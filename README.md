@@ -1,15 +1,3 @@
-## Customize this file after creating the new REPO and remove this lines.
-What to adjust:  
-* Add the your project or repo name direct under the logo.
-* Add a short and long desciption.
-* Add links for your final repo to report a bug or request a feature.
-* Add list of used technologies.
-* If you have, add a roadmap or remove this section.
-* Fill up the section for set up and documentation.
- * Start in this file only with documentation and link to the docs folder.
-* Add project shields. Use [shields.io](https://shields.io/)
-
-## ------- end to remove -------
 <div id="top"></div>
 
 <!-- PROJECT SHIELDS -->
@@ -23,88 +11,101 @@ What to adjust:
     <img src="/images/logo.png" alt="Logo" height="200">
   </a>
 
-<h3 align="center">DigiWF <i>repo or project name</i></h3>
+<h3 align="center">Informationssystem für soziale Infrastrukturplanung (ISI)</i></h3>
 
   <p align="center">
-    <i>Add a here a short description</i>
-    <br /><a href="#">Report Bug</a>
+    <i>Frontend Implementierung für die ISI-Anwendung</i>
+        <br /><a href="https://github.com/it-at-m/isi-frontend/issues">Fehler melden</a>
     ·
-    <a href="#">Request Feature</a>
+    <a href="https://github.com/it-at-m/isi-frontend/issues">Anforderung einstellen</a>
   </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## Über das Projekt
 
-*Add a description from your project here.*
-<p align="right">(<a href="#top">back to top</a>)</p>
+Das **Informationssystem für soziale Infrastrukturplanung (ISI)** ist eine integrierte Lösung
+für das Referat für Stadtplanung und Bauordnung der Landeshauptstadt München, die die
+kommunale Pflichtaufgabe zur Planung einer bedarfs- und zeitgerechten Versorgung mit
+**Kindertagesbetreuungs- und Grundschulplätzen** unterstützt und bestehende Planungsinstrumente ablöst.
+
+Dieses Projekt implementiert die UI der ISI-Anwendung.
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
 
 
-### Built With
+### Verwendete Technologien
 
-The documentation project is built with technologies we use in our projects:
+Dieses Projekt verwendet die folgenden Technologien:
 
-* *write here the list of used technologies*
+* Spring Boot
+* Vue.js
+* JSON Schema
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
 
-*if you have a ROADMAP for your project add this here*
+<!--*if you have a ROADMAP for your project add this here*-->
+*tbd*
 
 
-See the [open issues](#) for a full list of proposed features (and known issues).
+Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) die Liste der vorgeschlagenen Verbesserungen (und bekannten Fehler)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
 ## Set up
-*how can i start and fly this project*
+<!--*how can i start and fly this project*-->
+*tbd*
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
-## Documentation
-*what insights do you have to tell*
+## Dokumentation
+<!--*what insights do you have to tell*-->
+*tbd*
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
 <!-- CONTRIBUTING -->
-## Contributing
+## Beiträge
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Beiträge sind es, die die Open Source Community so wertvoll machen - zum Lernen und Erstellen sowie zur Inspiration.
+Beiträge sind **sehr willkommen**:
 
-If you have a suggestion that would make this better, please open an issue with the tag "enhancement", fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+Um Verbesserungsvorschläge einzureichen, öffne bitte ein _Issue_ mit dem _Tag_ "enhancement", erstelle einen _Fork_ des Repos und
+erzeuge einen _Pull Request_. Es ist natürlich auch möglich, nur ein Issue mit dem _Tag_ "enhancement" zu öffnen.
 
-1. Open an issue with the tag "enhancement"
-2. Fork the Project
-3. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to the Branch (`git push origin feature/AmazingFeature`)
-6. Open a Pull Request
+Vielen Dank, dass du diesem Projekt einen _Star_ vergibst!
 
-More about this in the [CODE_OF_CONDUCT](/CODE_OF_CONDUCT.md) file.
+1. Öffne ein **Issue** mit dem Tag "enhancement"
+2. Erstelle einen **Fork** des Projekts
+3. Erzeuge deinen eigenen **Feature Branch** (`git checkout -b feature/AmazingFeature`)
+4. **Commit** deine Änderungen (`git commit -m 'Add some AmazingFeature'`)
+5. **Push** in den Feature Branch (`git push origin feature/AmazingFeature`)
+6. Erstelle einen **Pull Request**
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+Mehr dazu in der Datei [CODE_OF_CONDUCT](/CODE_OF_CONDUCT.md) .
+
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
 
 <!-- LICENSE -->
-## License
+## Lizensierung
 
-Distributed under the MIT License. See `LICENSE` file for more information.
+Die Distribution erfolgt unter der MIT License. Mehr dazu in der Datei [LICENSE](/LICENSE).
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
 
 
 <!-- CONTACT -->
-## Contact
+## Kontakt
 
 it@m - opensource@muenchen.de
 
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">nach oben</a>)</p>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
