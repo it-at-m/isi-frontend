@@ -47,8 +47,15 @@ Dieses Projekt verwendet die folgenden Technologien:
 <!-- ROADMAP -->
 ## Roadmap
 
-<!--*if you have a ROADMAP for your project add this here*-->
-*tbd*
+<br />
+<div align="center">
+    <img src="/images/roadmap.png" alt="Roadmap">
+
+  <p align="center">
+    <i>ISI Roadmap</i>
+  </p>
+  <br/>
+</div>
 
 
 Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) die Liste der vorgeschlagenen Verbesserungen (und bekannten Fehler)
