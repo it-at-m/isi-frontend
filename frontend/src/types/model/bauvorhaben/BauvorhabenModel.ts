@@ -1,0 +1,12 @@
+import { BauvorhabenDto} from "@/api/api-client";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface BauvorhabenModel extends BauvorhabenDto {}
+
+class BauvorhabenModel {
+  constructor(bauvorhabenDto: BauvorhabenDto) {
+    Object.assign(this, bauvorhabenDto, {});
+  }
+}
+
+export { BauvorhabenModel as default };

@@ -1,0 +1,14 @@
+-----------------------------------------------------------
+  _____    _____   _____
+ |_   _|  / ____| |_   _|
+   | |   | (___     | |
+   | |    \___ \    | |
+  _| |_   ____) |  _| |_
+ |_____| |_____/  |_____|
+
+ISI: Informationssystem für soziale Infrastruktur
+
+ Application Name    : ${spring.application.name}
+ Spring Boot Version : ${spring-boot.formatted-version}
+-----------------------------------------------------------
+

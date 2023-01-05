@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.muenchen.isi</groupId>
+    <artifactId>isi-frontend</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>isi_frontend</name>
+    <packaging>pom</packaging>
+
+    <description>ISI Frontend Service</description>
+    <url>https://github.com/it-at-m/isi-frontend</url>
+
+    <properties>
+       		<!-- SonarQube -->
+		<sonar.scanner.version>3.9.0.2155</sonar.scanner.version>
+        <git.scm.url>scm:git:git@github.com:it-at-m/isi-frontend.git</git.scm.url>
+        <git.url>https://github.com/it-at-m/isi-frontend</git.url>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.10.0</version>
+                <configuration>
+                    <tag>RT-REL-${project.version}</tag>
+                </configuration>
+            </plugin>
+            <plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar.scanner.version}</version>
+			</plugin>
+        </plugins>
+    </build>
+
+
+    <modules>
+        <module>frontend</module>
+        <module>apigateway</module>
+    </modules>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>${git.url}</url>
+        <connection>${git.scm.url}</connection>
+        <developerConnection>${git.scm.url}</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+</project>

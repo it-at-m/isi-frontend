@@ -1,0 +1,5 @@
+include:
+  - project: "$INCLUDE_CICD_PROJECT"
+    ref: "main"
+    file:
+      - "$INCLUDE_CICD_GITLAB_YML"
