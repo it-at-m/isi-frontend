@@ -40,3 +40,4 @@ apigateway/**/application-*.yml
 apigateway/**/logback-spring.xml
 frontend/.env.development
 frontend/.env.production
+frontend/package-lock.json
