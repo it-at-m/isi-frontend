@@ -1,5 +1,10 @@
+variables:
+  ISI_INTERNAL_BRANCH:
+    value: "main"
+    description: "Welcher Branch soll für die Pipeline genutzt werden?"
+
 include:
   - project: "$INCLUDE_CICD_PROJECT"
-    ref: "main"
+    ref: "$INCLUDE_CICD_REF_BRANCH"
     file:
       - "$INCLUDE_CICD_GITLAB_YML"
