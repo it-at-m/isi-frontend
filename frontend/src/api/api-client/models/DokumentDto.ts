@@ -55,6 +55,12 @@ export interface DokumentDto {
      * @type {string}
      * @memberof DokumentDto
      */
+    titel?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DokumentDto
+     */
     artDokument: DokumentDtoArtDokumentEnum;
 }
 
@@ -94,6 +100,7 @@ export function DokumentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'filePath': FilepathDtoFromJSON(json['filePath']),
+        'titel': !exists(json, 'titel') ? undefined : json['titel'],
         'artDokument': json['artDokument'],
     };
 }
@@ -111,6 +118,7 @@ export function DokumentDtoToJSON(value?: DokumentDto | null): any {
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'filePath': FilepathDtoToJSON(value.filePath),
+        'titel': value.titel,
         'artDokument': value.artDokument,
     };
 }
