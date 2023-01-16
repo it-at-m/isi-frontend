@@ -6,26 +6,39 @@
         :key="item.filePath.pathToFile"
       >
         <v-container>
-          <v-row>
-            <v-col>
+          <v-row align="center">
+            <v-col
+              cols="1"
+              class="d-flex justify-center"
+            >
               <v-icon @click="downloadDokument(item)">
                 mdi-download
               </v-icon>
             </v-col>
             <v-col
-              cols="12"
-              md="5"
+              cols="11"
+              md="3"
             >
               {{ getDokumentDisplayName(item) }}
             </v-col>
             <v-col
               cols="12"
-              md="5"
-              style="padding: 0"
+              md="4"
+            >
+              <v-text-field
+                v-model="item.titel"
+                label="Titel"
+                counter
+                maxlength="50"
+                @input="formChanged"
+              />
+            </v-col>
+            <v-col
+              cols="11"
+              md="3"
             >
               <v-select
                 v-model="item.artDokument"
-                style="margin: 0px;"
                 :items="artDokumentList"
                 item-value="key"
                 item-text="value"
@@ -37,7 +50,10 @@
                 </template>
               </v-select>
             </v-col>
-            <v-col>
+            <v-col
+              cols="1"
+              class="d-flex justify-center"
+            >
               <v-icon @click="deleteDokument(item)">
                 mdi-delete
               </v-icon>
