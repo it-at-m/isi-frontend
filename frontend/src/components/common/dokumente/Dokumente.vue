@@ -1,6 +1,13 @@
 <template>
   <v-container>
     <div>
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        color="grey lighten-1"
+        size="50"
+        width="5"
+      />
       <dokumente-liste
         v-model="dokumente"
         @onDeleteDokument="deleteDokument"          
@@ -65,6 +72,8 @@ export default class Dokumente extends Mixins(
 
   private allowedMimeTypes = "";
 
+  private loading = false;
+
   mounted(): void {
     const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
     this.allowedMimeTypes = getAllowedMimeTypes(fileInformationDto);
@@ -99,11 +108,15 @@ export default class Dokumente extends Mixins(
     }
   }
 
-  private onFilesSelected(event: Event): void {
+  async onFilesSelected(event: Event): Promise<void> {
     const target = event.target as HTMLInputElement;
     const fileList = target.files;
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
-        this.saveFiles(fileList);
+      this.loading = true;
+      await this.saveFiles(fileList)
+        .finally(() => {
+          this.loading = false;
+        });     
     }
   }
 
@@ -182,13 +195,13 @@ export default class Dokumente extends Mixins(
     return messagePart;
   }
 
-  async saveFiles(fileList: FileList): Promise<void> {    
+  async saveFiles(fileList: FileList): Promise<void> {  
     for (let file of fileList) {
-      this.saveFile(this.pathToFile, file);
+      await this.saveFile(this.pathToFile, file);
     }
   }
 
-  async saveFile(pathToFile: string, file: File): Promise<void> {
+  async saveFile(pathToFile: string, file: File): Promise<void> {  
     const filepathDto: FilepathDto = createFilepathDto();
     filepathDto.pathToFile = pathToFile + file.name;
     let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
