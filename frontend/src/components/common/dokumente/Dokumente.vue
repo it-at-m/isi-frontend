@@ -2,7 +2,7 @@
   <v-container>
     <div>
       <v-progress-circular
-        v-if="loading"
+        v-if="isLoading"
         indeterminate
         color="grey lighten-1"
         size="50"
@@ -74,6 +74,10 @@ export default class Dokumente extends Mixins(
 
   private loading = false;
 
+  get isLoading(): boolean {
+    return this.loading;
+  }
+
   mounted(): void {
     const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
     this.allowedMimeTypes = getAllowedMimeTypes(fileInformationDto);
@@ -108,11 +112,16 @@ export default class Dokumente extends Mixins(
     }
   }
 
+  // Anzeigen des File-Explorers zur Auswahl von Dateien
+  // mit anschließendem Upload der ausgewählten Dateien in das Dokumentenverwaltungssystem
   async onFilesSelected(event: Event): Promise<void> {
     const target = event.target as HTMLInputElement;
     const fileList = target.files;
+    // Prüfung ob alle Dateien den Anforderungen entsprechen
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
+      // für die Dauer des gesamten Upload Prozesses wird ein Ladekreis angezeigt 
       this.loading = true;
+      // Upload der Dateien
       await this.saveFiles(fileList)
         .finally(() => {
           this.loading = false;
