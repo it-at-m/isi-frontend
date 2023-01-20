@@ -81,10 +81,6 @@ export default class BauvorhabenDataTransferDialog extends Mixins(AbfragelistenA
     return this.$store.getters["lookup/standVorhaben"];
   }
 
-  get statusAbfrageList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/statusAbfrage"];
-  }
-
   @Watch("selectedAbfrageListElement", { immediate: true })
   private transferToBauvorhaben(): void {
     if (!_.isNil(this.selectedAbfrageListElement) && !_.isNil(this.selectedAbfrageListElement.id)) {
@@ -100,7 +96,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(AbfragelistenA
     return "Name: " +
         _.defaultTo(listElement.nameAbfrage, "Kein Name vorhanden")
         + " - Status: "
-        + _.defaultTo(this.getLookupValue(listElement.statusAbfrage, this.statusAbfrageList), "Kein Abfragestatus vorhanden")
+        + _.defaultTo(listElement.statusAbfrage, "Kein Abfragestatus vorhanden")
         + " - Stand: "
         + _.defaultTo(this.getLookupValue(listElement.standVorhaben, this.standVorhabenList), "Kein Vorhabensstand vorhanden");
   }

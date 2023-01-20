@@ -21,7 +21,7 @@
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
+              <span> Status: {{ item.statusAbfrage }}</span>
               <v-spacer />
               <span>
                 Stand:
@@ -108,10 +108,6 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
 
   get standVorhabenList(): LookupEntryDto[] {
     return this.$store.getters["lookup/standVorhaben"];
-  }
-
-  get statusAbfrageList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/statusAbfrage"];
   }
 
   private datumFormatted(datum: string): string {

@@ -9,7 +9,6 @@ const state = {
   planungsrecht: [] as LookupEntryDto[],
   sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
   standVorhaben: [] as LookupEntryDto[],
-  statusAbfrage: [] as LookupEntryDto[],
   zustaendigeDienststelle: [] as LookupEntryDto[],
   baugebietTyp: [] as LookupEntryDto[],
   artDokument: [] as LookupEntryDto[],
@@ -41,9 +40,6 @@ export default {
     },
     standVorhaben: (state: LookupState): Array<LookupEntryDto> => {
       return state.standVorhaben;
-    },
-    statusAbfrage: (state: LookupState): Array<LookupEntryDto> => {
-      return state.statusAbfrage;
     },
     zustaendigeDienststelle: (state: LookupState): Array<LookupEntryDto> => {
       return state.zustaendigeDienststelle;
@@ -84,9 +80,6 @@ export default {
     standVorhaben(state: LookupState, list: LookupEntryDto[]): void {
       state.standVorhaben = list;
     },
-    statusAbfrage(state: LookupState, list: LookupEntryDto[]): void {
-      state.statusAbfrage = list;
-    },
     zustaendigeDienststelle(state: LookupState, list: LookupEntryDto[]): void {
       state.zustaendigeDienststelle = list;
     },
@@ -120,7 +113,6 @@ export default {
         context.commit('planungsrecht', lookupLists.planungsrecht?.list);
         context.commit('sobonVerfahrensgrundsaetzeJahr', lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
         context.commit('standVorhaben', lookupLists.standVorhaben?.list);
-        context.commit('statusAbfrage', lookupLists.statusAbfrage?.list);
         context.commit('zustaendigeDienststelle', lookupLists.zustaendigeDienststelle?.list);
         context.commit('baugebietTyp', lookupLists.baugebietTyp?.list);
         context.commit('artDokument', lookupLists.artDokument?.list);
@@ -144,9 +136,6 @@ export default {
     },
     standVorhaben(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("standVorhaben", list);
-    },
-    statusAbfrage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit("statusAbfrage", list);
     },
     zustaendigeDienststelle(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit('zustaendigeDienststelle', list);
