@@ -119,12 +119,13 @@ export default class Dokumente extends Mixins(
     const fileList = target.files;
     // Prüfung ob alle Dateien den Anforderungen entsprechen
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
-      // für die Dauer des gesamten Upload Prozesses wird ein Ladekreis angezeigt 
-      this.loading = true;
+      // Für die Dauer des gesamten Upload Prozesses wird ein Ladekreis angezeigt 
+      this.loading = true; // Aktivierung des Ladekreises
       // Upload der Dateien
       await this.saveFiles(fileList)
         .finally(() => {
-          this.loading = false;
+          // Ladekreis anzeigen beenden
+          this.loading = false; 
         });     
     }
   }
