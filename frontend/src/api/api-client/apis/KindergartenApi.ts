@@ -58,11 +58,6 @@ export class KindergartenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
-
         const response = await this.request({
             path: `/kindergarten`,
             method: 'POST',
@@ -94,11 +89,6 @@ export class KindergartenApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
-
         const response = await this.request({
             path: `/kindergarten/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
@@ -124,11 +114,6 @@ export class KindergartenApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
 
         const response = await this.request({
             path: `/kindergaerten`,
@@ -161,11 +146,6 @@ export class KindergartenApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
-
         const response = await this.request({
             path: `/kindergarten/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
@@ -197,11 +177,6 @@ export class KindergartenApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
 
         const response = await this.request({
             path: `/kindergarten`,

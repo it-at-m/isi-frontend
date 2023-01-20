@@ -92,6 +92,7 @@
             :items="statusAbfrageList"
             item-value="key"
             item-text="value"
+            readonly
             :rules="[fieldValidationRules.pflichtfeld]"
             @change="formChanged"
           >
