@@ -112,19 +112,20 @@ export default class Dokumente extends Mixins(
     }
   }
 
-  // Anzeigen des File-Explorers zur Auswahl von Dateien
-  // mit anschließendem Upload der ausgewählten Dateien in das Dokumentenverwaltungssystem
+  // - Anzeigen des File-Explorers zur Auswahl von Dateien
+  // - Upload der ausgewählten Dateien in das Dokumentenverwaltungssystem
+  // - Für die Dauer des Uploads aller Dateien in das Dokumentenverwaltungssystem wird ein Cursorladekreis (Progress-Circle) angezeigt
   async onFilesSelected(event: Event): Promise<void> {
     const target = event.target as HTMLInputElement;
     const fileList = target.files;
     // Prüfung ob alle Dateien den Anforderungen entsprechen
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
-      // Für die Dauer des gesamten Upload Prozesses wird ein Ladekreis angezeigt 
-      this.loading = true; // Aktivierung des Ladekreises
+      // Anzeige des Cursorladekreis starten 
+      this.loading = true;
       // Upload der Dateien
       await this.saveFiles(fileList)
         .finally(() => {
-          // Ladekreis anzeigen beenden
+          // Anzeige des Cursorladekreises beenden
           this.loading = false; 
         });     
     }
