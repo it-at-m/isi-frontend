@@ -33,11 +33,6 @@ export class InfrastruktureinrichtunglistenApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
-
         const response = await this.request({
             path: `/infrastruktureinrichtungen`,
             method: 'GET',

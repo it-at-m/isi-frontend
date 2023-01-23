@@ -101,9 +101,10 @@ export interface AbfrageDto {
 export const AbfrageDtoStatusAbfrageEnum = {
     Angelegt: 'ANGELEGT',
     Offen: 'OFFEN',
-    InArbeit: 'IN_ARBEIT',
     InErfassung: 'IN_ERFASSUNG',
-    InBearbeitung: 'IN_BEARBEITUNG',
+    InBearbeitungPlan: 'IN_BEARBEITUNG_PLAN',
+    InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
+    BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
     Erledigt: 'ERLEDIGT',
     Abbruch: 'ABBRUCH'
 } as const;

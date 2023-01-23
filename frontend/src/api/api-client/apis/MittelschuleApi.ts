@@ -58,11 +58,6 @@ export class MittelschuleApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
-
         const response = await this.request({
             path: `/mittelschule`,
             method: 'POST',
@@ -94,11 +89,6 @@ export class MittelschuleApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
-
         const response = await this.request({
             path: `/mittelschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
@@ -128,11 +118,6 @@ export class MittelschuleApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
-
         const response = await this.request({
             path: `/mittelschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
@@ -159,11 +144,6 @@ export class MittelschuleApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
 
         const response = await this.request({
             path: `/mittelschulen`,
@@ -197,11 +177,6 @@ export class MittelschuleApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("spring_oauth", []);
-        }
 
         const response = await this.request({
             path: `/mittelschule`,
