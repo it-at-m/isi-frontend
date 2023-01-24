@@ -92,6 +92,7 @@
             :items="statusAbfrageList"
             item-value="key"
             item-text="value"
+            readonly
             :rules="[fieldValidationRules.pflichtfeld]"
             @change="formChanged"
           >
@@ -109,7 +110,10 @@
             :items="standVorhabenList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :rules="[
+              fieldValidationRules.pflichtfeld,
+              fieldValidationRules.notUnspecified,
+            ]"
             @change="formChanged"
           >
             <template #label>
@@ -186,19 +190,19 @@ import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { createFilepathDtoFor } from "@/utils/Factories";
 import _ from "lodash";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   components: {
     DatePicker,
     Dokumente,
-    FieldGroupCard
+    FieldGroupCard,
   },
 })
 export default class AbfrageComponent extends Mixins(
   FieldValidationRulesMixin,
   BauvorhabenApiRequestMixin,
-  SaveLeaveMixin 
+  SaveLeaveMixin
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
 
@@ -208,7 +212,7 @@ export default class AbfrageComponent extends Mixins(
 
   private dokumentCardTitle = "Dokumente";
 
-  mounted(): void {    
+  mounted(): void {
     this.fetchBauvorhaben();
   }
 
@@ -216,12 +220,12 @@ export default class AbfrageComponent extends Mixins(
     return this.$store.getters["lookup/standVorhaben"];
   }
 
-  get statusAbfrageList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/statusAbfrage"];
-  }
-
   get bauvorhabenList(): BauvorhabenDto[] {
     return this.$store.getters["search/resultBauvorhaben"];
+  }
+  
+  get statusAbfrageList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/statusAbfrage"];
   }
 
   get dokumentePathToFile(): string | undefined {
@@ -235,12 +239,10 @@ export default class AbfrageComponent extends Mixins(
    * Holt alle Bauvorhaben vom Backend.
    */
   private async fetchBauvorhaben(): Promise<void> {
-    await this.getBauvorhaben(true)
-      .then((bauvorhaben: BauvorhabenDto[]) => {
-        this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
-      });
+    await this.getBauvorhaben(true).then((bauvorhaben: BauvorhabenDto[]) => {
+      this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
+    });
   }
-
 }
 </script>
 

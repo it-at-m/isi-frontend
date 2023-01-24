@@ -104,7 +104,7 @@ export default class ValidatorMixin extends Vue {
 
   findFaultInAbfragevariante(abfragevariante: AbfragevarianteModel): string | null {
     if (abfragevariante.realisierungVon > abfragevariante.realisierungBis) {
-      return `'Realisierung von' bei Abfragevariante ${abfragevariante.abfragevariantenNr} liegt nach 'Realisierung bis'`;
+      return `'Realisierung von ${abfragevariante.realisierungVon}' liegt nach 'Realisierung bis ${abfragevariante.realisierungBis}'`;
     }
     if (_.isNil(abfragevariante.geschossflaecheWohnen) && _.isNil(abfragevariante.gesamtanzahlWe)) {
       return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
