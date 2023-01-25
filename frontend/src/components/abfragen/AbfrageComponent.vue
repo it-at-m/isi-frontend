@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
-            v-model="abfrage.nameAbfrage"
+            v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
             @input="formChanged"
           >
