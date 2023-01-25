@@ -6,6 +6,7 @@
           <v-text-field
             v-model="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="70"
             @input="formChanged"
           >
             <template #label>
