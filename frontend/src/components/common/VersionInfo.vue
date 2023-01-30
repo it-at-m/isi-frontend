@@ -48,8 +48,8 @@
 interface Service {
   name: string,
   displayName: string,
-  commitHash: string,
   internal: boolean,
+  commitHash: string,
   active: boolean,
 }
 
@@ -60,11 +60,11 @@ export default {
   },
   setup(): unknown {
     const services: Service[] = [
-      { name: "isi-frontend", displayName: "Frontend", commitHash: "123456", internal: false, active: true },
-      { name: "isi-backend", displayName: "Backend", commitHash: "123456", internal: false, active: true },
-      { name: "isi-wfs-eai", displayName: "WFS-EAI", commitHash: "123456", internal: true, active: false },
-      { name: "isi-master-eai", displayName: "MAstER-EAI", commitHash: "123456", internal: true, active: false },
-      { name: "isi-document-storage", displayName: "Dokument-EAI", commitHash: "123456", internal: true, active: true },
+      { name: "isi-frontend", displayName: "Frontend", internal: false, commitHash: "123456",  active: true },
+      { name: "isi-backend", displayName: "Backend", internal: false, commitHash: "123456", active: true },
+      { name: "isi-wfs-eai", displayName: "WFS-EAI", internal: true, commitHash: "123456", active: false },
+      { name: "isi-master-eai", displayName: "MAstER-EAI", internal: true, commitHash: "123456", active: false },
+      { name: "isi-document-storage", displayName: "Dokument-EAI", internal: true, commitHash: "123456", active: true },
     ];
 
     function getCommitUrl(service: Service): string {
