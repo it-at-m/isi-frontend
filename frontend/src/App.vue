@@ -51,7 +51,32 @@
           cols="3"
           class="d-flex align-center justify-end"
         >
+          <v-menu
+            offset-y
+            transition="slide-y-transition"
+          >
+            <template #activator="{ on }">
+              <v-btn
+                small
+                text
+                fab
+              >
+                <v-icon
+                  class="white--text"
+                  v-on="on"
+                >
+                  mdi-help-circle
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list class="text-center">
+              <v-list-item @click="showVersionInfo = true">
+                <v-list-item-title>Versionsinfo</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-btn
+            small
             text
             fab
           >
@@ -109,6 +134,7 @@
         </div>
       </template>
     </v-app-bar>
+    <version-info v-model="showVersionInfo" />
     <v-main>
       <v-fade-transition mode="out-in">
         <router-view />
@@ -122,14 +148,17 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 import TheSnackbar from "@/components/TheSnackbar.vue";
+import VersionInfo from "@/components/common/VersionInfo.vue";
 import { RouteTag } from "./router";
 
 @Component({
-  components: { TheSnackbar }
+  components: { TheSnackbar, VersionInfo }
 })
 export default class App extends Vue {
 
   public query = "";
+
+  public showVersionInfo = false;
 
   created(): void {
     this.$store.dispatch("lookup/initialize");

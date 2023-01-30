@@ -105,6 +105,9 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
       .then((bauvorhaben: BauvorhabenDto[]) => {
         this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
         this.fetchSuccess = true;
+      })
+      .catch(() => {
+        this.fetchSuccess = false;
       });
   }
   
