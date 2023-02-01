@@ -101,6 +101,7 @@
           md="4"
         >
           <num-field
+            :key="componentKeyGeschossflaecheSobonUrsaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
             class="mx-3"
             label="SoBoN-ursächliche"
@@ -263,6 +264,8 @@ export default class AbfragevarianteForm extends Mixins(
     this.$emit("input", mode);
   }
 
+  private componentKeyGeschossflaecheSobonUrsaechlich = 0;
+
   @Prop()
   private sobonRelevant!: UncertainBoolean;
 
@@ -270,10 +273,12 @@ export default class AbfragevarianteForm extends Mixins(
     return this.sobonRelevant;
   }
 
-  get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {
-    return this.isSobonRelevant === UncertainBoolean.True &&
+  get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {  
+    const pflichtfeld = this.isSobonRelevant === UncertainBoolean.True &&
       (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
        this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
+    this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
+    return pflichtfeld;
   }
 
   private geschlossFlaecheCardTitle = "Geschlossfläche";
