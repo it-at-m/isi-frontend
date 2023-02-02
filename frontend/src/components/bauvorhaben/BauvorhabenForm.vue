@@ -62,63 +62,10 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="adressCardTitle">
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
-            v-model="bauvorhaben.allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.strasse"
-            label="Strasse"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            label="Hausnummer"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.ort"
-            label="Ort"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
+    <adresse-component
+      :adresse-prop.sync="bauvorhaben.adresse"
+      :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
+    />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
         <v-col
@@ -252,18 +199,18 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({ components: { FieldGroupCard, Dokumente, NumField, TriSwitch } })
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AdresseComponent
 ) {
   @VModel({type: BauvorhabenModel})
   bauvorhaben!: BauvorhabenModel;
   
-  private adressCardTitle = "Adressinformationen";
-
   private dokumentCardTitle = "Dokumente";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben"

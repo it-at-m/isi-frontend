@@ -15,60 +15,10 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="adressCardTitle">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-text-field
-            v-model="infrastruktureinrichtung.allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            value="abfrage.allgemeineOrtsangabe"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="infrastruktureinrichtung.adresse.strasse"
-            label="Strasse"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="infrastruktureinrichtung.adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            label="Hausnummer"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="infrastruktureinrichtung.adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="infrastruktureinrichtung.adresse.ort"
-            label="Ort"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
+    <adresse-component
+      :adresse-prop.sync="infrastruktureinrichtung.adresse"
+      :allgemeine-ortsangabe-prop.sync="infrastruktureinrichtung.allgemeineOrtsangabe"
+    />
     <field-group-card>
       <v-row justify="center">
         <v-col
@@ -174,11 +124,13 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({
   components: {
     FieldGroupCard,
-    NumField
+    NumField,
+    AdresseComponent
   },
 })
 export default class InfrastruktureinrichtungComponent extends Mixins(
@@ -199,8 +151,6 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   get isNewInfrastruktureinrichtung(): boolean {
     return this.mode === DisplayMode.NEU;
   }
-
-  private adressCardTitle = "Adressinformationen";
 
   private flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 

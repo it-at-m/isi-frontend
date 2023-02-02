@@ -15,60 +15,10 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="adressCardTitle">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-text-field
-            v-model="abfrage.allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            value="abfrage.allgemeineOrtsangabe"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.strasse"
-            label="Strasse"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            label="Hausnummer"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.ort"
-            label="Ort"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
+    <adresse-component
+      :adresse-prop.sync="abfrage.adresse"
+      :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
+    />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row justify="center">
         <v-col
@@ -191,12 +141,14 @@ import { createFilepathDtoFor } from "@/utils/Factories";
 import _ from "lodash";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({
   components: {
     DatePicker,
     Dokumente,
     FieldGroupCard,
+    AdresseComponent
   },
 })
 export default class AbfrageComponent extends Mixins(
@@ -205,8 +157,6 @@ export default class AbfrageComponent extends Mixins(
   SaveLeaveMixin
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
-
-  private adressCardTitle = "Adressinformationen";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Vorhaben";
 
