@@ -3,12 +3,13 @@
     <field-group-card :card-title="adressCardTitle">
       <v-row justify="center">
         <v-col cols="12">
-          <v-text-field
-            v-model="allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            value="abfrage.allgemeineOrtsangabe"
-            @input="formChanged"
-          />
+          <v-card>
+            <v-text-field
+              v-model="allgemeineOrtsangabe"
+              label="Allgemeine Ortsangabe"
+              @input="formChanged"
+            />
+          </v-card>
         </v-col>
         <v-col
           cols="12"
@@ -72,7 +73,6 @@ export default class AdresseComponent extends Mixins(
   FieldValidationRulesMixin,
   FieldGroupCard
 ) {
-
   private adressCardTitle = "Adressinformationen";
 
   @Prop()
@@ -83,7 +83,7 @@ export default class AdresseComponent extends Mixins(
   }
 
   set adresse(adresse: AdresseModel) {
-    this.$emit('update:adresseProp', adresse);
+    this.$emit("update:adresseProp", adresse);
   }
 
   @Prop()
@@ -94,8 +94,14 @@ export default class AdresseComponent extends Mixins(
   }
 
   set allgemeineOrtsangabe(allgemeineOrtsangabe: string) {
-    this.$emit('update:allgemeineOrtsangabeProp', allgemeineOrtsangabe);
+    this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
   }
 
+  get matchedAdressen(): { id: number; name: string }[] {
+    return [
+      { id: 1, name: "Test 1" },
+      { id: 2, name: "Test 2" },
+    ];
+  }
 }
 </script>
