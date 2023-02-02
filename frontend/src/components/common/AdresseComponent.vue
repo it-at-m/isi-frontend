@@ -3,13 +3,31 @@
     <field-group-card :card-title="adressCardTitle">
       <v-row justify="center">
         <v-col cols="12">
-          <v-card>
-            <v-text-field
-              v-model="allgemeineOrtsangabe"
-              label="Allgemeine Ortsangabe"
-              @input="formChanged"
-            />
-          </v-card>
+          <v-autocomplete
+            :items="matchedAdressen"
+            :loading="isLoading"
+            :search-input.sync="searchForAdresse"
+            hide-no-data
+            hide-selected
+            item-text="name"
+            item-value="id"
+            label="Adress-Suche"
+            placeholder="Suchtext mit Adressteilen"
+            prepend-icon="mdi-database-search"
+          >
+            <template #no-data>
+              <v-list>
+                <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
+              </v-list>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="allgemeineOrtsangabe"
+            label="Allgemeine Ortsangabe"
+            @input="formChanged"
+          />
         </v-col>
         <v-col
           cols="12"
@@ -64,6 +82,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import AdresseModel from "@/types/model/common/AdresseModel";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 
 @Component({
   components: {},
@@ -74,6 +93,12 @@ export default class AdresseComponent extends Mixins(
   FieldGroupCard
 ) {
   private adressCardTitle = "Adressinformationen";
+
+  private isLoading = false;
+
+  private adressSuche = "";
+
+  private adressen: Array<MuenchenAdresseDto> = [];
 
   @Prop()
   private adresseProp!: AdresseModel;
@@ -97,11 +122,17 @@ export default class AdresseComponent extends Mixins(
     this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
   }
 
-  get matchedAdressen(): { id: number; name: string }[] {
-    return [
-      { id: 1, name: "Test 1" },
-      { id: 2, name: "Test 2" },
-    ];
+  get searchResult(): MuenchenAdresseDto[] {
+    return this.adressen;
+  }
+
+  get searchForAdresse(): string {
+    return this.adressSuche;
+  }
+
+  set searchForAdresse(adressSuche: string) {
+    //console.log("searchForAdresse: "  + adressSuche);
+    this.adressSuche = adressSuche;
   }
 }
 </script>
