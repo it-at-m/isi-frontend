@@ -6,6 +6,7 @@ export * from './AbfragelistenApi';
 export * from './BaurateApi';
 export * from './BauvorhabenApi';
 export * from './DateihandlingApi';
+export * from './DokumenteApi';
 export * from './FileInfoStammApi';
 export * from './FoerdermixStammApi';
 export * from './GrundschuleApi';

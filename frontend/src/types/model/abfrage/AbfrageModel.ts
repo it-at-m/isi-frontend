@@ -1,4 +1,4 @@
-import { AbfrageDto } from "@/api/api-client";
+import { AbfrageDto } from "@/api/api-client/isi-backend";
 import { createAdresseDto } from "@/utils/Factories";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import _ from "lodash";

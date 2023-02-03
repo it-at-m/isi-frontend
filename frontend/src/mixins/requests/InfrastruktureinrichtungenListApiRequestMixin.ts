@@ -1,5 +1,5 @@
 import {Component, Mixins} from "vue-property-decorator";
-import {InfrastruktureinrichtungListElementsDto, InfrastruktureinrichtunglistenApi} from "@/api/api-client";
+import {InfrastruktureinrichtungListElementsDto, InfrastruktureinrichtunglistenApi} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 

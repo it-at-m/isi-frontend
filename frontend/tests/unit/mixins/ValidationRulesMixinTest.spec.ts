@@ -1,4 +1,4 @@
-import { FoerdermixDto, UncertainBoolean } from "@/api/api-client";
+import { FoerdermixDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 

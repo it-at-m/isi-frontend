@@ -29,7 +29,7 @@ import {
   MittelschuleDto,
   InfrastruktureinrichtungDtoEinrichtungstraegerEnum,
   InfrastruktureinrichtungDtoStatusEnum,
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 

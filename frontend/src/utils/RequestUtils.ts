@@ -1,4 +1,4 @@
-import {Configuration, ConfigurationParameters} from "@/api/api-client";
+import {Configuration, ConfigurationParameters} from "@/api/api-client/isi-backend";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 
 

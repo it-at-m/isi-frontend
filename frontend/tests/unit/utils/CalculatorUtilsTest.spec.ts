@@ -1,5 +1,5 @@
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import { FoerdermixDto } from "@/api/api-client";
+import { FoerdermixDto } from "@/api/api-client/isi-backend";
 import { addiereAnteile } from "@/utils/CalculationUtil";
 
 

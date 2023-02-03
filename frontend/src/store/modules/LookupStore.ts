@@ -1,4 +1,4 @@
-import { LookupApi, LookupEntryDto } from "@/api/api-client";
+import { LookupApi, LookupEntryDto } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";

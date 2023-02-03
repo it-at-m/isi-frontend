@@ -6,7 +6,7 @@ import {
   DeleteBaurateByIdRequest,
   GetBaurateByIdRequest,
   UpdateBaurateRequest
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 

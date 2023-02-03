@@ -1,4 +1,4 @@
-import { AbfrageListElementDto, BauvorhabenDto, InfrastruktureinrichtungListElementDto } from "@/api/api-client";
+import { AbfrageListElementDto, BauvorhabenDto, InfrastruktureinrichtungListElementDto } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";

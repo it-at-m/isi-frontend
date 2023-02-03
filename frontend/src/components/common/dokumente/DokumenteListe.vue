@@ -64,7 +64,7 @@ import { Mixins, Component, VModel } from "vue-property-decorator";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import { createFilepathDto } from "@/utils/Factories";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
-import {DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto} from "@/api/api-client";
+import {DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";

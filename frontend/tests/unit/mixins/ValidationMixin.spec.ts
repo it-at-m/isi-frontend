@@ -1,4 +1,4 @@
-import { BaurateDto, FoerdermixDto } from "@/api/api-client";
+import { BaurateDto, FoerdermixDto } from "@/api/api-client/isi-backend";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 

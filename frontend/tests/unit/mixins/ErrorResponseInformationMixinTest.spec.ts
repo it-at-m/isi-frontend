@@ -1,6 +1,6 @@
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import {Levels} from "@/api/error";
-import {InformationResponseDtoTypeEnum} from "@/api/api-client";
+import {InformationResponseDtoTypeEnum} from "@/api/api-client/isi-backend";
 
 describe("ErrorResponseInformationMixin Test", () => {
   const errorResponseInformationMixin = new ErrorHandler();

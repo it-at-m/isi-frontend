@@ -170,7 +170,7 @@ import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import {
   AbfrageListElementDtoStatusAbfrageEnum,
   InfrastrukturabfrageDto
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";

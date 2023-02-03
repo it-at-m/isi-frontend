@@ -1,4 +1,4 @@
-import {AbfrageStatusApi, FreigabeInfrastrukturabfrageRequest } from "@/api/api-client";
+import {AbfrageStatusApi, FreigabeInfrastrukturabfrageRequest } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import {Component, Mixins} from "vue-property-decorator";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";

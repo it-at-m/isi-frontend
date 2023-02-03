@@ -132,7 +132,7 @@ import {
   GrundschuleDto,
   MittelschuleDto,
   InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import KinderkrippeApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/KinderkrippeApiRequestMixin";
 import KindergartenApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/KindergartenApiRequestMixin";
 import HausFuerKinderApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/HausFuerKinderApiRequestMixin";

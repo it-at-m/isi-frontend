@@ -7,7 +7,7 @@ import { AdresseDto,
   BauvorhabenDtoPlanungsrechtEnum,
   BauvorhabenDtoStandVorhabenEnum,
   BauvorhabenDtoZustaendigkeitEnum,
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";

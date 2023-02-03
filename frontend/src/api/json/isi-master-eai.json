@@ -17,7 +17,7 @@
   ],
   "tags": [
     {
-      "name": "Controller zum Lesen von Adresse in MAstER",
+      "name": "MasterEai",
       "description": "API zum Abfragen des MAstER-Servers von Adressen."
     }
   ],
@@ -25,7 +25,7 @@
     "/adresse/search": {
       "post": {
         "tags": [
-          "Controller zum Lesen von Adresse in MAstER"
+          "MasterEai"
         ],
         "summary": "Holt die Adressen bei denen die Suchkriterien übereinstimmen.",
         "operationId": "getAdressen",

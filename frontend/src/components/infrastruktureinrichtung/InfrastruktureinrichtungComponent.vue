@@ -115,7 +115,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client";
+import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";

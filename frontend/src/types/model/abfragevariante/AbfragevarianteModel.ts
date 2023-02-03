@@ -1,4 +1,4 @@
-import { AbfragevarianteDto } from "@/api/api-client";
+import { AbfragevarianteDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AbfragevarianteModel extends AbfragevarianteDto { }

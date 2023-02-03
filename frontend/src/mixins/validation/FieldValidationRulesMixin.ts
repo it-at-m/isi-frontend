@@ -3,7 +3,7 @@ import moment from "moment";
 import _ from "lodash";
 import { addiereAnteile } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import { UncertainBoolean } from "@/api/api-client";
+import { UncertainBoolean } from "@/api/api-client/isi-backend";
 
 @Component
 export default class FieldValidationRulesMixin extends Vue {

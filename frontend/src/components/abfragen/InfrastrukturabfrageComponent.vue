@@ -75,7 +75,7 @@
 <script lang="ts">
 import { Component, VModel, Mixins, Watch } from "vue-property-decorator";
 import AbfrageComponent from "@/components/abfragen/AbfrageComponent.vue";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client";
+import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";

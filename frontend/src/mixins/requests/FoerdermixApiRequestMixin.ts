@@ -7,7 +7,7 @@ import {
   GetFoerdermixStammByIdRequest,
   SaveFoerdermixStammRequest,
   UpdateFoerdermixStammRequest
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import ErrorHandler from "./ErrorHandler";
 
 @Component

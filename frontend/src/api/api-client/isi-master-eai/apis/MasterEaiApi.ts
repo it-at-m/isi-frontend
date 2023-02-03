@@ -33,7 +33,7 @@ export interface GetAdressenRequest {
 /**
  * 
  */
-export class ControllerZumLesenVonAdresseInMAstERApi extends runtime.BaseAPI {
+export class MasterEaiApi extends runtime.BaseAPI {
 
     /**
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.

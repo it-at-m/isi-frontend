@@ -1,4 +1,4 @@
-import { LookupEntryDto} from "@/api/api-client";
+import { LookupEntryDto} from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface LookupEntryModel extends LookupEntryDto { }

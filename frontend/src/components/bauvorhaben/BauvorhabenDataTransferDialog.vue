@@ -57,7 +57,7 @@ import {
   AbfrageListElementsDto,
   InfrastrukturabfrageDto,
   LookupEntryDto
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import { createInfrastrukturabfrageDto } from "@/utils/Factories";

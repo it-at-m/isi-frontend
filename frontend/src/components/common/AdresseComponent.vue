@@ -82,7 +82,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import AdresseModel from "@/types/model/common/AdresseModel";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
+import { MuenchenAdresseDto } from "@/api/api-client/isi-backend/isi-master-eai";
 
 @Component({
   components: {},

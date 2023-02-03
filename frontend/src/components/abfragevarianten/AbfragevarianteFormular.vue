@@ -234,7 +234,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client";
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";

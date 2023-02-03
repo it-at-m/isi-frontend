@@ -5,7 +5,7 @@ import {
   GetFileRequest,
   PresignedUrlDto,
   SaveFileRequest,
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import {Component, Mixins} from "vue-property-decorator";
 import _ from "lodash";

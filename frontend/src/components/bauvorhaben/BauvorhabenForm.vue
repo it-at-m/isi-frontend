@@ -189,7 +189,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client";
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";

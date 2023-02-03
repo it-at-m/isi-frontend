@@ -5,7 +5,7 @@ import {
   AbfrageListElementDtoStandVorhabenEnum,
   InfrastruktureinrichtungListElementDto,
   InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum
- } from "@/api/api-client";
+ } from "@/api/api-client/isi-backend";
 import { createBauvorhabenDto } from "@/utils/Factories";
 import User, { UserState } from "@/store/modules/User";
 import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
