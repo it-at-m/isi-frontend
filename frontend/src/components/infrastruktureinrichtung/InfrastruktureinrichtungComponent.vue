@@ -81,6 +81,7 @@
             class="mx-3"
             year
             required
+            maxlength="4"
           />    
         </v-col>
         <v-col

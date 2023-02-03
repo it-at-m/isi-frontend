@@ -11,6 +11,7 @@
             label="Jahr (JJJJ)"
             year
             required
+            maxlength="4"
           />
         </v-col>
         <v-col
