@@ -6,6 +6,7 @@
           <v-text-field
             v-model="infrastruktureinrichtung.nameEinrichtung"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
             @input="formChanged"
           >
             <template #label>
@@ -22,6 +23,7 @@
             v-model="infrastruktureinrichtung.allgemeineOrtsangabe"
             label="Allgemeine Ortsangabe"
             value="abfrage.allgemeineOrtsangabe"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -32,6 +34,7 @@
           <v-text-field
             v-model="infrastruktureinrichtung.adresse.strasse"
             label="Strasse"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -43,6 +46,7 @@
             v-model="infrastruktureinrichtung.adresse.hausnummer"
             :rules="[fieldValidationRules.hausnummer]"
             label="Hausnummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -54,6 +58,7 @@
             v-model="infrastruktureinrichtung.adresse.plz"
             label="Postleitzahl"
             :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -64,6 +69,7 @@
           <v-text-field
             v-model="infrastruktureinrichtung.adresse.ort"
             label="Ort"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>

@@ -8,6 +8,7 @@
               <v-text-field
                 v-model="bauvorhaben.nameVorhaben"
                 :rules="[fieldValidationRules.pflichtfeld]"
+                maxlength="255"
                 @input="formChanged"
               >
                 <template #label>

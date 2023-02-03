@@ -21,6 +21,7 @@
           <v-text-field
             v-model="baurate.anzahlWeGeplant"
             label="Anzahl Wohneinheiten geplant"
+            maxlength="255"
           />
         </v-col>
         <v-col

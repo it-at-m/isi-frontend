@@ -9,6 +9,7 @@
           <v-text-field
             v-model="bauvorhaben.eigentuemer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
             @input="formChanged"
           >
             <template #label>
@@ -53,6 +54,7 @@
           <v-text-field
             v-model="bauvorhaben.bauvorhabenNummer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
             @input="formChanged"
           >
             <template #label>
@@ -68,6 +70,7 @@
           <v-text-field
             v-model="bauvorhaben.allgemeineOrtsangabe"
             label="Allgemeine Ortsangabe"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -80,6 +83,7 @@
           <v-text-field
             v-model="bauvorhaben.adresse.strasse"
             label="Strasse"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -91,6 +95,7 @@
             v-model="bauvorhaben.adresse.hausnummer"
             :rules="[fieldValidationRules.hausnummer]"
             label="Hausnummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -104,6 +109,7 @@
             v-model="bauvorhaben.adresse.plz"
             label="Postleitzahl"
             :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -114,6 +120,7 @@
           <v-text-field
             v-model="bauvorhaben.adresse.ort"
             label="Ort"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -201,6 +208,7 @@
           <v-text-field
             v-model="bauvorhaben.bebauungsplannummer"
             label="Bebauungsplannummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -211,6 +219,7 @@
           <v-text-field
             v-model="bauvorhaben.fisNummer"
             label="FIS-Nummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -222,6 +231,7 @@
             label="Anmerkung"
             rows="1"
             auto-grow
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>

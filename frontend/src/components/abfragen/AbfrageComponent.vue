@@ -22,6 +22,7 @@
             v-model="abfrage.allgemeineOrtsangabe"
             label="Allgemeine Ortsangabe"
             value="abfrage.allgemeineOrtsangabe"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -32,6 +33,7 @@
           <v-text-field
             v-model="abfrage.adresse.strasse"
             label="Strasse"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -43,6 +45,7 @@
             v-model="abfrage.adresse.hausnummer"
             :rules="[fieldValidationRules.hausnummer]"
             label="Hausnummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -54,6 +57,7 @@
             v-model="abfrage.adresse.plz"
             label="Postleitzahl"
             :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -64,6 +68,7 @@
           <v-text-field
             v-model="abfrage.adresse.ort"
             label="Ort"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -143,6 +148,7 @@
           <v-text-field
             v-model="abfrage.bebauungsplannummer"
             label="Bebauungsplannummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -159,6 +165,7 @@
             label="Anmerkungen"
             auto-grow
             rows="3"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
