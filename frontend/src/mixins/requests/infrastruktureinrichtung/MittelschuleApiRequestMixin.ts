@@ -21,7 +21,7 @@ export default class MittelschuleApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.mittelschuleApi = new MittelschuleApi(RequestUtils.getBasicFetchConfiguration());
+    this.mittelschuleApi = new MittelschuleApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createMittelschule(dto: MittelschuleDto, showInInformationList: boolean): Promise<MittelschuleDto> {

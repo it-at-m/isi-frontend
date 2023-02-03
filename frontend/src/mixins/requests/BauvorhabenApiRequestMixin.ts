@@ -21,7 +21,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.bauvorhabenApi = new BauvorhabenApi(RequestUtils.getBasicFetchConfiguration());
+    this.bauvorhabenApi = new BauvorhabenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   getBauvorhaben(showInInformationList: boolean): Promise<Array<BauvorhabenDto>> {

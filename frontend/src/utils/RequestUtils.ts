@@ -1,4 +1,5 @@
-import {Configuration, ConfigurationParameters} from "@/api/api-client/isi-backend";
+import {Configuration as ConfigurationBackend, ConfigurationParameters as ConfigurationParametersBackend} from "@/api/api-client/isi-backend";
+import {Configuration as ConfigurationMasterEai, ConfigurationParameters as ConfigurationParametersMasterEai} from "@/api/api-client/isi-master-eai";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 
 
@@ -8,11 +9,18 @@ export default class RequestUtils {
     return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-backend-service";
   }
   
-  public static getBasicFetchConfiguration(): Configuration {
-    const configuration: ConfigurationParameters = {
+  public static getBasicFetchConfigurationForBackend(): ConfigurationBackend {
+    const configuration: ConfigurationParametersBackend = {
       basePath: this.getBaseUrl(),
     };
-    return new Configuration(configuration);
+    return new ConfigurationBackend(configuration);
+  }
+  
+  public static getBasicFetchConfigurationForMasterEai(): ConfigurationMasterEai {
+    const configuration: ConfigurationParametersMasterEai = {
+      basePath: this.getBaseUrl(),
+    };
+    return new ConfigurationMasterEai(configuration);
   }
   
   /**

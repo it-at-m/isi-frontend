@@ -21,7 +21,7 @@ export default class HausFuerKinderApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.hausFuerKinderApi = new HausFuerKinderApi(RequestUtils.getBasicFetchConfiguration());
+    this.hausFuerKinderApi = new HausFuerKinderApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createHausFuerKinder(dto: HausFuerKinderDto, showInInformationList: boolean): Promise<HausFuerKinderDto> {

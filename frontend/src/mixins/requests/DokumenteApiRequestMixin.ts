@@ -18,7 +18,7 @@ export default class DokumenteApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.dateihandlingApi = new DateihandlingApi(RequestUtils.getBasicFetchConfiguration());
+    this.dateihandlingApi = new DateihandlingApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   async getPresignedUrlForSaveDokument(dto: FilepathDto, showInInformationList: boolean): Promise<PresignedUrlDto> {

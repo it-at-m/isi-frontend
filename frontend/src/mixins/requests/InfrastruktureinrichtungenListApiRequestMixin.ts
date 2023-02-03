@@ -10,7 +10,7 @@ export default class InfrastruktureinrichtungenListApiRequestMixin extends Mixin
   
   constructor() {
     super();
-    this.infrastruktureiInfrastruktureinrichtunglistenApi = new InfrastruktureinrichtunglistenApi(RequestUtils.getBasicFetchConfiguration());
+    this.infrastruktureiInfrastruktureinrichtunglistenApi = new InfrastruktureinrichtunglistenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   getInfrastruktureinrichtungenListElements(showInInformationList: boolean): Promise<InfrastruktureinrichtungListElementsDto> {

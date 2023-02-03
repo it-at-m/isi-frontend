@@ -113,7 +113,7 @@ export default {
 
   actions: {
     initialize(context: ActionContext<LookupState, RootState>): void {
-      const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfiguration());
+      const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfigurationForBackend());
       lookupApi.getLookupLists(RequestUtils.getGETConfig()).then(lookupLists => {
         context.commit('uncertainBoolean', lookupLists.uncertainBoolean?.list);
         context.commit('artAbfrage', lookupLists.artAbfrage?.list);

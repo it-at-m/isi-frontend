@@ -10,7 +10,7 @@ export default class FreigabeApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.abfrageStatusApi = new AbfrageStatusApi(RequestUtils.getBasicFetchConfiguration());
+    this.abfrageStatusApi = new AbfrageStatusApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
   freigabInfrastrukturabfrage(uuid: string, showInInformationList: boolean): Promise<void> {

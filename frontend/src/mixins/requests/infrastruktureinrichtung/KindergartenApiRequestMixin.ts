@@ -21,7 +21,7 @@ export default class KindergartenApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.kindergartenApi = new KindergartenApi(RequestUtils.getBasicFetchConfiguration());
+    this.kindergartenApi = new KindergartenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createKindergarten(dto: KindergartenDto, showInInformationList: boolean): Promise<KindergartenDto> {

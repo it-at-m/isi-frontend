@@ -21,9 +21,9 @@ import {
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    MuenchenAdresseCollectionDto,
-    MuenchenAdresseCollectionDtoFromJSON,
-    MuenchenAdresseCollectionDtoToJSON,
+    MuenchenAdresseDto,
+    MuenchenAdresseDtoFromJSON,
+    MuenchenAdresseDtoToJSON,
 } from '../models';
 
 export interface GetAdressenRequest {
@@ -38,7 +38,7 @@ export class MasterEaiApi extends runtime.BaseAPI {
     /**
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
-    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MuenchenAdresseCollectionDto>> {
+    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<MuenchenAdresseDto>>> {
         if (requestParameters.adresseDto === null || requestParameters.adresseDto === undefined) {
             throw new runtime.RequiredError('adresseDto','Required parameter requestParameters.adresseDto was null or undefined when calling getAdressen.');
         }
@@ -57,13 +57,13 @@ export class MasterEaiApi extends runtime.BaseAPI {
             body: AdresseDtoToJSON(requestParameters.adresseDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => MuenchenAdresseCollectionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MuenchenAdresseDtoFromJSON));
     }
 
     /**
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
-    async getAdressen(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MuenchenAdresseCollectionDto> {
+    async getAdressen(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<MuenchenAdresseDto>> {
         const response = await this.getAdressenRaw(requestParameters, initOverrides);
         return await response.value();
     }

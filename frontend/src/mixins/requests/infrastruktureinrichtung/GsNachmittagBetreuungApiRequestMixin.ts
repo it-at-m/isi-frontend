@@ -21,7 +21,7 @@ export default class GsNachmittagBetreuungApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.gsNachmittagBetreuungApi = new GsNachmittagBetreuungApi(RequestUtils.getBasicFetchConfiguration());
+    this.gsNachmittagBetreuungApi = new GsNachmittagBetreuungApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createGsNachmittagBetreuung(dto: GsNachmittagBetreuungDto, showInInformationList: boolean): Promise<GsNachmittagBetreuungDto> {

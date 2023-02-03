@@ -10,7 +10,7 @@ export default class AbfragelistenApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.abfragelistenApi = new AbfragelistenApi(RequestUtils.getBasicFetchConfiguration());
+    this.abfragelistenApi = new AbfragelistenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   getAbfrageListElements(showInInformationList: boolean): Promise<AbfrageListElementsDto> {

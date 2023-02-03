@@ -21,7 +21,7 @@ export default class AbfrageApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.abfrageApi = new AbfrageApi(RequestUtils.getBasicFetchConfiguration());
+    this.abfrageApi = new AbfrageApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createInfrastrukturabfrage(dto: InfrastrukturabfrageDto, showInInformationList: boolean): Promise<InfrastrukturabfrageDto> {

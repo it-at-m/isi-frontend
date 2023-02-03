@@ -17,7 +17,7 @@ export default class BauratenApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.bauratenApi = new BaurateApi(RequestUtils.getBasicFetchConfiguration());
+    this.bauratenApi = new BaurateApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createBaurate(dto: BaurateDto, showInInformationList: boolean): Promise<BaurateDto> {
