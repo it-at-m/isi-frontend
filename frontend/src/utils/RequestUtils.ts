@@ -8,7 +8,11 @@ export default class RequestUtils {
   public static getBaseUrl(): string {
     return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-backend-service";
   }
-  
+
+  public static getBaseMasterEaiUrl(): string {
+    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-master-eai";
+  }
+
   public static getBasicFetchConfigurationForBackend(): ConfigurationBackend {
     const configuration: ConfigurationParametersBackend = {
       basePath: this.getBaseUrl(),
@@ -18,7 +22,7 @@ export default class RequestUtils {
   
   public static getBasicFetchConfigurationForMasterEai(): ConfigurationMasterEai {
     const configuration: ConfigurationParametersMasterEai = {
-      basePath: this.getBaseUrl(),
+      basePath: this.getBaseMasterEaiUrl(),
     };
     return new ConfigurationMasterEai(configuration);
   }

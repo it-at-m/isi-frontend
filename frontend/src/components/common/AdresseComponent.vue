@@ -4,13 +4,13 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-autocomplete
-            :items="matchedAdressen"
+            :items="searchResult"
             :loading="isLoading"
             :search-input.sync="searchForAdresse"
             hide-no-data
             hide-selected
-            item-text="name"
-            item-value="id"
+            item-text="adresse"
+            item-value="adressId"
             label="Adress-Suche"
             placeholder="Suchtext mit Adressteilen"
             prepend-icon="mdi-database-search"
@@ -80,17 +80,22 @@
 import { Mixins, Component, Prop } from "vue-property-decorator";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import AdresseModel from "@/types/model/common/AdresseModel";
+import AdresseMasterEaiModel from "@/types/model/common/eai/AdresseMasterEaiModel";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { MuenchenAdresseDto } from "@/api/api-client/isi-backend/isi-master-eai";
+import { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
+import MasterEaiApiRequestMixin from "@/mixins/requests/eai/MasterEaiApiRequestMixin";
+import { createAdresseMasterEaiDto } from "@/utils/Factories";
+import _ from "lodash";
 
-@Component({
+@Component( {
   components: {},
 })
 export default class AdresseComponent extends Mixins(
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-  FieldGroupCard
+    SaveLeaveMixin,
+    FieldValidationRulesMixin,
+    FieldGroupCard,
+    MasterEaiApiRequestMixin
 ) {
   private adressCardTitle = "Adressinformationen";
 
@@ -118,12 +123,19 @@ export default class AdresseComponent extends Mixins(
     return this.allgemeineOrtsangabeProp;
   }
 
-  set allgemeineOrtsangabe(allgemeineOrtsangabe: string) {
-    this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
+  @Prop({ type: Boolean, default: true })
+  private showInInformationListProp!: boolean;
+
+  get showInInformationList(): boolean {
+    return this.showInInformationListProp;
   }
 
   get searchResult(): MuenchenAdresseDto[] {
     return this.adressen;
+  }
+
+  set searchResult(adressen: MuenchenAdresseDto[]) {
+    this.adressen = adressen;
   }
 
   get searchForAdresse(): string {
@@ -133,6 +145,21 @@ export default class AdresseComponent extends Mixins(
   set searchForAdresse(adressSuche: string) {
     //console.log("searchForAdresse: "  + adressSuche);
     this.adressSuche = adressSuche;
+    this.getAdressenFromEai("Rosenheimer 1");
+  }
+  async getAdressenFromEai(adressSuche: string): Promise<void> {
+    if (!_.isNil(adressSuche)
+        && !_.isEmpty(adressSuche)) {
+      const adresseModelEai: AdresseMasterEaiModel = createAdresseMasterEaiDto();
+      adresseModelEai.query = adressSuche;
+      console.log("query: " + adressSuche);
+      await this.getAdressen(adresseModelEai, this.showInInformationList)
+          .then((dto) => {
+            if (!_.isNil(dto)) {
+              this.searchResult = dto;
+            }
+          });
+    }
   }
 }
 </script>

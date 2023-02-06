@@ -20,7 +20,7 @@ export default class MasterEaiApiRequestMixin extends Mixins(
     this.masterEaiApi = new MasterEaiApi(RequestUtils.getBasicFetchConfigurationForMasterEai());
   }
   
-  getInfrastrukturabfragen(dto: AdresseDto, showInInformationList: boolean): Promise<MuenchenAdresseDto[]> {
+  getAdressen(dto: AdresseDto, showInInformationList: boolean): Promise<MuenchenAdresseDto[]> {
     const requestObject: GetAdressenRequest = {
       adresseDto: dto
     };

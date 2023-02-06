@@ -18,6 +18,7 @@
     <adresse-component
       :adresse-prop.sync="abfrage.adresse"
       :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
+      :show-in-information-list-prop="true"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row justify="center">

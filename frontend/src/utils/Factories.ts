@@ -32,6 +32,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
+import {AdresseDto as AdresseMasterEaiDto} from "@/api/api-client/isi-master-eai";
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {
@@ -347,6 +348,19 @@ export function createMittelschuleDto(): MittelschuleDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    schule: createSchuleDto()    
+    schule: createSchuleDto()
   } as MittelschuleDto;
 }
+
+/**
+ * AdresseMasterEaiDto
+ */
+export function createAdresseMasterEaiDto(): AdresseMasterEaiDto {
+  return {
+    query: "",
+    page: undefined,
+    pagesize: undefined
+  } as AdresseMasterEaiDto;
+}
+
+
