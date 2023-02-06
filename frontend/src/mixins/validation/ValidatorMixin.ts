@@ -112,10 +112,10 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(abfragevariante.geschossflaecheWohnen) && _.isNil(abfragevariante.gesamtanzahlWe)) {
       return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
     }
-    if (sobonRelevant === UncertainBoolean.True &&
-        (abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
-         abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11) &&
-         _.isNil(abfragevariante.geschossflaecheWohnenSoBoNursaechlich)) {
+    if (sobonRelevant === UncertainBoolean.True
+       && (abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
+         || abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11)
+          && _.isNil(abfragevariante.geschossflaecheWohnenSoBoNursaechlich)) {
            const abfragevarianteNr: string = showAbfragevarianteNr && !_.isNaN(abfragevariante.abfragevariantenNr)
             ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
             : "";
