@@ -2,9 +2,10 @@
   <v-form ref="form">
     <DefaultLayout solid-heading>
       <template #content>
-        <div v-if="step === 1">
-          <infrastrukturabfrageComponent v-model="abfrage" />
-        </div>
+        <infrastrukturabfrageComponent
+          v-if="step === 1"
+          v-model="abfrage" 
+        />
         <abfragevarianten
           v-if="step === 2"
           ref="abfragevarianten"
@@ -31,7 +32,7 @@
           dialogtitle="Hinweis"
           dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
           no-text="Abbrechen"
-          yes-text="Freigeben"
+          :yes-text="freigabeAbfrageButtonText"
           @no="yesNoDialogFreigabeNo"
           @yes="yesNoDialogFreigabeYes"
         />
@@ -144,7 +145,7 @@
           style="width: 200px"
           :disabled="!isAngelegt()"
           @click="freigabeAbfrage()"
-          v-text="'Freigeben'"
+          v-text="freigabeAbfrageButtonText"
         />
         <v-btn
           color="primary"
@@ -167,7 +168,7 @@ import BauratenComponent from "@/components/bauraten/BauratenComponent.vue";
 import Toaster from "../components/common/toaster.type";
 import {
   createInfrastrukturabfrageDto,
-  createBaurate,
+  createBaurate
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
@@ -178,7 +179,7 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import {
   AbfrageListElementDtoStatusAbfrageEnum,
-  InfrastrukturabfrageDto,
+  InfrastrukturabfrageDto
 } from "@/api/api-client";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
@@ -222,6 +223,8 @@ export default class Abfrage extends Mixins(
   private deleteDialogOpen = false;
 
   private freigabeDialogOpen = false;
+
+  private freigabeAbfrageButtonText = "ÜBERGABE AN PLAN-HAI-2"
 
   private step = 1;
 
