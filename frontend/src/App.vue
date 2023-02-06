@@ -15,7 +15,7 @@
         >
           <router-link to="/">
             <v-img
-              src="src/assets/isi-logo.svg?url"
+              :src="logo"
               max-width="32"
               max-height="32"
               class="mr-1"
@@ -130,8 +130,8 @@ import { RouteTag } from "./router";
 export default class App extends Vue {
 
   public query = "";
-
-  /*logo = new URL("./assets/isi-logo.svg", import.meta.url).href;*/
+  
+  logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
 
   created(): void {
     this.$store.dispatch("lookup/initialize");
