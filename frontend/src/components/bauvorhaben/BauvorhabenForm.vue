@@ -79,7 +79,7 @@
         >
           <v-text-field
             v-model="bauvorhaben.adresse.strasse"
-            label="Strasse"
+            label="Straße"
             @input="formChanged"
           />
         </v-col>

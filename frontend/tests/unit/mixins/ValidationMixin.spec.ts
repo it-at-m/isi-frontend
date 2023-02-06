@@ -32,7 +32,7 @@ describe("ValidatorMixin Test", () => {
 
     const geschossflaecheWohnen = validationMixin.findFaultInBaurate(baurate);
 
-    expect(geschossflaecheWohnen).toBe("Geschlossfläche Wohnen geplant muss angegeben werden");
+    expect(geschossflaecheWohnen).toBe("Geschossfläche Wohnen geplant muss angegeben werden");
 
     baurate.geschossflaecheWohnenGeplant = 50;
 

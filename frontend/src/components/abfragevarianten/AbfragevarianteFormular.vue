@@ -58,7 +58,7 @@
       </v-row>
     </field-group-card>
 
-    <field-group-card :card-title="geschlossFlaecheCardTitle">
+    <field-group-card :card-title="geschossFlaecheCardTitle">
       <v-row justify="center">
         <v-col
           cols="12"
@@ -114,7 +114,7 @@
           <num-field
             v-model="abfragevariante.geschossflaecheWohnenBestandswohnbaurecht"
             class="mx-3"
-            label="Bestandswohnbaurrecht"
+            label="Bestandswohnbaurecht"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
@@ -262,7 +262,7 @@ export default class AbfragevarianteForm extends Mixins(
     this.$emit("input", mode);
   }
 
-  private geschlossFlaecheCardTitle = "Geschlossfläche";
+  private geschossFlaecheCardTitle = "Geschossfläche";
 
   private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
