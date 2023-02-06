@@ -276,9 +276,9 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {  
-    const pflichtfeld = this.isSobonRelevant === UncertainBoolean.True &&
-      (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
-       this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
+    const pflichtfeld = this.isSobonRelevant === UncertainBoolean.True
+     && (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
+      || this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
     this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
     return pflichtfeld;
   }
