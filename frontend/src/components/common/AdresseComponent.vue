@@ -10,13 +10,13 @@
             :search-input.sync="searchForAdresse"
             hide-no-data
             hide-selected
-            clearable
             item-text="adresse"
             item-value="adressId"
             label="Adress-Suche"
             return-object
             placeholder="Suchtext mit Adressteilen"
             prepend-icon="mdi-magnify"
+            @blur="onBlurAdressSuche"
           >
             <template #no-data>
               <v-list>
@@ -27,6 +27,7 @@
         </v-col>
         <v-col cols="12">
           <v-text-field
+            ref="allgemeineOrtsangabeField"
             v-model="allgemeineOrtsangabe"
             label="Allgemeine Ortsangabe"
             @input="formChanged"
@@ -37,6 +38,7 @@
           md="6"
         >
           <v-text-field
+            ref="strasseField"
             v-model="adresse.strasse"
             label="Strasse"
             @input="formChanged"
@@ -106,6 +108,8 @@ export default class AdresseComponent extends Mixins(
 
   private adressSuche = "";
 
+  private adressSucheOnBlur = ""; // Kopie von adressSuche bis zum Verlassen des Feldes
+
   private adresseEai: MuenchenAdresseDto = createMuenchenAdresseDto();
 
   private adressen: Array<MuenchenAdresseDto> = [];
@@ -118,6 +122,10 @@ export default class AdresseComponent extends Mixins(
   }
 
   set adresse(adresse: AdresseModel) {
+    this.propagateAdresse(adresse);
+  }
+
+  private propagateAdresse(adresse: AdresseModel) {
     this.$emit("update:adresseProp", adresse);
   }
 
@@ -126,6 +134,14 @@ export default class AdresseComponent extends Mixins(
 
   get allgemeineOrtsangabe(): string {
     return this.allgemeineOrtsangabeProp;
+  }
+
+  set allgemeineOrtsangabe(allgemeineOrtsangabe: string) {
+    this.propagateAllgemeineOrtsangabe(allgemeineOrtsangabe);
+  }
+
+  private propagateAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
+    this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
   }
 
   @Prop({ type: Boolean, default: true })
@@ -140,9 +156,8 @@ export default class AdresseComponent extends Mixins(
   }
 
   set selectedAdresse(adresseEai: MuenchenAdresseDto) {
-    //console.log("adressId: " + adresseEai.adressId);
     this.adresseEai = adresseEai;
-    this.assignAdresse(this.adresseEai);
+    this.assumeAdresse(this.adresseEai);    
   }
 
   get isLoading(): boolean {
@@ -162,16 +177,65 @@ export default class AdresseComponent extends Mixins(
   }
 
   set searchForAdresse(adressSuche: string) {
-    //console.log("searchForAdresse: "  + adressSuche);
     this.adressSuche = adressSuche;
-    this.getAdressenFromEai(this.adressSuche);
+    if (!_.isNil(adressSuche)) {
+      this.adressSucheOnBlur = this.adressSuche;
+      this.getAdressenFromEai(this.adressSuche);
+    }
+  }
+
+  private assumeAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
+    this.propagateAllgemeineOrtsangabe(allgemeineOrtsangabe);
+    this.resetAdresse(this.adresse);
+  }
+
+  private assumeAdresse(adresseEai: MuenchenAdresseDto): void {
+    this.assignAdresse(adresseEai);
+    this.propagateAllgemeineOrtsangabe(""); // allgemeine Ortsangabe löschen
+    this.resetAdressSuche();
+    this.focusOnStrasseField();
   }
 
   private assignAdresse(adresseEai: MuenchenAdresseDto): void {
-    this.adresse.plz = _.isNil(adresseEai.geozuordnungen) ? undefined : adresseEai.geozuordnungen.postleitzahl;
+    this.adresse.plz = _.isNil(adresseEai.geozuordnungen) ? "" : adresseEai.geozuordnungen.postleitzahl;
     this.adresse.ort = adresseEai.ortsname;
     this.adresse.strasse = adresseEai.strassenname;
-    this.adresse.hausnummer = _.isNil(adresseEai.hausnummer) ? undefined : adresseEai.hausnummer.toLocaleString('de-DE');
+    this.adresse.hausnummer = _.isNil(adresseEai.hausnummer) ? "" : adresseEai.hausnummer.toLocaleString('de-DE');
+  }
+
+  private resetAdresse(adresse: AdresseModel): void {
+    adresse.plz = "";
+    adresse.ort = "";
+    adresse.strasse = "";
+    adresse.hausnummer = "";
+  }
+
+  private resetAdressSuche(): void {
+    this.adressSuche = "";
+    this.adressSucheOnBlur = "";
+    this.adresseEai = createMuenchenAdresseDto();
+    this.searchResult = [];
+  }
+  
+  private onBlurAdressSuche(): void {
+    this.propagateAllgemeineOrtsangabe(this.adressSucheOnBlur);
+    this.resetAdresse(this.adresse);
+    this.resetAdressSuche();
+    this.focusOnAllgemeineOrtseingbeField();
+  }
+
+  private focusOnAllgemeineOrtseingbeField() {
+    const allgemeineOrtsangabeFieldRef = this.$refs.allgemeineOrtsangabeField;
+    if (!_.isNil(allgemeineOrtsangabeFieldRef)) {
+      allgemeineOrtsangabeFieldRef.focus();
+    }
+  }
+
+  private focusOnStrasseField() {
+    const strasseFieldRef = this.$refs.strasseField;
+    if (!_.isNil(strasseFieldRef)) {
+      strasseFieldRef.focus();
+    }
   }
 
   //
@@ -181,7 +245,6 @@ export default class AdresseComponent extends Mixins(
     if (!_.isEmpty(searchFor)) {
       const adressSuche: AdressSucheDto = createAdressSucheDto();
       adressSuche.query = searchFor;
-      //console.log("Suche mit Query: " + adressSuche);
       this.loading = true; // Anzeige des Cursorladekreis starten 
       await this.getAdressen(adressSuche, this.showInInformationList)
           .then((dto) => {            
