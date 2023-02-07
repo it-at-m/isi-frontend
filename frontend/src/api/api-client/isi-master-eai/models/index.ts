@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './AdresseDto';
+export * from './AdressSucheDto';
 export * from './InformationResponseDto';
 export * from './MuenchenAdresseDto';
 export * from './MuenchenAdresseGeoZuordnungenDto';

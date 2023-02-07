@@ -15,9 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
-    AdresseDto,
-    AdresseDtoFromJSON,
-    AdresseDtoToJSON,
+    AdressSucheDto,
+    AdressSucheDtoFromJSON,
+    AdressSucheDtoToJSON,
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
@@ -27,7 +27,7 @@ import {
 } from '../models';
 
 export interface GetAdressenRequest {
-    adresseDto: AdresseDto;
+    adressSucheDto: AdressSucheDto;
 }
 
 /**
@@ -39,8 +39,8 @@ export class MasterEaiApi extends runtime.BaseAPI {
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
     async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<MuenchenAdresseDto>>> {
-        if (requestParameters.adresseDto === null || requestParameters.adresseDto === undefined) {
-            throw new runtime.RequiredError('adresseDto','Required parameter requestParameters.adresseDto was null or undefined when calling getAdressen.');
+        if (requestParameters.adressSucheDto === null || requestParameters.adressSucheDto === undefined) {
+            throw new runtime.RequiredError('adressSucheDto','Required parameter requestParameters.adressSucheDto was null or undefined when calling getAdressen.');
         }
 
         const queryParameters: any = {};
@@ -54,7 +54,7 @@ export class MasterEaiApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AdresseDtoToJSON(requestParameters.adresseDto),
+            body: AdressSucheDtoToJSON(requestParameters.adressSucheDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MuenchenAdresseDtoFromJSON));

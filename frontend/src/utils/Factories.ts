@@ -32,7 +32,10 @@ import {
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
-import {AdresseDto as AdresseMasterEaiDto} from "@/api/api-client/isi-master-eai";
+import {
+  AdressSucheDto,
+  MuenchenAdresseDto
+} from "@/api/api-client/isi-master-eai";
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {
@@ -353,14 +356,28 @@ export function createMittelschuleDto(): MittelschuleDto {
 }
 
 /**
- * AdresseMasterEaiDto
+ * AdressSucheDto
  */
-export function createAdresseMasterEaiDto(): AdresseMasterEaiDto {
+export function createAdressSucheDto(): AdressSucheDto {
   return {
     query: "",
     page: undefined,
     pagesize: undefined
-  } as AdresseMasterEaiDto;
+  } as AdressSucheDto;
 }
 
+/**
+ * MuenchenAdresseDto
+ */
+ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
+  return {
+    adresse: undefined,
+    adressId: undefined,
+    hausnummer: undefined,
+    ortname: undefined,
+    strassenname: undefined,
+    position: undefined,
+    geozuordnungen: undefined   
+  } as MuenchenAdresseDto;
+}
 

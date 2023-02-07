@@ -2,7 +2,7 @@ import {Component, Mixins} from "vue-property-decorator";
 import {
   MasterEaiApi,
   GetAdressenRequest,
-  AdresseDto,
+  AdressSucheDto,
   MuenchenAdresseDto
 } from "@/api/api-client/isi-master-eai";
 import RequestUtils from "@/utils/RequestUtils";
@@ -20,9 +20,9 @@ export default class MasterEaiApiRequestMixin extends Mixins(
     this.masterEaiApi = new MasterEaiApi(RequestUtils.getBasicFetchConfigurationForMasterEai());
   }
   
-  getAdressen(dto: AdresseDto, showInInformationList: boolean): Promise<MuenchenAdresseDto[]> {
+  getAdressen(dto: AdressSucheDto, showInInformationList: boolean): Promise<MuenchenAdresseDto[]> {
     const requestObject: GetAdressenRequest = {
-      adresseDto: dto
+      adressSucheDto: dto
     };
     return this.masterEaiApi.getAdressen(requestObject, RequestUtils.getPOSTConfig())
       .then(response => {
