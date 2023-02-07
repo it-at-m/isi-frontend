@@ -34,6 +34,12 @@ export interface HausFuerKinderDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof HausFuerKinderDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof HausFuerKinderDto
      */
@@ -117,6 +123,7 @@ export function HausFuerKinderDtoFromJSONTyped(json: any, ignoreDiscriminator: b
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'infrastruktureinrichtung': InfrastruktureinrichtungDtoFromJSON(json['infrastruktureinrichtung']),
@@ -142,6 +149,7 @@ export function HausFuerKinderDtoToJSON(value?: HausFuerKinderDto | null): any {
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'infrastruktureinrichtung': InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),

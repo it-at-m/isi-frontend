@@ -10,6 +10,7 @@ export * from './BaugebietDto';
 export * from './BaurateDto';
 export * from './BauvorhabenDto';
 export * from './DokumentDto';
+export * from './DokumenteDto';
 export * from './FileInformationDto';
 export * from './FilepathDto';
 export * from './FoerdermixDto';
