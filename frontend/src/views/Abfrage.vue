@@ -32,7 +32,7 @@
           dialogtitle="Hinweis"
           dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
           no-text="Abbrechen"
-          :yes-text="freigabeAbfrageButtonText"
+          :yes-text="'Freigabe'"
           @no="yesNoDialogFreigabeNo"
           @yes="yesNoDialogFreigabeYes"
         />
@@ -145,7 +145,7 @@
           style="width: 200px"
           :disabled="!isAngelegt()"
           @click="freigabeAbfrage()"
-          v-text="freigabeAbfrageButtonText"
+          v-text="'Freigabe'"
         />
         <v-btn
           color="primary"
@@ -223,8 +223,6 @@ export default class Abfrage extends Mixins(
   private deleteDialogOpen = false;
 
   private freigabeDialogOpen = false;
-
-  private freigabeAbfrageButtonText = "ÜBERGABE AN PLAN-HAI-2"
 
   private step = 1;
 
