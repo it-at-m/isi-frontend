@@ -1,82 +1,92 @@
 <template>
   <v-container>
     <field-group-card :card-title="adressCardTitle">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-autocomplete
-            v-model="selectedAdresse"
-            :items="searchResult"
-            :loading="isLoading"
-            :search-input.sync="searchForAdresse"
-            hide-no-data
-            hide-selected
-            item-text="adresse"
-            item-value="adressId"
-            label="Adress-Suche"
-            return-object
-            placeholder="Suchtext mit Adressteilen"
-            prepend-icon="mdi-magnify"
-            @blur="onBlurAdressSuche"
+      <div>
+        <v-row justify="center">
+          <v-col cols="12">
+            <v-autocomplete
+              v-model="selectedAdresse"
+              :items="searchResult"
+              :loading="isLoading"
+              :search-input.sync="searchForAdresse"
+              hide-no-data
+              hide-selected
+              item-text="adresse"
+              item-value="adressId"
+              label="Adress-Suche"
+              return-object
+              placeholder="Suchtext mit Adressteilen"
+              prepend-icon="mdi-magnify"
+              @blur="onBlurAdressSuche"
+            >
+              <template #no-data>
+                <v-list>
+                  <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
+                </v-list>
+              </template>
+            </v-autocomplete>
+          </v-col>        
+        </v-row>
+      </div>
+      <div v-if="isAllgemeineOrtsangabeVisible">
+        <v-row justify="center">
+          <v-col cols="12">
+            <v-text-field
+              ref="allgemeineOrtsangabeField"
+              v-model="allgemeineOrtsangabe"
+              label="Allgemeine Ortsangabe"
+              @input="formChanged"
+            />
+          </v-col>
+        </v-row>
+      </div>
+      <div v-if="isAdresseVisible">      
+        <v-row justify="center">
+          <v-col
+            cols="12"
+            md="6"
           >
-            <template #no-data>
-              <v-list>
-                <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
-              </v-list>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-            ref="allgemeineOrtsangabeField"
-            v-model="allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            ref="strasseField"
-            v-model="adresse.strasse"
-            label="Strasse"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            label="Hausnummer"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="adresse.ort"
-            label="Ort"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
+            <v-text-field
+              ref="strasseField"
+              v-model="adresse.strasse"
+              label="Strasse"
+              @input="formChanged"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-text-field
+              v-model="adresse.hausnummer"
+              :rules="[fieldValidationRules.hausnummer]"
+              label="Hausnummer"
+              @input="formChanged"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-text-field
+              v-model="adresse.plz"
+              label="Postleitzahl"
+              :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+              @input="formChanged"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-text-field
+              v-model="adresse.ort"
+              label="Ort"
+              @input="formChanged"
+            />
+          </v-col>
+        </v-row>
+      </div>
     </field-group-card>
   </v-container>
 </template>
@@ -186,6 +196,14 @@ export default class AdresseComponent extends Mixins(
     }
   }
 
+  get isAllgemeineOrtsangabeVisible(): boolean {
+    return !_.isEmpty(this.allgemeineOrtsangabe);
+  }
+
+  get isAdresseVisible(): boolean {
+    return _.isEmpty(this.allgemeineOrtsangabe);
+  }
+
   private assumeAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
     this.propagateAllgemeineOrtsangabe(allgemeineOrtsangabe);
     this.resetAdresse(this.adresse);
@@ -220,7 +238,6 @@ export default class AdresseComponent extends Mixins(
   }
   
   private onBlurAdressSuche(): void {
-    this.resetAdressSuche();
     if (!this.adressSucheItemSelected
         && !_.isEmpty(this.adressSucheOnBlur)) {
       this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
