@@ -110,6 +110,8 @@ export default class AdresseComponent extends Mixins(
 
   private adressSucheOnBlur = ""; // Kopie von adressSuche bis zum Verlassen des Feldes
 
+  private adressSucheItemSelected = false;
+
   private adresseEai: MuenchenAdresseDto = createMuenchenAdresseDto();
 
   private adressen: Array<MuenchenAdresseDto> = [];
@@ -190,10 +192,10 @@ export default class AdresseComponent extends Mixins(
   }
 
   private assumeAdresse(dto: MuenchenAdresseDto): void {
+    this.adressSucheItemSelected = true;
     this.assignAdresse(dto);
     this.propagateAllgemeineOrtsangabe(""); // allgemeine Ortsangabe löschen
     this.resetAdressSuche();
-    this.focusOnStrasseField();
   }
 
   private assignAdresse(dto: MuenchenAdresseDto): void {
@@ -218,27 +220,11 @@ export default class AdresseComponent extends Mixins(
   }
   
   private onBlurAdressSuche(): void {
-    this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
-    this.resetAdressSuche();
-    this.focusOnAllgemeineOrtseingbeField();
-  }
-
-  private focusOnAllgemeineOrtseingbeField() {
-    this.$nextTick(() => {
-      const allgemeineOrtsangabeFieldRef = this.$refs.allgemeineOrtsangabeField;
-      if (!_.isNil(allgemeineOrtsangabeFieldRef)) {
-        allgemeineOrtsangabeFieldRef.$el.focus();
-      }
-    });
-  }
-
-  private focusOnStrasseField() {
-     this.$nextTick(() => {
-      const strasseFieldRef = this.$refs.strasseField;
-      if (!_.isNil(strasseFieldRef)) {
-        strasseFieldRef.$el.focus();
-      }
-    });
+    if (!this.adressSucheItemSelected) {
+      this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
+      this.resetAdressSuche();
+    }
+    this.adressSucheItemSelected = false;
   }
 
   //
@@ -262,4 +248,4 @@ export default class AdresseComponent extends Mixins(
     }
   }
 }
-</script>
+</script>;
