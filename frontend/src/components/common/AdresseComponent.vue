@@ -220,7 +220,9 @@ export default class AdresseComponent extends Mixins(
   }
   
   private onBlurAdressSuche(): void {
-    if (!this.adressSucheItemSelected) {
+    this.resetAdressSuche();
+    if (!this.adressSucheItemSelected
+        && !_.isEmpty(this.adressSucheOnBlur)) {
       this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
       this.resetAdressSuche();
     }
