@@ -131,7 +131,7 @@ export default class App extends Vue {
 
   public query = "";
   
-  logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
+  private logo: string = new URL("./assets/isi-logo.svg", import.meta.url).href;
 
   created(): void {
     this.$store.dispatch("lookup/initialize");
