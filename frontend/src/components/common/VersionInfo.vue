@@ -1,30 +1,36 @@
 <template>
   <v-dialog
-    :value="value"
+    :value="visible"
     width="40%"
-    @input="$emit('update:value', $event.target.value)"
   >
     <v-card class="pb-4">
       <v-card-title>
         Versionen der ISI-Services
       </v-card-title>
-      <v-simple-table class="mx-8">
+      <v-simple-table
+        v-if="services.length !== 0"
+        class="mx-8"
+      >
         <template #default>
           <tbody>
             <tr
               v-for="service in services"
-              :key="service.name"
+              :key="service.displayName"
             >
               <td class="font-weight-bold">
                 {{ service.displayName }}
               </td>
               <td>
                 <a
+                  v-if="service.commitHash !== ''"
                   :href="getCommitUrl(service)"
                   target="_blank"
                 >
-                  {{ service.commitHash }}
+                  {{ service.commitHash.substring(0, 7) }}
                 </a>
+                <span v-else>
+                  Version unbekannt
+                </span>
               </td>
               <td>
                 <v-tooltip bottom>
@@ -40,41 +46,120 @@
           </tbody>
         </template>
       </v-simple-table>
+      <div
+        v-else
+        class="d-flex justify-center align-center"
+        style="height: 100%"
+      >
+        <span
+          v-if="fetchSuccess === true"
+          class="text-h6"
+        >Keine Services vorhanden</span>
+        <span
+          v-else-if="fetchSuccess === false"
+          class="text-h6"
+        >Ein Fehler ist aufgetreten</span>
+        <v-progress-circular
+          v-else
+          indeterminate
+          color="grey lighten-1"
+          size="50"
+          width="5"
+        />
+      </div>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
+import {Component, VModel, Vue, Watch} from "vue-property-decorator";
+import RequestUtils from "@/utils/RequestUtils";
+import _ from "lodash";
+
 interface Service {
-  name: string,
   displayName: string,
-  internal: boolean,
+  scmUrl: string,
+  infoPath: string,
+  appendCommitHash: boolean,
   commitHash: string,
   active: boolean,
 }
 
-export default {
-  name: "VersionInfo",
-  props: {
-    value: Boolean
-  },
-  setup(): unknown {
-    const services: Service[] = [
-      { name: "isi-frontend", displayName: "Frontend", internal: false, commitHash: "123456",  active: true },
-      { name: "isi-backend", displayName: "Backend", internal: false, commitHash: "123456", active: true },
-      { name: "isi-wfs-eai", displayName: "WFS-EAI", internal: true, commitHash: "123456", active: false },
-      { name: "isi-master-eai", displayName: "MAstER-EAI", internal: true, commitHash: "123456", active: false },
-      { name: "isi-document-storage", displayName: "Dokument-EAI", internal: true, commitHash: "123456", active: true },
-    ];
+@Component
+export default class VersionInfo extends Vue {
+  
+  @VModel({ type: Boolean })
+  visible!: boolean;
 
-    function getCommitUrl(service: Service): string {
-      let baseUrl = service.internal ? "https://git.muenchen.de/isi" : "https://github.com/it-at-m";
-      let page = service.internal ? "-/network/main?utf8=%E2%9C%93&extended_sha1=" : "network";
-      
-      return `${baseUrl}/${service.name}/${page}${service.commitHash}`;
+  private services: Service[] = [];
+
+  private fetchSuccess: boolean | null = null;
+
+  @Watch("visible")
+  private async updateServices(): Promise<void> {
+    if (this.visible) {
+      const services = await this.fetchServices();
+
+      for (const service of services) {
+        await this.fetchCommitHash(service)
+          .then(commitHash => {
+            service.commitHash = commitHash;
+            service.active = true;
+          })
+          .catch(() => {
+            service.commitHash = "";
+            service.active = false;
+          });
+      }
+
+      this.services = services;
     }
+  }
+
+  private async fetchServices(): Promise<Service[]> {
+    const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
+    let services: Service[] = [];
     
-    return { services, getCommitUrl };
-  },
-};
+    await fetch(fetchServicesUrl, RequestUtils.getGETConfig())
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
+        services = Object.values(json.application.services);
+        this.fetchSuccess = true;
+      })
+      .catch(() => {
+        this.fetchSuccess = false;
+      });
+
+    return services;
+  }
+
+  private async fetchCommitHash(service: Service): Promise<string> {
+    let commitHash = "";
+    const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
+    
+    await fetch(serviceInfoUrl, RequestUtils.getGETConfig())
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        // Für den Fall, dass der Service aktiv, aber der commitHash nicht vorhanden ist
+        if (!_.isNil(json.application.commitHash)) {
+          commitHash = json.application.commitHash;
+        }
+      });
+    
+    return commitHash;
+  }
+
+  private getCommitUrl(service: Service): string {
+    if (service.appendCommitHash) {
+      return service.scmUrl + service.commitHash;
+    } else {
+      return service.scmUrl;
+    }
+  }
+}
 </script>
