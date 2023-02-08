@@ -155,8 +155,8 @@ export default class AdresseComponent extends Mixins(
     return this.adresseEai;
   }
 
-  set selectedAdresse(adresseEai: MuenchenAdresseDto) {
-    this.adresseEai = adresseEai;
+  set selectedAdresse(dto: MuenchenAdresseDto) {
+    this.adresseEai = dto;
     this.assumeAdresse(this.adresseEai);    
   }
 
@@ -180,7 +180,7 @@ export default class AdresseComponent extends Mixins(
     this.adressSuche = adressSuche;
     if (!_.isNil(adressSuche)) {
       this.adressSucheOnBlur = this.adressSuche;
-      this.getAdressenFromEai(this.adressSuche);
+      this.searchForAdressenWith(this.adressSuche);
     }
   }
 
@@ -189,18 +189,18 @@ export default class AdresseComponent extends Mixins(
     this.resetAdresse(this.adresse);
   }
 
-  private assumeAdresse(adresseEai: MuenchenAdresseDto): void {
-    this.assignAdresse(adresseEai);
+  private assumeAdresse(dto: MuenchenAdresseDto): void {
+    this.assignAdresse(dto);
     this.propagateAllgemeineOrtsangabe(""); // allgemeine Ortsangabe löschen
     this.resetAdressSuche();
     this.focusOnStrasseField();
   }
 
-  private assignAdresse(adresseEai: MuenchenAdresseDto): void {
-    this.adresse.plz = _.isNil(adresseEai.geozuordnungen) ? "" : adresseEai.geozuordnungen.postleitzahl;
-    this.adresse.ort = adresseEai.ortsname;
-    this.adresse.strasse = adresseEai.strassenname;
-    this.adresse.hausnummer = _.isNil(adresseEai.hausnummer) ? "" : adresseEai.hausnummer.toLocaleString('de-DE');
+  private assignAdresse(dto: MuenchenAdresseDto): void {
+    this.adresse.plz = _.isNil(dto.geozuordnungen) ? "" : dto.geozuordnungen.postleitzahl;
+    this.adresse.ort = dto.ortsname;
+    this.adresse.strasse = dto.strassenname;
+    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString('de-DE');
   }
 
   private resetAdresse(adresse: AdresseModel): void {
@@ -218,30 +218,33 @@ export default class AdresseComponent extends Mixins(
   }
   
   private onBlurAdressSuche(): void {
-    this.propagateAllgemeineOrtsangabe(this.adressSucheOnBlur);
-    this.resetAdresse(this.adresse);
+    this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
     this.resetAdressSuche();
     this.focusOnAllgemeineOrtseingbeField();
   }
 
   private focusOnAllgemeineOrtseingbeField() {
-    const allgemeineOrtsangabeFieldRef = this.$refs.allgemeineOrtsangabeField;
-    if (!_.isNil(allgemeineOrtsangabeFieldRef)) {
-      allgemeineOrtsangabeFieldRef.focus();
-    }
+    this.$nextTick(() => {
+      const allgemeineOrtsangabeFieldRef = this.$refs.allgemeineOrtsangabeField;
+      if (!_.isNil(allgemeineOrtsangabeFieldRef)) {
+        allgemeineOrtsangabeFieldRef.$el.focus();
+      }
+    });
   }
 
   private focusOnStrasseField() {
-    const strasseFieldRef = this.$refs.strasseField;
-    if (!_.isNil(strasseFieldRef)) {
-      strasseFieldRef.focus();
-    }
+     this.$nextTick(() => {
+      const strasseFieldRef = this.$refs.strasseField;
+      if (!_.isNil(strasseFieldRef)) {
+        strasseFieldRef.$el.focus();
+      }
+    });
   }
 
   //
   // Aufruf der EAI zum Lesen der Münchner Adressen mit dem eingegebenen Suchtext mit Adressteilen
   // 
-  async getAdressenFromEai(searchFor: string): Promise<void> {
+  async searchForAdressenWith(searchFor: string): Promise<void> {
     if (!_.isEmpty(searchFor)) {
       const adressSuche: AdressSucheDto = createAdressSucheDto();
       adressSuche.query = searchFor;
