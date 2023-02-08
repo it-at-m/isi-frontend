@@ -9,14 +9,17 @@
               :items="searchResult"
               :loading="isLoading"
               :search-input.sync="searchForAdresse"
-              hide-no-data
-              hide-selected
+              dense    
+              clearable    
+              color="black"
+              no-filter
+              append-icon=""
               item-text="adresse"
               item-value="adressId"
               label="Adress-Suche"
               return-object
               placeholder="Suchtext mit Adressteilen"
-              prepend-icon="mdi-magnify"
+              prepend-inner-icon="mdi-magnify"
               @blur="onBlurAdressSuche"
             >
               <template #no-data>
@@ -235,6 +238,7 @@ export default class AdresseComponent extends Mixins(
     this.adressSucheOnBlur = "";
     this.adresseEai = createMuenchenAdresseDto();
     this.searchResult = [];
+    this.adressSucheItemSelected = false;
   }
   
   private onBlurAdressSuche(): void {
@@ -243,7 +247,6 @@ export default class AdresseComponent extends Mixins(
       this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
       this.resetAdressSuche();
     }
-    this.adressSucheItemSelected = false;
   }
 
   //
