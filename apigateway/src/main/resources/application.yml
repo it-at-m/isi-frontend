@@ -55,23 +55,3 @@ management:
 info.application.name: ${spring.application.name}
 info.application.version: @project.version@
 info.application.commitHash: ${buildNumber}
-info.application.services:
-  - displayName: Frontend
-    infoPath: /actuator/info
-    scmUrl: https://github.com/it-at-m/isi-frontend/network
-    appendCommitHash: false
-  - displayName: Backend
-    infoPath: /api/isi-backend-service/actuator/info
-    scmUrl: https://github.com/it-at-m/isi-backend/network
-  - displayName: WFS-EAI
-    infoPath: /api/isi-wfs-eai/actuator/info
-    scmUrl: https://git.muenchen.de/isi/isi-wfs-eai/-/network/main?utf8=%E2%9C%93&extended_sha1=
-    appendCommitHash: true
-  - displayName: MAstER-EAI
-    infoPath: /api/isi-master-eai/actuator/info
-    scmUrl: https://git.muenchen.de/isi-master-eai/-/network/main?utf8=%E2%9C%93&extended_sha1=
-    appendCommitHash: true
-  - displayName: Dokument-EAI
-    infoPath: /api/isi-document-storage/actuator/info
-    scmUrl: https://git.muenchen.de/isi/isi-document-storage/-/network/main?utf8=%E2%9C%93&extended_sha1=
-    appendCommitHash: true

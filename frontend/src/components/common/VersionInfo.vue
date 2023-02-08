@@ -125,8 +125,10 @@ export default class VersionInfo extends Vue {
         return response.json();
       })
       .then(json => {
-        // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
-        services = Object.values(json.application.services);
+        if (!_.isNil(json.application.services)) {
+          // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
+          services = Object.values(json.application.services);
+        }
         this.fetchSuccess = true;
       })
       .catch(() => {
@@ -145,7 +147,6 @@ export default class VersionInfo extends Vue {
         return response.json();
       })
       .then(json => {
-        // Für den Fall, dass der Service aktiv, aber der commitHash nicht vorhanden ist
         if (!_.isNil(json.application.commitHash)) {
           commitHash = json.application.commitHash;
         }
