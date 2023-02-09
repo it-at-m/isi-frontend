@@ -32,6 +32,7 @@ declare module '@vue/runtime-core' {
     InfrastruktureinrichtungTypComponent: typeof import('./src/components/infrastruktureinrichtung/InfrastruktureinrichtungTypComponent.vue')['default']
     KindergartenComponent: typeof import('./src/components/infrastruktureinrichtung/KindergartenComponent.vue')['default']
     KinderkrippeComponent: typeof import('./src/components/infrastruktureinrichtung/KinderkrippeComponent.vue')['default']
+    Loading: typeof import('./src/components/common/Loading.vue')['default']
     MittelschuleComponent: typeof import('./src/components/infrastruktureinrichtung/MittelschuleComponent.vue')['default']
     NumField: typeof import('./src/components/common/NumField.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

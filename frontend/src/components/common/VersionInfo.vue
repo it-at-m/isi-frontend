@@ -2,11 +2,27 @@
   <v-dialog
     :value="visible"
     width="40%"
+    @click:outside="visible = false"
   >
     <v-card class="pb-4">
-      <v-card-title>
-        Versionen der ISI-Services
-      </v-card-title>
+      <v-app-bar
+        flat
+        color="primary"
+      >
+        <span class="text-h6 white--text">
+          Versionen der ISI-Services
+        </span>
+        <v-spacer />
+        <v-btn
+          text
+          fab
+          @click="visible = false"
+        >
+          <v-icon class="white--text">
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </v-app-bar>
       <v-simple-table
         v-if="services.length !== 0"
         class="mx-8"
@@ -46,27 +62,11 @@
           </tbody>
         </template>
       </v-simple-table>
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="fetchSuccess === true"
-          class="text-h6"
-        >Keine Services vorhanden</span>
-        <span
-          v-else-if="fetchSuccess === false"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        :success="fetchSuccess"
+        name="Services"
+      />
     </v-card>
   </v-dialog>
 </template>
@@ -74,6 +74,7 @@
 <script lang="ts">
 import {Component, VModel, Vue, Watch} from "vue-property-decorator";
 import RequestUtils from "@/utils/RequestUtils";
+import Loading from "@/components/common/Loading.vue";
 import _ from "lodash";
 
 interface Service {
@@ -85,7 +86,9 @@ interface Service {
   active: boolean,
 }
 
-@Component
+@Component({
+  components: { Loading }
+})
 export default class VersionInfo extends Vue {
   
   @VModel({ type: Boolean })
@@ -122,12 +125,16 @@ export default class VersionInfo extends Vue {
     
     await fetch(fetchServicesUrl, RequestUtils.getGETConfig())
       .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
         return response.json();
       })
       .then(json => {
-        if (!_.isNil(json.application.services)) {
+        const object = json?.application?.services;
+        if (!_.isNil(object)) {
           // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
-          services = Object.values(json.application.services);
+          services = Object.values(object);
         }
         this.fetchSuccess = true;
       })
@@ -141,16 +148,21 @@ export default class VersionInfo extends Vue {
   private async fetchCommitHash(service: Service): Promise<string> {
     let commitHash = "";
     const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
-    
+
     await fetch(serviceInfoUrl, RequestUtils.getGETConfig())
       .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
         return response.json();
       })
       .then(json => {
-        if (!_.isNil(json.application.commitHash)) {
-          commitHash = json.application.commitHash;
+        const string = json?.application?.commitHash;
+        if (!_.isNil(string)) {
+          commitHash = string;
         }
-      });
+      })
+      .catch();
     
     return commitHash;
   }

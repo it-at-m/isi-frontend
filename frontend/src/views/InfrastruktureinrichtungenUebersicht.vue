@@ -26,28 +26,11 @@
           </v-card>
         </v-hover>
       </div>
-      <!-- Falls noch keine Infrastruktureinrichtungen vorhanden sind, wird Folgendes angezeigt -->
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="backendAccessSuccessful"
-          class="text-h6"
-        >Keine Infrastruktureinrichtungen vorhanden</span>
-        <span
-          v-else-if="!backendAccessSuccessful"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        :success="fetchSuccess"
+        name="Infrastruktureinrichtungen"
+      />
     </template>
     <template #action>
       <v-spacer />
