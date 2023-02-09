@@ -5,6 +5,7 @@
         <v-row justify="center">
           <v-col cols="12">
             <v-autocomplete
+              id="adressSuche"
               v-model="selectedAdresse"
               :items="searchResult"
               :loading="isLoading"
@@ -13,6 +14,7 @@
               clearable    
               color="black"
               no-filter
+              hide-no-data
               append-icon=""
               item-text="adresse"
               item-value="adressId"
@@ -22,6 +24,7 @@
               prepend-inner-icon="mdi-magnify"
               @blur="onBlurAdressSuche"
             >
+              <!-- optional. In Verbindung mit hide-no-data -->
               <template #no-data>
                 <v-list>
                   <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
@@ -125,7 +128,7 @@ export default class AdresseComponent extends Mixins(
 
   private adressSucheItemSelected = false;
 
-  private adresseEai: MuenchenAdresseDto = createMuenchenAdresseDto();
+  private selectedAdresseOfAdressSuche: MuenchenAdresseDto = createMuenchenAdresseDto();
 
   private adressen: Array<MuenchenAdresseDto> = [];
 
@@ -159,12 +162,12 @@ export default class AdresseComponent extends Mixins(
   }
 
   get selectedAdresse(): MuenchenAdresseDto {
-    return this.adresseEai;
+    return this.selectedAdresseOfAdressSuche;
   }
 
   set selectedAdresse(dto: MuenchenAdresseDto) {
-    this.adresseEai = dto;
-    this.assumeAdresse(this.adresseEai);    
+    this.selectedAdresseOfAdressSuche = dto;
+    this.assumeAdresse(this.selectedAdresseOfAdressSuche);    
   }
 
   get isLoading(): boolean {
@@ -202,6 +205,7 @@ export default class AdresseComponent extends Mixins(
   private assumeAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
     this.allgemeineOrtsangabe = allgemeineOrtsangabe;
     this.resetAdresse();
+    this.resetAdressSuche();
   }
 
   private assumeAdresse(dto: MuenchenAdresseDto): void {
@@ -225,16 +229,16 @@ export default class AdresseComponent extends Mixins(
   private resetAdressSuche(): void {
     this.adressSuche = "";
     this.adressSucheOnBlur = "";
-    this.adresseEai = createMuenchenAdresseDto();
+    this.selectedAdresseOfAdressSuche = createMuenchenAdresseDto();
     this.searchResult = [];
     this.adressSucheItemSelected = false;
+    this.formChanged();
   }
   
   private onBlurAdressSuche(): void {
     if (!this.adressSucheItemSelected
         && !_.isEmpty(this.adressSucheOnBlur)) {
       this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
-      this.resetAdressSuche();
     }
   }
 
