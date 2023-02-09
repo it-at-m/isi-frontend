@@ -103,7 +103,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 import MasterEaiApiRequestMixin from "@/mixins/requests/eai/MasterEaiApiRequestMixin";
-import { createAdressSucheDto, createMuenchenAdresseDto } from "@/utils/Factories";
+import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from "@/utils/Factories";
 import _ from "lodash";
 
 @Component( {
@@ -137,10 +137,6 @@ export default class AdresseComponent extends Mixins(
   }
 
   set adresse(adresse: AdresseModel) {
-    this.propagateAdresse(adresse);
-  }
-
-  private propagateAdresse(adresse: AdresseModel) {
     this.$emit("update:adresseProp", adresse);
   }
 
@@ -152,10 +148,6 @@ export default class AdresseComponent extends Mixins(
   }
 
   set allgemeineOrtsangabe(allgemeineOrtsangabe: string) {
-    this.propagateAllgemeineOrtsangabe(allgemeineOrtsangabe);
-  }
-
-  private propagateAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
     this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
   }
 
@@ -208,14 +200,14 @@ export default class AdresseComponent extends Mixins(
   }
 
   private assumeAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
-    this.propagateAllgemeineOrtsangabe(allgemeineOrtsangabe);
-    this.resetAdresse(this.adresse);
+    this.allgemeineOrtsangabe = allgemeineOrtsangabe;
+    this.resetAdresse();
   }
 
   private assumeAdresse(dto: MuenchenAdresseDto): void {
     this.adressSucheItemSelected = true;
     this.assignAdresse(dto);
-    this.propagateAllgemeineOrtsangabe(""); // allgemeine Ortsangabe löschen
+    this.allgemeineOrtsangabe = "";
     this.resetAdressSuche();
   }
 
@@ -226,11 +218,8 @@ export default class AdresseComponent extends Mixins(
     this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString('de-DE');
   }
 
-  private resetAdresse(adresse: AdresseModel): void {
-    adresse.plz = "";
-    adresse.ort = "";
-    adresse.strasse = "";
-    adresse.hausnummer = "";
+  private resetAdresse(): void {
+    this.adresse = new AdresseModel(createAdresseDto());
   }
 
   private resetAdressSuche(): void {

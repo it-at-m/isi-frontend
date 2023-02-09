@@ -18,6 +18,7 @@
     <adresse-component
       :adresse-prop.sync="infrastruktureinrichtung.adresse"
       :allgemeine-ortsangabe-prop.sync="infrastruktureinrichtung.allgemeineOrtsangabe"
+      :show-in-information-list-prop="true"
     />
     <field-group-card>
       <v-row justify="center">

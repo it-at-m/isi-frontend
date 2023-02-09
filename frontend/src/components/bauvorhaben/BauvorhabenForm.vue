@@ -65,6 +65,7 @@
     <adresse-component
       :adresse-prop.sync="bauvorhaben.adresse"
       :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
+      :show-in-information-list-prop="true"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
