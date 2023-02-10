@@ -71,7 +71,7 @@
             </template>
             <v-list class="text-center">
               <v-list-item @click="showVersionInfo = true">
-                <v-list-item-title>Versionsinfo</v-list-item-title>
+                <v-list-item-title>Versionsinformationen</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
