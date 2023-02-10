@@ -1,6 +1,13 @@
 <template>
   <v-container>
     <div>
+      <v-progress-circular
+        v-if="isLoading"
+        indeterminate
+        color="grey lighten-1"
+        size="50"
+        width="5"
+      />
       <dokumente-liste
         v-model="dokumente"
         @onDeleteDokument="deleteDokument"          
@@ -65,6 +72,12 @@ export default class Dokumente extends Mixins(
 
   private allowedMimeTypes = "";
 
+  private loading = false;
+
+  get isLoading(): boolean {
+    return this.loading;
+  }
+
   mounted(): void {
     const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
     this.allowedMimeTypes = getAllowedMimeTypes(fileInformationDto);
@@ -99,11 +112,22 @@ export default class Dokumente extends Mixins(
     }
   }
 
-  private onFilesSelected(event: Event): void {
+  // - Anzeigen des File-Explorers zur Auswahl von Dateien
+  // - Upload der ausgewählten Dateien in das Dokumentenverwaltungssystem
+  // - Für die Dauer des Uploads aller Dateien in das Dokumentenverwaltungssystem wird ein Cursorladekreis (Progress-Circle) angezeigt
+  async onFilesSelected(event: Event): Promise<void> {
     const target = event.target as HTMLInputElement;
     const fileList = target.files;
+    // Prüfung ob alle Dateien den Anforderungen entsprechen
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
-        this.saveFiles(fileList);
+      // Anzeige des Cursorladekreis starten 
+      this.loading = true;
+      // Upload der Dateien
+      await this.saveFiles(fileList)
+        .finally(() => {
+          // Anzeige des Cursorladekreises beenden
+          this.loading = false; 
+        });     
     }
   }
 
@@ -182,13 +206,13 @@ export default class Dokumente extends Mixins(
     return messagePart;
   }
 
-  async saveFiles(fileList: FileList): Promise<void> {    
+  async saveFiles(fileList: FileList): Promise<void> {  
     for (let file of fileList) {
-      this.saveFile(this.pathToFile, file);
+      await this.saveFile(this.pathToFile, file);
     }
   }
 
-  async saveFile(pathToFile: string, file: File): Promise<void> {
+  async saveFile(pathToFile: string, file: File): Promise<void> {  
     const filepathDto: FilepathDto = createFilepathDto();
     filepathDto.pathToFile = pathToFile + file.name;
     let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
