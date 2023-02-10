@@ -79,6 +79,30 @@ import Loading from "@/components/common/Loading.vue";
 import Service from "@/components/common/Service";
 import _ from "lodash";
 
+/**
+ * VersionInfo zeigt den Namen, aktuellen Commit-Hash und Status (aktiv/inaktiv) aller bekannten Services an.
+ * 
+ * Es wird angenommen, dass beim API-Gateway der Pfad "/actuator/info" existiert.
+ * Dieser sollte ein Objekt namens "application" liefern, welches (neben anderen Daten) etwas Derartiges enthält:
+ * services:
+ *   - displayName: Beispiel
+ *     infoPath: beispiel-projekt/actuator/info
+ *     scmUrl: https://github.com/beispiel/beispiel-projekt
+ *     appendCommitHash: false
+ *   - ...
+ * 
+ * Die einzelnen Felder haben folgenden Zweck:
+ * - displayName: Anzeigename des Services.
+ * - infoPath: Unter welchem Pfad beim API-Gateway man den Commit-Hash erhält.
+ * - scmUrl: Wohin der CommitHash verlinken soll.
+ * - appendCommitHash: Ob der CommitHash an die scmUrl angehängt werden soll.
+ * 
+ * Ebenfalls wird angenommen, dass die Antwort vom infoPath auch ein "application"-Objekt liefert.
+ * Dort sollte sich das String-Feld "commitHash" finden.
+ * 
+ * Props:
+ * - value (boolean): Ob der Dialog sichtbar ist.
+ */
 @Component({
   components: { Loading }
 })

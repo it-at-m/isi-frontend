@@ -24,11 +24,26 @@
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
 
+/**
+ * Loading ist ein Platzhalter für Daten, welche im Moment per Request geholt werden.
+ * 
+ * Abhängig vom Wert des Props success zeigt es eine von drei Sachen an:
+ * - Bei false zeigt es den Text "Ein Fehler ist aufgetreten" an.
+ * - Bei true zeigt es den Text "Keine {{ name }} gefunden" an, wobei {{ name }} aus dem Prop stammt.
+ * - Ansonsten zeigt es ein animiertes Ladesymbol an.
+ * 
+ * Hinweis: Wenn success=true ist, sollte es prinzipiell keinen Grund geben, die Komponente anzuzeigen.
+ * Der Text dient nur für den Fall, dass die Request erfolgreich war, aber keine Ergebnisse geliefert wurden.
+ * 
+ * Props:
+ * - success (boolean | null, default=null): Der Wert, welche die oben beschriebene Logik steuert.
+ * - name? (string, default="Ergebnisse"): Was bei "Keine {{ name }} gefunden" eingesetzt werden soll.
+ */
 @Component
 export default class Loading extends Vue {
   
-  @Prop({ type: Boolean })
-  success: boolean | undefined;
+  @Prop({ type: Boolean, default: null })
+  success!: boolean | null;
 
   @Prop({ type: String, default: "Ergebnisse" })
   name!: string;
