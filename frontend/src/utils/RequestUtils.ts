@@ -24,7 +24,7 @@ export default class RequestUtils {
       headers: headers,
       mode: 'cors',
       credentials: 'same-origin',
-      redirect: 'manual'
+      redirect: 'manual',
     };
   }
   

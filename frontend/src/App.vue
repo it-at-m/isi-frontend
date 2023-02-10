@@ -51,14 +51,39 @@
           cols="3"
           class="d-flex align-center justify-end"
         >
-          <v-btn
-            text
-            fab
+          <v-menu
+            v-model="menu"
+            :close-on-content-click="false"
+            :nudge-width="200"
+            offset-x
           >
-            <v-icon class="white--text">
-              mdi-account-circle
-            </v-icon>
-          </v-btn>
+            <template #activator="{ on, attrs }">
+              <v-icon
+                class="white--text"
+                v-bind="attrs"
+                v-on="on"
+              >
+                mdi-account-circle
+              </v-icon>
+            </template>
+
+            <v-card style="max-width: 400px">
+              <v-list>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ userinfo.surname + " " + userinfo.givenname }}</v-list-item-title>
+                    <v-divider />
+                    <v-list-item-subtitle>
+                      <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      <v-icon>mdi-account-badge</v-icon>{{ userinfo.role }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-menu>
         </v-col>
       </v-row>
       <template #extension>
@@ -72,7 +97,9 @@
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('karte') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('karte') ? 'active' : ''
+            }`"
             @click="goToRoute('/karte')"
             v-text="'Karte'"
           />
@@ -82,7 +109,9 @@
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('abfragen') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('abfragen') ? 'active' : ''
+            }`"
             @click="goToRoute('/abfragenuebersicht')"
             v-text="'Abfragen'"
           />
@@ -92,7 +121,9 @@
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('bauvorhaben') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('bauvorhaben') ? 'active' : ''
+            }`"
             @click="goToRoute('/bauvorhabenuebersicht')"
             v-text="'Bauvorhaben'"
           />
@@ -102,7 +133,9 @@
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('infrastruktureinrichtungen') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('infrastruktureinrichtungen') ? 'active' : ''
+            }`"
             @click="goToRoute('/infrastruktureinrichtungenuebersicht')"
             v-text="'Infrastruktureinrichtungen'"
           />
@@ -118,18 +151,24 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
+import { Mixins, Watch } from "vue-property-decorator";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { RouteTag } from "./router";
+import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
+import { Userinfo } from "./types/common/Userinfo";
 
 @Component({
-  components: { TheSnackbar }
+  components: { TheSnackbar },
 })
-export default class App extends Vue {
-
+export default class App extends Mixins(UserInfoApiRequestMixin) {
   public query = "";
+  private userinfo = new Userinfo();
+
+  private fav = true;
+  private menu = false;
+  private message = false;
+  private hints = true;
 
   created(): void {
     this.$store.dispatch("lookup/initialize");
@@ -137,6 +176,7 @@ export default class App extends Vue {
   }
 
   mounted(): void {
+    this.getUserinfo().then((userinfo: Userinfo) => (this.userinfo = userinfo));
     this.query = this.$route.params.query;
   }
 
@@ -151,7 +191,7 @@ export default class App extends Vue {
   public async search(): Promise<void> {
     if (this.query !== "" && this.query !== null) {
       this.$store.dispatch("snackbar/showMessage", {
-        message: "Sie haben nach " + this.query + " gesucht. ;)"
+        message: "Sie haben nach " + this.query + " gesucht. ;)",
       });
     }
   }
@@ -163,7 +203,6 @@ export default class App extends Vue {
   private currentRouteHasTag(tag: RouteTag): boolean {
     return this.$router.currentRoute.meta?.tag === tag;
   }
-
 }
 </script>
 
