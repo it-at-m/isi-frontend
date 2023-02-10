@@ -1,7 +1,7 @@
 <template>
   <div
     class="d-flex justify-center align-center"
-    style="height: 100%"
+    style="height: 100%; min-height: 50px"
   >
     <span
       v-if="success === true"

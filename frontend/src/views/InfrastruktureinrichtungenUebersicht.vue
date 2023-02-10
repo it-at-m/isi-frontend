@@ -28,7 +28,7 @@
       </div>
       <loading
         v-else
-        :success="fetchSuccess"
+        :success="backendAccessSuccessful"
         name="Infrastruktureinrichtungen"
       />
     </template>

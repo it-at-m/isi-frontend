@@ -8,6 +8,7 @@
       <v-app-bar
         flat
         color="primary"
+        class="mb-4"
       >
         <span class="text-h6 white--text">
           Versionen der ISI-Services
@@ -75,16 +76,8 @@
 import {Component, VModel, Vue, Watch} from "vue-property-decorator";
 import RequestUtils from "@/utils/RequestUtils";
 import Loading from "@/components/common/Loading.vue";
+import Service from "@/components/common/Service";
 import _ from "lodash";
-
-interface Service {
-  displayName: string,
-  scmUrl: string,
-  infoPath: string,
-  appendCommitHash: boolean,
-  commitHash: string,
-  active: boolean,
-}
 
 @Component({
   components: { Loading }
@@ -104,15 +97,14 @@ export default class VersionInfo extends Vue {
       const services = await this.fetchServices();
 
       for (const service of services) {
-        await this.fetchCommitHash(service)
-          .then(commitHash => {
+        try {
+            const commitHash = await this.fetchCommitHash(service);
             service.commitHash = commitHash;
             service.active = true;
-          })
-          .catch(() => {
+        } catch(error) {
             service.commitHash = "";
             service.active = false;
-          });
+        }
       }
 
       this.services = services;
@@ -123,24 +115,24 @@ export default class VersionInfo extends Vue {
     const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
     let services: Service[] = [];
     
-    await fetch(fetchServicesUrl, RequestUtils.getGETConfig())
-      .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then(json => {
-        const object = json?.application?.services;
-        if (!_.isNil(object)) {
-          // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
-          services = Object.values(object);
-        }
-        this.fetchSuccess = true;
-      })
-      .catch(() => {
-        this.fetchSuccess = false;
-      });
+    this.fetchSuccess = null;
+    
+    try {
+      const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+
+      const json = await response.json();
+      const object = json?.application?.services;
+      if (!_.isNil(object)) {
+        // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
+        services = Object.values(object);
+      }
+      this.fetchSuccess = true;
+    } catch(error) {
+      this.fetchSuccess = false;
+    }
 
     return services;
   }
@@ -149,20 +141,20 @@ export default class VersionInfo extends Vue {
     let commitHash = "";
     const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
 
-    await fetch(serviceInfoUrl, RequestUtils.getGETConfig())
-      .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then(json => {
-        const string = json?.application?.commitHash;
-        if (!_.isNil(string)) {
-          commitHash = string;
-        }
-      })
-      .catch();
+    try {
+      const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+
+      const json = await response.json();
+      const string = json?.application?.commitHash;
+      if (!_.isNil(string)) {
+        commitHash = string;
+      }
+    } catch(error) {
+      return Promise.reject(error);
+    }
     
     return commitHash;
   }
