@@ -71,7 +71,11 @@
               <v-list>
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title>{{ userinfo.surname + " " + userinfo.givenname }}</v-list-item-title>
+                    <v-list-item-title>
+                      {{
+                        userinfo.givenname + " " + userinfo.surname
+                      }}
+                    </v-list-item-title>
                     <v-divider />
                     <v-list-item-subtitle>
                       <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
@@ -176,7 +180,10 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
   }
 
   mounted(): void {
-    this.getUserinfo().then((userinfo: Userinfo) => (this.userinfo = userinfo));
+    this.getUserinfo().then((userinfo: Userinfo) => {
+      this.userinfo = userinfo;
+      this.$store.commit("search/resultUserInfo", userinfo);
+    });
     this.query = this.$route.params.query;
   }
 

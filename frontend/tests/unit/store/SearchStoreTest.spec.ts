@@ -1,11 +1,11 @@
 import Vuex from "vuex";
 import Vue from "vue";
 import {
-  AbfrageListElementDto, 
+  AbfrageListElementDto,
   AbfrageListElementDtoStandVorhabenEnum,
   InfrastruktureinrichtungListElementDto,
-  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum
- } from "@/api/api-client";
+  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
+} from "@/api/api-client";
 import { createBauvorhabenDto } from "@/utils/Factories";
 import User, { UserState } from "@/store/modules/User";
 import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
@@ -14,6 +14,7 @@ import LookupStore, { LookupState } from "@/store/modules/LookupStore";
 import SearchStore, { SearchState } from "@/store/modules/SearchStore";
 import FoerdermixStore, { FoerdermixState } from "@/store/modules/FoerdermixStore";
 import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
+import { Userinfo } from "@/types/common/Userinfo";
 
 describe("SearchStoreTest.spec.ts", () => {
   Vue.use(Vuex);
@@ -36,8 +37,8 @@ describe("SearchStoreTest.spec.ts", () => {
       common: CommonStore,
       lookup: LookupStore,
       search: SearchStore,
-      fileInfoStamm: FileInfoStammStore
-    }
+      fileInfoStamm: FileInfoStammStore,
+    },
   });
 
   beforeEach(() => {
@@ -63,7 +64,7 @@ describe("SearchStoreTest.spec.ts", () => {
   test("Save resultAbfrage", () => {
     const list: Array<AbfrageListElementDto> = [];
     list.push({
-      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt
+      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt,
     } as AbfrageListElementDto);
     store.commit("search/resultAbfrage", list);
     expect(store.getters["search/resultAbfrage"]).toHaveLength(1);
@@ -72,19 +73,19 @@ describe("SearchStoreTest.spec.ts", () => {
     );
   });
 
-  test("Is initialized resultAbfrage", async() => {
+  test("Is initialized resultAbfrage", async () => {
     const list: Array<AbfrageListElementDto> = [];
     list.push({
-      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt
+      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt,
     } as AbfrageListElementDto);
     store.commit("search/resultAbfrage", list);
     expect(await store.dispatch("search/isInitializedAbfrage")).toBeTruthy;
   });
 
-  test("Reset resultAbfrage", async() => {
+  test("Reset resultAbfrage", async () => {
     const list: Array<AbfrageListElementDto> = [];
     list.push({
-      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt
+      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt,
     } as AbfrageListElementDto);
     store.commit("search/resultAbfrage", list);
     expect(await store.dispatch("search/resetAbfrage"));
@@ -126,7 +127,9 @@ describe("SearchStoreTest.spec.ts", () => {
 
   test("Change searchQueryInfrastruktureinrichtung", () => {
     store.commit("search/searchQueryInfrastruktureinrichtung", "INFRASTRUKTUREINRICHTUNG_TYP=KINDERKRPPE");
-    expect(store.getters["search/searchQueryInfrastruktureinrichtung"]).toBe("INFRASTRUKTUREINRICHTUNG_TYP=KINDERKRPPE");
+    expect(store.getters["search/searchQueryInfrastruktureinrichtung"]).toBe(
+      "INFRASTRUKTUREINRICHTUNG_TYP=KINDERKRPPE"
+    );
   });
 
   test("Initialized resultInfrastruktureinrichtung", () => {
@@ -137,33 +140,50 @@ describe("SearchStoreTest.spec.ts", () => {
     const list: Array<InfrastruktureinrichtungListElementDto> = [];
     list.push({
       nameEinrichtung: "Kinderkrippe Maikäfer",
-      infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe
+      infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
     } as InfrastruktureinrichtungListElementDto);
     store.commit("search/resultInfrastruktureinrichtung", list);
     expect(store.getters["search/resultInfrastruktureinrichtung"]).toHaveLength(1);
     expect(store.getters["search/resultInfrastruktureinrichtung"][0].nameEinrichtung).toEqual("Kinderkrippe Maikäfer");
-    expect(store.getters["search/resultInfrastruktureinrichtung"][0].infrastruktureinrichtungTyp).toEqual(InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe);    
+    expect(store.getters["search/resultInfrastruktureinrichtung"][0].infrastruktureinrichtungTyp).toEqual(
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe
+    );
   });
 
-  test("Is initialized resultInfrastruktureinrichtung", async() => {
+  test("Is initialized resultInfrastruktureinrichtung", async () => {
     const list: Array<InfrastruktureinrichtungListElementDto> = [];
     list.push({
       nameEinrichtung: "Kinderkrippe Maikäfer",
-      infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe
+      infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
     } as InfrastruktureinrichtungListElementDto);
     store.commit("search/resultInfrastruktureinrichtung", list);
     expect(await store.dispatch("search/isInitializedInfrastruktureinrichtung")).toBeTruthy;
   });
 
-  test("Reset resultInfrastruktureinrichtung", async() => {
+  test("Reset resultInfrastruktureinrichtung", async () => {
     const list: Array<InfrastruktureinrichtungListElementDto> = [];
     list.push({
       nameEinrichtung: "Kinderkrippe Maikäfer",
-      infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe
+      infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
     } as InfrastruktureinrichtungListElementDto);
     store.commit("search/resultInfrastruktureinrichtung", list);
     expect(await store.dispatch("search/resetInfrastruktureinrichtung"));
     expect(await store.dispatch("search/isInitializedInfrastruktureinrichtung")).toBeFalsy;
   });
 
+  // Test Userinfo
+  test("Save Userinfo in Store", async () => {
+    const userinfo: Userinfo = new Userinfo();
+    userinfo.givenname = "Vorname";
+    userinfo.surname = "Nachname";
+    userinfo.department = "Abteilung";
+    userinfo.email = "Email";
+    userinfo.role = "Admin";
+    store.commit("search/resultUserInfo", userinfo);
+    expect(store.getters["search/resultUserInfo"].givenname).toEqual("Vorname");
+    expect(store.getters["search/resultUserInfo"].surname).toEqual("Nachname");
+    expect(store.getters["search/resultUserInfo"].department).toEqual("Abteilung");
+    expect(store.getters["search/resultUserInfo"].email).toEqual("Email");
+    expect(store.getters["search/resultUserInfo"].role).toEqual("Admin");
+  });
 });
