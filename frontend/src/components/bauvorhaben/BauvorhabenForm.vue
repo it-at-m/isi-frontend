@@ -9,6 +9,7 @@
           <v-text-field
             v-model="bauvorhaben.eigentuemer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -53,6 +54,7 @@
           <v-text-field
             v-model="bauvorhaben.bauvorhabenNummer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>

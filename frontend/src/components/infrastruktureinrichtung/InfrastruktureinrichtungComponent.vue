@@ -6,6 +6,7 @@
           <v-text-field
             v-model="infrastruktureinrichtung.nameEinrichtung"
             :rules="[fieldValidationRules.pflichtfeld]"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>

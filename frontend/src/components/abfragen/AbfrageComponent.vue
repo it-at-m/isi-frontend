@@ -7,6 +7,7 @@
             v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="70"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
