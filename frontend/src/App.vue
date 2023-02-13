@@ -67,23 +67,18 @@
               </v-icon>
             </template>
 
-            <v-card style="max-width: 300px">
-              <v-list>
-                <v-list-item>
-                  <v-list-item-content>
-                    <span>
-                      {{ userinfo.givenname + " " + userinfo.surname }}
-                    </span>
-                    <v-divider />
-                    <span class="userinfo-subtitles">
-                      <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
-                    </span>
-                    <span class="userinfo-subtitles">
-                      <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
-                    </span>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
+            <v-card class="userinfo-card">
+              <span>
+                {{ userinfo.givenname + " " + userinfo.surname }}
+              </span>
+              <v-divider />
+              <span class="userinfo-subtitles">
+                <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
+              </span>
+              <br>
+              <span class="userinfo-subtitles">
+                <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
+              </span>
             </v-card>
           </v-menu>
         </v-col>
@@ -236,5 +231,10 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 .userinfo-subtitles {
   font-size: 14px;
   color: grey;
+}
+
+.userinfo-card {
+  padding: 10px; 
+  overflow: hidden;
 }
 </style>
