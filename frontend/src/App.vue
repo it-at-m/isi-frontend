@@ -72,17 +72,15 @@
                 <v-list-item>
                   <v-list-item-content>
                     <span>
-                      {{
-                        userinfo.givenname + " " + userinfo.surname
-                      }}
+                      {{ userinfo.givenname + " " + userinfo.surname }}
                     </span>
                     <v-divider />
-                    <v-list-item-subtitle>
+                    <span class="userinfo-subtitles">
                       <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle>
+                    </span>
+                    <span class="userinfo-subtitles">
                       <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
-                    </v-list-item-subtitle>
+                    </span>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -167,7 +165,6 @@ import _ from "lodash";
   components: { TheSnackbar },
 })
 export default class App extends Mixins(UserInfoApiRequestMixin) {
-
   public query = "";
 
   private userinfo = new Userinfo();
@@ -176,7 +173,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   // Schreibt alle Nutzerollen in einen String für die Darstellung
   get userRoles(): string {
-   return _.join(this.userinfo.roles, ", ");
+    return _.join(this.userinfo.roles, ", ");
   }
 
   created(): void {
@@ -186,11 +183,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   mounted(): void {
     this.getUserinfo().then((userinfo: Userinfo) => {
-    this.userinfo.givenname = "SachbearbeiterPlanVorname";
-    this.userinfo.surname = "SachbearbeiterPlanNachname";
-    this.userinfo.department = "Abteilung";
-    this.userinfo.email = "Email";
-    this.userinfo.roles = ["Admin"];
+      this.userinfo = userinfo;
       this.$store.commit("userinfo/userinfo", userinfo);
     });
     this.query = this.$route.params.query;
@@ -238,5 +231,10 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
 .v-toolbar__extension {
   padding: 0px;
+}
+
+.userinfo-subtitles {
+  font-size: 14px;
+  color: grey;
 }
 </style>
