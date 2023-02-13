@@ -133,6 +133,8 @@ export default class VersionInfo extends Vue {
       }
 
       this.services = services;
+      // Ohne diese Abfrage könnte fetchSuccess=true gesetzt werden, obwohl die Request vorher fehlgeschlagen ist.
+      // Es wird ein strikter Vergleich mit false verwendet, da der Wert auch null sein könnte.
       if (this.fetchSuccess !== false) {
         this.fetchSuccess = true;
       }
