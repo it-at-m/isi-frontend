@@ -118,6 +118,7 @@ export default class VersionInfo extends Vue {
   @Watch("visible")
   private async updateServices(): Promise<void> {
     if (this.visible) {
+      this.fetchSuccess = null;
       const services = await this.fetchServices();
 
       for (const service of services) {
@@ -132,14 +133,13 @@ export default class VersionInfo extends Vue {
       }
 
       this.services = services;
+      this.fetchSuccess = true;
     }
   }
 
   private async fetchServices(): Promise<Service[]> {
     const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
     let services: Service[] = [];
-    
-    this.fetchSuccess = null;
     
     try {
       const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
@@ -153,7 +153,6 @@ export default class VersionInfo extends Vue {
         // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
         services = Object.values(object);
       }
-      this.fetchSuccess = true;
     } catch(error) {
       this.fetchSuccess = false;
     }
