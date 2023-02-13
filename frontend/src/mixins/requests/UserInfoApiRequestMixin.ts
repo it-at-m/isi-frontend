@@ -19,13 +19,13 @@ export default class UserInfoApiRequestMixin extends Mixins(ErrorHandler) {
         userinfo = this.mapJson(json);
       })
       .catch(() => {
-        // Wenn die Nutzerinformationen nicht geladen werden können geben wir einen Testnutzer zurück
+        // Wenn die Nutzerinformationen nicht geladen werden können geben wir einen Leeren Nutzer zurück
         Toaster.toast(`Nutzerinformationen konnten nicht geladen werden`, Levels.ERROR);
-        userinfo.givenname = "Max";
-        userinfo.surname = "Mustermann";
-        userinfo.department = "Abteilung";
-        userinfo.email = "test@muenchen.de";
-        userinfo.roles = ["Test-Rolle"];
+        userinfo.givenname = "";
+        userinfo.surname = "";
+        userinfo.department = "";
+        userinfo.email = "";
+        userinfo.roles = [""];
       });
 
     return userinfo;
