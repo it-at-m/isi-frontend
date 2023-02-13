@@ -4,7 +4,6 @@ import ErrorHandler from "./ErrorHandler";
 import { Userinfo } from "@/types/common/Userinfo";
 import Toaster from "@/components/common/toaster.type";
 import { Levels } from "@/api/error";
-import { UserInfo } from "os";
 
 @Component
 export default class UserInfoApiRequestMixin extends Mixins(ErrorHandler) {
