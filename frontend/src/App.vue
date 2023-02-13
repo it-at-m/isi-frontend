@@ -161,6 +161,7 @@ import TheSnackbar from "@/components/TheSnackbar.vue";
 import { RouteTag } from "./router";
 import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
+import _ from "lodash";
 
 @Component({
   components: { TheSnackbar },
@@ -175,13 +176,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   // Schreibt alle Nutzerollen in einen String für die Darstellung
   get userRoles(): string {
-    let userRoles = "";
-    this.userinfo.role?.forEach(role => {
-      userRoles += role + ", ";
-    });
-    // Entfernt Whitespace am Ende des Strings und das letzte ","
-    userRoles = userRoles.replace(/,\s*$/, "");
-    return userRoles;
+   return _.join(this.userinfo.roles, ", ");
   }
 
   created(): void {

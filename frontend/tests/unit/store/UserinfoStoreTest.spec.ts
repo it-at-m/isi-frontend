@@ -51,12 +51,12 @@ describe("UserinfoStoreTest.spec.ts", () => {
     userinfo.surname = "Nachname";
     userinfo.department = "Abteilung";
     userinfo.email = "Email";
-    userinfo.role = ["Admin"];
+    userinfo.roles = ["Admin"];
     store.commit("userinfo/userinfo", userinfo);
     expect(store.getters["userinfo/userinfo"].givenname).toEqual("Vorname");
     expect(store.getters["userinfo/userinfo"].surname).toEqual("Nachname");
     expect(store.getters["userinfo/userinfo"].department).toEqual("Abteilung");
     expect(store.getters["userinfo/userinfo"].email).toEqual("Email");
-    expect(store.getters["userinfo/userinfo"].role[0]).toEqual("Admin");
+    expect(store.getters["userinfo/userinfo"].roles[0]).toEqual("Admin");
   });
 });

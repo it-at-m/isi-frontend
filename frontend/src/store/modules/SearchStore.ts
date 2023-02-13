@@ -8,7 +8,6 @@ import GrundschuleModel from "@/types/model/infrastruktureinrichtung/Grundschule
 import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
-import { Userinfo } from "@/types/common/Userinfo";
 
 const state = {
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
