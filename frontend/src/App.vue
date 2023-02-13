@@ -67,15 +67,15 @@
               </v-icon>
             </template>
 
-            <v-card style="max-width: 100%">
+            <v-card style="max-width: 300px">
               <v-list>
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title>
+                    <span>
                       {{
                         userinfo.givenname + " " + userinfo.surname
                       }}
-                    </v-list-item-title>
+                    </span>
                     <v-divider />
                     <v-list-item-subtitle>
                       <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
@@ -186,7 +186,11 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   mounted(): void {
     this.getUserinfo().then((userinfo: Userinfo) => {
-      this.userinfo = userinfo;
+    this.userinfo.givenname = "SachbearbeiterPlanVorname";
+    this.userinfo.surname = "SachbearbeiterPlanNachname";
+    this.userinfo.department = "Abteilung";
+    this.userinfo.email = "Email";
+    this.userinfo.roles = ["Admin"];
       this.$store.commit("userinfo/userinfo", userinfo);
     });
     this.query = this.$route.params.query;

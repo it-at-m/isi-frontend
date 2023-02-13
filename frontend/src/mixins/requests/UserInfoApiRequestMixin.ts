@@ -18,7 +18,7 @@ export default class UserInfoApiRequestMixin extends Mixins(ErrorHandler) {
         userinfo = this.mapJson(json);
       })
       .catch(() => {
-        // Wenn die Nutzerinformationen nicht geladen werden können geben wir einen Leeren Nutzer zurück
+        // Wenn die Nutzerinformationen nicht geladen werden können wird ein leeres Nutzerobjekt zurückgegeben.
         Toaster.toast(`Die Nutzerinformationen konnten nicht geladen werden.`, Levels.ERROR);
         userinfo.givenname = "";
         userinfo.surname = "";
