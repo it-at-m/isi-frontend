@@ -22,15 +22,9 @@
               return-object
               placeholder="Suchtext mit Adressteilen"
               prepend-inner-icon="mdi-magnify"
+              @keyup.enter="onBlurAdressSuche"
               @blur="onBlurAdressSuche"
-            >
-              <!-- optional. In Verbindung mit hide-no-data -->
-              <template #no-data>
-                <v-list>
-                  <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
-                </v-list>
-              </template>
-            </v-autocomplete>
+            />
           </v-col>        
         </v-row>
       </div>
