@@ -133,7 +133,9 @@ export default class VersionInfo extends Vue {
       }
 
       this.services = services;
-      this.fetchSuccess = true;
+      if (this.fetchSuccess !== false) {
+        this.fetchSuccess = true;
+      }
     }
   }
 
