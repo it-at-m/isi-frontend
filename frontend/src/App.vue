@@ -67,7 +67,7 @@
               </v-icon>
             </template>
 
-            <v-card style="max-width: 400px">
+            <v-card style="max-width: 100%">
               <v-list>
                 <v-list-item>
                   <v-list-item-content>
@@ -81,7 +81,7 @@
                       <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
                     </v-list-item-subtitle>
                     <v-list-item-subtitle>
-                      <v-icon>mdi-account-badge</v-icon>{{ userinfo.role }}
+                      <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -166,13 +166,23 @@ import { Userinfo } from "./types/common/Userinfo";
   components: { TheSnackbar },
 })
 export default class App extends Mixins(UserInfoApiRequestMixin) {
+
   public query = "";
+
   private userinfo = new Userinfo();
 
-  private fav = true;
   private menu = false;
-  private message = false;
-  private hints = true;
+
+  // Schreibt alle Nutzerollen in einen String für die Darstellung
+  get userRoles(): string {
+    let userRoles = "";
+    this.userinfo.role?.forEach(role => {
+      userRoles += role + ", ";
+    });
+    // Entfernt Whitespace am Ende des Strings und das letzte ","
+    userRoles = userRoles.replace(/,\s*$/, "");
+    return userRoles;
+  }
 
   created(): void {
     this.$store.dispatch("lookup/initialize");
@@ -182,7 +192,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
   mounted(): void {
     this.getUserinfo().then((userinfo: Userinfo) => {
       this.userinfo = userinfo;
-      this.$store.commit("search/resultUserInfo", userinfo);
+      this.$store.commit("userinfo/userinfo", userinfo);
     });
     this.query = this.$route.params.query;
   }

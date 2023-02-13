@@ -170,20 +170,4 @@ describe("SearchStoreTest.spec.ts", () => {
     expect(await store.dispatch("search/resetInfrastruktureinrichtung"));
     expect(await store.dispatch("search/isInitializedInfrastruktureinrichtung")).toBeFalsy;
   });
-
-  // Test Userinfo
-  test("Save Userinfo in Store", async () => {
-    const userinfo: Userinfo = new Userinfo();
-    userinfo.givenname = "Vorname";
-    userinfo.surname = "Nachname";
-    userinfo.department = "Abteilung";
-    userinfo.email = "Email";
-    userinfo.role = "Admin";
-    store.commit("search/resultUserInfo", userinfo);
-    expect(store.getters["search/resultUserInfo"].givenname).toEqual("Vorname");
-    expect(store.getters["search/resultUserInfo"].surname).toEqual("Nachname");
-    expect(store.getters["search/resultUserInfo"].department).toEqual("Abteilung");
-    expect(store.getters["search/resultUserInfo"].email).toEqual("Email");
-    expect(store.getters["search/resultUserInfo"].role).toEqual("Admin");
-  });
 });

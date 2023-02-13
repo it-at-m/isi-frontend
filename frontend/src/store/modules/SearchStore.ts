@@ -26,7 +26,6 @@ const state = {
    GrundschuleModel |
    MittelschuleModel |
    undefined,
-   resultUserInfo: undefined as Userinfo | undefined,
 };
 
 export type SearchState = typeof state;
@@ -70,9 +69,6 @@ export default {
       | undefined => {
       return state.selectedInfrastruktureinrichtung;
     },
-    resultUserInfo: (state: SearchState): Userinfo | undefined => {
-      return state.resultUserInfo;
-    }
   },
 
   mutations: {
@@ -112,9 +108,6 @@ export default {
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
     },
-    resultUserInfo(state: SearchState, userinfo: Userinfo): void {
-      state.resultUserInfo = userinfo;
-    },
     resetInfrastruktureinrichtung(state: SearchState): void {
       state.resultInfrastruktureinrichtung = undefined;
     },
@@ -132,9 +125,6 @@ export default {
     },
     resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
       context.commit("resultBauvorhaben", items);
-    },
-    resultUserInfo(context: ActionContext<SearchState, RootState>, userinfo: Userinfo): void {
-      context.commit("resultUserInfo", userinfo);
     },
     resetAbfrage(context: ActionContext<SearchState, RootState>): void {
       context.commit("resetAbfrage");

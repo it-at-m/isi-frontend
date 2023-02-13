@@ -1,5 +1,5 @@
 export class Userinfo {
-  role: string | undefined;
+  role: Array<string> | undefined;
   surname: string | undefined;
   givenname: string | undefined;
   department: string | undefined;
