@@ -40,25 +40,22 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "description": "Adressen erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MuenchenAdressenDto"
+                }
+              }
+            }
+          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ausführung des MAstER-Requests ist ein serverseitiger Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Adressen erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MuenchenAdresseDto"
-                  }
                 }
               }
             }
@@ -161,6 +158,17 @@
         "properties": {
           "postleitzahl": {
             "type": "string"
+          }
+        }
+      },
+      "MuenchenAdressenDto": {
+        "type": "object",
+        "properties": {
+          "adressen": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MuenchenAdresseDto"
+            }
           }
         }
       },

@@ -7,6 +7,7 @@ import {
 } from "@/api/api-client/isi-master-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
+import _ from "lodash";
 
 @Component
 export default class MasterEaiApiRequestMixin extends Mixins(
@@ -26,7 +27,7 @@ export default class MasterEaiApiRequestMixin extends Mixins(
     };
     return this.masterEaiApi.getAdressen(requestObject, RequestUtils.getPOSTConfig())
       .then(response => {
-        return response;
+        return _.isNil(response.adressen) ? [] : response.adressen;
       })
       .catch(error => {
         throw this.handleError(showInInformationList, error);

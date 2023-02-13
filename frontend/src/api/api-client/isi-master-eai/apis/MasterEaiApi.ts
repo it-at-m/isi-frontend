@@ -21,9 +21,9 @@ import {
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    MuenchenAdresseDto,
-    MuenchenAdresseDtoFromJSON,
-    MuenchenAdresseDtoToJSON,
+    MuenchenAdressenDto,
+    MuenchenAdressenDtoFromJSON,
+    MuenchenAdressenDtoToJSON,
 } from '../models';
 
 export interface GetAdressenRequest {
@@ -38,7 +38,7 @@ export class MasterEaiApi extends runtime.BaseAPI {
     /**
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
-    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<MuenchenAdresseDto>>> {
+    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
         if (requestParameters.adressSucheDto === null || requestParameters.adressSucheDto === undefined) {
             throw new runtime.RequiredError('adressSucheDto','Required parameter requestParameters.adressSucheDto was null or undefined when calling getAdressen.');
         }
@@ -57,13 +57,13 @@ export class MasterEaiApi extends runtime.BaseAPI {
             body: AdressSucheDtoToJSON(requestParameters.adressSucheDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MuenchenAdresseDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MuenchenAdressenDtoFromJSON(jsonValue));
     }
 
     /**
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
-    async getAdressen(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<MuenchenAdresseDto>> {
+    async getAdressen(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MuenchenAdressenDto> {
         const response = await this.getAdressenRaw(requestParameters, initOverrides);
         return await response.value();
     }
