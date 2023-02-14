@@ -101,10 +101,12 @@
           md="4"
         >
           <num-field
+            :key="componentKeyGeschossflaecheSobonUrsaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
             class="mx-3"
             label="SoBoN-ursächliche"
             :suffix="fieldPrefixesSuffixes.squareMeter"
+            :required="isGeschossflaecheSobonUrsaechlichPflichtfeld"
           />
         </v-col>
         <v-col
@@ -234,7 +236,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client";
+import { AbfragevarianteDtoPlanungsrechtEnum, LookupEntryDto, UncertainBoolean } from "@/api/api-client";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -260,6 +262,25 @@ export default class AbfragevarianteForm extends Mixins(
 
   set displayMode(mode: DisplayMode) {
     this.$emit("input", mode);
+  }
+
+  // Das Attribut führt bei einer Wertänderung dazu, dass das Eingabefeld neu gerendert wird.
+  // Dies ist insbesondere bei der Änderung des Planungsrechts nötig, damit die Validerung korrekt aktiviert bzw. deaktiviert wird.
+  private componentKeyGeschossflaecheSobonUrsaechlich = 0;
+
+  @Prop()
+  private sobonRelevant!: UncertainBoolean;
+
+  get isSobonRelevant(): UncertainBoolean {
+    return this.sobonRelevant;
+  }
+
+  get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {  
+    const pflichtfeld = this.isSobonRelevant === UncertainBoolean.True
+     && (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
+      || this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
+    this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
+    return pflichtfeld;
   }
 
   private geschossFlaecheCardTitle = "Geschossfläche";
