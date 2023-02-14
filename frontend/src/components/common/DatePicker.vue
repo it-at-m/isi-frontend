@@ -5,6 +5,7 @@
       v-model="datumTextField"
       append-icon="mdi-calendar"
       :rules="required ? [fieldValidationRules.pflichtfeld, fieldValidationRules.datum] : [fieldValidationRules.datum]"
+      validate-on-blur
       :required="required"
       @click:append="activateDatePicker"
     >

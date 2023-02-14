@@ -9,6 +9,7 @@
           <v-text-field
             v-model="bauvorhaben.eigentuemer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -53,6 +54,7 @@
           <v-text-field
             v-model="bauvorhaben.bauvorhabenNummer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -79,7 +81,7 @@
         >
           <v-text-field
             v-model="bauvorhaben.adresse.strasse"
-            label="Strasse"
+            label="Straße"
             @input="formChanged"
           />
         </v-col>
@@ -90,6 +92,7 @@
           <v-text-field
             v-model="bauvorhaben.adresse.hausnummer"
             :rules="[fieldValidationRules.hausnummer]"
+            validate-on-blur
             label="Hausnummer"
             @input="formChanged"
           />
@@ -104,6 +107,7 @@
             v-model="bauvorhaben.adresse.plz"
             label="Postleitzahl"
             :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+            validate-on-blur
             @input="formChanged"
           />
         </v-col>

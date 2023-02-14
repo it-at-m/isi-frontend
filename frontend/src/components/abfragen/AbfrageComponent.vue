@@ -7,6 +7,7 @@
             v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="70"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -32,7 +33,7 @@
         >
           <v-text-field
             v-model="abfrage.adresse.strasse"
-            label="Strasse"
+            label="Straße"
             @input="formChanged"
           />
         </v-col>
@@ -44,6 +45,7 @@
             v-model="abfrage.adresse.hausnummer"
             :rules="[fieldValidationRules.hausnummer]"
             label="Hausnummer"
+            validate-on-blur
             @input="formChanged"
           />
         </v-col>
@@ -55,6 +57,7 @@
             v-model="abfrage.adresse.plz"
             label="Postleitzahl"
             :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+            validate-on-blur
             @input="formChanged"
           />
         </v-col>

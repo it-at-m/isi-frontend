@@ -148,7 +148,7 @@ export default class ValidatorMixin extends Vue {
       return "Fördermix ist nicht gepflegt";
     }
     if (!_.isNil(baurate.anzahlWeGeplant as number) && _.isNil(baurate.geschossflaecheWohnenGeplant as number)) {
-      return "Geschlossfläche Wohnen geplant muss angegeben werden";
+      return "Geschossfläche Wohnen geplant muss angegeben werden";
     }
     if (_.isNil(baurate.anzahlWeGeplant as number) && !_.isNil(baurate.geschossflaecheWohnenGeplant as number)) {
       return "Anzahl Wohnen geplant muss angegeben werden";

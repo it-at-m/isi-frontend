@@ -6,6 +6,7 @@
           <v-text-field
             v-model="infrastruktureinrichtung.nameEinrichtung"
             :rules="[fieldValidationRules.pflichtfeld]"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -31,7 +32,7 @@
         >
           <v-text-field
             v-model="infrastruktureinrichtung.adresse.strasse"
-            label="Strasse"
+            label="Straße"
             @input="formChanged"
           />
         </v-col>
@@ -42,6 +43,7 @@
           <v-text-field
             v-model="infrastruktureinrichtung.adresse.hausnummer"
             :rules="[fieldValidationRules.hausnummer]"
+            validate-on-blur
             label="Hausnummer"
             @input="formChanged"
           />
@@ -54,6 +56,7 @@
             v-model="infrastruktureinrichtung.adresse.plz"
             label="Postleitzahl"
             :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+            validate-on-blur
             @input="formChanged"
           />
         </v-col>
