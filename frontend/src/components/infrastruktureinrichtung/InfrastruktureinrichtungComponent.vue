@@ -32,7 +32,7 @@
         >
           <v-text-field
             v-model="infrastruktureinrichtung.adresse.strasse"
-            label="Strasse"
+            label="Straße"
             @input="formChanged"
           />
         </v-col>
