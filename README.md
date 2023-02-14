@@ -62,16 +62,19 @@ Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) d
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
+<!--
 ## Set up
-<!--*how can i start and fly this project*-->
+
+*how can i start and fly this project*
 *tbd*
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
+-->
 
 ## Dokumentation
-<!--*what insights do you have to tell*-->
-*tbd*
 
+<!--*what insights do you have to tell*-->
+Die Dokumentation befindet sich unter <a href="https://github.com/it-at-m/isi-frontend/tree/dev/docs">docs</a>
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
 <!-- CONTRIBUTING -->
