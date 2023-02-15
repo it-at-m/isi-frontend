@@ -213,7 +213,11 @@ export default class AdresseComponent extends Mixins(
     this.adresse.plz = _.isNil(dto.geozuordnungen) ? "" : dto.geozuordnungen.postleitzahl;
     this.adresse.ort = dto.ortsname;
     this.adresse.strasse = dto.strassenname;
+    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString('de-DE');    
     this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString('de-DE');
+    if (!_.isNil(dto.buchstabe)) {
+      this.adresse.hausnummer += dto.buchstabe;
+    }
   }
 
   private resetAdresse(): void {

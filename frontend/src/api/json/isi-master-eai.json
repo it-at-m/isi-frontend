@@ -139,6 +139,9 @@
             "type": "integer",
             "format": "int64"
           },
+          "buchstabe": {
+            "type": "string"
+          },
           "ortsname": {
             "type": "string"
           },

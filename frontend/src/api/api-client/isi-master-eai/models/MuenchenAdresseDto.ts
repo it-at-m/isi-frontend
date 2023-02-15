@@ -55,6 +55,12 @@ export interface MuenchenAdresseDto {
      * @type {string}
      * @memberof MuenchenAdresseDto
      */
+    buchstabe?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuenchenAdresseDto
+     */
     ortsname?: string;
     /**
      * 
@@ -89,6 +95,7 @@ export function MuenchenAdresseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'adresse': !exists(json, 'adresse') ? undefined : json['adresse'],
         'adressId': !exists(json, 'adressId') ? undefined : json['adressId'],
         'hausnummer': !exists(json, 'hausnummer') ? undefined : json['hausnummer'],
+        'buchstabe': !exists(json, 'buchstabe') ? undefined : json['buchstabe'],
         'ortsname': !exists(json, 'ortsname') ? undefined : json['ortsname'],
         'strassenname': !exists(json, 'strassenname') ? undefined : json['strassenname'],
         'position': !exists(json, 'position') ? undefined : PositionDtoFromJSON(json['position']),
@@ -108,6 +115,7 @@ export function MuenchenAdresseDtoToJSON(value?: MuenchenAdresseDto | null): any
         'adresse': value.adresse,
         'adressId': value.adressId,
         'hausnummer': value.hausnummer,
+        'buchstabe': value.buchstabe,
         'ortsname': value.ortsname,
         'strassenname': value.strassenname,
         'position': PositionDtoToJSON(value.position),
