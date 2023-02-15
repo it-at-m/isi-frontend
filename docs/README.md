@@ -12,7 +12,7 @@ Sourcen auf den lokalen Rechner holen und ins docs-Verzeichnis wechseln
 npm install
 npm run dev
 ```
-
+<!--
 ## Ohne lokale node Installation
 
 Um Node / NPM und die notwendigen Module auf dem lokalen Rechner zu installieren, führt man diesen Befehl einmalig aus:
@@ -24,7 +24,7 @@ Für die lokale Entwicklung der Dokumentation nutzt man diesen Befehl:
 ```bash
 mvn -Pdocs -Pdev package
 ```
-
+-->
 Die Vorschau der Dokumentation ist über http://localhost:8080/ erreichbar.
 
 ## Ändern der Dokumentation

@@ -1,12 +1,14 @@
 import { Component, Vue } from "vue-property-decorator";
 import _ from "lodash";
-import { AdresseDto, 
+import {
+  AdresseDto,
   AbfrageDtoStandVorhabenEnum,
   BauvorhabenDto,
   UncertainBoolean,
   BauvorhabenDtoPlanungsrechtEnum,
   BauvorhabenDtoStandVorhabenEnum,
   BauvorhabenDtoZustaendigkeitEnum,
+  AbfragevarianteDtoPlanungsrechtEnum,
 } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AdresseModel from "@/types/model/common/AdresseModel";
@@ -34,8 +36,8 @@ export default class ValidatorMixin extends Vue {
   public findFaultInInfrastrukturabfrageForSave(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrage(infrastrukturabfrage);
     return !_.isNil(validationMessage)
-      ? validationMessage 
-      : this.findFaultInAbfragevarianten(infrastrukturabfrage.abfragevarianten as AbfragevarianteModel[]);
+      ? validationMessage
+      : this.findFaultInAbfragevarianten(infrastrukturabfrage);
   }
 
   /**
@@ -47,8 +49,8 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(validationMessage)) {
       return validationMessage;
     }
-    if (infrastrukturabfrage.sobonRelevant === UncertainBoolean.True && 
-        _.isNil(infrastrukturabfrage.sobonJahr)) {
+    if (infrastrukturabfrage.sobonRelevant === UncertainBoolean.True &&
+      _.isNil(infrastrukturabfrage.sobonJahr)) {
       return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
     }
     return null;
@@ -56,14 +58,14 @@ export default class ValidatorMixin extends Vue {
 
   private findFaultInAbfrage(abfrage: AbfrageModel): string | null {
     if (!this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) &&
-        !this.isValidAdresse(abfrage.adresse)) {
+      !this.isValidAdresse(abfrage.adresse)) {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
 
     // entweder allgemeineOrtsangabe oder Adresse erlaubt
     if (this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) &&
-        this.isValidAdresse(abfrage.adresse)) {
-        return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
+      this.isValidAdresse(abfrage.adresse)) {
+      return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
     }
 
     if (abfrage.standVorhaben === AbfrageDtoStandVorhabenEnum.Unspecified) {
@@ -89,27 +91,37 @@ export default class ValidatorMixin extends Vue {
     return false;
   }
 
-  findFaultInAbfragevarianten(abfragevarianten: AbfragevarianteModel[] | undefined): string | null {
-    if (_.isNil(abfragevarianten) || abfragevarianten.length < 1 || abfragevarianten.length > 5) {
+  private findFaultInAbfragevarianten(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
+    if (_.isNil(infrastrukturabfrage.abfragevarianten) || infrastrukturabfrage.abfragevarianten.length < 1 || infrastrukturabfrage.abfragevarianten.length > 5) {
       return "Es müssen zwischen einer und fünf Abfragevarianten angegeben werden.";
     }
-    abfragevarianten.forEach(abfragevariante => {
-      const validationMessage: string | null = this.findFaultInAbfragevariante(abfragevariante);
+    let validationMessage = null;
+    for (const abfragevariante of infrastrukturabfrage.abfragevarianten) {
+      validationMessage = this.findFaultInAbfragevariante(infrastrukturabfrage.sobonRelevant, abfragevariante, true);
       if (!_.isNil(validationMessage)) {
-        return validationMessage;
+        break;
       }
-    });
-    return null;
+    }
+    return validationMessage;
   }
 
-  findFaultInAbfragevariante(abfragevariante: AbfragevarianteModel): string | null {
+  public findFaultInAbfragevariante(sobonRelevant: UncertainBoolean, abfragevariante: AbfragevarianteModel, showAbfragevarianteNr: boolean): string | null {
     if (abfragevariante.realisierungVon > abfragevariante.realisierungBis) {
       return `'Realisierung von ${abfragevariante.realisierungVon}' liegt nach 'Realisierung bis ${abfragevariante.realisierungBis}'`;
     }
     if (_.isNil(abfragevariante.geschossflaecheWohnen) && _.isNil(abfragevariante.gesamtanzahlWe)) {
       return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
     }
-    return null;   
+    if (sobonRelevant === UncertainBoolean.True
+       && (abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
+         || abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11)
+          && _.isNil(abfragevariante.geschossflaecheWohnenSoBoNursaechlich)) {
+           const abfragevarianteNr: string = showAbfragevarianteNr && !_.isNaN(abfragevariante.abfragevariantenNr)
+            ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
+            : "";
+           return `Bitte geben Sie die 'Geschossfläche SoBoN-ursächliche' ${abfragevarianteNr}an`;
+    }
+    return null;
   }
 
   findFaultInBauraten(bauraten: BaurateModel[]): string | null {
@@ -136,7 +148,7 @@ export default class ValidatorMixin extends Vue {
       return "Fördermix ist nicht gepflegt";
     }
     if (!_.isNil(baurate.anzahlWeGeplant as number) && _.isNil(baurate.geschossflaecheWohnenGeplant as number)) {
-      return "Geschlossfläche Wohnen geplant muss angegeben werden";
+      return "Geschossfläche Wohnen geplant muss angegeben werden";
     }
     if (_.isNil(baurate.anzahlWeGeplant as number) && !_.isNil(baurate.geschossflaecheWohnenGeplant as number)) {
       return "Anzahl Wohnen geplant muss angegeben werden";
@@ -208,14 +220,14 @@ export default class ValidatorMixin extends Vue {
 
   private findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungModel): string | null {
     if (!this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
-        !this.isValidAdresse(infrastruktureinrichtung.adresse)) {
+      !this.isValidAdresse(infrastruktureinrichtung.adresse)) {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
 
     // entweder allgemeineOrtsangabe oder Adresse erlaubt
     if (this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
-        this.isValidAdresse(infrastruktureinrichtung.adresse)) {
-        return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
+      this.isValidAdresse(infrastruktureinrichtung.adresse)) {
+      return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
     }
     return null;
   }

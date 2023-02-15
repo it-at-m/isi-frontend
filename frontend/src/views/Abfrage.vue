@@ -11,6 +11,7 @@
           v-if="step === 2"
           ref="abfragevarianten"
           v-model="abfrage.abfragevarianten"
+          :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauraten-component
           v-if="step === 3"
