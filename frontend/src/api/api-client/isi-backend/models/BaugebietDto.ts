@@ -34,6 +34,12 @@ export interface BaugebietDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof BaugebietDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof BaugebietDto
      */
@@ -114,6 +120,7 @@ export function BaugebietDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
@@ -136,6 +143,7 @@ export function BaugebietDtoToJSON(value?: BaugebietDto | null): any {
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'bezeichnung': value.bezeichnung,
