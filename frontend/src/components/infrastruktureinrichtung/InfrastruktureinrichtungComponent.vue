@@ -6,6 +6,7 @@
           <v-text-field
             v-model="infrastruktureinrichtung.nameEinrichtung"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
             validate-on-blur
             @input="formChanged"
           >
@@ -33,6 +34,7 @@
             class="mx-3"
             year
             required
+            maxlength="4"
           />    
         </v-col>
         <v-col

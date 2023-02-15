@@ -33,6 +33,7 @@
             v-model="infrastruktureinrichtungTypDisplay"
             label="Typ der Infrastruktureinrichtung"
             disabled
+            maxlength="255"
           />
         </v-col>
         <v-col
@@ -43,6 +44,7 @@
             v-model="lfdNrInfrastruktureinrichtung"
             label="Lfd. Nr."
             disabled
+            maxlength="255"
           />
         </v-col>
       </v-row>

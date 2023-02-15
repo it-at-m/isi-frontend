@@ -96,6 +96,7 @@
           <v-text-field
             v-model="abfrage.bebauungsplannummer"
             label="Bebauungsplannummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -112,6 +113,7 @@
             label="Anmerkungen"
             auto-grow
             rows="3"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>

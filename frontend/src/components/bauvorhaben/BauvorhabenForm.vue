@@ -9,6 +9,7 @@
           <v-text-field
             v-model="bauvorhaben.eigentuemer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
             validate-on-blur
             @input="formChanged"
           >
@@ -54,6 +55,7 @@
           <v-text-field
             v-model="bauvorhaben.bauvorhabenNummer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
             validate-on-blur
             @input="formChanged"
           >
@@ -151,6 +153,7 @@
           <v-text-field
             v-model="bauvorhaben.bebauungsplannummer"
             label="Bebauungsplannummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -161,6 +164,7 @@
           <v-text-field
             v-model="bauvorhaben.fisNummer"
             label="FIS-Nummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -172,6 +176,7 @@
             label="Anmerkung"
             rows="1"
             auto-grow
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>

@@ -8,6 +8,7 @@
               <v-text-field
                 v-model.trim="bauvorhaben.nameVorhaben"
                 :rules="[fieldValidationRules.pflichtfeld]"
+                maxlength="255"
                 validate-on-blur
                 @input="formChanged"
               >

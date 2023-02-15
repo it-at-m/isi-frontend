@@ -8,6 +8,7 @@
         <v-text-field
           v-model="infrastrukturabfrage.aktenzeichenProLbk"
           label="Aktenzeichen ProLBK"
+          maxlength="255"
           @input="formChanged"
         />  
       </template>
