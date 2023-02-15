@@ -6,9 +6,10 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="bauvorhaben.nameVorhaben"
+                v-model.trim="bauvorhaben.nameVorhaben"
                 :rules="[fieldValidationRules.pflichtfeld]"
                 maxlength="255"
+                validate-on-blur
                 @input="formChanged"
               >
                 <template #label>

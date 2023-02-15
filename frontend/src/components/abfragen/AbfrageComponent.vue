@@ -4,8 +4,10 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
-            v-model="abfrage.nameAbfrage"
+            v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="70"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -32,7 +34,7 @@
         >
           <v-text-field
             v-model="abfrage.adresse.strasse"
-            label="Strasse"
+            label="Straße"
             maxlength="255"
             @input="formChanged"
           />
@@ -46,6 +48,7 @@
             :rules="[fieldValidationRules.hausnummer]"
             label="Hausnummer"
             maxlength="255"
+            validate-on-blur
             @input="formChanged"
           />
         </v-col>
@@ -58,6 +61,7 @@
             label="Postleitzahl"
             :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
             maxlength="255"
+            validate-on-blur
             @input="formChanged"
           />
         </v-col>
