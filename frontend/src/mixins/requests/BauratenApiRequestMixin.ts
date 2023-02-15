@@ -6,7 +6,7 @@ import {
   DeleteBaurateByIdRequest,
   GetBaurateByIdRequest,
   UpdateBaurateRequest
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 
@@ -17,7 +17,7 @@ export default class BauratenApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.bauratenApi = new BaurateApi(RequestUtils.getBasicFetchConfiguration());
+    this.bauratenApi = new BaurateApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createBaurate(dto: BaurateDto, showInInformationList: boolean): Promise<BaurateDto> {

@@ -4,7 +4,7 @@ import {
   InformationResponseDtoFromJSON,
   InformationResponseDtoTypeEnum,
   ResponseError
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import Toaster from "@/components/common/toaster.type";
 import {Levels} from "@/api/error";

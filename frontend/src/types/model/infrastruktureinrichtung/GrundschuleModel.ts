@@ -1,4 +1,4 @@
-import { GrundschuleDto, InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client";
+import { GrundschuleDto, InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
 

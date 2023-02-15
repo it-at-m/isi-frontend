@@ -52,7 +52,29 @@
                                 <configuration>
                                     <inputSpec>${project.basedir}/src/api/json/isi-backend.json</inputSpec>
                                     <generatorName>typescript-fetch</generatorName>
-                                    <output>${project.basedir}/src/api/api-client</output>
+                                    <output>${project.basedir}/src/api/api-client/isi-backend/isi-backend</output>
+                                    <configOptions>
+                                        <sourceFolder>src/api/</sourceFolder>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>openapi-generator-maven-plugin</artifactId>
+                        <version>6.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>isi-master-eai</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.basedir}/src/api/json/isi-master-eai.json</inputSpec>
+                                    <generatorName>typescript-fetch</generatorName>
+                                    <output>${project.basedir}/src/api/api-client/isi-master-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
                                     </configOptions>

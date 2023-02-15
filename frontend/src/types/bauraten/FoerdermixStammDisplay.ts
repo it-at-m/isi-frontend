@@ -1,4 +1,4 @@
-import { FoerdermixStammDto } from "@/api/api-client";
+import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { convertDecimalForBackend } from "@/utils/Formatter";
 import _ from "lodash";
 import FoerdermixModel from "../model/bauraten/FoerdermixModel";

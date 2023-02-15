@@ -89,7 +89,7 @@ import {
   AbfrageListElementDto,
   AbfrageListElementsDto,
   LookupEntryDto
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import DefaultLayout from "@/components/DefaultLayout.vue";

@@ -29,9 +29,13 @@ import {
   MittelschuleDto,
   InfrastruktureinrichtungDtoEinrichtungstraegerEnum,
   InfrastruktureinrichtungDtoStatusEnum,
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
+import {
+  AdressSucheDto,
+  MuenchenAdresseDto
+} from "@/api/api-client/isi-master-eai";
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {
@@ -347,6 +351,33 @@ export function createMittelschuleDto(): MittelschuleDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    schule: createSchuleDto()    
+    schule: createSchuleDto()
   } as MittelschuleDto;
 }
+
+/**
+ * AdressSucheDto
+ */
+export function createAdressSucheDto(): AdressSucheDto {
+  return {
+    query: "",
+    page: undefined,
+    pagesize: undefined
+  } as AdressSucheDto;
+}
+
+/**
+ * MuenchenAdresseDto
+ */
+ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
+  return {
+    adresse: undefined,
+    adressId: undefined,
+    hausnummer: undefined,
+    ortname: undefined,
+    strassenname: undefined,
+    position: undefined,
+    geozuordnungen: undefined   
+  } as MuenchenAdresseDto;
+}
+

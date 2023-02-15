@@ -82,7 +82,7 @@ import {
   InfrastruktureinrichtungListElementDto,
   InfrastruktureinrichtungListElementsDto,
   LookupEntryDto
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungenListApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungenListApiRequestMixin";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";

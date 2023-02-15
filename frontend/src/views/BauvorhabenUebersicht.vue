@@ -74,7 +74,7 @@
 import { Component, Mixins } from "vue-property-decorator";
 import router from "@/router";
 import DefaultLayout from "@/components/DefaultLayout.vue";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client";
+import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 
 @Component({

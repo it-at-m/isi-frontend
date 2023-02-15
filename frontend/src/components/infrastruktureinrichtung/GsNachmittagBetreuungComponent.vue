@@ -31,7 +31,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { LookupEntryDto } from "@/api/api-client";
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
 import DisplayMode from "@/types/common/DisplayMode";
 

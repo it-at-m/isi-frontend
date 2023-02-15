@@ -113,7 +113,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
-import { InfrastrukturabfrageDto } from "@/api/api-client";
+import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
 
 @Component({
   components: {

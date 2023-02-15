@@ -66,70 +66,11 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="adressCardTitle">
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
-            v-model="bauvorhaben.allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            maxlength="255"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.strasse"
-            label="Straße"
-            maxlength="255"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            validate-on-blur
-            label="Hausnummer"
-            maxlength="255"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            maxlength="255"
-            validate-on-blur
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.ort"
-            label="Ort"
-            maxlength="255"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
+    <adresse-component
+      :adresse-prop.sync="bauvorhaben.adresse"
+      :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
+      :show-in-information-list-prop="true"
+    />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
         <v-col
@@ -256,7 +197,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client";
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -266,18 +207,18 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({ components: { FieldGroupCard, Dokumente, NumField, TriSwitch } })
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AdresseComponent
 ) {
   @VModel({type: BauvorhabenModel})
   bauvorhaben!: BauvorhabenModel;
   
-  private adressCardTitle = "Adressinformationen";
-
   private dokumentCardTitle = "Dokumente";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben"

@@ -43,7 +43,7 @@
 import { Mixins, Component, Prop, VModel } from "vue-property-decorator";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
 import DokumenteListe from "./DokumenteListe.vue";
-import { DokumentDto, FileInformationDto } from "@/api/api-client";
+import { DokumentDto, FileInformationDto } from "@/api/api-client/isi-backend";
 import { createFilepathDto, createPresignedUrlDto, createDokumentDto} from "@/utils/Factories";
 import {
   fileAlreadyExists,
@@ -51,7 +51,7 @@ import {
   maxFileSizeExceeded,
   getAllowedMimeTypes
 } from "@/utils/DokumenteUtil";
-import { FilepathDto, PresignedUrlDto } from "@/api/api-client";
+import { FilepathDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 

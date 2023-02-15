@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     AbfragevarianteFormular: typeof import('./src/components/abfragevarianten/AbfragevarianteFormular.vue')['default']
     Abfragevarianten: typeof import('./src/components/abfragevarianten/Abfragevarianten.vue')['default']
     AbfragevariantenListe: typeof import('./src/components/abfragevarianten/AbfragevariantenListe.vue')['default']
+    AdresseComponent: typeof import('./src/components/common/AdresseComponent.vue')['default']
     BauratenComponent: typeof import('./src/components/bauraten/BauratenComponent.vue')['default']
     BauvorhabenDataTransferDialog: typeof import('./src/components/bauvorhaben/BauvorhabenDataTransferDialog.vue')['default']
     BauvorhabenForm: typeof import('./src/components/bauvorhaben/BauvorhabenForm.vue')['default']

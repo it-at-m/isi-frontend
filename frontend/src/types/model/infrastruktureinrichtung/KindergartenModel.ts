@@ -1,4 +1,4 @@
-import { KindergartenDto, InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client";
+import { KindergartenDto, InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

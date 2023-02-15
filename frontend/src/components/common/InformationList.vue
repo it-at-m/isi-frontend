@@ -116,7 +116,7 @@ import {Component, Vue, Watch} from "vue-property-decorator";
 import {
   InformationResponseDto,
   InformationResponseDtoTypeEnum,
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment";
 

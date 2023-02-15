@@ -1,4 +1,4 @@
-import { DokumentDto, FileInformationDto, FilepathDto } from "@/api/api-client";
+import { DokumentDto, FileInformationDto, FilepathDto } from "@/api/api-client/isi-backend";
 import { createFilepathDtoFor, createDokumentDto } from "@/utils/Factories";
 import {
   fileAlreadyExists,
