@@ -34,6 +34,12 @@ export interface AbfragevarianteDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof AbfragevarianteDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof AbfragevarianteDto
      */
@@ -186,6 +192,7 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfragevariantenNr': json['abfragevariantenNr'],
@@ -219,6 +226,7 @@ export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfragevariantenNr': value.abfragevariantenNr,

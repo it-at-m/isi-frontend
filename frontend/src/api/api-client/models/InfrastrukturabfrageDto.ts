@@ -46,6 +46,12 @@ export interface InfrastrukturabfrageDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof InfrastrukturabfrageDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof InfrastrukturabfrageDto
      */
@@ -125,6 +131,7 @@ export function InfrastrukturabfrageDtoFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfrage': AbfrageDtoFromJSON(json['abfrage']),
@@ -147,6 +154,7 @@ export function InfrastrukturabfrageDtoToJSON(value?: InfrastrukturabfrageDto | 
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfrage': AbfrageDtoToJSON(value.abfrage),
