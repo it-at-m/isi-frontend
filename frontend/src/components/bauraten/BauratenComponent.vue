@@ -11,6 +11,7 @@
             label="Jahr (JJJJ)"
             year
             required
+            maxlength="4"
           />
         </v-col>
         <v-col
@@ -20,6 +21,7 @@
           <v-text-field
             v-model="baurate.anzahlWeGeplant"
             label="Anzahl Wohneinheiten geplant"
+            maxlength="255"
           />
         </v-col>
         <v-col
