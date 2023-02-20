@@ -84,6 +84,28 @@
                     </plugin>
 
                     <plugin>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>openapi-generator-maven-plugin</artifactId>
+                        <version>6.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>isi-wfs-eai</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.basedir}/src/api/json/isi-wfs-eai.json</inputSpec>
+                                    <generatorName>typescript-fetch</generatorName>
+                                    <output>${project.basedir}/src/api/api-client/isi-wfs-eai</output>
+                                    <configOptions>
+                                        <sourceFolder>src/api/</sourceFolder>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec.maven.plugin}</version>
