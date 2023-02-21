@@ -6,6 +6,7 @@
     >
       <template #aktenzeichenProLBK>
         <v-text-field
+          id="abfrage_aktenzeichenprolbk"
           v-model="infrastrukturabfrage.aktenzeichenProLbk"
           label="Aktenzeichen ProLBK"
           maxlength="255"

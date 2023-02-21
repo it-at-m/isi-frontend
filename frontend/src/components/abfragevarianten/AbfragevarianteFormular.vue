@@ -18,6 +18,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_realisierungvon"
             v-model="abfragevariante.realisierungVon"
             label="Realisierung von (JJJJ)"
             class="mx-3"

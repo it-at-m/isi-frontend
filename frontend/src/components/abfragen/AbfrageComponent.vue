@@ -4,6 +4,7 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
+            id="abfrage_name"
             v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="70"
@@ -29,6 +30,7 @@
           md="6"
         >
           <date-picker
+            id="abfrage_friststellungnahme"
             ref="fristStellungnahmeDatePicker"
             v-model="abfrage.fristStellungnahme"
             label="Termin der Stellungnahme"
@@ -41,6 +43,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_status"
             v-model="abfrage.statusAbfrage"
             :items="statusAbfrageList"
             item-value="key"
@@ -59,6 +62,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_standvorhaben"
             v-model="abfrage.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
@@ -79,6 +83,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_bauvorhaben"
             v-model="abfrage.bauvorhaben"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
@@ -94,6 +99,7 @@
           md="6"
         >
           <v-text-field
+            id="abfrage_bebauungsplannummer"
             v-model="abfrage.bebauungsplannummer"
             label="Bebauungsplannummer"
             maxlength="255"
@@ -109,6 +115,7 @@
         </v-col>
         <v-col cols="12">
           <v-textarea
+            id="abfrage_anmerkung"
             v-model="abfrage.anmerkung"
             label="Anmerkungen"
             auto-grow
