@@ -41,6 +41,25 @@
           md="6"
         >
           <v-select
+            v-model="abfrage.statusAbfrage"
+            :items="statusAbfrageList"
+            item-value="key"
+            item-text="value"
+            readonly
+            :rules="[fieldValidationRules.pflichtfeld]"
+            :append-icon="null"
+            @change="formChanged"
+          >
+            <template #label>
+              Status der Abfrage <span class="secondary--text">*</span>
+            </template>
+          </v-select>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-select
             v-model="abfrage.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
@@ -89,10 +108,6 @@
         >
           <slot name="aktenzeichenProLBK" />
         </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        />
         <v-col cols="12">
           <v-textarea
             v-model="abfrage.anmerkung"
@@ -164,7 +179,10 @@ export default class AbfrageComponent extends Mixins(
   get bauvorhabenList(): BauvorhabenDto[] {
     return this.$store.getters["search/resultBauvorhaben"];
   }
-
+  
+  get statusAbfrageList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/statusAbfrage"];
+  }
 
   get dokumentePathToFile(): string | undefined {
     if (!_.isNil(this.abfrage)) {
@@ -184,4 +202,5 @@ export default class AbfrageComponent extends Mixins(
 }
 </script>
 
-<style></style>
+<style>
+</style>
