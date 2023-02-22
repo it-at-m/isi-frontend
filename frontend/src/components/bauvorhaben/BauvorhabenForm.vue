@@ -94,24 +94,21 @@
           cols="12"
           md="6"
         >
-          <v-select
-            v-model="bauvorhaben.zustaendigkeit"
-            :items="zustaendigkeitList"
-            item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-            @change="formChanged"
+          <TriSwitch
+            v-model="bauvorhaben.sobonRelevant"
+            off-text="Nein"
+            on-text="Ja"
+            :rules="[fieldValidationRules.notUnspecified]"
           >
             <template #label>
-              Zuständigkeit <span class="secondary--text">*</span>
+              SoBoN-relevant <span class="secondary--text">*</span>
             </template>
-          </v-select>
+          </TriSwitch>
         </v-col>
       </v-row>
       <v-row>
         <v-col
           cols="12"
-          md="6"
         >
           <v-autocomplete            
             v-model="bauvorhaben.artFnp"
@@ -128,21 +125,6 @@
               <span class="secondary--text">*</span>
             </template>
           </v-autocomplete>  
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <TriSwitch
-            v-model="bauvorhaben.sobonRelevant"
-            off-text="Nein"
-            on-text="Ja"
-            :rules="[fieldValidationRules.notUnspecified]"
-          >
-            <template #label>
-              SoBoN-relevant <span class="secondary--text">*</span>
-            </template>
-          </TriSwitch>
         </v-col>
       </v-row>
       <v-row>
@@ -229,10 +211,6 @@ export default class BauvorhabenForm extends Mixins(
 
   get planungsrechtList(): LookupEntryDto[] {
     return this.$store.getters["lookup/planungsrecht"];
-  }
-
-  get zustaendigkeitList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/zustaendigeDienststelle"];
   }
 
   get baugebietTypList(): LookupEntryDto[] {
