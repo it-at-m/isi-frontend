@@ -12,20 +12,31 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import {
+    MultiPolygonGeometryDto,
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
+import {
+    PointGeometryDto,
+    PointGeometryDtoFromJSON,
+    PointGeometryDtoFromJSONTyped,
+    PointGeometryDtoToJSON,
+} from './PointGeometryDto';
+import {
+    PolygonGeometryDto,
+    PolygonGeometryDtoFromJSON,
+    PolygonGeometryDtoFromJSONTyped,
+    PolygonGeometryDtoToJSON,
+} from './PolygonGeometryDto';
+
 /**
+ * @type GeometryDto
  * 
  * @export
- * @interface GeometryDto
  */
-export interface GeometryDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GeometryDto
-     */
-    type?: string;
-}
+export type GeometryDto = MultiPolygonGeometryDto | PointGeometryDto | PolygonGeometryDto;
 
 export function GeometryDtoFromJSON(json: any): GeometryDto {
     return GeometryDtoFromJSONTyped(json, false);
@@ -35,10 +46,7 @@ export function GeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return {
-        
-        'type': !exists(json, 'type') ? undefined : json['type'],
-    };
+    return { ...MultiPolygonGeometryDtoFromJSONTyped(json, true), ...PointGeometryDtoFromJSONTyped(json, true), ...PolygonGeometryDtoFromJSONTyped(json, true) };
 }
 
 export function GeometryDtoToJSON(value?: GeometryDto | null): any {
@@ -48,9 +56,6 @@ export function GeometryDtoToJSON(value?: GeometryDto | null): any {
     if (value === null) {
         return null;
     }
-    return {
-        
-        'type': value.type,
-    };
+    return { ...MultiPolygonGeometryDtoToJSON(value), ...PointGeometryDtoToJSON(value), ...PolygonGeometryDtoToJSON(value) };
 }
 

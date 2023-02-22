@@ -51,7 +51,7 @@ import { Component, Prop, Mixins } from 'vue-property-decorator';
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
 import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
 import { CoordinateDto, FlurstueckDto } from '@/api/api-client/isi-wfs-eai';
-import L from 'leaflet';
+import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import _ from 'lodash';
 
@@ -116,10 +116,24 @@ export default class CityMap extends Mixins(
       
       for (const flurstueck of flurstuecke) {
         const data = flurstueck.properties;
-        message += data ? this.flurstueckToHtml(data) : "Keine Daten zu diesem Flurstück vorhanden";
-        message += "<br><br>";
 
-        //const polygon = L.polygon(flurstueck).addTo(map);
+        // TODO: data undefinded müsste auch zu "Keine Flurstücke an dieser Koordinate" führen
+        if (data && data.flurstueckId) {
+          if (!this.$store.getters["cityMap/flurstuecke"].has(data.flurstueckId)) {
+            this.$store.dispatch("cityMap/addFlurstueck", flurstueck);
+            message += this.flurstueckToHtml(data) + "<br><br>";
+          } else {
+            this.$store.dispatch("cityMap/removeFlurstueck", data.flurstueckId);
+          }
+        }
+      }
+
+      // TODO: Alle Polygone rendern
+      for (const flurstueck of this.$store.getters["cityMap/flurstuecke"]) {
+        const polygon = flurstueck.geometry.coordinates as LatLngExpression[][][];
+        // Die letzte Koordinate ist immer ein Duplikat der Ersten und sollte für Leaflet entfernt werden
+        polygon.pop();
+        L.polygon(polygon).addTo(this.map);
       }
       
       // Entfernt den letzten doppelten Zeilenumbruch

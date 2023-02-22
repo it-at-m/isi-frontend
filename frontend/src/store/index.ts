@@ -8,6 +8,7 @@ import SearchStore, { SearchState } from "@/store/modules/SearchStore";
 import FoerdermixStore, { FoerdermixState } from "@/store/modules/FoerdermixStore";
 import FileInfoStammStore, { FileInfoStammState } from './modules/FileInfoStammStore';
 import InformationStore from './modules/InformationStore';
+import CityMapStore, { CityMapState } from "./modules/CityMapStore";
 
 Vue.use(Vuex);
 const debug = import.meta.env.DEV;
@@ -20,6 +21,7 @@ export interface RootState {
   lookup: LookupState;
   search: SearchState;
   fileInfoStamm: FileInfoStammState;
+  cityMapState: CityMapState;
 }
 
 export default new Vuex.Store<RootState>({
@@ -31,7 +33,8 @@ export default new Vuex.Store<RootState>({
     lookup: LookupStore,
     search: SearchStore,
     fileInfoStamm: FileInfoStammStore,
-    information: InformationStore
+    information: InformationStore,
+    cityMap: CityMapStore,
   },
   strict: debug
 });
