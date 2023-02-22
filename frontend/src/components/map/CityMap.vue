@@ -47,10 +47,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Mixins } from 'vue-property-decorator';
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
+import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
+import { CoordinateDto, FlurstueckDto } from '@/api/api-client/isi-wfs-eai';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import _ from 'lodash';
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -64,17 +67,18 @@ import 'leaflet/dist/leaflet.css';
     'l-wms-tile-layer': LWMSTileLayer,
   }
 })
-export default class CityMap extends Vue {
-  
+export default class CityMap extends Mixins(
+  WfsEaiApiRequestMixin
+) {
   private readonly OSM_BASE_URL = "https://ows.terrestris.de/osm/service?";
-  private readonly MUNICH_CENTER = [48.137227, 11.575517] as const;
-  private readonly MAP_OPTIONS = {attributionControl: false} as const;
+  private readonly MUNICH_CENTER = [48.137227, 11.575517];
+  private readonly MAP_OPTIONS = {attributionControl: false};
 
   @Prop({default: "100%"})
   private readonly height!: number | string;
   @Prop({default: "100%"})
   private readonly width!: number | string;
-  @Prop({default: 12})
+  @Prop({default: 18})
   private readonly zoom!: number;
 
   private readonly popup = L.popup();
@@ -95,12 +99,46 @@ export default class CityMap extends Vue {
   /**
    * Öffnet an der angeklickten Bildschirmposition ein Popup, welches die Koordinaten der Kartenposition anzeigt.
    */
-  private openPopup(event: L.LeafletMouseEvent): void {
+  private async openPopup(event: L.LeafletMouseEvent): Promise<void> {
+    const latlng = event.latlng;
+
     this.popup
-      .setLatLng(event.latlng)
-      .setContent(event.latlng.lat + ", " + event.latlng.lng)
+      .setLatLng(latlng)
+      .setContent("Lädt...")
       .openOn(this.map);
+
+    const coordinate: CoordinateDto = { lat: latlng.lat, lon: latlng.lng };
+    const flurstuecke = await this.getFlurstuecke(coordinate, false);
+    console.log(flurstuecke);
+    
+    if (flurstuecke.length !== 0) {
+      let message = "";
+      
+      for (const flurstueck of flurstuecke) {
+        const data = flurstueck.properties;
+        message += data ? this.flurstueckToHtml(data) : "Keine Daten zu diesem Flurstück vorhanden";
+        message += "<br><br>";
+
+        //const polygon = L.polygon(flurstueck).addTo(map);
+      }
+      
+      // Entfernt den letzten doppelten Zeilenumbruch
+      message = message.replace(/<br><br>$/, "");
+      this.popup.setContent(message);
+    } else {
+      this.popup.setContent("Keine Flurstücke an dieser Koordinate");
+    }
   }
 
+  private flurstueckToHtml(flurstueck: FlurstueckDto): string {
+    return `
+      <b>Nummer:</b> ${_.defaultTo(flurstueck.fluerstueckNummer, "keine")}<br>
+      <b>NummerZ:</b> ${_.defaultTo(flurstueck.fluerstueckNummerZ, "keine")}<br>
+      <b>Gemarkung:</b> ${_.defaultTo(flurstueck.gemarkungName, "keine")}<br>
+      <b>Eigentumsart:</b> ${_.defaultTo(flurstueck.eigentumsart, "keine")}<br>
+      <b>Nutzungsart:</b> ${_.defaultTo(flurstueck.nutzungsart, "keine")}<br>
+      <b>Fläche:</b> ${_.defaultTo(flurstueck.flaecheQm, "keine")}
+    `;
+  }
 }
 </script>

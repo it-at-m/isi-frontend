@@ -1,5 +1,6 @@
 import {Configuration as ConfigurationBackend, ConfigurationParameters as ConfigurationParametersBackend} from "@/api/api-client/isi-backend";
 import {Configuration as ConfigurationMasterEai, ConfigurationParameters as ConfigurationParametersMasterEai} from "@/api/api-client/isi-master-eai";
+import {Configuration as ConfigurationWfsEai, ConfigurationParameters as ConfigurationParametersWfsEai} from "@/api/api-client/isi-wfs-eai";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 
 
@@ -11,6 +12,10 @@ export default class RequestUtils {
 
   public static getBaseMasterEaiUrl(): string {
     return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-master-eai";
+  }
+
+  public static getBaseWfsEaiUrl(): string {
+    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-wfs-eai";
   }
 
   public static getBasicFetchConfigurationForBackend(): ConfigurationBackend {
@@ -25,6 +30,13 @@ export default class RequestUtils {
       basePath: this.getBaseMasterEaiUrl(),
     };
     return new ConfigurationMasterEai(configuration);
+  }
+
+  public static getBasicFetchConfigurationForWfsEai(): ConfigurationWfsEai {
+    const configuration: ConfigurationParametersWfsEai = {
+      basePath: this.getBaseWfsEaiUrl(),
+    };
+    return new ConfigurationWfsEai(configuration);
   }
   
   /**
