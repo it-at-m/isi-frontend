@@ -17,6 +17,7 @@ export * from './KindergartenApi';
 export * from './KinderkrippeApi';
 export * from './KoordinatenApi';
 export * from './LookupApi';
+export * from './MimeTypeApi';
 export * from './MittelschuleApi';
 export * from './StammdatenApi';
 export * from './WohneinheitenInformationApi';
