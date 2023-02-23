@@ -26,7 +26,9 @@
                   cols="12"
                   md="12"
                 >
-                  {{ getDokumentDisplayName(item) }}
+                  <strong>
+                    {{ getDokumentDisplayName(item) }}
+                  </strong>
                 </v-col>
               </v-row>
               <v-row align="end">
