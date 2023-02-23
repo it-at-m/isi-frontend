@@ -73,7 +73,7 @@ export default class Dokumente extends Mixins(
     MimeTypeApiRequestMixin
 ) {
 
-  private readonly static DATEITYP_NICHT_ERLAUBT: string = "DATEITYP NICHT ERLAUBT";
+  public static readonly DATEITYP_NICHT_ERLAUBT: string = "DATEITYP NICHT ERLAUBT";
 
   @VModel({type: Array}) dokumente!: DokumentDto[];
 

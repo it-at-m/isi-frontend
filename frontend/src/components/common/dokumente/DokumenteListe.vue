@@ -100,6 +100,7 @@ import {DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto} from "@/api/a
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 
 @Component({
   components: {
@@ -164,6 +165,10 @@ export default class DokumenteListe extends Mixins(
   private yesNoDialogNo(): void {
     this.deleteDialogOpen = false;
     this.selectedDokument = undefined;
+  }
+
+  private isDokumentAllowed(dokument: DokumentDto): boolean {
+    return Dokumente.DATEITYP_NICHT_ERLAUBT !== dokument.typDokument;
   }
 
 }
