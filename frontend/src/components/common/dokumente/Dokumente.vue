@@ -43,7 +43,13 @@
 import {Component, Mixins, Prop, VModel} from "vue-property-decorator";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
 import DokumenteListe from "./DokumenteListe.vue";
-import {DokumentDto, FileInformationDto, FilepathDto, PresignedUrlDto} from "@/api/api-client/isi-backend";
+import {
+  DokumentDto,
+  FileInformationDto,
+  FilepathDto,
+  MimeTypeInformationDto,
+  PresignedUrlDto
+} from "@/api/api-client/isi-backend";
 import {createDokumentDto, createFilepathDto, createPresignedUrlDto} from "@/utils/Factories";
 import {
   fileAlreadyExists,
@@ -121,7 +127,7 @@ export default class Dokumente extends Mixins(
     const fileList = target.files;
     // Prüfung ob alle Dateien den Anforderungen entsprechen
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
-      // Anzeige des Cursorladekreis starten 
+      // Anzeige des Cursorladekreis starten
       this.loading = true;
       // Upload der Dateien
       await this.saveFiles(fileList)
@@ -223,15 +229,38 @@ export default class Dokumente extends Mixins(
         });
 
     if (!_.isNil(presignedUrlDto.url)) {
+      const newDokument = createDokumentDto();
+      newDokument.filePath.pathToFile = filepathDto.pathToFile;
+      let dokumentSuccessfullySaved = false;
       await this.saveDokumentWithUrl(presignedUrlDto, file)
           .then(() => {
-            const newDokument = createDokumentDto();
-            newDokument.filePath.pathToFile = filepathDto.pathToFile;
+
             this.dokumente.push(newDokument);
             this.formChanged();
             this.$emit("onDokumentAdded", newDokument);
+            dokumentSuccessfullySaved = true;
           });
+      if (dokumentSuccessfullySaved) {
+        await this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
+            .then(mimeTypeInformation => {
+              const savedDokument = this.dokumente.pop();
+              if (!_.isNil(savedDokument)) {
+                savedDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmpty(mimeTypeInformation);
+                this.dokumente.push(savedDokument);
+              }
+            });
+      }
     }
+  }
+
+  private acronymOrDescriptionWhenAcronymEmpty(mimeTypeInformation: MimeTypeInformationDto): string {
+    let type: string;
+    if (_.isEmpty(mimeTypeInformation.acronym)) {
+      type = _.isNil(mimeTypeInformation.description) ? "" : mimeTypeInformation.description;
+    } else {
+      type = _.isNil(mimeTypeInformation.acronym) ? "" : mimeTypeInformation.acronym;
+    }
+    return type;
   }
 
 }

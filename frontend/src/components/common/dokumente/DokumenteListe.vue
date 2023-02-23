@@ -1,4 +1,4 @@
-<template>  
+<template>
   <v-card class="mx-auto ma-4">
     <v-list v-if="hasDokumente">
       <v-list-item
@@ -7,20 +7,29 @@
       >
         <v-container>
           <v-row>
-            <v-col>
+            <v-col
+              cols="12"
+              md="1"
+            >
               <v-icon @click="downloadDokument(item)">
                 mdi-download
               </v-icon>
             </v-col>
             <v-col
               cols="12"
-              md="5"
+              md="4"
             >
               {{ getDokumentDisplayName(item) }}
             </v-col>
             <v-col
               cols="12"
-              md="5"
+              md="2"
+            >
+              {{ item.typDokument }}
+            </v-col>
+            <v-col
+              cols="12"
+              md="4"
               style="padding: 0"
             >
               <v-select
@@ -37,7 +46,10 @@
                 </template>
               </v-select>
             </v-col>
-            <v-col>
+            <v-col
+              cols="12"
+              md="1"
+            >
               <v-icon @click="deleteDokument(item)">
                 mdi-delete
               </v-icon>
@@ -60,14 +72,15 @@
 </template>
 
 <script lang="ts">
-import { Mixins, Component, VModel } from "vue-property-decorator";
+import {Component, Mixins, VModel} from "vue-property-decorator";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import { createFilepathDto } from "@/utils/Factories";
+import {createFilepathDto} from "@/utils/Factories";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
 import {DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+
 @Component({
   components: {
     YesNoDialog
@@ -79,7 +92,7 @@ export default class DokumenteListe extends Mixins(
     FieldValidationRulesMixin
 ) {
 
-  @VModel({ type: Array }) dokumente!: DokumentDto[];
+  @VModel({type: Array}) dokumente!: DokumentDto[];
 
   private selectedDokument: DokumentDto | undefined;
 
@@ -101,9 +114,9 @@ export default class DokumenteListe extends Mixins(
     const filepathDto: FilepathDto = createFilepathDto();
     filepathDto.pathToFile = dokument.filePath.pathToFile;
     await this.getPresignedUrlForGetDokument(filepathDto, true)
-      .then(presignedUrlDto => {
-        this.prepareDownloadLink(presignedUrlDto, dokument);
-      });
+        .then(presignedUrlDto => {
+          this.prepareDownloadLink(presignedUrlDto, dokument);
+        });
   }
 
   private prepareDownloadLink(dto: PresignedUrlDto, dokument: DokumentDto) {
@@ -130,7 +143,7 @@ export default class DokumenteListe extends Mixins(
 
   private yesNoDialogNo(): void {
     this.deleteDialogOpen = false;
-    this.selectedDokument = undefined;  
+    this.selectedDokument = undefined;
   }
 
 }
