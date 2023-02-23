@@ -8,11 +8,10 @@
         <v-container>
           <v-row class="align-center">
             <v-col
-              class="justify-start"
               cols="12"
               md="1"
             >
-              <v-row class="justify-start">
+              <v-row justify="start">
                 <v-icon @click="downloadDokument(item)">
                   mdi-download
                 </v-icon>
@@ -22,7 +21,7 @@
               cols="12"
               md="10"
             >
-              <v-row class="align-start">
+              <v-row align="start">
                 <v-col
                   cols="12"
                   md="12"
@@ -30,7 +29,7 @@
                   {{ getDokumentDisplayName(item) }}
                 </v-col>
               </v-row>
-              <v-row class="align-center">
+              <v-row align="end">
                 <v-col
                   cols="12"
                   md="6"
@@ -49,7 +48,6 @@
                 >
                   <v-select
                     v-model="item.artDokument"
-                    style="margin: 0px;"
                     :items="artDokumentList"
                     item-value="key"
                     item-text="value"
@@ -67,7 +65,7 @@
               cols="12"
               md="1"
             >
-              <v-row class="justify-end">
+              <v-row justify="end">
                 <v-icon @click="deleteDokument(item)">
                   mdi-delete
                 </v-icon>
