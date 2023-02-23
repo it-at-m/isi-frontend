@@ -234,7 +234,6 @@ export default class Dokumente extends Mixins(
       let dokumentSuccessfullySaved = false;
       await this.saveDokumentWithUrl(presignedUrlDto, file)
           .then(() => {
-
             this.dokumente.push(newDokument);
             this.formChanged();
             this.$emit("onDokumentAdded", newDokument);
@@ -245,7 +244,7 @@ export default class Dokumente extends Mixins(
             .then(mimeTypeInformation => {
               const savedDokument = this.dokumente.pop();
               if (!_.isNil(savedDokument)) {
-                savedDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmpty(mimeTypeInformation);
+                savedDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
                 this.dokumente.push(savedDokument);
               }
             });
@@ -253,7 +252,7 @@ export default class Dokumente extends Mixins(
     }
   }
 
-  private acronymOrDescriptionWhenAcronymEmpty(mimeTypeInformation: MimeTypeInformationDto): string {
+  private acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation: MimeTypeInformationDto): string {
     let type: string;
     if (_.isEmpty(mimeTypeInformation.acronym)) {
       if (_.isEmpty(mimeTypeInformation.description)) {
