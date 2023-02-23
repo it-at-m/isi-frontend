@@ -39,7 +39,6 @@
                     v-model="item.typDokument"
                     label="Dokumententyp"
                     readonly
-                    filled
                   />
                 </v-col>
                 <v-col
