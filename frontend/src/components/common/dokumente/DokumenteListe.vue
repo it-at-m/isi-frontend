@@ -31,6 +31,7 @@
               </v-row>
               <v-row align="end">
                 <v-col
+                  class="px-3 pt-3 pb-0"
                   cols="12"
                   md="6"
                 >
@@ -42,6 +43,7 @@
                   />
                 </v-col>
                 <v-col
+                  class="px-3 pt-3 pb-0"
                   cols="12"
                   md="6"
                 >
