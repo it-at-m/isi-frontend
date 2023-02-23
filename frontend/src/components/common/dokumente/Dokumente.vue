@@ -48,7 +48,8 @@ import {
   FileInformationDto,
   FilepathDto,
   MimeTypeInformationDto,
-  PresignedUrlDto
+  PresignedUrlDto,
+  ResponseError
 } from "@/api/api-client/isi-backend";
 import {createDokumentDto, createFilepathDto, createPresignedUrlDto} from "@/utils/Factories";
 import {
@@ -71,6 +72,8 @@ export default class Dokumente extends Mixins(
     SaveLeaveMixin,
     MimeTypeApiRequestMixin
 ) {
+
+  private readonly static DATEITYP_NICHT_ERLAUBT: string = "DATEITYP NICHT ERLAUBT";
 
   @VModel({type: Array}) dokumente!: DokumentDto[];
 
@@ -229,21 +232,22 @@ export default class Dokumente extends Mixins(
         });
 
     if (!_.isNil(presignedUrlDto.url)) {
-      const newDokument = createDokumentDto();
-      newDokument.filePath.pathToFile = filepathDto.pathToFile;
       await this.saveDokumentWithUrl(presignedUrlDto, file)
           .then(() => {
+            const newDokument = createDokumentDto();
+            newDokument.filePath.pathToFile = filepathDto.pathToFile;
+            this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
+                .then(mimeTypeInformation => {
+                  newDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
+                })
+                .catch(error => {
+                  if (error instanceof ResponseError && error.response.status === 406) {
+                    newDokument.typDokument = Dokumente.DATEITYP_NICHT_ERLAUBT;
+                  }
+                });
             this.dokumente.push(newDokument);
             this.formChanged();
             this.$emit("onDokumentAdded", newDokument);
-            this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
-                .then(mimeTypeInformation => {
-                  const savedDokument = this.dokumente.pop();
-                  if (!_.isNil(savedDokument)) {
-                    savedDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
-                    this.dokumente.push(savedDokument);
-                  }
-                });
           });
     }
   }
