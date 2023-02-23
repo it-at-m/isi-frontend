@@ -1,41 +1,39 @@
 import {
   AbfrageDto,
-  InfrastrukturabfrageDto,  
-  AbfragevarianteDto,
-  AdresseDto,
-  AbfragevarianteDtoPlanungsrechtEnum,
-  AbfrageDtoStatusAbfrageEnum,
   AbfrageDtoStandVorhabenEnum,
+  AbfrageDtoStatusAbfrageEnum,
+  AbfragevarianteDto,
+  AbfragevarianteDtoPlanungsrechtEnum,
+  AdresseDto,
   BaurateDto,
-  FoerdermixDto,
-  FoerdermixStammDto,
   BauvorhabenDto,
-  BauvorhabenDtoStandVorhabenEnum,
+  BauvorhabenDtoArtFnpEnum,
   BauvorhabenDtoPlanungsrechtEnum,
+  BauvorhabenDtoStandVorhabenEnum,
   BauvorhabenDtoZustaendigkeitEnum,
+  DokumentDto,
+  DokumentDtoArtDokumentEnum,
   FileInformationDto,
   FilepathDto,
-  PresignedUrlDto,
-  DokumentDto,
-  BauvorhabenDtoArtFnpEnum,
-  UncertainBoolean, DokumentDtoArtDokumentEnum,
-  InfrastruktureinrichtungDto,
-  SchuleDto,
-  KinderkrippeDto,
-  KindergartenDto,
-  HausFuerKinderDto,
-  GsNachmittagBetreuungDto,
+  FoerdermixDto,
+  FoerdermixStammDto,
   GrundschuleDto,
-  MittelschuleDto,
+  GsNachmittagBetreuungDto,
+  HausFuerKinderDto,
+  InfrastrukturabfrageDto,
+  InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoEinrichtungstraegerEnum,
   InfrastruktureinrichtungDtoStatusEnum,
+  KindergartenDto,
+  KinderkrippeDto,
+  MittelschuleDto,
+  PresignedUrlDto,
+  SchuleDto,
+  UncertainBoolean,
 } from "@/api/api-client/isi-backend";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import _ from "lodash";
-import {
-  AdressSucheDto,
-  MuenchenAdresseDto
-} from "@/api/api-client/isi-master-eai";
+import {AdressSucheDto, MuenchenAdresseDto} from "@/api/api-client/isi-master-eai";
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {
@@ -90,7 +88,7 @@ export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
     sobonJahr: undefined,
     abfragevarianten: new Array<AbfragevarianteDto>(),
     aktenzeichenProLbk: undefined,
-    offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,  
+    offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,
   } as InfrastrukturabfrageDto;
 }
 
@@ -137,53 +135,54 @@ export function createBauvorhabenDto(): BauvorhabenDto {
   };
 }
 
- /** 
-   * FileInformationDto
-   */
-  export function createFileInformationDto(): FileInformationDto {
-    return {
-      maxFileSizeBytes: undefined,
-      maxNumberOfFiles: undefined,
-      allowedFileExtensions: undefined
-    } as FileInformationDto;
-  }
+/**
+ * FileInformationDto
+ */
+export function createFileInformationDto(): FileInformationDto {
+  return {
+    maxFileSizeBytes: undefined,
+    maxNumberOfFiles: undefined,
+    allowedFileExtensions: undefined
+  } as FileInformationDto;
+}
 
- /** 
-   * FilepathDto
-   */
-  export function createFilepathDto(): FilepathDto {
-    return {
-      pathToFile: "",
-    } as FilepathDto;
-  }
+/**
+ * FilepathDto
+ */
+export function createFilepathDto(): FilepathDto {
+  return {
+    pathToFile: "",
+  } as FilepathDto;
+}
 
-  export function createFilepathDtoFor(name: string, dokumente: DokumentDto[] | undefined): string {
-    const filePath: string | undefined = !_.isNil(dokumente) && dokumente.length > 0 ? dokumente[0].filePath.pathToFile : undefined;
-    return filePath === undefined ? `${name}/${uuidv4()}/` : filePath.substring(0, filePath.lastIndexOf("/") + 1);
-  }
+export function createFilepathDtoFor(name: string, dokumente: DokumentDto[] | undefined): string {
+  const filePath: string | undefined = !_.isNil(dokumente) && dokumente.length > 0 ? dokumente[0].filePath.pathToFile : undefined;
+  return filePath === undefined ? `${name}/${uuidv4()}/` : filePath.substring(0, filePath.lastIndexOf("/") + 1);
+}
 
-  /**
-   * PresignedUrlDto
-   */
-  export function createPresignedUrlDto(): PresignedUrlDto {
-    return {
-      httpMethodToUse: undefined,
-      url: undefined      
-    };
-  }
+/**
+ * PresignedUrlDto
+ */
+export function createPresignedUrlDto(): PresignedUrlDto {
+  return {
+    httpMethodToUse: undefined,
+    url: undefined
+  };
+}
 
-  /**
-   * DokumentDto
-   */
-  export function createDokumentDto(): DokumentDto {
-    return {
-      id: undefined,
-      createdDateTime: undefined,
-      lastModifiedDateTime: undefined,
-      filePath: createFilepathDto(),
-      artDokument: DokumentDtoArtDokumentEnum.Unspecified
-    };
-  }
+/**
+ * DokumentDto
+ */
+export function createDokumentDto(): DokumentDto {
+  return {
+    id: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    filePath: createFilepathDto(),
+    artDokument: DokumentDtoArtDokumentEnum.Unspecified,
+    typDokument: ""
+  };
+}
 
 /**
  * BaurateDto
@@ -338,7 +337,7 @@ export function createGrundschuleDto(): GrundschuleDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    schule: createSchuleDto()    
+    schule: createSchuleDto()
   } as GrundschuleDto;
 }
 
@@ -369,7 +368,7 @@ export function createAdressSucheDto(): AdressSucheDto {
 /**
  * MuenchenAdresseDto
  */
- export function createMuenchenAdresseDto(): MuenchenAdresseDto {
+export function createMuenchenAdresseDto(): MuenchenAdresseDto {
   return {
     adresse: undefined,
     adressId: undefined,
@@ -377,7 +376,7 @@ export function createAdressSucheDto(): AdressSucheDto {
     ortname: undefined,
     strassenname: undefined,
     position: undefined,
-    geozuordnungen: undefined   
+    geozuordnungen: undefined
   } as MuenchenAdresseDto;
 }
 

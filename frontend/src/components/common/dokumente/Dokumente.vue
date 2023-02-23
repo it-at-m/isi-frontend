@@ -231,24 +231,20 @@ export default class Dokumente extends Mixins(
     if (!_.isNil(presignedUrlDto.url)) {
       const newDokument = createDokumentDto();
       newDokument.filePath.pathToFile = filepathDto.pathToFile;
-      let dokumentSuccessfullySaved = false;
       await this.saveDokumentWithUrl(presignedUrlDto, file)
           .then(() => {
             this.dokumente.push(newDokument);
             this.formChanged();
             this.$emit("onDokumentAdded", newDokument);
-            dokumentSuccessfullySaved = true;
+            this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
+                .then(mimeTypeInformation => {
+                  const savedDokument = this.dokumente.pop();
+                  if (!_.isNil(savedDokument)) {
+                    savedDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
+                    this.dokumente.push(savedDokument);
+                  }
+                });
           });
-      if (dokumentSuccessfullySaved) {
-        await this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
-            .then(mimeTypeInformation => {
-              const savedDokument = this.dokumente.pop();
-              if (!_.isNil(savedDokument)) {
-                savedDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
-                this.dokumente.push(savedDokument);
-              }
-            });
-      }
     }
   }
 
