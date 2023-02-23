@@ -6,7 +6,7 @@
         :key="item.filePath.pathToFile"
       >
         <v-container>
-          <v-row class="align-center">
+          <v-row align="center">
             <v-col
               cols="12"
               md="1"
