@@ -6,53 +6,72 @@
         :key="item.filePath.pathToFile"
       >
         <v-container>
-          <v-row>
+          <v-row class="align-center">
+            <v-col
+              class="justify-start"
+              cols="12"
+              md="1"
+            >
+              <v-row class="justify-start">
+                <v-icon @click="downloadDokument(item)">
+                  mdi-download
+                </v-icon>
+              </v-row>
+            </v-col>
+            <v-col
+              cols="12"
+              md="10"
+            >
+              <v-row class="align-start">
+                <v-col
+                  cols="12"
+                  md="12"
+                >
+                  {{ getDokumentDisplayName(item) }}
+                </v-col>
+              </v-row>
+              <v-row class="align-center">
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-text-field
+                    ref="typDokument"
+                    v-model="item.typDokument"
+                    label="Dokumententyp"
+                    readonly
+                    filled
+                  />
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-select
+                    v-model="item.artDokument"
+                    style="margin: 0px;"
+                    :items="artDokumentList"
+                    item-value="key"
+                    item-text="value"
+                    :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+                    @change="formChanged"
+                  >
+                    <template #label>
+                      Dokumentart <span class="secondary--text">*</span>
+                    </template>
+                  </v-select>
+                </v-col>
+              </v-row>
+            </v-col>
             <v-col
               cols="12"
               md="1"
             >
-              <v-icon @click="downloadDokument(item)">
-                mdi-download
-              </v-icon>
-            </v-col>
-            <v-col
-              cols="12"
-              md="4"
-            >
-              {{ getDokumentDisplayName(item) }}
-            </v-col>
-            <v-col
-              cols="12"
-              md="2"
-            >
-              {{ item.typDokument }}
-            </v-col>
-            <v-col
-              cols="12"
-              md="4"
-              style="padding: 0"
-            >
-              <v-select
-                v-model="item.artDokument"
-                style="margin: 0px;"
-                :items="artDokumentList"
-                item-value="key"
-                item-text="value"
-                :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-                @change="formChanged"
-              >
-                <template #label>
-                  Dokumentart <span class="secondary--text">*</span>
-                </template>
-              </v-select>
-            </v-col>
-            <v-col
-              cols="12"
-              md="1"
-            >
-              <v-icon @click="deleteDokument(item)">
-                mdi-delete
-              </v-icon>
+              <v-row class="justify-end">
+                <v-icon @click="deleteDokument(item)">
+                  mdi-delete
+                </v-icon>
+              </v-row>
             </v-col>
           </v-row>
         </v-container>
