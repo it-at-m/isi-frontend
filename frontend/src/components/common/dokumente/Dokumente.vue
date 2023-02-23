@@ -256,7 +256,11 @@ export default class Dokumente extends Mixins(
   private acronymOrDescriptionWhenAcronymEmpty(mimeTypeInformation: MimeTypeInformationDto): string {
     let type: string;
     if (_.isEmpty(mimeTypeInformation.acronym)) {
-      type = _.isNil(mimeTypeInformation.description) ? "" : mimeTypeInformation.description;
+      if (_.isEmpty(mimeTypeInformation.description)) {
+        type = _.isNil(mimeTypeInformation.type) ? "" : mimeTypeInformation.type;
+      } else {
+        type = _.isNil(mimeTypeInformation.description) ? "" : mimeTypeInformation.description;
+      }
     } else {
       type = _.isNil(mimeTypeInformation.acronym) ? "" : mimeTypeInformation.acronym;
     }
