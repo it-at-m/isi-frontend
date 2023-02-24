@@ -1,12 +1,12 @@
 <template>
-  <v-container class="mx-auto ma-2">
+  <v-container class="mx-auto my-2">
     <v-list v-if="hasDokumente">
       <template v-for="(item, index) in dokumente">
         <v-list-item
           :key="`dokument-${index}`"
         >
           <v-card
-            :class="`my-2 pt-2 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
+            :class="`my-2 pt-3 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
             flat
             width="100%"
           >
@@ -40,7 +40,7 @@
                 </v-row>
                 <v-row align="end">
                   <v-col
-                    class="px-3 pt-1 pb-2"
+                    class="px-3 pt-1 pb-0"
                     cols="12"
                     md="6"
                   >
@@ -52,7 +52,7 @@
                     />
                   </v-col>
                   <v-col
-                    class="px-3 pt-1 pb-2"
+                    class="px-3 pt-1 pb-0"
                     cols="12"
                     md="6"
                   >
@@ -62,6 +62,7 @@
                       item-value="key"
                       item-text="value"
                       :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+                      :readonly="isDokumentNotAllowed(item)"
                       @change="formChanged"
                     >
                       <template #label>
