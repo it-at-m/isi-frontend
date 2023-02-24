@@ -51,7 +51,7 @@
             @change="formChanged"
           >
             <template #label>
-              Status der Abfrage <span class="secondary--text">*</span>
+              Status der Abfrage
             </template>
           </v-select>
         </v-col>
