@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto ma-4">
+  <v-container class="mx-auto ma-4">
     <v-list v-if="hasDokumente">
       <v-list-item
         v-for="item in dokumente"
@@ -12,7 +12,10 @@
               md="1"
             >
               <v-row justify="start">
-                <v-icon @click="downloadDokument(item)">
+                <v-icon
+                  v-if="isDokumentAllowed(item)"
+                  @click="downloadDokument(item)"
+                >
                   mdi-download
                 </v-icon>
               </v-row>
@@ -88,19 +91,19 @@
       @no="yesNoDialogNo"
       @yes="yesNoDialogYes"
     />
-  </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
 import {Component, Mixins, VModel} from "vue-property-decorator";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import {createFilepathDto} from "@/utils/Factories";
+import {isDokumentAllowed} from "@/utils/DokumenteUtil";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
 import {DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 
 @Component({
   components: {
@@ -167,8 +170,8 @@ export default class DokumenteListe extends Mixins(
     this.selectedDokument = undefined;
   }
 
-  private isDokumentAllowed(dokument: DokumentDto): boolean {
-    return Dokumente.DATEITYP_NICHT_ERLAUBT !== dokument.typDokument;
+  private isDokumentAllowed(dokument: DokumentDto) {
+    return isDokumentAllowed(dokument);
   }
 
 }

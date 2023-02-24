@@ -55,8 +55,10 @@ import {createDokumentDto, createFilepathDto, createPresignedUrlDto} from "@/uti
 import {
   fileAlreadyExists,
   getAllowedMimeTypes,
+  isDokumentAllowed,
   maxFileSizeExceeded,
-  maxNumberOfFilesReached
+  maxNumberOfFilesReached,
+  mimeTypeNichtErlaubt
 } from "@/utils/DokumenteUtil";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -72,8 +74,6 @@ export default class Dokumente extends Mixins(
     SaveLeaveMixin,
     MimeTypeApiRequestMixin
 ) {
-
-  public static readonly DATEITYP_NICHT_ERLAUBT: string = "DATEITYP NICHT ERLAUBT";
 
   @VModel({type: Array}) dokumente!: DokumentDto[];
 
@@ -101,25 +101,34 @@ export default class Dokumente extends Mixins(
   }
 
   async deleteDokument(dokument: DokumentDto): Promise<void> {
-    const filepathDto: FilepathDto = createFilepathDto();
-    filepathDto.pathToFile = dokument.filePath.pathToFile;
-    let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
-    await this.getPresignedUrlForDeleteDokument(filepathDto, true)
-        .then(presignedUrlDtoInternal => {
-          presignedUrlDto = presignedUrlDtoInternal;
-        });
-    if (!_.isNil(presignedUrlDto.url)) {
-      await this.deleteDokumentWithUrl(presignedUrlDto)
-          .then(() => {
-            this.dokumente.forEach((item, index) => {
-              if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
-                this.dokumente.splice(index, 1);
-              }
-            });
-            this.formChanged();
-            this.$emit("onDokumentDeleted", dokument);
+    if (isDokumentAllowed(dokument)) {
+      const filepathDto: FilepathDto = createFilepathDto();
+      filepathDto.pathToFile = dokument.filePath.pathToFile;
+      let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
+      await this.getPresignedUrlForDeleteDokument(filepathDto, true)
+          .then(presignedUrlDtoInternal => {
+            presignedUrlDto = presignedUrlDtoInternal;
           });
+      if (!_.isNil(presignedUrlDto.url)) {
+        await this.deleteDokumentWithUrl(presignedUrlDto)
+            .then(() => {
+              this.dokumente.forEach((item, index) => {
+                if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
+                  this.dokumente.splice(index, 1);
+                }
+              });
+              this.formChanged();
+              this.$emit("onDokumentDeleted", dokument);
+            });
+      }
+    } else {
+      this.dokumente.forEach((item, index) => {
+        if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
+          this.dokumente.splice(index, 1);
+        }
+      });
     }
+
   }
 
   // - Anzeigen des File-Explorers zur Auswahl von Dateien
@@ -242,7 +251,7 @@ export default class Dokumente extends Mixins(
                 })
                 .catch(error => {
                   if (error instanceof ResponseError && error.response.status === 406) {
-                    newDokument.typDokument = Dokumente.DATEITYP_NICHT_ERLAUBT;
+                    newDokument.typDokument = mimeTypeNichtErlaubt();
                   }
                 });
             this.dokumente.push(newDokument);
