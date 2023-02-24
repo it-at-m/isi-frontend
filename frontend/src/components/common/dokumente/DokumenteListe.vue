@@ -174,5 +174,9 @@ export default class DokumenteListe extends Mixins(
     return isDokumentAllowed(dokument);
   }
 
+  private isDokumentNotAllowed(dokument: DokumentDto) {
+    return !this.isDokumentAllowed(dokument);
+  }
+
 }
 </script>
