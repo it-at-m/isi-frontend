@@ -1,85 +1,94 @@
 <template>
-  <v-container class="mx-auto ma-4">
+  <v-container class="mx-auto ma-2">
     <v-list v-if="hasDokumente">
-      <v-list-item
-        v-for="item in dokumente"
-        :key="item.filePath.pathToFile"
-      >
-        <v-container>
-          <v-row align="center">
-            <v-col
-              cols="12"
-              md="1"
-            >
-              <v-row justify="start">
-                <v-icon
-                  v-if="isDokumentAllowed(item)"
-                  @click="downloadDokument(item)"
-                >
-                  mdi-download
-                </v-icon>
-              </v-row>
-            </v-col>
-            <v-col
-              cols="12"
-              md="10"
-            >
-              <v-row align="start">
-                <v-col
-                  cols="12"
-                  md="12"
-                >
-                  <strong>
-                    {{ getDokumentDisplayName(item) }}
-                  </strong>
-                </v-col>
-              </v-row>
-              <v-row align="end">
-                <v-col
-                  class="px-3 pt-3 pb-0"
-                  cols="12"
-                  md="6"
-                >
-                  <v-text-field
-                    ref="typDokument"
-                    v-model="item.typDokument"
-                    label="Dokumententyp"
-                    readonly
-                  />
-                </v-col>
-                <v-col
-                  class="px-3 pt-3 pb-0"
-                  cols="12"
-                  md="6"
-                >
-                  <v-select
-                    v-model="item.artDokument"
-                    :items="artDokumentList"
-                    item-value="key"
-                    item-text="value"
-                    :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-                    @change="formChanged"
+      <template v-for="(item, index) in dokumente">
+        <v-list-item
+          :key="`dokument-${index}`"
+        >
+          <v-card
+            :class="`my-2 pt-2 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
+            flat
+            width="100%"
+          >
+            <v-row align="center">
+              <v-col
+                cols="12"
+                md="1"
+              >
+                <v-row justify="center">
+                  <v-icon
+                    v-if="isDokumentAllowed(item)"
+                    @click="downloadDokument(item)"
                   >
-                    <template #label>
-                      Dokumentart <span class="secondary--text">*</span>
-                    </template>
-                  </v-select>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col
-              cols="12"
-              md="1"
-            >
-              <v-row justify="end">
-                <v-icon @click="deleteDokument(item)">
-                  mdi-delete
-                </v-icon>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-list-item>
+                    mdi-download
+                  </v-icon>
+                </v-row>
+              </v-col>
+              <v-col
+                cols="12"
+                md="10"
+              >
+                <v-row align="center">
+                  <v-col
+                    cols="12"
+                    md="12"
+                  >
+                    <strong>
+                      {{ getDokumentDisplayName(item) }}
+                    </strong>
+                  </v-col>
+                </v-row>
+                <v-row align="end">
+                  <v-col
+                    class="px-3 pt-1 pb-2"
+                    cols="12"
+                    md="6"
+                  >
+                    <v-text-field
+                      ref="typDokument"
+                      v-model="item.typDokument"
+                      label="Dokumententyp"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col
+                    class="px-3 pt-1 pb-2"
+                    cols="12"
+                    md="6"
+                  >
+                    <v-select
+                      v-model="item.artDokument"
+                      :items="artDokumentList"
+                      item-value="key"
+                      item-text="value"
+                      :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+                      @change="formChanged"
+                    >
+                      <template #label>
+                        Dokumentart <span class="secondary--text">*</span>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col
+                cols="12"
+                md="1"
+              >
+                <v-row justify="center">
+                  <v-icon @click="deleteDokument(item)">
+                    mdi-delete
+                  </v-icon>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-list-item>
+        <v-divider
+          v-if="index < dokumente.length - 1"
+          :key="`divider-${index}`"
+        />
+      </template>
     </v-list>
     <yes-no-dialog
       v-model="deleteDialogOpen"
