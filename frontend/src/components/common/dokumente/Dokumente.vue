@@ -248,15 +248,17 @@ export default class Dokumente extends Mixins(
             this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
                 .then(mimeTypeInformation => {
                   newDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
+                  this.dokumente.push(newDokument);
+                  this.formChanged();
                 })
                 .catch(error => {
                   if (error instanceof ResponseError && error.response.status === 406) {
                     newDokument.typDokument = mimeTypeNichtErlaubt();
+                    this.dokumente.push(newDokument);
+                    this.formChanged();
                   }
                 });
-            this.dokumente.push(newDokument);
-            this.formChanged();
-            this.$emit("onDokumentAdded", newDokument);
+
           });
     }
   }
