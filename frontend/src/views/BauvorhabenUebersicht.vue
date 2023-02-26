@@ -5,8 +5,9 @@
         v-if="bauvorhabenList.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in bauvorhabenList"
+          v-for="(item, i) in bauvorhabenList"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,15 +17,15 @@
             :elevation="hover ? 4 : 0"
             @click="editBauvorhaben(item.id)"
           >
-            <v-card-title>
+            <v-card-title id="bauvorhaben_uebersicht_item_${i}_nameVorhaben">
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span>Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
+              <span id="bauvorhaben_uebersicht_item_${i}_bauvorhabenNummer">Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
               <v-spacer />
-              <span>Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
+              <span id="bauvorhaben_uebersicht_item_${i}_grundstueckgroesse">Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
               <v-spacer />
-              <span>Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
+              <span id="bauvorhaben_uebersicht_item_${i}_standVorhaben">Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>
@@ -37,14 +38,17 @@
       >
         <span
           v-if="fetchSuccess === true"
+          id="bauvorhaben_uebersicht_keineBauvorhabenVorhanden"
           class="text-h6"
         >Keine Bauvorhaben vorhanden</span>
         <span
           v-else-if="fetchSuccess === false"
+          id="bauvorhaben_uebersicht_fehlerMeldung"
           class="text-h6"
         >Ein Fehler ist aufgetreten</span>
         <v-progress-circular
           v-else
+          id="bauvorhaben_ladekreis"
           indeterminate
           color="grey lighten-1"
           size="50"
@@ -55,6 +59,7 @@
     <template #action>
       <v-spacer />
       <v-btn
+        id="bauvorhaben_uebersicht_bauvorhaben_erstellen_button"
         dark
         fab
         x-large

@@ -5,8 +5,9 @@
         v-if="infrastruktureinrichtungen.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in infrastruktureinrichtungen"
+          v-for="(item, i) in infrastruktureinrichtungen"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,12 +17,12 @@
             :elevation="hover ? 4 : 0"
             @click="routeToInfrastruktureinrichtungInfo(item)"
           >
-            <v-card-title>
+            <v-card-title id="infrastruktureinrichtung_uebersicht_item_${i}_nameEinrichtung">
               {{ item.nameEinrichtung }}
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span> {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList) }}</span>
+              <span id="infrastruktureinrichtung_uebersicht_item_${i}_infrastruktureinrichtungTyp"> {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>
@@ -34,14 +35,17 @@
       >
         <span
           v-if="backendAccessSuccessful"
+          id="infrastruktureinrichtung_keineInfrastruktureinrichtungVorhanden"
           class="text-h6"
         >Keine Infrastruktureinrichtungen vorhanden</span>
         <span
           v-else-if="!backendAccessSuccessful"
+          id="infrastruktureinrichtung_fehlerMeldung"
           class="text-h6"
         >Ein Fehler ist aufgetreten</span>
         <v-progress-circular
           v-else
+          id="infrastruktureinrichtung_ladekreis"
           indeterminate
           color="grey lighten-1"
           size="50"
@@ -54,6 +58,7 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="infrastruktureinrichtung_uebersicht_infrastruktureinrichtung_erstellen_button"
             slot="activator"
             v-model="options"
             dark

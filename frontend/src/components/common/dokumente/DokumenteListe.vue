@@ -1,14 +1,16 @@
 <template>  
   <v-card class="mx-auto ma-4">
-    <v-list v-if="hasDokumente">
+    <v-list id="dokumente_liste" v-if="hasDokumente">
+      <!-- eslint-disable vue/no-unused-vars -->
       <v-list-item
-        v-for="item in dokumente"
+        v-for="(item, i) in dokumente"
+        id="dokumente_listitem_${i}"
         :key="item.filePath.pathToFile"
       >
         <v-container>
           <v-row>
             <v-col>
-              <v-icon @click="downloadDokument(item)">
+              <v-icon id="dokumente_listitem_${i}_download_icon" @click="downloadDokument(item)">
                 mdi-download
               </v-icon>
             </v-col>
@@ -24,6 +26,7 @@
               style="padding: 0"
             >
               <v-select
+                id="dokumente_listitem_${i}_artDokument_dropdown"
                 v-model="item.artDokument"
                 style="margin: 0px;"
                 :items="artDokumentList"
@@ -38,7 +41,7 @@
               </v-select>
             </v-col>
             <v-col>
-              <v-icon @click="deleteDokument(item)">
+              <v-icon id="dokumente_listitem_${i}_loeschen_icon" @click="deleteDokument(item)">
                 mdi-delete
               </v-icon>
             </v-col>
@@ -47,6 +50,7 @@
       </v-list-item>
     </v-list>
     <yes-no-dialog
+      id="dokumente_yes_no_dialog_loeschen"
       v-model="deleteDialogOpen"
       icon="mdi-delete-forever"
       dialogtitle="Hinweis"

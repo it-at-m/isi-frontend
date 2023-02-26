@@ -15,6 +15,7 @@
         >
           <router-link to="/">
             <v-img
+              id="app_logo"
               :src="logo"
               max-width="32"
               max-height="32"
@@ -32,7 +33,7 @@
           class="d-flex align-center justify-center"
         >
           <v-text-field
-            id="suchfeld"
+            id="app_suchfeld"
             v-model="query"
             dense
             flat
@@ -67,6 +68,7 @@
           style="width: 100%"
         >
           <v-btn
+            id="app_karte_button"
             depressed
             tile
             text
@@ -77,6 +79,7 @@
             v-text="'Karte'"
           />
           <v-btn
+            id="app_abfrage_button"
             depressed
             tile
             text
@@ -87,6 +90,7 @@
             v-text="'Abfragen'"
           />
           <v-btn
+            id="app_bauvorhaben_button"
             depressed
             tile
             text
@@ -97,6 +101,7 @@
             v-text="'Bauvorhaben'"
           />
           <v-btn
+            id="app_infrastruktureinrichtung_button"
             depressed
             tile
             text

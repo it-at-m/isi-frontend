@@ -2,6 +2,7 @@
   <div>
     <v-text-field
       v-if="!datePickerActivated"
+      id="datum"
       v-model="datumTextField"
       append-icon="mdi-calendar"
       :rules="required ? [fieldValidationRules.pflichtfeld, fieldValidationRules.datum] : [fieldValidationRules.datum]"
@@ -24,6 +25,7 @@
     >
       <template #activator="{ on, attrs }">
         <v-text-field
+          id="datum_formattiertesDatum"
           v-model="datumTextFieldFormatted"
           append-icon="mdi-calendar"
           readonly
@@ -33,6 +35,7 @@
         />
       </template>
       <v-date-picker
+        id="datum_datePicker"
         v-model="datumDatePicker"
         locale="de"
         @change="deactivateDatePicker"

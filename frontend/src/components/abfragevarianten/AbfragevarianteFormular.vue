@@ -32,6 +32,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_realisierungBis"
             v-model="abfragevariante.realisierungBis"
             label="Realisierung bis (JJJJ)"
             class="mx-3"
@@ -45,6 +46,7 @@
           md="4"
         >
           <v-select
+            id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
             class="mx-3"
             :items="planungsrechtList"
@@ -68,6 +70,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnen"
             v-model="abfragevariante.geschossflaecheWohnen"
             class="mx-3"
             label="Wohnen"
@@ -79,6 +82,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnenGenehmigt"
             v-model="abfragevariante.geschossflaecheWohnenGenehmigt"
             class="mx-3"
             label="Genehmigt"
@@ -90,6 +94,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnenFestgesetzt"
             v-model="abfragevariante.geschossflaecheWohnenFestgesetzt"
             class="mx-3"
             label="Festgesetzt"
@@ -104,6 +109,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
             :key="componentKeyGeschossflaecheSobonUrsaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
             class="mx-3"
@@ -117,6 +123,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnenBestandswohnbaurecht"
             v-model="abfragevariante.geschossflaecheWohnenBestandswohnbaurecht"
             class="mx-3"
             label="Bestandswohnbaurecht"
@@ -128,6 +135,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheGenossenschaftlicheWohnungen"
             v-model="abfragevariante.geschossflaecheGenossenschaftlicheWohnungen"
             class="mx-3"
             label="Genossenschaftliche Wohnungen"
@@ -142,6 +150,7 @@
           md="4"
         >
           <v-checkbox
+            id="abfragevariante_sonderwohnformen"
             v-model="abfragevariante.sonderwohnformen"
             class="mx-3"
             label="Sonderwohnformen"
@@ -165,6 +174,7 @@
             md="4"
           >
             <num-field
+              id="abfragevariante_geschossflaecheStudentenwohnungen"
               v-model="abfragevariante.geschossflaecheStudentenwohnungen"
               class="mx-3"
               label="Studentenwohnungen"
@@ -176,6 +186,7 @@
             md="4"
           >
             <num-field
+              id="abfragevariante_geschossflaecheSeniorenwohnungen"
               v-model="abfragevariante.geschossflaecheSeniorenwohnungen"
               class="mx-3"
               label="Seniorenwohnungen"
@@ -187,6 +198,7 @@
             md="4"
           >
             <num-field
+              id="abfragevariante_geschossflaecheSonstiges"
               v-model="abfragevariante.geschossflaecheSonstiges"
               class="mx-3"
               label="Nicht infrastrukturrelevant"
@@ -204,6 +216,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_gesamtanzahlWe"
             v-model="abfragevariante.gesamtanzahlWe"
             class="mx-3"
             label="Geplante"
@@ -215,6 +228,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_anzahlWeBaurechtlichGenehmigt"
             v-model="abfragevariante.anzahlWeBaurechtlichGenehmigt"
             class="mx-3"
             label="Baurechtlich genehmigt"
@@ -226,6 +240,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_anzahlWeBaurechtlichFestgesetzt"
             v-model="abfragevariante.anzahlWeBaurechtlichFestgesetzt"
             class="mx-3"
             label="Baurechtlich festgesetzt"

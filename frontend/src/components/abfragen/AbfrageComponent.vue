@@ -19,6 +19,7 @@
       </v-row>
     </field-group-card>
     <adresse-component
+      id="abfrage_adresse_component"
       :adresse-prop.sync="abfrage.adresse"
       :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
@@ -43,7 +44,7 @@
           md="6"
         >
           <v-select
-            id="abfrage_status"
+            id="abfrage_status_dropdown"
             v-model="abfrage.statusAbfrage"
             :items="statusAbfrageList"
             item-value="key"
@@ -62,7 +63,7 @@
           md="6"
         >
           <v-select
-            id="abfrage_standvorhaben"
+            id="abfrage_standvorhaben_dropdown"
             v-model="abfrage.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
@@ -83,7 +84,7 @@
           md="6"
         >
           <v-select
-            id="abfrage_bauvorhaben"
+            id="abfrage_bauvorhaben_dropdown"
             v-model="abfrage.bauvorhaben"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
@@ -130,6 +131,7 @@
       <v-row>
         <v-col cols="12">
           <dokumente
+            id="abfrage_dokumente_component"
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
             :path-to-file="dokumentePathToFile"
