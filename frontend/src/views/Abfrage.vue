@@ -115,8 +115,8 @@
       </template>
       <template #information>
         <v-btn
-          id="abfrage_loeschen_button"
           v-if="!isNewAbfrage()"
+          id="abfrage_loeschen_button"
           class="text-wrap my-4 px-1"
           color="primary"
           elevation="1"
@@ -124,7 +124,10 @@
           @click="deleteAbfrage()"
           v-text="'Löschen'"
         />
-        <information-list id="abfrage_information_list" information-message-deletion-intervall-seconds="10" />
+        <information-list
+          id="abfrage_information_list"
+          information-message-deletion-intervall-seconds="10"
+        />
       </template>
       <template #action>
         <v-spacer />

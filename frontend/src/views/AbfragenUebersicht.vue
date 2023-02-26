@@ -17,19 +17,19 @@
             :elevation="hover ? 4 : 0"
             @click="routeToAbfrageInfo(item)"
           >
-            <v-card-title id="abfrage_uebersicht_item_${i}_nameAbfrage">
+            <v-card-title :id="'abfrage_uebersicht_item_' + i + '_nameAbfrage'">
               {{ item.nameAbfrage }}
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span id="abfrage_uebersicht_item_${i}_statusAbfrage"> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + i + '_statusAbfrage'"> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
               <v-spacer />
-              <span id="abfrage_uebersicht_item_${i}_standVorhaben">
+              <span :id="'abfrage_uebersicht_item_' + i + '_standVorhaben'">
                 Stand:
                 {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
               </span>
               <v-spacer />
-              <span id="abfrage_uebersicht_item_${i}_fristStellungnahme">Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + i + '_fristStellungnahme'">Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>

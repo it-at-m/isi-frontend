@@ -98,7 +98,10 @@
           @click="deleteInfrastruktureinrichtung()"
           v-text="'Löschen'"
         />
-        <information-list id="infrastruktureinrichtung_information_list" information-message-deletion-intervall-seconds="10" />
+        <information-list
+          id="infrastruktureinrichtung_information_list"
+          information-message-deletion-intervall-seconds="10"
+        />
       </template>
       <template #action>
         <v-spacer />

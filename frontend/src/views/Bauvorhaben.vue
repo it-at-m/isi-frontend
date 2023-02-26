@@ -48,7 +48,10 @@
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
-        <InformationList id="bauvorhaben_information_list" information-message-deletion-intervall-seconds="10" />
+        <InformationList
+          id="bauvorhaben_information_list"
+          information-message-deletion-intervall-seconds="10"
+        />
       </template>
       <template #action>
         <v-spacer />

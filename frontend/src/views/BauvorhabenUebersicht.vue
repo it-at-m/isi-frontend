@@ -17,15 +17,15 @@
             :elevation="hover ? 4 : 0"
             @click="editBauvorhaben(item.id)"
           >
-            <v-card-title id="bauvorhaben_uebersicht_item_${i}_nameVorhaben">
+            <v-card-title :id="'bauvorhaben_uebersicht_item_' + i + '_nameVorhaben'">
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span id="bauvorhaben_uebersicht_item_${i}_bauvorhabenNummer">Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + i + '_bauvorhabenNummer'">Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
               <v-spacer />
-              <span id="bauvorhaben_uebersicht_item_${i}_grundstueckgroesse">Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + i + '_grundstueckgroesse'">Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
               <v-spacer />
-              <span id="bauvorhaben_uebersicht_item_${i}_standVorhaben">Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + i + '_standVorhaben'">Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>

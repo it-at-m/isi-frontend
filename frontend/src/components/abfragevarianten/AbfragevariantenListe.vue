@@ -5,18 +5,27 @@
       md="10"
     >
       <v-card class="mx-auto ma-4">
-        <v-list id="abfragevariante_liste" v-if="abfragevarianten !== undefined && abfragevarianten.length > 0">
+        <v-list
+          v-if="abfragevarianten !== undefined && abfragevarianten.length > 0"
+          id="abfragevariante_list"
+        >
           <v-list-item
-            id="abfragevariante_listitem_${item.abfragevariantenNr}"
             v-for="item in abfragevarianten"
+            :id="'abfragevariante_listitem_'+ item.abfragevariantenNr"
             :key="item.abfragevariantenNr"            
           >
-            <v-list-item-content id="abfragevariante_listitem_editieren" @click="editAbfragevariante(item)">
+            <v-list-item-content
+              :id="'abfragevariante_listitem_'+ item.abfragevariantenNr + '_editieren'"
+              @click="editAbfragevariante(item)"
+            >
               <v-list-item-title v-text="displayZeile1(item)" />
               <v-list-item-subtitle v-text="displayZeile2(item)" />
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon id="abfragevariante_listitem_loeschen_icon" @click="deleteAbfragevariante(item)">
+              <v-icon
+                :id="'abfragevariante_listitem_' + item.abfragevariantenNr + '_loeschen_icon'"
+                @click="deleteAbfragevariante(item)"
+              >
                 mdi-delete
               </v-icon>
             </v-list-item-icon>
