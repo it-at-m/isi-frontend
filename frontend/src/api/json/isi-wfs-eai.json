@@ -17,23 +17,23 @@
   ],
   "tags": [
     {
-      "name": "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)",
-      "description": "API zum Abfragen des WFS-Servers für Polygon-Koordinaten."
+      "name": "PolygonOperationen",
+      "description": "Controller für polygonspezifische Operationen im Standard EPSG:4326 (WGS84)."
     },
     {
-      "name": "Controller für polygonspezifische Operationen im Standard EPSG:4326 (WGS84)",
-      "description": "API für polygonspezifische Operationen."
+      "name": "Polygon",
+      "description": "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)."
     },
     {
-      "name": "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)",
-      "description": "API zum Abfragen des WFS-Servers für Punkt-Koordinaten."
+      "name": "Punkt",
+      "description": "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)."
     }
   ],
   "paths": {
     "/polygon/stadtbezirke": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die Stadtbezirke die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getStadtbezirke",
@@ -48,22 +48,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Stadtbezirke erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/StadtbezirkCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Stadtbezirke erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StadtbezirkCollectionDto"
                 }
               }
             }
@@ -74,7 +74,7 @@
     "/polygon/operation/union": {
       "post": {
         "tags": [
-          "Controller für polygonspezifische Operationen im Standard EPSG:4326 (WGS84)"
+          "PolygonOperationen"
         ],
         "summary": "Ermittelt die Vereinigung der Polygone für die im Request gegebenen Polygone mit Koordinaten im Standard EPSG:4326 (WGS84).",
         "operationId": "unify",
@@ -115,7 +115,7 @@
     "/polygon/mittelschulverbuende": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die  Mittelschulverbuende die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulverbuende",
@@ -130,22 +130,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Mittelschulverbuende erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MittelschulverbundCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Mittelschulverbuende erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MittelschulverbundCollectionDto"
                 }
               }
             }
@@ -156,7 +156,7 @@
     "/polygon/mittelschulstandorte": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die  Mittelschulstandorte die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulstandorte",
@@ -171,22 +171,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Mittelschulstandorte erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MittelschulstandortCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Mittelschulstandorte erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MittelschulstandortCollectionDto"
                 }
               }
             }
@@ -197,7 +197,7 @@
     "/polygon/mittelschulsprengel": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die Mittelschulsprengel die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulsprengel",
@@ -212,22 +212,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Mittelschulsprengel erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MittelschulsprengelCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Mittelschulsprengel erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MittelschulsprengelCollectionDto"
                 }
               }
             }
@@ -238,7 +238,7 @@
     "/polygon/kitaplanungsbereiche": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die Kitaplanungsbereiche die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getKitaplanungsbereiche",
@@ -253,22 +253,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/KitaplanungsbereichCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/KitaplanungsbereichCollectionDto"
                 }
               }
             }
@@ -279,7 +279,7 @@
     "/polygon/grundschulverbuende": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die  Grundschulverbuende die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulverbuende",
@@ -294,22 +294,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Grundschulverbuende erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GrundschulverbundCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Grundschulverbuende erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrundschulverbundCollectionDto"
                 }
               }
             }
@@ -320,7 +320,7 @@
     "/polygon/grundschulstandorte": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die Grundschulstandorte die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulstandorte",
@@ -335,22 +335,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Grundschulstandorte erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GrundschulstandortCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Grundschulstandorte erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrundschulstandortCollectionDto"
                 }
               }
             }
@@ -361,7 +361,7 @@
     "/polygon/grundschulsprengel": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die Grundschulsprengel die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulsprengel",
@@ -376,22 +376,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Grundschulsprengel erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GrundschulsprengelCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Grundschulsprengel erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrundschulsprengelCollectionDto"
                 }
               }
             }
@@ -402,7 +402,7 @@
     "/polygon/gemarkungen": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die Gemarkungen die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGemarkungen",
@@ -417,22 +417,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Gemarkungen erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GemarkungCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Gemarkungen erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GemarkungCollectionDto"
                 }
               }
             }
@@ -443,7 +443,7 @@
     "/polygon/flurstuecke": {
       "post": {
         "tags": [
-          "Controller für Polygon-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Polygon"
         ],
         "summary": "Holt die Flurstuecke die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getFlurstuecke",
@@ -458,22 +458,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Flurstuecke erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FlurstueckCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Flurstuecke erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlurstueckCollectionDto"
                 }
               }
             }
@@ -484,7 +484,7 @@
     "/point/stadtbezirke": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Stadtbezirke die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getStadtbezirke_1",
@@ -499,22 +499,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Stadtbezirke erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/StadtbezirkCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Stadtbezirke erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StadtbezirkCollectionDto"
                 }
               }
             }
@@ -525,7 +525,7 @@
     "/point/mittelschulverbuende": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Mittelschulverbuende die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulverbuende_1",
@@ -540,22 +540,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Mittelschulverbuende erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MittelschulverbundCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Mittelschulverbuende erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MittelschulverbundCollectionDto"
                 }
               }
             }
@@ -566,7 +566,7 @@
     "/point/mittelschulsprengel": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Mittelschulsprengel die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulsprengel_1",
@@ -581,22 +581,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Mittelschulsprengel erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MittelschulsprengelCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Mittelschulsprengel erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MittelschulsprengelCollectionDto"
                 }
               }
             }
@@ -607,7 +607,7 @@
     "/point/kitaplanungsbereiche": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Kitaplanungsbereiche die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getKitaplanungsbereiche_1",
@@ -622,22 +622,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/KitaplanungsbereichCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/KitaplanungsbereichCollectionDto"
                 }
               }
             }
@@ -648,7 +648,7 @@
     "/point/grundschulverbuende": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Grundschulverbuende die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulverbuende_1",
@@ -663,22 +663,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Grundschulverbuende erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GrundschulverbundCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Grundschulverbuende erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrundschulverbundCollectionDto"
                 }
               }
             }
@@ -689,7 +689,7 @@
     "/point/grundschulsprengel": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Grundschulsprengel die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulsprengel_1",
@@ -704,22 +704,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Grundschulsprengel erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GrundschulsprengelCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Grundschulsprengel erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrundschulsprengelCollectionDto"
                 }
               }
             }
@@ -730,7 +730,7 @@
     "/point/gemarkungen": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Gemarkungen die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGemarkungen_1",
@@ -745,22 +745,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Gemarkungen erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GemarkungCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Gemarkungen erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GemarkungCollectionDto"
                 }
               }
             }
@@ -771,7 +771,7 @@
     "/point/flurstuecke": {
       "post": {
         "tags": [
-          "Controller für Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"
+          "Punkt"
         ],
         "summary": "Holt die Flurstuecke die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getFlurstuecke_1",
@@ -786,22 +786,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Flurstuecke erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FlurstueckCollectionDto"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des WFS-Requests ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Flurstuecke erfolgreich abgefragt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlurstueckCollectionDto"
                 }
               }
             }
