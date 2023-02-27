@@ -16,8 +16,8 @@
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
       <l-wms-tile-layer
         name="Hintergrund"
-        :base-url="OSM_BASE_URL"
-        layers="OSM-WMS"
+        :base-url="WMS_BASE_URL"
+        layers="Hintergrund"
         format="image/png"
         layer-type="base"
         :visible="true"
@@ -50,8 +50,9 @@
 import { Component, Prop, Mixins } from 'vue-property-decorator';
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
 import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
-import { CoordinateDto, FlurstueckDto } from '@/api/api-client/isi-wfs-eai';
-import L, { LatLngExpression } from 'leaflet';
+import { CoordinateDto, CoordinatesDto, FlurstueckDto, FlurstueckFeatureDto } from '@/api/api-client/isi-wfs-eai';
+import { VerortungState, MultiPolygon } from '@/store/modules/VerortungStore';
+import L, { LatLngLiteral } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import _ from 'lodash';
 
@@ -70,7 +71,7 @@ import _ from 'lodash';
 export default class CityMap extends Mixins(
   WfsEaiApiRequestMixin
 ) {
-  private readonly OSM_BASE_URL = "https://ows.terrestris.de/osm/service?";
+  private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MUNICH_CENTER = [48.137227, 11.575517];
   private readonly MAP_OPTIONS = {attributionControl: false};
 
@@ -78,15 +79,18 @@ export default class CityMap extends Mixins(
   private readonly height!: number | string;
   @Prop({default: "100%"})
   private readonly width!: number | string;
-  @Prop({default: 18})
+  @Prop({default: 16})
   private readonly zoom!: number;
 
   private readonly popup = L.popup();
   private map!: L.Map;
+  private flurstueckPolygon?: L.Polygon;
+  private loading = false;
 
   mounted(): void {
     // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
     this.map = (this.$refs.map as LMap).mapObject;
+    this.redraw();
   }
 
   /**
@@ -100,6 +104,11 @@ export default class CityMap extends Mixins(
    * Öffnet an der angeklickten Bildschirmposition ein Popup, welches die Koordinaten der Kartenposition anzeigt.
    */
   private async openPopup(event: L.LeafletMouseEvent): Promise<void> {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+
     const latlng = event.latlng;
 
     this.popup
@@ -108,40 +117,91 @@ export default class CityMap extends Mixins(
       .openOn(this.map);
 
     const coordinate: CoordinateDto = { lat: latlng.lat, lon: latlng.lng };
-    const flurstuecke = await this.getFlurstuecke(coordinate, false);
-    console.log(flurstuecke);
+    const fetchedFlurstuecke = await this.getFlurstuecke(coordinate, false);
+    const flurstuecke: FlurstueckFeatureDto[] = [];
+    const flurstueckMap = this.$store.getters["verortung/flurstuecke"] as VerortungState["flurstuecke"];
+    
+    for (const flurstueck of fetchedFlurstuecke) {
+      const id = flurstueck.properties?.flurstueckId;
+
+      if (id && flurstueck.geometry) {
+        if (!flurstueckMap.has(id)) {
+          this.$store.dispatch("verortung/addFlurstueck", flurstueck);
+        } else {
+          this.$store.dispatch("verortung/removeFlurstueck", id);
+        }
+
+        flurstuecke.push(flurstueck);
+      }
+    }
     
     if (flurstuecke.length !== 0) {
-      let message = "";
-      
-      for (const flurstueck of flurstuecke) {
-        const data = flurstueck.properties;
-
-        // TODO: data undefinded müsste auch zu "Keine Flurstücke an dieser Koordinate" führen
-        if (data && data.flurstueckId) {
-          if (!this.$store.getters["cityMap/flurstuecke"].has(data.flurstueckId)) {
-            this.$store.dispatch("cityMap/addFlurstueck", flurstueck);
-            message += this.flurstueckToHtml(data) + "<br><br>";
-          } else {
-            this.$store.dispatch("cityMap/removeFlurstueck", data.flurstueckId);
-          }
-        }
+      const multiPolygonArray: MultiPolygon[] = [];
+      for (const flurstueck of flurstueckMap.values()) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        multiPolygonArray.push(flurstueck.geometry!.coordinates as MultiPolygon);
       }
 
-      // TODO: Alle Polygone rendern
-      for (const flurstueck of this.$store.getters["cityMap/flurstuecke"]) {
-        const polygon = flurstueck.geometry.coordinates as LatLngExpression[][][];
-        // Die letzte Koordinate ist immer ein Duplikat der Ersten und sollte für Leaflet entfernt werden
-        polygon.pop();
-        L.polygon(polygon).addTo(this.map);
-      }
+      let coordinatesArray = this.multiPolygonArrayToCoordinatesArray(multiPolygonArray);
       
-      // Entfernt den letzten doppelten Zeilenumbruch
-      message = message.replace(/<br><br>$/, "");
-      this.popup.setContent(message);
+      if (coordinatesArray.length > 1) {
+        coordinatesArray = await this.getUnion(coordinatesArray, false);
+      }
+
+      this.$store.dispatch("verortung/setCoordinates", coordinatesArray);
+      
+      this.redraw();
+      this.map.closePopup(this.popup);
     } else {
       this.popup.setContent("Keine Flurstücke an dieser Koordinate");
     }
+
+    this.loading = false;
+  }
+
+  private redraw(): void {
+    const coordinates = this.$store.getters["verortung/coordinates"] as VerortungState["coordinates"];
+    const leafletCoordinates = this.coordinatesArrayToLeafletFormat(coordinates);
+    
+    if (this.flurstueckPolygon) {
+      this.flurstueckPolygon.setLatLngs(leafletCoordinates);
+      this.flurstueckPolygon.redraw();
+    } else {
+      this.flurstueckPolygon = L.polygon(leafletCoordinates, {
+        color: "#455A64",
+        fillColor: "#546E7A",
+        fillOpacity: 0.5
+      }).addTo(this.map);
+    }
+  }
+
+  private multiPolygonArrayToCoordinatesArray(multiPolygonArray: MultiPolygon[]): CoordinatesDto[] {
+    const coordinatesArray: CoordinatesDto[] = [];
+    
+    for (const multiPolygon of multiPolygonArray) {
+      const coordinatesDto: CoordinatesDto = { coordinates: [] };
+      for (const coords of multiPolygon[0][0]) {
+        coordinatesDto.coordinates.push({ lat: coords[1], lon: coords[0] });
+      }
+      coordinatesArray.push(coordinatesDto);
+    }
+
+    return coordinatesArray;
+  }
+
+  private coordinatesArrayToLeafletFormat(coordinatesArray: CoordinatesDto[]): LatLngLiteral[][][] {
+    const formatted: LatLngLiteral[][][] = [[]];
+
+    for (const coordinates of coordinatesArray) {
+      const latLngArray: LatLngLiteral[] = [];
+      for (const coordinate of coordinates.coordinates) {
+        latLngArray.push({ lat: coordinate.lat, lng: coordinate.lon });
+      }
+      latLngArray.pop();
+      formatted[0].push(latLngArray);
+    }
+
+    return formatted;
   }
 
   private flurstueckToHtml(flurstueck: FlurstueckDto): string {
