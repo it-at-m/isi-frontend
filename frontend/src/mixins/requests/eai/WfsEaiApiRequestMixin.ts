@@ -7,6 +7,11 @@ import {
   PolygonOperationenApi,
   UnifyRequest,
   CoordinatesDto,
+  PolygonApi,
+  GetGemarkungenRequest,
+  GemarkungFeatureDto,
+  StadtbezirkFeatureDto,
+  GetStadtbezirkeRequest,
 } from "@/api/api-client/isi-wfs-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -18,11 +23,13 @@ export default class WfsEaiApiRequestMixin extends Mixins(
 ) {
   
   private punktApi: PunktApi;
+  private polygonApi: PolygonApi;
   private operationApi: PolygonOperationenApi;
   
   constructor() {
     super();
     this.punktApi = new PunktApi(RequestUtils.getBasicFetchConfigurationForWfsEai());
+    this.polygonApi = new PolygonApi(RequestUtils.getBasicFetchConfigurationForWfsEai());
     this.operationApi = new PolygonOperationenApi(RequestUtils.getBasicFetchConfigurationForWfsEai());
   }
 
@@ -43,20 +50,54 @@ export default class WfsEaiApiRequestMixin extends Mixins(
     return flurstuecke;
   }
 
-  async getUnion(coordinates: CoordinatesDto[], showInInformationList: boolean): Promise<CoordinatesDto[]> {
-    const request: UnifyRequest = { polygonsDto: { polygons: coordinates } };
-    let flurstuecke: CoordinatesDto[] = [];
+  async getGemarkungen(coordinates: CoordinatesDto, showInInformationList: boolean): Promise<GemarkungFeatureDto[]> {
+    const request: GetGemarkungenRequest = { coordinatesDto: coordinates };
+    let gemarkungen: GemarkungFeatureDto[] = [];
 
-    await this.operationApi.unify(request)
+    await this.polygonApi.getGemarkungen(request)
       .then(response => {
-        if (!_.isNil(response.polygons)) {
-          flurstuecke = response.polygons;
+        if (!_.isNil(response.gemarkungen)) {
+          gemarkungen = response.gemarkungen;
         }
       })
       .catch(error => {
         throw this.handleError(showInInformationList, error);
       });
     
-    return flurstuecke;
+    return gemarkungen;
+  }
+
+  async getStadtbezirke(coordinates: CoordinatesDto, showInInformationList: boolean): Promise<StadtbezirkFeatureDto[]> {
+    const request: GetStadtbezirkeRequest = { coordinatesDto: coordinates };
+    let stadtbezirke: GemarkungFeatureDto[] = [];
+
+    await this.polygonApi.getStadtbezirke(request)
+      .then(response => {
+        if (!_.isNil(response.stadtbezirke)) {
+          stadtbezirke = response.stadtbezirke;
+        }
+      })
+      .catch(error => {
+        throw this.handleError(showInInformationList, error);
+      });
+    
+    return stadtbezirke;
+  }
+
+  async getUnion(coordinates: CoordinatesDto[], showInInformationList: boolean): Promise<CoordinatesDto[]> {
+    const request: UnifyRequest = { polygonsDto: { polygons: coordinates } };
+    let union: CoordinatesDto[] = [];
+
+    await this.operationApi.unify(request)
+      .then(response => {
+        if (!_.isNil(response.polygons)) {
+          union = response.polygons;
+        }
+      })
+      .catch(error => {
+        throw this.handleError(showInInformationList, error);
+      });
+    
+    return union;
   }
 }
