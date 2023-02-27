@@ -4,17 +4,16 @@
       v-if="hasDokumente"
       id="dokumente_liste"
     >
-      <!-- eslint-disable vue/no-unused-vars -->
       <v-list-item
-        v-for="(item, i) in dokumente"
-        :id="'dokumente_listitem_' + i"
+        v-for="(item, index) in dokumente"
+        :id="'dokumente_listitem_' + index"
         :key="item.filePath.pathToFile"
       >
         <v-container>
           <v-row>
             <v-col>
               <v-icon
-                :id="'dokumente_listitem_' + i + '_download_icon'"
+                :id="'dokumente_listitem_' + index + '_download_icon'"
                 @click="downloadDokument(item)"
               >
                 mdi-download
@@ -32,7 +31,7 @@
               style="padding: 0"
             >
               <v-select
-                :id="'dokumente_listitem_' + i + '_artDokument_dropdown'"
+                :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
                 v-model="item.artDokument"
                 style="margin: 0px;"
                 :items="artDokumentList"
@@ -48,7 +47,7 @@
             </v-col>
             <v-col>
               <v-icon
-                :id="'dokumente_listitem_' + i + '_loeschen_icon'"
+                :id="'dokumente_listitem_' + index + '_loeschen_icon'"
                 @click="deleteDokument(item)"
               >
                 mdi-delete

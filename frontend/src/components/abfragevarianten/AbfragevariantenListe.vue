@@ -10,12 +10,12 @@
           id="abfragevariante_list"
         >
           <v-list-item
-            v-for="item in abfragevarianten"
-            :id="'abfragevariante_listitem_'+ item.abfragevariantenNr"
+            v-for="(item, index) in abfragevarianten"
+            :id="'abfragevariante_listitem_'+ index"
             :key="item.abfragevariantenNr"            
           >
             <v-list-item-content
-              :id="'abfragevariante_listitem_'+ item.abfragevariantenNr + '_editieren'"
+              :id="'abfragevariante_listitem_'+ index + '_editieren'"
               @click="editAbfragevariante(item)"
             >
               <v-list-item-title v-text="displayZeile1(item)" />
@@ -23,7 +23,7 @@
             </v-list-item-content>
             <v-list-item-icon>
               <v-icon
-                :id="'abfragevariante_listitem_' + item.abfragevariantenNr + '_loeschen_icon'"
+                :id="'abfragevariante_listitem_' + index + '_loeschen_icon'"
                 @click="deleteAbfragevariante(item)"
               >
                 mdi-delete

@@ -7,7 +7,7 @@
       >
         <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="(item, i) in infrastruktureinrichtungen"
+          v-for="(item, index) in infrastruktureinrichtungen"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -17,12 +17,12 @@
             :elevation="hover ? 4 : 0"
             @click="routeToInfrastruktureinrichtungInfo(item)"
           >
-            <v-card-title :id="'infrastruktureinrichtung_uebersicht_item_' + i + '_nameEinrichtung'">
+            <v-card-title :id="'infrastruktureinrichtung_uebersicht_item_' + index + '_nameEinrichtung'">
               {{ item.nameEinrichtung }}
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span :id="'infrastruktureinrichtung_uebersicht_item_' + i + '_infrastruktureinrichtungtyp'"> {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList) }}</span>
+              <span :id="'infrastruktureinrichtung_uebersicht_item_' + index + '_infrastruktureinrichtungtyp'"> {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>
