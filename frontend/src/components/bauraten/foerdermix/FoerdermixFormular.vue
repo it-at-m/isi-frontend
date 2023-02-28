@@ -18,7 +18,6 @@
             label="Summe"
             filled
             readonly="readonly"
-            :class="sumOver100 ? disabled-off : disabled"
             :rules="[fieldValidationRules.nichtGleich100Prozent(foerdermix)]"
             :suffix="fieldPrefixesSuffixes.percent"
           />
@@ -113,24 +112,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import {Component, Mixins, VModel} from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import { addiereAnteile } from "@/utils/CalculationUtil";
+import {addiereAnteile} from "@/utils/CalculationUtil";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FormattingMixin from "@/mixins/FormattingMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
-@Component({ components: { FieldGroupCard } })
+@Component({components: {FieldGroupCard}})
 export default class FoerdermixFormular extends Mixins(
-  FieldValidationRulesMixin,
-  FieldPrefixesSuffixes,
-  FormattingMixin,
-  SaveLeaveMixin
+    FieldValidationRulesMixin,
+    FieldPrefixesSuffixes,
+    FormattingMixin,
+    SaveLeaveMixin
 ) {
-  
-  @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
+
+  @VModel({type: FoerdermixModel}) foerdermix!: FoerdermixModel;
 
   private anteileFMCardTitle = "Anteile Fördermix";
 
@@ -147,10 +146,4 @@ export default class FoerdermixFormular extends Mixins(
 </script>
 
 <style>
-.disabled {
-  color: black;
-}
-.disabled-off {
-  color: red;
-}
 </style>
