@@ -85,10 +85,6 @@
             </v-row>
           </v-card>
         </v-list-item>
-        <v-divider
-          v-if="index < dokumente.length - 1"
-          :key="`divider-${index}`"
-        />
       </template>
     </v-list>
     <yes-no-dialog
