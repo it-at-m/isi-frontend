@@ -12,19 +12,35 @@
         v-model="dokumente"
         @onDeleteDokument="deleteDokument"
       />
-      <v-row justify="end">
+      <v-row class="align-end">
         <v-col
           cols="12"
           md="2"
         >
-          <v-btn
-            class="text-wrap"
-            block
-            color="secondary"
-            elevation="1"
-            @click="addDokument()"
-            v-text="'Hinzufügen'"
-          />
+          <v-row class="justify-start">
+            <v-chip small>
+              {{ currentNumberOfAddedFiles }} / {{ maxNumberOfFiles }}
+            </v-chip>
+          </v-row>
+        </v-col>
+        <v-col
+          cols="12"
+          md="8"
+        />
+        <v-col
+          cols="12"
+          md="2"
+        >
+          <v-row class="justify-end">
+            <v-btn
+              class="text-wrap"
+              block
+              color="secondary"
+              elevation="1"
+              @click="addDokument()"
+              v-text="'Hinzufügen'"
+            />
+          </v-row>
         </v-col>
       </v-row>
     </div>
@@ -82,15 +98,23 @@ export default class Dokumente extends Mixins(
 
   private allowedMimeTypes = "";
 
+  private maxNumberOfFiles = 0;
+
   private loading = false;
 
   get isLoading(): boolean {
     return this.loading;
   }
 
+  get currentNumberOfAddedFiles(): number {
+    this.maxNumberOfFiles = this.getMaxNumberOfFiles();
+    return this.dokumente.length;
+  }
+
   mounted(): void {
     const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
     this.allowedMimeTypes = getAllowedMimeTypes(fileInformationDto);
+    this.maxNumberOfFiles = this.getMaxNumberOfFiles();
   }
 
   private addDokument(): void {
@@ -275,6 +299,11 @@ export default class Dokumente extends Mixins(
       type = _.isNil(mimeTypeInformation.acronym) ? "" : mimeTypeInformation.acronym;
     }
     return type;
+  }
+
+  private getMaxNumberOfFiles(): number {
+    const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
+    return _.isNil(fileInformationDto.maxNumberOfFiles) ? 0 : fileInformationDto.maxNumberOfFiles;
   }
 
 }
