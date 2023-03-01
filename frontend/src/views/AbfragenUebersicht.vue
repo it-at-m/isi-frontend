@@ -34,31 +34,12 @@
           </v-card>
         </v-hover>
       </div>
-      <!-- Falls noch keine Abfragen vorhanden sind, wird Folgendes angezeigt -->
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="fetchSuccess === true"
-          id="abfrage_uebersicht_keineAbfrageVorhanden"
-          class="text-h6"
-        >Keine Abfragen vorhanden</span>
-        <span
-          v-else-if="fetchSuccess === false"
-          id="abfrage_uebersicht_fehlerMeldung"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          id="abfrage_uebersicht_ladekreis"
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        id="abfrage_uebersicht_loading"
+        :success="fetchSuccess"
+        name="Abfragen"
+      />
     </template>
     <template #action>
       <v-spacer />

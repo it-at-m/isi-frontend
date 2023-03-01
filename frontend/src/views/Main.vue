@@ -29,31 +29,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import HealthService from "@/api/HealthService";
-import HealthState from "@/types/HealthState";
 
 @Component
-export default class App extends Vue {
-
-  base: string | undefined = import.meta.env.VITE_VUE_APP_API_URL
-  status = "DOWN"
-
-  mounted(): void {
-    HealthService.checkHealth()
-        .then((content: HealthState) => this.status = content.status)
-        .catch(error => {
-          this.$store.dispatch('snackbar/showMessage', error);
-        });
-  }
-}
+export default class App extends Vue {}
 </script>
-
-<style scoped>
-.UP {
-  color: limegreen;
-}
-
-.DOWN {
-  color: lightcoral;
-}
-</style>
