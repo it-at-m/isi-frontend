@@ -31,7 +31,7 @@
                 <v-row class="align-center">
                   <v-col
                     cols="12"
-                    md="10"
+                    md="12"
                   >
                     <v-row class="justify-start">
                       <strong>
@@ -39,46 +39,46 @@
                       </strong>
                     </v-row>
                   </v-col>
+                </v-row>
+                <v-row class="align-center">
                   <v-col
+                    class="px-3 pt-1 pb-0"
                     cols="12"
-                    md="2"
+                    md="4"
                   >
-                    <v-row class="justify-end">
+                    <v-row class="justify-start">
+                      {{ item.typDokument }}
+                    </v-row>
+                  </v-col>
+                  <v-col
+                    class="px-3 pt-1 pb-0"
+                    cols="12"
+                    md="4"
+                  >
+                    <v-row class="justify-center">
                       {{ getDokumentSizeInSIUnits(item) }}
                     </v-row>
                   </v-col>
-                </v-row>
-                <v-row align="end">
                   <v-col
                     class="px-3 pt-1 pb-0"
                     cols="12"
-                    md="6"
+                    md="4"
                   >
-                    <v-text-field
-                      ref="typDokument"
-                      v-model="item.typDokument"
-                      label="Dokumententyp"
-                      readonly
-                    />
-                  </v-col>
-                  <v-col
-                    class="px-3 pt-1 pb-0"
-                    cols="12"
-                    md="6"
-                  >
-                    <v-select
-                      v-model="item.artDokument"
-                      :items="artDokumentList"
-                      item-value="key"
-                      item-text="value"
-                      :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-                      :readonly="isDokumentNotAllowed(item)"
-                      @change="formChanged"
-                    >
-                      <template #label>
-                        Dokumentart <span class="secondary--text">*</span>
-                      </template>
-                    </v-select>
+                    <v-row class="justify-end">
+                      <v-select
+                        v-model="item.artDokument"
+                        :items="artDokumentList"
+                        item-value="key"
+                        item-text="value"
+                        :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+                        :readonly="isDokumentNotAllowed(item)"
+                        @change="formChanged"
+                      >
+                        <template #label>
+                          Dokumentart <span class="secondary--text">*</span>
+                        </template>
+                      </v-select>
+                    </v-row>
                   </v-col>
                 </v-row>
               </v-col>
