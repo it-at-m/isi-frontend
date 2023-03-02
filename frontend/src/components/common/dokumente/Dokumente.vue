@@ -3,12 +3,14 @@
     <div>
       <v-progress-circular
         v-if="isLoading"
+        id="dokumente_ladekreis"
         indeterminate
         color="grey lighten-1"
         size="50"
         width="5"
       />
       <dokumente-liste
+        id="dokumente_liste_component"
         v-model="dokumente"
         @onDeleteDokument="deleteDokument"          
       />
@@ -18,6 +20,7 @@
           md="2"
         >       
           <v-btn
+            id="dokumente_hinzufuegen_button"
             class="text-wrap"
             block
             color="secondary"
@@ -29,7 +32,7 @@
       </v-row>
     </div>
     <input
-      id="fileInputHidden"
+      id="dokumente_input"
       type="file"
       multiple
       hidden
@@ -84,7 +87,7 @@ export default class Dokumente extends Mixins(
   }
 
   private addDokument(): void {
-    const fileSelectionDialog = document.getElementById("fileInputHidden");
+    const fileSelectionDialog = document.getElementById("dokumente_input");
     if (!_.isNil(fileSelectionDialog)) {
       fileSelectionDialog.click();  
     }

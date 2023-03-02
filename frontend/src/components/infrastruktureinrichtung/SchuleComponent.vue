@@ -7,6 +7,7 @@
           md="6"
         >   
           <num-field
+            id="infrastruktureinrichtung_schule_anzahlKlassen"  
             v-model="schule.anzahlKlassen"
             class="mx-3"
             label="Anzahl der Klassen"
@@ -19,6 +20,7 @@
           md="6"
         >
           <num-field
+            id="infrastruktureinrichtung_schule_anzahlPlaetze" 
             v-model="schule.anzahlPlaetze"
             class="mx-3"
             label="Anzahl der Plätze"

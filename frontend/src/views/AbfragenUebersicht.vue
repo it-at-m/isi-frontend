@@ -5,8 +5,9 @@
         v-if="abfragenUebersicht.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in abfragenUebersicht"
+          v-for="(item, index) in abfragenUebersicht"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,25 +17,26 @@
             :elevation="hover ? 4 : 0"
             @click="routeToAbfrageInfo(item)"
           >
-            <v-card-title>
+            <v-card-title :id="'abfrage_uebersicht_item_' + index + '_nameAbfrage'">
               {{ item.nameAbfrage }}
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_statusAbfrage'"> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
               <v-spacer />
-              <span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_standVorhaben'">
                 Stand:
                 {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
               </span>
               <v-spacer />
-              <span>Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_fristStellungnahme'">Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>
       </div>
       <loading
         v-else
+        id="abfrage_uebersicht_loading"
         :success="fetchSuccess"
         name="Abfragen"
       />
@@ -44,6 +46,7 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="abfrage_uebersicht_abfrage_erstellen_button"
             slot="activator"
             v-model="options"
             dark
