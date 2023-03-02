@@ -28,14 +28,24 @@
                 cols="12"
                 md="10"
               >
-                <v-row align="center">
+                <v-row class="align-center">
                   <v-col
                     cols="12"
-                    md="12"
+                    md="10"
                   >
-                    <strong>
-                      {{ getDokumentDisplayName(item) }}
-                    </strong>
+                    <v-row class="justify-start">
+                      <strong>
+                        {{ getDokumentDisplayName(item) }}
+                      </strong>
+                    </v-row>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="2"
+                  >
+                    <v-row class="justify-end">
+                      {{ getDokumentSizeInSIUnits(item) }}
+                    </v-row>
                   </v-col>
                 </v-row>
                 <v-row align="end">
@@ -134,6 +144,18 @@ export default class DokumenteListe extends Mixins(
 
   private getDokumentDisplayName(dokument: DokumentDto): string {
     return dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
+  }
+
+  private getDokumentSizeInSIUnits(dokument: DokumentDto): string {
+    let size: string;
+    if (dokument.sizeInBytes < 1000) {
+      size = dokument.sizeInBytes + " Byte";
+    } else if (dokument.sizeInBytes < 1000000) {
+      size = _.round(dokument.sizeInBytes / 1000, 1) + " Kilobyte";
+    } else {
+      size = _.round(dokument.sizeInBytes / 1000000, 1) + " Megabyte";
+    }
+    return size;
   }
 
   get artDokumentList(): LookupEntryDto[] {

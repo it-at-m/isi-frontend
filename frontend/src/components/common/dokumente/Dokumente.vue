@@ -268,6 +268,7 @@ export default class Dokumente extends Mixins(
       await this.saveDokumentWithUrl(presignedUrlDto, file)
           .then(() => {
             const newDokument = createDokumentDto();
+            newDokument.sizeInBytes = file.size;
             newDokument.filePath.pathToFile = filepathDto.pathToFile;
             this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
                 .then(mimeTypeInformation => {
