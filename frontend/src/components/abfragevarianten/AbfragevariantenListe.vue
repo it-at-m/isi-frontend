@@ -5,23 +5,34 @@
       md="10"
     >
       <v-card class="mx-auto ma-4">
-        <v-list v-if="abfragevarianten !== undefined && abfragevarianten.length > 0">
+        <v-list
+          v-if="abfragevarianten !== undefined && abfragevarianten.length > 0"
+          id="abfragevariante_list"
+        >
           <v-list-item
-            v-for="item in abfragevarianten"
+            v-for="(item, index) in abfragevarianten"
+            :id="'abfragevariante_listitem_'+ index"
             :key="item.abfragevariantenNr"            
           >
-            <v-list-item-content @click="editAbfragevariante(item)">
+            <v-list-item-content
+              :id="'abfragevariante_listitem_'+ index + '_editieren'"
+              @click="editAbfragevariante(item)"
+            >
               <v-list-item-title v-text="displayZeile1(item)" />
               <v-list-item-subtitle v-text="displayZeile2(item)" />
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon @click="deleteAbfragevariante(item)">
+              <v-icon
+                :id="'abfragevariante_listitem_' + index + '_loeschen_icon'"
+                @click="deleteAbfragevariante(item)"
+              >
                 mdi-delete
               </v-icon>
             </v-list-item-icon>
           </v-list-item>
         </v-list>
         <yes-no-dialog
+          id="abfragevariante_yes_no_dialog_loeschen"
           v-model="deleteDialogOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"

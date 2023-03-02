@@ -7,6 +7,7 @@
           md="4"
         >
           <num-field
+            id="bauraten_jahr"
             v-model="baurate.jahr"
             label="Jahr (JJJJ)"
             year
@@ -19,6 +20,7 @@
           md="4"
         >
           <v-text-field
+            id="bauraten_anzahlWeGeplant"
             v-model="baurate.anzahlWeGeplant"
             label="Anzahl Wohneinheiten geplant"
             maxlength="255"
@@ -29,6 +31,7 @@
           md="4"
         >
           <num-field
+            id="bauraten_geschossflaecheWohnenGeplant"
             v-model="baurate.geschossflaecheWohnenGeplant"
             label="Geschossfläche Wohnen geplant"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -38,10 +41,12 @@
     </field-group-card>
     <v-row>
       <foerdermix-formular
+        id="foerdermix_formular_component"
         ref="Foerdermix"
         v-model="baurate.foerdermix"
       >
         <foerdermix-staemme-drop-down
+          id="foerdermix_stammdaten_dropdown_component"
           ref="Foerdermix Staemme Drop Down"
           v-model="baurate.foerdermix"
         />
@@ -53,6 +58,7 @@
         md="4"
       >
         <v-btn
+          id="bauraten_speichern_button"
           class="text-wrap"
           elevation="1"
           @click="saveBaurate()"

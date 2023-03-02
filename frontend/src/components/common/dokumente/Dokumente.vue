@@ -2,20 +2,22 @@
   <v-container>
     <div>
       <v-progress-circular
-        v-if="isLoading"
-        indeterminate
-        color="grey lighten-1"
-        size="50"
-        width="5"
+          v-if="isLoading"
+          id="dokumente_ladekreis"
+          indeterminate
+          color="grey lighten-1"
+          size="50"
+          width="5"
       />
       <dokumente-liste
-        v-model="dokumente"
-        @onDeleteDokument="deleteDokument"
+          v-model="dokumente"
+          id="dokumente_liste_component"
+          @onDeleteDokument="deleteDokument"
       />
       <v-row class="align-end">
         <v-col
-          cols="12"
-          md="2"
+            cols="12"
+            md="2"
         >
           <v-row class="justify-start">
             <v-chip small>
@@ -24,33 +26,34 @@
           </v-row>
         </v-col>
         <v-col
-          cols="12"
-          md="8"
+            cols="12"
+            md="8"
         />
         <v-col
-          cols="12"
-          md="2"
+            cols="12"
+            md="2"
         >
           <v-row class="justify-end">
             <v-btn
-              class="text-wrap"
-              block
-              color="secondary"
-              elevation="1"
-              @click="addDokument()"
-              v-text="'Hinzufügen'"
+                class="text-wrap"
+                id="dokumente_hinzufuegen_button"
+                block
+                color="secondary"
+                elevation="1"
+                @click="addDokument()"
+                v-text="'Hinzufügen'"
             />
           </v-row>
         </v-col>
       </v-row>
     </div>
     <input
-      id="fileInputHidden"
-      type="file"
-      multiple
-      hidden
-      :accept="allowedMimeTypes"
-      @change="onFilesSelected"
+        id="dokumente_input"
+        type="file"
+        multiple
+        hidden
+        :accept="allowedMimeTypes"
+        @change="onFilesSelected"
     >
   </v-container>
 </template>

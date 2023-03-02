@@ -4,6 +4,7 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
+            id="abfrage_name"
             v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="70"
@@ -18,6 +19,7 @@
       </v-row>
     </field-group-card>
     <adresse-component
+      id="abfrage_adresse_component"
       :adresse-prop.sync="abfrage.adresse"
       :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
@@ -29,6 +31,7 @@
           md="6"
         >
           <date-picker
+            id="abfrage_friststellungnahme"
             ref="fristStellungnahmeDatePicker"
             v-model="abfrage.fristStellungnahme"
             label="Termin der Stellungnahme"
@@ -41,6 +44,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_status_dropdown"
             v-model="abfrage.statusAbfrage"
             :items="statusAbfrageList"
             item-value="key"
@@ -59,6 +63,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_standvorhaben_dropdown"
             v-model="abfrage.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
@@ -79,6 +84,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_bauvorhaben_dropdown"
             v-model="abfrage.bauvorhaben"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
@@ -94,6 +100,7 @@
           md="6"
         >
           <v-text-field
+            id="abfrage_bebauungsplannummer"
             v-model="abfrage.bebauungsplannummer"
             label="Bebauungsplannummer"
             maxlength="255"
@@ -109,6 +116,7 @@
         </v-col>
         <v-col cols="12">
           <v-textarea
+            id="abfrage_anmerkung"
             v-model="abfrage.anmerkung"
             label="Anmerkungen"
             auto-grow
@@ -123,6 +131,7 @@
       <v-row>
         <v-col cols="12">
           <dokumente
+            id="abfrage_dokumente_component"
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
             :path-to-file="dokumentePathToFile"
