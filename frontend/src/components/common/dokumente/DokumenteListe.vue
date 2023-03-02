@@ -1,41 +1,41 @@
 <template>
   <v-container class="mx-auto my-2">
     <v-list
-        v-if="hasDokumente"
-        id="dokumente_liste"
+      v-if="hasDokumente"
+      id="dokumente_liste"
     >
       <template v-for="(item, index) in dokumente">
         <v-list-item
-            :key="`dokument-${index}`"
+          :key="`dokument-${index}`"
         >
           <v-card
-              :class="`my-2 pt-3 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
-              flat
-              width="100%"
+            :class="`my-2 pt-3 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
+            flat
+            width="100%"
           >
             <v-row align="center">
               <v-col
-                  cols="12"
-                  md="1"
+                cols="12"
+                md="1"
               >
                 <v-row justify="center">
                   <v-icon
-                      v-if="isDokumentAllowed(item)"
-                      :id="'dokumente_listitem_' + index + '_download_icon'"
-                      @click="downloadDokument(item)"
+                    v-if="isDokumentAllowed(item)"
+                    :id="'dokumente_listitem_' + index + '_download_icon'"
+                    @click="downloadDokument(item)"
                   >
                     mdi-download
                   </v-icon>
                 </v-row>
               </v-col>
               <v-col
-                  cols="12"
-                  md="10"
+                cols="12"
+                md="10"
               >
                 <v-row class="align-center">
                   <v-col
-                      cols="12"
-                      md="12"
+                    cols="12"
+                    md="12"
                   >
                     <v-row class="justify-start">
                       <strong>
@@ -46,38 +46,38 @@
                 </v-row>
                 <v-row class="align-center">
                   <v-col
-                      class="px-3 pt-1 pb-0"
-                      cols="12"
-                      md="4"
+                    class="px-3 pt-1 pb-0"
+                    cols="12"
+                    md="4"
                   >
                     <v-row class="justify-start">
                       {{ item.typDokument }}
                     </v-row>
                   </v-col>
                   <v-col
-                      class="px-3 pt-1 pb-0"
-                      cols="12"
-                      md="4"
+                    class="px-3 pt-1 pb-0"
+                    cols="12"
+                    md="4"
                   >
                     <v-row class="justify-center">
                       {{ getDokumentSizeInSIUnits(item) }}
                     </v-row>
                   </v-col>
                   <v-col
-                      class="px-3 pt-1 pb-0"
-                      cols="12"
-                      md="4"
+                    class="px-3 pt-1 pb-0"
+                    cols="12"
+                    md="4"
                   >
                     <v-row class="justify-end">
                       <v-select
-                          v-model="item.artDokument"
-                          :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
-                          :items="artDokumentList"
-                          item-value="key"
-                          item-text="value"
-                          :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-                          :readonly="isDokumentNotAllowed(item)"
-                          @change="formChanged"
+                        :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
+                        v-model="item.artDokument"
+                        :items="artDokumentList"
+                        item-value="key"
+                        item-text="value"
+                        :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+                        :readonly="isDokumentNotAllowed(item)"
+                        @change="formChanged"
                       >
                         <template #label>
                           Dokumentart <span class="secondary--text">*</span>
@@ -88,13 +88,13 @@
                 </v-row>
               </v-col>
               <v-col
-                  cols="12"
-                  md="1"
+                cols="12"
+                md="1"
               >
                 <v-row justify="center">
                   <v-icon
-                      @click="deleteDokument(item)"
-                      :id="'dokumente_listitem_' + index + '_loeschen_icon'"
+                    :id="'dokumente_listitem_' + index + '_loeschen_icon'"
+                    @click="deleteDokument(item)"
                   >
                     mdi-delete
                   </v-icon>
@@ -106,15 +106,15 @@
       </template>
     </v-list>
     <yes-no-dialog
-        v-model="deleteDialogOpen"
-        id="dokumente_yes_no_dialog_loeschen"
-        icon="mdi-delete-forever"
-        dialogtitle="Hinweis"
-        dialogtext="Hiermit wird das Dokument unwiderruflich entfernt."
-        no-text="Abbrechen"
-        yes-text="Entfernen"
-        @no="yesNoDialogNo"
-        @yes="yesNoDialogYes"
+      id="dokumente_yes_no_dialog_loeschen"
+      v-model="deleteDialogOpen"
+      icon="mdi-delete-forever"
+      dialogtitle="Hinweis"
+      dialogtext="Hiermit wird das Dokument unwiderruflich entfernt."
+      no-text="Abbrechen"
+      yes-text="Entfernen"
+      @no="yesNoDialogNo"
+      @yes="yesNoDialogYes"
     />
   </v-container>
 </template>

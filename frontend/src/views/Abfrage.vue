@@ -4,44 +4,44 @@
       <template #content>
         <div v-if="step === 1">
           <infrastrukturabfrageComponent
-              id="abfrage_infrastrukturabfrage_component"
-              v-model="abfrage"
+            id="abfrage_infrastrukturabfrage_component"
+            v-model="abfrage"
           />
         </div>
         <abfragevarianten
-            v-if="step === 2"
-            id="abfrage_abfragevarianten"
-            ref="abfragevarianten"
-            v-model="abfrage.abfragevarianten"
-            :sobon-relevant="abfrage.sobonRelevant"
+          v-if="step === 2"
+          id="abfrage_abfragevarianten"
+          ref="abfragevarianten"
+          v-model="abfrage.abfragevarianten"
+          :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauraten-component
-            v-if="step === 3"
-            id="abfrage_bauraten"
-            ref="bauratenComponent"
-            v-model="baurate"
+          v-if="step === 3"
+          id="abfrage_bauraten"
+          ref="bauratenComponent"
+          v-model="baurate"
         />
         <yes-no-dialog
-            id="abfrage_yes_no_dialog_loeschen"
-            v-model="deleteDialogOpen"
-            icon="mdi-delete-forever"
-            dialogtitle="Hinweis"
-            dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
-            no-text="Abbrechen"
-            yes-text="Löschen"
-            @no="yesNoDialogNo"
-            @yes="yesNoDialogYes"
+          id="abfrage_yes_no_dialog_loeschen"
+          v-model="deleteDialogOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogNo"
+          @yes="yesNoDialogYes"
         />
         <yes-no-dialog
-            id="abfrage_yes_no_dialog_save_leave"
-            ref="saveLeaveDialog"
-            v-model="saveLeaveDialog"
-            :dialogtitle="saveLeaveDialogTitle"
-            :dialogtext="saveLeaveDialogText"
-            :no-text="saveLeaveNoText"
-            :yes-text="saveLeaveYesText"
-            @yes="leave"
-            @no="cancel"
+          id="abfrage_yes_no_dialog_save_leave"
+          ref="saveLeaveDialog"
+          v-model="saveLeaveDialog"
+          :dialogtitle="saveLeaveDialogTitle"
+          :dialogtext="saveLeaveDialogText"
+          :no-text="saveLeaveNoText"
+          :yes-text="saveLeaveYesText"
+          @yes="leave"
+          @no="cancel"
         />
       </template>
       <template #heading>
@@ -49,117 +49,117 @@
           <v-row>
             <v-col cols="12">
               <span
-                  id="abfrage_displayName"
-                  class="text-h6 font-weight-bold"
-                  v-text="abfrage.displayName"
+                id="abfrage_displayName"
+                class="text-h6 font-weight-bold"
+                v-text="abfrage.displayName"
               />
             </v-col>
           </v-row>
         </v-container>
       </template>
       <template #navigation>
-        <v-spacer/>
+        <v-spacer />
         <v-stepper
-            v-model="step"
-            vertical
-            flat
+          v-model="step"
+          vertical
+          flat
         >
           <v-stepper-step
-              :complete="step > 1"
-              step="1"
+            :complete="step > 1"
+            step="1"
           >
             Abfrage
           </v-stepper-step>
           <v-divider
-              vertical
-              inset
+            vertical
+            inset
           />
           <v-stepper-step
-              :complete="step > 2"
-              step="2"
+            :complete="step > 2"
+            step="2"
           >
             Abfragevarianten
           </v-stepper-step>
           <v-divider
-              vertical
-              inset
+            vertical
+            inset
           />
           <v-stepper-step
-              :complete="step > 3"
-              step="3"
+            :complete="step > 3"
+            step="3"
           >
             Bauraten
           </v-stepper-step>
         </v-stepper>
-        <v-spacer/>
+        <v-spacer />
         <v-btn
-            id="abfrage_weiter_button"
-            class="text-wrap mt-2 px-1"
-            color="primary"
-            elevation="1"
-            style="width: 200px"
-            :disabled="step === 3"
-            @click="changeForward()"
-            v-text="'Weiter'"
+          id="abfrage_weiter_button"
+          class="text-wrap mt-2 px-1"
+          color="primary"
+          elevation="1"
+          style="width: 200px"
+          :disabled="step === 3"
+          @click="changeForward()"
+          v-text="'Weiter'"
         />
         <v-btn
-            id="abfrage_zurueck_button"
-            class="text-wrap mt-2 px-1"
-            color="primary"
-            elevation="1"
-            style="width: 200px"
-            :disabled="step === 1"
-            @click="changeBackwards()"
-            v-text="'Zurück'"
+          id="abfrage_zurueck_button"
+          class="text-wrap mt-2 px-1"
+          color="primary"
+          elevation="1"
+          style="width: 200px"
+          :disabled="step === 1"
+          @click="changeBackwards()"
+          v-text="'Zurück'"
         />
       </template>
       <template #information>
         <v-btn
-            v-if="!isNewAbfrage()"
-            id="abfrage_loeschen_button"
-            class="text-wrap my-4 px-1"
-            color="primary"
-            elevation="1"
-            style="width: 200px"
-            @click="deleteAbfrage()"
-            v-text="'Löschen'"
+          v-if="!isNewAbfrage()"
+          id="abfrage_loeschen_button"
+          class="text-wrap my-4 px-1"
+          color="primary"
+          elevation="1"
+          style="width: 200px"
+          @click="deleteAbfrage()"
+          v-text="'Löschen'"
         />
         <information-list
-            id="abfrage_information_list"
-            information-message-deletion-intervall-seconds="10"
+          id="abfrage_information_list"
+          information-message-deletion-intervall-seconds="10"
         />
       </template>
       <template #action>
-        <v-spacer/>
+        <v-spacer />
         <v-btn
-            v-if="!isNewAbfrage() || step !== 1"
-            id="abfrage_speichern_button"
-            class="text-wrap mt-2 px-1"
-            color="secondary"
-            elevation="1"
-            :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
-            style="width: 200px"
-            @click="saveAbfrage()"
-            v-text="buttonText"
+          v-if="!isNewAbfrage() || step !== 1"
+          id="abfrage_speichern_button"
+          class="text-wrap mt-2 px-1"
+          color="secondary"
+          elevation="1"
+          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
+          style="width: 200px"
+          @click="saveAbfrage()"
+          v-text="buttonText"
         />
         <v-btn
-            v-if="!isNewAbfrage()"
-            id="abfrage_freigeben_button"
-            class="text-wrap mt-2 px-1"
-            color="secondary"
-            elevation="1"
-            style="width: 200px"
-            @click="abfrageFreigeben()"
-            v-text="'Freigeben'"
+          v-if="!isNewAbfrage()"
+          id="abfrage_freigeben_button"
+          class="text-wrap mt-2 px-1"
+          color="secondary"
+          elevation="1"
+          style="width: 200px"
+          @click="abfrageFreigeben()"
+          v-text="'Freigeben'"
         />
         <v-btn
-            id="abfrage_abbrechen_button"
-            color="primary"
-            elevation="1"
-            class="text-wrap mt-2 px-1"
-            style="width: 200px"
-            @click="returnToUebersicht()"
-            v-text="'Abbrechen'"
+          id="abfrage_abbrechen_button"
+          color="primary"
+          elevation="1"
+          class="text-wrap mt-2 px-1"
+          style="width: 200px"
+          @click="returnToUebersicht()"
+          v-text="'Abbrechen'"
         />
       </template>
     </DefaultLayout>
