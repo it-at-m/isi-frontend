@@ -5,7 +5,7 @@
         <v-row justify="center">
           <v-col cols="12">
             <v-autocomplete
-              id="adressSuche"
+              id="adresse_adressSuche_dropdown"
               v-model="selectedAdresse"
               :items="searchResult"
               :loading="isLoading"
@@ -32,6 +32,7 @@
         <v-row justify="center">
           <v-col cols="12">
             <v-text-field
+              id="adresse_allgemeineOrtsangabe"
               ref="allgemeineOrtsangabeField"
               v-model="allgemeineOrtsangabe"
               label="Allgemeine Ortsangabe"
@@ -47,6 +48,7 @@
             md="6"
           >
             <v-text-field
+              id="adresse_strasse"
               ref="strasseField"
               v-model="adresse.strasse"
               label="Strasse"
@@ -58,6 +60,7 @@
             md="6"
           >
             <v-text-field
+              id="adresse_hausnummer"
               v-model="adresse.hausnummer"
               :rules="[fieldValidationRules.hausnummer]"
               label="Hausnummer"
@@ -69,6 +72,7 @@
             md="6"
           >
             <v-text-field
+              id="adresse_postleitzahl"
               v-model="adresse.plz"
               label="Postleitzahl"
               :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
@@ -80,6 +84,7 @@
             md="6"
           >
             <v-text-field
+              id="adresse_ort"
               v-model="adresse.ort"
               label="Ort"
               @input="formChanged"

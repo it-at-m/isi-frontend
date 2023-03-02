@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-select
+      id="foerdermix_stammdaten_dropdown"
       v-model="selectedItem"
       :items="groupedStammdaten"
       label="Fördermix"

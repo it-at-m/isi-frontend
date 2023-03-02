@@ -1,6 +1,7 @@
 <template>
   <div>
     <infrastruktureinrichtung-component
+      id="infrastruktureinrichtung_kindergarten_component" 
       ref="infrastruktureinrichtungComponent"
       v-model="kindergarten.infrastruktureinrichtung"
       :mode="displayMode"
@@ -12,6 +13,7 @@
           md="6"
         >
           <num-field
+            id="infrastruktureinrichtung_kindergarten_anzahlKindergartenPlaetze" 
             v-model="kindergarten.anzahlKindergartenPlaetze"
             class="mx-3"
             label="Anzahl der Kindergartenplätze"
@@ -24,6 +26,7 @@
           md="6"
         >          
           <num-field
+            id="infrastruktureinrichtung_kindergarten_anzahlKindergartenGruppen" 
             v-model="kindergarten.anzahlKindergartenGruppen"
             class="mx-3"
             label="Anzahl der Kindergartengruppen"
@@ -38,6 +41,7 @@
           md="6"
         >
           <num-field
+            id="infrastruktureinrichtung_kindergarten_wohnungsnaheKindergartenPlaetze" 
             v-model="kindergarten.wohnungsnaheKindergartenPlaetze"
             class="mx-3"
             label="Anzahl der wohnungsnahen Kindergartenplätze"

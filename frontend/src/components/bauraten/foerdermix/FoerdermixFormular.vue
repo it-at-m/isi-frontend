@@ -14,6 +14,7 @@
           md="4"
         >
           <v-text-field
+            id="foerdermix_gesamtsumme"
             v-model="gesamtsumme"
             label="Summe"
             filled
@@ -29,6 +30,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilFreifinanzierterGeschosswohnungsbau"
             v-model="foerdermix.anteilFreifinanzierterGeschosswohnungsbau"
             label="Freifinanzierter Geschosswohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -39,6 +41,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilGefoerderterMietwohnungsbau"
             v-model="foerdermix.anteilGefoerderterMietwohnungsbau"
             label="Geförderter Mietwohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -49,6 +52,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilMuenchenModell"
             v-model="foerdermix.anteilMuenchenModell"
             label="MünchenModell"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -61,6 +65,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilPreisgedaempfterMietwohnungsbau"
             v-model="foerdermix.anteilPreisgedaempfterMietwohnungsbau"
             label="Preisgedämpfter Mietwohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -71,6 +76,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilKonzeptionellerMietwohnungsbau"
             v-model="foerdermix.anteilKonzeptionellerMietwohnungsbau"
             label="Konzeptioneller Mietwohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -81,6 +87,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilBaugemeinschaften"
             v-model="foerdermix.anteilBaugemeinschaften"
             label="Baugemeinschaften"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -93,6 +100,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilEinUndZweifamilienhaeuser"
             v-model="foerdermix.anteilEinUndZweifamilienhaeuser"
             label="Ein- und Zweifamilienhäuser"
             :suffix="fieldPrefixesSuffixes.percent"

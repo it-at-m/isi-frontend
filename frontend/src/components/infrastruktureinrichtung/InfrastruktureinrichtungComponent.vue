@@ -4,6 +4,7 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
+            id="infrastruktureinrichtung_nameEinrichtung"
             v-model="infrastruktureinrichtung.nameEinrichtung"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
@@ -18,6 +19,7 @@
       </v-row>
     </field-group-card>
     <adresse-component
+      id="infrastruktureinrichtung_adresse_component"
       :adresse-prop.sync="infrastruktureinrichtung.adresse"
       :allgemeine-ortsangabe-prop.sync="infrastruktureinrichtung.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
@@ -28,7 +30,8 @@
           cols="12"
           md="6"
         >          
-          <num-field            
+          <num-field
+            id="infrastruktureinrichtung_fertigstellungsjahr"             
             v-model="infrastruktureinrichtung.fertigstellungsjahr"
             label="Fertigstellungsjahr (JJJJ)"
             class="mx-3"
@@ -42,6 +45,7 @@
           md="6"
         >
           <v-select
+            id="infrastruktureinrichtung_status_dropdown"  
             v-model="infrastruktureinrichtung.status"
             :items="statusInfrastruktureinrichtungList"
             item-value="key"
@@ -59,6 +63,7 @@
           md="6"
         >
           <v-select
+            id="infrastruktureinrichtung_einrichtungstraeger_dropdown"  
             v-model="infrastruktureinrichtung.einrichtungstraeger"
             :items="einrichtungstraegerList"
             item-value="key"
@@ -76,6 +81,7 @@
           md="6"
         >
           <v-select
+            id="infrastruktureinrichtung_bauvorhaben_dropdown"  
             v-model="infrastruktureinrichtung.bauvorhaben"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
@@ -95,6 +101,7 @@
           md="6"
         >          
           <num-field
+            id="infrastruktureinrichtung_flaecheGesamtgrundstueck"  
             v-model="infrastruktureinrichtung.flaecheGesamtgrundstueck"
             class="mx-3"
             label="Fläche Gesamtgrundstück"
@@ -106,6 +113,7 @@
           md="6"
         >
           <num-field
+            id="infrastruktureinrichtung_flaecheTeilgrundstueck"  
             v-model="infrastruktureinrichtung.flaecheTeilgrundstueck"
             class="mx-3"
             label="Fläche Teilgrundstück"

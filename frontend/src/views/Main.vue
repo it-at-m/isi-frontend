@@ -16,6 +16,12 @@
         <h1 class="text-h3 font-weight-bold mb-3">
           Willkommen beim Informationssystem für soziale Infrastruktur
         </h1>
+        <p>
+          Das API-Gateway ist: <span
+            id="app_status"
+            :class="status"
+          >{{ status }}</span>
+        </p>
       </v-col>
     </v-row>
   </v-container>

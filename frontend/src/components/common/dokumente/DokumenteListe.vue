@@ -1,14 +1,21 @@
 <template>  
   <v-card class="mx-auto ma-4">
-    <v-list v-if="hasDokumente">
+    <v-list
+      v-if="hasDokumente"
+      id="dokumente_liste"
+    >
       <v-list-item
-        v-for="item in dokumente"
+        v-for="(item, index) in dokumente"
+        :id="'dokumente_listitem_' + index"
         :key="item.filePath.pathToFile"
       >
         <v-container>
           <v-row>
             <v-col>
-              <v-icon @click="downloadDokument(item)">
+              <v-icon
+                :id="'dokumente_listitem_' + index + '_download_icon'"
+                @click="downloadDokument(item)"
+              >
                 mdi-download
               </v-icon>
             </v-col>
@@ -24,6 +31,7 @@
               style="padding: 0"
             >
               <v-select
+                :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
                 v-model="item.artDokument"
                 style="margin: 0px;"
                 :items="artDokumentList"
@@ -38,7 +46,10 @@
               </v-select>
             </v-col>
             <v-col>
-              <v-icon @click="deleteDokument(item)">
+              <v-icon
+                :id="'dokumente_listitem_' + index + '_loeschen_icon'"
+                @click="deleteDokument(item)"
+              >
                 mdi-delete
               </v-icon>
             </v-col>
@@ -47,6 +58,7 @@
       </v-list-item>
     </v-list>
     <yes-no-dialog
+      id="dokumente_yes_no_dialog_loeschen"
       v-model="deleteDialogOpen"
       icon="mdi-delete-forever"
       dialogtitle="Hinweis"
