@@ -40,6 +40,7 @@
               block
               color="secondary"
               elevation="1"
+              :disabled="currentNumberOfAddedFiles >= maxNumberOfFiles"
               @click="addDokument()"
               v-text="'Hinzufügen'"
             />
