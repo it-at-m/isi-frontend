@@ -121,7 +121,7 @@ export default class Dokumente extends Mixins(
   }
 
   private addDokument(): void {
-    const fileSelectionDialog = document.getElementById("fileInputHidden");
+    const fileSelectionDialog = document.getElementById("dokumente_input");
     if (!_.isNil(fileSelectionDialog)) {
       fileSelectionDialog.click();
     }
