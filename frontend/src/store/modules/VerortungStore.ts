@@ -14,13 +14,13 @@ export type VerortungState = typeof state;
 export type MultiPolygon = [number, number][][][];
 
 export interface Verortung {
+  fluerstuck: Flurstueck[];
   gemarkung: Gemarkung[];
   stadtbezirk: Stadtbezirk[];
 }
 export interface Gemarkung {
   nummer: number;
   name: string;
-  fluerstuck: Flurstueck[];
 }
 export interface Flurstueck {
   flurstueckNr: number;
@@ -73,38 +73,15 @@ export default {
   actions: {
     addFlurstueck(context: ActionContext<VerortungState, RootState>, flurstueck: FlurstueckFeatureDto): void {
       context.commit("addFlurstueck", flurstueck);
-      // context.dispatch("updateVereinigung");
     },
     removeFlurstueck(context: ActionContext<VerortungState, RootState>, flurstueckId: number): void {
       context.commit("removeFlurstueck", flurstueckId);
-      // context.dispatch("updateVereinigung");
     },
     setCoordinates(context: ActionContext<VerortungState, RootState>, coordinates: CoordinatesDto[]): void {
       context.commit("setCoordinates", coordinates);
-      // context.dispatch("updateVereinigung");
     },
-    /*
-    updateVereinigung(context: ActionContext<VerortungState, RootState>): void {
-      const flurstuecke = context.getters["flurstuecke"] as VerortungState["flurstuecke"];
-      const vereinigung: Vereinigung = {
-        flaeche: 0,
-        coordinates: [],
-      };
-      
-      for (const flurstueck of flurstuecke.values()) {
-        const flaeche = flurstueck.properties?.flaecheQm;
-        if (flaeche) {
-          vereinigung.flaeche + flaeche;
-        }
-
-        const coordinates = flurstueck.geometry?.coordinates as MultiPolygon;
-        if (coordinates) {
-          vereinigung.coordinates.push(...coordinates);
-        }
-      }
-
-      context.commit("setVereinigung", vereinigung);
-    }
-    */
-  }
+    setVerortung(context: ActionContext<VerortungState, RootState>, verortung: Verortung): void {
+      context.commit("setVerortung", verortung);
+    },
+  },
 };

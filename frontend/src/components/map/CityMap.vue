@@ -54,6 +54,7 @@ import { CoordinateDto, CoordinatesDto, FlurstueckFeatureDto } from '@/api/api-c
 import { VerortungState, MultiPolygon } from '@/store/modules/VerortungStore';
 import L, { LatLngLiteral } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import _ from 'lodash';
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -89,7 +90,7 @@ export default class CityMap extends Mixins(
   mounted(): void {
     // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
     this.map = (this.$refs.map as LMap).mapObject;
-    this.redraw();
+    this.updatePolygon();
   }
 
   /**
@@ -118,7 +119,7 @@ export default class CityMap extends Mixins(
     const coordinate: CoordinateDto = { lat: latlng.lat, lon: latlng.lng };
     const fetchedFlurstuecke = await this.getFlurstuecke(coordinate, false);
     const flurstuecke: FlurstueckFeatureDto[] = [];
-    const flurstueckMap = this.$store.getters["verortung/flurstuecke"] as VerortungState["flurstuecke"];
+    const flurstueckMap: VerortungState["flurstuecke"] = this.$store.getters["verortung/flurstuecke"];
     
     for (const flurstueck of fetchedFlurstuecke) {
       const id = flurstueck.properties?.flurstueckId;
@@ -149,8 +150,10 @@ export default class CityMap extends Mixins(
 
       this.$store.dispatch("verortung/setCoordinates", coordinatesArray);
       
-      this.redraw();
+      this.updatePolygon();
       this.map.closePopup(this.popup);
+
+      this.updateVerortung();
     } else {
       this.popup.setContent("Keine Flurstücke an dieser Koordinate");
     }
@@ -158,8 +161,8 @@ export default class CityMap extends Mixins(
     this.loading = false;
   }
 
-  private redraw(): void {
-    const coordinates = this.$store.getters["verortung/coordinates"] as VerortungState["coordinates"];
+  private updatePolygon(): void {
+    const coordinates: VerortungState["coordinates"] = this.$store.getters["verortung/coordinates"];
     const leafletCoordinates = this.coordinatesArrayToLeafletFormat(coordinates);
     
     if (this.flurstueckPolygon) {
@@ -172,6 +175,47 @@ export default class CityMap extends Mixins(
         fillOpacity: 0.5
       }).addTo(this.map);
     }
+  }
+
+  private async updateVerortung(): Promise<void> {
+    const verortung: VerortungState["verortung"] = { fluerstuck: [], gemarkung: [], stadtbezirk: [] };
+    const flurstuecke: VerortungState["flurstuecke"] = this.$store.getters["verortung/flurstuecke"];
+    const coordinates: VerortungState["coordinates"] = this.$store.getters["verortung/coordinates"];
+    
+    for (const flurstueck of flurstuecke.values()) {
+      const data = flurstueck.properties;
+      if (data) {
+        verortung.fluerstuck.push({
+          flurstueckNr: _.defaultTo(data.flurstueckId, -1),
+          zaehler: _.defaultTo(data.fluerstueckNummerZ, -1),
+          nennner: _.defaultTo(data.fluerstueckNummer, -1),
+          flaeche: _.defaultTo(data.flaecheQm, -1),
+          staedtischesEigentum: !_.isNil(data.eigentumsart),
+        });
+      }
+    }
+
+    for (const coordinate of coordinates) {
+      const gemarkungen = await this.getGemarkungen(coordinate, false);
+      for (const gemarkung of gemarkungen) {
+        const nummer = gemarkung.properties?.gemarkung;
+        const name = gemarkung.properties?.gemarkungName;
+        if (nummer && name) {
+          verortung.gemarkung.push({ nummer, name });
+        }
+      }
+
+      const stadtbezirke = await this.getStadtbezirke(coordinate, false);
+      for (const stadtbezirk of stadtbezirke) {
+        const nummer = stadtbezirk.properties?.stadtbezirkNummer;
+        const name = stadtbezirk.properties?.name;
+        if (nummer && name) {
+          verortung.stadtbezirk.push({ nummer: parseInt(nummer), name });
+        }
+      }
+    }
+
+    this.$store.dispatch("verortung/setVerortung", verortung);
   }
 
   private multiPolygonArrayToCoordinatesArray(multiPolygonArray: MultiPolygon[]): CoordinatesDto[] {
