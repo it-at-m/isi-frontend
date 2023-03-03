@@ -7,7 +7,6 @@ import {
   UncertainBoolean,
   BauvorhabenDtoPlanungsrechtEnum,
   BauvorhabenDtoStandVorhabenEnum,
-  BauvorhabenDtoZustaendigkeitEnum,
   AbfragevarianteDtoPlanungsrechtEnum,
 } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
@@ -185,10 +184,6 @@ export default class ValidatorMixin extends Vue {
 
     if (bauvorhaben.planungsrecht === BauvorhabenDtoPlanungsrechtEnum.Unspecified) {
       return "Bitte Planungsrecht angeben";
-    }
-
-    if (bauvorhaben.zustaendigkeit === BauvorhabenDtoZustaendigkeitEnum.Unspecified) {
-      return "Bitte Zuständigkeit angeben";
     }
 
     return null;

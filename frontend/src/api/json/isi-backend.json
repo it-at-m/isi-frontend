@@ -139,6 +139,16 @@
           "required": true
         },
         "responses": {
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
@@ -155,16 +165,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/FoerdermixStammDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
@@ -239,8 +239,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> Mittelschule konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Mittelschule mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -269,8 +269,8 @@
               }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Mittelschule mit der ID.",
+          "400": {
+            "description": "BAD_REQUEST -> Mittelschule konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
             "content": {
               "*/*": {
                 "schema": {
@@ -349,6 +349,16 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "BAD_REQUEST -> Kinderkrippe konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Kinderkrippe mit der ID.",
             "content": {
@@ -378,16 +388,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Kinderkrippe konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
           }
         }
       },
@@ -408,6 +408,16 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "BAD_REQUEST -> Kinderkrippe konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
@@ -424,16 +434,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/KinderkrippeDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Kinderkrippe konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
@@ -459,16 +459,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keinen Kindergarten mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "400": {
             "description": "BAD_REQUEST -> Kindergarten konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
             "content": {
@@ -481,6 +471,16 @@
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keinen Kindergarten mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -518,22 +518,22 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> Kindergarten konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "201": {
             "description": "CREATED -> Kindergarten wurde erfolgreich erstellt.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/KindergartenDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Kindergarten konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
@@ -569,8 +569,8 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
             "content": {
               "*/*": {
                 "schema": {
@@ -579,18 +579,18 @@
               }
             }
           },
-          "200": {
-            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/InfrastrukturabfrageDto"
+                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "*/*": {
                 "schema": {
@@ -609,12 +609,12 @@
               }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "200": {
+            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
+                  "$ref": "#/components/schemas/InfrastrukturabfrageDto"
                 }
               }
             }
@@ -703,8 +703,8 @@
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich freigegeben."
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht freigegeben werden.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -723,8 +723,8 @@
               }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht freigegeben werden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -864,6 +864,16 @@
           "required": true
         },
         "responses": {
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Nachmittagsbetreuung für Grundschulkinder mit der ID.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "200": {
             "description": "OK -> Nachmittagsbetreuung für Grundschulkinder wurde erfolgreich aktualisiert.",
             "content": {
@@ -893,16 +903,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Nachmittagsbetreuung für Grundschulkinder mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
           }
         }
       },
@@ -923,12 +923,12 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "CREATED -> Nachmittagsbetreuung für Grundschulkinder wurde erfolgreich erstellt.",
+          "400": {
+            "description": "BAD_REQUEST -> Nachmittagsbetreuung für Grundschulkinder konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/GsNachmittagBetreuungDto"
+                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
@@ -943,12 +943,12 @@
               }
             }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Nachmittagsbetreuung für Grundschulkinder konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "201": {
+            "description": "CREATED -> Nachmittagsbetreuung für Grundschulkinder wurde erfolgreich erstellt.",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
+                  "$ref": "#/components/schemas/GsNachmittagBetreuungDto"
                 }
               }
             }
@@ -1033,8 +1033,8 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> Grundschule konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1043,8 +1043,8 @@
               }
             }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Grundschule konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1107,16 +1107,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert.",
             "content": {
@@ -1129,6 +1119,16 @@
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1186,8 +1186,8 @@
               }
             }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1196,8 +1196,8 @@
               }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1237,8 +1237,8 @@
               }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Baurate mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1247,8 +1247,8 @@
               }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Baurate mit der ID.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1276,8 +1276,8 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> Baurate konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1286,8 +1286,8 @@
               }
             }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Baurate konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1327,22 +1327,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK -> Transformation der Koordinate von WGS84 zu UTM32 war erfolgreich.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/UtmDto"
-                }
-              }
-            }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Transformation der Koordinate ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK -> Transformation der Koordinate von WGS84 zu UTM32 war erfolgreich.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UtmDto"
                 }
               }
             }
@@ -1428,9 +1428,6 @@
               }
             }
           },
-          "200": {
-            "description": "OK -> Import konnte erfolgreich durchgeführt werden."
-          },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": {
@@ -1440,6 +1437,9 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "OK -> Import konnte erfolgreich durchgeführt werden."
           }
         }
       }
@@ -1481,9 +1481,6 @@
               }
             }
           },
-          "200": {
-            "description": "OK -> Import konnte erfolgreich durchgeführt werden."
-          },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": {
@@ -1493,6 +1490,9 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "OK -> Import konnte erfolgreich durchgeführt werden."
           }
         }
       }
@@ -1538,8 +1538,8 @@
               }
             }
           },
-          "400": {
-            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
+          "404": {
+            "description": "NOT FOUND -> Die Datei ist im S3-Storage nicht verfügbar.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1548,8 +1548,8 @@
               }
             }
           },
-          "404": {
-            "description": "NOT FOUND -> Die Datei ist im S3-Storage nicht verfügbar.",
+          "400": {
+            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1578,16 +1578,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
@@ -1600,6 +1590,16 @@
           },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1638,16 +1638,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
@@ -1660,6 +1650,16 @@
           },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1836,9 +1836,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "NO CONTENT"
-          },
           "404": {
             "description": "NOT FOUND -> FoerdermixStamm mit dieser ID nicht vorhanden.",
             "content": {
@@ -1848,6 +1845,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "NO CONTENT"
           }
         }
       }
@@ -1957,9 +1957,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "NO CONTENT"
-          },
           "409": {
             "description": "CONFLICT -> Die Mittelschule referenziert ein Bauvorhaben.",
             "content": {
@@ -1979,6 +1976,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "NO CONTENT"
           }
         }
       }
@@ -2088,9 +2088,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "NO CONTENT"
-          },
           "409": {
             "description": "CONFLICT -> Die Kinderkrippe referenziert ein Bauvorhaben.",
             "content": {
@@ -2110,6 +2107,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "NO CONTENT"
           }
         }
       }
@@ -2173,8 +2173,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Kindergarten mit dieser ID nicht vorhanden.",
+          "409": {
+            "description": "CONFLICT -> Die Kindergarten referenziert ein Bauvorhaben.",
             "content": {
               "*/*": {
                 "schema": {
@@ -2186,8 +2186,8 @@
           "204": {
             "description": "NO CONTENT"
           },
-          "409": {
-            "description": "CONFLICT -> Die Kindergarten referenziert ein Bauvorhaben.",
+          "404": {
+            "description": "NOT FOUND -> Kindergarten mit dieser ID nicht vorhanden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -2329,8 +2329,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "NO CONTENT"
+          "409": {
+            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
           },
           "404": {
             "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
@@ -2342,15 +2349,8 @@
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
+          "204": {
+            "description": "NO CONTENT"
           }
         }
       }
@@ -2374,22 +2374,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/HausFuerKinderDto"
-                }
-              }
-            }
-          },
           "404": {
             "description": "NOT FOUND -> Haus für Kinder mit dieser ID nicht vorhanden.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HausFuerKinderDto"
                 }
               }
             }
@@ -2414,8 +2414,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "NO CONTENT"
+          "404": {
+            "description": "NOT FOUND -> Haus für Kinder mit dieser ID nicht vorhanden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
           },
           "409": {
             "description": "CONFLICT -> Das Haus für Kinder referenziert ein Bauvorhaben.",
@@ -2427,15 +2434,8 @@
               }
             }
           },
-          "404": {
-            "description": "NOT FOUND -> Haus für Kinder mit dieser ID nicht vorhanden.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
+          "204": {
+            "description": "NO CONTENT"
           }
         }
       }
@@ -2509,22 +2509,22 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Nachmittagsbetreuung für Grundschulkinder mit dieser ID nicht vorhanden.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/GsNachmittagBetreuungDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND -> Nachmittagsbetreuung für Grundschulkinder mit dieser ID nicht vorhanden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
@@ -2549,6 +2549,9 @@
           }
         ],
         "responses": {
+          "204": {
+            "description": "NO CONTENT"
+          },
           "404": {
             "description": "NOT FOUND -> Nachmittagsbetreuung für Grundschulkinder mit dieser ID nicht vorhanden.",
             "content": {
@@ -2568,9 +2571,6 @@
                 }
               }
             }
-          },
-          "204": {
-            "description": "NO CONTENT"
           }
         }
       }
@@ -2659,16 +2659,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Grundschule mit dieser ID nicht vorhanden.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Die Grundschule referenziert ein Bauvorhaben.",
             "content": {
@@ -2681,6 +2671,16 @@
           },
           "204": {
             "description": "NO CONTENT"
+          },
+          "404": {
+            "description": "NOT FOUND -> Grundschule mit dieser ID nicht vorhanden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
           }
         }
       }
@@ -2787,15 +2787,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
+          "204": {
+            "description": "NO CONTENT"
           },
           "409": {
             "description": "CONFLICT -> Das Bauvorhaben wird durch Abfragen referenziert.",
@@ -2807,8 +2800,15 @@
               }
             }
           },
-          "204": {
-            "description": "NO CONTENT"
+          "404": {
+            "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
           }
         }
       }
@@ -2896,9 +2896,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "NO CONTENT"
-          },
           "404": {
             "description": "NOT FOUND -> Baurate mit dieser ID nicht vorhanden.",
             "content": {
@@ -2908,6 +2905,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "NO CONTENT"
           }
         }
       }
@@ -3880,8 +3880,7 @@
           "nameVorhaben",
           "planungsrecht",
           "sobonRelevant",
-          "standVorhaben",
-          "zustaendigkeit"
+          "standVorhaben"
         ],
         "type": "object",
         "properties": {
@@ -3981,20 +3980,6 @@
               "SONSTIGES_UMSTRUKTURIERUNG",
               "SONSTIGES_PARAG_165",
               "SONSTIGES_PARAG_246"
-            ]
-          },
-          "zustaendigkeit": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "PLAN_HA_2",
-              "KR",
-              "PLAN_HA_3",
-              "PLAN_HA_4",
-              "PLAN_HA_1_11_2",
-              "PLAN_HA_1_4",
-              "RBS_SB",
-              "RBS_ZIM_N"
             ]
           },
           "artFnp": {
@@ -4171,9 +4156,6 @@
             "$ref": "#/components/schemas/LookupListDto"
           },
           "baugebietTyp": {
-            "$ref": "#/components/schemas/LookupListDto"
-          },
-          "zustaendigeDienststelle": {
             "$ref": "#/components/schemas/LookupListDto"
           },
           "statusInfrastruktureinrichtung": {

@@ -79,12 +79,6 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    zustaendigeDienststelle?: LookupListDto;
-    /**
-     * 
-     * @type {LookupListDto}
-     * @memberof LookupListsDto
-     */
     statusInfrastruktureinrichtung?: LookupListDto;
     /**
      * 
@@ -124,7 +118,6 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
         'planungsrecht': !exists(json, 'planungsrecht') ? undefined : LookupListDtoFromJSON(json['planungsrecht']),
         'baugebietTyp': !exists(json, 'baugebietTyp') ? undefined : LookupListDtoFromJSON(json['baugebietTyp']),
-        'zustaendigeDienststelle': !exists(json, 'zustaendigeDienststelle') ? undefined : LookupListDtoFromJSON(json['zustaendigeDienststelle']),
         'statusInfrastruktureinrichtung': !exists(json, 'statusInfrastruktureinrichtung') ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
         'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
@@ -149,7 +142,6 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'statusAbfrage': LookupListDtoToJSON(value.statusAbfrage),
         'planungsrecht': LookupListDtoToJSON(value.planungsrecht),
         'baugebietTyp': LookupListDtoToJSON(value.baugebietTyp),
-        'zustaendigeDienststelle': LookupListDtoToJSON(value.zustaendigeDienststelle),
         'statusInfrastruktureinrichtung': LookupListDtoToJSON(value.statusInfrastruktureinrichtung),
         'einrichtungstraeger': LookupListDtoToJSON(value.einrichtungstraeger),
         'infrastruktureinrichtungTyp': LookupListDtoToJSON(value.infrastruktureinrichtungTyp),

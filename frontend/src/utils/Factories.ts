@@ -12,7 +12,6 @@ import {
   BauvorhabenDto,
   BauvorhabenDtoStandVorhabenEnum,
   BauvorhabenDtoPlanungsrechtEnum,
-  BauvorhabenDtoZustaendigkeitEnum,
   FileInformationDto,
   FilepathDto,
   PresignedUrlDto,
@@ -131,7 +130,6 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     anmerkung: "",
     sobonRelevant: UncertainBoolean.Unspecified,
     planungsrecht: BauvorhabenDtoPlanungsrechtEnum.Unspecified,
-    zustaendigkeit: BauvorhabenDtoZustaendigkeitEnum.Unspecified,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
   };
