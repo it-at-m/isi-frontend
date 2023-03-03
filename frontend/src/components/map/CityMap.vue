@@ -4,6 +4,7 @@
     :width="width"
   >
     <l-map
+      id="karte"
       ref="map"
       :options="MAP_OPTIONS"
       :center="MUNICH_CENTER"
@@ -15,6 +16,7 @@
       <l-control-layers />
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
       <l-wms-tile-layer
+        id="karte_hintergrund"
         name="Hintergrund"
         :base-url="OSM_BASE_URL"
         layers="OSM-WMS"
@@ -25,6 +27,7 @@
       <!-- Die Overlay-Layer der Karte. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen. -->
       <!-- Damit ein Overlay-Layer nicht die darunerliegenden Layer verdeckt, ist es wichtig, :transparent="true" zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt. -->
       <l-wms-tile-layer
+        id="karte_gemarkungen"
         name="Gemarkungen"
         :base-url="getGiwUrl('WMS_Stadtgrundkarte')"
         layers="Gemarkungen"
@@ -34,6 +37,7 @@
         :transparent="true"
       />
       <l-wms-tile-layer
+        id="karte_flurstuecke"
         name="Flurstücke"
         :base-url="getGiwUrl('WMS_Stadtgrundkarte')"
         layers="Flurstücke"

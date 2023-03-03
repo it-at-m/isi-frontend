@@ -8,6 +8,7 @@
     <template #activator="{on}">
       <template v-if="buttontext">
         <v-btn
+          id="yes_no_dialog_buttontext"
           class="text-wrap"
           color="primary"
           v-on="on"
@@ -38,14 +39,14 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          id="yesnodialog-btn-no"
+          id="yes_no_dialog-btn-no"
           class="text-wrap"
           text
           @click="no"
           v-text="noText"
         />
         <v-btn
-          id="yesnodialog-btn-yes"
+          id="yes_no_dialog-btn-yes"
           class="text-wrap"
           color="primary"
           @click="yes"
