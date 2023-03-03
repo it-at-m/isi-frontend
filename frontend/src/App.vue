@@ -15,7 +15,8 @@
         >
           <router-link to="/">
             <v-img
-              src="src/assets/isi-logo.svg"
+              id="app_logo"
+              :src="logo"
               max-width="32"
               max-height="32"
               class="mr-1"
@@ -32,7 +33,7 @@
           class="d-flex align-center justify-center"
         >
           <v-text-field
-            id="suchfeld"
+            id="app_suchfeld"
             v-model="query"
             dense
             flat
@@ -52,6 +53,31 @@
           class="d-flex align-center justify-end"
         >
           <v-menu
+            offset-y
+            transition="slide-y-transition"
+          >
+            <template #activator="{ on }">
+              <v-btn
+                small
+                text
+                fab
+              >
+                <v-icon
+                  class="white--text"
+                  v-on="on"
+                >
+                  mdi-help-circle
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list class="text-center">
+              <v-list-item @click="showVersionInfo = true">
+                <v-list-item-title>Versionsinformationen</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <v-menu
+            id="app_nutzerinformationen_menu"
             v-model="menu"
             :close-on-content-click="false"
             :nudge-width="200"
@@ -59,6 +85,7 @@
           >
             <template #activator="{ on, attrs }">
               <v-icon
+                id="app_nutzerinformationen_icon"
                 class="white--text"
                 v-bind="attrs"
                 v-on="on"
@@ -68,15 +95,21 @@
             </template>
 
             <v-card class="userinfo-card">
-              <span>
+              <span id="app_nutzerinformationen_vorname_nachname">
                 {{ userinfo.givenname + " " + userinfo.surname }}
               </span>
               <v-divider />
-              <span class="userinfo-subtitles">
+              <span
+                id="app_nutzerinformationen_abteilung"
+                class="userinfo-subtitles"
+              >
                 <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
               </span>
               <br>
-              <span class="userinfo-subtitles">
+              <span
+                id="app_nutzerinformationen_user_rollen"
+                class="userinfo-subtitles"
+              >
                 <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
               </span>
             </v-card>
@@ -89,6 +122,7 @@
           style="width: 100%"
         >
           <v-btn
+            id="app_karte_button"
             depressed
             tile
             text
@@ -101,6 +135,7 @@
             v-text="'Karte'"
           />
           <v-btn
+            id="app_abfrage_button"
             depressed
             tile
             text
@@ -113,6 +148,7 @@
             v-text="'Abfragen'"
           />
           <v-btn
+            id="app_bauvorhaben_button"
             depressed
             tile
             text
@@ -125,6 +161,7 @@
             v-text="'Bauvorhaben'"
           />
           <v-btn
+            id="app_infrastruktureinrichtung_button"
             depressed
             tile
             text
@@ -139,6 +176,7 @@
         </div>
       </template>
     </v-app-bar>
+    <version-info v-model="showVersionInfo" />
     <v-main>
       <v-fade-transition mode="out-in">
         <router-view />
@@ -151,16 +189,21 @@
 import Component from "vue-class-component";
 import { Mixins, Watch } from "vue-property-decorator";
 import TheSnackbar from "@/components/TheSnackbar.vue";
+import VersionInfo from "@/components/common/VersionInfo.vue";
 import { RouteTag } from "./router";
 import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
 
 @Component({
-  components: { TheSnackbar },
+  components: { TheSnackbar, VersionInfo },
 })
 export default class App extends Mixins(UserInfoApiRequestMixin) {
   public query = "";
+
+  private logo: string = new URL("./assets/isi-logo.svg", import.meta.url).href;
+
+  public showVersionInfo = false;
 
   private userinfo = new Userinfo();
 
@@ -234,7 +277,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 }
 
 .userinfo-card {
-  padding: 10px; 
+  padding: 10px;
   overflow: hidden;
 }
 </style>
