@@ -3,15 +3,15 @@
     <field-group-card>
       <v-row>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <v-text-field
-              v-model="bauvorhaben.eigentuemer"
-              :rules="[fieldValidationRules.pflichtfeld]"
-              maxlength="255"
-              validate-on-blur
-              @input="formChanged"
+            v-model="bauvorhaben.eigentuemer"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
+            validate-on-blur
+            @input="formChanged"
           >
             <template #label>
               Eigentümer <span class="secondary--text">*</span>
@@ -19,29 +19,29 @@
           </v-text-field>
         </v-col>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <num-field
-              v-model="bauvorhaben.grundstuecksgroesse"
-              label="Grundstücksgröße"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
-              required
+            v-model="bauvorhaben.grundstuecksgroesse"
+            label="Grundstücksgröße"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+            required
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <v-select
-              v-model="bauvorhaben.standVorhaben"
-              :items="standVorhabenList"
-              item-value="key"
-              item-text="value"
-              :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-              @change="formChanged"
+            v-model="bauvorhaben.standVorhaben"
+            :items="standVorhabenList"
+            item-value="key"
+            item-text="value"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            @change="formChanged"
           >
             <template #label>
               Stand des Vorhabens <span class="secondary--text">*</span>
@@ -49,15 +49,15 @@
           </v-select>
         </v-col>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <v-text-field
-              v-model="bauvorhaben.bauvorhabenNummer"
-              :rules="[fieldValidationRules.pflichtfeld]"
-              maxlength="255"
-              validate-on-blur
-              @input="formChanged"
+            v-model="bauvorhaben.bauvorhabenNummer"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
+            validate-on-blur
+            @input="formChanged"
           >
             <template #label>
               Bauvorhabennummer <span class="secondary--text">*</span>
@@ -67,23 +67,23 @@
       </v-row>
     </field-group-card>
     <adresse-component
-        :adresse-prop.sync="bauvorhaben.adresse"
-        :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
-        :show-in-information-list-prop="true"
+      :adresse-prop.sync="bauvorhaben.adresse"
+      :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
+      :show-in-information-list-prop="true"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <v-select
-              v-model="bauvorhaben.planungsrecht"
-              :items="planungsrechtList"
-              item-value="key"
-              item-text="value"
-              :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-              @change="formChanged"
+            v-model="bauvorhaben.planungsrecht"
+            :items="planungsrechtList"
+            item-value="key"
+            item-text="value"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            @change="formChanged"
           >
             <template #label>
               Planungsrecht <span class="secondary--text">*</span>
@@ -91,14 +91,14 @@
           </v-select>
         </v-col>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <TriSwitch
-              v-model="bauvorhaben.sobonRelevant"
-              off-text="Nein"
-              on-text="Ja"
-              :rules="[fieldValidationRules.notUnspecified]"
+            v-model="bauvorhaben.sobonRelevant"
+            off-text="Nein"
+            on-text="Ja"
+            :rules="[fieldValidationRules.notUnspecified]"
           >
             <template #label>
               SoBoN-relevant <span class="secondary--text">*</span>
@@ -108,17 +108,17 @@
       </v-row>
       <v-row>
         <v-col
-            cols="12"
+          cols="12"
         >
           <v-autocomplete
-              v-model="bauvorhaben.artFnp"
-              :items="baugebietTypList"
-              item-value="key"
-              item-text="value"
-              multiple
-              chips
-              :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
-              @input="formChanged"
+            v-model="bauvorhaben.artFnp"
+            :items="baugebietTypList"
+            item-value="key"
+            item-text="value"
+            multiple
+            chips
+            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            @input="formChanged"
           >
             <template #label>
               Flächennutzung laut Flächennutzungsplan
@@ -129,37 +129,37 @@
       </v-row>
       <v-row>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <v-text-field
-              v-model="bauvorhaben.bebauungsplannummer"
-              label="Bebauungsplannummer"
-              maxlength="255"
-              @input="formChanged"
+            v-model="bauvorhaben.bebauungsplannummer"
+            label="Bebauungsplannummer"
+            maxlength="255"
+            @input="formChanged"
           />
         </v-col>
         <v-col
-            cols="12"
-            md="6"
+          cols="12"
+          md="6"
         >
           <v-text-field
-              v-model="bauvorhaben.fisNummer"
-              label="FIS-Nummer"
-              maxlength="255"
-              @input="formChanged"
+            v-model="bauvorhaben.fisNummer"
+            label="FIS-Nummer"
+            maxlength="255"
+            @input="formChanged"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
           <v-textarea
-              v-model="bauvorhaben.anmerkung"
-              label="Anmerkung"
-              rows="1"
-              auto-grow
-              maxlength="255"
-              @input="formChanged"
+            v-model="bauvorhaben.anmerkung"
+            label="Anmerkung"
+            rows="1"
+            auto-grow
+            maxlength="255"
+            @input="formChanged"
           />
         </v-col>
       </v-row>
@@ -168,8 +168,8 @@
       <v-row>
         <v-col cols="12">
           <Dokumente
-              v-model="bauvorhaben.dokumente"
-              :path-to-file="dokumentePathToFile"
+            v-model="bauvorhaben.dokumente"
+            :path-to-file="dokumentePathToFile"
           />
         </v-col>
       </v-row>
