@@ -6,8 +6,11 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
+                id="bauvorhaben_nameVorhaben"
                 v-model.trim="bauvorhaben.nameVorhaben"
                 :rules="[fieldValidationRules.pflichtfeld]"
+                maxlength="255"
+                validate-on-blur
                 @input="formChanged"
               >
                 <template #label>
@@ -20,12 +23,14 @@
       </template>
       <template #content>
         <BauvorhabenForm
+          id="bauvorhaben_bauvorhabenForm_component"
           v-model="bauvorhaben"
         />
       </template>
       <template #information>
         <v-btn
           v-if="!isNew"
+          id="bauvorhaben_loeschen_button"
           class="text-wrap my-4"
           color="primary"
           elevation="1"
@@ -35,6 +40,7 @@
         />
         <v-btn
           v-else
+          id="bauvorhaben_datenuebernahme_button"
           class="text-wrap my-4"
           color="primary"
           elevation="1"
@@ -42,11 +48,15 @@
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
-        <InformationList information-message-deletion-intervall-seconds="10" />
+        <InformationList
+          id="bauvorhaben_information_list"
+          information-message-deletion-intervall-seconds="10"
+        />
       </template>
       <template #action>
         <v-spacer />
         <v-btn
+          id="bauvorhaben_speichern_button"
           color="secondary"
           elevation="1"
           class="text-wrap mt-2 px-1"
@@ -56,6 +66,7 @@
           v-text="isNew ? 'Speichern' : 'Aktualisieren'"
         />
         <v-btn
+          id="bauvorhaben_abbrechen_button"
           color="primary"
           elevation="1"
           class="text-wrap mt-2 px-1"
@@ -66,6 +77,7 @@
       </template>
     </DefaultLayout>
     <yes-no-dialog
+      id="bauvorhaben_yes_no_dialog_loeschen"
       v-model="deleteDialogOpen"
       icon="mdi-delete-forever"
       dialogtitle="Hinweis"
@@ -76,6 +88,7 @@
       @yes="removeBauvorhaben()"
     />
     <yes-no-dialog
+      id="bauvorhaben_yes_no_dialog_save_leave"
       ref="saveLeaveDialog"
       v-model="saveLeaveDialog"
       :dialogtitle="saveLeaveDialogTitle"
@@ -86,6 +99,7 @@
       @no="cancel"
     />
     <bauvorhaben-data-transfer-dialog
+      id="bauvorhaben_datenuebernahme"
       v-model="dataTransferDialogOpen"
       @abfrage-uebernehmen="abfrageUebernehmen($event)"
       @uebernahme-abbrechen="dataTransferDialogOpen = false"
@@ -111,7 +125,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
-import { InfrastrukturabfrageDto } from "@/api/api-client";
+import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
 
 @Component({
   components: {

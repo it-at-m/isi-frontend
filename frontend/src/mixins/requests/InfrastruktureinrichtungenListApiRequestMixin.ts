@@ -1,5 +1,5 @@
 import {Component, Mixins} from "vue-property-decorator";
-import {InfrastruktureinrichtungListElementsDto, InfrastruktureinrichtunglistenApi} from "@/api/api-client";
+import {InfrastruktureinrichtungListElementsDto, InfrastruktureinrichtunglistenApi} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 
@@ -10,7 +10,7 @@ export default class InfrastruktureinrichtungenListApiRequestMixin extends Mixin
   
   constructor() {
     super();
-    this.infrastruktureiInfrastruktureinrichtunglistenApi = new InfrastruktureinrichtunglistenApi(RequestUtils.getBasicFetchConfiguration());
+    this.infrastruktureiInfrastruktureinrichtunglistenApi = new InfrastruktureinrichtunglistenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   getInfrastruktureinrichtungenListElements(showInInformationList: boolean): Promise<InfrastruktureinrichtungListElementsDto> {

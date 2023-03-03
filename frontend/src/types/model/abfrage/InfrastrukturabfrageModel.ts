@@ -1,4 +1,4 @@
-import { InfrastrukturabfrageDto } from "@/api/api-client";
+import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import _ from "lodash";

@@ -6,7 +6,7 @@ import {
   InfrastrukturabfrageDto,
   GetInfrastrukturabfrageByIdRequest,
   UpdateInfrastrukturabfrageRequest,
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -21,7 +21,7 @@ export default class AbfrageApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.abfrageApi = new AbfrageApi(RequestUtils.getBasicFetchConfiguration());
+    this.abfrageApi = new AbfrageApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createInfrastrukturabfrage(dto: InfrastrukturabfrageDto, showInInformationList: boolean): Promise<InfrastrukturabfrageDto> {

@@ -4,8 +4,8 @@ import {
   AbfrageListElementDto,
   AbfrageListElementDtoStandVorhabenEnum,
   InfrastruktureinrichtungListElementDto,
-  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
-} from "@/api/api-client";
+  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum
+ } from "@/api/api-client/isi-backend";
 import { createBauvorhabenDto } from "@/utils/Factories";
 import User, { UserState } from "@/store/modules/User";
 import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
@@ -14,7 +14,6 @@ import LookupStore, { LookupState } from "@/store/modules/LookupStore";
 import SearchStore, { SearchState } from "@/store/modules/SearchStore";
 import FoerdermixStore, { FoerdermixState } from "@/store/modules/FoerdermixStore";
 import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
-import { Userinfo } from "@/types/common/Userinfo";
 
 describe("SearchStoreTest.spec.ts", () => {
   Vue.use(Vuex);

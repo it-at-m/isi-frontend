@@ -1,4 +1,4 @@
-import { FoerdermixStammDto } from "@/api/api-client";
+import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 

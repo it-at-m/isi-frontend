@@ -6,7 +6,7 @@ import {
   CreateMittelschuleRequest,
   UpdateMittelschuleRequest,
   DeleteMittelschuleByIdRequest
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -21,7 +21,7 @@ export default class MittelschuleApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.mittelschuleApi = new MittelschuleApi(RequestUtils.getBasicFetchConfiguration());
+    this.mittelschuleApi = new MittelschuleApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createMittelschule(dto: MittelschuleDto, showInInformationList: boolean): Promise<MittelschuleDto> {

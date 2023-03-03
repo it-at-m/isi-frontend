@@ -7,7 +7,7 @@ import {
   GetFoerdermixStammByIdRequest,
   SaveFoerdermixStammRequest,
   UpdateFoerdermixStammRequest
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import ErrorHandler from "./ErrorHandler";
 
 @Component
@@ -17,7 +17,7 @@ export default class FoerdermixApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.foerdermixStammApi = new FoerdermixStammApi(RequestUtils.getBasicFetchConfiguration());
+    this.foerdermixStammApi = new FoerdermixStammApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createFoerdermixStamm(dto: FoerdermixStammDto, showInInformationList: boolean): Promise<FoerdermixStammDto> {

@@ -5,8 +5,9 @@
         v-if="infrastruktureinrichtungen.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in infrastruktureinrichtungen"
+          v-for="(item, index) in infrastruktureinrichtungen"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,44 +17,29 @@
             :elevation="hover ? 4 : 0"
             @click="routeToInfrastruktureinrichtungInfo(item)"
           >
-            <v-card-title>
+            <v-card-title :id="'infrastruktureinrichtung_uebersicht_item_' + index + '_nameEinrichtung'">
               {{ item.nameEinrichtung }}
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span> {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList) }}</span>
+              <span :id="'infrastruktureinrichtung_uebersicht_item_' + index + '_infrastruktureinrichtungtyp'"> {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>
       </div>
-      <!-- Falls noch keine Infrastruktureinrichtungen vorhanden sind, wird Folgendes angezeigt -->
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="backendAccessSuccessful"
-          class="text-h6"
-        >Keine Infrastruktureinrichtungen vorhanden</span>
-        <span
-          v-else-if="!backendAccessSuccessful"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        id="infrastruktureinrichtung_uebersicht_loading"
+        :success="backendAccessSuccessful"
+        name="Infrastruktureinrichtungen"
+      />
     </template>
     <template #action>
       <v-spacer />
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="infrastruktureinrichtung_uebersicht_infrastruktureinrichtung_erstellen_button"
             slot="activator"
             v-model="options"
             dark
@@ -82,7 +68,7 @@ import {
   InfrastruktureinrichtungListElementDto,
   InfrastruktureinrichtungListElementsDto,
   LookupEntryDto
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungenListApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungenListApiRequestMixin";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";

@@ -6,7 +6,7 @@ import {
   CreateGsNachmittagBetreuungRequest,
   UpdateGsNachmittagBetreuungRequest,
   DeleteGsNachmittagBetreuungByIdRequest
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -21,7 +21,7 @@ export default class GsNachmittagBetreuungApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.gsNachmittagBetreuungApi = new GsNachmittagBetreuungApi(RequestUtils.getBasicFetchConfiguration());
+    this.gsNachmittagBetreuungApi = new GsNachmittagBetreuungApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createGsNachmittagBetreuung(dto: GsNachmittagBetreuungDto, showInInformationList: boolean): Promise<GsNachmittagBetreuungDto> {

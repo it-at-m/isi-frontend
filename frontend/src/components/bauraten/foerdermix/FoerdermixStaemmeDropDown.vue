@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-select
+      id="foerdermix_stammdaten_dropdown"
       v-model="selectedItem"
       :items="groupedStammdaten"
       label="Fördermix"
@@ -16,7 +17,7 @@
 import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMixin";
-import { FoerdermixStammDto } from "@/api/api-client";
+import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import MappingMixin from "@/mixins/MappingMixin";
 import { createFoerdermix, createFoerdermixStamm } from "@/utils/Factories";

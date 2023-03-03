@@ -4,6 +4,7 @@
       <v-row justify="center">
         <v-col cols="12">
           <abfragevarianten-liste
+            id="abfragevariante_liste_component"
             ref="abfragevariantenListe"
             v-model="abfragevarianten"
             @onEditAbfragevariante="editAbfragevariante"
@@ -22,6 +23,7 @@
         >
           <v-btn
             v-if="showAddAbfragevarianteButton"
+            id="abfragevariante_hinzufuegen_button"
             block
             color="secondary"
             elevation="1"
@@ -39,13 +41,16 @@
         <v-card>
           <v-container>
             <abfragevariante-formular
+              id="abfragevariante_formular_component"
               ref="abfragevarianteComponent"
-              v-model="abfragevariante"
-              :mode="mode"              
+              v-model="abfragevariante"              
+              :mode="mode"             
+              :sobon-relevant="isSobonRelevant" 
             />
             <v-card-actions>
               <v-spacer />
               <v-btn
+                id="abfragevariante_abbrechen_dialog"
                 text
                 color="primary"
                 @click="cancelFormularDialog"
@@ -53,6 +58,7 @@
                 Abbrechen
               </v-btn>
               <v-btn
+                id="abfragevariante_uebernehmen_dialog"
                 color="primary"
                 @click="assumeAbfragevariante"
               >
@@ -68,7 +74,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Mixins, VModel, Watch, Prop } from "vue-property-decorator";
+import { UncertainBoolean } from "@/api/api-client";
 import AbfragevariantenListe from "./AbfragevariantenListe.vue";
 import AbfragevarianteFormular from "./AbfragevarianteFormular.vue";
 import { createAbfragevarianteDto } from "@/utils/Factories";
@@ -95,6 +102,13 @@ export default class Abfragevarianten extends Mixins(
   SaveLeaveMixin
 ) {
   @VModel({ type: Array }) abfragevarianten!: AbfragevarianteModel[];
+
+  @Prop()
+  private sobonRelevant!: UncertainBoolean;
+
+  get isSobonRelevant(): UncertainBoolean {
+    return this.sobonRelevant;
+  }
 
   private abfragevariante = new AbfragevarianteModel(
     createAbfragevarianteDto()
@@ -130,7 +144,7 @@ export default class Abfragevarianten extends Mixins(
   private assumeAbfragevariante(): void {
     // alle Feld-Validatoren (:rules) werden aufgerufen, um sicherzustellen, dass diese Prüfungen vorher durchgeführt wurden
     if (this.validate()) {
-      let validationMessage: string | null = this.findFaultInAbfragevariante(this.abfragevariante);
+      let validationMessage: string | null = this.findFaultInAbfragevariante(this.isSobonRelevant, this.abfragevariante, false);
       if (_.isNull(validationMessage)) {
         if (this.mode === DisplayMode.NEU) {
           this.abfragevarianten?.push(this.abfragevariante);

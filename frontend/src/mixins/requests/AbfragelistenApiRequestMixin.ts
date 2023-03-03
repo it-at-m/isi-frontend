@@ -1,5 +1,5 @@
 import {Component, Mixins} from "vue-property-decorator";
-import {AbfrageListElementsDto, AbfragelistenApi} from "@/api/api-client";
+import {AbfrageListElementsDto, AbfragelistenApi} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 
@@ -10,7 +10,7 @@ export default class AbfragelistenApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.abfragelistenApi = new AbfragelistenApi(RequestUtils.getBasicFetchConfiguration());
+    this.abfragelistenApi = new AbfragelistenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   getAbfrageListElements(showInInformationList: boolean): Promise<AbfrageListElementsDto> {

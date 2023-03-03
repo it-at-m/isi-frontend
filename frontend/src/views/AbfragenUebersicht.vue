@@ -5,8 +5,9 @@
         v-if="abfragenUebersicht.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in abfragenUebersicht"
+          v-for="(item, index) in abfragenUebersicht"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,51 +17,36 @@
             :elevation="hover ? 4 : 0"
             @click="routeToAbfrageInfo(item)"
           >
-            <v-card-title>
+            <v-card-title :id="'abfrage_uebersicht_item_' + index + '_nameAbfrage'">
               {{ item.nameAbfrage }}
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_statusAbfrage'"> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
               <v-spacer />
-              <span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_standVorhaben'">
                 Stand:
                 {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
               </span>
               <v-spacer />
-              <span>Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_fristStellungnahme'">Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>
       </div>
-      <!-- Falls noch keine Abfragen vorhanden sind, wird Folgendes angezeigt -->
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="fetchSuccess === true"
-          class="text-h6"
-        >Keine Abfragen vorhanden</span>
-        <span
-          v-else-if="fetchSuccess === false"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        id="abfrage_uebersicht_loading"
+        :success="fetchSuccess"
+        name="Abfragen"
+      />
     </template>
     <template #action>
       <v-spacer />
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="abfrage_uebersicht_abfrage_erstellen_button"
             slot="activator"
             v-model="options"
             dark
@@ -89,7 +75,7 @@ import {
   AbfrageListElementDto,
   AbfrageListElementsDto,
   LookupEntryDto
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import DefaultLayout from "@/components/DefaultLayout.vue";

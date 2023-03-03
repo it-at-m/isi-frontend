@@ -1,6 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
-import { LookupEntryDto } from "@/api/api-client";
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import User, { UserState } from "@/store/modules/User";
 import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
 import CommonStore, { CommonState } from "@/store/modules/CommonStore";

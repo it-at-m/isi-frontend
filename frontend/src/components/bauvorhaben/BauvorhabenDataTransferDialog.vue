@@ -17,6 +17,7 @@
           md="10"
         >
           <v-select
+            id="bauvorhaben_abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageListElement"
             :items="abfragen"
             :item-text="item => getItemText(item)"
@@ -32,12 +33,14 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          id="bauvorhaben_abfrage_datenuebernahme_abbrechen_button"
           class="text-wrap"
           text
           @click="uebernahmeAbbrechen"
           v-text="'Abbrechen'"
         />
         <v-btn
+          id="bauvorhaben_abfrage_datenuebernahme_uebernehmen_button"
           class="text-wrap"
           color="primary"
           @click="abfrageUebernehmen"
@@ -57,7 +60,7 @@ import {
   AbfrageListElementsDto,
   InfrastrukturabfrageDto,
   LookupEntryDto
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import { createInfrastrukturabfrageDto } from "@/utils/Factories";

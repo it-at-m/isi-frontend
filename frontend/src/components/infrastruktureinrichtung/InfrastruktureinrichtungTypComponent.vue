@@ -7,6 +7,7 @@
       >
         <v-col cols="12">
           <v-select
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_dropdown"
             v-model="infrastruktureinrichtungTyp"
             class="mx-3"
             :items="infrastruktureinrichtungList"
@@ -30,9 +31,11 @@
           md="6"
         >
           <v-text-field
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_darstellung"
             v-model="infrastruktureinrichtungTypDisplay"
             label="Typ der Infrastruktureinrichtung"
             disabled
+            maxlength="255"
           />
         </v-col>
         <v-col
@@ -40,9 +43,11 @@
           md="6"
         >
           <v-text-field
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_ldfNr_darstellung"
             v-model="lfdNrInfrastruktureinrichtung"
             label="Lfd. Nr."
             disabled
+            maxlength="255"
           />
         </v-col>
       </v-row>
@@ -52,7 +57,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import {LookupEntryDto } from "@/api/api-client";
+import {LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
