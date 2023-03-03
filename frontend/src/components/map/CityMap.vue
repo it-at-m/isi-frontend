@@ -50,11 +50,10 @@
 import { Component, Prop, Mixins } from 'vue-property-decorator';
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
 import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
-import { CoordinateDto, CoordinatesDto, FlurstueckDto, FlurstueckFeatureDto } from '@/api/api-client/isi-wfs-eai';
+import { CoordinateDto, CoordinatesDto, FlurstueckFeatureDto } from '@/api/api-client/isi-wfs-eai';
 import { VerortungState, MultiPolygon } from '@/store/modules/VerortungStore';
 import L, { LatLngLiteral } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import _ from 'lodash';
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -179,18 +178,20 @@ export default class CityMap extends Mixins(
     const coordinatesArray: CoordinatesDto[] = [];
     
     for (const multiPolygon of multiPolygonArray) {
-      const coordinatesDto: CoordinatesDto = { coordinates: [] };
-      for (const coords of multiPolygon[0][0]) {
-        coordinatesDto.coordinates.push({ lat: coords[1], lon: coords[0] });
+      for (const polygon of multiPolygon) {
+        const coordinatesDto: CoordinatesDto = { coordinates: [] };
+        for (const coords of polygon[0]) {
+          coordinatesDto.coordinates.push({ lat: coords[1], lon: coords[0] });
+        }
+        coordinatesArray.push(coordinatesDto);
       }
-      coordinatesArray.push(coordinatesDto);
     }
 
     return coordinatesArray;
   }
 
-  private coordinatesArrayToLeafletFormat(coordinatesArray: CoordinatesDto[]): LatLngLiteral[][][] {
-    const formatted: LatLngLiteral[][][] = [[]];
+  private coordinatesArrayToLeafletFormat(coordinatesArray: CoordinatesDto[]): LatLngLiteral[][] {
+    const formatted: LatLngLiteral[][] = [];
 
     for (const coordinates of coordinatesArray) {
       const latLngArray: LatLngLiteral[] = [];
@@ -198,21 +199,10 @@ export default class CityMap extends Mixins(
         latLngArray.push({ lat: coordinate.lat, lng: coordinate.lon });
       }
       latLngArray.pop();
-      formatted[0].push(latLngArray);
+      formatted.push(latLngArray);
     }
 
     return formatted;
-  }
-
-  private flurstueckToHtml(flurstueck: FlurstueckDto): string {
-    return `
-      <b>Nummer:</b> ${_.defaultTo(flurstueck.fluerstueckNummer, "keine")}<br>
-      <b>NummerZ:</b> ${_.defaultTo(flurstueck.fluerstueckNummerZ, "keine")}<br>
-      <b>Gemarkung:</b> ${_.defaultTo(flurstueck.gemarkungName, "keine")}<br>
-      <b>Eigentumsart:</b> ${_.defaultTo(flurstueck.eigentumsart, "keine")}<br>
-      <b>Nutzungsart:</b> ${_.defaultTo(flurstueck.nutzungsart, "keine")}<br>
-      <b>Fläche:</b> ${_.defaultTo(flurstueck.flaecheQm, "keine")}
-    `;
   }
 }
 </script>
