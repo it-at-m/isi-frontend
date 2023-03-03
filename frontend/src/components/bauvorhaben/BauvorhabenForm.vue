@@ -7,6 +7,7 @@
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_eigentuemer"
             v-model="bauvorhaben.eigentuemer"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
@@ -23,6 +24,7 @@
           md="6"
         >
           <num-field
+            id="bauvorhaben_grundstuecksgroesse"
             v-model="bauvorhaben.grundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -36,6 +38,7 @@
           md="6"
         >
           <v-select
+            id="bauvorhaben_standVorhaben_dropdown"
             v-model="bauvorhaben.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
@@ -53,6 +56,7 @@
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
@@ -67,6 +71,7 @@
       </v-row>
     </field-group-card>
     <adresse-component
+      id="bauvorhaben_adresse_component"
       :adresse-prop.sync="bauvorhaben.adresse"
       :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
@@ -78,6 +83,7 @@
           md="6"
         >
           <v-select
+            id="bauvorhaben_planungsrecht_dropdown"
             v-model="bauvorhaben.planungsrecht"
             :items="planungsrechtList"
             item-value="key"
@@ -95,6 +101,7 @@
           md="6"
         >
           <TriSwitch
+            id="bauvorhaben_sobonRelevant_triswitch"
             v-model="bauvorhaben.sobonRelevant"
             off-text="Nein"
             on-text="Ja"
@@ -110,7 +117,8 @@
         <v-col
           cols="12"
         >
-          <v-autocomplete            
+          <v-autocomplete
+            id="bauvorhaben_artFnp_dropdown"            
             v-model="bauvorhaben.artFnp"
             :items="baugebietTypList"
             item-value="key"
@@ -133,6 +141,7 @@
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_bebauungsplannummer"
             v-model="bauvorhaben.bebauungsplannummer"
             label="Bebauungsplannummer"
             maxlength="255"
@@ -144,6 +153,7 @@
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_fisnummer"
             v-model="bauvorhaben.fisNummer"
             label="FIS-Nummer"
             maxlength="255"
@@ -154,6 +164,7 @@
       <v-row>
         <v-col cols="12">
           <v-textarea
+            id="bauvorhaben_anmerkung"
             v-model="bauvorhaben.anmerkung"
             label="Anmerkung"
             rows="1"
@@ -168,6 +179,7 @@
       <v-row>
         <v-col cols="12">
           <Dokumente
+            id="bauvorhaben_dokumente_component"
             v-model="bauvorhaben.dokumente"
             :path-to-file="dokumentePathToFile"
           />

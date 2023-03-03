@@ -4,6 +4,7 @@
       <v-row justify="center">
         <v-col cols="12">
           <abfragevarianten-liste
+            id="abfragevariante_liste_component"
             ref="abfragevariantenListe"
             v-model="abfragevarianten"
             @onEditAbfragevariante="editAbfragevariante"
@@ -22,6 +23,7 @@
         >
           <v-btn
             v-if="showAddAbfragevarianteButton"
+            id="abfragevariante_hinzufuegen_button"
             block
             color="secondary"
             elevation="1"
@@ -39,6 +41,7 @@
         <v-card>
           <v-container>
             <abfragevariante-formular
+              id="abfragevariante_formular_component"
               ref="abfragevarianteComponent"
               v-model="abfragevariante"              
               :mode="mode"             
@@ -47,6 +50,7 @@
             <v-card-actions>
               <v-spacer />
               <v-btn
+                id="abfragevariante_abbrechen_dialog"
                 text
                 color="primary"
                 @click="cancelFormularDialog"
@@ -54,6 +58,7 @@
                 Abbrechen
               </v-btn>
               <v-btn
+                id="abfragevariante_uebernehmen_dialog"
                 color="primary"
                 @click="assumeAbfragevariante"
               >

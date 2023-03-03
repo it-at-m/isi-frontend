@@ -4,21 +4,25 @@
       <template #content>
         <div v-if="step === 1">
           <infrastrukturabfrageComponent
+            id="abfrage_infrastrukturabfrage_component"
             v-model="abfrage"
           />
         </div>
         <abfragevarianten
           v-if="step === 2"
+          id="abfrage_abfragevarianten"
           ref="abfragevarianten"
           v-model="abfrage.abfragevarianten"
           :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauraten-component
           v-if="step === 3"
+          id="abfrage_bauraten"
           ref="bauratenComponent"
           v-model="baurate"
         />
         <yes-no-dialog
+          id="abfrage_yes_no_dialog_loeschen"
           v-model="deleteDialogOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
@@ -29,6 +33,7 @@
           @yes="yesNoDialogYes"
         />
         <yes-no-dialog
+          id="abfrage_yes_no_dialog_save_leave"
           ref="saveLeaveDialog"
           v-model="saveLeaveDialog"
           :dialogtitle="saveLeaveDialogTitle"
@@ -43,7 +48,8 @@
         <v-container>
           <v-row>
             <v-col cols="12">
-              <span 
+              <span
+                id="abfrage_displayName" 
                 class="text-h6 font-weight-bold"
                 v-text="abfrage.displayName"
               />
@@ -87,6 +93,7 @@
         </v-stepper>
         <v-spacer />
         <v-btn
+          id="abfrage_weiter_button"
           class="text-wrap mt-2 px-1"
           color="primary"
           elevation="1"
@@ -96,6 +103,7 @@
           v-text="'Weiter'"
         />
         <v-btn
+          id="abfrage_zurueck_button"
           class="text-wrap mt-2 px-1"
           color="primary"
           elevation="1"
@@ -108,6 +116,7 @@
       <template #information>
         <v-btn
           v-if="!isNewAbfrage()"
+          id="abfrage_loeschen_button"
           class="text-wrap my-4 px-1"
           color="primary"
           elevation="1"
@@ -115,12 +124,16 @@
           @click="deleteAbfrage()"
           v-text="'Löschen'"
         />
-        <information-list information-message-deletion-intervall-seconds="10" />
+        <information-list
+          id="abfrage_information_list"
+          information-message-deletion-intervall-seconds="10"
+        />
       </template>
       <template #action>
         <v-spacer />
         <v-btn
           v-if="!isNewAbfrage() || step !== 1"
+          id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
@@ -131,6 +144,7 @@
         />
         <v-btn
           v-if="!isNewAbfrage()"
+          id="abfrage_freigeben_button"
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
@@ -139,6 +153,7 @@
           v-text="'Freigeben'"
         />
         <v-btn
+          id="abfrage_abbrechen_button"
           color="primary"
           elevation="1"
           class="text-wrap mt-2 px-1"

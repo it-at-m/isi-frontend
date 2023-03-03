@@ -15,6 +15,7 @@
         >
           <router-link to="/">
             <v-img
+              id="app_logo"
               :src="logo"
               max-width="32"
               max-height="32"
@@ -32,7 +33,7 @@
           class="d-flex align-center justify-center"
         >
           <v-text-field
-            id="suchfeld"
+            id="app_suchfeld"
             v-model="query"
             dense
             flat
@@ -51,7 +52,32 @@
           cols="3"
           class="d-flex align-center justify-end"
         >
+          <v-menu
+            offset-y
+            transition="slide-y-transition"
+          >
+            <template #activator="{ on }">
+              <v-btn
+                small
+                text
+                fab
+              >
+                <v-icon
+                  class="white--text"
+                  v-on="on"
+                >
+                  mdi-help-circle
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list class="text-center">
+              <v-list-item @click="showVersionInfo = true">
+                <v-list-item-title>Versionsinformationen</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-btn
+            small
             text
             fab
           >
@@ -67,6 +93,7 @@
           style="width: 100%"
         >
           <v-btn
+            id="app_karte_button"
             depressed
             tile
             text
@@ -77,6 +104,7 @@
             v-text="'Karte'"
           />
           <v-btn
+            id="app_abfrage_button"
             depressed
             tile
             text
@@ -87,6 +115,7 @@
             v-text="'Abfragen'"
           />
           <v-btn
+            id="app_bauvorhaben_button"
             depressed
             tile
             text
@@ -97,6 +126,7 @@
             v-text="'Bauvorhaben'"
           />
           <v-btn
+            id="app_infrastruktureinrichtung_button"
             depressed
             tile
             text
@@ -109,6 +139,7 @@
         </div>
       </template>
     </v-app-bar>
+    <version-info v-model="showVersionInfo" />
     <v-main>
       <v-fade-transition mode="out-in">
         <router-view />
@@ -122,16 +153,19 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 import TheSnackbar from "@/components/TheSnackbar.vue";
+import VersionInfo from "@/components/common/VersionInfo.vue";
 import { RouteTag } from "./router";
 
 @Component({
-  components: { TheSnackbar }
+  components: { TheSnackbar, VersionInfo }
 })
 export default class App extends Vue {
 
   public query = "";
   
   private logo: string = new URL("./assets/isi-logo.svg", import.meta.url).href;
+
+  public showVersionInfo = false;
 
   created(): void {
     this.$store.dispatch("lookup/initialize");

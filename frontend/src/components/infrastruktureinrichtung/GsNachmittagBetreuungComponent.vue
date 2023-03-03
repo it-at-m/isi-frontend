@@ -1,6 +1,7 @@
 <template>
   <div>
     <infrastruktureinrichtung-component
+      id="infrastruktureinrichtung_gsNachmittagBetreuungModel_component" 
       ref="infrastruktureinrichtungComponent"
       v-model="gsNachmittagBetreuung.infrastruktureinrichtung"
       :mode="displayMode"
@@ -49,6 +50,7 @@
           md="6"
         >
           <v-select
+            id="gsNachmittagBetreuungModel_artGsNachmittagBetreuung" 
             v-model="gsNachmittagBetreuung.artGsNachmittagBetreuung"
             :items="artGsNachmittagBetreuungList"
             item-text="value"
