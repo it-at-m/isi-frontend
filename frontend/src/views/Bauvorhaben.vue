@@ -61,7 +61,7 @@
           elevation="1"
           class="text-wrap mt-2 px-1"
           style="width: 200px"
-          :disabled="!isNew && !isDirty()"
+          :disabled="(!isNew && !isDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente)"
           @click="validateAndProceed()"
           v-text="isNew ? 'Speichern' : 'Aktualisieren'"
         />
@@ -108,7 +108,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Vue } from "vue-property-decorator";
+import {Component, Mixins, Vue} from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import {createAdresseDto, createBauvorhabenDto} from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -118,16 +118,18 @@ import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import { Levels } from "@/api/error";
+import {Levels} from "@/api/error";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import InformationList from "@/components/common/InformationList.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
-import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
+import {InfrastrukturabfrageDto} from "@/api/api-client/isi-backend";
+import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
 
 @Component({
+  methods: {containsNotAllowedDokument},
   components: {
     BauvorhabenDataTransferDialog,
     BauvorhabenForm,
@@ -138,11 +140,11 @@ import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
   },
 })
 export default class Bauvorhaben extends Mixins(
-  FieldValidationRulesMixin,
-  ValidatorMixin,
-  BauvorhabenApiRequestMixin,
-  SaveLeaveMixin,
-  InformationListMixin,
+    FieldValidationRulesMixin,
+    ValidatorMixin,
+    BauvorhabenApiRequestMixin,
+    SaveLeaveMixin,
+    InformationListMixin,
 ) {
 
   private bauvorhaben = new BauvorhabenModel(createBauvorhabenDto());
@@ -155,7 +157,7 @@ export default class Bauvorhaben extends Mixins(
 
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
-    
+
     if (!this.isNew) {
       this.fetchBauvorhabenById();
     }
@@ -166,7 +168,7 @@ export default class Bauvorhaben extends Mixins(
    * Ist das Formular valide, wird auf sonstige Mängel überprüft.
    * Gibt es keine sonstigen Mängel, wird entweder das neue Bauvorhaben gespeichert oder das vorhandene Bauvorhaben aktualisiert.
    */
-  private validateAndProceed(): void {        
+  private validateAndProceed(): void {
     if (this.validate()) {
       const fault = this.findFaultInBauvorhaben(this.bauvorhaben);
 
@@ -189,35 +191,35 @@ export default class Bauvorhaben extends Mixins(
    */
   async fetchBauvorhabenById(): Promise<void> {
     await this.getBauvorhabenById(this.$route.params.id, false)
-      .then((dto) => {
-        this.$store.commit("search/selectedBauvorhaben", dto);
-        const dtoFromStore = _.cloneDeep(this.$store.getters["search/selectedBauvorhaben"]);
-        this.bauvorhaben = new BauvorhabenModel(dtoFromStore);
-      });
+        .then((dto) => {
+          this.$store.commit("search/selectedBauvorhaben", dto);
+          const dtoFromStore = _.cloneDeep(this.$store.getters["search/selectedBauvorhaben"]);
+          this.bauvorhaben = new BauvorhabenModel(dtoFromStore);
+        });
   }
 
   /**
    * Schickt eine POST-Anfrage für das neue Bauvorhaben ans Backend.
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
-  private async saveBauvorhaben(): Promise<void> {    
+  private async saveBauvorhaben(): Promise<void> {
     await this.postBauvorhaben(this.bauvorhaben, true)
-      .then(() => {
-        this.returnToUebersicht(
-          "Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS
-        );
-      });
+        .then(() => {
+          this.returnToUebersicht(
+              "Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS
+          );
+        });
   }
 
   /**
    * Schickt eine PUT-Anfrage für das derzeitige Bauvorhaben ans Backend.
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
-  private async updateBauvorhaben(): Promise<void> {    
+  private async updateBauvorhaben(): Promise<void> {
     await this.putBauvorhaben(this.bauvorhaben, true)
-      .then(() => {
+        .then(() => {
           Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
-      });
+        });
   }
 
   /**
@@ -228,17 +230,17 @@ export default class Bauvorhaben extends Mixins(
     this.deleteDialogOpen = false;
 
     await this.deleteBauvorhaben(this.$route.params.id, true)
-      .then(() => {
-        this.returnToUebersicht(
-          "Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS
-        );
-      });
+        .then(() => {
+          this.returnToUebersicht(
+              "Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS
+          );
+        });
   }
 
   /**
    * Kehrt zur Bauvorhabenübersicht und setzt das im Store zurzeit ausgewählte Bauvorhaben auf undefined.
    * Zeigt dabei optionalerweise auch eine Nachricht per Toaster an.
-   * 
+   *
    * @param message Die anzuzeigende Nachricht. Optional.
    * @param level Das Level der anzuzeigenden Nachricht. Optional, doch obligatorisch in Kombination mit message.
    */
@@ -247,13 +249,13 @@ export default class Bauvorhaben extends Mixins(
       Toaster.toast(message, level);
     }
 
-    this.$router.push({ name: "viewAllBauvorhaben" });
+    this.$router.push({name: "viewAllBauvorhaben"});
     this.$store.commit("search/selectedBauvorhaben", undefined);
   }
 
   /**
    * Shorthand zum Ausführen der validate-Methode vom v-form.
-   * 
+   *
    * @return Ob das Formular valide ist.
    */
   private validate(): boolean {

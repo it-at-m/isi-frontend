@@ -137,7 +137,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="!isNewAbfrage() && !isDirty()"
+          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
@@ -188,8 +188,10 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationList from "@/components/common/InformationList.vue";
 import {Levels} from "@/api/error";
 import DisplayMode from "@/types/common/DisplayMode";
+import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
 
 @Component({
+  methods: {containsNotAllowedDokument},
   components: {
     InformationList,
     InfrastrukturabfrageComponent,

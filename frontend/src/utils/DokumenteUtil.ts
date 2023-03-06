@@ -1,4 +1,4 @@
-import { DokumentDto, FileInformationDto } from "@/api/api-client/isi-backend";
+import {DokumentDto, FileInformationDto} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 
 /**
@@ -27,7 +27,7 @@ export function maxNumberOfFilesReached(dokumente: DokumentDto[], fileList: File
  * maxFileSizeExceeded
  */
 export function maxFileSizeExceeded(file: File, fileInformationDto: FileInformationDto): boolean {
-  let maxFileSizeExceeded = false; 
+  let maxFileSizeExceeded = false;
   if (!_.isNil(fileInformationDto.maxFileSizeBytes)) {
     maxFileSizeExceeded = file.size > fileInformationDto.maxFileSizeBytes;
   }
@@ -43,4 +43,22 @@ export function maxFileSizeExceeded(file: File, fileInformationDto: FileInformat
  */
 export function getAllowedMimeTypes(fileInformationDto: FileInformationDto): string {
   return _.join(fileInformationDto.allowedMimeTypes);
+}
+
+export function mimeTypeNichtErlaubt(): string {
+  return "DATEITYP NICHT ERLAUBT";
+}
+
+export function isDokumentAllowed(dokument: DokumentDto): boolean {
+  return dokument.typDokument !== mimeTypeNichtErlaubt();
+}
+
+export function containsNotAllowedDokument(dokumente: DokumentDto[]): boolean {
+  let containsNotAllowedDokument = false;
+  dokumente.forEach(dokumente => {
+    if (!isDokumentAllowed(dokumente)) {
+      containsNotAllowedDokument = true;
+    }
+  });
+  return containsNotAllowedDokument;
 }
