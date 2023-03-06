@@ -118,7 +118,7 @@
           cols="12"
         >
           <v-autocomplete
-            id="bauvorhaben_artFnp_dropdown"            
+            id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
             :items="baugebietTypList"
             item-value="key"
@@ -127,12 +127,12 @@
             chips
             :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
             @input="formChanged"
-          >        
+          >
             <template #label>
               Flächennutzung laut Flächennutzungsplan
               <span class="secondary--text">*</span>
             </template>
-          </v-autocomplete>  
+          </v-autocomplete>
         </v-col>
       </v-row>
       <v-row>
@@ -205,14 +205,14 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({ components: { FieldGroupCard, Dokumente, NumField, TriSwitch } })
 export default class BauvorhabenForm extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AdresseComponent
+    FieldPrefixesSuffixes,
+    FieldValidationRulesMixin,
+    SaveLeaveMixin,
+    AdresseComponent
 ) {
   @VModel({type: BauvorhabenModel})
   bauvorhaben!: BauvorhabenModel;
-  
+
   private dokumentCardTitle = "Dokumente";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben"
