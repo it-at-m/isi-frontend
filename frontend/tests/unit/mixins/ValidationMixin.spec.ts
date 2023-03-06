@@ -1,4 +1,4 @@
-import { BaurateDto, FoerdermixDto } from "@/api/api-client";
+import { BaurateDto, FoerdermixDto } from "@/api/api-client/isi-backend";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 
@@ -32,7 +32,7 @@ describe("ValidatorMixin Test", () => {
 
     const geschossflaecheWohnen = validationMixin.findFaultInBaurate(baurate);
 
-    expect(geschossflaecheWohnen).toBe("Geschlossfläche Wohnen geplant muss angegeben werden");
+    expect(geschossflaecheWohnen).toBe("Geschossfläche Wohnen geplant muss angegeben werden");
 
     baurate.geschossflaecheWohnenGeplant = 50;
 

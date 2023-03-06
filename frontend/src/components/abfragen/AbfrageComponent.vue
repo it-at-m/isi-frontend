@@ -4,8 +4,11 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
-            v-model="abfrage.nameAbfrage"
+            id="abfrage_name"
+            v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="70"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -15,60 +18,12 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="adressCardTitle">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-text-field
-            v-model="abfrage.allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            value="abfrage.allgemeineOrtsangabe"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.strasse"
-            label="Strasse"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            label="Hausnummer"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="abfrage.adresse.ort"
-            label="Ort"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
+    <adresse-component
+      id="abfrage_adresse_component"
+      :adresse-prop.sync="abfrage.adresse"
+      :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
+      :show-in-information-list-prop="true"
+    />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row justify="center">
         <v-col
@@ -76,6 +31,7 @@
           md="6"
         >
           <date-picker
+            id="abfrage_friststellungnahme"
             ref="fristStellungnahmeDatePicker"
             v-model="abfrage.fristStellungnahme"
             label="Termin der Stellungnahme"
@@ -88,6 +44,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_status_dropdown"
             v-model="abfrage.statusAbfrage"
             :items="statusAbfrageList"
             item-value="key"
@@ -106,6 +63,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_standvorhaben_dropdown"
             v-model="abfrage.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
@@ -126,6 +84,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_bauvorhaben_dropdown"
             v-model="abfrage.bauvorhaben"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
@@ -141,8 +100,10 @@
           md="6"
         >
           <v-text-field
+            id="abfrage_bebauungsplannummer"
             v-model="abfrage.bebauungsplannummer"
             label="Bebauungsplannummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -155,10 +116,12 @@
         </v-col>
         <v-col cols="12">
           <v-textarea
+            id="abfrage_anmerkung"
             v-model="abfrage.anmerkung"
             label="Anmerkungen"
             auto-grow
             rows="3"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -168,6 +131,7 @@
       <v-row>
         <v-col cols="12">
           <dokumente
+            id="abfrage_dokumente_component"
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
             :path-to-file="dokumentePathToFile"
@@ -181,7 +145,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client";
+import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import DatePicker from "@/components/common/DatePicker.vue";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
@@ -191,12 +155,14 @@ import { createFilepathDtoFor } from "@/utils/Factories";
 import _ from "lodash";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({
   components: {
     DatePicker,
     Dokumente,
     FieldGroupCard,
+    AdresseComponent
   },
 })
 export default class AbfrageComponent extends Mixins(
@@ -205,8 +171,6 @@ export default class AbfrageComponent extends Mixins(
   SaveLeaveMixin
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
-
-  private adressCardTitle = "Adressinformationen";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Vorhaben";
 

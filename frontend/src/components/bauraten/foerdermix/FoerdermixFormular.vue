@@ -14,11 +14,11 @@
           md="4"
         >
           <v-text-field
+            id="foerdermix_gesamtsumme"
             v-model="gesamtsumme"
             label="Summe"
             filled
             readonly="readonly"
-            :class="sumOver100 ? disabled-off : disabled"
             :rules="[fieldValidationRules.nichtGleich100Prozent(foerdermix)]"
             :suffix="fieldPrefixesSuffixes.percent"
           />
@@ -30,6 +30,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilFreifinanzierterGeschosswohnungsbau"
             v-model="foerdermix.anteilFreifinanzierterGeschosswohnungsbau"
             label="Freifinanzierter Geschosswohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -40,6 +41,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilGefoerderterMietwohnungsbau"
             v-model="foerdermix.anteilGefoerderterMietwohnungsbau"
             label="Geförderter Mietwohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -50,6 +52,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilMuenchenModell"
             v-model="foerdermix.anteilMuenchenModell"
             label="MünchenModell"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -62,6 +65,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilPreisgedaempfterMietwohnungsbau"
             v-model="foerdermix.anteilPreisgedaempfterMietwohnungsbau"
             label="Preisgedämpfter Mietwohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -72,6 +76,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilKonzeptionellerMietwohnungsbau"
             v-model="foerdermix.anteilKonzeptionellerMietwohnungsbau"
             label="Konzeptioneller Mietwohnungsbau"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -82,6 +87,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilBaugemeinschaften"
             v-model="foerdermix.anteilBaugemeinschaften"
             label="Baugemeinschaften"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -94,6 +100,7 @@
           md="4"
         >
           <num-field
+            id="foerdermix_anteilEinUndZweifamilienhaeuser"
             v-model="foerdermix.anteilEinUndZweifamilienhaeuser"
             label="Ein- und Zweifamilienhäuser"
             :suffix="fieldPrefixesSuffixes.percent"
@@ -113,24 +120,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import {Component, Mixins, VModel} from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import { addiereAnteile } from "@/utils/CalculationUtil";
+import {addiereAnteile} from "@/utils/CalculationUtil";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FormattingMixin from "@/mixins/FormattingMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
-@Component({ components: { FieldGroupCard } })
+@Component({components: {FieldGroupCard}})
 export default class FoerdermixFormular extends Mixins(
-  FieldValidationRulesMixin,
-  FieldPrefixesSuffixes,
-  FormattingMixin,
-  SaveLeaveMixin
+    FieldValidationRulesMixin,
+    FieldPrefixesSuffixes,
+    FormattingMixin,
+    SaveLeaveMixin
 ) {
-  
-  @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
+
+  @VModel({type: FoerdermixModel}) foerdermix!: FoerdermixModel;
 
   private anteileFMCardTitle = "Anteile Fördermix";
 
@@ -147,10 +154,4 @@ export default class FoerdermixFormular extends Mixins(
 </script>
 
 <style>
-.disabled {
-  color: black;
-}
-.disabled-off {
-  color: red;
-}
 </style>

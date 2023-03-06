@@ -1,5 +1,5 @@
 import {  } from "module";
-import { AbfragevarianteDtoPlanungsrechtEnum } from "@/api/api-client";
+import { AbfragevarianteDtoPlanungsrechtEnum } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import { createInfrastrukturabfrageDto, createAbfragevarianteDto, } from "@/utils/Factories";

@@ -1,4 +1,4 @@
-import { LookupApi, LookupEntryDto } from "@/api/api-client";
+import { LookupApi, LookupEntryDto } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
@@ -10,7 +10,6 @@ const state = {
   sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
   standVorhaben: [] as LookupEntryDto[],
   statusAbfrage: [] as LookupEntryDto[],
-  zustaendigeDienststelle: [] as LookupEntryDto[],
   baugebietTyp: [] as LookupEntryDto[],
   artDokument: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
@@ -44,9 +43,6 @@ export default {
     },
     statusAbfrage: (state: LookupState): Array<LookupEntryDto> => {
       return state.statusAbfrage;
-    },
-    zustaendigeDienststelle: (state: LookupState): Array<LookupEntryDto> => {
-      return state.zustaendigeDienststelle;
     },
     baugebietTyp: (state: LookupState): Array<LookupEntryDto> => {
       return state.baugebietTyp;
@@ -87,9 +83,6 @@ export default {
     statusAbfrage(state: LookupState, list: LookupEntryDto[]): void {
       state.statusAbfrage = list;
     },
-    zustaendigeDienststelle(state: LookupState, list: LookupEntryDto[]): void {
-      state.zustaendigeDienststelle = list;
-    },
     baugebietTyp(state: LookupState, list: LookupEntryDto[]): void {
       state.baugebietTyp = list;
     },
@@ -113,7 +106,7 @@ export default {
 
   actions: {
     initialize(context: ActionContext<LookupState, RootState>): void {
-      const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfiguration());
+      const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfigurationForBackend());
       lookupApi.getLookupLists(RequestUtils.getGETConfig()).then(lookupLists => {
         context.commit('uncertainBoolean', lookupLists.uncertainBoolean?.list);
         context.commit('artAbfrage', lookupLists.artAbfrage?.list);
@@ -121,7 +114,6 @@ export default {
         context.commit('sobonVerfahrensgrundsaetzeJahr', lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
         context.commit('standVorhaben', lookupLists.standVorhaben?.list);
         context.commit('statusAbfrage', lookupLists.statusAbfrage?.list);
-        context.commit('zustaendigeDienststelle', lookupLists.zustaendigeDienststelle?.list);
         context.commit('baugebietTyp', lookupLists.baugebietTyp?.list);
         context.commit('artDokument', lookupLists.artDokument?.list);
         context.commit('statusInfrastruktureinrichtung', lookupLists.statusInfrastruktureinrichtung?.list);
@@ -147,9 +139,6 @@ export default {
     },
     statusAbfrage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("statusAbfrage", list);
-    },
-    zustaendigeDienststelle(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit('zustaendigeDienststelle', list);
     },
     baugebietTyp(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit('baugebietTyp', list);

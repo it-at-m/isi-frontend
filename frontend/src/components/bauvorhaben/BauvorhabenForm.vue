@@ -7,8 +7,11 @@
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_eigentuemer"
             v-model="bauvorhaben.eigentuemer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -21,6 +24,7 @@
           md="6"
         >
           <num-field
+            id="bauvorhaben_grundstuecksgroesse"
             v-model="bauvorhaben.grundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -34,6 +38,7 @@
           md="6"
         >
           <v-select
+            id="bauvorhaben_standVorhaben_dropdown"
             v-model="bauvorhaben.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
@@ -51,8 +56,11 @@
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
             :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="255"
+            validate-on-blur
             @input="formChanged"
           >
             <template #label>
@@ -62,63 +70,12 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="adressCardTitle">
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
-            v-model="bauvorhaben.allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.strasse"
-            label="Strasse"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            label="Hausnummer"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="bauvorhaben.adresse.ort"
-            label="Ort"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
+    <adresse-component
+      id="bauvorhaben_adresse_component"
+      :adresse-prop.sync="bauvorhaben.adresse"
+      :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
+      :show-in-information-list-prop="true"
+    />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
         <v-col
@@ -126,6 +83,7 @@
           md="6"
         >
           <v-select
+            id="bauvorhaben_planungsrecht_dropdown"
             v-model="bauvorhaben.planungsrecht"
             :items="planungsrechtList"
             item-value="key"
@@ -142,46 +100,8 @@
           cols="12"
           md="6"
         >
-          <v-select
-            v-model="bauvorhaben.zustaendigkeit"
-            :items="zustaendigkeitList"
-            item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-            @change="formChanged"
-          >
-            <template #label>
-              Zuständigkeit <span class="secondary--text">*</span>
-            </template>
-          </v-select>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-autocomplete            
-            v-model="bauvorhaben.artFnp"
-            :items="baugebietTypList"
-            item-value="key"
-            item-text="value"
-            multiple
-            chips
-            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
-            @input="formChanged"
-          >        
-            <template #label>
-              Flächennutzung laut Flächennutzungsplan
-              <span class="secondary--text">*</span>
-            </template>
-          </v-autocomplete>  
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <TriSwitch
+            id="bauvorhaben_sobonRelevant_triswitch"
             v-model="bauvorhaben.sobonRelevant"
             off-text="Nein"
             on-text="Ja"
@@ -196,11 +116,35 @@
       <v-row>
         <v-col
           cols="12"
+        >
+          <v-autocomplete
+            id="bauvorhaben_artFnp_dropdown"
+            v-model="bauvorhaben.artFnp"
+            :items="baugebietTypList"
+            item-value="key"
+            item-text="value"
+            multiple
+            chips
+            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            @input="formChanged"
+          >
+            <template #label>
+              Flächennutzung laut Flächennutzungsplan
+              <span class="secondary--text">*</span>
+            </template>
+          </v-autocomplete>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_bebauungsplannummer"
             v-model="bauvorhaben.bebauungsplannummer"
             label="Bebauungsplannummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -209,8 +153,10 @@
           md="6"
         >
           <v-text-field
+            id="bauvorhaben_fisnummer"
             v-model="bauvorhaben.fisNummer"
             label="FIS-Nummer"
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -218,10 +164,12 @@
       <v-row>
         <v-col cols="12">
           <v-textarea
+            id="bauvorhaben_anmerkung"
             v-model="bauvorhaben.anmerkung"
             label="Anmerkung"
             rows="1"
             auto-grow
+            maxlength="255"
             @input="formChanged"
           />
         </v-col>
@@ -231,6 +179,7 @@
       <v-row>
         <v-col cols="12">
           <Dokumente
+            id="bauvorhaben_dokumente_component"
             v-model="bauvorhaben.dokumente"
             :path-to-file="dokumentePathToFile"
           />
@@ -242,7 +191,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client";
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -252,17 +201,17 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({ components: { FieldGroupCard, Dokumente, NumField, TriSwitch } })
 export default class BauvorhabenForm extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin
+    FieldPrefixesSuffixes,
+    FieldValidationRulesMixin,
+    SaveLeaveMixin,
+    AdresseComponent
 ) {
   @VModel({type: BauvorhabenModel})
   bauvorhaben!: BauvorhabenModel;
-  
-  private adressCardTitle = "Adressinformationen";
 
   private dokumentCardTitle = "Dokumente";
 
@@ -274,10 +223,6 @@ export default class BauvorhabenForm extends Mixins(
 
   get planungsrechtList(): LookupEntryDto[] {
     return this.$store.getters["lookup/planungsrecht"];
-  }
-
-  get zustaendigkeitList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/zustaendigeDienststelle"];
   }
 
   get baugebietTypList(): LookupEntryDto[] {

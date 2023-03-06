@@ -3,9 +3,9 @@
     ref="inputRef"
     v-model="formattedValue"
     v-bind="$attrs"
-    validate-on-blur
     :required="required"
     :rules="usedRules"
+    validate-on-blur
     @input="formChanged"
   >
     <!--

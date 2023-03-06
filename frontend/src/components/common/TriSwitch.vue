@@ -16,6 +16,7 @@
         <slot name="offText">{{ offText }}</slot>
       </span>
       <input
+        id="triswitch"
         v-model="valueAsPosition"
         :class="`slider mx-2 ${getBackgroundColor()}`"
         type="range"
@@ -34,7 +35,7 @@
 <script lang="ts">
 import {Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { UncertainBoolean } from "@/api/api-client";
+import { UncertainBoolean } from "@/api/api-client/isi-backend";
 
 type Position = "0" | "1" | "2";
 

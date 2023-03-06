@@ -3,6 +3,7 @@
     <DefaultLayout solid-heading>
       <template #content>
         <infrastruktureinrichtung-typ-component
+          id="infrastruktureinrichtung_infrastruktureinrichtungtyp_component"
           ref="infrastruktureinrichtungTypComponent"
           v-model="infrastruktureinrichtungTyp"
           :lfd-nr="lfdNr"
@@ -10,41 +11,48 @@
         />
         <kinderkrippe-component
           v-if="isKinderkrippe"
+          id="infrastruktureinrichtung_kinderkrippe_component"
           ref="kinderkrippeComponent"
           v-model="kinderkrippe"
           :mode="mode"
         />
         <kindergarten-component
           v-if="isKindergarten"
+          id="infrastruktureinrichtung_kindergarten_component"
           ref="kindergartenComponent"
           v-model="kindergarten"
           :mode="mode"
         />
         <haus-fuer-kinder-component
           v-if="isHausFuerKinder"
+          id="infrastruktureinrichtung_hausFuerKinder_component"
           ref="hausFuerKinderComponent"
           v-model="hausFuerKinder"
           :mode="mode"
         />
         <gs-nachmittag-betreuung-component
           v-if="isGsNachmittagBetreuung"
+          id="infrastruktureinrichtung_gsNachmittagBetreuung_component"
           ref="gsNachmittagBetreuungComponent"
           v-model="gsNachmittagBetreuung"
           :mode="mode"
         />
         <grundschule-component
           v-if="isGrundschule"
+          id="infrastruktureinrichtung_grundschule_component"
           ref="grundschuleComponent"
           v-model="grundschule"
           :mode="mode"
         />
         <mittelschule-component
           v-if="isMittelschule"
+          id="infrastruktureinrichtung_mittelschule_component"
           ref="mittelschuleComponent"
           v-model="mittelschule"
           :mode="mode"
         />
         <yes-no-dialog
+          id="infrastruktureinrichtung_yes_no_dialog_löschen"
           v-model="deleteDialogOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
@@ -55,6 +63,7 @@
           @yes="yesNoDialogYes"
         />
         <yes-no-dialog
+          id="infrastruktureinrichtung_yes_no_dialog_save_leave"
           ref="saveLeaveDialog"
           v-model="saveLeaveDialog"
           :dialogtitle="saveLeaveDialogTitle"
@@ -70,6 +79,7 @@
           <v-row>
             <v-col cols="12">
               <span
+                id="infrastruktureinrichtung_displayName"
                 class="text-h6 font-weight-bold"
                 v-text="infrastruktureinrichtungDisplayName"
               />
@@ -80,6 +90,7 @@
       <template #information>
         <v-btn
           v-if="!isNewInfrastruktureinrichtung()"
+          id="infrastruktureinrichtung_löschen_button"
           class="text-wrap my-4 px-1"
           color="primary"
           elevation="1"
@@ -87,11 +98,15 @@
           @click="deleteInfrastruktureinrichtung()"
           v-text="'Löschen'"
         />
-        <information-list information-message-deletion-intervall-seconds="10" />
+        <information-list
+          id="infrastruktureinrichtung_information_list"
+          information-message-deletion-intervall-seconds="10"
+        />
       </template>
       <template #action>
         <v-spacer />
         <v-btn
+          id="infrastruktureinrichtung_speichern_button"
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
@@ -101,6 +116,7 @@
           v-text="buttonText"
         />
         <v-btn
+          id="infrastruktureinrichtung_abbrechen_button"
           color="primary"
           elevation="1"
           class="text-wrap mt-2 px-1"
@@ -132,7 +148,7 @@ import {
   GrundschuleDto,
   MittelschuleDto,
   InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import KinderkrippeApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/KinderkrippeApiRequestMixin";
 import KindergartenApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/KindergartenApiRequestMixin";
 import HausFuerKinderApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/HausFuerKinderApiRequestMixin";

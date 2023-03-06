@@ -1,4 +1,4 @@
-import { InfrastruktureinrichtungDto } from "@/api/api-client";
+import { InfrastruktureinrichtungDto } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import { createAdresseDto } from "@/utils/Factories";
 import _ from "lodash";

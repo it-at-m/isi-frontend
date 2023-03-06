@@ -5,8 +5,9 @@
         v-if="bauvorhabenList.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in bauvorhabenList"
+          v-for="(item, index) in bauvorhabenList"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,45 +17,30 @@
             :elevation="hover ? 4 : 0"
             @click="editBauvorhaben(item.id)"
           >
-            <v-card-title>
+            <v-card-title :id="'bauvorhaben_uebersicht_item_' + index + '_nameVorhaben'">
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span>Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'">Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
               <v-spacer />
-              <span>Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
               <v-spacer />
-              <span>Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'">Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
             </v-card-text>
           </v-card>
         </v-hover>
       </div>
-      <!-- Falls noch keine Bauvorhaben vorhanden sind, wird Folgendes angezeigt -->
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="fetchSuccess === true"
-          class="text-h6"
-        >Keine Bauvorhaben vorhanden</span>
-        <span
-          v-else-if="fetchSuccess === false"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        id="bauvorhaben_uebersicht_loading"
+        :success="fetchSuccess"
+        name="Bauvorhaben"
+      />
     </template>
     <template #action>
       <v-spacer />
       <v-btn
+        id="bauvorhaben_uebersicht_bauvorhaben_erstellen_button"
         dark
         fab
         x-large
@@ -74,7 +60,7 @@
 import { Component, Mixins } from "vue-property-decorator";
 import router from "@/router";
 import DefaultLayout from "@/components/DefaultLayout.vue";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client";
+import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 
 @Component({
@@ -105,6 +91,9 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
       .then((bauvorhaben: BauvorhabenDto[]) => {
         this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
         this.fetchSuccess = true;
+      })
+      .catch(() => {
+        this.fetchSuccess = false;
       });
   }
   

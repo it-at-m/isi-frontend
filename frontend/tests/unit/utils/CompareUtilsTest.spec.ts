@@ -1,4 +1,4 @@
-import { FoerdermixDto, FoerdermixStammDto } from "@/api/api-client";
+import { FoerdermixDto, FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";

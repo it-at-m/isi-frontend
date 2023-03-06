@@ -1,4 +1,4 @@
-import { SchuleDto } from "@/api/api-client";
+import { SchuleDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface SchuleModel extends SchuleDto { }

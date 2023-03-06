@@ -1,4 +1,4 @@
-import { FileInfoStammApi, FileInformationDto } from "@/api/api-client";
+import { FileInfoStammApi, FileInformationDto } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
@@ -28,7 +28,7 @@ export default {
 
   actions: {
     initialize(context: ActionContext<FileInfoStammState, RootState>): void {
-      const fileInfoStammApi = new FileInfoStammApi(RequestUtils.getBasicFetchConfiguration());
+      const fileInfoStammApi = new FileInfoStammApi(RequestUtils.getBasicFetchConfigurationForBackend());
       fileInfoStammApi.getFileInformation(RequestUtils.getGETConfig()).then(dto => {
         context.commit("fileInformation", dto);
       });

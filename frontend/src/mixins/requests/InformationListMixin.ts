@@ -2,7 +2,7 @@ import {Component, Vue} from "vue-property-decorator";
 import {
   InformationResponseDto,
   InformationResponseDtoTypeEnum
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 
 @Component
 export default class InformationListMixin extends Vue {

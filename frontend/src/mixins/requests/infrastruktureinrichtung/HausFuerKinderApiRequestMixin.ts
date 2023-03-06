@@ -6,7 +6,7 @@ import {
   CreateHausFuerKinderRequest,
   UpdateHausFuerKinderRequest,
   DeleteHausFuerKinderByIdRequest
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -21,7 +21,7 @@ export default class HausFuerKinderApiRequestMixin extends Mixins(
   
   constructor() {
     super();
-    this.hausFuerKinderApi = new HausFuerKinderApi(RequestUtils.getBasicFetchConfiguration());
+    this.hausFuerKinderApi = new HausFuerKinderApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   createHausFuerKinder(dto: HausFuerKinderDto, showInInformationList: boolean): Promise<HausFuerKinderDto> {

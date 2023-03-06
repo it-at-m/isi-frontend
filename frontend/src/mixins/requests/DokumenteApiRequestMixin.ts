@@ -5,7 +5,7 @@ import {
   GetFileRequest,
   PresignedUrlDto,
   SaveFileRequest,
-} from "@/api/api-client";
+} from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import {Component, Mixins} from "vue-property-decorator";
 import _ from "lodash";
@@ -18,7 +18,7 @@ export default class DokumenteApiRequestMixin extends Mixins(ErrorHandler) {
   
   constructor() {
     super();
-    this.dateihandlingApi = new DateihandlingApi(RequestUtils.getBasicFetchConfiguration());
+    this.dateihandlingApi = new DateihandlingApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
   
   async getPresignedUrlForSaveDokument(dto: FilepathDto, showInInformationList: boolean): Promise<PresignedUrlDto> {

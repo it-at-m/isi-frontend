@@ -1,11 +1,13 @@
 <template>
   <div>
     <infrastruktureinrichtung-component
+      id="infrastruktureinrichtung_mittelschule_component" 
       ref="infrastruktureinrichtungComponent"
       v-model="mittelschule.infrastruktureinrichtung"
       :mode="displayMode"
     />    
     <schule-component
+      id="infrastruktureinrichtung_mittelschule_schule_component" 
       ref="schule-component"
       v-model="mittelschule.schule"
     />    
