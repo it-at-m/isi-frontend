@@ -34,6 +34,12 @@ export interface GsNachmittagBetreuungDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof GsNachmittagBetreuungDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof GsNachmittagBetreuungDto
      */
@@ -83,6 +89,7 @@ export function GsNachmittagBetreuungDtoFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'infrastruktureinrichtung': InfrastruktureinrichtungDtoFromJSON(json['infrastruktureinrichtung']),
@@ -100,6 +107,7 @@ export function GsNachmittagBetreuungDtoToJSON(value?: GsNachmittagBetreuungDto 
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'infrastruktureinrichtung': InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),

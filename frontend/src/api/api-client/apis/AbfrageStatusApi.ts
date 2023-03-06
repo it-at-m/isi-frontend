@@ -70,7 +70,7 @@ export interface ZusaetzlicheAbfragevarianteAnlegenRequest {
 export class AbfrageStatusApi extends runtime.BaseAPI {
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ABBRUCH genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ABBRUCH
      */
     async abbrechenInfrastrukturabfrageRaw(requestParameters: AbbrechenInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -92,14 +92,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ABBRUCH genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ABBRUCH
      */
     async abbrechenInfrastrukturabfrage(requestParameters: AbbrechenInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.abbrechenInfrastrukturabfrageRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ANGELEGT genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ANGELEGT
      */
     async angabenAnpassenInfrastrukturabfrageRaw(requestParameters: AngabenAnpassenInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -121,14 +121,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ANGELEGT genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ANGELEGT
      */
     async angabenAnpassenInfrastrukturabfrage(requestParameters: AngabenAnpassenInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.angabenAnpassenInfrastrukturabfrageRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf BEDARFSMELDUNG_ERFOLGT
+     * Setzt eine Infrastrukturabfrage auf den Status BEDARFSMELDUNG_ERFOLGT
      */
     async bedarfsmeldungErfolgtRaw(requestParameters: BedarfsmeldungErfolgtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -150,14 +150,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf BEDARFSMELDUNG_ERFOLGT
+     * Setzt eine Infrastrukturabfrage auf den Status BEDARFSMELDUNG_ERFOLGT
      */
     async bedarfsmeldungErfolgt(requestParameters: BedarfsmeldungErfolgtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.bedarfsmeldungErfolgtRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Gibt eine Infrastrukturabfrage frei genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status OFFEN
      */
     async freigabeInfrastrukturabfrageRaw(requestParameters: FreigabeInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -179,14 +179,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gibt eine Infrastrukturabfrage frei genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status OFFEN
      */
     async freigabeInfrastrukturabfrage(requestParameters: FreigabeInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.freigabeInfrastrukturabfrageRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ERLEDIGT genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
      */
     async keineBearbeitungNoetigRaw(requestParameters: KeineBearbeitungNoetigRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -208,14 +208,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ERLEDIGT genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
      */
     async keineBearbeitungNoetig(requestParameters: KeineBearbeitungNoetigRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.keineBearbeitungNoetigRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage von auf IN_BEARBEITUNG_PLAN genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_BEARBEITUNG_PLAN
      */
     async keineZusaetzlicheAbfragevarianteRaw(requestParameters: KeineZusaetzlicheAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -237,14 +237,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage von auf IN_BEARBEITUNG_PLAN genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_BEARBEITUNG_PLAN
      */
     async keineZusaetzlicheAbfragevariante(requestParameters: KeineZusaetzlicheAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.keineZusaetzlicheAbfragevarianteRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_BEARBEITUBG_PLAN genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_BEARBEITUBG_PLAN
      */
     async speicherDerVariantenRaw(requestParameters: SpeicherDerVariantenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -266,14 +266,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_BEARBEITUBG_PLAN genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_BEARBEITUBG_PLAN
      */
     async speicherDerVarianten(requestParameters: SpeicherDerVariantenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.speicherDerVariantenRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ERLEDIGT genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
      */
     async speichernVonSozialinfrastrukturVersorgungRaw(requestParameters: SpeichernVonSozialinfrastrukturVersorgungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -295,14 +295,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf ERLEDIGT genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
      */
     async speichernVonSozialinfrastrukturVersorgung(requestParameters: SpeichernVonSozialinfrastrukturVersorgungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.speichernVonSozialinfrastrukturVersorgungRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_BEARBEITUNG_FACHREFERATE genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_BEARBEITUNG_FACHREFERATE
      */
     async verschickenDerStellungnahmeRaw(requestParameters: VerschickenDerStellungnahmeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -324,14 +324,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_BEARBEITUNG_FACHREFERATE genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_BEARBEITUNG_FACHREFERATE
      */
     async verschickenDerStellungnahme(requestParameters: VerschickenDerStellungnahmeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.verschickenDerStellungnahmeRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_ERFASSUNG genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_ERFASSUNG
      */
     async weitereAbfragevariantenAnlegenRaw(requestParameters: WeitereAbfragevariantenAnlegenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -353,14 +353,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_ERFASSUNG genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_ERFASSUNG
      */
     async weitereAbfragevariantenAnlegen(requestParameters: WeitereAbfragevariantenAnlegenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.weitereAbfragevariantenAnlegenRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_ERFASSUNG genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_ERFASSUNG
      */
     async zusaetzlicheAbfragevarianteAnlegenRaw(requestParameters: ZusaetzlicheAbfragevarianteAnlegenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -382,7 +382,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf IN_ERFASSUNG genaue Statusänderungdefinition in {@link  StateMachineConfiguration}
+     * Setzt eine Infrastrukturabfrage auf den Status IN_ERFASSUNG
      */
     async zusaetzlicheAbfragevarianteAnlegen(requestParameters: ZusaetzlicheAbfragevarianteAnlegenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.zusaetzlicheAbfragevarianteAnlegenRaw(requestParameters, initOverrides);

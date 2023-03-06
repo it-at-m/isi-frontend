@@ -34,6 +34,12 @@ export interface DokumentDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof DokumentDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof DokumentDto
      */
@@ -91,6 +97,7 @@ export function DokumentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'filePath': FilepathDtoFromJSON(json['filePath']),
@@ -108,6 +115,7 @@ export function DokumentDtoToJSON(value?: DokumentDto | null): any {
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'filePath': FilepathDtoToJSON(value.filePath),

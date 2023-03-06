@@ -34,6 +34,12 @@ export interface BaurateDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof BaurateDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof BaurateDto
      */
@@ -81,6 +87,7 @@ export function BaurateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'jahr': json['jahr'],
@@ -100,6 +107,7 @@ export function BaurateDtoToJSON(value?: BaurateDto | null): any {
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'jahr': value.jahr,

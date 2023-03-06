@@ -34,6 +34,12 @@ export interface BauabschnittDto {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof BauabschnittDto
+     */
+    version?: number;
+    /**
+     * 
      * @type {Date}
      * @memberof BauabschnittDto
      */
@@ -69,6 +75,7 @@ export function BauabschnittDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
@@ -86,6 +93,7 @@ export function BauabschnittDtoToJSON(value?: BauabschnittDto | null): any {
     return {
         
         'id': value.id,
+        'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'bezeichnung': value.bezeichnung,
