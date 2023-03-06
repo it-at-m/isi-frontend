@@ -62,6 +62,24 @@ export interface GsNachmittagBetreuungDto {
      * @memberof GsNachmittagBetreuungDto
      */
     artGsNachmittagBetreuung?: GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof GsNachmittagBetreuungDto
+     */
+    anzahlHortPlaetze: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GsNachmittagBetreuungDto
+     */
+    anzahlHortGruppen: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GsNachmittagBetreuungDto
+     */
+    wohnungsnaheHortPlaetze?: number;
 }
 
 
@@ -94,6 +112,9 @@ export function GsNachmittagBetreuungDtoFromJSONTyped(json: any, ignoreDiscrimin
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'infrastruktureinrichtung': InfrastruktureinrichtungDtoFromJSON(json['infrastruktureinrichtung']),
         'artGsNachmittagBetreuung': !exists(json, 'artGsNachmittagBetreuung') ? undefined : json['artGsNachmittagBetreuung'],
+        'anzahlHortPlaetze': json['anzahlHortPlaetze'],
+        'anzahlHortGruppen': json['anzahlHortGruppen'],
+        'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],
     };
 }
 
@@ -112,6 +133,9 @@ export function GsNachmittagBetreuungDtoToJSON(value?: GsNachmittagBetreuungDto 
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'infrastruktureinrichtung': InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),
         'artGsNachmittagBetreuung': value.artGsNachmittagBetreuung,
+        'anzahlHortPlaetze': value.anzahlHortPlaetze,
+        'anzahlHortGruppen': value.anzahlHortGruppen,
+        'wohnungsnaheHortPlaetze': value.wohnungsnaheHortPlaetze,
     };
 }
 

@@ -10,7 +10,6 @@ import {
   BauvorhabenDtoArtFnpEnum,
   BauvorhabenDtoPlanungsrechtEnum,
   BauvorhabenDtoStandVorhabenEnum,
-  BauvorhabenDtoZustaendigkeitEnum,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
   FileInformationDto,
@@ -129,7 +128,6 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     anmerkung: "",
     sobonRelevant: UncertainBoolean.Unspecified,
     planungsrecht: BauvorhabenDtoPlanungsrechtEnum.Unspecified,
-    zustaendigkeit: BauvorhabenDtoZustaendigkeitEnum.Unspecified,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
   };
@@ -180,6 +178,7 @@ export function createDokumentDto(): DokumentDto {
     lastModifiedDateTime: undefined,
     filePath: createFilepathDto(),
     artDokument: DokumentDtoArtDokumentEnum.Unspecified,
+    sizeInBytes: 0,
     typDokument: ""
   };
 }

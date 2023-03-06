@@ -45,6 +45,7 @@
               :items="sobonVerfahrensgrundsaetzeJahrList"
               item-value="key"
               item-text="value"
+              :rules="[fieldValidationRules.pflichtfeld]"
               @change="formChanged"
             >
               <template #label>
