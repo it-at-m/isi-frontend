@@ -100,47 +100,6 @@
           cols="12"
           md="6"
         >
-          <v-select
-            id="bauvorhaben_zustaendigkeit_dropdown"
-            v-model="bauvorhaben.zustaendigkeit"
-            :items="zustaendigkeitList"
-            item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-            @change="formChanged"
-          >
-            <template #label>
-              Zuständigkeit <span class="secondary--text">*</span>
-            </template>
-          </v-select>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-autocomplete
-            id="bauvorhaben_artFnp_dropdown"            
-            v-model="bauvorhaben.artFnp"
-            :items="baugebietTypList"
-            item-value="key"
-            item-text="value"
-            multiple
-            chips
-            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
-            @input="formChanged"
-          >        
-            <template #label>
-              Flächennutzung laut Flächennutzungsplan
-              <span class="secondary--text">*</span>
-            </template>
-          </v-autocomplete>  
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <TriSwitch
             id="bauvorhaben_sobonRelevant_triswitch"
             v-model="bauvorhaben.sobonRelevant"
@@ -152,6 +111,28 @@
               SoBoN-relevant <span class="secondary--text">*</span>
             </template>
           </TriSwitch>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
+        >
+          <v-autocomplete
+            id="bauvorhaben_artFnp_dropdown"
+            v-model="bauvorhaben.artFnp"
+            :items="baugebietTypList"
+            item-value="key"
+            item-text="value"
+            multiple
+            chips
+            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            @input="formChanged"
+          >
+            <template #label>
+              Flächennutzung laut Flächennutzungsplan
+              <span class="secondary--text">*</span>
+            </template>
+          </v-autocomplete>
         </v-col>
       </v-row>
       <v-row>
@@ -224,14 +205,14 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({ components: { FieldGroupCard, Dokumente, NumField, TriSwitch } })
 export default class BauvorhabenForm extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AdresseComponent
+    FieldPrefixesSuffixes,
+    FieldValidationRulesMixin,
+    SaveLeaveMixin,
+    AdresseComponent
 ) {
   @VModel({type: BauvorhabenModel})
   bauvorhaben!: BauvorhabenModel;
-  
+
   private dokumentCardTitle = "Dokumente";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben"
@@ -242,10 +223,6 @@ export default class BauvorhabenForm extends Mixins(
 
   get planungsrechtList(): LookupEntryDto[] {
     return this.$store.getters["lookup/planungsrecht"];
-  }
-
-  get zustaendigkeitList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/zustaendigeDienststelle"];
   }
 
   get baugebietTypList(): LookupEntryDto[] {
