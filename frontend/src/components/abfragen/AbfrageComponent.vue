@@ -51,10 +51,11 @@
             item-text="value"
             readonly
             :rules="[fieldValidationRules.pflichtfeld]"
+            :append-icon="null"
             @change="formChanged"
           >
             <template #label>
-              Status der Abfrage <span class="secondary--text">*</span>
+              Status der Abfrage
             </template>
           </v-select>
         </v-col>
@@ -210,4 +211,5 @@ export default class AbfrageComponent extends Mixins(
 }
 </script>
 
-<style></style>
+<style>
+</style>
