@@ -2,10 +2,6 @@
   <v-form ref="form">
     <DefaultLayout solid-heading>
       <template #content>
-        <infrastrukturabfrageComponent
-          v-if="step === 1"
-          v-model="abfrage" 
-        />
         <div v-if="step === 1">
           <infrastrukturabfrageComponent
             id="abfrage_infrastrukturabfrage_component"
