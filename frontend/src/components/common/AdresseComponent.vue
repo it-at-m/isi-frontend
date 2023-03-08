@@ -51,7 +51,7 @@
               id="adresse_strasse"
               ref="strasseField"
               v-model="adresse.strasse"
-              label="Strasse"
+              label="Straße"
               @input="formChanged"
             />
           </v-col>
