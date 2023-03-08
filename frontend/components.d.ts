@@ -53,6 +53,7 @@ declare module '@vue/runtime-core' {
     VChip: typeof import('vuetify/lib')['VChip']
     VCol: typeof import('vuetify/lib')['VCol']
     VContainer: typeof import('vuetify/lib')['VContainer']
+    VDatePicker: typeof import('vuetify/lib')['VDatePicker']
     VDialog: typeof import('vuetify/lib')['VDialog']
     VDivider: typeof import('vuetify/lib')['VDivider']
     VersionInfo: typeof import('./src/components/common/VersionInfo.vue')['default']
