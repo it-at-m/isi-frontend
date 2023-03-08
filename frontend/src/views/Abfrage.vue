@@ -369,6 +369,7 @@ export default class Abfrage extends Mixins(
     const validationMessage: string | null =
       this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
+        await this.updateInfrastrukturabfrage(this.abfrage, true);
         this.freigabInfrastrukturabfrage(this.abfrage.id as string, true).then(
           () => {
             this.returnToUebersicht(
