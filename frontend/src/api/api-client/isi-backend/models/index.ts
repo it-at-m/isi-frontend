@@ -28,6 +28,7 @@ export * from './KinderkrippeDto';
 export * from './LookupEntryDto';
 export * from './LookupListDto';
 export * from './LookupListsDto';
+export * from './MimeTypeInformationDto';
 export * from './MittelschuleDto';
 export * from './PresignedUrlDto';
 export * from './RealisierungsZeitraumDto';

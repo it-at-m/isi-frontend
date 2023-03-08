@@ -62,6 +62,18 @@ export interface DokumentDto {
      * @memberof DokumentDto
      */
     artDokument: DokumentDtoArtDokumentEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof DokumentDto
+     */
+    sizeInBytes: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DokumentDto
+     */
+    typDokument: string;
 }
 
 
@@ -102,6 +114,8 @@ export function DokumentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'filePath': FilepathDtoFromJSON(json['filePath']),
         'artDokument': json['artDokument'],
+        'sizeInBytes': json['sizeInBytes'],
+        'typDokument': json['typDokument'],
     };
 }
 
@@ -120,6 +134,8 @@ export function DokumentDtoToJSON(value?: DokumentDto | null): any {
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'filePath': FilepathDtoToJSON(value.filePath),
         'artDokument': value.artDokument,
+        'sizeInBytes': value.sizeInBytes,
+        'typDokument': value.typDokument,
     };
 }
 
