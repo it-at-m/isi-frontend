@@ -7,7 +7,7 @@ import colors from "vuetify/lib/util/colors";
 
 Vue.use(Vuetify);
 
-const theme = {
+export const theme = {
   themes: {
     light: {
       primary: colors.blueGrey.darken2,

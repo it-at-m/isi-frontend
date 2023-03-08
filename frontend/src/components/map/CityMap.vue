@@ -47,6 +47,8 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { Component, Prop, Mixins } from 'vue-property-decorator';
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
 import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
@@ -55,6 +57,7 @@ import { VerortungState, MultiPolygon } from '@/store/modules/VerortungStore';
 import L, { LatLngLiteral } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import _ from 'lodash';
+import { theme } from '@/plugins/vuetify';
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -116,15 +119,19 @@ export default class CityMap extends Mixins(
       .setContent("Lädt...")
       .openOn(this.map);
 
-    const coordinate: CoordinateDto = { lat: latlng.lat, lon: latlng.lng };
-    const fetchedFlurstuecke = await this.getFlurstuecke(coordinate, false);
+    const point: CoordinateDto = { lat: latlng.lat, lon: latlng.lng };
+    const fetchedFlurstuecke = await this.getFlurstuecke(point, false);
     const flurstuecke: FlurstueckFeatureDto[] = [];
     const flurstueckMap: VerortungState["flurstuecke"] = this.$store.getters["verortung/flurstuecke"];
     
     for (const flurstueck of fetchedFlurstuecke) {
-      const id = flurstueck.properties?.flurstueckId;
-
-      if (id && flurstueck.geometry) {
+      /*
+      Flurstücke mit fehlenden obligatorischen Werten werden in diesem Schritt "verworfen".
+      Deswegen wird im weiteren Verlauf des Codes immer angenommen, dass die Werte vorhanden sind.
+      */
+      if (this.flurstueckIsValid(flurstueck)) {
+        const id = flurstueck.properties!.flurstueckId!;
+        
         if (!flurstueckMap.has(id)) {
           this.$store.dispatch("verortung/addFlurstueck", flurstueck);
         } else {
@@ -138,7 +145,6 @@ export default class CityMap extends Mixins(
     if (flurstuecke.length !== 0) {
       const multiPolygonArray: MultiPolygon[] = [];
       for (const flurstueck of flurstueckMap.values()) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         multiPolygonArray.push(flurstueck.geometry!.coordinates as MultiPolygon);
       }
 
@@ -167,11 +173,10 @@ export default class CityMap extends Mixins(
     
     if (this.flurstueckPolygon) {
       this.flurstueckPolygon.setLatLngs(leafletCoordinates);
-      this.flurstueckPolygon.redraw();
     } else {
       this.flurstueckPolygon = L.polygon(leafletCoordinates, {
-        color: "#455A64",
-        fillColor: "#546E7A",
+        color: theme.themes.light.primary,
+        fillColor: theme.themes.light.accent,
         fillOpacity: 0.5
       }).addTo(this.map);
     }
@@ -183,16 +188,13 @@ export default class CityMap extends Mixins(
     const coordinates: VerortungState["coordinates"] = this.$store.getters["verortung/coordinates"];
     
     for (const flurstueck of flurstuecke.values()) {
-      const data = flurstueck.properties;
-      if (data) {
-        verortung.fluerstuck.push({
-          flurstueckNr: _.defaultTo(data.flurstueckId, -1),
-          zaehler: _.defaultTo(data.fluerstueckNummerZ, -1),
-          nennner: _.defaultTo(data.fluerstueckNummer, -1),
-          flaeche: _.defaultTo(data.flaecheQm, -1),
-          staedtischesEigentum: !_.isNil(data.eigentumsart),
-        });
-      }
+      verortung.fluerstuck.push({
+        flurstueckNr: flurstueck.properties!.flurstueckId!,
+        zaehler: flurstueck.properties!.fluerstueckNummerZ!,
+        nennner: flurstueck.properties!.fluerstueckNummer!,
+        flaeche: flurstueck.properties!.flaecheQm!,
+        staedtischesEigentum: !_.isNil(flurstueck.properties!.eigentumsart),
+      });
     }
 
     for (const coordinate of coordinates) {
@@ -242,11 +244,24 @@ export default class CityMap extends Mixins(
       for (const coordinate of coordinates.coordinates) {
         latLngArray.push({ lat: coordinate.lat, lng: coordinate.lon });
       }
-      latLngArray.pop();
       formatted.push(latLngArray);
     }
 
     return formatted;
+  }
+
+  private flurstueckIsValid(flurstueck: FlurstueckFeatureDto): boolean {
+    const id = !_.isNil(flurstueck.properties?.flurstueckId);
+    const zaehler = !_.isNil(flurstueck.properties?.fluerstueckNummerZ);
+    const nenner = !_.isNil(flurstueck.properties?.fluerstueckNummer);
+    const flaeche = !_.isNil(flurstueck.properties?.flaecheQm);
+    const coordinates = !_.isNil(flurstueck.geometry?.coordinates);
+    
+    if (id && zaehler && nenner && flaeche && coordinates) {
+      return true;
+    }
+    
+    return false;
   }
 }
 </script>

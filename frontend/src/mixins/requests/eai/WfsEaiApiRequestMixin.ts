@@ -44,7 +44,7 @@ export default class WfsEaiApiRequestMixin extends Mixins(
         }
       })
       .catch(error => {
-        throw this.handleError(showInInformationList, error);
+        this.handleError(showInInformationList, error);
       });
     
     return flurstuecke;
@@ -61,7 +61,7 @@ export default class WfsEaiApiRequestMixin extends Mixins(
         }
       })
       .catch(error => {
-        throw this.handleError(showInInformationList, error);
+        this.handleError(showInInformationList, error);
       });
     
     return gemarkungen;
@@ -78,7 +78,7 @@ export default class WfsEaiApiRequestMixin extends Mixins(
         }
       })
       .catch(error => {
-        throw this.handleError(showInInformationList, error);
+        this.handleError(showInInformationList, error);
       });
     
     return stadtbezirke;
@@ -95,7 +95,7 @@ export default class WfsEaiApiRequestMixin extends Mixins(
         }
       })
       .catch(error => {
-        throw this.handleError(showInInformationList, error);
+        this.handleError(showInInformationList, error);
       });
     
     return union;
