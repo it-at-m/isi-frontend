@@ -33,6 +33,17 @@
           @yes="yesNoDialogYes"
         />
         <yes-no-dialog
+          id="abfrage_yes_no_dialog_freigeben"
+          v-model="freigabeDialogOpen"
+          icon="mdi-account-arrow-right"
+          dialogtitle="Hinweis"
+          dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
+          no-text="Abbrechen"
+          :yes-text="'Freigabe'"
+          @no="yesNoDialogFreigabeNo"
+          @yes="yesNoDialogFreigabeYes"
+        />
+        <yes-no-dialog
           id="abfrage_yes_no_dialog_save_leave"
           ref="saveLeaveDialog"
           v-model="saveLeaveDialog"
@@ -149,8 +160,9 @@
           color="secondary"
           elevation="1"
           style="width: 200px"
-          @click="abfrageFreigeben()"
-          v-text="'Freigeben'"
+          :disabled="!isAngelegt()"
+          @click="freigabeAbfrage()"
+          v-text="'Freigabe'"
         />
         <v-btn
           id="abfrage_abbrechen_button"
@@ -213,7 +225,9 @@ export default class Abfrage extends Mixins(
 
   private buttonText = "";
 
-  private abfrage: InfrastrukturabfrageModel = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
+  private abfrage: InfrastrukturabfrageModel = new InfrastrukturabfrageModel(
+    createInfrastrukturabfrageDto()
+  );
 
   private baurate: BaurateModel = new BaurateModel(createBaurate());
 
@@ -221,13 +235,15 @@ export default class Abfrage extends Mixins(
 
   private deleteDialogOpen = false;
 
+  private freigabeDialogOpen = false;
+
   private step = 1;
 
   mounted(): void {
     this.mode = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage()
-        ? "Speichern"
-        : "Aktualisieren";
+      ? "Entwurf Speichern"
+      : "Aktualisieren";
     this.getAbfrageById();
   }
 
@@ -249,7 +265,10 @@ export default class Abfrage extends Mixins(
             this.$store.commit("search/selectedAbfrage", undefined);
           });
     } else {
-      this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
+      this.$store.commit(
+        "search/selectedAbfrage",
+        new InfrastrukturabfrageModel(createInfrastrukturabfrageDto())
+      );
     }
   }
 
@@ -257,20 +276,35 @@ export default class Abfrage extends Mixins(
     this.deleteDialogOpen = true;
   }
 
+  private freigabeAbfrage(): void {
+    this.freigabeDialogOpen = true;
+  }
+
   private async yesNoDialogYes(): Promise<void> {
     this.deleteInfrastrukturabfrage();
     this.yesNoDialogNo();
   }
 
-  private async deleteInfrastrukturabfrage(): Promise<void> {
-    await this.deleteInfrastrukturabfrageById(this.abfrageId, true)
-        .then(() => {
-          this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
-        });
-  }
-
   private yesNoDialogNo(): void {
     this.deleteDialogOpen = false;
+  }
+
+  private async yesNoDialogFreigabeYes(): Promise<void> {
+    this.abfrageFreigeben();
+    this.yesNoDialogNo();
+  }
+
+  private async yesNoDialogFreigabeNo(): Promise<void> {
+    this.freigabeDialogOpen = false;
+  }
+
+  private async deleteInfrastrukturabfrage(): Promise<void> {
+    await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+      this.returnToUebersicht(
+        "Die Abfrage wurde erfolgreich gelöscht",
+        Levels.SUCCESS
+      );
+    });
   }
 
   private async saveAbfrage(): Promise<void> {
@@ -282,7 +316,8 @@ export default class Abfrage extends Mixins(
   }
 
   private async saveInfrastrukturabfrage(): Promise<void> {
-    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
+    const validationMessage: string | null =
+      this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
       if (this.mode === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(this.abfrage, true)
@@ -317,10 +352,15 @@ export default class Abfrage extends Mixins(
 
   private async abfrageFreigeben(): Promise<void> {
     if (this.validate()) {
-      if (this.abfrage.abfrage.statusAbfrage == AbfrageListElementDtoStatusAbfrageEnum.Angelegt) {
+      if (
+        this.abfrage.abfrage.statusAbfrage ==
+        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
+      ) {
         this.infrastrukturabfrageFreigeben();
       } else {
-        this.showWarningInInformationList("Die Abfrage muss den Status \"angelegt\" besitzen");
+        this.showWarningInInformationList(
+          'Die Abfrage muss den Status "angelegt" besitzen'
+        );
       }
     } else {
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
@@ -328,15 +368,18 @@ export default class Abfrage extends Mixins(
   }
 
   private async infrastrukturabfrageFreigeben(): Promise<void> {
-    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
+    const validationMessage: string | null =
+      this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
-      await this.updateInfrastrukturabfrage(this.abfrage, true)
-          .then(() => {
-            this.freigabInfrastrukturabfrage(this.abfrage.id as string, true)
-                .then(() => {
-                  this.returnToUebersicht("Die Abfrage wurde erfolgreich freigegeben", Levels.SUCCESS);
-                });
-          });
+        await this.updateInfrastrukturabfrage(this.abfrage, true);
+        this.freigabInfrastrukturabfrage(this.abfrage.id as string, true).then(
+          () => {
+            this.returnToUebersicht(
+              "Die Abfrage wurde erfolgreich freigegeben",
+              Levels.SUCCESS
+            );
+          }
+        );
     } else {
       this.showWarningInInformationList(validationMessage);
     }
@@ -344,6 +387,13 @@ export default class Abfrage extends Mixins(
 
   private isNewAbfrage(): boolean {
     return this.$route.params.id === undefined;
+  }
+
+  private isAngelegt(): boolean {
+    return (
+      this.abfrage.abfrage.statusAbfrage ==
+      AbfrageListElementDtoStatusAbfrageEnum.Angelegt
+    );
   }
 
   private changeForward(): void {
@@ -387,7 +437,6 @@ export default class Abfrage extends Mixins(
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
     }
   }
-
 
   private returnToUebersicht(message?: string, level?: Levels): void {
     if (message && level) {
