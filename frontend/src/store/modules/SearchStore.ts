@@ -8,13 +8,14 @@ import GrundschuleModel from "@/types/model/infrastruktureinrichtung/Grundschule
 import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
+import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 
 const state = {
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
   resultBauvorhaben: [] as BauvorhabenDto[],
-  selectedBauvorhaben: undefined as BauvorhabenDto | undefined,
+  selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungListElementDto[] | undefined,
   searchQueryInfrastruktureinrichtung: "",
   selectedInfrastruktureinrichtung: undefined as

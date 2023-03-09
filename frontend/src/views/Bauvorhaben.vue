@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Vue } from "vue-property-decorator";
+import { Component, Mixins, Vue, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import {createAdresseDto, createBauvorhabenDto} from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -113,7 +113,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
-import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
+import { BauvorhabenDto, InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
 
 @Component({
   components: {
@@ -146,6 +146,14 @@ export default class Bauvorhaben extends Mixins(
     
     if (!this.isNew) {
       this.fetchBauvorhabenById();
+    }
+  }
+
+  @Watch("$store.state.search.selectedBauvorhaben", { immediate: true, deep: true })
+  private selectedBauvorhabenChanged() {
+    const bauvorhabenFromStore = this.$store.getters["search/selectedBauvorhaben"];
+    if(!_.isNil(bauvorhabenFromStore)) {
+      this.bauvorhaben = _.cloneDeep(bauvorhabenFromStore);
     }
   }
 
@@ -203,7 +211,8 @@ export default class Bauvorhaben extends Mixins(
    */
   private async updateBauvorhaben(): Promise<void> {    
     await this.putBauvorhaben(this.bauvorhaben, true)
-      .then(() => {
+      .then((dto) => {
+          this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
           Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
       });
   }
@@ -248,6 +257,7 @@ export default class Bauvorhaben extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
+
   private abfrageUebernehmen(abfrage: InfrastrukturabfrageDto): void {
     this.bauvorhaben.adresse = _.isNil(abfrage.abfrage.adresse) ? createAdresseDto() : abfrage.abfrage.adresse;
     this.bauvorhaben.allgemeineOrtsangabe = abfrage.abfrage.allgemeineOrtsangabe;
@@ -256,6 +266,8 @@ export default class Bauvorhaben extends Mixins(
     this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
     this.dataTransferDialogOpen = false;
   }
+
+
 
 }
 </script>
