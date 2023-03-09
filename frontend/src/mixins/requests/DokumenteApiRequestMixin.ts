@@ -62,7 +62,7 @@ export default class DokumenteApiRequestMixin extends Mixins(ErrorHandler) {
   
   async saveDokumentWithUrl(dto: PresignedUrlDto, file: File): Promise<void> {
     if (!_.isNil(dto.url)) {
-      fetch(dto.url, {
+      await fetch(dto.url, {
         method: dto.httpMethodToUse as string,
         body: file,
         headers: {'Content-Type': 'application/octet-stream'}
@@ -80,7 +80,7 @@ export default class DokumenteApiRequestMixin extends Mixins(ErrorHandler) {
   
   async deleteDokumentWithUrl(dto: PresignedUrlDto): Promise<void> {
     if (!_.isNil(dto.url)) {
-      fetch(dto.url, {
+      await fetch(dto.url, {
         method: dto.httpMethodToUse as string,
       })
         .then((response) => {

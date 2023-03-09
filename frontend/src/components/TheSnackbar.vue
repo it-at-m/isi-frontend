@@ -8,6 +8,7 @@
     {{ message }}
     <v-btn
       v-if="color === 'error'"
+      id="snackbar_schließen_button"
       class="text-wrap"
       color="primary"
       text

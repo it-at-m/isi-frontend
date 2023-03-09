@@ -10,8 +10,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Advance Security Compliance Action
-        uses: GeekMasher/advanced-security-compliance@v1.7.0
+      - name: Advance Security Policy as Code
+        uses: advanced-security/policy-as-code@v2.1
         with:
           policy: GeekMasher/security-queries
           policy-path: policies/default.yml

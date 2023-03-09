@@ -15,6 +15,7 @@
         >
           <router-link to="/">
             <v-img
+              id="app_logo"
               :src="logo"
               max-width="32"
               max-height="32"
@@ -32,7 +33,7 @@
           class="d-flex align-center justify-center"
         >
           <v-text-field
-            id="suchfeld"
+            id="app_suchfeld"
             v-model="query"
             dense
             flat
@@ -75,15 +76,44 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn
-            small
-            text
-            fab
+          <v-menu
+            id="app_nutzerinformationen_menu"
+            v-model="menu"
+            :close-on-content-click="false"
+            :nudge-width="200"
+            offset-x
           >
-            <v-icon class="white--text">
-              mdi-account-circle
-            </v-icon>
-          </v-btn>
+            <template #activator="{ on, attrs }">
+              <v-icon
+                id="app_nutzerinformationen_icon"
+                class="white--text"
+                v-bind="attrs"
+                v-on="on"
+              >
+                mdi-account-circle
+              </v-icon>
+            </template>
+
+            <v-card class="userinfo-card">
+              <span id="app_nutzerinformationen_vorname_nachname">
+                {{ userinfo.givenname + " " + userinfo.surname }}
+              </span>
+              <v-divider />
+              <span
+                id="app_nutzerinformationen_abteilung"
+                class="userinfo-subtitles"
+              >
+                <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
+              </span>
+              <br>
+              <span
+                id="app_nutzerinformationen_user_rollen"
+                class="userinfo-subtitles"
+              >
+                <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
+              </span>
+            </v-card>
+          </v-menu>
         </v-col>
       </v-row>
       <template #extension>
@@ -92,42 +122,54 @@
           style="width: 100%"
         >
           <v-btn
+            id="app_karte_button"
             depressed
             tile
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('karte') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('karte') ? 'active' : ''
+            }`"
             @click="goToRoute('/karte')"
             v-text="'Karte'"
           />
           <v-btn
+            id="app_abfrage_button"
             depressed
             tile
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('abfragen') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('abfragen') ? 'active' : ''
+            }`"
             @click="goToRoute('/abfragenuebersicht')"
             v-text="'Abfragen'"
           />
           <v-btn
+            id="app_bauvorhaben_button"
             depressed
             tile
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('bauvorhaben') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('bauvorhaben') ? 'active' : ''
+            }`"
             @click="goToRoute('/bauvorhabenuebersicht')"
             v-text="'Bauvorhaben'"
           />
           <v-btn
+            id="app_infrastruktureinrichtung_button"
             depressed
             tile
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('infrastruktureinrichtungen') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('infrastruktureinrichtungen') ? 'active' : ''
+            }`"
             @click="goToRoute('/infrastruktureinrichtungenuebersicht')"
             v-text="'Infrastruktureinrichtungen'"
           />
@@ -144,23 +186,33 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
+import { Mixins, Watch } from "vue-property-decorator";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import VersionInfo from "@/components/common/VersionInfo.vue";
 import { RouteTag } from "./router";
+import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
+import { Userinfo } from "./types/common/Userinfo";
+import _ from "lodash";
 
 @Component({
-  components: { TheSnackbar, VersionInfo }
+  components: { TheSnackbar, VersionInfo },
 })
-export default class App extends Vue {
-
+export default class App extends Mixins(UserInfoApiRequestMixin) {
   public query = "";
-  
+
   private logo: string = new URL("./assets/isi-logo.svg", import.meta.url).href;
 
   public showVersionInfo = false;
+
+  private userinfo = new Userinfo();
+
+  private menu = false;
+
+  // Schreibt alle Nutzerollen in einen String für die Darstellung
+  get userRoles(): string {
+    return _.join(this.userinfo.roles, ", ");
+  }
 
   created(): void {
     this.$store.dispatch("lookup/initialize");
@@ -168,6 +220,10 @@ export default class App extends Vue {
   }
 
   mounted(): void {
+    this.getUserinfo().then((userinfo: Userinfo) => {
+      this.userinfo = userinfo;
+      this.$store.commit("userinfo/userinfo", userinfo);
+    });
     this.query = this.$route.params.query;
   }
 
@@ -182,7 +238,7 @@ export default class App extends Vue {
   public async search(): Promise<void> {
     if (this.query !== "" && this.query !== null) {
       this.$store.dispatch("snackbar/showMessage", {
-        message: "Sie haben nach " + this.query + " gesucht. ;)"
+        message: "Sie haben nach " + this.query + " gesucht. ;)",
       });
     }
   }
@@ -194,7 +250,6 @@ export default class App extends Vue {
   private currentRouteHasTag(tag: RouteTag): boolean {
     return this.$router.currentRoute.meta?.tag === tag;
   }
-
 }
 </script>
 
@@ -214,5 +269,15 @@ export default class App extends Vue {
 
 .v-toolbar__extension {
   padding: 0px;
+}
+
+.userinfo-subtitles {
+  font-size: 14px;
+  color: grey;
+}
+
+.userinfo-card {
+  padding: 10px;
+  overflow: hidden;
 }
 </style>

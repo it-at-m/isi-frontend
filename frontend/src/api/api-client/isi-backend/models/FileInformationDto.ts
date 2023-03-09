@@ -36,12 +36,6 @@ export interface FileInformationDto {
      * @type {Array<string>}
      * @memberof FileInformationDto
      */
-    allowedFileExtensions?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof FileInformationDto
-     */
     allowedMimeTypes?: Array<string>;
 }
 
@@ -57,7 +51,6 @@ export function FileInformationDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'maxFileSizeBytes': !exists(json, 'maxFileSizeBytes') ? undefined : json['maxFileSizeBytes'],
         'maxNumberOfFiles': !exists(json, 'maxNumberOfFiles') ? undefined : json['maxNumberOfFiles'],
-        'allowedFileExtensions': !exists(json, 'allowedFileExtensions') ? undefined : json['allowedFileExtensions'],
         'allowedMimeTypes': !exists(json, 'allowedMimeTypes') ? undefined : json['allowedMimeTypes'],
     };
 }
@@ -73,7 +66,6 @@ export function FileInformationDtoToJSON(value?: FileInformationDto | null): any
         
         'maxFileSizeBytes': value.maxFileSizeBytes,
         'maxNumberOfFiles': value.maxNumberOfFiles,
-        'allowedFileExtensions': value.allowedFileExtensions,
         'allowedMimeTypes': value.allowedMimeTypes,
     };
 }

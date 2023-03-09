@@ -1,11 +1,13 @@
 <template>
   <v-container>
     <abfrage-component
+      id="abfrage_infrastrukturabfrage_abfragecomponent_component"
       ref="abfrageComponent"
       v-model="infrastrukturabfrage.abfrage"
     >
       <template #aktenzeichenProLBK>
         <v-text-field
+          id="abfrage_infrastrukturabfrage_aktenzeichenprolbk"
           v-model="infrastrukturabfrage.aktenzeichenProLbk"
           label="Aktenzeichen ProLBK"
           maxlength="255"
@@ -20,6 +22,7 @@
           md="6"
         >
           <TriSwitch
+            id="abfrage_infrastrukturabfrage_sobonRelevant_triswitch"
             v-model="infrastrukturabfrage.sobonRelevant"
             off-text="Nein"
             on-text="Ja"
@@ -37,10 +40,12 @@
           <v-slide-y-reverse-transition>
             <v-select
               v-if="sobonJahrVisible"
+              id="abfrage_infrastrukturabfrage_sobonJahr_dropdown"
               v-model="infrastrukturabfrage.sobonJahr"
               :items="sobonVerfahrensgrundsaetzeJahrList"
               item-value="key"
               item-text="value"
+              :rules="[fieldValidationRules.pflichtfeld]"
               @change="formChanged"
             >
               <template #label>
@@ -58,6 +63,7 @@
           md="12"
         >
           <TriSwitch
+            id="abfrage_infrastrukturabfrage_offiziellerVerfahrensschritt_triswitch"
             v-model="infrastrukturabfrage.offiziellerVerfahrensschritt"
             off-text="Nein"
             on-text="Ja"

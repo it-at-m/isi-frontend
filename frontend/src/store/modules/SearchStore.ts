@@ -32,7 +32,7 @@ export type SearchState = typeof state;
 
 export default {
   namespaced: true,
-  
+
   state,
 
   getters: {
@@ -42,9 +42,7 @@ export default {
     searchQueryAbfrage: (state: SearchState): string => {
       return state.searchQueryAbfrage;
     },
-    selectedAbfrage: (
-      state: SearchState
-    ): InfrastrukturabfrageModel | undefined => {
+    selectedAbfrage: (state: SearchState): InfrastrukturabfrageModel | undefined => {
       return state.selectedAbfrage;
     },
     resultBauvorhaben: (state: SearchState): Array<BauvorhabenDto> => {
@@ -61,13 +59,14 @@ export default {
     },
     selectedInfrastruktureinrichtung: (
       state: SearchState
-    ): KinderkrippeModel |
-      KindergartenModel |
-      HausFuerKinderModel |
-      GsNachmittagBetreuungModel |
-      GrundschuleModel |
-      MittelschuleModel |
-      undefined => {
+    ):
+      | KinderkrippeModel
+      | KindergartenModel
+      | HausFuerKinderModel
+      | GsNachmittagBetreuungModel
+      | GrundschuleModel
+      | MittelschuleModel
+      | undefined => {
       return state.selectedInfrastruktureinrichtung;
     },
   },
@@ -79,10 +78,7 @@ export default {
     searchQueryAbfrage(state: SearchState, searchQuery: string): void {
       state.searchQueryAbfrage = searchQuery;
     },
-    selectedAbfrage(
-      state: SearchState,
-      selectedAbfrage: InfrastrukturabfrageModel
-    ): void {
+    selectedAbfrage(state: SearchState, selectedAbfrage: InfrastrukturabfrageModel): void {
       state.selectedAbfrage = selectedAbfrage;
     },
     resultBauvorhaben: (state: SearchState, items: BauvorhabenDto[]): void => {
@@ -103,18 +99,18 @@ export default {
     selectedInfrastruktureinrichtung(
       state: SearchState,
       selectedInfrastruktureinrichtung:
-        KinderkrippeModel |
-        KindergartenModel |
-        HausFuerKinderModel |
-        GsNachmittagBetreuungModel |
-        GrundschuleModel |
-        MittelschuleModel
+        | KinderkrippeModel
+        | KindergartenModel
+        | HausFuerKinderModel
+        | GsNachmittagBetreuungModel
+        | GrundschuleModel
+        | MittelschuleModel
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
     },
     resetInfrastruktureinrichtung(state: SearchState): void {
       state.resultInfrastruktureinrichtung = undefined;
-    },   
+    },
   },
 
   actions: {
@@ -124,10 +120,7 @@ export default {
     searchQueryAbfrage(context: ActionContext<SearchState, RootState>, searchQuery: string): void {
       context.commit("searchQueryAbfrage", searchQuery);
     },
-    selectedAbfrage(
-      context: ActionContext<SearchState, RootState>,
-      abfrage: InfrastrukturabfrageModel
-    ): void {
+    selectedAbfrage(context: ActionContext<SearchState, RootState>, abfrage: InfrastrukturabfrageModel): void {
       context.commit("selectedAbfrage", abfrage);
     },
     resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
@@ -140,23 +133,26 @@ export default {
       return this.resultAbfrage !== undefined;
     },
     selectedBauvorhaben(context: ActionContext<SearchState, RootState>, item: BauvorhabenDto): void {
-      context.commit('selectedBauvorhaben', item);
+      context.commit("selectedBauvorhaben", item);
     },
-    resultInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>, items: InfrastruktureinrichtungListElementDto[]): void {
+    resultInfrastruktureinrichtung(
+      context: ActionContext<SearchState, RootState>,
+      items: InfrastruktureinrichtungListElementDto[]
+    ): void {
       context.commit("resultInfrastruktureinrichtung", items);
     },
     searchQueryInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>, searchQuery: string): void {
       context.commit("searchQueryInfrastruktureinrichtung", searchQuery);
-    },    
+    },
     selectedInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      infrastruktureinrichtung: 
-        KinderkrippeModel |
-        KindergartenModel |
-        HausFuerKinderModel |
-        GsNachmittagBetreuungModel |
-        GrundschuleModel |
-        MittelschuleModel
+      infrastruktureinrichtung:
+        | KinderkrippeModel
+        | KindergartenModel
+        | HausFuerKinderModel
+        | GsNachmittagBetreuungModel
+        | GrundschuleModel
+        | MittelschuleModel
     ): void {
       context.commit("selectedInfrastruktureinrichtung", infrastruktureinrichtung);
     },
@@ -166,5 +162,5 @@ export default {
     resetInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>): void {
       context.commit("resetInfrastruktureinrichtung");
     },
-  }
+  },
 };

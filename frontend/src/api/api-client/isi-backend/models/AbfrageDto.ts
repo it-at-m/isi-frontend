@@ -67,7 +67,7 @@ export interface AbfrageDto {
      * @type {string}
      * @memberof AbfrageDto
      */
-    statusAbfrage: AbfrageDtoStatusAbfrageEnum;
+    readonly statusAbfrage?: AbfrageDtoStatusAbfrageEnum;
     /**
      * 
      * @type {string}
@@ -101,9 +101,10 @@ export interface AbfrageDto {
 export const AbfrageDtoStatusAbfrageEnum = {
     Angelegt: 'ANGELEGT',
     Offen: 'OFFEN',
-    InArbeit: 'IN_ARBEIT',
     InErfassung: 'IN_ERFASSUNG',
-    InBearbeitung: 'IN_BEARBEITUNG',
+    InBearbeitungPlan: 'IN_BEARBEITUNG_PLAN',
+    InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
+    BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
     Erledigt: 'ERLEDIGT',
     Abbruch: 'ABBRUCH'
 } as const;
@@ -147,7 +148,7 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'statusAbfrage': json['statusAbfrage'],
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : json['statusAbfrage'],
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'nameAbfrage': json['nameAbfrage'],
         'standVorhaben': json['standVorhaben'],
@@ -169,7 +170,6 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'adresse': AdresseDtoToJSON(value.adresse),
         'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
-        'statusAbfrage': value.statusAbfrage,
         'bebauungsplannummer': value.bebauungsplannummer,
         'nameAbfrage': value.nameAbfrage,
         'standVorhaben': value.standVorhaben,

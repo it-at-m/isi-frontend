@@ -7,6 +7,7 @@
       >
         <v-col cols="12">
           <v-select
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_dropdown"
             v-model="infrastruktureinrichtungTyp"
             class="mx-3"
             :items="infrastruktureinrichtungList"
@@ -30,6 +31,7 @@
           md="6"
         >
           <v-text-field
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_darstellung"
             v-model="infrastruktureinrichtungTypDisplay"
             label="Typ der Infrastruktureinrichtung"
             disabled
@@ -41,6 +43,7 @@
           md="6"
         >
           <v-text-field
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_ldfNr_darstellung"
             v-model="lfdNrInfrastruktureinrichtung"
             label="Lfd. Nr."
             disabled
