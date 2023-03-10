@@ -13,9 +13,7 @@
             >
               mdi-plus-box-outline
             </v-icon>
-            <v-icon
-              v-else-if="startsWithAbfragevariantenTreeName(item)"
-            >
+            <v-icon>
               mdi-trash-can-outline
             </v-icon>
           </template>
@@ -94,10 +92,6 @@ export default class AbfrageNavigationTree extends Vue {
     abfrageTreeItem.children.push(abfragevarianteTreeItem);
 
     return abfrageTreeItems;
-  }
-
-  private startsWithAbfragevariantenTreeName(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return _.startsWith(abfrageTreeItem.name, "Nr.:");
   }
 
 }
