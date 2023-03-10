@@ -2,9 +2,22 @@
   <v-row>
     <v-col>
       <v-treeview
+        open-all
         :items="abfrageTreeItems"
-        selected-color="indigo"
-      />
+      >
+        <template #append="{ item }">
+          <v-icon
+            v-if="item.name === `Abfragevariante`"
+          >
+            mdi-plus-box-outline
+          </v-icon>
+          <v-icon
+            v-else-if="startsWithAbfragevariantenTreeName(item)"
+          >
+            mdi-trash-can-outline
+          </v-icon>
+        </template>
+      </v-treeview>
     </v-col>
   </v-row>
 </template>
@@ -78,6 +91,10 @@ export default class AbfrageNavigationTree extends Vue {
     abfrageTreeItem.children.push(abfragevarianteTreeItem);
 
     return abfrageTreeItems;
+  }
+
+  private startsWithAbfragevariantenTreeName(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return _.startsWith(abfrageTreeItem.name, "Nr.:");
   }
 
 }
