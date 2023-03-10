@@ -4,6 +4,7 @@
       <v-col>
         <v-treeview
           open-all
+          activatable
           :items="abfrageTreeItems"
         >
           <template #append="{ item }">
