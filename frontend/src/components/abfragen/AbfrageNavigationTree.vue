@@ -8,14 +8,22 @@
           :items="abfrageTreeItems"
         >
           <template #append="{ item }">
-            <v-icon
+            <v-btn
               v-if="item.name === `Abfragevariante`"
+              icon
             >
-              mdi-plus-box-outline
-            </v-icon>
-            <v-icon>
-              mdi-trash-can-outline
-            </v-icon>
+              <v-icon>
+                mdi-plus-box-outline
+              </v-icon>
+            </v-btn>
+            <v-btn
+              v-else-if="isDeletableTreeItem(item)"
+              icon
+            >
+              <v-icon>
+                mdi-trash-can-outline
+              </v-icon>
+            </v-btn>
           </template>
         </v-treeview>
       </v-col>
@@ -92,6 +100,11 @@ export default class AbfrageNavigationTree extends Vue {
     abfrageTreeItem.children.push(abfragevarianteTreeItem);
 
     return abfrageTreeItems;
+  }
+
+  private isDeletableTreeItem(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return _.startsWith(abfrageTreeItem.name, "Nr.:")
+        || abfrageTreeItem.name === "Abfrage";
   }
 
 }
