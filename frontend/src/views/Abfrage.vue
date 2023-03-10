@@ -70,6 +70,7 @@
       </template>
       <template #navigation>
         <v-spacer />
+        <abfrage-navigation-tree />
         <v-stepper
           v-model="step"
           vertical
@@ -201,10 +202,12 @@ import InformationList from "@/components/common/InformationList.vue";
 import {Levels} from "@/api/error";
 import DisplayMode from "@/types/common/DisplayMode";
 import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
+import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 
 @Component({
   methods: {containsNotAllowedDokument},
   components: {
+    AbfrageNavigationTree,
     InformationList,
     InfrastrukturabfrageComponent,
     Abfragevarianten,
@@ -226,7 +229,7 @@ export default class Abfrage extends Mixins(
   private buttonText = "";
 
   private abfrage: InfrastrukturabfrageModel = new InfrastrukturabfrageModel(
-    createInfrastrukturabfrageDto()
+      createInfrastrukturabfrageDto()
   );
 
   private baurate: BaurateModel = new BaurateModel(createBaurate());
@@ -242,8 +245,8 @@ export default class Abfrage extends Mixins(
   mounted(): void {
     this.mode = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage()
-      ? "Entwurf Speichern"
-      : "Aktualisieren";
+        ? "Entwurf Speichern"
+        : "Aktualisieren";
     this.getAbfrageById();
   }
 
@@ -266,8 +269,8 @@ export default class Abfrage extends Mixins(
           });
     } else {
       this.$store.commit(
-        "search/selectedAbfrage",
-        new InfrastrukturabfrageModel(createInfrastrukturabfrageDto())
+          "search/selectedAbfrage",
+          new InfrastrukturabfrageModel(createInfrastrukturabfrageDto())
       );
     }
   }
@@ -299,12 +302,13 @@ export default class Abfrage extends Mixins(
   }
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
-    await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
-      this.returnToUebersicht(
-        "Die Abfrage wurde erfolgreich gelöscht",
-        Levels.SUCCESS
-      );
-    });
+    await this.deleteInfrastrukturabfrageById(this.abfrageId, true)
+        .then(() => {
+          this.returnToUebersicht(
+              "Die Abfrage wurde erfolgreich gelöscht",
+              Levels.SUCCESS
+          );
+        });
   }
 
   private async saveAbfrage(): Promise<void> {
@@ -317,7 +321,7 @@ export default class Abfrage extends Mixins(
 
   private async saveInfrastrukturabfrage(): Promise<void> {
     const validationMessage: string | null =
-      this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
+        this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
       if (this.mode === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(this.abfrage, true)
@@ -353,13 +357,13 @@ export default class Abfrage extends Mixins(
   private async abfrageFreigeben(): Promise<void> {
     if (this.validate()) {
       if (
-        this.abfrage.abfrage.statusAbfrage ==
-        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
+          this.abfrage.abfrage.statusAbfrage ==
+          AbfrageListElementDtoStatusAbfrageEnum.Angelegt
       ) {
         this.infrastrukturabfrageFreigeben();
       } else {
         this.showWarningInInformationList(
-          'Die Abfrage muss den Status "angelegt" besitzen'
+            'Die Abfrage muss den Status "angelegt" besitzen'
         );
       }
     } else {
@@ -369,17 +373,18 @@ export default class Abfrage extends Mixins(
 
   private async infrastrukturabfrageFreigeben(): Promise<void> {
     const validationMessage: string | null =
-      this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
+        this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
-        await this.updateInfrastrukturabfrage(this.abfrage, true);
-        this.freigabInfrastrukturabfrage(this.abfrage.id as string, true).then(
-          () => {
-            this.returnToUebersicht(
-              "Die Abfrage wurde erfolgreich freigegeben",
-              Levels.SUCCESS
-            );
-          }
-        );
+      await this.updateInfrastrukturabfrage(this.abfrage, true);
+      this.freigabInfrastrukturabfrage(this.abfrage.id as string, true)
+          .then(
+              () => {
+                this.returnToUebersicht(
+                    "Die Abfrage wurde erfolgreich freigegeben",
+                    Levels.SUCCESS
+                );
+              }
+          );
     } else {
       this.showWarningInInformationList(validationMessage);
     }
@@ -391,8 +396,8 @@ export default class Abfrage extends Mixins(
 
   private isAngelegt(): boolean {
     return (
-      this.abfrage.abfrage.statusAbfrage ==
-      AbfrageListElementDtoStatusAbfrageEnum.Angelegt
+        this.abfrage.abfrage.statusAbfrage ==
+        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
     );
   }
 
