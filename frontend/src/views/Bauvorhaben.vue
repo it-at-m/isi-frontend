@@ -272,7 +272,6 @@ export default class Bauvorhaben extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-
   private abfrageUebernehmen(abfrage: InfrastrukturabfrageDto): void {
     this.bauvorhaben.adresse = _.isNil(abfrage.abfrage.adresse) ? createAdresseDto() : abfrage.abfrage.adresse;
     this.bauvorhaben.allgemeineOrtsangabe = abfrage.abfrage.allgemeineOrtsangabe;
@@ -281,9 +280,6 @@ export default class Bauvorhaben extends Mixins(
     this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
     this.dataTransferDialogOpen = false;
   }
-
-
-
 }
 </script>
 
