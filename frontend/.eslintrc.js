@@ -18,13 +18,12 @@ module.exports = {
     '@vue/typescript',
     // Vuetify-Regeln: https://github.com/vuetifyjs/eslint-plugin-vuetify
     'plugin:vuetify/base',
-    'plugin:vuetify/recommended'
+    'plugin:vuetify/recommended',
+    'prettier'
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    semi: [2, 'always'],
-    'space-before-function-paren': ['error', 'never'],
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'vue/require-default-prop': 'off',
     'vue/no-v-text-v-html-on-component': 'off'
