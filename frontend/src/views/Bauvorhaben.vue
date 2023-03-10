@@ -226,6 +226,7 @@ export default class Bauvorhaben extends Mixins(
   private async updateBauvorhaben(): Promise<void> {
     await this.putBauvorhaben(this.bauvorhaben, true)
       .then((dto) => {
+          this.$store.dispatch("search/resetBauvorhaben");
           this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
           Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
         });
