@@ -1,25 +1,27 @@
 <template>
-  <v-row>
-    <v-col>
-      <v-treeview
-        open-all
-        :items="abfrageTreeItems"
-      >
-        <template #append="{ item }">
-          <v-icon
-            v-if="item.name === `Abfragevariante`"
-          >
-            mdi-plus-box-outline
-          </v-icon>
-          <v-icon
-            v-else-if="startsWithAbfragevariantenTreeName(item)"
-          >
-            mdi-trash-can-outline
-          </v-icon>
-        </template>
-      </v-treeview>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-row class="justify-start">
+      <v-col>
+        <v-treeview
+          open-all
+          :items="abfrageTreeItems"
+        >
+          <template #append="{ item }">
+            <v-icon
+              v-if="item.name === `Abfragevariante`"
+            >
+              mdi-plus-box-outline
+            </v-icon>
+            <v-icon
+              v-else-if="startsWithAbfragevariantenTreeName(item)"
+            >
+              mdi-trash-can-outline
+            </v-icon>
+          </template>
+        </v-treeview>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
