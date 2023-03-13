@@ -46,6 +46,8 @@ export interface AbfrageTreeItem {
 
   children: Array<AbfrageTreeItem>;
 
+  uuid: string | undefined;
+
 }
 
 @Component
@@ -93,14 +95,16 @@ export default class AbfrageNavigationTree extends Vue {
     let abfrageTreeItem: AbfrageTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementAbfrage,
-      children: []
+      children: [],
+      uuid: this.abfrage.id
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
     abfrageTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementListAbfragevarianten,
-      children: []
+      children: [],
+      uuid: undefined
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
@@ -109,7 +113,8 @@ export default class AbfrageNavigationTree extends Vue {
       abfragevarianteTreeItem = {
         id: itemKey++,
         name: this.getNameTreeElementAbfragevariante(abfragevariante),
-        children: []
+        children: [],
+        uuid: abfragevariante.id
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     });
@@ -117,8 +122,8 @@ export default class AbfrageNavigationTree extends Vue {
     abfragevarianteTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementAddAbfragevariante,
-      children: []
-
+      children: [],
+      uuid: undefined
     };
     abfrageTreeItem.children.push(abfragevarianteTreeItem);
 
