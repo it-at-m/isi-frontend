@@ -4,55 +4,55 @@
       <template #content>
         <div v-if="step === 1">
           <infrastrukturabfrageComponent
-            id="abfrage_infrastrukturabfrage_component"
-            v-model="abfrage"
+              id="abfrage_infrastrukturabfrage_component"
+              v-model="abfrage"
           />
         </div>
         <abfragevarianten
-          v-if="step === 2"
-          id="abfrage_abfragevarianten"
-          ref="abfragevarianten"
-          v-model="abfrage.abfragevarianten"
-          :sobon-relevant="abfrage.sobonRelevant"
+            v-if="step === 2"
+            id="abfrage_abfragevarianten"
+            ref="abfragevarianten"
+            v-model="abfrage.abfragevarianten"
+            :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauraten-component
-          v-if="step === 3"
-          id="abfrage_bauraten"
-          ref="bauratenComponent"
-          v-model="baurate"
+            v-if="step === 3"
+            id="abfrage_bauraten"
+            ref="bauratenComponent"
+            v-model="baurate"
         />
         <yes-no-dialog
-          id="abfrage_yes_no_dialog_loeschen"
-          v-model="deleteDialogOpen"
-          icon="mdi-delete-forever"
-          dialogtitle="Hinweis"
-          dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
-          no-text="Abbrechen"
-          yes-text="Löschen"
-          @no="yesNoDialogNo"
-          @yes="yesNoDialogYes"
+            id="abfrage_yes_no_dialog_loeschen"
+            v-model="deleteDialogOpen"
+            icon="mdi-delete-forever"
+            dialogtitle="Hinweis"
+            dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
+            no-text="Abbrechen"
+            yes-text="Löschen"
+            @no="yesNoDialogNo"
+            @yes="yesNoDialogYes"
         />
         <yes-no-dialog
-          id="abfrage_yes_no_dialog_freigeben"
-          v-model="freigabeDialogOpen"
-          icon="mdi-account-arrow-right"
-          dialogtitle="Hinweis"
-          dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
-          no-text="Abbrechen"
-          :yes-text="'Freigabe'"
-          @no="yesNoDialogFreigabeNo"
-          @yes="yesNoDialogFreigabeYes"
+            id="abfrage_yes_no_dialog_freigeben"
+            v-model="freigabeDialogOpen"
+            icon="mdi-account-arrow-right"
+            dialogtitle="Hinweis"
+            dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
+            no-text="Abbrechen"
+            :yes-text="'Freigabe'"
+            @no="yesNoDialogFreigabeNo"
+            @yes="yesNoDialogFreigabeYes"
         />
         <yes-no-dialog
-          id="abfrage_yes_no_dialog_save_leave"
-          ref="saveLeaveDialog"
-          v-model="saveLeaveDialog"
-          :dialogtitle="saveLeaveDialogTitle"
-          :dialogtext="saveLeaveDialogText"
-          :no-text="saveLeaveNoText"
-          :yes-text="saveLeaveYesText"
-          @yes="leave"
-          @no="cancel"
+            id="abfrage_yes_no_dialog_save_leave"
+            ref="saveLeaveDialog"
+            v-model="saveLeaveDialog"
+            :dialogtitle="saveLeaveDialogTitle"
+            :dialogtext="saveLeaveDialogText"
+            :no-text="saveLeaveNoText"
+            :yes-text="saveLeaveYesText"
+            @yes="leave"
+            @no="cancel"
         />
       </template>
       <template #heading>
@@ -60,71 +60,72 @@
           <v-row>
             <v-col cols="12">
               <span
-                id="abfrage_displayName"
-                class="text-h6 font-weight-bold"
-                v-text="abfrage.displayName"
+                  id="abfrage_displayName"
+                  class="text-h6 font-weight-bold"
+                  v-text="abfrage.displayName"
               />
             </v-col>
           </v-row>
         </v-container>
       </template>
       <template #navigation>
-        <v-spacer />
+        <v-spacer/>
         <abfrage-navigation-tree
-          @abfrage-tree-item-selected="handleAbfrageTreeItemSelected"
-          @abfrage-tree-item-deletion-for-abfragevariante="handleAbfrageTreeItemDeletionForAbfragevariante"
-          @create-new-abfragevariante="handleCreateNewAbfragevariante"
+            @abfrage-selected="handleAbfrageSelected"
+            @abfragevariante-selected="handleAbfragevarianteSelected"
+            @deletion-abfragevariante="handleDeletionAbfragevariante"
+            @create-new-abfragevariante="handleCreateNewAbfragevariante"
         />
-        <v-spacer />
+        <v-spacer/>
       </template>
       <template #information>
         <v-btn
-          v-if="!isNewAbfrage()"
-          id="abfrage_loeschen_button"
-          class="text-wrap my-4 px-1"
-          color="primary"
-          elevation="1"
-          style="width: 200px"
-          @click="deleteAbfrage()"
-          v-text="'Löschen'"
+            v-if="!isNewAbfrage()"
+            id="abfrage_loeschen_button"
+            class="text-wrap my-4 px-1"
+            color="primary"
+            elevation="1"
+            style="width: 200px"
+            @click="deleteAbfrage()"
+            v-text="'Löschen'"
         />
         <information-list
-          id="abfrage_information_list"
-          information-message-deletion-intervall-seconds="10"
+            id="abfrage_information_list"
+            information-message-deletion-intervall-seconds="10"
         />
       </template>
       <template #action>
-        <v-spacer />
+        <v-spacer/>
         <v-btn
-          v-if="!isNewAbfrage() || step !== 1"
-          id="abfrage_speichern_button"
-          class="text-wrap mt-2 px-1"
-          color="secondary"
-          elevation="1"
-          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
-          style="width: 200px"
-          @click="saveAbfrage()"
-          v-text="buttonText"
+            v-if="!isNewAbfrage() || step !== 1"
+            id="abfrage_speichern_button"
+            class="text-wrap mt-2 px-1"
+            color="secondary"
+            elevation="1"
+            :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
+            style="width: 200px"
+            @click="saveAbfrage()"
+            v-text="buttonText"
         />
         <v-btn
-          v-if="!isNewAbfrage()"
-          id="abfrage_freigeben_button"
-          class="text-wrap mt-2 px-1"
-          color="secondary"
-          elevation="1"
-          style="width: 200px"
-          :disabled="!isAngelegt()"
-          @click="freigabeAbfrage()"
-          v-text="'Freigabe'"
+            v-if="!isNewAbfrage()"
+            id="abfrage_freigeben_button"
+            class="text-wrap mt-2 px-1"
+            color="secondary"
+            elevation="1"
+            style="width: 200px"
+            :disabled="!isAngelegt()"
+            @click="freigabeAbfrage()"
+            v-text="'Freigabe'"
         />
         <v-btn
-          id="abfrage_abbrechen_button"
-          color="primary"
-          elevation="1"
-          class="text-wrap mt-2 px-1"
-          style="width: 200px"
-          @click="returnToUebersicht()"
-          v-text="'Abbrechen'"
+            id="abfrage_abbrechen_button"
+            color="primary"
+            elevation="1"
+            class="text-wrap mt-2 px-1"
+            style="width: 200px"
+            @click="returnToUebersicht()"
+            v-text="'Abbrechen'"
         />
       </template>
     </DefaultLayout>
@@ -408,16 +409,16 @@ export default class Abfrage extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private handleAbfrageTreeItemSelected(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleAbfrageTreeItemSelected: " + abfrageTreeItem.name);
+  private handleAbfrageSelected(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleAbfrageSelected: " + abfrageTreeItem.name);
   }
 
-  private handleAbfrageTreeItemDeletionForAbfrage(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleAbfrageTreeItemDeletionForAbfrage: " + abfrageTreeItem.name);
+  private handleAbfragevarianteSelected(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleAbfragevarianteSelected: " + abfrageTreeItem.name);
   }
 
-  private handleAbfrageTreeItemDeletionForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleAbfrageTreeItemDeletionForAbfragevariante: " + abfrageTreeItem.name);
+  private handleDeletionAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleDeletionForAbfragevariante: " + abfrageTreeItem.name);
   }
 
   private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {

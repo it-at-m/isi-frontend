@@ -3,26 +3,26 @@
     <v-row class="justify-start">
       <v-col>
         <v-treeview
-          :active.sync="markedTreeItemIds"
-          open-all
-          :open="treeItemIdsToOpen"
-          activatable
-          :items="abfrageTreeItems"
+            :active.sync="markedTreeItemIds"
+            open-all
+            :open="treeItemIdsToOpen"
+            activatable
+            :items="abfrageTreeItems"
         >
           <template #append="{ item }">
             <v-btn
-              v-if="item.name === nameTreeElementAddAbfragevariante"
-              icon
-              @click="createNewAbfragevariante(item)"
+                v-if="item.name === nameTreeElementAddAbfragevariante"
+                icon
+                @click="createNewAbfragevariante(item)"
             >
               <v-icon>
                 mdi-plus-box-outline
               </v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isDeletableTreeItemAbfragevariante(item)"
-              icon
-              @click="abfrageTreeItemDeletionForAbfragevariante(item)"
+                v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
+                icon
+                @click="deletionForAbfragevariante(item)"
             >
               <v-icon>
                 mdi-trash-can-outline
@@ -64,6 +64,8 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
 
+  private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
+
   private treeItemIdsToOpen: Array<number> = [];
 
   private abfrageTreeItems: Array<AbfrageTreeItem> = [];
@@ -87,7 +89,11 @@ export default class AbfrageNavigationTree extends Vue {
       const markedTreeItemId: number = this.markedTreeItemIds[0];
       const markedTreeItemElement = this.abfrageTreeItems.find(abfrageTreeItem => abfrageTreeItem.id === markedTreeItemId);
       if (!_.isNil(markedTreeItemElement)) {
-        this.abfrageTreeItemSelected(markedTreeItemElement);
+        if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItemElement)) {
+          this.abfragevarianteSelected(markedTreeItemElement);
+        } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItemElement)) {
+          this.abfrageSelected(markedTreeItemElement);
+        }
       }
     }
   }
@@ -105,7 +111,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
-    return `Nr.: ${abfragevariante.abfragevariantenNr} - Realisierung: ${abfragevariante.realisierungVon} bis ${abfragevariante.realisierungBis}`;
+    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr} - Realisierung: ${abfragevariante.realisierungVon} bis ${abfragevariante.realisierungBis}`;
   }
 
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
@@ -152,17 +158,26 @@ export default class AbfrageNavigationTree extends Vue {
     return abfrageTreeItems;
   }
 
-  private isDeletableTreeItemAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return _.startsWith(abfrageTreeItem.name, "Nr.:");
+  private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return abfrageTreeItem.name === AbfrageNavigationTree.NAME_TREE_ELEMENT_ABFRAGE;
+  }
+
+  private isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
   }
 
   @Emit()
-  private abfrageTreeItemSelected(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+  private abfrageSelected(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 
   @Emit()
-  private abfrageTreeItemDeletionForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+  private abfragevarianteSelected(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private deletionAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 
