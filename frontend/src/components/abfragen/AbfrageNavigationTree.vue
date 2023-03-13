@@ -3,26 +3,26 @@
     <v-row class="justify-start">
       <v-col>
         <v-treeview
-            :active.sync="markedTreeItemIds"
-            open-all
-            :open="treeItemIdsToOpen"
-            activatable
-            :items="abfrageTreeItems"
+          :active.sync="markedTreeItemIds"
+          open-all
+          :open="treeItemIdsToOpen"
+          activatable
+          :items="abfrageTreeItems"
         >
           <template #append="{ item }">
             <v-btn
-                v-if="item.name === nameTreeElementAddAbfragevariante"
-                icon
-                @click="createNewAbfragevariante(item)"
+              v-if="item.name === nameTreeElementAddAbfragevariante"
+              icon
+              @click="createNewAbfragevariante(item)"
             >
               <v-icon>
                 mdi-plus-box-outline
               </v-icon>
             </v-btn>
             <v-btn
-                v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
-                icon
-                @click="deletionForAbfragevariante(item)"
+              v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
+              icon
+              @click="deletionForAbfragevariante(item)"
             >
               <v-icon>
                 mdi-trash-can-outline
