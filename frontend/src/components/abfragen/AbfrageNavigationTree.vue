@@ -9,7 +9,7 @@
         >
           <template #append="{ item }">
             <v-btn
-              v-if="item.name === `Abfragevariante`"
+              v-if="item.name === nameTreeElementAddAbfragevariante"
               icon
             >
               <v-icon>
@@ -36,6 +36,7 @@ import {Component, Vue, Watch} from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {createInfrastrukturabfrageDto} from "@/utils/Factories";
 import _ from "lodash";
+import {AbfragevarianteDto} from "@/api/api-client/isi-backend";
 
 export interface AbfrageTreeItem {
 
@@ -50,9 +51,31 @@ export interface AbfrageTreeItem {
 @Component
 export default class AbfrageNavigationTree extends Vue {
 
+  private static readonly NAME_TREE_ELEMENT_ADD_ABFRAGEVARIANTE: string = "Abfragevariante";
+
+  private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
+
+  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
+
   private abfrage: InfrastrukturabfrageModel = new InfrastrukturabfrageModel(
       createInfrastrukturabfrageDto()
   );
+
+  get nameTreeElementAddAbfragevariante(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_ABFRAGEVARIANTE;
+  }
+
+  get nameTreeElementListAbfragevarianten(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN;
+  }
+
+  get nameTreeElementAbfrage(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ABFRAGE;
+  }
+
+  private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
+    return `Nr.: ${abfragevariante.abfragevariantenNr} - Realisierung: ${abfragevariante.realisierungVon} bis ${abfragevariante.realisierungBis}`;
+  }
 
 
   @Watch("$store.state.search.selectedAbfrage", {immediate: true, deep: true})
@@ -69,14 +92,14 @@ export default class AbfrageNavigationTree extends Vue {
 
     let abfrageTreeItem: AbfrageTreeItem = {
       id: itemKey++,
-      name: "Abfrage",
+      name: this.nameTreeElementAbfrage,
       children: []
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
     abfrageTreeItem = {
       id: itemKey++,
-      name: "Abfragevarianten",
+      name: this.nameTreeElementListAbfragevarianten,
       children: []
     };
     abfrageTreeItems.push(abfrageTreeItem);
@@ -85,7 +108,7 @@ export default class AbfrageNavigationTree extends Vue {
     this.abfrage.abfragevarianten.forEach(abfragevariante => {
       abfragevarianteTreeItem = {
         id: itemKey++,
-        name: `Nr.: ${abfragevariante.abfragevariantenNr} - Realisierung: ${abfragevariante.realisierungVon} bis ${abfragevariante.realisierungBis}`,
+        name: this.getNameTreeElementAbfragevariante(abfragevariante),
         children: []
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
@@ -93,7 +116,7 @@ export default class AbfrageNavigationTree extends Vue {
 
     abfragevarianteTreeItem = {
       id: itemKey++,
-      name: `Abfragevariante`,
+      name: this.nameTreeElementAddAbfragevariante,
       children: []
 
     };
@@ -104,7 +127,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private isDeletableTreeItem(abfrageTreeItem: AbfrageTreeItem): boolean {
     return _.startsWith(abfrageTreeItem.name, "Nr.:")
-        || abfrageTreeItem.name === "Abfrage";
+        || abfrageTreeItem.name === this.nameTreeElementAbfrage;
   }
 
 }

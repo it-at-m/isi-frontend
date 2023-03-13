@@ -71,59 +71,7 @@
       <template #navigation>
         <v-spacer />
         <abfrage-navigation-tree />
-        <v-stepper
-          v-model="step"
-          vertical
-          flat
-        >
-          <v-stepper-step
-            :complete="step > 1"
-            step="1"
-          >
-            Abfrage
-          </v-stepper-step>
-          <v-divider
-            vertical
-            inset
-          />
-          <v-stepper-step
-            :complete="step > 2"
-            step="2"
-          >
-            Abfragevarianten
-          </v-stepper-step>
-          <v-divider
-            vertical
-            inset
-          />
-          <v-stepper-step
-            :complete="step > 3"
-            step="3"
-          >
-            Bauraten
-          </v-stepper-step>
-        </v-stepper>
         <v-spacer />
-        <v-btn
-          id="abfrage_weiter_button"
-          class="text-wrap mt-2 px-1"
-          color="primary"
-          elevation="1"
-          style="width: 200px"
-          :disabled="step === 3"
-          @click="changeForward()"
-          v-text="'Weiter'"
-        />
-        <v-btn
-          id="abfrage_zurueck_button"
-          class="text-wrap mt-2 px-1"
-          color="primary"
-          elevation="1"
-          style="width: 200px"
-          :disabled="step === 1"
-          @click="changeBackwards()"
-          v-text="'Zurück'"
-        />
       </template>
       <template #information>
         <v-btn
