@@ -3,6 +3,7 @@
     <v-row class="justify-start">
       <v-col>
         <v-treeview
+          :active.sync="markedTreeItemIds"
           open-all
           activatable
           :items="abfrageTreeItems"
@@ -34,7 +35,6 @@
 <script lang="ts">
 import {Component, Vue, Watch} from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import {createInfrastrukturabfrageDto} from "@/utils/Factories";
 import _ from "lodash";
 import {AbfragevarianteDto} from "@/api/api-client/isi-backend";
 
@@ -59,9 +59,28 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
 
-  private abfrage: InfrastrukturabfrageModel = new InfrastrukturabfrageModel(
-      createInfrastrukturabfrageDto()
-  );
+  private abfrageTreeItems: Array<AbfrageTreeItem> = [];
+
+  private markedTreeItemIds: Array<number> = [];
+
+  @Watch("$store.state.search.selectedAbfrage", {immediate: true, deep: true})
+  private selectedAbfrageChanged(): void {
+    const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
+    if (!_.isNil(abfrageFromStore)) {
+      const abfrage = _.cloneDeep(abfrageFromStore);
+      this.abfrageTreeItems = this.createAbfrageTreeItems(abfrage);
+    }
+  }
+
+  @Watch("markedTreeItemIds", {immediate: true, deep: true})
+  private eventmarkedTreeItemElement(): void {
+    if (this.markedTreeItemIds.length) {
+      // Es kann nur ein Eintrag in der TreeView markiert werden.
+      const markedTreeItemId: number = this.markedTreeItemIds[0];
+      const markedTreeItemElement = this.abfrageTreeItems.find(abfrageTreeItem => abfrageTreeItem.id === markedTreeItemId);
+      console.log(markedTreeItemId);
+    }
+  }
 
   get nameTreeElementAddAbfragevariante(): string {
     return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_ABFRAGEVARIANTE;
@@ -79,24 +98,15 @@ export default class AbfrageNavigationTree extends Vue {
     return `Nr.: ${abfragevariante.abfragevariantenNr} - Realisierung: ${abfragevariante.realisierungVon} bis ${abfragevariante.realisierungBis}`;
   }
 
-
-  @Watch("$store.state.search.selectedAbfrage", {immediate: true, deep: true})
-  private selectedAbfrageChanged() {
-    const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
-    if (!_.isNil(abfrageFromStore)) {
-      this.abfrage = _.cloneDeep(abfrageFromStore);
-    }
-  }
-
-  get abfrageTreeItems(): Array<AbfrageTreeItem> {
+  public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
     const abfrageTreeItems: Array<AbfrageTreeItem> = [];
-    let itemKey = 1;
+    let itemKey = 0;
 
     let abfrageTreeItem: AbfrageTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementAbfrage,
       children: [],
-      uuid: this.abfrage.id
+      uuid: abfrage.id
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
@@ -109,7 +119,7 @@ export default class AbfrageNavigationTree extends Vue {
     abfrageTreeItems.push(abfrageTreeItem);
 
     let abfragevarianteTreeItem: AbfrageTreeItem;
-    this.abfrage.abfragevarianten.forEach(abfragevariante => {
+    abfrage.abfragevarianten.forEach(abfragevariante => {
       abfragevarianteTreeItem = {
         id: itemKey++,
         name: this.getNameTreeElementAbfragevariante(abfragevariante),
