@@ -56,6 +56,8 @@ export interface AbfrageTreeItem {
 @Component
 export default class AbfrageNavigationTree extends Vue {
 
+  private static readonly MAX_NUMBER_ABFRAGEVARIANTEN: number = 5;
+
   private static readonly NAME_TREE_ELEMENT_ADD_ABFRAGEVARIANTE: string = "Abfragevariante";
 
   private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
@@ -137,13 +139,15 @@ export default class AbfrageNavigationTree extends Vue {
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     });
 
-    abfragevarianteTreeItem = {
-      id: itemKey++,
-      name: this.nameTreeElementAddAbfragevariante,
-      children: [],
-      uuid: undefined
-    };
-    abfrageTreeItem.children.push(abfragevarianteTreeItem);
+    if (abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN) {
+      abfragevarianteTreeItem = {
+        id: itemKey++,
+        name: this.nameTreeElementAddAbfragevariante,
+        children: [],
+        uuid: undefined
+      };
+      abfrageTreeItem.children.push(abfragevarianteTreeItem);
+    }
 
     return abfrageTreeItems;
   }
