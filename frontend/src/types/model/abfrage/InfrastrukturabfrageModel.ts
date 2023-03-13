@@ -4,9 +4,8 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import _ from "lodash";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface InfrastrukturabfrageModel extends InfrastrukturabfrageDto { }
+interface InfrastrukturabfrageModel extends InfrastrukturabfrageDto {}
 class InfrastrukturabfrageModel {
-  
   constructor(infrastrukturabfrage: InfrastrukturabfrageDto) {
     Object.assign(this, infrastrukturabfrage, {});
     this.abfrage = new AbfrageModel(infrastrukturabfrage.abfrage);
@@ -16,6 +15,5 @@ class InfrastrukturabfrageModel {
       }
     }
   }
-    
 }
-export { InfrastrukturabfrageModel as default};
+export { InfrastrukturabfrageModel as default };

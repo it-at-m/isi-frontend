@@ -29,8 +29,8 @@ describe("SaveLeaveMixin Test", () => {
       common: CommonStore,
       lookup: LookupStore,
       search: SearchStore,
-      fileInfoStamm: FileInfoStammStore
-    }
+      fileInfoStamm: FileInfoStammStore,
+    },
   });
 
   afterEach(() => {
@@ -53,5 +53,4 @@ describe("SaveLeaveMixin Test", () => {
     store.dispatch("common/resetDirty");
     expect(store.getters["common/isDirty"]).toBe(false);
   });
-
 });

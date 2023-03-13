@@ -36,16 +36,16 @@
       <v-dialog
         v-model="showFormularDialog"
         persistent
-        width="auto"                              
+        width="auto"
       >
         <v-card>
           <v-container>
             <abfragevariante-formular
               id="abfragevariante_formular_component"
               ref="abfragevarianteComponent"
-              v-model="abfragevariante"              
-              :mode="mode"             
-              :sobon-relevant="isSobonRelevant" 
+              v-model="abfragevariante"
+              :mode="mode"
+              :sobon-relevant="isSobonRelevant"
             />
             <v-card-actions>
               <v-spacer />
@@ -93,14 +93,10 @@ import { Levels } from "@/api/error";
   components: {
     AbfragevariantenListe,
     AbfragevarianteFormular,
-    FieldGroupCard
+    FieldGroupCard,
   },
 })
-export default class Abfragevarianten extends Mixins(
-  ValidatorMixin,
-  InformationListMixin,
-  SaveLeaveMixin
-) {
+export default class Abfragevarianten extends Mixins(ValidatorMixin, InformationListMixin, SaveLeaveMixin) {
   @VModel({ type: Array }) abfragevarianten!: AbfragevarianteModel[];
 
   @Prop()
@@ -110,9 +106,7 @@ export default class Abfragevarianten extends Mixins(
     return this.sobonRelevant;
   }
 
-  private abfragevariante = new AbfragevarianteModel(
-    createAbfragevarianteDto()
-  );
+  private abfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
 
   private showAddAbfragevarianteButton = false;
 
@@ -126,34 +120,34 @@ export default class Abfragevarianten extends Mixins(
 
   @Watch("abfragevarianten", { immediate: true, deep: true })
   private checkIfAbfragevariantenIsEmptyOrFull(): void {
-    this.showAddAbfragevarianteButton = !_.isNil(this.abfragevarianten) && this.abfragevarianten.length <= 4; 
+    this.showAddAbfragevarianteButton = !_.isNil(this.abfragevarianten) && this.abfragevarianten.length <= 4;
   }
 
   // Computed properties
   private get mode(): DisplayMode {
     let value: DisplayMode | undefined;
-    value = _.isNaN(this.abfragevariante.abfragevariantenNr)
-        ? DisplayMode.NEU
-        : DisplayMode.AENDERUNG;
+    value = _.isNaN(this.abfragevariante.abfragevariantenNr) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     return value;
   }
 
   /*
    * Abfragevariante aus Dialog übernehmen
-  */
+   */
   private assumeAbfragevariante(): void {
     // alle Feld-Validatoren (:rules) werden aufgerufen, um sicherzustellen, dass diese Prüfungen vorher durchgeführt wurden
     if (this.validate()) {
-      let validationMessage: string | null = this.findFaultInAbfragevariante(this.isSobonRelevant, this.abfragevariante, false);
+      let validationMessage: string | null = this.findFaultInAbfragevariante(
+        this.isSobonRelevant,
+        this.abfragevariante,
+        false
+      );
       if (_.isNull(validationMessage)) {
         if (this.mode === DisplayMode.NEU) {
           this.abfragevarianten?.push(this.abfragevariante);
           this.renumberingAbfragevarianten();
         } else {
           const itemIndex: number = this.abfragevarianten.findIndex(
-            (item) =>
-              item.abfragevariantenNr ===
-              this.abfragevariante.abfragevariantenNr
+            (item) => item.abfragevariantenNr === this.abfragevariante.abfragevariantenNr
           );
           this.abfragevarianten.splice(itemIndex, 1, this.abfragevariante);
         }
@@ -164,7 +158,7 @@ export default class Abfragevarianten extends Mixins(
       }
     }
   }
-  
+
   private cancelFormularDialog(): void {
     this.reset();
   }
@@ -173,7 +167,6 @@ export default class Abfragevarianten extends Mixins(
     this.abfragevarianten.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });
-
   }
 
   private editAbfragevariante(abfragevariante: AbfragevarianteModel): void {

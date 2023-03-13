@@ -11,9 +11,7 @@
             validate-on-blur
             @input="formChanged"
           >
-            <template #label>
-              Name der Einrichtung <span class="secondary--text">*</span>
-            </template>
+            <template #label> Name der Einrichtung <span class="secondary--text">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -29,33 +27,31 @@
         <v-col
           cols="12"
           md="6"
-        >          
+        >
           <num-field
-            id="infrastruktureinrichtung_fertigstellungsjahr"             
+            id="infrastruktureinrichtung_fertigstellungsjahr"
             v-model="infrastruktureinrichtung.fertigstellungsjahr"
             label="Fertigstellungsjahr (JJJJ)"
             class="mx-3"
             year
             required
             maxlength="4"
-          />    
+          />
         </v-col>
         <v-col
           cols="12"
           md="6"
         >
           <v-select
-            id="infrastruktureinrichtung_status_dropdown"  
+            id="infrastruktureinrichtung_status_dropdown"
             v-model="infrastruktureinrichtung.status"
             :items="statusInfrastruktureinrichtungList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld,fieldValidationRules.notUnspecified]"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Status der Infrastruktureinrichtung <span class="secondary--text">*</span>
-            </template>
+            <template #label> Status der Infrastruktureinrichtung <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -63,17 +59,15 @@
           md="6"
         >
           <v-select
-            id="infrastruktureinrichtung_einrichtungstraeger_dropdown"  
+            id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
             v-model="infrastruktureinrichtung.einrichtungstraeger"
             :items="einrichtungstraegerList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld,fieldValidationRules.notUnspecified]"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Einrichtungsträger <span class="secondary--text">*</span>
-            </template>
+            <template #label> Einrichtungsträger <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -81,7 +75,7 @@
           md="6"
         >
           <v-select
-            id="infrastruktureinrichtung_bauvorhaben_dropdown"  
+            id="infrastruktureinrichtung_bauvorhaben_dropdown"
             v-model="infrastruktureinrichtung.bauvorhaben"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
@@ -99,26 +93,26 @@
         <v-col
           cols="12"
           md="6"
-        >          
+        >
           <num-field
-            id="infrastruktureinrichtung_flaecheGesamtgrundstueck"  
+            id="infrastruktureinrichtung_flaecheGesamtgrundstueck"
             v-model="infrastruktureinrichtung.flaecheGesamtgrundstueck"
             class="mx-3"
             label="Fläche Gesamtgrundstück"
             :suffix="fieldPrefixesSuffixes.squareMeter"
-          />          
+          />
         </v-col>
         <v-col
           cols="12"
           md="6"
         >
           <num-field
-            id="infrastruktureinrichtung_flaecheTeilgrundstueck"  
+            id="infrastruktureinrichtung_flaecheTeilgrundstueck"
             v-model="infrastruktureinrichtung.flaecheTeilgrundstueck"
             class="mx-3"
             label="Fläche Teilgrundstück"
             :suffix="fieldPrefixesSuffixes.squareMeter"
-          />          
+          />
         </v-col>
       </v-row>
     </field-group-card>
@@ -132,7 +126,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
@@ -142,7 +136,7 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
   components: {
     FieldGroupCard,
     NumField,
-    AdresseComponent
+    AdresseComponent,
   },
 })
 export default class InfrastruktureinrichtungComponent extends Mixins(
@@ -151,7 +145,8 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   SaveLeaveMixin,
   FieldPrefixesSuffixes
 ) {
-  @VModel({ type: InfrastruktureinrichtungModel }) infrastruktureinrichtung!: InfrastruktureinrichtungModel;
+  @VModel({ type: InfrastruktureinrichtungModel })
+  infrastruktureinrichtung!: InfrastruktureinrichtungModel;
 
   @Prop()
   private mode!: DisplayMode;
@@ -166,7 +161,7 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
 
   private flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 
-  mounted(): void {    
+  mounted(): void {
     this.fetchBauvorhaben();
   }
 
@@ -186,12 +181,10 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
    * Holt alle Bauvorhaben vom Backend.
    */
   private async fetchBauvorhaben(): Promise<void> {
-    await this.getBauvorhaben(true)
-      .then((bauvorhaben: BauvorhabenDto[]) => {
-        this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
-      });
+    await this.getBauvorhaben(true).then((bauvorhaben: BauvorhabenDto[]) => {
+      this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
+    });
   }
-
 }
 </script>
 <style></style>

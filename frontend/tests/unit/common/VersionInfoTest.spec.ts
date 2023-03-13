@@ -2,10 +2,10 @@ import VersionInfo from "@/components/common/VersionInfo.vue";
 import Service from "@/components/common/Service";
 
 const versionInfo = new VersionInfo() as {
-  value: boolean,
-  services: Service[],
-  fetchSuccess?: boolean,
-  updateServices: () => Promise<void>,
+  value: boolean;
+  services: Service[];
+  fetchSuccess?: boolean;
+  updateServices: () => Promise<void>;
 };
 versionInfo.value = true;
 
@@ -32,8 +32,7 @@ const testService2 = {
 };
 
 describe("VersionInfoTest.spec.ts", () => {
-  
-  test("Positivfall", async() => {
+  test("Positivfall", async () => {
     global.fetch = vi.fn((url: string) => {
       if (url.endsWith(servicesEndpoint)) {
         return Promise.resolve({
@@ -62,7 +61,7 @@ describe("VersionInfoTest.spec.ts", () => {
     expect(testService2.commitHash).toEqual(testCommitHash);
   });
 
-  test("Negativefall ohne Service-Endpoint", async() => {
+  test("Negativefall ohne Service-Endpoint", async () => {
     global.fetch = vi.fn((url: string) => {
       if (url.endsWith(servicesEndpoint)) {
         return Promise.resolve({
@@ -77,7 +76,7 @@ describe("VersionInfoTest.spec.ts", () => {
     expect(versionInfo.services.length).toEqual(0);
   });
 
-  test("Negativefall ohne Services", async() => {
+  test("Negativefall ohne Services", async () => {
     global.fetch = vi.fn((url: string) => {
       if (url.endsWith(servicesEndpoint)) {
         return Promise.resolve({
@@ -93,7 +92,7 @@ describe("VersionInfoTest.spec.ts", () => {
     expect(versionInfo.services.length).toEqual(0);
   });
 
-  test("Negativfall ohne CommitHash-Endpoint", async() => {
+  test("Negativfall ohne CommitHash-Endpoint", async () => {
     global.fetch = vi.fn((url: string) => {
       if (url.endsWith(servicesEndpoint)) {
         return Promise.resolve({
@@ -121,7 +120,7 @@ describe("VersionInfoTest.spec.ts", () => {
     expect(testService2.commitHash).toEqual("");
   });
 
-  test("Negativfall ohne CommitHashes", async() => {
+  test("Negativfall ohne CommitHashes", async () => {
     global.fetch = vi.fn((url: string) => {
       if (url.endsWith(servicesEndpoint)) {
         return Promise.resolve({
@@ -149,5 +148,4 @@ describe("VersionInfoTest.spec.ts", () => {
     expect(testService1.commitHash).toEqual("");
     expect(testService2.commitHash).toEqual("");
   });
-
 });

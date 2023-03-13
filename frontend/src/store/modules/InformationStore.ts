@@ -4,20 +4,20 @@ import { RootState } from "..";
 import _ from "lodash";
 
 const state = {
-  informationList: [] as Array<InformationResponseDto>
+  informationList: [] as Array<InformationResponseDto>,
 };
 
 export type InformationState = typeof state;
 
 export default {
   namespaced: true,
-  
+
   state,
 
   getters: {
     informationList: (state: InformationState): Array<InformationResponseDto> => {
       return state.informationList;
-    }
+    },
   },
 
   mutations: {
@@ -30,15 +30,18 @@ export default {
       } else {
         state.informationList = value;
       }
-    }
+    },
   },
 
   actions: {
     addInformation(context: ActionContext<InformationState, RootState>, value: InformationResponseDto): void {
       context.commit("addInformation", value);
     },
-    overwriteInformationList(context: ActionContext<InformationState, RootState>, value: Array<InformationResponseDto>): void {
+    overwriteInformationList(
+      context: ActionContext<InformationState, RootState>,
+      value: Array<InformationResponseDto>
+    ): void {
       context.commit("overwriteInformationList", value);
-    }
-  }
+    },
+  },
 };

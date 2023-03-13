@@ -11,9 +11,7 @@
             validate-on-blur
             @input="formChanged"
           >
-            <template #label>
-              Name der Abfrage <span class="secondary--text">*</span>
-            </template>
+            <template #label> Name der Abfrage <span class="secondary--text">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -54,9 +52,7 @@
             :append-icon="null"
             @change="formChanged"
           >
-            <template #label>
-              Status der Abfrage
-            </template>
+            <template #label> Status der Abfrage </template>
           </v-select>
         </v-col>
         <v-col
@@ -69,15 +65,10 @@
             :items="standVorhabenList"
             item-value="key"
             item-text="value"
-            :rules="[
-              fieldValidationRules.pflichtfeld,
-              fieldValidationRules.notUnspecified,
-            ]"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Stand des Vorhabens <span class="secondary--text">*</span>
-            </template>
+            <template #label> Stand des Vorhabens <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -143,7 +134,6 @@
   </div>
 </template>
 
-
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
 import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
@@ -163,7 +153,7 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
     DatePicker,
     Dokumente,
     FieldGroupCard,
-    AdresseComponent
+    AdresseComponent,
   },
 })
 export default class AbfrageComponent extends Mixins(
@@ -188,7 +178,7 @@ export default class AbfrageComponent extends Mixins(
   get bauvorhabenList(): BauvorhabenDto[] {
     return this.$store.getters["search/resultBauvorhaben"];
   }
-  
+
   get statusAbfrageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/statusAbfrage"];
   }
@@ -211,5 +201,4 @@ export default class AbfrageComponent extends Mixins(
 }
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,4 +1,4 @@
-import {DokumentDto, FileInformationDto} from "@/api/api-client/isi-backend";
+import { DokumentDto, FileInformationDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 
 /**
@@ -15,7 +15,11 @@ export function fileAlreadyExists(dokumente: DokumentDto[], file: File, pathToFi
 /**
  * maxNumberOfFilesReached
  */
-export function maxNumberOfFilesReached(dokumente: DokumentDto[], fileList: FileList, fileInformationDto: FileInformationDto): boolean {
+export function maxNumberOfFilesReached(
+  dokumente: DokumentDto[],
+  fileList: FileList,
+  fileInformationDto: FileInformationDto
+): boolean {
   let maximumReached = false;
   if (!_.isNil(fileInformationDto.maxNumberOfFiles) && !_.isNil(dokumente)) {
     maximumReached = dokumente.length + fileList.length > fileInformationDto.maxNumberOfFiles;
@@ -55,7 +59,7 @@ export function isDokumentAllowed(dokument: DokumentDto): boolean {
 
 export function containsNotAllowedDokument(dokumente: DokumentDto[]): boolean {
   let containsNotAllowedDokument = false;
-  dokumente.forEach(dokumente => {
+  dokumente.forEach((dokumente) => {
     if (!isDokumentAllowed(dokumente)) {
       containsNotAllowedDokument = true;
     }

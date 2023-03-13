@@ -10,15 +10,18 @@ export default class MappingMixin extends Vue {
 
     foerdermix.anteilEinUndZweifamilienhaeuser = foerdermixStammModel.foerdermix.anteilEinUndZweifamilienhaeuser;
 
-    foerdermix.anteilFreifinanzierterGeschosswohnungsbau = foerdermixStammModel.foerdermix.anteilFreifinanzierterGeschosswohnungsbau;
+    foerdermix.anteilFreifinanzierterGeschosswohnungsbau =
+      foerdermixStammModel.foerdermix.anteilFreifinanzierterGeschosswohnungsbau;
 
     foerdermix.anteilGefoerderterMietwohnungsbau = foerdermixStammModel.foerdermix.anteilGefoerderterMietwohnungsbau;
 
-    foerdermix.anteilKonzeptionellerMietwohnungsbau = foerdermixStammModel.foerdermix.anteilKonzeptionellerMietwohnungsbau;
+    foerdermix.anteilKonzeptionellerMietwohnungsbau =
+      foerdermixStammModel.foerdermix.anteilKonzeptionellerMietwohnungsbau;
 
     foerdermix.anteilMuenchenModell = foerdermixStammModel.foerdermix.anteilMuenchenModell;
 
-    foerdermix.anteilPreisgedaempfterMietwohnungsbau = foerdermixStammModel.foerdermix.anteilPreisgedaempfterMietwohnungsbau;
+    foerdermix.anteilPreisgedaempfterMietwohnungsbau =
+      foerdermixStammModel.foerdermix.anteilPreisgedaempfterMietwohnungsbau;
 
     return foerdermix;
   }

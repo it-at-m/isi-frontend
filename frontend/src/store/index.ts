@@ -1,14 +1,14 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
 import User, { UserState } from "@/store/modules/User";
 import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
 import CommonStore, { CommonState } from "@/store/modules/CommonStore";
 import LookupStore, { LookupState } from "@/store/modules/LookupStore";
 import SearchStore, { SearchState } from "@/store/modules/SearchStore";
 import FoerdermixStore, { FoerdermixState } from "@/store/modules/FoerdermixStore";
-import FileInfoStammStore, { FileInfoStammState } from './modules/FileInfoStammStore';
-import InformationStore from './modules/InformationStore';
-import UserinfoStore, { UserinfoState } from './modules/Userinfostore';
+import FileInfoStammStore, { FileInfoStammState } from "./modules/FileInfoStammStore";
+import InformationStore from "./modules/InformationStore";
+import UserinfoStore, { UserinfoState } from "./modules/Userinfostore";
 
 Vue.use(Vuex);
 const debug = import.meta.env.DEV;
@@ -34,7 +34,7 @@ export default new Vuex.Store<RootState>({
     search: SearchStore,
     fileInfoStamm: FileInfoStammStore,
     information: InformationStore,
-    userinfo: UserinfoStore
+    userinfo: UserinfoStore,
   },
-  strict: debug
+  strict: debug,
 });

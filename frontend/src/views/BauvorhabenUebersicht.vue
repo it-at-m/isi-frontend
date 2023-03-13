@@ -21,11 +21,17 @@
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'">Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'"
+                >Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span
+              >
               <v-spacer />
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'"
+                >Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span
+              >
               <v-spacer />
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'">Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'"
+                >Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span
+              >
             </v-card-text>
           </v-card>
         </v-hover>
@@ -48,9 +54,7 @@
         class="align-self-end"
         @click="createBauvorhaben()"
       >
-        <v-icon>
-          mdi-plus
-        </v-icon>
+        <v-icon> mdi-plus </v-icon>
       </v-btn>
     </template>
   </DefaultLayout>
@@ -64,11 +68,11 @@ import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 
 @Component({
-  components: { DefaultLayout }
+  components: { DefaultLayout },
 })
 export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin) {
   private fetchSuccess: boolean | null = null;
-  
+
   get bauvorhabenList(): BauvorhabenDto[] {
     return this.$store.getters["search/resultBauvorhaben"];
   }
@@ -76,7 +80,7 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
   get standVorhabenList(): LookupEntryDto[] {
     return this.$store.getters["lookup/standVorhaben"];
   }
-  
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
@@ -86,7 +90,7 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
    */
   private async fetchBauvorhaben(): Promise<void> {
     this.fetchSuccess = null;
-  
+
     await this.getBauvorhaben(false)
       .then((bauvorhaben: BauvorhabenDto[]) => {
         this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
@@ -96,14 +100,14 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
         this.fetchSuccess = false;
       });
   }
-  
+
   /**
    * Ermittelt den Anzeigenamen von einem Eintrag eines Lookup-Enums.
    * Konnte der Anzeigename nicht ermittelt werden, wird der Name des Eintrags zurückgegeben.
-   * 
+   *
    * @param key Der Name des Enum-Eintrags.
    * @param list Das Array mit allen Einträgen des Enums.
-   * 
+   *
    * @return Der Anzeigename oder Name des Enum-Eintrags.
    */
   private getLookupValue(key: string, list: Array<LookupEntryDto>): string {
@@ -116,16 +120,16 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
 
     return key;
   }
-  
+
   /**
    * Öffnet die View zur Bearbeitung eines existierenden Bauvorhabens.
-   * 
+   *
    * @param id Die ID des ausgewählten Bauvorhabens.
    */
   private editBauvorhaben(id: string): void {
     router.push({
       name: "editBauvorhaben",
-      params: { id }
+      params: { id },
     });
   }
 
@@ -134,7 +138,7 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
    */
   private createBauvorhaben(): void {
     router.push({
-      name: "createBauvorhaben"
+      name: "createBauvorhaben",
     });
   }
 }

@@ -12,189 +12,239 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
+import * as runtime from "../runtime";
 import {
-    GrundschuleDto,
-    GrundschuleDtoFromJSON,
-    GrundschuleDtoToJSON,
-    InformationResponseDto,
-    InformationResponseDtoFromJSON,
-    InformationResponseDtoToJSON,
-} from '../models';
+  GrundschuleDto,
+  GrundschuleDtoFromJSON,
+  GrundschuleDtoToJSON,
+  InformationResponseDto,
+  InformationResponseDtoFromJSON,
+  InformationResponseDtoToJSON,
+} from "../models";
 
 export interface CreateGrundschuleRequest {
-    grundschuleDto: GrundschuleDto;
+  grundschuleDto: GrundschuleDto;
 }
 
 export interface DeleteGrundschuleByIdRequest {
-    id: string;
+  id: string;
 }
 
 export interface GetGrundschuleByIdRequest {
-    id: string;
+  id: string;
 }
 
 export interface UpdateGrundschuleRequest {
-    grundschuleDto: GrundschuleDto;
+  grundschuleDto: GrundschuleDto;
 }
 
 /**
- * 
+ *
  */
 export class GrundschuleApi extends runtime.BaseAPI {
-
-    /**
-     * Anlegen einer neuen Grundschule
-     */
-    async createGrundschuleRaw(requestParameters: CreateGrundschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GrundschuleDto>> {
-        if (requestParameters.grundschuleDto === null || requestParameters.grundschuleDto === undefined) {
-            throw new runtime.RequiredError('grundschuleDto','Required parameter requestParameters.grundschuleDto was null or undefined when calling createGrundschule.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/grundschule`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: GrundschuleDtoToJSON(requestParameters.grundschuleDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GrundschuleDtoFromJSON(jsonValue));
+  /**
+   * Anlegen einer neuen Grundschule
+   */
+  async createGrundschuleRaw(
+    requestParameters: CreateGrundschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<GrundschuleDto>> {
+    if (requestParameters.grundschuleDto === null || requestParameters.grundschuleDto === undefined) {
+      throw new runtime.RequiredError(
+        "grundschuleDto",
+        "Required parameter requestParameters.grundschuleDto was null or undefined when calling createGrundschule."
+      );
     }
 
-    /**
-     * Anlegen einer neuen Grundschule
-     */
-    async createGrundschule(requestParameters: CreateGrundschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GrundschuleDto> {
-        const response = await this.createGrundschuleRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    const response = await this.request(
+      {
+        path: `/grundschule`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: GrundschuleDtoToJSON(requestParameters.grundschuleDto),
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GrundschuleDtoFromJSON(jsonValue));
+  }
+
+  /**
+   * Anlegen einer neuen Grundschule
+   */
+  async createGrundschule(
+    requestParameters: CreateGrundschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<GrundschuleDto> {
+    const response = await this.createGrundschuleRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Löschen einer Grundschule
+   */
+  async deleteGrundschuleByIdRaw(
+    requestParameters: DeleteGrundschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling deleteGrundschuleById."
+      );
     }
 
-    /**
-     * Löschen einer Grundschule
-     */
-    async deleteGrundschuleByIdRaw(requestParameters: DeleteGrundschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteGrundschuleById.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    const response = await this.request(
+      {
+        path: `/grundschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
 
-        const response = await this.request({
-            path: `/grundschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    return new runtime.VoidApiResponse(response);
+  }
 
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Löschen einer Grundschule
+   */
+  async deleteGrundschuleById(
+    requestParameters: DeleteGrundschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<void> {
+    await this.deleteGrundschuleByIdRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Lesen einer Grundschule
+   */
+  async getGrundschuleByIdRaw(
+    requestParameters: GetGrundschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<GrundschuleDto>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling getGrundschuleById."
+      );
     }
 
-    /**
-     * Löschen einer Grundschule
-     */
-    async deleteGrundschuleById(requestParameters: DeleteGrundschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.deleteGrundschuleByIdRaw(requestParameters, initOverrides);
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/grundschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GrundschuleDtoFromJSON(jsonValue));
+  }
+
+  /**
+   * Lesen einer Grundschule
+   */
+  async getGrundschuleById(
+    requestParameters: GetGrundschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<GrundschuleDto> {
+    const response = await this.getGrundschuleByIdRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+   * Lade alle Grundschulen
+   */
+  async getGrundschulenRaw(
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<Array<GrundschuleDto>>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/grundschulen`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GrundschuleDtoFromJSON));
+  }
+
+  /**
+   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+   * Lade alle Grundschulen
+   */
+  async getGrundschulen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GrundschuleDto>> {
+    const response = await this.getGrundschulenRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Aktualisierung einer Grundschule
+   */
+  async updateGrundschuleRaw(
+    requestParameters: UpdateGrundschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<GrundschuleDto>> {
+    if (requestParameters.grundschuleDto === null || requestParameters.grundschuleDto === undefined) {
+      throw new runtime.RequiredError(
+        "grundschuleDto",
+        "Required parameter requestParameters.grundschuleDto was null or undefined when calling updateGrundschule."
+      );
     }
 
-    /**
-     * Lesen einer Grundschule
-     */
-    async getGrundschuleByIdRaw(requestParameters: GetGrundschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GrundschuleDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getGrundschuleById.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    headerParameters["Content-Type"] = "application/json";
 
-        const response = await this.request({
-            path: `/grundschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    const response = await this.request(
+      {
+        path: `/grundschule`,
+        method: "PUT",
+        headers: headerParameters,
+        query: queryParameters,
+        body: GrundschuleDtoToJSON(requestParameters.grundschuleDto),
+      },
+      initOverrides
+    );
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GrundschuleDtoFromJSON(jsonValue));
-    }
+    return new runtime.JSONApiResponse(response, (jsonValue) => GrundschuleDtoFromJSON(jsonValue));
+  }
 
-    /**
-     * Lesen einer Grundschule
-     */
-    async getGrundschuleById(requestParameters: GetGrundschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GrundschuleDto> {
-        const response = await this.getGrundschuleByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-     * Lade alle Grundschulen
-     */
-    async getGrundschulenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GrundschuleDto>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/grundschulen`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GrundschuleDtoFromJSON));
-    }
-
-    /**
-     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-     * Lade alle Grundschulen
-     */
-    async getGrundschulen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GrundschuleDto>> {
-        const response = await this.getGrundschulenRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Aktualisierung einer Grundschule
-     */
-    async updateGrundschuleRaw(requestParameters: UpdateGrundschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GrundschuleDto>> {
-        if (requestParameters.grundschuleDto === null || requestParameters.grundschuleDto === undefined) {
-            throw new runtime.RequiredError('grundschuleDto','Required parameter requestParameters.grundschuleDto was null or undefined when calling updateGrundschule.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/grundschule`,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: GrundschuleDtoToJSON(requestParameters.grundschuleDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GrundschuleDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Aktualisierung einer Grundschule
-     */
-    async updateGrundschule(requestParameters: UpdateGrundschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GrundschuleDto> {
-        const response = await this.updateGrundschuleRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
+  /**
+   * Aktualisierung einer Grundschule
+   */
+  async updateGrundschule(
+    requestParameters: UpdateGrundschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<GrundschuleDto> {
+    const response = await this.updateGrundschuleRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 }

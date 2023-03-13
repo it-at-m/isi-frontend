@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col 
+      <v-col
         cols="12"
         md="12"
       >
@@ -55,9 +55,7 @@
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Planungsrecht <span class="secondary--text">*</span>
-            </template>
+            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -267,7 +265,7 @@ import DisplayMode from "@/types/common/DisplayMode";
 export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
-  SaveLeaveMixin,
+  SaveLeaveMixin
 ) {
   @VModel({ type: AbfragevarianteModel }) abfragevariante!: AbfragevarianteModel;
 
@@ -293,10 +291,11 @@ export default class AbfragevarianteForm extends Mixins(
     return this.sobonRelevant;
   }
 
-  get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {  
-    const pflichtfeld = this.isSobonRelevant === UncertainBoolean.True
-     && (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
-      || this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
+  get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {
+    const pflichtfeld =
+      this.isSobonRelevant === UncertainBoolean.True &&
+      (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
+        this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
     this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
     return pflichtfeld;
   }
@@ -310,7 +309,9 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get headline(): string {
-    return this.displayMode === DisplayMode.NEU ? "Abfragevariante anlegen" : `Abfragevariante Nr. ${this.abfragevariante.abfragevariantenNr} ändern`;
+    return this.displayMode === DisplayMode.NEU
+      ? "Abfragevariante anlegen"
+      : `Abfragevariante Nr. ${this.abfragevariante.abfragevariantenNr} ändern`;
   }
 
   @Watch("abfragevariante", { immediate: true, deep: true })
