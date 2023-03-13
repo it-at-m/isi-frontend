@@ -124,7 +124,7 @@
             depressed
             tile
             text
-            color="black"
+            color="white"
             height="42"
             :class="`text-wrap text-h6 tab ${currentRouteHasTag('karte') ? 'active' : ''}`"
             @click="goToRoute('/karte')"
