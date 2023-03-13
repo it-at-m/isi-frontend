@@ -5,6 +5,7 @@
         <v-treeview
           :active.sync="markedTreeItemIds"
           open-all
+          :open="treeItemIdsToOpen"
           activatable
           :items="abfrageTreeItems"
         >
@@ -59,6 +60,8 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
 
+  private treeItemIdsToOpen: Array<number> = [];
+
   private abfrageTreeItems: Array<AbfrageTreeItem> = [];
 
   private markedTreeItemIds: Array<number> = [];
@@ -69,6 +72,7 @@ export default class AbfrageNavigationTree extends Vue {
     if (!_.isNil(abfrageFromStore)) {
       const abfrage = _.cloneDeep(abfrageFromStore);
       this.abfrageTreeItems = this.createAbfrageTreeItems(abfrage);
+      this.treeItemIdsToOpen = this.abfrageTreeItems.map(abfrageTreeItem => abfrageTreeItem.id);
     }
   }
 
