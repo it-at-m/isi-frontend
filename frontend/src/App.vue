@@ -23,7 +23,9 @@
             />
           </router-link>
           <router-link to="/">
-            <v-toolbar-title class="text-h4 white--text font-weight-bold"> ISI </v-toolbar-title>
+            <v-toolbar-title class="text-h4 white--text font-weight-bold">
+              ISI
+            </v-toolbar-title>
           </router-link>
         </v-col>
         <v-col
@@ -103,7 +105,7 @@
               >
                 <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
               </span>
-              <br />
+              <br>
               <span
                 id="app_nutzerinformationen_user_rollen"
                 class="userinfo-subtitles"
@@ -126,7 +128,9 @@
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('karte') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('karte') ? 'active' : ''
+            }`"
             @click="goToRoute('/karte')"
             v-text="'Karte'"
           />
@@ -137,7 +141,9 @@
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('abfragen') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('abfragen') ? 'active' : ''
+            }`"
             @click="goToRoute('/abfragenuebersicht')"
             v-text="'Abfragen'"
           />
@@ -148,7 +154,9 @@
             text
             color="white"
             height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('bauvorhaben') ? 'active' : ''}`"
+            :class="`text-wrap text-h6 tab ${
+              currentRouteHasTag('bauvorhaben') ? 'active' : ''
+            }`"
             @click="goToRoute('/bauvorhabenuebersicht')"
             v-text="'Bauvorhaben'"
           />
