@@ -13,6 +13,7 @@
             <v-btn
               v-if="item.name === nameTreeElementAddAbfragevariante"
               icon
+              @click="createNewAbfragevariante(item)"
             >
               <v-icon>
                 mdi-plus-box-outline
@@ -21,6 +22,7 @@
             <v-btn
               v-else-if="isDeletableTreeItem(item)"
               icon
+              @click="abfrageTreeItemToDelete(item)"
             >
               <v-icon>
                 mdi-trash-can-outline
@@ -34,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from "vue-property-decorator";
+import {Component, Emit, Vue, Watch} from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
 import {AbfragevarianteDto} from "@/api/api-client/isi-backend";
@@ -82,7 +84,9 @@ export default class AbfrageNavigationTree extends Vue {
       // Es kann nur ein Eintrag in der TreeView markiert werden.
       const markedTreeItemId: number = this.markedTreeItemIds[0];
       const markedTreeItemElement = this.abfrageTreeItems.find(abfrageTreeItem => abfrageTreeItem.id === markedTreeItemId);
-      console.log(markedTreeItemId);
+      if (!_.isNil(markedTreeItemElement)) {
+        this.abfrageTreeItemSelected(markedTreeItemElement);
+      }
     }
   }
 
@@ -147,6 +151,21 @@ export default class AbfrageNavigationTree extends Vue {
   private isDeletableTreeItem(abfrageTreeItem: AbfrageTreeItem): boolean {
     return _.startsWith(abfrageTreeItem.name, "Nr.:")
         || abfrageTreeItem.name === this.nameTreeElementAbfrage;
+  }
+
+  @Emit()
+  private abfrageTreeItemSelected(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private abfrageTreeItemToDelete(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private createNewAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
   }
 
 }
