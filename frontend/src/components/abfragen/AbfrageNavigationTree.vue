@@ -22,7 +22,7 @@
             <v-btn
               v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
               icon
-              @click="deletionForAbfragevariante(item)"
+              @click="deletionAbfragevariante(item)"
             >
               <v-icon>
                 mdi-trash-can-outline
