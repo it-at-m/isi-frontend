@@ -22,7 +22,7 @@
             <v-btn
               v-else-if="isDeletableTreeItem(item)"
               icon
-              @click="abfrageTreeItemToDelete(item)"
+              @click="abfrageTreeItemDeletion(item)"
             >
               <v-icon>
                 mdi-trash-can-outline
@@ -163,7 +163,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   @Emit()
-  private abfrageTreeItemToDelete(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+  private abfrageTreeItemDeletion(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 

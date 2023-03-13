@@ -70,7 +70,11 @@
       </template>
       <template #navigation>
         <v-spacer />
-        <abfrage-navigation-tree />
+        <abfrage-navigation-tree
+          @abfrage-tree-item-selected="handleAbfrageTreeItemSelected"
+          @abfrage-tree-item-deletion="handleAbfrageTreeItemDeletion"
+          @create-new-abfragevariante="handleCreateNewAbfragevariante"
+        />
         <v-spacer />
       </template>
       <template #information>
@@ -150,7 +154,7 @@ import InformationList from "@/components/common/InformationList.vue";
 import {Levels} from "@/api/error";
 import DisplayMode from "@/types/common/DisplayMode";
 import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
-import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
+import AbfrageNavigationTree, {AbfrageTreeItem} from "@/components/abfragen/AbfrageNavigationTree.vue";
 
 @Component({
   methods: {containsNotAllowedDokument},
@@ -403,6 +407,20 @@ export default class Abfrage extends Mixins(
   private validate(): boolean {
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
+
+  private handleAbfrageTreeItemSelected(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleAbfrageTreeItemSelected: " + abfrageTreeItem.name);
+  }
+
+  private handleAbfrageTreeItemDeletion(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleAbfrageTreeItemDeletion: " + abfrageTreeItem.name);
+  }
+
+  private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleCreateNewAbfragevariante: " + abfrageTreeItem.name);
+  }
+
+
 }
 </script>
 
