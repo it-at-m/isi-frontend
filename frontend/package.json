@@ -67,6 +67,6 @@
     }
   },
   "lint-staged": {
-    "*.md": "prettier --write"
+    "src/*": "prettier --write --ignore-unknown"
   }
 }
