@@ -6,7 +6,7 @@
     "serve": "vite",
     "build": "vite build --out-dir dist",
     "lint": "npx prettier --write --ignore-unknown .",
-    "test:unit": "vitest run",
+    "test:unit": "npx prettier --check --ignore-unknown . && vitest run",
     "prepare": "cd .. && husky install"
   },
   "dependencies": {
