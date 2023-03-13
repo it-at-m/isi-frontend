@@ -20,9 +20,9 @@
               </v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isDeletableTreeItem(item)"
+              v-else-if="isDeletableTreeItemAbfragevariante(item)"
               icon
-              @click="abfrageTreeItemDeletion(item)"
+              @click="abfrageTreeItemDeletionForAbfragevariante(item)"
             >
               <v-icon>
                 mdi-trash-can-outline
@@ -152,9 +152,8 @@ export default class AbfrageNavigationTree extends Vue {
     return abfrageTreeItems;
   }
 
-  private isDeletableTreeItem(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return _.startsWith(abfrageTreeItem.name, "Nr.:")
-        || abfrageTreeItem.name === this.nameTreeElementAbfrage;
+  private isDeletableTreeItemAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return _.startsWith(abfrageTreeItem.name, "Nr.:");
   }
 
   @Emit()
@@ -163,7 +162,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   @Emit()
-  private abfrageTreeItemDeletion(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+  private abfrageTreeItemDeletionForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 

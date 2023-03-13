@@ -72,7 +72,7 @@
         <v-spacer />
         <abfrage-navigation-tree
           @abfrage-tree-item-selected="handleAbfrageTreeItemSelected"
-          @abfrage-tree-item-deletion="handleAbfrageTreeItemDeletion"
+          @abfrage-tree-item-deletion-for-abfragevariante="handleAbfrageTreeItemDeletionForAbfragevariante"
           @create-new-abfragevariante="handleCreateNewAbfragevariante"
         />
         <v-spacer />
@@ -412,8 +412,12 @@ export default class Abfrage extends Mixins(
     console.log("handleAbfrageTreeItemSelected: " + abfrageTreeItem.name);
   }
 
-  private handleAbfrageTreeItemDeletion(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleAbfrageTreeItemDeletion: " + abfrageTreeItem.name);
+  private handleAbfrageTreeItemDeletionForAbfrage(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleAbfrageTreeItemDeletionForAbfrage: " + abfrageTreeItem.name);
+  }
+
+  private handleAbfrageTreeItemDeletionForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("handleAbfrageTreeItemDeletionForAbfragevariante: " + abfrageTreeItem.name);
   }
 
   private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
