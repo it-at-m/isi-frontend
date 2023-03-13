@@ -73,7 +73,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   @Watch("markedTreeItemIds", {immediate: true, deep: true})
-  private eventmarkedTreeItemElement(): void {
+  private eventMarkedTreeItemElement(): void {
     if (this.markedTreeItemIds.length) {
       // Es kann nur ein Eintrag in der TreeView markiert werden.
       const markedTreeItemId: number = this.markedTreeItemIds[0];
