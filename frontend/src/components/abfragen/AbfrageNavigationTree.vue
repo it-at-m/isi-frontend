@@ -198,13 +198,11 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
-    const ids: Array<number> = [];
-    abfrageTreeItems.forEach(abfrageTreeItem => {
+    return abfrageTreeItems.flatMap(abfrageTreeItem => {
+      const ids = this.createTreeItemIds(abfrageTreeItem.children);
       ids.push(abfrageTreeItem.id);
-      const childIds = this.createTreeItemIds(abfrageTreeItem.children);
-      ids.push(...childIds);
+      return ids;
     });
-    return ids;
   }
 
 }
