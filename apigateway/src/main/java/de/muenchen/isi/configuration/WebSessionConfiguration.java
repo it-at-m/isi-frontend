@@ -25,7 +25,6 @@ import org.springframework.session.Session;
 import org.springframework.session.config.annotation.web.server.EnableSpringWebSession;
 import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
 
-
 /**
  * This class configures Hazelcast as the ReactiveSessionRepository.
  *
@@ -49,13 +48,17 @@ public class WebSessionConfiguration {
     }
 
     @Bean
-    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(@Qualifier("hazelcastInstance") @Autowired HazelcastInstance hazelcastInstance) {
-        final IMap<String, Session> map = hazelcastInstance.getMap(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
+    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(
+        @Qualifier("hazelcastInstance") @Autowired HazelcastInstance hazelcastInstance
+    ) {
+        final IMap<String, Session> map = hazelcastInstance.getMap(
+            HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME
+        );
         return new ReactiveMapSessionRepository(map);
     }
 
     @Bean
-    @Profile({"local", "test"})
+    @Profile({ "local", "test" })
     public Config localConfig(@Value("${spring.session.timeout}") int timeout) {
         final var hazelcastConfig = new Config();
         // Integrity Check
@@ -72,15 +75,13 @@ public class WebSessionConfiguration {
 
         final var joinConfig = networkConfig.getJoin();
         joinConfig.getMulticastConfig().setEnabled(false);
-        joinConfig.getTcpIpConfig()
-                .setEnabled(true)
-                .addMember("127.0.0.1");
+        joinConfig.getTcpIpConfig().setEnabled(true).addMember("127.0.0.1");
 
         return hazelcastConfig;
     }
 
     @Bean
-    @Profile({"dev", "kon", "demo", "prod"})
+    @Profile({ "dev", "kon", "demo", "prod" })
     public Config config(@Value("${spring.session.timeout}") int timeout) {
         final var hazelcastConfig = new Config();
         // Integrity Check
@@ -94,9 +95,13 @@ public class WebSessionConfiguration {
         addSessionTimeoutToHazelcastConfig(hazelcastConfig, timeout);
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
-        hazelcastConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
-                //If we dont set a specific name, it would call -all- services within a namespace
-                .setProperty("service-name", openshiftServiceName);
+        hazelcastConfig
+            .getNetworkConfig()
+            .getJoin()
+            .getKubernetesConfig()
+            .setEnabled(true)
+            //If we dont set a specific name, it would call -all- services within a namespace
+            .setProperty("service-name", openshiftServiceName);
 
         return hazelcastConfig;
     }
@@ -118,5 +123,4 @@ public class WebSessionConfiguration {
 
         hazelcastConfig.addMapConfig(sessionConfig);
     }
-
 }

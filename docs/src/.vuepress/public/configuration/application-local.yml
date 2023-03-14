@@ -10,7 +10,7 @@ spring:
       globalcors:
         corsConfigurations:
           # The cors configuration to allow frontend developers cross origin request via this api gateway
-          '[/**]':
+          "[/**]":
             allowedOrigins:
               - "http://localhost:8081"
               - "http://127.0.0.1:8081"

@@ -5,7 +5,7 @@ on: [push]
 jobs:
   compliance:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -17,5 +17,5 @@ jobs:
           policy-path: policies/default.yml
 
           token: ${{ secrets.ACCESS_TOKEN }}
-          
-          argvs: '--disable-dependabot --disable-secret-scanning --disable-code-scanning'
+
+          argvs: "--disable-dependabot --disable-secret-scanning --disable-code-scanning"

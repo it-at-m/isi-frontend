@@ -1,6 +1,7 @@
 # Konventionen
 
 ## Sprache
+
 Die Dokumentationssprache ist deutsch.
 
 Im Code wird die englische Sprache verwendet. Fachliche Begriffe werden jedoch in Deutsch benannt
@@ -15,12 +16,12 @@ Alle Variablen und Parameter sind wenn möglich als `final` und `private` zu dek
 
 Konstanten sind als `private`, `static` und `final` sowie in **UPPER_CASE** zu definieren.
 
-Das Java-Sprachfeature `var` kann verwendet werden, wenn der Datentyp eindeutig bei der 
+Das Java-Sprachfeature `var` kann verwendet werden, wenn der Datentyp eindeutig bei der
 Zuweisung erkennbar ist.
 
 ## Frontend Coding Guidelines
 
-* Die Bezeichner von Custom Components werden in HTML im kebab-case geschrieben, z.B.: `<abfrage-component/>`
-* Wo möglich sollen die Typescript Decorator für Vue verwendet werden, siehe auch https://github.com/strantr/vuety
-* Alle Objekte, die in Komponenten benötigt werden, sind im Vuex-Store vorzuhalten und von dort zu holen.
-* Statusänderungen eines Objektes sind über den Vuex-Store vorzunehmen und nicht über Events an übergeordnete Komponenten zurückzuspiegeln.
+-   Die Bezeichner von Custom Components werden in HTML im kebab-case geschrieben, z.B.: `<abfrage-component/>`
+-   Wo möglich sollen die Typescript Decorator für Vue verwendet werden, siehe auch https://github.com/strantr/vuety
+-   Alle Objekte, die in Komponenten benötigt werden, sind im Vuex-Store vorzuhalten und von dort zu holen.
+-   Statusänderungen eines Objektes sind über den Vuex-Store vorzunehmen und nicht über Events an übergeordnete Komponenten zurückzuspiegeln.

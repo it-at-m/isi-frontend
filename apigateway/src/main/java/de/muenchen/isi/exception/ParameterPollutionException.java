@@ -11,7 +11,6 @@ import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
 /**
  * Used in {@link GlobalRequestParameterPollutionFilter} to signal a possible parameter pollution attack.
  */
