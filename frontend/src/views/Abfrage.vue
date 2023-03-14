@@ -10,6 +10,7 @@
           />
         </div>
         <abfragevariante-formular
+          v-if="openAbfragevariantenFormular"
           id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
           :mode="modeAbfragevariante"
@@ -104,7 +105,7 @@
       <template #action>
         <v-spacer />
         <v-btn
-          v-if="!isNewAbfrage() || step !== 1"
+          v-if="!isNewAbfrage()"
           id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
           color="secondary"
@@ -227,6 +228,8 @@ export default class Abfrage extends Mixins(
     const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
     if (!_.isNil(abfrageFromStore)) {
       this.abfrage = _.cloneDeep(abfrageFromStore);
+      this.openAbfrageFormular = true;
+      this.openAbfragevariantenFormular = false;
     }
   }
 
@@ -423,6 +426,7 @@ export default class Abfrage extends Mixins(
     );
     this.abfrage.abfragevarianten.push(this.selectedAbfragevariante);
     this.renumberingAbfragevarianten();
+    this.formChanged();
     this.openAbfrageFormular = false;
     this.openAbfragevariantenFormular = true;
   }
@@ -447,6 +451,7 @@ export default class Abfrage extends Mixins(
     );
     this.abfrage.abfragevarianten = copyAbfragevarianten;
     this.renumberingAbfragevarianten();
+    this.formChanged();
     this.openAbfragevariantenFormular = false;
     this.openAbfrageFormular = true;
   }
