@@ -79,7 +79,7 @@ export default class AbfrageNavigationTree extends Vue {
   private markedTreeItems: Array<AbfrageTreeItem> = [];
 
   @Watch("infrastrukturabfrage", {immediate: true, deep: true})
-  private selectedAbfrageChanged(): void {
+  private abfrageChanged(): void {
     if (!_.isNil(this.infrastrukturabfrage)) {
       this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrage);
       this.treeItemIdsToOpen = this.abfrageTreeItems.map(abfrageTreeItem => abfrageTreeItem.id);
@@ -115,7 +115,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
-    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr} - Realisierung: ${abfragevariante.realisierungVon} bis ${abfragevariante.realisierungBis}`;
+    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0\xa0\xa0\xa0${abfragevariante.realisierungVon} - ${abfragevariante.realisierungBis}`;
   }
 
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {

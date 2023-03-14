@@ -397,10 +397,16 @@ export default class Abfrage extends Mixins(
 
   private handleDeletionAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     console.log("handleDeletionForAbfragevariante: " + abfrageTreeItem.name);
+    const copyAbfragevarianten = _.cloneDeep(this.abfrage.abfragevarianten);
     _.remove(
-        this.abfrage.abfragevarianten,
-        abfragevariante => _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
+        copyAbfragevarianten,
+        abfragevariante => {
+          let equal = _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante);
+          console.log(equal);
+          return equal;
+        }
     );
+    this.abfrage.abfragevarianten = copyAbfragevarianten;
     this.openAbfragevariantenFormular = false;
     this.openAbfrageFormular = true;
   }
@@ -410,6 +416,7 @@ export default class Abfrage extends Mixins(
     this.selectedAbfragevariante = new AbfragevarianteModel(
         createAbfragevarianteDto()
     );
+    this.abfrage.abfragevarianten.push(this.selectedAbfragevariante);
     this.openAbfrageFormular = false;
     this.openAbfragevariantenFormular = true;
   }
