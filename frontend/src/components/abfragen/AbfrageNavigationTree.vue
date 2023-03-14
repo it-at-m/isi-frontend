@@ -62,7 +62,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly MAX_NUMBER_ABFRAGEVARIANTEN: number = 5;
 
-  private static readonly NAME_TREE_ELEMENT_ADD_ABFRAGEVARIANTE: string = "Abfragevariante";
+  private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante neu";
 
   private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
 
@@ -103,7 +103,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   get nameTreeElementAddAbfragevariante(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_ABFRAGEVARIANTE;
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE;
   }
 
   get nameTreeElementListAbfragevarianten(): string {

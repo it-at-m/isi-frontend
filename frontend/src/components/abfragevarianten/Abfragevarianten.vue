@@ -36,16 +36,16 @@
       <v-dialog
         v-model="showFormularDialog"
         persistent
-        width="auto"                              
+        width="auto"
       >
         <v-card>
           <v-container>
             <abfragevariante-formular
               id="abfragevariante_formular_component"
               ref="abfragevarianteComponent"
-              v-model="abfragevariante"              
-              :mode="mode"             
-              :sobon-relevant="isSobonRelevant" 
+              v-model="abfragevariante"
+              :mode="mode"
+              :sobon-relevant="isSobonRelevant"
             />
             <v-card-actions>
               <v-spacer />
@@ -74,11 +74,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Mixins, VModel, Watch, Prop } from "vue-property-decorator";
-import { UncertainBoolean } from "@/api/api-client";
+import {Component, Mixins, Prop, VModel, Watch} from "vue-property-decorator";
+import {UncertainBoolean} from "@/api/api-client";
 import AbfragevariantenListe from "./AbfragevariantenListe.vue";
 import AbfragevarianteFormular from "./AbfragevarianteFormular.vue";
-import { createAbfragevarianteDto } from "@/utils/Factories";
+import {createAbfragevarianteDto} from "@/utils/Factories";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import _ from "lodash";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
@@ -87,7 +87,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
 import Toaster from "@/components/common/toaster.type";
-import { Levels } from "@/api/error";
+import {Levels} from "@/api/error";
 
 @Component({
   components: {
@@ -97,11 +97,11 @@ import { Levels } from "@/api/error";
   },
 })
 export default class Abfragevarianten extends Mixins(
-  ValidatorMixin,
-  InformationListMixin,
-  SaveLeaveMixin
+    ValidatorMixin,
+    InformationListMixin,
+    SaveLeaveMixin
 ) {
-  @VModel({ type: Array }) abfragevarianten!: AbfragevarianteModel[];
+  @VModel({type: Array}) abfragevarianten!: AbfragevarianteModel[];
 
   @Prop()
   private sobonRelevant!: UncertainBoolean;
@@ -111,7 +111,7 @@ export default class Abfragevarianten extends Mixins(
   }
 
   private abfragevariante = new AbfragevarianteModel(
-    createAbfragevarianteDto()
+      createAbfragevarianteDto()
   );
 
   private showAddAbfragevarianteButton = false;
@@ -124,9 +124,9 @@ export default class Abfragevarianten extends Mixins(
     this.showFormularDialog = true;
   }
 
-  @Watch("abfragevarianten", { immediate: true, deep: true })
+  @Watch("abfragevarianten", {immediate: true, deep: true})
   private checkIfAbfragevariantenIsEmptyOrFull(): void {
-    this.showAddAbfragevarianteButton = !_.isNil(this.abfragevarianten) && this.abfragevarianten.length <= 4; 
+    this.showAddAbfragevarianteButton = !_.isNil(this.abfragevarianten) && this.abfragevarianten.length <= 4;
   }
 
   // Computed properties
@@ -151,9 +151,9 @@ export default class Abfragevarianten extends Mixins(
           this.renumberingAbfragevarianten();
         } else {
           const itemIndex: number = this.abfragevarianten.findIndex(
-            (item) =>
-              item.abfragevariantenNr ===
-              this.abfragevariante.abfragevariantenNr
+              (item) =>
+                  item.abfragevariantenNr ===
+                  this.abfragevariante.abfragevariantenNr
           );
           this.abfragevarianten.splice(itemIndex, 1, this.abfragevariante);
         }
@@ -164,7 +164,7 @@ export default class Abfragevarianten extends Mixins(
       }
     }
   }
-  
+
   private cancelFormularDialog(): void {
     this.reset();
   }
@@ -173,7 +173,6 @@ export default class Abfragevarianten extends Mixins(
     this.abfragevarianten.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });
-
   }
 
   private editAbfragevariante(abfragevariante: AbfragevarianteModel): void {

@@ -407,6 +407,7 @@ export default class Abfrage extends Mixins(
         }
     );
     this.abfrage.abfragevarianten = copyAbfragevarianten;
+    this.renumberingAbfragevarianten();
     this.openAbfragevariantenFormular = false;
     this.openAbfrageFormular = true;
   }
@@ -417,16 +418,23 @@ export default class Abfrage extends Mixins(
         createAbfragevarianteDto()
     );
     this.abfrage.abfragevarianten.push(this.selectedAbfragevariante);
+    this.renumberingAbfragevarianten();
     this.openAbfrageFormular = false;
     this.openAbfragevariantenFormular = true;
   }
 
   private get modeAbfragevariante(): DisplayMode {
     let value: DisplayMode | undefined;
-    value = _.isNaN(this.selectedAbfragevariante.abfragevariantenNr)
+    value = _.isNil(this.selectedAbfragevariante.id)
         ? DisplayMode.NEU
         : DisplayMode.AENDERUNG;
     return value;
+  }
+
+  private renumberingAbfragevarianten(): void {
+    this.abfrage.abfragevarianten.forEach((value, index) => {
+      value.abfragevariantenNr = index + 1;
+    });
   }
 
 }
