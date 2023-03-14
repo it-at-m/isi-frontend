@@ -142,7 +142,6 @@
 import Vue from "vue";
 import {Component, Mixins, Watch} from "vue-property-decorator";
 import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
-import Abfragevarianten from "@/components/abfragevarianten/Abfragevarianten.vue";
 import BauratenComponent from "@/components/bauraten/BauratenComponent.vue";
 import Toaster from "../components/common/toaster.type";
 import {createAbfragevarianteDto, createInfrastrukturabfrageDto,} from "@/utils/Factories";
@@ -176,7 +175,6 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
     AbfrageNavigationTree,
     InformationList,
     InfrastrukturabfrageComponent,
-    Abfragevarianten,
     YesNoDialog,
     DefaultLayout,
     BauratenComponent,
