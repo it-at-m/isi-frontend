@@ -6,13 +6,13 @@
           id="abfrage_navigation_tree_treeview"
           :active.sync="markedTreeItems"
           open-all
-          :open="treeItemIdsToOpen"
+          :open.prop="treeItemIdsToOpen"
           :items="abfrageTreeItems"
           return-object
           activatable
         >
           <template #append="{ item }">
-            <v-btb
+            <v-btn
               v-if="item.name === nameTreeElementAddAbfragevariante"
               :id="'abfrage_navigation_tree_button_create_new_abfragebvariante_' + item.id"
               icon
@@ -21,7 +21,7 @@
               <v-icon>
                 mdi-plus-box-outline
               </v-icon>
-            </v-btb>
+            </v-btn>
             <v-btn
               v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_delete_abfragebvariante_' + item.id"
@@ -85,13 +85,17 @@ export default class AbfrageNavigationTree extends Vue {
   private abfrageChanged(): void {
     if (!_.isNil(this.infrastrukturabfrage)) {
       this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrage);
-      this.treeItemIdsToOpen = this.abfrageTreeItems.map(abfrageTreeItem => abfrageTreeItem.id);
+      this.treeItemIdsToOpen = this.abfrageTreeItems.flatMap(abfrageTreeItem => {
+        const ids: Array<number> = [];
+        ids.push(abfrageTreeItem.id);
+        abfrageTreeItem.children.forEach(childAbfrageTreeItem => ids.push(childAbfrageTreeItem.id));
+        return ids;
+      });
     }
   }
 
   @Watch("markedTreeItems", {immediate: true, deep: true})
   private eventMarkedTreeItemElement(): void {
-    console.log(this.markedTreeItems.length);
     if (this.markedTreeItems.length) {
       // Es kann nur ein Eintrag in der TreeView markiert werden.
       const markedTreeItem: AbfrageTreeItem = this.markedTreeItems[0];
