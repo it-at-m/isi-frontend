@@ -11,6 +11,7 @@
           return-object
           activatable
           active-class="font-weight-black v-treeview-node--active"
+          open-on-click
         >
           <template #append="{ item }">
             <v-btn
