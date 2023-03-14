@@ -10,6 +10,7 @@
           :items="abfrageTreeItems"
           return-object
           activatable
+          active-class="font-weight-black v-treeview-node--active"
         >
           <template #append="{ item }">
             <v-btn
