@@ -16,7 +16,7 @@
           <template #append="{ item }">
             <v-btn
               v-if="item.name === nameTreeElementAddAbfragevariante"
-              :id="'abfrage_navigation_tree_button_create_new_abfragebvariante_' + item.id"
+              :id="'abfrage_navigation_tree_button_create_new_abfragevariante_' + item.id"
               icon
               @click="createNewAbfragevariante(item)"
             >
@@ -26,7 +26,7 @@
             </v-btn>
             <v-btn
               v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
-              :id="'abfrage_navigation_tree_button_delete_abfragebvariante_' + item.id"
+              :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
               icon
               @click="deletionAbfragevariante(item)"
             >
