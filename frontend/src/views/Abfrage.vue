@@ -10,7 +10,7 @@
           />
         </div>
         <abfragevariante-formular
-          id="abfragevariante_formular_component"
+          id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
           :mode="modeAbfragevariante"
           :sobon-relevant="abfrage.sobonRelevant"
@@ -49,7 +49,7 @@
           @no="cancel"
         />
         <yes-no-dialog
-          id="abfragevariante_yes_no_dialog_loeschen"
+          id="abfrage_abfragevariante_yes_no_dialog_loeschen"
           v-model="deleteDialogAbfragevarianteOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
@@ -76,6 +76,7 @@
       <template #navigation>
         <v-spacer />
         <abfrage-navigation-tree
+          id="abfrage_navidation_tree"
           v-model="abfrage"
           @abfrage-selected="handleAbfrageSelected"
           @abfragevariante-selected="handleAbfragevarianteSelected"
@@ -418,7 +419,7 @@ export default class Abfrage extends Mixins(
     this.deleteDialogAbfragevarianteOpen = true;
   }
 
-  private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleCreateNewAbfragevariante(): void {
     this.selectedAbfragevariante = new AbfragevarianteModel(
         createAbfragevarianteDto()
     );

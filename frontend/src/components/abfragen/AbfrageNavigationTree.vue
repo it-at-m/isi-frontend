@@ -3,6 +3,7 @@
     <v-row class="justify-start">
       <v-col>
         <v-treeview
+          id="abfrage_navigation_tree_treeview"
           :active.sync="markedTreeItems"
           open-all
           :open="treeItemIdsToOpen"
@@ -11,17 +12,19 @@
           activatable
         >
           <template #append="{ item }">
-            <v-btn
+            <v-btb
               v-if="item.name === nameTreeElementAddAbfragevariante"
+              :id="'abfrage_navigation_tree_button_create_new_abfragebvariante_' + item.id"
               icon
               @click="createNewAbfragevariante(item)"
             >
               <v-icon>
                 mdi-plus-box-outline
               </v-icon>
-            </v-btn>
+            </v-btb>
             <v-btn
               v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
+              :id="'abfrage_navigation_tree_button_delete_abfragebvariante_' + item.id"
               icon
               @click="deletionAbfragevariante(item)"
             >

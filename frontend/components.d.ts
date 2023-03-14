@@ -45,6 +45,7 @@ declare module '@vue/runtime-core' {
     VApp: typeof import('vuetify/lib')['VApp']
     VAppBar: typeof import('vuetify/lib')['VAppBar']
     VAutocomplete: typeof import('vuetify/lib')['VAutocomplete']
+    VBtb: typeof import('vuetify/lib')['VBtb']
     VBtn: typeof import('vuetify/lib')['VBtn']
     VButton: typeof import('vuetify/lib')['VButton']
     VCard: typeof import('vuetify/lib')['VCard']
