@@ -53,7 +53,7 @@
           v-model="deleteDialogAbfragevarianteOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          dialogtext="Hiermit wird die Abfragevariante unwiderruflich gelöscht."
+          :dialogtext="'Hiermit wird die Abfragevariante Nr.' + selectedAbfragevariante.abfragevariantenNr + ' unwiderruflich gelöscht.'"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogAbfragevarianteNo"
