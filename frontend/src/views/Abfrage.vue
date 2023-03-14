@@ -256,7 +256,7 @@ export default class Abfrage extends Mixins(
     this.freigabeDialogOpen = true;
   }
 
-  private async yesNoDialogAbfrageYes(): Promise<void> {
+  private yesNoDialogAbfrageYes(): void {
     this.deleteInfrastrukturabfrage();
     this.yesNoDialogAbfrageNo();
   }
@@ -265,16 +265,16 @@ export default class Abfrage extends Mixins(
     this.deleteDialogAbfrageOpen = false;
   }
 
-  private async yesNoDialogFreigabeYes(): Promise<void> {
+  private yesNoDialogFreigabeYes(): void {
     this.abfrageFreigeben();
-    this.yesNoDialogNo();
+    this.yesNoDialogFreigabeNo();
   }
 
-  private async yesNoDialogFreigabeNo(): Promise<void> {
+  private yesNoDialogFreigabeNo(): void {
     this.freigabeDialogOpen = false;
   }
 
-  private async yesNoDialogAbfragevarianteYes(): Promise<void> {
+  private yesNoDialogAbfragevarianteYes(): void {
     this.removeAbfragevarianteFromAbfrage();
     this.yesNoDialogAbfragevarianteNo();
   }
@@ -400,7 +400,7 @@ export default class Abfrage extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private handleAbfrageSelected(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleAbfrageSelected(): void {
     this.openAbfrageFormular = true;
     this.openAbfragevariantenFormular = false;
   }
