@@ -2,24 +2,18 @@
   <v-form ref="form">
     <DefaultLayout solid-heading>
       <template #content>
-        <div v-if="step === 1">
-          <infrastrukturabfrageComponent
+        <div v-if="openAbfrageFormular">
+          <infrastrukturabfrage-component
             id="abfrage_infrastrukturabfrage_component"
             v-model="abfrage"
+            :mode="modeAbfrage"
           />
         </div>
-        <abfragevarianten
-          v-if="step === 2"
-          id="abfrage_abfragevarianten"
-          ref="abfragevarianten"
-          v-model="abfrage.abfragevarianten"
+        <abfragevariante-formular
+          id="abfragevariante_formular_component"
+          v-model="selectedAbfragevariante"
+          :mode="modeAbfragevariante"
           :sobon-relevant="abfrage.sobonRelevant"
-        />
-        <bauraten-component
-          v-if="step === 3"
-          id="abfrage_bauraten"
-          ref="bauratenComponent"
-          v-model="baurate"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
@@ -71,6 +65,7 @@
       <template #navigation>
         <v-spacer />
         <abfrage-navigation-tree
+          v-model="abfrage"
           @abfrage-selected="handleAbfrageSelected"
           @abfragevariante-selected="handleAbfragevarianteSelected"
           @deletion-abfragevariante="handleDeletionAbfragevariante"
@@ -138,13 +133,12 @@ import InfrastrukturabfrageComponent from "@/components/abfragen/Infrastrukturab
 import Abfragevarianten from "@/components/abfragevarianten/Abfragevarianten.vue";
 import BauratenComponent from "@/components/bauraten/BauratenComponent.vue";
 import Toaster from "../components/common/toaster.type";
-import {createBaurate, createInfrastrukturabfrageDto,} from "@/utils/Factories";
+import {createAbfragevarianteDto, createInfrastrukturabfrageDto,} from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
 import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import {AbfrageListElementDtoStatusAbfrageEnum, InfrastrukturabfrageDto} from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
@@ -156,10 +150,13 @@ import {Levels} from "@/api/error";
 import DisplayMode from "@/types/common/DisplayMode";
 import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
 import AbfrageNavigationTree, {AbfrageTreeItem} from "@/components/abfragen/AbfrageNavigationTree.vue";
+import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
+import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 
 @Component({
   methods: {containsNotAllowedDokument},
   components: {
+    AbfragevarianteFormular,
     AbfrageNavigationTree,
     InformationList,
     InfrastrukturabfrageComponent,
@@ -177,7 +174,7 @@ export default class Abfrage extends Mixins(
     ValidatorMixin,
     SaveLeaveMixin
 ) {
-  private mode = DisplayMode.UNDEFINED;
+  private modeAbfrage = DisplayMode.UNDEFINED;
 
   private buttonText = "";
 
@@ -185,7 +182,9 @@ export default class Abfrage extends Mixins(
       createInfrastrukturabfrageDto()
   );
 
-  private baurate: BaurateModel = new BaurateModel(createBaurate());
+  private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(
+      createAbfragevarianteDto()
+  );
 
   private abfrageId: string = this.$route.params.id;
 
@@ -193,13 +192,17 @@ export default class Abfrage extends Mixins(
 
   private freigabeDialogOpen = false;
 
-  private step = 1;
+  private openAbfrageFormular = true;
+
+  private openAbfragevariantenFormular = false;
 
   mounted(): void {
-    this.mode = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+    this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage()
         ? "Entwurf Speichern"
         : "Aktualisieren";
+    this.openAbfrageFormular = true;
+    this.openAbfragevariantenFormular = false;
     this.getAbfrageById();
   }
 
@@ -276,7 +279,7 @@ export default class Abfrage extends Mixins(
     const validationMessage: string | null =
         this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
-      if (this.mode === DisplayMode.NEU) {
+      if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(this.abfrage, true)
             .then((dto) => {
               this.handleSuccess(dto);
@@ -301,6 +304,8 @@ export default class Abfrage extends Mixins(
     } else {
       Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
+    this.openAbfrageFormular = true;
+    this.openAbfragevariantenFormular = false;
   }
 
   private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
@@ -338,6 +343,8 @@ export default class Abfrage extends Mixins(
                 );
               }
           );
+      this.openAbfrageFormular = true;
+      this.openAbfragevariantenFormular = false;
     } else {
       this.showWarningInInformationList(validationMessage);
     }
@@ -352,48 +359,6 @@ export default class Abfrage extends Mixins(
         this.abfrage.abfrage.statusAbfrage ==
         AbfrageListElementDtoStatusAbfrageEnum.Angelegt
     );
-  }
-
-  private changeForward(): void {
-    if (this.validate()) {
-      let validationMessage: string | null = null;
-
-      if (this.step === 1) {
-        validationMessage = this.findFaultInInfrastrukturabfrage(this.abfrage);
-      }
-
-      if (this.step === 2) {
-        validationMessage = this.findFaultInAbfragevarianten(this.abfrage);
-      }
-
-      if (_.isNil(validationMessage) && this.step < 3) {
-        this.step++;
-        this.$store.dispatch("information/overwriteInformationList", []);
-      } else if (_.isString(validationMessage)) {
-        this.showWarningInInformationList(validationMessage);
-      }
-    } else {
-      this.showWarningInInformationList("Es gibt noch Validierungsfehler");
-    }
-  }
-
-  private changeBackwards(): void {
-    if (this.validate()) {
-      let validationMessage: string | null = null;
-
-      if (this.step === 1) {
-        validationMessage = this.findFaultInInfrastrukturabfrage(this.abfrage);
-      }
-
-      if (_.isNil(validationMessage) && this.step > 1) {
-        this.step--;
-        this.$store.dispatch("information/overwriteInformationList", []);
-      } else if (_.isString(validationMessage)) {
-        this.showWarningInInformationList(validationMessage);
-      }
-    } else {
-      this.showWarningInInformationList("Es gibt noch Validierungsfehler");
-    }
   }
 
   private returnToUebersicht(message?: string, level?: Levels): void {
@@ -411,20 +376,51 @@ export default class Abfrage extends Mixins(
 
   private handleAbfrageSelected(abfrageTreeItem: AbfrageTreeItem): void {
     console.log("handleAbfrageSelected: " + abfrageTreeItem.name);
+    this.openAbfrageFormular = true;
+    this.openAbfragevariantenFormular = false;
   }
 
   private handleAbfragevarianteSelected(abfrageTreeItem: AbfrageTreeItem): void {
     console.log("handleAbfragevarianteSelected: " + abfrageTreeItem.name);
+    let selectedAbfragevariante = this.abfrage.abfragevarianten.find(
+        abfragevariante => _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
+    );
+    if (_.isNil(selectedAbfragevariante)) {
+      selectedAbfragevariante = new AbfragevarianteModel(
+          createAbfragevarianteDto()
+      );
+    }
+    this.selectedAbfragevariante = selectedAbfragevariante;
+    this.openAbfrageFormular = false;
+    this.openAbfragevariantenFormular = true;
   }
 
   private handleDeletionAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     console.log("handleDeletionForAbfragevariante: " + abfrageTreeItem.name);
+    _.remove(
+        this.abfrage.abfragevarianten,
+        abfragevariante => _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
+    );
+    this.openAbfragevariantenFormular = false;
+    this.openAbfrageFormular = true;
   }
 
   private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     console.log("handleCreateNewAbfragevariante: " + abfrageTreeItem.name);
+    this.selectedAbfragevariante = new AbfragevarianteModel(
+        createAbfragevarianteDto()
+    );
+    this.openAbfrageFormular = false;
+    this.openAbfragevariantenFormular = true;
   }
 
+  private get modeAbfragevariante(): DisplayMode {
+    let value: DisplayMode | undefined;
+    value = _.isNaN(this.selectedAbfragevariante.abfragevariantenNr)
+        ? DisplayMode.NEU
+        : DisplayMode.AENDERUNG;
+    return value;
+  }
 
 }
 </script>

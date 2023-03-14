@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Vue, Watch} from "vue-property-decorator";
+import {Component, Emit, VModel, Vue, Watch} from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
-import {AbfragevarianteDto} from "@/api/api-client/isi-backend";
+import {AbfragevarianteDto, InfrastrukturabfrageDto} from "@/api/api-client/isi-backend";
 
 export interface AbfrageTreeItem {
 
@@ -49,7 +49,10 @@ export interface AbfrageTreeItem {
 
   children: Array<AbfrageTreeItem>;
 
-  uuid: string | undefined;
+  abfrage: InfrastrukturabfrageDto | undefined;
+
+  abfragevariante: AbfragevarianteDto | undefined;
+
 
 }
 
@@ -66,32 +69,37 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
 
+  @VModel({type: InfrastrukturabfrageModel}) infrastrukturabfrage!: InfrastrukturabfrageModel;
+
   private treeItemIdsToOpen: Array<number> = [];
 
   private abfrageTreeItems: Array<AbfrageTreeItem> = [];
 
   private markedTreeItemIds: Array<number> = [];
 
-  @Watch("$store.state.search.selectedAbfrage", {immediate: true, deep: true})
+  @Watch("infrastrukturabfrage", {immediate: true, deep: true})
   private selectedAbfrageChanged(): void {
-    const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
-    if (!_.isNil(abfrageFromStore)) {
-      const abfrage = _.cloneDeep(abfrageFromStore);
-      this.abfrageTreeItems = this.createAbfrageTreeItems(abfrage);
+    if (!_.isNil(this.infrastrukturabfrage)) {
+      this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrage);
       this.treeItemIdsToOpen = this.abfrageTreeItems.map(abfrageTreeItem => abfrageTreeItem.id);
     }
   }
 
   @Watch("markedTreeItemIds", {immediate: true, deep: true})
   private eventMarkedTreeItemElement(): void {
+    console.log("eventMarkedTreeItemElement");
     if (this.markedTreeItemIds.length) {
+      console.log("this.markedTreeItemIds.length");
       // Es kann nur ein Eintrag in der TreeView markiert werden.
       const markedTreeItemId: number = this.markedTreeItemIds[0];
       const markedTreeItemElement = this.abfrageTreeItems.find(abfrageTreeItem => abfrageTreeItem.id === markedTreeItemId);
       if (!_.isNil(markedTreeItemElement)) {
+        console.log("!_.isNil(markedTreeItemElement)");
         if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItemElement)) {
+          console.log("is a abfragevariante");
           this.abfragevarianteSelected(markedTreeItemElement);
         } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItemElement)) {
+          console.log("is a abfrage");
           this.abfrageSelected(markedTreeItemElement);
         }
       }
@@ -122,7 +130,8 @@ export default class AbfrageNavigationTree extends Vue {
       id: itemKey++,
       name: this.nameTreeElementAbfrage,
       children: [],
-      uuid: abfrage.id
+      abfrage: abfrage,
+      abfragevariante: undefined
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
@@ -130,7 +139,8 @@ export default class AbfrageNavigationTree extends Vue {
       id: itemKey++,
       name: this.nameTreeElementListAbfragevarianten,
       children: [],
-      uuid: undefined
+      abfrage: undefined,
+      abfragevariante: undefined
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
@@ -140,7 +150,8 @@ export default class AbfrageNavigationTree extends Vue {
         id: itemKey++,
         name: this.getNameTreeElementAbfragevariante(abfragevariante),
         children: [],
-        uuid: abfragevariante.id
+        abfrage: undefined,
+        abfragevariante: abfragevariante
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     });
@@ -150,7 +161,8 @@ export default class AbfrageNavigationTree extends Vue {
         id: itemKey++,
         name: this.nameTreeElementAddAbfragevariante,
         children: [],
-        uuid: undefined
+        abfrage: undefined,
+        abfragevariante: undefined
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     }
@@ -159,10 +171,12 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
+    console.log("isAbfrageTreeItemAnAbfrage");
     return abfrageTreeItem.name === AbfrageNavigationTree.NAME_TREE_ELEMENT_ABFRAGE;
   }
 
   private isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
+    console.log("isAbfrageTreeItemAnAbfragevariante");
     return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
   }
 
