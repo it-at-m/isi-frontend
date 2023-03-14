@@ -454,11 +454,9 @@ export default class Abfrage extends Mixins(
   }
 
   private get modeAbfragevariante(): DisplayMode {
-    let value: DisplayMode | undefined;
-    value = _.isNil(this.selectedAbfragevariante.id)
+    return _.isNil(this.selectedAbfragevariante.id)
         ? DisplayMode.NEU
         : DisplayMode.AENDERUNG;
-    return value;
   }
 
   private renumberingAbfragevarianten(): void {
