@@ -85,12 +85,7 @@ export default class AbfrageNavigationTree extends Vue {
   private abfrageChanged(): void {
     if (!_.isNil(this.infrastrukturabfrage)) {
       this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrage);
-      this.treeItemIdsToOpen = this.abfrageTreeItems.flatMap(abfrageTreeItem => {
-        const ids: Array<number> = [];
-        ids.push(abfrageTreeItem.id);
-        abfrageTreeItem.children.forEach(childAbfrageTreeItem => ids.push(childAbfrageTreeItem.id));
-        return ids;
-      });
+      this.treeItemIdsToOpen = this.createTreeItemIds(this.abfrageTreeItems);
     }
   }
 
@@ -199,6 +194,16 @@ export default class AbfrageNavigationTree extends Vue {
   @Emit()
   private createNewAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
+  }
+
+  private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
+    const ids: Array<number> = [];
+    abfrageTreeItems.forEach(abfrageTreeItem => {
+      ids.push(abfrageTreeItem.id);
+      const childIds = this.createTreeItemIds(abfrageTreeItem.children);
+      ids.push(...childIds);
+    });
+    return ids;
   }
 
 }
