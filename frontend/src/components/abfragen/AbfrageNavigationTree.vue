@@ -28,7 +28,7 @@
               v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
               icon
-              @click="deletionAbfragevariante(item)"
+              @click="deleteAbfragevariante(item)"
             >
               <v-icon>
                 mdi-trash-can-outline
@@ -95,9 +95,9 @@ export default class AbfrageNavigationTree extends Vue {
       const markedTreeItem: AbfrageTreeItem = this.markedTreeItems[0];
       if (!_.isNil(markedTreeItem)) {
         if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItem)) {
-          this.abfragevarianteSelected(markedTreeItem);
+          this.selectAbfragevariante(markedTreeItem);
         } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItem)) {
-          this.abfrageSelected(markedTreeItem);
+          this.selectAbfrage(markedTreeItem);
         }
       }
     }
@@ -179,32 +179,32 @@ export default class AbfrageNavigationTree extends Vue {
     return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
   }
 
-  @Emit()
-  private abfrageSelected(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private abfragevarianteSelected(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private deletionAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private createNewAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
   private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
     return abfrageTreeItems.flatMap(abfrageTreeItem => {
       const ids = this.createTreeItemIds(abfrageTreeItem.children);
       ids.push(abfrageTreeItem.id);
       return ids;
     });
+  }
+
+  @Emit()
+  private selectAbfrage(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private selectAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private deleteAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private createNewAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
   }
 
 }

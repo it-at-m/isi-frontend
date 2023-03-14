@@ -78,9 +78,9 @@
         <abfrage-navigation-tree
           id="abfrage_navidation_tree"
           v-model="abfrage"
-          @abfrage-selected="handleAbfrageSelected"
-          @abfragevariante-selected="handleAbfragevarianteSelected"
-          @deletion-abfragevariante="handleDeletionAbfragevariante"
+          @select-abfrage="handleSelectAbfrage"
+          @select-abfragevariante="handleSelectAbfragevariante"
+          @delete-abfragevariante="handleDeleteAbfragevariante"
           @create-new-abfragevariante="handleCreateNewAbfragevariante"
         />
         <v-spacer />
@@ -274,7 +274,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
-    this.removeAbfragevarianteFromAbfrage();
+    this.removeSelectedAbfragevarianteFromAbfrage();
     this.yesNoDialogAbfragevarianteNo();
   }
 
@@ -399,18 +399,18 @@ export default class Abfrage extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private handleAbfrageSelected(): void {
+  private handleSelectAbfrage(): void {
     this.openAbfrageFormular = true;
     this.openAbfragevariantenFormular = false;
   }
 
-  private handleAbfragevarianteSelected(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleSelectAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfrageFormular = false;
     this.openAbfragevariantenFormular = true;
   }
 
-  private handleDeletionAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfrageFormular = false;
     this.openAbfragevariantenFormular = true;
@@ -439,7 +439,7 @@ export default class Abfrage extends Mixins(
     return selectedAbfragevariante;
   }
 
-  private removeAbfragevarianteFromAbfrage(): void {
+  private removeSelectedAbfragevarianteFromAbfrage(): void {
     const copyAbfragevarianten = _.cloneDeep(this.abfrage.abfragevarianten);
     _.remove(
         copyAbfragevarianten,
