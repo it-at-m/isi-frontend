@@ -17,14 +17,14 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
-          v-model="deleteDialogOpen"
+          v-model="deleteDialogAbfrageOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
           no-text="Abbrechen"
           yes-text="Löschen"
-          @no="yesNoDialogNo"
-          @yes="yesNoDialogYes"
+          @no="yesNoDialogAbfrageNo"
+          @yes="yesNoDialogAbfrageYes"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_freigeben"
@@ -47,6 +47,17 @@
           :yes-text="saveLeaveYesText"
           @yes="leave"
           @no="cancel"
+        />
+        <yes-no-dialog
+          id="abfragevariante_yes_no_dialog_loeschen"
+          v-model="deleteDialogAbfragevarianteOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          dialogtext="Hiermit wird die Abfragevariante unwiderruflich gelöscht."
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogAbfragevarianteNo"
+          @yes="yesNoDialogAbfragevarianteYes"
         />
       </template>
       <template #heading>
@@ -139,7 +150,11 @@ import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
 import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import {AbfrageListElementDtoStatusAbfrageEnum, InfrastrukturabfrageDto} from "@/api/api-client/isi-backend";
+import {
+  AbfrageListElementDtoStatusAbfrageEnum,
+  AbfragevarianteDto,
+  InfrastrukturabfrageDto
+} from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
@@ -188,9 +203,11 @@ export default class Abfrage extends Mixins(
 
   private abfrageId: string = this.$route.params.id;
 
-  private deleteDialogOpen = false;
+  private deleteDialogAbfrageOpen = false;
 
   private freigabeDialogOpen = false;
+
+  private deleteDialogAbfragevarianteOpen = false;
 
   private openAbfrageFormular = true;
 
@@ -232,20 +249,20 @@ export default class Abfrage extends Mixins(
   }
 
   private deleteAbfrage(): void {
-    this.deleteDialogOpen = true;
+    this.deleteDialogAbfrageOpen = true;
   }
 
   private freigabeAbfrage(): void {
     this.freigabeDialogOpen = true;
   }
 
-  private async yesNoDialogYes(): Promise<void> {
+  private async yesNoDialogAbfrageYes(): Promise<void> {
     this.deleteInfrastrukturabfrage();
-    this.yesNoDialogNo();
+    this.yesNoDialogAbfrageNo();
   }
 
-  private yesNoDialogNo(): void {
-    this.deleteDialogOpen = false;
+  private yesNoDialogAbfrageNo(): void {
+    this.deleteDialogAbfrageOpen = false;
   }
 
   private async yesNoDialogFreigabeYes(): Promise<void> {
@@ -255,6 +272,15 @@ export default class Abfrage extends Mixins(
 
   private async yesNoDialogFreigabeNo(): Promise<void> {
     this.freigabeDialogOpen = false;
+  }
+
+  private async yesNoDialogAbfragevarianteYes(): Promise<void> {
+    this.removeAbfragevarianteFromAbfrage();
+    this.yesNoDialogAbfragevarianteNo();
+  }
+
+  private yesNoDialogAbfragevarianteNo(): void {
+    this.deleteDialogAbfragevarianteOpen = false;
   }
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
@@ -375,13 +401,34 @@ export default class Abfrage extends Mixins(
   }
 
   private handleAbfrageSelected(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleAbfrageSelected: " + abfrageTreeItem.name);
     this.openAbfrageFormular = true;
     this.openAbfragevariantenFormular = false;
   }
 
   private handleAbfragevarianteSelected(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleAbfragevarianteSelected: " + abfrageTreeItem.name);
+    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+    this.openAbfrageFormular = false;
+    this.openAbfragevariantenFormular = true;
+  }
+
+  private handleDeletionAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+    this.openAbfrageFormular = false;
+    this.openAbfragevariantenFormular = true;
+    this.deleteDialogAbfragevarianteOpen = true;
+  }
+
+  private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.selectedAbfragevariante = new AbfragevarianteModel(
+        createAbfragevarianteDto()
+    );
+    this.abfrage.abfragevarianten.push(this.selectedAbfragevariante);
+    this.renumberingAbfragevarianten();
+    this.openAbfrageFormular = false;
+    this.openAbfragevariantenFormular = true;
+  }
+
+  private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
     let selectedAbfragevariante = this.abfrage.abfragevarianten.find(
         abfragevariante => _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
     );
@@ -390,37 +437,19 @@ export default class Abfrage extends Mixins(
           createAbfragevarianteDto()
       );
     }
-    this.selectedAbfragevariante = selectedAbfragevariante;
-    this.openAbfrageFormular = false;
-    this.openAbfragevariantenFormular = true;
+    return selectedAbfragevariante;
   }
 
-  private handleDeletionAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleDeletionForAbfragevariante: " + abfrageTreeItem.name);
+  private removeAbfragevarianteFromAbfrage(): void {
     const copyAbfragevarianten = _.cloneDeep(this.abfrage.abfragevarianten);
     _.remove(
         copyAbfragevarianten,
-        abfragevariante => {
-          let equal = _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante);
-          console.log(equal);
-          return equal;
-        }
+        abfragevariante => _.isEqual(abfragevariante, this.selectedAbfragevariante)
     );
     this.abfrage.abfragevarianten = copyAbfragevarianten;
     this.renumberingAbfragevarianten();
     this.openAbfragevariantenFormular = false;
     this.openAbfrageFormular = true;
-  }
-
-  private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("handleCreateNewAbfragevariante: " + abfrageTreeItem.name);
-    this.selectedAbfragevariante = new AbfragevarianteModel(
-        createAbfragevarianteDto()
-    );
-    this.abfrage.abfragevarianten.push(this.selectedAbfragevariante);
-    this.renumberingAbfragevarianten();
-    this.openAbfrageFormular = false;
-    this.openAbfragevariantenFormular = true;
   }
 
   private get modeAbfragevariante(): DisplayMode {
