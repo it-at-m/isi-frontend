@@ -2,7 +2,11 @@
   <div>
     <ul>
       <li>
-        <a :href="`/${type}/${artifact}`" target="_blank">{{ $props.artifact }}</a>
+        <a
+          :href="`/${type}/${artifact}`"
+          target="_blank"
+          >{{ $props.artifact }}</a
+        >
       </li>
     </ul>
   </div>

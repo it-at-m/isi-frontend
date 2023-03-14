@@ -5,9 +5,7 @@
   "scripts": {
     "serve": "vite",
     "build": "vite build --out-dir dist",
-    "lint": "npx prettier --write --ignore-unknown .",
-    "test:unit": "vitest run",
-    "prepare": "cd .. && husky install"
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "@fontsource/roboto": "^4.5.8",
@@ -45,12 +43,8 @@
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-vue": "^9.8.0",
     "eslint-plugin-vuetify": "^1.1.0",
-    "husky": "^8.0.2",
     "jsdom": "^20.0.0",
-    "lint-staged": "^13.2.0",
     "postcss": "^8.4.14",
-    "prettier": "2.8.4",
-    "prettier-plugin-java": "^2.1.0",
     "sass": "~1.32.12",
     "stylus": "^0.59.0",
     "typescript": "~4.4.3",
@@ -66,8 +60,5 @@
     "plugins": {
       "autoprefixer": {}
     }
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
   }
 }
