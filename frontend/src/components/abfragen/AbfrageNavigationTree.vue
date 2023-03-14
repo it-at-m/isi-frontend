@@ -75,8 +75,6 @@ export default class AbfrageNavigationTree extends Vue {
 
   @VModel({type: InfrastrukturabfrageModel}) infrastrukturabfrage!: InfrastrukturabfrageModel;
 
-  private treeItemIdsToOpen: Array<number> = [];
-
   private abfrageTreeItems: Array<AbfrageTreeItem> = [];
 
   private markedTreeItems: Array<AbfrageTreeItem> = [];
@@ -85,7 +83,6 @@ export default class AbfrageNavigationTree extends Vue {
   private abfrageChanged(): void {
     if (!_.isNil(this.infrastrukturabfrage)) {
       this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrage);
-      this.treeItemIdsToOpen = this.createTreeItemIds(this.abfrageTreeItems);
     }
   }
 
@@ -102,6 +99,10 @@ export default class AbfrageNavigationTree extends Vue {
         }
       }
     }
+  }
+
+  get treeItemIdsToOpen(): Array<number> {
+    return this.createTreeItemIds(this.abfrageTreeItems);
   }
 
   get nameTreeElementAddAbfragevariante(): string {
