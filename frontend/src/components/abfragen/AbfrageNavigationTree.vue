@@ -3,11 +3,12 @@
     <v-row class="justify-start">
       <v-col>
         <v-treeview
-          :active.sync="markedTreeItemIds"
+          :active.sync="markedTreeItems"
           open-all
           :open="treeItemIdsToOpen"
-          activatable
           :items="abfrageTreeItems"
+          return-object
+          activatable
         >
           <template #append="{ item }">
             <v-btn
@@ -75,7 +76,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private abfrageTreeItems: Array<AbfrageTreeItem> = [];
 
-  private markedTreeItemIds: Array<number> = [];
+  private markedTreeItems: Array<AbfrageTreeItem> = [];
 
   @Watch("infrastrukturabfrage", {immediate: true, deep: true})
   private selectedAbfrageChanged(): void {
@@ -85,22 +86,17 @@ export default class AbfrageNavigationTree extends Vue {
     }
   }
 
-  @Watch("markedTreeItemIds", {immediate: true, deep: true})
+  @Watch("markedTreeItems", {immediate: true, deep: true})
   private eventMarkedTreeItemElement(): void {
-    console.log("eventMarkedTreeItemElement");
-    if (this.markedTreeItemIds.length) {
-      console.log("this.markedTreeItemIds.length");
+    console.log(this.markedTreeItems.length);
+    if (this.markedTreeItems.length) {
       // Es kann nur ein Eintrag in der TreeView markiert werden.
-      const markedTreeItemId: number = this.markedTreeItemIds[0];
-      const markedTreeItemElement = this.abfrageTreeItems.find(abfrageTreeItem => abfrageTreeItem.id === markedTreeItemId);
-      if (!_.isNil(markedTreeItemElement)) {
-        console.log("!_.isNil(markedTreeItemElement)");
-        if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItemElement)) {
-          console.log("is a abfragevariante");
-          this.abfragevarianteSelected(markedTreeItemElement);
-        } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItemElement)) {
-          console.log("is a abfrage");
-          this.abfrageSelected(markedTreeItemElement);
+      const markedTreeItem: AbfrageTreeItem = this.markedTreeItems[0];
+      if (!_.isNil(markedTreeItem)) {
+        if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItem)) {
+          this.abfragevarianteSelected(markedTreeItem);
+        } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItem)) {
+          this.abfrageSelected(markedTreeItem);
         }
       }
     }
@@ -171,12 +167,10 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
-    console.log("isAbfrageTreeItemAnAbfrage");
     return abfrageTreeItem.name === AbfrageNavigationTree.NAME_TREE_ELEMENT_ABFRAGE;
   }
 
   private isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
-    console.log("isAbfrageTreeItemAnAbfragevariante");
     return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
   }
 
