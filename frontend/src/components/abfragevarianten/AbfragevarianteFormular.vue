@@ -274,6 +274,10 @@ export default class AbfragevarianteForm extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
+  mounted(): void {
+    console.log("AbfragevarianteForm mounted");
+  }
+
   get displayMode(): DisplayMode {
     return this.mode;
   }

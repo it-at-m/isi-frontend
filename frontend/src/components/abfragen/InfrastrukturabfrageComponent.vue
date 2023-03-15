@@ -12,7 +12,7 @@
           label="Aktenzeichen ProLBK"
           maxlength="255"
           @input="formChanged"
-        />  
+        />
       </template>
     </abfrage-component>
     <field-group-card :card-title="sobonCardTitle">
@@ -80,36 +80,41 @@
 </template>
 
 <script lang="ts">
-import { Component, VModel, Mixins, Watch } from "vue-property-decorator";
+import {Component, Mixins, VModel, Watch} from "vue-property-decorator";
 import AbfrageComponent from "@/components/abfragen/AbfrageComponent.vue";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import {LookupEntryDto, UncertainBoolean} from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   components: {
     AbfrageComponent,
     FieldGroupCard,
-    TriSwitch },
+    TriSwitch
+  },
   mixins: [FieldValidationRulesMixin],
 })
-export default class InfrastrukturabfrageComponent extends Mixins (SaveLeaveMixin) {
-  @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
+export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin) {
+  @VModel({type: InfrastrukturabfrageModel}) infrastrukturabfrage!: InfrastrukturabfrageModel;
 
   private sobonCardTitle = "SoBoN";
 
-  private offiziellCardTitle = "Verfahrensschritt"
+  private offiziellCardTitle = "Verfahrensschritt";
 
   private sobonJahrVisible = false;
+  
+  mounted(): void {
+    console.log("InfrastrukturabfrageComponent mounted");
+  }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
   }
 
-  @Watch("infrastrukturabfrage.sobonRelevant", { immediate: true })
+  @Watch("infrastrukturabfrage.sobonRelevant", {immediate: true})
   private sobonRelevantChanged(value: UncertainBoolean): void {
     if (value === UncertainBoolean.True) {
       this.sobonJahrVisible = true;

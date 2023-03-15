@@ -408,9 +408,14 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    // Mount des Abfrageformulars um anschließend das Formular für die Abfragevariante neu mounten zu können.
+    this.handleSelectAbfrage();
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    this.openAbfrageFormular = false;
-    this.openAbfragevariantenFormular = true;
+    this.$nextTick(() => {
+      // Neues Mounten des Abfragevariantenformulars.
+      this.openAbfrageFormular = false;
+      this.openAbfragevariantenFormular = true;
+    });
   }
 
   private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
