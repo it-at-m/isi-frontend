@@ -18,8 +18,8 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="OSM_BASE_URL"
-        layers="OSM-WMS"
+        :base-url="WMS_BASE_URL"
+        layers="Hintergrund"
         format="image/png"
         layer-type="base"
         :visible="true"
@@ -70,7 +70,7 @@ import 'leaflet/dist/leaflet.css';
 })
 export default class CityMap extends Vue {
   
-  private readonly OSM_BASE_URL = "https://ows.terrestris.de/osm/service?";
+  private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MUNICH_CENTER = [48.137227, 11.575517] as const;
   private readonly MAP_OPTIONS = {attributionControl: false} as const;
 
