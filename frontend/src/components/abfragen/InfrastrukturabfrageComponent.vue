@@ -105,10 +105,6 @@ export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin
   private offiziellCardTitle = "Verfahrensschritt";
 
   private sobonJahrVisible = false;
-  
-  mounted(): void {
-    console.log("InfrastrukturabfrageComponent mounted");
-  }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];

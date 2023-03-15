@@ -2,58 +2,58 @@
   <div>
     <v-row>
       <v-col
-        cols="12"
-        md="12"
+          cols="12"
+          md="12"
       >
         <span
-          class="text-h6 font-weight-bold"
-          v-text="headline"
+            class="text-h6 font-weight-bold"
+            v-text="headline"
         />
       </v-col>
     </v-row>
     <field-group-card>
       <v-row justify="center">
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_realisierungvon"
-            v-model="abfragevariante.realisierungVon"
-            label="Realisierung von (JJJJ)"
-            class="mx-3"
-            year
-            required
-            maxlength="4"
+              id="abfragevariante_realisierungvon"
+              v-model="abfragevariante.realisierungVon"
+              label="Realisierung von (JJJJ)"
+              class="mx-3"
+              year
+              required
+              maxlength="4"
           />
         </v-col>
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_realisierungBis"
-            v-model="abfragevariante.realisierungBis"
-            label="Realisierung bis (JJJJ)"
-            class="mx-3"
-            year
-            required
-            maxlength="4"
+              id="abfragevariante_realisierungBis"
+              v-model="abfragevariante.realisierungBis"
+              label="Realisierung bis (JJJJ)"
+              class="mx-3"
+              year
+              required
+              maxlength="4"
           />
         </v-col>
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <v-select
-            id="abfragevariante_planungsrecht"
-            v-model="abfragevariante.planungsrecht"
-            class="mx-3"
-            :items="planungsrechtList"
-            item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-            @change="formChanged"
+              id="abfragevariante_planungsrecht"
+              v-model="abfragevariante.planungsrecht"
+              class="mx-3"
+              :items="planungsrechtList"
+              item-value="key"
+              item-text="value"
+              :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+              @change="formChanged"
           >
             <template #label>
               Planungsrecht <span class="secondary--text">*</span>
@@ -66,143 +66,143 @@
     <field-group-card :card-title="geschossFlaecheCardTitle">
       <v-row justify="center">
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_geschossflaecheWohnen"
-            v-model="abfragevariante.geschossflaecheWohnen"
-            class="mx-3"
-            label="Wohnen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+              id="abfragevariante_geschossflaecheWohnen"
+              v-model="abfragevariante.geschossflaecheWohnen"
+              class="mx-3"
+              label="Wohnen"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_geschossflaecheWohnenGenehmigt"
-            v-model="abfragevariante.geschossflaecheWohnenGenehmigt"
-            class="mx-3"
-            label="Genehmigt"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+              id="abfragevariante_geschossflaecheWohnenGenehmigt"
+              v-model="abfragevariante.geschossflaecheWohnenGenehmigt"
+              class="mx-3"
+              label="Genehmigt"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_geschossflaecheWohnenFestgesetzt"
-            v-model="abfragevariante.geschossflaecheWohnenFestgesetzt"
-            class="mx-3"
-            label="Festgesetzt"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-      </v-row>
-
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
-            :key="componentKeyGeschossflaecheSobonUrsaechlich"
-            v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
-            class="mx-3"
-            label="SoBoN-ursächliche"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-            :required="isGeschossflaecheSobonUrsaechlichPflichtfeld"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="abfragevariante_geschossflaecheWohnenBestandswohnbaurecht"
-            v-model="abfragevariante.geschossflaecheWohnenBestandswohnbaurecht"
-            class="mx-3"
-            label="Bestandswohnbaurecht"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="abfragevariante_geschossflaecheGenossenschaftlicheWohnungen"
-            v-model="abfragevariante.geschossflaecheGenossenschaftlicheWohnungen"
-            class="mx-3"
-            label="Genossenschaftliche Wohnungen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+              id="abfragevariante_geschossflaecheWohnenFestgesetzt"
+              v-model="abfragevariante.geschossflaecheWohnenFestgesetzt"
+              class="mx-3"
+              label="Festgesetzt"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
       </v-row>
 
       <v-row justify="center">
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
+        >
+          <num-field
+              id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
+              :key="componentKeyGeschossflaecheSobonUrsaechlich"
+              v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
+              class="mx-3"
+              label="SoBoN-ursächliche"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :required="isGeschossflaecheSobonUrsaechlichPflichtfeld"
+          />
+        </v-col>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <num-field
+              id="abfragevariante_geschossflaecheWohnenBestandswohnbaurecht"
+              v-model="abfragevariante.geschossflaecheWohnenBestandswohnbaurecht"
+              class="mx-3"
+              label="Bestandswohnbaurecht"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <num-field
+              id="abfragevariante_geschossflaecheGenossenschaftlicheWohnungen"
+              v-model="abfragevariante.geschossflaecheGenossenschaftlicheWohnungen"
+              class="mx-3"
+              label="Genossenschaftliche Wohnungen"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row justify="center">
+        <v-col
+            cols="12"
+            md="4"
         >
           <v-checkbox
-            id="abfragevariante_sonderwohnformen"
-            v-model="abfragevariante.sonderwohnformen"
-            class="mx-3"
-            label="Sonderwohnformen"
-            color="primary"
-            @change="formChanged"
+              id="abfragevariante_sonderwohnformen"
+              v-model="abfragevariante.sonderwohnformen"
+              class="mx-3"
+              label="Sonderwohnformen"
+              color="primary"
+              @change="formChanged"
           />
         </v-col>
         <v-col
-          cols="12"
-          md="8"
+            cols="12"
+            md="8"
         />
       </v-row>
 
       <v-expand-transition>
         <v-row
-          v-if="abfragevariante.sonderwohnformen"
-          justify="center"
+            v-if="abfragevariante.sonderwohnformen"
+            justify="center"
         >
           <v-col
-            cols="12"
-            md="4"
+              cols="12"
+              md="4"
           >
             <num-field
-              id="abfragevariante_geschossflaecheStudentenwohnungen"
-              v-model="abfragevariante.geschossflaecheStudentenwohnungen"
-              class="mx-3"
-              label="Studentenwohnungen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+                id="abfragevariante_geschossflaecheStudentenwohnungen"
+                v-model="abfragevariante.geschossflaecheStudentenwohnungen"
+                class="mx-3"
+                label="Studentenwohnungen"
+                :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
           <v-col
-            cols="12"
-            md="4"
+              cols="12"
+              md="4"
           >
             <num-field
-              id="abfragevariante_geschossflaecheSeniorenwohnungen"
-              v-model="abfragevariante.geschossflaecheSeniorenwohnungen"
-              class="mx-3"
-              label="Seniorenwohnungen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+                id="abfragevariante_geschossflaecheSeniorenwohnungen"
+                v-model="abfragevariante.geschossflaecheSeniorenwohnungen"
+                class="mx-3"
+                label="Seniorenwohnungen"
+                :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
           <v-col
-            cols="12"
-            md="4"
+              cols="12"
+              md="4"
           >
             <num-field
-              id="abfragevariante_geschossflaecheSonstiges"
-              v-model="abfragevariante.geschossflaecheSonstiges"
-              class="mx-3"
-              label="Nicht infrastrukturrelevant"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+                id="abfragevariante_geschossflaecheSonstiges"
+                v-model="abfragevariante.geschossflaecheSonstiges"
+                class="mx-3"
+                label="Nicht infrastrukturrelevant"
+                :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
         </v-row>
@@ -212,39 +212,39 @@
     <field-group-card :card-title="anzahlWECardTitle">
       <v-row justify="center">
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_gesamtanzahlWe"
-            v-model="abfragevariante.gesamtanzahlWe"
-            class="mx-3"
-            label="Geplante"
-            integer
+              id="abfragevariante_gesamtanzahlWe"
+              v-model="abfragevariante.gesamtanzahlWe"
+              class="mx-3"
+              label="Geplante"
+              integer
           />
         </v-col>
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_anzahlWeBaurechtlichGenehmigt"
-            v-model="abfragevariante.anzahlWeBaurechtlichGenehmigt"
-            class="mx-3"
-            label="Baurechtlich genehmigt"
-            integer
+              id="abfragevariante_anzahlWeBaurechtlichGenehmigt"
+              v-model="abfragevariante.anzahlWeBaurechtlichGenehmigt"
+              class="mx-3"
+              label="Baurechtlich genehmigt"
+              integer
           />
         </v-col>
         <v-col
-          cols="12"
-          md="4"
+            cols="12"
+            md="4"
         >
           <num-field
-            id="abfragevariante_anzahlWeBaurechtlichFestgesetzt"
-            v-model="abfragevariante.anzahlWeBaurechtlichFestgesetzt"
-            class="mx-3"
-            label="Baurechtlich festgesetzt"
-            integer
+              id="abfragevariante_anzahlWeBaurechtlichFestgesetzt"
+              v-model="abfragevariante.anzahlWeBaurechtlichFestgesetzt"
+              class="mx-3"
+              label="Baurechtlich festgesetzt"
+              integer
           />
         </v-col>
       </v-row>
@@ -273,10 +273,6 @@ export default class AbfragevarianteForm extends Mixins(
 
   @Prop()
   private mode!: DisplayMode;
-
-  mounted(): void {
-    console.log("AbfragevarianteForm mounted");
-  }
 
   get displayMode(): DisplayMode {
     return this.mode;
