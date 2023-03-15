@@ -13,6 +13,13 @@
           active-class="font-weight-black v-treeview-node--active"
           open-on-click
         >
+          <template #prepend="{ item }">
+            <v-icon
+              v-if="isAbfrageTreeItemNewAbfragevariante(item)"
+            >
+              mdi-exclamation
+            </v-icon>
+          </template>
           <template #append="{ item }">
             <v-btn
               v-if="item.name === nameTreeElementAddAbfragevariante"
@@ -179,6 +186,12 @@ export default class AbfrageNavigationTree extends Vue {
 
   private isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
     return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
+  }
+
+  private isAbfrageTreeItemNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return this.isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem)
+        && !_.isNil(abfrageTreeItem.abfragevariante)
+        && _.isNil(abfrageTreeItem.abfragevariante.id);
   }
 
   private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
