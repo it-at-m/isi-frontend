@@ -69,7 +69,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
 
-  private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante neu";
+  private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante anlegen";
 
   private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
 
