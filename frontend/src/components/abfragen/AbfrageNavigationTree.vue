@@ -67,6 +67,8 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly MAX_NUMBER_ABFRAGEVARIANTEN: number = 5;
 
+  private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
+
   private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante neu";
 
   private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
@@ -120,7 +122,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
-    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0\xa0\xa0\xa0${abfragevariante.realisierungVon} - ${abfragevariante.realisierungBis}`;
+    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0\xa0\xa0\xa0${_.isNil(abfragevariante.realisierungVon) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungVon}\xa0-\xa0${_.isNil(abfragevariante.realisierungBis) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungBis}`;
   }
 
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
