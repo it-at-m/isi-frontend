@@ -197,10 +197,11 @@ export default class AbfrageNavigationTree extends Vue {
     const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems);
     const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems);
     flatNewAbfrageTreeItems.forEach(newAbfrageTreeItem => {
-      flatOldAbfrageTreeItems.forEach(oldAbfrageTreeItems => {
-        const changed = this.isChanged(newAbfrageTreeItem, oldAbfrageTreeItems);
-        if (changed) {
-          newAbfrageTreeItem.changed = changed;
+      newAbfrageTreeItem.changed = true;
+      flatOldAbfrageTreeItems.forEach(oldAbfrageTreeItem => {
+        const equal = this.isEqual(newAbfrageTreeItem, oldAbfrageTreeItem);
+        if (equal && newAbfrageTreeItem.changed) {
+          newAbfrageTreeItem.changed = false;
         }
       });
     });
@@ -212,24 +213,24 @@ export default class AbfrageNavigationTree extends Vue {
    * @param oldAbfrageTreeItem
    * @private
    */
-  private isChanged(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
-    let changed = false;
+  private isEqual(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
+    let equal = true;
     let clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
     let clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
     if (this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)) {
       // Entfernen der Bauabschnitte aus Klon zur Vermeidung eines isEqual bei Bauabschnitten.
       if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante)) clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
       if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante)) clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-      changed = (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante) && _.isNil(clonedNewAbfrageTreeItem.abfragevariante.id))
-          || !_.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante);
+      equal = (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante) && !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id))
+          && _.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante);
     } else if (this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)) {
       // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
       if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
       if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
-      changed = (!_.isNil(clonedNewAbfrageTreeItem.abfrage) && _.isNil(clonedNewAbfrageTreeItem.abfrage.id))
-          || !_.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
+      equal = (!_.isNil(clonedNewAbfrageTreeItem.abfrage) && !_.isNil(clonedNewAbfrageTreeItem.abfrage.id))
+          && _.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
     }
-    return changed;
+    return equal;
   }
 
   private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
