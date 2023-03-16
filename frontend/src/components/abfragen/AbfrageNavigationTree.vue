@@ -195,9 +195,9 @@ export default class AbfrageNavigationTree extends Vue {
 
   private markNewAbfrageTreeItemsAsChanged(newAbfrageTreeItems: Array<AbfrageTreeItem>, oldAbfrageTreeItems: Array<AbfrageTreeItem>): void {
     const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems)
-        .filter(newAbfrageTreeItem => this.isAbfrageTreeItemAnAbfrage(newAbfrageTreeItem) || this.isAbfrageTreeItemAnAbfragevariante(newAbfrageTreeItem));
+        .filter(this.isAbfrageTreeItemAnSelectableItem);
     const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems)
-        .filter(oldAbfrageTreeItem => this.isAbfrageTreeItemAnAbfrage(oldAbfrageTreeItem) || this.isAbfrageTreeItemAnAbfragevariante(oldAbfrageTreeItem));
+        .filter(this.isAbfrageTreeItemAnSelectableItem);
     flatNewAbfrageTreeItems.forEach(newAbfrageTreeItem => {
       newAbfrageTreeItem.changed = true;
       flatOldAbfrageTreeItems.forEach(oldAbfrageTreeItem => {
@@ -241,6 +241,10 @@ export default class AbfrageNavigationTree extends Vue {
 
   private isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
     return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
+  }
+
+  private isAbfrageTreeItemAnSelectableItem(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return this.isAbfrageTreeItemAnAbfrage(abfrageTreeItem) || this.isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem);
   }
 
   private createFlatAbfrageTreeItem(abfrageTreeItems: Array<AbfrageTreeItem>): Array<AbfrageTreeItem> {
