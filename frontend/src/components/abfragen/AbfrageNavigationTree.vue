@@ -194,13 +194,15 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private markNewAbfrageTreeItemsAsChanged(newAbfrageTreeItems: Array<AbfrageTreeItem>, oldAbfrageTreeItems: Array<AbfrageTreeItem>): void {
-    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems);
-    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems);
+    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems)
+        .filter(newAbfrageTreeItem => this.isAbfrageTreeItemAnAbfrage(newAbfrageTreeItem) || this.isAbfrageTreeItemAnAbfragevariante(newAbfrageTreeItem));
+    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems)
+        .filter(oldAbfrageTreeItem => this.isAbfrageTreeItemAnAbfrage(oldAbfrageTreeItem) || this.isAbfrageTreeItemAnAbfragevariante(oldAbfrageTreeItem));
     flatNewAbfrageTreeItems.forEach(newAbfrageTreeItem => {
       newAbfrageTreeItem.changed = true;
       flatOldAbfrageTreeItems.forEach(oldAbfrageTreeItem => {
-        const equal = this.isEqual(newAbfrageTreeItem, oldAbfrageTreeItem);
-        if (equal && newAbfrageTreeItem.changed) {
+        const notChanged = this.isNotChanged(newAbfrageTreeItem, oldAbfrageTreeItem);
+        if (notChanged) {
           newAbfrageTreeItem.changed = false;
         }
       });
@@ -213,24 +215,24 @@ export default class AbfrageNavigationTree extends Vue {
    * @param oldAbfrageTreeItem
    * @private
    */
-  private isEqual(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
-    let equal = true;
+  private isNotChanged(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
+    let notChanged = false;
     let clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
     let clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
     if (this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)) {
       // Entfernen der Bauabschnitte aus Klon zur Vermeidung eines isEqual bei Bauabschnitten.
       if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante)) clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
       if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante)) clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-      equal = (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante) && !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id))
+      notChanged = (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante) && !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id))
           && _.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante);
     } else if (this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)) {
       // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
       if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
       if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
-      equal = (!_.isNil(clonedNewAbfrageTreeItem.abfrage) && !_.isNil(clonedNewAbfrageTreeItem.abfrage.id))
+      notChanged = (!_.isNil(clonedNewAbfrageTreeItem.abfrage) && !_.isNil(clonedNewAbfrageTreeItem.abfrage.id))
           && _.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
     }
-    return equal;
+    return notChanged;
   }
 
   private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
