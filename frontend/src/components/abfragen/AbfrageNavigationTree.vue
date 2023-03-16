@@ -15,7 +15,7 @@
         >
           <template #prepend="{ item }">
             <v-icon
-              v-if="isAbfrageTreeItemNewAbfragevariante(item)"
+              v-if="item.changed"
             >
               mdi-exclamation
             </v-icon>
@@ -54,6 +54,15 @@ import InfrastrukturabfrageModel from "@/types/model/abfrage/Infrastrukturabfrag
 import _ from "lodash";
 import {AbfragevarianteDto, InfrastrukturabfrageDto} from "@/api/api-client/isi-backend";
 
+
+export interface InfrastrukturabfrageModelWrapper {
+
+  infrastrukturabfrage: InfrastrukturabfrageModel;
+
+  initial: boolean;
+
+}
+
 export interface AbfrageTreeItem {
 
   id: number;
@@ -66,6 +75,7 @@ export interface AbfrageTreeItem {
 
   abfragevariante: AbfragevarianteDto | undefined;
 
+  changed: boolean;
 
 }
 
@@ -84,16 +94,23 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
 
-  @VModel({type: InfrastrukturabfrageModel}) infrastrukturabfrage!: InfrastrukturabfrageModel;
+  @VModel({type: InfrastrukturabfrageModel}) infrastrukturabfrageWrapped!: InfrastrukturabfrageModelWrapper;
+
+  private initialAbfrageTreeItems: Array<AbfrageTreeItem> = [];
 
   private abfrageTreeItems: Array<AbfrageTreeItem> = [];
 
   private markedTreeItems: Array<AbfrageTreeItem> = [];
 
-  @Watch("infrastrukturabfrage", {immediate: true, deep: true})
+  @Watch("infrastrukturabfrageWrapped", {immediate: true, deep: true})
   private abfrageChanged(): void {
-    if (!_.isNil(this.infrastrukturabfrage)) {
-      this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrage);
+    if (!_.isNil(this.infrastrukturabfrageWrapped.infrastrukturabfrage)) {
+      this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrageWrapped.infrastrukturabfrage);
+      if (this.infrastrukturabfrageWrapped.initial) {
+        this.initialAbfrageTreeItems = _.cloneDeep(this.abfrageTreeItems);
+        this.infrastrukturabfrageWrapped.initial = false;
+      }
+      this.markNewAbfrageTreeItemsAsChanged(this.abfrageTreeItems, this.initialAbfrageTreeItems);
     }
   }
 
@@ -141,7 +158,8 @@ export default class AbfrageNavigationTree extends Vue {
       name: this.nameTreeElementAbfrage,
       children: [],
       abfrage: abfrage,
-      abfragevariante: undefined
+      abfragevariante: undefined,
+      changed: false
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
@@ -150,7 +168,8 @@ export default class AbfrageNavigationTree extends Vue {
       name: this.nameTreeElementListAbfragevarianten,
       children: [],
       abfrage: undefined,
-      abfragevariante: undefined
+      abfragevariante: undefined,
+      changed: false
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
@@ -161,7 +180,8 @@ export default class AbfrageNavigationTree extends Vue {
         name: this.getNameTreeElementAbfragevariante(abfragevariante),
         children: [],
         abfrage: undefined,
-        abfragevariante: abfragevariante
+        abfragevariante: abfragevariante,
+        changed: false
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     });
@@ -172,12 +192,49 @@ export default class AbfrageNavigationTree extends Vue {
         name: this.nameTreeElementAddAbfragevariante,
         children: [],
         abfrage: undefined,
-        abfragevariante: undefined
+        abfragevariante: undefined,
+        changed: false
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     }
 
     return abfrageTreeItems;
+  }
+
+  private markNewAbfrageTreeItemsAsChanged(newAbfrageTreeItems: Array<AbfrageTreeItem>, oldAbfrageTreeItems: Array<AbfrageTreeItem>): void {
+    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems);
+    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems);
+    flatNewAbfrageTreeItems.forEach(newAbfrageTreeItem => {
+      flatOldAbfrageTreeItems.forEach(oldAbfrageTreeItems => {
+        const changed = this.isChanged(newAbfrageTreeItem, oldAbfrageTreeItems);
+        if (changed) {
+          newAbfrageTreeItem.changed = changed;
+        }
+      });
+    });
+  }
+
+  /**
+   * tbd
+   * @param newAbfrageTreeItem
+   * @param oldAbfrageTreeItem
+   * @private
+   */
+  private isChanged(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
+    let changed = false;
+    if (this.isAbfrageTreeItemAnAbfragevariante(newAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfragevariante(oldAbfrageTreeItem)) {
+      changed = (!_.isNil(newAbfrageTreeItem.abfragevariante) && _.isNil(newAbfrageTreeItem.abfragevariante.id))
+          || !_.isEqual(newAbfrageTreeItem.abfragevariante, oldAbfrageTreeItem.abfragevariante);
+    } else if (this.isAbfrageTreeItemAnAbfrage(newAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfrage(oldAbfrageTreeItem)) {
+      // Entfernen der Abfragevariantem aus Klone zur Vermeidung eines isEqual bei Abfragevarianten.
+      const clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
+      if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
+      const clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
+      if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
+      changed = (!_.isNil(clonedNewAbfrageTreeItem.abfrage) && _.isNil(clonedNewAbfrageTreeItem.abfrage.id))
+          || !_.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
+    }
+    return changed;
   }
 
   private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
@@ -188,18 +245,17 @@ export default class AbfrageNavigationTree extends Vue {
     return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
   }
 
-  private isAbfrageTreeItemNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return this.isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem)
-        && !_.isNil(abfrageTreeItem.abfragevariante)
-        && _.isNil(abfrageTreeItem.abfragevariante.id);
+  private createFlatAbfrageTreeItem(abfrageTreeItems: Array<AbfrageTreeItem>): Array<AbfrageTreeItem> {
+    return abfrageTreeItems.flatMap(abfrageTreeItem => {
+      const flatChildren = this.createFlatAbfrageTreeItem(abfrageTreeItem.children);
+      flatChildren.push(abfrageTreeItem);
+      return flatChildren;
+    });
   }
 
   private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
-    return abfrageTreeItems.flatMap(abfrageTreeItem => {
-      const ids = this.createTreeItemIds(abfrageTreeItem.children);
-      ids.push(abfrageTreeItem.id);
-      return ids;
-    });
+    return this.createFlatAbfrageTreeItem(abfrageTreeItems)
+        .map(abfrageTreeItem => abfrageTreeItem.id);
   }
 
   @Emit()

@@ -5,7 +5,7 @@
         <div v-if="openAbfrageFormular">
           <infrastrukturabfrage-component
             id="abfrage_infrastrukturabfrage_component"
-            v-model="abfrage"
+            v-model="abfrageWrapped.infrastrukturabfrage"
             :mode="modeAbfrage"
           />
         </div>
@@ -14,7 +14,7 @@
           id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
           :mode="modeAbfragevariante"
-          :sobon-relevant="abfrage.sobonRelevant"
+          :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
@@ -68,7 +68,7 @@
               <span
                 id="abfrage_displayName"
                 class="text-h6 font-weight-bold"
-                v-text="abfrage.displayName"
+                v-text="abfrageWrapped.infrastrukturabfrage.displayName"
               />
             </v-col>
           </v-row>
@@ -77,7 +77,7 @@
       <template #navigation>
         <abfrage-navigation-tree
           id="abfrage_navidation_tree"
-          v-model="abfrage"
+          v-model="abfrageWrapped"
           @select-abfrage="handleSelectAbfrage"
           @select-abfragevariante="handleSelectAbfragevariante"
           @delete-abfragevariante="handleDeleteAbfragevariante"
@@ -109,7 +109,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
+          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrageWrapped.infrastrukturabfrage.abfrage.dokumente)"
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
@@ -164,7 +164,10 @@ import InformationList from "@/components/common/InformationList.vue";
 import {Levels} from "@/api/error";
 import DisplayMode from "@/types/common/DisplayMode";
 import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
-import AbfrageNavigationTree, {AbfrageTreeItem} from "@/components/abfragen/AbfrageNavigationTree.vue";
+import AbfrageNavigationTree, {
+  AbfrageTreeItem,
+  InfrastrukturabfrageModelWrapper
+} from "@/components/abfragen/AbfrageNavigationTree.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 
@@ -192,9 +195,12 @@ export default class Abfrage extends Mixins(
 
   private buttonText = "";
 
-  private abfrage: InfrastrukturabfrageModel = new InfrastrukturabfrageModel(
-      createInfrastrukturabfrageDto()
-  );
+  private abfrageWrapped: InfrastrukturabfrageModelWrapper = {
+    infrastrukturabfrage: new InfrastrukturabfrageModel(
+        createInfrastrukturabfrageDto()
+    ),
+    initial: true
+  };
 
   private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(
       createAbfragevarianteDto()
@@ -226,7 +232,10 @@ export default class Abfrage extends Mixins(
   private selectedAbfrageChanged() {
     const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
     if (!_.isNil(abfrageFromStore)) {
-      this.abfrage = _.cloneDeep(abfrageFromStore);
+      this.abfrageWrapped = {
+        infrastrukturabfrage: _.cloneDeep(abfrageFromStore),
+        initial: true
+      };
       this.openAbfrageFormular = true;
       this.openAbfragevariantenFormular = false;
     }
@@ -304,15 +313,15 @@ export default class Abfrage extends Mixins(
 
   private async saveInfrastrukturabfrage(): Promise<void> {
     const validationMessage: string | null =
-        this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
+        this.findFaultInInfrastrukturabfrageForSave(this.abfrageWrapped.infrastrukturabfrage);
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.createInfrastrukturabfrage(this.abfrage, true)
+        await this.createInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true)
             .then((dto) => {
               this.handleSuccess(dto);
             });
       } else {
-        await this.updateInfrastrukturabfrage(this.abfrage, true)
+        await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true)
             .then((dto) => {
               this.handleSuccess(dto);
             });
@@ -342,7 +351,7 @@ export default class Abfrage extends Mixins(
   private async abfrageFreigeben(): Promise<void> {
     if (this.validate()) {
       if (
-          this.abfrage.abfrage.statusAbfrage ==
+          this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ===
           AbfrageListElementDtoStatusAbfrageEnum.Angelegt
       ) {
         this.infrastrukturabfrageFreigeben();
@@ -358,10 +367,10 @@ export default class Abfrage extends Mixins(
 
   private async infrastrukturabfrageFreigeben(): Promise<void> {
     const validationMessage: string | null =
-        this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
+        this.findFaultInInfrastrukturabfrageForSave(this.abfrageWrapped.infrastrukturabfrage);
     if (_.isNil(validationMessage)) {
-      await this.updateInfrastrukturabfrage(this.abfrage, true);
-      this.freigabInfrastrukturabfrage(this.abfrage.id as string, true)
+      await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
+      this.freigabInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage.id as string, true)
           .then(
               () => {
                 this.returnToUebersicht(
@@ -383,7 +392,7 @@ export default class Abfrage extends Mixins(
 
   private isAngelegt(): boolean {
     return (
-        this.abfrage.abfrage.statusAbfrage ==
+        this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ==
         AbfrageListElementDtoStatusAbfrageEnum.Angelegt
     );
   }
@@ -423,7 +432,7 @@ export default class Abfrage extends Mixins(
     this.selectedAbfragevariante = new AbfragevarianteModel(
         createAbfragevarianteDto()
     );
-    this.abfrage.abfragevarianten.push(this.selectedAbfragevariante);
+    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
     this.renumberingAbfragevarianten();
     this.formChanged();
     this.openAbfrageFormular = false;
@@ -431,7 +440,7 @@ export default class Abfrage extends Mixins(
   }
 
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
-    let selectedAbfragevariante = this.abfrage.abfragevarianten.find(
+    let selectedAbfragevariante = this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.find(
         abfragevariante => _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
     );
     if (_.isNil(selectedAbfragevariante)) {
@@ -443,12 +452,12 @@ export default class Abfrage extends Mixins(
   }
 
   private removeSelectedAbfragevarianteFromAbfrage(): void {
-    const copyAbfragevarianten = _.cloneDeep(this.abfrage.abfragevarianten);
+    const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
     _.remove(
         copyAbfragevarianten,
         abfragevariante => _.isEqual(abfragevariante, this.selectedAbfragevariante)
     );
-    this.abfrage.abfragevarianten = copyAbfragevarianten;
+    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = copyAbfragevarianten;
     this.renumberingAbfragevarianten();
     this.formChanged();
     this.openAbfragevariantenFormular = false;
@@ -462,7 +471,7 @@ export default class Abfrage extends Mixins(
   }
 
   private renumberingAbfragevarianten(): void {
-    this.abfrage.abfragevarianten.forEach((value, index) => {
+    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });
   }
