@@ -214,14 +214,17 @@ export default class AbfrageNavigationTree extends Vue {
    */
   private isChanged(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
     let changed = false;
-    if (this.isAbfrageTreeItemAnAbfragevariante(newAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfragevariante(oldAbfrageTreeItem)) {
-      changed = (!_.isNil(newAbfrageTreeItem.abfragevariante) && _.isNil(newAbfrageTreeItem.abfragevariante.id))
-          || !_.isEqual(newAbfrageTreeItem.abfragevariante, oldAbfrageTreeItem.abfragevariante);
-    } else if (this.isAbfrageTreeItemAnAbfrage(newAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfrage(oldAbfrageTreeItem)) {
-      // Entfernen der Abfragevariantem aus Klone zur Vermeidung eines isEqual bei Abfragevarianten.
-      const clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
+    let clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
+    let clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
+    if (this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)) {
+      // Entfernen der Bauabschnitte aus Klon zur Vermeidung eines isEqual bei Bauabschnitten.
+      if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante)) clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
+      if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante)) clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
+      changed = (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante) && _.isNil(clonedNewAbfrageTreeItem.abfragevariante.id))
+          || !_.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante);
+    } else if (this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)) {
+      // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
       if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
-      const clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
       if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
       changed = (!_.isNil(clonedNewAbfrageTreeItem.abfrage) && _.isNil(clonedNewAbfrageTreeItem.abfrage.id))
           || !_.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
