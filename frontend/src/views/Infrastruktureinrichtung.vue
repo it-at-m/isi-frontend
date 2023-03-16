@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <DefaultLayout solid-heading>
+    <default-layout solid-heading>
       <template #content>
         <infrastruktureinrichtung-typ-component
           id="infrastruktureinrichtung_infrastruktureinrichtungtyp_component"
@@ -125,7 +125,7 @@
           v-text="'Abbrechen'"
         />
       </template>
-    </DefaultLayout>
+    </default-layout>
   </v-form>
 </template>
 <script lang="ts">

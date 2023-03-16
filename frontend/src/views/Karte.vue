@@ -1,9 +1,9 @@
 <template>
-  <DefaultLayout wide>
+  <default-layout wide>
     <template #content>
-      <CityMap />
+      <city-map />
     </template>
-  </DefaultLayout>
+  </default-layout>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout>
+  <default-layout>
     <template #content>
       <div
         v-if="infrastruktureinrichtungen.length !== 0"
@@ -58,7 +58,7 @@
         <span v-else>Infrastruktureinrichtung erstellen</span>
       </v-tooltip>
     </template>
-  </DefaultLayout>
+  </default-layout>
 </template>
 
 <script lang="ts">

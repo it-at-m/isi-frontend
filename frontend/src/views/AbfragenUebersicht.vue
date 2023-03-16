@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout>
+  <default-layout>
     <template #content>
       <div
         v-if="abfragenUebersicht.length !== 0"
@@ -65,7 +65,7 @@
         <span v-else>Abfrage erstellen</span>
       </v-tooltip>
     </template>
-  </DefaultLayout>
+  </default-layout>
 </template>
 
 <script lang="ts">
