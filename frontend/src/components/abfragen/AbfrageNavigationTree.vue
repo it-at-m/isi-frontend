@@ -53,15 +53,7 @@ import {Component, Emit, VModel, Vue, Watch} from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
 import {AbfragevarianteDto, InfrastrukturabfrageDto} from "@/api/api-client/isi-backend";
-
-
-export interface InfrastrukturabfrageModelWrapper {
-
-  infrastrukturabfrage: InfrastrukturabfrageModel;
-
-  initial: boolean;
-
-}
+import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 
 export interface AbfrageTreeItem {
 
@@ -94,7 +86,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
 
-  @VModel({type: InfrastrukturabfrageModel}) infrastrukturabfrageWrapped!: InfrastrukturabfrageModelWrapper;
+  @VModel({type: InfrastrukturabfrageWrapperModel}) infrastrukturabfrageWrapped!: InfrastrukturabfrageWrapperModel;
 
   private initialAbfrageTreeItems: Array<AbfrageTreeItem> = [];
 

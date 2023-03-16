@@ -164,12 +164,10 @@ import InformationList from "@/components/common/InformationList.vue";
 import {Levels} from "@/api/error";
 import DisplayMode from "@/types/common/DisplayMode";
 import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
-import AbfrageNavigationTree, {
-  AbfrageTreeItem,
-  InfrastrukturabfrageModelWrapper
-} from "@/components/abfragen/AbfrageNavigationTree.vue";
+import AbfrageNavigationTree, {AbfrageTreeItem} from "@/components/abfragen/AbfrageNavigationTree.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 
 @Component({
   methods: {containsNotAllowedDokument},
@@ -195,12 +193,10 @@ export default class Abfrage extends Mixins(
 
   private buttonText = "";
 
-  private abfrageWrapped: InfrastrukturabfrageModelWrapper = {
-    infrastrukturabfrage: new InfrastrukturabfrageModel(
-        createInfrastrukturabfrageDto()
-    ),
-    initial: true
-  };
+  private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
+      new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
+      true
+  );
 
   private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(
       createAbfragevarianteDto()
@@ -232,10 +228,10 @@ export default class Abfrage extends Mixins(
   private selectedAbfrageChanged() {
     const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
     if (!_.isNil(abfrageFromStore)) {
-      this.abfrageWrapped = {
-        infrastrukturabfrage: _.cloneDeep(abfrageFromStore),
-        initial: true
-      };
+      this.abfrageWrapped = new InfrastrukturabfrageWrapperModel(
+          _.cloneDeep(abfrageFromStore),
+          true
+      );
       this.openAbfrageFormular = true;
       this.openAbfragevariantenFormular = false;
     }
