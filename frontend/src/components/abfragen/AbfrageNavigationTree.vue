@@ -53,10 +53,19 @@ export interface AbfrageTreeItem {
 
   children: Array<AbfrageTreeItem>;
 
+  /**
+   * Referenziert die in der Treeview darzustellende Abfrage.
+   */
   abfrage: InfrastrukturabfrageDto | undefined;
 
+  /**
+   * Referenziert die in der Treeview darzustellende Abfragevariante.
+   */
   abfragevariante: AbfragevarianteDto | undefined;
 
+  /**
+   * True falls das referenzierte Objekt geändert wurde, andernfalls false.
+   */
   changed: boolean;
 }
 
@@ -82,6 +91,11 @@ export default class AbfrageNavigationTree extends Vue {
 
   private markedTreeItems: Array<number> = [];
 
+  /**
+   * Der Watcher reagiert, falls sich der übergebene AbfrageWrapper ändert oder durch einen Neuen ersetzt wird.
+   * Hat das Attribut "initial" die Ausprägung true, so wird eine Kopie der AbfrageTreeItems erstellt,
+   * welche als Referenz zur Erkennung von möglichen Änderungen der in den AbfrageTreeItems referenzierten Objekten dient.
+   */
   @Watch("infrastrukturabfrageWrapped", { immediate: true, deep: true })
   private abfrageChanged(): void {
     if (!_.isNil(this.infrastrukturabfrageWrapped.infrastrukturabfrage)) {
@@ -136,10 +150,16 @@ export default class AbfrageNavigationTree extends Vue {
     }`;
   }
 
+  /**
+   * Erstellt die AbfrageTreeItems auf Basis der Abfrage.
+   * Jedes AbfrageTreeItem referenziert das in der Treeview darzustellende Objekt.
+   * @param abfrage zur Erstellung der AbfrageTreeItems.
+   */
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
     const abfrageTreeItems: Array<AbfrageTreeItem> = [];
     let itemKey = 0;
 
+    // Abfrage
     let abfrageTreeItem: AbfrageTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementAbfrage,
@@ -150,6 +170,7 @@ export default class AbfrageNavigationTree extends Vue {
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
+    // Wurzelelement für Abfragevarianten
     abfrageTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementListAbfragevarianten,
@@ -160,6 +181,7 @@ export default class AbfrageNavigationTree extends Vue {
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
+    // Abfragevarianten welche an das Wurzelelement der Abfragevarianten angefügt werden.
     let abfragevarianteTreeItem: AbfrageTreeItem;
     abfrage.abfragevarianten.forEach((abfragevariante) => {
       abfragevarianteTreeItem = {
@@ -173,6 +195,7 @@ export default class AbfrageNavigationTree extends Vue {
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     });
 
+    // Element zum Hinzufügen einer neuen Abfragevariante
     if (abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN) {
       abfragevarianteTreeItem = {
         id: itemKey++,
@@ -188,6 +211,13 @@ export default class AbfrageNavigationTree extends Vue {
     return abfrageTreeItems;
   }
 
+  /**
+   * Markiert jedes Element im Parameter newAbfrageTreeItems als geändert, falls sich zur Referenz im Parameter
+   * oldAbfrageTreeItems eine Änderung ergeben hat.
+   *
+   * @param newAbfrageTreeItems zum Prüfen auf Änderung.
+   * @param oldAbfrageTreeItems welche als Referenz zur Änderungsprüfung herangezogen werden.
+   */
   private markNewAbfrageTreeItemsAsChanged(
     newAbfrageTreeItems: Array<AbfrageTreeItem>,
     oldAbfrageTreeItems: Array<AbfrageTreeItem>
@@ -199,8 +229,12 @@ export default class AbfrageNavigationTree extends Vue {
       this.isAbfrageTreeItemAnSelectableItem
     );
     flatNewAbfrageTreeItems.forEach((newAbfrageTreeItem) => {
+      // Grundannahme: Es hat sich eine Änderung ergeben.
       newAbfrageTreeItem.changed = true;
       flatOldAbfrageTreeItems.forEach((oldAbfrageTreeItem) => {
+        // notChanged == true -> So existiert im neuen AbfrageItem ein referenziertes Objekt,
+        // welches mit dem referenzierten Objekt im alten AbfrageItem identisch ist.
+        // Folglich hat sich keine Änderung ergeben.
         const notChanged = this.isNotChanged(newAbfrageTreeItem, oldAbfrageTreeItem);
         if (notChanged) {
           newAbfrageTreeItem.changed = false;
@@ -210,10 +244,12 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   /**
-   * tbd
-   * @param newAbfrageTreeItem
-   * @param oldAbfrageTreeItem
-   * @private
+   * Prüft auf Basis eine flachen Kopie der in den AbfrageTreeItems referenzierten Objekten ob diese gleich sind.
+   * Sommit hat sich bei den beiden Objekte keine Änderung ergeben.
+   *
+   * @param newAbfrageTreeItem zum Prüfen auf Änderung.
+   * @param oldAbfrageTreeItem welche als Referenz zur Änderungsprüfung herangezogen werden.
+   * @return true falls sich keine Änderung ergeben hat, andernfalls false.
    */
   private isNotChanged(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
     let notChanged = false;
