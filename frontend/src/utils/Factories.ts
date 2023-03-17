@@ -12,7 +12,6 @@ import {
   BauvorhabenDtoStandVorhabenEnum,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
-  FileInformationDto,
   FilepathDto,
   FoerdermixDto,
   FoerdermixStammDto,
@@ -132,17 +131,6 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
   };
-}
-
-/**
- * FileInformationDto
- */
-export function createFileInformationDto(): FileInformationDto {
-  return {
-    maxFileSizeBytes: undefined,
-    maxNumberOfFiles: undefined,
-    allowedFileExtensions: undefined,
-  } as FileInformationDto;
 }
 
 /**
