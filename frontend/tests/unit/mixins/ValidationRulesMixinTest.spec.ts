@@ -102,17 +102,15 @@ describe("FieldValidationRulesMixin", () => {
   });
 
   it("should be exactly 100", () => {
-    const foerdermix = new FoerdermixModel(
-      {
-        anteilBaugemeinschaften: 10,
-        anteilEinUndZweifamilienhaeuser: 10,
-        anteilFreifinanzierterGeschosswohnungsbau: 10,
-        anteilGefoerderterMietwohnungsbau: 10,
-        anteilKonzeptionellerMietwohnungsbau: 10,
-        anteilMuenchenModell: 10,
-        anteilPreisgedaempfterMietwohnungsbau: 40
-      } as FoerdermixDto
-    );
+    const foerdermix = new FoerdermixModel({
+      anteilBaugemeinschaften: 10,
+      anteilEinUndZweifamilienhaeuser: 10,
+      anteilFreifinanzierterGeschosswohnungsbau: 10,
+      anteilGefoerderterMietwohnungsbau: 10,
+      anteilKonzeptionellerMietwohnungsbau: 10,
+      anteilMuenchenModell: 10,
+      anteilPreisgedaempfterMietwohnungsbau: 40,
+    } as FoerdermixDto);
     const theRule = (rules as any).nichtGleich100Prozent;
 
     const unter100Message = "Die Summe ist unter 100";

@@ -54,7 +54,11 @@
           v-model="deleteDialogAbfragevarianteOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="'Hiermit wird die Abfragevariante Nr.' + selectedAbfragevariante.abfragevariantenNr + ' unwiderruflich gelöscht.'"
+          :dialogtext="
+            'Hiermit wird die Abfragevariante Nr.' +
+            selectedAbfragevariante.abfragevariantenNr +
+            ' unwiderruflich gelöscht.'
+          "
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogAbfragevarianteNo"
@@ -109,7 +113,10 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrageWrapped.infrastrukturabfrage.abfrage.dokumente)"
+          :disabled="
+            (!isNewAbfrage() && !isDirty()) ||
+            containsNotAllowedDokument(abfrageWrapped.infrastrukturabfrage.abfrage.dokumente)
+          "
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
@@ -140,11 +147,11 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import {Component, Mixins, Watch} from "vue-property-decorator";
+import { Component, Mixins, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
 import BauratenComponent from "@/components/bauraten/BauratenComponent.vue";
 import Toaster from "../components/common/toaster.type";
-import {createAbfragevarianteDto, createInfrastrukturabfrageDto,} from "@/utils/Factories";
+import { createAbfragevarianteDto, createInfrastrukturabfrageDto } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
 import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
@@ -153,7 +160,7 @@ import InfrastrukturabfrageModel from "@/types/model/abfrage/Infrastrukturabfrag
 import {
   AbfrageListElementDtoStatusAbfrageEnum,
   AbfragevarianteDto,
-  InfrastrukturabfrageDto
+  InfrastrukturabfrageDto,
 } from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
@@ -161,16 +168,16 @@ import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationList from "@/components/common/InformationList.vue";
-import {Levels} from "@/api/error";
+import { Levels } from "@/api/error";
 import DisplayMode from "@/types/common/DisplayMode";
-import {containsNotAllowedDokument} from "@/utils/DokumenteUtil";
-import AbfrageNavigationTree, {AbfrageTreeItem} from "@/components/abfragen/AbfrageNavigationTree.vue";
+import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
+import AbfrageNavigationTree, { AbfrageTreeItem } from "@/components/abfragen/AbfrageNavigationTree.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 
 @Component({
-  methods: {containsNotAllowedDokument},
+  methods: { containsNotAllowedDokument },
   components: {
     AbfragevarianteFormular,
     AbfrageNavigationTree,
@@ -182,25 +189,23 @@ import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/Infrastruktu
   },
 })
 export default class Abfrage extends Mixins(
-    FieldValidationRulesMixin,
-    AbfrageApiRequestMixin,
-    FreigabeApiRequestMixin,
-    BaurateReqestMixin,
-    ValidatorMixin,
-    SaveLeaveMixin
+  FieldValidationRulesMixin,
+  AbfrageApiRequestMixin,
+  FreigabeApiRequestMixin,
+  BaurateReqestMixin,
+  ValidatorMixin,
+  SaveLeaveMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
 
   private buttonText = "";
 
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
-      new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
-      true
+    new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
+    true
   );
 
-  private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(
-      createAbfragevarianteDto()
-  );
+  private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
 
   private abfrageId: string = this.$route.params.id;
 
@@ -216,22 +221,17 @@ export default class Abfrage extends Mixins(
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
-    this.buttonText = this.isNewAbfrage()
-        ? "Entwurf Speichern"
-        : "Aktualisieren";
+    this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.openAbfrageFormular = true;
     this.openAbfragevariantenFormular = false;
     this.getAbfrageById();
   }
 
-  @Watch("$store.state.search.selectedAbfrage", {immediate: true, deep: true})
+  @Watch("$store.state.search.selectedAbfrage", { immediate: true, deep: true })
   private selectedAbfrageChanged() {
     const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
     if (!_.isNil(abfrageFromStore)) {
-      this.abfrageWrapped = new InfrastrukturabfrageWrapperModel(
-          _.cloneDeep(abfrageFromStore),
-          true
-      );
+      this.abfrageWrapped = new InfrastrukturabfrageWrapperModel(_.cloneDeep(abfrageFromStore), true);
       this.openAbfrageFormular = true;
       this.openAbfragevariantenFormular = false;
     }
@@ -240,17 +240,14 @@ export default class Abfrage extends Mixins(
   async getAbfrageById(): Promise<void> {
     if (this.abfrageId !== undefined) {
       this.getInfrastrukturabfrageById(this.abfrageId, true)
-          .then((dto) => {
-            this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(dto));
-          })
-          .catch(() => {
-            this.$store.commit("search/selectedAbfrage", undefined);
-          });
+        .then((dto) => {
+          this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(dto));
+        })
+        .catch(() => {
+          this.$store.commit("search/selectedAbfrage", undefined);
+        });
     } else {
-      this.$store.commit(
-          "search/selectedAbfrage",
-          new InfrastrukturabfrageModel(createInfrastrukturabfrageDto())
-      );
+      this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
     }
   }
 
@@ -290,13 +287,9 @@ export default class Abfrage extends Mixins(
   }
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
-    await this.deleteInfrastrukturabfrageById(this.abfrageId, true)
-        .then(() => {
-          this.returnToUebersicht(
-              "Die Abfrage wurde erfolgreich gelöscht",
-              Levels.SUCCESS
-          );
-        });
+    await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+      this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
+    });
   }
 
   private async saveAbfrage(): Promise<void> {
@@ -308,19 +301,18 @@ export default class Abfrage extends Mixins(
   }
 
   private async saveInfrastrukturabfrage(): Promise<void> {
-    const validationMessage: string | null =
-        this.findFaultInInfrastrukturabfrageForSave(this.abfrageWrapped.infrastrukturabfrage);
+    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
+      this.abfrageWrapped.infrastrukturabfrage
+    );
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.createInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true)
-            .then((dto) => {
-              this.handleSuccess(dto);
-            });
+        await this.createInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+          this.handleSuccess(dto);
+        });
       } else {
-        await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true)
-            .then((dto) => {
-              this.handleSuccess(dto);
-            });
+        await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+          this.handleSuccess(dto);
+        });
       }
     } else {
       this.showWarningInInformationList(validationMessage);
@@ -331,7 +323,7 @@ export default class Abfrage extends Mixins(
     this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
     this.$store.dispatch("search/resetAbfrage");
     if (this.isNewAbfrage()) {
-      this.$router.push({path: "/abfragenuebersicht"});
+      this.$router.push({ path: "/abfragenuebersicht" });
       Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
     } else {
       Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
@@ -347,14 +339,12 @@ export default class Abfrage extends Mixins(
   private async abfrageFreigeben(): Promise<void> {
     if (this.validate()) {
       if (
-          this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ===
-          AbfrageListElementDtoStatusAbfrageEnum.Angelegt
+        this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ===
+        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
       ) {
         this.infrastrukturabfrageFreigeben();
       } else {
-        this.showWarningInInformationList(
-            'Die Abfrage muss den Status "angelegt" besitzen'
-        );
+        this.showWarningInInformationList('Die Abfrage muss den Status "angelegt" besitzen');
       }
     } else {
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
@@ -362,19 +352,14 @@ export default class Abfrage extends Mixins(
   }
 
   private async infrastrukturabfrageFreigeben(): Promise<void> {
-    const validationMessage: string | null =
-        this.findFaultInInfrastrukturabfrageForSave(this.abfrageWrapped.infrastrukturabfrage);
+    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
+      this.abfrageWrapped.infrastrukturabfrage
+    );
     if (_.isNil(validationMessage)) {
       await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
-      this.freigabInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage.id as string, true)
-          .then(
-              () => {
-                this.returnToUebersicht(
-                    "Die Abfrage wurde erfolgreich freigegeben",
-                    Levels.SUCCESS
-                );
-              }
-          );
+      this.freigabInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage.id as string, true).then(() => {
+        this.returnToUebersicht("Die Abfrage wurde erfolgreich freigegeben", Levels.SUCCESS);
+      });
       this.openAbfrageFormular = true;
       this.openAbfragevariantenFormular = false;
     } else {
@@ -388,8 +373,7 @@ export default class Abfrage extends Mixins(
 
   private isAngelegt(): boolean {
     return (
-        this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ==
-        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
+      this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == AbfrageListElementDtoStatusAbfrageEnum.Angelegt
     );
   }
 
@@ -399,7 +383,7 @@ export default class Abfrage extends Mixins(
     }
 
     this.$store.dispatch("search/resetAbfrage");
-    this.$router.push({path: "/abfragenuebersicht"});
+    this.$router.push({ path: "/abfragenuebersicht" });
   }
 
   private validate(): boolean {
@@ -425,9 +409,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateNewAbfragevariante(): void {
-    this.selectedAbfragevariante = new AbfragevarianteModel(
-        createAbfragevarianteDto()
-    );
+    this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
     this.renumberingAbfragevarianten();
     this.formChanged();
@@ -436,23 +418,18 @@ export default class Abfrage extends Mixins(
   }
 
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
-    let selectedAbfragevariante = this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.find(
-        abfragevariante => _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
+    let selectedAbfragevariante = this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.find((abfragevariante) =>
+      _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
     );
     if (_.isNil(selectedAbfragevariante)) {
-      selectedAbfragevariante = new AbfragevarianteModel(
-          createAbfragevarianteDto()
-      );
+      selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     }
     return selectedAbfragevariante;
   }
 
   private removeSelectedAbfragevarianteFromAbfrage(): void {
     const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
-    _.remove(
-        copyAbfragevarianten,
-        abfragevariante => _.isEqual(abfragevariante, this.selectedAbfragevariante)
-    );
+    _.remove(copyAbfragevarianten, (abfragevariante) => _.isEqual(abfragevariante, this.selectedAbfragevariante));
     this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = copyAbfragevarianten;
     this.renumberingAbfragevarianten();
     this.formChanged();
@@ -461,9 +438,7 @@ export default class Abfrage extends Mixins(
   }
 
   private get modeAbfragevariante(): DisplayMode {
-    return _.isNil(this.selectedAbfragevariante.id)
-        ? DisplayMode.NEU
-        : DisplayMode.AENDERUNG;
+    return _.isNil(this.selectedAbfragevariante.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
   private renumberingAbfragevarianten(): void {
@@ -471,7 +446,6 @@ export default class Abfrage extends Mixins(
       value.abfragevariantenNr = index + 1;
     });
   }
-
 }
 </script>
 

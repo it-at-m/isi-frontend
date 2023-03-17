@@ -55,9 +55,7 @@
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Planungsrecht <span class="secondary--text">*</span>
-            </template>
+            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -253,8 +251,8 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Prop, VModel, Watch} from "vue-property-decorator";
-import {AbfragevarianteDtoPlanungsrechtEnum, LookupEntryDto, UncertainBoolean} from "@/api/api-client/isi-backend";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
+import { AbfragevarianteDtoPlanungsrechtEnum, LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -263,13 +261,13 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 
-@Component({components: {FieldGroupCard, NumField}})
+@Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(
-    FieldPrefixesSuffixes,
-    FieldValidationRulesMixin,
-    SaveLeaveMixin,
+  FieldPrefixesSuffixes,
+  FieldValidationRulesMixin,
+  SaveLeaveMixin
 ) {
-  @VModel({type: AbfragevarianteModel}) abfragevariante!: AbfragevarianteModel;
+  @VModel({ type: AbfragevarianteModel }) abfragevariante!: AbfragevarianteModel;
 
   @Prop()
   private mode!: DisplayMode;
@@ -294,9 +292,10 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {
-    const pflichtfeld = this.isSobonRelevant === UncertainBoolean.True
-        && (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
-            || this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
+    const pflichtfeld =
+      this.isSobonRelevant === UncertainBoolean.True &&
+      (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
+        this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
     this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
     return pflichtfeld;
   }
@@ -314,7 +313,7 @@ export default class AbfragevarianteForm extends Mixins(
     return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
   }
 
-  @Watch("abfragevariante", {immediate: true, deep: true})
+  @Watch("abfragevariante", { immediate: true, deep: true })
   public clearSonderwohnformData(): void {
     if (!this.abfragevariante.sonderwohnformen) {
       this.abfragevariante.geschossflaecheStudentenwohnungen = undefined;

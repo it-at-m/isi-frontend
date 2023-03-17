@@ -28,9 +28,7 @@
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
           >
-            <template #label>
-              SoBoN-relevant <span class="secondary--text">*</span>
-            </template>
+            <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
           </TriSwitch>
         </v-col>
         <v-col
@@ -69,9 +67,7 @@
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
           >
-            <template #label>
-              Offiziell <span class="secondary--text">*</span>
-            </template>
+            <template #label> Offiziell <span class="secondary--text">*</span> </template>
           </TriSwitch>
         </v-col>
       </v-row>
@@ -80,9 +76,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, VModel, Watch} from "vue-property-decorator";
+import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
 import AbfrageComponent from "@/components/abfragen/AbfrageComponent.vue";
-import {LookupEntryDto, UncertainBoolean} from "@/api/api-client/isi-backend";
+import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -93,12 +89,12 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
   components: {
     AbfrageComponent,
     FieldGroupCard,
-    TriSwitch
+    TriSwitch,
   },
   mixins: [FieldValidationRulesMixin],
 })
 export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin) {
-  @VModel({type: InfrastrukturabfrageModel}) infrastrukturabfrage!: InfrastrukturabfrageModel;
+  @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
 
   private sobonCardTitle = "SoBoN";
 
@@ -110,7 +106,7 @@ export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
   }
 
-  @Watch("infrastrukturabfrage.sobonRelevant", {immediate: true})
+  @Watch("infrastrukturabfrage.sobonRelevant", { immediate: true })
   private sobonRelevantChanged(value: UncertainBoolean): void {
     if (value === UncertainBoolean.True) {
       this.sobonJahrVisible = true;

@@ -7,7 +7,6 @@ Vue.use(Toast, {
   closeOnClick: false,
 });
 
-
 export default class Toaster {
   /**
    *

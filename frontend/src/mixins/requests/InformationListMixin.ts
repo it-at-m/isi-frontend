@@ -1,16 +1,12 @@
-import {Component, Vue} from "vue-property-decorator";
-import {
-  InformationResponseDto,
-  InformationResponseDtoTypeEnum
-} from "@/api/api-client/isi-backend";
+import { Component, Vue } from "vue-property-decorator";
+import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 
 @Component
 export default class InformationListMixin extends Vue {
-  
   public showInformationResponseDtoInInformationList(informationResponseDto: InformationResponseDto): void {
     this.$store.dispatch("information/addInformation", informationResponseDto);
   }
-  
+
   public showSuccessInInformationList(message: string): void {
     const informationResponseDto: InformationResponseDto = {
       messages: [message],
@@ -23,7 +19,7 @@ export default class InformationListMixin extends Vue {
     } as InformationResponseDto;
     this.showInformationResponseDtoInInformationList(informationResponseDto);
   }
-  
+
   public showWarningInInformationList(message: string): void {
     const informationResponseDto: InformationResponseDto = {
       messages: [message],
@@ -36,7 +32,7 @@ export default class InformationListMixin extends Vue {
     } as InformationResponseDto;
     this.showInformationResponseDtoInInformationList(informationResponseDto);
   }
-  
+
   public showErrorInInformationList(message: string): void {
     const informationResponseDto: InformationResponseDto = {
       messages: [message],
@@ -49,6 +45,4 @@ export default class InformationListMixin extends Vue {
     } as InformationResponseDto;
     this.showInformationResponseDtoInInformationList(informationResponseDto);
   }
-
 }
-  

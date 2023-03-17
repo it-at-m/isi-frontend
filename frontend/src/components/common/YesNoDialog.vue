@@ -5,7 +5,7 @@
     width="50%"
     @input="changed"
   >
-    <template #activator="{on}">
+    <template #activator="{ on }">
       <template v-if="buttontext">
         <v-btn
           id="yes_no_dialog_buttontext"
@@ -27,9 +27,7 @@
         </v-btn>
       </template>
     </template>
-    <v-card
-      class="overflow-x-hidden"
-    >
+    <v-card class="overflow-x-hidden">
       <v-card-title>
         {{ dialogtitle }}
       </v-card-title>
@@ -58,8 +56,7 @@
 </template>
 
 <script lang="ts">
-
-import {Component, Prop, VModel, Vue} from "vue-property-decorator";
+import { Component, Prop, VModel, Vue } from "vue-property-decorator";
 
 /**
  * Der YesNo-Dialog ist ein generischer Dialog zur binären Abfrage beim Nutzer.
@@ -72,7 +69,7 @@ import {Component, Prop, VModel, Vue} from "vue-property-decorator";
  * als reiner Dialog verwendet werden. Hierzu wird das Value vom Dialog durchgereicht.
  *
  * Der Text des "Ja"- bzw. des "Nein"-Buttons kann über `yes-text` bzw. `no-text` gesetzt werden.
- * 
+ *
  * Die Bestätigung des Dialogs wird über ein `yes` Event signalisiert. Analog erfolgt die
  * Signalisierung der Abweisung durch ein `no` Event.
  *
@@ -87,7 +84,6 @@ import {Component, Prop, VModel, Vue} from "vue-property-decorator";
  */
 @Component
 export default class YesNoDialog extends Vue {
-  
   @Prop()
   buttontext: string | undefined;
 
@@ -110,20 +106,18 @@ export default class YesNoDialog extends Vue {
    * Steuerflag für den Dialog
    */
   @VModel({ type: Boolean })
-  steuerflag!: boolean
+  steuerflag!: boolean;
 
   no(): void {
-    this.$emit('no');
+    this.$emit("no");
   }
 
   yes(): void {
-    this.$emit('yes');
+    this.$emit("yes");
   }
 
   changed(val: boolean): void {
     this.$emit("input", val);
   }
-
-
 }
 </script>

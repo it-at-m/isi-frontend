@@ -14,11 +14,7 @@
           open-on-click
         >
           <template #prepend="{ item }">
-            <v-icon
-              v-if="item.changed"
-            >
-              mdi-exclamation
-            </v-icon>
+            <v-icon v-if="item.changed"> mdi-exclamation </v-icon>
           </template>
           <template #append="{ item }">
             <v-btn
@@ -27,9 +23,7 @@
               icon
               @click="createNewAbfragevariante(item)"
             >
-              <v-icon>
-                mdi-plus-box-outline
-              </v-icon>
+              <v-icon> mdi-plus-box-outline </v-icon>
             </v-btn>
             <v-btn
               v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
@@ -37,9 +31,7 @@
               icon
               @click="deleteAbfragevariante(item)"
             >
-              <v-icon>
-                mdi-trash-can-outline
-              </v-icon>
+              <v-icon> mdi-trash-can-outline </v-icon>
             </v-btn>
           </template>
         </v-treeview>
@@ -49,14 +41,13 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, VModel, Vue, Watch} from "vue-property-decorator";
+import { Component, Emit, VModel, Vue, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
-import {AbfragevarianteDto, InfrastrukturabfrageDto} from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 
 export interface AbfrageTreeItem {
-
   id: number;
 
   name: string;
@@ -68,12 +59,10 @@ export interface AbfrageTreeItem {
   abfragevariante: AbfragevarianteDto | undefined;
 
   changed: boolean;
-
 }
 
 @Component
 export default class AbfrageNavigationTree extends Vue {
-
   private static readonly MAX_NUMBER_ABFRAGEVARIANTEN: number = 5;
 
   private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
@@ -86,7 +75,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
 
-  @VModel({type: InfrastrukturabfrageWrapperModel}) infrastrukturabfrageWrapped!: InfrastrukturabfrageWrapperModel;
+  @VModel({ type: InfrastrukturabfrageWrapperModel }) infrastrukturabfrageWrapped!: InfrastrukturabfrageWrapperModel;
 
   private initialAbfrageTreeItems: Array<AbfrageTreeItem> = [];
 
@@ -94,7 +83,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private markedTreeItems: Array<AbfrageTreeItem> = [];
 
-  @Watch("infrastrukturabfrageWrapped", {immediate: true, deep: true})
+  @Watch("infrastrukturabfrageWrapped", { immediate: true, deep: true })
   private abfrageChanged(): void {
     if (!_.isNil(this.infrastrukturabfrageWrapped.infrastrukturabfrage)) {
       this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrageWrapped.infrastrukturabfrage);
@@ -106,7 +95,7 @@ export default class AbfrageNavigationTree extends Vue {
     }
   }
 
-  @Watch("markedTreeItems", {immediate: true, deep: true})
+  @Watch("markedTreeItems", { immediate: true, deep: true })
   private eventMarkedTreeItemElement(): void {
     if (this.markedTreeItems.length) {
       // Es kann nur ein Eintrag in der TreeView markiert werden.
@@ -138,7 +127,11 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
-    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0\xa0\xa0\xa0${_.isNil(abfragevariante.realisierungVon) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungVon}\xa0-\xa0${_.isNil(abfragevariante.realisierungBis) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungBis}`;
+    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0\xa0\xa0\xa0${
+      _.isNil(abfragevariante.realisierungVon) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungVon
+    }\xa0-\xa0${
+      _.isNil(abfragevariante.realisierungBis) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungBis
+    }`;
   }
 
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
@@ -151,7 +144,7 @@ export default class AbfrageNavigationTree extends Vue {
       children: [],
       abfrage: abfrage,
       abfragevariante: undefined,
-      changed: false
+      changed: false,
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
@@ -161,19 +154,19 @@ export default class AbfrageNavigationTree extends Vue {
       children: [],
       abfrage: undefined,
       abfragevariante: undefined,
-      changed: false
+      changed: false,
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
     let abfragevarianteTreeItem: AbfrageTreeItem;
-    abfrage.abfragevarianten.forEach(abfragevariante => {
+    abfrage.abfragevarianten.forEach((abfragevariante) => {
       abfragevarianteTreeItem = {
         id: itemKey++,
         name: this.getNameTreeElementAbfragevariante(abfragevariante),
         children: [],
         abfrage: undefined,
         abfragevariante: abfragevariante,
-        changed: false
+        changed: false,
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     });
@@ -185,7 +178,7 @@ export default class AbfrageNavigationTree extends Vue {
         children: [],
         abfrage: undefined,
         abfragevariante: undefined,
-        changed: false
+        changed: false,
       };
       abfrageTreeItem.children.push(abfragevarianteTreeItem);
     }
@@ -193,14 +186,19 @@ export default class AbfrageNavigationTree extends Vue {
     return abfrageTreeItems;
   }
 
-  private markNewAbfrageTreeItemsAsChanged(newAbfrageTreeItems: Array<AbfrageTreeItem>, oldAbfrageTreeItems: Array<AbfrageTreeItem>): void {
-    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems)
-        .filter(this.isAbfrageTreeItemAnSelectableItem);
-    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems)
-        .filter(this.isAbfrageTreeItemAnSelectableItem);
-    flatNewAbfrageTreeItems.forEach(newAbfrageTreeItem => {
+  private markNewAbfrageTreeItemsAsChanged(
+    newAbfrageTreeItems: Array<AbfrageTreeItem>,
+    oldAbfrageTreeItems: Array<AbfrageTreeItem>
+  ): void {
+    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems).filter(
+      this.isAbfrageTreeItemAnSelectableItem
+    );
+    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems).filter(
+      this.isAbfrageTreeItemAnSelectableItem
+    );
+    flatNewAbfrageTreeItems.forEach((newAbfrageTreeItem) => {
       newAbfrageTreeItem.changed = true;
-      flatOldAbfrageTreeItems.forEach(oldAbfrageTreeItem => {
+      flatOldAbfrageTreeItems.forEach((oldAbfrageTreeItem) => {
         const notChanged = this.isNotChanged(newAbfrageTreeItem, oldAbfrageTreeItem);
         if (notChanged) {
           newAbfrageTreeItem.changed = false;
@@ -219,18 +217,30 @@ export default class AbfrageNavigationTree extends Vue {
     let notChanged = false;
     let clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
     let clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
-    if (this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)) {
+    if (
+      this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) &&
+      this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)
+    ) {
       // Entfernen der Bauabschnitte aus Klon zur Vermeidung eines isEqual bei Bauabschnitten.
-      if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante)) clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-      if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante)) clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-      notChanged = (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante) && !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id))
-          && _.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante);
-    } else if (this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) && this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)) {
+      if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante))
+        clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
+      if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante))
+        clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
+      notChanged =
+        !_.isNil(clonedNewAbfrageTreeItem.abfragevariante) &&
+        !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id) &&
+        _.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante);
+    } else if (
+      this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) &&
+      this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)
+    ) {
       // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
       if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
       if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
-      notChanged = (!_.isNil(clonedNewAbfrageTreeItem.abfrage) && !_.isNil(clonedNewAbfrageTreeItem.abfrage.id))
-          && _.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
+      notChanged =
+        !_.isNil(clonedNewAbfrageTreeItem.abfrage) &&
+        !_.isNil(clonedNewAbfrageTreeItem.abfrage.id) &&
+        _.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
     }
     return notChanged;
   }
@@ -248,7 +258,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private createFlatAbfrageTreeItem(abfrageTreeItems: Array<AbfrageTreeItem>): Array<AbfrageTreeItem> {
-    return abfrageTreeItems.flatMap(abfrageTreeItem => {
+    return abfrageTreeItems.flatMap((abfrageTreeItem) => {
       const flatChildren = this.createFlatAbfrageTreeItem(abfrageTreeItem.children);
       flatChildren.push(abfrageTreeItem);
       return flatChildren;
@@ -256,8 +266,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
-    return this.createFlatAbfrageTreeItem(abfrageTreeItems)
-        .map(abfrageTreeItem => abfrageTreeItem.id);
+    return this.createFlatAbfrageTreeItem(abfrageTreeItems).map((abfrageTreeItem) => abfrageTreeItem.id);
   }
 
   @Emit()
@@ -279,10 +288,7 @@ export default class AbfrageNavigationTree extends Vue {
   private createNewAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
-
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

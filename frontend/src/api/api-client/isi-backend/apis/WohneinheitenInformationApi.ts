@@ -12,143 +12,176 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
+import * as runtime from "../runtime";
 import {
-    AbfragevarianteDto,
-    AbfragevarianteDtoFromJSON,
-    AbfragevarianteDtoToJSON,
-    BauabschnittDto,
-    BauabschnittDtoFromJSON,
-    BauabschnittDtoToJSON,
-    BaugebietDto,
-    BaugebietDtoFromJSON,
-    BaugebietDtoToJSON,
-    WohneinheitenInformationDto,
-    WohneinheitenInformationDtoFromJSON,
-    WohneinheitenInformationDtoToJSON,
-} from '../models';
+  AbfragevarianteDto,
+  AbfragevarianteDtoFromJSON,
+  AbfragevarianteDtoToJSON,
+  BauabschnittDto,
+  BauabschnittDtoFromJSON,
+  BauabschnittDtoToJSON,
+  BaugebietDto,
+  BaugebietDtoFromJSON,
+  BaugebietDtoToJSON,
+  WohneinheitenInformationDto,
+  WohneinheitenInformationDtoFromJSON,
+  WohneinheitenInformationDtoToJSON,
+} from "../models";
 
 export interface CalculateWohneinheitenInformationRequest {
-    baugebietDto: BaugebietDto;
+  baugebietDto: BaugebietDto;
 }
 
 export interface CalculateWohneinheitenInformation1Request {
-    bauabschnittDto: BauabschnittDto;
+  bauabschnittDto: BauabschnittDto;
 }
 
 export interface CalculateWohneinheitenInformation2Request {
-    abfragevarianteDto: AbfragevarianteDto;
+  abfragevarianteDto: AbfragevarianteDto;
 }
 
 /**
- * 
+ *
  */
 export class WohneinheitenInformationApi extends runtime.BaseAPI {
-
-    /**
-     * Das Ergebnis summiert die Informationen der im Baugebiet beinhalteten Bauraten
-     * Berechne Informationen zu Wohneinheiten für ein Baugebiet
-     */
-    async calculateWohneinheitenInformationRaw(requestParameters: CalculateWohneinheitenInformationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WohneinheitenInformationDto>> {
-        if (requestParameters.baugebietDto === null || requestParameters.baugebietDto === undefined) {
-            throw new runtime.RequiredError('baugebietDto','Required parameter requestParameters.baugebietDto was null or undefined when calling calculateWohneinheitenInformation.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/calculate-wohneinheiten-information-for-baugebiet`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: BaugebietDtoToJSON(requestParameters.baugebietDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => WohneinheitenInformationDtoFromJSON(jsonValue));
+  /**
+   * Das Ergebnis summiert die Informationen der im Baugebiet beinhalteten Bauraten
+   * Berechne Informationen zu Wohneinheiten für ein Baugebiet
+   */
+  async calculateWohneinheitenInformationRaw(
+    requestParameters: CalculateWohneinheitenInformationRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<WohneinheitenInformationDto>> {
+    if (requestParameters.baugebietDto === null || requestParameters.baugebietDto === undefined) {
+      throw new runtime.RequiredError(
+        "baugebietDto",
+        "Required parameter requestParameters.baugebietDto was null or undefined when calling calculateWohneinheitenInformation."
+      );
     }
 
-    /**
-     * Das Ergebnis summiert die Informationen der im Baugebiet beinhalteten Bauraten
-     * Berechne Informationen zu Wohneinheiten für ein Baugebiet
-     */
-    async calculateWohneinheitenInformation(requestParameters: CalculateWohneinheitenInformationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WohneinheitenInformationDto> {
-        const response = await this.calculateWohneinheitenInformationRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    const response = await this.request(
+      {
+        path: `/calculate-wohneinheiten-information-for-baugebiet`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: BaugebietDtoToJSON(requestParameters.baugebietDto),
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => WohneinheitenInformationDtoFromJSON(jsonValue));
+  }
+
+  /**
+   * Das Ergebnis summiert die Informationen der im Baugebiet beinhalteten Bauraten
+   * Berechne Informationen zu Wohneinheiten für ein Baugebiet
+   */
+  async calculateWohneinheitenInformation(
+    requestParameters: CalculateWohneinheitenInformationRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<WohneinheitenInformationDto> {
+    const response = await this.calculateWohneinheitenInformationRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Das Ergebnis summiert die Informationen der im Bauabschnitt beinhalteten Baugebiete
+   * Berechne Informationen zu Wohneinheiten für einen Bauabschnitt
+   */
+  async calculateWohneinheitenInformation1Raw(
+    requestParameters: CalculateWohneinheitenInformation1Request,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<WohneinheitenInformationDto>> {
+    if (requestParameters.bauabschnittDto === null || requestParameters.bauabschnittDto === undefined) {
+      throw new runtime.RequiredError(
+        "bauabschnittDto",
+        "Required parameter requestParameters.bauabschnittDto was null or undefined when calling calculateWohneinheitenInformation1."
+      );
     }
 
-    /**
-     * Das Ergebnis summiert die Informationen der im Bauabschnitt beinhalteten Baugebiete
-     * Berechne Informationen zu Wohneinheiten für einen Bauabschnitt
-     */
-    async calculateWohneinheitenInformation1Raw(requestParameters: CalculateWohneinheitenInformation1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WohneinheitenInformationDto>> {
-        if (requestParameters.bauabschnittDto === null || requestParameters.bauabschnittDto === undefined) {
-            throw new runtime.RequiredError('bauabschnittDto','Required parameter requestParameters.bauabschnittDto was null or undefined when calling calculateWohneinheitenInformation1.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    headerParameters["Content-Type"] = "application/json";
 
-        headerParameters['Content-Type'] = 'application/json';
+    const response = await this.request(
+      {
+        path: `/calculate-wohneinheiten-information-for-bauabschnitt`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: BauabschnittDtoToJSON(requestParameters.bauabschnittDto),
+      },
+      initOverrides
+    );
 
-        const response = await this.request({
-            path: `/calculate-wohneinheiten-information-for-bauabschnitt`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: BauabschnittDtoToJSON(requestParameters.bauabschnittDto),
-        }, initOverrides);
+    return new runtime.JSONApiResponse(response, (jsonValue) => WohneinheitenInformationDtoFromJSON(jsonValue));
+  }
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => WohneinheitenInformationDtoFromJSON(jsonValue));
+  /**
+   * Das Ergebnis summiert die Informationen der im Bauabschnitt beinhalteten Baugebiete
+   * Berechne Informationen zu Wohneinheiten für einen Bauabschnitt
+   */
+  async calculateWohneinheitenInformation1(
+    requestParameters: CalculateWohneinheitenInformation1Request,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<WohneinheitenInformationDto> {
+    const response = await this.calculateWohneinheitenInformation1Raw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Das Ergebnis summiert die Informationen der in der Abfragevariante beinhalteten Bauabschnitte
+   * Berechne Informationen zu Wohneinheiten für eine Abfragevariante
+   */
+  async calculateWohneinheitenInformation2Raw(
+    requestParameters: CalculateWohneinheitenInformation2Request,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<WohneinheitenInformationDto>> {
+    if (requestParameters.abfragevarianteDto === null || requestParameters.abfragevarianteDto === undefined) {
+      throw new runtime.RequiredError(
+        "abfragevarianteDto",
+        "Required parameter requestParameters.abfragevarianteDto was null or undefined when calling calculateWohneinheitenInformation2."
+      );
     }
 
-    /**
-     * Das Ergebnis summiert die Informationen der im Bauabschnitt beinhalteten Baugebiete
-     * Berechne Informationen zu Wohneinheiten für einen Bauabschnitt
-     */
-    async calculateWohneinheitenInformation1(requestParameters: CalculateWohneinheitenInformation1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WohneinheitenInformationDto> {
-        const response = await this.calculateWohneinheitenInformation1Raw(requestParameters, initOverrides);
-        return await response.value();
-    }
+    const queryParameters: any = {};
 
-    /**
-     * Das Ergebnis summiert die Informationen der in der Abfragevariante beinhalteten Bauabschnitte
-     * Berechne Informationen zu Wohneinheiten für eine Abfragevariante
-     */
-    async calculateWohneinheitenInformation2Raw(requestParameters: CalculateWohneinheitenInformation2Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WohneinheitenInformationDto>> {
-        if (requestParameters.abfragevarianteDto === null || requestParameters.abfragevarianteDto === undefined) {
-            throw new runtime.RequiredError('abfragevarianteDto','Required parameter requestParameters.abfragevarianteDto was null or undefined when calling calculateWohneinheitenInformation2.');
-        }
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const queryParameters: any = {};
+    headerParameters["Content-Type"] = "application/json";
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    const response = await this.request(
+      {
+        path: `/calculate-wohneinheiten-information-for-abfragevariante`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: AbfragevarianteDtoToJSON(requestParameters.abfragevarianteDto),
+      },
+      initOverrides
+    );
 
-        headerParameters['Content-Type'] = 'application/json';
+    return new runtime.JSONApiResponse(response, (jsonValue) => WohneinheitenInformationDtoFromJSON(jsonValue));
+  }
 
-        const response = await this.request({
-            path: `/calculate-wohneinheiten-information-for-abfragevariante`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: AbfragevarianteDtoToJSON(requestParameters.abfragevarianteDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => WohneinheitenInformationDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Das Ergebnis summiert die Informationen der in der Abfragevariante beinhalteten Bauabschnitte
-     * Berechne Informationen zu Wohneinheiten für eine Abfragevariante
-     */
-    async calculateWohneinheitenInformation2(requestParameters: CalculateWohneinheitenInformation2Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WohneinheitenInformationDto> {
-        const response = await this.calculateWohneinheitenInformation2Raw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
+  /**
+   * Das Ergebnis summiert die Informationen der in der Abfragevariante beinhalteten Bauabschnitte
+   * Berechne Informationen zu Wohneinheiten für eine Abfragevariante
+   */
+  async calculateWohneinheitenInformation2(
+    requestParameters: CalculateWohneinheitenInformation2Request,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<WohneinheitenInformationDto> {
+    const response = await this.calculateWohneinheitenInformation2Raw(requestParameters, initOverrides);
+    return await response.value();
+  }
 }

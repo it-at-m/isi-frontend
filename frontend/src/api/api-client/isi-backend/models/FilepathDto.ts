@@ -12,45 +12,42 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
- * 
+ *
  * @export
  * @interface FilepathDto
  */
 export interface FilepathDto {
-    /**
-     * Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf
-     * @type {string}
-     * @memberof FilepathDto
-     */
-    pathToFile: string;
+  /**
+   * Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf
+   * @type {string}
+   * @memberof FilepathDto
+   */
+  pathToFile: string;
 }
 
 export function FilepathDtoFromJSON(json: any): FilepathDto {
-    return FilepathDtoFromJSONTyped(json, false);
+  return FilepathDtoFromJSONTyped(json, false);
 }
 
 export function FilepathDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FilepathDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'pathToFile': json['pathToFile'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    pathToFile: json["pathToFile"],
+  };
 }
 
 export function FilepathDtoToJSON(value?: FilepathDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'pathToFile': value.pathToFile,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    pathToFile: value.pathToFile,
+  };
 }
-

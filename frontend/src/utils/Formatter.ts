@@ -6,8 +6,8 @@ import _ from "lodash";
  *
  * @param string Datum das zu formatieren ist
  */
-export function convertDateForBackend(dateToFormat: string | undefined): string | undefined {  
-  return dateToFormat ? moment(dateToFormat, "DD.MM.YYYY").format('YYYY-MM-DD') : undefined;
+export function convertDateForBackend(dateToFormat: string | undefined): string | undefined {
+  return dateToFormat ? moment(dateToFormat, "DD.MM.YYYY").format("YYYY-MM-DD") : undefined;
 }
 
 /**
@@ -24,7 +24,9 @@ export function convertDecimalForFrontend(decimalToFormat: number | undefined): 
 }
 
 export function convertDecimalForBackend(decimalToFormat: string | undefined): number | undefined {
-  return _.isNil(decimalToFormat) || decimalToFormat === "" ? undefined : parseFloat(decimalToFormat.toString().replace(",", "."));
+  return _.isNil(decimalToFormat) || decimalToFormat === ""
+    ? undefined
+    : parseFloat(decimalToFormat.toString().replace(",", "."));
 }
 
 export function convertIntForFrontend(intToFormat: number | undefined): string {

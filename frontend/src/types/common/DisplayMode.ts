@@ -1,4 +1,4 @@
-export { DisplayMode as default};
+export { DisplayMode as default };
 
 enum DisplayMode {
   UNDEFINED = -1,

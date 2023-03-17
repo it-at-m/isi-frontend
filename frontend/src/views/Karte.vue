@@ -14,8 +14,8 @@ import CityMap from "@/components/map/CityMap.vue";
 @Component({
   components: {
     DefaultLayout,
-    CityMap
-  }
+    CityMap,
+  },
 })
 export default class Karte extends Vue {}
 </script>

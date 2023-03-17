@@ -88,15 +88,12 @@ export default class BauratenComponent extends Mixins(
   BauratenApiRequestMixin,
   ValidatorMixin,
   FieldPrefixesSuffixes,
-  SaveLeaveMixin 
+  SaveLeaveMixin
 ) {
-
   @VModel({ type: BaurateModel }) baurate!: BaurateModel;
 
   private async saveBaurate(): Promise<void> {
-    let validationMessage: string | null = this.findFaultInBaurate(
-      this.baurate
-    );
+    let validationMessage: string | null = this.findFaultInBaurate(this.baurate);
 
     if (_.isNull(validationMessage)) {
       await this.createBaurate(this.baurate, true).then(() => {
@@ -108,12 +105,9 @@ export default class BauratenComponent extends Mixins(
   }
 
   private handleSucces(): void {
-    this.showSuccessInInformationList(
-      "Die Baurate wurde erfolgreich gespeichert"
-    );
+    this.showSuccessInInformationList("Die Baurate wurde erfolgreich gespeichert");
   }
 }
 </script>
 
-<style>
-</style>
+<style></style>

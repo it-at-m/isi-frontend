@@ -17,8 +17,8 @@ describe("ValidatorMixin Test", () => {
         anteilGefoerderterMietwohnungsbau: 10,
         anteilKonzeptionellerMietwohnungsbau: 10,
         anteilMuenchenModell: 10,
-        anteilPreisgedaempfterMietwohnungsbau: 50
-      } as FoerdermixDto
+        anteilPreisgedaempfterMietwohnungsbau: 50,
+      } as FoerdermixDto,
     } as BaurateDto);
 
     baurate.anzahlWeGeplant = undefined;
@@ -37,7 +37,7 @@ describe("ValidatorMixin Test", () => {
     baurate.geschossflaecheWohnenGeplant = 50;
 
     const foerdermixErrorAbove = validationMixin.findFaultInBaurate(baurate);
-    
+
     expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100");
 
     baurate.foerdermix.anteilPreisgedaempfterMietwohnungsbau = 30;

@@ -30,9 +30,9 @@ import {
   SchuleDto,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
-import {AdressSucheDto, MuenchenAdresseDto} from "@/api/api-client/isi-master-eai";
+import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {
@@ -99,7 +99,7 @@ export function createAdresseDto(): AdresseDto {
     plz: undefined,
     ort: undefined,
     strasse: undefined,
-    hausnummer: undefined
+    hausnummer: undefined,
   } as AdresseDto;
 }
 
@@ -120,7 +120,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
       strasse: "",
       hausnummer: "",
       plz: "",
-      ort: ""
+      ort: "",
     },
     allgemeineOrtsangabe: "",
     bebauungsplannummer: "",
@@ -140,7 +140,7 @@ export function createFileInformationDto(): FileInformationDto {
   return {
     maxFileSizeBytes: undefined,
     maxNumberOfFiles: undefined,
-    allowedFileExtensions: undefined
+    allowedFileExtensions: undefined,
   } as FileInformationDto;
 }
 
@@ -154,7 +154,8 @@ export function createFilepathDto(): FilepathDto {
 }
 
 export function createFilepathDtoFor(name: string, dokumente: DokumentDto[] | undefined): string {
-  const filePath: string | undefined = !_.isNil(dokumente) && dokumente.length > 0 ? dokumente[0].filePath.pathToFile : undefined;
+  const filePath: string | undefined =
+    !_.isNil(dokumente) && dokumente.length > 0 ? dokumente[0].filePath.pathToFile : undefined;
   return filePath === undefined ? `${name}/${uuidv4()}/` : filePath.substring(0, filePath.lastIndexOf("/") + 1);
 }
 
@@ -164,7 +165,7 @@ export function createFilepathDtoFor(name: string, dokumente: DokumentDto[] | un
 export function createPresignedUrlDto(): PresignedUrlDto {
   return {
     httpMethodToUse: undefined,
-    url: undefined
+    url: undefined,
   };
 }
 
@@ -179,7 +180,7 @@ export function createDokumentDto(): DokumentDto {
     filePath: createFilepathDto(),
     artDokument: DokumentDtoArtDokumentEnum.Unspecified,
     sizeInBytes: 0,
-    typDokument: ""
+    typDokument: "",
   };
 }
 
@@ -201,8 +202,8 @@ export function createBaurate(): BaurateDto {
       anteilGefoerderterMietwohnungsbau: undefined,
       anteilKonzeptionellerMietwohnungsbau: undefined,
       anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined
-    } as FoerdermixDto
+      anteilPreisgedaempfterMietwohnungsbau: undefined,
+    } as FoerdermixDto,
   } as BaurateDto;
 }
 
@@ -214,7 +215,7 @@ export function createFoerdermix(): FoerdermixDto {
     anteilGefoerderterMietwohnungsbau: undefined,
     anteilKonzeptionellerMietwohnungsbau: undefined,
     anteilMuenchenModell: undefined,
-    anteilPreisgedaempfterMietwohnungsbau: undefined
+    anteilPreisgedaempfterMietwohnungsbau: undefined,
   } as FoerdermixDto;
 }
 
@@ -229,8 +230,8 @@ export function createFoerdermixStamm(): FoerdermixStammDto {
       anteilGefoerderterMietwohnungsbau: undefined,
       anteilKonzeptionellerMietwohnungsbau: undefined,
       anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined
-    } as FoerdermixDto
+      anteilPreisgedaempfterMietwohnungsbau: undefined,
+    } as FoerdermixDto,
   } as FoerdermixStammDto;
 }
 
@@ -249,7 +250,7 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined
+    zugeordnetesBaugebiet: undefined,
   } as InfrastruktureinrichtungDto;
 }
 
@@ -289,7 +290,7 @@ export function createKindergartenDto(): KindergartenDto {
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
-    wohnungsnaheKindergartenPlaetze: undefined
+    wohnungsnaheKindergartenPlaetze: undefined,
   } as KindergartenDto;
 }
 
@@ -310,7 +311,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     anzahlHortGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
     wohnungsnaheKindergartenPlaetze: undefined,
-    wohnungsnaheHortPlaetze: undefined
+    wohnungsnaheHortPlaetze: undefined,
   } as HausFuerKinderDto;
 }
 
@@ -323,7 +324,7 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    artGsNachmittagBetreuung: undefined
+    artGsNachmittagBetreuung: undefined,
   } as GsNachmittagBetreuungDto;
 }
 
@@ -336,7 +337,7 @@ export function createGrundschuleDto(): GrundschuleDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    schule: createSchuleDto()
+    schule: createSchuleDto(),
   } as GrundschuleDto;
 }
 
@@ -349,7 +350,7 @@ export function createMittelschuleDto(): MittelschuleDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    schule: createSchuleDto()
+    schule: createSchuleDto(),
   } as MittelschuleDto;
 }
 
@@ -360,7 +361,7 @@ export function createAdressSucheDto(): AdressSucheDto {
   return {
     query: "",
     page: undefined,
-    pagesize: undefined
+    pagesize: undefined,
   } as AdressSucheDto;
 }
 
@@ -375,7 +376,6 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
     ortname: undefined,
     strassenname: undefined,
     position: undefined,
-    geozuordnungen: undefined
+    geozuordnungen: undefined,
   } as MuenchenAdresseDto;
 }
-

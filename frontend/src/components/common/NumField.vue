@@ -27,7 +27,9 @@
       <span
         v-if="required"
         class="secondary--text"
-      > *</span>
+      >
+        *</span
+      >
     </template>
   </v-text-field>
 </template>
@@ -36,7 +38,7 @@
 /**
  * NumField ist ein v-text-field, welches nur Zahlen akzeptiert und diese formatiert.
  * Dafür nutzt es https://dm4t2.github.io/vue-currency-input.
- * 
+ *
  * Props:
  * - value (number): Die Zahl, die vom NumField formatiert werden soll. Wird üblicherweise mit v-model gesetzt.
  * - precision? (number, default=2): Wie viele Nachkommastellen die Zahl haben soll.
@@ -48,7 +50,7 @@
  * - year? (boolean): Richtet das Feld so ein, als hätte es integer=true, min=1900, max=2100 und noGrouping=true. Überschreibt alles.
  * - required? (boolean): Stattet das Feld mit der pflichtfeld-Rule und einem Pflichtfeld-Stern hinter dem Label aus.
  * - Alle Props von v-text-field.
- * 
+ *
  * Slots:
  * - Alle Slots von v-text-field.
  */
@@ -59,22 +61,22 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import store from "@/store/index";
 
 interface Props {
-  value: number,
-  precision?: number,
-  min?: number,
-  max?: number,
-  integer?: boolean,
-  allowNegatives?: boolean,
-  noGrouping?: boolean,
-  year?: boolean,
-  required?: boolean,
-  label?: string,
-  rules?: unknown[],
+  value: number;
+  precision?: number;
+  min?: number;
+  max?: number;
+  integer?: boolean;
+  allowNegatives?: boolean;
+  noGrouping?: boolean;
+  year?: boolean;
+  required?: boolean;
+  label?: string;
+  rules?: unknown[];
 }
 
 // <script setup> wird hier wegen technischen Einschränkungen bis zur Einführung von Vue 3 nicht genutzt.
 export default {
-  name: 'NumField',
+  name: "NumField",
   props: {
     value: Number,
     precision: {
@@ -133,12 +135,12 @@ export default {
 
     // Da die Composition API keine Mixins unterstützt, müssen die Rules importiert werden.
     const allRules = new FieldValidationRulesMixin().fieldValidationRules as {
-      min: (limit: number) => (v: string) => boolean | string,
-      max: (limit: number) => (v: string) => boolean | string,
-      pflichtfeld: (v: string) => boolean | string,
+      min: (limit: number) => (v: string) => boolean | string;
+      max: (limit: number) => (v: string) => boolean | string;
+      pflichtfeld: (v: string) => boolean | string;
     };
 
-    if (props.year) {      
+    if (props.year) {
       usedRules.push(allRules.min(1900));
       usedRules.push(allRules.max(2100));
     } else {
@@ -155,7 +157,7 @@ export default {
     }
 
     // Legt die options für vue-currency-input fest.
-    
+
     const options: CurrencyInputOptions = {
       currency: "EUR", // Die Währung muss angegeben werden, auch wenn sie nicht angezeigt wird.
       currencyDisplay: CurrencyDisplay.hidden,
@@ -189,6 +191,6 @@ export default {
     }
 
     return { usedRules, formChanged, inputRef, formattedValue };
-  }
+  },
 };
 </script>
