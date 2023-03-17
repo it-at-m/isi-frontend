@@ -396,9 +396,13 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.openAbfrageFormular = true;
+    this.openAbfragevariantenFormular = false;
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    this.openAbfrageFormular = false;
-    this.openAbfragevariantenFormular = true;
+    this.$nextTick(() => {
+      this.openAbfrageFormular = false;
+      this.openAbfragevariantenFormular = true;
+    });
   }
 
   private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {

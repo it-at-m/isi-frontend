@@ -8,13 +8,12 @@
           open-all
           :open.prop="treeItemIdsToOpen"
           :items="abfrageTreeItems"
-          return-object
           activatable
           active-class="font-weight-black v-treeview-node--active"
           open-on-click
         >
           <template #prepend="{ item }">
-            <v-icon v-if="item.changed"> mdi-exclamation </v-icon>
+            <v-icon v-if="item.changed"> mdi-exclamation</v-icon>
           </template>
           <template #append="{ item }">
             <v-btn
@@ -23,7 +22,7 @@
               icon
               @click="createNewAbfragevariante(item)"
             >
-              <v-icon> mdi-plus-box-outline </v-icon>
+              <v-icon> mdi-plus-box-outline</v-icon>
             </v-btn>
             <v-btn
               v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
@@ -31,7 +30,7 @@
               icon
               @click="deleteAbfragevariante(item)"
             >
-              <v-icon> mdi-trash-can-outline </v-icon>
+              <v-icon> mdi-trash-can-outline</v-icon>
             </v-btn>
           </template>
         </v-treeview>
@@ -81,7 +80,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private abfrageTreeItems: Array<AbfrageTreeItem> = [];
 
-  private markedTreeItems: Array<AbfrageTreeItem> = [];
+  private markedTreeItems: Array<number> = [];
 
   @Watch("infrastrukturabfrageWrapped", { immediate: true, deep: true })
   private abfrageChanged(): void {
@@ -99,8 +98,11 @@ export default class AbfrageNavigationTree extends Vue {
   private eventMarkedTreeItemElement(): void {
     if (this.markedTreeItems.length) {
       // Es kann nur ein Eintrag in der TreeView markiert werden.
-      const markedTreeItem: AbfrageTreeItem = this.markedTreeItems[0];
-      if (!_.isNil(markedTreeItem)) {
+      const markedTreeItemId = this.markedTreeItems[0];
+      const markedTreeItem = this.createFlatAbfrageTreeItem(this.abfrageTreeItems).find(
+        (abfrageTreeItem) => abfrageTreeItem.id === markedTreeItemId
+      );
+      if (!_.isNil(markedTreeItemId) && !_.isNil(markedTreeItem)) {
         if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItem)) {
           this.selectAbfragevariante(markedTreeItem);
         } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItem)) {
