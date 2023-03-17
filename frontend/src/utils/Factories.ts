@@ -53,6 +53,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     geschossflaecheStudentenwohnungen: undefined,
     geschossflaecheSeniorenwohnungen: undefined,
     geschossflaecheSonstiges: undefined,
+    bauabschnitte: [],
   } as AbfragevarianteDto;
 }
 
