@@ -11,11 +11,11 @@
         >
           <v-list-item
             v-for="(item, index) in abfragevarianten"
-            :id="'abfragevariante_listitem_'+ index"
-            :key="item.abfragevariantenNr"            
+            :id="'abfragevariante_listitem_' + index"
+            :key="item.abfragevariantenNr"
           >
             <v-list-item-content
-              :id="'abfragevariante_listitem_'+ index + '_editieren'"
+              :id="'abfragevariante_listitem_' + index + '_editieren'"
               @click="editAbfragevariante(item)"
             >
               <v-list-item-title v-text="displayZeile1(item)" />
@@ -56,10 +56,10 @@ import _ from "lodash";
 
 @Component({
   components: {
-    YesNoDialog
-  }
+    YesNoDialog,
+  },
 })
-export default class AbfragevariantenListe extends Mixins (FieldPrefixesSuffixes) {
+export default class AbfragevariantenListe extends Mixins(FieldPrefixesSuffixes) {
   @VModel({ type: Array }) abfragevarianten!: AbfragevarianteModel[];
 
   private selectedAbfragevariante: AbfragevarianteModel | undefined;
@@ -83,7 +83,6 @@ export default class AbfragevariantenListe extends Mixins (FieldPrefixesSuffixes
     }
     return zeile2;
   }
-
 
   private editAbfragevariante(selectedAbfragevariante: AbfragevarianteModel): void {
     this.$emit("onEditAbfragevariante", selectedAbfragevariante);
@@ -111,5 +110,4 @@ export default class AbfragevariantenListe extends Mixins (FieldPrefixesSuffixes
     this.selectedAbfragevariante = undefined;
   }
 }
-
 </script>

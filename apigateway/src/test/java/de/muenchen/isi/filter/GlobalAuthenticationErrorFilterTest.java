@@ -4,9 +4,15 @@
  */
 package de.muenchen.isi.filter;
 
-import de.muenchen.isi.ApiGatewayApplication;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static de.muenchen.isi.TestConstants.SPRING_TEST_PROFILE;
+
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
+import de.muenchen.isi.ApiGatewayApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,18 +25,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static de.muenchen.isi.TestConstants.SPRING_TEST_PROFILE;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-
-
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(
-        classes = {ApiGatewayApplication.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest(classes = { ApiGatewayApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(SPRING_TEST_PROFILE)
 @AutoConfigureWireMock
 class GlobalAuthenticationErrorFilterTest {
@@ -40,28 +36,45 @@ class GlobalAuthenticationErrorFilterTest {
 
     @BeforeEach
     void setup() {
-        stubFor(get(urlEqualTo("/remote"))
-                .willReturn(aResponse()
+        stubFor(
+            get(urlEqualTo("/remote"))
+                .willReturn(
+                    aResponse()
                         .withStatus(HttpStatus.UNAUTHORIZED.value())
-                        .withHeaders(new HttpHeaders(
+                        .withHeaders(
+                            new HttpHeaders(
                                 new HttpHeader("Content-Type", "application/json"),
-                                new HttpHeader("WWW-Authenticate", "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
+                                new HttpHeader(
+                                    "WWW-Authenticate",
+                                    "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""
+                                ),
                                 new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT")
-                        ))
-                        .withBody("{ \"testkey\" : \"testvalue\" }")));
+                            )
+                        )
+                        .withBody("{ \"testkey\" : \"testvalue\" }")
+                )
+        );
     }
 
     @Test
     @WithMockUser
     void backendAuthenticationError() {
-        webTestClient.get().uri("/api/isi-backend-service/remote").exchange()
-                .expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED)
-                .expectHeader().valueMatches("Content-Type", "application/json")
-                .expectHeader().doesNotExist("WWW-Authenticate")
-                .expectHeader().valueMatches("Expires", "0")
-                .expectBody()
-                    .jsonPath("$.status").isEqualTo("401")
-                    .jsonPath("$.error").isEqualTo("Authentication Error");
+        webTestClient
+            .get()
+            .uri("/api/isi-backend-service/remote")
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.UNAUTHORIZED)
+            .expectHeader()
+            .valueMatches("Content-Type", "application/json")
+            .expectHeader()
+            .doesNotExist("WWW-Authenticate")
+            .expectHeader()
+            .valueMatches("Expires", "0")
+            .expectBody()
+            .jsonPath("$.status")
+            .isEqualTo("401")
+            .jsonPath("$.error")
+            .isEqualTo("Authentication Error");
     }
-
 }

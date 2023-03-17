@@ -12,53 +12,50 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
- * 
+ *
  * @export
  * @interface LookupEntryDto
  */
 export interface LookupEntryDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof LookupEntryDto
-     */
-    key?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LookupEntryDto
-     */
-    value?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LookupEntryDto
+   */
+  key?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LookupEntryDto
+   */
+  value?: string;
 }
 
 export function LookupEntryDtoFromJSON(json: any): LookupEntryDto {
-    return LookupEntryDtoFromJSONTyped(json, false);
+  return LookupEntryDtoFromJSONTyped(json, false);
 }
 
 export function LookupEntryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): LookupEntryDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'key': !exists(json, 'key') ? undefined : json['key'],
-        'value': !exists(json, 'value') ? undefined : json['value'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    key: !exists(json, "key") ? undefined : json["key"],
+    value: !exists(json, "value") ? undefined : json["value"],
+  };
 }
 
 export function LookupEntryDtoToJSON(value?: LookupEntryDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'key': value.key,
-        'value': value.value,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    key: value.key,
+    value: value.value,
+  };
 }
-

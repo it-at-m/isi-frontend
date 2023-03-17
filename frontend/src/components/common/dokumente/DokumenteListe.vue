@@ -5,9 +5,7 @@
       id="dokumente_liste"
     >
       <template v-for="(item, index) in dokumente">
-        <v-list-item
-          :key="`dokument-${index}`"
-        >
+        <v-list-item :key="`dokument-${index}`">
           <v-card
             :class="`my-2 pt-3 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
             flat
@@ -79,9 +77,7 @@
                         :readonly="isDokumentNotAllowed(item)"
                         @change="formChanged"
                       >
-                        <template #label>
-                          Dokumentart <span class="secondary--text">*</span>
-                        </template>
+                        <template #label> Dokumentart <span class="secondary--text">*</span> </template>
                       </v-select>
                     </v-row>
                   </v-col>
@@ -120,35 +116,34 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, VModel} from "vue-property-decorator";
+import { Component, Mixins, VModel } from "vue-property-decorator";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import {createFilepathDto} from "@/utils/Factories";
-import {isDokumentAllowed} from "@/utils/DokumenteUtil";
+import { createFilepathDto } from "@/utils/Factories";
+import { isDokumentAllowed } from "@/utils/DokumenteUtil";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
-import {DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto} from "@/api/api-client/isi-backend";
+import { DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 
 @Component({
   components: {
-    YesNoDialog
-  }
+    YesNoDialog,
+  },
 })
 export default class DokumenteListe extends Mixins(
-    DokumenteApiRequestMixin,
-    SaveLeaveMixin,
-    FieldValidationRulesMixin
+  DokumenteApiRequestMixin,
+  SaveLeaveMixin,
+  FieldValidationRulesMixin
 ) {
-
-  @VModel({type: Array}) dokumente!: DokumentDto[];
+  @VModel({ type: Array }) dokumente!: DokumentDto[];
 
   private selectedDokument: DokumentDto | undefined;
 
   private deleteDialogOpen = false;
 
   get hasDokumente(): boolean {
-    return (!_.isNil(this.dokumente) && this.dokumente.length > 0);
+    return !_.isNil(this.dokumente) && this.dokumente.length > 0;
   }
 
   private getDokumentDisplayName(dokument: DokumentDto): string {
@@ -174,17 +169,16 @@ export default class DokumenteListe extends Mixins(
   async downloadDokument(dokument: DokumentDto): Promise<void> {
     const filepathDto: FilepathDto = createFilepathDto();
     filepathDto.pathToFile = dokument.filePath.pathToFile;
-    await this.getPresignedUrlForGetDokument(filepathDto, true)
-        .then(presignedUrlDto => {
-          this.prepareDownloadLink(presignedUrlDto, dokument);
-        });
+    await this.getPresignedUrlForGetDokument(filepathDto, true).then((presignedUrlDto) => {
+      this.prepareDownloadLink(presignedUrlDto, dokument);
+    });
   }
 
   private prepareDownloadLink(dto: PresignedUrlDto, dokument: DokumentDto) {
     if (!_.isNil(dto.url)) {
       const a = document.createElement("a");
       a.href = dto.url;
-      a.download = dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf('/') + 1);
+      a.download = dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
       a.click();
     }
   }
@@ -214,6 +208,5 @@ export default class DokumenteListe extends Mixins(
   private isDokumentNotAllowed(dokument: DokumentDto) {
     return !this.isDokumentAllowed(dokument);
   }
-
 }
 </script>

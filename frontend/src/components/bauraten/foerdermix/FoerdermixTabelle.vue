@@ -59,10 +59,7 @@ import { createFoerdermix } from "@/utils/Factories";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component
-export default class FoerdermixTabelle extends Mixins(
-  FoerdermixApiRequestMixin,
-  SaveLeaveMixin
-) {
+export default class FoerdermixTabelle extends Mixins(FoerdermixApiRequestMixin, SaveLeaveMixin) {
   @Prop()
   private value!: FoerdermixModel;
 
@@ -140,9 +137,7 @@ export default class FoerdermixTabelle extends Mixins(
   async loadFoerdermixStaemme(): Promise<void> {
     await this.getFoerdermixStaemme(true).then((dto: FoerdermixStammDto[]) => {
       dto.forEach((foerdermixStamm: FoerdermixStammDto) => {
-        this.stammdaten.push(
-            FoerderMixStammDisplay.mapFoerdermixStammToDisplay(foerdermixStamm)
-        );
+        this.stammdaten.push(FoerderMixStammDisplay.mapFoerdermixStammToDisplay(foerdermixStamm));
         this.$store.dispatch("foerdermix/foerdermixStammdaten", dto);
       });
     });

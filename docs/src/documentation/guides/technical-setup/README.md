@@ -11,22 +11,24 @@ Für den Bau des Services muss JDK 11 (oder neuer), Maven 3.8.1 (oder neuer) und
 Für diesen Service wird ein Backend unter [isi-backend](https://github.com/it-at-m/isi-backend) bereitgestellt.
 
 ## Source Code holen
+
 Sourcen auf den lokalen Rechner holen
 
     git clone https://github.com/it-at-m/isi-frontend.git
     cd isi-frontend
 
 Die Sourcen sind in zwei Verzeichnissen abgelegt:
+
 1. `apigateway`: Enthält die Sourcen des API Gateways.
 2. `frontend`: Enthält die Sourcen der Oberfläche.
 
 ## Konfiguration des Services
 
-Für die lokale Umgebung erstellt man die Konfigurationsdatei 
+Für die lokale Umgebung erstellt man die Konfigurationsdatei
 
     apigateway/src/main/resources/application-local.yml
 
-Das API Gateway startet standardmäßig mit dem Port `8082`. Dieser kann in der lokalen Umgebung über die 
+Das API Gateway startet standardmäßig mit dem Port `8082`. Dieser kann in der lokalen Umgebung über die
 Konfigurationsdatei umgestellt werden.
 
 In der Konfigurationsdatei wird außerdem die Route zum Backend, die für den Zugriff auf das API Gateway erlaubten URLS und
@@ -49,7 +51,7 @@ Der Service wird mit folgendem Befehl gebaut
 
 Im Verzeichnis `apigateway` befinden sich Scripts zum Start des API Gateways auf dem lokalen Rechner:
 
-1. `runLocal.bat` bzw. `runLocal.sh`: Die Benutzer*innen müssen sich über einen Identity Provider authentifizieren.
+1. `runLocal.bat` bzw. `runLocal.sh`: Die Benutzer\*innen müssen sich über einen Identity Provider authentifizieren.
 2. `runLocalNoSecurity.bat` bzw. `runLocalNoSecurity.sh`: Die Anwendung kann ohne Authentifizierung bedient werden.
 
 Zum Start des API Gateways wird eines der Scripts im Verzeichnis `apigatway` ausgeführt, z.B.:

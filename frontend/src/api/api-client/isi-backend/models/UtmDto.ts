@@ -12,61 +12,58 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
- * 
+ *
  * @export
  * @interface UtmDto
  */
 export interface UtmDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof UtmDto
-     */
-    zone?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof UtmDto
-     */
-    north: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof UtmDto
-     */
-    east: number;
+  /**
+   *
+   * @type {string}
+   * @memberof UtmDto
+   */
+  zone?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof UtmDto
+   */
+  north: number;
+  /**
+   *
+   * @type {number}
+   * @memberof UtmDto
+   */
+  east: number;
 }
 
 export function UtmDtoFromJSON(json: any): UtmDto {
-    return UtmDtoFromJSONTyped(json, false);
+  return UtmDtoFromJSONTyped(json, false);
 }
 
 export function UtmDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UtmDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'zone': !exists(json, 'zone') ? undefined : json['zone'],
-        'north': json['north'],
-        'east': json['east'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    zone: !exists(json, "zone") ? undefined : json["zone"],
+    north: json["north"],
+    east: json["east"],
+  };
 }
 
 export function UtmDtoToJSON(value?: UtmDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'zone': value.zone,
-        'north': value.north,
-        'east': value.east,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    zone: value.zone,
+    north: value.north,
+    east: value.east,
+  };
 }
-

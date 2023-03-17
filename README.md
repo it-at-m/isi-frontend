@@ -22,6 +22,7 @@
 </div>
 
 <!-- ABOUT THE PROJECT -->
+
 ## Über das Projekt
 
 Das **Informationssystem für soziale Infrastrukturplanung (ISI)** ist eine integrierte Lösung
@@ -30,21 +31,21 @@ kommunale Pflichtaufgabe zur Planung einer bedarfs- und zeitgerechten Versorgung
 **Kindertagesbetreuungs- und Grundschulplätzen** unterstützt und bestehende Planungsinstrumente ablöst.
 
 Dieses Projekt implementiert die UI der ISI-Anwendung.
+
 <p align="right">(<a href="#top">nach oben</a>)</p>
-
-
 
 ### Verwendete Technologien
 
 Dieses Projekt verwendet die folgenden Technologien:
 
-* Spring Boot
-* Vue.js
-* JSON Schema
+-   Spring Boot
+-   Vue.js
+-   JSON Schema
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
 <br />
@@ -56,7 +57,6 @@ Dieses Projekt verwendet die folgenden Technologien:
   </p>
   <br/>
 </div>
-
 
 Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) die Liste der vorgeschlagenen Verbesserungen (und bekannten Fehler)
 
@@ -74,10 +74,13 @@ Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) d
 ## Dokumentation
 
 <!--*what insights do you have to tell*-->
+
 Die Dokumentation befindet sich unter <a href="https://github.com/it-at-m/isi-frontend/tree/dev/docs">docs</a>
+
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
 <!-- CONTRIBUTING -->
+
 ## Beiträge
 
 Beiträge sind es, die die Open Source Community so wertvoll machen - zum Lernen und Erstellen sowie zur Inspiration.
@@ -99,24 +102,21 @@ Mehr dazu in der Datei [CODE_OF_CONDUCT](/CODE_OF_CONDUCT.md) .
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
-
 <!-- LICENSE -->
+
 ## Lizensierung
 
 Die Distribution erfolgt unter der MIT License. Mehr dazu in der Datei [LICENSE](/LICENSE).
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Kontakt
 
 it@m - opensource@muenchen.de
 
-
 <p align="right">(<a href="#top">nach oben</a>)</p>
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

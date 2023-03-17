@@ -40,7 +40,7 @@ describe("UserinfoStoreTest.spec.ts", () => {
       lookup: LookupStore,
       search: SearchStore,
       fileInfoStamm: FileInfoStammStore,
-      userinfo: UserinfoStore
+      userinfo: UserinfoStore,
     },
   });
 

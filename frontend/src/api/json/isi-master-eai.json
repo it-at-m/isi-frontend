@@ -24,9 +24,7 @@
   "paths": {
     "/adresse/search": {
       "post": {
-        "tags": [
-          "MasterEai"
-        ],
+        "tags": ["MasterEai"],
         "summary": "Holt die Adressen bei denen die Suchkriterien übereinstimmen.",
         "operationId": "getAdressen",
         "requestBody": {
@@ -67,9 +65,7 @@
   "components": {
     "schemas": {
       "AdressSucheDto": {
-        "required": [
-          "query"
-        ],
+        "required": ["query"],
         "type": "object",
         "properties": {
           "query": {
@@ -94,12 +90,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "ERROR",
-              "WARNING",
-              "INFORMATION_SUCCESS",
-              "INFORMATION_NEUTRAL"
-            ]
+            "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"]
           },
           "timestamp": {
             "type": "string",

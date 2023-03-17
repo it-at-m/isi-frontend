@@ -10,18 +10,14 @@
         color="primary"
         class="mb-4"
       >
-        <span class="text-h6 white--text">
-          Versionen der ISI-Services
-        </span>
+        <span class="text-h6 white--text"> Versionen der ISI-Services </span>
         <v-spacer />
         <v-btn
           text
           fab
           @click="visible = false"
         >
-          <v-icon class="white--text">
-            mdi-close
-          </v-icon>
+          <v-icon class="white--text"> mdi-close </v-icon>
         </v-btn>
       </v-app-bar>
       <v-simple-table
@@ -45,9 +41,7 @@
                 >
                   {{ service.commitHash.substring(0, 7) }}
                 </a>
-                <span v-else>
-                  Version unbekannt
-                </span>
+                <span v-else> Version unbekannt </span>
               </td>
               <td>
                 <v-tooltip bottom>
@@ -73,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import {Component, VModel, Vue, Watch} from "vue-property-decorator";
+import { Component, VModel, Vue, Watch } from "vue-property-decorator";
 import RequestUtils from "@/utils/RequestUtils";
 import Loading from "@/components/common/Loading.vue";
 import Service from "@/components/common/Service";
@@ -81,7 +75,7 @@ import _ from "lodash";
 
 /**
  * VersionInfo zeigt den Namen, aktuellen Commit-Hash und Status (aktiv/inaktiv) aller bekannten Services an.
- * 
+ *
  * Es wird angenommen, dass beim API-Gateway der Pfad "/actuator/info" existiert.
  * Dieser sollte ein Objekt namens "application" liefern, welches (neben anderen Daten) etwas Derartiges enthält:
  * services:
@@ -90,24 +84,23 @@ import _ from "lodash";
  *     scmUrl: https://github.com/beispiel/beispiel-projekt
  *     appendCommitHash: false
  *   - ...
- * 
+ *
  * Die einzelnen Felder haben folgenden Zweck:
  * - displayName: Anzeigename des Services.
  * - infoPath: Unter welchem Pfad beim API-Gateway man den Commit-Hash erhält.
  * - scmUrl: Wohin der CommitHash verlinken soll.
  * - appendCommitHash: Ob der CommitHash an die scmUrl angehängt werden soll.
- * 
+ *
  * Ebenfalls wird angenommen, dass die Antwort vom infoPath auch ein "application"-Objekt liefert.
  * Dort sollte sich das String-Feld "commitHash" finden.
- * 
+ *
  * Props:
  * - value (boolean): Ob der Dialog sichtbar ist.
  */
 @Component({
-  components: { Loading }
+  components: { Loading },
 })
 export default class VersionInfo extends Vue {
-  
   @VModel({ type: Boolean })
   visible!: boolean;
 
@@ -123,17 +116,17 @@ export default class VersionInfo extends Vue {
 
       for (const service of services) {
         try {
-            const commitHash = await this.fetchCommitHash(service);
-            service.commitHash = commitHash;
-            service.active = true;
-        } catch(error) {
-            service.commitHash = "";
-            service.active = false;
+          const commitHash = await this.fetchCommitHash(service);
+          service.commitHash = commitHash;
+          service.active = true;
+        } catch (error) {
+          service.commitHash = "";
+          service.active = false;
         }
       }
 
       this.services = services;
-      
+
       /*
       Ohne diese Abfrage könnte fetchSuccess=true gesetzt werden, obwohl die Request vorher fehlgeschlagen ist.
       Es wird ein strikter Vergleich mit false verwendet, da der Wert auch null sein könnte.
@@ -147,7 +140,7 @@ export default class VersionInfo extends Vue {
   private async fetchServices(): Promise<Service[]> {
     const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
     let services: Service[] = [];
-    
+
     try {
       const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
       if (!response.ok) {
@@ -160,7 +153,7 @@ export default class VersionInfo extends Vue {
         // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
         services = Object.values(object);
       }
-    } catch(error) {
+    } catch (error) {
       this.fetchSuccess = false;
     }
 
@@ -182,10 +175,10 @@ export default class VersionInfo extends Vue {
       if (!_.isNil(string)) {
         commitHash = string;
       }
-    } catch(error) {
+    } catch (error) {
       return Promise.reject(error);
     }
-    
+
     return commitHash;
   }
 
