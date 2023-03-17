@@ -1,0 +1,5 @@
+# Ignore artifacts:
+frontend/dist
+frontend/target
+frontend/node_modules
+apigateway/target
