@@ -12,125 +12,138 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import {
-    InformationResponseDto,
-    InformationResponseDtoFromJSON,
-    InformationResponseDtoToJSON,
-} from '../models';
+import * as runtime from "../runtime";
+import { InformationResponseDto, InformationResponseDtoFromJSON, InformationResponseDtoToJSON } from "../models";
 
 export interface ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest {
-    file: Blob;
+  file: Blob;
 }
 
 export interface ImportStaedtebaulicheOrientierungswerteRequest {
-    file: Blob;
+  file: Blob;
 }
 
 /**
- * 
+ *
  */
 export class StammdatenApi extends runtime.BaseAPI {
-
-    /**
-     * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
-     */
-    async importSoBoNOrientierungswerteSozialeInfrastrukturRaw(requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.file === null || requestParameters.file === undefined) {
-            throw new runtime.RequiredError('file','Required parameter requestParameters.file was null or undefined when calling importSoBoNOrientierungswerteSozialeInfrastruktur.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters.file !== undefined) {
-            formParams.append('file', requestParameters.file as any);
-        }
-
-        const response = await this.request({
-            path: `/stammdaten/sobon-orientierungswerte-soziale-infrastruktur/import`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
+   */
+  async importSoBoNOrientierungswerteSozialeInfrastrukturRaw(
+    requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.file === null || requestParameters.file === undefined) {
+      throw new runtime.RequiredError(
+        "file",
+        "Required parameter requestParameters.file was null or undefined when calling importSoBoNOrientierungswerteSozialeInfrastruktur."
+      );
     }
 
-    /**
-     * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
-     */
-    async importSoBoNOrientierungswerteSozialeInfrastruktur(requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.importSoBoNOrientierungswerteSozialeInfrastrukturRaw(requestParameters, initOverrides);
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
+    // @ts-ignore: canConsumeForm may be unused
+    const canConsumeForm = runtime.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new URLSearchParams();
     }
 
-    /**
-     * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
-     */
-    async importStaedtebaulicheOrientierungswerteRaw(requestParameters: ImportStaedtebaulicheOrientierungswerteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.file === null || requestParameters.file === undefined) {
-            throw new runtime.RequiredError('file','Required parameter requestParameters.file was null or undefined when calling importStaedtebaulicheOrientierungswerte.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters.file !== undefined) {
-            formParams.append('file', requestParameters.file as any);
-        }
-
-        const response = await this.request({
-            path: `/stammdaten/staedtebauliche-orientierungswerte/import`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters.file !== undefined) {
+      formParams.append("file", requestParameters.file as any);
     }
 
-    /**
-     * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
-     */
-    async importStaedtebaulicheOrientierungswerte(requestParameters: ImportStaedtebaulicheOrientierungswerteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.importStaedtebaulicheOrientierungswerteRaw(requestParameters, initOverrides);
+    const response = await this.request(
+      {
+        path: `/stammdaten/sobon-orientierungswerte-soziale-infrastruktur/import`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: formParams,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
+   */
+  async importSoBoNOrientierungswerteSozialeInfrastruktur(
+    requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<void> {
+    await this.importSoBoNOrientierungswerteSozialeInfrastrukturRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
+   */
+  async importStaedtebaulicheOrientierungswerteRaw(
+    requestParameters: ImportStaedtebaulicheOrientierungswerteRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.file === null || requestParameters.file === undefined) {
+      throw new runtime.RequiredError(
+        "file",
+        "Required parameter requestParameters.file was null or undefined when calling importStaedtebaulicheOrientierungswerte."
+      );
     }
 
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
+    // @ts-ignore: canConsumeForm may be unused
+    const canConsumeForm = runtime.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new URLSearchParams();
+    }
+
+    if (requestParameters.file !== undefined) {
+      formParams.append("file", requestParameters.file as any);
+    }
+
+    const response = await this.request(
+      {
+        path: `/stammdaten/staedtebauliche-orientierungswerte/import`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: formParams,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
+   */
+  async importStaedtebaulicheOrientierungswerte(
+    requestParameters: ImportStaedtebaulicheOrientierungswerteRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<void> {
+    await this.importStaedtebaulicheOrientierungswerteRaw(requestParameters, initOverrides);
+  }
 }

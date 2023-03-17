@@ -1,5 +1,6 @@
 package de.muenchen.isi.configuration;
 
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,8 +21,6 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
 
-import java.util.stream.Collectors;
-
 /**
  * Verwenden der {@link Order} entsprechend der Definition
  * in {@link ErrorWebFluxAutoConfiguration#errorWebExceptionHandler}.
@@ -33,12 +32,14 @@ public class CustomErrorWebExceptionHandler extends DefaultErrorWebExceptionHand
 
     private static final String INVALID_GRANT = "[invalid_grant]";
 
-    public CustomErrorWebExceptionHandler(final ErrorAttributes errorAttributes,
-                                          final WebProperties webProperties,
-                                          final ServerProperties serverProperties,
-                                          final ApplicationContext applicationContext,
-                                          final ObjectProvider<ViewResolver> viewResolvers,
-                                          final ServerCodecConfigurer serverCodecConfigurer) {
+    public CustomErrorWebExceptionHandler(
+        final ErrorAttributes errorAttributes,
+        final WebProperties webProperties,
+        final ServerProperties serverProperties,
+        final ApplicationContext applicationContext,
+        final ObjectProvider<ViewResolver> viewResolvers,
+        final ServerCodecConfigurer serverCodecConfigurer
+    ) {
         super(errorAttributes, webProperties.getResources(), serverProperties.getError(), applicationContext);
         this.setViewResolvers(viewResolvers.orderedStream().collect(Collectors.toList()));
         this.setMessageWriters(serverCodecConfigurer.getWriters());
@@ -55,5 +56,4 @@ public class CustomErrorWebExceptionHandler extends DefaultErrorWebExceptionHand
         }
         return super.renderErrorResponse(request);
     }
-
 }

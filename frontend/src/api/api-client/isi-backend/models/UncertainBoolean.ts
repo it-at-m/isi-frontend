@@ -12,28 +12,25 @@
  * Do not edit the class manually.
  */
 
-
 /**
- * 
+ *
  * @export
  */
 export const UncertainBoolean = {
-    Unspecified: 'UNSPECIFIED',
-    True: 'TRUE',
-    False: 'FALSE'
+  Unspecified: "UNSPECIFIED",
+  True: "TRUE",
+  False: "FALSE",
 } as const;
-export type UncertainBoolean = typeof UncertainBoolean[keyof typeof UncertainBoolean];
-
+export type UncertainBoolean = (typeof UncertainBoolean)[keyof typeof UncertainBoolean];
 
 export function UncertainBooleanFromJSON(json: any): UncertainBoolean {
-    return UncertainBooleanFromJSONTyped(json, false);
+  return UncertainBooleanFromJSONTyped(json, false);
 }
 
 export function UncertainBooleanFromJSONTyped(json: any, ignoreDiscriminator: boolean): UncertainBoolean {
-    return json as UncertainBoolean;
+  return json as UncertainBoolean;
 }
 
 export function UncertainBooleanToJSON(value?: UncertainBoolean | null): any {
-    return value as any;
+  return value as any;
 }
-

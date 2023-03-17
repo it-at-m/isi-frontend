@@ -12,189 +12,239 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
+import * as runtime from "../runtime";
 import {
-    InformationResponseDto,
-    InformationResponseDtoFromJSON,
-    InformationResponseDtoToJSON,
-    MittelschuleDto,
-    MittelschuleDtoFromJSON,
-    MittelschuleDtoToJSON,
-} from '../models';
+  InformationResponseDto,
+  InformationResponseDtoFromJSON,
+  InformationResponseDtoToJSON,
+  MittelschuleDto,
+  MittelschuleDtoFromJSON,
+  MittelschuleDtoToJSON,
+} from "../models";
 
 export interface CreateMittelschuleRequest {
-    mittelschuleDto: MittelschuleDto;
+  mittelschuleDto: MittelschuleDto;
 }
 
 export interface DeleteMittelschuleByIdRequest {
-    id: string;
+  id: string;
 }
 
 export interface GetMittelschuleByIdRequest {
-    id: string;
+  id: string;
 }
 
 export interface UpdateMittelschuleRequest {
-    mittelschuleDto: MittelschuleDto;
+  mittelschuleDto: MittelschuleDto;
 }
 
 /**
- * 
+ *
  */
 export class MittelschuleApi extends runtime.BaseAPI {
-
-    /**
-     * Anlegen einer neuen Mittelschule
-     */
-    async createMittelschuleRaw(requestParameters: CreateMittelschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MittelschuleDto>> {
-        if (requestParameters.mittelschuleDto === null || requestParameters.mittelschuleDto === undefined) {
-            throw new runtime.RequiredError('mittelschuleDto','Required parameter requestParameters.mittelschuleDto was null or undefined when calling createMittelschule.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/mittelschule`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: MittelschuleDtoToJSON(requestParameters.mittelschuleDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => MittelschuleDtoFromJSON(jsonValue));
+  /**
+   * Anlegen einer neuen Mittelschule
+   */
+  async createMittelschuleRaw(
+    requestParameters: CreateMittelschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<MittelschuleDto>> {
+    if (requestParameters.mittelschuleDto === null || requestParameters.mittelschuleDto === undefined) {
+      throw new runtime.RequiredError(
+        "mittelschuleDto",
+        "Required parameter requestParameters.mittelschuleDto was null or undefined when calling createMittelschule."
+      );
     }
 
-    /**
-     * Anlegen einer neuen Mittelschule
-     */
-    async createMittelschule(requestParameters: CreateMittelschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MittelschuleDto> {
-        const response = await this.createMittelschuleRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    const response = await this.request(
+      {
+        path: `/mittelschule`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: MittelschuleDtoToJSON(requestParameters.mittelschuleDto),
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => MittelschuleDtoFromJSON(jsonValue));
+  }
+
+  /**
+   * Anlegen einer neuen Mittelschule
+   */
+  async createMittelschule(
+    requestParameters: CreateMittelschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<MittelschuleDto> {
+    const response = await this.createMittelschuleRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Löschen einer Mittelschule
+   */
+  async deleteMittelschuleByIdRaw(
+    requestParameters: DeleteMittelschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling deleteMittelschuleById."
+      );
     }
 
-    /**
-     * Löschen einer Mittelschule
-     */
-    async deleteMittelschuleByIdRaw(requestParameters: DeleteMittelschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteMittelschuleById.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    const response = await this.request(
+      {
+        path: `/mittelschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
 
-        const response = await this.request({
-            path: `/mittelschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    return new runtime.VoidApiResponse(response);
+  }
 
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Löschen einer Mittelschule
+   */
+  async deleteMittelschuleById(
+    requestParameters: DeleteMittelschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<void> {
+    await this.deleteMittelschuleByIdRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Lesen einer Mittelschule
+   */
+  async getMittelschuleByIdRaw(
+    requestParameters: GetMittelschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<MittelschuleDto>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling getMittelschuleById."
+      );
     }
 
-    /**
-     * Löschen einer Mittelschule
-     */
-    async deleteMittelschuleById(requestParameters: DeleteMittelschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.deleteMittelschuleByIdRaw(requestParameters, initOverrides);
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/mittelschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => MittelschuleDtoFromJSON(jsonValue));
+  }
+
+  /**
+   * Lesen einer Mittelschule
+   */
+  async getMittelschuleById(
+    requestParameters: GetMittelschuleByIdRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<MittelschuleDto> {
+    const response = await this.getMittelschuleByIdRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+   * Lade alle Mittelschulen
+   */
+  async getMittelschulenRaw(
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<Array<MittelschuleDto>>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/mittelschulen`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MittelschuleDtoFromJSON));
+  }
+
+  /**
+   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+   * Lade alle Mittelschulen
+   */
+  async getMittelschulen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<MittelschuleDto>> {
+    const response = await this.getMittelschulenRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Aktualisierung einer Mittelschule
+   */
+  async updateMittelschuleRaw(
+    requestParameters: UpdateMittelschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<MittelschuleDto>> {
+    if (requestParameters.mittelschuleDto === null || requestParameters.mittelschuleDto === undefined) {
+      throw new runtime.RequiredError(
+        "mittelschuleDto",
+        "Required parameter requestParameters.mittelschuleDto was null or undefined when calling updateMittelschule."
+      );
     }
 
-    /**
-     * Lesen einer Mittelschule
-     */
-    async getMittelschuleByIdRaw(requestParameters: GetMittelschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MittelschuleDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getMittelschuleById.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    headerParameters["Content-Type"] = "application/json";
 
-        const response = await this.request({
-            path: `/mittelschule/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    const response = await this.request(
+      {
+        path: `/mittelschule`,
+        method: "PUT",
+        headers: headerParameters,
+        query: queryParameters,
+        body: MittelschuleDtoToJSON(requestParameters.mittelschuleDto),
+      },
+      initOverrides
+    );
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => MittelschuleDtoFromJSON(jsonValue));
-    }
+    return new runtime.JSONApiResponse(response, (jsonValue) => MittelschuleDtoFromJSON(jsonValue));
+  }
 
-    /**
-     * Lesen einer Mittelschule
-     */
-    async getMittelschuleById(requestParameters: GetMittelschuleByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MittelschuleDto> {
-        const response = await this.getMittelschuleByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-     * Lade alle Mittelschulen
-     */
-    async getMittelschulenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<MittelschuleDto>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/mittelschulen`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MittelschuleDtoFromJSON));
-    }
-
-    /**
-     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-     * Lade alle Mittelschulen
-     */
-    async getMittelschulen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<MittelschuleDto>> {
-        const response = await this.getMittelschulenRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Aktualisierung einer Mittelschule
-     */
-    async updateMittelschuleRaw(requestParameters: UpdateMittelschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MittelschuleDto>> {
-        if (requestParameters.mittelschuleDto === null || requestParameters.mittelschuleDto === undefined) {
-            throw new runtime.RequiredError('mittelschuleDto','Required parameter requestParameters.mittelschuleDto was null or undefined when calling updateMittelschule.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/mittelschule`,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: MittelschuleDtoToJSON(requestParameters.mittelschuleDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => MittelschuleDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Aktualisierung einer Mittelschule
-     */
-    async updateMittelschule(requestParameters: UpdateMittelschuleRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MittelschuleDto> {
-        const response = await this.updateMittelschuleRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
+  /**
+   * Aktualisierung einer Mittelschule
+   */
+  async updateMittelschule(
+    requestParameters: UpdateMittelschuleRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<MittelschuleDto> {
+    const response = await this.updateMittelschuleRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 }

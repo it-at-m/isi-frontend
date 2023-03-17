@@ -29,14 +29,13 @@ describe("BaurateStoreTest.spec.ts", () => {
       common: CommonStore,
       lookup: LookupStore,
       search: SearchStore,
-      fileInfoStamm: FileInfoStammStore
-    }
+      fileInfoStamm: FileInfoStammStore,
+    },
   });
 
   afterEach(() => {
     store.commit("foerdermix/foerdermixStammdaten", []);
   });
-
 
   test("Initialized foerdermixStammdaten", () => {
     expect(store.getters["foerdermix/foerdermixStammdaten"]).toStrictEqual([]);
@@ -46,7 +45,7 @@ describe("BaurateStoreTest.spec.ts", () => {
     const list: Array<FoerdermixStammDto> = [];
     list.push({
       bezeichnungJahr: "Sobon 2017",
-      bezeichnung: "Test"
+      bezeichnung: "Test",
     } as FoerdermixStammDto);
     store.commit("foerdermix/foerdermixStammdaten", list);
     expect(store.getters["foerdermix/foerdermixStammdaten"]).toHaveLength(1);

@@ -12,53 +12,50 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
- * 
+ *
  * @export
  * @interface SchuleDto
  */
 export interface SchuleDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof SchuleDto
-     */
-    anzahlKlassen: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof SchuleDto
-     */
-    anzahlPlaetze: number;
+  /**
+   *
+   * @type {number}
+   * @memberof SchuleDto
+   */
+  anzahlKlassen: number;
+  /**
+   *
+   * @type {number}
+   * @memberof SchuleDto
+   */
+  anzahlPlaetze: number;
 }
 
 export function SchuleDtoFromJSON(json: any): SchuleDto {
-    return SchuleDtoFromJSONTyped(json, false);
+  return SchuleDtoFromJSONTyped(json, false);
 }
 
 export function SchuleDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SchuleDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'anzahlKlassen': json['anzahlKlassen'],
-        'anzahlPlaetze': json['anzahlPlaetze'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    anzahlKlassen: json["anzahlKlassen"],
+    anzahlPlaetze: json["anzahlPlaetze"],
+  };
 }
 
 export function SchuleDtoToJSON(value?: SchuleDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'anzahlKlassen': value.anzahlKlassen,
-        'anzahlPlaetze': value.anzahlPlaetze,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    anzahlKlassen: value.anzahlKlassen,
+    anzahlPlaetze: value.anzahlPlaetze,
+  };
 }
-

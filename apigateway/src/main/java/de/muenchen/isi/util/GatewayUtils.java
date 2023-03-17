@@ -4,6 +4,8 @@
  */
 package de.muenchen.isi.util;
 
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +25,6 @@ import org.springframework.security.web.server.authentication.logout.ServerLogou
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-
 
 /**
  * Utility methods and constants which are used in multiple
@@ -53,14 +51,15 @@ public class GatewayUtils {
      * @param newResponseBody The UTF8 conform message to add into the body of the {@link ServerHttpResponse}.
      * @return An empty mono. The results are processed within the {@link GatewayFilterChain}.
      */
-    public static Mono<Void> responseBodyManipulatorForServerWebExchange(final ServerWebExchange exchange,
-                                                                         final GatewayFilterChain chain,
-                                                                         final HttpStatus httpStatus,
-                                                                         final String newResponseBody) {
+    public static Mono<Void> responseBodyManipulatorForServerWebExchange(
+        final ServerWebExchange exchange,
+        final GatewayFilterChain chain,
+        final HttpStatus httpStatus,
+        final String newResponseBody
+    ) {
         final ServerHttpResponse response = exchange.getResponse();
 
         final ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
-
             /**
              * This overridden method adds the response body given in the parameter of
              * the surrounding method when the http status given in the parameter of
@@ -76,8 +75,7 @@ public class GatewayUtils {
                 if (body instanceof Flux && responseHttpStatus.equals(httpStatus)) {
                     final var dataBufferFactory = response.bufferFactory();
                     final DataBuffer newDataBuffer = dataBufferFactory.wrap(
-                            ObjectUtils.defaultIfNull(newResponseBody, EMPTY_JSON_OBJECT)
-                                    .getBytes(StandardCharsets.UTF_8)
+                        ObjectUtils.defaultIfNull(newResponseBody, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8)
                     );
 
                     log.debug("Response from upstream {} get new response body: {}", httpStatus, newResponseBody);
@@ -85,14 +83,15 @@ public class GatewayUtils {
                     getDelegate().getHeaders().setContentType(MediaType.APPLICATION_JSON);
                     Flux<? extends DataBuffer> flux = (Flux<? extends DataBuffer>) body;
 
-                    return super.writeWith(flux.buffer().map(
-                            // replace old body represented by dataBuffer by the new one
-                            dataBuffer -> newDataBuffer
-                    ));
+                    return super.writeWith(
+                        flux
+                            .buffer()
+                            .map(dataBuffer -> newDataBuffer // replace old body represented by dataBuffer by the new one
+                            )
+                    );
                 }
                 return super.writeWith(body);
             }
-
         };
 
         final ServerWebExchange swe = exchange.mutate().response(decoratedResponse).build();
@@ -111,5 +110,4 @@ public class GatewayUtils {
         successHandler.setLogoutSuccessUrl(URI.create(uri));
         return successHandler;
     }
-
 }

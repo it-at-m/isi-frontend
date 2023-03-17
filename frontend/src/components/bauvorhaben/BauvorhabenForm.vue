@@ -14,9 +14,7 @@
             validate-on-blur
             @input="formChanged"
           >
-            <template #label>
-              Eigentümer <span class="secondary--text">*</span>
-            </template>
+            <template #label> Eigentümer <span class="secondary--text">*</span> </template>
           </v-text-field>
         </v-col>
         <v-col
@@ -46,9 +44,7 @@
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Stand des Vorhabens <span class="secondary--text">*</span>
-            </template>
+            <template #label> Stand des Vorhabens <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -63,9 +59,7 @@
             validate-on-blur
             @input="formChanged"
           >
-            <template #label>
-              Bauvorhabennummer <span class="secondary--text">*</span>
-            </template>
+            <template #label> Bauvorhabennummer <span class="secondary--text">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -91,9 +85,7 @@
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Planungsrecht <span class="secondary--text">*</span>
-            </template>
+            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -107,16 +99,12 @@
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
           >
-            <template #label>
-              SoBoN-relevant <span class="secondary--text">*</span>
-            </template>
+            <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
           </tri-switch>
         </v-col>
       </v-row>
       <v-row>
-        <v-col
-          cols="12"
-        >
+        <v-col cols="12">
           <v-autocomplete
             id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
@@ -205,17 +193,17 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({ components: { FieldGroupCard, Dokumente, NumField, TriSwitch } })
 export default class BauvorhabenForm extends Mixins(
-    FieldPrefixesSuffixes,
-    FieldValidationRulesMixin,
-    SaveLeaveMixin,
-    AdresseComponent
+  FieldPrefixesSuffixes,
+  FieldValidationRulesMixin,
+  SaveLeaveMixin,
+  AdresseComponent
 ) {
-  @VModel({type: BauvorhabenModel})
+  @VModel({ type: BauvorhabenModel })
   bauvorhaben!: BauvorhabenModel;
 
   private dokumentCardTitle = "Dokumente";
 
-  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben"
+  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben";
 
   get standVorhabenList(): LookupEntryDto[] {
     return this.$store.getters["lookup/standVorhaben"];

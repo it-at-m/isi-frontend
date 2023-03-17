@@ -12,7 +12,7 @@
           label="Aktenzeichen ProLBK"
           maxlength="255"
           @input="formChanged"
-        />  
+        />
       </template>
     </abfrage-component>
     <field-group-card :card-title="sobonCardTitle">
@@ -28,9 +28,7 @@
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
           >
-            <template #label>
-              SoBoN-relevant <span class="secondary--text">*</span>
-            </template>
+            <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
           </tri-switch>
         </v-col>
         <v-col
@@ -49,7 +47,8 @@
               @change="formChanged"
             >
               <template #label>
-                Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN <span class="secondary--text">*</span>
+                Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN
+                <span class="secondary--text">*</span>
               </template>
             </v-select>
           </v-slide-y-reverse-transition>
@@ -69,9 +68,7 @@
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
           >
-            <template #label>
-              Offiziell <span class="secondary--text">*</span>
-            </template>
+            <template #label> Offiziell <span class="secondary--text">*</span> </template>
           </tri-switch>
         </v-col>
       </v-row>
@@ -87,21 +84,22 @@ import InfrastrukturabfrageModel from "@/types/model/abfrage/Infrastrukturabfrag
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   components: {
     AbfrageComponent,
     FieldGroupCard,
-    TriSwitch },
+    TriSwitch,
+  },
   mixins: [FieldValidationRulesMixin],
 })
-export default class InfrastrukturabfrageComponent extends Mixins (SaveLeaveMixin) {
+export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin) {
   @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
 
   private sobonCardTitle = "SoBoN";
 
-  private offiziellCardTitle = "Verfahrensschritt"
+  private offiziellCardTitle = "Verfahrensschritt";
 
   private sobonJahrVisible = false;
 

@@ -12,53 +12,50 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
- * 
+ *
  * @export
  * @interface Wgs84Dto
  */
 export interface Wgs84Dto {
-    /**
-     * 
-     * @type {number}
-     * @memberof Wgs84Dto
-     */
-    latitude: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Wgs84Dto
-     */
-    longitude: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Wgs84Dto
+   */
+  latitude: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Wgs84Dto
+   */
+  longitude: number;
 }
 
 export function Wgs84DtoFromJSON(json: any): Wgs84Dto {
-    return Wgs84DtoFromJSONTyped(json, false);
+  return Wgs84DtoFromJSONTyped(json, false);
 }
 
 export function Wgs84DtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): Wgs84Dto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'latitude': json['latitude'],
-        'longitude': json['longitude'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    latitude: json["latitude"],
+    longitude: json["longitude"],
+  };
 }
 
 export function Wgs84DtoToJSON(value?: Wgs84Dto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'latitude': value.latitude,
-        'longitude': value.longitude,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    latitude: value.latitude,
+    longitude: value.longitude,
+  };
 }
-

@@ -1,6 +1,6 @@
-import {Levels} from "@/api/error";
-import {ActionContext} from "vuex";
-import {RootState} from "@/store";
+import { Levels } from "@/api/error";
+import { ActionContext } from "vuex";
+import { RootState } from "@/store";
 
 export interface SnackbarState {
   message: string | undefined;
@@ -13,7 +13,7 @@ export default {
   state: {
     message: undefined,
     level: Levels.INFO,
-    show: false
+    show: false,
   } as SnackbarState,
   getters: {},
   mutations: {
@@ -25,16 +25,16 @@ export default {
     },
     SET_SHOW(state: SnackbarState, show: boolean): void {
       state.show = show;
-    }
+    },
   },
   actions: {
     showMessage(context: ActionContext<SnackbarState, RootState>, message: SnackbarState): void {
-      context.commit('SET_LEVEL', message.level ? message.level : Levels.INFO);
-      context.commit('SET_MESSAGE', message.message);
-      context.commit('SET_SHOW', true);
+      context.commit("SET_LEVEL", message.level ? message.level : Levels.INFO);
+      context.commit("SET_MESSAGE", message.message);
+      context.commit("SET_SHOW", true);
     },
     updateShow(context: ActionContext<SnackbarState, RootState>, show: boolean): void {
-      context.commit('SET_SHOW', show);
-    }
-  }
+      context.commit("SET_SHOW", show);
+    },
+  },
 };

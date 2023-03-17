@@ -12,77 +12,80 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
- * 
+ *
  * @export
  * @interface InfrastruktureinrichtungListElementDto
  */
 export interface InfrastruktureinrichtungListElementDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungListElementDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungListElementDto
-     */
-    nameEinrichtung?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungListElementDto
-     */
-    infrastruktureinrichtungTyp?: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof InfrastruktureinrichtungListElementDto
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof InfrastruktureinrichtungListElementDto
+   */
+  nameEinrichtung?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof InfrastruktureinrichtungListElementDto
+   */
+  infrastruktureinrichtungTyp?: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum;
 }
-
 
 /**
  * @export
  */
 export const InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum = {
-    Unspecified: 'UNSPECIFIED',
-    Kinderkrippe: 'KINDERKRIPPE',
-    Kindergarten: 'KINDERGARTEN',
-    GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
-    HausFuerKinder: 'HAUS_FUER_KINDER',
-    Grundschule: 'GRUNDSCHULE',
-    Mittelschule: 'MITTELSCHULE'
+  Unspecified: "UNSPECIFIED",
+  Kinderkrippe: "KINDERKRIPPE",
+  Kindergarten: "KINDERGARTEN",
+  GsNachmittagBetreuung: "GS_NACHMITTAG_BETREUUNG",
+  HausFuerKinder: "HAUS_FUER_KINDER",
+  Grundschule: "GRUNDSCHULE",
+  Mittelschule: "MITTELSCHULE",
 } as const;
-export type InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum];
-
+export type InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum =
+  (typeof InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum)[keyof typeof InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum];
 
 export function InfrastruktureinrichtungListElementDtoFromJSON(json: any): InfrastruktureinrichtungListElementDto {
-    return InfrastruktureinrichtungListElementDtoFromJSONTyped(json, false);
+  return InfrastruktureinrichtungListElementDtoFromJSONTyped(json, false);
 }
 
-export function InfrastruktureinrichtungListElementDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungListElementDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
-        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
-    };
+export function InfrastruktureinrichtungListElementDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): InfrastruktureinrichtungListElementDto {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    id: !exists(json, "id") ? undefined : json["id"],
+    nameEinrichtung: !exists(json, "nameEinrichtung") ? undefined : json["nameEinrichtung"],
+    infrastruktureinrichtungTyp: !exists(json, "infrastruktureinrichtungTyp")
+      ? undefined
+      : json["infrastruktureinrichtungTyp"],
+  };
 }
 
-export function InfrastruktureinrichtungListElementDtoToJSON(value?: InfrastruktureinrichtungListElementDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'id': value.id,
-        'nameEinrichtung': value.nameEinrichtung,
-        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
-    };
+export function InfrastruktureinrichtungListElementDtoToJSON(
+  value?: InfrastruktureinrichtungListElementDto | null
+): any {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    id: value.id,
+    nameEinrichtung: value.nameEinrichtung,
+    infrastruktureinrichtungTyp: value.infrastruktureinrichtungTyp,
+  };
 }
-

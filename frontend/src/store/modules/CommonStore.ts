@@ -3,14 +3,14 @@ import { RootState } from "..";
 
 const state = {
   stepNumber: 1,
-  formDirty: false
+  formDirty: false,
 };
 
 export type CommonState = typeof state;
 
 export default {
   namespaced: true,
-  
+
   state,
 
   getters: {
@@ -19,7 +19,7 @@ export default {
     },
     isDirty: (state: CommonState): boolean => {
       return state.formDirty;
-    }
+    },
   },
 
   mutations: {
@@ -28,7 +28,7 @@ export default {
     },
     formDirty(state: CommonState, value: boolean): void {
       state.formDirty = value;
-    }
+    },
   },
 
   actions: {
@@ -40,6 +40,6 @@ export default {
     },
     resetDirty(context: ActionContext<CommonState, RootState>): void {
       context.commit("formDirty", false);
-    }
-  }
+    },
+  },
 };

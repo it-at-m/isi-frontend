@@ -4,6 +4,8 @@
  */
 package de.muenchen.isi.controller;
 
+import static de.muenchen.isi.TestConstants.SPRING_TEST_PROFILE;
+
 import de.muenchen.isi.ApiGatewayApplication;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,14 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static de.muenchen.isi.TestConstants.SPRING_TEST_PROFILE;
-
-
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(
-        classes = {ApiGatewayApplication.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest(classes = { ApiGatewayApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(SPRING_TEST_PROFILE)
 class PingControllerTest {
 
@@ -32,16 +28,11 @@ class PingControllerTest {
     @Test
     @WithMockUser
     void ping() {
-        webTestClient.get().uri("/api").exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.OK.value());
+        webTestClient.get().uri("/api").exchange().expectStatus().isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
     void pingNotAuthenticated() {
-        webTestClient.get().uri("/api").exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.FOUND);
+        webTestClient.get().uri("/api").exchange().expectStatus().isEqualTo(HttpStatus.FOUND);
     }
-
 }

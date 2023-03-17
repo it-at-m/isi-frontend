@@ -7,7 +7,6 @@ package de.muenchen.isi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
 /**
  * To do some base configuration for the non blocking client-server framework
  * named Netty via properties use the properties listed in the link down below:
@@ -26,13 +25,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @see <a href="https://cloud.spring.io/spring-cloud-gateway/reference/html/">https://cloud.spring.io/spring-cloud-gateway/reference/html/</a>
  */
-@SpringBootApplication(
-        scanBasePackages = {"de.muenchen.isi"}
-)
+@SpringBootApplication(scanBasePackages = { "de.muenchen.isi" })
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
-
 }

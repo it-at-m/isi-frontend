@@ -20,9 +20,7 @@
           md="2"
         >
           <v-row class="justify-start">
-            <v-chip small>
-              {{ currentNumberOfAddedFiles }} / {{ maxNumberOfFiles }}
-            </v-chip>
+            <v-chip small> {{ currentNumberOfAddedFiles }} / {{ maxNumberOfFiles }} </v-chip>
           </v-row>
         </v-col>
         <v-col
@@ -55,12 +53,12 @@
       hidden
       :accept="allowedMimeTypes"
       @change="onFilesSelected"
-    >
+    />
   </v-container>
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Prop, VModel} from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
 import DokumenteListe from "./DokumenteListe.vue";
 import {
@@ -69,16 +67,16 @@ import {
   FilepathDto,
   MimeTypeInformationDto,
   PresignedUrlDto,
-  ResponseError
+  ResponseError,
 } from "@/api/api-client/isi-backend";
-import {createDokumentDto, createFilepathDto, createPresignedUrlDto} from "@/utils/Factories";
+import { createDokumentDto, createFilepathDto, createPresignedUrlDto } from "@/utils/Factories";
 import {
   fileAlreadyExists,
   getAllowedMimeTypes,
   isDokumentAllowed,
   maxFileSizeExceeded,
   maxNumberOfFilesReached,
-  mimeTypeNichtErlaubt
+  mimeTypeNichtErlaubt,
 } from "@/utils/DokumenteUtil";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -87,15 +85,10 @@ import MimeTypeApiRequestMixin from "@/mixins/requests/MimeTypeApiRequestMixin";
 @Component({
   components: {
     DokumenteListe,
-  }
+  },
 })
-export default class Dokumente extends Mixins(
-    DokumenteApiRequestMixin,
-    SaveLeaveMixin,
-    MimeTypeApiRequestMixin
-) {
-
-  @VModel({type: Array}) dokumente!: DokumentDto[];
+export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeaveMixin, MimeTypeApiRequestMixin) {
+  @VModel({ type: Array }) dokumente!: DokumentDto[];
 
   @Prop()
   private pathToFile!: string;
@@ -133,21 +126,19 @@ export default class Dokumente extends Mixins(
       const filepathDto: FilepathDto = createFilepathDto();
       filepathDto.pathToFile = dokument.filePath.pathToFile;
       let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
-      await this.getPresignedUrlForDeleteDokument(filepathDto, true)
-          .then(presignedUrlDtoInternal => {
-            presignedUrlDto = presignedUrlDtoInternal;
-          });
+      await this.getPresignedUrlForDeleteDokument(filepathDto, true).then((presignedUrlDtoInternal) => {
+        presignedUrlDto = presignedUrlDtoInternal;
+      });
       if (!_.isNil(presignedUrlDto.url)) {
-        await this.deleteDokumentWithUrl(presignedUrlDto)
-            .then(() => {
-              this.dokumente.forEach((item, index) => {
-                if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
-                  this.dokumente.splice(index, 1);
-                }
-              });
-              this.formChanged();
-              this.$emit("onDokumentDeleted", dokument);
-            });
+        await this.deleteDokumentWithUrl(presignedUrlDto).then(() => {
+          this.dokumente.forEach((item, index) => {
+            if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
+              this.dokumente.splice(index, 1);
+            }
+          });
+          this.formChanged();
+          this.$emit("onDokumentDeleted", dokument);
+        });
       }
     } else {
       this.dokumente.forEach((item, index) => {
@@ -156,7 +147,6 @@ export default class Dokumente extends Mixins(
         }
       });
     }
-
   }
 
   // - Anzeigen des File-Explorers zur Auswahl von Dateien
@@ -170,28 +160,43 @@ export default class Dokumente extends Mixins(
       // Anzeige des Cursorladekreis starten
       this.loading = true;
       // Upload der Dateien
-      await this.saveFiles(fileList)
-          .finally(() => {
-            // Anzeige des Cursorladekreises beenden
-            this.loading = false;
-          });
+      await this.saveFiles(fileList).finally(() => {
+        // Anzeige des Cursorladekreises beenden
+        this.loading = false;
+      });
     }
   }
 
   private areFilesValid(fileList: FileList): boolean {
-    const fileInformationDto: FileInformationDto = this.$store.getters["fileInfoStamm/fileInformation"] as FileInformationDto;
+    const fileInformationDto: FileInformationDto = this.$store.getters[
+      "fileInfoStamm/fileInformation"
+    ] as FileInformationDto;
     let maxNumberOfFilesMessagePart = "";
     let fileAlreadyExistsMessagePart = "";
     let maxFileSizeExceededMessagePart = "";
     let warningMessage = "";
     maxNumberOfFilesMessagePart += this.validateAndCreateMaxNumberOfFilesMessagePart(fileInformationDto, fileList);
     for (let newFile of fileList) {
-      maxFileSizeExceededMessagePart += this.validateAndCreateMaxFileSizeExceededMessagePart(fileInformationDto, newFile, maxFileSizeExceededMessagePart);
-      fileAlreadyExistsMessagePart += this.validateAndCreateFileAlreadyExistsMessagePart(this.dokumente, newFile, fileAlreadyExistsMessagePart);
+      maxFileSizeExceededMessagePart += this.validateAndCreateMaxFileSizeExceededMessagePart(
+        fileInformationDto,
+        newFile,
+        maxFileSizeExceededMessagePart
+      );
+      fileAlreadyExistsMessagePart += this.validateAndCreateFileAlreadyExistsMessagePart(
+        this.dokumente,
+        newFile,
+        fileAlreadyExistsMessagePart
+      );
     }
     warningMessage += this.formatValidationWarningMessagePartWith(maxNumberOfFilesMessagePart, warningMessage);
-    warningMessage += this.formatValidationWarningMessagePartWith(this.formatFileAlreadyExistsMessagePartMessagePart(fileAlreadyExistsMessagePart), warningMessage);
-    warningMessage += this.formatValidationWarningMessagePartWith(this.formatMaxFileExceededMessagePart(fileInformationDto, maxFileSizeExceededMessagePart), warningMessage);
+    warningMessage += this.formatValidationWarningMessagePartWith(
+      this.formatFileAlreadyExistsMessagePartMessagePart(fileAlreadyExistsMessagePart),
+      warningMessage
+    );
+    warningMessage += this.formatValidationWarningMessagePartWith(
+      this.formatMaxFileExceededMessagePart(fileInformationDto, maxFileSizeExceededMessagePart),
+      warningMessage
+    );
     if (!_.isEmpty(warningMessage)) {
       this.showWarningInInformationList(warningMessage);
       return false;
@@ -201,11 +206,15 @@ export default class Dokumente extends Mixins(
 
   private validateAndCreateMaxNumberOfFilesMessagePart(fileInformationDto: FileInformationDto, fileList: FileList) {
     return maxNumberOfFilesReached(this.dokumente, fileList, fileInformationDto)
-        ? `Die maximale Anzahl von ${fileInformationDto.maxNumberOfFiles} Dokumenten wird überschritten`
-        : "";
+      ? `Die maximale Anzahl von ${fileInformationDto.maxNumberOfFiles} Dokumenten wird überschritten`
+      : "";
   }
 
-  private validateAndCreateMaxFileSizeExceededMessagePart(fileInformationDto: FileInformationDto, newFile: File, maxFileSizeExceededMessage: string): string {
+  private validateAndCreateMaxFileSizeExceededMessagePart(
+    fileInformationDto: FileInformationDto,
+    newFile: File,
+    maxFileSizeExceededMessage: string
+  ): string {
     let messagePart = "";
     if (maxFileSizeExceeded(newFile, fileInformationDto)) {
       if (!_.isEmpty(maxFileSizeExceededMessage)) {
@@ -216,7 +225,11 @@ export default class Dokumente extends Mixins(
     return messagePart;
   }
 
-  private validateAndCreateFileAlreadyExistsMessagePart(dokumente: DokumentDto[], newFile: File, fileAlreadyExistsMessage: string): string {
+  private validateAndCreateFileAlreadyExistsMessagePart(
+    dokumente: DokumentDto[],
+    newFile: File,
+    fileAlreadyExistsMessage: string
+  ): string {
     let messagePart = "";
     if (fileAlreadyExists(dokumente, newFile, this.pathToFile)) {
       if (!_.isEmpty(fileAlreadyExistsMessage)) {
@@ -231,12 +244,15 @@ export default class Dokumente extends Mixins(
     return !_.isEmpty(message) && !_.isEmpty(warningMessage) ? "\n" + message : message;
   }
 
-  private formatMaxFileExceededMessagePart(fileInformationDto: FileInformationDto, maxFileExceededMessagePart: string): string {
+  private formatMaxFileExceededMessagePart(
+    fileInformationDto: FileInformationDto,
+    maxFileExceededMessagePart: string
+  ): string {
     let messagePart = "";
     if (!_.isEmpty(maxFileExceededMessagePart)) {
       messagePart += maxFileExceededMessagePart.includes(",")
-          ? "Die Dateien " + maxFileExceededMessagePart + " überschreiten "
-          : "Die Datei " + maxFileExceededMessagePart + " überschreitet ";
+        ? "Die Dateien " + maxFileExceededMessagePart + " überschreiten "
+        : "Die Datei " + maxFileExceededMessagePart + " überschreitet ";
       messagePart += "die max. Dateigröße von " + fileInformationDto.maxFileSizeBytes + " Bytes";
     }
     return messagePart;
@@ -246,8 +262,8 @@ export default class Dokumente extends Mixins(
     let messagePart = "";
     if (!_.isEmpty(fileAlreadyExistsMessagePart)) {
       messagePart += fileAlreadyExistsMessagePart.includes(",")
-          ? "Die Dateien " + fileAlreadyExistsMessagePart + " sind "
-          : "Die Datei " + fileAlreadyExistsMessagePart + " ist ";
+        ? "Die Dateien " + fileAlreadyExistsMessagePart + " sind "
+        : "Die Datei " + fileAlreadyExistsMessagePart + " ist ";
       messagePart += "bereits in den Dokumenten enthalten";
     }
     return messagePart;
@@ -263,36 +279,36 @@ export default class Dokumente extends Mixins(
     const filepathDto: FilepathDto = createFilepathDto();
     filepathDto.pathToFile = pathToFile + file.name;
     let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
-    await this.getPresignedUrlForSaveDokument(filepathDto, true)
-        .then(presignedUrlDtoInternal => {
-          presignedUrlDto = presignedUrlDtoInternal;
-        });
+    await this.getPresignedUrlForSaveDokument(filepathDto, true).then((presignedUrlDtoInternal) => {
+      presignedUrlDto = presignedUrlDtoInternal;
+    });
 
     if (!_.isNil(presignedUrlDto.url)) {
-      await this.saveDokumentWithUrl(presignedUrlDto, file)
-          .then(() => {
-            const newDokument = createDokumentDto();
-            newDokument.sizeInBytes = file.size;
-            newDokument.filePath.pathToFile = filepathDto.pathToFile;
-            this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
-                .then(mimeTypeInformation => {
-                  newDokument.typDokument = this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
-                  this.dokumente.push(newDokument);
-                  this.formChanged();
-                })
-                .catch(error => {
-                  if (error instanceof ResponseError && error.response.status === 406) {
-                    newDokument.typDokument = mimeTypeNichtErlaubt();
-                    this.dokumente.push(newDokument);
-                    this.formChanged();
-                  }
-                });
-
+      await this.saveDokumentWithUrl(presignedUrlDto, file).then(() => {
+        const newDokument = createDokumentDto();
+        newDokument.sizeInBytes = file.size;
+        newDokument.filePath.pathToFile = filepathDto.pathToFile;
+        this.extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
+          .then((mimeTypeInformation) => {
+            newDokument.typDokument =
+              this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
+            this.dokumente.push(newDokument);
+            this.formChanged();
+          })
+          .catch((error) => {
+            if (error instanceof ResponseError && error.response.status === 406) {
+              newDokument.typDokument = mimeTypeNichtErlaubt();
+              this.dokumente.push(newDokument);
+              this.formChanged();
+            }
           });
+      });
     }
   }
 
-  private acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation: MimeTypeInformationDto): string {
+  private acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(
+    mimeTypeInformation: MimeTypeInformationDto
+  ): string {
     let type: string;
     if (_.isEmpty(mimeTypeInformation.acronym)) {
       if (_.isEmpty(mimeTypeInformation.description)) {
@@ -310,7 +326,5 @@ export default class Dokumente extends Mixins(
     const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
     return _.isNil(fileInformationDto.maxNumberOfFiles) ? 0 : fileInformationDto.maxNumberOfFiles;
   }
-
 }
-
 </script>
