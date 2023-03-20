@@ -12,43 +12,43 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from "../runtime";
-import { AbfrageListElementsDto, AbfrageListElementsDtoFromJSON, AbfrageListElementsDtoToJSON } from "../models";
+
+import * as runtime from '../runtime';
+import {
+    AbfrageListElementsDto,
+    AbfrageListElementsDtoFromJSON,
+    AbfrageListElementsDtoToJSON,
+} from '../models';
 
 /**
- *
+ * 
  */
 export class AbfragelistenApi extends runtime.BaseAPI {
-  /**
-   * Lade alle Abfragen für die Listendarstellung
-   */
-  async getAbfrageListElementsRaw(
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<AbfrageListElementsDto>> {
-    const queryParameters: any = {};
 
-    const headerParameters: runtime.HTTPHeaders = {};
+    /**
+     * Lade alle Abfragen für die Listendarstellung
+     */
+    async getAbfrageListElementsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AbfrageListElementsDto>> {
+        const queryParameters: any = {};
 
-    const response = await this.request(
-      {
-        path: `/abfragen`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    return new runtime.JSONApiResponse(response, (jsonValue) => AbfrageListElementsDtoFromJSON(jsonValue));
-  }
+        const response = await this.request({
+            path: `/abfragen`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-  /**
-   * Lade alle Abfragen für die Listendarstellung
-   */
-  async getAbfrageListElements(
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<AbfrageListElementsDto> {
-    const response = await this.getAbfrageListElementsRaw(initOverrides);
-    return await response.value();
-  }
+        return new runtime.JSONApiResponse(response, (jsonValue) => AbfrageListElementsDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Lade alle Abfragen für die Listendarstellung
+     */
+    async getAbfrageListElements(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AbfrageListElementsDto> {
+        const response = await this.getAbfrageListElementsRaw(initOverrides);
+        return await response.value();
+    }
+
 }

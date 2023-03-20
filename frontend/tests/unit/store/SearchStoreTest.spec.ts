@@ -3,6 +3,8 @@ import Vue from "vue";
 import {
   AbfrageListElementDto,
   AbfrageListElementDtoStandVorhabenEnum,
+  BauvorhabenDto,
+  BauvorhabenDtoStandVorhabenEnum,
   InfrastruktureinrichtungListElementDto,
   InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
 } from "@/api/api-client/isi-backend";
@@ -45,6 +47,8 @@ describe("SearchStoreTest.spec.ts", () => {
     store.commit("search/resultAbfrage", undefined);
     store.commit("search/searchQueryInfrastruktureinrichtung", "");
     store.commit("search/resultInfrastruktureinrichtung", undefined);
+    store.commit("search/resultBauvorhaben", undefined);
+    store.commit("search/selectedBauvorhaben", undefined);
   });
 
   test("Initialization of searchQueryAbfrage", () => {
@@ -94,7 +98,7 @@ describe("SearchStoreTest.spec.ts", () => {
   // Tests für Bauvorhaben
 
   test("resultBauvorhaben is empty", () => {
-    expect(store.getters["search/resultBauvorhaben"]).toHaveLength(0);
+    expect(store.getters["search/resultBauvorhaben"]).toBeUndefined();
   });
 
   test("resultBauvorhaben receives an entry", () => {
@@ -117,6 +121,17 @@ describe("SearchStoreTest.spec.ts", () => {
 
     expect(store.getters["search/selectedBauvorhaben"]).toBe(bauvorhaben);
   });
+
+  test("Reset resultBauvorhaben", async () => {
+      const list: Array<BauvorhabenDto> = [];
+      list.push({
+        standVorhaben: BauvorhabenDtoStandVorhabenEnum.BauantragEingereicht ,
+      } as BauvorhabenDto);
+      store.commit("search/resultBauvorhaben", list);
+      expect(await store.getters["search/resultBauvorhaben"]).toHaveLength(1);
+      expect(await store.dispatch("search/resetBauvorhaben"));
+      expect(await store.getters["search/resultBauvorhaben"]).toBeUndefined();
+    });
 
   // Tests Infrastruktureinrichtung
 
