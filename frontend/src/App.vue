@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <TheSnackbar />
+    <the-snackbar />
     <v-app-bar
       app
       color="primary"

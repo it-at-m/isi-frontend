@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout>
+  <default-layout>
     <template #content>
       <div
         v-if="bauvorhabenList.length !== 0"
@@ -57,7 +57,7 @@
         <v-icon> mdi-plus </v-icon>
       </v-btn>
     </template>
-  </DefaultLayout>
+  </default-layout>
 </template>
 
 <script lang="ts">

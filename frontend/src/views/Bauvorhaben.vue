@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <DefaultLayout solid-heading>
+    <default-layout solid-heading>
       <template #heading>
         <v-container>
           <v-row>
@@ -20,7 +20,7 @@
         </v-container>
       </template>
       <template #content>
-        <BauvorhabenForm
+        <bauvorhaben-form
           id="bauvorhaben_bauvorhabenForm_component"
           v-model="bauvorhaben"
         />
@@ -46,7 +46,7 @@
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
-        <InformationList
+        <information-list
           id="bauvorhaben_information_list"
           information-message-deletion-intervall-seconds="10"
         />
@@ -73,7 +73,7 @@
           v-text="'Abbrechen'"
         />
       </template>
-    </DefaultLayout>
+    </default-layout>
     <yes-no-dialog
       id="bauvorhaben_yes_no_dialog_loeschen"
       v-model="deleteDialogOpen"
