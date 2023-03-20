@@ -18,7 +18,7 @@ describe("CompareUtilTest.spec.ts", () => {
       anteilPreisgedaempfterMietwohnungsbau: 20,
       anteilKonzeptionellerMietwohnungsbau: 10,
       anteilBaugemeinschaften: 5,
-      anteilEinUndZweifamilienhaeuser: 5
+      anteilEinUndZweifamilienhaeuser: 5,
     } as FoerdermixDto);
 
     foerdermixStaemme = [];
@@ -33,8 +33,8 @@ describe("CompareUtilTest.spec.ts", () => {
         anteilPreisgedaempfterMietwohnungsbau: 20,
         anteilKonzeptionellerMietwohnungsbau: 10,
         anteilBaugemeinschaften: 5,
-        anteilEinUndZweifamilienhaeuser: 5
-      }
+        anteilEinUndZweifamilienhaeuser: 5,
+      },
     } as FoerdermixStammDto);
   });
 

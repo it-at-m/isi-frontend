@@ -23,9 +23,7 @@
               x-small
               @click="deleteInformationListEntryByIndex(index)"
             >
-              <v-icon dense>
-                mdi-window-close
-              </v-icon>
+              <v-icon dense> mdi-window-close </v-icon>
             </v-btn>
           </v-row>
 
@@ -119,17 +117,13 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from "vue-property-decorator";
-import {
-  InformationResponseDto,
-  InformationResponseDtoTypeEnum,
-} from "@/api/api-client/isi-backend";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment";
 
 @Component
 export default class InformationList extends Vue {
-
   private static readonly NOT_APPLICABLE: string = "n/a";
 
   private static readonly FORMAT_TIMESTAMP: string = "DD.MM.YYYY HH:mm:ss";
@@ -192,6 +186,5 @@ export default class InformationList extends Vue {
   public isTimestampOrOriginalExceptionAvailable(informationResponseDto: InformationResponseDto): boolean {
     return !_.isNil(informationResponseDto.timestamp) || !_.isNil(informationResponseDto.originalException);
   }
-
 }
 </script>

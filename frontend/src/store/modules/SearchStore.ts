@@ -1,4 +1,8 @@
-import { AbfrageListElementDto, BauvorhabenDto, InfrastruktureinrichtungListElementDto } from "@/api/api-client/isi-backend";
+import {
+  AbfrageListElementDto,
+  BauvorhabenDto,
+  InfrastruktureinrichtungListElementDto,
+} from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
@@ -19,13 +23,13 @@ const state = {
   resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungListElementDto[] | undefined,
   searchQueryInfrastruktureinrichtung: "",
   selectedInfrastruktureinrichtung: undefined as
-   KinderkrippeModel |
-   KindergartenModel |
-   HausFuerKinderModel |
-   GsNachmittagBetreuungModel |
-   GrundschuleModel |
-   MittelschuleModel |
-   undefined,
+    | KinderkrippeModel
+    | KindergartenModel
+    | HausFuerKinderModel
+    | GsNachmittagBetreuungModel
+    | GrundschuleModel
+    | MittelschuleModel
+    | undefined,
 };
 
 export type SearchState = typeof state;

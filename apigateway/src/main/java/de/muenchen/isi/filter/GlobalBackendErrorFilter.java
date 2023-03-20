@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-
 /**
  * This {@link GlobalFilter} replaces the body by a generic error body, when a server responses
  * with a {@link HttpStatus#INTERNAL_SERVER_ERROR}.
@@ -34,11 +33,10 @@ public class GlobalBackendErrorFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.debug("Check for backend errors");
         return GatewayUtils.responseBodyManipulatorForServerWebExchange(
-                exchange,
-                chain,
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                GENERIC_ERROR
+            exchange,
+            chain,
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            GENERIC_ERROR
         );
     }
-
 }

@@ -1,4 +1,4 @@
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 /**
  * Mit dem SaveLeave Mixin kann ein Datenverlust durch ungewolltest Navigieren verhindert werden.
@@ -13,22 +13,20 @@ import {Component, Vue} from "vue-property-decorator";
  *
  * Mit dem Aufruf von `leave()` oder `cancel()` kann die Entscheidung des Nutzers ausgeführt werden.
  */
-Component.registerHooks([
-  'beforeRouteLeave',
-]);
+Component.registerHooks(["beforeRouteLeave"]);
 @Component
 export default class SaveLeaveMixin extends Vue {
   name = "saveLeaveMixin";
-  
-  
-  saveLeaveDialogTitle = 'Hinweis';
-  saveLeaveDialogText = 'Es sind ungespeicherte Änderungen vorhanden, die beim Verlassen der Seite verloren gehen werden.';
-  saveLeaveNoText = 'Abbrechen';
-  saveLeaveYesText = 'Verlassen';
+
+  saveLeaveDialogTitle = "Hinweis";
+  saveLeaveDialogText =
+    "Es sind ungespeicherte Änderungen vorhanden, die beim Verlassen der Seite verloren gehen werden.";
+  saveLeaveNoText = "Abbrechen";
+  saveLeaveYesText = "Verlassen";
   saveLeaveDialog = false;
   // eslint-disable-next-line
   next: any = null;
-  
+
   // eslint-disable-next-line
   beforeRouteLeave(to: any, from: any, next: any): void {
     if (this.isDirty()) {
@@ -39,17 +37,17 @@ export default class SaveLeaveMixin extends Vue {
       next();
     }
   }
-  
+
   cancel(): void {
     this.saveLeaveDialog = false;
     this.next(false);
   }
-  
+
   leave(): void {
     this.resetDirty();
     this.next();
   }
-  
+
   public isDirty(): boolean {
     return this.$store.getters["common/isDirty"];
   }
@@ -61,5 +59,4 @@ export default class SaveLeaveMixin extends Vue {
   public resetDirty(): void {
     this.$store.dispatch("common/resetDirty");
   }
-  
 }

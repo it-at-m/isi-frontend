@@ -13,14 +13,14 @@ Vue.config.productionTip = false;
 moment.locale(window.navigator.language);
 
 Vue.use(VCalendar, {
-  componentPrefix: "vc"
+  componentPrefix: "vc",
 });
 
 new Vue({
   router,
   store: store,
   vuetify: Vuetify,
-  render: (h): VNode => h(App)
+  render: (h): VNode => h(App),
 }).$mount("#app");
 
 /**

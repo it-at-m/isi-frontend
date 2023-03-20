@@ -10,18 +10,15 @@
     <slot />
   </v-card>
 </template>
- 
+
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class FieldGroupCard extends Vue {
-
   @Prop()
   cardTitle!: string;
-
 }
 </script>
 
-<style>
-</style>
+<style></style>

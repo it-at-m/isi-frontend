@@ -10,8 +10,8 @@
               :items="searchResult"
               :loading="isLoading"
               :search-input.sync="searchForAdresse"
-              dense    
-              clearable    
+              dense
+              clearable
               color="black"
               no-filter
               hide-no-data
@@ -25,7 +25,7 @@
               @keyup.enter="onBlurAdressSuche"
               @blur="onBlurAdressSuche"
             />
-          </v-col>        
+          </v-col>
         </v-row>
       </div>
       <div v-if="isAllgemeineOrtsangabeVisible">
@@ -41,7 +41,7 @@
           </v-col>
         </v-row>
       </div>
-      <div v-if="isAdresseVisible">      
+      <div v-if="isAdresseVisible">
         <v-row justify="center">
           <v-col
             cols="12"
@@ -108,14 +108,14 @@ import MasterEaiApiRequestMixin from "@/mixins/requests/eai/MasterEaiApiRequestM
 import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from "@/utils/Factories";
 import _ from "lodash";
 
-@Component( {
+@Component({
   components: {},
 })
 export default class AdresseComponent extends Mixins(
-    SaveLeaveMixin,
-    FieldValidationRulesMixin,
-    FieldGroupCard,
-    MasterEaiApiRequestMixin
+  SaveLeaveMixin,
+  FieldValidationRulesMixin,
+  FieldGroupCard,
+  MasterEaiApiRequestMixin
 ) {
   private adressCardTitle = "Adressinformationen";
 
@@ -166,7 +166,7 @@ export default class AdresseComponent extends Mixins(
 
   set selectedAdresse(dto: MuenchenAdresseDto) {
     this.selectedAdresseOfAdressSuche = dto;
-    this.assumeAdresse(this.selectedAdresseOfAdressSuche);    
+    this.assumeAdresse(this.selectedAdresseOfAdressSuche);
   }
 
   get isLoading(): boolean {
@@ -218,8 +218,8 @@ export default class AdresseComponent extends Mixins(
     this.adresse.plz = _.isNil(dto.geozuordnungen) ? "" : dto.geozuordnungen.postleitzahl;
     this.adresse.ort = dto.ortsname;
     this.adresse.strasse = dto.strassenname;
-    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString('de-DE');    
-    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString('de-DE');
+    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString("de-DE");
+    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString("de-DE");
     if (!_.isNil(dto.buchstabe)) {
       this.adresse.hausnummer += dto.buchstabe;
     }
@@ -237,33 +237,33 @@ export default class AdresseComponent extends Mixins(
     this.adressSucheItemSelected = false;
     this.formChanged();
   }
-  
+
   private onBlurAdressSuche(): void {
-    if (!this.adressSucheItemSelected
-        && !_.isEmpty(this.adressSucheOnBlur)) {
+    if (!this.adressSucheItemSelected && !_.isEmpty(this.adressSucheOnBlur)) {
       this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
     }
   }
 
   //
   // Aufruf der EAI zum Lesen der Münchner Adressen mit dem eingegebenen Suchtext mit Adressteilen
-  // 
+  //
   async searchForAdressenWith(searchFor: string): Promise<void> {
     if (!_.isEmpty(searchFor)) {
       const adressSuche: AdressSucheDto = createAdressSucheDto();
       adressSuche.query = searchFor;
-      this.loading = true; // Anzeige des Cursorladekreis starten 
+      this.loading = true; // Anzeige des Cursorladekreis starten
       await this.getAdressen(adressSuche, this.showInInformationList)
-          .then((dto) => {            
-            if (!_.isNil(dto)) {              
-              this.searchResult = dto;
-            }
-          })
-          .finally(() => {
-            // Anzeige des Cursorladekreises beenden
-            this.loading = false; 
-        });     
+        .then((dto) => {
+          if (!_.isNil(dto)) {
+            this.searchResult = dto;
+          }
+        })
+        .finally(() => {
+          // Anzeige des Cursorladekreises beenden
+          this.loading = false;
+        });
     }
   }
 }
-</script>;
+</script>
+;

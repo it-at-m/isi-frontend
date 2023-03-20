@@ -51,10 +51,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -65,20 +65,19 @@ import 'leaflet/dist/leaflet.css';
     LMap,
     LPopup,
     LControlLayers,
-    'l-wms-tile-layer': LWMSTileLayer,
-  }
+    "l-wms-tile-layer": LWMSTileLayer,
+  },
 })
 export default class CityMap extends Vue {
-  
   private readonly OSM_BASE_URL = "https://ows.terrestris.de/osm/service?";
   private readonly MUNICH_CENTER = [48.137227, 11.575517] as const;
-  private readonly MAP_OPTIONS = {attributionControl: false} as const;
+  private readonly MAP_OPTIONS = { attributionControl: false } as const;
 
-  @Prop({default: "100%"})
+  @Prop({ default: "100%" })
   private readonly height!: number | string;
-  @Prop({default: "100%"})
+  @Prop({ default: "100%" })
   private readonly width!: number | string;
-  @Prop({default: 12})
+  @Prop({ default: 12 })
   private readonly zoom!: number;
 
   private readonly popup = L.popup();
@@ -93,7 +92,7 @@ export default class CityMap extends Vue {
    * Da GeoInfoWeb mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
   private getGiwUrl(service: string): string {
-    return (import.meta.env.VITE_GIS_URL as string).replace('{1}', service);
+    return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
   }
 
   /**
@@ -105,6 +104,5 @@ export default class CityMap extends Vue {
       .setContent(event.latlng.lat + ", " + event.latlng.lng)
       .openOn(this.map);
   }
-
 }
 </script>

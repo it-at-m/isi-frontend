@@ -1,24 +1,26 @@
-import {Component, Mixins} from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import {
   InformationResponseDto,
   InformationResponseDtoFromJSON,
   InformationResponseDtoTypeEnum,
-  ResponseError
+  ResponseError,
 } from "@/api/api-client/isi-backend";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import Toaster from "@/components/common/toaster.type";
-import {Levels} from "@/api/error";
+import { Levels } from "@/api/error";
 import _ from "lodash";
 
 @Component
 export default class ErrorHandler extends Mixins(InformationListMixin) {
-  
-  public static readonly ERROR_MESSAGE_GATEWAY: string = "Anwendungssystem (API-Gateway) nicht verfügbar. Bitte kontaktieren Sie den Servicedesk.";
-  
-  public static readonly ERROR_MESSAGE_BACKEND: string = "Es ist ein Problem im Anwendungssystem (Backend) aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
-  
-  public static readonly ERROR_MESSAGE_NOT_AUTHORIZED: string = "Sie haben nicht die nötigen Rechte um diese Aktion durchzuführen.";
-  
+  public static readonly ERROR_MESSAGE_GATEWAY: string =
+    "Anwendungssystem (API-Gateway) nicht verfügbar. Bitte kontaktieren Sie den Servicedesk.";
+
+  public static readonly ERROR_MESSAGE_BACKEND: string =
+    "Es ist ein Problem im Anwendungssystem (Backend) aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
+
+  public static readonly ERROR_MESSAGE_NOT_AUTHORIZED: string =
+    "Sie haben nicht die nötigen Rechte um diese Aktion durchzuführen.";
+
   /**
    * Diese Methode zeigt den im Parameter übergebenen "error" abhängig vom Parameter "showInInformationList"
    * entweder als Nachricht in der InformationsListe oder als Toast.
@@ -46,19 +48,18 @@ export default class ErrorHandler extends Mixins(InformationListMixin) {
       this.showErrorInformation(showInInformationList, errorMessage);
     } else if (error instanceof ResponseError && error.response.status !== 500) {
       // Das Backend reagiert mit einer fachlichen Fehlermeldung.
-      error.response.json()
-        .then((json: unknown) => {
-          const informationResponseDto: InformationResponseDto = InformationResponseDtoFromJSON(json);
-          
-          if (showInInformationList) {
-            this.showInformationResponseDtoInInformationList(informationResponseDto);
-          } else {
-            // Show as Toast
-            const messages: string = _.join(informationResponseDto.messages, "; ");
-            const toastLevel: Levels = this.getToastLevel(informationResponseDto.type);
-            Toaster.toast(messages, toastLevel);
-          }
-        });
+      error.response.json().then((json: unknown) => {
+        const informationResponseDto: InformationResponseDto = InformationResponseDtoFromJSON(json);
+
+        if (showInInformationList) {
+          this.showInformationResponseDtoInInformationList(informationResponseDto);
+        } else {
+          // Show as Toast
+          const messages: string = _.join(informationResponseDto.messages, "; ");
+          const toastLevel: Levels = this.getToastLevel(informationResponseDto.type);
+          Toaster.toast(messages, toastLevel);
+        }
+      });
     } else if (error instanceof ResponseError && error.response.status === 500) {
       // ResponseError vom Gateway. D.h. das Gateway aber nicht das Backend konnte erreicht werden.
       const errorMessage = ErrorHandler.ERROR_MESSAGE_BACKEND;
@@ -70,7 +71,7 @@ export default class ErrorHandler extends Mixins(InformationListMixin) {
     }
     return error;
   }
-  
+
   /**
    * @param showInInformationList falls true. Andernfalls wird der Fehler als Toast gezeigt.
    * @param errorMessage welche angezeigt werden soll.
@@ -82,7 +83,7 @@ export default class ErrorHandler extends Mixins(InformationListMixin) {
       Toaster.toast(errorMessage, Levels.ERROR);
     }
   }
-  
+
   public getToastLevel(type: InformationResponseDtoTypeEnum | undefined): Levels {
     let level: Levels = Levels.INFO;
     if (type === InformationResponseDtoTypeEnum.Error) {
@@ -94,6 +95,4 @@ export default class ErrorHandler extends Mixins(InformationListMixin) {
     }
     return level;
   }
-  
 }
-  

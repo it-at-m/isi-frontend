@@ -6,7 +6,7 @@ export interface UserState {
 export default {
   namespaced: true,
   state: {
-    username: ""
+    username: "",
   } as UserState,
   getters: {},
   mutations: {
@@ -15,7 +15,6 @@ export default {
     },
     SET_LEVEL(state: UserState, authorities: string[]): void {
       state.authorities = authorities;
-    }
+    },
   },
-  
 };
