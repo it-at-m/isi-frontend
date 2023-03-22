@@ -12,93 +12,47 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
+import { FoerderartDto, FoerderartDtoFromJSON, FoerderartDtoFromJSONTyped, FoerderartDtoToJSON } from "./FoerderartDto";
+
 /**
- * 
+ *
  * @export
  * @interface FoerdermixDto
  */
 export interface FoerdermixDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    anteilFreifinanzierterGeschosswohnungsbau?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    anteilGefoerderterMietwohnungsbau?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    anteilMuenchenModell?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    anteilPreisgedaempfterMietwohnungsbau?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    anteilKonzeptionellerMietwohnungsbau?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    anteilBaugemeinschaften?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    anteilEinUndZweifamilienhaeuser?: number;
+  /**
+   *
+   * @type {Array<FoerderartDto>}
+   * @memberof FoerdermixDto
+   */
+  foerderarten?: Array<FoerderartDto>;
 }
 
 export function FoerdermixDtoFromJSON(json: any): FoerdermixDto {
-    return FoerdermixDtoFromJSONTyped(json, false);
+  return FoerdermixDtoFromJSONTyped(json, false);
 }
 
 export function FoerdermixDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FoerdermixDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'anteilFreifinanzierterGeschosswohnungsbau': !exists(json, 'anteilFreifinanzierterGeschosswohnungsbau') ? undefined : json['anteilFreifinanzierterGeschosswohnungsbau'],
-        'anteilGefoerderterMietwohnungsbau': !exists(json, 'anteilGefoerderterMietwohnungsbau') ? undefined : json['anteilGefoerderterMietwohnungsbau'],
-        'anteilMuenchenModell': !exists(json, 'anteilMuenchenModell') ? undefined : json['anteilMuenchenModell'],
-        'anteilPreisgedaempfterMietwohnungsbau': !exists(json, 'anteilPreisgedaempfterMietwohnungsbau') ? undefined : json['anteilPreisgedaempfterMietwohnungsbau'],
-        'anteilKonzeptionellerMietwohnungsbau': !exists(json, 'anteilKonzeptionellerMietwohnungsbau') ? undefined : json['anteilKonzeptionellerMietwohnungsbau'],
-        'anteilBaugemeinschaften': !exists(json, 'anteilBaugemeinschaften') ? undefined : json['anteilBaugemeinschaften'],
-        'anteilEinUndZweifamilienhaeuser': !exists(json, 'anteilEinUndZweifamilienhaeuser') ? undefined : json['anteilEinUndZweifamilienhaeuser'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    foerderarten: !exists(json, "foerderarten")
+      ? undefined
+      : (json["foerderarten"] as Array<any>).map(FoerderartDtoFromJSON),
+  };
 }
 
 export function FoerdermixDtoToJSON(value?: FoerdermixDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'anteilFreifinanzierterGeschosswohnungsbau': value.anteilFreifinanzierterGeschosswohnungsbau,
-        'anteilGefoerderterMietwohnungsbau': value.anteilGefoerderterMietwohnungsbau,
-        'anteilMuenchenModell': value.anteilMuenchenModell,
-        'anteilPreisgedaempfterMietwohnungsbau': value.anteilPreisgedaempfterMietwohnungsbau,
-        'anteilKonzeptionellerMietwohnungsbau': value.anteilKonzeptionellerMietwohnungsbau,
-        'anteilBaugemeinschaften': value.anteilBaugemeinschaften,
-        'anteilEinUndZweifamilienhaeuser': value.anteilEinUndZweifamilienhaeuser,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    foerderarten:
+      value.foerderarten === undefined ? undefined : (value.foerderarten as Array<any>).map(FoerderartDtoToJSON),
+  };
 }
-
