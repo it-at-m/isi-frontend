@@ -18,6 +18,7 @@
 		<sonar.scanner.version>3.9.0.2155</sonar.scanner.version>
         <git.scm.url>scm:git:git@github.com:it-at-m/isi-frontend.git</git.scm.url>
         <git.url>https://github.com/it-at-m/isi-frontend</git.url>
+		<exec.maven.plugin>3.0.0</exec.maven.plugin>
     </properties>
 
     <build>
@@ -33,6 +34,26 @@
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>${sonar.scanner.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec.maven.plugin}</version>
+				<executions>
+					<execution>
+						<id>install git hook</id>
+						<phase>install</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
         </plugins>
     </build>
