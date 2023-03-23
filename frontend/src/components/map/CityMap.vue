@@ -7,7 +7,7 @@
       id="karte"
       ref="map"
       :options="MAP_OPTIONS"
-      :center="MUNICH_CENTER"
+      :center="center"
       :zoom="zoom"
       style="z-index: 1"
       @click="openPopup($event)"
@@ -70,14 +70,21 @@ import 'leaflet/dist/leaflet.css';
 })
 export default class CityMap extends Vue {
   
+  private static readonly MUNICH_CENTER = [48.137227, 11.575517];
+
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
-  private readonly MUNICH_CENTER = [48.137227, 11.575517] as const;
-  private readonly MAP_OPTIONS = {attributionControl: false} as const;
+  private readonly MAP_OPTIONS = {attributionControl: false};
 
   @Prop({default: "100%"})
   private readonly height!: number | string;
+
   @Prop({default: "100%"})
   private readonly width!: number | string;
+
+// TODO: center soll nur initial direkt gesetzt werden. Danach soll mit flyTo/panTo zur Koordinate gegangen werden.
+  @Prop({default: CityMap.MUNICH_CENTER})
+  private readonly center!: [number, number];
+
   @Prop({default: 12})
   private readonly zoom!: number;
 

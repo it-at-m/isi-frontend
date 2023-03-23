@@ -149,6 +149,10 @@ export default class DefaultLayout extends Vue {
   pointer-events: auto;
 }
 
+.side-bar > * {
+  pointer-events: auto;
+}
+
 .side-bar-information > * {
   pointer-events: auto;
 }
