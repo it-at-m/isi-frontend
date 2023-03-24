@@ -1,4 +1,7 @@
-# Build directories
+# Build-Ordner
 apigateway/target
 frontend/dist
 frontend/target
+
+# yml-Datieien könnnen evtl. zu Fehlern führen
+*.yml
