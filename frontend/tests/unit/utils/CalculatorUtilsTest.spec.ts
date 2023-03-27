@@ -3,35 +3,38 @@ import { FoerdermixDto } from "@/api/api-client/isi-backend";
 import { addiereAnteile } from "@/utils/CalculationUtil";
 
 describe("CalculatorUtilsTest", () => {
-  let value = new FoerdermixModel({});
+  let foerdermix = new FoerdermixModel({});
 
   beforeEach(() => {
-    value = new FoerdermixModel({
-      anteilBaugemeinschaften: 10,
-      anteilEinUndZweifamilienhaeuser: 10,
-      anteilFreifinanzierterGeschosswohnungsbau: 10,
-      anteilGefoerderterMietwohnungsbau: 10,
-      anteilKonzeptionellerMietwohnungsbau: 10,
-      anteilMuenchenModell: 10,
-      anteilPreisgedaempfterMietwohnungsbau: 40,
+    foerdermix = new FoerdermixModel({
+      foerderarten: [
+        { bezeichnung: "Baugemeinschaften", anteilProzent: 10 },
+        { bezeichnung: "EinUndZweifamilienhaeuser", anteilProzent: 10 },
+        { bezeichnung: "FreifinanzierterGeschosswohnungsbau", anteilProzent: 10 },
+        { bezeichnung: "GefoerderterMietwohnungsbau", anteilProzent: 10 },
+        { bezeichnung: "KonzeptionellerMietwohnungsbau", anteilProzent: 10 },
+        { bezeichnung: "MuenchenModell", anteilProzent: 10 },
+        { bezeichnung: "PreisgedaempfterMietwohnungsbau", anteilProzent: 40 },
+      ],
     } as FoerdermixDto);
   });
 
   it("should add 100", async function () {
-    const ergebnis = addiereAnteile(value);
+    const ergebnis = addiereAnteile(foerdermix);
 
     expect(ergebnis).toBe(100);
 
-    value.anteilBaugemeinschaften = 40;
+    // @ts-ignore
+    foerdermix.foerderarten[0].anteilProzent = 40;
 
-    const ergebnis2 = addiereAnteile(value);
+    const ergebnis2 = addiereAnteile(foerdermix);
 
     expect(ergebnis2).toBe(130);
   });
 
   it("should return 0 when undefined", async function () {
-    const value = new FoerdermixModel({});
-    const ergebnis = addiereAnteile(value);
+    const foerdermix = new FoerdermixModel({});
+    const ergebnis = addiereAnteile(foerdermix);
     expect(ergebnis).toBe(0);
   });
 });

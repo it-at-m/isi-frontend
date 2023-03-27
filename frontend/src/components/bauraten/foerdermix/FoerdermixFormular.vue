@@ -13,7 +13,7 @@
           cols="12"
           md="4"
         >
-          <num-field
+          <v-text-field
             id="foerdermix_gesamtsumme"
             v-model="gesamtsumme"
             label="Summe"
@@ -21,12 +21,11 @@
             readonly="readonly"
             :rules="[fieldValidationRules.nichtGleich100Prozent(foerdermix)]"
             :suffix="fieldPrefixesSuffixes.percent"
-            integer
           />
         </v-col>
       </v-row>
       <v-row>
-        <template v-for="(foerderart, foerderartIndex) in test">
+        <template v-for="(foerderart, foerderartIndex) in foerdermix.foerderarten">
           <v-col
             :key="foerderartIndex"
             cols="12"
@@ -36,7 +35,7 @@
               :id="'foerdermix_foerderart_' + foerderartIndex"
               :key="foerderartIndex"
               v-model="foerderart.anteilProzent"
-              :label="foerderart.name"
+              :label="foerderart.bezeichnung"
               :suffix="fieldPrefixesSuffixes.percent"
             />
           </v-col>
@@ -67,13 +66,6 @@ export default class FoerdermixFormular extends Mixins(
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 
   private anteileFMCardTitle = "Anteile Fördermix";
-  private test = [
-    { name: "haa", anteilProzent: 12 },
-    { name: "ggg", anteilProzent: 54 },
-    { name: "sgsg", anteilProzent: 4 },
-    { name: "gewgg", anteilProzent: 78 },
-    { name: "werer", anteilProzent: 13 },
-  ];
 
   private readonly = true;
 
