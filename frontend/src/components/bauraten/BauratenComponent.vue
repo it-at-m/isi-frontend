@@ -19,11 +19,11 @@
           cols="12"
           md="4"
         >
-          <v-text-field
+          <num-field
             id="bauraten_anzahlWeGeplant"
             v-model="baurate.anzahlWeGeplant"
             label="Anzahl Wohneinheiten geplant"
-            maxlength="255"
+            integer
           />
         </v-col>
         <v-col

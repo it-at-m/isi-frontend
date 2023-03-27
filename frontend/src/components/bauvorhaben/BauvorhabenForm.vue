@@ -92,7 +92,7 @@
           cols="12"
           md="6"
         >
-          <TriSwitch
+          <tri-switch
             id="bauvorhaben_sobonRelevant_triswitch"
             v-model="bauvorhaben.sobonRelevant"
             off-text="Nein"
@@ -100,7 +100,7 @@
             :rules="[fieldValidationRules.notUnspecified]"
           >
             <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
-          </TriSwitch>
+          </tri-switch>
         </v-col>
       </v-row>
       <v-row>
@@ -166,7 +166,7 @@
     <field-group-card :card-title="dokumentCardTitle">
       <v-row>
         <v-col cols="12">
-          <Dokumente
+          <dokumente
             id="bauvorhaben_dokumente_component"
             v-model="bauvorhaben.dokumente"
             :path-to-file="dokumentePathToFile"

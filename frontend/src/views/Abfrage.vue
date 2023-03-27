@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <DefaultLayout solid-heading>
+    <default-layout solid-heading>
       <template #content>
         <div v-if="openAbfrageFormular">
           <infrastrukturabfrage-component
@@ -142,7 +142,7 @@
           v-text="'Abbrechen'"
         />
       </template>
-    </DefaultLayout>
+    </default-layout>
   </v-form>
 </template>
 <script lang="ts">

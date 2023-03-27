@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <DefaultLayout solid-heading>
+    <default-layout solid-heading>
       <template #heading>
         <v-container>
           <v-row>
@@ -20,7 +20,7 @@
         </v-container>
       </template>
       <template #content>
-        <BauvorhabenForm
+        <bauvorhaben-form
           id="bauvorhaben_bauvorhabenForm_component"
           v-model="bauvorhaben"
         />
@@ -46,7 +46,7 @@
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
-        <InformationList
+        <information-list
           id="bauvorhaben_information_list"
           information-message-deletion-intervall-seconds="10"
         />
@@ -73,7 +73,7 @@
           v-text="'Abbrechen'"
         />
       </template>
-    </DefaultLayout>
+    </default-layout>
     <yes-no-dialog
       id="bauvorhaben_yes_no_dialog_loeschen"
       v-model="deleteDialogOpen"
@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Vue } from "vue-property-decorator";
+import { Component, Mixins, Vue, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import { createAdresseDto, createBauvorhabenDto } from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -160,6 +160,14 @@ export default class Bauvorhaben extends Mixins(
     }
   }
 
+  @Watch("$store.state.search.selectedBauvorhaben", { immediate: true, deep: true })
+  private selectedBauvorhabenChanged() {
+    const bauvorhabenFromStore = this.$store.getters["search/selectedBauvorhaben"];
+    if (!_.isNil(bauvorhabenFromStore)) {
+      this.bauvorhaben = _.cloneDeep(bauvorhabenFromStore);
+    }
+  }
+
   /**
    * Löst zuerst eine Validierung des Formulars aus.
    * Ist das Formular valide, wird auf sonstige Mängel überprüft.
@@ -209,7 +217,9 @@ export default class Bauvorhaben extends Mixins(
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
   private async updateBauvorhaben(): Promise<void> {
-    await this.putBauvorhaben(this.bauvorhaben, true).then(() => {
+    await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
+      this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
+      this.$store.dispatch("search/resetBauvorhaben");
       Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
     });
   }

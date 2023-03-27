@@ -12,13 +12,14 @@ import GrundschuleModel from "@/types/model/infrastruktureinrichtung/Grundschule
 import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
+import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 
 const state = {
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
-  resultBauvorhaben: [] as BauvorhabenDto[],
-  selectedBauvorhaben: undefined as BauvorhabenDto | undefined,
+  resultBauvorhaben: undefined as BauvorhabenDto[] | undefined,
+  selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungListElementDto[] | undefined,
   searchQueryInfrastruktureinrichtung: "",
   selectedInfrastruktureinrichtung: undefined as
@@ -48,7 +49,7 @@ export default {
     selectedAbfrage: (state: SearchState): InfrastrukturabfrageModel | undefined => {
       return state.selectedAbfrage;
     },
-    resultBauvorhaben: (state: SearchState): Array<BauvorhabenDto> => {
+    resultBauvorhaben: (state: SearchState): Array<BauvorhabenDto> | undefined => {
       return state.resultBauvorhaben;
     },
     selectedBauvorhaben: (state: SearchState): BauvorhabenDto | undefined => {
@@ -84,14 +85,17 @@ export default {
     selectedAbfrage(state: SearchState, selectedAbfrage: InfrastrukturabfrageModel): void {
       state.selectedAbfrage = selectedAbfrage;
     },
-    resultBauvorhaben: (state: SearchState, items: BauvorhabenDto[]): void => {
-      state.resultBauvorhaben = items;
-    },
     resetAbfrage(state: SearchState): void {
       state.resultAbfrage = undefined;
     },
     selectedBauvorhaben: (state: SearchState, item: BauvorhabenDto): void => {
       state.selectedBauvorhaben = item;
+    },
+    resultBauvorhaben: (state: SearchState, items: BauvorhabenDto[]): void => {
+      state.resultBauvorhaben = items;
+    },
+    resetBauvorhaben(state: SearchState): void {
+      state.resultBauvorhaben = undefined;
     },
     resultInfrastruktureinrichtung(state: SearchState, items: InfrastruktureinrichtungListElementDto[]): void {
       state.resultInfrastruktureinrichtung = items;
@@ -126,17 +130,20 @@ export default {
     selectedAbfrage(context: ActionContext<SearchState, RootState>, abfrage: InfrastrukturabfrageModel): void {
       context.commit("selectedAbfrage", abfrage);
     },
-    resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
-      context.commit("resultBauvorhaben", items);
-    },
     resetAbfrage(context: ActionContext<SearchState, RootState>): void {
       context.commit("resetAbfrage");
     },
     isInitializedAbfrage(): boolean {
       return this.resultAbfrage !== undefined;
     },
+    resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
+      context.commit("resultBauvorhaben", items);
+    },
     selectedBauvorhaben(context: ActionContext<SearchState, RootState>, item: BauvorhabenDto): void {
       context.commit("selectedBauvorhaben", item);
+    },
+    resetBauvorhaben(context: ActionContext<SearchState, RootState>): void {
+      context.commit("resetBauvorhaben");
     },
     resultInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
