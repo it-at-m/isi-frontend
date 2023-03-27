@@ -154,7 +154,7 @@ export default class AbfrageNavigationTree extends Vue {
    * Erstellt die AbfrageTreeItems auf Basis der Abfrage.
    * Jedes AbfrageTreeItem referenziert das in der Treeview darzustellende Objekt.
    *
-   * @param abfrage zur Erstellung der AbfrageTreeItems.
+   * @param abfrage zur Erstellung der AbfrageTreeItems
    */
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
     const abfrageTreeItems: Array<AbfrageTreeItem> = [];
@@ -212,8 +212,8 @@ export default class AbfrageNavigationTree extends Vue {
    * Markiert jedes Element im Parameter newAbfrageTreeItems als geändert, falls sich zur Referenz im Parameter
    * oldAbfrageTreeItems eine Änderung ergeben hat.
    *
-   * @param newAbfrageTreeItems zum Prüfen auf Änderung.
-   * @param oldAbfrageTreeItems welche als Referenz zur Änderungsprüfung herangezogen werden.
+   * @param newAbfrageTreeItems zum Prüfen auf Änderung
+   * @param oldAbfrageTreeItems welche als Referenz zur Änderungsprüfung herangezogen werden
    */
   private markNewAbfrageTreeItemsAsChanged(
     newAbfrageTreeItems: Array<AbfrageTreeItem>,
@@ -247,9 +247,9 @@ export default class AbfrageNavigationTree extends Vue {
    * Bei der Prüfung auf gleichheit werden z.B. bei der Abfrage die referenzierten Abfragevarianten ignoriert.
    * Die Prüfung auf Gleichheit wird bei der Abfrage z.B. nur auf Basis von nichtreferenziellen Attributen durchgeführt.
    *
-   * @param newAbfrageTreeItem zum Prüfen auf Änderung.
-   * @param oldAbfrageTreeItem welche als Referenz zur Änderungsprüfung herangezogen werden.
-   * @return true falls sich keine Änderung ergeben hat, andernfalls false.
+   * @param newAbfrageTreeItem zum Prüfen auf Änderung
+   * @param oldAbfrageTreeItem welche als Referenz zur Änderungsprüfung herangezogen werden
+   * @return true falls sich keine Änderung ergeben hat, andernfalls false
    */
   private isNotChanged(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
     let notChanged = false;
