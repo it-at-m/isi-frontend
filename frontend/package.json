@@ -5,7 +5,6 @@
   "scripts": {
     "serve": "vite",
     "build": "vite build --out-dir dist",
-    "lint": "",
     "test:unit": "vitest run"
   },
   "dependencies": {
