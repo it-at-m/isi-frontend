@@ -229,9 +229,11 @@ export default class AbfrageNavigationTree extends Vue {
       // Grundannahme: Es hat sich eine Änderung ergeben.
       newAbfrageTreeItem.changed = true;
       flatOldAbfrageTreeItems.forEach((oldAbfrageTreeItem) => {
-        // notChanged == true -> So existiert im neuen AbfrageItem ein referenziertes Objekt,
-        // welches mit dem referenzierten Objekt im alten AbfrageItem identisch ist.
-        // Folglich hat sich keine Änderung ergeben.
+        /*
+          notChanged == true -> So existiert im neuen AbfrageItem ein referenziertes Objekt,
+          welches mit dem referenzierten Objekt im alten AbfrageItem identisch ist.
+          Folglich hat sich keine Änderung ergeben.
+         */
         const notChanged = this.isNotChanged(newAbfrageTreeItem, oldAbfrageTreeItem);
         if (notChanged) {
           newAbfrageTreeItem.changed = false;
