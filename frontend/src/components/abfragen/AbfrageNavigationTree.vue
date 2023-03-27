@@ -153,6 +153,7 @@ export default class AbfrageNavigationTree extends Vue {
   /**
    * Erstellt die AbfrageTreeItems auf Basis der Abfrage.
    * Jedes AbfrageTreeItem referenziert das in der Treeview darzustellende Objekt.
+   *
    * @param abfrage zur Erstellung der AbfrageTreeItems.
    */
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
@@ -244,8 +245,11 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   /**
-   * Prüft auf Basis eine flachen Kopie der in den AbfrageTreeItems referenzierten Objekten ob diese gleich sind.
-   * Sommit hat sich bei den beiden Objekte keine Änderung ergeben.
+   * Prüft auf Basis von flachen Kopien der in den Parametern referenzierten Objekten, ob diese gleich sind.
+   * Bei Gleichheit der flachen Kopien hat sich keine Änderung ergeben.
+   *
+   * Bei der Prüfung auf gleichheit werden z.B. bei der Abfrage die referenzierten Abfragevarianten ignoriert.
+   * Die Prüfung auf Gleichheit wird bei der Abfrage z.B. nur auf Basis von nichtreferenziellen Attributen durchgeführt.
    *
    * @param newAbfrageTreeItem zum Prüfen auf Änderung.
    * @param oldAbfrageTreeItem welche als Referenz zur Änderungsprüfung herangezogen werden.
