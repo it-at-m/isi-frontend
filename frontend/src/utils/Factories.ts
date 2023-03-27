@@ -14,6 +14,7 @@ import {
   DokumentDtoArtDokumentEnum,
   FileInformationDto,
   FilepathDto,
+  FoerderartDto,
   FoerdermixDto,
   FoerdermixStammDto,
   GrundschuleDto,
@@ -196,26 +197,14 @@ export function createBaurate(): BaurateDto {
     anzahlWeGeplant: undefined,
     jahr: Number.NaN,
     foerdermix: {
-      anteilBaugemeinschaften: undefined,
-      anteilEinUndZweifamilienhaeuser: undefined,
-      anteilFreifinanzierterGeschosswohnungsbau: undefined,
-      anteilGefoerderterMietwohnungsbau: undefined,
-      anteilKonzeptionellerMietwohnungsbau: undefined,
-      anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined,
+      foerderarten: new Array<FoerderartDto>(),
     } as FoerdermixDto,
   } as BaurateDto;
 }
 
 export function createFoerdermix(): FoerdermixDto {
   return {
-    anteilBaugemeinschaften: undefined,
-    anteilEinUndZweifamilienhaeuser: undefined,
-    anteilFreifinanzierterGeschosswohnungsbau: undefined,
-    anteilGefoerderterMietwohnungsbau: undefined,
-    anteilKonzeptionellerMietwohnungsbau: undefined,
-    anteilMuenchenModell: undefined,
-    anteilPreisgedaempfterMietwohnungsbau: undefined,
+    foerderarten: new Array<FoerderartDto>(),
   } as FoerdermixDto;
 }
 
@@ -224,13 +213,7 @@ export function createFoerdermixStamm(): FoerdermixStammDto {
     bezeichnung: "",
     bezeichnungJahr: "",
     foerdermix: {
-      anteilBaugemeinschaften: undefined,
-      anteilEinUndZweifamilienhaeuser: undefined,
-      anteilFreifinanzierterGeschosswohnungsbau: undefined,
-      anteilGefoerderterMietwohnungsbau: undefined,
-      anteilKonzeptionellerMietwohnungsbau: undefined,
-      anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined,
+      foerderarten: new Array<FoerderartDto>(),
     } as FoerdermixDto,
   } as FoerdermixStammDto;
 }
