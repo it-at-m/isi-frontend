@@ -160,8 +160,7 @@ export default class AbfrageNavigationTree extends Vue {
     const abfrageTreeItems: Array<AbfrageTreeItem> = [];
     let itemKey = 0;
 
-    // Abfrage
-    let abfrageTreeItem: AbfrageTreeItem = {
+    const abfrageTreeItem: AbfrageTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementAbfrage,
       children: [],
@@ -171,8 +170,7 @@ export default class AbfrageNavigationTree extends Vue {
     };
     abfrageTreeItems.push(abfrageTreeItem);
 
-    // Wurzelelement für Abfragevarianten
-    abfrageTreeItem = {
+    const rootAbfragevariantenTreeItem: AbfrageTreeItem = {
       id: itemKey++,
       name: this.nameTreeElementListAbfragevarianten,
       children: [],
@@ -180,9 +178,8 @@ export default class AbfrageNavigationTree extends Vue {
       abfragevariante: undefined,
       changed: false,
     };
-    abfrageTreeItems.push(abfrageTreeItem);
+    abfrageTreeItems.push(rootAbfragevariantenTreeItem);
 
-    // Abfragevarianten welche an das Wurzelelement der Abfragevarianten angefügt werden.
     let abfragevarianteTreeItem: AbfrageTreeItem;
     abfrage.abfragevarianten.forEach((abfragevariante) => {
       abfragevarianteTreeItem = {
@@ -193,12 +190,11 @@ export default class AbfrageNavigationTree extends Vue {
         abfragevariante: abfragevariante,
         changed: false,
       };
-      abfrageTreeItem.children.push(abfragevarianteTreeItem);
+      rootAbfragevariantenTreeItem.children.push(abfragevarianteTreeItem);
     });
 
-    // Element zum Hinzufügen einer neuen Abfragevariante
     if (abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN) {
-      abfragevarianteTreeItem = {
+      const addAbfragevarianteTreeItem: AbfrageTreeItem = {
         id: itemKey++,
         name: this.nameTreeElementAddAbfragevariante,
         children: [],
@@ -206,7 +202,7 @@ export default class AbfrageNavigationTree extends Vue {
         abfragevariante: undefined,
         changed: false,
       };
-      abfrageTreeItem.children.push(abfragevarianteTreeItem);
+      rootAbfragevariantenTreeItem.children.push(addAbfragevarianteTreeItem);
     }
 
     return abfrageTreeItems;
