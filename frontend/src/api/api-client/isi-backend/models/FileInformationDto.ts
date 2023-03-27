@@ -12,61 +12,58 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
- * 
+ *
  * @export
  * @interface FileInformationDto
  */
 export interface FileInformationDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof FileInformationDto
-     */
-    maxFileSizeBytes?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FileInformationDto
-     */
-    maxNumberOfFiles?: number;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof FileInformationDto
-     */
-    allowedMimeTypes?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof FileInformationDto
+   */
+  maxFileSizeBytes?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof FileInformationDto
+   */
+  maxNumberOfFiles?: number;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof FileInformationDto
+   */
+  allowedMimeTypes?: Array<string>;
 }
 
 export function FileInformationDtoFromJSON(json: any): FileInformationDto {
-    return FileInformationDtoFromJSONTyped(json, false);
+  return FileInformationDtoFromJSONTyped(json, false);
 }
 
 export function FileInformationDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileInformationDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'maxFileSizeBytes': !exists(json, 'maxFileSizeBytes') ? undefined : json['maxFileSizeBytes'],
-        'maxNumberOfFiles': !exists(json, 'maxNumberOfFiles') ? undefined : json['maxNumberOfFiles'],
-        'allowedMimeTypes': !exists(json, 'allowedMimeTypes') ? undefined : json['allowedMimeTypes'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    maxFileSizeBytes: !exists(json, "maxFileSizeBytes") ? undefined : json["maxFileSizeBytes"],
+    maxNumberOfFiles: !exists(json, "maxNumberOfFiles") ? undefined : json["maxNumberOfFiles"],
+    allowedMimeTypes: !exists(json, "allowedMimeTypes") ? undefined : json["allowedMimeTypes"],
+  };
 }
 
 export function FileInformationDtoToJSON(value?: FileInformationDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'maxFileSizeBytes': value.maxFileSizeBytes,
-        'maxNumberOfFiles': value.maxNumberOfFiles,
-        'allowedMimeTypes': value.allowedMimeTypes,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    maxFileSizeBytes: value.maxFileSizeBytes,
+    maxNumberOfFiles: value.maxNumberOfFiles,
+    allowedMimeTypes: value.allowedMimeTypes,
+  };
 }
-
