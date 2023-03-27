@@ -123,15 +123,15 @@ describe("SearchStoreTest.spec.ts", () => {
   });
 
   test("Reset resultBauvorhaben", async () => {
-      const list: Array<BauvorhabenDto> = [];
-      list.push({
-        standVorhaben: BauvorhabenDtoStandVorhabenEnum.BauantragEingereicht ,
-      } as BauvorhabenDto);
-      store.commit("search/resultBauvorhaben", list);
-      expect(await store.getters["search/resultBauvorhaben"]).toHaveLength(1);
-      expect(await store.dispatch("search/resetBauvorhaben"));
-      expect(await store.getters["search/resultBauvorhaben"]).toBeUndefined();
-    });
+    const list: Array<BauvorhabenDto> = [];
+    list.push({
+      standVorhaben: BauvorhabenDtoStandVorhabenEnum.BauantragEingereicht,
+    } as BauvorhabenDto);
+    store.commit("search/resultBauvorhaben", list);
+    expect(await store.getters["search/resultBauvorhaben"]).toHaveLength(1);
+    expect(await store.dispatch("search/resetBauvorhaben"));
+    expect(await store.getters["search/resultBauvorhaben"]).toBeUndefined();
+  });
 
   // Tests Infrastruktureinrichtung
 

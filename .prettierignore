@@ -3,5 +3,10 @@ apigateway/target
 frontend/dist
 frontend/target
 
+# Generierte Datieien
+frontend/src/api/api-client
+frontend/auto-imports.d.ts
+frontend/components.d.ts
+
 # yml-Datieien könnnen evtl. zu Fehlern führen
 *.yml
