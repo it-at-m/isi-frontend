@@ -163,7 +163,7 @@ export default class Bauvorhaben extends Mixins(
   @Watch("$store.state.search.selectedBauvorhaben", { immediate: true, deep: true })
   private selectedBauvorhabenChanged() {
     const bauvorhabenFromStore = this.$store.getters["search/selectedBauvorhaben"];
-    if(!_.isNil(bauvorhabenFromStore)) {
+    if (!_.isNil(bauvorhabenFromStore)) {
       this.bauvorhaben = _.cloneDeep(bauvorhabenFromStore);
     }
   }
@@ -217,12 +217,11 @@ export default class Bauvorhaben extends Mixins(
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
   private async updateBauvorhaben(): Promise<void> {
-    await this.putBauvorhaben(this.bauvorhaben, true)
-      .then((dto) => {
-          this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
-          this.$store.dispatch("search/resetBauvorhaben");
-          Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
-        });
+    await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
+      this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
+      this.$store.dispatch("search/resetBauvorhaben");
+      Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
+    });
   }
 
   /**
