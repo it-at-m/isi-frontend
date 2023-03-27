@@ -108,7 +108,6 @@
       <template #action>
         <v-spacer />
         <v-btn
-          v-if="!isNewAbfrage()"
           id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
           color="secondary"
