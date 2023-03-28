@@ -21,7 +21,7 @@
           cols="12"
           md="6"
         >
-          <TriSwitch
+          <tri-switch
             id="abfrage_infrastrukturabfrage_sobonRelevant_triswitch"
             v-model="infrastrukturabfrage.sobonRelevant"
             off-text="Nein"
@@ -29,7 +29,7 @@
             :rules="[fieldValidationRules.notUnspecified]"
           >
             <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
-          </TriSwitch>
+          </tri-switch>
         </v-col>
         <v-col
           cols="12"
@@ -47,8 +47,7 @@
               @change="formChanged"
             >
               <template #label>
-                Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN
-                <span class="secondary--text">*</span>
+                Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN <span class="secondary--text">*</span>
               </template>
             </v-select>
           </v-slide-y-reverse-transition>
@@ -61,7 +60,7 @@
           cols="12"
           md="12"
         >
-          <TriSwitch
+          <tri-switch
             id="abfrage_infrastrukturabfrage_offiziellerVerfahrensschritt_triswitch"
             v-model="infrastrukturabfrage.offiziellerVerfahrensschritt"
             off-text="Nein"
@@ -69,7 +68,7 @@
             :rules="[fieldValidationRules.notUnspecified]"
           >
             <template #label> Offiziell <span class="secondary--text">*</span> </template>
-          </TriSwitch>
+          </tri-switch>
         </v-col>
       </v-row>
     </field-group-card>
@@ -77,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import { Component, VModel, Mixins, Watch } from "vue-property-decorator";
+import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
 import AbfrageComponent from "@/components/abfragen/AbfrageComponent.vue";
 import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";

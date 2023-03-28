@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
+    "check": "npx prettier --check --ignore-unknown .",
     "lint": "npx prettier --write --ignore-unknown ."
   },
   "devDependencies": {

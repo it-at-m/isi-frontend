@@ -251,7 +251,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import { AbfragevarianteDtoPlanungsrechtEnum, LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -309,9 +309,8 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get headline(): string {
-    return this.displayMode === DisplayMode.NEU
-      ? "Abfragevariante anlegen"
-      : `Abfragevariante Nr. ${this.abfragevariante.abfragevariantenNr} ändern`;
+    const headline = `Abfragevariante Nr. ${this.abfragevariante.abfragevariantenNr} `;
+    return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
   }
 
   @Watch("abfragevariante", { immediate: true, deep: true })
