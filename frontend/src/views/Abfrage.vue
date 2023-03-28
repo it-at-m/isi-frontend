@@ -29,14 +29,14 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_freigeben"
-          v-model="freigabeDialogOpen"
+          v-model="statusUebergangDialog"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
           dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
           no-text="Abbrechen"
-          :yes-text="'Freigabe'"
-          @no="yesNoDialogFreigabeNo"
-          @yes="yesNoDialogFreigabeYes"
+          :yes-text="'Zustimmen'"
+          @no="yesNoDialogStatusUebergangeNo"
+          @yes="yesNoDialogStatusUebergangYes"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_save_leave"
@@ -107,6 +107,21 @@
       </template>
       <template #action>
         <v-spacer />
+        <v-list-item
+          v-for="(transition, index) in possbileTransitions"
+          :key="index"
+        >
+          <v-btn
+            v-if="!isNewAbfrage()"
+            id="abfrage_status_aenderung"
+            color="secondary"
+            class="text-wrap mt-2 px-1"
+            elevation="1"
+            style="width: 200px"
+            @click="statusUebergang(transition)"
+            v-text="transition.buttonName"
+          />
+        </v-list-item>
         <v-btn
           id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
@@ -119,17 +134,6 @@
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
-        />
-        <v-btn
-          v-if="!isNewAbfrage()"
-          id="abfrage_freigeben_button"
-          class="text-wrap mt-2 px-1"
-          color="secondary"
-          elevation="1"
-          style="width: 200px"
-          :disabled="!isAngelegt()"
-          @click="freigabeAbfrage()"
-          v-text="'Freigabe'"
         />
         <v-btn
           id="abfrage_abbrechen_button"
@@ -152,7 +156,7 @@ import BauratenComponent from "@/components/bauraten/BauratenComponent.vue";
 import Toaster from "../components/common/toaster.type";
 import { createAbfragevarianteDto, createInfrastrukturabfrageDto } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
-import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
+import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
 import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
@@ -160,6 +164,7 @@ import {
   AbfrageListElementDtoStatusAbfrageEnum,
   AbfragevarianteDto,
   InfrastrukturabfrageDto,
+  TransitionDto,
 } from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
@@ -174,6 +179,7 @@ import AbfrageNavigationTree, { AbfrageTreeItem } from "@/components/abfragen/Ab
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
+import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
 
 @Component({
   methods: { containsNotAllowedDokument },
@@ -188,9 +194,10 @@ import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/Infrastruktu
   },
 })
 export default class Abfrage extends Mixins(
+  TransitionApiRequestMixin,
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
-  FreigabeApiRequestMixin,
+  StatusUebergangApiRequestMixin,
   BaurateReqestMixin,
   ValidatorMixin,
   SaveLeaveMixin
@@ -208,9 +215,11 @@ export default class Abfrage extends Mixins(
 
   private abfrageId: string = this.$route.params.id;
 
+  private transition: TransitionDto | undefined;
+
   private deleteDialogAbfrageOpen = false;
 
-  private freigabeDialogOpen = false;
+  private statusUebergangDialog = false;
 
   private deleteDialogAbfragevarianteOpen = false;
 
@@ -218,11 +227,7 @@ export default class Abfrage extends Mixins(
 
   private openAbfragevariantenFormular = false;
 
-  private testing: Array<TransitionDto> = [
-    {url: "freigabe", buttonName: "FREIGABE", index: 1},
-    {url: "abbrechen", buttonName: "STONIEREN", index: 3},
-    {url: "in-bearbeitung-setzten", buttonName: "BEARBEITEN", index: 2}
-  ]
+  private possbileTransitions: Array<TransitionDto> = [];
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
@@ -230,6 +235,11 @@ export default class Abfrage extends Mixins(
     this.openAbfrageFormular = true;
     this.openAbfragevariantenFormular = false;
     this.getAbfrageById();
+
+    if (!this.isNewAbfrage())
+      this.getTransitions(this.abfrageId, false).then((response) => {
+        this.possbileTransitions = response;
+      });
   }
 
   @Watch("$store.state.search.selectedAbfrage", { immediate: true, deep: true })
@@ -260,8 +270,9 @@ export default class Abfrage extends Mixins(
     this.deleteDialogAbfrageOpen = true;
   }
 
-  private freigabeAbfrage(): void {
-    this.freigabeDialogOpen = true;
+  private statusUebergang(transition: TransitionDto): void {
+    this.transition = transition;
+    this.statusUebergangDialog = true;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -273,13 +284,13 @@ export default class Abfrage extends Mixins(
     this.deleteDialogAbfrageOpen = false;
   }
 
-  private yesNoDialogFreigabeYes(): void {
-    this.abfrageFreigeben();
-    this.yesNoDialogFreigabeNo();
+  private yesNoDialogStatusUebergangYes(): void {
+    if (!_.isNil(this.transition)) this.startStatusUebergang(this.transition);
+    this.yesNoDialogStatusUebergangeNo();
   }
 
-  private yesNoDialogFreigabeNo(): void {
-    this.freigabeDialogOpen = false;
+  private yesNoDialogStatusUebergangeNo(): void {
+    this.statusUebergangDialog = false;
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
@@ -337,39 +348,25 @@ export default class Abfrage extends Mixins(
     this.openAbfragevariantenFormular = false;
   }
 
-  private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
-    this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
-  }
-
-  private async abfrageFreigeben(): Promise<void> {
-    if (this.validate()) {
-      if (
-        this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ===
-        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
-      ) {
-        this.infrastrukturabfrageFreigeben();
-      } else {
-        this.showWarningInInformationList('Die Abfrage muss den Status "angelegt" besitzen');
-      }
-    } else {
-      this.showWarningInInformationList("Es gibt noch Validierungsfehler");
-    }
-  }
-
-  private async infrastrukturabfrageFreigeben(): Promise<void> {
+  private async startStatusUebergang(transition: TransitionDto) {
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
       this.abfrageWrapped.infrastrukturabfrage
     );
     if (_.isNil(validationMessage)) {
       await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
-      this.freigabInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage.id as string, true).then(() => {
-        this.returnToUebersicht("Die Abfrage wurde erfolgreich freigegeben", Levels.SUCCESS);
-      });
-      this.openAbfrageFormular = true;
-      this.openAbfragevariantenFormular = false;
+      const response = await this.statusUebergangRequest(transition, this.abfrageId);
+      if (response) {
+        this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
+        this.openAbfrageFormular = true;
+        this.openAbfragevariantenFormular = false;
+      }
     } else {
       this.showWarningInInformationList(validationMessage);
     }
+  }
+
+  private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
+    this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
   }
 
   private isNewAbfrage(): boolean {

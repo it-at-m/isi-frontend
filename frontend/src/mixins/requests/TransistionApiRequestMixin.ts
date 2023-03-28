@@ -12,7 +12,7 @@ export default class TransitionApiRequestMixin extends Mixins(ErrorHandler) {
     this.abfrageStatusApi = new AbfrageStatusApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
-  freigabInfrastrukturabfrage(uuid: string, showInInformationList: boolean): Promise<TransitionDto[]> {
+  getTransitions(uuid: string, showInInformationList: boolean): Promise<TransitionDto[]> {
     const requestObject: TransitionsRequest = {
       id: uuid,
     };
