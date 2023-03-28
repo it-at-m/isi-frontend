@@ -12,121 +12,130 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
-import { FilepathDto, FilepathDtoFromJSON, FilepathDtoFromJSONTyped, FilepathDtoToJSON } from "./FilepathDto";
+import { exists, mapValues } from '../runtime';
+import {
+    FilepathDto,
+    FilepathDtoFromJSON,
+    FilepathDtoFromJSONTyped,
+    FilepathDtoToJSON,
+} from './FilepathDto';
 
 /**
- *
+ * 
  * @export
  * @interface DokumentDto
  */
 export interface DokumentDto {
-  /**
-   *
-   * @type {string}
-   * @memberof DokumentDto
-   */
-  id?: string;
-  /**
-   *
-   * @type {number}
-   * @memberof DokumentDto
-   */
-  version?: number;
-  /**
-   *
-   * @type {Date}
-   * @memberof DokumentDto
-   */
-  createdDateTime?: Date;
-  /**
-   *
-   * @type {Date}
-   * @memberof DokumentDto
-   */
-  lastModifiedDateTime?: Date;
-  /**
-   *
-   * @type {FilepathDto}
-   * @memberof DokumentDto
-   */
-  filePath: FilepathDto;
-  /**
-   *
-   * @type {string}
-   * @memberof DokumentDto
-   */
-  artDokument: DokumentDtoArtDokumentEnum;
-  /**
-   *
-   * @type {number}
-   * @memberof DokumentDto
-   */
-  sizeInBytes: number;
-  /**
-   *
-   * @type {string}
-   * @memberof DokumentDto
-   */
-  typDokument: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DokumentDto
+     */
+    id?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof DokumentDto
+     */
+    version?: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof DokumentDto
+     */
+    createdDateTime?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof DokumentDto
+     */
+    lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {FilepathDto}
+     * @memberof DokumentDto
+     */
+    filePath: FilepathDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof DokumentDto
+     */
+    artDokument: DokumentDtoArtDokumentEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof DokumentDto
+     */
+    sizeInBytes: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DokumentDto
+     */
+    typDokument: string;
 }
+
 
 /**
  * @export
  */
 export const DokumentDtoArtDokumentEnum = {
-  Unspecified: "UNSPECIFIED",
-  Email: "EMAIL",
-  Beschluss: "BESCHLUSS",
-  Anlage: "ANLAGE",
-  Antrag: "ANTRAG",
-  Karte: "KARTE",
-  Stellungnahme: "STELLUNGNAHME",
-  DatenBauvorhaben: "DATEN_BAUVORHABEN",
-  Gebaeudeplan: "GEBAEUDEPLAN",
-  Berechnung: "BERECHNUNG",
-  InfosBaugenehmigung: "INFOS_BAUGENEHMIGUNG",
-  Presseartikel: "PRESSEARTIKEL",
-  Sonstiges: "SONSTIGES",
+    Unspecified: 'UNSPECIFIED',
+    Email: 'EMAIL',
+    Beschluss: 'BESCHLUSS',
+    Anlage: 'ANLAGE',
+    Antrag: 'ANTRAG',
+    Karte: 'KARTE',
+    Stellungnahme: 'STELLUNGNAHME',
+    DatenBauvorhaben: 'DATEN_BAUVORHABEN',
+    Gebaeudeplan: 'GEBAEUDEPLAN',
+    Berechnung: 'BERECHNUNG',
+    InfosBaugenehmigung: 'INFOS_BAUGENEHMIGUNG',
+    Presseartikel: 'PRESSEARTIKEL',
+    Sonstiges: 'SONSTIGES'
 } as const;
-export type DokumentDtoArtDokumentEnum = (typeof DokumentDtoArtDokumentEnum)[keyof typeof DokumentDtoArtDokumentEnum];
+export type DokumentDtoArtDokumentEnum = typeof DokumentDtoArtDokumentEnum[keyof typeof DokumentDtoArtDokumentEnum];
+
 
 export function DokumentDtoFromJSON(json: any): DokumentDto {
-  return DokumentDtoFromJSONTyped(json, false);
+    return DokumentDtoFromJSONTyped(json, false);
 }
 
 export function DokumentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): DokumentDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    id: !exists(json, "id") ? undefined : json["id"],
-    version: !exists(json, "version") ? undefined : json["version"],
-    createdDateTime: !exists(json, "createdDateTime") ? undefined : new Date(json["createdDateTime"]),
-    lastModifiedDateTime: !exists(json, "lastModifiedDateTime") ? undefined : new Date(json["lastModifiedDateTime"]),
-    filePath: FilepathDtoFromJSON(json["filePath"]),
-    artDokument: json["artDokument"],
-    sizeInBytes: json["sizeInBytes"],
-    typDokument: json["typDokument"],
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'filePath': FilepathDtoFromJSON(json['filePath']),
+        'artDokument': json['artDokument'],
+        'sizeInBytes': json['sizeInBytes'],
+        'typDokument': json['typDokument'],
+    };
 }
 
 export function DokumentDtoToJSON(value?: DokumentDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    id: value.id,
-    version: value.version,
-    createdDateTime: value.createdDateTime === undefined ? undefined : value.createdDateTime.toISOString(),
-    lastModifiedDateTime:
-      value.lastModifiedDateTime === undefined ? undefined : value.lastModifiedDateTime.toISOString(),
-    filePath: FilepathDtoToJSON(value.filePath),
-    artDokument: value.artDokument,
-    sizeInBytes: value.sizeInBytes,
-    typDokument: value.typDokument,
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'filePath': FilepathDtoToJSON(value.filePath),
+        'artDokument': value.artDokument,
+        'sizeInBytes': value.sizeInBytes,
+        'typDokument': value.typDokument,
+    };
 }
+

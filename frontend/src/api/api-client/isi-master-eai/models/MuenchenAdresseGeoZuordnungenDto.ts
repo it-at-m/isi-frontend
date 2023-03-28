@@ -12,45 +12,45 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface MuenchenAdresseGeoZuordnungenDto
  */
 export interface MuenchenAdresseGeoZuordnungenDto {
-  /**
-   *
-   * @type {string}
-   * @memberof MuenchenAdresseGeoZuordnungenDto
-   */
-  postleitzahl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuenchenAdresseGeoZuordnungenDto
+     */
+    postleitzahl?: string;
 }
 
 export function MuenchenAdresseGeoZuordnungenDtoFromJSON(json: any): MuenchenAdresseGeoZuordnungenDto {
-  return MuenchenAdresseGeoZuordnungenDtoFromJSONTyped(json, false);
+    return MuenchenAdresseGeoZuordnungenDtoFromJSONTyped(json, false);
 }
 
-export function MuenchenAdresseGeoZuordnungenDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): MuenchenAdresseGeoZuordnungenDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    postleitzahl: !exists(json, "postleitzahl") ? undefined : json["postleitzahl"],
-  };
+export function MuenchenAdresseGeoZuordnungenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MuenchenAdresseGeoZuordnungenDto {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'postleitzahl': !exists(json, 'postleitzahl') ? undefined : json['postleitzahl'],
+    };
 }
 
 export function MuenchenAdresseGeoZuordnungenDtoToJSON(value?: MuenchenAdresseGeoZuordnungenDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    postleitzahl: value.postleitzahl,
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'postleitzahl': value.postleitzahl,
+    };
 }
+

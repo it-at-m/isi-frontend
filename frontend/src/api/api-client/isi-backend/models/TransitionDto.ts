@@ -16,39 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface PresignedUrlDto
+ * @interface TransitionDto
  */
-export interface PresignedUrlDto {
+export interface TransitionDto {
     /**
-     * Die HTTP-Methode für den Request der Presigned-Url
+     * 
      * @type {string}
-     * @memberof PresignedUrlDto
-     */
-    httpMethodToUse?: string;
-    /**
-     * Die Presigned-Url
-     * @type {string}
-     * @memberof PresignedUrlDto
+     * @memberof TransitionDto
      */
     url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransitionDto
+     */
+    buttonName?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TransitionDto
+     */
+    index?: number;
 }
 
-export function PresignedUrlDtoFromJSON(json: any): PresignedUrlDto {
-    return PresignedUrlDtoFromJSONTyped(json, false);
+export function TransitionDtoFromJSON(json: any): TransitionDto {
+    return TransitionDtoFromJSONTyped(json, false);
 }
 
-export function PresignedUrlDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresignedUrlDto {
+export function TransitionDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): TransitionDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'httpMethodToUse': !exists(json, 'httpMethodToUse') ? undefined : json['httpMethodToUse'],
         'url': !exists(json, 'url') ? undefined : json['url'],
+        'buttonName': !exists(json, 'buttonName') ? undefined : json['buttonName'],
+        'index': !exists(json, 'index') ? undefined : json['index'],
     };
 }
 
-export function PresignedUrlDtoToJSON(value?: PresignedUrlDto | null): any {
+export function TransitionDtoToJSON(value?: TransitionDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +64,9 @@ export function PresignedUrlDtoToJSON(value?: PresignedUrlDto | null): any {
     }
     return {
         
-        'httpMethodToUse': value.httpMethodToUse,
         'url': value.url,
+        'buttonName': value.buttonName,
+        'index': value.index,
     };
 }
 

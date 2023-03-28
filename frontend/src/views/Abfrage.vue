@@ -191,7 +191,7 @@ import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import { AbfrageListElementDtoStatusAbfrageEnum, InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
+import { AbfrageListElementDtoStatusAbfrageEnum, InfrastrukturabfrageDto, TransitionDto } from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
@@ -236,6 +236,12 @@ export default class Abfrage extends Mixins(
   private freigabeDialogOpen = false;
 
   private step = 1;
+
+  private testing: Array<TransitionDto> = [
+    {url: "freigabe", buttonName: "FREIGABE", index: 1},
+    {url: "abbrechen", buttonName: "STONIEREN", index: 3},
+    {url: "in-bearbeitung-setzten", buttonName: "BEARBEITEN", index: 2}
+  ]
 
   mounted(): void {
     this.mode = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;

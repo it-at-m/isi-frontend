@@ -12,41 +12,43 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from "../runtime";
-import { LookupListsDto, LookupListsDtoFromJSON, LookupListsDtoToJSON } from "../models";
+
+import * as runtime from '../runtime';
+import {
+    LookupListsDto,
+    LookupListsDtoFromJSON,
+    LookupListsDtoToJSON,
+} from '../models';
 
 /**
- *
+ * 
  */
 export class LookupApi extends runtime.BaseAPI {
-  /**
-   * Gibt die Lookuplisten zurück.
-   */
-  async getLookupListsRaw(
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<LookupListsDto>> {
-    const queryParameters: any = {};
 
-    const headerParameters: runtime.HTTPHeaders = {};
+    /**
+     * Gibt die Lookuplisten zurück.
+     */
+    async getLookupListsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<LookupListsDto>> {
+        const queryParameters: any = {};
 
-    const response = await this.request(
-      {
-        path: `/lookup-lists`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    return new runtime.JSONApiResponse(response, (jsonValue) => LookupListsDtoFromJSON(jsonValue));
-  }
+        const response = await this.request({
+            path: `/lookup-lists`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-  /**
-   * Gibt die Lookuplisten zurück.
-   */
-  async getLookupLists(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<LookupListsDto> {
-    const response = await this.getLookupListsRaw(initOverrides);
-    return await response.value();
-  }
+        return new runtime.JSONApiResponse(response, (jsonValue) => LookupListsDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gibt die Lookuplisten zurück.
+     */
+    async getLookupLists(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<LookupListsDto> {
+        const response = await this.getLookupListsRaw(initOverrides);
+        return await response.value();
+    }
+
 }

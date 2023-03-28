@@ -12,155 +12,167 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
-import { AdresseDto, AdresseDtoFromJSON, AdresseDtoFromJSONTyped, AdresseDtoToJSON } from "./AdresseDto";
-import { DokumentDto, DokumentDtoFromJSON, DokumentDtoFromJSONTyped, DokumentDtoToJSON } from "./DokumentDto";
+import { exists, mapValues } from '../runtime';
+import {
+    AdresseDto,
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
+import {
+    DokumentDto,
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+} from './DokumentDto';
 
 /**
- *
+ * 
  * @export
  * @interface AbfrageDto
  */
 export interface AbfrageDto {
-  /**
-   *
-   * @type {Array<DokumentDto>}
-   * @memberof AbfrageDto
-   */
-  dokumente?: Array<DokumentDto>;
-  /**
-   *
-   * @type {string}
-   * @memberof AbfrageDto
-   */
-  allgemeineOrtsangabe?: string;
-  /**
-   *
-   * @type {AdresseDto}
-   * @memberof AbfrageDto
-   */
-  adresse?: AdresseDto;
-  /**
-   *
-   * @type {Date}
-   * @memberof AbfrageDto
-   */
-  fristStellungnahme: Date;
-  /**
-   *
-   * @type {string}
-   * @memberof AbfrageDto
-   */
-  anmerkung?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AbfrageDto
-   */
-  readonly statusAbfrage?: AbfrageDtoStatusAbfrageEnum;
-  /**
-   *
-   * @type {string}
-   * @memberof AbfrageDto
-   */
-  bebauungsplannummer?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AbfrageDto
-   */
-  nameAbfrage: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AbfrageDto
-   */
-  standVorhaben: AbfrageDtoStandVorhabenEnum;
-  /**
-   *
-   * @type {string}
-   * @memberof AbfrageDto
-   */
-  bauvorhaben?: string;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfrageDto
+     */
+    dokumente?: Array<DokumentDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    allgemeineOrtsangabe?: string;
+    /**
+     * 
+     * @type {AdresseDto}
+     * @memberof AbfrageDto
+     */
+    adresse?: AdresseDto;
+    /**
+     * 
+     * @type {Date}
+     * @memberof AbfrageDto
+     */
+    fristStellungnahme: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    anmerkung?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    readonly statusAbfrage?: AbfrageDtoStatusAbfrageEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    bebauungsplannummer?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    nameAbfrage: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    standVorhaben: AbfrageDtoStandVorhabenEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    bauvorhaben?: string;
 }
+
 
 /**
  * @export
  */
 export const AbfrageDtoStatusAbfrageEnum = {
-  Angelegt: "ANGELEGT",
-  Offen: "OFFEN",
-  InErfassung: "IN_ERFASSUNG",
-  InBearbeitungPlan: "IN_BEARBEITUNG_PLAN",
-  InBearbeitungFachreferate: "IN_BEARBEITUNG_FACHREFERATE",
-  BedarfsmeldungErfolgt: "BEDARFSMELDUNG_ERFOLGT",
-  Erledigt: "ERLEDIGT",
-  Abbruch: "ABBRUCH",
+    Angelegt: 'ANGELEGT',
+    Offen: 'OFFEN',
+    InBearbeitungPlan: 'IN_BEARBEITUNG_PLAN',
+    InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
+    BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
+    Erledigt: 'ERLEDIGT',
+    Abbruch: 'ABBRUCH'
 } as const;
-export type AbfrageDtoStatusAbfrageEnum =
-  (typeof AbfrageDtoStatusAbfrageEnum)[keyof typeof AbfrageDtoStatusAbfrageEnum];
+export type AbfrageDtoStatusAbfrageEnum = typeof AbfrageDtoStatusAbfrageEnum[keyof typeof AbfrageDtoStatusAbfrageEnum];
 
 /**
  * @export
  */
 export const AbfrageDtoStandVorhabenEnum = {
-  Unspecified: "UNSPECIFIED",
-  GrundsatzEckdatenbeschluss: "GRUNDSATZ_ECKDATENBESCHLUSS",
-  Aufstellungsbeschluss: "AUFSTELLUNGSBESCHLUSS",
-  Parag31Baugb: "PARAG_3_1_BAUGB",
-  Parag32Baugb: "PARAG_3_2_BAUGB",
-  Parag412Baugb: "PARAG_4_1_2_BAUGB",
-  Billigungsbeschluss: "BILLIGUNGSBESCHLUSS",
-  Satzungsbeschluss: "SATZUNGSBESCHLUSS",
-  BplanInKraft: "BPLAN_IN_KRAFT",
-  VorbescheidEingereicht: "VORBESCHEID_EINGEREICHT",
-  BauantragEingereicht: "BAUANTRAG_EINGEREICHT",
-  BaugenehmigungErteilt: "BAUGENEHMIGUNG_ERTEILT",
-  BaubeginnAngezeigt: "BAUBEGINN_ANGEZEIGT",
-  BaufertigstellungGeplant: "BAUFERTIGSTELLUNG_GEPLANT",
-  BaufertigstellungAngezeigt: "BAUFERTIGSTELLUNG_ANGEZEIGT",
+    Unspecified: 'UNSPECIFIED',
+    GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
+    Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
+    Parag31Baugb: 'PARAG_3_1_BAUGB',
+    Parag32Baugb: 'PARAG_3_2_BAUGB',
+    Parag412Baugb: 'PARAG_4_1_2_BAUGB',
+    Billigungsbeschluss: 'BILLIGUNGSBESCHLUSS',
+    Satzungsbeschluss: 'SATZUNGSBESCHLUSS',
+    BplanInKraft: 'BPLAN_IN_KRAFT',
+    VorbescheidEingereicht: 'VORBESCHEID_EINGEREICHT',
+    BauantragEingereicht: 'BAUANTRAG_EINGEREICHT',
+    BaugenehmigungErteilt: 'BAUGENEHMIGUNG_ERTEILT',
+    BaubeginnAngezeigt: 'BAUBEGINN_ANGEZEIGT',
+    BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
+    BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
 } as const;
-export type AbfrageDtoStandVorhabenEnum =
-  (typeof AbfrageDtoStandVorhabenEnum)[keyof typeof AbfrageDtoStandVorhabenEnum];
+export type AbfrageDtoStandVorhabenEnum = typeof AbfrageDtoStandVorhabenEnum[keyof typeof AbfrageDtoStandVorhabenEnum];
+
 
 export function AbfrageDtoFromJSON(json: any): AbfrageDto {
-  return AbfrageDtoFromJSONTyped(json, false);
+    return AbfrageDtoFromJSONTyped(json, false);
 }
 
 export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    dokumente: !exists(json, "dokumente") ? undefined : (json["dokumente"] as Array<any>).map(DokumentDtoFromJSON),
-    allgemeineOrtsangabe: !exists(json, "allgemeineOrtsangabe") ? undefined : json["allgemeineOrtsangabe"],
-    adresse: !exists(json, "adresse") ? undefined : AdresseDtoFromJSON(json["adresse"]),
-    fristStellungnahme: new Date(json["fristStellungnahme"]),
-    anmerkung: !exists(json, "anmerkung") ? undefined : json["anmerkung"],
-    statusAbfrage: !exists(json, "statusAbfrage") ? undefined : json["statusAbfrage"],
-    bebauungsplannummer: !exists(json, "bebauungsplannummer") ? undefined : json["bebauungsplannummer"],
-    nameAbfrage: json["nameAbfrage"],
-    standVorhaben: json["standVorhaben"],
-    bauvorhaben: !exists(json, "bauvorhaben") ? undefined : json["bauvorhaben"],
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
+        'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'fristStellungnahme': (new Date(json['fristStellungnahme'])),
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : json['statusAbfrage'],
+        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
+        'nameAbfrage': json['nameAbfrage'],
+        'standVorhaben': json['standVorhaben'],
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+    };
 }
 
 export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    dokumente: value.dokumente === undefined ? undefined : (value.dokumente as Array<any>).map(DokumentDtoToJSON),
-    allgemeineOrtsangabe: value.allgemeineOrtsangabe,
-    adresse: AdresseDtoToJSON(value.adresse),
-    fristStellungnahme: value.fristStellungnahme.toISOString().substr(0, 10),
-    anmerkung: value.anmerkung,
-    bebauungsplannummer: value.bebauungsplannummer,
-    nameAbfrage: value.nameAbfrage,
-    standVorhaben: value.standVorhaben,
-    bauvorhaben: value.bauvorhaben,
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
+        'adresse': AdresseDtoToJSON(value.adresse),
+        'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
+        'anmerkung': value.anmerkung,
+        'bebauungsplannummer': value.bebauungsplannummer,
+        'nameAbfrage': value.nameAbfrage,
+        'standVorhaben': value.standVorhaben,
+        'bauvorhaben': value.bauvorhaben,
+    };
 }
+
