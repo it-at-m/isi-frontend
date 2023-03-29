@@ -107,7 +107,7 @@
       </template>
       <template #action>
         <v-spacer />
-        <v-list-item
+        <div
           v-for="(transition, index) in possbileTransitions"
           :key="index"
         >
@@ -121,7 +121,7 @@
             @click="statusUebergang(transition)"
             v-text="transition.buttonName"
           />
-        </v-list-item>
+        </div>
         <v-btn
           id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
