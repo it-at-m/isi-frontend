@@ -113,7 +113,7 @@
         >
           <v-btn
             v-if="!isNewAbfrage()"
-            id="abfrage_status_aenderung"
+            :id="'abfrage_status_aenderung' + index + '_button'"
             color="secondary"
             class="text-wrap mt-2 px-1"
             elevation="1"
