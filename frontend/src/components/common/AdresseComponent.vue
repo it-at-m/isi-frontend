@@ -93,7 +93,10 @@
     </div>
     <v-row>
       <v-col cols="12">
-        <city-map height="300" />
+        <city-map
+          height="300"
+          expandable
+        />
       </v-col>
     </v-row>
   </field-group-card>

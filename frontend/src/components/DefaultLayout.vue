@@ -5,7 +5,7 @@
       <slot name="content" />
     </div>
     <div class="control-wrapper">
-      <div class="side-bar">
+      <div class="side-bar-navigation">
         <slot name="navigation" />
       </div>
       <div class="middle-wrapper">
@@ -112,7 +112,7 @@ export default class DefaultLayout extends Vue {
   padding-top: 20px;
 }
 
-.side-bar {
+.side-bar, .side-bar-navigation {
   width: 20%;
   height: 100%;
   display: flex;
@@ -149,7 +149,7 @@ export default class DefaultLayout extends Vue {
   pointer-events: auto;
 }
 
-.side-bar > * {
+.side-bar-navigation > * {
   pointer-events: auto;
 }
 
