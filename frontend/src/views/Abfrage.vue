@@ -109,6 +109,7 @@
         <v-spacer />
         <v-btn
           v-for="(transition, index) in possbileTransitions"
+          key="index"
           v-show="!isNewAbfrage()"
           :id="'abfrage_status_aenderung' + index + '_button'"
           color="secondary"
