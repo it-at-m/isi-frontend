@@ -107,23 +107,17 @@
       </template>
       <template #action>
         <v-spacer />
-        <v-list-item
+        <v-btn
           v-for="(transition, index) in possbileTransitions"
-          :key="index"
-        >
-          <v-list-item-action>
-            <v-btn
-              v-if="!isNewAbfrage()"
-              :id="'abfrage_status_aenderung' + index + '_button'"
-              color="secondary"
-              class="text-wrap mt-2 px-1"
-              elevation="1"
-              style="width: 200px"
-              @click="statusUebergang(transition)"
-              v-text="transition.buttonName"
-            />
-          </v-list-item-action>
-        </v-list-item>
+          v-if="!isNewAbfrage()"
+          :id="'abfrage_status_aenderung' + index + '_button'"
+          color="secondary"
+          class="text-wrap mt-2 px-1"
+          elevation="1"
+          style="width: 200px"
+          @click="statusUebergang(transition)"
+          v-text="transition.buttonName"
+        />
         <v-btn
           id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
@@ -229,7 +223,7 @@ export default class Abfrage extends Mixins(
 
   private openAbfragevariantenFormular = false;
 
-  private possbileTransitions: Array<TransitionDto> = [];
+  public possbileTransitions: Array<TransitionDto> = [];
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
