@@ -237,7 +237,7 @@ export default class Abfrage extends Mixins(
     this.getAbfrageById();
 
     if (!this.isNewAbfrage())
-      this.getTransitions(this.abfrageId, false).then((response) => {
+      this.getTransitions(this.abfrageId, true).then((response) => {
         this.possbileTransitions = response;
       });
   }
