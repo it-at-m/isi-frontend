@@ -49,7 +49,6 @@
       />
     </l-map>
     <v-dialog
-      id="realDialog"
       v-model="expanded"
       persistent
       eager
@@ -97,7 +96,7 @@ export default class CityMap extends Vue {
   @Prop({default: "100%"})
   private width!: number | string;
 
-// TODO: center soll nur initial direkt gesetzt werden. Danach soll mit flyTo/panTo zur Koordinate gegangen werden.
+  // TODO: center soll nur initial direkt gesetzt werden. Danach soll mit flyTo/panTo zur Koordinate gegangen werden.
   @Prop({default: () => CityMap.MUNICH_CENTER})
   private readonly center!: [number, number];
 
@@ -137,13 +136,11 @@ export default class CityMap extends Vue {
       .openOn(this.map);
   }
 
-  private addExpansionControl() {
+  private addExpansionControl(): void {
     const Control = L.Control.extend({
       onAdd: () => {
         const anchor = L.DomUtil.create("a");
         const image = L.DomUtil.create("img");
-
-        document.getElementById("realDialog")?.addEventListener("transitionend", () => console.log("Yippie!"));
 
         anchor.id = "karte_erweitern_button";
         anchor.title = "Erweitern";
@@ -152,6 +149,7 @@ export default class CityMap extends Vue {
         anchor.addEventListener("click", (event) => {
           event.preventDefault();
           event.stopPropagation();
+          
           this.expanded = !this.expanded;
 
           if (this.expanded) {
@@ -160,7 +158,10 @@ export default class CityMap extends Vue {
             (this.$refs.origin as any).$el.appendChild((this.$refs.map as any).$el);
           }
 
-          // setTimeout(() => this.map.invalidateSize(), 200);
+          /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
+             Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog erst geöffnet werden muss. */
+          setTimeout(() => this.map.invalidateSize());
+          
           image.src = this.expanded ? this.collapseIcon : this.expansionIcon;
         });
 
