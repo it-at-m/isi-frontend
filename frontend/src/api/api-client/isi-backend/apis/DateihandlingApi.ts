@@ -12,174 +12,141 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from "../runtime";
+
+import * as runtime from '../runtime';
 import {
-  FilepathDto,
-  FilepathDtoFromJSON,
-  FilepathDtoToJSON,
-  InformationResponseDto,
-  InformationResponseDtoFromJSON,
-  InformationResponseDtoToJSON,
-  PresignedUrlDto,
-  PresignedUrlDtoFromJSON,
-  PresignedUrlDtoToJSON,
-} from "../models";
+    FilepathDto,
+    FilepathDtoFromJSON,
+    FilepathDtoToJSON,
+    InformationResponseDto,
+    InformationResponseDtoFromJSON,
+    InformationResponseDtoToJSON,
+    PresignedUrlDto,
+    PresignedUrlDtoFromJSON,
+    PresignedUrlDtoToJSON,
+} from '../models';
 
 export interface DeleteFileRequest {
-  filepathDto: FilepathDto;
+    filepathDto: FilepathDto;
 }
 
 export interface GetFileRequest {
-  pathToFile: string;
+    pathToFile: string;
 }
 
 export interface SaveFileRequest {
-  filepathDto: FilepathDto;
+    filepathDto: FilepathDto;
 }
 
 /**
- *
+ * 
  */
 export class DateihandlingApi extends runtime.BaseAPI {
-  /**
-   * Die Presigned-Url ist vom Aufrufer mit der Http-Methode DELETE zu verwenden.
-   * Stellt die Presigned-Url zum Löschen einer Datei zur Verfügung.
-   */
-  async deleteFileRaw(
-    requestParameters: DeleteFileRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<PresignedUrlDto>> {
-    if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
-      throw new runtime.RequiredError(
-        "filepathDto",
-        "Required parameter requestParameters.filepathDto was null or undefined when calling deleteFile."
-      );
+
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode DELETE zu verwenden.
+     * Stellt die Presigned-Url zum Löschen einer Datei zur Verfügung.
+     */
+    async deleteFileRaw(requestParameters: DeleteFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+        if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
+            throw new runtime.RequiredError('filepathDto','Required parameter requestParameters.filepathDto was null or undefined when calling deleteFile.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/presigned-url`,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FilepathDtoToJSON(requestParameters.filepathDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
     }
 
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json";
-
-    const response = await this.request(
-      {
-        path: `/presigned-url`,
-        method: "DELETE",
-        headers: headerParameters,
-        query: queryParameters,
-        body: FilepathDtoToJSON(requestParameters.filepathDto),
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
-  }
-
-  /**
-   * Die Presigned-Url ist vom Aufrufer mit der Http-Methode DELETE zu verwenden.
-   * Stellt die Presigned-Url zum Löschen einer Datei zur Verfügung.
-   */
-  async deleteFile(
-    requestParameters: DeleteFileRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<PresignedUrlDto> {
-    const response = await this.deleteFileRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
-   * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
-   */
-  async getFileRaw(
-    requestParameters: GetFileRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<PresignedUrlDto>> {
-    if (requestParameters.pathToFile === null || requestParameters.pathToFile === undefined) {
-      throw new runtime.RequiredError(
-        "pathToFile",
-        "Required parameter requestParameters.pathToFile was null or undefined when calling getFile."
-      );
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode DELETE zu verwenden.
+     * Stellt die Presigned-Url zum Löschen einer Datei zur Verfügung.
+     */
+    async deleteFile(requestParameters: DeleteFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PresignedUrlDto> {
+        const response = await this.deleteFileRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    const queryParameters: any = {};
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
+     * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
+     */
+    async getFileRaw(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+        if (requestParameters.pathToFile === null || requestParameters.pathToFile === undefined) {
+            throw new runtime.RequiredError('pathToFile','Required parameter requestParameters.pathToFile was null or undefined when calling getFile.');
+        }
 
-    if (requestParameters.pathToFile !== undefined) {
-      queryParameters["pathToFile"] = requestParameters.pathToFile;
+        const queryParameters: any = {};
+
+        if (requestParameters.pathToFile !== undefined) {
+            queryParameters['pathToFile'] = requestParameters.pathToFile;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/presigned-url`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
     }
 
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/presigned-url`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
-  }
-
-  /**
-   * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
-   * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
-   */
-  async getFile(
-    requestParameters: GetFileRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<PresignedUrlDto> {
-    const response = await this.getFileRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
-   * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
-   */
-  async saveFileRaw(
-    requestParameters: SaveFileRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<PresignedUrlDto>> {
-    if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
-      throw new runtime.RequiredError(
-        "filepathDto",
-        "Required parameter requestParameters.filepathDto was null or undefined when calling saveFile."
-      );
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
+     * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
+     */
+    async getFile(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PresignedUrlDto> {
+        const response = await this.getFileRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    const queryParameters: any = {};
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
+     * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
+     */
+    async saveFileRaw(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+        if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
+            throw new runtime.RequiredError('filepathDto','Required parameter requestParameters.filepathDto was null or undefined when calling saveFile.');
+        }
 
-    const headerParameters: runtime.HTTPHeaders = {};
+        const queryParameters: any = {};
 
-    headerParameters["Content-Type"] = "application/json";
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    const response = await this.request(
-      {
-        path: `/presigned-url`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-        body: FilepathDtoToJSON(requestParameters.filepathDto),
-      },
-      initOverrides
-    );
+        headerParameters['Content-Type'] = 'application/json';
 
-    return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
-  }
+        const response = await this.request({
+            path: `/presigned-url`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FilepathDtoToJSON(requestParameters.filepathDto),
+        }, initOverrides);
 
-  /**
-   * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
-   * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
-   */
-  async saveFile(
-    requestParameters: SaveFileRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<PresignedUrlDto> {
-    const response = await this.saveFileRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
+        return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
+     * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
+     */
+    async saveFile(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PresignedUrlDto> {
+        const response = await this.saveFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }

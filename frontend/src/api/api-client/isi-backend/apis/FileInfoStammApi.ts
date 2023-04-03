@@ -12,41 +12,43 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from "../runtime";
-import { FileInformationDto, FileInformationDtoFromJSON, FileInformationDtoToJSON } from "../models";
+
+import * as runtime from '../runtime';
+import {
+    FileInformationDto,
+    FileInformationDtoFromJSON,
+    FileInformationDtoToJSON,
+} from '../models';
 
 /**
- *
+ * 
  */
 export class FileInfoStammApi extends runtime.BaseAPI {
-  /**
-   * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
-   */
-  async getFileInformationRaw(
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<FileInformationDto>> {
-    const queryParameters: any = {};
 
-    const headerParameters: runtime.HTTPHeaders = {};
+    /**
+     * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
+     */
+    async getFileInformationRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FileInformationDto>> {
+        const queryParameters: any = {};
 
-    const response = await this.request(
-      {
-        path: `/stammdaten/file-information`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    return new runtime.JSONApiResponse(response, (jsonValue) => FileInformationDtoFromJSON(jsonValue));
-  }
+        const response = await this.request({
+            path: `/stammdaten/file-information`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-  /**
-   * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
-   */
-  async getFileInformation(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FileInformationDto> {
-    const response = await this.getFileInformationRaw(initOverrides);
-    return await response.value();
-  }
+        return new runtime.JSONApiResponse(response, (jsonValue) => FileInformationDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
+     */
+    async getFileInformation(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FileInformationDto> {
+        const response = await this.getFileInformationRaw(initOverrides);
+        return await response.value();
+    }
+
 }

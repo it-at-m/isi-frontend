@@ -12,59 +12,52 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 import {
-  InfrastruktureinrichtungListElementDto,
-  InfrastruktureinrichtungListElementDtoFromJSON,
-  InfrastruktureinrichtungListElementDtoFromJSONTyped,
-  InfrastruktureinrichtungListElementDtoToJSON,
-} from "./InfrastruktureinrichtungListElementDto";
+    InfrastruktureinrichtungListElementDto,
+    InfrastruktureinrichtungListElementDtoFromJSON,
+    InfrastruktureinrichtungListElementDtoFromJSONTyped,
+    InfrastruktureinrichtungListElementDtoToJSON,
+} from './InfrastruktureinrichtungListElementDto';
 
 /**
- *
+ * 
  * @export
  * @interface InfrastruktureinrichtungListElementsDto
  */
 export interface InfrastruktureinrichtungListElementsDto {
-  /**
-   *
-   * @type {Array<InfrastruktureinrichtungListElementDto>}
-   * @memberof InfrastruktureinrichtungListElementsDto
-   */
-  listElements?: Array<InfrastruktureinrichtungListElementDto>;
+    /**
+     * 
+     * @type {Array<InfrastruktureinrichtungListElementDto>}
+     * @memberof InfrastruktureinrichtungListElementsDto
+     */
+    listElements?: Array<InfrastruktureinrichtungListElementDto>;
 }
 
 export function InfrastruktureinrichtungListElementsDtoFromJSON(json: any): InfrastruktureinrichtungListElementsDto {
-  return InfrastruktureinrichtungListElementsDtoFromJSONTyped(json, false);
+    return InfrastruktureinrichtungListElementsDtoFromJSONTyped(json, false);
 }
 
-export function InfrastruktureinrichtungListElementsDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): InfrastruktureinrichtungListElementsDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    listElements: !exists(json, "listElements")
-      ? undefined
-      : (json["listElements"] as Array<any>).map(InfrastruktureinrichtungListElementDtoFromJSON),
-  };
+export function InfrastruktureinrichtungListElementsDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungListElementsDto {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'listElements': !exists(json, 'listElements') ? undefined : ((json['listElements'] as Array<any>).map(InfrastruktureinrichtungListElementDtoFromJSON)),
+    };
 }
 
-export function InfrastruktureinrichtungListElementsDtoToJSON(
-  value?: InfrastruktureinrichtungListElementsDto | null
-): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    listElements:
-      value.listElements === undefined
-        ? undefined
-        : (value.listElements as Array<any>).map(InfrastruktureinrichtungListElementDtoToJSON),
-  };
+export function InfrastruktureinrichtungListElementsDtoToJSON(value?: InfrastruktureinrichtungListElementsDto | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'listElements': value.listElements === undefined ? undefined : ((value.listElements as Array<any>).map(InfrastruktureinrichtungListElementDtoToJSON)),
+    };
 }
+

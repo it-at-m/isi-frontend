@@ -13,6 +13,22 @@
     </v-row>
     <field-group-card>
       <v-row justify="center">
+        <v-col cols="12">
+          <v-text-field
+            id="abfragevariante_name"
+            v-model.trim="abfragevariante.abfragevariantenName"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="30"
+            validate-on-blur
+            @input="formChanged"
+          >
+            <template #label> Name der Abfragevariante <span class="secondary--text">*</span> </template>
+          </v-text-field>
+        </v-col>
+      </v-row>
+    </field-group-card>
+    <field-group-card>
+      <v-row justify="center">
         <v-col
           cols="12"
           md="4"
@@ -310,7 +326,9 @@ export default class AbfragevarianteForm extends Mixins(
 
   get headline(): string {
     const headline = `Abfragevariante Nr. ${this.abfragevariante.abfragevariantenNr} `;
-    return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
+    return this.displayMode === DisplayMode.NEU
+      ? headline.concat("anlegen")
+      : headline.concat(`${this.abfragevariante.abfragevariantenName} ändern`);
   }
 
   @Watch("abfragevariante", { immediate: true, deep: true })
