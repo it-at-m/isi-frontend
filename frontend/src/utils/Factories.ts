@@ -12,7 +12,6 @@ import {
   BauvorhabenDtoStandVorhabenEnum,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
-  FileInformationDto,
   FilepathDto,
   FoerderartDto,
   FoerdermixDto,
@@ -54,6 +53,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     geschossflaecheStudentenwohnungen: undefined,
     geschossflaecheSeniorenwohnungen: undefined,
     geschossflaecheSonstiges: undefined,
+    bauabschnitte: [],
   } as AbfragevarianteDto;
 }
 
@@ -132,17 +132,6 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
   };
-}
-
-/**
- * FileInformationDto
- */
-export function createFileInformationDto(): FileInformationDto {
-  return {
-    maxFileSizeBytes: undefined,
-    maxNumberOfFiles: undefined,
-    allowedFileExtensions: undefined,
-  } as FileInformationDto;
 }
 
 /**

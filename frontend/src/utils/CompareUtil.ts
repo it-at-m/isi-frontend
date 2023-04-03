@@ -11,7 +11,7 @@ export function matchFoerdermixStammDaten(
 
   for (const stammdatum of foerdermixStammDaten) {
     if (!_.isNil(stammdatum.foerdermix)) {
-      if (_.isEqual(foerdermixEingabe.foerderarten, stammdatum.foerdermix.anteilBaugemeinschaften)) {
+      if (_.isEqual(foerdermixEingabe.foerderarten, stammdatum.foerdermix.foerderarten)) {
         foerdermixStamm.bezeichnung = stammdatum.bezeichnung;
         return foerdermixStamm;
       } else {

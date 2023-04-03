@@ -12,80 +12,84 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
-import { FoerderartDto, FoerderartDtoFromJSON, FoerderartDtoFromJSONTyped, FoerderartDtoToJSON } from "./FoerderartDto";
+import { exists, mapValues } from '../runtime';
+import {
+    FoerderartDto,
+    FoerderartDtoFromJSON,
+    FoerderartDtoFromJSONTyped,
+    FoerderartDtoToJSON,
+} from './FoerderartDto';
 
 /**
- *
+ * 
  * @export
  * @interface FoerdermixDto
  */
 export interface FoerdermixDto {
-  /**
-   *
-   * @type {string}
-   * @memberof FoerdermixDto
-   */
-  id?: string;
-  /**
-   *
-   * @type {number}
-   * @memberof FoerdermixDto
-   */
-  version?: number;
-  /**
-   *
-   * @type {Date}
-   * @memberof FoerdermixDto
-   */
-  createdDateTime?: Date;
-  /**
-   *
-   * @type {Date}
-   * @memberof FoerdermixDto
-   */
-  lastModifiedDateTime?: Date;
-  /**
-   *
-   * @type {Array<FoerderartDto>}
-   * @memberof FoerdermixDto
-   */
-  foerderarten?: Array<FoerderartDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof FoerdermixDto
+     */
+    id?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof FoerdermixDto
+     */
+    version?: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof FoerdermixDto
+     */
+    createdDateTime?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof FoerdermixDto
+     */
+    lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {Array<FoerderartDto>}
+     * @memberof FoerdermixDto
+     */
+    foerderarten?: Array<FoerderartDto>;
 }
 
 export function FoerdermixDtoFromJSON(json: any): FoerdermixDto {
-  return FoerdermixDtoFromJSONTyped(json, false);
+    return FoerdermixDtoFromJSONTyped(json, false);
 }
 
 export function FoerdermixDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FoerdermixDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    id: !exists(json, "id") ? undefined : json["id"],
-    version: !exists(json, "version") ? undefined : json["version"],
-    createdDateTime: !exists(json, "createdDateTime") ? undefined : new Date(json["createdDateTime"]),
-    lastModifiedDateTime: !exists(json, "lastModifiedDateTime") ? undefined : new Date(json["lastModifiedDateTime"]),
-    foerderarten: !exists(json, "foerderarten")
-      ? undefined
-      : (json["foerderarten"] as Array<any>).map(FoerderartDtoFromJSON),
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'foerderarten': !exists(json, 'foerderarten') ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartDtoFromJSON)),
+    };
 }
 
 export function FoerdermixDtoToJSON(value?: FoerdermixDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    id: value.id,
-    version: value.version,
-    createdDateTime: value.createdDateTime === undefined ? undefined : value.createdDateTime.toISOString(),
-    lastModifiedDateTime:
-      value.lastModifiedDateTime === undefined ? undefined : value.lastModifiedDateTime.toISOString(),
-    foerderarten:
-      value.foerderarten === undefined ? undefined : (value.foerderarten as Array<any>).map(FoerderartDtoToJSON),
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'foerderarten': value.foerderarten === undefined ? undefined : ((value.foerderarten as Array<any>).map(FoerderartDtoToJSON)),
+    };
 }
+
