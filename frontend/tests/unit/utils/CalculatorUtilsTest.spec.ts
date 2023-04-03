@@ -24,8 +24,9 @@ describe("CalculatorUtilsTest", () => {
 
     expect(ergebnis).toBe(100);
 
-    // @ts-ignore
-    foerdermix.foerderarten[0].anteilProzent = 40;
+    if (foerdermix.foerderarten !== undefined) {
+      foerdermix.foerderarten[0].anteilProzent = 40;
+    }
 
     const ergebnis2 = addiereAnteile(foerdermix);
 

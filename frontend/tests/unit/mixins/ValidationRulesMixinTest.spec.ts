@@ -121,13 +121,16 @@ describe("FieldValidationRulesMixin", () => {
     expect(theRule(null)).toBe(false);
     expect(theRule(foerdermix)).toBe(true);
 
-    // @ts-ignore
-    foerdermix.foerderarten[-1].anteilProzent = 50;
-    expect(theRule(foerdermix)).toBe(ueber100Message);
+    if (foerdermix.foerderarten !== undefined) {
+      var len = foerdermix.foerderarten.length;
+      var f = foerdermix.foerderarten[len - 1];
+      f.anteilProzent = 50;
 
-    // @ts-ignore
-    foerdermix.foerderarten[-1].anteilProzent = 20;
-    expect(theRule(foerdermix)).toBe(unter100Message);
+      expect(theRule(foerdermix)).toBe(ueber100Message);
+
+      f.anteilProzent = 20;
+      expect(theRule(foerdermix)).toBe(unter100Message);
+    }
   });
 
   it("should not be 'UNSPECIFIED'", () => {

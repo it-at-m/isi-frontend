@@ -45,8 +45,10 @@ describe("ValidatorMixin Test", () => {
     let anteilPreisgedaempfterMietwohnungsbau = baurate.foerdermix.foerderarten?.find(
       (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau"
     );
-    // @ts-ignore
-    anteilPreisgedaempfterMietwohnungsbau.anteilProzent = 30;
+
+    if (anteilPreisgedaempfterMietwohnungsbau !== undefined) {
+      anteilPreisgedaempfterMietwohnungsbau.anteilProzent = 30;
+    }
 
     const foerdermixErrorBelow = validationMixin.findFaultInBaurate(baurate);
 

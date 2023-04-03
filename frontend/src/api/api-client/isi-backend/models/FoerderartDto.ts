@@ -24,30 +24,6 @@ export interface FoerderartDto {
    * @type {string}
    * @memberof FoerderartDto
    */
-  id?: string;
-  /**
-   *
-   * @type {number}
-   * @memberof FoerderartDto
-   */
-  version?: number;
-  /**
-   *
-   * @type {Date}
-   * @memberof FoerderartDto
-   */
-  createdDateTime?: Date;
-  /**
-   *
-   * @type {Date}
-   * @memberof FoerderartDto
-   */
-  lastModifiedDateTime?: Date;
-  /**
-   *
-   * @type {string}
-   * @memberof FoerderartDto
-   */
   bezeichnung?: string;
   /**
    *
@@ -66,10 +42,6 @@ export function FoerderartDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     return json;
   }
   return {
-    id: !exists(json, "id") ? undefined : json["id"],
-    version: !exists(json, "version") ? undefined : json["version"],
-    createdDateTime: !exists(json, "createdDateTime") ? undefined : new Date(json["createdDateTime"]),
-    lastModifiedDateTime: !exists(json, "lastModifiedDateTime") ? undefined : new Date(json["lastModifiedDateTime"]),
     bezeichnung: !exists(json, "bezeichnung") ? undefined : json["bezeichnung"],
     anteilProzent: !exists(json, "anteilProzent") ? undefined : json["anteilProzent"],
   };
@@ -83,11 +55,6 @@ export function FoerderartDtoToJSON(value?: FoerderartDto | null): any {
     return null;
   }
   return {
-    id: value.id,
-    version: value.version,
-    createdDateTime: value.createdDateTime === undefined ? undefined : value.createdDateTime.toISOString(),
-    lastModifiedDateTime:
-      value.lastModifiedDateTime === undefined ? undefined : value.lastModifiedDateTime.toISOString(),
     bezeichnung: value.bezeichnung,
     anteilProzent: value.anteilProzent,
   };

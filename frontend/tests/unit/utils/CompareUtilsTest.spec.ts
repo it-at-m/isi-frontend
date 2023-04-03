@@ -12,13 +12,15 @@ describe("CompareUtilTest.spec.ts", () => {
 
   beforeEach(() => {
     foerdermix = new FoerdermixModel({
-      anteilFreifinanzierterGeschosswohnungsbau: 20,
-      anteilGefoerderterMietwohnungsbau: 20,
-      anteilMuenchenModell: 20,
-      anteilPreisgedaempfterMietwohnungsbau: 20,
-      anteilKonzeptionellerMietwohnungsbau: 10,
-      anteilBaugemeinschaften: 5,
-      anteilEinUndZweifamilienhaeuser: 5,
+      foerderarten: [
+        { bezeichnung: "Baugemeinschaften", anteilProzent: 20 },
+        { bezeichnung: "EinUndZweifamilienhaeuser", anteilProzent: 20 },
+        { bezeichnung: "FreifinanzierterGeschosswohnungsbau", anteilProzent: 20 },
+        { bezeichnung: "GefoerderterMietwohnungsbau", anteilProzent: 20 },
+        { bezeichnung: "KonzeptionellerMietwohnungsbau", anteilProzent: 10 },
+        { bezeichnung: "MuenchenModell", anteilProzent: 5 },
+        { bezeichnung: "PreisgedaempfterMietwohnungsbau", anteilProzent: 5 },
+      ],
     } as FoerdermixDto);
 
     foerdermixStaemme = [];
@@ -27,13 +29,15 @@ describe("CompareUtilTest.spec.ts", () => {
       bezeichnung: "Testwert",
       bezeichnungJahr: "Test",
       foerdermix: {
-        anteilFreifinanzierterGeschosswohnungsbau: 20,
-        anteilGefoerderterMietwohnungsbau: 20,
-        anteilMuenchenModell: 20,
-        anteilPreisgedaempfterMietwohnungsbau: 20,
-        anteilKonzeptionellerMietwohnungsbau: 10,
-        anteilBaugemeinschaften: 5,
-        anteilEinUndZweifamilienhaeuser: 5,
+        foerderarten: [
+          { bezeichnung: "Baugemeinschaften", anteilProzent: 20 },
+          { bezeichnung: "EinUndZweifamilienhaeuser", anteilProzent: 20 },
+          { bezeichnung: "FreifinanzierterGeschosswohnungsbau", anteilProzent: 20 },
+          { bezeichnung: "GefoerderterMietwohnungsbau", anteilProzent: 20 },
+          { bezeichnung: "KonzeptionellerMietwohnungsbau", anteilProzent: 10 },
+          { bezeichnung: "MuenchenModell", anteilProzent: 5 },
+          { bezeichnung: "PreisgedaempfterMietwohnungsbau", anteilProzent: 5 },
+        ],
       },
     } as FoerdermixStammDto);
   });
@@ -47,7 +51,14 @@ describe("CompareUtilTest.spec.ts", () => {
   });
 
   it("should not match FoerdermixStammdatum", () => {
-    foerdermixStamm.foerdermix.anteilBaugemeinschaften = 10;
+    let anteilPreisgedaempfterMietwohnungsbau = foerdermixStamm.foerdermix.foerderarten?.find(
+      (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau"
+    );
+
+    if (anteilPreisgedaempfterMietwohnungsbau !== undefined) {
+      anteilPreisgedaempfterMietwohnungsbau.anteilProzent = 5;
+    }
+
     foerdermixStaemme.push(foerdermixStamm);
 
     const ergebnis = matchFoerdermixStammDaten(foerdermix, foerdermixStaemme);
