@@ -103,6 +103,8 @@ export default class AbfrageNavigationTree extends Vue {
       if (this.infrastrukturabfrageWrapped.initial) {
         this.initialAbfrageTreeItems = _.cloneDeep(this.abfrageTreeItems);
         this.infrastrukturabfrageWrapped.initial = false;
+        // Markieren der Abfrage im AbfrageNavigationTree bei initialen Laden
+        this.markedTreeItems = [0];
       }
       this.markNewAbfrageTreeItemsAsChanged(this.abfrageTreeItems, this.initialAbfrageTreeItems);
     }
