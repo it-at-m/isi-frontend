@@ -1,6 +1,6 @@
 <template>
   <v-sheet
-    ref="origin"
+    ref="sheet"
     :height="height"
     :width="width"
   >
@@ -8,7 +8,7 @@
       id="karte"
       ref="map"
       :options="MAP_OPTIONS"
-      :center="center"
+      :center="initialCenter"
       :zoom="zoom"
       style="z-index: 1"
       @click="openPopup($event)"
@@ -56,7 +56,7 @@
       width="80%"
     >
       <v-card
-        ref="dialog"
+        ref="dialogCard"
         height="80vh"
         width="100%"
       />
@@ -65,9 +65,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
-import L from "leaflet";
+import L, { LatLngLiteral } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 type Ref = Vue & { $el: HTMLElement };
@@ -85,30 +85,32 @@ type Ref = Vue & { $el: HTMLElement };
   },
 })
 export default class CityMap extends Vue {
-  private static readonly MUNICH_CENTER = [48.137227, 11.575517];
+  private static readonly MUNICH_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MAP_OPTIONS = { attributionControl: false };
 
-  private readonly expansionTitle = "Erweitern";
-  private readonly collapseTitle = "Einklappen";
-  private readonly expansionIcon = new URL("@/assets/arrow-expand.svg", import.meta.url).href;
-  private readonly collapseIcon = new URL("@/assets/arrow-collapse.svg", import.meta.url).href;
+  private readonly EXPANSION_TITLE = "Erweitern";
+  private readonly COLLAPSE_TITLE = "Einklappen";
+  private readonly EXPANSION_ICON = new URL("@/assets/arrow-expand.svg", import.meta.url).href;
+  private readonly COLLAPSE_ICON = new URL("@/assets/arrow-collapse.svg", import.meta.url).href;
 
   @Prop({ default: "100%" })
-  private height!: number | string;
+  private readonly height!: number | string;
 
   @Prop({ default: "100%" })
-  private width!: number | string;
-
-  // TODO: center soll nur initial direkt gesetzt werden. Danach soll mit flyTo/panTo zur Koordinate gegangen werden.
-  @Prop({ default: () => CityMap.MUNICH_CENTER })
-  private readonly center!: [number, number];
+  private readonly width!: number | string;
 
   @Prop({ default: 12 })
   private readonly zoom!: number;
 
+  @Prop({ default: () => CityMap.MUNICH_CENTER })
+  private readonly initialCenter!: LatLngLiteral;
+
   @Prop({ type: Boolean, default: false })
   private readonly expandable!: boolean;
+
+  @Prop()
+  private readonly center?: LatLngLiteral;
 
   private readonly popup = L.popup();
   private map!: L.Map;
@@ -150,7 +152,7 @@ export default class CityMap extends Vue {
         const image = L.DomUtil.create("img");
 
         anchor.id = "karte_erweitern_button";
-        anchor.title = this.expansionTitle;
+        anchor.title = this.EXPANSION_TITLE;
         anchor.href = "#";
         anchor.classList.add("expansion-control");
         anchor.addEventListener("click", (event) => {
@@ -160,22 +162,22 @@ export default class CityMap extends Vue {
           this.expanded = !this.expanded;
 
           if (this.expanded) {
-            (this.$refs.dialog as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-            anchor.title = this.collapseTitle;
-            image.src = this.collapseIcon;
+            (this.$refs.dialogCard as Ref).$el.appendChild((this.$refs.map as Ref).$el);
+            anchor.title = this.COLLAPSE_TITLE;
+            image.src = this.COLLAPSE_ICON;
           } else {
-            (this.$refs.origin as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-            anchor.title = this.expansionTitle;
-            image.src = this.expansionIcon;
+            (this.$refs.sheet as Ref).$el.appendChild((this.$refs.map as Ref).$el);
+            anchor.title = this.EXPANSION_TITLE;
+            image.src = this.EXPANSION_ICON;
           }
 
           /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
-             Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog erst geöffnet werden muss. */
+             Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
           setTimeout(() => this.map.invalidateSize());
         });
 
         image.id = "karte_erweitern_icon";
-        image.src = this.expansionIcon;
+        image.src = this.EXPANSION_ICON;
         image.style.filter = "opacity(60%)";
         anchor.appendChild(image);
 
@@ -187,6 +189,13 @@ export default class CityMap extends Vue {
     });
 
     new Control({ position: "bottomright" }).addTo(this.map);
+  }
+
+  @Watch("center", { deep: true })
+  private onCenterChange(): void {
+    if (this.center) {
+      this.map.flyTo(this.center, 16);
+    }
   }
 }
 </script>

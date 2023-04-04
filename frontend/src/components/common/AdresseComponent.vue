@@ -95,7 +95,9 @@
       <v-col cols="12">
         <city-map
           height="300"
+          zoom="14"
           expandable
+          :center="mapCenter"
         />
       </v-col>
     </v-row>
@@ -114,6 +116,7 @@ import MasterEaiApiRequestMixin from "@/mixins/requests/eai/MasterEaiApiRequestM
 import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from "@/utils/Factories";
 import CityMap from "@/components/map/CityMap.vue";
 import _ from "lodash";
+import { LatLngLiteral } from "leaflet";
 
 @Component({
   components: { CityMap },
@@ -137,6 +140,8 @@ export default class AdresseComponent extends Mixins(
   private selectedAdresseOfAdressSuche: MuenchenAdresseDto = createMuenchenAdresseDto();
 
   private adressen: Array<MuenchenAdresseDto> = [];
+
+  private mapCenter: LatLngLiteral | undefined;
 
   @Prop()
   private adresseProp!: AdresseModel;
@@ -224,7 +229,7 @@ export default class AdresseComponent extends Mixins(
     const lat = dto.position?.wgs?.lat;
     const lon = dto.position?.wgs?.lon;
     if (lat && lon) {
-      // TODO: Change center of map
+      this.mapCenter = { lat, lng: lon };
     }
   }
 
