@@ -108,7 +108,7 @@ export default class ValidatorMixin extends Vue {
     showAbfragevarianteNr: boolean
   ): string | null {
     if (_.isNil(abfragevariante.abfragevariantenName)) {
-      return "Bitte geben Sie einen Abfragevarianten Name an";
+      return "Bitte geben Sie einen Namen für die Abfragevariante an.";
     }
     if (abfragevariante.realisierungVon > abfragevariante.realisierungBis) {
       return `'Realisierung von ${abfragevariante.realisierungVon}' liegt nach 'Realisierung bis ${abfragevariante.realisierungBis}'`;
