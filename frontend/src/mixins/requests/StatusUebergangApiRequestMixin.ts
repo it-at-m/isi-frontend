@@ -1,11 +1,10 @@
 import { TransitionDto } from "@/api/api-client/isi-backend";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import RequestUtils from "@/utils/RequestUtils";
-import Toaster from "@/components/common/toaster.type";
-import { Levels } from "@/api/error";
+import ErrorHandler from "./ErrorHandler";
 
 @Component
-export default class StatusUebergangApiRequestMixin extends Vue {
+export default class StatusUebergangApiRequestMixin extends Mixins(ErrorHandler) {
   async statusUebergangRequest(transition: TransitionDto, abfrageId: string | undefined): Promise<boolean> {
     let successFullRequest = false;
     const fetchUrl =
@@ -13,12 +12,12 @@ export default class StatusUebergangApiRequestMixin extends Vue {
       `/api/isi-backend-service//infrastruktur-abfrage/${abfrageId}/${transition.url}`;
     await fetch(fetchUrl, RequestUtils.getPUTConfig())
       .then((response) => {
-        if (response.status == 200) {
+        if (response.ok) {
           successFullRequest = true;
         }
       })
-      .catch(() => {
-        Toaster.toast(`Beim ${transition.buttonName} ist ein Fehler aufgetreten`, Levels.ERROR);
+      .catch((error) => {
+        this.handleError(true, error);
         successFullRequest = false;
       });
     return successFullRequest;

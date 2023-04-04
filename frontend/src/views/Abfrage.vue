@@ -351,8 +351,8 @@ export default class Abfrage extends Mixins(
     );
     if (_.isNil(validationMessage)) {
       await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
-      const response = await this.statusUebergangRequest(transition, this.abfrageId);
-      if (response) {
+      const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
+      if (requestSuccessful) {
         if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
           this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
         } else {
