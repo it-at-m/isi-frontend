@@ -97,7 +97,7 @@
           height="300"
           zoom="14"
           expandable
-          :center="mapCenter"
+          :look-at="adressKoordinate"
         />
       </v-col>
     </v-row>
@@ -141,7 +141,7 @@ export default class AdresseComponent extends Mixins(
 
   private adressen: Array<MuenchenAdresseDto> = [];
 
-  private mapCenter: LatLngLiteral | undefined;
+  private adressKoordinate?: LatLngLiteral;
 
   @Prop()
   private adresseProp!: AdresseModel;
@@ -229,7 +229,7 @@ export default class AdresseComponent extends Mixins(
     const lat = dto.position?.wgs?.lat;
     const lon = dto.position?.wgs?.lon;
     if (lat && lon) {
-      this.mapCenter = { lat, lng: lon };
+      this.adressKoordinate = { lat, lng: lon };
     }
   }
 

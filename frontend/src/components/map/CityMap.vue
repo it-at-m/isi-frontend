@@ -9,7 +9,7 @@
       ref="map"
       :options="MAP_OPTIONS"
       :center="initialCenter"
-      :zoom="zoom"
+      :zoom="initialZoom"
       style="z-index: 1"
       @click="openPopup($event)"
     >
@@ -67,7 +67,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
-import L, { LatLngLiteral } from "leaflet";
+import L, { LatLngLiteral, MapOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 type Ref = Vue & { $el: HTMLElement };
@@ -87,7 +87,7 @@ type Ref = Vue & { $el: HTMLElement };
 export default class CityMap extends Vue {
   private static readonly MUNICH_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
-  private readonly MAP_OPTIONS = { attributionControl: false };
+  private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
 
   private readonly EXPANSION_TITLE = "Erweitern";
   private readonly COLLAPSE_TITLE = "Einklappen";
@@ -102,19 +102,28 @@ export default class CityMap extends Vue {
 
   @Prop({ default: 12 })
   private readonly zoom!: number;
+  private initialZoom!: number;
 
   @Prop({ default: () => CityMap.MUNICH_CENTER })
-  private readonly initialCenter!: LatLngLiteral;
+  private readonly center!: LatLngLiteral;
+  private initialCenter!: LatLngLiteral;
 
   @Prop({ type: Boolean, default: false })
   private readonly expandable!: boolean;
 
   @Prop()
-  private readonly center?: LatLngLiteral;
+  private readonly lookAt?: LatLngLiteral;
 
   private readonly popup = L.popup();
   private map!: L.Map;
   private expanded = false;
+
+  created(): void {
+    /* Da die Karte Zoom und Zentrierung selber ändern kann, sollten diese Werte nur einmalig gesetzt werden.
+       Ändert das Elternelement im Nachhinein den Wert vom "zoom"- oder "center"-Prop, soll dies die Karte nicht beeinflussen. */
+    this.initialZoom = this.zoom;
+    this.initialCenter = this.center;
+  }
 
   mounted(): void {
     // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
@@ -191,10 +200,10 @@ export default class CityMap extends Vue {
     new Control({ position: "bottomright" }).addTo(this.map);
   }
 
-  @Watch("center", { deep: true })
-  private onCenterChange(): void {
-    if (this.center) {
-      this.map.flyTo(this.center, 16);
+  @Watch("lookAt", { deep: true })
+  private onLookAtChanged(): void {
+    if (this.lookAt) {
+      this.map.flyTo(this.lookAt, 16);
     }
   }
 }
