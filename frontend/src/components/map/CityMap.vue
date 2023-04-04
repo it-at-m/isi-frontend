@@ -47,6 +47,19 @@
         :visible="false"
         :transparent="true"
       />
+      <l-control
+        v-if="expandable"
+        position="bottomright"
+      >
+        <button
+          id="karte_erweitern_button"
+          class="expansion-control"
+          :title="expanded ? 'Einklappen' : 'Erweitern'"
+          @click="toggleExpansion"
+        >
+          <v-icon large>{{ expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand" }}</v-icon>
+        </button>
+      </l-control>
     </l-map>
     <v-dialog
       id="karte_dialog"
@@ -67,7 +80,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
+import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
 import L, { LatLngLiteral, MapOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -83,17 +96,13 @@ type Ref = Vue & { $el: HTMLElement };
     LPopup,
     LControlLayers,
     "l-wms-tile-layer": LWMSTileLayer,
+    LControl,
   },
 })
 export default class CityMap extends Vue {
   private static readonly MUNICH_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
-
-  private readonly EXPANSION_TITLE = "Erweitern";
-  private readonly COLLAPSE_TITLE = "Einklappen";
-  private readonly EXPANSION_ICON = new URL("@/assets/arrow-expand.svg", import.meta.url).href;
-  private readonly COLLAPSE_ICON = new URL("@/assets/arrow-collapse.svg", import.meta.url).href;
 
   @Prop({ default: "100%" })
   private readonly height!: number | string;
@@ -129,10 +138,6 @@ export default class CityMap extends Vue {
   mounted(): void {
     // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
     this.map = (this.$refs.map as LMap).mapObject;
-
-    if (this.expandable) {
-      this.addExpansionControl();
-    }
   }
 
   /**
@@ -153,51 +158,23 @@ export default class CityMap extends Vue {
   }
 
   /**
-   * Fügt der der Karte ein Leaflet-Control hinzu, welches sie in einen Dialog verschieben und größer machen kann.
+   * Erweitert bzw. klappt die Karte ein. Dafür muss sie entweder in den Dialog oder zurück zum Ausgangspunkt verschoben werden.
    */
-  private addExpansionControl(): void {
-    const Control = L.Control.extend({
-      onAdd: () => {
-        const button = L.DomUtil.create("button");
-        const image = L.DomUtil.create("img");
+  private toggleExpansion(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
 
-        button.id = "karte_erweitern_button";
-        button.title = this.EXPANSION_TITLE;
-        button.classList.add("expansion-control");
-        button.addEventListener("click", (event) => {
-          event.preventDefault();
-          event.stopPropagation();
+    this.expanded = !this.expanded;
 
-          this.expanded = !this.expanded;
+    if (this.expanded) {
+      (this.$refs.dialogCard as Ref).$el.appendChild((this.$refs.map as Ref).$el);
+    } else {
+      (this.$refs.sheet as Ref).$el.appendChild((this.$refs.map as Ref).$el);
+    }
 
-          if (this.expanded) {
-            (this.$refs.dialogCard as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-            button.title = this.COLLAPSE_TITLE;
-            image.src = this.COLLAPSE_ICON;
-          } else {
-            (this.$refs.sheet as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-            button.title = this.EXPANSION_TITLE;
-            image.src = this.EXPANSION_ICON;
-          }
-
-          /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
-             Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
-          setTimeout(() => this.map.invalidateSize());
-        });
-
-        image.id = "karte_erweitern_icon";
-        image.src = this.EXPANSION_ICON;
-        image.style.filter = "opacity(60%)";
-        button.appendChild(image);
-
-        return button;
-      },
-      onRemove: () => {
-        // Keine Logik benötigt
-      },
-    });
-
-    new Control({ position: "bottomright" }).addTo(this.map);
+    /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
+       Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
+    setTimeout(() => this.map.invalidateSize());
   }
 
   @Watch("lookAt", { deep: true })
