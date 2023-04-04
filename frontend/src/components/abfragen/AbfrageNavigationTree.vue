@@ -32,6 +32,21 @@
             >
               <v-icon> mdi-trash-can-outline</v-icon>
             </v-btn>
+            <v-btn
+              v-if="item.name === nameTreeElementAddBauabschnitt"
+              :id="'abfrage_navigation_tree_button_create_new_bauabschnitt_' + item.id"
+              icon
+              @click="createNewBauabschnitt(item)"
+            >
+            </v-btn>
+            <v-btn
+              v-else-if="isAbfrageTreeItemAnBauabschnitt(item)"
+              :id="'abfrage_navigation_tree_button_delete_bauabschnitt_' + item.id"
+              icon
+              @click="deleteBauabschnitt(item)"
+            >
+              <v-icon> mdi-trash-can-outline</v-icon>
+            </v-btn>
           </template>
         </v-treeview>
       </v-col>
@@ -43,7 +58,7 @@
 import { Component, Emit, VModel, Vue, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
-import { AbfragevarianteDto, InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, InfrastrukturabfrageDto, BauabschnittDto } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 
 export interface AbfrageTreeItem {
@@ -64,6 +79,11 @@ export interface AbfrageTreeItem {
   abfragevariante: AbfragevarianteDto | undefined;
 
   /**
+   * Referenziert die in der Treeview darzustellenden Bauabschnitt.
+   */
+  bauabschnitt: BauabschnittDto | undefined;
+
+  /**
    * True falls das referenzierte Objekt geändert wurde, andernfalls false.
    */
   changed: boolean;
@@ -77,7 +97,11 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante anlegen";
 
+  private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT: string = "Bauabschnitt anlegen";
+
   private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
+
+  private static readonly NAME_TREE_ELEMENT_LIST_BAUABSCHNITTE: string = "Bauabschnitte";
 
   private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
 
@@ -121,6 +145,8 @@ export default class AbfrageNavigationTree extends Vue {
           this.selectAbfragevariante(markedTreeItem);
         } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItem)) {
           this.selectAbfrage(markedTreeItem);
+        } else if (this.isAbfrageTreeItemAnBauabschnitt(markedTreeItem)) {
+          this.selectBauabschnitt(markedTreeItem);
         }
       }
     }
@@ -134,8 +160,16 @@ export default class AbfrageNavigationTree extends Vue {
     return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE;
   }
 
+  get nameTreeElementAddBauabschnitt(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT;
+  }
+
   get nameTreeElementListAbfragevarianten(): string {
     return AbfrageNavigationTree.NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN;
+  }
+
+  get nameTreeElementListBauabschnitte(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_LIST_BAUABSCHNITTE;
   }
 
   get nameTreeElementAbfrage(): string {
@@ -148,6 +182,10 @@ export default class AbfrageNavigationTree extends Vue {
     }\xa0-\xa0${
       _.isNil(abfragevariante.realisierungBis) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungBis
     }`;
+  }
+
+  private getNameTreeElementBauabschnitt(bauabschnitt: BauabschnittDto): string {
+    return `${bauabschnitt.bezeichnung}`;
   }
 
   /**
@@ -166,6 +204,7 @@ export default class AbfrageNavigationTree extends Vue {
       children: [],
       abfrage: abfrage,
       abfragevariante: undefined,
+      bauabschnitt: undefined,
       changed: false,
     };
     abfrageTreeItems.push(abfrageTreeItem);
@@ -176,6 +215,7 @@ export default class AbfrageNavigationTree extends Vue {
       children: [],
       abfrage: undefined,
       abfragevariante: undefined,
+      bauabschnitt: undefined,
       changed: false,
     };
     abfrageTreeItems.push(rootAbfragevariantenTreeItem);
@@ -188,8 +228,44 @@ export default class AbfrageNavigationTree extends Vue {
         children: [],
         abfrage: undefined,
         abfragevariante: abfragevariante,
+        bauabschnitt: undefined,
         changed: false,
       };
+      if (!_.isNil(abfragevariante.bauabschnitte) && abfragevariante.bauabschnitte.length > 0) {
+        const rootBauabschnitteTreeItem: AbfrageTreeItem = {
+          id: itemKey++,
+          name: this.nameTreeElementListBauabschnitte,
+          children: [],
+          abfrage: undefined,
+          abfragevariante: undefined,
+          bauabschnitt: undefined,
+          changed: false,
+        };
+        abfragevarianteTreeItem.children.push(rootBauabschnitteTreeItem);
+        let bauabschnittTreeItem: AbfrageTreeItem;
+        abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
+          bauabschnittTreeItem = {
+            id: itemKey++,
+            name: this.getNameTreeElementBauabschnitt(bauabschnitt),
+            children: [],
+            abfrage: undefined,
+            abfragevariante: abfragevariante,
+            bauabschnitt: bauabschnitt,
+            changed: false,
+          };
+          abfragevarianteTreeItem.children.push(bauabschnittTreeItem);
+        });
+      }
+      const addBauabschnittTreeItem: AbfrageTreeItem = {
+        id: itemKey++,
+        name: this.nameTreeElementAddBauabschnitt,
+        children: [],
+        abfrage: undefined,
+        abfragevariante: undefined,
+        bauabschnitt: undefined,
+        changed: false,
+      };
+      abfragevarianteTreeItem.children.push(addBauabschnittTreeItem);
       rootAbfragevariantenTreeItem.children.push(abfragevarianteTreeItem);
     });
 
@@ -200,6 +276,7 @@ export default class AbfrageNavigationTree extends Vue {
         children: [],
         abfrage: undefined,
         abfragevariante: undefined,
+        bauabschnitt: undefined,
         changed: false,
       };
       rootAbfragevariantenTreeItem.children.push(addAbfragevarianteTreeItem);
@@ -274,6 +351,7 @@ export default class AbfrageNavigationTree extends Vue {
       this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) &&
       this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)
     ) {
+      // AS: bauabschnitt einfügen, reihenfolge: abfrage, abfragevariante, bauabschnitt...
       // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
       if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
       if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
@@ -293,8 +371,16 @@ export default class AbfrageNavigationTree extends Vue {
     return _.startsWith(abfrageTreeItem.name, AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE);
   }
 
+  private isAbfrageTreeItemAnBauabschnitt(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return !_.isNil(abfrageTreeItem.bauabschnitt);
+  }
+
   private isAbfrageTreeItemAnSelectableItem(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return this.isAbfrageTreeItemAnAbfrage(abfrageTreeItem) || this.isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem);
+    return (
+      this.isAbfrageTreeItemAnAbfrage(abfrageTreeItem) ||
+      this.isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem) ||
+      this.isAbfrageTreeItemAnBauabschnitt(abfrageTreeItem)
+    );
   }
 
   private createFlatAbfrageTreeItem(abfrageTreeItems: Array<AbfrageTreeItem>): Array<AbfrageTreeItem> {
@@ -326,6 +412,21 @@ export default class AbfrageNavigationTree extends Vue {
 
   @Emit()
   private createNewAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private selectBauabschnitt(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private deleteBauabschnitt(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private createNewBauabschnitt(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 }

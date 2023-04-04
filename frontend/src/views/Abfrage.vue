@@ -16,6 +16,13 @@
           :mode="modeAbfragevariante"
           :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
+        <div v-if="openBauabschnittFormular">
+          <bauabschnitt-component
+            id="bauabschnitt_component"
+            v-model="selectedBauabschnitt"
+            :mode="modeAbfrage"
+          />
+        </div>
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
           v-model="deleteDialogAbfrageOpen"
@@ -86,6 +93,9 @@
           @select-abfragevariante="handleSelectAbfragevariante"
           @delete-abfragevariante="handleDeleteAbfragevariante"
           @create-new-abfragevariante="handleCreateNewAbfragevariante"
+          @select-bauabschnitt="handleSelectBauabschnitt"
+          @delete-bauabschnitt="handleDeleteBauabschnitt"
+          @create-new-bauabschnitt="handleCreateNewBauabschnitt"
         />
         <v-spacer />
       </template>
@@ -150,7 +160,7 @@ import { Component, Mixins, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
 import BauratenComponent from "@/components/bauraten/BauratenComponent.vue";
 import Toaster from "../components/common/toaster.type";
-import { createAbfragevarianteDto, createInfrastrukturabfrageDto } from "@/utils/Factories";
+import { createAbfragevarianteDto, createInfrastrukturabfrageDto, createBauabschnittDto } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
 import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
@@ -159,6 +169,7 @@ import InfrastrukturabfrageModel from "@/types/model/abfrage/Infrastrukturabfrag
 import {
   AbfrageListElementDtoStatusAbfrageEnum,
   AbfragevarianteDto,
+  BauabschnittDto,
   InfrastrukturabfrageDto,
 } from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
@@ -173,6 +184,7 @@ import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import AbfrageNavigationTree, { AbfrageTreeItem } from "@/components/abfragen/AbfrageNavigationTree.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 
 @Component({
@@ -204,6 +216,8 @@ export default class Abfrage extends Mixins(
     true
   );
 
+  private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
+
   private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
 
   private abfrageId: string = this.$route.params.id;
@@ -217,6 +231,8 @@ export default class Abfrage extends Mixins(
   private openAbfrageFormular = true;
 
   private openAbfragevariantenFormular = false;
+
+  private openBauabschnittFormular = false;
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
@@ -430,6 +446,19 @@ export default class Abfrage extends Mixins(
     return selectedAbfragevariante;
   }
 
+  private getSelectedBauabschnitt(abfrageTreeItem: AbfrageTreeItem): BauabschnittDto {
+    let selectedBauabschnitt = undefined;
+    if (!_.isNil(this.selectedAbfragevariante.bauabschnitte)) {
+      selectedBauabschnitt = this.selectedAbfragevariante.bauabschnitte.find((bauabschnitt) =>
+        _.isEqual(bauabschnitt, abfrageTreeItem.bauabschnitt)
+      );
+    }
+    if (_.isNil(selectedBauabschnitt)) {
+      selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
+    }
+    return selectedBauabschnitt;
+  }
+
   private removeSelectedAbfragevarianteFromAbfrage(): void {
     const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
     _.remove(copyAbfragevarianten, (abfragevariante) => _.isEqual(abfragevariante, this.selectedAbfragevariante));
@@ -438,6 +467,40 @@ export default class Abfrage extends Mixins(
     this.formChanged();
     this.openAbfragevariantenFormular = false;
     this.openAbfrageFormular = true;
+  }
+
+  private handleSelectBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+    this;
+    this.openAbfrageFormular = true;
+    this.openAbfragevariantenFormular = false;
+    this.openBauabschnittFormular = false;
+    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+    this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
+    this.$nextTick(() => {
+      this.openAbfrageFormular = false;
+      this.openAbfragevariantenFormular = false;
+      this.openBauabschnittFormular = true;
+    });
+  }
+
+  private handleDeleteBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+    this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
+    this.openAbfrageFormular = false;
+    this.openAbfragevariantenFormular = false;
+    this.openBauabschnittFormular = true;
+    this.deleteDialogAbfragevarianteOpen = true;
+  }
+
+  private handleCreateNewBauabschnitt(): void {
+    this.selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
+    if (_.isNil(this.selectedAbfragevariante.bauabschnitte)) {
+      this.selectedAbfragevariante.bauabschnitte = [];
+    }
+    this.selectedAbfragevariante.bauabschnitte.push(this.selectedBauabschnitt);
+    this.formChanged();
+    this.openAbfrageFormular = false;
+    this.openAbfragevariantenFormular = false;
+    this.openBauabschnittFormular = true;
   }
 
   private get modeAbfragevariante(): DisplayMode {

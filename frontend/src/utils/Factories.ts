@@ -27,6 +27,7 @@ import {
   MittelschuleDto,
   PresignedUrlDto,
   SchuleDto,
+  BauabschnittDto,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
@@ -367,4 +368,14 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
     position: undefined,
     geozuordnungen: undefined,
   } as MuenchenAdresseDto;
+}
+
+/**
+ * BauabschnittDto
+ */
+export function createBauabschnittDto(): BauabschnittDto {
+  return {
+    bezeichnung: "",
+    baugebiete: [],
+  } as BauabschnittDto;
 }
