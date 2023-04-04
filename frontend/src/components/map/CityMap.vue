@@ -86,6 +86,9 @@ export default class CityMap extends Vue {
   private static readonly MUNICH_CENTER = [48.137227, 11.575517];
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MAP_OPTIONS = { attributionControl: false };
+
+  private readonly expansionTitle = "Erweitern";
+  private readonly collapseTitle = "Einklappen";
   private readonly expansionIcon = new URL("@/assets/arrow-expand.svg", import.meta.url).href;
   private readonly collapseIcon = new URL("@/assets/arrow-collapse.svg", import.meta.url).href;
 
@@ -135,6 +138,9 @@ export default class CityMap extends Vue {
       .openOn(this.map);
   }
 
+  /**
+   * Fügt der der Karte ein Leaflet-Control hinzu, welches sie in einen Dialog verschieben und größer machen kann.
+   */
   private addExpansionControl(): void {
     const Control = L.Control.extend({
       onAdd: () => {
@@ -142,7 +148,7 @@ export default class CityMap extends Vue {
         const image = L.DomUtil.create("img");
 
         anchor.id = "karte_erweitern_button";
-        anchor.title = "Erweitern";
+        anchor.title = this.expansionTitle;
         anchor.href = "#";
         anchor.classList.add("expansion-control");
         anchor.addEventListener("click", (event) => {
@@ -153,15 +159,17 @@ export default class CityMap extends Vue {
 
           if (this.expanded) {
             (this.$refs.dialog as any).$el.appendChild((this.$refs.map as any).$el);
+            anchor.title = this.collapseTitle;
+            image.src = this.collapseIcon;
           } else {
             (this.$refs.origin as any).$el.appendChild((this.$refs.map as any).$el);
+            anchor.title = this.expansionTitle;
+            image.src = this.expansionIcon;
           }
 
           /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
              Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog erst geöffnet werden muss. */
           setTimeout(() => this.map.invalidateSize());
-
-          image.src = this.expanded ? this.collapseIcon : this.expansionIcon;
         });
 
         image.id = "karte_erweitern_icon";
