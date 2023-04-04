@@ -9,11 +9,11 @@ interface FoerdermixStammModel extends FoerdermixStammDto {}
 class FoerdermixStammModel {
   constructor(foerdermixStamm: FoerdermixStammDto) {
     Object.assign(this, foerdermixStamm, {});
-     if (_.isNil(foerdermixStamm.foerdermix)) {
-       this.foerdermix = new FoerdermixModel(createFoerdermix());
-     } else {
-       this.foerdermix = new FoerdermixModel(foerdermixStamm.foerdermix);
-     }
+    if (_.isNil(foerdermixStamm.foerdermix)) {
+      this.foerdermix = new FoerdermixModel(createFoerdermix());
+    } else {
+      this.foerdermix = new FoerdermixModel(foerdermixStamm.foerdermix);
+    }
   }
 }
 

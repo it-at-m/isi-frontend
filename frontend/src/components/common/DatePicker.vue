@@ -11,10 +11,13 @@
       @click:append="activateDatePicker"
     >
       <template #label>
-        {{ label }}<span
+        {{ label
+        }}<span
           v-if="required"
           class="secondary--text"
-        > *</span>
+        >
+          *</span
+        >
       </template>
     </v-text-field>
     <v-dialog
@@ -120,8 +123,7 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
    */
   get datumTextFieldFormatted(): string {
     if (this.datePickerActivated) {
-      if (moment(this.datum, "DD-MM-YYYY").isSame(moment("1970-01-01"), "day")) 
-      this.datum = new Date();
+      if (moment(this.datum, "DD-MM-YYYY").isSame(moment("1970-01-01"), "day")) this.datum = new Date();
       return moment(this.datum).format("DD.MM.YYYY");
     } else {
       return moment(this.datum, "DD-MM-YYYY").isSame(moment("1970-01-01"), "day")

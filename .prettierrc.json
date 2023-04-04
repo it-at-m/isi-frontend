@@ -1,0 +1,12 @@
+{
+  "printWidth": 120,
+  "singleAttributePerLine": true,
+  "overrides": [
+    {
+      "files": "*.java",
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}

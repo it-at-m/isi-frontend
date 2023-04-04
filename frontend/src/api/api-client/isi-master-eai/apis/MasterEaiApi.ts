@@ -12,60 +12,69 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
+import * as runtime from "../runtime";
 import {
-    AdressSucheDto,
-    AdressSucheDtoFromJSON,
-    AdressSucheDtoToJSON,
-    InformationResponseDto,
-    InformationResponseDtoFromJSON,
-    InformationResponseDtoToJSON,
-    MuenchenAdressenDto,
-    MuenchenAdressenDtoFromJSON,
-    MuenchenAdressenDtoToJSON,
-} from '../models';
+  AdressSucheDto,
+  AdressSucheDtoFromJSON,
+  AdressSucheDtoToJSON,
+  InformationResponseDto,
+  InformationResponseDtoFromJSON,
+  InformationResponseDtoToJSON,
+  MuenchenAdressenDto,
+  MuenchenAdressenDtoFromJSON,
+  MuenchenAdressenDtoToJSON,
+} from "../models";
 
 export interface GetAdressenRequest {
-    adressSucheDto: AdressSucheDto;
+  adressSucheDto: AdressSucheDto;
 }
 
 /**
- * 
+ *
  */
 export class MasterEaiApi extends runtime.BaseAPI {
-
-    /**
-     * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
-     */
-    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
-        if (requestParameters.adressSucheDto === null || requestParameters.adressSucheDto === undefined) {
-            throw new runtime.RequiredError('adressSucheDto','Required parameter requestParameters.adressSucheDto was null or undefined when calling getAdressen.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/adresse/search`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: AdressSucheDtoToJSON(requestParameters.adressSucheDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => MuenchenAdressenDtoFromJSON(jsonValue));
+  /**
+   * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
+   */
+  async getAdressenRaw(
+    requestParameters: GetAdressenRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
+    if (requestParameters.adressSucheDto === null || requestParameters.adressSucheDto === undefined) {
+      throw new runtime.RequiredError(
+        "adressSucheDto",
+        "Required parameter requestParameters.adressSucheDto was null or undefined when calling getAdressen."
+      );
     }
 
-    /**
-     * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
-     */
-    async getAdressen(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MuenchenAdressenDto> {
-        const response = await this.getAdressenRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
+    const queryParameters: any = {};
 
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    const response = await this.request(
+      {
+        path: `/adresse/search`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: AdressSucheDtoToJSON(requestParameters.adressSucheDto),
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => MuenchenAdressenDtoFromJSON(jsonValue));
+  }
+
+  /**
+   * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
+   */
+  async getAdressen(
+    requestParameters: GetAdressenRequest,
+    initOverrides?: RequestInit | runtime.InitOverideFunction
+  ): Promise<MuenchenAdressenDto> {
+    const response = await this.getAdressenRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 }

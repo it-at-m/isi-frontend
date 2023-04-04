@@ -8,9 +8,8 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AbfrageComponent: typeof import('./src/components/abfragen/AbfrageComponent.vue')['default']
+    AbfrageNavigationTree: typeof import('./src/components/abfragen/AbfrageNavigationTree.vue')['default']
     AbfragevarianteFormular: typeof import('./src/components/abfragevarianten/AbfragevarianteFormular.vue')['default']
-    Abfragevarianten: typeof import('./src/components/abfragevarianten/Abfragevarianten.vue')['default']
-    AbfragevariantenListe: typeof import('./src/components/abfragevarianten/AbfragevariantenListe.vue')['default']
     AdresseComponent: typeof import('./src/components/common/AdresseComponent.vue')['default']
     BauratenComponent: typeof import('./src/components/bauraten/BauratenComponent.vue')['default']
     BauvorhabenDataTransferDialog: typeof import('./src/components/bauvorhaben/BauvorhabenDataTransferDialog.vue')['default']
@@ -87,6 +86,7 @@ declare module '@vue/runtime-core' {
     VTextField: typeof import('vuetify/lib')['VTextField']
     VToolbarTitle: typeof import('vuetify/lib')['VToolbarTitle']
     VTooltip: typeof import('vuetify/lib')['VTooltip']
+    VTreeview: typeof import('vuetify/lib')['VTreeview']
     YesNoDialog: typeof import('./src/components/common/YesNoDialog.vue')['default']
   }
 }

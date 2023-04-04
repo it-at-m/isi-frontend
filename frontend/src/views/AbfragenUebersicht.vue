@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout>
+  <default-layout>
     <template #content>
       <div
         v-if="abfragenUebersicht.length !== 0"
@@ -22,14 +22,17 @@
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span :id="'abfrage_uebersicht_item_' + index + '_statusAbfrage'"> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
-              <v-spacer />
-              <span :id="'abfrage_uebersicht_item_' + index + '_standVorhaben'">
-                Stand:
-                {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
+              <span :id="'abfrage_uebersicht_item_' + index + '_statusAbfrage'">
+                Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}
               </span>
               <v-spacer />
-              <span :id="'abfrage_uebersicht_item_' + index + '_fristStellungnahme'">Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_standVorhaben'">
+                Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
+              </span>
+              <v-spacer />
+              <span :id="'abfrage_uebersicht_item_' + index + '_fristStellungnahme'">
+                Frist: {{ datumFormatted(item.fristStellungnahme) }}
+              </span>
             </v-card-text>
           </v-card>
         </v-hover>
@@ -56,36 +59,29 @@
             v-on="on"
             @click="newAbfrage"
           >
-            <v-icon>
-              mdi-plus
-            </v-icon>
+            <v-icon> mdi-plus </v-icon>
           </v-btn>
-        </template>   
+        </template>
         <span v-if="options">Abbrechen</span>
         <span v-else>Abfrage erstellen</span>
       </v-tooltip>
     </template>
-  </DefaultLayout>
+  </default-layout>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import router from "@/router";
-import {
-  AbfrageListElementDto,
-  AbfrageListElementsDto,
-  LookupEntryDto
-} from "@/api/api-client/isi-backend";
+import { AbfrageListElementDto, AbfrageListElementsDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 
 @Component({
-  components: { DefaultLayout }
+  components: { DefaultLayout },
 })
 export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMixin) {
-
   private abfragenUebersicht: Array<AbfrageListElementDto> = [];
 
   private options = false;
@@ -113,9 +109,7 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
   }
 
   private getLookupValue(key: string, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list)
-      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-      : "";
+    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 
   mounted(): void {
@@ -153,7 +147,7 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
     if (!_.isUndefined(abfrageListElementDto.id)) {
       router.push({
         name: "updateabfrage",
-        params: { id: abfrageListElementDto.id }
+        params: { id: abfrageListElementDto.id },
       });
     }
   }
@@ -170,7 +164,6 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
       name: "newabfrage",
     });
   }
-
 }
 </script>
 

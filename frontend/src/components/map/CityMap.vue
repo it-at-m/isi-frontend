@@ -65,10 +65,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -79,31 +79,30 @@ import 'leaflet/dist/leaflet.css';
     LMap,
     LPopup,
     LControlLayers,
-    'l-wms-tile-layer': LWMSTileLayer,
-  }
+    "l-wms-tile-layer": LWMSTileLayer,
+  },
 })
 export default class CityMap extends Vue {
-  
   private static readonly MUNICH_CENTER = [48.137227, 11.575517];
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
-  private readonly MAP_OPTIONS = {attributionControl: false};
+  private readonly MAP_OPTIONS = { attributionControl: false };
   private readonly expansionIcon = new URL("@/assets/arrow-expand.svg", import.meta.url).href;
   private readonly collapseIcon = new URL("@/assets/arrow-collapse.svg", import.meta.url).href;
 
-  @Prop({default: "100%"})
+  @Prop({ default: "100%" })
   private height!: number | string;
 
-  @Prop({default: "100%"})
+  @Prop({ default: "100%" })
   private width!: number | string;
 
   // TODO: center soll nur initial direkt gesetzt werden. Danach soll mit flyTo/panTo zur Koordinate gegangen werden.
-  @Prop({default: () => CityMap.MUNICH_CENTER})
+  @Prop({ default: () => CityMap.MUNICH_CENTER })
   private readonly center!: [number, number];
 
-  @Prop({default: 12})
+  @Prop({ default: 12 })
   private readonly zoom!: number;
 
-  @Prop({type: Boolean, default: false})
+  @Prop({ type: Boolean, default: false })
   private readonly expandable!: boolean;
 
   private readonly popup = L.popup();
@@ -113,7 +112,7 @@ export default class CityMap extends Vue {
   mounted(): void {
     // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
     this.map = (this.$refs.map as LMap).mapObject;
-    
+
     if (this.expandable) {
       this.addExpansionControl();
     }
@@ -123,7 +122,7 @@ export default class CityMap extends Vue {
    * Da GeoInfoWeb mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
   private getGiwUrl(service: string): string {
-    return (import.meta.env.VITE_GIS_URL as string).replace('{1}', service);
+    return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
   }
 
   /**
@@ -149,7 +148,7 @@ export default class CityMap extends Vue {
         anchor.addEventListener("click", (event) => {
           event.preventDefault();
           event.stopPropagation();
-          
+
           this.expanded = !this.expanded;
 
           if (this.expanded) {
@@ -161,7 +160,7 @@ export default class CityMap extends Vue {
           /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
              Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog erst geöffnet werden muss. */
           setTimeout(() => this.map.invalidateSize());
-          
+
           image.src = this.expanded ? this.collapseIcon : this.expansionIcon;
         });
 
@@ -179,7 +178,6 @@ export default class CityMap extends Vue {
 
     new Control({ position: "bottomright" }).addTo(this.map);
   }
-
 }
 </script>
 

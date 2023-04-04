@@ -12,130 +12,130 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 import {
-    InfrastruktureinrichtungDto,
-    InfrastruktureinrichtungDtoFromJSON,
-    InfrastruktureinrichtungDtoFromJSONTyped,
-    InfrastruktureinrichtungDtoToJSON,
-} from './InfrastruktureinrichtungDto';
+  InfrastruktureinrichtungDto,
+  InfrastruktureinrichtungDtoFromJSON,
+  InfrastruktureinrichtungDtoFromJSONTyped,
+  InfrastruktureinrichtungDtoToJSON,
+} from "./InfrastruktureinrichtungDto";
 
 /**
- * 
+ *
  * @export
  * @interface GsNachmittagBetreuungDto
  */
 export interface GsNachmittagBetreuungDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
-     * @type {InfrastruktureinrichtungDto}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    infrastruktureinrichtung: InfrastruktureinrichtungDto;
-    /**
-     * 
-     * @type {string}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    artGsNachmittagBetreuung?: GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    anzahlHortPlaetze: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    anzahlHortGruppen: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    wohnungsnaheHortPlaetze?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  id?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  version?: number;
+  /**
+   *
+   * @type {Date}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  createdDateTime?: Date;
+  /**
+   *
+   * @type {Date}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  lastModifiedDateTime?: Date;
+  /**
+   *
+   * @type {InfrastruktureinrichtungDto}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  infrastruktureinrichtung: InfrastruktureinrichtungDto;
+  /**
+   *
+   * @type {string}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  artGsNachmittagBetreuung?: GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum;
+  /**
+   *
+   * @type {number}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  anzahlHortPlaetze: number;
+  /**
+   *
+   * @type {number}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  anzahlHortGruppen: number;
+  /**
+   *
+   * @type {number}
+   * @memberof GsNachmittagBetreuungDto
+   */
+  wohnungsnaheHortPlaetze?: number;
 }
-
 
 /**
  * @export
  */
 export const GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum = {
-    Hort: 'HORT',
-    KooperativerGanztagFlexibleVariante: 'KOOPERATIVER_GANZTAG_FLEXIBLE_VARIANTE',
-    KooperativerGanztagRhythmisierteVariante: 'KOOPERATIVER_GANZTAG_RHYTHMISIERTE_VARIANTE',
-    Tagesheim: 'TAGESHEIM',
-    Mittagsbetreuung: 'MITTAGSBETREUUNG'
+  Hort: "HORT",
+  KooperativerGanztagFlexibleVariante: "KOOPERATIVER_GANZTAG_FLEXIBLE_VARIANTE",
+  KooperativerGanztagRhythmisierteVariante: "KOOPERATIVER_GANZTAG_RHYTHMISIERTE_VARIANTE",
+  Tagesheim: "TAGESHEIM",
+  Mittagsbetreuung: "MITTAGSBETREUUNG",
 } as const;
-export type GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum = typeof GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum[keyof typeof GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum];
-
+export type GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum =
+  (typeof GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum)[keyof typeof GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum];
 
 export function GsNachmittagBetreuungDtoFromJSON(json: any): GsNachmittagBetreuungDto {
-    return GsNachmittagBetreuungDtoFromJSONTyped(json, false);
+  return GsNachmittagBetreuungDtoFromJSONTyped(json, false);
 }
 
-export function GsNachmittagBetreuungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GsNachmittagBetreuungDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoFromJSON(json['infrastruktureinrichtung']),
-        'artGsNachmittagBetreuung': !exists(json, 'artGsNachmittagBetreuung') ? undefined : json['artGsNachmittagBetreuung'],
-        'anzahlHortPlaetze': json['anzahlHortPlaetze'],
-        'anzahlHortGruppen': json['anzahlHortGruppen'],
-        'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],
-    };
+export function GsNachmittagBetreuungDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GsNachmittagBetreuungDto {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    id: !exists(json, "id") ? undefined : json["id"],
+    version: !exists(json, "version") ? undefined : json["version"],
+    createdDateTime: !exists(json, "createdDateTime") ? undefined : new Date(json["createdDateTime"]),
+    lastModifiedDateTime: !exists(json, "lastModifiedDateTime") ? undefined : new Date(json["lastModifiedDateTime"]),
+    infrastruktureinrichtung: InfrastruktureinrichtungDtoFromJSON(json["infrastruktureinrichtung"]),
+    artGsNachmittagBetreuung: !exists(json, "artGsNachmittagBetreuung") ? undefined : json["artGsNachmittagBetreuung"],
+    anzahlHortPlaetze: json["anzahlHortPlaetze"],
+    anzahlHortGruppen: json["anzahlHortGruppen"],
+    wohnungsnaheHortPlaetze: !exists(json, "wohnungsnaheHortPlaetze") ? undefined : json["wohnungsnaheHortPlaetze"],
+  };
 }
 
 export function GsNachmittagBetreuungDtoToJSON(value?: GsNachmittagBetreuungDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),
-        'artGsNachmittagBetreuung': value.artGsNachmittagBetreuung,
-        'anzahlHortPlaetze': value.anzahlHortPlaetze,
-        'anzahlHortGruppen': value.anzahlHortGruppen,
-        'wohnungsnaheHortPlaetze': value.wohnungsnaheHortPlaetze,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    id: value.id,
+    version: value.version,
+    createdDateTime: value.createdDateTime === undefined ? undefined : value.createdDateTime.toISOString(),
+    lastModifiedDateTime:
+      value.lastModifiedDateTime === undefined ? undefined : value.lastModifiedDateTime.toISOString(),
+    infrastruktureinrichtung: InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),
+    artGsNachmittagBetreuung: value.artGsNachmittagBetreuung,
+    anzahlHortPlaetze: value.anzahlHortPlaetze,
+    anzahlHortGruppen: value.anzahlHortGruppen,
+    wohnungsnaheHortPlaetze: value.wohnungsnaheHortPlaetze,
+  };
 }
-

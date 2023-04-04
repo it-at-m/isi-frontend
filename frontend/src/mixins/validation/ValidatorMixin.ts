@@ -1,4 +1,4 @@
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import _ from "lodash";
 import {
   AbfrageDtoStandVorhabenEnum,
@@ -22,66 +22,60 @@ import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/G
 import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
 import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import moment from "moment";
-import {addiereAnteile} from "@/utils/CalculationUtil";
+import { addiereAnteile } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 
 @Component
 export default class ValidatorMixin extends Vue {
-  
   /**
    * Prüft die komplette Abfrage vor dem Speichern
    */
-  
+
   public findFaultInInfrastrukturabfrageForSave(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrage(infrastrukturabfrage);
-    return !_.isNil(validationMessage)
-      ? validationMessage
-      : this.findFaultInAbfragevarianten(infrastrukturabfrage);
+    return !_.isNil(validationMessage) ? validationMessage : this.findFaultInAbfragevarianten(infrastrukturabfrage);
   }
-  
+
   /**
    * Prüft die Abfrage vor dem nächsten Schritt
    */
-  
+
   public findFaultInInfrastrukturabfrage(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
     const validationMessage: string | null = this.findFaultInAbfrage(infrastrukturabfrage.abfrage);
     if (!_.isNil(validationMessage)) {
       return validationMessage;
     }
-    if (infrastrukturabfrage.sobonRelevant === UncertainBoolean.True &&
-      _.isNil(infrastrukturabfrage.sobonJahr)) {
+    if (infrastrukturabfrage.sobonRelevant === UncertainBoolean.True && _.isNil(infrastrukturabfrage.sobonJahr)) {
       return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
     }
     return null;
   }
-  
+
   private findFaultInAbfrage(abfrage: AbfrageModel): string | null {
-    if (!this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) &&
-      !this.isValidAdresse(abfrage.adresse)) {
+    if (!this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) && !this.isValidAdresse(abfrage.adresse)) {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
-    
+
     // entweder allgemeineOrtsangabe oder Adresse erlaubt
-    if (this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) &&
-      this.isValidAdresse(abfrage.adresse)) {
+    if (this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) && this.isValidAdresse(abfrage.adresse)) {
       return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
     }
-    
+
     if (abfrage.standVorhaben === AbfrageDtoStandVorhabenEnum.Unspecified) {
       return "Bitte Stand des Vorhabens angeben";
     }
-    
+
     const date = moment(abfrage.fristStellungnahme, "DD.MM.YYYY", true);
     if (!date.isValid()) {
       return "Termin der Stellungnahme nicht im Format TT.MM.JJJJ";
     }
     return null;
   }
-  
+
   private isValidAllgemeineOrtsangabe(allgemeineOrtsangabe?: string): boolean {
     return !_.isNil(allgemeineOrtsangabe) && !_.isEmpty(allgemeineOrtsangabe.trim());
   }
-  
+
   private isValidAdresse(adresse?: AdresseDto): boolean {
     if (!_.isNil(adresse)) {
       const model: AdresseModel = new AdresseModel(adresse);
@@ -89,9 +83,13 @@ export default class ValidatorMixin extends Vue {
     }
     return false;
   }
-  
+
   public findFaultInAbfragevarianten(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
-    if (_.isNil(infrastrukturabfrage.abfragevarianten) || infrastrukturabfrage.abfragevarianten.length < 1 || infrastrukturabfrage.abfragevarianten.length > 5) {
+    if (
+      _.isNil(infrastrukturabfrage.abfragevarianten) ||
+      infrastrukturabfrage.abfragevarianten.length < 1 ||
+      infrastrukturabfrage.abfragevarianten.length > 5
+    ) {
       return "Es müssen zwischen einer und fünf Abfragevarianten angegeben werden.";
     }
     let validationMessage = null;
@@ -103,28 +101,35 @@ export default class ValidatorMixin extends Vue {
     }
     return validationMessage;
   }
-  
-  public findFaultInAbfragevariante(sobonRelevant: UncertainBoolean, abfragevariante: AbfragevarianteModel, showAbfragevarianteNr: boolean): string | null {
+
+  public findFaultInAbfragevariante(
+    sobonRelevant: UncertainBoolean,
+    abfragevariante: AbfragevarianteModel,
+    showAbfragevarianteNr: boolean
+  ): string | null {
     if (abfragevariante.realisierungVon > abfragevariante.realisierungBis) {
       return `'Realisierung von ${abfragevariante.realisierungVon}' liegt nach 'Realisierung bis ${abfragevariante.realisierungBis}'`;
     }
     if (_.isNil(abfragevariante.geschossflaecheWohnen) && _.isNil(abfragevariante.gesamtanzahlWe)) {
       return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
     }
-    if (sobonRelevant === UncertainBoolean.True
-      && (abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
-        || abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11)
-      && _.isNil(abfragevariante.geschossflaecheWohnenSoBoNursaechlich)) {
-      const abfragevarianteNr: string = showAbfragevarianteNr && !_.isNaN(abfragevariante.abfragevariantenNr)
-        ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
-        : "";
+    if (
+      sobonRelevant === UncertainBoolean.True &&
+      (abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
+        abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11) &&
+      _.isNil(abfragevariante.geschossflaecheWohnenSoBoNursaechlich)
+    ) {
+      const abfragevarianteNr: string =
+        showAbfragevarianteNr && !_.isNaN(abfragevariante.abfragevariantenNr)
+          ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
+          : "";
       return `Bitte geben Sie die 'Geschossfläche SoBoN-ursächliche' ${abfragevarianteNr}an`;
     }
     return null;
   }
-  
+
   findFaultInBauraten(bauraten: BaurateModel[]): string | null {
-    bauraten.forEach(baurate => {
+    bauraten.forEach((baurate) => {
       const validationMessage: string | null = this.findFaultInBaurate(new BaurateModel(baurate));
       if (!_.isNil(validationMessage)) {
         return validationMessage;
@@ -132,7 +137,7 @@ export default class ValidatorMixin extends Vue {
     });
     return null;
   }
-  
+
   findFaultInBaurate(baurate: BaurateModel): string | null {
     if (baurate.anzahlWeGeplant?.toString() === "") {
       baurate.anzahlWeGeplant = undefined;
@@ -160,7 +165,7 @@ export default class ValidatorMixin extends Vue {
     }
     return null;
   }
-  
+
   findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | null {
     if (
       !this.isValidAllgemeineOrtsangabe(bauvorhaben.allgemeineOrtsangabe) &&
@@ -177,54 +182,57 @@ export default class ValidatorMixin extends Vue {
     if (bauvorhaben.artFnp.length === 0) {
       return "Bitte treffen Sie eine Auswahl zur Flächennutzung laut Flächennutzungsplan";
     }
-    
+
     if (bauvorhaben.standVorhaben === BauvorhabenDtoStandVorhabenEnum.Unspecified) {
       return "Bitte Stand des Vorhaben angeben";
     }
-    
+
     if (bauvorhaben.planungsrecht === BauvorhabenDtoPlanungsrechtEnum.Unspecified) {
       return "Bitte Planungsrecht angeben";
     }
-    
+
     return null;
   }
-  
+
   public findFaultInKinderkrippeForSave(kinderkrippe: KinderkrippeModel): string | null {
     return this.findFaultInInfrastruktureinrichtung(kinderkrippe.infrastruktureinrichtung);
   }
-  
+
   public findFaultInKindergartenForSave(kindergarten: KindergartenModel): string | null {
     return this.findFaultInInfrastruktureinrichtung(kindergarten.infrastruktureinrichtung);
   }
-  
+
   public findFaultInHausFuerKinderForSave(hausFuerKinder: HausFuerKinderModel): string | null {
     return this.findFaultInInfrastruktureinrichtung(hausFuerKinder.infrastruktureinrichtung);
   }
-  
+
   public findFaultInGsNachmittagBetreuungForSave(gsNachmittagBetreuung: GsNachmittagBetreuungModel): string | null {
     return this.findFaultInInfrastruktureinrichtung(gsNachmittagBetreuung.infrastruktureinrichtung);
   }
-  
+
   public findFaultInGrundschuleForSave(grundschule: GrundschuleModel): string | null {
     return this.findFaultInInfrastruktureinrichtung(grundschule.infrastruktureinrichtung);
   }
-  
+
   public findFaultInMittelschuleForSave(mittelschule: MittelschuleModel): string | null {
     return this.findFaultInInfrastruktureinrichtung(mittelschule.infrastruktureinrichtung);
   }
-  
+
   private findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungModel): string | null {
-    if (!this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
-      !this.isValidAdresse(infrastruktureinrichtung.adresse)) {
+    if (
+      !this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
+      !this.isValidAdresse(infrastruktureinrichtung.adresse)
+    ) {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
-    
+
     // entweder allgemeineOrtsangabe oder Adresse erlaubt
-    if (this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
-      this.isValidAdresse(infrastruktureinrichtung.adresse)) {
+    if (
+      this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
+      this.isValidAdresse(infrastruktureinrichtung.adresse)
+    ) {
       return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
     }
     return null;
   }
-  
 }

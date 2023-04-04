@@ -12,10 +12,7 @@ export function matchFoerdermixStammDaten(
   for (const stammdatum of foerdermixStammDaten) {
     if (!_.isNil(stammdatum.foerdermix)) {
       if (
-        _.isEqual(
-          foerdermixEingabe.anteilBaugemeinschaften, stammdatum.foerdermix.anteilBaugemeinschaften
-        ) 
-          &&
+        _.isEqual(foerdermixEingabe.anteilBaugemeinschaften, stammdatum.foerdermix.anteilBaugemeinschaften) &&
         _.isEqual(
           foerdermixEingabe.anteilEinUndZweifamilienhaeuser,
           stammdatum.foerdermix.anteilEinUndZweifamilienhaeuser
@@ -32,14 +29,8 @@ export function matchFoerdermixStammDaten(
           foerdermixEingabe.anteilKonzeptionellerMietwohnungsbau,
           stammdatum.foerdermix.anteilKonzeptionellerMietwohnungsbau
         ) &&
-        _.isEqual(
-          foerdermixEingabe.anteilMuenchenModell, stammdatum.foerdermix.anteilMuenchenModell
-        ) 
-          &&
-        _.isEqual(
-          foerdermixEingabe.anteilBaugemeinschaften, stammdatum.foerdermix.anteilBaugemeinschaften
-        ) 
-          &&
+        _.isEqual(foerdermixEingabe.anteilMuenchenModell, stammdatum.foerdermix.anteilMuenchenModell) &&
+        _.isEqual(foerdermixEingabe.anteilBaugemeinschaften, stammdatum.foerdermix.anteilBaugemeinschaften) &&
         _.isEqual(
           foerdermixEingabe.anteilPreisgedaempfterMietwohnungsbau,
           stammdatum.foerdermix.anteilPreisgedaempfterMietwohnungsbau

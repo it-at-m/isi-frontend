@@ -12,68 +12,74 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 import {
-    RealisierungsZeitraumDto,
-    RealisierungsZeitraumDtoFromJSON,
-    RealisierungsZeitraumDtoFromJSONTyped,
-    RealisierungsZeitraumDtoToJSON,
-} from './RealisierungsZeitraumDto';
+  RealisierungsZeitraumDto,
+  RealisierungsZeitraumDtoFromJSON,
+  RealisierungsZeitraumDtoFromJSONTyped,
+  RealisierungsZeitraumDtoToJSON,
+} from "./RealisierungsZeitraumDto";
 
 /**
- * 
+ *
  * @export
  * @interface WohneinheitenInformationDto
  */
 export interface WohneinheitenInformationDto {
-    /**
-     * 
-     * @type {RealisierungsZeitraumDto}
-     * @memberof WohneinheitenInformationDto
-     */
-    realisierungsZeitraum?: RealisierungsZeitraumDto;
-    /**
-     * 
-     * @type {number}
-     * @memberof WohneinheitenInformationDto
-     */
-    anzahlWohneinheitenGeplant?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof WohneinheitenInformationDto
-     */
-    geschossflaecheWohnenGeplant?: number;
+  /**
+   *
+   * @type {RealisierungsZeitraumDto}
+   * @memberof WohneinheitenInformationDto
+   */
+  realisierungsZeitraum?: RealisierungsZeitraumDto;
+  /**
+   *
+   * @type {number}
+   * @memberof WohneinheitenInformationDto
+   */
+  anzahlWohneinheitenGeplant?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WohneinheitenInformationDto
+   */
+  geschossflaecheWohnenGeplant?: number;
 }
 
 export function WohneinheitenInformationDtoFromJSON(json: any): WohneinheitenInformationDto {
-    return WohneinheitenInformationDtoFromJSONTyped(json, false);
+  return WohneinheitenInformationDtoFromJSONTyped(json, false);
 }
 
-export function WohneinheitenInformationDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WohneinheitenInformationDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'realisierungsZeitraum': !exists(json, 'realisierungsZeitraum') ? undefined : RealisierungsZeitraumDtoFromJSON(json['realisierungsZeitraum']),
-        'anzahlWohneinheitenGeplant': !exists(json, 'anzahlWohneinheitenGeplant') ? undefined : json['anzahlWohneinheitenGeplant'],
-        'geschossflaecheWohnenGeplant': !exists(json, 'geschossflaecheWohnenGeplant') ? undefined : json['geschossflaecheWohnenGeplant'],
-    };
+export function WohneinheitenInformationDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): WohneinheitenInformationDto {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    realisierungsZeitraum: !exists(json, "realisierungsZeitraum")
+      ? undefined
+      : RealisierungsZeitraumDtoFromJSON(json["realisierungsZeitraum"]),
+    anzahlWohneinheitenGeplant: !exists(json, "anzahlWohneinheitenGeplant")
+      ? undefined
+      : json["anzahlWohneinheitenGeplant"],
+    geschossflaecheWohnenGeplant: !exists(json, "geschossflaecheWohnenGeplant")
+      ? undefined
+      : json["geschossflaecheWohnenGeplant"],
+  };
 }
 
 export function WohneinheitenInformationDtoToJSON(value?: WohneinheitenInformationDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'realisierungsZeitraum': RealisierungsZeitraumDtoToJSON(value.realisierungsZeitraum),
-        'anzahlWohneinheitenGeplant': value.anzahlWohneinheitenGeplant,
-        'geschossflaecheWohnenGeplant': value.geschossflaecheWohnenGeplant,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    realisierungsZeitraum: RealisierungsZeitraumDtoToJSON(value.realisierungsZeitraum),
+    anzahlWohneinheitenGeplant: value.anzahlWohneinheitenGeplant,
+    geschossflaecheWohnenGeplant: value.geschossflaecheWohnenGeplant,
+  };
 }
-

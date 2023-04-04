@@ -30,8 +30,8 @@ describe("LookupStoreTest.spec.ts", () => {
       common: CommonStore,
       lookup: LookupStore,
       search: SearchStore,
-      fileInfoStamm: FileInfoStammStore
-    }
+      fileInfoStamm: FileInfoStammStore,
+    },
   });
 
   afterEach(() => {
@@ -42,11 +42,11 @@ describe("LookupStoreTest.spec.ts", () => {
     const list: Array<LookupEntryDto> = [];
     list.push({
       key: "ERMITTLUNG_SOZINFRA_BEDARF",
-      value: "Ermittlung des durch das Wohnbauvorhaben ausgelösten Infrastrukturbedarfs"
+      value: "Ermittlung des durch das Wohnbauvorhaben ausgelösten Infrastrukturbedarfs",
     } as LookupEntryDto);
     list.push({
       key: "STELLUNGNAHME_MITZEICHNUNGSKETTE_BESCHLUSSVORLAGE",
-      value: "Stellungnahme zu Beschlussvorlage"
+      value: "Stellungnahme zu Beschlussvorlage",
     } as LookupEntryDto);
     store.commit("lookup/artAbfrage", list);
     expect(store.getters["lookup/artAbfrage"]).toHaveLength(2);
@@ -56,11 +56,11 @@ describe("LookupStoreTest.spec.ts", () => {
     const list: Array<LookupEntryDto> = [];
     list.push({
       key: "ERMITTLUNG_SOZINFRA_BEDARF",
-      value: "Ermittlung des durch das Wohnbauvorhaben ausgelösten Infrastrukturbedarfs"
+      value: "Ermittlung des durch das Wohnbauvorhaben ausgelösten Infrastrukturbedarfs",
     } as LookupEntryDto);
     list.push({
       key: "STELLUNGNAHME_MITZEICHNUNGSKETTE_BESCHLUSSVORLAGE",
-      value: "Stellungnahme zu Beschlussvorlage"
+      value: "Stellungnahme zu Beschlussvorlage",
     } as LookupEntryDto);
     store.commit("lookup/artAbfrage", list);
     expect(store.getters["lookup/artAbfrage"]).toHaveLength(2);

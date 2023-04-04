@@ -1,7 +1,7 @@
 <template>
   <div>
     <infrastruktureinrichtung-component
-      id="infrastruktureinrichtung_gsNachmittagBetreuungModel_component" 
+      id="infrastruktureinrichtung_gsNachmittagBetreuungModel_component"
       ref="infrastruktureinrichtungComponent"
       v-model="gsNachmittagBetreuung.infrastruktureinrichtung"
       :mode="displayMode"
@@ -50,7 +50,7 @@
           md="6"
         >
           <v-select
-            id="gsNachmittagBetreuungModel_artGsNachmittagBetreuung" 
+            id="gsNachmittagBetreuungModel_artGsNachmittagBetreuung"
             v-model="gsNachmittagBetreuung.artGsNachmittagBetreuung"
             :items="artGsNachmittagBetreuungList"
             item-text="value"
@@ -77,13 +77,10 @@ import DisplayMode from "@/types/common/DisplayMode";
 @Component({
   components: {
     FieldGroupCard,
-    InfrastruktureinrichtungComponent
+    InfrastruktureinrichtungComponent,
   },
 })
-export default class GsNachmittagBetreuungComponent extends Mixins(
-    FieldValidationRulesMixin,
-    SaveLeaveMixin
-) {
+export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: GsNachmittagBetreuungModel }) gsNachmittagBetreuung!: GsNachmittagBetreuungModel;
 
   get artGsNachmittagBetreuungList(): LookupEntryDto[] {
@@ -96,7 +93,6 @@ export default class GsNachmittagBetreuungComponent extends Mixins(
   get displayMode(): DisplayMode {
     return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
   }
-
 }
 </script>
 <style></style>
