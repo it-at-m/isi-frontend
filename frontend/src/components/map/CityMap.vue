@@ -19,7 +19,7 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="WMS_BASE_URL"
+        :base-url="getGiwUrl('WMS_Stadtkarte')"
         layers="Hintergrund"
         format="image/png"
         layer-type="base"
@@ -101,7 +101,6 @@ type Ref = Vue & { $el: HTMLElement };
 })
 export default class CityMap extends Vue {
   private static readonly MUNICH_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
-  private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
 
   @Prop({ default: "100%" })

@@ -141,7 +141,7 @@ export default class AdresseComponent extends Mixins(
 
   private adressen: Array<MuenchenAdresseDto> = [];
 
-  private adressKoordinate?: LatLngLiteral;
+  private adressKoordinate: LatLngLiteral | null = null;
 
   @Prop()
   private adresseProp!: AdresseModel;
