@@ -25,6 +25,12 @@ import {
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import {
+    StatusAbfrage,
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+} from './StatusAbfrage';
 
 /**
  * 
@@ -64,10 +70,10 @@ export interface AbfrageDto {
     anmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {StatusAbfrage}
      * @memberof AbfrageDto
      */
-    readonly statusAbfrage?: AbfrageDtoStatusAbfrageEnum;
+    statusAbfrage?: StatusAbfrage;
     /**
      * 
      * @type {string}
@@ -94,20 +100,6 @@ export interface AbfrageDto {
     bauvorhaben?: string;
 }
 
-
-/**
- * @export
- */
-export const AbfrageDtoStatusAbfrageEnum = {
-    Angelegt: 'ANGELEGT',
-    Offen: 'OFFEN',
-    InBearbeitungPlan: 'IN_BEARBEITUNG_PLAN',
-    InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
-    BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
-    Erledigt: 'ERLEDIGT',
-    Abbruch: 'ABBRUCH'
-} as const;
-export type AbfrageDtoStatusAbfrageEnum = typeof AbfrageDtoStatusAbfrageEnum[keyof typeof AbfrageDtoStatusAbfrageEnum];
 
 /**
  * @export
@@ -147,7 +139,7 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : json['statusAbfrage'],
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'nameAbfrage': json['nameAbfrage'],
         'standVorhaben': json['standVorhaben'],
@@ -169,6 +161,7 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'adresse': AdresseDtoToJSON(value.adresse),
         'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'bebauungsplannummer': value.bebauungsplannummer,
         'nameAbfrage': value.nameAbfrage,
         'standVorhaben': value.standVorhaben,

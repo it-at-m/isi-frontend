@@ -28,11 +28,11 @@
           @yes="yesNoDialogAbfrageYes"
         />
         <yes-no-dialog
-          id="abfrage_yes_no_dialog_freigeben"
+          id="abfrage_yes_no_dialog_statusuebergang"
           v-model="statusUebergangDialog"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
-          dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
+          dialogtext="Hiermit wird die Abfrage ihren Status ändern."
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
           @no="yesNoDialogStatusUebergangeNo"
@@ -158,7 +158,7 @@ import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
-  AbfrageListElementDtoStatusAbfrageEnum,
+  StatusAbfrage,
   AbfragevarianteDto,
   InfrastrukturabfrageDto,
   TransitionDto,
@@ -379,9 +379,7 @@ export default class Abfrage extends Mixins(
   }
 
   private isAngelegt(): boolean {
-    return (
-      this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == AbfrageListElementDtoStatusAbfrageEnum.Angelegt
-    );
+    return this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == StatusAbfrage.Angelegt;
   }
 
   private returnToUebersicht(message?: string, level?: Levels): void {

@@ -33,6 +33,7 @@ export * from './MittelschuleDto';
 export * from './PresignedUrlDto';
 export * from './RealisierungsZeitraumDto';
 export * from './SchuleDto';
+export * from './StatusAbfrage';
 export * from './TransitionDto';
 export * from './UncertainBoolean';
 export * from './UtmDto';
