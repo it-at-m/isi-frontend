@@ -70,6 +70,8 @@ import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+type Ref = Vue & { $el: HTMLElement };
+
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
  * Die Leaflet-Karte wurde für Stylebarkeit in eine Vuetify Sheet-Komponente eingebettet.
@@ -158,11 +160,11 @@ export default class CityMap extends Vue {
           this.expanded = !this.expanded;
 
           if (this.expanded) {
-            (this.$refs.dialog as any).$el.appendChild((this.$refs.map as any).$el);
+            (this.$refs.dialog as Ref).$el.appendChild((this.$refs.map as Ref).$el);
             anchor.title = this.collapseTitle;
             image.src = this.collapseIcon;
           } else {
-            (this.$refs.origin as any).$el.appendChild((this.$refs.map as any).$el);
+            (this.$refs.origin as Ref).$el.appendChild((this.$refs.map as Ref).$el);
             anchor.title = this.expansionTitle;
             image.src = this.expansionIcon;
           }
