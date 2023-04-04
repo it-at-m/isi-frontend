@@ -122,31 +122,12 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   }
 
   async deleteDokument(dokument: DokumentDto): Promise<void> {
-    if (isDokumentAllowed(dokument)) {
-      const filepathDto: FilepathDto = createFilepathDto();
-      filepathDto.pathToFile = dokument.filePath.pathToFile;
-      let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
-      await this.getPresignedUrlForDeleteDokument(filepathDto, true).then((presignedUrlDtoInternal) => {
-        presignedUrlDto = presignedUrlDtoInternal;
-      });
-      if (!_.isNil(presignedUrlDto.url)) {
-        await this.deleteDokumentWithUrl(presignedUrlDto).then(() => {
-          this.dokumente.forEach((item, index) => {
-            if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
-              this.dokumente.splice(index, 1);
-            }
-          });
-          this.formChanged();
-          this.$emit("onDokumentDeleted", dokument);
-        });
+    this.dokumente.forEach((item, index) => {
+      if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
+        this.dokumente.splice(index, 1);
       }
-    } else {
-      this.dokumente.forEach((item, index) => {
-        if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
-          this.dokumente.splice(index, 1);
-        }
-      });
-    }
+    });
+    this.formChanged();
   }
 
   // - Anzeigen des File-Explorers zur Auswahl von Dateien
