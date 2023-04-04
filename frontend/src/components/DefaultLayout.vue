@@ -112,7 +112,8 @@ export default class DefaultLayout extends Vue {
   padding-top: 20px;
 }
 
-.side-bar, .side-bar-navigation {
+.side-bar,
+.side-bar-navigation {
   width: 20%;
   height: 100%;
   display: flex;

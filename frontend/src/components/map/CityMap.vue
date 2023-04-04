@@ -49,6 +49,7 @@
       />
     </l-map>
     <v-dialog
+      id="karte_dialog"
       v-model="expanded"
       persistent
       eager
@@ -157,14 +158,13 @@ export default class CityMap extends Vue {
   private addExpansionControl(): void {
     const Control = L.Control.extend({
       onAdd: () => {
-        const anchor = L.DomUtil.create("a");
+        const button = L.DomUtil.create("button");
         const image = L.DomUtil.create("img");
 
-        anchor.id = "karte_erweitern_button";
-        anchor.title = this.EXPANSION_TITLE;
-        anchor.href = "#";
-        anchor.classList.add("expansion-control");
-        anchor.addEventListener("click", (event) => {
+        button.id = "karte_erweitern_button";
+        button.title = this.EXPANSION_TITLE;
+        button.classList.add("expansion-control");
+        button.addEventListener("click", (event) => {
           event.preventDefault();
           event.stopPropagation();
 
@@ -172,11 +172,11 @@ export default class CityMap extends Vue {
 
           if (this.expanded) {
             (this.$refs.dialogCard as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-            anchor.title = this.COLLAPSE_TITLE;
+            button.title = this.COLLAPSE_TITLE;
             image.src = this.COLLAPSE_ICON;
           } else {
             (this.$refs.sheet as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-            anchor.title = this.EXPANSION_TITLE;
+            button.title = this.EXPANSION_TITLE;
             image.src = this.EXPANSION_ICON;
           }
 
@@ -188,9 +188,9 @@ export default class CityMap extends Vue {
         image.id = "karte_erweitern_icon";
         image.src = this.EXPANSION_ICON;
         image.style.filter = "opacity(60%)";
-        anchor.appendChild(image);
+        button.appendChild(image);
 
-        return anchor;
+        return button;
       },
       onRemove: () => {
         // Keine Logik benötigt
@@ -216,5 +216,6 @@ export default class CityMap extends Vue {
   border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   background-color: white;
+  cursor: pointer;
 }
 </style>

@@ -95,7 +95,7 @@
       <v-col cols="12">
         <city-map
           height="300"
-          zoom="14"
+          :zoom="14"
           expandable
           :look-at="adressKoordinate"
         />
