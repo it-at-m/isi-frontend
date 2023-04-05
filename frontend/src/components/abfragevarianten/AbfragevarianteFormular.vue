@@ -108,7 +108,6 @@
         >
           <num-field
             id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
-            :key="componentKeyGeschossflaecheSobonUrsaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
             class="mx-3"
             label="SoBoN-ursächliche"
@@ -280,10 +279,6 @@ export default class AbfragevarianteForm extends Mixins(
     this.$emit("input", mode);
   }
 
-  // Das Attribut führt bei einer Wertänderung dazu, dass das Eingabefeld neu gerendert wird.
-  // Dies ist insbesondere bei der Änderung des Planungsrechts nötig, damit die Validerung korrekt aktiviert bzw. deaktiviert wird.
-  private componentKeyGeschossflaecheSobonUrsaechlich = 0;
-
   @Prop()
   private sobonRelevant!: UncertainBoolean;
 
@@ -296,7 +291,6 @@ export default class AbfragevarianteForm extends Mixins(
       this.isSobonRelevant === UncertainBoolean.True &&
       (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
         this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
-    this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
     return pflichtfeld;
   }
 
