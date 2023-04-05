@@ -33,11 +33,12 @@
               <v-icon> mdi-trash-can-outline</v-icon>
             </v-btn>
             <v-btn
-              v-if="item.name === nameTreeElementAddBauabschnitt"
+              v-else-if="item.name === nameTreeElementAddBauabschnitt"
               :id="'abfrage_navigation_tree_button_create_new_bauabschnitt_' + item.id"
               icon
               @click="createNewBauabschnitt(item)"
             >
+              <v-icon> mdi-plus-box-outline</v-icon>
             </v-btn>
             <v-btn
               v-else-if="isAbfrageTreeItemAnBauabschnitt(item)"
@@ -95,15 +96,19 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
 
+  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
+
+  /*
+  private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
+  */
+
   private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante anlegen";
 
-  private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT: string = "Bauabschnitt anlegen";
-
-  private static readonly NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN: string = "Abfragevarianten";
-
+  /*
   private static readonly NAME_TREE_ELEMENT_LIST_BAUABSCHNITTE: string = "Bauabschnitte";
+  */
 
-  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
+  private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT: string = "Bauabschnitt anlegen";
 
   private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
 
@@ -141,10 +146,10 @@ export default class AbfrageNavigationTree extends Vue {
         (abfrageTreeItem) => abfrageTreeItem.id === markedTreeItemId
       );
       if (!_.isNil(markedTreeItemId) && !_.isNil(markedTreeItem)) {
-        if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItem)) {
-          this.selectAbfragevariante(markedTreeItem);
-        } else if (this.isAbfrageTreeItemAnAbfrage(markedTreeItem)) {
+        if (this.isAbfrageTreeItemAnAbfrage(markedTreeItem)) {
           this.selectAbfrage(markedTreeItem);
+        } else if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItem)) {
+          this.selectAbfragevariante(markedTreeItem);
         } else if (this.isAbfrageTreeItemAnBauabschnitt(markedTreeItem)) {
           this.selectBauabschnitt(markedTreeItem);
         }
@@ -156,24 +161,28 @@ export default class AbfrageNavigationTree extends Vue {
     return this.createTreeItemIds(this.abfrageTreeItems);
   }
 
+  get nameTreeElementAbfrage(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ABFRAGE;
+  }
+
+  /*
+  get nameTreeElementListAbfragevarianten(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN;
+  }
+  */
+
   get nameTreeElementAddAbfragevariante(): string {
     return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE;
   }
 
-  get nameTreeElementAddBauabschnitt(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT;
-  }
-
-  get nameTreeElementListAbfragevarianten(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_LIST_ABFRAGEVARIANTEN;
-  }
-
+  /*
   get nameTreeElementListBauabschnitte(): string {
     return AbfrageNavigationTree.NAME_TREE_ELEMENT_LIST_BAUABSCHNITTE;
   }
+  */
 
-  get nameTreeElementAbfrage(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ABFRAGE;
+  get nameTreeElementAddBauabschnitt(): string {
+    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT;
   }
 
   private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
@@ -198,91 +207,93 @@ export default class AbfrageNavigationTree extends Vue {
     const abfrageTreeItems: Array<AbfrageTreeItem> = [];
     let itemKey = 0;
 
-    const abfrageTreeItem: AbfrageTreeItem = {
-      id: itemKey++,
-      name: this.nameTreeElementAbfrage,
-      children: [],
-      abfrage: abfrage,
-      abfragevariante: undefined,
-      bauabschnitt: undefined,
-      changed: false,
-    };
-    abfrageTreeItems.push(abfrageTreeItem);
+    const abfrageRootTreeItem = this.createRootAbfrageTreeItem(itemKey++, abfrage);
+    abfrageTreeItems.push(abfrageRootTreeItem);
 
-    const rootAbfragevariantenTreeItem: AbfrageTreeItem = {
-      id: itemKey++,
-      name: this.nameTreeElementListAbfragevarianten,
-      children: [],
-      abfrage: undefined,
-      abfragevariante: undefined,
-      bauabschnitt: undefined,
-      changed: false,
-    };
-    abfrageTreeItems.push(rootAbfragevariantenTreeItem);
+    //const abfragevariantenRootTreeItem = this.createRootAbfragevariantenTreeItem(itemKey++);
+    //abfrageTreeItems.push(abfragevariantenRootTreeItem);
 
-    let abfragevarianteTreeItem: AbfrageTreeItem;
     abfrage.abfragevarianten.forEach((abfragevariante) => {
-      abfragevarianteTreeItem = {
-        id: itemKey++,
-        name: this.getNameTreeElementAbfragevariante(abfragevariante),
-        children: [],
-        abfrage: undefined,
-        abfragevariante: abfragevariante,
-        bauabschnitt: undefined,
-        changed: false,
-      };
+      let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(itemKey++, abfragevariante);
       if (!_.isNil(abfragevariante.bauabschnitte) && abfragevariante.bauabschnitte.length > 0) {
-        const rootBauabschnitteTreeItem: AbfrageTreeItem = {
-          id: itemKey++,
-          name: this.nameTreeElementListBauabschnitte,
-          children: [],
-          abfrage: undefined,
-          abfragevariante: undefined,
-          bauabschnitt: undefined,
-          changed: false,
-        };
-        abfragevarianteTreeItem.children.push(rootBauabschnitteTreeItem);
-        let bauabschnittTreeItem: AbfrageTreeItem;
         abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
-          bauabschnittTreeItem = {
-            id: itemKey++,
-            name: this.getNameTreeElementBauabschnitt(bauabschnitt),
-            children: [],
-            abfrage: undefined,
-            abfragevariante: abfragevariante,
-            bauabschnitt: bauabschnitt,
-            changed: false,
-          };
-          abfragevarianteTreeItem.children.push(bauabschnittTreeItem);
+          abfragevarianteTreeItem.children.push(
+            this.createBauabschnittTreeItem(itemKey++, abfragevariante, bauabschnitt)
+          );
         });
       }
-      const addBauabschnittTreeItem: AbfrageTreeItem = {
-        id: itemKey++,
-        name: this.nameTreeElementAddBauabschnitt,
-        children: [],
-        abfrage: undefined,
-        abfragevariante: undefined,
-        bauabschnitt: undefined,
-        changed: false,
-      };
-      abfragevarianteTreeItem.children.push(addBauabschnittTreeItem);
-      rootAbfragevariantenTreeItem.children.push(abfragevarianteTreeItem);
+      abfragevarianteTreeItem.children.push(this.createAddBauabschnittTreeItem(itemKey++, abfragevariante));
+      abfrageRootTreeItem.children.push(abfragevarianteTreeItem);
     });
 
     if (abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN) {
-      const addAbfragevarianteTreeItem: AbfrageTreeItem = {
-        id: itemKey++,
-        name: this.nameTreeElementAddAbfragevariante,
-        children: [],
-        abfrage: undefined,
-        abfragevariante: undefined,
-        bauabschnitt: undefined,
-        changed: false,
-      };
-      rootAbfragevariantenTreeItem.children.push(addAbfragevarianteTreeItem);
+      abfrageRootTreeItem.children.push(this.createAddAbfragevarianteTreeItem(itemKey++));
     }
 
     return abfrageTreeItems;
+  }
+
+  private createRootAbfrageTreeItem(id: number, abfrage: InfrastrukturabfrageDto) {
+    return this.createAbfrageTreeItem(id, this.nameTreeElementAbfrage, abfrage, undefined, undefined);
+  }
+
+  /*
+  private createRootAbfragevariantenTreeItem(id: number) {
+    return this.createAbfrageTreeItem(id, this.nameTreeElementListAbfragevarianten, undefined, undefined, undefined);
+  }
+  */
+
+  private createAbfragevarianteTreeItem(id: number, abfragevariante: AbfragevarianteDto) {
+    return this.createAbfrageTreeItem(
+      id,
+      this.getNameTreeElementAbfragevariante(abfragevariante),
+      undefined,
+      abfragevariante,
+      undefined
+    );
+  }
+
+  private createAddAbfragevarianteTreeItem(id: number) {
+    return this.createAbfrageTreeItem(id, this.nameTreeElementAddAbfragevariante, undefined, undefined, undefined);
+  }
+
+  /*
+  private createRootBauabschnitteTreeItem(id: number) {
+    return this.createAbfrageTreeItem(id, this.nameTreeElementListBauabschnitte, undefined, undefined, undefined);
+  }
+  */
+
+  private createBauabschnittTreeItem(id: number, abfragevariante: AbfragevarianteDto, bauabschnitt: BauabschnittDto) {
+    return this.createAbfrageTreeItem(
+      id,
+      this.getNameTreeElementBauabschnitt(bauabschnitt),
+      undefined,
+      abfragevariante,
+      bauabschnitt
+    );
+  }
+
+  private createAddBauabschnittTreeItem(id: number, abfragevariante: AbfragevarianteDto) {
+    return this.createAbfrageTreeItem(id, this.nameTreeElementAddBauabschnitt, undefined, abfragevariante, undefined);
+  }
+
+  private createAbfrageTreeItem(
+    id: number,
+    name: string,
+    abfrage: InfrastrukturabfrageDto | undefined,
+    abfragevariante: AbfragevarianteDto | undefined,
+    bauabschnitt: BauabschnittDto | undefined
+  ) {
+    const abfrageTreeItem: AbfrageTreeItem = {
+      id: id,
+      name: name,
+      children: [],
+      abfrage: abfrage,
+      abfragevariante: abfragevariante,
+      bauabschnitt: bauabschnitt,
+      changed: false,
+    };
+    return abfrageTreeItem;
   }
 
   /**
@@ -334,33 +345,66 @@ export default class AbfrageNavigationTree extends Vue {
     let notChanged = false;
     let clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
     let clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
+
     if (
-      this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) &&
-      this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)
-    ) {
-      // Entfernen der Bauabschnitte aus Klon zur Vermeidung eines isEqual bei Bauabschnitten.
-      if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante))
-        clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-      if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante))
-        clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-      notChanged =
-        !_.isNil(clonedNewAbfrageTreeItem.abfragevariante) &&
-        !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id) &&
-        _.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante);
-    } else if (
       this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) &&
       this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)
     ) {
-      // AS: bauabschnitt einfügen, reihenfolge: abfrage, abfragevariante, bauabschnitt...
-      // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
-      if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
-      if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
-      notChanged =
-        !_.isNil(clonedNewAbfrageTreeItem.abfrage) &&
-        !_.isNil(clonedNewAbfrageTreeItem.abfrage.id) &&
-        _.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage);
+      return this.isNotChangedAbfrage(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
+    } else if (
+      this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) &&
+      this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)
+    ) {
+      return this.isNotChangedAbfragevariante(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
+    } else if (
+      this.isAbfrageTreeItemAnBauabschnitt(clonedNewAbfrageTreeItem) &&
+      this.isAbfrageTreeItemAnBauabschnitt(clonedOldAbfrageTreeItem)
+    ) {
+      return this.isNotChangedBauabschnitt(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
     }
     return notChanged;
+  }
+
+  private isNotChangedAbfrage(
+    clonedNewAbfrageTreeItem: AbfrageTreeItem,
+    clonedOldAbfrageTreeItem: AbfrageTreeItem
+  ): boolean {
+    // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
+    if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
+    if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
+    return (
+      !_.isNil(clonedNewAbfrageTreeItem.abfrage) &&
+      !_.isNil(clonedNewAbfrageTreeItem.abfrage.id) &&
+      _.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage)
+    );
+  }
+
+  private isNotChangedAbfragevariante(
+    clonedNewAbfrageTreeItem: AbfrageTreeItem,
+    clonedOldAbfrageTreeItem: AbfrageTreeItem
+  ): boolean {
+    // Entfernen der Bauabschnitte aus Klon zur Vermeidung eines isEqual bei Bauabschnitten.
+    if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante)) clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
+    if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante)) clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
+    return (
+      !_.isNil(clonedNewAbfrageTreeItem.abfragevariante) &&
+      !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id) &&
+      _.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante)
+    );
+  }
+
+  private isNotChangedBauabschnitt(
+    clonedNewAbfrageTreeItem: AbfrageTreeItem,
+    clonedOldAbfrageTreeItem: AbfrageTreeItem
+  ): boolean {
+    // Entfernen der Baugebiete aus Klon zur Vermeidung eines isEqual bei Baugebieten.
+    if (!_.isNil(clonedNewAbfrageTreeItem.bauabschnitt)) clonedNewAbfrageTreeItem.bauabschnitt.baugebiete = [];
+    if (!_.isNil(clonedOldAbfrageTreeItem.bauabschnitt)) clonedOldAbfrageTreeItem.bauabschnitt.baugebiete = [];
+    return (
+      !_.isNil(clonedNewAbfrageTreeItem.bauabschnitt) &&
+      !_.isNil(clonedNewAbfrageTreeItem.bauabschnitt.id) &&
+      _.isEqual(clonedNewAbfrageTreeItem.bauabschnitt, clonedOldAbfrageTreeItem.bauabschnitt)
+    );
   }
 
   private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {

@@ -12,58 +12,56 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from "../runtime";
-import { DokumenteDto, DokumenteDtoFromJSON, DokumenteDtoToJSON } from "../models";
+
+import * as runtime from '../runtime';
+import {
+    DokumenteDto,
+    DokumenteDtoFromJSON,
+    DokumenteDtoToJSON,
+} from '../models';
 
 export interface GetDokumenteRequest {
-  pageNumber?: number;
-  pageSize?: number;
+    pageNumber?: number;
+    pageSize?: number;
 }
 
 /**
- *
+ * 
  */
 export class DokumenteApi extends runtime.BaseAPI {
-  /**
-   * Holen aller in der Anwendung vorhandenen Dokumente
-   */
-  async getDokumenteRaw(
-    requestParameters: GetDokumenteRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<DokumenteDto>> {
-    const queryParameters: any = {};
 
-    if (requestParameters.pageNumber !== undefined) {
-      queryParameters["pageNumber"] = requestParameters.pageNumber;
+    /**
+     * Holen aller in der Anwendung vorhandenen Dokumente
+     */
+    async getDokumenteRaw(requestParameters: GetDokumenteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<DokumenteDto>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.pageNumber !== undefined) {
+            queryParameters['pageNumber'] = requestParameters.pageNumber;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['pageSize'] = requestParameters.pageSize;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/dokumente`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DokumenteDtoFromJSON(jsonValue));
     }
 
-    if (requestParameters.pageSize !== undefined) {
-      queryParameters["pageSize"] = requestParameters.pageSize;
+    /**
+     * Holen aller in der Anwendung vorhandenen Dokumente
+     */
+    async getDokumente(requestParameters: GetDokumenteRequest = {}, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<DokumenteDto> {
+        const response = await this.getDokumenteRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/dokumente`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => DokumenteDtoFromJSON(jsonValue));
-  }
-
-  /**
-   * Holen aller in der Anwendung vorhandenen Dokumente
-   */
-  async getDokumente(
-    requestParameters: GetDokumenteRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<DokumenteDto> {
-    const response = await this.getDokumenteRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
 }

@@ -28,6 +28,8 @@ import {
   PresignedUrlDto,
   SchuleDto,
   BauabschnittDto,
+  BaugebietDto,
+  BaugebietDtoBaugebietTypEnum,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
@@ -375,7 +377,26 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
  */
 export function createBauabschnittDto(): BauabschnittDto {
   return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
     bezeichnung: "",
     baugebiete: [],
   } as BauabschnittDto;
+}
+
+/**
+ * BaugebietDto
+ */
+export function createBaugebietDto(): BaugebietDto {
+  return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "",
+    baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
+    bauraten: [],
+  } as BaugebietDto;
 }

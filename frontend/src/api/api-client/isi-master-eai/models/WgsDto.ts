@@ -12,50 +12,53 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface WgsDto
  */
 export interface WgsDto {
-  /**
-   *
-   * @type {number}
-   * @memberof WgsDto
-   */
-  lat?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof WgsDto
-   */
-  lon?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WgsDto
+     */
+    lat?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WgsDto
+     */
+    lon?: number;
 }
 
 export function WgsDtoFromJSON(json: any): WgsDto {
-  return WgsDtoFromJSONTyped(json, false);
+    return WgsDtoFromJSONTyped(json, false);
 }
 
 export function WgsDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WgsDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    lat: !exists(json, "lat") ? undefined : json["lat"],
-    lon: !exists(json, "lon") ? undefined : json["lon"],
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'lat': !exists(json, 'lat') ? undefined : json['lat'],
+        'lon': !exists(json, 'lon') ? undefined : json['lon'],
+    };
 }
 
 export function WgsDtoToJSON(value?: WgsDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    lat: value.lat,
-    lon: value.lon,
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'lat': value.lat,
+        'lon': value.lon,
+    };
 }
+

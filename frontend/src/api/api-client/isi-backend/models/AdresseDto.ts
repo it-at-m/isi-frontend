@@ -12,66 +12,69 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface AdresseDto
  */
 export interface AdresseDto {
-  /**
-   *
-   * @type {string}
-   * @memberof AdresseDto
-   */
-  plz?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AdresseDto
-   */
-  ort?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AdresseDto
-   */
-  strasse?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AdresseDto
-   */
-  hausnummer?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AdresseDto
+     */
+    plz?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AdresseDto
+     */
+    ort?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AdresseDto
+     */
+    strasse?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AdresseDto
+     */
+    hausnummer?: string;
 }
 
 export function AdresseDtoFromJSON(json: any): AdresseDto {
-  return AdresseDtoFromJSONTyped(json, false);
+    return AdresseDtoFromJSONTyped(json, false);
 }
 
 export function AdresseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AdresseDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    plz: !exists(json, "plz") ? undefined : json["plz"],
-    ort: !exists(json, "ort") ? undefined : json["ort"],
-    strasse: !exists(json, "strasse") ? undefined : json["strasse"],
-    hausnummer: !exists(json, "hausnummer") ? undefined : json["hausnummer"],
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'plz': !exists(json, 'plz') ? undefined : json['plz'],
+        'ort': !exists(json, 'ort') ? undefined : json['ort'],
+        'strasse': !exists(json, 'strasse') ? undefined : json['strasse'],
+        'hausnummer': !exists(json, 'hausnummer') ? undefined : json['hausnummer'],
+    };
 }
 
 export function AdresseDtoToJSON(value?: AdresseDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    plz: value.plz,
-    ort: value.ort,
-    strasse: value.strasse,
-    hausnummer: value.hausnummer,
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'plz': value.plz,
+        'ort': value.ort,
+        'strasse': value.strasse,
+        'hausnummer': value.hausnummer,
+    };
 }
+

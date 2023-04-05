@@ -12,247 +12,189 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from "../runtime";
+
+import * as runtime from '../runtime';
 import {
-  GsNachmittagBetreuungDto,
-  GsNachmittagBetreuungDtoFromJSON,
-  GsNachmittagBetreuungDtoToJSON,
-  InformationResponseDto,
-  InformationResponseDtoFromJSON,
-  InformationResponseDtoToJSON,
-} from "../models";
+    GsNachmittagBetreuungDto,
+    GsNachmittagBetreuungDtoFromJSON,
+    GsNachmittagBetreuungDtoToJSON,
+    InformationResponseDto,
+    InformationResponseDtoFromJSON,
+    InformationResponseDtoToJSON,
+} from '../models';
 
 export interface CreateGsNachmittagBetreuungRequest {
-  gsNachmittagBetreuungDto: GsNachmittagBetreuungDto;
+    gsNachmittagBetreuungDto: GsNachmittagBetreuungDto;
 }
 
 export interface DeleteGsNachmittagBetreuungByIdRequest {
-  id: string;
+    id: string;
 }
 
 export interface GetGsNachmittagBetreuungByIdRequest {
-  id: string;
+    id: string;
 }
 
 export interface UpdateGsNachmittagBetreuungRequest {
-  gsNachmittagBetreuungDto: GsNachmittagBetreuungDto;
+    gsNachmittagBetreuungDto: GsNachmittagBetreuungDto;
 }
 
 /**
- *
+ * 
  */
 export class GsNachmittagBetreuungApi extends runtime.BaseAPI {
-  /**
-   * Anlegen einer neuen Nachmittagsbetreuung für Grundschulkinder
-   */
-  async createGsNachmittagBetreuungRaw(
-    requestParameters: CreateGsNachmittagBetreuungRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<GsNachmittagBetreuungDto>> {
-    if (
-      requestParameters.gsNachmittagBetreuungDto === null ||
-      requestParameters.gsNachmittagBetreuungDto === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "gsNachmittagBetreuungDto",
-        "Required parameter requestParameters.gsNachmittagBetreuungDto was null or undefined when calling createGsNachmittagBetreuung."
-      );
+
+    /**
+     * Anlegen einer neuen Nachmittagsbetreuung für Grundschulkinder
+     */
+    async createGsNachmittagBetreuungRaw(requestParameters: CreateGsNachmittagBetreuungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GsNachmittagBetreuungDto>> {
+        if (requestParameters.gsNachmittagBetreuungDto === null || requestParameters.gsNachmittagBetreuungDto === undefined) {
+            throw new runtime.RequiredError('gsNachmittagBetreuungDto','Required parameter requestParameters.gsNachmittagBetreuungDto was null or undefined when calling createGsNachmittagBetreuung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/gs-nachmittag-betreuung`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GsNachmittagBetreuungDtoToJSON(requestParameters.gsNachmittagBetreuungDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GsNachmittagBetreuungDtoFromJSON(jsonValue));
     }
 
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json";
-
-    const response = await this.request(
-      {
-        path: `/gs-nachmittag-betreuung`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-        body: GsNachmittagBetreuungDtoToJSON(requestParameters.gsNachmittagBetreuungDto),
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => GsNachmittagBetreuungDtoFromJSON(jsonValue));
-  }
-
-  /**
-   * Anlegen einer neuen Nachmittagsbetreuung für Grundschulkinder
-   */
-  async createGsNachmittagBetreuung(
-    requestParameters: CreateGsNachmittagBetreuungRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<GsNachmittagBetreuungDto> {
-    const response = await this.createGsNachmittagBetreuungRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Löschen einer Nachmittagsbetreuung für Grundschulkinder
-   */
-  async deleteGsNachmittagBetreuungByIdRaw(
-    requestParameters: DeleteGsNachmittagBetreuungByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling deleteGsNachmittagBetreuungById."
-      );
+    /**
+     * Anlegen einer neuen Nachmittagsbetreuung für Grundschulkinder
+     */
+    async createGsNachmittagBetreuung(requestParameters: CreateGsNachmittagBetreuungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GsNachmittagBetreuungDto> {
+        const response = await this.createGsNachmittagBetreuungRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    const queryParameters: any = {};
+    /**
+     * Löschen einer Nachmittagsbetreuung für Grundschulkinder
+     */
+    async deleteGsNachmittagBetreuungByIdRaw(requestParameters: DeleteGsNachmittagBetreuungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteGsNachmittagBetreuungById.');
+        }
 
-    const headerParameters: runtime.HTTPHeaders = {};
+        const queryParameters: any = {};
 
-    const response = await this.request(
-      {
-        path: `/gs-nachmittag-betreuung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-        method: "DELETE",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    return new runtime.VoidApiResponse(response);
-  }
+        const response = await this.request({
+            path: `/gs-nachmittag-betreuung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-  /**
-   * Löschen einer Nachmittagsbetreuung für Grundschulkinder
-   */
-  async deleteGsNachmittagBetreuungById(
-    requestParameters: DeleteGsNachmittagBetreuungByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<void> {
-    await this.deleteGsNachmittagBetreuungByIdRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   * Lesen einer Nachmittagsbetreuung für Grundschulkinder
-   */
-  async getGsNachmittagBetreuungByIdRaw(
-    requestParameters: GetGsNachmittagBetreuungByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<GsNachmittagBetreuungDto>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling getGsNachmittagBetreuungById."
-      );
+        return new runtime.VoidApiResponse(response);
     }
 
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/gs-nachmittag-betreuung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => GsNachmittagBetreuungDtoFromJSON(jsonValue));
-  }
-
-  /**
-   * Lesen einer Nachmittagsbetreuung für Grundschulkinder
-   */
-  async getGsNachmittagBetreuungById(
-    requestParameters: GetGsNachmittagBetreuungByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<GsNachmittagBetreuungDto> {
-    const response = await this.getGsNachmittagBetreuungByIdRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-   * Lade alle Nachmittagsbetreuungen für Grundschulkinder
-   */
-  async getGsNachmittagBetreuungenRaw(
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<Array<GsNachmittagBetreuungDto>>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/gs-nachmittag-betreuungen`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GsNachmittagBetreuungDtoFromJSON));
-  }
-
-  /**
-   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-   * Lade alle Nachmittagsbetreuungen für Grundschulkinder
-   */
-  async getGsNachmittagBetreuungen(
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<Array<GsNachmittagBetreuungDto>> {
-    const response = await this.getGsNachmittagBetreuungenRaw(initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Aktualisierung einer Nachmittagsbetreuung für Grundschulkinder
-   */
-  async updateGsNachmittagBetreuungRaw(
-    requestParameters: UpdateGsNachmittagBetreuungRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<GsNachmittagBetreuungDto>> {
-    if (
-      requestParameters.gsNachmittagBetreuungDto === null ||
-      requestParameters.gsNachmittagBetreuungDto === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "gsNachmittagBetreuungDto",
-        "Required parameter requestParameters.gsNachmittagBetreuungDto was null or undefined when calling updateGsNachmittagBetreuung."
-      );
+    /**
+     * Löschen einer Nachmittagsbetreuung für Grundschulkinder
+     */
+    async deleteGsNachmittagBetreuungById(requestParameters: DeleteGsNachmittagBetreuungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.deleteGsNachmittagBetreuungByIdRaw(requestParameters, initOverrides);
     }
 
-    const queryParameters: any = {};
+    /**
+     * Lesen einer Nachmittagsbetreuung für Grundschulkinder
+     */
+    async getGsNachmittagBetreuungByIdRaw(requestParameters: GetGsNachmittagBetreuungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GsNachmittagBetreuungDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getGsNachmittagBetreuungById.');
+        }
 
-    const headerParameters: runtime.HTTPHeaders = {};
+        const queryParameters: any = {};
 
-    headerParameters["Content-Type"] = "application/json";
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    const response = await this.request(
-      {
-        path: `/gs-nachmittag-betreuung`,
-        method: "PUT",
-        headers: headerParameters,
-        query: queryParameters,
-        body: GsNachmittagBetreuungDtoToJSON(requestParameters.gsNachmittagBetreuungDto),
-      },
-      initOverrides
-    );
+        const response = await this.request({
+            path: `/gs-nachmittag-betreuung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-    return new runtime.JSONApiResponse(response, (jsonValue) => GsNachmittagBetreuungDtoFromJSON(jsonValue));
-  }
+        return new runtime.JSONApiResponse(response, (jsonValue) => GsNachmittagBetreuungDtoFromJSON(jsonValue));
+    }
 
-  /**
-   * Aktualisierung einer Nachmittagsbetreuung für Grundschulkinder
-   */
-  async updateGsNachmittagBetreuung(
-    requestParameters: UpdateGsNachmittagBetreuungRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<GsNachmittagBetreuungDto> {
-    const response = await this.updateGsNachmittagBetreuungRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
+    /**
+     * Lesen einer Nachmittagsbetreuung für Grundschulkinder
+     */
+    async getGsNachmittagBetreuungById(requestParameters: GetGsNachmittagBetreuungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GsNachmittagBetreuungDto> {
+        const response = await this.getGsNachmittagBetreuungByIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+     * Lade alle Nachmittagsbetreuungen für Grundschulkinder
+     */
+    async getGsNachmittagBetreuungenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GsNachmittagBetreuungDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/gs-nachmittag-betreuungen`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GsNachmittagBetreuungDtoFromJSON));
+    }
+
+    /**
+     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+     * Lade alle Nachmittagsbetreuungen für Grundschulkinder
+     */
+    async getGsNachmittagBetreuungen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GsNachmittagBetreuungDto>> {
+        const response = await this.getGsNachmittagBetreuungenRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Aktualisierung einer Nachmittagsbetreuung für Grundschulkinder
+     */
+    async updateGsNachmittagBetreuungRaw(requestParameters: UpdateGsNachmittagBetreuungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GsNachmittagBetreuungDto>> {
+        if (requestParameters.gsNachmittagBetreuungDto === null || requestParameters.gsNachmittagBetreuungDto === undefined) {
+            throw new runtime.RequiredError('gsNachmittagBetreuungDto','Required parameter requestParameters.gsNachmittagBetreuungDto was null or undefined when calling updateGsNachmittagBetreuung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/gs-nachmittag-betreuung`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GsNachmittagBetreuungDtoToJSON(requestParameters.gsNachmittagBetreuungDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GsNachmittagBetreuungDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung einer Nachmittagsbetreuung für Grundschulkinder
+     */
+    async updateGsNachmittagBetreuung(requestParameters: UpdateGsNachmittagBetreuungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GsNachmittagBetreuungDto> {
+        const response = await this.updateGsNachmittagBetreuungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }
