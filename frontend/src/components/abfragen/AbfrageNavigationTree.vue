@@ -81,7 +81,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
 
-  private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
+  private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr: ";
 
   @VModel({ type: InfrastrukturabfrageWrapperModel }) infrastrukturabfrageWrapped!: InfrastrukturabfrageWrapperModel;
 
