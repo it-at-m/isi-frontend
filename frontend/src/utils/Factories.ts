@@ -377,7 +377,7 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
  */
 export function createBauabschnittDto(): BauabschnittDto {
   return {
-    id: "",
+    id: undefined,
     version: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
@@ -391,7 +391,7 @@ export function createBauabschnittDto(): BauabschnittDto {
  */
 export function createBaugebietDto(): BaugebietDto {
   return {
-    id: "",
+    id: undefined,
     version: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
