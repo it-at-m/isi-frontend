@@ -55,8 +55,8 @@ describe("DokumenteTest.spec.ts", () => {
     } as DokumentDto;
     const file1 = { name: "Test2.pdf" } as File;
     const file2 = { name: "Test3.pdf" } as File;
-    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file1, pathToFile)).toBe(true);
-    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file2, pathToFile)).toBe(false);
+    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file1)).toBe(true);
+    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file2)).toBe(false);
   });
 
   test("Maximale Größe einer Datei überschritten", () => {
