@@ -218,7 +218,7 @@ export default class BauvorhabenForm extends Mixins(
   }
 
   get dokumentePathToFile(): string {
-    return createFilepathDtoFor("bauvorhaben", this.bauvorhaben.dokumente);
+    return createFilepathDtoFor("bauvorhaben");
   }
 }
 </script>

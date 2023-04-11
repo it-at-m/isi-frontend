@@ -185,7 +185,7 @@ export default class AbfrageComponent extends Mixins(
 
   get dokumentePathToFile(): string | undefined {
     if (!_.isNil(this.abfrage)) {
-      return createFilepathDtoFor("abfrage", this.abfrage.dokumente);
+      return createFilepathDtoFor("abfrage");
     }
     return undefined;
   }

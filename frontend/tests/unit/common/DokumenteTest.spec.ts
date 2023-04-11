@@ -73,17 +73,10 @@ describe("DokumenteTest.spec.ts", () => {
   });
 
   test("Test filepath ohne Dokumente", () => {
-    const filepath: string = createFilepathDtoFor("test", undefined);
+    const filepath: string = createFilepathDtoFor("test");
     expect(filepath).not.toBeUndefined();
     // "test/<36-stellige UUID>/", d. h. eine (neue) UUID wird generiert
     expect(filepath).toHaveLength(42);
-  });
-
-  test("Test filepath mit Dokument", () => {
-    const dokument: DokumentDto = createDokumentDto();
-    dokument.filePath.pathToFile = createFilepathDtoFor("test", undefined);
-    // muss den gleichen Pfad liefern den das auch das erste Dokument in der Liste hat, d. h. es darf keine neue UUID generiert werden
-    expect(createFilepathDtoFor("test", [dokument])).toEqual(dokument.filePath.pathToFile);
   });
 
   test("Test Allowed MIME-Types", () => {
