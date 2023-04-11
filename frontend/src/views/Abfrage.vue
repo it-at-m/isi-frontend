@@ -385,7 +385,6 @@ export default class Abfrage extends Mixins(
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
       this.abfrageWrapped.infrastrukturabfrage
     );
-    console.log("saveInfrastrukturabfrage, validationMessage: " + validationMessage);
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
@@ -515,11 +514,7 @@ export default class Abfrage extends Mixins(
   }
 
   private validate(): boolean {
-    const valid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
-
-    console.log("Abfrage.validate: " + valid);
-    return valid;
-    //return (this.$refs.form as Vue & { validate: () => boolean }).validate();
+    return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
   private handleSelectAbfrage(): void {
@@ -564,12 +559,6 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedAbfragevariante)) {
       selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     }
-    console.log(
-      "getSelectedAbfragevariante, id: " +
-        selectedAbfragevariante.id +
-        ", Nr.: " +
-        selectedAbfragevariante.abfragevariantenNr
-    );
     return selectedAbfragevariante;
   }
 
@@ -584,7 +573,6 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedBauabschnitt)) {
       selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
     }
-    console.log("getSelectedBauabschnitt, id: " + selectedBauabschnitt.id + ": " + selectedBauabschnitt.bezeichnung);
     return selectedBauabschnitt;
   }
 
@@ -599,34 +587,18 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedBaugebiet)) {
       selectedBaugebiet = new BaugebietModel(createBaugebietDto());
     }
-    console.log("getSelectedBaugebiet, id: " + selectedBaugebiet.id + ": " + selectedBaugebiet.bezeichnung);
     return selectedBaugebiet;
   }
 
   private getSelectedBaurate(abfrageTreeItem: AbfrageTreeItem): BaurateDto {
     let selectedBaurate = undefined;
-    console.log(
-      "Anfang: getSelectedBaurate(), selectedBaurate: " +
-        selectedBaurate +
-        ", abfrageTreeItem.baurate: " +
-        abfrageTreeItem.baurate +
-        ", jahr: " +
-        (_.isNull(abfrageTreeItem.baurate?.jahr) ? "null" : abfrageTreeItem.baurate?.jahr)
-    );
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     selectedBaurate = selectedBaugebiet.bauraten.find((baurate) =>
       _.isEqual(baurate.jahr, abfrageTreeItem.baurate?.jahr)
     );
     if (_.isNil(selectedBaurate)) {
       selectedBaurate = new BaurateModel(createBaurateDto());
-      console.log("Baurate not found");
     }
-    console.log(
-      "Ende: getSelectedBaurate, id: " +
-        selectedBaurate.jahr +
-        ", jahr: " +
-        (_.isNull(selectedBaurate.jahr) ? "null" : selectedBaurate.jahr)
-    );
     return selectedBaurate;
   }
 
@@ -646,7 +618,6 @@ export default class Abfrage extends Mixins(
 
   private handleCreateNewBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    console.log("handleCreateNewBauabschnitt, Abfragevariante: " + selectedAbfragevariante.abfragevariantenNr);
     this.selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
     if (_.isNil(selectedAbfragevariante.bauabschnitte)) {
       selectedAbfragevariante.bauabschnitte = [];
@@ -672,7 +643,6 @@ export default class Abfrage extends Mixins(
 
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
-    console.log("handleCreateNewBaugebiet, Bauabschnitt: " + selectedBauabschnitt.bezeichnung);
     this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
     selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
     this.formChanged();
@@ -694,12 +664,9 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log("Anfang: handleCreateNewBaurate()");
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
-    console.log("handleCreateNewBaurate, Baugebiet: " + selectedBaugebiet.bezeichnung);
     this.selectedBaurate = new BaurateModel(createBaurateDto());
     selectedBaugebiet.bauraten.push(this.selectedBaurate);
-    console.log("Ende: handleCreateNewBaurate(), pushed Baurate Jahr: " + this.selectedBaurate.jahr);
     this.formChanged();
     this.openBaurateFormular();
   }

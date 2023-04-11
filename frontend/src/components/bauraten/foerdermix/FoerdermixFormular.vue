@@ -13,7 +13,7 @@
           cols="12"
           md="4"
         >
-          <num-field
+          <v-text-field
             id="foerdermix_gesamtsumme"
             v-model="gesamtsumme"
             label="Summe"
@@ -147,7 +147,6 @@ export default class FoerdermixFormular extends Mixins(
   get gesamtsumme(): number {
     const sum: number = addiereAnteile(this.foerdermix);
     this.sumOver100 = sum > 100;
-    //console.log("Gesamtsumme: " + sum);
     return sum;
   }
 }

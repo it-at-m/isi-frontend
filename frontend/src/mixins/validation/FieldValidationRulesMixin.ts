@@ -49,13 +49,8 @@ export default class FieldValidationRulesMixin extends Vue {
      * Werte die null/undefined sind werden als 0 gewertet
      */
     nichtGleich100Prozent(foerdermix: FoerdermixModel): string | boolean {
-      console.log("nichtGleich100Prozent");
       if (!_.isNil(foerdermix)) {
-        console.log(
-          "nichtGleich100Prozent, Freifinanzierter Wohnungsbau: " + foerdermix.anteilFreifinanzierterGeschosswohnungsbau
-        );
         const sum: number = addiereAnteile(foerdermix);
-        console.log("nichtGleich100Prozent, sum: " + sum);
         if (sum < 100) {
           return "Die Summe ist unter 100";
         }
@@ -65,7 +60,6 @@ export default class FieldValidationRulesMixin extends Vue {
         }
 
         if (sum === 100) {
-          console.log("nichtGleich100Prozent, sum === 100: return true");
           return true;
         }
       } else {

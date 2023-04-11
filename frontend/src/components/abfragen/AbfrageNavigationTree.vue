@@ -678,10 +678,6 @@ export default class AbfrageNavigationTree extends Vue {
     clonedNewAbfrageTreeItem: AbfrageTreeItem,
     clonedOldAbfrageTreeItem: AbfrageTreeItem
   ): boolean {
-    //AS: mit Boxi klären
-    // Entfernen des Fördermix aus Klon zur Vermeidung eines isEqual bei Fördermix
-    //if (!_.isNil(clonedNewAbfrageTreeItem.baurate)) clonedNewAbfrageTreeItem.baurate.foerdermix = ???;
-    //if (!_.isNil(clonedOldAbfrageTreeItem.baurate)) clonedOldAbfrageTreeItem.baurate.foerdermix = ???;
     return (
       !_.isNil(clonedNewAbfrageTreeItem.baurate) &&
       !_.isNil(clonedNewAbfrageTreeItem.baurate.id) &&
