@@ -177,11 +177,40 @@ export function createDokumentDto(): DokumentDto {
 }
 
 /**
+ * BauabschnittDto
+ */
+export function createBauabschnittDto(): BauabschnittDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "",
+    baugebiete: [],
+  } as BauabschnittDto;
+}
+
+/**
+ * BaugebietDto
+ */
+export function createBaugebietDto(): BaugebietDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "",
+    baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
+    bauraten: [],
+  } as BaugebietDto;
+}
+
+/**
  * BaurateDto
  */
-export function createBaurate(): BaurateDto {
+export function createBaurateDto(): BaurateDto {
   return {
-    id: "",
+    id: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     geschossflaecheWohnenGeplant: undefined,
@@ -199,7 +228,7 @@ export function createBaurate(): BaurateDto {
   } as BaurateDto;
 }
 
-export function createFoerdermix(): FoerdermixDto {
+export function createFoerdermixDto(): FoerdermixDto {
   return {
     anteilBaugemeinschaften: undefined,
     anteilEinUndZweifamilienhaeuser: undefined,
@@ -211,7 +240,7 @@ export function createFoerdermix(): FoerdermixDto {
   } as FoerdermixDto;
 }
 
-export function createFoerdermixStamm(): FoerdermixStammDto {
+export function createFoerdermixStammDto(): FoerdermixStammDto {
   return {
     bezeichnung: "",
     bezeichnungJahr: "",
@@ -370,33 +399,4 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
     position: undefined,
     geozuordnungen: undefined,
   } as MuenchenAdresseDto;
-}
-
-/**
- * BauabschnittDto
- */
-export function createBauabschnittDto(): BauabschnittDto {
-  return {
-    id: undefined,
-    version: undefined,
-    createdDateTime: undefined,
-    lastModifiedDateTime: undefined,
-    bezeichnung: "",
-    baugebiete: [],
-  } as BauabschnittDto;
-}
-
-/**
- * BaugebietDto
- */
-export function createBaugebietDto(): BaugebietDto {
-  return {
-    id: undefined,
-    version: undefined,
-    createdDateTime: undefined,
-    lastModifiedDateTime: undefined,
-    bezeichnung: "",
-    baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
-    bauraten: [],
-  } as BaugebietDto;
 }

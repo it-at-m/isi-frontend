@@ -1,5 +1,5 @@
 import { BaurateDto } from "@/api/api-client/isi-backend";
-import { createFoerdermix } from "@/utils/Factories";
+import { createFoerdermixDto } from "@/utils/Factories";
 import FoerdermixModel from "./FoerdermixModel";
 import _ from "lodash";
 
@@ -9,7 +9,7 @@ class BaurateModel {
   constructor(baurate: BaurateDto) {
     Object.assign(this, baurate, {});
     if (_.isNil(baurate.foerdermix)) {
-      this.foerdermix = new FoerdermixModel(createFoerdermix());
+      this.foerdermix = new FoerdermixModel(createFoerdermixDto());
     } else {
       this.foerdermix = new FoerdermixModel(baurate.foerdermix);
     }

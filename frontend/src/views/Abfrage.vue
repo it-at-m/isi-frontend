@@ -30,6 +30,13 @@
             :mode="modeBaugebiet"
           />
         </div>
+        <div v-if="isBaurateFormularOpen">
+          <baurate-component
+            id="baurate_component"
+            v-model="selectedBaurate"
+            :mode="modeBaurate"
+          />
+        </div>
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
           v-model="deleteDialogAbfrageOpen"
@@ -106,6 +113,9 @@
           @select-baugebiet="handleSelectBaugebiet"
           @delete-baugebiet="handleDeleteBaugebiet"
           @create-new-baugebiet="handleCreateNewBaugebiet"
+          @select-baurate="handleSelectBaurate"
+          @delete-baurate="handleDeleteBaurate"
+          @create-new-baurate="handleCreateNewBaurate"
         />
         <v-spacer />
       </template>
@@ -170,17 +180,18 @@ import { Component, Mixins, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
 import BaugebietComponent from "@/components/baugebiete/BaugebietComponent.vue";
-//import BauratenComponent from "@/components/bauraten/BauratenComponent.vue";
+import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
 import Toaster from "../components/common/toaster.type";
 import {
   createAbfragevarianteDto,
   createInfrastrukturabfrageDto,
   createBauabschnittDto,
   createBaugebietDto,
+  createBaurateDto,
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
-//import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
+import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
@@ -189,6 +200,7 @@ import {
   AbfragevarianteDto,
   BauabschnittDto,
   BaugebietDto,
+  BaurateDto,
 } from "@/api/api-client/isi-backend";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
@@ -204,6 +216,7 @@ import AbfragevarianteFormular from "@/components/abfragevarianten/Abfragevarian
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
+import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 
 @Component({
@@ -215,7 +228,7 @@ import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/Infrastruktu
     InfrastrukturabfrageComponent,
     YesNoDialog,
     DefaultLayout,
-    //BauratenComponent,
+    BaurateComponent,
     BauabschnittComponent,
     BaugebietComponent,
   },
@@ -224,7 +237,7 @@ export default class Abfrage extends Mixins(
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
   FreigabeApiRequestMixin,
-  //BaurateReqestMixin,
+  BaurateReqestMixin,
   ValidatorMixin,
   SaveLeaveMixin
 ) {
@@ -243,6 +256,8 @@ export default class Abfrage extends Mixins(
 
   private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
 
+  private selectedBaurate: BaurateModel = new BaurateModel(createBaurateDto());
+
   private abfrageId: string = this.$route.params.id;
 
   private deleteDialogAbfrageOpen = false;
@@ -255,6 +270,8 @@ export default class Abfrage extends Mixins(
 
   private deleteDialogBaugebietOpen = false;
 
+  private deleteDialogBaurateOpen = false;
+
   private abfrageFormularOpen = true;
 
   private abfragevarianteFormularOpen = false;
@@ -262,6 +279,8 @@ export default class Abfrage extends Mixins(
   private bauabschnittFormularOpen = false;
 
   private baugebietFormularOpen = false;
+
+  private baurateFormularOpen = false;
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
@@ -307,6 +326,10 @@ export default class Abfrage extends Mixins(
 
   get isBaugebietFormularOpen(): boolean {
     return this.baugebietFormularOpen;
+  }
+
+  get isBaurateFormularOpen(): boolean {
+    return this.baurateFormularOpen;
   }
 
   private deleteAbfrage(): void {
@@ -362,6 +385,7 @@ export default class Abfrage extends Mixins(
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
       this.abfrageWrapped.infrastrukturabfrage
     );
+    console.log("saveInfrastrukturabfrage, validationMessage: " + validationMessage);
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
@@ -428,6 +452,7 @@ export default class Abfrage extends Mixins(
     this.abfragevarianteFormularOpen = false;
     this.bauabschnittFormularOpen = false;
     this.baugebietFormularOpen = false;
+    this.baurateFormularOpen = false;
   }
 
   private openAbfrageFormular(): void {
@@ -435,6 +460,7 @@ export default class Abfrage extends Mixins(
     this.abfragevarianteFormularOpen = false;
     this.bauabschnittFormularOpen = false;
     this.baugebietFormularOpen = false;
+    this.baurateFormularOpen = false;
   }
 
   private openAbfragevarianteFormular(): void {
@@ -442,6 +468,7 @@ export default class Abfrage extends Mixins(
     this.abfragevarianteFormularOpen = true;
     this.bauabschnittFormularOpen = false;
     this.baugebietFormularOpen = false;
+    this.baurateFormularOpen = false;
   }
 
   private openBauabschnittFormular(): void {
@@ -449,6 +476,7 @@ export default class Abfrage extends Mixins(
     this.abfragevarianteFormularOpen = false;
     this.bauabschnittFormularOpen = true;
     this.baugebietFormularOpen = false;
+    this.baurateFormularOpen = false;
   }
 
   private openBaugebietFormular(): void {
@@ -456,6 +484,15 @@ export default class Abfrage extends Mixins(
     this.abfragevarianteFormularOpen = false;
     this.bauabschnittFormularOpen = false;
     this.baugebietFormularOpen = true;
+    this.baurateFormularOpen = false;
+  }
+
+  private openBaurateFormular(): void {
+    this.abfrageFormularOpen = false;
+    this.abfragevarianteFormularOpen = false;
+    this.bauabschnittFormularOpen = false;
+    this.baugebietFormularOpen = false;
+    this.baurateFormularOpen = true;
   }
 
   private isNewAbfrage(): boolean {
@@ -478,7 +515,11 @@ export default class Abfrage extends Mixins(
   }
 
   private validate(): boolean {
-    return (this.$refs.form as Vue & { validate: () => boolean }).validate();
+    const valid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+
+    console.log("Abfrage.validate: " + valid);
+    return valid;
+    //return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
   private handleSelectAbfrage(): void {
@@ -523,6 +564,12 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedAbfragevariante)) {
       selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     }
+    console.log(
+      "getSelectedAbfragevariante, id: " +
+        selectedAbfragevariante.id +
+        ", Nr.: " +
+        selectedAbfragevariante.abfragevariantenNr
+    );
     return selectedAbfragevariante;
   }
 
@@ -537,6 +584,7 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedBauabschnitt)) {
       selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
     }
+    console.log("getSelectedBauabschnitt, id: " + selectedBauabschnitt.id + ": " + selectedBauabschnitt.bezeichnung);
     return selectedBauabschnitt;
   }
 
@@ -551,7 +599,35 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedBaugebiet)) {
       selectedBaugebiet = new BaugebietModel(createBaugebietDto());
     }
+    console.log("getSelectedBaugebiet, id: " + selectedBaugebiet.id + ": " + selectedBaugebiet.bezeichnung);
     return selectedBaugebiet;
+  }
+
+  private getSelectedBaurate(abfrageTreeItem: AbfrageTreeItem): BaurateDto {
+    let selectedBaurate = undefined;
+    console.log(
+      "Anfang: getSelectedBaurate(), selectedBaurate: " +
+        selectedBaurate +
+        ", abfrageTreeItem.baurate: " +
+        abfrageTreeItem.baurate +
+        ", jahr: " +
+        (_.isNull(abfrageTreeItem.baurate?.jahr) ? "null" : abfrageTreeItem.baurate?.jahr)
+    );
+    let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
+    selectedBaurate = selectedBaugebiet.bauraten.find((baurate) =>
+      _.isEqual(baurate.jahr, abfrageTreeItem.baurate?.jahr)
+    );
+    if (_.isNil(selectedBaurate)) {
+      selectedBaurate = new BaurateModel(createBaurateDto());
+      console.log("Baurate not found");
+    }
+    console.log(
+      "Ende: getSelectedBaurate, id: " +
+        selectedBaurate.jahr +
+        ", jahr: " +
+        (_.isNull(selectedBaurate.jahr) ? "null" : selectedBaurate.jahr)
+    );
+    return selectedBaurate;
   }
 
   private handleSelectBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
@@ -570,7 +646,7 @@ export default class Abfrage extends Mixins(
 
   private handleCreateNewBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    //AS: alert("handleCreateNewBauabschnitt, Abfragevariante: " + selectedAbfragevariante.abfragevariantenNr);
+    console.log("handleCreateNewBauabschnitt, Abfragevariante: " + selectedAbfragevariante.abfragevariantenNr);
     this.selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
     if (_.isNil(selectedAbfragevariante.bauabschnitte)) {
       selectedAbfragevariante.bauabschnitte = [];
@@ -596,11 +672,36 @@ export default class Abfrage extends Mixins(
 
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
-    // AS: alert("handleCreateNewBaugebiet, Bauabschnitt: " + selectedBauabschnitt.bezeichnung);
+    console.log("handleCreateNewBaugebiet, Bauabschnitt: " + selectedBauabschnitt.bezeichnung);
     this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
     selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
     this.formChanged();
     this.openBaugebietFormular();
+  }
+
+  private handleSelectBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    this.initializeFormulare();
+    this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
+    this.$nextTick(() => {
+      this.openBaurateFormular();
+    });
+  }
+
+  private handleDeleteBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
+    this.openBaurateFormular();
+    this.deleteDialogBaurateOpen = true;
+  }
+
+  private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log("Anfang: handleCreateNewBaurate()");
+    let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
+    console.log("handleCreateNewBaurate, Baugebiet: " + selectedBaugebiet.bezeichnung);
+    this.selectedBaurate = new BaurateModel(createBaurateDto());
+    selectedBaugebiet.bauraten.push(this.selectedBaurate);
+    console.log("Ende: handleCreateNewBaurate(), pushed Baurate Jahr: " + this.selectedBaurate.jahr);
+    this.formChanged();
+    this.openBaurateFormular();
   }
 
   private get modeAbfragevariante(): DisplayMode {
@@ -613,6 +714,10 @@ export default class Abfrage extends Mixins(
 
   private get modeBaugebiet(): DisplayMode {
     return _.isNil(this.selectedBaugebiet.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+  }
+
+  private get modeBaurate(): DisplayMode {
+    return _.isNil(this.selectedBaurate.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
   private renumberingAbfragevarianten(): void {
