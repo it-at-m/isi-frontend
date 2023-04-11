@@ -150,9 +150,9 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
       // Anzeige des Cursorladekreis starten
       this.loading = true;
       // Erstellen der Ordnerstruktur zum Speichern der gewählten Dateien.
-      const nameRootFolder = createFilepathFor(this.nameRootFolder);
+      const pathToFiles = createFilepathFor(this.nameRootFolder);
       // Upload der Dateien
-      await this.saveFiles(fileList, nameRootFolder).finally(() => {
+      await this.saveFiles(fileList, pathToFiles).finally(() => {
         // Anzeige des Cursorladekreises beenden
         this.loading = false;
       });
