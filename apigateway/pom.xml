@@ -22,8 +22,8 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <spring.boot.version>2.7.6</spring.boot.version>
-        <spring.cloud.version>2021.0.5</spring.cloud.version>
+        <spring.boot.version>2.7.10</spring.boot.version>
+        <spring.cloud.version>2021.0.6</spring.cloud.version>
         <logstash.encoder.version>7.0.1</logstash.encoder.version>
         <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
         <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>

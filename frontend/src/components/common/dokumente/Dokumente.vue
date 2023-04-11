@@ -73,7 +73,6 @@ import { createDokumentDto, createFilepathDto, createPresignedUrlDto } from "@/u
 import {
   fileAlreadyExists,
   getAllowedMimeTypes,
-  isDokumentAllowed,
   maxFileSizeExceeded,
   maxNumberOfFilesReached,
   mimeTypeNichtErlaubt,
