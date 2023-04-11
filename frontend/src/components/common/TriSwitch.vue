@@ -24,6 +24,7 @@
         min="0"
         max="2"
         :step="isCollapsed() ? 2 : 1"
+        @change="formChanged"
         @focus="focused"
         @blur="blurred"
       />
