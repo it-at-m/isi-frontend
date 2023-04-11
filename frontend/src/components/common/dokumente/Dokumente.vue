@@ -53,6 +53,7 @@
       hidden
       :accept="allowedMimeTypes"
       @change="onFilesSelected"
+      @click="onClick"
     />
   </v-container>
 </template>
@@ -127,6 +128,15 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
       }
     });
     this.formChanged();
+  }
+
+  /**
+   * Erforderlich um nach Auswahl einer vorher bereits gewählten Datei das HTMLInputElement-Change-Event nochmal zu triggern.
+   * @param event als HTMLInputElement
+   */
+  onClick(event: Event) {
+    const target = event.target as HTMLInputElement;
+    target.value = "";
   }
 
   // - Anzeigen des File-Explorers zur Auswahl von Dateien
