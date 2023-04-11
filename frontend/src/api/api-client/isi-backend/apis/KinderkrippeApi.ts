@@ -12,239 +12,189 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from "../runtime";
+
+import * as runtime from '../runtime';
 import {
-  InformationResponseDto,
-  InformationResponseDtoFromJSON,
-  InformationResponseDtoToJSON,
-  KinderkrippeDto,
-  KinderkrippeDtoFromJSON,
-  KinderkrippeDtoToJSON,
-} from "../models";
+    InformationResponseDto,
+    InformationResponseDtoFromJSON,
+    InformationResponseDtoToJSON,
+    KinderkrippeDto,
+    KinderkrippeDtoFromJSON,
+    KinderkrippeDtoToJSON,
+} from '../models';
 
 export interface CreateKinderkrippeRequest {
-  kinderkrippeDto: KinderkrippeDto;
+    kinderkrippeDto: KinderkrippeDto;
 }
 
 export interface DeleteKinderkrippeByIdRequest {
-  id: string;
+    id: string;
 }
 
 export interface GetKinderkrippeByIdRequest {
-  id: string;
+    id: string;
 }
 
 export interface UpdateKinderkrippeRequest {
-  kinderkrippeDto: KinderkrippeDto;
+    kinderkrippeDto: KinderkrippeDto;
 }
 
 /**
- *
+ * 
  */
 export class KinderkrippeApi extends runtime.BaseAPI {
-  /**
-   * Anlegen einer neuen Kinderkrippe
-   */
-  async createKinderkrippeRaw(
-    requestParameters: CreateKinderkrippeRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<KinderkrippeDto>> {
-    if (requestParameters.kinderkrippeDto === null || requestParameters.kinderkrippeDto === undefined) {
-      throw new runtime.RequiredError(
-        "kinderkrippeDto",
-        "Required parameter requestParameters.kinderkrippeDto was null or undefined when calling createKinderkrippe."
-      );
+
+    /**
+     * Anlegen einer neuen Kinderkrippe
+     */
+    async createKinderkrippeRaw(requestParameters: CreateKinderkrippeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<KinderkrippeDto>> {
+        if (requestParameters.kinderkrippeDto === null || requestParameters.kinderkrippeDto === undefined) {
+            throw new runtime.RequiredError('kinderkrippeDto','Required parameter requestParameters.kinderkrippeDto was null or undefined when calling createKinderkrippe.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/kinderkrippe`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KinderkrippeDtoToJSON(requestParameters.kinderkrippeDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KinderkrippeDtoFromJSON(jsonValue));
     }
 
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json";
-
-    const response = await this.request(
-      {
-        path: `/kinderkrippe`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-        body: KinderkrippeDtoToJSON(requestParameters.kinderkrippeDto),
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => KinderkrippeDtoFromJSON(jsonValue));
-  }
-
-  /**
-   * Anlegen einer neuen Kinderkrippe
-   */
-  async createKinderkrippe(
-    requestParameters: CreateKinderkrippeRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<KinderkrippeDto> {
-    const response = await this.createKinderkrippeRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Löschen einer Kinderkrippe
-   */
-  async deleteKinderkrippeByIdRaw(
-    requestParameters: DeleteKinderkrippeByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling deleteKinderkrippeById."
-      );
+    /**
+     * Anlegen einer neuen Kinderkrippe
+     */
+    async createKinderkrippe(requestParameters: CreateKinderkrippeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<KinderkrippeDto> {
+        const response = await this.createKinderkrippeRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    const queryParameters: any = {};
+    /**
+     * Löschen einer Kinderkrippe
+     */
+    async deleteKinderkrippeByIdRaw(requestParameters: DeleteKinderkrippeByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteKinderkrippeById.');
+        }
 
-    const headerParameters: runtime.HTTPHeaders = {};
+        const queryParameters: any = {};
 
-    const response = await this.request(
-      {
-        path: `/kinderkrippe/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-        method: "DELETE",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    return new runtime.VoidApiResponse(response);
-  }
+        const response = await this.request({
+            path: `/kinderkrippe/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-  /**
-   * Löschen einer Kinderkrippe
-   */
-  async deleteKinderkrippeById(
-    requestParameters: DeleteKinderkrippeByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<void> {
-    await this.deleteKinderkrippeByIdRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   * Lesen einer Kinderkrippe
-   */
-  async getKinderkrippeByIdRaw(
-    requestParameters: GetKinderkrippeByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<KinderkrippeDto>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling getKinderkrippeById."
-      );
+        return new runtime.VoidApiResponse(response);
     }
 
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/kinderkrippe/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => KinderkrippeDtoFromJSON(jsonValue));
-  }
-
-  /**
-   * Lesen einer Kinderkrippe
-   */
-  async getKinderkrippeById(
-    requestParameters: GetKinderkrippeByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<KinderkrippeDto> {
-    const response = await this.getKinderkrippeByIdRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-   * Lade alle Kinderkrippen
-   */
-  async getKinderkrippenRaw(
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<Array<KinderkrippeDto>>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/kinderkrippen`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(KinderkrippeDtoFromJSON));
-  }
-
-  /**
-   * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
-   * Lade alle Kinderkrippen
-   */
-  async getKinderkrippen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<KinderkrippeDto>> {
-    const response = await this.getKinderkrippenRaw(initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Aktualisierung einer Kinderkrippe
-   */
-  async updateKinderkrippeRaw(
-    requestParameters: UpdateKinderkrippeRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<runtime.ApiResponse<KinderkrippeDto>> {
-    if (requestParameters.kinderkrippeDto === null || requestParameters.kinderkrippeDto === undefined) {
-      throw new runtime.RequiredError(
-        "kinderkrippeDto",
-        "Required parameter requestParameters.kinderkrippeDto was null or undefined when calling updateKinderkrippe."
-      );
+    /**
+     * Löschen einer Kinderkrippe
+     */
+    async deleteKinderkrippeById(requestParameters: DeleteKinderkrippeByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.deleteKinderkrippeByIdRaw(requestParameters, initOverrides);
     }
 
-    const queryParameters: any = {};
+    /**
+     * Lesen einer Kinderkrippe
+     */
+    async getKinderkrippeByIdRaw(requestParameters: GetKinderkrippeByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<KinderkrippeDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getKinderkrippeById.');
+        }
 
-    const headerParameters: runtime.HTTPHeaders = {};
+        const queryParameters: any = {};
 
-    headerParameters["Content-Type"] = "application/json";
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    const response = await this.request(
-      {
-        path: `/kinderkrippe`,
-        method: "PUT",
-        headers: headerParameters,
-        query: queryParameters,
-        body: KinderkrippeDtoToJSON(requestParameters.kinderkrippeDto),
-      },
-      initOverrides
-    );
+        const response = await this.request({
+            path: `/kinderkrippe/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-    return new runtime.JSONApiResponse(response, (jsonValue) => KinderkrippeDtoFromJSON(jsonValue));
-  }
+        return new runtime.JSONApiResponse(response, (jsonValue) => KinderkrippeDtoFromJSON(jsonValue));
+    }
 
-  /**
-   * Aktualisierung einer Kinderkrippe
-   */
-  async updateKinderkrippe(
-    requestParameters: UpdateKinderkrippeRequest,
-    initOverrides?: RequestInit | runtime.InitOverideFunction
-  ): Promise<KinderkrippeDto> {
-    const response = await this.updateKinderkrippeRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
+    /**
+     * Lesen einer Kinderkrippe
+     */
+    async getKinderkrippeById(requestParameters: GetKinderkrippeByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<KinderkrippeDto> {
+        const response = await this.getKinderkrippeByIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+     * Lade alle Kinderkrippen
+     */
+    async getKinderkrippenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<KinderkrippeDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/kinderkrippen`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(KinderkrippeDtoFromJSON));
+    }
+
+    /**
+     * Das Ergebnis wird nach Name der Einrichtung aufsteigend sortiert
+     * Lade alle Kinderkrippen
+     */
+    async getKinderkrippen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<KinderkrippeDto>> {
+        const response = await this.getKinderkrippenRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Aktualisierung einer Kinderkrippe
+     */
+    async updateKinderkrippeRaw(requestParameters: UpdateKinderkrippeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<KinderkrippeDto>> {
+        if (requestParameters.kinderkrippeDto === null || requestParameters.kinderkrippeDto === undefined) {
+            throw new runtime.RequiredError('kinderkrippeDto','Required parameter requestParameters.kinderkrippeDto was null or undefined when calling updateKinderkrippe.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/kinderkrippe`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KinderkrippeDtoToJSON(requestParameters.kinderkrippeDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KinderkrippeDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung einer Kinderkrippe
+     */
+    async updateKinderkrippe(requestParameters: UpdateKinderkrippeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<KinderkrippeDto> {
+        const response = await this.updateKinderkrippeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }

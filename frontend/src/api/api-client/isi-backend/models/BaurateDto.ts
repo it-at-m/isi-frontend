@@ -12,103 +12,108 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
-import { FoerdermixDto, FoerdermixDtoFromJSON, FoerdermixDtoFromJSONTyped, FoerdermixDtoToJSON } from "./FoerdermixDto";
+import { exists, mapValues } from '../runtime';
+import {
+    FoerdermixDto,
+    FoerdermixDtoFromJSON,
+    FoerdermixDtoFromJSONTyped,
+    FoerdermixDtoToJSON,
+} from './FoerdermixDto';
 
 /**
- *
+ * 
  * @export
  * @interface BaurateDto
  */
 export interface BaurateDto {
-  /**
-   *
-   * @type {string}
-   * @memberof BaurateDto
-   */
-  id?: string;
-  /**
-   *
-   * @type {number}
-   * @memberof BaurateDto
-   */
-  version?: number;
-  /**
-   *
-   * @type {Date}
-   * @memberof BaurateDto
-   */
-  createdDateTime?: Date;
-  /**
-   *
-   * @type {Date}
-   * @memberof BaurateDto
-   */
-  lastModifiedDateTime?: Date;
-  /**
-   *
-   * @type {number}
-   * @memberof BaurateDto
-   */
-  jahr: number;
-  /**
-   *
-   * @type {number}
-   * @memberof BaurateDto
-   */
-  anzahlWeGeplant?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof BaurateDto
-   */
-  geschossflaecheWohnenGeplant?: number;
-  /**
-   *
-   * @type {FoerdermixDto}
-   * @memberof BaurateDto
-   */
-  foerdermix: FoerdermixDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaurateDto
+     */
+    id?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaurateDto
+     */
+    version?: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof BaurateDto
+     */
+    createdDateTime?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof BaurateDto
+     */
+    lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaurateDto
+     */
+    jahr: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaurateDto
+     */
+    anzahlWeGeplant?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaurateDto
+     */
+    geschossflaecheWohnenGeplant?: number;
+    /**
+     * 
+     * @type {FoerdermixDto}
+     * @memberof BaurateDto
+     */
+    foerdermix: FoerdermixDto;
 }
 
 export function BaurateDtoFromJSON(json: any): BaurateDto {
-  return BaurateDtoFromJSONTyped(json, false);
+    return BaurateDtoFromJSONTyped(json, false);
 }
 
 export function BaurateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaurateDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    id: !exists(json, "id") ? undefined : json["id"],
-    version: !exists(json, "version") ? undefined : json["version"],
-    createdDateTime: !exists(json, "createdDateTime") ? undefined : new Date(json["createdDateTime"]),
-    lastModifiedDateTime: !exists(json, "lastModifiedDateTime") ? undefined : new Date(json["lastModifiedDateTime"]),
-    jahr: json["jahr"],
-    anzahlWeGeplant: !exists(json, "anzahlWeGeplant") ? undefined : json["anzahlWeGeplant"],
-    geschossflaecheWohnenGeplant: !exists(json, "geschossflaecheWohnenGeplant")
-      ? undefined
-      : json["geschossflaecheWohnenGeplant"],
-    foerdermix: FoerdermixDtoFromJSON(json["foerdermix"]),
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'jahr': json['jahr'],
+        'anzahlWeGeplant': !exists(json, 'anzahlWeGeplant') ? undefined : json['anzahlWeGeplant'],
+        'geschossflaecheWohnenGeplant': !exists(json, 'geschossflaecheWohnenGeplant') ? undefined : json['geschossflaecheWohnenGeplant'],
+        'foerdermix': FoerdermixDtoFromJSON(json['foerdermix']),
+    };
 }
 
 export function BaurateDtoToJSON(value?: BaurateDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    id: value.id,
-    version: value.version,
-    createdDateTime: value.createdDateTime === undefined ? undefined : value.createdDateTime.toISOString(),
-    lastModifiedDateTime:
-      value.lastModifiedDateTime === undefined ? undefined : value.lastModifiedDateTime.toISOString(),
-    jahr: value.jahr,
-    anzahlWeGeplant: value.anzahlWeGeplant,
-    geschossflaecheWohnenGeplant: value.geschossflaecheWohnenGeplant,
-    foerdermix: FoerdermixDtoToJSON(value.foerdermix),
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'jahr': value.jahr,
+        'anzahlWeGeplant': value.anzahlWeGeplant,
+        'geschossflaecheWohnenGeplant': value.geschossflaecheWohnenGeplant,
+        'foerdermix': FoerdermixDtoToJSON(value.foerdermix),
+    };
 }
+

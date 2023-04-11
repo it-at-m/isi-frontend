@@ -12,50 +12,53 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface PresignedUrlDto
  */
 export interface PresignedUrlDto {
-  /**
-   * Die HTTP-Methode für den Request der Presigned-Url
-   * @type {string}
-   * @memberof PresignedUrlDto
-   */
-  httpMethodToUse?: string;
-  /**
-   * Die Presigned-Url
-   * @type {string}
-   * @memberof PresignedUrlDto
-   */
-  url?: string;
+    /**
+     * Die HTTP-Methode für den Request der Presigned-Url
+     * @type {string}
+     * @memberof PresignedUrlDto
+     */
+    httpMethodToUse?: string;
+    /**
+     * Die Presigned-Url
+     * @type {string}
+     * @memberof PresignedUrlDto
+     */
+    url?: string;
 }
 
 export function PresignedUrlDtoFromJSON(json: any): PresignedUrlDto {
-  return PresignedUrlDtoFromJSONTyped(json, false);
+    return PresignedUrlDtoFromJSONTyped(json, false);
 }
 
 export function PresignedUrlDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresignedUrlDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    httpMethodToUse: !exists(json, "httpMethodToUse") ? undefined : json["httpMethodToUse"],
-    url: !exists(json, "url") ? undefined : json["url"],
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'httpMethodToUse': !exists(json, 'httpMethodToUse') ? undefined : json['httpMethodToUse'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+    };
 }
 
 export function PresignedUrlDtoToJSON(value?: PresignedUrlDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    httpMethodToUse: value.httpMethodToUse,
-    url: value.url,
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'httpMethodToUse': value.httpMethodToUse,
+        'url': value.url,
+    };
 }
+
