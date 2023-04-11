@@ -69,7 +69,7 @@ import {
   PresignedUrlDto,
   ResponseError,
 } from "@/api/api-client/isi-backend";
-import { createDokumentDto, createFilepathDto, createPresignedUrlDto } from "@/utils/Factories";
+import { createDokumentDto, createFilepathFor, createFilepathDto, createPresignedUrlDto } from "@/utils/Factories";
 import {
   fileAlreadyExists,
   getAllowedMimeTypes,
@@ -90,7 +90,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   @VModel({ type: Array }) dokumente!: DokumentDto[];
 
   @Prop()
-  private pathToFile!: string;
+  private nameRootFolder!: string;
 
   private allowedMimeTypes = "";
 
@@ -139,8 +139,10 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
       // Anzeige des Cursorladekreis starten
       this.loading = true;
+      // Erstellen der Ordnerstruktur zum Speichern der gewählten Dateien.
+      const nameRootFolder = createFilepathFor(this.nameRootFolder);
       // Upload der Dateien
-      await this.saveFiles(fileList).finally(() => {
+      await this.saveFiles(fileList, nameRootFolder).finally(() => {
         // Anzeige des Cursorladekreises beenden
         this.loading = false;
       });
@@ -211,7 +213,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     fileAlreadyExistsMessage: string
   ): string {
     let messagePart = "";
-    if (fileAlreadyExists(dokumente, newFile, this.pathToFile)) {
+    if (fileAlreadyExists(dokumente, newFile)) {
       if (!_.isEmpty(fileAlreadyExistsMessage)) {
         messagePart += ", ";
       }
@@ -249,9 +251,9 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     return messagePart;
   }
 
-  async saveFiles(fileList: FileList): Promise<void> {
+  async saveFiles(fileList: FileList, pathToFiles: string): Promise<void> {
     for (let file of fileList) {
-      await this.saveFile(this.pathToFile, file);
+      await this.saveFile(pathToFiles, file);
     }
   }
 

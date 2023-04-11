@@ -142,7 +142,7 @@ export function createFilepathDto(): FilepathDto {
   } as FilepathDto;
 }
 
-export function createFilepathDtoFor(nameRootFolder: string): string {
+export function createFilepathFor(nameRootFolder: string): string {
   return `${nameRootFolder}/${uuidv4()}/`;
 }
 

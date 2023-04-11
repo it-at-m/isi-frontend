@@ -1,5 +1,5 @@
 import { DokumentDto, FileInformationDto, FilepathDto } from "@/api/api-client/isi-backend";
-import { createFilepathDtoFor, createDokumentDto } from "@/utils/Factories";
+import { createFilepathFor, createDokumentDto } from "@/utils/Factories";
 import {
   fileAlreadyExists,
   maxFileSizeExceeded,
@@ -73,7 +73,7 @@ describe("DokumenteTest.spec.ts", () => {
   });
 
   test("Test filepath ohne Dokumente", () => {
-    const filepath: string = createFilepathDtoFor("test");
+    const filepath: string = createFilepathFor("test");
     expect(filepath).not.toBeUndefined();
     // "test/<36-stellige UUID>/", d. h. eine (neue) UUID wird generiert
     expect(filepath).toHaveLength(42);
