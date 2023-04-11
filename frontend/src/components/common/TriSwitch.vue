@@ -209,19 +209,13 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
   transition: box-shadow 0.2s;
 }
 
-.slider::-webkit-slider-thumb:hover {
+.slider::-webkit-slider-thumb:hover,
+.slider:focus::-webkit-slider-thumb {
   box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
 }
 
-.slider::-moz-range-thumb:hover {
-  box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
-}
-
-.slider:focus .slider::-webkit-slider-thumb {
-  box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
-}
-
-.slider:focus .slider::-moz-range-thumb {
+.slider::-moz-range-thumb:hover,
+.slider:focus::-moz-range-thumb {
   box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
 }
 </style>
