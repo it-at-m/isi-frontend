@@ -247,7 +247,6 @@ export default class Bauvorhaben extends Mixins(
     }
 
     this.$router.push({ name: "viewAllBauvorhaben" });
-    this.$store.commit("search/selectedBauvorhaben", undefined);
   }
 
   /**
