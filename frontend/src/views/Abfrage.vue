@@ -226,7 +226,7 @@ export default class Abfrage extends Mixins(
     this.getAbfrageById();
   }
 
-  @Watch("$store.state.search.selectedAbfrage", { immediate: true, deep: true })
+  @Watch("$store.state.search.selectedAbfrage", { deep: true })
   private selectedAbfrageChanged() {
     const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
     if (!_.isNil(abfrageFromStore)) {

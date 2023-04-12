@@ -160,11 +160,11 @@ export default class Bauvorhaben extends Mixins(
     }
   }
 
-  @Watch("$store.state.search.selectedBauvorhaben", { immediate: true, deep: true })
+  @Watch("$store.state.search.selectedBauvorhaben", { deep: true })
   private selectedBauvorhabenChanged() {
     const bauvorhabenFromStore = this.$store.getters["search/selectedBauvorhaben"];
     if (!_.isNil(bauvorhabenFromStore)) {
-      this.bauvorhaben = _.cloneDeep(bauvorhabenFromStore);
+      this.bauvorhaben = new BauvorhabenModel(_.cloneDeep(bauvorhabenFromStore));
     }
   }
 
@@ -197,8 +197,6 @@ export default class Bauvorhaben extends Mixins(
   async fetchBauvorhabenById(): Promise<void> {
     await this.getBauvorhabenById(this.$route.params.id, false).then((dto) => {
       this.$store.commit("search/selectedBauvorhaben", dto);
-      const dtoFromStore = _.cloneDeep(this.$store.getters["search/selectedBauvorhaben"]);
-      this.bauvorhaben = new BauvorhabenModel(dtoFromStore);
     });
   }
 
