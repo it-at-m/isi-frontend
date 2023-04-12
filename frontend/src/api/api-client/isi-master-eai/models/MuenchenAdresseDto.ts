@@ -12,108 +12,114 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 import {
-  MuenchenAdresseGeoZuordnungenDto,
-  MuenchenAdresseGeoZuordnungenDtoFromJSON,
-  MuenchenAdresseGeoZuordnungenDtoFromJSONTyped,
-  MuenchenAdresseGeoZuordnungenDtoToJSON,
-} from "./MuenchenAdresseGeoZuordnungenDto";
-import { PositionDto, PositionDtoFromJSON, PositionDtoFromJSONTyped, PositionDtoToJSON } from "./PositionDto";
+    MuenchenAdresseGeoZuordnungenDto,
+    MuenchenAdresseGeoZuordnungenDtoFromJSON,
+    MuenchenAdresseGeoZuordnungenDtoFromJSONTyped,
+    MuenchenAdresseGeoZuordnungenDtoToJSON,
+} from './MuenchenAdresseGeoZuordnungenDto';
+import {
+    PositionDto,
+    PositionDtoFromJSON,
+    PositionDtoFromJSONTyped,
+    PositionDtoToJSON,
+} from './PositionDto';
 
 /**
- *
+ * 
  * @export
  * @interface MuenchenAdresseDto
  */
 export interface MuenchenAdresseDto {
-  /**
-   *
-   * @type {string}
-   * @memberof MuenchenAdresseDto
-   */
-  adresse?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof MuenchenAdresseDto
-   */
-  adressId?: string;
-  /**
-   *
-   * @type {number}
-   * @memberof MuenchenAdresseDto
-   */
-  hausnummer?: number;
-  /**
-   *
-   * @type {string}
-   * @memberof MuenchenAdresseDto
-   */
-  buchstabe?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof MuenchenAdresseDto
-   */
-  ortsname?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof MuenchenAdresseDto
-   */
-  strassenname?: string;
-  /**
-   *
-   * @type {PositionDto}
-   * @memberof MuenchenAdresseDto
-   */
-  position?: PositionDto;
-  /**
-   *
-   * @type {MuenchenAdresseGeoZuordnungenDto}
-   * @memberof MuenchenAdresseDto
-   */
-  geozuordnungen?: MuenchenAdresseGeoZuordnungenDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuenchenAdresseDto
+     */
+    adresse?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuenchenAdresseDto
+     */
+    adressId?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MuenchenAdresseDto
+     */
+    hausnummer?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuenchenAdresseDto
+     */
+    buchstabe?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuenchenAdresseDto
+     */
+    ortsname?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuenchenAdresseDto
+     */
+    strassenname?: string;
+    /**
+     * 
+     * @type {PositionDto}
+     * @memberof MuenchenAdresseDto
+     */
+    position?: PositionDto;
+    /**
+     * 
+     * @type {MuenchenAdresseGeoZuordnungenDto}
+     * @memberof MuenchenAdresseDto
+     */
+    geozuordnungen?: MuenchenAdresseGeoZuordnungenDto;
 }
 
 export function MuenchenAdresseDtoFromJSON(json: any): MuenchenAdresseDto {
-  return MuenchenAdresseDtoFromJSONTyped(json, false);
+    return MuenchenAdresseDtoFromJSONTyped(json, false);
 }
 
 export function MuenchenAdresseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MuenchenAdresseDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    adresse: !exists(json, "adresse") ? undefined : json["adresse"],
-    adressId: !exists(json, "adressId") ? undefined : json["adressId"],
-    hausnummer: !exists(json, "hausnummer") ? undefined : json["hausnummer"],
-    buchstabe: !exists(json, "buchstabe") ? undefined : json["buchstabe"],
-    ortsname: !exists(json, "ortsname") ? undefined : json["ortsname"],
-    strassenname: !exists(json, "strassenname") ? undefined : json["strassenname"],
-    position: !exists(json, "position") ? undefined : PositionDtoFromJSON(json["position"]),
-    geozuordnungen: !exists(json, "geozuordnungen")
-      ? undefined
-      : MuenchenAdresseGeoZuordnungenDtoFromJSON(json["geozuordnungen"]),
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'adresse': !exists(json, 'adresse') ? undefined : json['adresse'],
+        'adressId': !exists(json, 'adressId') ? undefined : json['adressId'],
+        'hausnummer': !exists(json, 'hausnummer') ? undefined : json['hausnummer'],
+        'buchstabe': !exists(json, 'buchstabe') ? undefined : json['buchstabe'],
+        'ortsname': !exists(json, 'ortsname') ? undefined : json['ortsname'],
+        'strassenname': !exists(json, 'strassenname') ? undefined : json['strassenname'],
+        'position': !exists(json, 'position') ? undefined : PositionDtoFromJSON(json['position']),
+        'geozuordnungen': !exists(json, 'geozuordnungen') ? undefined : MuenchenAdresseGeoZuordnungenDtoFromJSON(json['geozuordnungen']),
+    };
 }
 
 export function MuenchenAdresseDtoToJSON(value?: MuenchenAdresseDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    adresse: value.adresse,
-    adressId: value.adressId,
-    hausnummer: value.hausnummer,
-    buchstabe: value.buchstabe,
-    ortsname: value.ortsname,
-    strassenname: value.strassenname,
-    position: PositionDtoToJSON(value.position),
-    geozuordnungen: MuenchenAdresseGeoZuordnungenDtoToJSON(value.geozuordnungen),
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'adresse': value.adresse,
+        'adressId': value.adressId,
+        'hausnummer': value.hausnummer,
+        'buchstabe': value.buchstabe,
+        'ortsname': value.ortsname,
+        'strassenname': value.strassenname,
+        'position': PositionDtoToJSON(value.position),
+        'geozuordnungen': MuenchenAdresseGeoZuordnungenDtoToJSON(value.geozuordnungen),
+    };
 }
+

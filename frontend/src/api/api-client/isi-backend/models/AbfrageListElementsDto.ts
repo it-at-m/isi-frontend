@@ -12,54 +12,52 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 import {
-  AbfrageListElementDto,
-  AbfrageListElementDtoFromJSON,
-  AbfrageListElementDtoFromJSONTyped,
-  AbfrageListElementDtoToJSON,
-} from "./AbfrageListElementDto";
+    AbfrageListElementDto,
+    AbfrageListElementDtoFromJSON,
+    AbfrageListElementDtoFromJSONTyped,
+    AbfrageListElementDtoToJSON,
+} from './AbfrageListElementDto';
 
 /**
- *
+ * 
  * @export
  * @interface AbfrageListElementsDto
  */
 export interface AbfrageListElementsDto {
-  /**
-   *
-   * @type {Array<AbfrageListElementDto>}
-   * @memberof AbfrageListElementsDto
-   */
-  listElements?: Array<AbfrageListElementDto>;
+    /**
+     * 
+     * @type {Array<AbfrageListElementDto>}
+     * @memberof AbfrageListElementsDto
+     */
+    listElements?: Array<AbfrageListElementDto>;
 }
 
 export function AbfrageListElementsDtoFromJSON(json: any): AbfrageListElementsDto {
-  return AbfrageListElementsDtoFromJSONTyped(json, false);
+    return AbfrageListElementsDtoFromJSONTyped(json, false);
 }
 
 export function AbfrageListElementsDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageListElementsDto {
-  if (json === undefined || json === null) {
-    return json;
-  }
-  return {
-    listElements: !exists(json, "listElements")
-      ? undefined
-      : (json["listElements"] as Array<any>).map(AbfrageListElementDtoFromJSON),
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'listElements': !exists(json, 'listElements') ? undefined : ((json['listElements'] as Array<any>).map(AbfrageListElementDtoFromJSON)),
+    };
 }
 
 export function AbfrageListElementsDtoToJSON(value?: AbfrageListElementsDto | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-    listElements:
-      value.listElements === undefined
-        ? undefined
-        : (value.listElements as Array<any>).map(AbfrageListElementDtoToJSON),
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'listElements': value.listElements === undefined ? undefined : ((value.listElements as Array<any>).map(AbfrageListElementDtoToJSON)),
+    };
 }
+
