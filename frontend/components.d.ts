@@ -14,7 +14,6 @@ declare module '@vue/runtime-core' {
     BauabschnittComponent: typeof import('./src/components/bauabschnitte/BauabschnittComponent.vue')['default']
     BaugebietComponent: typeof import('./src/components/baugebiete/BaugebietComponent.vue')['default']
     BaurateComponent: typeof import('./src/components/bauraten/BaurateComponent.vue')['default']
-    BauratenComponent: typeof import('./src/components/bauraten/BauratenComponent.vue')['default']
     BauvorhabenDataTransferDialog: typeof import('./src/components/bauvorhaben/BauvorhabenDataTransferDialog.vue')['default']
     BauvorhabenForm: typeof import('./src/components/bauvorhaben/BauvorhabenForm.vue')['default']
     CityMap: typeof import('./src/components/map/CityMap.vue')['default']

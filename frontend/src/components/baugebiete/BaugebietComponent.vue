@@ -85,7 +85,7 @@
         >
           <num-field
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
-            v-model="baugebiet.anzahlWeBaurechtlichGenehmigt"
+            v-model="baugebiet.anzahlWohneinheitenBaurechtlichGenehmigt"
             class="mx-3"
             label="Baurechtlich genehmigt"
             integer
@@ -97,7 +97,7 @@
         >
           <num-field
             id="baugebiet_anzahlWeBaurechtlichFestgesetzt"
-            v-model="baugebiet.anzahlWeBaurechtlichFestgesetzt"
+            v-model="baugebiet.anzahlWohneinheitenBaurechtlichFestgesetzt"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             integer
