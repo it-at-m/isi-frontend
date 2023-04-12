@@ -5,8 +5,7 @@
         <v-treeview
           id="abfrage_navigation_tree_treeview"
           :active.sync="markedTreeItems"
-          open-all
-          :open.prop="treeItemIdsToOpen"
+          :open.sync="treeItemIdsToOpen"
           :items="abfrageTreeItems"
           activatable
           active-class="font-weight-black v-treeview-node--active"
@@ -179,12 +178,14 @@ export default class AbfrageNavigationTree extends Vue {
 
   private treeItemKey = 0;
 
+  private abfrageTreeItemsToOpen: Array<number> = [];
+
   /**
    * Der Watcher reagiert, falls sich der übergebene AbfrageWrapper ändert oder durch einen Neuen ersetzt wird.
    * Hat das Attribut "initial" die Ausprägung true, so wird eine Kopie der AbfrageTreeItems erstellt,
    * welche als Referenz zur Erkennung von möglichen Änderungen der in den AbfrageTreeItems referenzierten Objekten dient.
    */
-  @Watch("infrastrukturabfrageWrapped", { immediate: true, deep: true })
+  @Watch("infrastrukturabfrageWrapped", { deep: true })
   private abfrageChanged(): void {
     if (!_.isNil(this.infrastrukturabfrageWrapped.infrastrukturabfrage)) {
       this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrageWrapped.infrastrukturabfrage);
@@ -220,8 +221,16 @@ export default class AbfrageNavigationTree extends Vue {
     }
   }
 
+  public initializTreeItemsToOpen(): void {
+    this.abfrageTreeItemsToOpen = [];
+  }
+
   get treeItemIdsToOpen(): Array<number> {
-    return this.createTreeItemIds(this.abfrageTreeItems);
+    return this.abfrageTreeItemsToOpen;
+  }
+
+  set treeItemIdsToOpen(treeItemIds: Array<number>) {
+    this.abfrageTreeItemsToOpen = treeItemIds;
   }
 
   get nameTreeElementAbfrage(): string {
@@ -274,14 +283,30 @@ export default class AbfrageNavigationTree extends Vue {
    */
   public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
     const abfrageTreeItems: Array<AbfrageTreeItem> = [];
-
     this.treeItemKey = 0;
+
     const abfrageRootTreeItem = this.createRootAbfrageTreeItem(this.treeItemKey++, abfrage);
     abfrageTreeItems.push(abfrageRootTreeItem);
-
+    if (this.abfrageTreeItemsToOpen.length === 0) {
+      // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
+      this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id);
+    }
     this.createAbfragevariantenTreeItems(abfrageRootTreeItem, abfrage);
 
     return abfrageTreeItems;
+  }
+
+  private createRootAbfrageTreeItem(id: number, abfrage: InfrastrukturabfrageDto) {
+    return this.createAbfrageTreeItem(
+      id,
+      this.nameTreeElementAbfrage,
+      AbfrageTreeItemType.ABFRAGE,
+      abfrage,
+      undefined,
+      undefined,
+      undefined,
+      undefined
+    );
   }
 
   private createAbfragevariantenTreeItems(parentTreeItem: AbfrageTreeItem, abfrage: InfrastrukturabfrageDto) {
@@ -357,19 +382,6 @@ export default class AbfrageNavigationTree extends Vue {
     });
     parentTreeItem.children.push(
       this.createAddBaurateTreeItem(this.treeItemKey++, abfrage, abfragevariante, bauabschnitt, baugebiet)
-    );
-  }
-
-  private createRootAbfrageTreeItem(id: number, abfrage: InfrastrukturabfrageDto) {
-    return this.createAbfrageTreeItem(
-      id,
-      this.nameTreeElementAbfrage,
-      AbfrageTreeItemType.ABFRAGE,
-      abfrage,
-      undefined,
-      undefined,
-      undefined,
-      undefined
     );
   }
 

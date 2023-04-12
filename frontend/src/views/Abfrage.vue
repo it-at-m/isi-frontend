@@ -101,7 +101,8 @@
       </template>
       <template #navigation>
         <abfrage-navigation-tree
-          id="abfrage_navidation_tree"
+          id="abfrage_navigation_tree"
+          ref="abfrageNavigationTree"
           v-model="abfrageWrapped"
           @select-abfrage="handleSelectAbfrage"
           @select-abfragevariante="handleSelectAbfragevariante"
@@ -410,6 +411,7 @@ export default class Abfrage extends Mixins(
       Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
     this.initializeFormulare();
+    this.initializTreeItemsToOpen();
   }
 
   private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
@@ -443,6 +445,13 @@ export default class Abfrage extends Mixins(
       this.initializeFormulare();
     } else {
       this.showWarningInInformationList(validationMessage);
+    }
+  }
+
+  private initializTreeItemsToOpen(): void {
+    if (!_.isNil(this.$refs.abfrageNavigationTree)) {
+      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
+      abfrageNavitionTree.initializTreeItemsToOpen();
     }
   }
 
