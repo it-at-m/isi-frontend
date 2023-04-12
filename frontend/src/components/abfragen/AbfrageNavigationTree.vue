@@ -81,7 +81,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
 
-  private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
+  private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr: ";
 
   @VModel({ type: InfrastrukturabfrageWrapperModel }) infrastrukturabfrageWrapped!: InfrastrukturabfrageWrapperModel;
 
@@ -143,10 +143,10 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
-    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0\xa0\xa0\xa0${
-      _.isNil(abfragevariante.realisierungVon) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungVon
-    }\xa0-\xa0${
-      _.isNil(abfragevariante.realisierungBis) ? AbfrageNavigationTree.NICHT_GEPFLEGT : abfragevariante.realisierungBis
+    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0-\xa0${
+      _.isNil(abfragevariante.abfragevariantenName)
+        ? AbfrageNavigationTree.NICHT_GEPFLEGT
+        : abfragevariante.abfragevariantenName
     }`;
   }
 
