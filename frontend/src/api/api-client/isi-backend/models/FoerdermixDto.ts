@@ -28,30 +28,6 @@ import {
 export interface FoerdermixDto {
     /**
      * 
-     * @type {string}
-     * @memberof FoerdermixDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FoerdermixDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof FoerdermixDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof FoerdermixDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
      * @type {Array<FoerderartDto>}
      * @memberof FoerdermixDto
      */
@@ -68,10 +44,6 @@ export function FoerdermixDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'foerderarten': !exists(json, 'foerderarten') ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartDtoFromJSON)),
     };
 }
@@ -85,10 +57,6 @@ export function FoerdermixDtoToJSON(value?: FoerdermixDto | null): any {
     }
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'foerderarten': value.foerderarten === undefined ? undefined : ((value.foerderarten as Array<any>).map(FoerderartDtoToJSON)),
     };
 }

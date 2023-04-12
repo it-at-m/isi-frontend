@@ -61,6 +61,12 @@ export interface AbfragevarianteDto {
      * @type {string}
      * @memberof AbfragevarianteDto
      */
+    abfragevariantenName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteDto
+     */
     planungsrecht: AbfragevarianteDtoPlanungsrechtEnum;
     /**
      * 
@@ -196,6 +202,7 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfragevariantenNr': json['abfragevariantenNr'],
+        'abfragevariantenName': json['abfragevariantenName'],
         'planungsrecht': json['planungsrecht'],
         'geschossflaecheWohnen': !exists(json, 'geschossflaecheWohnen') ? undefined : json['geschossflaecheWohnen'],
         'geschossflaecheWohnenGenehmigt': !exists(json, 'geschossflaecheWohnenGenehmigt') ? undefined : json['geschossflaecheWohnenGenehmigt'],
@@ -230,6 +237,7 @@ export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfragevariantenNr': value.abfragevariantenNr,
+        'abfragevariantenName': value.abfragevariantenName,
         'planungsrecht': value.planungsrecht,
         'geschossflaecheWohnen': value.geschossflaecheWohnen,
         'geschossflaecheWohnenGenehmigt': value.geschossflaecheWohnenGenehmigt,
