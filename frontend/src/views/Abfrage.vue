@@ -85,6 +85,41 @@
           @no="yesNoDialogAbfragevarianteNo"
           @yes="yesNoDialogAbfragevarianteYes"
         />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_bauabschnitt_yes_no_dialog_loeschen"
+          v-model="deleteDialogBauabschnittOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          :dialogtext="
+            'Hiermit wird der Bauabschnitt \'' + selectedBauabschnitt.bezeichnung + '\' unwiderruflich gelöscht.'
+          "
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogBauabschnittNo"
+          @yes="yesNoDialogBauabschnittYes"
+        />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_bauabschnitt_baugebiet_yes_no_dialog_loeschen"
+          v-model="deleteDialogBaugebietOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          :dialogtext="'Hiermit wird der Baugebiet \'' + selectedBaugebiet.bezeichnung + '\' unwiderruflich gelöscht.'"
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogBaugebietNo"
+          @yes="yesNoDialogBaugebietYes"
+        />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_bauabschnitt_baugebiet_baurate_yes_no_dialog_loeschen"
+          v-model="deleteDialogBaurateOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selectedBaurate.jahr + ' unwiderruflich gelöscht.'"
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogBaurateNo"
+          @yes="yesNoDialogBaurateYes"
+        />
       </template>
       <template #heading>
         <v-container>
@@ -374,6 +409,33 @@ export default class Abfrage extends Mixins(
     });
   }
 
+  private yesNoDialogBauabschnittYes(): void {
+    this.removeSelectedBauabschnittFromAbfragevariante();
+    this.yesNoDialogBauabschnittNo();
+  }
+
+  private yesNoDialogBauabschnittNo(): void {
+    this.deleteDialogBauabschnittOpen = false;
+  }
+
+  private yesNoDialogBaugebietYes(): void {
+    this.removeSelectedBaugebietFromBauabschnitt();
+    this.yesNoDialogBaugebietNo();
+  }
+
+  private yesNoDialogBaugebietNo(): void {
+    this.deleteDialogBaugebietOpen = false;
+  }
+
+  private yesNoDialogBaurateYes(): void {
+    this.removeSelectedBaurateFromBaugebiet();
+    this.yesNoDialogBaurateNo();
+  }
+
+  private yesNoDialogBaurateNo(): void {
+    this.deleteDialogBaurateOpen = false;
+  }
+
   private async saveAbfrage(): Promise<void> {
     if (this.validate()) {
       this.saveInfrastrukturabfrage();
@@ -561,6 +623,32 @@ export default class Abfrage extends Mixins(
     this.openAbfrageFormular();
   }
 
+  private removeSelectedBauabschnittFromAbfragevariante(): void {
+    if (!_.isNil(this.selectedAbfragevariante.bauabschnitte)) {
+      const copyBauabschnitte = _.cloneDeep(this.selectedAbfragevariante.bauabschnitte);
+      _.remove(copyBauabschnitte, (bauabschnitt) => _.isEqual(bauabschnitt, this.selectedBauabschnitt));
+      this.selectedAbfragevariante.bauabschnitte = copyBauabschnitte;
+      this.formChanged();
+      this.openAbfragevarianteFormular();
+    }
+  }
+
+  private removeSelectedBaugebietFromBauabschnitt(): void {
+    const copyBaugebiete = _.cloneDeep(this.selectedBauabschnitt.baugebiete);
+    _.remove(copyBaugebiete, (baugebiet) => _.isEqual(baugebiet, this.selectedBaugebiet));
+    this.selectedBauabschnitt.baugebiete = copyBaugebiete;
+    this.formChanged();
+    this.openBauabschnittFormular();
+  }
+
+  private removeSelectedBaurateFromBaugebiet(): void {
+    const copyBauraten = _.cloneDeep(this.selectedBaugebiet.bauraten);
+    _.remove(copyBauraten, (baurate) => _.isEqual(baurate, this.selectedBaurate));
+    this.selectedBaugebiet.bauraten = copyBauraten;
+    this.formChanged();
+    this.openBaugebietFormular();
+  }
+
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
     let selectedAbfragevariante = this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.find((abfragevariante) =>
       _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
@@ -620,6 +708,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.openBauabschnittFormular();
     this.deleteDialogBauabschnittOpen = true;
@@ -645,6 +734,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+    this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.openBaugebietFormular();
     this.deleteDialogBaugebietOpen = true;
@@ -667,6 +757,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
     this.openBaurateFormular();
     this.deleteDialogBaurateOpen = true;

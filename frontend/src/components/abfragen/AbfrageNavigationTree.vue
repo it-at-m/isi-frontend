@@ -117,6 +117,8 @@ export interface AbfrageTreeItem {
 
   type: AbfrageTreeItemType;
 
+  parentTreeItem: AbfrageTreeItem | undefined;
+
   children: Array<AbfrageTreeItem>;
 
   /**
@@ -299,6 +301,7 @@ export default class AbfrageNavigationTree extends Vue {
   private createRootAbfrageTreeItem(id: number, abfrage: InfrastrukturabfrageDto) {
     return this.createAbfrageTreeItem(
       id,
+      undefined,
       this.nameTreeElementAbfrage,
       AbfrageTreeItemType.ABFRAGE,
       abfrage,
@@ -311,12 +314,17 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createAbfragevariantenTreeItems(parentTreeItem: AbfrageTreeItem, abfrage: InfrastrukturabfrageDto) {
     abfrage.abfragevarianten.forEach((abfragevariante) => {
-      let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(this.treeItemKey++, abfrage, abfragevariante);
+      let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(
+        this.treeItemKey++,
+        parentTreeItem,
+        abfrage,
+        abfragevariante
+      );
       this.createBauabschnitteTreeItems(abfragevarianteTreeItem, abfrage, abfragevariante);
       parentTreeItem.children.push(abfragevarianteTreeItem);
     });
     if (abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN) {
-      parentTreeItem.children.push(this.createAddAbfragevarianteTreeItem(this.treeItemKey++, abfrage));
+      parentTreeItem.children.push(this.createAddAbfragevarianteTreeItem(this.treeItemKey++, parentTreeItem, abfrage));
     }
   }
 
@@ -329,6 +337,7 @@ export default class AbfrageNavigationTree extends Vue {
       abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
         let bauabschnittTreeItem = this.createBauabschnittTreeItem(
           this.treeItemKey++,
+          parentTreeItem,
           abfrage,
           abfragevariante,
           bauabschnitt
@@ -337,7 +346,9 @@ export default class AbfrageNavigationTree extends Vue {
         this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
       });
     }
-    parentTreeItem.children.push(this.createAddBauabschnittTreeItem(this.treeItemKey++, abfrage, abfragevariante));
+    parentTreeItem.children.push(
+      this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+    );
   }
 
   private createBaugebieteTreeItems(
@@ -349,6 +360,7 @@ export default class AbfrageNavigationTree extends Vue {
     bauabschnitt.baugebiete.forEach((baugebiet) => {
       let baugebietTreeItem = this.createBaugebietTreeItem(
         this.treeItemKey++,
+        parentTreeItem,
         abfrage,
         abfragevariante,
         bauabschnitt,
@@ -358,7 +370,7 @@ export default class AbfrageNavigationTree extends Vue {
       this.createBauratenTreeItems(baugebietTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
     });
     parentTreeItem.children.push(
-      this.createAddBaugebietTreeItem(this.treeItemKey++, abfrage, abfragevariante, bauabschnitt)
+      this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
     );
   }
 
@@ -372,6 +384,7 @@ export default class AbfrageNavigationTree extends Vue {
     baugebiet.bauraten.forEach((baurate) => {
       let baurateTreeItem = this.createBaurateTreeItem(
         this.treeItemKey++,
+        parentTreeItem,
         abfrage,
         abfragevariante,
         bauabschnitt,
@@ -381,17 +394,26 @@ export default class AbfrageNavigationTree extends Vue {
       parentTreeItem.children.push(baurateTreeItem);
     });
     parentTreeItem.children.push(
-      this.createAddBaurateTreeItem(this.treeItemKey++, abfrage, abfragevariante, bauabschnitt, baugebiet)
+      this.createAddBaurateTreeItem(
+        this.treeItemKey++,
+        parentTreeItem,
+        abfrage,
+        abfragevariante,
+        bauabschnitt,
+        baugebiet
+      )
     );
   }
 
   private createAbfragevarianteTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.getNameTreeElementAbfragevariante(abfragevariante),
       AbfrageTreeItemType.ABFRAGEVARIANTE,
       abfrage,
@@ -402,9 +424,14 @@ export default class AbfrageNavigationTree extends Vue {
     );
   }
 
-  private createAddAbfragevarianteTreeItem(id: number, abfrage: InfrastrukturabfrageDto) {
+  private createAddAbfragevarianteTreeItem(
+    id: number,
+    parentTreeItem: AbfrageTreeItem,
+    abfrage: InfrastrukturabfrageDto
+  ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.nameTreeElementAddAbfragevariante,
       AbfrageTreeItemType.ADD_ABFRAGEVARIANTE,
       abfrage,
@@ -417,12 +444,14 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createBauabschnittTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.getNameTreeElementBauabschnitt(bauabschnitt),
       AbfrageTreeItemType.BAUABSCHNITT,
       abfrage,
@@ -435,11 +464,13 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createAddBauabschnittTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.nameTreeElementAddBauabschnitt,
       AbfrageTreeItemType.ADD_BAUABSCHNITT,
       abfrage,
@@ -452,6 +483,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createBaugebietTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
@@ -459,6 +491,7 @@ export default class AbfrageNavigationTree extends Vue {
   ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.getNameTreeElementBaugebiet(baugebiet),
       AbfrageTreeItemType.BAUGEBIET,
       abfrage,
@@ -471,12 +504,14 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createAddBaugebietTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.nameTreeElementAddBaugebiet,
       AbfrageTreeItemType.ADD_BAUGEBIET,
       abfrage,
@@ -489,6 +524,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createBaurateTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
@@ -497,6 +533,7 @@ export default class AbfrageNavigationTree extends Vue {
   ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.getNameTreeElementBaurate(baurate),
       AbfrageTreeItemType.BAURATE,
       abfrage,
@@ -509,6 +546,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createAddBaurateTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
@@ -516,6 +554,7 @@ export default class AbfrageNavigationTree extends Vue {
   ) {
     return this.createAbfrageTreeItem(
       id,
+      parentTreeItem,
       this.nameTreeElementAddBaurate,
       AbfrageTreeItemType.ADD_BAURATE,
       abfrage,
@@ -528,6 +567,7 @@ export default class AbfrageNavigationTree extends Vue {
 
   private createAbfrageTreeItem(
     id: number,
+    parentTreeItem: AbfrageTreeItem | undefined,
     name: string,
     type: AbfrageTreeItemType,
     abfrage: InfrastrukturabfrageDto | undefined,
@@ -538,6 +578,7 @@ export default class AbfrageNavigationTree extends Vue {
   ) {
     const abfrageTreeItem: AbfrageTreeItem = {
       id: id,
+      parentTreeItem: parentTreeItem,
       name: name,
       type: type,
       children: [],
