@@ -1,10 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
+      <v-col cols="12">
         <span
           class="text-h6 font-weight-bold"
           v-text="headline"

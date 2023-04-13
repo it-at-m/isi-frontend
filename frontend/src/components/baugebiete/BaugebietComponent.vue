@@ -1,10 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
+      <v-col cols="12">
         <span
           class="text-h6 font-weight-bold"
           v-text="headline"
@@ -13,10 +10,7 @@
     </v-row>
     <field-group-card>
       <v-row justify="center">
-        <v-col
-          cols="12"
-          md="12"
-        >
+        <v-col cols="12">
           <v-text-field
             id="baugebiet_bezeichnung"
             v-model.trim="baugebiet.bezeichnung"
@@ -30,10 +24,7 @@
         </v-col>
       </v-row>
       <v-row justify="center">
-        <v-col
-          cols="12"
-          md="12"
-        >
+        <v-col cols="12">
           <v-select
             id="baugebiet_baugebietTyp"
             v-model="baugebiet.baugebietTyp"
