@@ -15,7 +15,7 @@
           </template>
           <template #append="{ item }">
             <v-btn
-              v-if="isAbfrageTreeItemAddAbfragevariante(item)"
+              v-if="isItemTypeOfAddAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_create_new_abfragevariante_' + item.id"
               icon
               @click="createNewAbfragevariante(item)"
@@ -23,7 +23,7 @@
               <v-icon> mdi-plus-box-outline</v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isAbfrageTreeItemAnAbfragevariante(item)"
+              v-else-if="isItemTypeOfAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
               icon
               @click="deleteAbfragevariante(item)"
@@ -31,7 +31,7 @@
               <v-icon> mdi-trash-can-outline</v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isAbfrageTreeItemAddBauabschnitt(item)"
+              v-else-if="isItemTypeOfAddBauabschnitt(item)"
               :id="'abfrage_navigation_tree_button_create_new_bauabschnitt_' + item.id"
               icon
               @click="createNewBauabschnitt(item)"
@@ -39,7 +39,7 @@
               <v-icon> mdi-plus-box-outline</v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isAbfrageTreeItemAnBauabschnitt(item)"
+              v-else-if="isItemTypeOfBauabschnitt(item)"
               :id="'abfrage_navigation_tree_button_delete_bauabschnitt_' + item.id"
               icon
               @click="deleteBauabschnitt(item)"
@@ -47,7 +47,7 @@
               <v-icon> mdi-trash-can-outline</v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isAbfrageTreeItemAddBaugebiet(item)"
+              v-else-if="isItemTypeOfAddBaugebiet(item)"
               :id="'abfrage_navigation_tree_button_create_new_baugebiet_' + item.id"
               icon
               @click="createNewBaugebiet(item)"
@@ -55,7 +55,7 @@
               <v-icon> mdi-plus-box-outline</v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isAbfrageTreeItemAnBaugebiet(item)"
+              v-else-if="isItemTypeOfBaugebiet(item)"
               :id="'abfrage_navigation_tree_button_delete_baugebiet_' + item.id"
               icon
               @click="deleteBaugebiet(item)"
@@ -63,7 +63,7 @@
               <v-icon> mdi-trash-can-outline</v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isAbfrageTreeItemAddBaurate(item)"
+              v-else-if="isItemTypeOfAddBaurate(item)"
               :id="'abfrage_navigation_tree_button_create_new_baurate_' + item.id"
               icon
               @click="createNewBaurate(item)"
@@ -71,7 +71,7 @@
               <v-icon> mdi-plus-box-outline</v-icon>
             </v-btn>
             <v-btn
-              v-else-if="isAbfrageTreeItemAnBaurate(item)"
+              v-else-if="isItemTypeOfBaurate(item)"
               :id="'abfrage_navigation_tree_button_delete_baurate_' + item.id"
               icon
               @click="deleteBaurate(item)"
@@ -206,15 +206,15 @@ export default class AbfrageNavigationTree extends Vue {
         (abfrageTreeItem) => abfrageTreeItem.id === markedTreeItemId
       );
       if (!_.isNil(markedTreeItemId) && !_.isNil(markedTreeItem)) {
-        if (this.isAbfrageTreeItemAnAbfrage(markedTreeItem)) {
+        if (this.isItemTypeOfAbfrage(markedTreeItem)) {
           this.selectAbfrage(markedTreeItem);
-        } else if (this.isAbfrageTreeItemAnAbfragevariante(markedTreeItem)) {
+        } else if (this.isItemTypeOfAbfragevariante(markedTreeItem)) {
           this.selectAbfragevariante(markedTreeItem);
-        } else if (this.isAbfrageTreeItemAnBauabschnitt(markedTreeItem)) {
+        } else if (this.isItemTypeOfBauabschnitt(markedTreeItem)) {
           this.selectBauabschnitt(markedTreeItem);
-        } else if (this.isAbfrageTreeItemAnBaugebiet(markedTreeItem)) {
+        } else if (this.isItemTypeOfBaugebiet(markedTreeItem)) {
           this.selectBaugebiet(markedTreeItem);
-        } else if (this.isAbfrageTreeItemAnBaurate(markedTreeItem)) {
+        } else if (this.isItemTypeOfBaurate(markedTreeItem)) {
           this.selectBaurate(markedTreeItem);
         }
       }
@@ -562,12 +562,8 @@ export default class AbfrageNavigationTree extends Vue {
     newAbfrageTreeItems: Array<AbfrageTreeItem>,
     oldAbfrageTreeItems: Array<AbfrageTreeItem>
   ): void {
-    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems).filter(
-      this.isAbfrageTreeItemAnSelectableItem
-    );
-    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems).filter(
-      this.isAbfrageTreeItemAnSelectableItem
-    );
+    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems).filter(this.isItemSelectable);
+    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems).filter(this.isItemSelectable);
     flatNewAbfrageTreeItems.forEach((newAbfrageTreeItem) => {
       // Grundannahme: Es hat sich eine Änderung ergeben.
       newAbfrageTreeItem.changed = true;
@@ -601,29 +597,26 @@ export default class AbfrageNavigationTree extends Vue {
     let clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
     let clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
 
-    if (
-      this.isAbfrageTreeItemAnAbfrage(clonedNewAbfrageTreeItem) &&
-      this.isAbfrageTreeItemAnAbfrage(clonedOldAbfrageTreeItem)
-    ) {
+    if (this.isItemTypeOfAbfrage(clonedNewAbfrageTreeItem) && this.isItemTypeOfAbfrage(clonedOldAbfrageTreeItem)) {
       return this.isNotChangedAbfrage(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
     } else if (
-      this.isAbfrageTreeItemAnAbfragevariante(clonedNewAbfrageTreeItem) &&
-      this.isAbfrageTreeItemAnAbfragevariante(clonedOldAbfrageTreeItem)
+      this.isItemTypeOfAbfragevariante(clonedNewAbfrageTreeItem) &&
+      this.isItemTypeOfAbfragevariante(clonedOldAbfrageTreeItem)
     ) {
       return this.isNotChangedAbfragevariante(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
     } else if (
-      this.isAbfrageTreeItemAnBauabschnitt(clonedNewAbfrageTreeItem) &&
-      this.isAbfrageTreeItemAnBauabschnitt(clonedOldAbfrageTreeItem)
+      this.isItemTypeOfBauabschnitt(clonedNewAbfrageTreeItem) &&
+      this.isItemTypeOfBauabschnitt(clonedOldAbfrageTreeItem)
     ) {
       return this.isNotChangedBauabschnitt(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
     } else if (
-      this.isAbfrageTreeItemAnBaugebiet(clonedNewAbfrageTreeItem) &&
-      this.isAbfrageTreeItemAnBaugebiet(clonedOldAbfrageTreeItem)
+      this.isItemTypeOfBaugebiet(clonedNewAbfrageTreeItem) &&
+      this.isItemTypeOfBaugebiet(clonedOldAbfrageTreeItem)
     ) {
       return this.isNotChangedBaugebiet(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
     } else if (
-      this.isAbfrageTreeItemAnBaurate(clonedNewAbfrageTreeItem) &&
-      this.isAbfrageTreeItemAnBaurate(clonedOldAbfrageTreeItem)
+      this.isItemTypeOfBaurate(clonedNewAbfrageTreeItem) &&
+      this.isItemTypeOfBaurate(clonedOldAbfrageTreeItem)
     ) {
       return this.isNotChangedBaurate(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
     }
@@ -697,49 +690,49 @@ export default class AbfrageNavigationTree extends Vue {
     );
   }
 
-  private isAbfrageTreeItemAnAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.ABFRAGE;
   }
 
-  private isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.ABFRAGEVARIANTE;
   }
 
-  private isAbfrageTreeItemAddAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfAddAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.ADD_ABFRAGEVARIANTE;
   }
 
-  private isAbfrageTreeItemAnBauabschnitt(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfBauabschnitt(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.BAUABSCHNITT;
   }
 
-  private isAbfrageTreeItemAddBauabschnitt(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfAddBauabschnitt(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAUABSCHNITT;
   }
 
-  private isAbfrageTreeItemAnBaugebiet(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfBaugebiet(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.BAUGEBIET;
   }
 
-  private isAbfrageTreeItemAddBaugebiet(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfAddBaugebiet(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAUGEBIET;
   }
 
-  private isAbfrageTreeItemAnBaurate(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfBaurate(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.BAURATE;
   }
 
-  private isAbfrageTreeItemAddBaurate(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfAddBaurate(abfrageTreeItem: AbfrageTreeItem): boolean {
     return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAURATE;
   }
 
-  private isAbfrageTreeItemAnSelectableItem(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemSelectable(abfrageTreeItem: AbfrageTreeItem): boolean {
     return (
-      this.isAbfrageTreeItemAnAbfrage(abfrageTreeItem) ||
-      this.isAbfrageTreeItemAnAbfragevariante(abfrageTreeItem) ||
-      this.isAbfrageTreeItemAnBauabschnitt(abfrageTreeItem) ||
-      this.isAbfrageTreeItemAnBaugebiet(abfrageTreeItem) ||
-      this.isAbfrageTreeItemAnBaurate(abfrageTreeItem)
+      this.isItemTypeOfAbfrage(abfrageTreeItem) ||
+      this.isItemTypeOfAbfragevariante(abfrageTreeItem) ||
+      this.isItemTypeOfBauabschnitt(abfrageTreeItem) ||
+      this.isItemTypeOfBaugebiet(abfrageTreeItem) ||
+      this.isItemTypeOfBaurate(abfrageTreeItem)
     );
   }
 

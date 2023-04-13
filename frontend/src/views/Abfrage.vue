@@ -2,41 +2,37 @@
   <v-form ref="form">
     <default-layout solid-heading>
       <template #content>
-        <div v-if="isAbfrageFormularOpen">
-          <infrastrukturabfrage-component
-            id="abfrage_infrastrukturabfrage_component"
-            v-model="abfrageWrapped.infrastrukturabfrage"
-            :mode="modeAbfrage"
-          />
-        </div>
+        <infrastrukturabfrage-component
+          v-if="isAbfrageFormularOpen"
+          id="abfrage_infrastrukturabfrage_component"
+          v-model="abfrageWrapped.infrastrukturabfrage"
+          :mode="modeAbfrage"
+        />
         <abfragevariante-formular
-          v-if="isAbfragevarianteFormularOpen"
+          v-else-if="isAbfragevarianteFormularOpen"
           id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
           :mode="modeAbfragevariante"
           :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
-        <div v-if="isBauabschnittFormularOpen">
-          <bauabschnitt-component
-            id="bauabschnitt_component"
-            v-model="selectedBauabschnitt"
-            :mode="modeBauabschnitt"
-          />
-        </div>
-        <div v-if="isBaugebietFormularOpen">
-          <baugebiet-component
-            id="baugebiet_component"
-            v-model="selectedBaugebiet"
-            :mode="modeBaugebiet"
-          />
-        </div>
-        <div v-if="isBaurateFormularOpen">
-          <baurate-component
-            id="baurate_component"
-            v-model="selectedBaurate"
-            :mode="modeBaurate"
-          />
-        </div>
+        <bauabschnitt-component
+          v-else-if="isBauabschnittFormularOpen"
+          id="bauabschnitt_component"
+          v-model="selectedBauabschnitt"
+          :mode="modeBauabschnitt"
+        />
+        <baugebiet-component
+          v-else-if="isBaugebietFormularOpen"
+          id="baugebiet_component"
+          v-model="selectedBaugebiet"
+          :mode="modeBaugebiet"
+        />
+        <baurate-component
+          v-else-if="isBaurateFormularOpen"
+          id="baurate_component"
+          v-model="selectedBaurate"
+          :mode="modeBaurate"
+        />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
           v-model="deleteDialogAbfrageOpen"
@@ -273,15 +269,15 @@ export default class Abfrage extends Mixins(
 
   private deleteDialogBaurateOpen = false;
 
-  private abfrageFormularOpen = true;
+  private isAbfrageFormularOpen = true;
 
-  private abfragevarianteFormularOpen = false;
+  private isAbfragevarianteFormularOpen = false;
 
-  private bauabschnittFormularOpen = false;
+  private isBauabschnittFormularOpen = false;
 
-  private baugebietFormularOpen = false;
+  private isBaugebietFormularOpen = false;
 
-  private baurateFormularOpen = false;
+  private isBaurateFormularOpen = false;
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
@@ -311,26 +307,6 @@ export default class Abfrage extends Mixins(
     } else {
       this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
     }
-  }
-
-  get isAbfrageFormularOpen(): boolean {
-    return this.abfrageFormularOpen;
-  }
-
-  get isAbfragevarianteFormularOpen(): boolean {
-    return this.abfragevarianteFormularOpen;
-  }
-
-  get isBauabschnittFormularOpen(): boolean {
-    return this.bauabschnittFormularOpen;
-  }
-
-  get isBaugebietFormularOpen(): boolean {
-    return this.baugebietFormularOpen;
-  }
-
-  get isBaurateFormularOpen(): boolean {
-    return this.baurateFormularOpen;
   }
 
   private deleteAbfrage(): void {
@@ -456,51 +432,51 @@ export default class Abfrage extends Mixins(
   }
 
   private initializeFormulare(): void {
-    this.abfrageFormularOpen = true;
-    this.abfragevarianteFormularOpen = false;
-    this.bauabschnittFormularOpen = false;
-    this.baugebietFormularOpen = false;
-    this.baurateFormularOpen = false;
+    this.isAbfrageFormularOpen = true;
+    this.isAbfragevarianteFormularOpen = false;
+    this.isBauabschnittFormularOpen = false;
+    this.isBaugebietFormularOpen = false;
+    this.isBaurateFormularOpen = false;
   }
 
   private openAbfrageFormular(): void {
-    this.abfrageFormularOpen = true;
-    this.abfragevarianteFormularOpen = false;
-    this.bauabschnittFormularOpen = false;
-    this.baugebietFormularOpen = false;
-    this.baurateFormularOpen = false;
+    this.isAbfrageFormularOpen = true;
+    this.isAbfragevarianteFormularOpen = false;
+    this.isBauabschnittFormularOpen = false;
+    this.isBaugebietFormularOpen = false;
+    this.isBaurateFormularOpen = false;
   }
 
   private openAbfragevarianteFormular(): void {
-    this.abfrageFormularOpen = false;
-    this.abfragevarianteFormularOpen = true;
-    this.bauabschnittFormularOpen = false;
-    this.baugebietFormularOpen = false;
-    this.baurateFormularOpen = false;
+    this.isAbfrageFormularOpen = false;
+    this.isAbfragevarianteFormularOpen = true;
+    this.isBauabschnittFormularOpen = false;
+    this.isBaugebietFormularOpen = false;
+    this.isBaurateFormularOpen = false;
   }
 
   private openBauabschnittFormular(): void {
-    this.abfrageFormularOpen = false;
-    this.abfragevarianteFormularOpen = false;
-    this.bauabschnittFormularOpen = true;
-    this.baugebietFormularOpen = false;
-    this.baurateFormularOpen = false;
+    this.isAbfrageFormularOpen = false;
+    this.isAbfragevarianteFormularOpen = false;
+    this.isBauabschnittFormularOpen = true;
+    this.isBaugebietFormularOpen = false;
+    this.isBaurateFormularOpen = false;
   }
 
   private openBaugebietFormular(): void {
-    this.abfrageFormularOpen = false;
-    this.abfragevarianteFormularOpen = false;
-    this.bauabschnittFormularOpen = false;
-    this.baugebietFormularOpen = true;
-    this.baurateFormularOpen = false;
+    this.isAbfrageFormularOpen = false;
+    this.isAbfragevarianteFormularOpen = false;
+    this.isBauabschnittFormularOpen = false;
+    this.isBaugebietFormularOpen = true;
+    this.isBaurateFormularOpen = false;
   }
 
   private openBaurateFormular(): void {
-    this.abfrageFormularOpen = false;
-    this.abfragevarianteFormularOpen = false;
-    this.bauabschnittFormularOpen = false;
-    this.baugebietFormularOpen = false;
-    this.baurateFormularOpen = true;
+    this.isAbfrageFormularOpen = false;
+    this.isAbfragevarianteFormularOpen = false;
+    this.isBauabschnittFormularOpen = false;
+    this.isBaugebietFormularOpen = false;
+    this.isBaurateFormularOpen = true;
   }
 
   private isNewAbfrage(): boolean {
