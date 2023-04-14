@@ -35,7 +35,7 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
-          v-model="deleteDialogAbfrageOpen"
+          v-model="isDeleteDialogAbfrageOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
@@ -46,7 +46,7 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_freigeben"
-          v-model="freigabeDialogOpen"
+          v-model="isFreigabeDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
           dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
@@ -68,7 +68,7 @@
         />
         <yes-no-dialog
           id="abfrage_abfragevariante_yes_no_dialog_loeschen"
-          v-model="deleteDialogAbfragevarianteOpen"
+          v-model="isDeleteDialogAbfragevarianteOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           :dialogtext="
@@ -83,7 +83,7 @@
         />
         <yes-no-dialog
           id="abfrage_abfragevariante_bauabschnitt_yes_no_dialog_loeschen"
-          v-model="deleteDialogBauabschnittOpen"
+          v-model="isDeleteDialogBauabschnittOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           :dialogtext="
@@ -96,7 +96,7 @@
         />
         <yes-no-dialog
           id="abfrage_abfragevariante_bauabschnitt_baugebiet_yes_no_dialog_loeschen"
-          v-model="deleteDialogBaugebietOpen"
+          v-model="isDeleteDialogBaugebietOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           :dialogtext="'Hiermit wird der Baugebiet \'' + selectedBaugebiet.bezeichnung + '\' unwiderruflich gelöscht.'"
@@ -107,7 +107,7 @@
         />
         <yes-no-dialog
           id="abfrage_abfragevariante_bauabschnitt_baugebiet_baurate_yes_no_dialog_loeschen"
-          v-model="deleteDialogBaurateOpen"
+          v-model="isDeleteDialogBaurateOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selectedBaurate.jahr + ' unwiderruflich gelöscht.'"
@@ -292,17 +292,17 @@ export default class Abfrage extends Mixins(
 
   private abfrageId: string = this.$route.params.id;
 
-  private deleteDialogAbfrageOpen = false;
+  private isDeleteDialogAbfrageOpen = false;
 
-  private freigabeDialogOpen = false;
+  private isFreigabeDialogOpen = false;
 
-  private deleteDialogAbfragevarianteOpen = false;
+  private isDeleteDialogAbfragevarianteOpen = false;
 
-  private deleteDialogBauabschnittOpen = false;
+  private isDeleteDialogBauabschnittOpen = false;
 
-  private deleteDialogBaugebietOpen = false;
+  private isDeleteDialogBaugebietOpen = false;
 
-  private deleteDialogBaurateOpen = false;
+  private isDeleteDialogBaurateOpen = false;
 
   private isAbfrageFormularOpen = true;
 
@@ -345,11 +345,11 @@ export default class Abfrage extends Mixins(
   }
 
   private deleteAbfrage(): void {
-    this.deleteDialogAbfrageOpen = true;
+    this.isDeleteDialogAbfrageOpen = true;
   }
 
   private freigabeAbfrage(): void {
-    this.freigabeDialogOpen = true;
+    this.isFreigabeDialogOpen = true;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -358,7 +358,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogAbfrageNo(): void {
-    this.deleteDialogAbfrageOpen = false;
+    this.isDeleteDialogAbfrageOpen = false;
   }
 
   private yesNoDialogFreigabeYes(): void {
@@ -367,7 +367,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogFreigabeNo(): void {
-    this.freigabeDialogOpen = false;
+    this.isFreigabeDialogOpen = false;
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
@@ -376,7 +376,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogAbfragevarianteNo(): void {
-    this.deleteDialogAbfragevarianteOpen = false;
+    this.isDeleteDialogAbfragevarianteOpen = false;
   }
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
@@ -391,7 +391,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogBauabschnittNo(): void {
-    this.deleteDialogBauabschnittOpen = false;
+    this.isDeleteDialogBauabschnittOpen = false;
   }
 
   private yesNoDialogBaugebietYes(): void {
@@ -400,7 +400,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogBaugebietNo(): void {
-    this.deleteDialogBaugebietOpen = false;
+    this.isDeleteDialogBaugebietOpen = false;
   }
 
   private yesNoDialogBaurateYes(): void {
@@ -409,7 +409,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogBaurateNo(): void {
-    this.deleteDialogBaurateOpen = false;
+    this.isDeleteDialogBaurateOpen = false;
   }
 
   private async saveAbfrage(): Promise<void> {
@@ -579,7 +579,7 @@ export default class Abfrage extends Mixins(
   private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
-    this.deleteDialogAbfragevarianteOpen = true;
+    this.isDeleteDialogAbfragevarianteOpen = true;
   }
 
   private handleCreateNewAbfragevariante(): void {
@@ -687,7 +687,7 @@ export default class Abfrage extends Mixins(
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.openBauabschnittFormular();
-    this.deleteDialogBauabschnittOpen = true;
+    this.isDeleteDialogBauabschnittOpen = true;
   }
 
   private handleCreateNewBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
@@ -713,7 +713,7 @@ export default class Abfrage extends Mixins(
     this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.openBaugebietFormular();
-    this.deleteDialogBaugebietOpen = true;
+    this.isDeleteDialogBaugebietOpen = true;
   }
 
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
@@ -736,7 +736,7 @@ export default class Abfrage extends Mixins(
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
     this.openBaurateFormular();
-    this.deleteDialogBaurateOpen = true;
+    this.isDeleteDialogBaurateOpen = true;
   }
 
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
