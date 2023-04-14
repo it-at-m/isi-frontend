@@ -99,6 +99,7 @@ export interface BaugebietDto {
  * @export
  */
 export const BaugebietDtoBaugebietTypEnum = {
+    Unspecified: 'UNSPECIFIED',
     Mi: 'MI',
     Wa: 'WA',
     Mu: 'MU',

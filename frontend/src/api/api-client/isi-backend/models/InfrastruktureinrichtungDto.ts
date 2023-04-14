@@ -61,7 +61,7 @@ export interface InfrastruktureinrichtungDto {
      * @type {number}
      * @memberof InfrastruktureinrichtungDto
      */
-    fertigstellungsjahr: number;
+    fertigstellungsjahr?: number;
     /**
      * 
      * @type {string}
@@ -73,7 +73,7 @@ export interface InfrastruktureinrichtungDto {
      * @type {string}
      * @memberof InfrastruktureinrichtungDto
      */
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum;
+    einrichtungstraeger?: InfrastruktureinrichtungDtoEinrichtungstraegerEnum;
     /**
      * 
      * @type {number}
@@ -148,9 +148,9 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'nameEinrichtung': json['nameEinrichtung'],
-        'fertigstellungsjahr': json['fertigstellungsjahr'],
+        'fertigstellungsjahr': !exists(json, 'fertigstellungsjahr') ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
-        'einrichtungstraeger': json['einrichtungstraeger'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
         'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
         'zugeordnetesBaugebiet': !exists(json, 'zugeordnetesBaugebiet') ? undefined : json['zugeordnetesBaugebiet'],
