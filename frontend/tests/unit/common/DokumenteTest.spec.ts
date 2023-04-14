@@ -1,5 +1,5 @@
 import { DokumentDto, FileInformationDto, FilepathDto } from "@/api/api-client/isi-backend";
-import { createFilepathDtoFor, createDokumentDto } from "@/utils/Factories";
+import { createFilepathFor, createDokumentDto } from "@/utils/Factories";
 import {
   fileAlreadyExists,
   maxFileSizeExceeded,
@@ -55,8 +55,8 @@ describe("DokumenteTest.spec.ts", () => {
     } as DokumentDto;
     const file1 = { name: "Test2.pdf" } as File;
     const file2 = { name: "Test3.pdf" } as File;
-    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file1, pathToFile)).toBe(true);
-    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file2, pathToFile)).toBe(false);
+    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file1)).toBe(true);
+    expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file2)).toBe(false);
   });
 
   test("Maximale Größe einer Datei überschritten", () => {
@@ -73,17 +73,10 @@ describe("DokumenteTest.spec.ts", () => {
   });
 
   test("Test filepath ohne Dokumente", () => {
-    const filepath: string = createFilepathDtoFor("test", undefined);
+    const filepath: string = createFilepathFor("test");
     expect(filepath).not.toBeUndefined();
     // "test/<36-stellige UUID>/", d. h. eine (neue) UUID wird generiert
     expect(filepath).toHaveLength(42);
-  });
-
-  test("Test filepath mit Dokument", () => {
-    const dokument: DokumentDto = createDokumentDto();
-    dokument.filePath.pathToFile = createFilepathDtoFor("test", undefined);
-    // muss den gleichen Pfad liefern den das auch das erste Dokument in der Liste hat, d. h. es darf keine neue UUID generiert werden
-    expect(createFilepathDtoFor("test", [dokument])).toEqual(dokument.filePath.pathToFile);
   });
 
   test("Test Allowed MIME-Types", () => {

@@ -169,7 +169,7 @@
           <dokumente
             id="bauvorhaben_dokumente_component"
             v-model="bauvorhaben.dokumente"
-            :path-to-file="dokumentePathToFile"
+            :name-root-folder="nameRootFolder"
           />
         </v-col>
       </v-row>
@@ -184,7 +184,6 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
-import { createFilepathDtoFor } from "@/utils/Factories";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
@@ -203,6 +202,8 @@ export default class BauvorhabenForm extends Mixins(
 
   private dokumentCardTitle = "Dokumente";
 
+  private nameRootFolder = "bauvorhaben";
+
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben";
 
   get standVorhabenList(): LookupEntryDto[] {
@@ -215,10 +216,6 @@ export default class BauvorhabenForm extends Mixins(
 
   get baugebietTypList(): LookupEntryDto[] {
     return this.$store.getters["lookup/baugebietTyp"];
-  }
-
-  get dokumentePathToFile(): string {
-    return createFilepathDtoFor("bauvorhaben", this.bauvorhaben.dokumente);
   }
 }
 </script>

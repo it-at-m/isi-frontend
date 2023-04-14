@@ -53,6 +53,7 @@
       hidden
       :accept="allowedMimeTypes"
       @change="onFilesSelected"
+      @click="onClick"
     />
   </v-container>
 </template>
@@ -69,11 +70,10 @@ import {
   PresignedUrlDto,
   ResponseError,
 } from "@/api/api-client/isi-backend";
-import { createDokumentDto, createFilepathDto, createPresignedUrlDto } from "@/utils/Factories";
+import { createDokumentDto, createFilepathFor, createFilepathDto, createPresignedUrlDto } from "@/utils/Factories";
 import {
   fileAlreadyExists,
   getAllowedMimeTypes,
-  isDokumentAllowed,
   maxFileSizeExceeded,
   maxNumberOfFilesReached,
   mimeTypeNichtErlaubt,
@@ -91,7 +91,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   @VModel({ type: Array }) dokumente!: DokumentDto[];
 
   @Prop()
-  private pathToFile!: string;
+  private nameRootFolder!: string;
 
   private allowedMimeTypes = "";
 
@@ -122,31 +122,21 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   }
 
   async deleteDokument(dokument: DokumentDto): Promise<void> {
-    if (isDokumentAllowed(dokument)) {
-      const filepathDto: FilepathDto = createFilepathDto();
-      filepathDto.pathToFile = dokument.filePath.pathToFile;
-      let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
-      await this.getPresignedUrlForDeleteDokument(filepathDto, true).then((presignedUrlDtoInternal) => {
-        presignedUrlDto = presignedUrlDtoInternal;
-      });
-      if (!_.isNil(presignedUrlDto.url)) {
-        await this.deleteDokumentWithUrl(presignedUrlDto).then(() => {
-          this.dokumente.forEach((item, index) => {
-            if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
-              this.dokumente.splice(index, 1);
-            }
-          });
-          this.formChanged();
-          this.$emit("onDokumentDeleted", dokument);
-        });
+    this.dokumente.forEach((item, index) => {
+      if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
+        this.dokumente.splice(index, 1);
       }
-    } else {
-      this.dokumente.forEach((item, index) => {
-        if (item.filePath.pathToFile === dokument.filePath.pathToFile) {
-          this.dokumente.splice(index, 1);
-        }
-      });
-    }
+    });
+    this.formChanged();
+  }
+
+  /**
+   * Erforderlich um nach Auswahl einer vorher bereits gewählten Datei das HTMLInputElement-Change-Event nochmal zu triggern.
+   * @param event als HTMLInputElement
+   */
+  onClick(event: Event) {
+    const target = event.target as HTMLInputElement;
+    target.value = "";
   }
 
   // - Anzeigen des File-Explorers zur Auswahl von Dateien
@@ -159,8 +149,10 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     if (!_.isNil(fileList) && this.areFilesValid(fileList)) {
       // Anzeige des Cursorladekreis starten
       this.loading = true;
+      // Erstellen der Ordnerstruktur zum Speichern der gewählten Dateien.
+      const pathToFiles = createFilepathFor(this.nameRootFolder);
       // Upload der Dateien
-      await this.saveFiles(fileList).finally(() => {
+      await this.saveFiles(fileList, pathToFiles).finally(() => {
         // Anzeige des Cursorladekreises beenden
         this.loading = false;
       });
@@ -231,7 +223,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     fileAlreadyExistsMessage: string
   ): string {
     let messagePart = "";
-    if (fileAlreadyExists(dokumente, newFile, this.pathToFile)) {
+    if (fileAlreadyExists(dokumente, newFile)) {
       if (!_.isEmpty(fileAlreadyExistsMessage)) {
         messagePart += ", ";
       }
@@ -269,9 +261,9 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     return messagePart;
   }
 
-  async saveFiles(fileList: FileList): Promise<void> {
+  async saveFiles(fileList: FileList, pathToFiles: string): Promise<void> {
     for (let file of fileList) {
-      await this.saveFile(this.pathToFile, file);
+      await this.saveFile(pathToFiles, file);
     }
   }
 
