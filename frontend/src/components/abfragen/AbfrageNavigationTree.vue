@@ -298,8 +298,7 @@ export default class AbfrageNavigationTree extends Vue {
     const abfrageRootTreeItem = this.createRootAbfrageTreeItem(this.treeItemKey++, abfrage);
     abfrageTreeItems.push(abfrageRootTreeItem);
     if (this.abfrageTreeItemsToOpen.length === 0) {
-      // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
-      this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id);
+      this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id); // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
       this.setSelectedTreeItem(abfrageRootTreeItem);
     }
     this.createAbfragevariantenTreeItems(abfrageRootTreeItem, abfrage);
