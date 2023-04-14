@@ -26,10 +26,6 @@ import {
     PresignedUrlDtoToJSON,
 } from '../models';
 
-export interface DeleteFileRequest {
-    filepathDto: FilepathDto;
-}
-
 export interface GetFileRequest {
     pathToFile: string;
 }
@@ -42,41 +38,6 @@ export interface SaveFileRequest {
  * 
  */
 export class DateihandlingApi extends runtime.BaseAPI {
-
-    /**
-     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode DELETE zu verwenden.
-     * Stellt die Presigned-Url zum Löschen einer Datei zur Verfügung.
-     */
-    async deleteFileRaw(requestParameters: DeleteFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
-        if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
-            throw new runtime.RequiredError('filepathDto','Required parameter requestParameters.filepathDto was null or undefined when calling deleteFile.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/presigned-url`,
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-            body: FilepathDtoToJSON(requestParameters.filepathDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode DELETE zu verwenden.
-     * Stellt die Presigned-Url zum Löschen einer Datei zur Verfügung.
-     */
-    async deleteFile(requestParameters: DeleteFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PresignedUrlDto> {
-        const response = await this.deleteFileRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.

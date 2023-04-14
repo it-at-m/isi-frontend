@@ -126,7 +126,7 @@
             id="abfrage_dokumente_component"
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
-            :path-to-file="dokumentePathToFile"
+            :name-root-folder="nameRootFolder"
           />
         </v-col>
       </v-row>
@@ -142,8 +142,6 @@ import DatePicker from "@/components/common/DatePicker.vue";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import { createFilepathDtoFor } from "@/utils/Factories";
-import _ from "lodash";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
@@ -167,6 +165,8 @@ export default class AbfrageComponent extends Mixins(
 
   private dokumentCardTitle = "Dokumente";
 
+  private nameRootFolder = "abfrage";
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
@@ -181,13 +181,6 @@ export default class AbfrageComponent extends Mixins(
 
   get statusAbfrageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/statusAbfrage"];
-  }
-
-  get dokumentePathToFile(): string | undefined {
-    if (!_.isNil(this.abfrage)) {
-      return createFilepathDtoFor("abfrage", this.abfrage.dokumente);
-    }
-    return undefined;
   }
 
   /**

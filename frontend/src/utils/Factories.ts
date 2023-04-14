@@ -145,10 +145,8 @@ export function createFilepathDto(): FilepathDto {
   } as FilepathDto;
 }
 
-export function createFilepathDtoFor(name: string, dokumente: DokumentDto[] | undefined): string {
-  const filePath: string | undefined =
-    !_.isNil(dokumente) && dokumente.length > 0 ? dokumente[0].filePath.pathToFile : undefined;
-  return filePath === undefined ? `${name}/${uuidv4()}/` : filePath.substring(0, filePath.lastIndexOf("/") + 1);
+export function createFilepathFor(nameRootFolder: string): string {
+  return `${nameRootFolder}/${uuidv4()}/`;
 }
 
 /**

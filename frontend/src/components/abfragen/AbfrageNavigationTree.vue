@@ -4,6 +4,8 @@
       <v-col>
         <v-treeview
           id="abfrage_navigation_tree_treeview"
+          ref="abfrageTreeview"
+          dense
           :active.sync="markedTreeItems"
           :open.sync="treeItemIdsToOpen"
           :items="abfrageTreeItems"
@@ -227,6 +229,12 @@ export default class AbfrageNavigationTree extends Vue {
     this.abfrageTreeItemsToOpen = [];
   }
 
+  public setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem): void {
+    if (!_.isNil(this.$refs.abfrageTreeview)) {
+      this.markedTreeItems = [selectedTreeItem.id];
+    }
+  }
+
   get treeItemIdsToOpen(): Array<number> {
     return this.abfrageTreeItemsToOpen;
   }
@@ -292,6 +300,7 @@ export default class AbfrageNavigationTree extends Vue {
     if (this.abfrageTreeItemsToOpen.length === 0) {
       // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
       this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id);
+      this.setSelectedTreeItem(abfrageRootTreeItem);
     }
     this.createAbfragevariantenTreeItems(abfrageRootTreeItem, abfrage);
 

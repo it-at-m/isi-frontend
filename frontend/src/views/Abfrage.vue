@@ -314,6 +314,14 @@ export default class Abfrage extends Mixins(
 
   private isBaurateFormularOpen = false;
 
+  private abfragevarianteTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
+  private bauabschnittTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
+  private baugebietTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
+  private baurateTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
@@ -493,6 +501,13 @@ export default class Abfrage extends Mixins(
     }
   }
 
+  private setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem | undefined): void {
+    if (!_.isNil(selectedTreeItem) && !_.isNil(this.$refs.abfrageNavigationTree)) {
+      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
+      abfrageNavitionTree.setSelectedTreeItem(selectedTreeItem);
+    }
+  }
+
   private initializeFormulare(): void {
     this.isAbfrageFormularOpen = true;
     this.isAbfragevarianteFormularOpen = false;
@@ -577,6 +592,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.abfragevarianteTreeItemToDelete = abfrageTreeItem;
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
     this.isDeleteDialogAbfragevarianteOpen = true;
@@ -591,38 +607,65 @@ export default class Abfrage extends Mixins(
   }
 
   private removeSelectedAbfragevarianteFromAbfrage(): void {
-    const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
-    _.remove(copyAbfragevarianten, (abfragevariante) => _.isEqual(abfragevariante, this.selectedAbfragevariante));
-    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = copyAbfragevarianten;
-    this.renumberingAbfragevarianten();
-    this.formChanged();
-    this.openAbfrageFormular();
+    if (!_.isNil(this.abfragevarianteTreeItemToDelete)) {
+      const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
+      _.remove(copyAbfragevarianten, (abfragevariante) => _.isEqual(abfragevariante, this.selectedAbfragevariante));
+      this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = copyAbfragevarianten;
+      this.renumberingAbfragevarianten();
+      this.formChanged();
+      this.openAbfrageFormular();
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.abfragevarianteTreeItemToDelete?.parentTreeItem);
+        this.abfragevarianteTreeItemToDelete = undefined;
+      });
+    }
   }
 
   private removeSelectedBauabschnittFromAbfragevariante(): void {
-    if (!_.isNil(this.selectedAbfragevariante.bauabschnitte)) {
-      const copyBauabschnitte = _.cloneDeep(this.selectedAbfragevariante.bauabschnitte);
-      _.remove(copyBauabschnitte, (bauabschnitt) => _.isEqual(bauabschnitt, this.selectedBauabschnitt));
-      this.selectedAbfragevariante.bauabschnitte = copyBauabschnitte;
-      this.formChanged();
-      this.openAbfragevarianteFormular();
+    if (!_.isNil(this.bauabschnittTreeItemToDelete)) {
+      const selectedAbfragevariante = this.getSelectedAbfragevariante(this.bauabschnittTreeItemToDelete);
+      if (!_.isNil(selectedAbfragevariante.bauabschnitte)) {
+        const copyBauabschnitte = _.cloneDeep(selectedAbfragevariante.bauabschnitte);
+        _.remove(copyBauabschnitte, (bauabschnitt) => _.isEqual(bauabschnitt, this.selectedBauabschnitt));
+        selectedAbfragevariante.bauabschnitte = copyBauabschnitte;
+        this.formChanged();
+        this.openAbfragevarianteFormular();
+      }
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.bauabschnittTreeItemToDelete?.parentTreeItem);
+        this.bauabschnittTreeItemToDelete = undefined;
+      });
     }
   }
 
   private removeSelectedBaugebietFromBauabschnitt(): void {
-    const copyBaugebiete = _.cloneDeep(this.selectedBauabschnitt.baugebiete);
-    _.remove(copyBaugebiete, (baugebiet) => _.isEqual(baugebiet, this.selectedBaugebiet));
-    this.selectedBauabschnitt.baugebiete = copyBaugebiete;
-    this.formChanged();
-    this.openBauabschnittFormular();
+    if (!_.isNil(this.baugebietTreeItemToDelete)) {
+      const selectedBauabschnitt = this.getSelectedBauabschnitt(this.baugebietTreeItemToDelete);
+      const copyBaugebiete = _.cloneDeep(selectedBauabschnitt.baugebiete);
+      _.remove(copyBaugebiete, (baugebiet) => _.isEqual(baugebiet, this.selectedBaugebiet));
+      selectedBauabschnitt.baugebiete = copyBaugebiete;
+      this.formChanged();
+      this.openBauabschnittFormular();
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.baugebietTreeItemToDelete?.parentTreeItem);
+        this.baugebietTreeItemToDelete = undefined;
+      });
+    }
   }
 
   private removeSelectedBaurateFromBaugebiet(): void {
-    const copyBauraten = _.cloneDeep(this.selectedBaugebiet.bauraten);
-    _.remove(copyBauraten, (baurate) => _.isEqual(baurate, this.selectedBaurate));
-    this.selectedBaugebiet.bauraten = copyBauraten;
-    this.formChanged();
-    this.openBaugebietFormular();
+    if (!_.isNil(this.baurateTreeItemToDelete)) {
+      const selectedBaugebiet = this.getSelectedBaugebiet(this.baurateTreeItemToDelete);
+      const copyBauraten = _.cloneDeep(selectedBaugebiet.bauraten);
+      _.remove(copyBauraten, (baurate) => _.isEqual(baurate, this.selectedBaurate));
+      selectedBaugebiet.bauraten = copyBauraten;
+      this.formChanged();
+      this.openBaugebietFormular();
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.baurateTreeItemToDelete?.parentTreeItem);
+        this.baurateTreeItemToDelete = undefined;
+      });
+    }
   }
 
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
@@ -684,7 +727,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
-    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+    this.bauabschnittTreeItemToDelete = abfrageTreeItem;
     this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.openBauabschnittFormular();
     this.isDeleteDialogBauabschnittOpen = true;
@@ -710,7 +753,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
-    this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
+    this.baugebietTreeItemToDelete = abfrageTreeItem;
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.openBaugebietFormular();
     this.isDeleteDialogBaugebietOpen = true;
@@ -733,7 +776,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaurate(abfrageTreeItem: AbfrageTreeItem): void {
-    this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
+    this.baurateTreeItemToDelete = abfrageTreeItem;
     this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
     this.openBaurateFormular();
     this.isDeleteDialogBaurateOpen = true;
