@@ -87,7 +87,9 @@
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           :dialogtext="
-            'Hiermit wird der Bauabschnitt \'' + selectedBauabschnitt.bezeichnung + '\' unwiderruflich gelöscht.'
+            'Hiermit wird der Bauabschnitt \'' +
+            selectedBauabschnitt.bezeichnung +
+            '\' und alle dazugehörigen Baugebiete unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
           yes-text="Löschen"
@@ -99,7 +101,11 @@
           v-model="isDeleteDialogBaugebietOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="'Hiermit wird der Baugebiet \'' + selectedBaugebiet.bezeichnung + '\' unwiderruflich gelöscht.'"
+          :dialogtext="
+            'Hiermit wird das Baugebiet \'' +
+            selectedBaugebiet.bezeichnung +
+            '\' und alle dazugehörigen Bauraten unwiderruflich gelöscht.'
+          "
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBaugebietNo"
