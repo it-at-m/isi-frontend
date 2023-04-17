@@ -139,6 +139,13 @@ export default class CityMap extends Vue {
     this.map = (this.$refs.map as LMap).mapObject;
   }
 
+  @Watch("lookAt", { deep: true })
+  private onLookAtChanged(): void {
+    if (this.lookAt) {
+      this.map.flyTo(this.lookAt, 16);
+    }
+  }
+
   /**
    * Da GeoInfoWeb mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
@@ -174,13 +181,6 @@ export default class CityMap extends Vue {
     /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
        Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
     setTimeout(() => this.map.invalidateSize());
-  }
-
-  @Watch("lookAt", { deep: true })
-  private onLookAtChanged(): void {
-    if (this.lookAt) {
-      this.map.flyTo(this.lookAt, 16);
-    }
   }
 }
 </script>
