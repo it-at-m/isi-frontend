@@ -74,7 +74,7 @@
           :dialogtext="
             'Hiermit wird die Abfragevariante Nr.' +
             selectedAbfragevariante.abfragevariantenNr +
-            ' unwiderruflich gelöscht.'
+            ' und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
           yes-text="Löschen"
