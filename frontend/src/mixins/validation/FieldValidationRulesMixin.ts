@@ -51,7 +51,6 @@ export default class FieldValidationRulesMixin extends Vue {
     nichtGleich100Prozent(foerdermix: FoerdermixModel): string | boolean {
       if (!_.isNil(foerdermix)) {
         const sum: number = addiereAnteile(foerdermix);
-
         if (sum < 100) {
           return "Die Summe ist unter 100";
         }

@@ -28,20 +28,6 @@
           cols="12"
           md="6"
         >
-          <num-field
-            id="infrastruktureinrichtung_fertigstellungsjahr"
-            v-model="infrastruktureinrichtung.fertigstellungsjahr"
-            label="Fertigstellungsjahr (JJJJ)"
-            class="mx-3"
-            year
-            required
-            maxlength="4"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <v-select
             id="infrastruktureinrichtung_status_dropdown"
             v-model="infrastruktureinrichtung.status"
@@ -51,8 +37,22 @@
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label> Status der Infrastruktureinrichtung <span class="secondary--text">*</span> </template>
+            <template #label>Status der Infrastruktureinrichtung <span class="secondary--text">*</span></template>
           </v-select>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <num-field
+            id="infrastruktureinrichtung_fertigstellungsjahr"
+            v-model="infrastruktureinrichtung.fertigstellungsjahr"
+            label="Fertigstellungsjahr (JJJJ)"
+            class="mx-3"
+            year
+            :required="isFertigstellungsjahrRequired()"
+            maxlength="4"
+          />
         </v-col>
         <v-col
           cols="12"
@@ -64,10 +64,21 @@
             :items="einrichtungstraegerList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :rules="
+              isEinrichtungstraegerRequired()
+                ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]
+                : []
+            "
             @change="formChanged"
           >
-            <template #label> Einrichtungsträger <span class="secondary--text">*</span> </template>
+            <template #label
+              >Einrichtungsträger
+              <span
+                v-if="isEinrichtungstraegerRequired()"
+                class="secondary--text"
+                >*</span
+              ></template
+            >
           </v-select>
         </v-col>
         <v-col
@@ -121,7 +132,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { BauvorhabenDto, InfrastruktureinrichtungDtoStatusEnum, LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
@@ -175,6 +186,17 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
 
   get bauvorhabenList(): BauvorhabenDto[] {
     return this.$store.getters["search/resultBauvorhaben"];
+  }
+
+  private isFertigstellungsjahrRequired(): boolean {
+    return this.infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand;
+  }
+
+  private isEinrichtungstraegerRequired(): boolean {
+    return (
+      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
+      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
+    );
   }
 
   /**

@@ -4,7 +4,7 @@
     v-model="formattedValue"
     v-bind="$attrs"
     :required="required"
-    :rules="usedRules"
+    :rules="getRules()"
     validate-on-blur
     @input="formChanged"
   >
@@ -125,35 +125,39 @@ export default {
     },
   },
   setup(props: Props): unknown {
-    // Vereinigt evtl. übergebene Rules und die intern gesetzten Rules in einem Array.
+    // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
 
-    const usedRules: unknown[] = [];
+    function getRules(): unknown[] {
+      const usedRules: unknown[] = [];
 
-    if (props.rules) {
-      usedRules.push(...props.rules);
-    }
-
-    // Da die Composition API keine Mixins unterstützt, müssen die Rules importiert werden.
-    const allRules = new FieldValidationRulesMixin().fieldValidationRules as {
-      min: (limit: number) => (v: string) => boolean | string;
-      max: (limit: number) => (v: string) => boolean | string;
-      pflichtfeld: (v: string) => boolean | string;
-    };
-
-    if (props.year) {
-      usedRules.push(allRules.min(1900));
-      usedRules.push(allRules.max(2100));
-    } else {
-      if (props.min !== undefined && !props.allowNegatives) {
-        usedRules.push(allRules.min(props.min));
+      if (props.rules) {
+        usedRules.push(...props.rules);
       }
-      if (props.max !== undefined) {
-        usedRules.push(allRules.max(props.max));
-      }
-    }
 
-    if (props.required) {
-      usedRules.push(allRules.pflichtfeld);
+      // Da die Composition API keine Mixins unterstützt, müssen die Rules importiert werden.
+      const allRules = new FieldValidationRulesMixin().fieldValidationRules as {
+        min: (limit: number) => (v: string) => boolean | string;
+        max: (limit: number) => (v: string) => boolean | string;
+        pflichtfeld: (v: string) => boolean | string;
+      };
+
+      if (props.year) {
+        usedRules.push(allRules.min(1900));
+        usedRules.push(allRules.max(2100));
+      } else {
+        if (props.min !== undefined && !props.allowNegatives) {
+          usedRules.push(allRules.min(props.min));
+        }
+        if (props.max !== undefined) {
+          usedRules.push(allRules.max(props.max));
+        }
+      }
+
+      if (props.required) {
+        usedRules.push(allRules.pflichtfeld);
+      }
+
+      return usedRules;
     }
 
     // Legt die options für vue-currency-input fest.
@@ -190,7 +194,7 @@ export default {
       store.dispatch("common/formChanged");
     }
 
-    return { usedRules, formChanged, inputRef, formattedValue };
+    return { getRules, formChanged, inputRef, formattedValue };
   },
 };
 </script>

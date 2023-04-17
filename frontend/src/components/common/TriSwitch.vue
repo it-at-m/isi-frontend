@@ -1,5 +1,6 @@
 <template>
   <v-input
+    ref="input"
     class="pt-6"
     :value="valueInternal"
     :rules="rules"
@@ -24,6 +25,8 @@
         max="2"
         :step="isCollapsed() ? 2 : 1"
         @change="formChanged"
+        @focus="focused"
+        @blur="blurred"
       />
       <span :class="`annotation ${getAnnotationColor('on')}`">
         <slot name="onText">{{ onText }}</slot>
@@ -33,11 +36,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Vue } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 
 type Position = "0" | "1" | "2";
+
+interface VInput extends Vue {
+  isFocused: boolean;
+}
 
 /**
  * Eine Input-Komponente, welche sehr einem Switch ähnelt, jedoch einen mittleren Ausgangszustand hat.
@@ -148,6 +155,20 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
   private isCollapsed(): boolean {
     return this.valueInternal !== UncertainBoolean.Unspecified;
   }
+
+  /**
+   * Meldet an v-input, dass das Element Fokus erhalten hat.
+   */
+  private focused(): void {
+    (this.$refs.input as VInput).isFocused = true;
+  }
+
+  /**
+   * Meldet an v-input, dass das Element Fokus verloren hat.
+   */
+  private blurred(): void {
+    (this.$refs.input as VInput).isFocused = false;
+  }
 }
 </script>
 
@@ -189,11 +210,13 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
   transition: box-shadow 0.2s;
 }
 
-.slider::-webkit-slider-thumb:hover {
+.slider::-webkit-slider-thumb:hover,
+.slider:focus::-webkit-slider-thumb {
   box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
 }
 
-.slider::-moz-range-thumb:hover {
+.slider::-moz-range-thumb:hover,
+.slider:focus::-moz-range-thumb {
   box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
 }
 </style>
