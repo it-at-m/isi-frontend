@@ -1,13 +1,13 @@
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import _ from "lodash";
-import { createFoerdermixStamm } from "./Factories";
+import { createFoerdermixStammDto } from "./Factories";
 
 export function matchFoerdermixStammDaten(
   foerdermixEingabe: FoerdermixModel,
   foerdermixStammDaten: FoerdermixStammModel[]
 ): FoerdermixStammModel {
-  const foerdermixStamm: FoerdermixStammModel = createFoerdermixStamm();
+  const foerdermixStamm: FoerdermixStammModel = createFoerdermixStammDto();
 
   for (const stammdatum of foerdermixStammDaten) {
     if (!_.isNil(stammdatum.foerdermix)) {

@@ -11,4 +11,3 @@ ISI: Informationssystem für soziale Infrastruktur
  Application Name    : ${spring.application.name}
  Spring Boot Version : ${spring-boot.formatted-version}
 -----------------------------------------------------------
-

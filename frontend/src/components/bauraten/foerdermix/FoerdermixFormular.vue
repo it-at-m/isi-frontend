@@ -71,10 +71,10 @@ export default class FoerdermixFormular extends Mixins(
 
   private sumOver100 = false;
 
-  get gesamtsumme(): string {
+  get gesamtsumme(): number {
     const sum: number = addiereAnteile(this.foerdermix);
     this.sumOver100 = sum > 100;
-    return this.formatGesammtsumme(sum);
+    return sum;
   }
 }
 </script>

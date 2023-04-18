@@ -4,10 +4,9 @@ import _ from "lodash";
 /**
  * fileAlreadyExists
  */
-export function fileAlreadyExists(dokumente: DokumentDto[], file: File, pathToFile: string): boolean {
-  const newUrl = pathToFile + file.name;
+export function fileAlreadyExists(dokumente: DokumentDto[], file: File): boolean {
   const found = dokumente.find((dokument) => {
-    return dokument.filePath.pathToFile === newUrl;
+    return _.endsWith(dokument.filePath.pathToFile, file.name);
   });
   return found !== undefined;
 }

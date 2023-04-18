@@ -28,6 +28,9 @@ import {
   MittelschuleDto,
   PresignedUrlDto,
   SchuleDto,
+  BauabschnittDto,
+  BaugebietDto,
+  BaugebietDtoBaugebietTypEnum,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
@@ -143,10 +146,8 @@ export function createFilepathDto(): FilepathDto {
   } as FilepathDto;
 }
 
-export function createFilepathDtoFor(name: string, dokumente: DokumentDto[] | undefined): string {
-  const filePath: string | undefined =
-    !_.isNil(dokumente) && dokumente.length > 0 ? dokumente[0].filePath.pathToFile : undefined;
-  return filePath === undefined ? `${name}/${uuidv4()}/` : filePath.substring(0, filePath.lastIndexOf("/") + 1);
+export function createFilepathFor(nameRootFolder: string): string {
+  return `${nameRootFolder}/${uuidv4()}/`;
 }
 
 /**
@@ -175,11 +176,40 @@ export function createDokumentDto(): DokumentDto {
 }
 
 /**
+ * BauabschnittDto
+ */
+export function createBauabschnittDto(): BauabschnittDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "",
+    baugebiete: [],
+  } as BauabschnittDto;
+}
+
+/**
+ * BaugebietDto
+ */
+export function createBaugebietDto(): BaugebietDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "",
+    baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
+    bauraten: [],
+  } as BaugebietDto;
+}
+
+/**
  * BaurateDto
  */
-export function createBaurate(): BaurateDto {
+export function createBaurateDto(): BaurateDto {
   return {
-    id: "",
+    id: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     geschossflaecheWohnenGeplant: undefined,
@@ -191,13 +221,13 @@ export function createBaurate(): BaurateDto {
   } as BaurateDto;
 }
 
-export function createFoerdermix(): FoerdermixDto {
+export function createFoerdermixDto(): FoerdermixDto {
   return {
     foerderarten: new Array<FoerderartDto>(),
   } as FoerdermixDto;
 }
 
-export function createFoerdermixStamm(): FoerdermixStammDto {
+export function createFoerdermixStammDto(): FoerdermixStammDto {
   return {
     bezeichnung: "",
     bezeichnungJahr: "",

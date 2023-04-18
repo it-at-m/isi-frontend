@@ -74,11 +74,13 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
   private fetchSuccess: boolean | null = null;
 
   get bauvorhabenList(): BauvorhabenDto[] {
-    return this.$store.getters["search/resultBauvorhaben"];
+    const list = this.$store.getters["search/resultBauvorhaben"];
+    return list ? list : [];
   }
 
   get standVorhabenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVorhaben"];
+    const list = this.$store.getters["lookup/standVorhaben"];
+    return list ? list : [];
   }
 
   mounted(): void {
