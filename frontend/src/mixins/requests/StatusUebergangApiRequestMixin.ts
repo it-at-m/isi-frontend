@@ -9,7 +9,7 @@ export default class StatusUebergangApiRequestMixin extends Mixins(ErrorHandler)
     let successFullRequest = false;
     const fetchUrl =
       import.meta.env.VITE_VUE_APP_API_URL +
-      `/api/isi-backend-service//infrastruktur-abfrage/${abfrageId}/${transition.url}`;
+      `/api/isi-backend-service/infrastruktur-abfrage/${abfrageId}/${transition.url}`;
     await fetch(fetchUrl, RequestUtils.getPUTConfig())
       .then((response) => {
         if (response.ok) {

@@ -46,7 +46,7 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_statusuebergang"
-          v-model="statusUebergangDialog"
+          v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
           dialogtext="Hiermit wird die Abfrage ihren Status ändern."
