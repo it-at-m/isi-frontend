@@ -13,6 +13,22 @@
     </v-row>
     <field-group-card>
       <v-row justify="center">
+        <v-col cols="12">
+          <v-text-field
+            id="abfragevariante_name"
+            v-model.trim="abfragevariante.abfragevariantenName"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="30"
+            validate-on-blur
+            @input="formChanged"
+          >
+            <template #label> Name der Abfragevariante <span class="secondary--text">*</span> </template>
+          </v-text-field>
+        </v-col>
+      </v-row>
+    </field-group-card>
+    <field-group-card>
+      <v-row justify="center">
         <v-col
           cols="12"
           md="4"
@@ -108,7 +124,6 @@
         >
           <num-field
             id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
-            :key="componentKeyGeschossflaecheSobonUrsaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
             class="mx-3"
             label="SoBoN-ursächliche"
@@ -280,10 +295,6 @@ export default class AbfragevarianteForm extends Mixins(
     this.$emit("input", mode);
   }
 
-  // Das Attribut führt bei einer Wertänderung dazu, dass das Eingabefeld neu gerendert wird.
-  // Dies ist insbesondere bei der Änderung des Planungsrechts nötig, damit die Validerung korrekt aktiviert bzw. deaktiviert wird.
-  private componentKeyGeschossflaecheSobonUrsaechlich = 0;
-
   @Prop()
   private sobonRelevant!: UncertainBoolean;
 
@@ -296,7 +307,6 @@ export default class AbfragevarianteForm extends Mixins(
       this.isSobonRelevant === UncertainBoolean.True &&
       (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
         this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
-    this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
     return pflichtfeld;
   }
 
@@ -309,8 +319,10 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get headline(): string {
-    const headline = `Abfragevariante Nr. ${this.abfragevariante.abfragevariantenNr} `;
-    return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
+    const headline = `Abfragevariante Nr: ${this.abfragevariante.abfragevariantenNr} - `;
+    return this.displayMode === DisplayMode.NEU
+      ? headline.concat("anlegen")
+      : headline.concat(`${this.abfragevariante.abfragevariantenName} ändern`);
   }
 
   @Watch("abfragevariante", { immediate: true, deep: true })

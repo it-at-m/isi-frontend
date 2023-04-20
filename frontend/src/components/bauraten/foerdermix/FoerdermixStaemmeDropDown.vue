@@ -20,7 +20,7 @@ import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMix
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import MappingMixin from "@/mixins/MappingMixin";
-import { createFoerdermix, createFoerdermixStamm } from "@/utils/Factories";
+import { createFoerdermixDto, createFoerdermixStammDto } from "@/utils/Factories";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
@@ -30,7 +30,7 @@ type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 export default class FoerdermixStaemmeDropDown extends Mixins(FoerdermixApiRequestMixin, MappingMixin, SaveLeaveMixin) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 
-  private selectedItem: FoerdermixStammModel = createFoerdermixStamm();
+  private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();
 
   private stammdaten: FoerdermixStammModel[] = [];
 
@@ -103,7 +103,7 @@ export default class FoerdermixStaemmeDropDown extends Mixins(FoerdermixApiReque
     const foerdermixStammDto = {
       bezeichnung: "Freie Eingabe",
       bezeichnungJahr: "Weitere",
-      foerdermix: createFoerdermix(),
+      foerdermix: createFoerdermixDto(),
     } as FoerdermixStammDto;
     return foerdermixStammDto;
   }
