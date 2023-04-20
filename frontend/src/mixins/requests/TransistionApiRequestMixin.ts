@@ -17,7 +17,7 @@ export default class TransitionApiRequestMixin extends Mixins(ErrorHandler) {
       id: uuid,
     };
     return this.abfrageStatusApi
-      .transitions(requestObject, RequestUtils.getGETConfig())
+      .transitionsInfrastrukturabfrage(requestObject, RequestUtils.getGETConfig())
       .then((response) => {
         return response;
       })
