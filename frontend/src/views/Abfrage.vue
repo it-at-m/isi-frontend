@@ -49,7 +49,7 @@
           v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
-          dialogtext="Hiermit wird die Abfrage ihren Status ändern."
+          :dialogtext="dialogTextStatus"
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
           @no="yesNoDialogStatusUebergangeNo"
@@ -287,6 +287,8 @@ export default class Abfrage extends Mixins(
 
   private buttonText = "";
 
+  private dialogTextStatus = "";
+
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
     true
@@ -379,6 +381,7 @@ export default class Abfrage extends Mixins(
 
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
+    this.dialogTextStatus = transition.dialogText as string;
     this.isStatusUebergangDialogOpen = true;
   }
 

@@ -37,6 +37,12 @@ export interface TransitionDto {
      * @memberof TransitionDto
      */
     index?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransitionDto
+     */
+    dialogText?: string;
 }
 
 export function TransitionDtoFromJSON(json: any): TransitionDto {
@@ -52,6 +58,7 @@ export function TransitionDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'url': !exists(json, 'url') ? undefined : json['url'],
         'buttonName': !exists(json, 'buttonName') ? undefined : json['buttonName'],
         'index': !exists(json, 'index') ? undefined : json['index'],
+        'dialogText': !exists(json, 'dialogText') ? undefined : json['dialogText'],
     };
 }
 
@@ -67,6 +74,7 @@ export function TransitionDtoToJSON(value?: TransitionDto | null): any {
         'url': value.url,
         'buttonName': value.buttonName,
         'index': value.index,
+        'dialogText': value.dialogText,
     };
 }
 
