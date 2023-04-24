@@ -5,8 +5,10 @@
       <slot name="content" />
     </div>
     <div class="control-wrapper">
-      <div class="side-bar-navigation">
-        <slot name="navigation" />
+      <div class="side-bar">
+        <div class="side-bar-navigation">
+          <slot name="navigation" />
+        </div>
       </div>
       <div class="middle-wrapper">
         <!-- Bei Angabe des 'solid-heading'-Props wird 'transparent-edge' zu den CSS-Klassen hinzugefügt. -->
@@ -112,14 +114,21 @@ export default class DefaultLayout extends Vue {
   padding-top: 20px;
 }
 
-.side-bar,
-.side-bar-navigation {
+.side-bar {
   width: 20%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+}
+
+.side-bar-navigation {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .side-bar-information {
