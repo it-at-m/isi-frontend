@@ -10,7 +10,6 @@ const state = {
   sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
   standVorhaben: [] as LookupEntryDto[],
   statusAbfrage: [] as LookupEntryDto[],
-  zustaendigeDienststelle: [] as LookupEntryDto[],
   baugebietTyp: [] as LookupEntryDto[],
   artDokument: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
@@ -23,7 +22,7 @@ export type LookupState = typeof state;
 
 export default {
   namespaced: true,
-  
+
   state,
 
   getters: {
@@ -44,9 +43,6 @@ export default {
     },
     statusAbfrage: (state: LookupState): Array<LookupEntryDto> => {
       return state.statusAbfrage;
-    },
-    zustaendigeDienststelle: (state: LookupState): Array<LookupEntryDto> => {
-      return state.zustaendigeDienststelle;
     },
     baugebietTyp: (state: LookupState): Array<LookupEntryDto> => {
       return state.baugebietTyp;
@@ -87,9 +83,6 @@ export default {
     statusAbfrage(state: LookupState, list: LookupEntryDto[]): void {
       state.statusAbfrage = list;
     },
-    zustaendigeDienststelle(state: LookupState, list: LookupEntryDto[]): void {
-      state.zustaendigeDienststelle = list;
-    },
     baugebietTyp(state: LookupState, list: LookupEntryDto[]): void {
       state.baugebietTyp = list;
     },
@@ -108,26 +101,24 @@ export default {
     artGsNachmittagBetreuung(state: LookupState, list: LookupEntryDto[]): void {
       state.artGsNachmittagBetreuung = list;
     },
-
   },
 
   actions: {
     initialize(context: ActionContext<LookupState, RootState>): void {
       const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfigurationForBackend());
-      lookupApi.getLookupLists(RequestUtils.getGETConfig()).then(lookupLists => {
-        context.commit('uncertainBoolean', lookupLists.uncertainBoolean?.list);
-        context.commit('artAbfrage', lookupLists.artAbfrage?.list);
-        context.commit('planungsrecht', lookupLists.planungsrecht?.list);
-        context.commit('sobonVerfahrensgrundsaetzeJahr', lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
-        context.commit('standVorhaben', lookupLists.standVorhaben?.list);
-        context.commit('statusAbfrage', lookupLists.statusAbfrage?.list);
-        context.commit('zustaendigeDienststelle', lookupLists.zustaendigeDienststelle?.list);
-        context.commit('baugebietTyp', lookupLists.baugebietTyp?.list);
-        context.commit('artDokument', lookupLists.artDokument?.list);
-        context.commit('statusInfrastruktureinrichtung', lookupLists.statusInfrastruktureinrichtung?.list);
-        context.commit('einrichtungstraeger', lookupLists.einrichtungstraeger?.list);
-        context.commit('infrastruktureinrichtungTyp', lookupLists.infrastruktureinrichtungTyp?.list);
-        context.commit('artGsNachmittagBetreuung', lookupLists.artGsNachmittagBetreuung?.list);
+      lookupApi.getLookupLists(RequestUtils.getGETConfig()).then((lookupLists) => {
+        context.commit("uncertainBoolean", lookupLists.uncertainBoolean?.list);
+        context.commit("artAbfrage", lookupLists.artAbfrage?.list);
+        context.commit("planungsrecht", lookupLists.planungsrecht?.list);
+        context.commit("sobonVerfahrensgrundsaetzeJahr", lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
+        context.commit("standVorhaben", lookupLists.standVorhaben?.list);
+        context.commit("statusAbfrage", lookupLists.statusAbfrage?.list);
+        context.commit("baugebietTyp", lookupLists.baugebietTyp?.list);
+        context.commit("artDokument", lookupLists.artDokument?.list);
+        context.commit("statusInfrastruktureinrichtung", lookupLists.statusInfrastruktureinrichtung?.list);
+        context.commit("einrichtungstraeger", lookupLists.einrichtungstraeger?.list);
+        context.commit("infrastruktureinrichtungTyp", lookupLists.infrastruktureinrichtungTyp?.list);
+        context.commit("artGsNachmittagBetreuung", lookupLists.artGsNachmittagBetreuung?.list);
       });
     },
     uncertainBoolean(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
@@ -148,11 +139,8 @@ export default {
     statusAbfrage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("statusAbfrage", list);
     },
-    zustaendigeDienststelle(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit('zustaendigeDienststelle', list);
-    },
     baugebietTyp(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit('baugebietTyp', list);
+      context.commit("baugebietTyp", list);
     },
     artDokument(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("artDokument", list);
@@ -169,5 +157,5 @@ export default {
     artGssBetreuung(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("artGsNachmittagBetreuung", list);
     },
-  }
+  },
 };

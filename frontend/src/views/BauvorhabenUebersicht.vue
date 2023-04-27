@@ -1,12 +1,13 @@
 <template>
-  <DefaultLayout>
+  <default-layout>
     <template #content>
       <div
         v-if="bauvorhabenList.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in bauvorhabenList"
+          v-for="(item, index) in bauvorhabenList"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,45 +17,36 @@
             :elevation="hover ? 4 : 0"
             @click="editBauvorhaben(item.id)"
           >
-            <v-card-title>
+            <v-card-title :id="'bauvorhaben_uebersicht_item_' + index + '_nameVorhaben'">
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span>Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'"
+                >Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span
+              >
               <v-spacer />
-              <span>Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'"
+                >Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span
+              >
               <v-spacer />
-              <span>Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'"
+                >Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span
+              >
             </v-card-text>
           </v-card>
         </v-hover>
       </div>
-      <!-- Falls noch keine Bauvorhaben vorhanden sind, wird Folgendes angezeigt -->
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="fetchSuccess === true"
-          class="text-h6"
-        >Keine Bauvorhaben vorhanden</span>
-        <span
-          v-else-if="fetchSuccess === false"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        id="bauvorhaben_uebersicht_loading"
+        :success="fetchSuccess"
+        name="Bauvorhaben"
+      />
     </template>
     <template #action>
       <v-spacer />
       <v-btn
+        id="bauvorhaben_uebersicht_bauvorhaben_erstellen_button"
         dark
         fab
         x-large
@@ -62,12 +54,10 @@
         class="align-self-end"
         @click="createBauvorhaben()"
       >
-        <v-icon>
-          mdi-plus
-        </v-icon>
+        <v-icon> mdi-plus </v-icon>
       </v-btn>
     </template>
-  </DefaultLayout>
+  </default-layout>
 </template>
 
 <script lang="ts">
@@ -78,19 +68,21 @@ import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 
 @Component({
-  components: { DefaultLayout }
+  components: { DefaultLayout },
 })
 export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin) {
   private fetchSuccess: boolean | null = null;
-  
+
   get bauvorhabenList(): BauvorhabenDto[] {
-    return this.$store.getters["search/resultBauvorhaben"];
+    const list = this.$store.getters["search/resultBauvorhaben"];
+    return list ? list : [];
   }
 
   get standVorhabenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVorhaben"];
+    const list = this.$store.getters["lookup/standVorhaben"];
+    return list ? list : [];
   }
-  
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
@@ -100,21 +92,24 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
    */
   private async fetchBauvorhaben(): Promise<void> {
     this.fetchSuccess = null;
-  
+
     await this.getBauvorhaben(false)
       .then((bauvorhaben: BauvorhabenDto[]) => {
         this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
         this.fetchSuccess = true;
+      })
+      .catch(() => {
+        this.fetchSuccess = false;
       });
   }
-  
+
   /**
    * Ermittelt den Anzeigenamen von einem Eintrag eines Lookup-Enums.
    * Konnte der Anzeigename nicht ermittelt werden, wird der Name des Eintrags zurückgegeben.
-   * 
+   *
    * @param key Der Name des Enum-Eintrags.
    * @param list Das Array mit allen Einträgen des Enums.
-   * 
+   *
    * @return Der Anzeigename oder Name des Enum-Eintrags.
    */
   private getLookupValue(key: string, list: Array<LookupEntryDto>): string {
@@ -127,16 +122,16 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
 
     return key;
   }
-  
+
   /**
    * Öffnet die View zur Bearbeitung eines existierenden Bauvorhabens.
-   * 
+   *
    * @param id Die ID des ausgewählten Bauvorhabens.
    */
   private editBauvorhaben(id: string): void {
     router.push({
       name: "editBauvorhaben",
-      params: { id }
+      params: { id },
     });
   }
 
@@ -145,7 +140,7 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
    */
   private createBauvorhaben(): void {
     router.push({
-      name: "createBauvorhaben"
+      name: "createBauvorhaben",
     });
   }
 }

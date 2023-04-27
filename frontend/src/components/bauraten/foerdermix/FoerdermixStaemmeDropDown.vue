@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-select
+      id="foerdermix_stammdaten_dropdown"
       v-model="selectedItem"
       :items="groupedStammdaten"
       label="Fördermix"
@@ -19,22 +20,17 @@ import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMix
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import MappingMixin from "@/mixins/MappingMixin";
-import { createFoerdermix, createFoerdermixStamm } from "@/utils/Factories";
+import { createFoerdermixDto, createFoerdermixStammDto } from "@/utils/Factories";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
 @Component
-export default class FoerdermixStaemmeDropDown extends Mixins(
-  FoerdermixApiRequestMixin,
-  MappingMixin,
-  SaveLeaveMixin
-) {
-  
+export default class FoerdermixStaemmeDropDown extends Mixins(FoerdermixApiRequestMixin, MappingMixin, SaveLeaveMixin) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 
-  private selectedItem: FoerdermixStammModel = createFoerdermixStamm();
+  private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();
 
   private stammdaten: FoerdermixStammModel[] = [];
 
@@ -46,10 +42,7 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
 
   @Watch("foerdermix", { immediate: true, deep: true })
   private changeFördermixBezeichnung(): void {
-    const matchedFoerdermix = matchFoerdermixStammDaten(
-      this.foerdermix,
-      this.stammdaten
-    );
+    const matchedFoerdermix = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
     this.selectedItem = matchedFoerdermix;
   }
 
@@ -57,17 +50,15 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
     this.foerdermix = this.mapFoerdermixStammModelToFoerderMix(item);
   }
 
-   loadFoerdermixStaemme(): void {
-    this.getFoerdermixStaemme(true).then(
-      (foerdermixStaemme: FoerdermixStammDto[]) => {
-        foerdermixStaemme.forEach((foerdermixStamm: FoerdermixStammDto) => {
-          this.stammdaten.push(foerdermixStamm);
-        });
-        this.$store.dispatch("foerdermix/foerdermixStammdaten", foerdermixStaemme);
-        this.stammdaten.push(this.createFreieEingabe());
-        this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
-      }
-    );
+  loadFoerdermixStaemme(): void {
+    this.getFoerdermixStaemme(true).then((foerdermixStaemme: FoerdermixStammDto[]) => {
+      foerdermixStaemme.forEach((foerdermixStamm: FoerdermixStammDto) => {
+        this.stammdaten.push(foerdermixStamm);
+      });
+      this.$store.dispatch("foerdermix/foerdermixStammdaten", foerdermixStaemme);
+      this.stammdaten.push(this.createFreieEingabe());
+      this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
+    });
   }
 
   /**
@@ -83,7 +74,7 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
 
     data.forEach((foerdermix: FoerdermixStammModel) => {
       // Falls für das 'bezeichnungJahr' des aktuellen Fördermixes kein Array vorhanden ist, wird eins erschaffen.
-      groups[foerdermix.bezeichnungJahr] = groups[foerdermix.bezeichnungJahr] || [] ;
+      groups[foerdermix.bezeichnungJahr] = groups[foerdermix.bezeichnungJahr] || [];
       // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
       groups[foerdermix.bezeichnungJahr].push(foerdermix);
     });
@@ -112,12 +103,11 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
     const foerdermixStammDto = {
       bezeichnung: "Freie Eingabe",
       bezeichnungJahr: "Weitere",
-      foerdermix: createFoerdermix(),
+      foerdermix: createFoerdermixDto(),
     } as FoerdermixStammDto;
     return foerdermixStammDto;
   }
 }
 </script>
 
-<style>
-</style>
+<style></style>

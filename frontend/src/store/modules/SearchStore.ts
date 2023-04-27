@@ -1,4 +1,8 @@
-import { AbfrageListElementDto, BauvorhabenDto, InfrastruktureinrichtungListElementDto } from "@/api/api-client/isi-backend";
+import {
+  AbfrageListElementDto,
+  BauvorhabenDto,
+  InfrastruktureinrichtungListElementDto,
+} from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
@@ -8,30 +12,31 @@ import GrundschuleModel from "@/types/model/infrastruktureinrichtung/Grundschule
 import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
+import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 
 const state = {
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
-  resultBauvorhaben: [] as BauvorhabenDto[],
-  selectedBauvorhaben: undefined as BauvorhabenDto | undefined,
+  resultBauvorhaben: undefined as BauvorhabenDto[] | undefined,
+  selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungListElementDto[] | undefined,
   searchQueryInfrastruktureinrichtung: "",
   selectedInfrastruktureinrichtung: undefined as
-   KinderkrippeModel |
-   KindergartenModel |
-   HausFuerKinderModel |
-   GsNachmittagBetreuungModel |
-   GrundschuleModel |
-   MittelschuleModel |
-   undefined,
+    | KinderkrippeModel
+    | KindergartenModel
+    | HausFuerKinderModel
+    | GsNachmittagBetreuungModel
+    | GrundschuleModel
+    | MittelschuleModel
+    | undefined,
 };
 
 export type SearchState = typeof state;
 
 export default {
   namespaced: true,
-  
+
   state,
 
   getters: {
@@ -41,12 +46,10 @@ export default {
     searchQueryAbfrage: (state: SearchState): string => {
       return state.searchQueryAbfrage;
     },
-    selectedAbfrage: (
-      state: SearchState
-    ): InfrastrukturabfrageModel | undefined => {
+    selectedAbfrage: (state: SearchState): InfrastrukturabfrageModel | undefined => {
       return state.selectedAbfrage;
     },
-    resultBauvorhaben: (state: SearchState): Array<BauvorhabenDto> => {
+    resultBauvorhaben: (state: SearchState): Array<BauvorhabenDto> | undefined => {
       return state.resultBauvorhaben;
     },
     selectedBauvorhaben: (state: SearchState): BauvorhabenDto | undefined => {
@@ -60,13 +63,14 @@ export default {
     },
     selectedInfrastruktureinrichtung: (
       state: SearchState
-    ): KinderkrippeModel |
-      KindergartenModel |
-      HausFuerKinderModel |
-      GsNachmittagBetreuungModel |
-      GrundschuleModel |
-      MittelschuleModel |
-      undefined => {
+    ):
+      | KinderkrippeModel
+      | KindergartenModel
+      | HausFuerKinderModel
+      | GsNachmittagBetreuungModel
+      | GrundschuleModel
+      | MittelschuleModel
+      | undefined => {
       return state.selectedInfrastruktureinrichtung;
     },
   },
@@ -78,20 +82,20 @@ export default {
     searchQueryAbfrage(state: SearchState, searchQuery: string): void {
       state.searchQueryAbfrage = searchQuery;
     },
-    selectedAbfrage(
-      state: SearchState,
-      selectedAbfrage: InfrastrukturabfrageModel
-    ): void {
+    selectedAbfrage(state: SearchState, selectedAbfrage: InfrastrukturabfrageModel): void {
       state.selectedAbfrage = selectedAbfrage;
-    },
-    resultBauvorhaben: (state: SearchState, items: BauvorhabenDto[]): void => {
-      state.resultBauvorhaben = items;
     },
     resetAbfrage(state: SearchState): void {
       state.resultAbfrage = undefined;
     },
     selectedBauvorhaben: (state: SearchState, item: BauvorhabenDto): void => {
       state.selectedBauvorhaben = item;
+    },
+    resultBauvorhaben: (state: SearchState, items: BauvorhabenDto[]): void => {
+      state.resultBauvorhaben = items;
+    },
+    resetBauvorhaben(state: SearchState): void {
+      state.resultBauvorhaben = undefined;
     },
     resultInfrastruktureinrichtung(state: SearchState, items: InfrastruktureinrichtungListElementDto[]): void {
       state.resultInfrastruktureinrichtung = items;
@@ -102,18 +106,18 @@ export default {
     selectedInfrastruktureinrichtung(
       state: SearchState,
       selectedInfrastruktureinrichtung:
-        KinderkrippeModel |
-        KindergartenModel |
-        HausFuerKinderModel |
-        GsNachmittagBetreuungModel |
-        GrundschuleModel |
-        MittelschuleModel
+        | KinderkrippeModel
+        | KindergartenModel
+        | HausFuerKinderModel
+        | GsNachmittagBetreuungModel
+        | GrundschuleModel
+        | MittelschuleModel
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
     },
     resetInfrastruktureinrichtung(state: SearchState): void {
       state.resultInfrastruktureinrichtung = undefined;
-    },   
+    },
   },
 
   actions: {
@@ -123,14 +127,8 @@ export default {
     searchQueryAbfrage(context: ActionContext<SearchState, RootState>, searchQuery: string): void {
       context.commit("searchQueryAbfrage", searchQuery);
     },
-    selectedAbfrage(
-      context: ActionContext<SearchState, RootState>,
-      abfrage: InfrastrukturabfrageModel
-    ): void {
+    selectedAbfrage(context: ActionContext<SearchState, RootState>, abfrage: InfrastrukturabfrageModel): void {
       context.commit("selectedAbfrage", abfrage);
-    },
-    resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
-      context.commit("resultBauvorhaben", items);
     },
     resetAbfrage(context: ActionContext<SearchState, RootState>): void {
       context.commit("resetAbfrage");
@@ -138,24 +136,33 @@ export default {
     isInitializedAbfrage(): boolean {
       return this.resultAbfrage !== undefined;
     },
-    selectedBauvorhaben(context: ActionContext<SearchState, RootState>, item: BauvorhabenDto): void {
-      context.commit('selectedBauvorhaben', item);
+    resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
+      context.commit("resultBauvorhaben", items);
     },
-    resultInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>, items: InfrastruktureinrichtungListElementDto[]): void {
+    selectedBauvorhaben(context: ActionContext<SearchState, RootState>, item: BauvorhabenDto): void {
+      context.commit("selectedBauvorhaben", item);
+    },
+    resetBauvorhaben(context: ActionContext<SearchState, RootState>): void {
+      context.commit("resetBauvorhaben");
+    },
+    resultInfrastruktureinrichtung(
+      context: ActionContext<SearchState, RootState>,
+      items: InfrastruktureinrichtungListElementDto[]
+    ): void {
       context.commit("resultInfrastruktureinrichtung", items);
     },
     searchQueryInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>, searchQuery: string): void {
       context.commit("searchQueryInfrastruktureinrichtung", searchQuery);
-    },    
+    },
     selectedInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      infrastruktureinrichtung: 
-        KinderkrippeModel |
-        KindergartenModel |
-        HausFuerKinderModel |
-        GsNachmittagBetreuungModel |
-        GrundschuleModel |
-        MittelschuleModel
+      infrastruktureinrichtung:
+        | KinderkrippeModel
+        | KindergartenModel
+        | HausFuerKinderModel
+        | GsNachmittagBetreuungModel
+        | GrundschuleModel
+        | MittelschuleModel
     ): void {
       context.commit("selectedInfrastruktureinrichtung", infrastruktureinrichtung);
     },
@@ -165,5 +172,5 @@ export default {
     resetInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>): void {
       context.commit("resetInfrastruktureinrichtung");
     },
-  }
+  },
 };

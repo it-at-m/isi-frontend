@@ -4,10 +4,9 @@ import _ from "lodash";
 /**
  * fileAlreadyExists
  */
-export function fileAlreadyExists(dokumente: DokumentDto[], file: File, pathToFile: string): boolean {
-  const newUrl = pathToFile + file.name;
+export function fileAlreadyExists(dokumente: DokumentDto[], file: File): boolean {
   const found = dokumente.find((dokument) => {
-    return dokument.filePath.pathToFile === newUrl;
+    return _.endsWith(dokument.filePath.pathToFile, file.name);
   });
   return found !== undefined;
 }
@@ -15,7 +14,11 @@ export function fileAlreadyExists(dokumente: DokumentDto[], file: File, pathToFi
 /**
  * maxNumberOfFilesReached
  */
-export function maxNumberOfFilesReached(dokumente: DokumentDto[], fileList: FileList, fileInformationDto: FileInformationDto): boolean {
+export function maxNumberOfFilesReached(
+  dokumente: DokumentDto[],
+  fileList: FileList,
+  fileInformationDto: FileInformationDto
+): boolean {
   let maximumReached = false;
   if (!_.isNil(fileInformationDto.maxNumberOfFiles) && !_.isNil(dokumente)) {
     maximumReached = dokumente.length + fileList.length > fileInformationDto.maxNumberOfFiles;
@@ -27,7 +30,7 @@ export function maxNumberOfFilesReached(dokumente: DokumentDto[], fileList: File
  * maxFileSizeExceeded
  */
 export function maxFileSizeExceeded(file: File, fileInformationDto: FileInformationDto): boolean {
-  let maxFileSizeExceeded = false; 
+  let maxFileSizeExceeded = false;
   if (!_.isNil(fileInformationDto.maxFileSizeBytes)) {
     maxFileSizeExceeded = file.size > fileInformationDto.maxFileSizeBytes;
   }
@@ -43,4 +46,22 @@ export function maxFileSizeExceeded(file: File, fileInformationDto: FileInformat
  */
 export function getAllowedMimeTypes(fileInformationDto: FileInformationDto): string {
   return _.join(fileInformationDto.allowedMimeTypes);
+}
+
+export function mimeTypeNichtErlaubt(): string {
+  return "DATEITYP NICHT ERLAUBT";
+}
+
+export function isDokumentAllowed(dokument: DokumentDto): boolean {
+  return dokument.typDokument !== mimeTypeNichtErlaubt();
+}
+
+export function containsNotAllowedDokument(dokumente: DokumentDto[]): boolean {
+  let containsNotAllowedDokument = false;
+  dokumente.forEach((dokumente) => {
+    if (!isDokumentAllowed(dokumente)) {
+      containsNotAllowedDokument = true;
+    }
+  });
+  return containsNotAllowedDokument;
 }

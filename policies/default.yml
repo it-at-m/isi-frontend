@@ -23,10 +23,10 @@ licensing:
 
 # General Dependency Alerts
 # dependencies:
-  # warnings:
-  #   ids:
-  #     - Maintenance
-  #     - Organization
+# warnings:
+#   ids:
+#     - Maintenance
+#     - Organization
 
 secretscanning:
   level: all

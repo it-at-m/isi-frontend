@@ -7,17 +7,16 @@
       >
         <v-col cols="12">
           <v-select
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_dropdown"
             v-model="infrastruktureinrichtungTyp"
             class="mx-3"
             :items="infrastruktureinrichtungList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld,fieldValidationRules.notUnspecified]"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Infrastruktureinrichtung Typ <span class="secondary--text">*</span>
-            </template>
+            <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -30,6 +29,7 @@
           md="6"
         >
           <v-text-field
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_darstellung"
             v-model="infrastruktureinrichtungTypDisplay"
             label="Typ der Infrastruktureinrichtung"
             disabled
@@ -41,6 +41,7 @@
           md="6"
         >
           <v-text-field
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_ldfNr_darstellung"
             v-model="lfdNrInfrastruktureinrichtung"
             label="Lfd. Nr."
             disabled
@@ -54,22 +55,19 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import {LookupEntryDto } from "@/api/api-client/isi-backend";
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import _ from "lodash";
 
 @Component({
   components: {
-    FieldGroupCard
+    FieldGroupCard,
   },
 })
-export default class InfrastruktureinrichtungTypComponent extends Mixins(
-  FieldValidationRulesMixin,
-  SaveLeaveMixin 
-) {
+export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: String }) infrastruktureinrichtungTyp!: string;
 
   @Prop()
@@ -94,22 +92,20 @@ export default class InfrastruktureinrichtungTypComponent extends Mixins(
     return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
   }
 
-  get infrastruktureinrichtungTypDisplay(): string {    
+  get infrastruktureinrichtungTypDisplay(): string {
     if (!_.isNil(this.infrastruktureinrichtungTyp)) {
       const lookupValue = this.getLookupValue(this.infrastruktureinrichtungTyp, this.infrastruktureinrichtungList);
-      return (!_.isNil(lookupValue)) ? lookupValue : "";
-    }
-    else {
+      return !_.isNil(lookupValue) ? lookupValue : "";
+    } else {
       return "";
     }
   }
 
   private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) && !_.isNil(key)
-        ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-        : key;
+      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+      : key;
   }
-
 }
 </script>
 <style></style>

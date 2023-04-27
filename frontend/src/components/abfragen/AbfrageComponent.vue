@@ -4,20 +4,20 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
+            id="abfrage_name"
             v-model.trim="abfrage.nameAbfrage"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="70"
             validate-on-blur
             @input="formChanged"
           >
-            <template #label>
-              Name der Abfrage <span class="secondary--text">*</span>
-            </template>
+            <template #label> Name der Abfrage <span class="secondary--text">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
     </field-group-card>
     <adresse-component
+      id="abfrage_adresse_component"
       :adresse-prop.sync="abfrage.adresse"
       :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
@@ -29,6 +29,7 @@
           md="6"
         >
           <date-picker
+            id="abfrage_friststellungnahme"
             ref="fristStellungnahmeDatePicker"
             v-model="abfrage.fristStellungnahme"
             label="Termin der Stellungnahme"
@@ -41,17 +42,17 @@
           md="6"
         >
           <v-select
+            id="abfrage_status_dropdown"
             v-model="abfrage.statusAbfrage"
             :items="statusAbfrageList"
             item-value="key"
             item-text="value"
             readonly
             :rules="[fieldValidationRules.pflichtfeld]"
+            :append-icon="null"
             @change="formChanged"
           >
-            <template #label>
-              Status der Abfrage <span class="secondary--text">*</span>
-            </template>
+            <template #label> Status der Abfrage </template>
           </v-select>
         </v-col>
         <v-col
@@ -59,19 +60,15 @@
           md="6"
         >
           <v-select
+            id="abfrage_standvorhaben_dropdown"
             v-model="abfrage.standVorhaben"
             :items="standVorhabenList"
             item-value="key"
             item-text="value"
-            :rules="[
-              fieldValidationRules.pflichtfeld,
-              fieldValidationRules.notUnspecified,
-            ]"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Stand des Vorhabens <span class="secondary--text">*</span>
-            </template>
+            <template #label> Stand des Vorhabens <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -79,6 +76,7 @@
           md="6"
         >
           <v-select
+            id="abfrage_bauvorhaben_dropdown"
             v-model="abfrage.bauvorhaben"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
@@ -94,6 +92,7 @@
           md="6"
         >
           <v-text-field
+            id="abfrage_bebauungsplannummer"
             v-model="abfrage.bebauungsplannummer"
             label="Bebauungsplannummer"
             maxlength="255"
@@ -109,6 +108,7 @@
         </v-col>
         <v-col cols="12">
           <v-textarea
+            id="abfrage_anmerkung"
             v-model="abfrage.anmerkung"
             label="Anmerkungen"
             auto-grow
@@ -123,16 +123,16 @@
       <v-row>
         <v-col cols="12">
           <dokumente
+            id="abfrage_dokumente_component"
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
-            :path-to-file="dokumentePathToFile"
+            :name-root-folder="nameRootFolder"
           />
         </v-col>
       </v-row>
     </field-group-card>
   </div>
 </template>
-
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
@@ -142,8 +142,6 @@ import DatePicker from "@/components/common/DatePicker.vue";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import { createFilepathDtoFor } from "@/utils/Factories";
-import _ from "lodash";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
@@ -153,7 +151,7 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
     DatePicker,
     Dokumente,
     FieldGroupCard,
-    AdresseComponent
+    AdresseComponent,
   },
 })
 export default class AbfrageComponent extends Mixins(
@@ -167,6 +165,8 @@ export default class AbfrageComponent extends Mixins(
 
   private dokumentCardTitle = "Dokumente";
 
+  private nameRootFolder = "abfrage";
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
@@ -178,16 +178,9 @@ export default class AbfrageComponent extends Mixins(
   get bauvorhabenList(): BauvorhabenDto[] {
     return this.$store.getters["search/resultBauvorhaben"];
   }
-  
+
   get statusAbfrageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/statusAbfrage"];
-  }
-
-  get dokumentePathToFile(): string | undefined {
-    if (!_.isNil(this.abfrage)) {
-      return createFilepathDtoFor("abfrage", this.abfrage.dokumente);
-    }
-    return undefined;
   }
 
   /**

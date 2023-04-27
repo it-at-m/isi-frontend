@@ -4,6 +4,7 @@
     :width="width"
   >
     <l-map
+      id="karte"
       ref="map"
       :options="MAP_OPTIONS"
       :center="MUNICH_CENTER"
@@ -15,6 +16,7 @@
       <l-control-layers />
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
       <l-wms-tile-layer
+        id="karte_hintergrund"
         name="Hintergrund"
         :base-url="WMS_BASE_URL"
         layers="Hintergrund"
@@ -25,6 +27,7 @@
       <!-- Die Overlay-Layer der Karte. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen. -->
       <!-- Damit ein Overlay-Layer nicht die darunerliegenden Layer verdeckt, ist es wichtig, :transparent="true" zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt. -->
       <l-wms-tile-layer
+        id="karte_gemarkungen"
         name="Gemarkungen"
         :base-url="getGiwUrl('WMS_Stadtgrundkarte')"
         layers="Gemarkungen"
@@ -34,6 +37,7 @@
         :transparent="true"
       />
       <l-wms-tile-layer
+        id="karte_flurstuecke"
         name="Flurstücke"
         :base-url="getGiwUrl('WMS_Stadtgrundkarte')"
         layers="Flurstücke"
@@ -47,17 +51,15 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
-import { Component, Prop, Mixins } from 'vue-property-decorator';
-import { LMap, LPopup, LControlLayers, LWMSTileLayer } from 'vue2-leaflet';
+import { Component, Prop, Mixins } from "vue-property-decorator";
+import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
 import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
-import { CoordinateDto, CoordinatesDto, FlurstueckFeatureDto } from '@/api/api-client/isi-wfs-eai';
-import { VerortungState, MultiPolygon } from '@/store/modules/VerortungStore';
-import L, { LatLngLiteral } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import _ from 'lodash';
-import { theme } from '@/plugins/vuetify';
+import { CoordinateDto, CoordinatesDto, FlurstueckFeatureDto } from "@/api/api-client/isi-wfs-eai";
+import { VerortungState, MultiPolygon } from "@/store/modules/VerortungStore";
+import L, { LatLngLiteral } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import _ from "lodash";
+import { theme } from "@/plugins/vuetify";
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -68,21 +70,19 @@ import { theme } from '@/plugins/vuetify';
     LMap,
     LPopup,
     LControlLayers,
-    'l-wms-tile-layer': LWMSTileLayer,
-  }
+    "l-wms-tile-layer": LWMSTileLayer,
+  },
 })
-export default class CityMap extends Mixins(
-  WfsEaiApiRequestMixin
-) {
+export default class CityMap extends Mixins(WfsEaiApiRequestMixin) {
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MUNICH_CENTER = [48.137227, 11.575517];
-  private readonly MAP_OPTIONS = {attributionControl: false};
+  private readonly MAP_OPTIONS = { attributionControl: false };
 
-  @Prop({default: "100%"})
+  @Prop({ default: "100%" })
   private readonly height!: number | string;
-  @Prop({default: "100%"})
+  @Prop({ default: "100%" })
   private readonly width!: number | string;
-  @Prop({default: 16})
+  @Prop({ default: 16 })
   private readonly zoom!: number;
 
   private readonly popup = L.popup();
@@ -100,7 +100,7 @@ export default class CityMap extends Mixins(
    * Da GeoInfoWeb mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
   private getGiwUrl(service: string): string {
-    return (import.meta.env.VITE_GIS_URL as string).replace('{1}', service);
+    return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
   }
 
   /**
@@ -114,16 +114,13 @@ export default class CityMap extends Mixins(
 
     const latlng = event.latlng;
 
-    this.popup
-      .setLatLng(latlng)
-      .setContent("Lädt...")
-      .openOn(this.map);
+    this.popup.setLatLng(latlng).setContent("Lädt...").openOn(this.map);
 
     const point: CoordinateDto = { lat: latlng.lat, lon: latlng.lng };
     const fetchedFlurstuecke = await this.getFlurstuecke(point, false);
     const flurstuecke: FlurstueckFeatureDto[] = [];
     const flurstueckMap: VerortungState["flurstuecke"] = this.$store.getters["verortung/flurstuecke"];
-    
+
     for (const flurstueck of fetchedFlurstuecke) {
       /*
       Flurstücke mit fehlenden obligatorischen Werten werden in diesem Schritt "verworfen".
@@ -131,7 +128,7 @@ export default class CityMap extends Mixins(
       */
       if (this.flurstueckIsValid(flurstueck)) {
         const id = flurstueck.properties!.flurstueckId!;
-        
+
         if (!flurstueckMap.has(id)) {
           this.$store.dispatch("verortung/addFlurstueck", flurstueck);
         } else {
@@ -141,7 +138,7 @@ export default class CityMap extends Mixins(
         flurstuecke.push(flurstueck);
       }
     }
-    
+
     if (flurstuecke.length !== 0) {
       const multiPolygonArray: MultiPolygon[] = [];
       for (const flurstueck of flurstueckMap.values()) {
@@ -149,13 +146,13 @@ export default class CityMap extends Mixins(
       }
 
       let coordinatesArray = this.multiPolygonArrayToCoordinatesArray(multiPolygonArray);
-      
+
       if (coordinatesArray.length > 1) {
         coordinatesArray = await this.getUnion(coordinatesArray, false);
       }
 
       this.$store.dispatch("verortung/setCoordinates", coordinatesArray);
-      
+
       this.updatePolygon();
       this.map.closePopup(this.popup);
 
@@ -170,14 +167,14 @@ export default class CityMap extends Mixins(
   private updatePolygon(): void {
     const coordinates: VerortungState["coordinates"] = this.$store.getters["verortung/coordinates"];
     const leafletCoordinates = this.coordinatesArrayToLeafletFormat(coordinates);
-    
+
     if (this.flurstueckPolygon) {
       this.flurstueckPolygon.setLatLngs(leafletCoordinates);
     } else {
       this.flurstueckPolygon = L.polygon(leafletCoordinates, {
         color: theme.themes.light.primary,
         fillColor: theme.themes.light.accent,
-        fillOpacity: 0.5
+        fillOpacity: 0.5,
       }).addTo(this.map);
     }
   }
@@ -186,7 +183,7 @@ export default class CityMap extends Mixins(
     const verortung: VerortungState["verortung"] = { fluerstuck: [], gemarkung: [], stadtbezirk: [] };
     const flurstuecke: VerortungState["flurstuecke"] = this.$store.getters["verortung/flurstuecke"];
     const coordinates: VerortungState["coordinates"] = this.$store.getters["verortung/coordinates"];
-    
+
     for (const flurstueck of flurstuecke.values()) {
       verortung.fluerstuck.push({
         flurstueckNr: flurstueck.properties!.flurstueckId!,
@@ -222,7 +219,7 @@ export default class CityMap extends Mixins(
 
   private multiPolygonArrayToCoordinatesArray(multiPolygonArray: MultiPolygon[]): CoordinatesDto[] {
     const coordinatesArray: CoordinatesDto[] = [];
-    
+
     for (const multiPolygon of multiPolygonArray) {
       for (const polygon of multiPolygon) {
         const coordinatesDto: CoordinatesDto = { coordinates: [] };
@@ -256,11 +253,11 @@ export default class CityMap extends Mixins(
     const nenner = !_.isNil(flurstueck.properties?.fluerstueckNummer);
     const flaeche = !_.isNil(flurstueck.properties?.flaecheQm);
     const coordinates = !_.isNil(flurstueck.geometry?.coordinates);
-    
+
     if (id && zaehler && nenner && flaeche && coordinates) {
       return true;
     }
-    
+
     return false;
   }
 }

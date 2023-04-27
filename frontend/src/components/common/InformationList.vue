@@ -6,6 +6,7 @@
   >
     <template v-for="(item, index) in informationFromInformationList">
       <v-list-item
+        id="information_list"
         :key="index"
         class="ma-0 pa-0"
       >
@@ -17,13 +18,12 @@
         >
           <v-row class="pa-0 ma-0 justify-end align-start">
             <v-btn
+              :id="'information_listitem_' + index + '_loeschen_button'"
               icon
               x-small
               @click="deleteInformationListEntryByIndex(index)"
             >
-              <v-icon dense>
-                mdi-window-close
-              </v-icon>
+              <v-icon dense> mdi-window-close </v-icon>
             </v-btn>
           </v-row>
 
@@ -39,6 +39,7 @@
                 md="6"
               >
                 <v-list-item-action-text
+                  :id="'information_listitem_' + index + '_traceId'"
                   class="text-wrap align-stretch"
                   v-text="textTraceId(item.traceId)"
                 />
@@ -49,6 +50,7 @@
                 md="6"
               >
                 <v-list-item-action-text
+                  :id="'information_listitem_' + index + '_spanId'"
                   class="text-wrap align-stretch"
                   v-text="textSpanId(item.spanId)"
                 />
@@ -66,6 +68,7 @@
                 md="6"
               >
                 <v-list-item-action-text
+                  :id="'information_listitem_' + index + '_timestamp'"
                   class="text-wrap align-stretch"
                   v-text="textDatumUhrzeit(item.timestamp)"
                 />
@@ -76,6 +79,7 @@
                 md="6"
               >
                 <v-list-item-action-text
+                  :id="'information_listitem_' + index + 'originalException'"
                   class="text-wrap align-stretch"
                   v-text="item.originalException"
                 />
@@ -97,6 +101,7 @@
                     md="12"
                   >
                     <v-list-item-title
+                      :id="'information_listitem_' + index + '_error_message_' + messageIndex"
                       class="text-wrap align-stretch pa-0 ma-0"
                       v-text="message"
                     />
@@ -112,17 +117,13 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from "vue-property-decorator";
-import {
-  InformationResponseDto,
-  InformationResponseDtoTypeEnum,
-} from "@/api/api-client/isi-backend";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment";
 
 @Component
 export default class InformationList extends Vue {
-
   private static readonly NOT_APPLICABLE: string = "n/a";
 
   private static readonly FORMAT_TIMESTAMP: string = "DD.MM.YYYY HH:mm:ss";
@@ -185,6 +186,5 @@ export default class InformationList extends Vue {
   public isTimestampOrOriginalExceptionAvailable(informationResponseDto: InformationResponseDto): boolean {
     return !_.isNil(informationResponseDto.timestamp) || !_.isNil(informationResponseDto.originalException);
   }
-
 }
 </script>

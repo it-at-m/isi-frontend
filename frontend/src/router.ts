@@ -1,25 +1,25 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Main from './views/Main.vue';
-import Karte from './views/Karte.vue';
-import AbfragenUebersicht from './views/AbfragenUebersicht.vue';
-import BauvorhabenUebersicht from './views/BauvorhabenUebersicht.vue';
-import InfrastruktureinrichtungenUebersicht from './views/InfrastruktureinrichtungenUebersicht.vue';
-import Abfrage from './views/Abfrage.vue';
-import Bauvorhaben from './views/Bauvorhaben.vue';
-import Infrastruktureinrichtung from './views/Infrastruktureinrichtung.vue';
+import Main from "./views/Main.vue";
+import Karte from "./views/Karte.vue";
+import AbfragenUebersicht from "./views/AbfragenUebersicht.vue";
+import BauvorhabenUebersicht from "./views/BauvorhabenUebersicht.vue";
+import InfrastruktureinrichtungenUebersicht from "./views/InfrastruktureinrichtungenUebersicht.vue";
+import Abfrage from "./views/Abfrage.vue";
+import Bauvorhaben from "./views/Bauvorhaben.vue";
+import Infrastruktureinrichtung from "./views/Infrastruktureinrichtung.vue";
 
 Vue.use(Router);
 
 /*
-* Preventing "NavigationDuplicated" errors in console in Vue-router >= 3.1.0
-* https://github.com/vuejs/vue-router/issues/2881#issuecomment-520554378
-* */
+ * Preventing "NavigationDuplicated" errors in console in Vue-router >= 3.1.0
+ * https://github.com/vuejs/vue-router/issues/2881#issuecomment-520554378
+ * */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const routerMethods = ['push', 'replace'];
+const routerMethods = ["push", "replace"];
 routerMethods.forEach((method: string) => {
   const originalCall = (Router.prototype as any)[method];
-  (Router.prototype as any)[method] = function(location: any, onResolve: any, onReject: any): Promise<any> {
+  (Router.prototype as any)[method] = function (location: any, onResolve: any, onReject: any): Promise<any> {
     if (onResolve || onReject) {
       return originalCall.call(this, location, onResolve, onReject);
     }
@@ -36,74 +36,74 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Main
+      component: Main,
     },
     {
       path: "/karte",
       name: "karte",
       meta: { tag: "karte" },
-      component: Karte
+      component: Karte,
     },
     {
       path: "/abfragenuebersicht",
       name: "abfragenuebersicht",
       meta: { tag: "abfragen" },
-      component: AbfragenUebersicht
+      component: AbfragenUebersicht,
     },
     {
       path: "/abfrageninformationen/abfrage/:id",
       name: "updateabfrage",
       meta: { tag: "abfragen" },
-      component: Abfrage
+      component: Abfrage,
     },
     {
       path: "/abfrageninformationen/abfrage",
       name: "newabfrage",
       meta: { tag: "abfragen" },
-      component: Abfrage
+      component: Abfrage,
     },
     {
       path: "/bauvorhabenuebersicht",
       name: "viewAllBauvorhaben",
       meta: { tag: "bauvorhaben" },
-      component: BauvorhabenUebersicht
+      component: BauvorhabenUebersicht,
     },
     {
       path: "/bauvorhaben",
       name: "createBauvorhaben",
       meta: { tag: "bauvorhaben" },
-      component: Bauvorhaben
+      component: Bauvorhaben,
     },
     {
       path: "/bauvorhaben/:id",
       name: "editBauvorhaben",
       meta: { tag: "bauvorhaben" },
-      component: Bauvorhaben
+      component: Bauvorhaben,
     },
     {
       path: "/infrastruktureinrichtungenuebersicht",
       name: "infrastruktureinrichtungenuebersicht",
       meta: { tag: "infrastruktureinrichtungen" },
-      component: InfrastruktureinrichtungenUebersicht
+      component: InfrastruktureinrichtungenUebersicht,
     },
     {
       path: "/infrastruktureinrichtungeninformationen/infrastruktureinrichtung",
       name: "newInfrastruktureinrichtung",
       meta: { tag: "infrastruktureinrichtungen" },
-      component: Infrastruktureinrichtung
+      component: Infrastruktureinrichtung,
     },
     {
       path: "/infrastruktureinrichtungeninformationen/infrastruktureinrichtung/:typ/:id",
       name: "updateinfrastruktureinrichtung",
       meta: { tag: "infrastruktureinrichtungen" },
-      component: Infrastruktureinrichtung
-    },    
-    {path: '*', redirect: '/'} //Fallback 2
-  ]
+      component: Infrastruktureinrichtung,
+    },
+    { path: "*", redirect: "/" }, //Fallback 2
+  ],
 });
 
-declare module 'vue-router' {
+declare module "vue-router" {
   interface RouteMeta {
-    tag?: RouteTag
+    tag?: RouteTag;
   }
 }

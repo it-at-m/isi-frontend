@@ -1,16 +1,18 @@
 <template>
   <v-container>
     <abfrage-component
+      id="abfrage_infrastrukturabfrage_abfragecomponent_component"
       ref="abfrageComponent"
       v-model="infrastrukturabfrage.abfrage"
     >
       <template #aktenzeichenProLBK>
         <v-text-field
+          id="abfrage_infrastrukturabfrage_aktenzeichenprolbk"
           v-model="infrastrukturabfrage.aktenzeichenProLbk"
           label="Aktenzeichen ProLBK"
           maxlength="255"
           @input="formChanged"
-        />  
+        />
       </template>
     </abfrage-component>
     <field-group-card :card-title="sobonCardTitle">
@@ -19,16 +21,15 @@
           cols="12"
           md="6"
         >
-          <TriSwitch
+          <tri-switch
+            id="abfrage_infrastrukturabfrage_sobonRelevant_triswitch"
             v-model="infrastrukturabfrage.sobonRelevant"
             off-text="Nein"
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
           >
-            <template #label>
-              SoBoN-relevant <span class="secondary--text">*</span>
-            </template>
-          </TriSwitch>
+            <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
+          </tri-switch>
         </v-col>
         <v-col
           cols="12"
@@ -37,10 +38,12 @@
           <v-slide-y-reverse-transition>
             <v-select
               v-if="sobonJahrVisible"
+              id="abfrage_infrastrukturabfrage_sobonJahr_dropdown"
               v-model="infrastrukturabfrage.sobonJahr"
               :items="sobonVerfahrensgrundsaetzeJahrList"
               item-value="key"
               item-text="value"
+              :rules="[fieldValidationRules.pflichtfeld]"
               @change="formChanged"
             >
               <template #label>
@@ -57,16 +60,15 @@
           cols="12"
           md="12"
         >
-          <TriSwitch
+          <tri-switch
+            id="abfrage_infrastrukturabfrage_offiziellerVerfahrensschritt_triswitch"
             v-model="infrastrukturabfrage.offiziellerVerfahrensschritt"
             off-text="Nein"
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
           >
-            <template #label>
-              Offiziell <span class="secondary--text">*</span>
-            </template>
-          </TriSwitch>
+            <template #label> Offiziell <span class="secondary--text">*</span> </template>
+          </tri-switch>
         </v-col>
       </v-row>
     </field-group-card>
@@ -74,28 +76,29 @@
 </template>
 
 <script lang="ts">
-import { Component, VModel, Mixins, Watch } from "vue-property-decorator";
+import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
 import AbfrageComponent from "@/components/abfragen/AbfrageComponent.vue";
 import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin"; 
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   components: {
     AbfrageComponent,
     FieldGroupCard,
-    TriSwitch },
+    TriSwitch,
+  },
   mixins: [FieldValidationRulesMixin],
 })
-export default class InfrastrukturabfrageComponent extends Mixins (SaveLeaveMixin) {
+export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin) {
   @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
 
   private sobonCardTitle = "SoBoN";
 
-  private offiziellCardTitle = "Verfahrensschritt"
+  private offiziellCardTitle = "Verfahrensschritt";
 
   private sobonJahrVisible = false;
 

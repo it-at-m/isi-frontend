@@ -1,20 +1,19 @@
-import {  } from "module";
+import {} from "module";
 import { AbfragevarianteDtoPlanungsrechtEnum } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
-import { createInfrastrukturabfrageDto, createAbfragevarianteDto, } from "@/utils/Factories";
+import { createInfrastrukturabfrageDto, createAbfragevarianteDto } from "@/utils/Factories";
 
 describe("ModelTest.spec.ts", () => {
-
-  test('Test InfrastrukturabfrageModel', () => {
+  test("Test InfrastrukturabfrageModel", () => {
     const dto = createInfrastrukturabfrageDto();
-    expect(dto.abfrage.adresse).toBeUndefined();  
+    expect(dto.abfrage.adresse).toBeUndefined();
     expect(dto.abfragevarianten).toHaveLength(0);
     const model = new InfrastrukturabfrageModel(dto);
     expect(model.abfrage.adresse).not.toBeNull();
   });
 
-  test('Test AbfragevarianteModel', () => {
+  test("Test AbfragevarianteModel", () => {
     const abfrageDto = createInfrastrukturabfrageDto();
     const abfragevarianteDto = createAbfragevarianteDto();
     abfragevarianteDto.abfragevariantenNr = 1;
@@ -22,7 +21,7 @@ describe("ModelTest.spec.ts", () => {
     abfragevarianteDto.realisierungVon = 2022;
     abfragevarianteDto.realisierungBis = 2023;
     abfragevarianteDto.geschossflaecheWohnen = 123.45;
-    abfragevarianteDto.geschossflaecheWohnenFestgesetzt = 0.90;
+    abfragevarianteDto.geschossflaecheWohnenFestgesetzt = 0.9;
     abfragevarianteDto.anzahlWeBaurechtlichGenehmigt = 120;
     abfragevarianteDto.anzahlWeBaurechtlichFestgesetzt = 2;
     abfragevarianteDto.anzahlWeBaurechtlichGenehmigt = 2;
@@ -31,7 +30,8 @@ describe("ModelTest.spec.ts", () => {
     expect(abfrageModel.abfragevarianten).toHaveLength(1);
     const abfragevarianteModel = abfrageModel.abfragevarianten?.[0] as AbfragevarianteModel;
     expect(abfragevarianteModel).not.toBeUndefined();
-    expect(abfragevarianteModel.planungsrecht).toEqual(AbfragevarianteDtoPlanungsrechtEnum.NachverdBaurechtsausschoepfung);
+    expect(abfragevarianteModel.planungsrecht).toEqual(
+      AbfragevarianteDtoPlanungsrechtEnum.NachverdBaurechtsausschoepfung
+    );
   });
-
 });

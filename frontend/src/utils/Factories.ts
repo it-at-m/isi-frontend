@@ -1,41 +1,41 @@
 import {
   AbfrageDto,
-  InfrastrukturabfrageDto,  
-  AbfragevarianteDto,
-  AdresseDto,
-  AbfragevarianteDtoPlanungsrechtEnum,
-  AbfrageDtoStatusAbfrageEnum,
   AbfrageDtoStandVorhabenEnum,
+  AbfrageDtoStatusAbfrageEnum,
+  AbfragevarianteDto,
+  AbfragevarianteDtoPlanungsrechtEnum,
+  AdresseDto,
   BaurateDto,
+  BauvorhabenDto,
+  BauvorhabenDtoArtFnpEnum,
+  BauvorhabenDtoPlanungsrechtEnum,
+  BauvorhabenDtoStandVorhabenEnum,
+  DokumentDto,
+  DokumentDtoArtDokumentEnum,
+  FilepathDto,
+  FoerderartDto,
   FoerdermixDto,
   FoerdermixStammDto,
-  BauvorhabenDto,
-  BauvorhabenDtoStandVorhabenEnum,
-  BauvorhabenDtoPlanungsrechtEnum,
-  BauvorhabenDtoZustaendigkeitEnum,
-  FileInformationDto,
-  FilepathDto,
-  PresignedUrlDto,
-  DokumentDto,
-  BauvorhabenDtoArtFnpEnum,
-  UncertainBoolean, DokumentDtoArtDokumentEnum,
-  InfrastruktureinrichtungDto,
-  SchuleDto,
-  KinderkrippeDto,
-  KindergartenDto,
-  HausFuerKinderDto,
-  GsNachmittagBetreuungDto,
   GrundschuleDto,
-  MittelschuleDto,
+  GsNachmittagBetreuungDto,
+  HausFuerKinderDto,
+  InfrastrukturabfrageDto,
+  InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoEinrichtungstraegerEnum,
   InfrastruktureinrichtungDtoStatusEnum,
+  KindergartenDto,
+  KinderkrippeDto,
+  MittelschuleDto,
+  PresignedUrlDto,
+  SchuleDto,
+  BauabschnittDto,
+  BaugebietDto,
+  BaugebietDtoBaugebietTypEnum,
+  UncertainBoolean,
 } from "@/api/api-client/isi-backend";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
-import {
-  AdressSucheDto,
-  MuenchenAdresseDto
-} from "@/api/api-client/isi-master-eai";
+import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {
@@ -56,6 +56,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     geschossflaecheStudentenwohnungen: undefined,
     geschossflaecheSeniorenwohnungen: undefined,
     geschossflaecheSonstiges: undefined,
+    bauabschnitte: [],
   } as AbfragevarianteDto;
 }
 
@@ -90,7 +91,7 @@ export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
     sobonJahr: undefined,
     abfragevarianten: new Array<AbfragevarianteDto>(),
     aktenzeichenProLbk: undefined,
-    offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,  
+    offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,
   } as InfrastrukturabfrageDto;
 }
 
@@ -102,7 +103,7 @@ export function createAdresseDto(): AdresseDto {
     plz: undefined,
     ort: undefined,
     strasse: undefined,
-    hausnummer: undefined
+    hausnummer: undefined,
   } as AdresseDto;
 }
 
@@ -123,7 +124,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
       strasse: "",
       hausnummer: "",
       plz: "",
-      ort: ""
+      ort: "",
     },
     allgemeineOrtsangabe: "",
     bebauungsplannummer: "",
@@ -131,108 +132,108 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     anmerkung: "",
     sobonRelevant: UncertainBoolean.Unspecified,
     planungsrecht: BauvorhabenDtoPlanungsrechtEnum.Unspecified,
-    zustaendigkeit: BauvorhabenDtoZustaendigkeitEnum.Unspecified,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
   };
 }
 
- /** 
-   * FileInformationDto
-   */
-  export function createFileInformationDto(): FileInformationDto {
-    return {
-      maxFileSizeBytes: undefined,
-      maxNumberOfFiles: undefined,
-      allowedFileExtensions: undefined
-    } as FileInformationDto;
-  }
+/**
+ * FilepathDto
+ */
+export function createFilepathDto(): FilepathDto {
+  return {
+    pathToFile: "",
+  } as FilepathDto;
+}
 
- /** 
-   * FilepathDto
-   */
-  export function createFilepathDto(): FilepathDto {
-    return {
-      pathToFile: "",
-    } as FilepathDto;
-  }
+export function createFilepathFor(nameRootFolder: string): string {
+  return `${nameRootFolder}/${uuidv4()}/`;
+}
 
-  export function createFilepathDtoFor(name: string, dokumente: DokumentDto[] | undefined): string {
-    const filePath: string | undefined = !_.isNil(dokumente) && dokumente.length > 0 ? dokumente[0].filePath.pathToFile : undefined;
-    return filePath === undefined ? `${name}/${uuidv4()}/` : filePath.substring(0, filePath.lastIndexOf("/") + 1);
-  }
+/**
+ * PresignedUrlDto
+ */
+export function createPresignedUrlDto(): PresignedUrlDto {
+  return {
+    httpMethodToUse: undefined,
+    url: undefined,
+  };
+}
 
-  /**
-   * PresignedUrlDto
-   */
-  export function createPresignedUrlDto(): PresignedUrlDto {
-    return {
-      httpMethodToUse: undefined,
-      url: undefined      
-    };
-  }
+/**
+ * DokumentDto
+ */
+export function createDokumentDto(): DokumentDto {
+  return {
+    id: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    filePath: createFilepathDto(),
+    artDokument: DokumentDtoArtDokumentEnum.Unspecified,
+    sizeInBytes: 0,
+    typDokument: "",
+  };
+}
 
-  /**
-   * DokumentDto
-   */
-  export function createDokumentDto(): DokumentDto {
-    return {
-      id: undefined,
-      createdDateTime: undefined,
-      lastModifiedDateTime: undefined,
-      filePath: createFilepathDto(),
-      artDokument: DokumentDtoArtDokumentEnum.Unspecified
-    };
-  }
+/**
+ * BauabschnittDto
+ */
+export function createBauabschnittDto(): BauabschnittDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "",
+    baugebiete: [],
+  } as BauabschnittDto;
+}
+
+/**
+ * BaugebietDto
+ */
+export function createBaugebietDto(): BaugebietDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "",
+    baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
+    bauraten: [],
+  } as BaugebietDto;
+}
 
 /**
  * BaurateDto
  */
-export function createBaurate(): BaurateDto {
+export function createBaurateDto(): BaurateDto {
   return {
-    id: "",
+    id: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     geschossflaecheWohnenGeplant: undefined,
     anzahlWeGeplant: undefined,
     jahr: Number.NaN,
     foerdermix: {
-      anteilBaugemeinschaften: undefined,
-      anteilEinUndZweifamilienhaeuser: undefined,
-      anteilFreifinanzierterGeschosswohnungsbau: undefined,
-      anteilGefoerderterMietwohnungsbau: undefined,
-      anteilKonzeptionellerMietwohnungsbau: undefined,
-      anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined
-    } as FoerdermixDto
+      foerderarten: new Array<FoerderartDto>(),
+    } as FoerdermixDto,
   } as BaurateDto;
 }
 
-export function createFoerdermix(): FoerdermixDto {
+export function createFoerdermixDto(): FoerdermixDto {
   return {
-    anteilBaugemeinschaften: undefined,
-    anteilEinUndZweifamilienhaeuser: undefined,
-    anteilFreifinanzierterGeschosswohnungsbau: undefined,
-    anteilGefoerderterMietwohnungsbau: undefined,
-    anteilKonzeptionellerMietwohnungsbau: undefined,
-    anteilMuenchenModell: undefined,
-    anteilPreisgedaempfterMietwohnungsbau: undefined
+    foerderarten: new Array<FoerderartDto>(),
   } as FoerdermixDto;
 }
 
-export function createFoerdermixStamm(): FoerdermixStammDto {
+export function createFoerdermixStammDto(): FoerdermixStammDto {
   return {
     bezeichnung: "",
     bezeichnungJahr: "",
     foerdermix: {
-      anteilBaugemeinschaften: undefined,
-      anteilEinUndZweifamilienhaeuser: undefined,
-      anteilFreifinanzierterGeschosswohnungsbau: undefined,
-      anteilGefoerderterMietwohnungsbau: undefined,
-      anteilKonzeptionellerMietwohnungsbau: undefined,
-      anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined
-    } as FoerdermixDto
+      foerderarten: new Array<FoerderartDto>(),
+    } as FoerdermixDto,
   } as FoerdermixStammDto;
 }
 
@@ -251,7 +252,7 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined
+    zugeordnetesBaugebiet: undefined,
   } as InfrastruktureinrichtungDto;
 }
 
@@ -291,7 +292,7 @@ export function createKindergartenDto(): KindergartenDto {
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
-    wohnungsnaheKindergartenPlaetze: undefined
+    wohnungsnaheKindergartenPlaetze: undefined,
   } as KindergartenDto;
 }
 
@@ -312,7 +313,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     anzahlHortGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
     wohnungsnaheKindergartenPlaetze: undefined,
-    wohnungsnaheHortPlaetze: undefined
+    wohnungsnaheHortPlaetze: undefined,
   } as HausFuerKinderDto;
 }
 
@@ -325,7 +326,7 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    artGsNachmittagBetreuung: undefined
+    artGsNachmittagBetreuung: undefined,
   } as GsNachmittagBetreuungDto;
 }
 
@@ -338,7 +339,7 @@ export function createGrundschuleDto(): GrundschuleDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    schule: createSchuleDto()    
+    schule: createSchuleDto(),
   } as GrundschuleDto;
 }
 
@@ -351,7 +352,7 @@ export function createMittelschuleDto(): MittelschuleDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
-    schule: createSchuleDto()
+    schule: createSchuleDto(),
   } as MittelschuleDto;
 }
 
@@ -362,14 +363,14 @@ export function createAdressSucheDto(): AdressSucheDto {
   return {
     query: "",
     page: undefined,
-    pagesize: undefined
+    pagesize: undefined,
   } as AdressSucheDto;
 }
 
 /**
  * MuenchenAdresseDto
  */
- export function createMuenchenAdresseDto(): MuenchenAdresseDto {
+export function createMuenchenAdresseDto(): MuenchenAdresseDto {
   return {
     adresse: undefined,
     adressId: undefined,
@@ -377,7 +378,6 @@ export function createAdressSucheDto(): AdressSucheDto {
     ortname: undefined,
     strassenname: undefined,
     position: undefined,
-    geozuordnungen: undefined   
+    geozuordnungen: undefined,
   } as MuenchenAdresseDto;
 }
-

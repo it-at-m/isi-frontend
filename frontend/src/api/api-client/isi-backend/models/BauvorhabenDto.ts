@@ -136,12 +136,6 @@ export interface BauvorhabenDto {
     planungsrecht: BauvorhabenDtoPlanungsrechtEnum;
     /**
      * 
-     * @type {string}
-     * @memberof BauvorhabenDto
-     */
-    zustaendigkeit: BauvorhabenDtoZustaendigkeitEnum;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof BauvorhabenDto
      */
@@ -199,23 +193,8 @@ export type BauvorhabenDtoPlanungsrechtEnum = typeof BauvorhabenDtoPlanungsrecht
 /**
  * @export
  */
-export const BauvorhabenDtoZustaendigkeitEnum = {
-    Unspecified: 'UNSPECIFIED',
-    PlanHa2: 'PLAN_HA_2',
-    Kr: 'KR',
-    PlanHa3: 'PLAN_HA_3',
-    PlanHa4: 'PLAN_HA_4',
-    PlanHa1112: 'PLAN_HA_1_11_2',
-    PlanHa14: 'PLAN_HA_1_4',
-    RbsSb: 'RBS_SB',
-    RbsZimN: 'RBS_ZIM_N'
-} as const;
-export type BauvorhabenDtoZustaendigkeitEnum = typeof BauvorhabenDtoZustaendigkeitEnum[keyof typeof BauvorhabenDtoZustaendigkeitEnum];
-
-/**
- * @export
- */
 export const BauvorhabenDtoArtFnpEnum = {
+    Unspecified: 'UNSPECIFIED',
     Mi: 'MI',
     Wa: 'WA',
     Mu: 'MU',
@@ -252,7 +231,6 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
         'planungsrecht': json['planungsrecht'],
-        'zustaendigkeit': json['zustaendigkeit'],
         'artFnp': json['artFnp'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
@@ -283,7 +261,6 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'anmerkung': value.anmerkung,
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
         'planungsrecht': value.planungsrecht,
-        'zustaendigkeit': value.zustaendigkeit,
         'artFnp': value.artFnp,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };

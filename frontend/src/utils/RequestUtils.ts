@@ -1,11 +1,18 @@
-import {Configuration as ConfigurationBackend, ConfigurationParameters as ConfigurationParametersBackend} from "@/api/api-client/isi-backend";
-import {Configuration as ConfigurationMasterEai, ConfigurationParameters as ConfigurationParametersMasterEai} from "@/api/api-client/isi-master-eai";
-import {Configuration as ConfigurationWfsEai, ConfigurationParameters as ConfigurationParametersWfsEai} from "@/api/api-client/isi-wfs-eai";
+import {
+  Configuration as ConfigurationBackend,
+  ConfigurationParameters as ConfigurationParametersBackend,
+} from "@/api/api-client/isi-backend";
+import {
+  Configuration as ConfigurationMasterEai,
+  ConfigurationParameters as ConfigurationParametersMasterEai,
+} from "@/api/api-client/isi-master-eai";
+import {
+  Configuration as ConfigurationWfsEai,
+  ConfigurationParameters as ConfigurationParametersWfsEai,
+} from "@/api/api-client/isi-wfs-eai";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 
-
 export default class RequestUtils {
-  
   public static getBaseUrl(): string {
     return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-backend-service";
   }
@@ -24,7 +31,7 @@ export default class RequestUtils {
     };
     return new ConfigurationBackend(configuration);
   }
-  
+
   public static getBasicFetchConfigurationForMasterEai(): ConfigurationMasterEai {
     const configuration: ConfigurationParametersMasterEai = {
       basePath: this.getBaseMasterEaiUrl(),
@@ -38,7 +45,7 @@ export default class RequestUtils {
     };
     return new ConfigurationWfsEai(configuration);
   }
-  
+
   /**
    * Liefert eine default GET-Config für fetch
    */
@@ -46,12 +53,12 @@ export default class RequestUtils {
     const headers: Headers = this.getHeaders();
     return {
       headers: headers,
-      mode: 'cors',
-      credentials: 'same-origin',
-      redirect: 'manual'
+      mode: "cors",
+      credentials: "same-origin",
+      redirect: "manual",
     };
   }
-  
+
   /**
    * Liefert eine default POST-Config für fetch
    * @param body zu übertragender Body
@@ -59,14 +66,14 @@ export default class RequestUtils {
   public static getPOSTConfig(): RequestInit {
     const headers: Headers = this.getHeaders();
     return {
-      method: 'POST',
+      method: "POST",
       headers: headers,
-      mode: 'cors',
-      credentials: 'same-origin',
-      redirect: "manual"
+      mode: "cors",
+      credentials: "same-origin",
+      redirect: "manual",
     };
   }
-  
+
   /**
    * Liefert eine default PUT-Config für fetch
    * In dieser wird, wenn vorhanden, die Version der zu aktualisierenden Entität
@@ -76,14 +83,14 @@ export default class RequestUtils {
   public static getPUTConfig(): RequestInit {
     const headers = this.getHeaders();
     return {
-      method: 'PUT',
+      method: "PUT",
       headers: headers,
-      mode: 'cors',
-      credentials: 'same-origin',
-      redirect: "manual"
+      mode: "cors",
+      credentials: "same-origin",
+      redirect: "manual",
     };
   }
-  
+
   /**
    * Liefert eine default PATCH-Config für fetch
    * In dieser wird, wenn vorhanden, die Version der zu aktualisierenden Entität
@@ -94,40 +101,38 @@ export default class RequestUtils {
   public static getPATCHConfig(): RequestInit {
     const headers: Headers = this.getHeaders();
     return {
-      method: 'PATCH',
+      method: "PATCH",
       headers: headers,
-      mode: 'cors',
-      credentials: 'same-origin',
-      redirect: "manual"
+      mode: "cors",
+      credentials: "same-origin",
+      redirect: "manual",
     };
   }
-  
+
   /**
    * Liefert eine default DELETE-Config für fetch
    */
   public static getDELETEConfig(): RequestInit {
     const headers: Headers = this.getHeaders();
     return {
-      method: 'DELETE',
+      method: "DELETE",
       headers: headers,
-      mode: 'cors',
-      credentials: 'same-origin',
-      redirect: "manual"
+      mode: "cors",
+      credentials: "same-origin",
+      redirect: "manual",
     };
   }
-  
+
   /**
    *  Baut den Header fuer den Request auf
    * @returns {Headers}
    */
   public static getHeaders(): Headers {
     const headers = new Headers({
-      'Content-Type': 'application/json',
-      'Accept-Language': 'de-DE',
-      'X-XSRF-TOKEN': XsrfTokenExtractorUtil.getXsrfToken()
-        .toString()
+      "Content-Type": "application/json",
+      "Accept-Language": "de-DE",
+      "X-XSRF-TOKEN": XsrfTokenExtractorUtil.getXsrfToken().toString(),
     });
     return headers;
   }
-  
 }

@@ -32,9 +32,7 @@
   "paths": {
     "/polygon/stadtbezirke": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die Stadtbezirke die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getStadtbezirke",
         "requestBody": {
@@ -73,9 +71,7 @@
     },
     "/polygon/operation/union": {
       "post": {
-        "tags": [
-          "PolygonOperationen"
-        ],
+        "tags": ["PolygonOperationen"],
         "summary": "Ermittelt die Vereinigung der Polygone für die im Request gegebenen Polygone mit Koordinaten im Standard EPSG:4326 (WGS84).",
         "operationId": "unify",
         "requestBody": {
@@ -114,9 +110,7 @@
     },
     "/polygon/mittelschulverbuende": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die  Mittelschulverbuende die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulverbuende",
         "requestBody": {
@@ -155,9 +149,7 @@
     },
     "/polygon/mittelschulstandorte": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die  Mittelschulstandorte die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulstandorte",
         "requestBody": {
@@ -196,9 +188,7 @@
     },
     "/polygon/mittelschulsprengel": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die Mittelschulsprengel die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulsprengel",
         "requestBody": {
@@ -237,9 +227,7 @@
     },
     "/polygon/kitaplanungsbereiche": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die Kitaplanungsbereiche die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getKitaplanungsbereiche",
         "requestBody": {
@@ -278,9 +266,7 @@
     },
     "/polygon/grundschulverbuende": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die  Grundschulverbuende die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulverbuende",
         "requestBody": {
@@ -319,9 +305,7 @@
     },
     "/polygon/grundschulstandorte": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die Grundschulstandorte die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulstandorte",
         "requestBody": {
@@ -360,9 +344,7 @@
     },
     "/polygon/grundschulsprengel": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die Grundschulsprengel die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulsprengel",
         "requestBody": {
@@ -401,9 +383,7 @@
     },
     "/polygon/gemarkungen": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die Gemarkungen die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGemarkungen",
         "requestBody": {
@@ -442,9 +422,7 @@
     },
     "/polygon/flurstuecke": {
       "post": {
-        "tags": [
-          "Polygon"
-        ],
+        "tags": ["Polygon"],
         "summary": "Holt die Flurstuecke die sich mit den Polygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getFlurstuecke",
         "requestBody": {
@@ -483,9 +461,7 @@
     },
     "/point/stadtbezirke": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Stadtbezirke die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getStadtbezirke_1",
         "requestBody": {
@@ -524,9 +500,7 @@
     },
     "/point/mittelschulverbuende": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Mittelschulverbuende die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulverbuende_1",
         "requestBody": {
@@ -565,9 +539,7 @@
     },
     "/point/mittelschulsprengel": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Mittelschulsprengel die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getMittelschulsprengel_1",
         "requestBody": {
@@ -606,9 +578,7 @@
     },
     "/point/kitaplanungsbereiche": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Kitaplanungsbereiche die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getKitaplanungsbereiche_1",
         "requestBody": {
@@ -647,9 +617,7 @@
     },
     "/point/grundschulverbuende": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Grundschulverbuende die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulverbuende_1",
         "requestBody": {
@@ -688,9 +656,7 @@
     },
     "/point/grundschulsprengel": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Grundschulsprengel die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGrundschulsprengel_1",
         "requestBody": {
@@ -729,9 +695,7 @@
     },
     "/point/gemarkungen": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Gemarkungen die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getGemarkungen_1",
         "requestBody": {
@@ -770,9 +734,7 @@
     },
     "/point/flurstuecke": {
       "post": {
-        "tags": [
-          "Punkt"
-        ],
+        "tags": ["Punkt"],
         "summary": "Holt die Flurstuecke die sich mit der Punkt-Koordinate im Standard EPSG:4326 (WGS84) überschneiden.",
         "operationId": "getFlurstuecke_1",
         "requestBody": {
@@ -813,10 +775,7 @@
   "components": {
     "schemas": {
       "CoordinateDto": {
-        "required": [
-          "lat",
-          "lon"
-        ],
+        "required": ["lat", "lon"],
         "type": "object",
         "properties": {
           "lat": {
@@ -831,9 +790,7 @@
         "description": "Die Koordinate im Standard EPSG:4326 (WGS84)"
       },
       "CoordinatesDto": {
-        "required": [
-          "coordinates"
-        ],
+        "required": ["coordinates"],
         "type": "object",
         "properties": {
           "coordinates": {
@@ -852,12 +809,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "ERROR",
-              "WARNING",
-              "INFORMATION_SUCCESS",
-              "INFORMATION_NEUTRAL"
-            ]
+            "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"]
           },
           "timestamp": {
             "type": "string",
@@ -1024,9 +976,7 @@
         }
       },
       "PolygonsDto": {
-        "required": [
-          "polygons"
-        ],
+        "required": ["polygons"],
         "type": "object",
         "properties": {
           "polygons": {

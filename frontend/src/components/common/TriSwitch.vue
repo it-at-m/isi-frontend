@@ -1,5 +1,6 @@
 <template>
   <v-input
+    ref="input"
     class="pt-6"
     :value="valueInternal"
     :rules="rules"
@@ -16,6 +17,7 @@
         <slot name="offText">{{ offText }}</slot>
       </span>
       <input
+        id="triswitch"
         v-model="valueAsPosition"
         :class="`slider mx-2 ${getBackgroundColor()}`"
         type="range"
@@ -23,7 +25,9 @@
         max="2"
         :step="isCollapsed() ? 2 : 1"
         @change="formChanged"
-      >
+        @focus="focused"
+        @blur="blurred"
+      />
       <span :class="`annotation ${getAnnotationColor('on')}`">
         <slot name="onText">{{ onText }}</slot>
       </span>
@@ -32,26 +36,29 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Vue } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 
 type Position = "0" | "1" | "2";
 
+interface VInput extends Vue {
+  isFocused: boolean;
+}
+
 /**
  * Eine Input-Komponente, welche sehr einem Switch ähnelt, jedoch einen mittleren Ausgangszustand hat.
  * Dieser Ausgangszustand ist nach einer Interaktion mit dem Switch nicht mehr erreichbar.
- * 
+ *
  * Die Komponente erwartet einen String-Prop 'value', welcher einen der drei Werte von {@link UncertainBoolean} annehmen darf.
  * Sobald dieser Wert nicht 'UNDEFINED' ist, ist der entsprechende mittlere Ausgangszustand nicht mehr erreichbar.
- * 
+ *
  * Mit den Props 'off-text' und 'on-text' kann jeweils eine Anmerkung für den "aus"- bzw. "an"-Zustand angegeben werden.
  * Die Props 'label', 'disabled' und 'rules' verhalten sich wie bei anderen Input-Komponenten in Vuetfiy.
  * Darüber hinaus können 'label', 'offText' und 'onText' auch über gleichnamige Slots befüllt werden.
  */
 @Component
 export default class TriSwitch extends Mixins(SaveLeaveMixin) {
-  
   @VModel({ type: String })
   private valueInternal!: UncertainBoolean;
 
@@ -72,7 +79,7 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
 
   /**
    * Gibt in Abhängigkeit vom Zustand der Komponente eine Position für den Regler des Range Sliders zurück.
-   * 
+   *
    * @return Entweder "0", "1" oder "2".
    */
   get valueAsPosition(): Position {
@@ -88,7 +95,7 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
 
   /**
    * Setzt den Zustand der Komponente in Abhängigkeit davon, wo der Regler des Range Sliders ist.
-   * 
+   *
    * @param position Entweder "0", "1" oder "2".
    */
   set valueAsPosition(position: Position) {
@@ -103,10 +110,10 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
         this.valueInternal = UncertainBoolean.Unspecified;
     }
   }
-  
+
   /**
    * Bestimmt die Hintergrundfarbe für den Range Slider.
-   * 
+   *
    * @return Die entsprechende(n) CSS-Klasse(n).
    */
   private getBackgroundColor(): string {
@@ -122,14 +129,16 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
 
   /**
    * Bestimmt die Textfarbe für die Texte links und rechts vom Range Slider.
-   * 
+   *
    * @param type Entweder "on" oder "off", was für den rechten "onText" oder den linken "offText" steht.
    * @return Die entsprechende CSS-Klasse.
    */
-  private getAnnotationColor(type: "on" | "off"): string {    
+  private getAnnotationColor(type: "on" | "off"): string {
     if (this.valueInternal !== UncertainBoolean.Unspecified) {
-      if (type === "on" && this.valueInternal === UncertainBoolean.True
-      || type === "off" && this.valueInternal === UncertainBoolean.False) {
+      if (
+        (type === "on" && this.valueInternal === UncertainBoolean.True) ||
+        (type === "off" && this.valueInternal === UncertainBoolean.False)
+      ) {
         return "";
       }
     }
@@ -140,11 +149,25 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
   /**
    * Prüft, ob der interne Wert der Komponente nicht 'UNSPECIFIED' ist.
    * Dies entspricht einem "kollabierten" Switch.
-   * 
+   *
    * @return Ob der Switch kollabiert ist.
    */
   private isCollapsed(): boolean {
     return this.valueInternal !== UncertainBoolean.Unspecified;
+  }
+
+  /**
+   * Meldet an v-input, dass das Element Fokus erhalten hat.
+   */
+  private focused(): void {
+    (this.$refs.input as VInput).isFocused = true;
+  }
+
+  /**
+   * Meldet an v-input, dass das Element Fokus verloren hat.
+   */
+  private blurred(): void {
+    (this.$refs.input as VInput).isFocused = false;
   }
 }
 </script>
@@ -187,11 +210,13 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
   transition: box-shadow 0.2s;
 }
 
-.slider::-webkit-slider-thumb:hover {
+.slider::-webkit-slider-thumb:hover,
+.slider:focus::-webkit-slider-thumb {
   box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
 }
 
-.slider::-moz-range-thumb:hover {
+.slider::-moz-range-thumb:hover,
+.slider:focus::-moz-range-thumb {
   box-shadow: 0px 0px 0px 10px rgba(50, 50, 50, 0.2);
 }
 </style>

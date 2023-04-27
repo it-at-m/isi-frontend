@@ -15,23 +15,23 @@ export const theme = {
       secondary: colors.orange.lighten1,
       success: colors.green.accent4,
       warning: colors.yellow.accent4,
-      error: colors.red.accent4
-    }
-  }
+      error: colors.red.accent4,
+    },
+  },
 };
 
 Vue.component("MyComponent", {
   methods: {
     changeLocale() {
       this.$vuetify.lang.current = "de";
-    }
-  }
+    },
+  },
 });
 
 export default new Vuetify({
   lang: {
     locales: { de },
-    current: "de"
+    current: "de",
   },
-  theme: theme
+  theme: theme,
 });

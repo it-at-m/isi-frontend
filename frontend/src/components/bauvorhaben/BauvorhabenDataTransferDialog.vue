@@ -4,9 +4,7 @@
     persistent
     width="60%"
   >
-    <v-card
-      class="overflow-x-hidden"
-    >
+    <v-card class="overflow-x-hidden">
       <v-card-title
         class="text-wrap align-stretch"
         v-text="'Datenübernahme aus Abfrage'"
@@ -17,9 +15,10 @@
           md="10"
         >
           <v-select
+            id="bauvorhaben_abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageListElement"
             :items="abfragen"
-            :item-text="item => getItemText(item)"
+            :item-text="(item) => getItemText(item)"
             item-value="id"
             label="Abfragen"
             return-object
@@ -32,12 +31,14 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          id="bauvorhaben_abfrage_datenuebernahme_abbrechen_button"
           class="text-wrap"
           text
           @click="uebernahmeAbbrechen"
           v-text="'Abbrechen'"
         />
         <v-btn
+          id="bauvorhaben_abfrage_datenuebernahme_uebernehmen_button"
           class="text-wrap"
           color="primary"
           @click="abfrageUebernehmen"
@@ -49,22 +50,23 @@
 </template>
 
 <script lang="ts">
-
-import {Component, Emit, Mixins, VModel, Watch} from "vue-property-decorator";
+import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
 import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 import {
   AbfrageListElementDto,
   AbfrageListElementsDto,
   InfrastrukturabfrageDto,
-  LookupEntryDto
+  LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import { createInfrastrukturabfrageDto } from "@/utils/Factories";
 
 @Component
-export default class BauvorhabenDataTransferDialog extends Mixins(AbfragelistenApiRequestMixin, AbfrageApiRequestMixin) {
-
+export default class BauvorhabenDataTransferDialog extends Mixins(
+  AbfragelistenApiRequestMixin,
+  AbfrageApiRequestMixin
+) {
   @VModel({ type: Boolean }) steuerflag!: boolean;
 
   private abfragen: Array<AbfrageListElementDto> = [];
@@ -89,29 +91,35 @@ export default class BauvorhabenDataTransferDialog extends Mixins(AbfragelistenA
   private transferToBauvorhaben(): void {
     if (!_.isNil(this.selectedAbfrageListElement) && !_.isNil(this.selectedAbfrageListElement.id)) {
       const idAbfrage: string = this.selectedAbfrageListElement.id;
-      this.getInfrastrukturabfrageById(idAbfrage, false)
-        .then((abfrageDto: InfrastrukturabfrageDto) => {
-          this.selectedAbfrage = abfrageDto;
+      this.getInfrastrukturabfrageById(idAbfrage, false).then((abfrageDto: InfrastrukturabfrageDto) => {
+        this.selectedAbfrage = abfrageDto;
       });
     }
   }
 
   private getItemText(listElement: AbfrageListElementDto): string {
-    return "Name: " +
-        _.defaultTo(listElement.nameAbfrage, "Kein Name vorhanden")
-        + " - Status: "
-        + _.defaultTo(this.getLookupValue(listElement.statusAbfrage, this.statusAbfrageList), "Kein Abfragestatus vorhanden")
-        + " - Stand: "
-        + _.defaultTo(this.getLookupValue(listElement.standVorhaben, this.standVorhabenList), "Kein Vorhabensstand vorhanden");
+    return (
+      "Name: " +
+      _.defaultTo(listElement.nameAbfrage, "Kein Name vorhanden") +
+      " - Status: " +
+      _.defaultTo(
+        this.getLookupValue(listElement.statusAbfrage, this.statusAbfrageList),
+        "Kein Abfragestatus vorhanden"
+      ) +
+      " - Stand: " +
+      _.defaultTo(
+        this.getLookupValue(listElement.standVorhaben, this.standVorhabenList),
+        "Kein Vorhabensstand vorhanden"
+      )
+    );
   }
 
   private async fetchAbfragen(): Promise<void> {
-    await this.getAbfrageListElements(false)
-        .then((abfrageListElementsDto: AbfrageListElementsDto) => {
-          if (!_.isUndefined(abfrageListElementsDto.listElements)) {
-            this.abfragen = abfrageListElementsDto.listElements;
-          }
-        });
+    await this.getAbfrageListElements(false).then((abfrageListElementsDto: AbfrageListElementsDto) => {
+      if (!_.isUndefined(abfrageListElementsDto.listElements)) {
+        this.abfragen = abfrageListElementsDto.listElements;
+      }
+    });
   }
 
   /**
@@ -123,8 +131,8 @@ export default class BauvorhabenDataTransferDialog extends Mixins(AbfragelistenA
    */
   private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) && !_.isNil(key)
-        ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-        : key;
+      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+      : key;
   }
 
   @Emit()
@@ -137,6 +145,5 @@ export default class BauvorhabenDataTransferDialog extends Mixins(AbfragelistenA
   private uebernahmeAbbrechen(): void {
     this.selectedAbfrageListElement = {};
   }
-
 }
 </script>

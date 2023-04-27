@@ -1,7 +1,13 @@
 <template>
   <div>
     <ul>
-      <li><a :href="`/${type}/${artifact}`" target="_blank">{{$props.artifact}}</a></li>
+      <li>
+        <a
+          :href="`/${type}/${artifact}`"
+          target="_blank"
+          >{{ $props.artifact }}</a
+        >
+      </li>
     </ul>
   </div>
 </template>
@@ -11,6 +17,6 @@ export default {
   props: {
     artifact: String,
     type: String,
-  }
-}
+  },
+};
 </script>

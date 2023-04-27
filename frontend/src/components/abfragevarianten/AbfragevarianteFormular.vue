@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col 
+      <v-col
         cols="12"
         md="12"
       >
@@ -13,11 +13,28 @@
     </v-row>
     <field-group-card>
       <v-row justify="center">
+        <v-col cols="12">
+          <v-text-field
+            id="abfragevariante_name"
+            v-model.trim="abfragevariante.abfragevariantenName"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            maxlength="30"
+            validate-on-blur
+            @input="formChanged"
+          >
+            <template #label> Name der Abfragevariante <span class="secondary--text">*</span> </template>
+          </v-text-field>
+        </v-col>
+      </v-row>
+    </field-group-card>
+    <field-group-card>
+      <v-row justify="center">
         <v-col
           cols="12"
           md="4"
         >
           <num-field
+            id="abfragevariante_realisierungvon"
             v-model="abfragevariante.realisierungVon"
             label="Realisierung von (JJJJ)"
             class="mx-3"
@@ -31,6 +48,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_realisierungBis"
             v-model="abfragevariante.realisierungBis"
             label="Realisierung bis (JJJJ)"
             class="mx-3"
@@ -44,6 +62,7 @@
           md="4"
         >
           <v-select
+            id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
             class="mx-3"
             :items="planungsrechtList"
@@ -52,9 +71,7 @@
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             @change="formChanged"
           >
-            <template #label>
-              Planungsrecht <span class="secondary--text">*</span>
-            </template>
+            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -67,6 +84,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnen"
             v-model="abfragevariante.geschossflaecheWohnen"
             class="mx-3"
             label="Wohnen"
@@ -78,6 +96,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnenGenehmigt"
             v-model="abfragevariante.geschossflaecheWohnenGenehmigt"
             class="mx-3"
             label="Genehmigt"
@@ -89,6 +108,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnenFestgesetzt"
             v-model="abfragevariante.geschossflaecheWohnenFestgesetzt"
             class="mx-3"
             label="Festgesetzt"
@@ -103,7 +123,7 @@
           md="4"
         >
           <num-field
-            :key="componentKeyGeschossflaecheSobonUrsaechlich"
+            id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
             class="mx-3"
             label="SoBoN-ursächliche"
@@ -116,6 +136,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheWohnenBestandswohnbaurecht"
             v-model="abfragevariante.geschossflaecheWohnenBestandswohnbaurecht"
             class="mx-3"
             label="Bestandswohnbaurecht"
@@ -127,6 +148,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_geschossflaecheGenossenschaftlicheWohnungen"
             v-model="abfragevariante.geschossflaecheGenossenschaftlicheWohnungen"
             class="mx-3"
             label="Genossenschaftliche Wohnungen"
@@ -141,6 +163,7 @@
           md="4"
         >
           <v-checkbox
+            id="abfragevariante_sonderwohnformen"
             v-model="abfragevariante.sonderwohnformen"
             class="mx-3"
             label="Sonderwohnformen"
@@ -164,6 +187,7 @@
             md="4"
           >
             <num-field
+              id="abfragevariante_geschossflaecheStudentenwohnungen"
               v-model="abfragevariante.geschossflaecheStudentenwohnungen"
               class="mx-3"
               label="Studentenwohnungen"
@@ -175,6 +199,7 @@
             md="4"
           >
             <num-field
+              id="abfragevariante_geschossflaecheSeniorenwohnungen"
               v-model="abfragevariante.geschossflaecheSeniorenwohnungen"
               class="mx-3"
               label="Seniorenwohnungen"
@@ -186,6 +211,7 @@
             md="4"
           >
             <num-field
+              id="abfragevariante_geschossflaecheSonstiges"
               v-model="abfragevariante.geschossflaecheSonstiges"
               class="mx-3"
               label="Nicht infrastrukturrelevant"
@@ -203,6 +229,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_gesamtanzahlWe"
             v-model="abfragevariante.gesamtanzahlWe"
             class="mx-3"
             label="Geplante"
@@ -214,6 +241,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_anzahlWeBaurechtlichGenehmigt"
             v-model="abfragevariante.anzahlWeBaurechtlichGenehmigt"
             class="mx-3"
             label="Baurechtlich genehmigt"
@@ -225,6 +253,7 @@
           md="4"
         >
           <num-field
+            id="abfragevariante_anzahlWeBaurechtlichFestgesetzt"
             v-model="abfragevariante.anzahlWeBaurechtlichFestgesetzt"
             class="mx-3"
             label="Baurechtlich festgesetzt"
@@ -237,7 +266,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import { AbfragevarianteDtoPlanungsrechtEnum, LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -251,7 +280,7 @@ import DisplayMode from "@/types/common/DisplayMode";
 export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
-  SaveLeaveMixin,
+  SaveLeaveMixin
 ) {
   @VModel({ type: AbfragevarianteModel }) abfragevariante!: AbfragevarianteModel;
 
@@ -266,10 +295,6 @@ export default class AbfragevarianteForm extends Mixins(
     this.$emit("input", mode);
   }
 
-  // Das Attribut führt bei einer Wertänderung dazu, dass das Eingabefeld neu gerendert wird.
-  // Dies ist insbesondere bei der Änderung des Planungsrechts nötig, damit die Validerung korrekt aktiviert bzw. deaktiviert wird.
-  private componentKeyGeschossflaecheSobonUrsaechlich = 0;
-
   @Prop()
   private sobonRelevant!: UncertainBoolean;
 
@@ -277,11 +302,11 @@ export default class AbfragevarianteForm extends Mixins(
     return this.sobonRelevant;
   }
 
-  get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {  
-    const pflichtfeld = this.isSobonRelevant === UncertainBoolean.True
-     && (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12
-      || this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
-    this.componentKeyGeschossflaecheSobonUrsaechlich++; // Trigger, damit die Komponente neu gerendert wird
+  get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {
+    const pflichtfeld =
+      this.isSobonRelevant === UncertainBoolean.True &&
+      (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
+        this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
     return pflichtfeld;
   }
 
@@ -294,7 +319,10 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get headline(): string {
-    return this.displayMode === DisplayMode.NEU ? "Abfragevariante anlegen" : `Abfragevariante Nr. ${this.abfragevariante.abfragevariantenNr} ändern`;
+    const headline = `Abfragevariante Nr: ${this.abfragevariante.abfragevariantenNr} - `;
+    return this.displayMode === DisplayMode.NEU
+      ? headline.concat("anlegen")
+      : headline.concat(`${this.abfragevariante.abfragevariantenName} ändern`);
   }
 
   @Watch("abfragevariante", { immediate: true, deep: true })

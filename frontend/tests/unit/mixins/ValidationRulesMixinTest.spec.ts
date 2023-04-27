@@ -102,17 +102,17 @@ describe("FieldValidationRulesMixin", () => {
   });
 
   it("should be exactly 100", () => {
-    const foerdermix = new FoerdermixModel(
-      {
-        anteilBaugemeinschaften: 10,
-        anteilEinUndZweifamilienhaeuser: 10,
-        anteilFreifinanzierterGeschosswohnungsbau: 10,
-        anteilGefoerderterMietwohnungsbau: 10,
-        anteilKonzeptionellerMietwohnungsbau: 10,
-        anteilMuenchenModell: 10,
-        anteilPreisgedaempfterMietwohnungsbau: 40
-      } as FoerdermixDto
-    );
+    const foerdermix = new FoerdermixModel({
+      foerderarten: [
+        { bezeichnung: "Baugemeinschaften", anteilProzent: 10 },
+        { bezeichnung: "EinUndZweifamilienhaeuser", anteilProzent: 10 },
+        { bezeichnung: "FreifinanzierterGeschosswohnungsbau", anteilProzent: 10 },
+        { bezeichnung: "GefoerderterMietwohnungsbau", anteilProzent: 10 },
+        { bezeichnung: "KonzeptionellerMietwohnungsbau", anteilProzent: 10 },
+        { bezeichnung: "MuenchenModell", anteilProzent: 10 },
+        { bezeichnung: "PreisgedaempfterMietwohnungsbau", anteilProzent: 40 },
+      ],
+    } as FoerdermixDto);
     const theRule = (rules as any).nichtGleich100Prozent;
 
     const unter100Message = "Die Summe ist unter 100";
@@ -121,11 +121,16 @@ describe("FieldValidationRulesMixin", () => {
     expect(theRule(null)).toBe(false);
     expect(theRule(foerdermix)).toBe(true);
 
-    foerdermix.anteilPreisgedaempfterMietwohnungsbau = 50;
-    expect(theRule(foerdermix)).toBe(ueber100Message);
+    if (foerdermix.foerderarten !== undefined) {
+      var len = foerdermix.foerderarten.length;
+      var f = foerdermix.foerderarten[len - 1];
+      f.anteilProzent = 50;
 
-    foerdermix.anteilPreisgedaempfterMietwohnungsbau = 20;
-    expect(theRule(foerdermix)).toBe(unter100Message);
+      expect(theRule(foerdermix)).toBe(ueber100Message);
+
+      f.anteilProzent = 20;
+      expect(theRule(foerdermix)).toBe(unter100Message);
+    }
   });
 
   it("should not be 'UNSPECIFIED'", () => {

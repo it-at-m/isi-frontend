@@ -37,7 +37,7 @@ export interface Stadtbezirk {
 
 export default {
   namespaced: true,
-  
+
   state,
 
   getters: {

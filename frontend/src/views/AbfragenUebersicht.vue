@@ -1,12 +1,13 @@
 <template>
-  <DefaultLayout>
+  <default-layout>
     <template #content>
       <div
         v-if="abfragenUebersicht.length !== 0"
         class="py-12"
       >
+        <!-- eslint-disable vue/no-unused-vars -->
         <v-hover
-          v-for="item in abfragenUebersicht"
+          v-for="(item, index) in abfragenUebersicht"
           :key="item.id"
           v-slot="{ hover }"
         >
@@ -16,51 +17,39 @@
             :elevation="hover ? 4 : 0"
             @click="routeToAbfrageInfo(item)"
           >
-            <v-card-title>
+            <v-card-title :id="'abfrage_uebersicht_item_' + index + '_nameAbfrage'">
               {{ item.nameAbfrage }}
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span> Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}</span>
-              <v-spacer />
-              <span>
-                Stand:
-                {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
+              <span :id="'abfrage_uebersicht_item_' + index + '_statusAbfrage'">
+                Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}
               </span>
               <v-spacer />
-              <span>Frist: {{ datumFormatted(item.fristStellungnahme) }}</span>
+              <span :id="'abfrage_uebersicht_item_' + index + '_standVorhaben'">
+                Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
+              </span>
+              <v-spacer />
+              <span :id="'abfrage_uebersicht_item_' + index + '_fristStellungnahme'">
+                Frist: {{ datumFormatted(item.fristStellungnahme) }}
+              </span>
             </v-card-text>
           </v-card>
         </v-hover>
       </div>
-      <!-- Falls noch keine Abfragen vorhanden sind, wird Folgendes angezeigt -->
-      <div
+      <loading
         v-else
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-      >
-        <span
-          v-if="fetchSuccess === true"
-          class="text-h6"
-        >Keine Abfragen vorhanden</span>
-        <span
-          v-else-if="fetchSuccess === false"
-          class="text-h6"
-        >Ein Fehler ist aufgetreten</span>
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="grey lighten-1"
-          size="50"
-          width="5"
-        />
-      </div>
+        id="abfrage_uebersicht_loading"
+        :success="fetchSuccess"
+        name="Abfragen"
+      />
     </template>
     <template #action>
       <v-spacer />
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="abfrage_uebersicht_abfrage_erstellen_button"
             slot="activator"
             v-model="options"
             dark
@@ -70,36 +59,29 @@
             v-on="on"
             @click="newAbfrage"
           >
-            <v-icon>
-              mdi-plus
-            </v-icon>
+            <v-icon> mdi-plus </v-icon>
           </v-btn>
-        </template>   
+        </template>
         <span v-if="options">Abbrechen</span>
         <span v-else>Abfrage erstellen</span>
       </v-tooltip>
     </template>
-  </DefaultLayout>
+  </default-layout>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import router from "@/router";
-import {
-  AbfrageListElementDto,
-  AbfrageListElementsDto,
-  LookupEntryDto
-} from "@/api/api-client/isi-backend";
+import { AbfrageListElementDto, AbfrageListElementsDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 
 @Component({
-  components: { DefaultLayout }
+  components: { DefaultLayout },
 })
 export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMixin) {
-
   private abfragenUebersicht: Array<AbfrageListElementDto> = [];
 
   private options = false;
@@ -127,9 +109,7 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
   }
 
   private getLookupValue(key: string, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list)
-      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-      : "";
+    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 
   mounted(): void {
@@ -167,7 +147,7 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
     if (!_.isUndefined(abfrageListElementDto.id)) {
       router.push({
         name: "updateabfrage",
-        params: { id: abfrageListElementDto.id }
+        params: { id: abfrageListElementDto.id },
       });
     }
   }
@@ -184,7 +164,6 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
       name: "newabfrage",
     });
   }
-
 }
 </script>
 

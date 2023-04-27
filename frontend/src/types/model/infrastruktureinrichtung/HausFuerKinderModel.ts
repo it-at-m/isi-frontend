@@ -1,10 +1,12 @@
-import { HausFuerKinderDto, InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client/isi-backend";
+import {
+  HausFuerKinderDto,
+  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
+} from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface HausFuerKinderModel extends HausFuerKinderDto { }
+interface HausFuerKinderModel extends HausFuerKinderDto {}
 class HausFuerKinderModel {
-  
   constructor(hausFuerKinder: HausFuerKinderDto) {
     Object.assign(this, hausFuerKinder, {});
     this.infrastruktureinrichtung = new InfrastruktureinrichtungModel(hausFuerKinder.infrastruktureinrichtung);
@@ -13,6 +15,5 @@ class HausFuerKinderModel {
   get infrastruktureinrichtungTyp(): InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum {
     return InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder;
   }
-    
 }
-export { HausFuerKinderModel as default};
+export { HausFuerKinderModel as default };

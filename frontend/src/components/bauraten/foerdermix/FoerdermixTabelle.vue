@@ -55,14 +55,11 @@ import FoerderMixStammDisplay from "@/types/bauraten/FoerdermixStammDisplay";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMixin";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
-import { createFoerdermix } from "@/utils/Factories";
+import { createFoerdermixDto } from "@/utils/Factories";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component
-export default class FoerdermixTabelle extends Mixins(
-  FoerdermixApiRequestMixin,
-  SaveLeaveMixin
-) {
+export default class FoerdermixTabelle extends Mixins(FoerdermixApiRequestMixin, SaveLeaveMixin) {
   @Prop()
   private value!: FoerdermixModel;
 
@@ -134,15 +131,13 @@ export default class FoerdermixTabelle extends Mixins(
    * Setzt alle Felder auf 0
    */
   freieEingabe(): void {
-    this.foerdermix = new FoerdermixModel(createFoerdermix());
+    this.foerdermix = new FoerdermixModel(createFoerdermixDto());
   }
 
   async loadFoerdermixStaemme(): Promise<void> {
     await this.getFoerdermixStaemme(true).then((dto: FoerdermixStammDto[]) => {
       dto.forEach((foerdermixStamm: FoerdermixStammDto) => {
-        this.stammdaten.push(
-            FoerderMixStammDisplay.mapFoerdermixStammToDisplay(foerdermixStamm)
-        );
+        this.stammdaten.push(FoerderMixStammDisplay.mapFoerdermixStammToDisplay(foerdermixStamm));
         this.$store.dispatch("foerdermix/foerdermixStammdaten", dto);
       });
     });

@@ -1,33 +1,34 @@
 <template>
   <v-form ref="form">
-    <DefaultLayout solid-heading>
+    <default-layout solid-heading>
       <template #heading>
         <v-container>
           <v-row>
             <v-col cols="12">
               <v-text-field
+                id="bauvorhaben_nameVorhaben"
                 v-model.trim="bauvorhaben.nameVorhaben"
                 :rules="[fieldValidationRules.pflichtfeld]"
                 maxlength="255"
                 validate-on-blur
                 @input="formChanged"
               >
-                <template #label>
-                  Name des Bauvorhabens <span class="secondary--text">*</span>
-                </template>
+                <template #label> Name des Bauvorhabens <span class="secondary--text">*</span> </template>
               </v-text-field>
             </v-col>
           </v-row>
         </v-container>
       </template>
       <template #content>
-        <BauvorhabenForm
+        <bauvorhaben-form
+          id="bauvorhaben_bauvorhabenForm_component"
           v-model="bauvorhaben"
         />
       </template>
       <template #information>
         <v-btn
           v-if="!isNew"
+          id="bauvorhaben_loeschen_button"
           class="text-wrap my-4"
           color="primary"
           elevation="1"
@@ -37,6 +38,7 @@
         />
         <v-btn
           v-else
+          id="bauvorhaben_datenuebernahme_button"
           class="text-wrap my-4"
           color="primary"
           elevation="1"
@@ -44,20 +46,25 @@
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
-        <InformationList information-message-deletion-intervall-seconds="10" />
+        <information-list
+          id="bauvorhaben_information_list"
+          information-message-deletion-intervall-seconds="10"
+        />
       </template>
       <template #action>
         <v-spacer />
         <v-btn
+          id="bauvorhaben_speichern_button"
           color="secondary"
           elevation="1"
           class="text-wrap mt-2 px-1"
           style="width: 200px"
-          :disabled="!isNew && !isDirty()"
+          :disabled="(!isNew && !isDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente)"
           @click="validateAndProceed()"
           v-text="isNew ? 'Speichern' : 'Aktualisieren'"
         />
         <v-btn
+          id="bauvorhaben_abbrechen_button"
           color="primary"
           elevation="1"
           class="text-wrap mt-2 px-1"
@@ -66,8 +73,9 @@
           v-text="'Abbrechen'"
         />
       </template>
-    </DefaultLayout>
+    </default-layout>
     <yes-no-dialog
+      id="bauvorhaben_yes_no_dialog_loeschen"
       v-model="deleteDialogOpen"
       icon="mdi-delete-forever"
       dialogtitle="Hinweis"
@@ -78,6 +86,7 @@
       @yes="removeBauvorhaben()"
     />
     <yes-no-dialog
+      id="bauvorhaben_yes_no_dialog_save_leave"
       ref="saveLeaveDialog"
       v-model="saveLeaveDialog"
       :dialogtitle="saveLeaveDialogTitle"
@@ -88,6 +97,7 @@
       @no="cancel"
     />
     <bauvorhaben-data-transfer-dialog
+      id="bauvorhaben_datenuebernahme"
       v-model="dataTransferDialogOpen"
       @abfrage-uebernehmen="abfrageUebernehmen($event)"
       @uebernahme-abbrechen="dataTransferDialogOpen = false"
@@ -96,9 +106,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Vue } from "vue-property-decorator";
+import { Component, Mixins, Vue, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
-import {createAdresseDto, createBauvorhabenDto} from "@/utils/Factories";
+import { createAdresseDto, createBauvorhabenDto } from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
@@ -114,8 +124,10 @@ import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
 import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
+import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 
 @Component({
+  methods: { containsNotAllowedDokument },
   components: {
     BauvorhabenDataTransferDialog,
     BauvorhabenForm,
@@ -130,9 +142,8 @@ export default class Bauvorhaben extends Mixins(
   ValidatorMixin,
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
-  InformationListMixin,
+  InformationListMixin
 ) {
-
   private bauvorhaben = new BauvorhabenModel(createBauvorhabenDto());
 
   private deleteDialogOpen = false;
@@ -143,9 +154,17 @@ export default class Bauvorhaben extends Mixins(
 
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
-    
+
     if (!this.isNew) {
       this.fetchBauvorhabenById();
+    }
+  }
+
+  @Watch("$store.state.search.selectedBauvorhaben", { deep: true })
+  private selectedBauvorhabenChanged() {
+    const bauvorhabenFromStore = this.$store.getters["search/selectedBauvorhaben"];
+    if (!_.isNil(bauvorhabenFromStore)) {
+      this.bauvorhaben = new BauvorhabenModel(_.cloneDeep(bauvorhabenFromStore));
     }
   }
 
@@ -154,7 +173,7 @@ export default class Bauvorhaben extends Mixins(
    * Ist das Formular valide, wird auf sonstige Mängel überprüft.
    * Gibt es keine sonstigen Mängel, wird entweder das neue Bauvorhaben gespeichert oder das vorhandene Bauvorhaben aktualisiert.
    */
-  private validateAndProceed(): void {        
+  private validateAndProceed(): void {
     if (this.validate()) {
       const fault = this.findFaultInBauvorhaben(this.bauvorhaben);
 
@@ -176,36 +195,31 @@ export default class Bauvorhaben extends Mixins(
    * Schickt eine GET-Anfrage für das ausgewählte Bauvorhaben ans Backend.
    */
   async fetchBauvorhabenById(): Promise<void> {
-    await this.getBauvorhabenById(this.$route.params.id, false)
-      .then((dto) => {
-        this.$store.commit("search/selectedBauvorhaben", dto);
-        const dtoFromStore = _.cloneDeep(this.$store.getters["search/selectedBauvorhaben"]);
-        this.bauvorhaben = new BauvorhabenModel(dtoFromStore);
-      });
+    await this.getBauvorhabenById(this.$route.params.id, false).then((dto) => {
+      this.$store.commit("search/selectedBauvorhaben", dto);
+    });
   }
 
   /**
    * Schickt eine POST-Anfrage für das neue Bauvorhaben ans Backend.
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
-  private async saveBauvorhaben(): Promise<void> {    
-    await this.postBauvorhaben(this.bauvorhaben, true)
-      .then(() => {
-        this.returnToUebersicht(
-          "Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS
-        );
-      });
+  private async saveBauvorhaben(): Promise<void> {
+    await this.postBauvorhaben(this.bauvorhaben, true).then(() => {
+      this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS);
+    });
   }
 
   /**
    * Schickt eine PUT-Anfrage für das derzeitige Bauvorhaben ans Backend.
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
-  private async updateBauvorhaben(): Promise<void> {    
-    await this.putBauvorhaben(this.bauvorhaben, true)
-      .then(() => {
-          Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
-      });
+  private async updateBauvorhaben(): Promise<void> {
+    await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
+      this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
+      this.$store.dispatch("search/resetBauvorhaben");
+      Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
+    });
   }
 
   /**
@@ -215,18 +229,15 @@ export default class Bauvorhaben extends Mixins(
   private async removeBauvorhaben(): Promise<void> {
     this.deleteDialogOpen = false;
 
-    await this.deleteBauvorhaben(this.$route.params.id, true)
-      .then(() => {
-        this.returnToUebersicht(
-          "Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS
-        );
-      });
+    await this.deleteBauvorhaben(this.$route.params.id, true).then(() => {
+      this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
+    });
   }
 
   /**
    * Kehrt zur Bauvorhabenübersicht und setzt das im Store zurzeit ausgewählte Bauvorhaben auf undefined.
    * Zeigt dabei optionalerweise auch eine Nachricht per Toaster an.
-   * 
+   *
    * @param message Die anzuzeigende Nachricht. Optional.
    * @param level Das Level der anzuzeigenden Nachricht. Optional, doch obligatorisch in Kombination mit message.
    */
@@ -236,12 +247,11 @@ export default class Bauvorhaben extends Mixins(
     }
 
     this.$router.push({ name: "viewAllBauvorhaben" });
-    this.$store.commit("search/selectedBauvorhaben", undefined);
   }
 
   /**
    * Shorthand zum Ausführen der validate-Methode vom v-form.
-   * 
+   *
    * @return Ob das Formular valide ist.
    */
   private validate(): boolean {
@@ -256,7 +266,6 @@ export default class Bauvorhaben extends Mixins(
     this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
     this.dataTransferDialogOpen = false;
   }
-
 }
 </script>
 

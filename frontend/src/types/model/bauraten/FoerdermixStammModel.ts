@@ -1,5 +1,5 @@
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
-import { createFoerdermix } from "@/utils/Factories";
+import { createFoerdermixDto } from "@/utils/Factories";
 import _ from "lodash";
 import FoerdermixModel from "./FoerdermixModel";
 
@@ -9,11 +9,11 @@ interface FoerdermixStammModel extends FoerdermixStammDto {}
 class FoerdermixStammModel {
   constructor(foerdermixStamm: FoerdermixStammDto) {
     Object.assign(this, foerdermixStamm, {});
-     if (_.isNil(foerdermixStamm.foerdermix)) {
-       this.foerdermix = new FoerdermixModel(createFoerdermix());
-     } else {
-       this.foerdermix = new FoerdermixModel(foerdermixStamm.foerdermix);
-     }
+    if (_.isNil(foerdermixStamm.foerdermix)) {
+      this.foerdermix = new FoerdermixModel(createFoerdermixDto());
+    } else {
+      this.foerdermix = new FoerdermixModel(foerdermixStamm.foerdermix);
+    }
   }
 }
 

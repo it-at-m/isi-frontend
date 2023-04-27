@@ -1,4 +1,4 @@
-import {Component, Mixins} from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import {
   PunktApi,
   GetFlurstuecke1Request,
@@ -18,14 +18,11 @@ import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import _ from "lodash";
 
 @Component
-export default class WfsEaiApiRequestMixin extends Mixins(
-  ErrorHandler
-) {
-  
+export default class WfsEaiApiRequestMixin extends Mixins(ErrorHandler) {
   private punktApi: PunktApi;
   private polygonApi: PolygonApi;
   private operationApi: PolygonOperationenApi;
-  
+
   constructor() {
     super();
     this.punktApi = new PunktApi(RequestUtils.getBasicFetchConfigurationForWfsEai());
@@ -37,16 +34,17 @@ export default class WfsEaiApiRequestMixin extends Mixins(
     const request: GetFlurstuecke1Request = { coordinateDto: coordinate };
     let flurstuecke: FlurstueckFeatureDto[] = [];
 
-    await this.punktApi.getFlurstuecke1(request)
-      .then(response => {
+    await this.punktApi
+      .getFlurstuecke1(request)
+      .then((response) => {
         if (!_.isNil(response.flurstuecke)) {
           flurstuecke = response.flurstuecke;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.handleError(showInInformationList, error);
       });
-    
+
     return flurstuecke;
   }
 
@@ -54,16 +52,17 @@ export default class WfsEaiApiRequestMixin extends Mixins(
     const request: GetGemarkungenRequest = { coordinatesDto: coordinates };
     let gemarkungen: GemarkungFeatureDto[] = [];
 
-    await this.polygonApi.getGemarkungen(request)
-      .then(response => {
+    await this.polygonApi
+      .getGemarkungen(request)
+      .then((response) => {
         if (!_.isNil(response.gemarkungen)) {
           gemarkungen = response.gemarkungen;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.handleError(showInInformationList, error);
       });
-    
+
     return gemarkungen;
   }
 
@@ -71,16 +70,17 @@ export default class WfsEaiApiRequestMixin extends Mixins(
     const request: GetStadtbezirkeRequest = { coordinatesDto: coordinates };
     let stadtbezirke: GemarkungFeatureDto[] = [];
 
-    await this.polygonApi.getStadtbezirke(request)
-      .then(response => {
+    await this.polygonApi
+      .getStadtbezirke(request)
+      .then((response) => {
         if (!_.isNil(response.stadtbezirke)) {
           stadtbezirke = response.stadtbezirke;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.handleError(showInInformationList, error);
       });
-    
+
     return stadtbezirke;
   }
 
@@ -88,16 +88,17 @@ export default class WfsEaiApiRequestMixin extends Mixins(
     const request: UnifyRequest = { polygonsDto: { polygons: coordinates } };
     let union: CoordinatesDto[] = [];
 
-    await this.operationApi.unify(request)
-      .then(response => {
+    await this.operationApi
+      .unify(request)
+      .then((response) => {
         if (!_.isNil(response.polygons)) {
           union = response.polygons;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.handleError(showInInformationList, error);
       });
-    
+
     return union;
   }
 }
