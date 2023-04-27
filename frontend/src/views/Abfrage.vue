@@ -365,13 +365,13 @@ export default class Abfrage extends Mixins(
     if (this.abfrageId !== undefined) {
       this.getInfrastrukturabfrageById(this.abfrageId, true)
         .then((dto) => {
-          this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(dto));
+          this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
         })
         .catch(() => {
           this.$store.commit("search/selectedAbfrage", undefined);
         });
     } else {
-      this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
+      this.saveAbfrageInStore(new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
     }
   }
 
