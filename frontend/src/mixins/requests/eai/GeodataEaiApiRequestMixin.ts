@@ -12,6 +12,7 @@ import {
   FeatureDtoStadtbezirkDto,
   GetStadtbezirkeRequest,
   UnifyRequest,
+  GetFlurstueckeRequest,
 } from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -32,7 +33,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     this.operationApi = new PolygonOperationenApi(RequestUtils.getBasicFetchConfigurationForGeodataEai());
   }
 
-  async getFlurstuecke(
+  async getFlurstueckeForPoint(
     point: PointGeometryDto,
     showInInformationList: boolean
   ): Promise<Array<FeatureDtoFlurstueckDto>> {
@@ -53,7 +54,28 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     return flurstuecke;
   }
 
-  async getGemarkungen(
+  async getFlurstueckeForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean
+  ): Promise<Array<FeatureDtoFlurstueckDto>> {
+    const request: GetFlurstueckeRequest = { multiPolygonGeometryDto: multiPolygon };
+    let flurstuecke: Array<FeatureDtoFlurstueckDto> = [];
+
+    await this.polygonApi
+      .getFlurstuecke(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.feature)) {
+          flurstuecke = response.feature;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+      });
+
+    return flurstuecke;
+  }
+
+  async getGemarkungenForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
     showInInformationList: boolean
   ): Promise<Array<FeatureDtoGemarkungDto>> {
@@ -61,7 +83,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     let gemarkungen: Array<FeatureDtoGemarkungDto> = [];
 
     await this.polygonApi
-      .getGemarkungen(request)
+      .getGemarkungen(request, RequestUtils.getPOSTConfig())
       .then((response) => {
         if (!_.isNil(response.feature)) {
           gemarkungen = response.feature;
@@ -74,7 +96,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     return gemarkungen;
   }
 
-  async getStadtbezirke(
+  async getStadtbezirkeForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
     showInInformationList: boolean
   ): Promise<Array<FeatureDtoStadtbezirkDto>> {
@@ -82,7 +104,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     let stadtbezirke: Array<FeatureDtoStadtbezirkDto> = [];
 
     await this.polygonApi
-      .getStadtbezirke(request)
+      .getStadtbezirke(request, RequestUtils.getPOSTConfig())
       .then((response) => {
         if (!_.isNil(response.feature)) {
           stadtbezirke = response.feature;
@@ -95,7 +117,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     return stadtbezirke;
   }
 
-  async getUnion(
+  async getUnionOfMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
     showInInformationList: boolean
   ): Promise<MultiPolygonGeometryDto> {
@@ -106,7 +128,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     };
 
     await this.operationApi
-      .unify(request)
+      .unify(request, RequestUtils.getPOSTConfig())
       .then((response) => {
         if (!_.isNil(response)) {
           unifiedMultipolygon = response;
