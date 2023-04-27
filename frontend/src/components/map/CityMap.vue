@@ -54,7 +54,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, Prop, Mixins } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
-import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
+import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
   FeatureCollectionDtoFeatureDtoFlurstueckDto,
   FeatureDtoFlurstueckDto,
@@ -79,7 +79,7 @@ import { theme } from "@/plugins/vuetify";
     "l-wms-tile-layer": LWMSTileLayer,
   },
 })
-export default class CityMap extends Mixins(WfsEaiApiRequestMixin) {
+export default class CityMap extends Mixins(GeodataEaiApiRequestMixin) {
   private readonly WMS_BASE_URL = "https://geoinfoweb.muenchen.de/arcgis/services/WMS_Stadtkarte/MapServer/WMSServer?";
   private readonly MUNICH_CENTER = [48.137227, 11.575517];
   private readonly MAP_OPTIONS = { attributionControl: false };
