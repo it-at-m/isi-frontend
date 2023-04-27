@@ -57,7 +57,7 @@ export interface GetStadtbezirkeRequest {
 export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
 
     /**
-     * Holt die Flurstücke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getFlurstueckeRaw(requestParameters: GetFlurstueckeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoFlurstueckDto>> {
         if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
@@ -82,7 +82,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Flurstücke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getFlurstuecke(requestParameters: GetFlurstueckeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FeatureCollectionDtoFeatureDtoFlurstueckDto> {
         const response = await this.getFlurstueckeRaw(requestParameters, initOverrides);
@@ -90,7 +90,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Gemarkungen die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGemarkungenRaw(requestParameters: GetGemarkungenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGemarkungDto>> {
         if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
@@ -115,7 +115,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Gemarkungen die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGemarkungen(requestParameters: GetGemarkungenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FeatureCollectionDtoFeatureDtoGemarkungDto> {
         const response = await this.getGemarkungenRaw(requestParameters, initOverrides);
@@ -123,7 +123,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Schulstandorte die sich mit dem Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Schulstandorte die sich mit dem Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getSchulstandorteRaw(requestParameters: GetSchulstandorteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoSchulstandortDto>> {
         if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
@@ -148,7 +148,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Schulstandorte die sich mit dem Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Schulstandorte die sich mit dem Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getSchulstandorte(requestParameters: GetSchulstandorteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FeatureCollectionDtoFeatureDtoSchulstandortDto> {
         const response = await this.getSchulstandorteRaw(requestParameters, initOverrides);
@@ -156,7 +156,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Stadtbezirke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Stadtbezirke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getStadtbezirkeRaw(requestParameters: GetStadtbezirkeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoStadtbezirkDto>> {
         if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
@@ -181,7 +181,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Stadtbezirke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Stadtbezirke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getStadtbezirke(requestParameters: GetStadtbezirkeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FeatureCollectionDtoFeatureDtoStadtbezirkDto> {
         const response = await this.getStadtbezirkeRaw(requestParameters, initOverrides);

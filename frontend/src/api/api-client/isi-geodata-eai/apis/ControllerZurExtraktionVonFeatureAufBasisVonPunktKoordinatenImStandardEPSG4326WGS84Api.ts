@@ -50,7 +50,7 @@ export interface GetStadtbezirke1Request {
 export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
 
     /**
-     * Holt die Flurstücke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Flurstücke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getFlurstuecke1Raw(requestParameters: GetFlurstuecke1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoFlurstueckDto>> {
         if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
@@ -75,7 +75,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     }
 
     /**
-     * Holt die Flurstücke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Flurstücke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getFlurstuecke1(requestParameters: GetFlurstuecke1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FeatureCollectionDtoFeatureDtoFlurstueckDto> {
         const response = await this.getFlurstuecke1Raw(requestParameters, initOverrides);
@@ -83,7 +83,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     }
 
     /**
-     * Holt die Gemarkungen die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Gemarkungen die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGemarkungen1Raw(requestParameters: GetGemarkungen1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGemarkungDto>> {
         if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
@@ -108,7 +108,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     }
 
     /**
-     * Holt die Gemarkungen die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Gemarkungen die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGemarkungen1(requestParameters: GetGemarkungen1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FeatureCollectionDtoFeatureDtoGemarkungDto> {
         const response = await this.getGemarkungen1Raw(requestParameters, initOverrides);
@@ -116,7 +116,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     }
 
     /**
-     * Holt die Stadtbezirke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Stadtbezirke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getStadtbezirke1Raw(requestParameters: GetStadtbezirke1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoStadtbezirkDto>> {
         if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
@@ -141,7 +141,7 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     }
 
     /**
-     * Holt die Stadtbezirke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.
+     * Holt die Stadtbezirke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getStadtbezirke1(requestParameters: GetStadtbezirke1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FeatureCollectionDtoFeatureDtoStadtbezirkDto> {
         const response = await this.getStadtbezirke1Raw(requestParameters, initOverrides);

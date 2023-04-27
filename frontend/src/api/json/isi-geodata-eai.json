@@ -9,23 +9,23 @@
   "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [
     {
-      "name": "Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)",
-      "description": "API zum Abfragen des Feature-Servers für MultiPolygon-Koordinaten."
-    },
-    {
       "name": "Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)",
       "description": "API für geometriespezifische Operationen."
     },
     {
       "name": "Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)",
-      "description": "API zum Abfragen des Feature-Servers für Punkt-Koordinaten."
+      "description": "API zum Abfragen des FeatureServers für Punkt-Koordinaten."
+    },
+    {
+      "name": "Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)",
+      "description": "API zum Abfragen des FeatureServers für MultiPolygon-Koordinaten."
     }
   ],
   "paths": {
     "/polygon/stadtbezirke": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
-        "summary": "Holt die Stadtbezirke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "summary": "Holt die Stadtbezirke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getStadtbezirke",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
@@ -48,22 +48,22 @@
     "/polygon/schulstandorte": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
-        "summary": "Holt die Schulstandorte die sich mit dem Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "summary": "Holt die Schulstandorte die sich mit dem Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getSchulstandorte",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Schulstandorte erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoSchulstandortDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -71,7 +71,7 @@
     "/polygon/gemarkungen": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
-        "summary": "Holt die Gemarkungen die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "summary": "Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getGemarkungen",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
@@ -94,7 +94,7 @@
     "/polygon/flurstuecke": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
-        "summary": "Holt die Flurstücke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "summary": "Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getFlurstuecke",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
@@ -117,7 +117,7 @@
     "/point/stadtbezirke": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
-        "summary": "Holt die Stadtbezirke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "summary": "Holt die Stadtbezirke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getStadtbezirke_1",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
@@ -140,7 +140,7 @@
     "/point/gemarkungen": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
-        "summary": "Holt die Gemarkungen die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "summary": "Holt die Gemarkungen die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getGemarkungen_1",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
@@ -163,7 +163,7 @@
     "/point/flurstuecke": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
-        "summary": "Holt die Flurstücke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "summary": "Holt die Flurstücke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getFlurstuecke_1",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
@@ -186,7 +186,7 @@
     "/geometry/operation/union": {
       "post": {
         "tags": ["Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)"],
-        "summary": "Ermittelt die Vereinigung der Polygone für Multipolygon mit Koordinaten im Standard EPSG:4326 (WGS84).",
+        "summary": "Ermittelt die Vereinigung der Polygone für Multipolygon (im Standard EPSG:4326 (WGS84)).",
         "operationId": "unify",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
@@ -218,19 +218,19 @@
             "properties": {
               "coordinates": {
                 "type": "array",
-                "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen. Jeder lineare Ring wird als eine Reihe von Punkten dargestellt. Der erste Punkt eines jeden Rings ist immer derselbe wie der letzte Punkt. Jeder Punkt in einem Ring wird als Zahlenfeld dargestellt. Äußere Ringe sind als Polygonhülle im Uhrzeigersinn orientiert, während Löcher gegen den Uhrzeigersinn orientiert sind. Ringe können sich an einem Scheitelpunkt berühren oder sich selbst an einem Scheitelpunkt berühren, aber es sollte keine anderen Schnittpunkte geben. Die von den Diensten zurückgegebenen Polygone sind topologisch einfach. ",
                 "items": {
                   "type": "array",
-                  "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                  "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen. Jeder lineare Ring wird als eine Reihe von Punkten dargestellt. Der erste Punkt eines jeden Rings ist immer derselbe wie der letzte Punkt. Jeder Punkt in einem Ring wird als Zahlenfeld dargestellt. Äußere Ringe sind als Polygonhülle im Uhrzeigersinn orientiert, während Löcher gegen den Uhrzeigersinn orientiert sind. Ringe können sich an einem Scheitelpunkt berühren oder sich selbst an einem Scheitelpunkt berühren, aber es sollte keine anderen Schnittpunkte geben. Die von den Diensten zurückgegebenen Polygone sind topologisch einfach. ",
                   "items": {
                     "type": "array",
-                    "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                    "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen. Jeder lineare Ring wird als eine Reihe von Punkten dargestellt. Der erste Punkt eines jeden Rings ist immer derselbe wie der letzte Punkt. Jeder Punkt in einem Ring wird als Zahlenfeld dargestellt. Äußere Ringe sind als Polygonhülle im Uhrzeigersinn orientiert, während Löcher gegen den Uhrzeigersinn orientiert sind. Ringe können sich an einem Scheitelpunkt berühren oder sich selbst an einem Scheitelpunkt berühren, aber es sollte keine anderen Schnittpunkte geben. Die von den Diensten zurückgegebenen Polygone sind topologisch einfach. ",
                     "items": {
                       "type": "array",
-                      "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                      "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen. Jeder lineare Ring wird als eine Reihe von Punkten dargestellt. Der erste Punkt eines jeden Rings ist immer derselbe wie der letzte Punkt. Jeder Punkt in einem Ring wird als Zahlenfeld dargestellt. Äußere Ringe sind als Polygonhülle im Uhrzeigersinn orientiert, während Löcher gegen den Uhrzeigersinn orientiert sind. Ringe können sich an einem Scheitelpunkt berühren oder sich selbst an einem Scheitelpunkt berühren, aber es sollte keine anderen Schnittpunkte geben. Die von den Diensten zurückgegebenen Polygone sind topologisch einfach. ",
                       "items": {
                         "type": "number",
-                        "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen."
+                        "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen. Jeder lineare Ring wird als eine Reihe von Punkten dargestellt. Der erste Punkt eines jeden Rings ist immer derselbe wie der letzte Punkt. Jeder Punkt in einem Ring wird als Zahlenfeld dargestellt. Äußere Ringe sind als Polygonhülle im Uhrzeigersinn orientiert, während Löcher gegen den Uhrzeigersinn orientiert sind. Ringe können sich an einem Scheitelpunkt berühren oder sich selbst an einem Scheitelpunkt berühren, aber es sollte keine anderen Schnittpunkte geben. Die von den Diensten zurückgegebenen Polygone sind topologisch einfach. "
                       }
                     }
                   }

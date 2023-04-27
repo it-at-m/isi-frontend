@@ -33,7 +33,7 @@ export interface UnifyRequest {
 export class ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
 
     /**
-     * Ermittelt die Vereinigung der Polygone für Multipolygon mit Koordinaten im Standard EPSG:4326 (WGS84).
+     * Ermittelt die Vereinigung der Polygone für Multipolygon (im Standard EPSG:4326 (WGS84)).
      */
     async unifyRaw(requestParameters: UnifyRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MultiPolygonGeometryDto>> {
         if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
@@ -58,7 +58,7 @@ export class ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84A
     }
 
     /**
-     * Ermittelt die Vereinigung der Polygone für Multipolygon mit Koordinaten im Standard EPSG:4326 (WGS84).
+     * Ermittelt die Vereinigung der Polygone für Multipolygon (im Standard EPSG:4326 (WGS84)).
      */
     async unify(requestParameters: UnifyRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MultiPolygonGeometryDto> {
         const response = await this.unifyRaw(requestParameters, initOverrides);
