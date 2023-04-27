@@ -55,7 +55,7 @@ export interface AdresseDto {
      * @type {Wgs84Dto}
      * @memberof AdresseDto
      */
-    coordinate: Wgs84Dto;
+    coordinate?: Wgs84Dto;
 }
 
 export function AdresseDtoFromJSON(json: any): AdresseDto {
@@ -72,7 +72,7 @@ export function AdresseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'ort': !exists(json, 'ort') ? undefined : json['ort'],
         'strasse': !exists(json, 'strasse') ? undefined : json['strasse'],
         'hausnummer': !exists(json, 'hausnummer') ? undefined : json['hausnummer'],
-        'coordinate': Wgs84DtoFromJSON(json['coordinate']),
+        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
     };
 }
 
