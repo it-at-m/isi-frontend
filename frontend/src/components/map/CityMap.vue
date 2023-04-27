@@ -51,10 +51,16 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, Prop, Mixins } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer } from "vue2-leaflet";
 import WfsEaiApiRequestMixin from "@/mixins/requests/eai/WfsEaiApiRequestMixin";
-import { CoordinateDto, CoordinatesDto, FlurstueckFeatureDto } from "@/api/api-client/isi-wfs-eai";
+import {
+  FeatureCollectionDtoFeatureDtoFlurstueckDto,
+  FeatureDtoFlurstueckDto,
+  MultiPolygonGeometryDto,
+  PointGeometryDto,
+} from "@/api/api-client/isi-geodata-eai";
 import { VerortungState, MultiPolygon } from "@/store/modules/VerortungStore";
 import L, { LatLngLiteral } from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -116,9 +122,9 @@ export default class CityMap extends Mixins(WfsEaiApiRequestMixin) {
 
     this.popup.setLatLng(latlng).setContent("Lädt...").openOn(this.map);
 
-    const point: CoordinateDto = { lat: latlng.lat, lon: latlng.lng };
+    const point: PointGeometryDto = { coordinates: [latlng.lng, latlng.lat] };
     const fetchedFlurstuecke = await this.getFlurstuecke(point, false);
-    const flurstuecke: FlurstueckFeatureDto[] = [];
+    const flurstuecke: FeatureDtoFlurstueckDto[] = [];
     const flurstueckMap: VerortungState["flurstuecke"] = this.$store.getters["verortung/flurstuecke"];
 
     for (const flurstueck of fetchedFlurstuecke) {

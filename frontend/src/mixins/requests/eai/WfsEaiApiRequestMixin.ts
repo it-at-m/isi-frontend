@@ -1,18 +1,9 @@
 import { Component, Mixins } from "vue-property-decorator";
 import {
-  PunktApi,
-  GetFlurstuecke1Request,
-  FlurstueckFeatureDto,
-  CoordinateDto,
-  PolygonOperationenApi,
-  UnifyRequest,
-  CoordinatesDto,
-  PolygonApi,
-  GetGemarkungenRequest,
-  GemarkungFeatureDto,
-  StadtbezirkFeatureDto,
-  GetStadtbezirkeRequest,
-} from "@/api/api-client/isi-wfs-eai";
+  ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api as PunktApi,
+  ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api as PolygonApi,
+  ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84Api as PolygonOperationenApi,
+} from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import _ from "lodash";
@@ -25,9 +16,9 @@ export default class WfsEaiApiRequestMixin extends Mixins(ErrorHandler) {
 
   constructor() {
     super();
-    this.punktApi = new PunktApi(RequestUtils.getBasicFetchConfigurationForWfsEai());
-    this.polygonApi = new PolygonApi(RequestUtils.getBasicFetchConfigurationForWfsEai());
-    this.operationApi = new PolygonOperationenApi(RequestUtils.getBasicFetchConfigurationForWfsEai());
+    this.punktApi = new PunktApi(RequestUtils.getBasicFetchConfigurationForGeodataEai());
+    this.polygonApi = new PolygonApi(RequestUtils.getBasicFetchConfigurationForGeodataEai());
+    this.operationApi = new PolygonOperationenApi(RequestUtils.getBasicFetchConfigurationForGeodataEai());
   }
 
   async getFlurstuecke(coordinate: CoordinateDto, showInInformationList: boolean): Promise<FlurstueckFeatureDto[]> {

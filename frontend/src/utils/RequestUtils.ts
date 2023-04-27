@@ -7,9 +7,9 @@ import {
   ConfigurationParameters as ConfigurationParametersMasterEai,
 } from "@/api/api-client/isi-master-eai";
 import {
-  Configuration as ConfigurationWfsEai,
-  ConfigurationParameters as ConfigurationParametersWfsEai,
-} from "@/api/api-client/isi-wfs-eai";
+  Configuration as ConfigurationGeodataEai,
+  ConfigurationParameters as ConfigurationParametersGeodataEai,
+} from "@/api/api-client/isi-geodata-eai";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 
 export default class RequestUtils {
@@ -21,8 +21,8 @@ export default class RequestUtils {
     return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-master-eai";
   }
 
-  public static getBaseWfsEaiUrl(): string {
-    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-wfs-eai";
+  public static getBaseGeodataUrl(): string {
+    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-geodata-eai";
   }
 
   public static getBasicFetchConfigurationForBackend(): ConfigurationBackend {
@@ -39,11 +39,11 @@ export default class RequestUtils {
     return new ConfigurationMasterEai(configuration);
   }
 
-  public static getBasicFetchConfigurationForWfsEai(): ConfigurationWfsEai {
-    const configuration: ConfigurationParametersWfsEai = {
-      basePath: this.getBaseWfsEaiUrl(),
+  public static getBasicFetchConfigurationForGeodataEai(): ConfigurationGeodataEai {
+    const configuration: ConfigurationParametersGeodataEai = {
+      basePath: this.getBaseGeodataUrl(),
     };
-    return new ConfigurationWfsEai(configuration);
+    return new ConfigurationGeodataEai(configuration);
   }
 
   /**

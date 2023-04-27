@@ -1,0 +1,428 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ISI GEODATA EAI",
+    "description": "ISI GEODATA EAI - Service zum Abfragen von Geoinformationen",
+    "contact": { "name": "ISI Management", "email": "unbekannt@muenchen.de" },
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
+  "tags": [
+    {
+      "name": "Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)",
+      "description": "API zum Abfragen des Feature-Servers für MultiPolygon-Koordinaten."
+    },
+    {
+      "name": "Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)",
+      "description": "API für geometriespezifische Operationen."
+    },
+    {
+      "name": "Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)",
+      "description": "API zum Abfragen des Feature-Servers für Punkt-Koordinaten."
+    }
+  ],
+  "paths": {
+    "/polygon/stadtbezirke": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Stadtbezirke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "operationId": "getStadtbezirke",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Stadtbezirke erfolgreich abgefragt.",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/polygon/schulstandorte": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Schulstandorte die sich mit dem Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "operationId": "getSchulstandorte",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Schulstandorte erfolgreich abgefragt.",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoSchulstandortDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/polygon/gemarkungen": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Gemarkungen die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "operationId": "getGemarkungen",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Gemarkungen erfolgreich abgefragt.",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/polygon/flurstuecke": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Flurstücke die sich mit den Multipolygon definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "operationId": "getFlurstuecke",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Flurstücke erfolgreich abgefragt.",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/point/stadtbezirke": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Stadtbezirke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "operationId": "getStadtbezirke_1",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Stadtbezirke erfolgreich abgefragt.",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/point/gemarkungen": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Gemarkungen die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "operationId": "getGemarkungen_1",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Gemarkungen erfolgreich abgefragt.",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/point/flurstuecke": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Flurstücke die sich mit den Punkt definiert mit Koordinaten im Standard EPSG:4326 (WGS84) überschneiden.",
+        "operationId": "getFlurstuecke_1",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Flurstücke erfolgreich abgefragt.",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/geometry/operation/union": {
+      "post": {
+        "tags": ["Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)"],
+        "summary": "Ermittelt die Vereinigung der Polygone für Multipolygon mit Koordinaten im Standard EPSG:4326 (WGS84).",
+        "operationId": "unify",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung der Logik ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Multipolygon erfolgreich vereinigt.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MultiPolygonGeometryDto": {
+        "required": ["type"],
+        "type": "object",
+        "description": "Die GEOJSON-Repräsentation des Multipolygons.",
+        "allOf": [
+          { "$ref": "#/components/schemas/GeometryDto" },
+          {
+            "type": "object",
+            "properties": {
+              "coordinates": {
+                "type": "array",
+                "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                "items": {
+                  "type": "array",
+                  "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                  "items": {
+                    "type": "array",
+                    "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                    "items": {
+                      "type": "array",
+                      "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen.",
+                      "items": {
+                        "type": "number",
+                        "description": "Die Koordinaten im Standard EPSG:4326 (WGS84) als lineare Ringe. Die erste Listendimension beinhaltet die einzelnen Polygone. Die zweite Listendimension beinhaltet die linearen Ringe des Polygons. Der erste lineare Ring entspricht der äußeren Hülle des Polygons. Die folgenden linearen Ringe repräsentieren die Löcher im Polygon. Die dritte Listendimension beinhaltet die Punktkoordinaten im Standard EPSG:4326 (WGS84). Die vierte Listendimension stellt eine Punktkoordinate dar. Die durch die Liste repräsentierte Punktkoordinate muss der Länge 2 entsprechen und somit einen X und einen Y-Abschnitt besitzen."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "InformationResponseDto": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "traceId": { "type": "string" },
+          "spanId": { "type": "string" },
+          "httpStatus": { "type": "integer", "format": "int32" },
+          "originalException": { "type": "string" },
+          "messages": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "FeatureCollectionDtoFeatureDtoStadtbezirkDto": {
+        "type": "object",
+        "properties": {
+          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoStadtbezirkDto" } }
+        }
+      },
+      "FeatureDtoStadtbezirkDto": {
+        "type": "object",
+        "properties": {
+          "geometry": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
+            ]
+          },
+          "attributes": { "$ref": "#/components/schemas/StadtbezirkDto" }
+        }
+      },
+      "GeometryDto": {
+        "required": ["type"],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Definiert den Geometrietyp in der Ausprägung als Multipolygon oder als Point."
+          }
+        },
+        "discriminator": { "propertyName": "type" }
+      },
+      "PointGeometryDto": {
+        "required": ["coordinates", "type"],
+        "type": "object",
+        "description": "Die GEOJSON-Repräsentation einer Punktkoordinate.",
+        "allOf": [
+          { "$ref": "#/components/schemas/GeometryDto" },
+          {
+            "type": "object",
+            "properties": {
+              "coordinates": {
+                "maxItems": 2,
+                "minItems": 2,
+                "type": "array",
+                "description": "Die Punktkoordinate ([x,y] bzw. [longitude, latitude]) im Standard EPSG:4326 (WGS84).",
+                "items": {
+                  "type": "number",
+                  "description": "Die Punktkoordinate ([x,y] bzw. [longitude, latitude]) im Standard EPSG:4326 (WGS84)."
+                }
+              }
+            }
+          }
+        ]
+      },
+      "StadtbezirkDto": {
+        "type": "object",
+        "properties": {
+          "objectId": { "type": "integer", "format": "int64" },
+          "stadtbezirkNummer": { "type": "string" },
+          "name": { "type": "string" },
+          "flaecheQm": { "type": "number" },
+          "xcoordinate": { "type": "number" },
+          "ycoordinate": { "type": "number" }
+        }
+      },
+      "FeatureCollectionDtoFeatureDtoSchulstandortDto": {
+        "type": "object",
+        "properties": {
+          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoSchulstandortDto" } }
+        }
+      },
+      "FeatureDtoSchulstandortDto": {
+        "type": "object",
+        "properties": {
+          "geometry": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
+            ]
+          },
+          "attributes": { "$ref": "#/components/schemas/SchulstandortDto" }
+        }
+      },
+      "SchulstandortDto": {
+        "type": "object",
+        "properties": {
+          "objectId": { "type": "integer", "format": "int64" },
+          "kreisschl": { "type": "integer", "format": "int64" },
+          "kreis": { "type": "string" },
+          "schulnummer": { "type": "integer", "format": "int64" },
+          "schulname": { "type": "string" },
+          "linkSchule": { "type": "string" },
+          "verbundname": { "type": "string" },
+          "verbundnummer": { "type": "string" },
+          "schulamt": { "type": "string" },
+          "rabl": { "type": "string" },
+          "linkRabl": { "type": "string" },
+          "schulart": { "type": "string" },
+          "postleitzahl": { "type": "integer", "format": "int64" },
+          "strasse": { "type": "string" },
+          "internetadresse": { "type": "string" },
+          "ebene": { "type": "integer", "format": "int64" },
+          "winkel": { "type": "number" },
+          "bedeutungEbene": { "type": "string" }
+        }
+      },
+      "FeatureCollectionDtoFeatureDtoGemarkungDto": {
+        "type": "object",
+        "properties": {
+          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoGemarkungDto" } }
+        }
+      },
+      "FeatureDtoGemarkungDto": {
+        "type": "object",
+        "properties": {
+          "geometry": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
+            ]
+          },
+          "attributes": { "$ref": "#/components/schemas/GemarkungDto" }
+        }
+      },
+      "GemarkungDto": {
+        "type": "object",
+        "properties": {
+          "objectId": { "type": "integer", "format": "int64" },
+          "oid1": { "type": "string" },
+          "gemarkung": { "type": "number" },
+          "gemarkungName": { "type": "string" }
+        }
+      },
+      "FeatureCollectionDtoFeatureDtoFlurstueckDto": {
+        "type": "object",
+        "properties": {
+          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoFlurstueckDto" } }
+        }
+      },
+      "FeatureDtoFlurstueckDto": {
+        "type": "object",
+        "properties": {
+          "geometry": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
+            ]
+          },
+          "attributes": { "$ref": "#/components/schemas/FlurstueckDto" }
+        }
+      },
+      "FlurstueckDto": {
+        "type": "object",
+        "properties": {
+          "objectId": { "type": "integer", "format": "int64" },
+          "oid1": { "type": "string" },
+          "gemarkung": { "type": "integer", "format": "int64" },
+          "fluerstueckNummerZ": { "type": "integer", "format": "int64" },
+          "fluerstueckNummer": { "type": "integer", "format": "int64" },
+          "afl": { "type": "number" },
+          "lage": { "type": "string" },
+          "gemeinde": { "type": "number" },
+          "objektart": { "type": "integer", "format": "int64" },
+          "nutzungsart": { "type": "integer", "format": "int64" },
+          "eigentumsart": { "type": "integer", "format": "int64" },
+          "flaecheQm": { "type": "number" },
+          "gemarkungName": { "type": "string" },
+          "flurstueckId": { "type": "number" },
+          "eigentumsartBedeutung": { "type": "string" },
+          "gemeindeBedeutung": { "type": "string" },
+          "nutzungsartBedeutung": { "type": "string" }
+        }
+      }
+    }
+  }
+}
