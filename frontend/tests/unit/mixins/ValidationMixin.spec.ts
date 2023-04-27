@@ -11,13 +11,15 @@ describe("ValidatorMixin Test", () => {
       anzahlWeGeplant: 50,
       geschossflaecheWohnenGeplant: 50,
       foerdermix: {
-        anteilBaugemeinschaften: 10,
-        anteilEinUndZweifamilienhaeuser: 10,
-        anteilFreifinanzierterGeschosswohnungsbau: 10,
-        anteilGefoerderterMietwohnungsbau: 10,
-        anteilKonzeptionellerMietwohnungsbau: 10,
-        anteilMuenchenModell: 10,
-        anteilPreisgedaempfterMietwohnungsbau: 50,
+        foerderarten: [
+          { bezeichnung: "Baugemeinschaften", anteilProzent: 10 },
+          { bezeichnung: "EinUndZweifamilienhaeuser", anteilProzent: 10 },
+          { bezeichnung: "FreifinanzierterGeschosswohnungsbau", anteilProzent: 10 },
+          { bezeichnung: "GefoerderterMietwohnungsbau", anteilProzent: 10 },
+          { bezeichnung: "KonzeptionellerMietwohnungsbau", anteilProzent: 10 },
+          { bezeichnung: "MuenchenModell", anteilProzent: 10 },
+          { bezeichnung: "PreisgedaempfterMietwohnungsbau", anteilProzent: 50 },
+        ],
       } as FoerdermixDto,
     } as BaurateDto);
 
@@ -40,7 +42,13 @@ describe("ValidatorMixin Test", () => {
 
     expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100");
 
-    baurate.foerdermix.anteilPreisgedaempfterMietwohnungsbau = 30;
+    let anteilPreisgedaempfterMietwohnungsbau = baurate.foerdermix.foerderarten?.find(
+      (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau"
+    );
+
+    if (anteilPreisgedaempfterMietwohnungsbau !== undefined) {
+      anteilPreisgedaempfterMietwohnungsbau.anteilProzent = 30;
+    }
 
     const foerdermixErrorBelow = validationMixin.findFaultInBaurate(baurate);
 

@@ -344,7 +344,7 @@ export default class Abfrage extends Mixins(
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.initializeFormulare();
-    this.getAbfrageById();
+    this.setSelectedAbfrageInStore();
 
     if (!this.isNewAbfrage())
       this.getTransitions(this.abfrageId, true).then((response) => {
@@ -361,7 +361,7 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  async getAbfrageById(): Promise<void> {
+  async setSelectedAbfrageInStore(): Promise<void> {
     if (this.abfrageId !== undefined) {
       this.getInfrastrukturabfrageById(this.abfrageId, true)
         .then((dto) => {
@@ -496,7 +496,7 @@ export default class Abfrage extends Mixins(
         if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
           this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
         } else {
-          this.getAbfrageById();
+          this.setSelectedAbfrageInStore();
           this.getTransitions(this.abfrageId, true).then((response) => {
             this.possbileTransitions = response;
           });

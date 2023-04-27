@@ -20,7 +20,7 @@
 export const StatusAbfrage = {
     Angelegt: 'ANGELEGT',
     Offen: 'OFFEN',
-    InBearbeitungPlan: 'IN_BEARBEITUNG_PLAN',
+    InBearbeitungSachbearbeitung: 'IN_BEARBEITUNG_SACHBEARBEITUNG',
     InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
     BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
     Erledigt: 'ERLEDIGT',
