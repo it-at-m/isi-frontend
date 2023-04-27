@@ -13,6 +13,7 @@ export * from './DokumentDto';
 export * from './DokumenteDto';
 export * from './FileInformationDto';
 export * from './FilepathDto';
+export * from './FoerderartDto';
 export * from './FoerdermixDto';
 export * from './FoerdermixStammDto';
 export * from './GrundschuleDto';
