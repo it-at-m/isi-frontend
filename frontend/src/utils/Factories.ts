@@ -125,10 +125,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
       hausnummer: "",
       plz: "",
       ort: "",
-      coordinate: {
-        latitude: 0,
-        longitude: 0,
-      },
+      coordinate: undefined,
     },
     allgemeineOrtsangabe: "",
     bebauungsplannummer: "",

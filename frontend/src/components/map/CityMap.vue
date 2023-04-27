@@ -8,7 +8,7 @@
       id="karte"
       ref="map"
       :options="MAP_OPTIONS"
-      :center="initialCenter"
+      :center="CITY_CENTER"
       :zoom="initialZoom"
       style="z-index: 1"
       @click="openPopup($event)"
@@ -19,7 +19,7 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="getGiwUrl('WMS_Stadtkarte')"
+        :base-url="getGeoUrl('WMS_Stadtkarte')"
         layers="Hintergrund"
         format="image/png"
         layer-type="base"
@@ -30,7 +30,7 @@
       <l-wms-tile-layer
         id="karte_gemarkungen"
         name="Gemarkungen"
-        :base-url="getGiwUrl('WMS_Stadtgrundkarte')"
+        :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
         layers="Gemarkungen"
         format="image/png"
         layer-type="overlay"
@@ -40,7 +40,7 @@
       <l-wms-tile-layer
         id="karte_flurstuecke"
         name="Flurstücke"
-        :base-url="getGiwUrl('WMS_Stadtgrundkarte')"
+        :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
         layers="Flurstücke"
         format="image/png"
         layer-type="overlay"
@@ -100,7 +100,7 @@ type Ref = Vue & { $el: HTMLElement };
   },
 })
 export default class CityMap extends Vue {
-  private static readonly MUNICH_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
+  private readonly CITY_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
   private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
 
   @Prop({ default: "100%" })
@@ -113,10 +113,6 @@ export default class CityMap extends Vue {
   private readonly zoom!: number;
   private initialZoom!: number;
 
-  @Prop({ default: () => CityMap.MUNICH_CENTER })
-  private readonly center!: LatLngLiteral;
-  private initialCenter!: LatLngLiteral;
-
   @Prop({ type: Boolean, default: false })
   private readonly expandable!: boolean;
 
@@ -128,15 +124,16 @@ export default class CityMap extends Vue {
   private expanded = false;
 
   created(): void {
-    /* Da die Karte Zoom und Zentrierung selber ändern kann, sollten diese Werte nur einmalig gesetzt werden.
-       Ändert das Elternelement im Nachhinein den Wert vom "zoom"- oder "center"-Prop, soll dies die Karte nicht beeinflussen. */
+    /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
+       Ändert das Elternelement im Nachhinein den Wert vom "zoom"-Prop, soll dies die Karte nicht beeinflussen. */
     this.initialZoom = this.zoom;
-    this.initialCenter = this.center;
   }
 
   mounted(): void {
     // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
     this.map = (this.$refs.map as LMap).mapObject;
+    // Workaround für anderes Fetch-Verhalten bei Infrastruktureinrichtungen.
+    this.onLookAtChanged();
   }
 
   @Watch("lookAt", { deep: true })
@@ -147,9 +144,9 @@ export default class CityMap extends Vue {
   }
 
   /**
-   * Da GeoInfoWeb mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
+   * Da der Geo-Dienst mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
-  private getGiwUrl(service: string): string {
+  private getGeoUrl(service: string): string {
     return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
   }
 

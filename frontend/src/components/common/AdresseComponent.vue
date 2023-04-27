@@ -97,7 +97,7 @@
           height="300"
           :zoom="14"
           expandable
-          :look-at="adressKoordinate"
+          :look-at="coordinate"
         />
       </v-col>
     </v-row>
@@ -140,8 +140,6 @@ export default class AdresseComponent extends Mixins(
   private selectedAdresseOfAdressSuche: MuenchenAdresseDto = createMuenchenAdresseDto();
 
   private adressen: Array<MuenchenAdresseDto> = [];
-
-  private adressKoordinate: LatLngLiteral | null = null;
 
   @Prop()
   private adresseProp!: AdresseModel;
@@ -213,6 +211,16 @@ export default class AdresseComponent extends Mixins(
     return _.isEmpty(this.allgemeineOrtsangabe);
   }
 
+  get coordinate(): LatLngLiteral | undefined {
+    const lat = this.adresse.coordinate?.latitude;
+    const lng = this.adresse.coordinate?.longitude;
+
+    if (lat && lng) {
+      return { lat, lng };
+    }
+    return undefined;
+  }
+
   private assumeAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
     this.allgemeineOrtsangabe = allgemeineOrtsangabe;
     this.resetAdresse();
@@ -224,13 +232,6 @@ export default class AdresseComponent extends Mixins(
     this.assignAdresse(dto);
     this.allgemeineOrtsangabe = "";
     this.resetAdressSuche();
-
-    // Auf der Karte zur ausgewählten Position gehen
-    const lat = dto.position?.wgs?.lat;
-    const lon = dto.position?.wgs?.lon;
-    if (lat && lon) {
-      this.adressKoordinate = { lat, lng: lon };
-    }
   }
 
   private assignAdresse(dto: MuenchenAdresseDto): void {
@@ -241,6 +242,12 @@ export default class AdresseComponent extends Mixins(
     this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString("de-DE");
     if (!_.isNil(dto.buchstabe)) {
       this.adresse.hausnummer += dto.buchstabe;
+    }
+
+    const latitude = dto.position?.wgs?.lat;
+    const longitude = dto.position?.wgs?.lon;
+    if (latitude && longitude) {
+      this.adresse.coordinate = { latitude, longitude };
     }
   }
 

@@ -17,7 +17,6 @@
         <slot name="offText">{{ offText }}</slot>
       </span>
       <input
-        id="triswitch"
         v-model="valueAsPosition"
         :class="`slider mx-2 ${getBackgroundColor()}`"
         type="range"
