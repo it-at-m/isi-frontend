@@ -444,7 +444,7 @@ export default class Abfrage extends Mixins(
           this.handleSuccess(dto);
         });
       } else {
-        await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+        await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
           this.handleSuccess(dto);
         });
       }
@@ -490,7 +490,7 @@ export default class Abfrage extends Mixins(
       this.abfrageWrapped.infrastrukturabfrage
     );
     if (_.isNil(validationMessage)) {
-      await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
+      await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true);
       this.freigabInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage.id as string, true).then(() => {
         this.returnToUebersicht("Die Abfrage wurde erfolgreich freigegeben", Levels.SUCCESS);
       });
