@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    FoerderartDto,
-    FoerderartDtoFromJSON,
-    FoerderartDtoFromJSONTyped,
-    FoerderartDtoToJSON,
-} from './FoerderartDto';
-
 /**
  * 
  * @export
@@ -28,10 +21,46 @@ import {
 export interface FoerdermixDto {
     /**
      * 
-     * @type {Array<FoerderartDto>}
+     * @type {number}
      * @memberof FoerdermixDto
      */
-    foerderarten?: Array<FoerderartDto>;
+    anteilFreifinanzierterGeschosswohnungsbau?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FoerdermixDto
+     */
+    anteilGefoerderterMietwohnungsbau?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FoerdermixDto
+     */
+    anteilMuenchenModell?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FoerdermixDto
+     */
+    anteilPreisgedaempfterMietwohnungsbau?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FoerdermixDto
+     */
+    anteilKonzeptionellerMietwohnungsbau?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FoerdermixDto
+     */
+    anteilBaugemeinschaften?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FoerdermixDto
+     */
+    anteilEinUndZweifamilienhaeuser?: number;
 }
 
 export function FoerdermixDtoFromJSON(json: any): FoerdermixDto {
@@ -44,7 +73,13 @@ export function FoerdermixDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'foerderarten': !exists(json, 'foerderarten') ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartDtoFromJSON)),
+        'anteilFreifinanzierterGeschosswohnungsbau': !exists(json, 'anteilFreifinanzierterGeschosswohnungsbau') ? undefined : json['anteilFreifinanzierterGeschosswohnungsbau'],
+        'anteilGefoerderterMietwohnungsbau': !exists(json, 'anteilGefoerderterMietwohnungsbau') ? undefined : json['anteilGefoerderterMietwohnungsbau'],
+        'anteilMuenchenModell': !exists(json, 'anteilMuenchenModell') ? undefined : json['anteilMuenchenModell'],
+        'anteilPreisgedaempfterMietwohnungsbau': !exists(json, 'anteilPreisgedaempfterMietwohnungsbau') ? undefined : json['anteilPreisgedaempfterMietwohnungsbau'],
+        'anteilKonzeptionellerMietwohnungsbau': !exists(json, 'anteilKonzeptionellerMietwohnungsbau') ? undefined : json['anteilKonzeptionellerMietwohnungsbau'],
+        'anteilBaugemeinschaften': !exists(json, 'anteilBaugemeinschaften') ? undefined : json['anteilBaugemeinschaften'],
+        'anteilEinUndZweifamilienhaeuser': !exists(json, 'anteilEinUndZweifamilienhaeuser') ? undefined : json['anteilEinUndZweifamilienhaeuser'],
     };
 }
 
@@ -57,7 +92,13 @@ export function FoerdermixDtoToJSON(value?: FoerdermixDto | null): any {
     }
     return {
         
-        'foerderarten': value.foerderarten === undefined ? undefined : ((value.foerderarten as Array<any>).map(FoerderartDtoToJSON)),
+        'anteilFreifinanzierterGeschosswohnungsbau': value.anteilFreifinanzierterGeschosswohnungsbau,
+        'anteilGefoerderterMietwohnungsbau': value.anteilGefoerderterMietwohnungsbau,
+        'anteilMuenchenModell': value.anteilMuenchenModell,
+        'anteilPreisgedaempfterMietwohnungsbau': value.anteilPreisgedaempfterMietwohnungsbau,
+        'anteilKonzeptionellerMietwohnungsbau': value.anteilKonzeptionellerMietwohnungsbau,
+        'anteilBaugemeinschaften': value.anteilBaugemeinschaften,
+        'anteilEinUndZweifamilienhaeuser': value.anteilEinUndZweifamilienhaeuser,
     };
 }
 

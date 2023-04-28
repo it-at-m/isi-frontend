@@ -1,7 +1,7 @@
 import {
   AbfrageDto,
   AbfrageDtoStandVorhabenEnum,
-  AbfrageDtoStatusAbfrageEnum,
+  StatusAbfrage,
   AbfragevarianteDto,
   AbfragevarianteDtoPlanungsrechtEnum,
   AdresseDto,
@@ -69,7 +69,7 @@ export function createAbfrageDto(): AbfrageDto {
     adresse: undefined,
     fristStellungnahme: new Date(0),
     anmerkung: undefined,
-    statusAbfrage: AbfrageDtoStatusAbfrageEnum.Angelegt,
+    statusAbfrage: StatusAbfrage.Angelegt,
     bebauungsplannummer: undefined,
     nameAbfrage: "",
     standVorhaben: AbfrageDtoStandVorhabenEnum.Unspecified,
