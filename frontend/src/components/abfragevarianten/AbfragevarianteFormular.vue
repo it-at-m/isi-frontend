@@ -87,7 +87,7 @@
             id="abfragevariante_geschossflaecheWohnen"
             v-model="abfragevariante.geschossflaecheWohnen"
             class="mx-3"
-            label="Wohnen"
+            label="Gesamt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
@@ -99,7 +99,7 @@
             id="abfragevariante_geschossflaecheWohnenGenehmigt"
             v-model="abfragevariante.geschossflaecheWohnenGenehmigt"
             class="mx-3"
-            label="Genehmigt"
+            label="Baurechtlich genehmigt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
@@ -111,7 +111,7 @@
             id="abfragevariante_geschossflaecheWohnenFestgesetzt"
             v-model="abfragevariante.geschossflaecheWohnenFestgesetzt"
             class="mx-3"
-            label="Festgesetzt"
+            label="Baurechtlich festgesetzt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
@@ -126,7 +126,7 @@
             id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
             class="mx-3"
-            label="SoBoN-ursächliche"
+            label="SoBoN-ursächlich"
             :suffix="fieldPrefixesSuffixes.squareMeter"
             :required="isGeschossflaecheSobonUrsaechlichPflichtfeld"
           />
@@ -151,7 +151,7 @@
             id="abfragevariante_geschossflaecheGenossenschaftlicheWohnungen"
             v-model="abfragevariante.geschossflaecheGenossenschaftlicheWohnungen"
             class="mx-3"
-            label="Genossenschaftliche Wohnungen"
+            label="Genossenschaftlich"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
@@ -232,7 +232,7 @@
             id="abfragevariante_gesamtanzahlWe"
             v-model="abfragevariante.gesamtanzahlWe"
             class="mx-3"
-            label="Geplante"
+            label="Gesamt"
             integer
           />
         </v-col>
@@ -310,7 +310,7 @@ export default class AbfragevarianteForm extends Mixins(
     return pflichtfeld;
   }
 
-  private geschossFlaecheCardTitle = "Geschossfläche";
+  private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
 
   private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
