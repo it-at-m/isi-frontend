@@ -92,6 +92,12 @@ export interface BaugebietDto {
      * @memberof BaugebietDto
      */
     bauraten: Array<BaurateDto>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BaugebietDto
+     */
+    technical: boolean;
 }
 
 
@@ -131,6 +137,7 @@ export function BaugebietDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'geschossflaecheWohnenGenehmigt': !exists(json, 'geschossflaecheWohnenGenehmigt') ? undefined : json['geschossflaecheWohnenGenehmigt'],
         'geschossflaecheWohnenFestgesetzt': !exists(json, 'geschossflaecheWohnenFestgesetzt') ? undefined : json['geschossflaecheWohnenFestgesetzt'],
         'bauraten': ((json['bauraten'] as Array<any>).map(BaurateDtoFromJSON)),
+        'technical': json['technical'],
     };
 }
 
@@ -154,6 +161,7 @@ export function BaugebietDtoToJSON(value?: BaugebietDto | null): any {
         'geschossflaecheWohnenGenehmigt': value.geschossflaecheWohnenGenehmigt,
         'geschossflaecheWohnenFestgesetzt': value.geschossflaecheWohnenFestgesetzt,
         'bauraten': ((value.bauraten as Array<any>).map(BaurateDtoToJSON)),
+        'technical': value.technical,
     };
 }
 
