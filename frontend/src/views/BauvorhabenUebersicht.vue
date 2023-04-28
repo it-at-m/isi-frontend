@@ -21,17 +21,17 @@
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'">
-                Bauvorhabennummer: {{ item.bauvorhabenNummer }}
-              </span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'"
+                >Bauvorhabennummer: {{ item.bauvorhabenNummer }}</span
+              >
               <v-spacer />
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">
-                Grundstücksgröße: {{ item.grundstuecksgroesse }} m²
-              </span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'"
+                >Grundstücksgröße: {{ item.grundstuecksgroesse }} m²</span
+              >
               <v-spacer />
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'">
-                Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
-              </span>
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'"
+                >Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}</span
+              >
             </v-card-text>
           </v-card>
         </v-hover>
@@ -45,26 +45,17 @@
     </template>
     <template #action>
       <v-spacer />
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="bauvorhaben_uebersicht_bauvorhaben_erstellen_button"
-            slot="activator"
-            v-model="options"
-            dark
-            fab
-            x-large
-            color="secondary"
-            class="align-self-end"
-            v-on="on"
-            @click="createBauvorhaben()"
-          >
-            <v-icon> mdi-plus </v-icon>
-          </v-btn>
-        </template>
-        <span v-if="options">Abbrechen</span>
-        <span v-else>Bauvorhaben erstellen</span>
-      </v-tooltip>
+      <v-btn
+        id="bauvorhaben_uebersicht_bauvorhaben_erstellen_button"
+        dark
+        fab
+        x-large
+        color="secondary"
+        class="align-self-end"
+        @click="createBauvorhaben()"
+      >
+        <v-icon> mdi-plus </v-icon>
+      </v-btn>
     </template>
   </default-layout>
 </template>
@@ -81,7 +72,6 @@ import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestM
 })
 export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin) {
   private fetchSuccess: boolean | null = null;
-  private options = false;
 
   get bauvorhabenList(): BauvorhabenDto[] {
     const list = this.$store.getters["search/resultBauvorhaben"];

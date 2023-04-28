@@ -56,7 +56,6 @@
             fab
             x-large
             color="secondary"
-            class="align-self-end"
             v-on="on"
             @click="newAbfrage"
           >
