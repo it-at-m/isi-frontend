@@ -43,8 +43,8 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     await this.punktApi
       .getFlurstuecke1(request, RequestUtils.getPOSTConfig())
       .then((response) => {
-        if (!_.isNil(response.feature)) {
-          flurstuecke = response.feature;
+        if (!_.isNil(response.features)) {
+          flurstuecke = response.features;
         }
       })
       .catch((error) => {
@@ -64,8 +64,8 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     await this.polygonApi
       .getFlurstuecke(request, RequestUtils.getPOSTConfig())
       .then((response) => {
-        if (!_.isNil(response.feature)) {
-          flurstuecke = response.feature;
+        if (!_.isNil(response.features)) {
+          flurstuecke = response.features;
         }
       })
       .catch((error) => {
@@ -85,8 +85,8 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     await this.polygonApi
       .getGemarkungen(request, RequestUtils.getPOSTConfig())
       .then((response) => {
-        if (!_.isNil(response.feature)) {
-          gemarkungen = response.feature;
+        if (!_.isNil(response.features)) {
+          gemarkungen = response.features;
         }
       })
       .catch((error) => {
@@ -106,8 +106,8 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     await this.polygonApi
       .getStadtbezirke(request, RequestUtils.getPOSTConfig())
       .then((response) => {
-        if (!_.isNil(response.feature)) {
-          stadtbezirke = response.feature;
+        if (!_.isNil(response.features)) {
+          stadtbezirke = response.features;
         }
       })
       .catch((error) => {

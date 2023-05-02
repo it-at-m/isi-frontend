@@ -57,6 +57,7 @@ declare module '@vue/runtime-core' {
     VDatePicker: typeof import('vuetify/lib')['VDatePicker']
     VDialog: typeof import('vuetify/lib')['VDialog']
     VDivider: typeof import('vuetify/lib')['VDivider']
+    Verortung: typeof import('./src/components/common/Verortung.vue')['default']
     VersionInfo: typeof import('./src/components/common/VersionInfo.vue')['default']
     VExpandTransition: typeof import('vuetify/lib')['VExpandTransition']
     VFadeTransition: typeof import('vuetify/lib')['VFadeTransition']

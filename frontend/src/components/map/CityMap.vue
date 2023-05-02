@@ -11,7 +11,7 @@
       :center="CITY_CENTER"
       :zoom="initialZoom"
       style="z-index: 1"
-      @click="openPopup($event)"
+      @click="onClickInMap($event)"
     >
       <!-- Fügt ein Steuerungselement hinzu, mit welchem sich ein Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt. -->
       <l-control-layers />
@@ -79,10 +79,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
-import L, { LatLngLiteral, MapOptions } from "leaflet";
+import L, { LatLng, LatLngLiteral, LayerGroup, LeafletMouseEvent, MapOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { MultiPolygonGeometryDto } from "@/api/api-client/isi-backend";
+import _ from "lodash";
+import { GeoJsonObject } from "geojson";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -111,6 +114,7 @@ export default class CityMap extends Vue {
 
   @Prop({ default: 12 })
   private readonly zoom!: number;
+
   private initialZoom!: number;
 
   @Prop({ type: Boolean, default: false })
@@ -118,6 +122,11 @@ export default class CityMap extends Vue {
 
   @Prop()
   private readonly lookAt?: LatLngLiteral;
+
+  @Prop({ default: [] })
+  private readonly geoJson?: GeoJsonObject[];
+
+  private layerGroup: LayerGroup = new LayerGroup();
 
   private readonly popup = L.popup();
   private map!: L.Map;
@@ -143,21 +152,22 @@ export default class CityMap extends Vue {
     }
   }
 
+  @Watch("geometries", { deep: true })
+  private onGeoJsonChanged(): void {
+    if (!_.isEmpty(this.geoJson)) {
+      this.addGeoJsonToMap();
+    }
+  }
+
+  private onClickInMap(event: LeafletMouseEvent): void {
+    this.clickInMap(event);
+  }
+
   /**
    * Da der Geo-Dienst mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
   private getGeoUrl(service: string): string {
     return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
-  }
-
-  /**
-   * Öffnet an der angeklickten Bildschirmposition ein Popup, welches die Koordinaten der Kartenposition anzeigt.
-   */
-  private openPopup(event: L.LeafletMouseEvent): void {
-    this.popup
-      .setLatLng(event.latlng)
-      .setContent(event.latlng.lat + ", " + event.latlng.lng)
-      .openOn(this.map);
   }
 
   /**
@@ -178,6 +188,18 @@ export default class CityMap extends Vue {
     /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
        Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
     setTimeout(() => this.map.invalidateSize());
+  }
+
+  private addGeoJsonToMap(): void {
+    this.map.removeLayer(this.layerGroup);
+    this.layerGroup = new L.LayerGroup();
+    L.geoJSON(this.geoJson).addTo(this.layerGroup);
+    this.layerGroup.addTo(this.map);
+  }
+
+  @Emit()
+  private clickInMap(event: LeafletMouseEvent): LatLng {
+    return event.latlng;
   }
 }
 </script>

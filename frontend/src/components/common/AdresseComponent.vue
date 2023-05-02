@@ -93,12 +93,7 @@
     </div>
     <v-row>
       <v-col cols="12">
-        <city-map
-          height="300"
-          :zoom="14"
-          expandable
-          :look-at="coordinate"
-        />
+        <verortung :look-at="coordinate" />
       </v-col>
     </v-row>
   </field-group-card>
@@ -117,9 +112,10 @@ import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from
 import CityMap from "@/components/map/CityMap.vue";
 import _ from "lodash";
 import { LatLngLiteral } from "leaflet";
+import Verortung from "@/components/common/Verortung.vue";
 
 @Component({
-  components: { CityMap },
+  components: { Verortung, CityMap },
 })
 export default class AdresseComponent extends Mixins(
   SaveLeaveMixin,
