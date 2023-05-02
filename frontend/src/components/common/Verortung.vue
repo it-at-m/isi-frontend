@@ -38,14 +38,18 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
   }
 
   private handleClickInMap(latlng: LatLng): void {
-    const point: PointGeometryDto = {
-      type: "Point",
-      coordinates: [latlng.lng, latlng.lat],
-    };
+    const point = this.createPointGeometry(latlng);
     this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
       this.selectedFlurstuecke = this.createMapOfSelectedFlurstuecke(flurstuecke);
       this.geoJson = this.mapToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
     });
+  }
+
+  private createPointGeometry(latlng: LatLng): PointGeometryDto {
+    return {
+      type: "Point",
+      coordinates: [latlng.lng, latlng.lat],
+    };
   }
 
   private createMapOfSelectedFlurstuecke(
