@@ -154,9 +154,7 @@ export default class CityMap extends Vue {
 
   @Watch("geoJson", { deep: true })
   private onGeoJsonChanged(): void {
-    if (!_.isEmpty(this.geoJson)) {
-      this.addGeoJsonToMap();
-    }
+    this.addGeoJsonToMap();
   }
 
   private onClickInMap(event: LeafletMouseEvent): void {

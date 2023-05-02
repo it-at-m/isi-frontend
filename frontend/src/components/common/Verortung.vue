@@ -27,10 +27,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
 
   private geoJson: Array<GeoJsonObject> = [];
 
-  private selectedFlurstuecke: Map<FlurstueckDto, FeatureDtoFlurstueckDto> = new Map<
-    FlurstueckDto,
-    FeatureDtoFlurstueckDto
-  >();
+  private selectedFlurstuecke: Map<number, FeatureDtoFlurstueckDto> = new Map<number, FeatureDtoFlurstueckDto>();
 
   get coordinate(): LatLngLiteral | undefined {
     return this.lookAt;
@@ -46,20 +43,32 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       coordinates: [latlng.lng, latlng.lat],
     };
     this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
-      flurstuecke.forEach((flurstueck: FeatureDtoFlurstueckDto) => {
-        const flurstueckProperties = _.isNil(flurstueck.properties) ? {} : flurstueck.properties;
-        const alreadySelected = this.selectedFlurstuecke.has(flurstueckProperties);
-        if (alreadySelected) {
-          this.selectedFlurstuecke.delete(flurstueckProperties);
-        } else {
-          this.selectedFlurstuecke.set(flurstueckProperties, flurstueck);
-        }
-      });
+      this.selectedFlurstuecke = this.createMapOfSelectedFlurstuecke(flurstuecke);
       this.geoJson = this.mapToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
     });
   }
 
-  private mapToGeoJsonObject(flurstuecke: Array<FeatureDtoFlurstueckDto>) {
+  private createMapOfSelectedFlurstuecke(
+    flurstuecke: Array<FeatureDtoFlurstueckDto>
+  ): Map<number, FeatureDtoFlurstueckDto> {
+    const clonedMap = _.cloneDeep(this.selectedFlurstuecke);
+    flurstuecke.forEach((flurstueck: FeatureDtoFlurstueckDto) => {
+      const flurstueckId = _.isNil(flurstueck.properties)
+        ? -1
+        : _.isNil(flurstueck.properties.flurstueckId)
+        ? -1
+        : flurstueck.properties.flurstueckId;
+      const alreadySelected = clonedMap.has(flurstueckId);
+      if (alreadySelected) {
+        clonedMap.delete(flurstueckId);
+      } else {
+        clonedMap.set(flurstueckId, flurstueck);
+      }
+    });
+    return clonedMap;
+  }
+
+  private mapToGeoJsonObject(flurstuecke: Array<FeatureDtoFlurstueckDto>): Array<GeoJsonObject> {
     return flurstuecke.map((flurstueck: FeatureDtoFlurstueckDto) => {
       const geoJsonString: string = JSON.stringify(flurstueck);
       return JSON.parse(geoJsonString) as GeoJsonObject;
