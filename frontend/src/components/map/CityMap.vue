@@ -49,15 +49,14 @@
       />
       <l-control
         v-if="expandable"
-        position="bottomright"
+        position="bottomleft"
       >
         <button
-          id="karte_erweitern_button"
+          id="save_geojson_button"
           class="map-control"
-          :title="expanded ? 'Einklappen' : 'Erweitern'"
-          @click="toggleExpansion"
+          title="Auswahl übernehmen"
         >
-          <v-icon large>{{ expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand" }}</v-icon>
+          <v-icon large> mdi-content-save-outline </v-icon>
         </button>
         <button
           v-if="isGeoJsonNotEmpty"
@@ -67,6 +66,19 @@
           @click="onDeleteGeoJson"
         >
           <v-icon large> mdi-delete-outline </v-icon>
+        </button>
+      </l-control>
+      <l-control
+        v-if="expandable"
+        position="bottomright"
+      >
+        <button
+          id="karte_erweitern_button"
+          class="map-control"
+          :title="expanded ? 'Einklappen' : 'Erweitern'"
+          @click="toggleExpansion"
+        >
+          <v-icon large>{{ expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand" }}</v-icon>
         </button>
       </l-control>
     </l-map>
