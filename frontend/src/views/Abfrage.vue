@@ -227,6 +227,8 @@ import {
   createBauabschnittDto,
   createBaugebietDto,
   createBaurateDto,
+  createTechnicalBauabschnittDto,
+  createTechnicalBaugebietDto,
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
@@ -704,7 +706,7 @@ export default class Abfrage extends Mixins(
       );
     }
     if (_.isNil(selectedBauabschnitt)) {
-      selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
+      selectedBauabschnitt = this.getTechnicalBauabschnitt(selectedAbfragevariante);
     }
     return selectedBauabschnitt;
   }
@@ -718,7 +720,8 @@ export default class Abfrage extends Mixins(
       );
     }
     if (_.isNil(selectedBaugebiet)) {
-      selectedBaugebiet = new BaugebietModel(createBaugebietDto());
+      const selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+      selectedBaugebiet = this.getTechnicalBaugebiet(selectedAbfragevariante);
     }
     return selectedBaugebiet;
   }
@@ -827,6 +830,35 @@ export default class Abfrage extends Mixins(
     this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });
+  }
+
+  private getTechnicalBauabschnitt(abfragevariante: AbfragevarianteModel): BauabschnittModel {
+    let bauabschnittDto: BauabschnittDto | undefined;
+
+    if (!_.isNil(abfragevariante.bauabschnitte)) {
+      bauabschnittDto = abfragevariante.bauabschnitte.find((dto) => dto.technical);
+    } else {
+      abfragevariante.bauabschnitte = [];
+    }
+
+    if (_.isNil(bauabschnittDto)) {
+      bauabschnittDto = createTechnicalBauabschnittDto();
+      abfragevariante.bauabschnitte.push(bauabschnittDto);
+    }
+
+    return new BauabschnittModel(bauabschnittDto);
+  }
+
+  private getTechnicalBaugebiet(abfragevariante: AbfragevarianteModel): BaugebietModel {
+    const bauabschnitt = this.getTechnicalBauabschnitt(abfragevariante);
+    let baugebietDto = bauabschnitt.baugebiete.find((dto) => dto.technical);
+
+    if (_.isNil(baugebietDto)) {
+      baugebietDto = createTechnicalBaugebietDto();
+      bauabschnitt.baugebiete.push(baugebietDto);
+    }
+
+    return new BaugebietModel(baugebietDto);
   }
 }
 </script>

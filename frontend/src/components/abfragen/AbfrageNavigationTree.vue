@@ -357,6 +357,12 @@ export default class AbfrageNavigationTree extends Vue {
     parentTreeItem.children.push(
       this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
     );
+    parentTreeItem.children.push(
+      this.createAddOrphanedBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+    );
+    parentTreeItem.children.push(
+      this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+    );
   }
 
   private createBaugebieteTreeItems(
@@ -379,6 +385,9 @@ export default class AbfrageNavigationTree extends Vue {
     });
     parentTreeItem.children.push(
       this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
+    );
+    parentTreeItem.children.push(
+      this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
     );
   }
 
@@ -530,6 +539,25 @@ export default class AbfrageNavigationTree extends Vue {
     );
   }
 
+  private createAddOrphanedBaugebietTreeItem(
+    id: number,
+    parentTreeItem: AbfrageTreeItem,
+    abfrage: InfrastrukturabfrageDto,
+    abfragevariante: AbfragevarianteDto
+  ) {
+    return this.createAbfrageTreeItem(
+      id,
+      parentTreeItem,
+      this.nameTreeElementAddBaugebiet,
+      AbfrageTreeItemType.ADD_BAUGEBIET,
+      abfrage,
+      abfragevariante,
+      undefined,
+      undefined,
+      undefined
+    );
+  }
+
   private createBaurateTreeItem(
     id: number,
     parentTreeItem: AbfrageTreeItem,
@@ -569,6 +597,25 @@ export default class AbfrageNavigationTree extends Vue {
       abfragevariante,
       bauabschnitt,
       baugebiet,
+      undefined
+    );
+  }
+
+  private createAddOrphanedBaurateTreeItem(
+    id: number,
+    parentTreeItem: AbfrageTreeItem,
+    abfrage: InfrastrukturabfrageDto,
+    abfragevariante: AbfragevarianteDto
+  ) {
+    return this.createAbfrageTreeItem(
+      id,
+      parentTreeItem,
+      this.nameTreeElementAddBaurate,
+      AbfrageTreeItemType.ADD_BAURATE,
+      abfrage,
+      abfragevariante,
+      undefined,
+      undefined,
       undefined
     );
   }
