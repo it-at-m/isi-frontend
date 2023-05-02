@@ -35,7 +35,7 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
-          v-model="deleteDialogAbfrageOpen"
+          v-model="isDeleteDialogAbfrageOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
@@ -45,15 +45,15 @@
           @yes="yesNoDialogAbfrageYes"
         />
         <yes-no-dialog
-          id="abfrage_yes_no_dialog_freigeben"
-          v-model="freigabeDialogOpen"
+          id="abfrage_yes_no_dialog_statusuebergang"
+          v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
-          dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
+          :dialogtext="dialogTextStatus"
           no-text="Abbrechen"
-          :yes-text="'Freigabe'"
-          @no="yesNoDialogFreigabeNo"
-          @yes="yesNoDialogFreigabeYes"
+          :yes-text="'Zustimmen'"
+          @no="yesNoDialogStatusUebergangeNo"
+          @yes="yesNoDialogStatusUebergangYes"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_save_leave"
@@ -68,18 +68,59 @@
         />
         <yes-no-dialog
           id="abfrage_abfragevariante_yes_no_dialog_loeschen"
-          v-model="deleteDialogAbfragevarianteOpen"
+          v-model="isDeleteDialogAbfragevarianteOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
           :dialogtext="
             'Hiermit wird die Abfragevariante Nr.' +
             selectedAbfragevariante.abfragevariantenNr +
-            ' unwiderruflich gelöscht.'
+            ' und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogAbfragevarianteNo"
           @yes="yesNoDialogAbfragevarianteYes"
+        />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_bauabschnitt_yes_no_dialog_loeschen"
+          v-model="isDeleteDialogBauabschnittOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          :dialogtext="
+            'Hiermit wird der Bauabschnitt \'' +
+            selectedBauabschnitt.bezeichnung +
+            '\' und alle dazugehörigen Baugebiete unwiderruflich gelöscht.'
+          "
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogBauabschnittNo"
+          @yes="yesNoDialogBauabschnittYes"
+        />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_bauabschnitt_baugebiet_yes_no_dialog_loeschen"
+          v-model="isDeleteDialogBaugebietOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          :dialogtext="
+            'Hiermit wird das Baugebiet \'' +
+            selectedBaugebiet.bezeichnung +
+            '\' und alle dazugehörigen Bauraten unwiderruflich gelöscht.'
+          "
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogBaugebietNo"
+          @yes="yesNoDialogBaugebietYes"
+        />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_bauabschnitt_baugebiet_baurate_yes_no_dialog_loeschen"
+          v-model="isDeleteDialogBaurateOpen"
+          icon="mdi-delete-forever"
+          dialogtitle="Hinweis"
+          :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selectedBaurate.jahr + ' unwiderruflich gelöscht.'"
+          no-text="Abbrechen"
+          yes-text="Löschen"
+          @no="yesNoDialogBaurateNo"
+          @yes="yesNoDialogBaurateYes"
         />
       </template>
       <template #heading>
@@ -135,6 +176,18 @@
       <template #action>
         <v-spacer />
         <v-btn
+          v-for="(transition, index) in possbileTransitions"
+          v-show="!isNewAbfrage()"
+          :id="'abfrage_status_aenderung' + index + '_button'"
+          :key="index"
+          color="secondary"
+          class="text-wrap mt-2 px-1"
+          elevation="1"
+          style="width: 200px"
+          @click="statusUebergang(transition)"
+          v-text="transition.buttonName"
+        />
+        <v-btn
           id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
           color="secondary"
@@ -146,17 +199,6 @@
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
-        />
-        <v-btn
-          v-if="!isNewAbfrage()"
-          id="abfrage_freigeben_button"
-          class="text-wrap mt-2 px-1"
-          color="secondary"
-          elevation="1"
-          style="width: 200px"
-          :disabled="!isAngelegt()"
-          @click="freigabeAbfrage()"
-          v-text="'Freigabe'"
         />
         <v-btn
           id="abfrage_abbrechen_button"
@@ -187,14 +229,15 @@ import {
   createBaurateDto,
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
-import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
+import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
 import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
-  AbfrageListElementDtoStatusAbfrageEnum,
-  InfrastrukturabfrageDto,
+  StatusAbfrage,
   AbfragevarianteDto,
+  InfrastrukturabfrageDto,
+  TransitionDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
@@ -215,6 +258,7 @@ import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
+import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
 
 @Component({
   methods: { containsNotAllowedDokument },
@@ -231,9 +275,10 @@ import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/Infrastruktu
   },
 })
 export default class Abfrage extends Mixins(
+  TransitionApiRequestMixin,
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
-  FreigabeApiRequestMixin,
+  StatusUebergangApiRequestMixin,
   BaurateReqestMixin,
   ValidatorMixin,
   SaveLeaveMixin
@@ -241,6 +286,8 @@ export default class Abfrage extends Mixins(
   private modeAbfrage = DisplayMode.UNDEFINED;
 
   private buttonText = "";
+
+  private dialogTextStatus = "";
 
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
@@ -257,17 +304,21 @@ export default class Abfrage extends Mixins(
 
   private abfrageId: string = this.$route.params.id;
 
-  private deleteDialogAbfrageOpen = false;
+  private transition: TransitionDto | undefined;
 
-  private freigabeDialogOpen = false;
+  private isStatusUebergangDialogOpen = false;
 
-  private deleteDialogAbfragevarianteOpen = false;
+  private isDeleteDialogAbfrageOpen = false;
 
-  private deleteDialogBauabschnittOpen = false;
+  private isFreigabeDialogOpen = false;
 
-  private deleteDialogBaugebietOpen = false;
+  private isDeleteDialogAbfragevarianteOpen = false;
 
-  private deleteDialogBaurateOpen = false;
+  private isDeleteDialogBauabschnittOpen = false;
+
+  private isDeleteDialogBaugebietOpen = false;
+
+  private isDeleteDialogBaurateOpen = false;
 
   private isAbfrageFormularOpen = true;
 
@@ -279,11 +330,26 @@ export default class Abfrage extends Mixins(
 
   private isBaurateFormularOpen = false;
 
+  private abfragevarianteTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
+  private bauabschnittTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
+  private baugebietTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
+  private baurateTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+
+  public possbileTransitions: Array<TransitionDto> = [];
+
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.initializeFormulare();
-    this.getAbfrageById();
+    this.setSelectedAbfrageInStore();
+
+    if (!this.isNewAbfrage())
+      this.getTransitions(this.abfrageId, true).then((response) => {
+        this.possbileTransitions = response;
+      });
   }
 
   @Watch("$store.state.search.selectedAbfrage", { deep: true })
@@ -295,26 +361,28 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  async getAbfrageById(): Promise<void> {
+  async setSelectedAbfrageInStore(): Promise<void> {
     if (this.abfrageId !== undefined) {
       this.getInfrastrukturabfrageById(this.abfrageId, true)
         .then((dto) => {
-          this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(dto));
+          this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
         })
         .catch(() => {
           this.$store.commit("search/selectedAbfrage", undefined);
         });
     } else {
-      this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
+      this.saveAbfrageInStore(new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
     }
   }
 
   private deleteAbfrage(): void {
-    this.deleteDialogAbfrageOpen = true;
+    this.isDeleteDialogAbfrageOpen = true;
   }
 
-  private freigabeAbfrage(): void {
-    this.freigabeDialogOpen = true;
+  private statusUebergang(transition: TransitionDto): void {
+    this.transition = transition;
+    this.dialogTextStatus = transition.dialogText as string;
+    this.isStatusUebergangDialogOpen = true;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -323,16 +391,16 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogAbfrageNo(): void {
-    this.deleteDialogAbfrageOpen = false;
+    this.isDeleteDialogAbfrageOpen = false;
   }
 
-  private yesNoDialogFreigabeYes(): void {
-    this.abfrageFreigeben();
-    this.yesNoDialogFreigabeNo();
+  private yesNoDialogStatusUebergangYes(): void {
+    if (!_.isNil(this.transition)) this.startStatusUebergang(this.transition);
+    this.yesNoDialogStatusUebergangeNo();
   }
 
-  private yesNoDialogFreigabeNo(): void {
-    this.freigabeDialogOpen = false;
+  private yesNoDialogStatusUebergangeNo(): void {
+    this.isStatusUebergangDialogOpen = false;
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
@@ -341,13 +409,40 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogAbfragevarianteNo(): void {
-    this.deleteDialogAbfragevarianteOpen = false;
+    this.isDeleteDialogAbfragevarianteOpen = false;
   }
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
     await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
+  }
+
+  private yesNoDialogBauabschnittYes(): void {
+    this.removeSelectedBauabschnittFromAbfragevariante();
+    this.yesNoDialogBauabschnittNo();
+  }
+
+  private yesNoDialogBauabschnittNo(): void {
+    this.isDeleteDialogBauabschnittOpen = false;
+  }
+
+  private yesNoDialogBaugebietYes(): void {
+    this.removeSelectedBaugebietFromBauabschnitt();
+    this.yesNoDialogBaugebietNo();
+  }
+
+  private yesNoDialogBaugebietNo(): void {
+    this.isDeleteDialogBaugebietOpen = false;
+  }
+
+  private yesNoDialogBaurateYes(): void {
+    this.removeSelectedBaurateFromBaugebiet();
+    this.yesNoDialogBaurateNo();
+  }
+
+  private yesNoDialogBaurateNo(): void {
+    this.isDeleteDialogBaurateOpen = false;
   }
 
   private async saveAbfrage(): Promise<void> {
@@ -390,44 +485,45 @@ export default class Abfrage extends Mixins(
     this.initializTreeItemsToOpen();
   }
 
-  private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
-    this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
-  }
-
-  private async abfrageFreigeben(): Promise<void> {
-    if (this.validate()) {
-      if (
-        this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ===
-        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
-      ) {
-        this.infrastrukturabfrageFreigeben();
-      } else {
-        this.showWarningInInformationList('Die Abfrage muss den Status "angelegt" besitzen');
-      }
-    } else {
-      this.showWarningInInformationList("Es gibt noch Validierungsfehler");
-    }
-  }
-
-  private async infrastrukturabfrageFreigeben(): Promise<void> {
+  private async startStatusUebergang(transition: TransitionDto) {
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
       this.abfrageWrapped.infrastrukturabfrage
     );
     if (_.isNil(validationMessage)) {
       await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
-      this.freigabInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage.id as string, true).then(() => {
-        this.returnToUebersicht("Die Abfrage wurde erfolgreich freigegeben", Levels.SUCCESS);
-      });
-      this.initializeFormulare();
+      const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
+      if (requestSuccessful) {
+        if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
+          this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
+        } else {
+          this.setSelectedAbfrageInStore();
+          this.getTransitions(this.abfrageId, true).then((response) => {
+            this.possbileTransitions = response;
+          });
+        }
+
+        this.openAbfrageFormular();
+      }
     } else {
       this.showWarningInInformationList(validationMessage);
     }
+  }
+
+  private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
+    this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
   }
 
   private initializTreeItemsToOpen(): void {
     if (!_.isNil(this.$refs.abfrageNavigationTree)) {
       const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
       abfrageNavitionTree.initializTreeItemsToOpen();
+    }
+  }
+
+  private setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem | undefined): void {
+    if (!_.isNil(selectedTreeItem) && !_.isNil(this.$refs.abfrageNavigationTree)) {
+      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
+      abfrageNavitionTree.setSelectedTreeItem(selectedTreeItem);
     }
   }
 
@@ -484,9 +580,7 @@ export default class Abfrage extends Mixins(
   }
 
   private isAngelegt(): boolean {
-    return (
-      this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == AbfrageListElementDtoStatusAbfrageEnum.Angelegt
-    );
+    return this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == StatusAbfrage.Angelegt;
   }
 
   private returnToUebersicht(message?: string, level?: Levels): void {
@@ -515,9 +609,10 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.abfragevarianteTreeItemToDelete = abfrageTreeItem;
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
-    this.deleteDialogAbfragevarianteOpen = true;
+    this.isDeleteDialogAbfragevarianteOpen = true;
   }
 
   private handleCreateNewAbfragevariante(): void {
@@ -529,12 +624,65 @@ export default class Abfrage extends Mixins(
   }
 
   private removeSelectedAbfragevarianteFromAbfrage(): void {
-    const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
-    _.remove(copyAbfragevarianten, (abfragevariante) => _.isEqual(abfragevariante, this.selectedAbfragevariante));
-    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = copyAbfragevarianten;
-    this.renumberingAbfragevarianten();
-    this.formChanged();
-    this.openAbfrageFormular();
+    if (!_.isNil(this.abfragevarianteTreeItemToDelete)) {
+      const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
+      _.remove(copyAbfragevarianten, (abfragevariante) => _.isEqual(abfragevariante, this.selectedAbfragevariante));
+      this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = copyAbfragevarianten;
+      this.renumberingAbfragevarianten();
+      this.formChanged();
+      this.openAbfrageFormular();
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.abfragevarianteTreeItemToDelete?.parentTreeItem);
+        this.abfragevarianteTreeItemToDelete = undefined;
+      });
+    }
+  }
+
+  private removeSelectedBauabschnittFromAbfragevariante(): void {
+    if (!_.isNil(this.bauabschnittTreeItemToDelete)) {
+      const selectedAbfragevariante = this.getSelectedAbfragevariante(this.bauabschnittTreeItemToDelete);
+      if (!_.isNil(selectedAbfragevariante.bauabschnitte)) {
+        const copyBauabschnitte = _.cloneDeep(selectedAbfragevariante.bauabschnitte);
+        _.remove(copyBauabschnitte, (bauabschnitt) => _.isEqual(bauabschnitt, this.selectedBauabschnitt));
+        selectedAbfragevariante.bauabschnitte = copyBauabschnitte;
+        this.formChanged();
+        this.openAbfragevarianteFormular();
+      }
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.bauabschnittTreeItemToDelete?.parentTreeItem);
+        this.bauabschnittTreeItemToDelete = undefined;
+      });
+    }
+  }
+
+  private removeSelectedBaugebietFromBauabschnitt(): void {
+    if (!_.isNil(this.baugebietTreeItemToDelete)) {
+      const selectedBauabschnitt = this.getSelectedBauabschnitt(this.baugebietTreeItemToDelete);
+      const copyBaugebiete = _.cloneDeep(selectedBauabschnitt.baugebiete);
+      _.remove(copyBaugebiete, (baugebiet) => _.isEqual(baugebiet, this.selectedBaugebiet));
+      selectedBauabschnitt.baugebiete = copyBaugebiete;
+      this.formChanged();
+      this.openBauabschnittFormular();
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.baugebietTreeItemToDelete?.parentTreeItem);
+        this.baugebietTreeItemToDelete = undefined;
+      });
+    }
+  }
+
+  private removeSelectedBaurateFromBaugebiet(): void {
+    if (!_.isNil(this.baurateTreeItemToDelete)) {
+      const selectedBaugebiet = this.getSelectedBaugebiet(this.baurateTreeItemToDelete);
+      const copyBauraten = _.cloneDeep(selectedBaugebiet.bauraten);
+      _.remove(copyBauraten, (baurate) => _.isEqual(baurate, this.selectedBaurate));
+      selectedBaugebiet.bauraten = copyBauraten;
+      this.formChanged();
+      this.openBaugebietFormular();
+      this.$nextTick(() => {
+        this.setSelectedTreeItem(this.baurateTreeItemToDelete?.parentTreeItem);
+        this.baurateTreeItemToDelete = undefined;
+      });
+    }
   }
 
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
@@ -596,9 +744,10 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+    this.bauabschnittTreeItemToDelete = abfrageTreeItem;
     this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.openBauabschnittFormular();
-    this.deleteDialogBauabschnittOpen = true;
+    this.isDeleteDialogBauabschnittOpen = true;
   }
 
   private handleCreateNewBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
@@ -621,9 +770,10 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+    this.baugebietTreeItemToDelete = abfrageTreeItem;
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.openBaugebietFormular();
-    this.deleteDialogBaugebietOpen = true;
+    this.isDeleteDialogBaugebietOpen = true;
   }
 
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
@@ -643,9 +793,10 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    this.baurateTreeItemToDelete = abfrageTreeItem;
     this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
     this.openBaurateFormular();
-    this.deleteDialogBaurateOpen = true;
+    this.isDeleteDialogBaurateOpen = true;
   }
 
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {

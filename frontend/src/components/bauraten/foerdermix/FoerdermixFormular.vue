@@ -13,7 +13,7 @@
           cols="12"
           md="4"
         >
-          <num-field
+          <v-text-field
             id="foerdermix_gesamtsumme"
             v-model="gesamtsumme"
             label="Summe"
@@ -25,95 +25,21 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="foerdermix_anteilFreifinanzierterGeschosswohnungsbau"
-            v-model="foerdermix.anteilFreifinanzierterGeschosswohnungsbau"
-            label="Freifinanzierter Geschosswohnungsbau"
-            :suffix="fieldPrefixesSuffixes.percent"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="foerdermix_anteilGefoerderterMietwohnungsbau"
-            v-model="foerdermix.anteilGefoerderterMietwohnungsbau"
-            label="Geförderter Mietwohnungsbau"
-            :suffix="fieldPrefixesSuffixes.percent"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="foerdermix_anteilMuenchenModell"
-            v-model="foerdermix.anteilMuenchenModell"
-            label="MünchenModell"
-            :suffix="fieldPrefixesSuffixes.percent"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="foerdermix_anteilPreisgedaempfterMietwohnungsbau"
-            v-model="foerdermix.anteilPreisgedaempfterMietwohnungsbau"
-            label="Preisgedämpfter Mietwohnungsbau"
-            :suffix="fieldPrefixesSuffixes.percent"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="foerdermix_anteilKonzeptionellerMietwohnungsbau"
-            v-model="foerdermix.anteilKonzeptionellerMietwohnungsbau"
-            label="Konzeptioneller Mietwohnungsbau"
-            :suffix="fieldPrefixesSuffixes.percent"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="foerdermix_anteilBaugemeinschaften"
-            v-model="foerdermix.anteilBaugemeinschaften"
-            label="Baugemeinschaften"
-            :suffix="fieldPrefixesSuffixes.percent"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="foerdermix_anteilEinUndZweifamilienhaeuser"
-            v-model="foerdermix.anteilEinUndZweifamilienhaeuser"
-            label="Ein- und Zweifamilienhäuser"
-            :suffix="fieldPrefixesSuffixes.percent"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        />
-        <v-col
-          cols="12"
-          md="4"
-        />
+        <template v-for="(foerderart, foerderartIndex) in foerdermix.foerderarten">
+          <v-col
+            :key="foerderartIndex"
+            cols="12"
+            md="4"
+          >
+            <num-field
+              :id="'foerdermix_foerderart_' + foerderartIndex"
+              :key="foerderartIndex"
+              v-model="foerderart.anteilProzent"
+              :label="foerderart.bezeichnung"
+              :suffix="fieldPrefixesSuffixes.percent"
+            />
+          </v-col>
+        </template>
       </v-row>
     </field-group-card>
   </v-container>
@@ -128,8 +54,9 @@ import { addiereAnteile } from "@/utils/CalculationUtil";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FormattingMixin from "@/mixins/FormattingMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import NumField from "@/components/common/NumField.vue";
 
-@Component({ components: { FieldGroupCard } })
+@Component({ components: { NumField, FieldGroupCard } })
 export default class FoerdermixFormular extends Mixins(
   FieldValidationRulesMixin,
   FieldPrefixesSuffixes,

@@ -133,7 +133,7 @@ export default class DefaultLayout extends Vue {
 
 .side-bar-information {
   width: 100%;
-  height: 70%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -141,7 +141,7 @@ export default class DefaultLayout extends Vue {
 
 .side-bar-action {
   width: 100%;
-  height: 30%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,7 +1,7 @@
 import {
   AbfrageDto,
   AbfrageDtoStandVorhabenEnum,
-  AbfrageDtoStatusAbfrageEnum,
+  StatusAbfrage,
   AbfragevarianteDto,
   AbfragevarianteDtoPlanungsrechtEnum,
   AdresseDto,
@@ -13,6 +13,7 @@ import {
   DokumentDto,
   DokumentDtoArtDokumentEnum,
   FilepathDto,
+  FoerderartDto,
   FoerdermixDto,
   FoerdermixStammDto,
   GrundschuleDto,
@@ -68,7 +69,7 @@ export function createAbfrageDto(): AbfrageDto {
     adresse: undefined,
     fristStellungnahme: new Date(0),
     anmerkung: undefined,
-    statusAbfrage: AbfrageDtoStatusAbfrageEnum.Angelegt,
+    statusAbfrage: StatusAbfrage.Angelegt,
     bebauungsplannummer: undefined,
     nameAbfrage: "",
     standVorhaben: AbfrageDtoStandVorhabenEnum.Unspecified,
@@ -217,26 +218,14 @@ export function createBaurateDto(): BaurateDto {
     anzahlWeGeplant: undefined,
     jahr: Number.NaN,
     foerdermix: {
-      anteilBaugemeinschaften: undefined,
-      anteilEinUndZweifamilienhaeuser: undefined,
-      anteilFreifinanzierterGeschosswohnungsbau: undefined,
-      anteilGefoerderterMietwohnungsbau: undefined,
-      anteilKonzeptionellerMietwohnungsbau: undefined,
-      anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined,
+      foerderarten: new Array<FoerderartDto>(),
     } as FoerdermixDto,
   } as BaurateDto;
 }
 
 export function createFoerdermixDto(): FoerdermixDto {
   return {
-    anteilBaugemeinschaften: undefined,
-    anteilEinUndZweifamilienhaeuser: undefined,
-    anteilFreifinanzierterGeschosswohnungsbau: undefined,
-    anteilGefoerderterMietwohnungsbau: undefined,
-    anteilKonzeptionellerMietwohnungsbau: undefined,
-    anteilMuenchenModell: undefined,
-    anteilPreisgedaempfterMietwohnungsbau: undefined,
+    foerderarten: new Array<FoerderartDto>(),
   } as FoerdermixDto;
 }
 
@@ -245,13 +234,7 @@ export function createFoerdermixStammDto(): FoerdermixStammDto {
     bezeichnung: "",
     bezeichnungJahr: "",
     foerdermix: {
-      anteilBaugemeinschaften: undefined,
-      anteilEinUndZweifamilienhaeuser: undefined,
-      anteilFreifinanzierterGeschosswohnungsbau: undefined,
-      anteilGefoerderterMietwohnungsbau: undefined,
-      anteilKonzeptionellerMietwohnungsbau: undefined,
-      anteilMuenchenModell: undefined,
-      anteilPreisgedaempfterMietwohnungsbau: undefined,
+      foerderarten: new Array<FoerderartDto>(),
     } as FoerdermixDto,
   } as FoerdermixStammDto;
 }
