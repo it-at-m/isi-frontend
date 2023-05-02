@@ -152,7 +152,7 @@ export default class CityMap extends Vue {
     }
   }
 
-  @Watch("geometries", { deep: true })
+  @Watch("geoJson", { deep: true })
   private onGeoJsonChanged(): void {
     if (!_.isEmpty(this.geoJson)) {
       this.addGeoJsonToMap();
@@ -193,8 +193,12 @@ export default class CityMap extends Vue {
   private addGeoJsonToMap(): void {
     this.map.removeLayer(this.layerGroup);
     this.layerGroup = new L.LayerGroup();
-    L.geoJSON(this.geoJson).addTo(this.layerGroup);
     this.layerGroup.addTo(this.map);
+    L.geoJSON(this.geoJson, {
+      style: function (feature) {
+        return { color: "#ff0000" };
+      },
+    }).addTo(this.layerGroup);
   }
 
   @Emit()
