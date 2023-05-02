@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    StatusAbfrage,
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+} from './StatusAbfrage';
+
 /**
  * 
  * @export
@@ -39,10 +46,10 @@ export interface AbfrageListElementDto {
     standVorhaben?: AbfrageListElementDtoStandVorhabenEnum;
     /**
      * 
-     * @type {string}
+     * @type {StatusAbfrage}
      * @memberof AbfrageListElementDto
      */
-    statusAbfrage?: AbfrageListElementDtoStatusAbfrageEnum;
+    statusAbfrage?: StatusAbfrage;
     /**
      * 
      * @type {Date}
@@ -83,21 +90,6 @@ export type AbfrageListElementDtoStandVorhabenEnum = typeof AbfrageListElementDt
 /**
  * @export
  */
-export const AbfrageListElementDtoStatusAbfrageEnum = {
-    Angelegt: 'ANGELEGT',
-    Offen: 'OFFEN',
-    InErfassung: 'IN_ERFASSUNG',
-    InBearbeitungPlan: 'IN_BEARBEITUNG_PLAN',
-    InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
-    BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
-    Erledigt: 'ERLEDIGT',
-    Abbruch: 'ABBRUCH'
-} as const;
-export type AbfrageListElementDtoStatusAbfrageEnum = typeof AbfrageListElementDtoStatusAbfrageEnum[keyof typeof AbfrageListElementDtoStatusAbfrageEnum];
-
-/**
- * @export
- */
 export const AbfrageListElementDtoTypeEnum = {
     Infrastrukturabfrage: 'INFRASTRUKTURABFRAGE',
     Standortabfrage: 'STANDORTABFRAGE'
@@ -118,7 +110,7 @@ export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminato
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
         'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
-        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : json['statusAbfrage'],
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
         'type': !exists(json, 'type') ? undefined : json['type'],
     };
@@ -136,7 +128,7 @@ export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null
         'id': value.id,
         'nameAbfrage': value.nameAbfrage,
         'standVorhaben': value.standVorhaben,
-        'statusAbfrage': value.statusAbfrage,
+        'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
         'type': value.type,
     };
