@@ -173,10 +173,6 @@ export default class CityMap extends Vue {
     this.clickInMap(event);
   }
 
-  private onDeleteGeoJson(): void {
-    this.clearGeoJson();
-  }
-
   /**
    * Da der Geo-Dienst mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
@@ -202,6 +198,12 @@ export default class CityMap extends Vue {
     /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
        Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
     setTimeout(() => this.map.invalidateSize());
+  }
+
+  private onDeleteGeoJson(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.clearGeoJson();
   }
 
   private addGeoJsonToMap(): void {
