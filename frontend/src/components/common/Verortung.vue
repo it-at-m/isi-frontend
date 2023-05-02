@@ -6,11 +6,12 @@
     :look-at="coordinate"
     :geo-json="geoJsonObjectsToShow"
     @click-in-map="handleClickInMap($event)"
+    @clear-geo-json="handleClearGeoJson"
   />
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import { LatLng, LatLngLiteral } from "leaflet";
 import { GeoJsonObject } from "geojson";
@@ -37,12 +38,20 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     return this.geoJson;
   }
 
+  @Watch("selectedFlurstuecke", { deep: true })
+  private onSelectedFlurstueckeChanged(): void {
+    this.geoJson = this.mapToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
+  }
+
   private handleClickInMap(latlng: LatLng): void {
     const point = this.createPointGeometry(latlng);
     this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
       this.selectedFlurstuecke = this.createMapOfSelectedFlurstuecke(flurstuecke);
-      this.geoJson = this.mapToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
     });
+  }
+
+  private handleClearGeoJson(): void {
+    this.selectedFlurstuecke = new Map<number, FeatureDtoFlurstueckDto>();
   }
 
   private createPointGeometry(latlng: LatLng): PointGeometryDto {

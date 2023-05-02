@@ -53,11 +53,20 @@
       >
         <button
           id="karte_erweitern_button"
-          class="expansion-control"
+          class="map-control"
           :title="expanded ? 'Einklappen' : 'Erweitern'"
           @click="toggleExpansion"
         >
           <v-icon large>{{ expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand" }}</v-icon>
+        </button>
+        <button
+          v-if="isGeoJsonNotEmpty"
+          id="clear_geojson_button"
+          class="map-control"
+          title="Auswahl aufheben"
+          @click="onDeleteGeoJson"
+        >
+          <v-icon large> mdi-delete-outline </v-icon>
         </button>
       </l-control>
     </l-map>
@@ -83,7 +92,6 @@ import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
 import L, { LatLng, LatLngLiteral, LayerGroup, LeafletMouseEvent, MapOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MultiPolygonGeometryDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import { GeoJsonObject } from "geojson";
 
@@ -157,8 +165,16 @@ export default class CityMap extends Vue {
     this.addGeoJsonToMap();
   }
 
+  get isGeoJsonNotEmpty(): boolean {
+    return !_.isEmpty(this.geoJson);
+  }
+
   private onClickInMap(event: LeafletMouseEvent): void {
     this.clickInMap(event);
+  }
+
+  private onDeleteGeoJson(): void {
+    this.clearGeoJson();
   }
 
   /**
@@ -203,11 +219,16 @@ export default class CityMap extends Vue {
   private clickInMap(event: LeafletMouseEvent): LatLng {
     return event.latlng;
   }
+
+  @Emit()
+  private clearGeoJson(): void {
+    // Clears geoJson
+  }
 }
 </script>
 
 <style>
-.expansion-control {
+.map-control {
   width: 44px;
   height: 44px;
   border: 2px solid rgba(0, 0, 0, 0.2);
