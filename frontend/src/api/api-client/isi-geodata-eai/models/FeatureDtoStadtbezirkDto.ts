@@ -34,6 +34,12 @@ import {
 export interface FeatureDtoStadtbezirkDto {
     /**
      * 
+     * @type {string}
+     * @memberof FeatureDtoStadtbezirkDto
+     */
+    type?: string;
+    /**
+     * 
      * @type {FeatureDtoStadtbezirkDtoGeometry}
      * @memberof FeatureDtoStadtbezirkDto
      */
@@ -43,7 +49,7 @@ export interface FeatureDtoStadtbezirkDto {
      * @type {StadtbezirkDto}
      * @memberof FeatureDtoStadtbezirkDto
      */
-    attributes?: StadtbezirkDto;
+    properties?: StadtbezirkDto;
 }
 
 export function FeatureDtoStadtbezirkDtoFromJSON(json: any): FeatureDtoStadtbezirkDto {
@@ -56,8 +62,9 @@ export function FeatureDtoStadtbezirkDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoStadtbezirkDtoGeometryFromJSON(json['geometry']),
-        'attributes': !exists(json, 'attributes') ? undefined : StadtbezirkDtoFromJSON(json['attributes']),
+        'properties': !exists(json, 'properties') ? undefined : StadtbezirkDtoFromJSON(json['properties']),
     };
 }
 
@@ -70,8 +77,9 @@ export function FeatureDtoStadtbezirkDtoToJSON(value?: FeatureDtoStadtbezirkDto 
     }
     return {
         
+        'type': value.type,
         'geometry': FeatureDtoStadtbezirkDtoGeometryToJSON(value.geometry),
-        'attributes': StadtbezirkDtoToJSON(value.attributes),
+        'properties': StadtbezirkDtoToJSON(value.properties),
     };
 }
 

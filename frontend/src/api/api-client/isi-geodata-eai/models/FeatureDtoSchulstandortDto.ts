@@ -34,6 +34,12 @@ import {
 export interface FeatureDtoSchulstandortDto {
     /**
      * 
+     * @type {string}
+     * @memberof FeatureDtoSchulstandortDto
+     */
+    type?: string;
+    /**
+     * 
      * @type {FeatureDtoStadtbezirkDtoGeometry}
      * @memberof FeatureDtoSchulstandortDto
      */
@@ -43,7 +49,7 @@ export interface FeatureDtoSchulstandortDto {
      * @type {SchulstandortDto}
      * @memberof FeatureDtoSchulstandortDto
      */
-    attributes?: SchulstandortDto;
+    properties?: SchulstandortDto;
 }
 
 export function FeatureDtoSchulstandortDtoFromJSON(json: any): FeatureDtoSchulstandortDto {
@@ -56,8 +62,9 @@ export function FeatureDtoSchulstandortDtoFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoStadtbezirkDtoGeometryFromJSON(json['geometry']),
-        'attributes': !exists(json, 'attributes') ? undefined : SchulstandortDtoFromJSON(json['attributes']),
+        'properties': !exists(json, 'properties') ? undefined : SchulstandortDtoFromJSON(json['properties']),
     };
 }
 
@@ -70,8 +77,9 @@ export function FeatureDtoSchulstandortDtoToJSON(value?: FeatureDtoSchulstandort
     }
     return {
         
+        'type': value.type,
         'geometry': FeatureDtoStadtbezirkDtoGeometryToJSON(value.geometry),
-        'attributes': SchulstandortDtoToJSON(value.attributes),
+        'properties': SchulstandortDtoToJSON(value.properties),
     };
 }
 

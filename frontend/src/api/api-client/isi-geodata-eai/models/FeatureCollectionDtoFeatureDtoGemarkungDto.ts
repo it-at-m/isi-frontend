@@ -28,10 +28,16 @@ import {
 export interface FeatureCollectionDtoFeatureDtoGemarkungDto {
     /**
      * 
+     * @type {string}
+     * @memberof FeatureCollectionDtoFeatureDtoGemarkungDto
+     */
+    type?: string;
+    /**
+     * 
      * @type {Array<FeatureDtoGemarkungDto>}
      * @memberof FeatureCollectionDtoFeatureDtoGemarkungDto
      */
-    feature?: Array<FeatureDtoGemarkungDto>;
+    features?: Array<FeatureDtoGemarkungDto>;
 }
 
 export function FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoGemarkungDto {
@@ -44,7 +50,8 @@ export function FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSONTyped(json: an
     }
     return {
         
-        'feature': !exists(json, 'feature') ? undefined : ((json['feature'] as Array<any>).map(FeatureDtoGemarkungDtoFromJSON)),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoGemarkungDtoFromJSON)),
     };
 }
 
@@ -57,7 +64,8 @@ export function FeatureCollectionDtoFeatureDtoGemarkungDtoToJSON(value?: Feature
     }
     return {
         
-        'feature': value.feature === undefined ? undefined : ((value.feature as Array<any>).map(FeatureDtoGemarkungDtoToJSON)),
+        'type': value.type,
+        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoGemarkungDtoToJSON)),
     };
 }
 

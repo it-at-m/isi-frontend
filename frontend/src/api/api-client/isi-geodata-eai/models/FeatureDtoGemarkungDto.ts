@@ -34,6 +34,12 @@ import {
 export interface FeatureDtoGemarkungDto {
     /**
      * 
+     * @type {string}
+     * @memberof FeatureDtoGemarkungDto
+     */
+    type?: string;
+    /**
+     * 
      * @type {FeatureDtoStadtbezirkDtoGeometry}
      * @memberof FeatureDtoGemarkungDto
      */
@@ -43,7 +49,7 @@ export interface FeatureDtoGemarkungDto {
      * @type {GemarkungDto}
      * @memberof FeatureDtoGemarkungDto
      */
-    attributes?: GemarkungDto;
+    properties?: GemarkungDto;
 }
 
 export function FeatureDtoGemarkungDtoFromJSON(json: any): FeatureDtoGemarkungDto {
@@ -56,8 +62,9 @@ export function FeatureDtoGemarkungDtoFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoStadtbezirkDtoGeometryFromJSON(json['geometry']),
-        'attributes': !exists(json, 'attributes') ? undefined : GemarkungDtoFromJSON(json['attributes']),
+        'properties': !exists(json, 'properties') ? undefined : GemarkungDtoFromJSON(json['properties']),
     };
 }
 
@@ -70,8 +77,9 @@ export function FeatureDtoGemarkungDtoToJSON(value?: FeatureDtoGemarkungDto | nu
     }
     return {
         
+        'type': value.type,
         'geometry': FeatureDtoStadtbezirkDtoGeometryToJSON(value.geometry),
-        'attributes': GemarkungDtoToJSON(value.attributes),
+        'properties': GemarkungDtoToJSON(value.properties),
     };
 }
 

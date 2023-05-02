@@ -34,6 +34,12 @@ import {
 export interface FeatureDtoFlurstueckDto {
     /**
      * 
+     * @type {string}
+     * @memberof FeatureDtoFlurstueckDto
+     */
+    type?: string;
+    /**
+     * 
      * @type {FeatureDtoStadtbezirkDtoGeometry}
      * @memberof FeatureDtoFlurstueckDto
      */
@@ -43,7 +49,7 @@ export interface FeatureDtoFlurstueckDto {
      * @type {FlurstueckDto}
      * @memberof FeatureDtoFlurstueckDto
      */
-    attributes?: FlurstueckDto;
+    properties?: FlurstueckDto;
 }
 
 export function FeatureDtoFlurstueckDtoFromJSON(json: any): FeatureDtoFlurstueckDto {
@@ -56,8 +62,9 @@ export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoStadtbezirkDtoGeometryFromJSON(json['geometry']),
-        'attributes': !exists(json, 'attributes') ? undefined : FlurstueckDtoFromJSON(json['attributes']),
+        'properties': !exists(json, 'properties') ? undefined : FlurstueckDtoFromJSON(json['properties']),
     };
 }
 
@@ -70,8 +77,9 @@ export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | 
     }
     return {
         
+        'type': value.type,
         'geometry': FeatureDtoStadtbezirkDtoGeometryToJSON(value.geometry),
-        'attributes': FlurstueckDtoToJSON(value.attributes),
+        'properties': FlurstueckDtoToJSON(value.properties),
     };
 }
 

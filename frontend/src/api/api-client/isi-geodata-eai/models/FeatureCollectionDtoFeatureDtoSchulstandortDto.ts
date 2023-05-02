@@ -28,10 +28,16 @@ import {
 export interface FeatureCollectionDtoFeatureDtoSchulstandortDto {
     /**
      * 
+     * @type {string}
+     * @memberof FeatureCollectionDtoFeatureDtoSchulstandortDto
+     */
+    type?: string;
+    /**
+     * 
      * @type {Array<FeatureDtoSchulstandortDto>}
      * @memberof FeatureCollectionDtoFeatureDtoSchulstandortDto
      */
-    feature?: Array<FeatureDtoSchulstandortDto>;
+    features?: Array<FeatureDtoSchulstandortDto>;
 }
 
 export function FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoSchulstandortDto {
@@ -44,7 +50,8 @@ export function FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSONTyped(json
     }
     return {
         
-        'feature': !exists(json, 'feature') ? undefined : ((json['feature'] as Array<any>).map(FeatureDtoSchulstandortDtoFromJSON)),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoSchulstandortDtoFromJSON)),
     };
 }
 
@@ -57,7 +64,8 @@ export function FeatureCollectionDtoFeatureDtoSchulstandortDtoToJSON(value?: Fea
     }
     return {
         
-        'feature': value.feature === undefined ? undefined : ((value.feature as Array<any>).map(FeatureDtoSchulstandortDtoToJSON)),
+        'type': value.type,
+        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoSchulstandortDtoToJSON)),
     };
 }
 

@@ -32,15 +32,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -78,15 +78,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -101,15 +101,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -124,15 +124,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -147,15 +147,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -170,15 +170,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -255,19 +255,21 @@
       "FeatureCollectionDtoFeatureDtoStadtbezirkDto": {
         "type": "object",
         "properties": {
-          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoStadtbezirkDto" } }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoStadtbezirkDto" } }
         }
       },
       "FeatureDtoStadtbezirkDto": {
         "type": "object",
         "properties": {
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
               { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
               { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "attributes": { "$ref": "#/components/schemas/StadtbezirkDto" }
+          "properties": { "$ref": "#/components/schemas/StadtbezirkDto" }
         }
       },
       "GeometryDto": {
@@ -318,19 +320,21 @@
       "FeatureCollectionDtoFeatureDtoSchulstandortDto": {
         "type": "object",
         "properties": {
-          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoSchulstandortDto" } }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoSchulstandortDto" } }
         }
       },
       "FeatureDtoSchulstandortDto": {
         "type": "object",
         "properties": {
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
               { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
               { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "attributes": { "$ref": "#/components/schemas/SchulstandortDto" }
+          "properties": { "$ref": "#/components/schemas/SchulstandortDto" }
         }
       },
       "SchulstandortDto": {
@@ -359,19 +363,21 @@
       "FeatureCollectionDtoFeatureDtoGemarkungDto": {
         "type": "object",
         "properties": {
-          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoGemarkungDto" } }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoGemarkungDto" } }
         }
       },
       "FeatureDtoGemarkungDto": {
         "type": "object",
         "properties": {
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
               { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
               { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "attributes": { "$ref": "#/components/schemas/GemarkungDto" }
+          "properties": { "$ref": "#/components/schemas/GemarkungDto" }
         }
       },
       "GemarkungDto": {
@@ -386,19 +392,21 @@
       "FeatureCollectionDtoFeatureDtoFlurstueckDto": {
         "type": "object",
         "properties": {
-          "feature": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoFlurstueckDto" } }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoFlurstueckDto" } }
         }
       },
       "FeatureDtoFlurstueckDto": {
         "type": "object",
         "properties": {
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
               { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
               { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "attributes": { "$ref": "#/components/schemas/FlurstueckDto" }
+          "properties": { "$ref": "#/components/schemas/FlurstueckDto" }
         }
       },
       "FlurstueckDto": {
@@ -408,7 +416,7 @@
           "oid1": { "type": "string" },
           "gemarkung": { "type": "integer", "format": "int64" },
           "fluerstueckNummerZ": { "type": "integer", "format": "int64" },
-          "fluerstueckNummer": { "type": "integer", "format": "int64" },
+          "fluerstueckNummerN": { "type": "integer", "format": "int64" },
           "afl": { "type": "number" },
           "lage": { "type": "string" },
           "gemeinde": { "type": "number" },

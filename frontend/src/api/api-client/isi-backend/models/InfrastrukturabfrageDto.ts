@@ -31,6 +31,12 @@ import {
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 
@@ -104,6 +110,12 @@ export interface InfrastrukturabfrageDto {
      * @memberof InfrastrukturabfrageDto
      */
     displayName?: string;
+    /**
+     * 
+     * @type {VerortungDto}
+     * @memberof InfrastrukturabfrageDto
+     */
+    verortung?: VerortungDto;
 }
 
 
@@ -141,6 +153,7 @@ export function InfrastrukturabfrageDtoFromJSONTyped(json: any, ignoreDiscrimina
         'aktenzeichenProLbk': !exists(json, 'aktenzeichenProLbk') ? undefined : json['aktenzeichenProLbk'],
         'offiziellerVerfahrensschritt': UncertainBooleanFromJSON(json['offiziellerVerfahrensschritt']),
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
     };
 }
 
@@ -164,6 +177,7 @@ export function InfrastrukturabfrageDtoToJSON(value?: InfrastrukturabfrageDto | 
         'aktenzeichenProLbk': value.aktenzeichenProLbk,
         'offiziellerVerfahrensschritt': UncertainBooleanToJSON(value.offiziellerVerfahrensschritt),
         'displayName': value.displayName,
+        'verortung': VerortungDtoToJSON(value.verortung),
     };
 }
 

@@ -48,7 +48,7 @@ export interface FlurstueckDto {
      * @type {number}
      * @memberof FlurstueckDto
      */
-    fluerstueckNummer?: number;
+    fluerstueckNummerN?: number;
     /**
      * 
      * @type {number}
@@ -137,7 +137,7 @@ export function FlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'oid1': !exists(json, 'oid1') ? undefined : json['oid1'],
         'gemarkung': !exists(json, 'gemarkung') ? undefined : json['gemarkung'],
         'fluerstueckNummerZ': !exists(json, 'fluerstueckNummerZ') ? undefined : json['fluerstueckNummerZ'],
-        'fluerstueckNummer': !exists(json, 'fluerstueckNummer') ? undefined : json['fluerstueckNummer'],
+        'fluerstueckNummerN': !exists(json, 'fluerstueckNummerN') ? undefined : json['fluerstueckNummerN'],
         'afl': !exists(json, 'afl') ? undefined : json['afl'],
         'lage': !exists(json, 'lage') ? undefined : json['lage'],
         'gemeinde': !exists(json, 'gemeinde') ? undefined : json['gemeinde'],
@@ -166,7 +166,7 @@ export function FlurstueckDtoToJSON(value?: FlurstueckDto | null): any {
         'oid1': value.oid1,
         'gemarkung': value.gemarkung,
         'fluerstueckNummerZ': value.fluerstueckNummerZ,
-        'fluerstueckNummer': value.fluerstueckNummer,
+        'fluerstueckNummerN': value.fluerstueckNummerN,
         'afl': value.afl,
         'lage': value.lage,
         'gemeinde': value.gemeinde,

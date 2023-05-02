@@ -28,10 +28,16 @@ import {
 export interface FeatureCollectionDtoFeatureDtoStadtbezirkDto {
     /**
      * 
+     * @type {string}
+     * @memberof FeatureCollectionDtoFeatureDtoStadtbezirkDto
+     */
+    type?: string;
+    /**
+     * 
      * @type {Array<FeatureDtoStadtbezirkDto>}
      * @memberof FeatureCollectionDtoFeatureDtoStadtbezirkDto
      */
-    feature?: Array<FeatureDtoStadtbezirkDto>;
+    features?: Array<FeatureDtoStadtbezirkDto>;
 }
 
 export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoStadtbezirkDto {
@@ -44,7 +50,8 @@ export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSONTyped(json: 
     }
     return {
         
-        'feature': !exists(json, 'feature') ? undefined : ((json['feature'] as Array<any>).map(FeatureDtoStadtbezirkDtoFromJSON)),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoStadtbezirkDtoFromJSON)),
     };
 }
 
@@ -57,7 +64,8 @@ export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoToJSON(value?: Featu
     }
     return {
         
-        'feature': value.feature === undefined ? undefined : ((value.feature as Array<any>).map(FeatureDtoStadtbezirkDtoToJSON)),
+        'type': value.type,
+        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoStadtbezirkDtoToJSON)),
     };
 }
 
