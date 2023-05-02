@@ -195,7 +195,7 @@ export default class CityMap extends Vue {
     this.layerGroup = new L.LayerGroup();
     this.layerGroup.addTo(this.map);
     L.geoJSON(this.geoJson, {
-      style: function (feature) {
+      style: function () {
         return { color: "#ff0000" };
       },
     }).addTo(this.layerGroup);
