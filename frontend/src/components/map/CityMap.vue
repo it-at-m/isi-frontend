@@ -52,6 +52,7 @@
         position="bottomleft"
       >
         <button
+          v-if="saveableGeoJson"
           id="save_geojson_button"
           class="map-control"
           title="Auswahl übernehmen"
@@ -139,6 +140,9 @@ export default class CityMap extends Vue {
 
   @Prop({ type: Boolean, default: false })
   private readonly expandable!: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly saveableGeoJson!: boolean;
 
   @Prop()
   private readonly lookAt?: LatLngLiteral;

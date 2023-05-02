@@ -3,6 +3,7 @@
     height="300"
     :zoom="14"
     expandable
+    saveable-geo-json
     :look-at="coordinate"
     :geo-json="geoJsonObjectsToShow"
     @click-in-map="handleClickInMap($event)"
