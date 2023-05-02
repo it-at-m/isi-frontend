@@ -38,25 +38,27 @@
     </template>
     <template #action>
       <v-spacer />
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="infrastruktureinrichtung_uebersicht_infrastruktureinrichtung_erstellen_button"
-            slot="activator"
-            v-model="options"
-            dark
-            fab
-            x-large
-            color="secondary"
-            v-on="on"
-            @click="newInfrastruktureinrichtung"
-          >
-            <v-icon> mdi-plus </v-icon>
-          </v-btn>
-        </template>
-        <span v-if="options">Abbrechen</span>
-        <span v-else>Infrastruktureinrichtung erstellen</span>
-      </v-tooltip>
+      <div>
+        <v-tooltip left>
+          <template #activator="{ on }">
+            <v-btn
+              id="infrastruktureinrichtung_uebersicht_infrastruktureinrichtung_erstellen_button"
+              slot="activator"
+              v-model="options"
+              dark
+              fab
+              x-large
+              color="secondary"
+              v-on="on"
+              @click="newInfrastruktureinrichtung"
+            >
+              <v-icon> mdi-plus </v-icon>
+            </v-btn>
+          </template>
+          <span v-if="options">Abbrechen</span>
+          <span v-else>Infrastruktureinrichtung erstellen</span>
+        </v-tooltip>
+      </div>
     </template>
   </default-layout>
 </template>
