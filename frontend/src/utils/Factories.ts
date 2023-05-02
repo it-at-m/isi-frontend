@@ -1,7 +1,7 @@
 import {
   AbfrageDto,
   AbfrageDtoStandVorhabenEnum,
-  AbfrageDtoStatusAbfrageEnum,
+  StatusAbfrage,
   AbfragevarianteDto,
   AbfragevarianteDtoPlanungsrechtEnum,
   AdresseDto,
@@ -34,12 +34,12 @@ import {
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
-import _ from "lodash";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {
     abfragevariantenNr: Number.NaN,
+    abfragevariantenName: "",
     planungsrecht: AbfragevarianteDtoPlanungsrechtEnum.Unspecified,
     geschossflaecheWohnen: undefined,
     geschossflaecheWohnenGenehmigt: undefined,
@@ -69,7 +69,7 @@ export function createAbfrageDto(): AbfrageDto {
     adresse: undefined,
     fristStellungnahme: new Date(0),
     anmerkung: undefined,
-    statusAbfrage: AbfrageDtoStatusAbfrageEnum.Angelegt,
+    statusAbfrage: StatusAbfrage.Angelegt,
     bebauungsplannummer: undefined,
     nameAbfrage: "",
     standVorhaben: AbfrageDtoStandVorhabenEnum.Unspecified,
@@ -104,6 +104,7 @@ export function createAdresseDto(): AdresseDto {
     ort: undefined,
     strasse: undefined,
     hausnummer: undefined,
+    coordinate: undefined,
   } as AdresseDto;
 }
 
@@ -125,6 +126,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
       hausnummer: "",
       plz: "",
       ort: "",
+      coordinate: undefined,
     },
     allgemeineOrtsangabe: "",
     bebauungsplannummer: "",

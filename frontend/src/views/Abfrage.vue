@@ -45,15 +45,15 @@
           @yes="yesNoDialogAbfrageYes"
         />
         <yes-no-dialog
-          id="abfrage_yes_no_dialog_freigeben"
-          v-model="isFreigabeDialogOpen"
+          id="abfrage_yes_no_dialog_statusuebergang"
+          v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
-          dialogtext="Die Abfrage wird zur Bearbeitung weitergeleitet und kann nicht mehr geändert werden."
+          :dialogtext="dialogTextStatus"
           no-text="Abbrechen"
-          :yes-text="'Freigabe'"
-          @no="yesNoDialogFreigabeNo"
-          @yes="yesNoDialogFreigabeYes"
+          :yes-text="'Zustimmen'"
+          @no="yesNoDialogStatusUebergangeNo"
+          @yes="yesNoDialogStatusUebergangYes"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_save_leave"
@@ -176,6 +176,18 @@
       <template #action>
         <v-spacer />
         <v-btn
+          v-for="(transition, index) in possbileTransitions"
+          v-show="!isNewAbfrage()"
+          :id="'abfrage_status_aenderung' + index + '_button'"
+          :key="index"
+          color="secondary"
+          class="text-wrap mt-2 px-1"
+          elevation="1"
+          style="width: 200px"
+          @click="statusUebergang(transition)"
+          v-text="transition.buttonName"
+        />
+        <v-btn
           id="abfrage_speichern_button"
           class="text-wrap mt-2 px-1"
           color="secondary"
@@ -187,17 +199,6 @@
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
-        />
-        <v-btn
-          v-if="!isNewAbfrage()"
-          id="abfrage_freigeben_button"
-          class="text-wrap mt-2 px-1"
-          color="secondary"
-          elevation="1"
-          style="width: 200px"
-          :disabled="!isAngelegt()"
-          @click="freigabeAbfrage()"
-          v-text="'Freigabe'"
         />
         <v-btn
           id="abfrage_abbrechen_button"
@@ -228,14 +229,15 @@ import {
   createBaurateDto,
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
-import FreigabeApiRequestMixin from "@/mixins/requests/FreigabeApiRequestMixin";
+import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
 import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
-  AbfrageListElementDtoStatusAbfrageEnum,
-  InfrastrukturabfrageDto,
+  StatusAbfrage,
   AbfragevarianteDto,
+  InfrastrukturabfrageDto,
+  TransitionDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
@@ -256,6 +258,7 @@ import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
+import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
 
 @Component({
   methods: { containsNotAllowedDokument },
@@ -272,9 +275,10 @@ import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/Infrastruktu
   },
 })
 export default class Abfrage extends Mixins(
+  TransitionApiRequestMixin,
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
-  FreigabeApiRequestMixin,
+  StatusUebergangApiRequestMixin,
   BaurateReqestMixin,
   ValidatorMixin,
   SaveLeaveMixin
@@ -282,6 +286,8 @@ export default class Abfrage extends Mixins(
   private modeAbfrage = DisplayMode.UNDEFINED;
 
   private buttonText = "";
+
+  private dialogTextStatus = "";
 
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
@@ -297,6 +303,10 @@ export default class Abfrage extends Mixins(
   private selectedBaurate: BaurateModel = new BaurateModel(createBaurateDto());
 
   private abfrageId: string = this.$route.params.id;
+
+  private transition: TransitionDto | undefined;
+
+  private isStatusUebergangDialogOpen = false;
 
   private isDeleteDialogAbfrageOpen = false;
 
@@ -328,11 +338,18 @@ export default class Abfrage extends Mixins(
 
   private baurateTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
 
+  public possbileTransitions: Array<TransitionDto> = [];
+
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.initializeFormulare();
-    this.getAbfrageById();
+    this.setSelectedAbfrageInStore();
+
+    if (!this.isNewAbfrage())
+      this.getTransitions(this.abfrageId, true).then((response) => {
+        this.possbileTransitions = response;
+      });
   }
 
   @Watch("$store.state.search.selectedAbfrage", { deep: true })
@@ -344,17 +361,17 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  async getAbfrageById(): Promise<void> {
+  async setSelectedAbfrageInStore(): Promise<void> {
     if (this.abfrageId !== undefined) {
       this.getInfrastrukturabfrageById(this.abfrageId, true)
         .then((dto) => {
-          this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(dto));
+          this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
         })
         .catch(() => {
           this.$store.commit("search/selectedAbfrage", undefined);
         });
     } else {
-      this.$store.commit("search/selectedAbfrage", new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
+      this.saveAbfrageInStore(new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
     }
   }
 
@@ -362,8 +379,10 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfrageOpen = true;
   }
 
-  private freigabeAbfrage(): void {
-    this.isFreigabeDialogOpen = true;
+  private statusUebergang(transition: TransitionDto): void {
+    this.transition = transition;
+    this.dialogTextStatus = transition.dialogText as string;
+    this.isStatusUebergangDialogOpen = true;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -375,13 +394,13 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfrageOpen = false;
   }
 
-  private yesNoDialogFreigabeYes(): void {
-    this.abfrageFreigeben();
-    this.yesNoDialogFreigabeNo();
+  private yesNoDialogStatusUebergangYes(): void {
+    if (!_.isNil(this.transition)) this.startStatusUebergang(this.transition);
+    this.yesNoDialogStatusUebergangeNo();
   }
 
-  private yesNoDialogFreigabeNo(): void {
-    this.isFreigabeDialogOpen = false;
+  private yesNoDialogStatusUebergangeNo(): void {
+    this.isStatusUebergangDialogOpen = false;
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
@@ -466,38 +485,32 @@ export default class Abfrage extends Mixins(
     this.initializTreeItemsToOpen();
   }
 
-  private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
-    this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
-  }
-
-  private async abfrageFreigeben(): Promise<void> {
-    if (this.validate()) {
-      if (
-        this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage ===
-        AbfrageListElementDtoStatusAbfrageEnum.Angelegt
-      ) {
-        this.infrastrukturabfrageFreigeben();
-      } else {
-        this.showWarningInInformationList('Die Abfrage muss den Status "angelegt" besitzen');
-      }
-    } else {
-      this.showWarningInInformationList("Es gibt noch Validierungsfehler");
-    }
-  }
-
-  private async infrastrukturabfrageFreigeben(): Promise<void> {
+  private async startStatusUebergang(transition: TransitionDto) {
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
       this.abfrageWrapped.infrastrukturabfrage
     );
     if (_.isNil(validationMessage)) {
       await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
-      this.freigabInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage.id as string, true).then(() => {
-        this.returnToUebersicht("Die Abfrage wurde erfolgreich freigegeben", Levels.SUCCESS);
-      });
-      this.initializeFormulare();
+      const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
+      if (requestSuccessful) {
+        if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
+          this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
+        } else {
+          this.setSelectedAbfrageInStore();
+          this.getTransitions(this.abfrageId, true).then((response) => {
+            this.possbileTransitions = response;
+          });
+        }
+
+        this.openAbfrageFormular();
+      }
     } else {
       this.showWarningInInformationList(validationMessage);
     }
+  }
+
+  private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
+    this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
   }
 
   private initializTreeItemsToOpen(): void {
@@ -567,9 +580,7 @@ export default class Abfrage extends Mixins(
   }
 
   private isAngelegt(): boolean {
-    return (
-      this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == AbfrageListElementDtoStatusAbfrageEnum.Angelegt
-    );
+    return this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == StatusAbfrage.Angelegt;
   }
 
   private returnToUebersicht(message?: string, level?: Levels): void {

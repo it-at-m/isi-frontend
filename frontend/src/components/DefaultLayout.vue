@@ -6,7 +6,9 @@
     </div>
     <div class="control-wrapper">
       <div class="side-bar">
-        <slot name="navigation" />
+        <div class="side-bar-navigation">
+          <slot name="navigation" />
+        </div>
       </div>
       <div class="middle-wrapper">
         <!-- Bei Angabe des 'solid-heading'-Props wird 'transparent-edge' zu den CSS-Klassen hinzugefügt. -->
@@ -121,9 +123,17 @@ export default class DefaultLayout extends Vue {
   padding: 20px;
 }
 
+.side-bar-navigation {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .side-bar-information {
   width: 100%;
-  height: 70%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,7 +141,7 @@ export default class DefaultLayout extends Vue {
 
 .side-bar-action {
   width: 100%;
-  height: 30%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,6 +156,10 @@ export default class DefaultLayout extends Vue {
 /* Die Unterelemente der vier Zonen sollen Maus-Events wiederum wahrnehmen */
 
 .middle-bar > * {
+  pointer-events: auto;
+}
+
+.side-bar-navigation > * {
   pointer-events: auto;
 }
 

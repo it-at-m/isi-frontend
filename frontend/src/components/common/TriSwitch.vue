@@ -17,7 +17,7 @@
         <slot name="offText">{{ offText }}</slot>
       </span>
       <input
-        id="triswitch"
+        v-bind="$attrs"
         v-model="valueAsPosition"
         :class="`slider mx-2 ${getBackgroundColor()}`"
         type="range"
@@ -57,7 +57,7 @@ interface VInput extends Vue {
  * Die Props 'label', 'disabled' und 'rules' verhalten sich wie bei anderen Input-Komponenten in Vuetfiy.
  * Darüber hinaus können 'label', 'offText' und 'onText' auch über gleichnamige Slots befüllt werden.
  */
-@Component
+@Component({ inheritAttrs: false })
 export default class TriSwitch extends Mixins(SaveLeaveMixin) {
   @VModel({ type: String })
   private valueInternal!: UncertainBoolean;
