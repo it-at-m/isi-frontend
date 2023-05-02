@@ -663,6 +663,7 @@ export default class Abfrage extends Mixins(
       const copyBaugebiete = _.cloneDeep(selectedBauabschnitt.baugebiete);
       _.remove(copyBaugebiete, (baugebiet) => _.isEqual(baugebiet, this.selectedBaugebiet));
       selectedBauabschnitt.baugebiete = copyBaugebiete;
+      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baugebietTreeItemToDelete));
       this.formChanged();
       this.openBauabschnittFormular();
       this.$nextTick(() => {
@@ -678,6 +679,7 @@ export default class Abfrage extends Mixins(
       const copyBauraten = _.cloneDeep(selectedBaugebiet.bauraten);
       _.remove(copyBauraten, (baurate) => _.isEqual(baurate, this.selectedBaurate));
       selectedBaugebiet.bauraten = copyBauraten;
+      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baurateTreeItemToDelete));
       this.formChanged();
       this.openBaugebietFormular();
       this.$nextTick(() => {
@@ -832,6 +834,9 @@ export default class Abfrage extends Mixins(
     });
   }
 
+  /**
+   * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
+   */
   private getTechnicalBauabschnitt(abfragevariante: AbfragevarianteModel): BauabschnittModel {
     let bauabschnittDto: BauabschnittDto | undefined;
 
@@ -849,6 +854,9 @@ export default class Abfrage extends Mixins(
     return new BauabschnittModel(bauabschnittDto);
   }
 
+  /**
+   * Ermittelt oder erstellt bei Bedarf ein Platzhalter-Baugebiet für "alleinstehende" Bauraten.
+   */
   private getTechnicalBaugebiet(abfragevariante: AbfragevarianteModel): BaugebietModel {
     const bauabschnitt = this.getTechnicalBauabschnitt(abfragevariante);
     let baugebietDto = bauabschnitt.baugebiete.find((dto) => dto.technical);
@@ -859,6 +867,31 @@ export default class Abfrage extends Mixins(
     }
 
     return new BaugebietModel(baugebietDto);
+  }
+
+  /**
+   * Soll nach dem Löschen von Baugebieten und -raten aufgerufen werden, um Platzhalter ohne Kinder zu beseitigen.
+   */
+  private clearTechnicalEntities(abfragevariante: AbfragevarianteModel): void {
+    if (!_.isNil(abfragevariante.bauabschnitte)) {
+      const bauabschnittIndex = abfragevariante.bauabschnitte.findIndex((dto) => dto.technical);
+
+      if (bauabschnittIndex !== -1) {
+        const bauabschnitt = abfragevariante.bauabschnitte[bauabschnittIndex];
+        const baugebietIndex = bauabschnitt?.baugebiete.findIndex((dto) => dto.technical);
+
+        if (baugebietIndex !== -1) {
+          const baugebiet = bauabschnitt.baugebiete[baugebietIndex];
+          if (baugebiet.bauraten.length === 0) {
+            bauabschnitt.baugebiete.splice(baugebietIndex, 1);
+          }
+        }
+
+        if (bauabschnitt.baugebiete.length === 0) {
+          abfragevariante.bauabschnitte.splice(bauabschnittIndex, 1);
+        }
+      }
+    }
   }
 }
 </script>

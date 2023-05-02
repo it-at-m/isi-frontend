@@ -343,15 +343,19 @@ export default class AbfrageNavigationTree extends Vue {
   ) {
     if (!_.isNil(abfragevariante.bauabschnitte)) {
       abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
-        let bauabschnittTreeItem = this.createBauabschnittTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          abfragevariante,
-          bauabschnitt
-        );
-        parentTreeItem.children.push(bauabschnittTreeItem);
-        this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
+        if (!bauabschnitt.technical) {
+          let bauabschnittTreeItem = this.createBauabschnittTreeItem(
+            this.treeItemKey++,
+            parentTreeItem,
+            abfrage,
+            abfragevariante,
+            bauabschnitt
+          );
+          parentTreeItem.children.push(bauabschnittTreeItem);
+          this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
+        } else {
+          this.createBaugebieteTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt);
+        }
       });
     }
     parentTreeItem.children.push(
@@ -372,23 +376,30 @@ export default class AbfrageNavigationTree extends Vue {
     bauabschnitt: BauabschnittDto
   ) {
     bauabschnitt.baugebiete.forEach((baugebiet) => {
-      let baugebietTreeItem = this.createBaugebietTreeItem(
-        this.treeItemKey++,
-        parentTreeItem,
-        abfrage,
-        abfragevariante,
-        bauabschnitt,
-        baugebiet
-      );
-      parentTreeItem.children.push(baugebietTreeItem);
-      this.createBauratenTreeItems(baugebietTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
+      if (!baugebiet.technical) {
+        let baugebietTreeItem = this.createBaugebietTreeItem(
+          this.treeItemKey++,
+          parentTreeItem,
+          abfrage,
+          abfragevariante,
+          bauabschnitt,
+          baugebiet
+        );
+        parentTreeItem.children.push(baugebietTreeItem);
+        this.createBauratenTreeItems(baugebietTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
+      } else {
+        this.createBauratenTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
+      }
     });
-    parentTreeItem.children.push(
-      this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
-    );
-    parentTreeItem.children.push(
-      this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-    );
+
+    if (!bauabschnitt.technical) {
+      parentTreeItem.children.push(
+        this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
+      );
+      parentTreeItem.children.push(
+        this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+      );
+    }
   }
 
   private createBauratenTreeItems(
@@ -410,16 +421,19 @@ export default class AbfrageNavigationTree extends Vue {
       );
       parentTreeItem.children.push(baurateTreeItem);
     });
-    parentTreeItem.children.push(
-      this.createAddBaurateTreeItem(
-        this.treeItemKey++,
-        parentTreeItem,
-        abfrage,
-        abfragevariante,
-        bauabschnitt,
-        baugebiet
-      )
-    );
+
+    if (!baugebiet.technical) {
+      parentTreeItem.children.push(
+        this.createAddBaurateTreeItem(
+          this.treeItemKey++,
+          parentTreeItem,
+          abfrage,
+          abfragevariante,
+          bauabschnitt,
+          baugebiet
+        )
+      );
+    }
   }
 
   private createAbfragevarianteTreeItem(
