@@ -10,13 +10,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Mixins } from "vue-property-decorator";
+import { Component, Prop, Mixins } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import { LatLng, LatLngLiteral } from "leaflet";
-import { MultiPolygonGeometryDto } from "@/api/api-client/isi-backend";
 import { GeoJsonObject } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
-import { FeatureDtoFlurstueckDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
+import { FeatureDtoFlurstueckDto, FlurstueckDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
+import _ from "lodash";
 
 @Component({
   components: { CityMap },
@@ -26,6 +26,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
   private readonly lookAt?: LatLngLiteral;
 
   private geoJson: Array<GeoJsonObject> = [];
+
+  private selectedFlurstuecke: Map<FlurstueckDto, FeatureDtoFlurstueckDto> = new Map<
+    FlurstueckDto,
+    FeatureDtoFlurstueckDto
+  >();
 
   get coordinate(): LatLngLiteral | undefined {
     return this.lookAt;
@@ -41,13 +46,22 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       coordinates: [latlng.lng, latlng.lat],
     };
     this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
-      this.geoJson = this.mapToGeoJsonObject(flurstuecke);
+      flurstuecke.forEach((flurstueck: FeatureDtoFlurstueckDto) => {
+        const flurstueckProperties = _.isNil(flurstueck.properties) ? {} : flurstueck.properties;
+        const alreadySelected = this.selectedFlurstuecke.has(flurstueckProperties);
+        if (alreadySelected) {
+          this.selectedFlurstuecke.delete(flurstueckProperties);
+        } else {
+          this.selectedFlurstuecke.set(flurstueckProperties, flurstueck);
+        }
+      });
+      this.geoJson = this.mapToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
     });
   }
 
   private mapToGeoJsonObject(flurstuecke: Array<FeatureDtoFlurstueckDto>) {
-    return flurstuecke.map((flurstuecke: FeatureDtoFlurstueckDto) => {
-      const geoJsonString: string = JSON.stringify(flurstuecke);
+    return flurstuecke.map((flurstueck: FeatureDtoFlurstueckDto) => {
+      const geoJsonString: string = JSON.stringify(flurstueck);
       return JSON.parse(geoJsonString) as GeoJsonObject;
     });
   }
