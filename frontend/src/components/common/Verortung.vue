@@ -56,7 +56,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
 
   @Watch("selectedFlurstuecke", { deep: true })
   private onSelectedFlurstueckeChanged(): void {
-    this.geoJson = this.mapToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
+    this.geoJson = this.flurstueckeToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
   }
 
   private handleClickInMap(latlng: LatLng): void {
@@ -104,7 +104,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     return clonedMap;
   }
 
-  private mapToGeoJsonObject(flurstuecke: Array<FeatureDtoFlurstueckDto>): Array<GeoJsonObject> {
+  private flurstueckeToGeoJsonObject(flurstuecke: Array<FeatureDtoFlurstueckDto>): Array<GeoJsonObject> {
     return flurstuecke.map((flurstueck: FeatureDtoFlurstueckDto) => {
       const geoJsonString: string = JSON.stringify(flurstueck);
       return JSON.parse(geoJsonString) as GeoJsonObject;
