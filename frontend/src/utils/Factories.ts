@@ -32,6 +32,9 @@ import {
   BaugebietDto,
   BaugebietDtoBaugebietTypEnum,
   UncertainBoolean,
+  VerortungDto,
+  GemarkungDto,
+  StadtbezirkDto,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -113,6 +116,17 @@ export function createAdresseDto(): AdresseDto {
     hausnummer: undefined,
     coordinate: undefined,
   } as AdresseDto;
+}
+
+export function createVerortungDto(): VerortungDto {
+  return {
+    gemarkungen: new Set<GemarkungDto>(),
+    stadtbezirke: new Set<StadtbezirkDto>(),
+    multiPolygon: {
+      type: "MultiPolygon",
+      coordinates: [],
+    },
+  };
 }
 
 /**
