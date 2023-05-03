@@ -38,7 +38,7 @@
     </template>
     <template #action>
       <v-spacer />
-      <div>
+      <div class="align-self-end">
         <v-tooltip left>
           <template #activator="{ on }">
             <v-btn
@@ -49,7 +49,6 @@
               fab
               x-large
               color="secondary"
-              class="align-self-end"
               v-on="on"
               @click="newInfrastruktureinrichtung"
             >
