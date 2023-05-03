@@ -85,11 +85,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
     const verortung: VerortungDto = await this.createVerortungDtoFromSelectedFlurstuecke();
-    this.verortungModel.multiPolygon = verortung.multiPolygon;
-    this.verortungModel.stadtbezirke = verortung.stadtbezirke;
-    this.verortungModel.gemarkungen = verortung.gemarkungen;
-    console.log(verortung);
-    console.log(this.verortungModel);
+    this.verortungModel = new VerortungModel(verortung);
   }
 
   private createPointGeometry(latlng: LatLng): PointGeometryDto {
@@ -147,38 +143,15 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       unifiedMultipolygon,
       true
     );
-    const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirke.map((stadtbezirk) => {
-      return {
-        nummer: stadtbezirk.properties?.stadtbezirkNummer,
-        name: stadtbezirk.properties?.name,
-        multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
+    const stadtbezirkeBackend: Array<StadtbezirkDto> =
+      this.createStadtbezirkeBackendFromStadtbezirkeGeoDataEai(stadtbezirke);
     const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
       unifiedMultipolygon,
       true
     );
-    const gemarkungenBackend: Array<GemarkungDto> = gemarkungen.map((gemarkung) => {
-      return {
-        flurstuecke: new Set<FlurstueckDto>(),
-        name: gemarkung.properties?.gemarkungName,
-        nummer: gemarkung.properties?.gemarkung,
-        multiPolygon: JSON.parse(JSON.stringify(gemarkung.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
+    const gemarkungenBackend: Array<GemarkungDto> = this.createGemarkungenBackendFromGemarkungenGeoDataEai(gemarkungen);
     this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
-      const flurstueckBackend: FlurstueckDto = {
-        nummer: [
-          selectedFlurstueck.properties?.fluerstueckNummerZ,
-          selectedFlurstueck.properties?.fluerstueckNummerN,
-        ].join("/"),
-        zaehler: selectedFlurstueck.properties?.fluerstueckNummerZ,
-        nenner: selectedFlurstueck.properties?.fluerstueckNummerN,
-        flaecheQm: selectedFlurstueck.properties?.flaecheQm,
-        eigentumsart: selectedFlurstueck.properties?.eigentumsart,
-        eigentumsartBedeutung: selectedFlurstueck.properties?.eigentumsartBedeutung,
-        multiPolygon: JSON.parse(JSON.stringify(selectedFlurstueck.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
+      const flurstueckBackend: FlurstueckDto = this.createFlurstueckBackendFromFlurstueckGeoDataEai(selectedFlurstueck);
       const matchingGemarkung = gemarkungenBackend.find(
         (gemarkung) => gemarkung.nummer === selectedFlurstueck.properties?.gemarkung
       );
@@ -190,6 +163,48 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
     };
     return verortung;
+  }
+
+  private createStadtbezirkeBackendFromStadtbezirkeGeoDataEai(
+    stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>
+  ): Array<StadtbezirkDto> {
+    return stadtbezirkeGeoDataEai.map((stadtbezirk) => {
+      return {
+        nummer: stadtbezirk.properties?.stadtbezirkNummer,
+        name: stadtbezirk.properties?.name,
+        multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private createGemarkungenBackendFromGemarkungenGeoDataEai(
+    gemarkungenGeoDataEai: Array<FeatureDtoGemarkungDto>
+  ): Array<GemarkungDto> {
+    return gemarkungenGeoDataEai.map((gemarkung) => {
+      return {
+        flurstuecke: new Set<FlurstueckDto>(),
+        name: gemarkung.properties?.gemarkungName,
+        nummer: gemarkung.properties?.gemarkung,
+        multiPolygon: JSON.parse(JSON.stringify(gemarkung.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private createFlurstueckBackendFromFlurstueckGeoDataEai(
+    flurstueckGeoDataEai: FeatureDtoFlurstueckDto
+  ): FlurstueckDto {
+    return {
+      nummer: [
+        flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
+        flurstueckGeoDataEai.properties?.fluerstueckNummerN,
+      ].join("/"),
+      zaehler: flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
+      nenner: flurstueckGeoDataEai.properties?.fluerstueckNummerN,
+      flaecheQm: flurstueckGeoDataEai.properties?.flaecheQm,
+      eigentumsart: flurstueckGeoDataEai.properties?.eigentumsart,
+      eigentumsartBedeutung: flurstueckGeoDataEai.properties?.eigentumsartBedeutung,
+      multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
   }
 }
 </script>
