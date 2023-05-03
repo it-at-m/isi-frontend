@@ -14,7 +14,7 @@
       @click="onClickInMap($event)"
     >
       <!-- Fügt ein Steuerungselement hinzu, mit welchem sich ein Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt. -->
-      <l-control-layers />
+      <l-control-layers id="city-map-layer-control" />
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
       <l-wms-tile-layer
         id="karte_hintergrund"
