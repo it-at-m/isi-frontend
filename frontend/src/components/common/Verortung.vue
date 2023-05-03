@@ -17,13 +17,12 @@
 <script lang="ts">
 import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
-import { LatLng, LatLngLiteral } from "leaflet";
+import { LatLng, LatLngLiteral, polygon } from "leaflet";
 import { GeoJsonObject } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
-import { FeatureDtoFlurstueckDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
+import { FeatureDtoFlurstueckDto, MultiPolygonGeometryDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
 import _ from "lodash";
 import VerortungModel from "@/types/model/common/VerortungModel";
-import AdresseModel from "@/types/model/common/AdresseModel";
 import { AdresseDto } from "@/api/api-client/isi-backend";
 
 @Component({
@@ -71,8 +70,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     this.selectedFlurstuecke = new Map<number, FeatureDtoFlurstueckDto>();
   }
 
-  private handleAcceptSelectedGeoJson(): void {
-    this.geoJson.length;
+  private async handleAcceptSelectedGeoJson(): Promise<void> {
+    const multipolygon = this.createMultiPolygonFromSelectedFlurstuecke();
+    const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
+    const stadtbezirke = await this.getStadtbezirkeForMultipolygon(unifiedMultipolygon, true);
+    const gemarkungen = await this.getGemarkungenForMultipolygon(unifiedMultipolygon, true);
   }
 
   private createPointGeometry(latlng: LatLng): PointGeometryDto {
@@ -107,6 +109,20 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       const geoJsonString: string = JSON.stringify(flurstueck);
       return JSON.parse(geoJsonString) as GeoJsonObject;
     });
+  }
+
+  private createMultiPolygonFromSelectedFlurstuecke(): MultiPolygonGeometryDto {
+    const multipolygon: MultiPolygonGeometryDto = {
+      type: "MultiPolygon",
+      coordinates: [],
+    };
+    this.selectedFlurstuecke.forEach((flurstueck: FeatureDtoFlurstueckDto, key: number) => {
+      const flurstueckMultiPolygon = flurstueck.geometry as MultiPolygonGeometryDto;
+      flurstueckMultiPolygon?.coordinates?.forEach((polygon) => {
+        multipolygon.coordinates?.push(polygon);
+      });
+    });
+    return multipolygon;
   }
 }
 </script>
