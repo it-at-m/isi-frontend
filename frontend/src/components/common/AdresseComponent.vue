@@ -91,11 +91,6 @@
         </v-col>
       </v-row>
     </div>
-    <v-row>
-      <v-col cols="12">
-        <verortung :look-at="coordinate" />
-      </v-col>
-    </v-row>
   </field-group-card>
 </template>
 

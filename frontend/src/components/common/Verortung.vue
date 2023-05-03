@@ -1,15 +1,17 @@
 <template>
-  <city-map
-    height="300"
-    :zoom="14"
-    expandable
-    editable
-    :look-at="coordinate"
-    :geo-json="geoJsonObjectsToShow"
-    @click-in-map="handleClickInMap($event)"
-    @deselect-geo-json="handleDeselectGeoJson"
-    @accept-selected-geo-json="handleAcceptSelectedGeoJson"
-  />
+  <field-group-card :card-title="verortungCardTitle">
+    <city-map
+      height="300"
+      :zoom="14"
+      expandable
+      editable
+      :look-at="coordinate"
+      :geo-json="geoJsonObjectsToShow"
+      @click-in-map="handleClickInMap($event)"
+      @deselect-geo-json="handleDeselectGeoJson"
+      @accept-selected-geo-json="handleAcceptSelectedGeoJson"
+    />
+  </field-group-card>
 </template>
 
 <script lang="ts">
@@ -21,22 +23,32 @@ import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiReques
 import { FeatureDtoFlurstueckDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
 import _ from "lodash";
 import VerortungModel from "@/types/model/common/VerortungModel";
+import AdresseModel from "@/types/model/common/AdresseModel";
+import { AdresseDto } from "@/api/api-client/isi-backend";
 
 @Component({
   components: { CityMap },
 })
 export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
+  private verortungCardTitle = "Verortung";
+
   @VModel({ type: VerortungModel }) abfrage!: VerortungModel;
 
   @Prop()
-  private readonly lookAt?: LatLngLiteral;
+  private readonly lookAt?: AdresseDto;
 
   private geoJson: Array<GeoJsonObject> = [];
 
   private selectedFlurstuecke: Map<number, FeatureDtoFlurstueckDto> = new Map<number, FeatureDtoFlurstueckDto>();
 
   get coordinate(): LatLngLiteral | undefined {
-    return this.lookAt;
+    const lat = this.lookAt?.coordinate?.latitude;
+    const lng = this.lookAt?.coordinate?.longitude;
+
+    if (lat && lng) {
+      return { lat, lng };
+    }
+    return undefined;
   }
 
   get geoJsonObjectsToShow(): Array<GeoJsonObject> {

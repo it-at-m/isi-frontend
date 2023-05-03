@@ -31,6 +31,12 @@ import {
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 
@@ -98,6 +104,12 @@ export interface BauvorhabenDto {
      * @memberof BauvorhabenDto
      */
     adresse?: AdresseDto;
+    /**
+     * 
+     * @type {VerortungDto}
+     * @memberof BauvorhabenDto
+     */
+    verortung?: VerortungDto;
     /**
      * 
      * @type {string}
@@ -225,6 +237,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'standVorhaben': json['standVorhaben'],
         'bauvorhabenNummer': json['bauvorhabenNummer'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'fisNummer': !exists(json, 'fisNummer') ? undefined : json['fisNummer'],
@@ -255,6 +268,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'standVorhaben': value.standVorhaben,
         'bauvorhabenNummer': value.bauvorhabenNummer,
         'adresse': AdresseDtoToJSON(value.adresse),
+        'verortung': VerortungDtoToJSON(value.verortung),
         'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'bebauungsplannummer': value.bebauungsplannummer,
         'fisNummer': value.fisNummer,

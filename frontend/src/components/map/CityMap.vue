@@ -106,8 +106,7 @@ import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaf
 import L, { LatLng, LatLngLiteral, LayerGroup, LeafletMouseEvent, MapOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
-import { GeoJSON, GeoJsonObject } from "geojson";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import { GeoJsonObject } from "geojson";
 
 type Ref = Vue & { $el: HTMLElement };
 
