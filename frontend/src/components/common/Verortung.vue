@@ -3,27 +3,31 @@
     height="300"
     :zoom="14"
     expandable
-    saveable-geo-json
+    editable
     :look-at="coordinate"
     :geo-json="geoJsonObjectsToShow"
     @click-in-map="handleClickInMap($event)"
-    @clear-geo-json="handleClearGeoJson"
+    @deselect-geo-json="handleDeselectGeoJson"
+    @accept-selected-geo-json="handleAcceptSelectedGeoJson"
   />
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import { LatLng, LatLngLiteral } from "leaflet";
 import { GeoJsonObject } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
-import { FeatureDtoFlurstueckDto, FlurstueckDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
+import { FeatureDtoFlurstueckDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
 import _ from "lodash";
+import VerortungModel from "@/types/model/common/VerortungModel";
 
 @Component({
   components: { CityMap },
 })
 export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
+  @VModel({ type: VerortungModel }) abfrage!: VerortungModel;
+
   @Prop()
   private readonly lookAt?: LatLngLiteral;
 
@@ -51,8 +55,12 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     });
   }
 
-  private handleClearGeoJson(): void {
+  private handleDeselectGeoJson(): void {
     this.selectedFlurstuecke = new Map<number, FeatureDtoFlurstueckDto>();
+  }
+
+  private handleAcceptSelectedGeoJson(): void {
+    this.geoJson.length;
   }
 
   private createPointGeometry(latlng: LatLng): PointGeometryDto {

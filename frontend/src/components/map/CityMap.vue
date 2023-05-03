@@ -48,14 +48,14 @@
         :transparent="true"
       />
       <l-control
-        v-if="expandable"
+        v-if="editable"
         position="bottomleft"
       >
         <button
-          v-if="saveableGeoJson"
           id="save_geojson_button"
           class="map-control"
           title="Auswahl übernehmen"
+          @click="onAcceptSelectedGeoJson"
         >
           <v-icon large> mdi-content-save-outline </v-icon>
         </button>
@@ -64,7 +64,7 @@
           id="clear_geojson_button"
           class="map-control"
           title="Auswahl aufheben"
-          @click="onDeleteGeoJson"
+          @click="onDeselectGeoJson"
         >
           <v-icon large> mdi-delete-outline </v-icon>
         </button>
@@ -106,7 +106,8 @@ import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaf
 import L, { LatLng, LatLngLiteral, LayerGroup, LeafletMouseEvent, MapOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
-import { GeoJsonObject } from "geojson";
+import { GeoJSON, GeoJsonObject } from "geojson";
+import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -142,7 +143,7 @@ export default class CityMap extends Vue {
   private readonly expandable!: boolean;
 
   @Prop({ type: Boolean, default: false })
-  private readonly saveableGeoJson!: boolean;
+  private readonly editable!: boolean;
 
   @Prop()
   private readonly lookAt?: LatLngLiteral;
@@ -216,10 +217,16 @@ export default class CityMap extends Vue {
     setTimeout(() => this.map.invalidateSize());
   }
 
-  private onDeleteGeoJson(event: MouseEvent): void {
+  private onDeselectGeoJson(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    this.clearGeoJson();
+    this.deselectGeoJson();
+  }
+
+  private onAcceptSelectedGeoJson(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.acceptSelectedGeoJson();
   }
 
   private addGeoJsonToMap(): void {
@@ -239,8 +246,13 @@ export default class CityMap extends Vue {
   }
 
   @Emit()
-  private clearGeoJson(): void {
+  private deselectGeoJson(): void {
     // Clears geoJson
+  }
+
+  @Emit()
+  private acceptSelectedGeoJson(): void {
+    // Accept geoJson
   }
 }
 </script>
