@@ -45,26 +45,28 @@
     </template>
     <template #action>
       <v-spacer />
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="bauvorhaben_uebersicht_bauvorhaben_erstellen_button"
-            slot="activator"
-            v-model="options"
-            dark
-            fab
-            x-large
-            color="secondary"
-            class="align-self-end"
-            v-on="on"
-            @click="createBauvorhaben()"
-          >
-            <v-icon> mdi-plus </v-icon>
-          </v-btn>
-        </template>
-        <span v-if="options">Abbrechen</span>
-        <span v-else>Bauvorhaben erstellen</span>
-      </v-tooltip>
+      <div>
+        <v-tooltip left>
+          <template #activator="{ on }">
+            <v-btn
+              id="bauvorhaben_uebersicht_bauvorhaben_erstellen_button"
+              slot="activator"
+              v-model="options"
+              dark
+              fab
+              x-large
+              color="secondary"
+              class="align-self-end"
+              v-on="on"
+              @click="createBauvorhaben()"
+            >
+              <v-icon> mdi-plus </v-icon>
+            </v-btn>
+          </template>
+          <span v-if="options">Abbrechen</span>
+          <span v-else>Bauvorhaben erstellen</span>
+        </v-tooltip>
+      </div>
     </template>
   </default-layout>
 </template>

@@ -46,26 +46,28 @@
     </template>
     <template #action>
       <v-spacer />
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="abfrage_uebersicht_abfrage_erstellen_button"
-            slot="activator"
-            v-model="options"
-            dark
-            fab
-            x-large
-            color="secondary"
-            class="align-self-end"
-            v-on="on"
-            @click="newAbfrage"
-          >
-            <v-icon> mdi-plus </v-icon>
-          </v-btn>
-        </template>
-        <span v-if="options">Abbrechen</span>
-        <span v-else>Abfrage erstellen</span>
-      </v-tooltip>
+      <div>
+        <v-tooltip left>
+          <template #activator="{ on }">
+            <v-btn
+              id="abfrage_uebersicht_abfrage_erstellen_button"
+              slot="activator"
+              v-model="options"
+              dark
+              fab
+              x-large
+              color="secondary"
+              class="align-self-end"
+              v-on="on"
+              @click="newAbfrage"
+            >
+              <v-icon> mdi-plus </v-icon>
+            </v-btn>
+          </template>
+          <span v-if="options">Abbrechen</span>
+          <span v-else>Abfrage erstellen</span>
+        </v-tooltip>
+      </div>
     </template>
   </default-layout>
 </template>
