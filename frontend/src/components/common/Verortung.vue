@@ -18,7 +18,7 @@
 import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import { LatLng, LatLngLiteral, polygon } from "leaflet";
-import { GeoJsonObject } from "geojson";
+import { Feature, GeoJsonObject, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
   FeatureDtoFlurstueckDto,
@@ -51,7 +51,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
 
   private geoJson: Array<GeoJsonObject> = [];
 
-  private selectedFlurstuecke: Map<number, FeatureDtoFlurstueckDto> = new Map<number, FeatureDtoFlurstueckDto>();
+  private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
   get coordinate(): LatLngLiteral | undefined {
     const lat = this.lookAt?.coordinate?.latitude;
@@ -69,18 +69,34 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
 
   @Watch("selectedFlurstuecke", { deep: true })
   private onSelectedFlurstueckeChanged(): void {
-    this.geoJson = this.flurstueckeToGeoJsonObject(Array.from(this.selectedFlurstuecke.values()));
+    console.log(Array.from(this.selectedFlurstuecke.values()));
+
+    this.geoJson = this.flurstueckeToGeoJsonFeature(Array.from(this.selectedFlurstuecke.values()));
+    console.log("this.geoJson");
+    console.log(this.geoJson);
+  }
+
+  @Watch("verortungModel", { deep: true })
+  private onVerortungModelChanged(): void {
+    const flurstueckeFromVerortungModel = Array.from(this.verortungModel.gemarkungen).flatMap((gemarkung) =>
+      Array.from(gemarkung.flurstuecke)
+    );
+    console.log(flurstueckeFromVerortungModel);
+    this.selectedFlurstuecke = this.createMapForFlurstuecke(flurstueckeFromVerortungModel);
+    console.log("this.selectedFlurstuecke");
+    console.log(this.selectedFlurstuecke);
   }
 
   private handleClickInMap(latlng: LatLng): void {
     const point = this.createPointGeometry(latlng);
     this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
-      this.selectedFlurstuecke = this.createMapOfSelectedFlurstuecke(flurstuecke);
+      const flurstueckeBackend = this.createFlurstueckeBackendFromFlurstueckeGeoDataEai(flurstuecke);
+      this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
     });
   }
 
   private handleDeselectGeoJson(): void {
-    this.selectedFlurstuecke = new Map<number, FeatureDtoFlurstueckDto>();
+    this.selectedFlurstuecke = new Map<string, FlurstueckDto>();
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
@@ -95,30 +111,43 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     };
   }
 
-  private createMapOfSelectedFlurstuecke(
-    flurstuecke: Array<FeatureDtoFlurstueckDto>
-  ): Map<number, FeatureDtoFlurstueckDto> {
+  private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
     const clonedMap = _.cloneDeep(this.selectedFlurstuecke);
-    flurstuecke.forEach((flurstueck: FeatureDtoFlurstueckDto) => {
-      const flurstueckId = _.isNil(flurstueck.properties)
-        ? -1
-        : _.isNil(flurstueck.properties.flurstueckId)
-        ? -1
-        : flurstueck.properties.flurstueckId;
-      const alreadySelected = clonedMap.has(flurstueckId);
+    flurstuecke.forEach((flurstueck: FlurstueckDto) => {
+      const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
+      const alreadySelected = clonedMap.has(flurstueckNummer);
       if (alreadySelected) {
-        clonedMap.delete(flurstueckId);
+        clonedMap.delete(flurstueckNummer);
       } else {
-        clonedMap.set(flurstueckId, flurstueck);
+        clonedMap.set(flurstueckNummer, flurstueck);
       }
     });
     return clonedMap;
   }
 
-  private flurstueckeToGeoJsonObject(flurstuecke: Array<FeatureDtoFlurstueckDto>): Array<GeoJsonObject> {
-    return flurstuecke.map((flurstueck: FeatureDtoFlurstueckDto) => {
-      const geoJsonString: string = JSON.stringify(flurstueck);
-      return JSON.parse(geoJsonString) as GeoJsonObject;
+  private createMapForFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
+    const flurstueckMap = new Map<string, FlurstueckDto>();
+    flurstuecke.forEach((flurstueck: FlurstueckDto) => {
+      const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
+      flurstueckMap.set(flurstueckNummer, flurstueck);
+    });
+    return flurstueckMap;
+  }
+
+  private flurstueckeToGeoJsonFeature(flurstuecke: Array<FlurstueckDto>): Array<Feature> {
+    return flurstuecke.map((flurstueck: FlurstueckDto) => {
+      return {
+        type: "Feature",
+        geometry: JSON.parse(JSON.stringify(flurstueck.multiPolygon)) as MultiPolygon,
+        properties: {
+          nummer: flurstueck.nummer,
+          zaehler: flurstueck.zaehler,
+          nenner: flurstueck.nenner,
+          eigentumsart: flurstueck.eigentumsart,
+          eigentumsartBedeutung: flurstueck.eigentumsartBedeutung,
+          flaecheQm: flurstueck.flaecheQm,
+        },
+      };
     });
   }
 
@@ -127,8 +156,8 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       type: "MultiPolygon",
       coordinates: [],
     };
-    this.selectedFlurstuecke.forEach((flurstueck: FeatureDtoFlurstueckDto, key: number) => {
-      const flurstueckMultiPolygon = flurstueck.geometry as MultiPolygonGeometryDtoGeoDataEai;
+    this.selectedFlurstuecke.forEach((flurstueck: FlurstueckDto, key: string) => {
+      const flurstueckMultiPolygon = flurstueck.multiPolygon as MultiPolygonGeometryDtoBackend;
       flurstueckMultiPolygon?.coordinates?.forEach((polygon) => {
         multipolygon.coordinates?.push(polygon);
       });
@@ -150,12 +179,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       true
     );
     const gemarkungenBackend: Array<GemarkungDto> = this.createGemarkungenBackendFromGemarkungenGeoDataEai(gemarkungen);
-    this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
-      const flurstueckBackend: FlurstueckDto = this.createFlurstueckBackendFromFlurstueckGeoDataEai(selectedFlurstueck);
+    this.selectedFlurstuecke.forEach((selectedFlurstueck, key) => {
       const matchingGemarkung = gemarkungenBackend.find(
-        (gemarkung) => gemarkung.nummer === selectedFlurstueck.properties?.gemarkung
+        (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer
       );
-      matchingGemarkung?.flurstuecke.add(flurstueckBackend);
+      matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
     });
     const verortung: VerortungDto = {
       gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
@@ -190,6 +218,12 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     });
   }
 
+  private createFlurstueckeBackendFromFlurstueckeGeoDataEai(
+    flurstueckGeoDataEai: Array<FeatureDtoFlurstueckDto>
+  ): Array<FlurstueckDto> {
+    return flurstueckGeoDataEai.map(this.createFlurstueckBackendFromFlurstueckGeoDataEai);
+  }
+
   private createFlurstueckBackendFromFlurstueckGeoDataEai(
     flurstueckGeoDataEai: FeatureDtoFlurstueckDto
   ): FlurstueckDto {
@@ -203,6 +237,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       flaecheQm: flurstueckGeoDataEai.properties?.flaecheQm,
       eigentumsart: flurstueckGeoDataEai.properties?.eigentumsart,
       eigentumsartBedeutung: flurstueckGeoDataEai.properties?.eigentumsartBedeutung,
+      gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
       multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
     };
   }

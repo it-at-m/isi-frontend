@@ -88,6 +88,12 @@ export interface FlurstueckDto {
     eigentumsartBedeutung?: string;
     /**
      * 
+     * @type {number}
+     * @memberof FlurstueckDto
+     */
+    gemarkungNummer?: number;
+    /**
+     * 
      * @type {MultiPolygonGeometryDto}
      * @memberof FlurstueckDto
      */
@@ -114,6 +120,7 @@ export function FlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'nenner': !exists(json, 'nenner') ? undefined : json['nenner'],
         'eigentumsart': !exists(json, 'eigentumsart') ? undefined : json['eigentumsart'],
         'eigentumsartBedeutung': !exists(json, 'eigentumsartBedeutung') ? undefined : json['eigentumsartBedeutung'],
+        'gemarkungNummer': !exists(json, 'gemarkungNummer') ? undefined : json['gemarkungNummer'],
         'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
@@ -137,6 +144,7 @@ export function FlurstueckDtoToJSON(value?: FlurstueckDto | null): any {
         'nenner': value.nenner,
         'eigentumsart': value.eigentumsart,
         'eigentumsartBedeutung': value.eigentumsartBedeutung,
+        'gemarkungNummer': value.gemarkungNummer,
         'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
