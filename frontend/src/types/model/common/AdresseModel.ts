@@ -13,7 +13,8 @@ class AdresseModel {
       (_.isNil(this.plz) || _.isEmpty(this.plz.trim())) &&
       (_.isNil(this.strasse) || _.isEmpty(this.strasse.trim())) &&
       (_.isNil(this.ort) || _.isEmpty(this.ort.trim())) &&
-      (_.isNil(this.hausnummer) || _.isEmpty(this.hausnummer.trim()))
+      (_.isNil(this.hausnummer) || _.isEmpty(this.hausnummer.trim())) &&
+      (_.isNil(this.coordinate) || _.isEmpty(this.coordinate))
     );
   }
 }
