@@ -90,7 +90,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
   private handleClickInMap(latlng: LatLng): void {
     const point = this.createPointGeometry(latlng);
     this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
-      const flurstueckeBackend = this.createFlurstueckeBackendFromFlurstueckeGeoDataEai(flurstuecke);
+      const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
       this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
     });
   }
@@ -102,13 +102,6 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
   private async handleAcceptSelectedGeoJson(): Promise<void> {
     const verortung: VerortungDto = await this.createVerortungDtoFromSelectedFlurstuecke();
     this.verortungModel = new VerortungModel(verortung);
-  }
-
-  private createPointGeometry(latlng: LatLng): PointGeometryDto {
-    return {
-      type: "Point",
-      coordinates: [latlng.lng, latlng.lat],
-    };
   }
 
   private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
@@ -134,6 +127,27 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     return flurstueckMap;
   }
 
+  private createPointGeometry(latlng: LatLng): PointGeometryDto {
+    return {
+      type: "Point",
+      coordinates: [latlng.lng, latlng.lat],
+    };
+  }
+
+  private createMultiPolygonGeometryFromSelectedFlurstuecke(): MultiPolygonGeometryDtoGeoDataEai {
+    const multipolygon: MultiPolygonGeometryDtoGeoDataEai = {
+      type: "MultiPolygon",
+      coordinates: [],
+    };
+    this.selectedFlurstuecke.forEach((flurstueck: FlurstueckDto, key: string) => {
+      const flurstueckMultiPolygon = flurstueck.multiPolygon as MultiPolygonGeometryDtoBackend;
+      flurstueckMultiPolygon?.coordinates?.forEach((polygon) => {
+        multipolygon.coordinates?.push(polygon);
+      });
+    });
+    return multipolygon;
+  }
+
   private flurstueckeToGeoJsonFeature(flurstuecke: Array<FlurstueckDto>): Array<Feature> {
     return flurstuecke.map((flurstueck: FlurstueckDto) => {
       return {
@@ -151,34 +165,19 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     });
   }
 
-  private createMultiPolygonFromSelectedFlurstuecke(): MultiPolygonGeometryDtoGeoDataEai {
-    const multipolygon: MultiPolygonGeometryDtoGeoDataEai = {
-      type: "MultiPolygon",
-      coordinates: [],
-    };
-    this.selectedFlurstuecke.forEach((flurstueck: FlurstueckDto, key: string) => {
-      const flurstueckMultiPolygon = flurstueck.multiPolygon as MultiPolygonGeometryDtoBackend;
-      flurstueckMultiPolygon?.coordinates?.forEach((polygon) => {
-        multipolygon.coordinates?.push(polygon);
-      });
-    });
-    return multipolygon;
-  }
-
   private async createVerortungDtoFromSelectedFlurstuecke(): Promise<VerortungDto> {
-    const multipolygon = this.createMultiPolygonFromSelectedFlurstuecke();
+    const multipolygon = this.createMultiPolygonGeometryFromSelectedFlurstuecke();
     const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
     const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForMultipolygon(
       unifiedMultipolygon,
       true
     );
-    const stadtbezirkeBackend: Array<StadtbezirkDto> =
-      this.createStadtbezirkeBackendFromStadtbezirkeGeoDataEai(stadtbezirke);
+    const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
     const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
       unifiedMultipolygon,
       true
     );
-    const gemarkungenBackend: Array<GemarkungDto> = this.createGemarkungenBackendFromGemarkungenGeoDataEai(gemarkungen);
+    const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
     this.selectedFlurstuecke.forEach((selectedFlurstueck, key) => {
       const matchingGemarkung = gemarkungenBackend.find(
         (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer
@@ -193,7 +192,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     return verortung;
   }
 
-  private createStadtbezirkeBackendFromStadtbezirkeGeoDataEai(
+  private stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
     stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>
   ): Array<StadtbezirkDto> {
     return stadtbezirkeGeoDataEai.map((stadtbezirk) => {
@@ -205,7 +204,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     });
   }
 
-  private createGemarkungenBackendFromGemarkungenGeoDataEai(
+  private gemarkungenGeoDataEaiToGemarkungenBackend(
     gemarkungenGeoDataEai: Array<FeatureDtoGemarkungDto>
   ): Array<GemarkungDto> {
     return gemarkungenGeoDataEai.map((gemarkung) => {
@@ -218,15 +217,13 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     });
   }
 
-  private createFlurstueckeBackendFromFlurstueckeGeoDataEai(
+  private flurstueckeGeoDataEaiToFlurstueckeBackend(
     flurstueckGeoDataEai: Array<FeatureDtoFlurstueckDto>
   ): Array<FlurstueckDto> {
-    return flurstueckGeoDataEai.map(this.createFlurstueckBackendFromFlurstueckGeoDataEai);
+    return flurstueckGeoDataEai.map(this.flurstueckGeoDataEaiToFlurstueckBackend);
   }
 
-  private createFlurstueckBackendFromFlurstueckGeoDataEai(
-    flurstueckGeoDataEai: FeatureDtoFlurstueckDto
-  ): FlurstueckDto {
+  private flurstueckGeoDataEaiToFlurstueckBackend(flurstueckGeoDataEai: FeatureDtoFlurstueckDto): FlurstueckDto {
     return {
       nummer: [
         flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
