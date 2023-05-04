@@ -44,7 +44,7 @@ import {
 export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
   private verortungCardTitle = "Verortung";
 
-  @VModel({ type: VerortungModel }) verortungModel!: VerortungModel;
+  @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
 
   @Prop()
   private readonly lookAt?: AdresseDto;
@@ -69,22 +69,15 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
 
   @Watch("selectedFlurstuecke", { deep: true })
   private onSelectedFlurstueckeChanged(): void {
-    console.log(Array.from(this.selectedFlurstuecke.values()));
-
     this.geoJson = this.flurstueckeToGeoJsonFeature(Array.from(this.selectedFlurstuecke.values()));
-    console.log("this.geoJson");
-    console.log(this.geoJson);
   }
 
   @Watch("verortungModel", { deep: true })
   private onVerortungModelChanged(): void {
-    const flurstueckeFromVerortungModel = Array.from(this.verortungModel.gemarkungen).flatMap((gemarkung) =>
-      Array.from(gemarkung.flurstuecke)
-    );
-    console.log(flurstueckeFromVerortungModel);
+    const flurstueckeFromVerortungModel = Array.from(
+      _.isNil(this.verortungModel) ? [] : this.verortungModel.gemarkungen
+    ).flatMap((gemarkung) => Array.from(gemarkung.flurstuecke));
     this.selectedFlurstuecke = this.createMapForFlurstuecke(flurstueckeFromVerortungModel);
-    console.log("this.selectedFlurstuecke");
-    console.log(this.selectedFlurstuecke);
   }
 
   private handleClickInMap(latlng: LatLng): void {
@@ -100,8 +93,12 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
-    const verortung: VerortungDto = await this.createVerortungDtoFromSelectedFlurstuecke();
-    this.verortungModel = new VerortungModel(verortung);
+    if (this.selectedFlurstuecke.size !== 0) {
+      const verortung: VerortungDto = await this.createVerortungDtoFromSelectedFlurstuecke();
+      this.verortungModel = new VerortungModel(verortung);
+    } else {
+      this.verortungModel = undefined;
+    }
   }
 
   private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
@@ -234,6 +231,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
           eigentumsart: flurstueck.eigentumsart,
           eigentumsartBedeutung: flurstueck.eigentumsartBedeutung,
           flaecheQm: flurstueck.flaecheQm,
+          nummerGemarkung: flurstueck.gemarkungNummer,
         },
       };
     });

@@ -248,11 +248,19 @@ export default class CityMap extends Vue {
       onEachFeature: function (feature, layer) {
         // Tooltip je Multipolygon
         if (feature.properties && feature.properties.nummer) {
-          layer.bindTooltip("<b>Flurstueck:</b><br>" + "Nummer:&nbsp;" + feature.properties.nummer, {
-            sticky: true,
-            direction: "top",
-            offset: L.point(0, -2),
-          });
+          layer.bindTooltip(
+            "<b>Flurstueck:</b><br>" +
+              "Nummer:&nbsp;" +
+              feature.properties.nummer +
+              "<br>" +
+              "Gemarkung:&nbsp;" +
+              feature.properties.nummerGemarkung,
+            {
+              sticky: true,
+              direction: "top",
+              offset: L.point(0, -2),
+            }
+          );
           layer.on("mouseover", function () {
             layer.openTooltip();
           });

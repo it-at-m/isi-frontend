@@ -76,7 +76,7 @@ export function createAbfrageDto(): AbfrageDto {
       ort: "",
       coordinate: undefined,
     },
-    verortung: createVerortungDto(),
+    verortung: undefined,
     fristStellungnahme: new Date(0),
     anmerkung: undefined,
     statusAbfrage: StatusAbfrage.Angelegt,
@@ -118,17 +118,6 @@ export function createAdresseDto(): AdresseDto {
   } as AdresseDto;
 }
 
-export function createVerortungDto(): VerortungDto {
-  return {
-    gemarkungen: new Set<GemarkungDto>(),
-    stadtbezirke: new Set<StadtbezirkDto>(),
-    multiPolygon: {
-      type: "MultiPolygon",
-      coordinates: [],
-    },
-  };
-}
-
 /**
  * BauvorhabenDto
  */
@@ -149,7 +138,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
       ort: "",
       coordinate: undefined,
     },
-    verortung: createVerortungDto(),
+    verortung: undefined,
     allgemeineOrtsangabe: "",
     bebauungsplannummer: "",
     fisNummer: "",
