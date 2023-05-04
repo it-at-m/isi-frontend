@@ -148,23 +148,6 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     return multipolygon;
   }
 
-  private flurstueckeToGeoJsonFeature(flurstuecke: Array<FlurstueckDto>): Array<Feature> {
-    return flurstuecke.map((flurstueck: FlurstueckDto) => {
-      return {
-        type: "Feature",
-        geometry: JSON.parse(JSON.stringify(flurstueck.multiPolygon)) as MultiPolygon,
-        properties: {
-          nummer: flurstueck.nummer,
-          zaehler: flurstueck.zaehler,
-          nenner: flurstueck.nenner,
-          eigentumsart: flurstueck.eigentumsart,
-          eigentumsartBedeutung: flurstueck.eigentumsartBedeutung,
-          flaecheQm: flurstueck.flaecheQm,
-        },
-      };
-    });
-  }
-
   private async createVerortungDtoFromSelectedFlurstuecke(): Promise<VerortungDto> {
     const multipolygon = this.createMultiPolygonGeometryFromSelectedFlurstuecke();
     const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
@@ -237,6 +220,23 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
       gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
       multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
     };
+  }
+
+  private flurstueckeToGeoJsonFeature(flurstuecke: Array<FlurstueckDto>): Array<Feature> {
+    return flurstuecke.map((flurstueck: FlurstueckDto) => {
+      return {
+        type: "Feature",
+        geometry: JSON.parse(JSON.stringify(flurstueck.multiPolygon)) as MultiPolygon,
+        properties: {
+          nummer: flurstueck.nummer,
+          zaehler: flurstueck.zaehler,
+          nenner: flurstueck.nenner,
+          eigentumsart: flurstueck.eigentumsart,
+          eigentumsartBedeutung: flurstueck.eigentumsartBedeutung,
+          flaecheQm: flurstueck.flaecheQm,
+        },
+      };
+    });
   }
 }
 </script>
