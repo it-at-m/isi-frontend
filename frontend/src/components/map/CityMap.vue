@@ -57,7 +57,7 @@
           title="Auswahl übernehmen"
           @click="onAcceptSelectedGeoJson"
         >
-          <v-icon large> mdi-content-save-outline </v-icon>
+          <v-icon large> mdi-checkbox-marked-outline </v-icon>
         </button>
         <button
           v-if="isGeoJsonNotEmpty"

@@ -37,11 +37,12 @@ import {
   StadtbezirkDto,
   VerortungDto,
 } from "@/api/api-client/isi-backend";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   components: { CityMap },
 })
-export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
+export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLeaveMixin) {
   private verortungCardTitle = "Verortung";
 
   @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
@@ -99,6 +100,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     } else {
       this.verortungModel = undefined;
     }
+    this.formChanged();
   }
 
   private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
