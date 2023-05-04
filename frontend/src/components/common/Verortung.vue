@@ -7,6 +7,7 @@
       editable
       :look-at="coordinate"
       :geo-json="geoJsonObjectsToShow"
+      :geo-json-options="geoJsonOptionsToShow"
       @click-in-map="handleClickInMap($event)"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
@@ -17,7 +18,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
-import { LatLng, LatLngLiteral } from "leaflet";
+import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
@@ -68,6 +69,39 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     return this.geoJson;
   }
 
+  get geoJsonOptionsToShow(): GeoJSONOptions {
+    return {
+      // Farbe des Multipolygons
+      style: function () {
+        return { color: "#E91E63" };
+      },
+      onEachFeature: function (feature, layer) {
+        // Tooltip je Multipolygon
+        if (feature.properties && feature.properties.nummer) {
+          layer.bindTooltip(
+            "<b>Flurstück:</b><br>" +
+              "Nummer:&nbsp;" +
+              feature.properties.nummer +
+              "<br>" +
+              "Gemarkung:&nbsp;" +
+              feature.properties.nummerGemarkung,
+            {
+              sticky: true,
+              direction: "top",
+              offset: L.point(0, -2),
+            }
+          );
+          layer.on("mouseover", function () {
+            layer.openTooltip();
+          });
+          layer.on("mouseout", function () {
+            layer.closeTooltip();
+          });
+        }
+      },
+    };
+  }
+
   @Watch("selectedFlurstuecke", { deep: true })
   private onSelectedFlurstueckeChanged(): void {
     this.geoJson = this.flurstueckeToGeoJsonFeature(Array.from(this.selectedFlurstuecke.values()));
@@ -94,13 +128,17 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
+    let newVerortungModel: VerortungModel | undefined;
     if (this.selectedFlurstuecke.size !== 0) {
       const verortung: VerortungDto = await this.createVerortungDtoFromSelectedFlurstuecke();
-      this.verortungModel = new VerortungModel(verortung);
+      newVerortungModel = new VerortungModel(verortung);
     } else {
-      this.verortungModel = undefined;
+      newVerortungModel = undefined;
     }
-    this.formChanged();
+    if (!this.isEqual(this.verortungModel, newVerortungModel)) {
+      this.verortungModel = newVerortungModel;
+      this.formChanged();
+    }
   }
 
   private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
@@ -138,7 +176,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       type: "MultiPolygon",
       coordinates: [],
     };
-    this.selectedFlurstuecke.forEach((flurstueck: FlurstueckDto, key: string) => {
+    this.selectedFlurstuecke.forEach((flurstueck: FlurstueckDto) => {
       const flurstueckMultiPolygon = flurstueck.multiPolygon as MultiPolygonGeometryDtoBackend;
       flurstueckMultiPolygon?.coordinates?.forEach((polygon) => {
         multipolygon.coordinates?.push(polygon);
@@ -160,7 +198,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       true
     );
     const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
-    this.selectedFlurstuecke.forEach((selectedFlurstueck, key) => {
+    this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
       const matchingGemarkung = gemarkungenBackend.find(
         (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer
       );
@@ -237,6 +275,70 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         },
       };
     });
+  }
+
+  private isEqual(value: VerortungModel | undefined, other: VerortungModel | undefined): boolean {
+    let clonedValue = _.cloneDeep(value);
+    if (!_.isNil(clonedValue) && !(clonedValue instanceof VerortungModel)) {
+      clonedValue = new VerortungModel(clonedValue);
+    }
+    let clonedOther = _.cloneDeep(other);
+    if (!_.isNil(clonedOther) && !(clonedOther instanceof VerortungModel)) {
+      clonedOther = new VerortungModel(clonedOther);
+    }
+    if (!_.isNil(clonedValue)) clonedValue.id = undefined;
+    if (!_.isNil(clonedValue)) clonedValue.version = undefined;
+    if (!_.isNil(clonedValue)) clonedValue.createdDateTime = undefined;
+    if (!_.isNil(clonedValue)) clonedValue.lastModifiedDateTime = undefined;
+    if (!_.isNil(clonedValue)) clonedValue.multiPolygon.coordinates = [];
+    clonedValue?.stadtbezirke.forEach((stadtbezirk) => {
+      stadtbezirk.id = undefined;
+      stadtbezirk.version = undefined;
+      stadtbezirk.createdDateTime = undefined;
+      stadtbezirk.lastModifiedDateTime = undefined;
+      stadtbezirk.multiPolygon.coordinates = [];
+    });
+    clonedValue?.gemarkungen.forEach((gemarkung) => {
+      gemarkung.id = undefined;
+      gemarkung.version = undefined;
+      gemarkung.createdDateTime = undefined;
+      gemarkung.lastModifiedDateTime = undefined;
+      gemarkung.multiPolygon.coordinates = [];
+      gemarkung.flurstuecke.forEach((flurstueck) => {
+        flurstueck.id = undefined;
+        flurstueck.version = undefined;
+        flurstueck.createdDateTime = undefined;
+        flurstueck.lastModifiedDateTime = undefined;
+        flurstueck.multiPolygon = undefined;
+      });
+    });
+    if (!_.isNil(clonedOther)) clonedOther.id = undefined;
+    if (!_.isNil(clonedOther)) clonedOther.version = undefined;
+    if (!_.isNil(clonedOther)) clonedOther.createdDateTime = undefined;
+    if (!_.isNil(clonedOther)) clonedOther.lastModifiedDateTime = undefined;
+    if (!_.isNil(clonedOther)) clonedOther.multiPolygon.coordinates = [];
+    clonedOther?.stadtbezirke.forEach((stadtbezirk) => {
+      stadtbezirk.id = undefined;
+      stadtbezirk.version = undefined;
+      stadtbezirk.createdDateTime = undefined;
+      stadtbezirk.lastModifiedDateTime = undefined;
+      stadtbezirk.multiPolygon.coordinates = [];
+    });
+    clonedOther?.gemarkungen.forEach((gemarkung) => {
+      gemarkung.id = undefined;
+      gemarkung.version = undefined;
+      gemarkung.createdDateTime = undefined;
+      gemarkung.lastModifiedDateTime = undefined;
+      gemarkung.multiPolygon.coordinates = [];
+      gemarkung.flurstuecke.forEach((flurstueck) => {
+        flurstueck.id = undefined;
+        flurstueck.version = undefined;
+        flurstueck.createdDateTime = undefined;
+        flurstueck.lastModifiedDateTime = undefined;
+        flurstueck.multiPolygon = undefined;
+      });
+    });
+    return _.isEqual(clonedValue, clonedOther);
   }
 }
 </script>

@@ -104,6 +104,7 @@
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
 import L, {
+  GeoJSONOptions,
   LatLng,
   LatLngBounds,
   LatLngBoundsLiteral,
@@ -155,8 +156,17 @@ export default class CityMap extends Vue {
   @Prop()
   private readonly lookAt?: LatLngLiteral;
 
+  /**
+   * Die Feature welche in der Karte dargestellt werden sollen.
+   */
   @Prop({ default: [] })
   private readonly geoJson?: Feature[];
+
+  /**
+   * Die Konfiguration der Darstellung und des Verhaltens der Feature in der Property "geoJson".
+   */
+  @Prop({ default: undefined })
+  private readonly geoJsonOptions?: GeoJSONOptions;
 
   private layerGroup: LayerGroup = new LayerGroup();
 
@@ -239,37 +249,7 @@ export default class CityMap extends Vue {
     this.map.removeLayer(this.layerGroup);
     this.layerGroup = new L.LayerGroup();
     this.layerGroup.addTo(this.map);
-    L.geoJSON(this.geoJson, {
-      // Farbe des Multipolygons
-      style: function () {
-        return { color: "#E91E63" };
-      },
-      //
-      onEachFeature: function (feature, layer) {
-        // Tooltip je Multipolygon
-        if (feature.properties && feature.properties.nummer) {
-          layer.bindTooltip(
-            "<b>Flurstueck:</b><br>" +
-              "Nummer:&nbsp;" +
-              feature.properties.nummer +
-              "<br>" +
-              "Gemarkung:&nbsp;" +
-              feature.properties.nummerGemarkung,
-            {
-              sticky: true,
-              direction: "top",
-              offset: L.point(0, -2),
-            }
-          );
-          layer.on("mouseover", function () {
-            layer.openTooltip();
-          });
-          layer.on("mouseout", function () {
-            layer.closeTooltip();
-          });
-        }
-      },
-    }).addTo(this.layerGroup);
+    L.geoJSON(this.geoJson, this.geoJsonOptions).addTo(this.layerGroup);
   }
 
   private flyToCenterOfPolygonsInMap(): void {
