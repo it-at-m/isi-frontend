@@ -12,6 +12,42 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
+    <v-chip-group
+      v-if="stadtbezirke.length !== 0"
+      title="Stadtbezirke"
+      active-class="primary--text"
+    >
+      <v-chip
+        v-for="(stadtbezirk, index) in stadtbezirke"
+        :key="index"
+      >
+        {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
+      </v-chip>
+    </v-chip-group>
+    <v-chip-group
+      v-if="gemarkungen.length !== 0"
+      title="Gemarkungen"
+      active-class="primary--text"
+    >
+      <v-chip
+        v-for="(gemarkung, index) in gemarkungen"
+        :key="index"
+      >
+        {{ gemarkung.nummer + `/` + gemarkung.name }}
+      </v-chip>
+    </v-chip-group>
+    <v-chip-group
+      v-if="flurstuecke.length !== 0"
+      title="Flurstücke"
+      active-class="primary--text"
+    >
+      <v-chip
+        v-for="(flurstueck, index) in flurstuecke"
+        :key="index"
+      >
+        {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner }}
+      </v-chip>
+    </v-chip-group>
   </field-group-card>
 </template>
 
@@ -100,6 +136,18 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         }
       },
     };
+  }
+
+  get stadtbezirke(): Array<StadtbezirkDto> {
+    return _.isNil(this.verortungModel) ? [] : Array.from(this.verortungModel?.stadtbezirke);
+  }
+
+  get gemarkungen(): Array<GemarkungDto> {
+    return _.isNil(this.verortungModel) ? [] : Array.from(this.verortungModel?.gemarkungen);
+  }
+
+  get flurstuecke(): Array<FlurstueckDto> {
+    return this.gemarkungen.flatMap((gemarkung) => Array.from(gemarkung.flurstuecke));
   }
 
   @Watch("selectedFlurstuecke", { deep: true })
