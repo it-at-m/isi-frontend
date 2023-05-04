@@ -106,7 +106,7 @@ import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaf
 import L, { LatLng, LatLngLiteral, LayerGroup, LeafletMouseEvent, MapOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
-import { GeoJsonObject } from "geojson";
+import { Feature } from "geojson";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -148,7 +148,7 @@ export default class CityMap extends Vue {
   private readonly lookAt?: LatLngLiteral;
 
   @Prop({ default: [] })
-  private readonly geoJson?: GeoJsonObject[];
+  private readonly geoJson?: Feature[];
 
   private layerGroup: LayerGroup = new LayerGroup();
 
@@ -233,8 +233,26 @@ export default class CityMap extends Vue {
     this.layerGroup = new L.LayerGroup();
     this.layerGroup.addTo(this.map);
     L.geoJSON(this.geoJson, {
+      // Farbe des Multipolygons
       style: function () {
         return { color: "#E91E63" };
+      },
+      //
+      onEachFeature: function (feature, layer) {
+        // Tooltip je Multipolygon
+        if (feature.properties && feature.properties.nummer) {
+          layer.bindTooltip("<b>Flurstueck:</b><br>" + "Nummer:&nbsp;" + feature.properties.nummer, {
+            sticky: true,
+            direction: "top",
+            offset: L.point(0, -2),
+          });
+          layer.on("mouseover", function () {
+            layer.openTooltip();
+          });
+          layer.on("mouseout", function () {
+            layer.closeTooltip();
+          });
+        }
       },
     }).addTo(this.layerGroup);
   }

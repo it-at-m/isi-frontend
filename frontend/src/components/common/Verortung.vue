@@ -17,8 +17,8 @@
 <script lang="ts">
 import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
-import { LatLng, LatLngLiteral, polygon } from "leaflet";
-import { Feature, GeoJsonObject, MultiPolygon } from "geojson";
+import { LatLng, LatLngLiteral } from "leaflet";
+import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
   FeatureDtoFlurstueckDto,
@@ -49,7 +49,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
   @Prop()
   private readonly lookAt?: AdresseDto;
 
-  private geoJson: Array<GeoJsonObject> = [];
+  private geoJson: Array<Feature> = [];
 
   private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
@@ -63,7 +63,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin) {
     return undefined;
   }
 
-  get geoJsonObjectsToShow(): Array<GeoJsonObject> {
+  get geoJsonObjectsToShow(): Array<Feature> {
     return this.geoJson;
   }
 
