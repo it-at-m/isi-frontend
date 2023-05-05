@@ -142,15 +142,17 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   get stadtbezirke(): Array<StadtbezirkDto> {
-    return _.isNil(this.verortungModel) ? [] : Array.from(this.verortungModel?.stadtbezirke);
+    return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.stadtbezirke), ["nummer"]);
   }
 
   get gemarkungen(): Array<GemarkungDto> {
-    return _.isNil(this.verortungModel) ? [] : Array.from(this.verortungModel?.gemarkungen);
+    return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.gemarkungen), ["nummer"]);
   }
 
   get flurstuecke(): Array<FlurstueckDto> {
-    return this.gemarkungen.flatMap((gemarkung) => Array.from(gemarkung.flurstuecke));
+    return this.gemarkungen.flatMap((gemarkung) =>
+      _.sortBy(Array.from(gemarkung.flurstuecke), ["gemarkungNummer", "zaehler", "nenner"])
+    );
   }
 
   @Watch("selectedFlurstuecke", { deep: true })
@@ -186,10 +188,8 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     } else {
       newVerortungModel = undefined;
     }
-    if (!this.isEqual(this.verortungModel, newVerortungModel)) {
-      this.verortungModel = newVerortungModel;
-      this.formChanged();
-    }
+    this.verortungModel = newVerortungModel;
+    this.formChanged();
   }
 
   private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
@@ -326,70 +326,6 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         },
       };
     });
-  }
-
-  private isEqual(value: VerortungModel | undefined, other: VerortungModel | undefined): boolean {
-    let clonedValue = _.cloneDeep(value);
-    if (!_.isNil(clonedValue) && !(clonedValue instanceof VerortungModel)) {
-      clonedValue = new VerortungModel(clonedValue);
-    }
-    let clonedOther = _.cloneDeep(other);
-    if (!_.isNil(clonedOther) && !(clonedOther instanceof VerortungModel)) {
-      clonedOther = new VerortungModel(clonedOther);
-    }
-    if (!_.isNil(clonedValue)) clonedValue.id = undefined;
-    if (!_.isNil(clonedValue)) clonedValue.version = undefined;
-    if (!_.isNil(clonedValue)) clonedValue.createdDateTime = undefined;
-    if (!_.isNil(clonedValue)) clonedValue.lastModifiedDateTime = undefined;
-    if (!_.isNil(clonedValue)) clonedValue.multiPolygon.coordinates = [];
-    clonedValue?.stadtbezirke.forEach((stadtbezirk) => {
-      stadtbezirk.id = undefined;
-      stadtbezirk.version = undefined;
-      stadtbezirk.createdDateTime = undefined;
-      stadtbezirk.lastModifiedDateTime = undefined;
-      stadtbezirk.multiPolygon.coordinates = [];
-    });
-    clonedValue?.gemarkungen.forEach((gemarkung) => {
-      gemarkung.id = undefined;
-      gemarkung.version = undefined;
-      gemarkung.createdDateTime = undefined;
-      gemarkung.lastModifiedDateTime = undefined;
-      gemarkung.multiPolygon.coordinates = [];
-      gemarkung.flurstuecke.forEach((flurstueck) => {
-        flurstueck.id = undefined;
-        flurstueck.version = undefined;
-        flurstueck.createdDateTime = undefined;
-        flurstueck.lastModifiedDateTime = undefined;
-        flurstueck.multiPolygon = undefined;
-      });
-    });
-    if (!_.isNil(clonedOther)) clonedOther.id = undefined;
-    if (!_.isNil(clonedOther)) clonedOther.version = undefined;
-    if (!_.isNil(clonedOther)) clonedOther.createdDateTime = undefined;
-    if (!_.isNil(clonedOther)) clonedOther.lastModifiedDateTime = undefined;
-    if (!_.isNil(clonedOther)) clonedOther.multiPolygon.coordinates = [];
-    clonedOther?.stadtbezirke.forEach((stadtbezirk) => {
-      stadtbezirk.id = undefined;
-      stadtbezirk.version = undefined;
-      stadtbezirk.createdDateTime = undefined;
-      stadtbezirk.lastModifiedDateTime = undefined;
-      stadtbezirk.multiPolygon.coordinates = [];
-    });
-    clonedOther?.gemarkungen.forEach((gemarkung) => {
-      gemarkung.id = undefined;
-      gemarkung.version = undefined;
-      gemarkung.createdDateTime = undefined;
-      gemarkung.lastModifiedDateTime = undefined;
-      gemarkung.multiPolygon.coordinates = [];
-      gemarkung.flurstuecke.forEach((flurstueck) => {
-        flurstueck.id = undefined;
-        flurstueck.version = undefined;
-        flurstueck.createdDateTime = undefined;
-        flurstueck.lastModifiedDateTime = undefined;
-        flurstueck.multiPolygon = undefined;
-      });
-    });
-    return _.isEqual(clonedValue, clonedOther);
   }
 }
 </script>
