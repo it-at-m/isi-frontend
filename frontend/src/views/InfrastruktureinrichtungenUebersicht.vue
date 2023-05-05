@@ -38,7 +38,7 @@
     </template>
     <template #action>
       <v-spacer />
-      <div>
+      <div class="align-self-end">
         <v-tooltip left>
           <template #activator="{ on }">
             <v-btn
