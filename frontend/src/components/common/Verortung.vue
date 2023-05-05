@@ -12,6 +12,7 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
+    <v-label v-if="stadtbezirke.length !== 0">Stadtbezirke</v-label>
     <v-chip-group
       v-if="stadtbezirke.length !== 0"
       title="Stadtbezirke"
@@ -24,6 +25,7 @@
         {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
       </v-chip>
     </v-chip-group>
+    <v-label v-if="gemarkungen.length !== 0">Gemarkungen</v-label>
     <v-chip-group
       v-if="gemarkungen.length !== 0"
       title="Gemarkungen"
@@ -36,6 +38,7 @@
         {{ gemarkung.nummer + `/` + gemarkung.name }}
       </v-chip>
     </v-chip-group>
+    <v-label v-if="flurstuecke.length !== 0">Flurstücke</v-label>
     <v-chip-group
       v-if="flurstuecke.length !== 0"
       title="Flurstücke"
