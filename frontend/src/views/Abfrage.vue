@@ -606,10 +606,9 @@ export default class Abfrage extends Mixins(
   }
 
   private handleRelevantAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    this.abfragevarianteTreeItemToDelete = abfrageTreeItem;
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.forEach((abfragevariante, index) => {
-      if (abfragevariante.id === this.selectedAbfragevariante.id) {
+      if (_.isEqual(abfragevariante, this.selectedAbfragevariante)) {
         this.abfrageWrapped.infrastrukturabfrage.abfragevarianten[index].relevant =
           !this.abfrageWrapped.infrastrukturabfrage.abfragevarianten[index].relevant;
         this.formChanged();
