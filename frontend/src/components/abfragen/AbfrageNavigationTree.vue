@@ -9,13 +9,11 @@
           :active.sync="markedTreeItems"
           :open.sync="treeItemIdsToOpen"
           :items="abfrageTreeItems"
+          activatable
           active-class="font-weight-black v-treeview-node--active"
         >
           <template #prepend="{ item }">
             <v-icon v-if="item.changed"> mdi-exclamation</v-icon>
-          </template>
-          <template #label="{ item }">
-            <a @click="setSelectedTreeItem(item)">{{ item.name }}</a>
           </template>
           <template #append="{ item }">
             <v-btn
@@ -186,8 +184,6 @@ export default class AbfrageNavigationTree extends Vue {
 
   private abfrageTreeItemsToOpen: Array<number> = [];
 
-  private newEntityToMark: unknown;
-
   /**
    * Der Watcher reagiert, falls sich der übergebene AbfrageWrapper ändert oder durch einen Neuen ersetzt wird.
    * Hat das Attribut "initial" die Ausprägung true, so wird eine Kopie der AbfrageTreeItems erstellt,
@@ -234,13 +230,9 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   public setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem): void {
-    if (!_.isNil(this.$refs.abfrageTreeview) && this.isItemSelectable(selectedTreeItem)) {
+    if (!_.isNil(this.$refs.abfrageTreeview)) {
       this.markedTreeItems = [selectedTreeItem.id];
     }
-  }
-
-  public setNewEntityToMark(entity: unknown): void {
-    this.newEntityToMark = entity;
   }
 
   get treeItemIdsToOpen(): Array<number> {
@@ -450,7 +442,7 @@ export default class AbfrageNavigationTree extends Vue {
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto
   ) {
-    const item = this.createAbfrageTreeItem(
+    return this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementAbfragevariante(abfragevariante),
@@ -461,12 +453,6 @@ export default class AbfrageNavigationTree extends Vue {
       undefined,
       undefined
     );
-
-    if (abfragevariante === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
-    }
-
-    return item;
   }
 
   private createAddAbfragevarianteTreeItem(
@@ -494,7 +480,7 @@ export default class AbfrageNavigationTree extends Vue {
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
-    const item = this.createAbfrageTreeItem(
+    return this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementBauabschnitt(bauabschnitt),
@@ -505,12 +491,6 @@ export default class AbfrageNavigationTree extends Vue {
       undefined,
       undefined
     );
-
-    if (bauabschnitt === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
-    }
-
-    return item;
   }
 
   private createAddBauabschnittTreeItem(
@@ -540,7 +520,7 @@ export default class AbfrageNavigationTree extends Vue {
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
   ) {
-    const item = this.createAbfrageTreeItem(
+    return this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementBaugebiet(baugebiet),
@@ -551,12 +531,6 @@ export default class AbfrageNavigationTree extends Vue {
       baugebiet,
       undefined
     );
-
-    if (baugebiet === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
-    }
-
-    return item;
   }
 
   private createAddBaugebietTreeItem(
@@ -607,7 +581,7 @@ export default class AbfrageNavigationTree extends Vue {
     baugebiet: BaugebietDto,
     baurate: BaurateDto
   ) {
-    const item = this.createAbfrageTreeItem(
+    return this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementBaurate(baurate),
@@ -618,12 +592,6 @@ export default class AbfrageNavigationTree extends Vue {
       baugebiet,
       baurate
     );
-
-    if (baurate === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
-    }
-
-    return item;
   }
 
   private createAddBaurateTreeItem(
@@ -939,7 +907,6 @@ export default class AbfrageNavigationTree extends Vue {
   private createNewBaugebiet(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
-
   @Emit()
   private selectBaurate(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
