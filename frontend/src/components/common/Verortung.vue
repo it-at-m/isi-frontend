@@ -17,6 +17,7 @@
       v-if="stadtbezirke.length !== 0"
       title="Stadtbezirke"
       active-class="primary--text"
+      column
     >
       <v-chip
         v-for="(stadtbezirk, index) in stadtbezirke"
@@ -30,6 +31,7 @@
       v-if="gemarkungen.length !== 0"
       title="Gemarkungen"
       active-class="primary--text"
+      column
     >
       <v-chip
         v-for="(gemarkung, index) in gemarkungen"
@@ -43,6 +45,7 @@
       v-if="flurstuecke.length !== 0"
       title="Flurstücke"
       active-class="primary--text"
+      column
     >
       <v-chip
         v-for="(flurstueck, index) in flurstuecke"
