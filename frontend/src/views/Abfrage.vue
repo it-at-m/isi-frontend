@@ -144,6 +144,7 @@
           @select-abfrage="handleSelectAbfrage"
           @select-abfragevariante="handleSelectAbfragevariante"
           @delete-abfragevariante="handleDeleteAbfragevariante"
+          @relevant-abfragevariante="handleRelevantAbfragevariante"
           @create-new-abfragevariante="handleCreateNewAbfragevariante"
           @select-bauabschnitt="handleSelectBauabschnitt"
           @delete-bauabschnitt="handleDeleteBauabschnitt"
@@ -602,6 +603,18 @@ export default class Abfrage extends Mixins(
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
     this.isDeleteDialogAbfragevarianteOpen = true;
+  }
+
+  private handleRelevantAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.abfragevarianteTreeItemToDelete = abfrageTreeItem;
+    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.forEach((abfragevariante, index) => {
+      if (abfragevariante.id === this.selectedAbfragevariante.id) {
+        this.abfrageWrapped.infrastrukturabfrage.abfragevarianten[index].relevant =
+          !this.abfrageWrapped.infrastrukturabfrage.abfragevarianten[index].relevant;
+        this.formChanged();
+      }
+    });
   }
 
   private handleCreateNewAbfragevariante(): void {
