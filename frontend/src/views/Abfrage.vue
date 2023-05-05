@@ -613,6 +613,9 @@ export default class Abfrage extends Mixins(
         this.abfrageWrapped.infrastrukturabfrage.abfragevarianten[index].relevant =
           !this.abfrageWrapped.infrastrukturabfrage.abfragevarianten[index].relevant;
         this.formChanged();
+        this.$nextTick(() => {
+          this.openAbfragevarianteFormular();
+        });
       }
     });
   }
