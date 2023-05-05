@@ -233,7 +233,7 @@ export function createTechnicalBaugebietDto(): BaugebietDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     bezeichnung: "Platzhalter",
-    baugebietTyp: BaugebietDtoBaugebietTypEnum.Ge,
+    baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
     bauraten: [],
     technical: true,
   };
