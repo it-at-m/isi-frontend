@@ -276,12 +276,14 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         true
       );
       const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+      // Anfügen der Flurstücke an Gemarkung
       this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
         const matchingGemarkung = gemarkungenBackend.find(
           (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer
         );
         matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
       });
+      // Erstellung des VerortungDto
       return {
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
