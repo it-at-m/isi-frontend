@@ -49,6 +49,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       })
       .catch((error) => {
         this.handleError(showInInformationList, error);
+        throw new Error(error);
       });
 
     return flurstuecke;
@@ -70,6 +71,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       })
       .catch((error) => {
         this.handleError(showInInformationList, error);
+        throw new Error(error);
       });
 
     return flurstuecke;
@@ -91,6 +93,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       })
       .catch((error) => {
         this.handleError(showInInformationList, error);
+        throw new Error(error);
       });
 
     return gemarkungen;
@@ -112,6 +115,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       })
       .catch((error) => {
         this.handleError(showInInformationList, error);
+        throw new Error(error);
       });
 
     return stadtbezirke;
@@ -136,6 +140,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       })
       .catch((error) => {
         this.handleError(showInInformationList, error);
+        throw new Error(error);
       });
 
     return unifiedMultipolygon;

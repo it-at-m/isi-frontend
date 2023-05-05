@@ -190,15 +190,17 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
-    let newVerortungModel: VerortungModel | undefined;
+    let verortung: VerortungDto | undefined;
     if (this.selectedFlurstuecke.size !== 0) {
-      const verortung: VerortungDto = await this.createVerortungDtoFromSelectedFlurstuecke();
-      newVerortungModel = new VerortungModel(verortung);
+      verortung = await this.createVerortungDtoFromSelectedFlurstuecke();
+      if (!_.isNil(verortung)) {
+        this.verortungModel = new VerortungModel(verortung);
+        this.formChanged();
+      }
     } else {
-      newVerortungModel = undefined;
+      verortung = undefined;
+      this.formChanged();
     }
-    this.verortungModel = newVerortungModel;
-    this.formChanged();
   }
 
   /**
@@ -258,32 +260,36 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   /**
    * Erstellt das VerortungDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
+   * Tritt ein fehler bei der Erstellung des VerortungDtos auf, so wird undefined zurückgegeben.
    */
-  private async createVerortungDtoFromSelectedFlurstuecke(): Promise<VerortungDto> {
+  private async createVerortungDtoFromSelectedFlurstuecke(): Promise<VerortungDto | undefined> {
     const multipolygon = this.createMultiPolygonGeometryFromSelectedFlurstuecke();
-    const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
-    const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForMultipolygon(
-      unifiedMultipolygon,
-      true
-    );
-    const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
-    const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
-      unifiedMultipolygon,
-      true
-    );
-    const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
-    this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
-      const matchingGemarkung = gemarkungenBackend.find(
-        (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer
+    try {
+      const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
+      const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForMultipolygon(
+        unifiedMultipolygon,
+        true
       );
-      matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
-    });
-    const verortung: VerortungDto = {
-      gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
-      stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
-      multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
-    };
-    return verortung;
+      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
+      const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
+        unifiedMultipolygon,
+        true
+      );
+      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+      this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
+        const matchingGemarkung = gemarkungenBackend.find(
+          (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer
+        );
+        matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
+      });
+      return {
+        gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
+        stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
+        multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
+      } as VerortungDto;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   private stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
