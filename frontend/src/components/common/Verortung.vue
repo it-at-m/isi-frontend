@@ -198,7 +198,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         this.formChanged();
       }
     } else {
-      verortung = undefined;
+      this.verortungModel = undefined;
       this.formChanged();
     }
   }
