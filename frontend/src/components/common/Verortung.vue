@@ -202,10 +202,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   /**
-   * Die Methode dient dazu, die im Parameter gegebenen Flurstücke an die Variable "selectedFlurstuecke" anzufügen,
+   * Die Methode dient dazu, die im Parameter gegebenen Flurstücke an eine Kopie der Variablen "selectedFlurstuecke" anzufügen,
    * falls nicht bereits vorhanden.
-   * Ist ein Flurstück gegeben im Parameter bereits in der variablen "selectedFlurstuecke" vorhanden,
+   * Ist ein Flurstück gegeben im Parameter bereits in der Kopie der Variablen "selectedFlurstuecke" vorhanden,
    * wird das Flurstück aus der Variablen entfernt.
+   * Es wird die angepasst Kopie der der Variablen "selectedFlurstuecke" zurückgeben.
    */
   private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
     const clonedMap = _.cloneDeep(this.selectedFlurstuecke);
@@ -221,6 +222,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     return clonedMap;
   }
 
+  /**
+   * Erstellt eine Map mit den im Parameter gegebenen Flurstücken und gibt diese zurück.
+   * Der Key der Map ist die Flurstücknummer und der Value das im Parameter übergebene Flurstück.
+   */
   private createMapForFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
     const flurstueckMap = new Map<string, FlurstueckDto>();
     flurstuecke.forEach((flurstueck: FlurstueckDto) => {
