@@ -224,7 +224,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   /**
    * Erstellt eine Map mit den im Parameter gegebenen Flurstücken und gibt diese zurück.
-   * Der Key der Map ist die Flurstücknummer und der Value das im Parameter übergebene Flurstück.
+   * Der Key der Map ist die Flurstücknummer und der Value das entsprechende Flurstück.
    */
   private createMapForFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
     const flurstueckMap = new Map<string, FlurstueckDto>();
