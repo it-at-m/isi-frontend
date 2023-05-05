@@ -102,8 +102,6 @@ export default class ValidatorMixin extends Vue {
     let counter = 0;
     for (const abfragevariante of infrastrukturabfrage.abfragevarianten) {
       if (abfragevariante.relevant) {
-        console.log(abfragevariante.relevant);
-
         counter++;
       }
     }
