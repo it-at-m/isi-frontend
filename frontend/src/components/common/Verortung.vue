@@ -93,8 +93,14 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   @Prop()
   private readonly lookAt?: AdresseDto;
 
+  /**
+   * Repräsentiert das Multipolygon je Flurstück.
+   */
   private geoJson: Array<Feature> = [];
 
+  /**
+   * Repräsentiert die gewählten Flurstücke identifiziert über die Flurstücksnummer.
+   */
   private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
   get coordinate(): LatLngLiteral | undefined {
@@ -195,6 +201,12 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     this.formChanged();
   }
 
+  /**
+   * Die Methode dient dazu, die im Parameter gegebenen Flurstücke an die Variable "selectedFlurstuecke" anzufügen,
+   * falls nicht bereits vorhanden.
+   * Ist ein Flurstück gegeben im Parameter bereits in der variablen "selectedFlurstuecke" vorhanden,
+   * wird das Flurstück aus der Variablen entfernt.
+   */
   private adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
     const clonedMap = _.cloneDeep(this.selectedFlurstuecke);
     flurstuecke.forEach((flurstueck: FlurstueckDto) => {
@@ -239,6 +251,9 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     return multipolygon;
   }
 
+  /**
+   * Erstellt das VerortungDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
+   */
   private async createVerortungDtoFromSelectedFlurstuecke(): Promise<VerortungDto> {
     const multipolygon = this.createMultiPolygonGeometryFromSelectedFlurstuecke();
     const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
