@@ -5,7 +5,7 @@ import {
   DeleteInfrastrukturabfrageByIdRequest,
   InfrastrukturabfrageDto,
   GetInfrastrukturabfrageByIdRequest,
-  UpdateInfrastrukturabfrageRequest,
+  PatchAbfrageAngelegtRequest,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -38,15 +38,12 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  updateInfrastrukturabfrage(
-    dto: InfrastrukturabfrageDto,
-    showInInformationList: boolean
-  ): Promise<InfrastrukturabfrageDto> {
-    const requestObject: UpdateInfrastrukturabfrageRequest = {
+  patchAbfrageAngelegt(dto: InfrastrukturabfrageDto, showInInformationList: boolean): Promise<InfrastrukturabfrageDto> {
+    const requestObject: PatchAbfrageAngelegtRequest = {
       infrastrukturabfrageDto: dto,
     };
     return this.abfrageApi
-      .updateInfrastrukturabfrage(requestObject, RequestUtils.getPUTConfig())
+      .patchAbfrageAngelegt(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
         this.resetDirty();
         return response;

@@ -7,7 +7,7 @@ import { createInfrastrukturabfrageDto, createAbfragevarianteDto } from "@/utils
 describe("ModelTest.spec.ts", () => {
   test("Test InfrastrukturabfrageModel", () => {
     const dto = createInfrastrukturabfrageDto();
-    expect(dto.abfrage.adresse).toBeUndefined();
+    expect(dto.abfrage.adresse).not.toBeNull();
     expect(dto.abfragevarianten).toHaveLength(0);
     const model = new InfrastrukturabfrageModel(dto);
     expect(model.abfrage.adresse).not.toBeNull();

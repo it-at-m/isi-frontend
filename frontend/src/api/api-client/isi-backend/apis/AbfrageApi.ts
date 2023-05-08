@@ -35,7 +35,7 @@ export interface GetInfrastrukturabfrageByIdRequest {
     id: string;
 }
 
-export interface UpdateInfrastrukturabfrageRequest {
+export interface PatchAbfrageAngelegtRequest {
     infrastrukturabfrageDto: InfrastrukturabfrageDto;
 }
 
@@ -59,7 +59,7 @@ export class AbfrageApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/infrastruktur-abfrage`,
+            path: `/infrastruktur-abfragen`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -90,7 +90,7 @@ export class AbfrageApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/infrastruktur-abfrage/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/infrastruktur-abfragen/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -119,7 +119,7 @@ export class AbfrageApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/infrastruktur-abfrage/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/infrastruktur-abfragen/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -165,11 +165,11 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage
+     * Aktualisierung einer Infrastrukturabfrage.
      */
-    async updateInfrastrukturabfrageRaw(requestParameters: UpdateInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
+    async patchAbfrageAngelegtRaw(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
         if (requestParameters.infrastrukturabfrageDto === null || requestParameters.infrastrukturabfrageDto === undefined) {
-            throw new runtime.RequiredError('infrastrukturabfrageDto','Required parameter requestParameters.infrastrukturabfrageDto was null or undefined when calling updateInfrastrukturabfrage.');
+            throw new runtime.RequiredError('infrastrukturabfrageDto','Required parameter requestParameters.infrastrukturabfrageDto was null or undefined when calling patchAbfrageAngelegt.');
         }
 
         const queryParameters: any = {};
@@ -179,8 +179,8 @@ export class AbfrageApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/infrastruktur-abfrage`,
-            method: 'PUT',
+            path: `/infrastruktur-abfragen/angelegt`,
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: InfrastrukturabfrageDtoToJSON(requestParameters.infrastrukturabfrageDto),
@@ -190,10 +190,10 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage
+     * Aktualisierung einer Infrastrukturabfrage.
      */
-    async updateInfrastrukturabfrage(requestParameters: UpdateInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
-        const response = await this.updateInfrastrukturabfrageRaw(requestParameters, initOverrides);
+    async patchAbfrageAngelegt(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
+        const response = await this.patchAbfrageAngelegtRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
