@@ -188,8 +188,6 @@ export default class AbfrageNavigationTree extends Vue {
 
   private newEntityToMark: unknown;
 
-  private markSilently = false;
-
   /**
    * Der Watcher reagiert, falls sich der übergebene AbfrageWrapper ändert oder durch einen Neuen ersetzt wird.
    * Hat das Attribut "initial" die Ausprägung true, so wird eine Kopie der AbfrageTreeItems erstellt,
@@ -207,47 +205,34 @@ export default class AbfrageNavigationTree extends Vue {
     }
   }
 
-  @Watch("markedTreeItems", { immediate: true, deep: true })
-  private eventMarkedTreeItemElement(): void {
-    if (!this.markSilently && this.markedTreeItems.length) {
-      // Es kann nur ein Eintrag in der TreeView markiert werden.
-      const markedTreeItemId = this.markedTreeItems[0];
-      const markedTreeItem = this.createFlatAbfrageTreeItem(this.abfrageTreeItems).find(
-        (abfrageTreeItem) => abfrageTreeItem.id === markedTreeItemId
-      );
-      if (!_.isNil(markedTreeItemId) && !_.isNil(markedTreeItem)) {
-        if (this.isItemTypeOfAbfrage(markedTreeItem)) {
-          this.selectAbfrage(markedTreeItem);
-        } else if (this.isItemTypeOfAbfragevariante(markedTreeItem)) {
-          this.selectAbfragevariante(markedTreeItem);
-        } else if (this.isItemTypeOfBauabschnitt(markedTreeItem)) {
-          this.selectBauabschnitt(markedTreeItem);
-        } else if (this.isItemTypeOfBaugebiet(markedTreeItem)) {
-          this.selectBaugebiet(markedTreeItem);
-        } else if (this.isItemTypeOfBaurate(markedTreeItem)) {
-          this.selectBaurate(markedTreeItem);
-        }
-      }
-    }
-
-    this.markSilently = false;
-  }
-
   public initializTreeItemsToOpen(): void {
     this.abfrageTreeItemsToOpen = [];
   }
 
   public setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem): void {
-    // Bei einem manuellen Setzen der Markierung
-    this.markSilently = true;
+    this.markTreeItem(selectedTreeItem);
 
-    if (!_.isNil(this.$refs.abfrageTreeview) && this.isItemSelectable(selectedTreeItem)) {
-      this.markedTreeItems = [selectedTreeItem.id];
+    if (this.isItemTypeOfAbfrage(selectedTreeItem)) {
+      this.selectAbfrage(selectedTreeItem);
+    } else if (this.isItemTypeOfAbfragevariante(selectedTreeItem)) {
+      this.selectAbfragevariante(selectedTreeItem);
+    } else if (this.isItemTypeOfBauabschnitt(selectedTreeItem)) {
+      this.selectBauabschnitt(selectedTreeItem);
+    } else if (this.isItemTypeOfBaugebiet(selectedTreeItem)) {
+      this.selectBaugebiet(selectedTreeItem);
+    } else if (this.isItemTypeOfBaurate(selectedTreeItem)) {
+      this.selectBaurate(selectedTreeItem);
     }
   }
 
   public setNewEntityToMark(entity: unknown): void {
     this.newEntityToMark = entity;
+  }
+
+  private markTreeItem(item: AbfrageTreeItem): void {
+    if (this.isItemSelectable(item)) {
+      this.markedTreeItems = [item.id];
+    }
   }
 
   get treeItemIdsToOpen(): Array<number> {
@@ -314,7 +299,7 @@ export default class AbfrageNavigationTree extends Vue {
     abfrageTreeItems.push(abfrageRootTreeItem);
     if (this.abfrageTreeItemsToOpen.length === 0) {
       this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id); // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
-      this.setSelectedTreeItem(abfrageRootTreeItem);
+      this.markTreeItem(abfrageRootTreeItem);
     }
     this.createAbfragevariantenTreeItems(abfrageRootTreeItem, abfrage);
 
@@ -470,7 +455,7 @@ export default class AbfrageNavigationTree extends Vue {
     );
 
     if (abfragevariante === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
+      this.markTreeItem(item);
     }
 
     return item;
@@ -514,7 +499,7 @@ export default class AbfrageNavigationTree extends Vue {
     );
 
     if (bauabschnitt === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
+      this.markTreeItem(item);
     }
 
     return item;
@@ -560,7 +545,7 @@ export default class AbfrageNavigationTree extends Vue {
     );
 
     if (baugebiet === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
+      this.markTreeItem(item);
     }
 
     return item;
@@ -627,7 +612,7 @@ export default class AbfrageNavigationTree extends Vue {
     );
 
     if (baurate === this.newEntityToMark) {
-      this.setSelectedTreeItem(item);
+      this.markTreeItem(item);
     }
 
     return item;
