@@ -529,6 +529,13 @@ export default class Abfrage extends Mixins(
     }
   }
 
+  private setNewEntityToMark(entity: unknown): void {
+    if (!_.isNil(entity) && !_.isNil(this.$refs.abfrageNavigationTree)) {
+      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
+      abfrageNavitionTree.setNewEntityToMark(entity);
+    }
+  }
+
   private initializeFormulare(): void {
     this.isAbfrageFormularOpen = true;
     this.isAbfragevarianteFormularOpen = false;
@@ -619,6 +626,7 @@ export default class Abfrage extends Mixins(
 
   private handleCreateNewAbfragevariante(): void {
     this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
+    this.setNewEntityToMark(this.selectedAbfragevariante);
     this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
     this.renumberingAbfragevarianten();
     this.formChanged();
@@ -761,6 +769,7 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedAbfragevariante.bauabschnitte)) {
       selectedAbfragevariante.bauabschnitte = [];
     }
+    this.setNewEntityToMark(this.selectedBauabschnitt);
     selectedAbfragevariante.bauabschnitte.push(this.selectedBauabschnitt);
     this.formChanged();
     this.openBauabschnittFormular();
@@ -784,6 +793,7 @@ export default class Abfrage extends Mixins(
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
+    this.setNewEntityToMark(this.selectedBaugebiet);
     selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
     this.formChanged();
     this.openBaugebietFormular();
@@ -807,6 +817,7 @@ export default class Abfrage extends Mixins(
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.selectedBaurate = new BaurateModel(createBaurateDto());
+    this.setNewEntityToMark(this.selectedBaurate);
     selectedBaugebiet.bauraten.push(this.selectedBaurate);
     this.formChanged();
     this.openBaurateFormular();
