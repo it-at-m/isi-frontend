@@ -151,7 +151,7 @@ export default class CityMap extends Vue {
   private readonly expandable!: boolean;
 
   /**
-   * True falls Buttons zum feuern der Events "acceptSelectedGeoJson" und
+   * True falls Buttons zum Feuern der Events "acceptSelectedGeoJson" und
    * "deselectGeoJson" auf der Karte angezeigt werden sollen.
    * Andernfalls false.
    */
@@ -159,7 +159,7 @@ export default class CityMap extends Vue {
   private readonly editable!: boolean;
 
   /**
-   * Property zur definition der initialen Kartenposition.
+   * Property zur Definition der initialen Kartenposition.
    */
   @Prop()
   private readonly lookAt?: LatLngLiteral;
