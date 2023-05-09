@@ -11,6 +11,7 @@ describe("ModelTest.spec.ts", () => {
     expect(dto.abfragevarianten).toHaveLength(0);
     const model = new InfrastrukturabfrageModel(dto);
     expect(model.abfrage.adresse).not.toBeNull();
+    expect(dto.abfrage.verortung).toBeUndefined();
   });
 
   test("Test AbfragevarianteModel", () => {
