@@ -66,7 +66,14 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
 export function createAbfrageDto(): AbfrageDto {
   return {
     allgemeineOrtsangabe: undefined,
-    adresse: undefined,
+    adresse: {
+      strasse: "",
+      hausnummer: "",
+      plz: "",
+      ort: "",
+      coordinate: undefined,
+    },
+    verortung: undefined,
     fristStellungnahme: new Date(0),
     anmerkung: undefined,
     statusAbfrage: StatusAbfrage.Angelegt,
@@ -128,6 +135,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
       ort: "",
       coordinate: undefined,
     },
+    verortung: undefined,
     allgemeineOrtsangabe: "",
     bebauungsplannummer: "",
     fisNummer: "",

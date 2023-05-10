@@ -31,6 +31,12 @@ import {
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 
@@ -56,6 +62,12 @@ export interface AbfrageDto {
      * @memberof AbfrageDto
      */
     adresse?: AdresseDto;
+    /**
+     * 
+     * @type {VerortungDto}
+     * @memberof AbfrageDto
+     */
+    verortung?: VerortungDto;
     /**
      * 
      * @type {Date}
@@ -137,6 +149,7 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
@@ -159,6 +172,7 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'adresse': AdresseDtoToJSON(value.adresse),
+        'verortung': VerortungDtoToJSON(value.verortung),
         'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
