@@ -76,7 +76,7 @@
                 <v-list-item-title>
                   <a
                     target="_blank"
-                    href="https://youtu.be/TX6oqQD3ijo"
+                    :href="getDatenschutzhinweisUrl()"
                     >Datenschutzhinweis<span class="mdi mdi-launch"></span
                   ></a>
                 </v-list-item-title>
@@ -229,6 +229,10 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
   @Watch("$route.params.query")
   public function(query: string): void {
     if (this.query !== query) this.query = query;
+  }
+
+  private getDatenschutzhinweisUrl(): string {
+    return import.meta.env.VITE_DATENSCHUTZHINWEIS_URL as string;
   }
 
   /**
