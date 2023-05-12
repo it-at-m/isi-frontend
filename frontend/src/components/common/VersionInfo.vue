@@ -39,7 +39,7 @@
                   :href="getCommitUrl(service)"
                   target="_blank"
                 >
-                  {{ service.commitHash.substring(0, 7) }}
+                  {{ service.commitHash.substring(0, 7) }}<span class="mdi mdi-launch" />
                 </a>
                 <span v-else> Version unbekannt </span>
               </td>
