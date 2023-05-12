@@ -72,6 +72,15 @@
               <v-list-item @click="showVersionInfo = true">
                 <v-list-item-title>Versionsinformationen</v-list-item-title>
               </v-list-item>
+              <v-list-item>
+                <v-list-item-title>
+                  <a
+                    target="_blank"
+                    href="https://youtu.be/TX6oqQD3ijo"
+                    >Datenschutzhinweis<span class="mdi mdi-launch"></span
+                  ></a>
+                </v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
           <v-menu
