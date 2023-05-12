@@ -103,6 +103,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
    */
   private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
+  mounted(): void {
+    this.onVerortungModelChanged();
+  }
+
   get coordinate(): LatLngLiteral | undefined {
     const lat = this.lookAt?.coordinate?.latitude;
     const lng = this.lookAt?.coordinate?.longitude;
