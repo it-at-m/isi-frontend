@@ -341,9 +341,22 @@ export default class AbfrageNavigationTree extends Vue {
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto
   ) {
-    if (!_.isNil(abfragevariante.bauabschnitte)) {
-      abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
-        if (!bauabschnitt.technical) {
+    if (_.isNil(abfragevariante.bauabschnitte) || abfragevariante.bauabschnitte.length === 0) {
+      // Fall 1: Keine Bauabschnitte vorhanden -> Bauabschnitt, Baugebiet oder Baurate kann erstellt werden
+      parentTreeItem.children.push(
+        this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+      );
+      parentTreeItem.children.push(
+        this.createAddOrphanedBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+      );
+      parentTreeItem.children.push(
+        this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+      );
+    } else {
+      const firstBauabschnitt = abfragevariante.bauabschnitte[0];
+      if (!firstBauabschnitt.technical) {
+        // Fall 2: Nicht-technischer Bauabschnitt vorhanden -> Bauabschnitte werden aufgelistet und können erstellt werden
+        abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
           let bauabschnittTreeItem = this.createBauabschnittTreeItem(
             this.treeItemKey++,
             parentTreeItem,
@@ -353,20 +366,15 @@ export default class AbfrageNavigationTree extends Vue {
           );
           parentTreeItem.children.push(bauabschnittTreeItem);
           this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
-        } else {
-          this.createBaugebieteTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt);
-        }
-      });
+        });
+        parentTreeItem.children.push(
+          this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+        );
+      } else {
+        // Fall 3: Technischer Bauabschnitt vorhanden -> Baugebiete werden unter Abfragevariente angelegt
+        this.createBaugebieteTreeItems(parentTreeItem, abfrage, abfragevariante, firstBauabschnitt);
+      }
     }
-    parentTreeItem.children.push(
-      this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-    );
-    parentTreeItem.children.push(
-      this.createAddOrphanedBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-    );
-    parentTreeItem.children.push(
-      this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-    );
   }
 
   private createBaugebieteTreeItems(
@@ -375,30 +383,34 @@ export default class AbfrageNavigationTree extends Vue {
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
-    bauabschnitt.baugebiete.forEach((baugebiet) => {
-      if (!baugebiet.technical) {
-        let baugebietTreeItem = this.createBaugebietTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          abfragevariante,
-          bauabschnitt,
-          baugebiet
-        );
-        parentTreeItem.children.push(baugebietTreeItem);
-        this.createBauratenTreeItems(baugebietTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
-      } else {
-        this.createBauratenTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
-      }
-    });
-
-    if (!bauabschnitt.technical) {
+    if (bauabschnitt.baugebiete.length === 0) {
+      // Fall 1: Keine Baugebiete vorhanden -> Baugebiet kann erstellt werden
       parentTreeItem.children.push(
         this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
       );
-      parentTreeItem.children.push(
-        this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-      );
+    } else {
+      const firstBaugebiet = bauabschnitt.baugebiete[0];
+      if (!firstBaugebiet.technical) {
+        // Fall 2: Nicht-technisches Bauagebiet vorhanden -> Baugebiete werden aufgelistet und können erstellt werden
+        bauabschnitt.baugebiete.forEach((baugebiet) => {
+          let bauabschnittTreeItem = this.createBaugebietTreeItem(
+            this.treeItemKey++,
+            parentTreeItem,
+            abfrage,
+            abfragevariante,
+            bauabschnitt,
+            baugebiet
+          );
+          parentTreeItem.children.push(bauabschnittTreeItem);
+          this.createBauratenTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
+        });
+        parentTreeItem.children.push(
+          this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
+        );
+      } else {
+        // Fall 3: Technisches Bauagebiet vorhanden -> Bauraten werden unter Abfragevariente angelegt
+        this.createBauratenTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt, firstBaugebiet);
+      }
     }
   }
 
@@ -422,18 +434,16 @@ export default class AbfrageNavigationTree extends Vue {
       parentTreeItem.children.push(baurateTreeItem);
     });
 
-    if (!baugebiet.technical) {
-      parentTreeItem.children.push(
-        this.createAddBaurateTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          abfragevariante,
-          bauabschnitt,
-          baugebiet
-        )
-      );
-    }
+    parentTreeItem.children.push(
+      this.createAddBaurateTreeItem(
+        this.treeItemKey++,
+        parentTreeItem,
+        abfrage,
+        abfragevariante,
+        bauabschnitt,
+        baugebiet
+      )
+    );
   }
 
   private createAbfragevarianteTreeItem(

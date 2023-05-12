@@ -716,7 +716,10 @@ export default class Abfrage extends Mixins(
       );
     }
     if (_.isNil(selectedBauabschnitt)) {
-      selectedBauabschnitt = this.getTechnicalBauabschnitt(selectedAbfragevariante);
+      const technicalBauabschnitt = this.getTechnicalBauabschnitt(selectedAbfragevariante);
+      selectedBauabschnitt = technicalBauabschnitt
+        ? technicalBauabschnitt
+        : new BauabschnittModel(createBauabschnittDto());
     }
     return selectedBauabschnitt;
   }
@@ -731,7 +734,8 @@ export default class Abfrage extends Mixins(
     }
     if (_.isNil(selectedBaugebiet)) {
       const selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-      selectedBaugebiet = this.getTechnicalBaugebiet(selectedAbfragevariante);
+      const technicalBaugebiet = this.getTechnicalBaugebiet(selectedAbfragevariante);
+      selectedBaugebiet = technicalBaugebiet ? technicalBaugebiet : new BaugebietModel(createBaugebietDto());
     }
     return selectedBaugebiet;
   }
@@ -848,11 +852,11 @@ export default class Abfrage extends Mixins(
   /**
    * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
    */
-  private getTechnicalBauabschnitt(abfragevariante: AbfragevarianteModel): BauabschnittModel {
+  private getTechnicalBauabschnitt(abfragevariante: AbfragevarianteModel): BauabschnittModel | undefined {
     let bauabschnittDto: BauabschnittDto | undefined;
 
     if (!_.isNil(abfragevariante.bauabschnitte)) {
-      bauabschnittDto = abfragevariante.bauabschnitte.find((dto) => dto.technical);
+      bauabschnittDto = abfragevariante.bauabschnitte[0];
     } else {
       abfragevariante.bauabschnitte = [];
     }
@@ -862,22 +866,33 @@ export default class Abfrage extends Mixins(
       abfragevariante.bauabschnitte.push(bauabschnittDto);
     }
 
-    return new BauabschnittModel(bauabschnittDto);
+    if (bauabschnittDto.technical) {
+      return new BauabschnittModel(bauabschnittDto);
+    } else {
+      return undefined;
+    }
   }
 
   /**
    * Ermittelt oder erstellt bei Bedarf ein Platzhalter-Baugebiet für "alleinstehende" Bauraten.
    */
-  private getTechnicalBaugebiet(abfragevariante: AbfragevarianteModel): BaugebietModel {
+  private getTechnicalBaugebiet(abfragevariante: AbfragevarianteModel): BaugebietModel | undefined {
     const bauabschnitt = this.getTechnicalBauabschnitt(abfragevariante);
-    let baugebietDto = bauabschnitt.baugebiete.find((dto) => dto.technical);
 
-    if (_.isNil(baugebietDto)) {
-      baugebietDto = createTechnicalBaugebietDto();
-      bauabschnitt.baugebiete.push(baugebietDto);
+    if (!_.isNil(bauabschnitt)) {
+      let baugebietDto = bauabschnitt.baugebiete[0];
+
+      if (_.isNil(baugebietDto)) {
+        baugebietDto = createTechnicalBaugebietDto();
+        bauabschnitt.baugebiete.push(baugebietDto);
+      }
+
+      if (baugebietDto.technical) {
+        return new BaugebietModel(baugebietDto);
+      }
     }
 
-    return new BaugebietModel(baugebietDto);
+    return undefined;
   }
 
   /**
