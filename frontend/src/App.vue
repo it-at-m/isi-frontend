@@ -77,8 +77,9 @@
                   <a
                     target="_blank"
                     :href="getDatenschutzhinweisUrl()"
-                    >Datenschutzhinweis<span class="mdi mdi-launch"></span
-                  ></a>
+                  >
+                    Datenschutzhinweis<span class="mdi mdi-launch" />
+                  </a>
                 </v-list-item-title>
               </v-list-item>
             </v-list>
