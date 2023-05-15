@@ -206,7 +206,6 @@ export type BauvorhabenDtoPlanungsrechtEnum = typeof BauvorhabenDtoPlanungsrecht
  * @export
  */
 export const BauvorhabenDtoArtFnpEnum = {
-    Unspecified: 'UNSPECIFIED',
     Mi: 'MI',
     Wa: 'WA',
     Mu: 'MU',

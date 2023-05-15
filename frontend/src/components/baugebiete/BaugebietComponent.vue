@@ -32,7 +32,7 @@
             :items="baugebietTypList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :rules="[fieldValidationRules.pflichtfeld]"
             @change="formChanged"
           >
             <template #label> Baugebiet Typ <span class="secondary--text">*</span> </template>

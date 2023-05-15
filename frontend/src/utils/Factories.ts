@@ -209,7 +209,7 @@ export function createBaugebietDto(): BaugebietDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     bezeichnung: "",
-    baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
+    baugebietTyp: BaugebietDtoBaugebietTypEnum.Ge,
     bauraten: [],
   } as BaugebietDto;
 }
