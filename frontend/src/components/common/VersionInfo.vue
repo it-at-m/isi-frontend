@@ -39,7 +39,7 @@
                   :href="getCommitUrl(service)"
                   target="_blank"
                 >
-                  {{ service.commitHash.substring(0, 7) }}
+                  {{ service.commitHash.substring(0, 8) }}
                 </a>
                 <span v-else> Version unbekannt </span>
               </td>
