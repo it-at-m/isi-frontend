@@ -286,60 +286,34 @@ export default class Abfrage extends Mixins(
   SaveLeaveMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
-
   private buttonText = "";
-
   private dialogTextStatus = "";
-
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
     true
   );
-
   private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
-
   private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
-
   private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
-
   private selectedBaurate: BaurateModel = new BaurateModel(createBaurateDto());
-
   private abfrageId: string = this.$route.params.id;
-
   private transition: TransitionDto | undefined;
-
   private isStatusUebergangDialogOpen = false;
-
   private isDeleteDialogAbfrageOpen = false;
-
   private isFreigabeDialogOpen = false;
-
   private isDeleteDialogAbfragevarianteOpen = false;
-
   private isDeleteDialogBauabschnittOpen = false;
-
   private isDeleteDialogBaugebietOpen = false;
-
   private isDeleteDialogBaurateOpen = false;
-
   private isAbfrageFormularOpen = true;
-
   private isAbfragevarianteFormularOpen = false;
-
   private isBauabschnittFormularOpen = false;
-
   private isBaugebietFormularOpen = false;
-
   private isBaurateFormularOpen = false;
-
   private abfragevarianteTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   private bauabschnittTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   private baugebietTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   private baurateTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   public possbileTransitions: Array<TransitionDto> = [];
 
   mounted(): void {
@@ -347,7 +321,6 @@ export default class Abfrage extends Mixins(
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.initializeFormulare();
     this.setSelectedAbfrageInStore();
-
     if (!this.isNewAbfrage())
       this.getTransitions(this.abfrageId, true).then((response) => {
         this.possbileTransitions = response;
@@ -465,7 +438,7 @@ export default class Abfrage extends Mixins(
           this.handleSuccess(dto);
         });
       } else {
-        await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+        await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
           this.handleSuccess(dto);
         });
       }
@@ -492,7 +465,7 @@ export default class Abfrage extends Mixins(
       this.abfrageWrapped.infrastrukturabfrage
     );
     if (_.isNil(validationMessage)) {
-      await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
+      await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true);
       const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
       if (requestSuccessful) {
         if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
@@ -503,7 +476,6 @@ export default class Abfrage extends Mixins(
             this.possbileTransitions = response;
           });
         }
-
         this.openAbfrageFormular();
       }
     } else {
@@ -596,7 +568,6 @@ export default class Abfrage extends Mixins(
     if (message && level) {
       Toaster.toast(message, level);
     }
-
     this.$store.dispatch("search/resetAbfrage");
     this.$router.push({ path: "/abfragenuebersicht" });
   }

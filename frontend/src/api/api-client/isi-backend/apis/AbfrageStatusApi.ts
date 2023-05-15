@@ -59,7 +59,7 @@ export interface VerschickenDerStellungnahmeInfrastrukturabfrageRequest {
     id: string;
 }
 
-export interface ZurueckAnAbfrageerstellerInfrastrukturabfrageRequest {
+export interface ZurueckAbfrageerstellungInfrastrukturabfrageRequest {
     id: string;
 }
 
@@ -337,9 +337,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     /**
      * Setzt eine Infrastrukturabfrage auf den Status ANGELEGT
      */
-    async zurueckAnAbfrageerstellerInfrastrukturabfrageRaw(requestParameters: ZurueckAnAbfrageerstellerInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async zurueckAbfrageerstellungInfrastrukturabfrageRaw(requestParameters: ZurueckAbfrageerstellungInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling zurueckAnAbfrageerstellerInfrastrukturabfrage.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling zurueckAbfrageerstellungInfrastrukturabfrage.');
         }
 
         const queryParameters: any = {};
@@ -347,7 +347,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/infrastruktur-abfrage/{id}/zurueck-an-abfrageersteller`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/infrastruktur-abfrage/{id}/zurueck-an-abfrageerstellung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -359,8 +359,8 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     /**
      * Setzt eine Infrastrukturabfrage auf den Status ANGELEGT
      */
-    async zurueckAnAbfrageerstellerInfrastrukturabfrage(requestParameters: ZurueckAnAbfrageerstellerInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.zurueckAnAbfrageerstellerInfrastrukturabfrageRaw(requestParameters, initOverrides);
+    async zurueckAbfrageerstellungInfrastrukturabfrage(requestParameters: ZurueckAbfrageerstellungInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.zurueckAbfrageerstellungInfrastrukturabfrageRaw(requestParameters, initOverrides);
     }
 
     /**

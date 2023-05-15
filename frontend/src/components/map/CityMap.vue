@@ -11,10 +11,10 @@
       :center="CITY_CENTER"
       :zoom="initialZoom"
       style="z-index: 1"
-      @click="openPopup($event)"
+      @click="onClickInMap($event)"
     >
       <!-- Fügt ein Steuerungselement hinzu, mit welchem sich ein Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt. -->
-      <l-control-layers />
+      <l-control-layers id="city-map-layer-control" />
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
       <l-wms-tile-layer
         id="karte_hintergrund"
@@ -48,12 +48,34 @@
         :transparent="true"
       />
       <l-control
+        v-if="editable"
+        position="bottomleft"
+      >
+        <button
+          id="save_geojson_button"
+          class="map-control"
+          title="Auswahl übernehmen"
+          @click="onAcceptSelectedGeoJson"
+        >
+          <v-icon large> mdi-checkbox-marked-outline </v-icon>
+        </button>
+        <button
+          v-if="isGeoJsonNotEmpty"
+          id="clear_geojson_button"
+          class="map-control"
+          title="Auswahl aufheben"
+          @click="onDeselectGeoJson"
+        >
+          <v-icon large> mdi-delete-outline </v-icon>
+        </button>
+      </l-control>
+      <l-control
         v-if="expandable"
         position="bottomright"
       >
         <button
           id="karte_erweitern_button"
-          class="expansion-control"
+          class="map-control"
           :title="expanded ? 'Einklappen' : 'Erweitern'"
           @click="toggleExpansion"
         >
@@ -79,10 +101,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
-import L, { LatLngLiteral, MapOptions } from "leaflet";
+import L, {
+  GeoJSONOptions,
+  LatLng,
+  LatLngBounds,
+  LatLngBoundsLiteral,
+  LatLngLiteral,
+  LayerGroup,
+  LeafletMouseEvent,
+  MapOptions,
+} from "leaflet";
 import "leaflet/dist/leaflet.css";
+import _ from "lodash";
+import { Feature } from "geojson";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -111,13 +144,39 @@ export default class CityMap extends Vue {
 
   @Prop({ default: 12 })
   private readonly zoom!: number;
+
   private initialZoom!: number;
 
   @Prop({ type: Boolean, default: false })
   private readonly expandable!: boolean;
 
+  /**
+   * True falls Buttons zum Feuern der Events "acceptSelectedGeoJson" und
+   * "deselectGeoJson" auf der Karte angezeigt werden sollen.
+   * Andernfalls false.
+   */
+  @Prop({ type: Boolean, default: false })
+  private readonly editable!: boolean;
+
+  /**
+   * Property zur Definition der initialen Kartenposition.
+   */
   @Prop()
   private readonly lookAt?: LatLngLiteral;
+
+  /**
+   * Die Feature welche in der Karte dargestellt werden sollen.
+   */
+  @Prop({ default: [] })
+  private readonly geoJson?: Feature[];
+
+  /**
+   * Die Konfiguration der Darstellung und des Verhaltens der Feature in der Property "geoJson".
+   */
+  @Prop({ default: undefined })
+  private readonly geoJsonOptions?: GeoJSONOptions;
+
+  private layerGroup: LayerGroup = new LayerGroup();
 
   private readonly popup = L.popup();
   private map!: L.Map;
@@ -138,9 +197,21 @@ export default class CityMap extends Vue {
 
   @Watch("lookAt", { deep: true })
   private onLookAtChanged(): void {
-    if (this.lookAt) {
-      this.map.flyTo(this.lookAt, 16);
-    }
+    this.flyToPositionOnMap(this.lookAt);
+  }
+
+  @Watch("geoJson", { deep: true })
+  private onGeoJsonChanged(): void {
+    this.addGeoJsonToMap();
+    this.flyToCenterOfPolygonsInMap();
+  }
+
+  get isGeoJsonNotEmpty(): boolean {
+    return !_.isEmpty(this.geoJson);
+  }
+
+  private onClickInMap(event: LeafletMouseEvent): void {
+    this.clickInMap(event);
   }
 
   /**
@@ -148,16 +219,6 @@ export default class CityMap extends Vue {
    */
   private getGeoUrl(service: string): string {
     return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
-  }
-
-  /**
-   * Öffnet an der angeklickten Bildschirmposition ein Popup, welches die Koordinaten der Kartenposition anzeigt.
-   */
-  private openPopup(event: L.LeafletMouseEvent): void {
-    this.popup
-      .setLatLng(event.latlng)
-      .setContent(event.latlng.lat + ", " + event.latlng.lng)
-      .openOn(this.map);
   }
 
   /**
@@ -179,11 +240,69 @@ export default class CityMap extends Vue {
        Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
     setTimeout(() => this.map.invalidateSize());
   }
+
+  private onDeselectGeoJson(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.deselectGeoJson();
+  }
+
+  private onAcceptSelectedGeoJson(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.acceptSelectedGeoJson();
+  }
+
+  private addGeoJsonToMap(): void {
+    this.map.removeLayer(this.layerGroup);
+    this.layerGroup = new L.LayerGroup();
+    this.layerGroup.addTo(this.map);
+    L.geoJSON(this.geoJson, this.geoJsonOptions).addTo(this.layerGroup);
+  }
+
+  private flyToCenterOfPolygonsInMap(): void {
+    const polygonCenter: Array<L.LatLng> = [];
+    this.map.eachLayer(function (layer) {
+      if (layer instanceof L.Polygon) {
+        const polygon = layer as L.Polygon;
+        polygonCenter.push(polygon.getBounds().getCenter());
+      }
+    });
+    if (polygonCenter.length === 1 || polygonCenter.length === 2) {
+      const center: L.LatLng = polygonCenter[0];
+      this.flyToPositionOnMap({ lat: center.lat, lng: center.lng });
+    } else if (polygonCenter.length >= 2) {
+      const bounds = polygonCenter.map((latLng) => [latLng.lat, latLng.lng]) as LatLngBoundsLiteral;
+      const center: L.LatLng = new LatLngBounds(bounds).getCenter();
+      this.flyToPositionOnMap({ lat: center.lat, lng: center.lng });
+    } else {
+      this.flyToPositionOnMap(this.lookAt);
+    }
+  }
+
+  private flyToPositionOnMap(position: LatLngLiteral | undefined) {
+    if (position) this.map.flyTo(position, 16);
+  }
+
+  @Emit()
+  private clickInMap(event: LeafletMouseEvent): LatLng {
+    return event.latlng;
+  }
+
+  @Emit()
+  private deselectGeoJson(): void {
+    // Clears geoJson
+  }
+
+  @Emit()
+  private acceptSelectedGeoJson(): void {
+    // Accept geoJson
+  }
 }
 </script>
 
 <style>
-.expansion-control {
+.map-control {
   width: 44px;
   height: 44px;
   border: 2px solid rgba(0, 0, 0, 0.2);
