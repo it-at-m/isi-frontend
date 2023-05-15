@@ -39,6 +39,10 @@
                   :href="getCommitUrl(service)"
                   target="_blank"
                 >
+                  <!--
+                    In der verkürzten Darstellung sind Git Commit Hashes meistens sieben Zeichen lang.
+                    Doch unter Umständen werden sie auch mit acht Zeichen dargestellt, also wurde die größere Länge gewählt.
+                  -->
                   {{ service.commitHash.substring(0, 8) }}
                 </a>
                 <span v-else> Version unbekannt </span>
