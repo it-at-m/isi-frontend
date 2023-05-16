@@ -1,5 +1,8 @@
 <template>
-  <field-group-card :card-title="adressCardTitle">
+  <field-group-card
+    :card-title="adressCardTitle"
+    :mark-card-title-as-mandatory="true"
+  >
     <div>
       <v-row justify="center">
         <v-col cols="12">
@@ -154,6 +157,7 @@ export default class AdresseComponent extends Mixins(
     this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
   }
 
+  @Prop()
   @Prop({ type: Boolean, default: true })
   private showInInformationListProp!: boolean;
 
