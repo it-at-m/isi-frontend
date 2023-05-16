@@ -232,7 +232,6 @@ import {
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
-import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
@@ -281,7 +280,6 @@ export default class Abfrage extends Mixins(
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
   StatusUebergangApiRequestMixin,
-  BaurateReqestMixin,
   ValidatorMixin,
   SaveLeaveMixin
 ) {
