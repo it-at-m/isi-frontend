@@ -22,7 +22,6 @@
         :base-url="getGeoUrl('WMS_Stadtkarte')"
         layers="Hintergrund"
         format="image/png"
-        layer-type="base"
         :visible="true"
       />
       <!-- Die Overlay-Layer der Karte. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen. -->
