@@ -43,7 +43,7 @@
                     In der verkürzten Darstellung sind Git Commit Hashes meistens sieben Zeichen lang.
                     Doch unter Umständen werden sie auch mit acht Zeichen dargestellt, also wurde die größere Länge gewählt.
                   -->
-                  {{ service.commitHash.substring(0, 8) }}
+                  {{ service.commitHash.substring(0, 8) }}<span class="mdi mdi-launch" />
                 </a>
                 <span v-else> Version unbekannt </span>
               </td>
