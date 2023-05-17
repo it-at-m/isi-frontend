@@ -19,6 +19,14 @@
           </template>
           <template #append="{ item }">
             <v-btn
+              v-if="isItemTypeOfAbfragevarianteAndBauratenAreCalculable(item)"
+              :id="'abfrage_navigation_tree_button_abfragevariante_calculate_bauraten_' + item.id"
+              icon
+              @click="calculateBauratenForAbfragevariante(item)"
+            >
+              <v-icon> mdi-calculator</v-icon>
+            </v-btn>
+            <v-btn
               v-if="isItemTypeOfAddAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_create_new_abfragevariante_' + item.id"
               icon
@@ -870,6 +878,14 @@ export default class AbfrageNavigationTree extends Vue {
     return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAURATE;
   }
 
+  private isItemTypeOfAbfragevarianteAndBauratenAreCalculable(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return (
+      this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
+      (_.isNil(abfrageTreeItem.abfragevariante?.bauabschnitte) ||
+        _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte))
+    );
+  }
+
   private isItemSelectable(abfrageTreeItem: AbfrageTreeItem): boolean {
     return (
       this.isItemTypeOfAbfrage(abfrageTreeItem) ||
@@ -888,10 +904,6 @@ export default class AbfrageNavigationTree extends Vue {
     });
   }
 
-  private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
-    return this.createFlatAbfrageTreeItem(abfrageTreeItems).map((abfrageTreeItem) => abfrageTreeItem.id);
-  }
-
   @Emit()
   private selectAbfrage(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
@@ -904,6 +916,11 @@ export default class AbfrageNavigationTree extends Vue {
 
   @Emit()
   private deleteAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private calculateBauratenForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 
