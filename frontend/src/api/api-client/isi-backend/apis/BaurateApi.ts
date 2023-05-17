@@ -35,7 +35,7 @@ export interface DetermineBauratenRequest {
 export class BaurateApi extends runtime.BaseAPI {
 
     /**
-     * Ermittelt die Bauraten auf Basis der idealtypischen Bauraten
+     * Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten
      */
     async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
         if (requestParameters.realisierungsbeginn === null || requestParameters.realisierungsbeginn === undefined) {
@@ -73,7 +73,7 @@ export class BaurateApi extends runtime.BaseAPI {
     }
 
     /**
-     * Ermittelt die Bauraten auf Basis der idealtypischen Bauraten
+     * Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten
      */
     async determineBauraten(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<BaurateDto>> {
         const response = await this.determineBauratenRaw(requestParameters, initOverrides);
