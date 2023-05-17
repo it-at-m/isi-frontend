@@ -31,7 +31,7 @@
             <template #activator="{ on }">
               <v-icon
                 v-on="on"
-                @click="deleteAdresse"
+                @click="resetAdresse"
               >
                 mdi-delete
               </v-icon>
@@ -217,10 +217,6 @@ export default class AdresseComponent extends Mixins(
     return undefined;
   }
 
-  private deleteAdresse(): void {
-    this.resetAdresse();
-  }
-
   private assumeAdresse(dto: MuenchenAdresseDto): void {
     this.adressSucheItemSelected = true;
     this.assignAdresse(dto);
@@ -246,6 +242,7 @@ export default class AdresseComponent extends Mixins(
 
   private resetAdresse(): void {
     this.adresse = new AdresseModel(createAdresseDto());
+    this.formChanged();
   }
 
   private resetAdressSuche(): void {
