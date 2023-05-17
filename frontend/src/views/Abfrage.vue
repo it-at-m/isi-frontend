@@ -595,7 +595,15 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    console.log(abfrageTreeItem.abfragevariante?.abfragevariantenName);
+    const abfragevariante = abfrageTreeItem.abfragevariante;
+    if (!_.isNil(abfragevariante)) {
+      const technicalBaugebiet = createTechnicalBaugebietDto();
+      const technicalBauabschnitt = createTechnicalBauabschnittDto();
+      const baurente: Array<BaurateDto> = [];
+      technicalBaugebiet.bauraten = baurente;
+      technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
+      abfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+    }
   }
 
   private handleCreateNewAbfragevariante(): void {
