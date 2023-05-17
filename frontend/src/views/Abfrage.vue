@@ -604,12 +604,13 @@ export default class Abfrage extends Mixins(
         abfragevariante.gesamtanzahlWe,
         abfragevariante.geschossflaecheWohnen,
         true
-      ).catch((bauraten: Array<BaurateDto>) => {
+      ).then((bauraten: Array<BaurateDto>) => {
         const technicalBaugebiet = createTechnicalBaugebietDto();
         const technicalBauabschnitt = createTechnicalBauabschnittDto();
         technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
         technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
         abfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+        this.formChanged();
       });
     }
   }
