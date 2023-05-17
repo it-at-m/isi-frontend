@@ -16,13 +16,13 @@ export default class BauratenApiRequestMixin extends Mixins(ErrorHandler) {
   determineBauraten(
     realisierungsbeginn: number,
     wohneinheiten: number | undefined,
-    geschossflaecheWohnen: number,
+    geschossflaecheWohnen: number | undefined,
     showInInformationList: boolean
   ): Promise<Array<BaurateDto>> {
     const requestParameters = {
       realisierungsbeginn: realisierungsbeginn,
       wohneinheiten: _.isNil(wohneinheiten) ? undefined : wohneinheiten,
-      geschossflaecheWohnen: geschossflaecheWohnen,
+      geschossflaecheWohnen: _.isNil(geschossflaecheWohnen) ? undefined : geschossflaecheWohnen,
     } as DetermineBauratenRequest;
     return this.bauratenApi
       .determineBauraten(requestParameters, RequestUtils.getGETConfig())

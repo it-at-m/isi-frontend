@@ -25,8 +25,8 @@ import {
 
 export interface DetermineBauratenRequest {
     realisierungsbeginn: number;
-    geschossflaecheWohnen: number;
     wohneinheiten?: number;
+    geschossflaecheWohnen?: number;
 }
 
 /**
@@ -40,10 +40,6 @@ export class BaurateApi extends runtime.BaseAPI {
     async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
         if (requestParameters.realisierungsbeginn === null || requestParameters.realisierungsbeginn === undefined) {
             throw new runtime.RequiredError('realisierungsbeginn','Required parameter requestParameters.realisierungsbeginn was null or undefined when calling determineBauraten.');
-        }
-
-        if (requestParameters.geschossflaecheWohnen === null || requestParameters.geschossflaecheWohnen === undefined) {
-            throw new runtime.RequiredError('geschossflaecheWohnen','Required parameter requestParameters.geschossflaecheWohnen was null or undefined when calling determineBauraten.');
         }
 
         const queryParameters: any = {};
