@@ -600,22 +600,19 @@ export default class Abfrage extends Mixins(
   private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     this.handleSelectAbfragevariante(abfrageTreeItem);
     this.setNewEntityToMark(this.selectedAbfragevariante);
-    const abfragevariante = abfrageTreeItem.abfragevariante;
-    if (!_.isNil(abfragevariante)) {
-      this.determineBauraten(
-        abfragevariante.realisierungVon,
-        abfragevariante.gesamtanzahlWe,
-        abfragevariante.geschossflaecheWohnen,
-        true
-      ).then((bauraten: Array<BaurateDto>) => {
-        const technicalBaugebiet = createTechnicalBaugebietDto();
-        const technicalBauabschnitt = createTechnicalBauabschnittDto();
-        technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
-        technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
-        abfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
-        this.formChanged();
-      });
-    }
+    this.determineBauraten(
+      this.selectedAbfragevariante.realisierungVon,
+      this.selectedAbfragevariante.gesamtanzahlWe,
+      this.selectedAbfragevariante.geschossflaecheWohnen,
+      true
+    ).then((bauraten: Array<BaurateDto>) => {
+      const technicalBaugebiet = createTechnicalBaugebietDto();
+      const technicalBauabschnitt = createTechnicalBauabschnittDto();
+      technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+      technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
+      this.selectedAbfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+      this.formChanged();
+    });
   }
 
   private handleCreateNewAbfragevariante(): void {
