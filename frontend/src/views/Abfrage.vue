@@ -598,6 +598,8 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.handleSelectAbfragevariante(abfrageTreeItem);
+    this.setNewEntityToMark(this.selectedAbfragevariante);
     const abfragevariante = abfrageTreeItem.abfragevariante;
     if (!_.isNil(abfragevariante)) {
       this.determineBauraten(
