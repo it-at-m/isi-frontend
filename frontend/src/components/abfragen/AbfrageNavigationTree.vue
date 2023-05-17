@@ -18,10 +18,12 @@
             <a @click="setSelectedTreeItem(item)">{{ item.name }}</a>
           </template>
           <template #append="{ item }">
-            <v-tooltip top>
+            <v-tooltip
+              v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
+              top
+            >
               <template #activator="{ on }">
                 <v-btn
-                  v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
                   :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
                   icon
                   v-on="on"
