@@ -141,19 +141,20 @@
           id="abfrage_navigation_tree"
           ref="abfrageNavigationTree"
           v-model="abfrageWrapped"
-          @select-abfrage="handleSelectAbfrage"
-          @select-abfragevariante="handleSelectAbfragevariante"
-          @delete-abfragevariante="handleDeleteAbfragevariante"
-          @create-new-abfragevariante="handleCreateNewAbfragevariante"
-          @select-bauabschnitt="handleSelectBauabschnitt"
-          @delete-bauabschnitt="handleDeleteBauabschnitt"
-          @create-new-bauabschnitt="handleCreateNewBauabschnitt"
-          @select-baugebiet="handleSelectBaugebiet"
-          @delete-baugebiet="handleDeleteBaugebiet"
-          @create-new-baugebiet="handleCreateNewBaugebiet"
-          @select-baurate="handleSelectBaurate"
-          @delete-baurate="handleDeleteBaurate"
-          @create-new-baurate="handleCreateNewBaurate"
+          @select-abfrage="handleSelectAbfrage()"
+          @select-abfragevariante="handleSelectAbfragevariante($event)"
+          @delete-abfragevariante="handleDeleteAbfragevariante($event)"
+          @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
+          @create-new-abfragevariante="handleCreateNewAbfragevariante()"
+          @select-bauabschnitt="handleSelectBauabschnitt($event)"
+          @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
+          @create-new-bauabschnitt="handleCreateNewBauabschnitt($event)"
+          @select-baugebiet="handleSelectBaugebiet($event)"
+          @delete-baugebiet="handleDeleteBaugebiet($event)"
+          @create-new-baugebiet="handleCreateNewBaugebiet($event)"
+          @select-baurate="handleSelectBaurate($event)"
+          @delete-baurate="handleDeleteBaurate($event)"
+          @create-new-baurate="handleCreateNewBaurate($event)"
         />
         <v-spacer />
       </template>
@@ -591,6 +592,10 @@ export default class Abfrage extends Mixins(
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
     this.isDeleteDialogAbfragevarianteOpen = true;
+  }
+
+  private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    console.log(abfrageTreeItem.abfragevariante?.abfragevariantenName);
   }
 
   private handleCreateNewAbfragevariante(): void {
