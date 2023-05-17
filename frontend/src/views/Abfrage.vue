@@ -607,7 +607,7 @@ export default class Abfrage extends Mixins(
       ).catch((bauraten: Array<BaurateDto>) => {
         const technicalBaugebiet = createTechnicalBaugebietDto();
         const technicalBauabschnitt = createTechnicalBauabschnittDto();
-        technicalBaugebiet.bauraten = bauraten.map((baurate) => new BaurateModel(baurate));
+        technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
         technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
         abfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
       });
