@@ -2,6 +2,7 @@ import { Component, Mixins } from "vue-property-decorator";
 import { BaurateApi, BaurateDto, DetermineBauratenRequest } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
+import _ from "lodash";
 
 @Component
 export default class BauratenApiRequestMixin extends Mixins(ErrorHandler) {
@@ -20,7 +21,7 @@ export default class BauratenApiRequestMixin extends Mixins(ErrorHandler) {
   ): Promise<Array<BaurateDto>> {
     const requestParameters = {
       realisierungsbeginn: realisierungsbeginn,
-      wohneinheiten: wohneinheiten,
+      wohneinheiten: _.isNil(wohneinheiten) ? undefined : wohneinheiten,
       geschossflaecheWohnen: geschossflaecheWohnen,
     } as DetermineBauratenRequest;
     return this.bauratenApi
