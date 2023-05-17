@@ -19,8 +19,8 @@
           </template>
           <template #append="{ item }">
             <v-btn
-              v-if="isItemTypeOfAbfragevarianteAndBauratenAreCalculable(item)"
-              :id="'abfrage_navigation_tree_button_abfragevariante_calculate_bauraten_' + item.id"
+              v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
+              :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
               icon
               @click="determineBauratenForAbfragevariante(item)"
             >
@@ -878,7 +878,7 @@ export default class AbfrageNavigationTree extends Vue {
     return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAURATE;
   }
 
-  private isItemTypeOfAbfragevarianteAndBauratenAreCalculable(abfrageTreeItem: AbfrageTreeItem): boolean {
+  private isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(abfrageTreeItem: AbfrageTreeItem): boolean {
     return (
       this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
       (_.isNil(abfrageTreeItem.abfragevariante?.bauabschnitte) ||
