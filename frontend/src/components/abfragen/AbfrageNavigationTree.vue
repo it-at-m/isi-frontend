@@ -22,7 +22,7 @@
               v-if="isItemTypeOfAbfragevarianteAndBauratenAreCalculable(item)"
               :id="'abfrage_navigation_tree_button_abfragevariante_calculate_bauraten_' + item.id"
               icon
-              @click="calculateBauratenForAbfragevariante(item)"
+              @click="determineBauratenForAbfragevariante(item)"
             >
               <v-icon> mdi-calculator</v-icon>
             </v-btn>
@@ -920,7 +920,7 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   @Emit()
-  private calculateBauratenForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+  private determineBauratenForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 
