@@ -596,20 +596,21 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfragevarianteOpen = true;
   }
 
-  private async handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     const abfragevariante = abfrageTreeItem.abfragevariante;
     if (!_.isNil(abfragevariante)) {
-      const bauraten: Array<BaurateDto> = await this.determineBauraten(
+      this.determineBauraten(
         abfragevariante.realisierungVon,
         abfragevariante.gesamtanzahlWe,
         abfragevariante.geschossflaecheWohnen,
         true
-      );
-      const technicalBaugebiet = createTechnicalBaugebietDto();
-      const technicalBauabschnitt = createTechnicalBauabschnittDto();
-      technicalBaugebiet.bauraten = bauraten;
-      technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
-      abfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+      ).catch((bauraten: Array<BaurateDto>) => {
+        const technicalBaugebiet = createTechnicalBaugebietDto();
+        const technicalBauabschnitt = createTechnicalBauabschnittDto();
+        technicalBaugebiet.bauraten = bauraten.map((baurate) => new BaurateModel(baurate));
+        technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
+        abfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+      });
     }
   }
 
