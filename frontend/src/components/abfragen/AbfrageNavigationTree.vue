@@ -18,14 +18,20 @@
             <a @click="setSelectedTreeItem(item)">{{ item.name }}</a>
           </template>
           <template #append="{ item }">
-            <v-btn
-              v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
-              :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
-              icon
-              @click="determineBauratenForAbfragevariante(item)"
-            >
-              <v-icon> mdi-calculator</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template #activator="{ on }">
+                <v-btn
+                  v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
+                  :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
+                  icon
+                  v-on="on"
+                  @click="determineBauratenForAbfragevariante(item)"
+                >
+                  <v-icon> mdi-calculator</v-icon>
+                </v-btn>
+              </template>
+              <span>Idealtypische Bauraten ermitteln</span>
+            </v-tooltip>
             <v-btn
               v-if="isItemTypeOfAddAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_create_new_abfragevariante_' + item.id"
