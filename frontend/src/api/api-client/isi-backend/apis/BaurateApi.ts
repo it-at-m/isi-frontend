@@ -23,20 +23,10 @@ import {
     InformationResponseDtoToJSON,
 } from '../models';
 
-export interface CreateBaurateRequest {
-    baurateDto: BaurateDto;
-}
-
-export interface DeleteBaurateByIdRequest {
-    id: string;
-}
-
-export interface GetBaurateByIdRequest {
-    id: string;
-}
-
-export interface UpdateBaurateRequest {
-    baurateDto: BaurateDto;
+export interface DetermineBauratenRequest {
+    realisierungsbeginn: number;
+    geschossflaecheWohnen: number;
+    wohneinheiten?: number;
 }
 
 /**
@@ -45,107 +35,35 @@ export interface UpdateBaurateRequest {
 export class BaurateApi extends runtime.BaseAPI {
 
     /**
-     * Anlegen einer neuen Baurate
+     * Ermittelt die Bauraten auf Basis der idealtypischen Bauraten
      */
-    async createBaurateRaw(requestParameters: CreateBaurateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BaurateDto>> {
-        if (requestParameters.baurateDto === null || requestParameters.baurateDto === undefined) {
-            throw new runtime.RequiredError('baurateDto','Required parameter requestParameters.baurateDto was null or undefined when calling createBaurate.');
+    async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
+        if (requestParameters.realisierungsbeginn === null || requestParameters.realisierungsbeginn === undefined) {
+            throw new runtime.RequiredError('realisierungsbeginn','Required parameter requestParameters.realisierungsbeginn was null or undefined when calling determineBauraten.');
+        }
+
+        if (requestParameters.geschossflaecheWohnen === null || requestParameters.geschossflaecheWohnen === undefined) {
+            throw new runtime.RequiredError('geschossflaecheWohnen','Required parameter requestParameters.geschossflaecheWohnen was null or undefined when calling determineBauraten.');
         }
 
         const queryParameters: any = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/baurate`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: BaurateDtoToJSON(requestParameters.baurateDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => BaurateDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Anlegen einer neuen Baurate
-     */
-    async createBaurate(requestParameters: CreateBaurateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BaurateDto> {
-        const response = await this.createBaurateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Löschen einer Baurate
-     */
-    async deleteBaurateByIdRaw(requestParameters: DeleteBaurateByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteBaurateById.');
+        if (requestParameters.realisierungsbeginn !== undefined) {
+            queryParameters['realisierungsbeginn'] = requestParameters.realisierungsbeginn;
         }
 
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/baurate/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Löschen einer Baurate
-     */
-    async deleteBaurateById(requestParameters: DeleteBaurateByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.deleteBaurateByIdRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Lesen einer Baurate
-     */
-    async getBaurateByIdRaw(requestParameters: GetBaurateByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BaurateDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getBaurateById.');
+        if (requestParameters.wohneinheiten !== undefined) {
+            queryParameters['wohneinheiten'] = requestParameters.wohneinheiten;
         }
 
-        const queryParameters: any = {};
+        if (requestParameters.geschossflaecheWohnen !== undefined) {
+            queryParameters['geschossflaecheWohnen'] = requestParameters.geschossflaecheWohnen;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/baurate/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => BaurateDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Lesen einer Baurate
-     */
-    async getBaurateById(requestParameters: GetBaurateByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BaurateDto> {
-        const response = await this.getBaurateByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Lesen aller Bauraten
-     */
-    async getBauratenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/bauraten`,
+            path: `/baurate/determine`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -155,43 +73,10 @@ export class BaurateApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lesen aller Bauraten
+     * Ermittelt die Bauraten auf Basis der idealtypischen Bauraten
      */
-    async getBauraten(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<BaurateDto>> {
-        const response = await this.getBauratenRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Aktualisierung einer Baurate
-     */
-    async updateBaurateRaw(requestParameters: UpdateBaurateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BaurateDto>> {
-        if (requestParameters.baurateDto === null || requestParameters.baurateDto === undefined) {
-            throw new runtime.RequiredError('baurateDto','Required parameter requestParameters.baurateDto was null or undefined when calling updateBaurate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/baurate`,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: BaurateDtoToJSON(requestParameters.baurateDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => BaurateDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Aktualisierung einer Baurate
-     */
-    async updateBaurate(requestParameters: UpdateBaurateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BaurateDto> {
-        const response = await this.updateBaurateRaw(requestParameters, initOverrides);
+    async determineBauraten(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<BaurateDto>> {
+        const response = await this.determineBauratenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

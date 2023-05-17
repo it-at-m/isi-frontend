@@ -261,6 +261,7 @@ import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
+import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 
 @Component({
   methods: { containsNotAllowedDokument },
@@ -280,6 +281,7 @@ export default class Abfrage extends Mixins(
   TransitionApiRequestMixin,
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
+  BauratenApiRequestMixin,
   StatusUebergangApiRequestMixin,
   ValidatorMixin,
   SaveLeaveMixin
@@ -594,13 +596,18 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfragevarianteOpen = true;
   }
 
-  private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+  private async handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     const abfragevariante = abfrageTreeItem.abfragevariante;
     if (!_.isNil(abfragevariante)) {
+      const bauraten: Array<BaurateDto> = await this.determineBauraten(
+        abfragevariante.realisierungVon,
+        abfragevariante.gesamtanzahlWe,
+        abfragevariante.geschossflaecheWohnen,
+        true
+      );
       const technicalBaugebiet = createTechnicalBaugebietDto();
       const technicalBauabschnitt = createTechnicalBauabschnittDto();
-      const baurente: Array<BaurateDto> = [];
-      technicalBaugebiet.bauraten = baurente;
+      technicalBaugebiet.bauraten = bauraten;
       technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
       abfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
     }
