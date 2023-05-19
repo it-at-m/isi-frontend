@@ -115,10 +115,10 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
         this.getLookupValue(listElement.standVorhaben, this.standVorhabenList),
         "Kein Vorhabensstand vorhanden"
       ) +
-      " - VerfahrensgrundsaetzeJahr: " +
+      " - Verfahrensgrundsätze Jahr: " +
       _.defaultTo(
         this.getLookupValue(listElement.sobonJahr, this.sobonVerfahrensgrundsaetzeJahrList),
-        "Kein VerfahrensgrundsaetzeJahr vorhanden"
+        "Kein Verfahrensgrundsätze Jahr vorhanden"
       )
     );
   }
