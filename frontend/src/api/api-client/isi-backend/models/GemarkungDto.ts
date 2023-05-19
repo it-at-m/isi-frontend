@@ -14,67 +14,79 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    BaugebietDto,
-    BaugebietDtoFromJSON,
-    BaugebietDtoFromJSONTyped,
-    BaugebietDtoToJSON,
-} from './BaugebietDto';
+    FlurstueckDto,
+    FlurstueckDtoFromJSON,
+    FlurstueckDtoFromJSONTyped,
+    FlurstueckDtoToJSON,
+} from './FlurstueckDto';
+import {
+    MultiPolygonGeometryDto,
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 
 /**
  * 
  * @export
- * @interface BauabschnittDto
+ * @interface GemarkungDto
  */
-export interface BauabschnittDto {
+export interface GemarkungDto {
     /**
      * 
      * @type {string}
-     * @memberof BauabschnittDto
+     * @memberof GemarkungDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof BauabschnittDto
+     * @memberof GemarkungDto
      */
     version?: number;
     /**
      * 
      * @type {Date}
-     * @memberof BauabschnittDto
+     * @memberof GemarkungDto
      */
     createdDateTime?: Date;
     /**
      * 
      * @type {Date}
-     * @memberof BauabschnittDto
+     * @memberof GemarkungDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
+     * @type {number}
+     * @memberof GemarkungDto
+     */
+    nummer?: number;
+    /**
+     * 
      * @type {string}
-     * @memberof BauabschnittDto
+     * @memberof GemarkungDto
      */
-    bezeichnung: string;
+    name?: string;
     /**
      * 
-     * @type {Array<BaugebietDto>}
-     * @memberof BauabschnittDto
+     * @type {Set<FlurstueckDto>}
+     * @memberof GemarkungDto
      */
-    baugebiete: Array<BaugebietDto>;
+    flurstuecke: Set<FlurstueckDto>;
     /**
      * 
-     * @type {boolean}
-     * @memberof BauabschnittDto
+     * @type {MultiPolygonGeometryDto}
+     * @memberof GemarkungDto
      */
-    technical: boolean;
+    multiPolygon: MultiPolygonGeometryDto;
 }
 
-export function BauabschnittDtoFromJSON(json: any): BauabschnittDto {
-    return BauabschnittDtoFromJSONTyped(json, false);
+export function GemarkungDtoFromJSON(json: any): GemarkungDto {
+    return GemarkungDtoFromJSONTyped(json, false);
 }
 
-export function BauabschnittDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauabschnittDto {
+export function GemarkungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GemarkungDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -84,13 +96,14 @@ export function BauabschnittDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bezeichnung': json['bezeichnung'],
-        'baugebiete': ((json['baugebiete'] as Array<any>).map(BaugebietDtoFromJSON)),
-        'technical': json['technical'],
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'flurstuecke': (new Set((json['flurstuecke'] as Array<any>).map(FlurstueckDtoFromJSON))),
+        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
-export function BauabschnittDtoToJSON(value?: BauabschnittDto | null): any {
+export function GemarkungDtoToJSON(value?: GemarkungDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -103,9 +116,10 @@ export function BauabschnittDtoToJSON(value?: BauabschnittDto | null): any {
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bezeichnung': value.bezeichnung,
-        'baugebiete': ((value.baugebiete as Array<any>).map(BaugebietDtoToJSON)),
-        'technical': value.technical,
+        'nummer': value.nummer,
+        'name': value.name,
+        'flurstuecke': (Array.from(value.flurstuecke as Set<any>).map(FlurstueckDtoToJSON)),
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

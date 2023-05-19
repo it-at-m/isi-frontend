@@ -134,7 +134,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
    * Erforderlich um nach Auswahl einer vorher bereits gewählten Datei das HTMLInputElement-Change-Event nochmal zu triggern.
    * @param event als HTMLInputElement
    */
-  onClick(event: Event) {
+  onClick(event: Event): void {
     const target = event.target as HTMLInputElement;
     target.value = "";
   }

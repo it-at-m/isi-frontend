@@ -14,67 +14,79 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    BaugebietDto,
-    BaugebietDtoFromJSON,
-    BaugebietDtoFromJSONTyped,
-    BaugebietDtoToJSON,
-} from './BaugebietDto';
+    GemarkungDto,
+    GemarkungDtoFromJSON,
+    GemarkungDtoFromJSONTyped,
+    GemarkungDtoToJSON,
+} from './GemarkungDto';
+import {
+    MultiPolygonGeometryDto,
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
+import {
+    StadtbezirkDto,
+    StadtbezirkDtoFromJSON,
+    StadtbezirkDtoFromJSONTyped,
+    StadtbezirkDtoToJSON,
+} from './StadtbezirkDto';
 
 /**
  * 
  * @export
- * @interface BauabschnittDto
+ * @interface VerortungDto
  */
-export interface BauabschnittDto {
+export interface VerortungDto {
     /**
      * 
      * @type {string}
-     * @memberof BauabschnittDto
+     * @memberof VerortungDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof BauabschnittDto
+     * @memberof VerortungDto
      */
     version?: number;
     /**
      * 
      * @type {Date}
-     * @memberof BauabschnittDto
+     * @memberof VerortungDto
      */
     createdDateTime?: Date;
     /**
      * 
      * @type {Date}
-     * @memberof BauabschnittDto
+     * @memberof VerortungDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
-     * @memberof BauabschnittDto
+     * @type {Set<StadtbezirkDto>}
+     * @memberof VerortungDto
      */
-    bezeichnung: string;
+    stadtbezirke: Set<StadtbezirkDto>;
     /**
      * 
-     * @type {Array<BaugebietDto>}
-     * @memberof BauabschnittDto
+     * @type {Set<GemarkungDto>}
+     * @memberof VerortungDto
      */
-    baugebiete: Array<BaugebietDto>;
+    gemarkungen: Set<GemarkungDto>;
     /**
      * 
-     * @type {boolean}
-     * @memberof BauabschnittDto
+     * @type {MultiPolygonGeometryDto}
+     * @memberof VerortungDto
      */
-    technical: boolean;
+    multiPolygon: MultiPolygonGeometryDto;
 }
 
-export function BauabschnittDtoFromJSON(json: any): BauabschnittDto {
-    return BauabschnittDtoFromJSONTyped(json, false);
+export function VerortungDtoFromJSON(json: any): VerortungDto {
+    return VerortungDtoFromJSONTyped(json, false);
 }
 
-export function BauabschnittDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauabschnittDto {
+export function VerortungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): VerortungDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -84,13 +96,13 @@ export function BauabschnittDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bezeichnung': json['bezeichnung'],
-        'baugebiete': ((json['baugebiete'] as Array<any>).map(BaugebietDtoFromJSON)),
-        'technical': json['technical'],
+        'stadtbezirke': (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
+        'gemarkungen': (new Set((json['gemarkungen'] as Array<any>).map(GemarkungDtoFromJSON))),
+        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
-export function BauabschnittDtoToJSON(value?: BauabschnittDto | null): any {
+export function VerortungDtoToJSON(value?: VerortungDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -103,9 +115,9 @@ export function BauabschnittDtoToJSON(value?: BauabschnittDto | null): any {
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bezeichnung': value.bezeichnung,
-        'baugebiete': ((value.baugebiete as Array<any>).map(BaugebietDtoToJSON)),
-        'technical': value.technical,
+        'stadtbezirke': (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
+        'gemarkungen': (Array.from(value.gemarkungen as Set<any>).map(GemarkungDtoToJSON)),
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

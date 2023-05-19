@@ -6,6 +6,10 @@ import {
   Configuration as ConfigurationMasterEai,
   ConfigurationParameters as ConfigurationParametersMasterEai,
 } from "@/api/api-client/isi-master-eai";
+import {
+  Configuration as ConfigurationGeodataEai,
+  ConfigurationParameters as ConfigurationParametersGeodataEai,
+} from "@/api/api-client/isi-geodata-eai";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 
 export default class RequestUtils {
@@ -15,6 +19,10 @@ export default class RequestUtils {
 
   public static getBaseMasterEaiUrl(): string {
     return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-master-eai";
+  }
+
+  public static getBaseGeodataUrl(): string {
+    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-geodata-eai";
   }
 
   public static getBasicFetchConfigurationForBackend(): ConfigurationBackend {
@@ -29,6 +37,13 @@ export default class RequestUtils {
       basePath: this.getBaseMasterEaiUrl(),
     };
     return new ConfigurationMasterEai(configuration);
+  }
+
+  public static getBasicFetchConfigurationForGeodataEai(): ConfigurationGeodataEai {
+    const configuration: ConfigurationParametersGeodataEai = {
+      basePath: this.getBaseGeodataUrl(),
+    };
+    return new ConfigurationGeodataEai(configuration);
   }
 
   /**

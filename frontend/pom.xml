@@ -73,6 +73,20 @@
                                     </configOptions>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>isi-geodata-eai</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.basedir}/src/api/json/isi-geodata-eai.json</inputSpec>
+                                    <generatorName>typescript-fetch</generatorName>
+                                    <output>${project.basedir}/src/api/api-client/isi-geodata-eai</output>
+                                    <configOptions>
+                                        <sourceFolder>src/api/</sourceFolder>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
 

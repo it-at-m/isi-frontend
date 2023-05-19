@@ -227,6 +227,8 @@ import {
   createBauabschnittDto,
   createBaugebietDto,
   createBaurateDto,
+  createTechnicalBauabschnittDto,
+  createTechnicalBaugebietDto,
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
@@ -284,60 +286,34 @@ export default class Abfrage extends Mixins(
   SaveLeaveMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
-
   private buttonText = "";
-
   private dialogTextStatus = "";
-
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
     true
   );
-
   private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
-
   private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
-
   private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
-
   private selectedBaurate: BaurateModel = new BaurateModel(createBaurateDto());
-
   private abfrageId: string = this.$route.params.id;
-
   private transition: TransitionDto | undefined;
-
   private isStatusUebergangDialogOpen = false;
-
   private isDeleteDialogAbfrageOpen = false;
-
   private isFreigabeDialogOpen = false;
-
   private isDeleteDialogAbfragevarianteOpen = false;
-
   private isDeleteDialogBauabschnittOpen = false;
-
   private isDeleteDialogBaugebietOpen = false;
-
   private isDeleteDialogBaurateOpen = false;
-
   private isAbfrageFormularOpen = true;
-
   private isAbfragevarianteFormularOpen = false;
-
   private isBauabschnittFormularOpen = false;
-
   private isBaugebietFormularOpen = false;
-
   private isBaurateFormularOpen = false;
-
   private abfragevarianteTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   private bauabschnittTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   private baugebietTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   private baurateTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-
   public possbileTransitions: Array<TransitionDto> = [];
 
   mounted(): void {
@@ -345,7 +321,6 @@ export default class Abfrage extends Mixins(
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.initializeFormulare();
     this.setSelectedAbfrageInStore();
-
     if (!this.isNewAbfrage())
       this.getTransitions(this.abfrageId, true).then((response) => {
         this.possbileTransitions = response;
@@ -463,7 +438,7 @@ export default class Abfrage extends Mixins(
           this.handleSuccess(dto);
         });
       } else {
-        await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+        await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
           this.handleSuccess(dto);
         });
       }
@@ -490,7 +465,7 @@ export default class Abfrage extends Mixins(
       this.abfrageWrapped.infrastrukturabfrage
     );
     if (_.isNil(validationMessage)) {
-      await this.updateInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true);
+      await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true);
       const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
       if (requestSuccessful) {
         if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
@@ -501,7 +476,6 @@ export default class Abfrage extends Mixins(
             this.possbileTransitions = response;
           });
         }
-
         this.openAbfrageFormular();
       }
     } else {
@@ -524,6 +498,13 @@ export default class Abfrage extends Mixins(
     if (!_.isNil(selectedTreeItem) && !_.isNil(this.$refs.abfrageNavigationTree)) {
       const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
       abfrageNavitionTree.setSelectedTreeItem(selectedTreeItem);
+    }
+  }
+
+  private setNewEntityToMark(entity: unknown): void {
+    if (!_.isNil(entity) && !_.isNil(this.$refs.abfrageNavigationTree)) {
+      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
+      abfrageNavitionTree.setNewEntityToMark(entity);
     }
   }
 
@@ -587,7 +568,6 @@ export default class Abfrage extends Mixins(
     if (message && level) {
       Toaster.toast(message, level);
     }
-
     this.$store.dispatch("search/resetAbfrage");
     this.$router.push({ path: "/abfragenuebersicht" });
   }
@@ -617,6 +597,7 @@ export default class Abfrage extends Mixins(
 
   private handleCreateNewAbfragevariante(): void {
     this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
+    this.setNewEntityToMark(this.selectedAbfragevariante);
     this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
     this.renumberingAbfragevarianten();
     this.formChanged();
@@ -661,6 +642,7 @@ export default class Abfrage extends Mixins(
       const copyBaugebiete = _.cloneDeep(selectedBauabschnitt.baugebiete);
       _.remove(copyBaugebiete, (baugebiet) => _.isEqual(baugebiet, this.selectedBaugebiet));
       selectedBauabschnitt.baugebiete = copyBaugebiete;
+      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baugebietTreeItemToDelete));
       this.formChanged();
       this.openBauabschnittFormular();
       this.$nextTick(() => {
@@ -676,6 +658,7 @@ export default class Abfrage extends Mixins(
       const copyBauraten = _.cloneDeep(selectedBaugebiet.bauraten);
       _.remove(copyBauraten, (baurate) => _.isEqual(baurate, this.selectedBaurate));
       selectedBaugebiet.bauraten = copyBauraten;
+      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baurateTreeItemToDelete));
       this.formChanged();
       this.openBaugebietFormular();
       this.$nextTick(() => {
@@ -704,7 +687,10 @@ export default class Abfrage extends Mixins(
       );
     }
     if (_.isNil(selectedBauabschnitt)) {
-      selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
+      const technicalBauabschnitt = this.getTechnicalBauabschnitt(selectedAbfragevariante);
+      selectedBauabschnitt = technicalBauabschnitt
+        ? technicalBauabschnitt
+        : new BauabschnittModel(createBauabschnittDto());
     }
     return selectedBauabschnitt;
   }
@@ -718,7 +704,9 @@ export default class Abfrage extends Mixins(
       );
     }
     if (_.isNil(selectedBaugebiet)) {
-      selectedBaugebiet = new BaugebietModel(createBaugebietDto());
+      const selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+      const technicalBaugebiet = this.getTechnicalBaugebiet(selectedAbfragevariante);
+      selectedBaugebiet = technicalBaugebiet ? technicalBaugebiet : new BaugebietModel(createBaugebietDto());
     }
     return selectedBaugebiet;
   }
@@ -756,6 +744,7 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedAbfragevariante.bauabschnitte)) {
       selectedAbfragevariante.bauabschnitte = [];
     }
+    this.setNewEntityToMark(this.selectedBauabschnitt);
     selectedAbfragevariante.bauabschnitte.push(this.selectedBauabschnitt);
     this.formChanged();
     this.openBauabschnittFormular();
@@ -779,6 +768,7 @@ export default class Abfrage extends Mixins(
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
+    this.setNewEntityToMark(this.selectedBaugebiet);
     selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
     this.formChanged();
     this.openBaugebietFormular();
@@ -802,6 +792,7 @@ export default class Abfrage extends Mixins(
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.selectedBaurate = new BaurateModel(createBaurateDto());
+    this.setNewEntityToMark(this.selectedBaurate);
     selectedBaugebiet.bauraten.push(this.selectedBaurate);
     this.formChanged();
     this.openBaurateFormular();
@@ -827,6 +818,77 @@ export default class Abfrage extends Mixins(
     this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });
+  }
+
+  /**
+   * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
+   */
+  private getTechnicalBauabschnitt(abfragevariante: AbfragevarianteModel): BauabschnittModel | undefined {
+    let bauabschnittDto: BauabschnittDto | undefined;
+
+    if (!_.isNil(abfragevariante.bauabschnitte)) {
+      bauabschnittDto = abfragevariante.bauabschnitte[0];
+    } else {
+      abfragevariante.bauabschnitte = [];
+    }
+
+    if (_.isNil(bauabschnittDto)) {
+      bauabschnittDto = createTechnicalBauabschnittDto();
+      abfragevariante.bauabschnitte.push(bauabschnittDto);
+    }
+
+    if (bauabschnittDto.technical) {
+      return new BauabschnittModel(bauabschnittDto);
+    } else {
+      return undefined;
+    }
+  }
+
+  /**
+   * Ermittelt oder erstellt bei Bedarf ein Platzhalter-Baugebiet für "alleinstehende" Bauraten.
+   */
+  private getTechnicalBaugebiet(abfragevariante: AbfragevarianteModel): BaugebietModel | undefined {
+    const bauabschnitt = this.getTechnicalBauabschnitt(abfragevariante);
+
+    if (!_.isNil(bauabschnitt)) {
+      let baugebietDto = bauabschnitt.baugebiete[0];
+
+      if (_.isNil(baugebietDto)) {
+        baugebietDto = createTechnicalBaugebietDto();
+        bauabschnitt.baugebiete.push(baugebietDto);
+      }
+
+      if (baugebietDto.technical) {
+        return new BaugebietModel(baugebietDto);
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Soll nach dem Löschen von Baugebieten und -raten aufgerufen werden, um Platzhalter ohne Kinder zu beseitigen.
+   */
+  private clearTechnicalEntities(abfragevariante: AbfragevarianteModel): void {
+    if (!_.isNil(abfragevariante.bauabschnitte)) {
+      const bauabschnittIndex = abfragevariante.bauabschnitte.findIndex((dto) => dto.technical);
+
+      if (bauabschnittIndex !== -1) {
+        const bauabschnitt = abfragevariante.bauabschnitte[bauabschnittIndex];
+        const baugebietIndex = bauabschnitt?.baugebiete.findIndex((dto) => dto.technical);
+
+        if (baugebietIndex !== -1) {
+          const baugebiet = bauabschnitt.baugebiete[baugebietIndex];
+          if (baugebiet.bauraten.length === 0) {
+            bauabschnitt.baugebiete.splice(baugebietIndex, 1);
+          }
+        }
+
+        if (bauabschnitt.baugebiete.length === 0) {
+          abfragevariante.bauabschnitte.splice(bauabschnittIndex, 1);
+        }
+      }
+    }
   }
 }
 </script>

@@ -70,6 +70,11 @@
       :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
     />
+    <verortung
+      id="verortung_component"
+      v-model="bauvorhaben.verortung"
+      :look-at="bauvorhaben.adresse"
+    />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
         <v-col cols="12">
