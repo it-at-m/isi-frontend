@@ -1,5 +1,8 @@
 <template>
-  <v-form ref="form">
+  <v-form
+    ref="form"
+    :disabled="isFormDisabled"
+  >
     <default-layout solid-heading>
       <template #content>
         <infrastrukturabfrage-component
@@ -261,6 +264,7 @@ import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   methods: { containsNotAllowedDokument },
@@ -283,7 +287,8 @@ export default class Abfrage extends Mixins(
   StatusUebergangApiRequestMixin,
   BaurateReqestMixin,
   ValidatorMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
   private buttonText = "";
@@ -348,6 +353,10 @@ export default class Abfrage extends Mixins(
     } else {
       this.saveAbfrageInStore(new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
     }
+  }
+
+  get isFormDisabled(): boolean {
+    return !this.abfrageEditable();
   }
 
   private deleteAbfrage(): void {
