@@ -87,6 +87,10 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
     return this.$store.getters["lookup/statusAbfrage"];
   }
 
+  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+  }
+
   @Watch("selectedAbfrageListElement", { immediate: true })
   private transferToBauvorhaben(): void {
     if (!_.isNil(this.selectedAbfrageListElement) && !_.isNil(this.selectedAbfrageListElement.id)) {
@@ -110,6 +114,11 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
       _.defaultTo(
         this.getLookupValue(listElement.standVorhaben, this.standVorhabenList),
         "Kein Vorhabensstand vorhanden"
+      ) +
+      " - VerfahrensgrundsaetzeJahr: " +
+      _.defaultTo(
+        this.getLookupValue(listElement.sobonJahr, this.sobonVerfahrensgrundsaetzeJahrList),
+        "Kein VerfahrensgrundsaetzeJahr vorhanden"
       )
     );
   }
