@@ -889,6 +889,10 @@ export default class AbfrageNavigationTree extends Vue {
   private isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(abfrageTreeItem: AbfrageTreeItem): boolean {
     return (
       this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
+      // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
+      (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
+        !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
+      // Die Abfragevariante darf keine Bauabschnitte referenzieren.
       (_.isNil(abfrageTreeItem.abfragevariante?.bauabschnitte) ||
         _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte))
     );
