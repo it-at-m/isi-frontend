@@ -167,7 +167,6 @@ export default class AdresseComponent extends Mixins(
     this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
   }
 
-  @Prop()
   @Prop({ type: Boolean, default: true })
   private showInInformationListProp!: boolean;
 
