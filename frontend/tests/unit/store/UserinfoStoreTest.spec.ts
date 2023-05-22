@@ -59,4 +59,23 @@ describe("UserinfoStoreTest.spec.ts", () => {
     expect(store.getters["userinfo/userinfo"].email).toEqual("Email");
     expect(store.getters["userinfo/userinfo"].roles[0]).toEqual("Admin");
   });
+
+  // Test Userinfo has role admin
+  test("Test has role admin", async () => {
+    const userinfo: Userinfo = new Userinfo();
+    userinfo.roles = ["admin"];
+    store.commit("userinfo/userinfo", userinfo);
+    expect(store.getters["userinfo/hasRoleAdmin"]).toBeTruthy();
+    expect(store.getters["userinfo/hasRoleAbfrageerstellung"]).not.toBeTruthy();
+  });
+
+  // Test Userinfo has role admin and abfrageersteller
+  test("Test has role admin and abfrageersteller", async () => {
+    const userinfo: Userinfo = new Userinfo();
+    userinfo.roles = ["admin", "abfrageerstellung"];
+    store.commit("userinfo/userinfo", userinfo);
+    expect(store.getters["userinfo/hasRoleAdmin"]).toBeTruthy();
+    expect(store.getters["userinfo/hasRoleAbfrageerstellung"]).toBeTruthy();
+    expect(store.getters["userinfo/hasRoleSachbearbeitung"]).not.toBeTruthy();
+  });
 });

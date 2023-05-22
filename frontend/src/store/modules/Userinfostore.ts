@@ -23,19 +23,16 @@ export default {
         ? state.userinfo?.roles?.includes("admin")
         : false;
     },
-
     hasRoleAbfrageerstellung: (state: UserinfoState): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("abfrageerstellung")
         : false;
     },
-
     hasRoleSachbearbeitung: (state: UserinfoState): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("sachbearbeitung")
         : false;
     },
-
     hasRoleBedarfsmeldung: (state: UserinfoState): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("bedarfsmeldung")

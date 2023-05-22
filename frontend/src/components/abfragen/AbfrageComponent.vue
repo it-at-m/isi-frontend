@@ -132,6 +132,7 @@
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
             :name-root-folder="nameRootFolder"
+            :add-dokument-enabled="addDokumentEnabled"
           />
         </v-col>
       </v-row>
@@ -151,6 +152,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import Verortung from "@/components/common/Verortung.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: {
@@ -164,7 +166,8 @@ import Verortung from "@/components/common/Verortung.vue";
 export default class AbfrageComponent extends Mixins(
   FieldValidationRulesMixin,
   BauvorhabenApiRequestMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
 
@@ -188,6 +191,10 @@ export default class AbfrageComponent extends Mixins(
 
   get statusAbfrageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/statusAbfrage"];
+  }
+
+  get addDokumentEnabled(): boolean {
+    return this.abfrageEditable();
   }
 
   /**
