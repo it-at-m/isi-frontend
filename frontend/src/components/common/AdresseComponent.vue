@@ -9,6 +9,7 @@
           <v-autocomplete
             id="adresse_adressSuche_dropdown"
             v-model="selectedAdresse"
+            :disabled="!isEditable"
             :items="searchResult"
             :loading="isLoading"
             :search-input.sync="searchForAdresse"
@@ -29,12 +30,15 @@
         <v-col cols="1">
           <v-tooltip bottom>
             <template #activator="{ on }">
-              <v-icon
+              <v-btn
+                :id="abfrage_loeschen"
+                :disabled="!isEditable"
+                icon
                 v-on="on"
                 @click="resetAdresse"
               >
-                mdi-delete
-              </v-icon>
+                <v-icon> mdi-delete</v-icon>
+              </v-btn>
             </template>
             <span>ausgewählte Adresse löschen</span>
           </v-tooltip>
@@ -100,6 +104,7 @@
           id="adresse_allgemeineOrtsangabe"
           ref="allgemeineOrtsangabeField"
           v-model="allgemeineOrtsangabe"
+          :disabled="!isEditable"
           label="Angabe zur Lage des Vorhabens und ergänzende Adressinformationen"
           maxlength="255"
           @input="formChanged"
@@ -181,6 +186,13 @@ export default class AdresseComponent extends Mixins(
   set selectedAdresse(dto: MuenchenAdresseDto) {
     this.selectedAdresseOfAdressSuche = dto;
     this.assumeAdresse(this.selectedAdresseOfAdressSuche);
+  }
+
+  @Prop({ type: Boolean, default: true })
+  private isEditableProp!: boolean;
+
+  get isEditable(): boolean {
+    return this.isEditableProp;
   }
 
   get isLoading(): boolean {
