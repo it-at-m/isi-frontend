@@ -6,6 +6,9 @@ import {
   InfrastrukturabfrageDto,
   GetInfrastrukturabfrageByIdRequest,
   PatchAbfrageAngelegtRequest,
+  PatchAbfrageInBearbeitungSachbearbeitungRequest,
+  SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto,
+  AbfrageerstellungInfrastrukturabfrageAngelegtDto,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -21,11 +24,11 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   }
 
   createInfrastrukturabfrage(
-    dto: InfrastrukturabfrageDto,
+    dto: AbfrageerstellungInfrastrukturabfrageAngelegtDto,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: CreateInfrastrukturabfrageRequest = {
-      infrastrukturabfrageDto: dto,
+      abfrageerstellungInfrastrukturabfrageAngelegtDto: dto,
     };
     return this.abfrageApi
       .createInfrastrukturabfrage(requestObject, RequestUtils.getPOSTConfig())
@@ -38,12 +41,33 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  patchAbfrageAngelegt(dto: InfrastrukturabfrageDto, showInInformationList: boolean): Promise<InfrastrukturabfrageDto> {
+  patchAbfrageAngelegt(
+    dto: AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+    showInInformationList: boolean
+  ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageAngelegtRequest = {
-      infrastrukturabfrageDto: dto,
+      abfrageerstellungInfrastrukturabfrageAngelegtDto: dto,
     };
     return this.abfrageApi
       .patchAbfrageAngelegt(requestObject, RequestUtils.getPATCHConfig())
+      .then((response) => {
+        this.resetDirty();
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  patchAbfrageInBearbeitungOffen(
+    dto: SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto,
+    showInInformationList: boolean
+  ): Promise<InfrastrukturabfrageDto> {
+    const requestObject: PatchAbfrageInBearbeitungSachbearbeitungRequest = {
+      sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto: dto,
+    };
+    return this.abfrageApi
+      .patchAbfrageInBearbeitungSachbearbeitung(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
         this.resetDirty();
         return response;

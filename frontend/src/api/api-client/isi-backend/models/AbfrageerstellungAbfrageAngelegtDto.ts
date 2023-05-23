@@ -25,77 +25,65 @@ import {
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
-import {
-    StatusAbfrage,
-    StatusAbfrageFromJSON,
-    StatusAbfrageFromJSONTyped,
-    StatusAbfrageToJSON,
-} from './StatusAbfrage';
 
 /**
  * 
  * @export
- * @interface AbfrageDto
+ * @interface AbfrageerstellungAbfrageAngelegtDto
  */
-export interface AbfrageDto {
+export interface AbfrageerstellungAbfrageAngelegtDto {
     /**
      * 
      * @type {Array<DokumentDto>}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
     allgemeineOrtsangabe?: string;
     /**
      * 
      * @type {AdresseDto}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
     adresse?: AdresseDto;
     /**
      * 
      * @type {Date}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
-    fristStellungnahme?: Date;
+    fristStellungnahme: Date;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
     anmerkung?: string;
     /**
      * 
-     * @type {StatusAbfrage}
-     * @memberof AbfrageDto
-     */
-    statusAbfrage?: StatusAbfrage;
-    /**
-     * 
      * @type {string}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
     bebauungsplannummer?: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
-    nameAbfrage?: string;
+    nameAbfrage: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
-    standVorhaben?: AbfrageDtoStandVorhabenEnum;
+    standVorhaben: AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageDto
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
     bauvorhaben?: string;
 }
@@ -104,7 +92,7 @@ export interface AbfrageDto {
 /**
  * @export
  */
-export const AbfrageDtoStandVorhabenEnum = {
+export const AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum = {
     Unspecified: 'UNSPECIFIED',
     GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
     Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
@@ -121,14 +109,14 @@ export const AbfrageDtoStandVorhabenEnum = {
     BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
     BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
 } as const;
-export type AbfrageDtoStandVorhabenEnum = typeof AbfrageDtoStandVorhabenEnum[keyof typeof AbfrageDtoStandVorhabenEnum];
+export type AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum = typeof AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum[keyof typeof AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum];
 
 
-export function AbfrageDtoFromJSON(json: any): AbfrageDto {
-    return AbfrageDtoFromJSONTyped(json, false);
+export function AbfrageerstellungAbfrageAngelegtDtoFromJSON(json: any): AbfrageerstellungAbfrageAngelegtDto {
+    return AbfrageerstellungAbfrageAngelegtDtoFromJSONTyped(json, false);
 }
 
-export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageDto {
+export function AbfrageerstellungAbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageerstellungAbfrageAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -137,17 +125,16 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
+        'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
-        'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
-        'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
+        'nameAbfrage': json['nameAbfrage'],
+        'standVorhaben': json['standVorhaben'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
 }
 
-export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
+export function AbfrageerstellungAbfrageAngelegtDtoToJSON(value?: AbfrageerstellungAbfrageAngelegtDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -159,9 +146,8 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'adresse': AdresseDtoToJSON(value.adresse),
-        'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
+        'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
-        'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'bebauungsplannummer': value.bebauungsplannummer,
         'nameAbfrage': value.nameAbfrage,
         'standVorhaben': value.standVorhaben,

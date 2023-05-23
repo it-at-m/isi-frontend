@@ -260,7 +260,10 @@ import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
-
+import {
+  mapToAbfrageerstellungInfrastrukturabfrageAngelegt,
+  mapToSachbearbeitungInfrastrukturabfrageOffenInBearbeitung,
+} from "@/utils/MapperUtil";
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
@@ -433,11 +436,17 @@ export default class Abfrage extends Mixins(
     );
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.createInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+        await this.createInfrastrukturabfrage(
+          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          true
+        ).then((dto) => {
           this.handleSuccess(dto);
         });
       } else {
-        await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+        await this.patchAbfrageAngelegt(
+          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          true
+        ).then((dto) => {
           this.handleSuccess(dto);
         });
       }
@@ -464,7 +473,10 @@ export default class Abfrage extends Mixins(
       this.abfrageWrapped.infrastrukturabfrage
     );
     if (_.isNil(validationMessage)) {
-      await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true);
+      await this.patchAbfrageAngelegt(
+        mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+        true
+      );
       const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
       if (requestSuccessful) {
         if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {

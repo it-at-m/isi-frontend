@@ -15,16 +15,22 @@
 
 import * as runtime from '../runtime';
 import {
+    AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+    AbfrageerstellungInfrastrukturabfrageAngelegtDtoFromJSON,
+    AbfrageerstellungInfrastrukturabfrageAngelegtDtoToJSON,
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
     InfrastrukturabfrageDto,
     InfrastrukturabfrageDtoFromJSON,
     InfrastrukturabfrageDtoToJSON,
+    SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto,
+    SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDtoFromJSON,
+    SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDtoToJSON,
 } from '../models';
 
 export interface CreateInfrastrukturabfrageRequest {
-    infrastrukturabfrageDto: InfrastrukturabfrageDto;
+    abfrageerstellungInfrastrukturabfrageAngelegtDto: AbfrageerstellungInfrastrukturabfrageAngelegtDto;
 }
 
 export interface DeleteInfrastrukturabfrageByIdRequest {
@@ -36,7 +42,11 @@ export interface GetInfrastrukturabfrageByIdRequest {
 }
 
 export interface PatchAbfrageAngelegtRequest {
-    infrastrukturabfrageDto: InfrastrukturabfrageDto;
+    abfrageerstellungInfrastrukturabfrageAngelegtDto: AbfrageerstellungInfrastrukturabfrageAngelegtDto;
+}
+
+export interface PatchAbfrageInBearbeitungSachbearbeitungRequest {
+    sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto: SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto;
 }
 
 /**
@@ -48,8 +58,8 @@ export class AbfrageApi extends runtime.BaseAPI {
      * Anlegen einer neuen Infrastrukturabfrage
      */
     async createInfrastrukturabfrageRaw(requestParameters: CreateInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
-        if (requestParameters.infrastrukturabfrageDto === null || requestParameters.infrastrukturabfrageDto === undefined) {
-            throw new runtime.RequiredError('infrastrukturabfrageDto','Required parameter requestParameters.infrastrukturabfrageDto was null or undefined when calling createInfrastrukturabfrage.');
+        if (requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === null || requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === undefined) {
+            throw new runtime.RequiredError('abfrageerstellungInfrastrukturabfrageAngelegtDto','Required parameter requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto was null or undefined when calling createInfrastrukturabfrage.');
         }
 
         const queryParameters: any = {};
@@ -63,7 +73,7 @@ export class AbfrageApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: InfrastrukturabfrageDtoToJSON(requestParameters.infrastrukturabfrageDto),
+            body: AbfrageerstellungInfrastrukturabfrageAngelegtDtoToJSON(requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
@@ -165,11 +175,11 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage.
+     * Aktualisierung einer Infrastrukturabfrage im Status ANGELEGT.
      */
     async patchAbfrageAngelegtRaw(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
-        if (requestParameters.infrastrukturabfrageDto === null || requestParameters.infrastrukturabfrageDto === undefined) {
-            throw new runtime.RequiredError('infrastrukturabfrageDto','Required parameter requestParameters.infrastrukturabfrageDto was null or undefined when calling patchAbfrageAngelegt.');
+        if (requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === null || requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === undefined) {
+            throw new runtime.RequiredError('abfrageerstellungInfrastrukturabfrageAngelegtDto','Required parameter requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto was null or undefined when calling patchAbfrageAngelegt.');
         }
 
         const queryParameters: any = {};
@@ -183,17 +193,50 @@ export class AbfrageApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: InfrastrukturabfrageDtoToJSON(requestParameters.infrastrukturabfrageDto),
+            body: AbfrageerstellungInfrastrukturabfrageAngelegtDtoToJSON(requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage.
+     * Aktualisierung einer Infrastrukturabfrage im Status ANGELEGT.
      */
     async patchAbfrageAngelegt(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
         const response = await this.patchAbfrageAngelegtRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Aktualisierung einer Infrastrukturabfrage im Status OFFEN oder IN_BEARBEITUNG_SACHBEARBEITUNG.
+     */
+    async patchAbfrageInBearbeitungSachbearbeitungRaw(requestParameters: PatchAbfrageInBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
+        if (requestParameters.sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto === null || requestParameters.sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto === undefined) {
+            throw new runtime.RequiredError('sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto','Required parameter requestParameters.sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto was null or undefined when calling patchAbfrageInBearbeitungSachbearbeitung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/infrastruktur-abfragen/in-bearbeitung-offen`,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDtoToJSON(requestParameters.sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung einer Infrastrukturabfrage im Status OFFEN oder IN_BEARBEITUNG_SACHBEARBEITUNG.
+     */
+    async patchAbfrageInBearbeitungSachbearbeitung(requestParameters: PatchAbfrageInBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
+        const response = await this.patchAbfrageInBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -23,160 +23,154 @@ import {
 /**
  * 
  * @export
- * @interface AbfragevarianteDto
+ * @interface AbfrageerstellungAbfragevarianteAngelegtDto
  */
-export interface AbfragevarianteDto {
+export interface AbfrageerstellungAbfragevarianteAngelegtDto {
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     version?: number;
     /**
      * 
      * @type {Date}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     createdDateTime?: Date;
     /**
      * 
      * @type {Date}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
-    abfragevariantenNr?: number;
+    abfragevariantenNr: number;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
-    abfragevariantenName?: string;
+    abfragevariantenName: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
-    planungsrecht?: AbfragevarianteDtoPlanungsrechtEnum;
+    planungsrecht: AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheWohnenGenehmigt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheWohnenFestgesetzt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheWohnenSoBoNursaechlich?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheWohnenBestandswohnbaurecht?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     gesamtanzahlWe?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     anzahlWeBaurechtlichGenehmigt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     anzahlWeBaurechtlichFestgesetzt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
-    realisierungVon?: number;
+    realisierungVon: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
-    realisierungBis?: number;
+    realisierungBis: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheGenossenschaftlicheWohnungen?: number;
     /**
      * 
      * @type {boolean}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
-    sonderwohnformen?: boolean;
+    sonderwohnformen: boolean;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheStudentenwohnungen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheSeniorenwohnungen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     geschossflaecheSonstiges?: number;
     /**
      * 
      * @type {Array<BauabschnittDto>}
-     * @memberof AbfragevarianteDto
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     bauabschnitte?: Array<BauabschnittDto>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AbfragevarianteDto
-     */
-    relevant?: boolean;
 }
 
 
 /**
  * @export
  */
-export const AbfragevarianteDtoPlanungsrechtEnum = {
+export const AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum = {
     Unspecified: 'UNSPECIFIED',
     BplanParag30: 'BPLAN_PARAG_30',
     BplanParag12: 'BPLAN_PARAG_12',
@@ -190,14 +184,14 @@ export const AbfragevarianteDtoPlanungsrechtEnum = {
     SonstigesParag165: 'SONSTIGES_PARAG_165',
     SonstigesParag246: 'SONSTIGES_PARAG_246'
 } as const;
-export type AbfragevarianteDtoPlanungsrechtEnum = typeof AbfragevarianteDtoPlanungsrechtEnum[keyof typeof AbfragevarianteDtoPlanungsrechtEnum];
+export type AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum = typeof AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum[keyof typeof AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum];
 
 
-export function AbfragevarianteDtoFromJSON(json: any): AbfragevarianteDto {
-    return AbfragevarianteDtoFromJSONTyped(json, false);
+export function AbfrageerstellungAbfragevarianteAngelegtDtoFromJSON(json: any): AbfrageerstellungAbfragevarianteAngelegtDto {
+    return AbfrageerstellungAbfragevarianteAngelegtDtoFromJSONTyped(json, false);
 }
 
-export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteDto {
+export function AbfrageerstellungAbfragevarianteAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageerstellungAbfragevarianteAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -207,9 +201,9 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
-        'abfragevariantenName': !exists(json, 'abfragevariantenName') ? undefined : json['abfragevariantenName'],
-        'planungsrecht': !exists(json, 'planungsrecht') ? undefined : json['planungsrecht'],
+        'abfragevariantenNr': json['abfragevariantenNr'],
+        'abfragevariantenName': json['abfragevariantenName'],
+        'planungsrecht': json['planungsrecht'],
         'geschossflaecheWohnen': !exists(json, 'geschossflaecheWohnen') ? undefined : json['geschossflaecheWohnen'],
         'geschossflaecheWohnenGenehmigt': !exists(json, 'geschossflaecheWohnenGenehmigt') ? undefined : json['geschossflaecheWohnenGenehmigt'],
         'geschossflaecheWohnenFestgesetzt': !exists(json, 'geschossflaecheWohnenFestgesetzt') ? undefined : json['geschossflaecheWohnenFestgesetzt'],
@@ -218,19 +212,18 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'gesamtanzahlWe': !exists(json, 'gesamtanzahlWe') ? undefined : json['gesamtanzahlWe'],
         'anzahlWeBaurechtlichGenehmigt': !exists(json, 'anzahlWeBaurechtlichGenehmigt') ? undefined : json['anzahlWeBaurechtlichGenehmigt'],
         'anzahlWeBaurechtlichFestgesetzt': !exists(json, 'anzahlWeBaurechtlichFestgesetzt') ? undefined : json['anzahlWeBaurechtlichFestgesetzt'],
-        'realisierungVon': !exists(json, 'realisierungVon') ? undefined : json['realisierungVon'],
-        'realisierungBis': !exists(json, 'realisierungBis') ? undefined : json['realisierungBis'],
+        'realisierungVon': json['realisierungVon'],
+        'realisierungBis': json['realisierungBis'],
         'geschossflaecheGenossenschaftlicheWohnungen': !exists(json, 'geschossflaecheGenossenschaftlicheWohnungen') ? undefined : json['geschossflaecheGenossenschaftlicheWohnungen'],
-        'sonderwohnformen': !exists(json, 'sonderwohnformen') ? undefined : json['sonderwohnformen'],
+        'sonderwohnformen': json['sonderwohnformen'],
         'geschossflaecheStudentenwohnungen': !exists(json, 'geschossflaecheStudentenwohnungen') ? undefined : json['geschossflaecheStudentenwohnungen'],
         'geschossflaecheSeniorenwohnungen': !exists(json, 'geschossflaecheSeniorenwohnungen') ? undefined : json['geschossflaecheSeniorenwohnungen'],
         'geschossflaecheSonstiges': !exists(json, 'geschossflaecheSonstiges') ? undefined : json['geschossflaecheSonstiges'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
-        'relevant': !exists(json, 'relevant') ? undefined : json['relevant'],
     };
 }
 
-export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any {
+export function AbfrageerstellungAbfragevarianteAngelegtDtoToJSON(value?: AbfrageerstellungAbfragevarianteAngelegtDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -262,7 +255,6 @@ export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any
         'geschossflaecheSeniorenwohnungen': value.geschossflaecheSeniorenwohnungen,
         'geschossflaecheSonstiges': value.geschossflaecheSonstiges,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
-        'relevant': value.relevant,
     };
 }
 
