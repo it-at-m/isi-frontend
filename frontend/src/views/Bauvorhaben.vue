@@ -264,6 +264,7 @@ export default class Bauvorhaben extends Mixins(
     this.bauvorhaben.standVorhaben = abfrage.abfrage.standVorhaben;
     this.bauvorhaben.bebauungsplannummer = abfrage.abfrage.bebauungsplannummer;
     this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
+    this.bauvorhaben.sobonJahr = abfrage.sobonJahr;
     this.dataTransferDialogOpen = false;
   }
 }

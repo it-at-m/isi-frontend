@@ -77,10 +77,7 @@
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
+        <v-col cols="12">
           <v-select
             id="bauvorhaben_planungsrecht_dropdown"
             v-model="bauvorhaben.planungsrecht"
@@ -92,20 +89,6 @@
           >
             <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <tri-switch
-            id="bauvorhaben_sobonRelevant_triswitch"
-            v-model="bauvorhaben.sobonRelevant"
-            off-text="Nein"
-            on-text="Ja"
-            :rules="[fieldValidationRules.notUnspecified]"
-          >
-            <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
-          </tri-switch>
         </v-col>
       </v-row>
       <v-row>
@@ -179,12 +162,51 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <field-group-card :card-title="sobonCardTitle">
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <tri-switch
+            id="bauvorhaben_sobonRelevant_triswitch"
+            v-model="bauvorhaben.sobonRelevant"
+            off-text="Nein"
+            on-text="Ja"
+            :rules="[fieldValidationRules.notUnspecified]"
+          >
+            <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
+          </tri-switch>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-slide-y-reverse-transition>
+            <v-select
+              v-if="sobonJahrVisible"
+              id="bauvorhaben_sobonJahr_dropdown"
+              v-model="bauvorhaben.sobonJahr"
+              :items="sobonVerfahrensgrundsaetzeJahrList"
+              item-value="key"
+              item-text="value"
+              :rules="[fieldValidationRules.pflichtfeld]"
+              @change="formChanged"
+            >
+              <template #label>
+                Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN <span class="secondary--text">*</span>
+              </template>
+            </v-select>
+          </v-slide-y-reverse-transition>
+        </v-col>
+      </v-row>
+    </field-group-card>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -207,6 +229,10 @@ export default class BauvorhabenForm extends Mixins(
 
   private dokumentCardTitle = "Dokumente";
 
+  private sobonCardTitle = "SoBoN";
+
+  private sobonJahrVisible = false;
+
   private nameRootFolder = "bauvorhaben";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben";
@@ -221,6 +247,20 @@ export default class BauvorhabenForm extends Mixins(
 
   get baugebietTypList(): LookupEntryDto[] {
     return this.$store.getters["lookup/baugebietTyp"];
+  }
+
+  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+  }
+
+  @Watch("bauvorhaben.sobonRelevant", { immediate: true })
+  private sobonRelevantChanged(value: UncertainBoolean): void {
+    if (value === UncertainBoolean.True) {
+      this.sobonJahrVisible = true;
+    } else {
+      this.sobonJahrVisible = false;
+      this.bauvorhaben.sobonJahr = undefined;
+    }
   }
 }
 </script>
