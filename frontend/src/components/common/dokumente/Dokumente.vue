@@ -38,7 +38,7 @@
               block
               color="secondary"
               elevation="1"
-              :disabled="currentNumberOfAddedFiles >= maxNumberOfFiles"
+              :disabled="!addDokumentButtonEnabled"
               @click="addDokument()"
               v-text="'Hinzufügen'"
             />
@@ -93,6 +93,9 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   @Prop()
   private nameRootFolder!: string;
 
+  @Prop({ type: Boolean, default: true })
+  private addDokumentEnabled!: boolean;
+
   private allowedMimeTypes = "";
 
   private maxNumberOfFiles = 0;
@@ -112,6 +115,10 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
     this.allowedMimeTypes = getAllowedMimeTypes(fileInformationDto);
     this.maxNumberOfFiles = this.getMaxNumberOfFiles();
+  }
+
+  get addDokumentButtonEnabled(): boolean {
+    return this.addDokumentEnabled && this.currentNumberOfAddedFiles < this.maxNumberOfFiles;
   }
 
   private addDokument(): void {
