@@ -62,6 +62,12 @@ export interface BauabschnittDto {
      * @memberof BauabschnittDto
      */
     baugebiete: Array<BaugebietDto>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BauabschnittDto
+     */
+    technical: boolean;
 }
 
 export function BauabschnittDtoFromJSON(json: any): BauabschnittDto {
@@ -80,6 +86,7 @@ export function BauabschnittDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
         'baugebiete': ((json['baugebiete'] as Array<any>).map(BaugebietDtoFromJSON)),
+        'technical': json['technical'],
     };
 }
 
@@ -98,6 +105,7 @@ export function BauabschnittDtoToJSON(value?: BauabschnittDto | null): any {
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'bezeichnung': value.bezeichnung,
         'baugebiete': ((value.baugebiete as Array<any>).map(BaugebietDtoToJSON)),
+        'technical': value.technical,
     };
 }
 

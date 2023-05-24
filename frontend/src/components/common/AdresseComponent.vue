@@ -1,8 +1,11 @@
 <template>
-  <field-group-card :card-title="adressCardTitle">
+  <field-group-card
+    :card-title="adressCardTitle"
+    :mark-card-title-as-mandatory="true"
+  >
     <div>
       <v-row justify="center">
-        <v-col cols="12">
+        <v-col cols="11">
           <v-autocomplete
             id="adresse_adressSuche_dropdown"
             v-model="selectedAdresse"
@@ -21,83 +24,85 @@
             return-object
             placeholder="Suchtext mit Adressteilen"
             prepend-inner-icon="mdi-magnify"
-            @keyup.enter="onBlurAdressSuche"
-            @blur="onBlurAdressSuche"
           />
+        </v-col>
+        <v-col cols="1">
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+              <v-icon
+                v-on="on"
+                @click="resetAdresse"
+              >
+                mdi-delete
+              </v-icon>
+            </template>
+            <span>ausgewählte Adresse löschen</span>
+          </v-tooltip>
         </v-col>
       </v-row>
     </div>
-    <div v-if="isAllgemeineOrtsangabeVisible">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-text-field
-            id="adresse_allgemeineOrtsangabe"
-            ref="allgemeineOrtsangabeField"
-            v-model="allgemeineOrtsangabe"
-            label="Allgemeine Ortsangabe"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </div>
-    <div v-if="isAdresseVisible">
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            id="adresse_strasse"
-            ref="strasseField"
-            v-model="adresse.strasse"
-            label="Straße"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            id="adresse_hausnummer"
-            v-model="adresse.hausnummer"
-            :rules="[fieldValidationRules.hausnummer]"
-            label="Hausnummer"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            id="adresse_postleitzahl"
-            v-model="adresse.plz"
-            label="Postleitzahl"
-            :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            id="adresse_ort"
-            v-model="adresse.ort"
-            label="Ort"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-    </div>
-    <v-row>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-text-field
+          id="adresse_strasse"
+          ref="strasseField"
+          v-model="adresse.strasse"
+          label="Straße"
+          disabled
+          @input="formChanged"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-text-field
+          id="adresse_hausnummer"
+          v-model="adresse.hausnummer"
+          :rules="[fieldValidationRules.hausnummer]"
+          label="Hausnummer"
+          disabled
+          @input="formChanged"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-text-field
+          id="adresse_postleitzahl"
+          v-model="adresse.plz"
+          label="Postleitzahl"
+          :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+          disabled
+          @input="formChanged"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-text-field
+          id="adresse_ort"
+          v-model="adresse.ort"
+          label="Ort"
+          disabled
+          @input="formChanged"
+        />
+      </v-col>
+    </v-row>
+    <v-row justify="center">
       <v-col cols="12">
-        <city-map
-          height="300"
-          :zoom="14"
-          expandable
-          :look-at="coordinate"
+        <v-text-field
+          id="adresse_allgemeineOrtsangabe"
+          ref="allgemeineOrtsangabeField"
+          v-model="allgemeineOrtsangabe"
+          label="Angabe zur Lage des Vorhabens und ergänzende Adressinformationen"
+          maxlength="255"
+          @input="formChanged"
         />
       </v-col>
     </v-row>
@@ -117,9 +122,10 @@ import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from
 import CityMap from "@/components/map/CityMap.vue";
 import _ from "lodash";
 import { LatLngLiteral } from "leaflet";
+import Verortung from "@/components/common/Verortung.vue";
 
 @Component({
-  components: { CityMap },
+  components: { Verortung, CityMap },
 })
 export default class AdresseComponent extends Mixins(
   SaveLeaveMixin,
@@ -132,8 +138,6 @@ export default class AdresseComponent extends Mixins(
   private loading = false;
 
   private adressSuche = "";
-
-  private adressSucheOnBlur = ""; // Kopie von adressSuche bis zum Verlassen des Feldes
 
   private adressSucheItemSelected = false;
 
@@ -198,17 +202,8 @@ export default class AdresseComponent extends Mixins(
   set searchForAdresse(adressSuche: string) {
     this.adressSuche = adressSuche;
     if (!_.isNil(adressSuche)) {
-      this.adressSucheOnBlur = this.adressSuche;
       this.searchForAdressenWith(this.adressSuche);
     }
-  }
-
-  get isAllgemeineOrtsangabeVisible(): boolean {
-    return !_.isEmpty(this.allgemeineOrtsangabe);
-  }
-
-  get isAdresseVisible(): boolean {
-    return _.isEmpty(this.allgemeineOrtsangabe);
   }
 
   get coordinate(): LatLngLiteral | undefined {
@@ -221,16 +216,9 @@ export default class AdresseComponent extends Mixins(
     return undefined;
   }
 
-  private assumeAllgemeineOrtsangabe(allgemeineOrtsangabe: string): void {
-    this.allgemeineOrtsangabe = allgemeineOrtsangabe;
-    this.resetAdresse();
-    this.resetAdressSuche();
-  }
-
   private assumeAdresse(dto: MuenchenAdresseDto): void {
     this.adressSucheItemSelected = true;
     this.assignAdresse(dto);
-    this.allgemeineOrtsangabe = "";
     this.resetAdressSuche();
   }
 
@@ -253,21 +241,15 @@ export default class AdresseComponent extends Mixins(
 
   private resetAdresse(): void {
     this.adresse = new AdresseModel(createAdresseDto());
+    this.formChanged();
   }
 
   private resetAdressSuche(): void {
     this.adressSuche = "";
-    this.adressSucheOnBlur = "";
     this.selectedAdresseOfAdressSuche = createMuenchenAdresseDto();
     this.searchResult = [];
     this.adressSucheItemSelected = false;
     this.formChanged();
-  }
-
-  private onBlurAdressSuche(): void {
-    if (!this.adressSucheItemSelected && !_.isEmpty(this.adressSucheOnBlur)) {
-      this.assumeAllgemeineOrtsangabe(this.adressSucheOnBlur);
-    }
   }
 
   //

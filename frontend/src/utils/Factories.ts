@@ -57,7 +57,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     geschossflaecheSeniorenwohnungen: undefined,
     geschossflaecheSonstiges: undefined,
     bauabschnitte: [],
-  } as AbfragevarianteDto;
+  };
 }
 
 /**
@@ -66,7 +66,14 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
 export function createAbfrageDto(): AbfrageDto {
   return {
     allgemeineOrtsangabe: undefined,
-    adresse: undefined,
+    adresse: {
+      strasse: "",
+      hausnummer: "",
+      plz: "",
+      ort: "",
+      coordinate: undefined,
+    },
+    verortung: undefined,
     fristStellungnahme: new Date(0),
     anmerkung: undefined,
     statusAbfrage: StatusAbfrage.Angelegt,
@@ -75,7 +82,7 @@ export function createAbfrageDto(): AbfrageDto {
     standVorhaben: AbfrageDtoStandVorhabenEnum.Unspecified,
     bauvorhaben: undefined,
     dokumente: new Array<DokumentDto>(),
-  } as AbfrageDto;
+  };
 }
 
 /**
@@ -92,7 +99,7 @@ export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
     abfragevarianten: new Array<AbfragevarianteDto>(),
     aktenzeichenProLbk: undefined,
     offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,
-  } as InfrastrukturabfrageDto;
+  };
 }
 
 /**
@@ -105,7 +112,7 @@ export function createAdresseDto(): AdresseDto {
     strasse: undefined,
     hausnummer: undefined,
     coordinate: undefined,
-  } as AdresseDto;
+  };
 }
 
 /**
@@ -128,6 +135,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
       ort: "",
       coordinate: undefined,
     },
+    verortung: undefined,
     allgemeineOrtsangabe: "",
     bebauungsplannummer: "",
     fisNummer: "",
@@ -145,7 +153,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
 export function createFilepathDto(): FilepathDto {
   return {
     pathToFile: "",
-  } as FilepathDto;
+  };
 }
 
 export function createFilepathFor(nameRootFolder: string): string {
@@ -188,7 +196,23 @@ export function createBauabschnittDto(): BauabschnittDto {
     lastModifiedDateTime: undefined,
     bezeichnung: "",
     baugebiete: [],
-  } as BauabschnittDto;
+    technical: false,
+  };
+}
+
+/**
+ * BauabschnittDto-Platzhalter
+ */
+export function createTechnicalBauabschnittDto(): BauabschnittDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "Platzhalter",
+    baugebiete: [],
+    technical: true,
+  };
 }
 
 /**
@@ -201,9 +225,26 @@ export function createBaugebietDto(): BaugebietDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     bezeichnung: "",
+    baugebietTyp: BaugebietDtoBaugebietTypEnum.Ge,
+    bauraten: [],
+    technical: false,
+  };
+}
+
+/**
+ * BaugebietDto-Platzhalter
+ */
+export function createTechnicalBaugebietDto(): BaugebietDto {
+  return {
+    id: undefined,
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bezeichnung: "Platzhalter",
     baugebietTyp: BaugebietDtoBaugebietTypEnum.Unspecified,
     bauraten: [],
-  } as BaugebietDto;
+    technical: true,
+  };
 }
 
 /**
@@ -219,14 +260,14 @@ export function createBaurateDto(): BaurateDto {
     jahr: Number.NaN,
     foerdermix: {
       foerderarten: new Array<FoerderartDto>(),
-    } as FoerdermixDto,
-  } as BaurateDto;
+    },
+  };
 }
 
 export function createFoerdermixDto(): FoerdermixDto {
   return {
     foerderarten: new Array<FoerderartDto>(),
-  } as FoerdermixDto;
+  };
 }
 
 export function createFoerdermixStammDto(): FoerdermixStammDto {
@@ -235,8 +276,8 @@ export function createFoerdermixStammDto(): FoerdermixStammDto {
     bezeichnungJahr: "",
     foerdermix: {
       foerderarten: new Array<FoerderartDto>(),
-    } as FoerdermixDto,
-  } as FoerdermixStammDto;
+    },
+  };
 }
 
 /**
@@ -255,7 +296,7 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
-  } as InfrastruktureinrichtungDto;
+  };
 }
 
 /**
@@ -265,7 +306,7 @@ export function createSchuleDto(): SchuleDto {
   return {
     anzahlKlassen: Number.NaN,
     anzahlPlaetze: Number.NaN,
-  } as SchuleDto;
+  };
 }
 
 /**
@@ -280,7 +321,7 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKinderkrippeGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
-  } as KinderkrippeDto;
+  };
 }
 
 /**
@@ -295,7 +336,7 @@ export function createKindergartenDto(): KindergartenDto {
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
     wohnungsnaheKindergartenPlaetze: undefined,
-  } as KindergartenDto;
+  };
 }
 
 /**
@@ -316,7 +357,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     wohnungsnaheKinderkrippePlaetze: undefined,
     wohnungsnaheKindergartenPlaetze: undefined,
     wohnungsnaheHortPlaetze: undefined,
-  } as HausFuerKinderDto;
+  };
 }
 
 /**
@@ -329,7 +370,9 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
     artGsNachmittagBetreuung: undefined,
-  } as GsNachmittagBetreuungDto;
+    anzahlHortGruppen: Number.NaN,
+    anzahlHortPlaetze: Number.NaN,
+  };
 }
 
 /**
@@ -342,7 +385,7 @@ export function createGrundschuleDto(): GrundschuleDto {
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
     schule: createSchuleDto(),
-  } as GrundschuleDto;
+  };
 }
 
 /**
@@ -355,7 +398,7 @@ export function createMittelschuleDto(): MittelschuleDto {
     lastModifiedDateTime: undefined,
     infrastruktureinrichtung: createInfrastruktureinrichtungDto(),
     schule: createSchuleDto(),
-  } as MittelschuleDto;
+  };
 }
 
 /**
@@ -366,7 +409,7 @@ export function createAdressSucheDto(): AdressSucheDto {
     query: "",
     page: undefined,
     pagesize: undefined,
-  } as AdressSucheDto;
+  };
 }
 
 /**
@@ -377,9 +420,9 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
     adresse: undefined,
     adressId: undefined,
     hausnummer: undefined,
-    ortname: undefined,
+    ortsname: undefined,
     strassenname: undefined,
     position: undefined,
     geozuordnungen: undefined,
-  } as MuenchenAdresseDto;
+  };
 }

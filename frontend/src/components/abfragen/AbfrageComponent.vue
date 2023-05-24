@@ -22,6 +22,11 @@
       :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
     />
+    <verortung
+      id="verortung_component"
+      v-model="abfrage.verortung"
+      :look-at="abfrage.adresse"
+    />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row justify="center">
         <v-col
@@ -145,9 +150,11 @@ import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import Verortung from "@/components/common/Verortung.vue";
 
 @Component({
   components: {
+    Verortung,
     DatePicker,
     Dokumente,
     FieldGroupCard,

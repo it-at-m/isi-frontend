@@ -31,6 +31,12 @@ import {
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 
@@ -58,10 +64,16 @@ export interface AbfrageDto {
     adresse?: AdresseDto;
     /**
      * 
+     * @type {VerortungDto}
+     * @memberof AbfrageDto
+     */
+    verortung?: VerortungDto;
+    /**
+     * 
      * @type {Date}
      * @memberof AbfrageDto
      */
-    fristStellungnahme?: Date;
+    fristStellungnahme: Date;
     /**
      * 
      * @type {string}
@@ -137,7 +149,8 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
+        'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
@@ -159,7 +172,8 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'adresse': AdresseDtoToJSON(value.adresse),
-        'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
+        'verortung': VerortungDtoToJSON(value.verortung),
+        'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'bebauungsplannummer': value.bebauungsplannummer,

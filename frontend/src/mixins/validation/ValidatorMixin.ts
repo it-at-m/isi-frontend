@@ -56,11 +56,6 @@ export default class ValidatorMixin extends Vue {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
 
-    // entweder allgemeineOrtsangabe oder Adresse erlaubt
-    if (this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) && this.isValidAdresse(abfrage.adresse)) {
-      return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
-    }
-
     if (abfrage.standVorhaben === AbfrageDtoStandVorhabenEnum.Unspecified) {
       return "Bitte Stand des Vorhabens angeben";
     }
@@ -185,12 +180,6 @@ export default class ValidatorMixin extends Vue {
     ) {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
-    if (
-      this.isValidAllgemeineOrtsangabe(bauvorhaben.allgemeineOrtsangabe) &&
-      this.isValidAdresse(bauvorhaben.adresse)
-    ) {
-      return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
-    }
     if (bauvorhaben.artFnp.length === 0) {
       return "Bitte treffen Sie eine Auswahl zur Flächennutzung laut Flächennutzungsplan";
     }
@@ -238,13 +227,6 @@ export default class ValidatorMixin extends Vue {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
 
-    // entweder allgemeineOrtsangabe oder Adresse erlaubt
-    if (
-      this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
-      this.isValidAdresse(infrastruktureinrichtung.adresse)
-    ) {
-      return "Angabe von sowohl allgemeiner Ortsangabe als auch Adresse nicht erlaubt";
-    }
     return null;
   }
 }

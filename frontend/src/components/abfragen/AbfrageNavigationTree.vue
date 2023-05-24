@@ -9,11 +9,13 @@
           :active.sync="markedTreeItems"
           :open.sync="treeItemIdsToOpen"
           :items="abfrageTreeItems"
-          activatable
           active-class="font-weight-black v-treeview-node--active"
         >
           <template #prepend="{ item }">
             <v-icon v-if="item.changed"> mdi-exclamation</v-icon>
+          </template>
+          <template #label="{ item }">
+            <a @click="setSelectedTreeItem(item)">{{ item.name }}</a>
           </template>
           <template #append="{ item }">
             <v-btn
@@ -193,6 +195,8 @@ export default class AbfrageNavigationTree extends Vue {
 
   private abfrageTreeItemsToOpen: Array<number> = [];
 
+  private newEntityToMark: unknown;
+
   /**
    * Der Watcher reagiert, falls sich der übergebene AbfrageWrapper ändert oder durch einen Neuen ersetzt wird.
    * Hat das Attribut "initial" die Ausprägung true, so wird eine Kopie der AbfrageTreeItems erstellt,
@@ -210,37 +214,33 @@ export default class AbfrageNavigationTree extends Vue {
     }
   }
 
-  @Watch("markedTreeItems", { immediate: true, deep: true })
-  private eventMarkedTreeItemElement(): void {
-    if (this.markedTreeItems.length) {
-      // Es kann nur ein Eintrag in der TreeView markiert werden.
-      const markedTreeItemId = this.markedTreeItems[0];
-      const markedTreeItem = this.createFlatAbfrageTreeItem(this.abfrageTreeItems).find(
-        (abfrageTreeItem) => abfrageTreeItem.id === markedTreeItemId
-      );
-      if (!_.isNil(markedTreeItemId) && !_.isNil(markedTreeItem)) {
-        if (this.isItemTypeOfAbfrage(markedTreeItem)) {
-          this.selectAbfrage(markedTreeItem);
-        } else if (this.isItemTypeOfAbfragevariante(markedTreeItem)) {
-          this.selectAbfragevariante(markedTreeItem);
-        } else if (this.isItemTypeOfBauabschnitt(markedTreeItem)) {
-          this.selectBauabschnitt(markedTreeItem);
-        } else if (this.isItemTypeOfBaugebiet(markedTreeItem)) {
-          this.selectBaugebiet(markedTreeItem);
-        } else if (this.isItemTypeOfBaurate(markedTreeItem)) {
-          this.selectBaurate(markedTreeItem);
-        }
-      }
-    }
-  }
-
   public initializTreeItemsToOpen(): void {
     this.abfrageTreeItemsToOpen = [];
   }
 
   public setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem): void {
-    if (!_.isNil(this.$refs.abfrageTreeview)) {
-      this.markedTreeItems = [selectedTreeItem.id];
+    this.markTreeItem(selectedTreeItem);
+
+    if (this.isItemTypeOfAbfrage(selectedTreeItem)) {
+      this.selectAbfrage(selectedTreeItem);
+    } else if (this.isItemTypeOfAbfragevariante(selectedTreeItem)) {
+      this.selectAbfragevariante(selectedTreeItem);
+    } else if (this.isItemTypeOfBauabschnitt(selectedTreeItem)) {
+      this.selectBauabschnitt(selectedTreeItem);
+    } else if (this.isItemTypeOfBaugebiet(selectedTreeItem)) {
+      this.selectBaugebiet(selectedTreeItem);
+    } else if (this.isItemTypeOfBaurate(selectedTreeItem)) {
+      this.selectBaurate(selectedTreeItem);
+    }
+  }
+
+  public setNewEntityToMark(entity: unknown): void {
+    this.newEntityToMark = entity;
+  }
+
+  private markTreeItem(item: AbfrageTreeItem): void {
+    if (this.isItemSelectable(item)) {
+      this.markedTreeItems = [item.id];
     }
   }
 
@@ -308,7 +308,7 @@ export default class AbfrageNavigationTree extends Vue {
     abfrageTreeItems.push(abfrageRootTreeItem);
     if (this.abfrageTreeItemsToOpen.length === 0) {
       this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id); // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
-      this.setSelectedTreeItem(abfrageRootTreeItem);
+      this.markTreeItem(abfrageRootTreeItem);
     }
     this.createAbfragevariantenTreeItems(abfrageRootTreeItem, abfrage);
 
@@ -350,22 +350,40 @@ export default class AbfrageNavigationTree extends Vue {
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto
   ) {
-    if (!_.isNil(abfragevariante.bauabschnitte)) {
-      abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
-        let bauabschnittTreeItem = this.createBauabschnittTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          abfragevariante,
-          bauabschnitt
+    if (_.isNil(abfragevariante.bauabschnitte) || abfragevariante.bauabschnitte.length === 0) {
+      // Fall 1: Keine Bauabschnitte vorhanden -> Bauabschnitt, Baugebiet oder Baurate kann erstellt werden
+      parentTreeItem.children.push(
+        this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+      );
+      parentTreeItem.children.push(
+        this.createAddOrphanedBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+      );
+      parentTreeItem.children.push(
+        this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+      );
+    } else {
+      const firstBauabschnitt = abfragevariante.bauabschnitte[0];
+      if (!firstBauabschnitt.technical) {
+        // Fall 2: Nicht-technischer Bauabschnitt vorhanden -> Bauabschnitte werden aufgelistet und können erstellt werden
+        abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
+          let bauabschnittTreeItem = this.createBauabschnittTreeItem(
+            this.treeItemKey++,
+            parentTreeItem,
+            abfrage,
+            abfragevariante,
+            bauabschnitt
+          );
+          parentTreeItem.children.push(bauabschnittTreeItem);
+          this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
+        });
+        parentTreeItem.children.push(
+          this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
         );
-        parentTreeItem.children.push(bauabschnittTreeItem);
-        this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
-      });
+      } else {
+        // Fall 3: Technischer Bauabschnitt vorhanden -> Baugebiete werden unter Abfragevariente angelegt
+        this.createBaugebieteTreeItems(parentTreeItem, abfrage, abfragevariante, firstBauabschnitt);
+      }
     }
-    parentTreeItem.children.push(
-      this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-    );
   }
 
   private createBaugebieteTreeItems(
@@ -374,21 +392,35 @@ export default class AbfrageNavigationTree extends Vue {
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
-    bauabschnitt.baugebiete.forEach((baugebiet) => {
-      let baugebietTreeItem = this.createBaugebietTreeItem(
-        this.treeItemKey++,
-        parentTreeItem,
-        abfrage,
-        abfragevariante,
-        bauabschnitt,
-        baugebiet
+    if (bauabschnitt.baugebiete.length === 0) {
+      // Fall 1: Keine Baugebiete vorhanden -> Baugebiet kann erstellt werden
+      parentTreeItem.children.push(
+        this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
       );
-      parentTreeItem.children.push(baugebietTreeItem);
-      this.createBauratenTreeItems(baugebietTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
-    });
-    parentTreeItem.children.push(
-      this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
-    );
+    } else {
+      const firstBaugebiet = bauabschnitt.baugebiete[0];
+      if (!firstBaugebiet.technical) {
+        // Fall 2: Nicht-technisches Bauagebiet vorhanden -> Baugebiete werden aufgelistet und können erstellt werden
+        bauabschnitt.baugebiete.forEach((baugebiet) => {
+          let bauabschnittTreeItem = this.createBaugebietTreeItem(
+            this.treeItemKey++,
+            parentTreeItem,
+            abfrage,
+            abfragevariante,
+            bauabschnitt,
+            baugebiet
+          );
+          parentTreeItem.children.push(bauabschnittTreeItem);
+          this.createBauratenTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
+        });
+        parentTreeItem.children.push(
+          this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
+        );
+      } else {
+        // Fall 3: Technisches Bauagebiet vorhanden -> Bauraten werden unter Abfragevariente angelegt
+        this.createBauratenTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt, firstBaugebiet);
+      }
+    }
   }
 
   private createBauratenTreeItems(
@@ -410,6 +442,7 @@ export default class AbfrageNavigationTree extends Vue {
       );
       parentTreeItem.children.push(baurateTreeItem);
     });
+
     parentTreeItem.children.push(
       this.createAddBaurateTreeItem(
         this.treeItemKey++,
@@ -428,7 +461,7 @@ export default class AbfrageNavigationTree extends Vue {
     abfrage: InfrastrukturabfrageDto,
     abfragevariante: AbfragevarianteDto
   ) {
-    return this.createAbfrageTreeItem(
+    const item = this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementAbfragevariante(abfragevariante),
@@ -439,6 +472,12 @@ export default class AbfrageNavigationTree extends Vue {
       undefined,
       undefined
     );
+
+    if (abfragevariante === this.newEntityToMark) {
+      this.markTreeItem(item);
+    }
+
+    return item;
   }
 
   private createAddAbfragevarianteTreeItem(
@@ -466,7 +505,7 @@ export default class AbfrageNavigationTree extends Vue {
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
-    return this.createAbfrageTreeItem(
+    const item = this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementBauabschnitt(bauabschnitt),
@@ -477,6 +516,12 @@ export default class AbfrageNavigationTree extends Vue {
       undefined,
       undefined
     );
+
+    if (bauabschnitt === this.newEntityToMark) {
+      this.markTreeItem(item);
+    }
+
+    return item;
   }
 
   private createAddBauabschnittTreeItem(
@@ -506,7 +551,7 @@ export default class AbfrageNavigationTree extends Vue {
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
   ) {
-    return this.createAbfrageTreeItem(
+    const item = this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementBaugebiet(baugebiet),
@@ -517,6 +562,12 @@ export default class AbfrageNavigationTree extends Vue {
       baugebiet,
       undefined
     );
+
+    if (baugebiet === this.newEntityToMark) {
+      this.markTreeItem(item);
+    }
+
+    return item;
   }
 
   private createAddBaugebietTreeItem(
@@ -539,6 +590,25 @@ export default class AbfrageNavigationTree extends Vue {
     );
   }
 
+  private createAddOrphanedBaugebietTreeItem(
+    id: number,
+    parentTreeItem: AbfrageTreeItem,
+    abfrage: InfrastrukturabfrageDto,
+    abfragevariante: AbfragevarianteDto
+  ) {
+    return this.createAbfrageTreeItem(
+      id,
+      parentTreeItem,
+      this.nameTreeElementAddBaugebiet,
+      AbfrageTreeItemType.ADD_BAUGEBIET,
+      abfrage,
+      abfragevariante,
+      undefined,
+      undefined,
+      undefined
+    );
+  }
+
   private createBaurateTreeItem(
     id: number,
     parentTreeItem: AbfrageTreeItem,
@@ -548,7 +618,7 @@ export default class AbfrageNavigationTree extends Vue {
     baugebiet: BaugebietDto,
     baurate: BaurateDto
   ) {
-    return this.createAbfrageTreeItem(
+    const item = this.createAbfrageTreeItem(
       id,
       parentTreeItem,
       this.getNameTreeElementBaurate(baurate),
@@ -559,6 +629,12 @@ export default class AbfrageNavigationTree extends Vue {
       baugebiet,
       baurate
     );
+
+    if (baurate === this.newEntityToMark) {
+      this.markTreeItem(item);
+    }
+
+    return item;
   }
 
   private createAddBaurateTreeItem(
@@ -578,6 +654,25 @@ export default class AbfrageNavigationTree extends Vue {
       abfragevariante,
       bauabschnitt,
       baugebiet,
+      undefined
+    );
+  }
+
+  private createAddOrphanedBaurateTreeItem(
+    id: number,
+    parentTreeItem: AbfrageTreeItem,
+    abfrage: InfrastrukturabfrageDto,
+    abfragevariante: AbfragevarianteDto
+  ) {
+    return this.createAbfrageTreeItem(
+      id,
+      parentTreeItem,
+      this.nameTreeElementAddBaurate,
+      AbfrageTreeItemType.ADD_BAURATE,
+      abfrage,
+      abfragevariante,
+      undefined,
+      undefined,
       undefined
     );
   }
