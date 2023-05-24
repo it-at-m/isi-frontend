@@ -14,6 +14,7 @@
           <v-text-field
             id="bauabschnitt_bezeichnung"
             v-model.trim="bauabschnitt.bezeichnung"
+            :disabled="!isEditableByAbfrageerstellung()"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
@@ -35,12 +36,14 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: BauabschnittModel }) bauabschnitt!: BauabschnittModel;
 

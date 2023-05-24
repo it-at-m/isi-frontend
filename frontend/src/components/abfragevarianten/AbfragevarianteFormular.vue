@@ -17,6 +17,7 @@
           <v-text-field
             id="abfragevariante_name"
             v-model.trim="abfragevariante.abfragevariantenName"
+            :disabled="!isEditableByAbfrageerstellung()"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="30"
             validate-on-blur
@@ -36,6 +37,7 @@
           <num-field
             id="abfragevariante_realisierungvon"
             v-model="abfragevariante.realisierungVon"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Realisierung von (JJJJ)"
             class="mx-3"
             year
@@ -50,6 +52,7 @@
           <num-field
             id="abfragevariante_realisierungBis"
             v-model="abfragevariante.realisierungBis"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Realisierung bis (JJJJ)"
             class="mx-3"
             year
@@ -64,6 +67,7 @@
           <v-select
             id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             :items="planungsrechtList"
             item-value="key"
@@ -86,6 +90,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnen"
             v-model="abfragevariante.geschossflaecheWohnen"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Gesamt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -98,6 +103,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenGenehmigt"
             v-model="abfragevariante.geschossflaecheWohnenGenehmigt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Baurechtlich genehmigt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -110,6 +116,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenFestgesetzt"
             v-model="abfragevariante.geschossflaecheWohnenFestgesetzt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -125,6 +132,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="SoBoN-ursächlich"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -138,6 +146,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenBestandswohnbaurecht"
             v-model="abfragevariante.geschossflaecheWohnenBestandswohnbaurecht"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Bestandswohnbaurecht"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -150,6 +159,7 @@
           <num-field
             id="abfragevariante_geschossflaecheGenossenschaftlicheWohnungen"
             v-model="abfragevariante.geschossflaecheGenossenschaftlicheWohnungen"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Genossenschaftlich"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -165,6 +175,7 @@
           <v-checkbox
             id="abfragevariante_sonderwohnformen"
             v-model="abfragevariante.sonderwohnformen"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Sonderwohnformen"
             color="primary"
@@ -189,6 +200,7 @@
             <num-field
               id="abfragevariante_geschossflaecheStudentenwohnungen"
               v-model="abfragevariante.geschossflaecheStudentenwohnungen"
+              :disabled="!isEditableByAbfrageerstellung()"
               class="mx-3"
               label="Studentenwohnungen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -201,6 +213,7 @@
             <num-field
               id="abfragevariante_geschossflaecheSeniorenwohnungen"
               v-model="abfragevariante.geschossflaecheSeniorenwohnungen"
+              :disabled="!isEditableByAbfrageerstellung()"
               class="mx-3"
               label="Seniorenwohnungen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -213,6 +226,7 @@
             <num-field
               id="abfragevariante_geschossflaecheSonstiges"
               v-model="abfragevariante.geschossflaecheSonstiges"
+              :disabled="!isEditableByAbfrageerstellung()"
               class="mx-3"
               label="Nicht infrastrukturrelevant"
               :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -231,6 +245,7 @@
           <num-field
             id="abfragevariante_gesamtanzahlWe"
             v-model="abfragevariante.gesamtanzahlWe"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Gesamt"
             integer
@@ -243,6 +258,7 @@
           <num-field
             id="abfragevariante_anzahlWeBaurechtlichGenehmigt"
             v-model="abfragevariante.anzahlWeBaurechtlichGenehmigt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Baurechtlich genehmigt"
             integer
@@ -255,6 +271,7 @@
           <num-field
             id="abfragevariante_anzahlWeBaurechtlichFestgesetzt"
             v-model="abfragevariante.anzahlWeBaurechtlichFestgesetzt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             integer
@@ -275,12 +292,14 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: AbfragevarianteModel }) abfragevariante!: AbfragevarianteModel;
 
