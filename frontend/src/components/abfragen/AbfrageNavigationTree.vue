@@ -291,7 +291,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   }
 
   /**
-   * Wertet die Rolle des angemeldeten Person aus und den Status der Abfrage und steuert abhängig davon ob Änderungen durchgeführt werden dürfen
+   * Wertet die Rolle der angemeldeten Person sowie den Status der Abfrage aus und gibt true zurück falls Änderungen durchgeführt werden dürfen.
    */
   get isNavigationTreeEditable(): boolean {
     return this.isEditableByAbfrageerstellung();
