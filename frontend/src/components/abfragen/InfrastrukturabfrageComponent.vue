@@ -96,9 +96,12 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
     FieldGroupCard,
     TriSwitch,
   },
-  mixins: [FieldValidationRulesMixin, AbfrageSecurityMixin],
 })
-export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin, AbfrageSecurityMixin) {
+export default class InfrastrukturabfrageComponent extends Mixins(
+  FieldValidationRulesMixin,
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
+) {
   @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
 
   private sobonCardTitle = "SoBoN";
@@ -119,10 +122,6 @@ export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin
       this.sobonJahrVisible = false;
       this.infrastrukturabfrage.sobonJahr = undefined;
     }
-  }
-
-  get editableByAbfrageerstellung(): boolean {
-    return this.isEditableByAbfrageerstellung();
   }
 }
 </script>

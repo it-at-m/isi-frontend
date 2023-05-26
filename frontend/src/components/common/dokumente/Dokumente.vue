@@ -12,6 +12,7 @@
       <dokumente-liste
         id="dokumente_liste_component"
         v-model="dokumente"
+        :is-dokumente-editable="isDokumenteEditable"
         @onDeleteDokument="deleteDokument"
       />
       <v-row class="align-end">
@@ -94,7 +95,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   private nameRootFolder!: string;
 
   @Prop({ type: Boolean, default: true })
-  private addDokumentEnabled!: boolean;
+  private isDokumenteEditable!: boolean;
 
   private allowedMimeTypes = "";
 
@@ -118,7 +119,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   }
 
   get addDokumentButtonEnabled(): boolean {
-    return this.addDokumentEnabled && this.currentNumberOfAddedFiles < this.maxNumberOfFiles;
+    return this.isDokumenteEditable && this.currentNumberOfAddedFiles < this.maxNumberOfFiles;
   }
 
   private addDokument(): void {
