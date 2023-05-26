@@ -50,6 +50,7 @@
         >
           <num-field
             id="baugebiet_geschossflaecheWohnenGenehmigt"
+            v-model="baugebiet.geschossflaecheWohnenGenehmigt"
             :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Genehmigt"

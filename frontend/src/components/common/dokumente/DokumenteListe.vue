@@ -17,13 +17,13 @@
                 md="1"
               >
                 <v-row justify="center">
-                  <v-icon
-                    v-if="isDokumentAllowed(item)"
-                    :id="'dokumente_listitem_' + index + '_download_icon'"
+                  <v-btn
+                    :id="'dokument_listitem_download' + index"
+                    icon
                     @click="downloadDokument(item)"
                   >
-                    mdi-download
-                  </v-icon>
+                    <v-icon> mdi-download</v-icon>
+                  </v-btn>
                 </v-row>
               </v-col>
               <v-col
@@ -88,12 +88,14 @@
                 md="1"
               >
                 <v-row justify="center">
-                  <v-icon
-                    :id="'dokumente_listitem_' + index + '_loeschen_icon'"
+                  <v-btn
+                    :id="'dokument_listitem_loeschen' + index"
+                    :disabled="!isDokumenteEditable"
+                    icon
                     @click="deleteDokument(item)"
                   >
-                    mdi-delete
-                  </v-icon>
+                    <v-icon> mdi-delete</v-icon>
+                  </v-btn>
                 </v-row>
               </v-col>
             </v-row>
@@ -116,7 +118,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import { createFilepathDto } from "@/utils/Factories";
 import { isDokumentAllowed } from "@/utils/DokumenteUtil";
@@ -137,6 +139,9 @@ export default class DokumenteListe extends Mixins(
   FieldValidationRulesMixin
 ) {
   @VModel({ type: Array }) dokumente!: DokumentDto[];
+
+  @Prop({ type: Boolean, default: true })
+  private isDokumenteEditable!: boolean;
 
   private selectedDokument: DokumentDto | undefined;
 

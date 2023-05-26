@@ -140,7 +140,7 @@
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
             :name-root-folder="nameRootFolder"
-            :add-dokument-enabled="isEditableByAbfrageerstellung()"
+            :is-dokumente-editable="isEditableByAbfrageerstellung()"
           />
         </v-col>
       </v-row>
