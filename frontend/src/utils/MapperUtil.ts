@@ -5,8 +5,6 @@ import {
   AbfrageerstellungInfrastrukturabfrageAngelegtDto,
   AbfragevarianteDtoPlanungsrechtEnum,
   InfrastrukturabfrageDto,
-  SachbearbeitungAbfragevarianteOffenInBearbeitungDto,
-  SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto,
 } from "@/api/api-client/isi-backend";
 
 export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
@@ -15,6 +13,8 @@ export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
   const abfragevarianten = [] as AbfrageerstellungAbfragevarianteAngelegtDto[];
   infrastrukturabfrageDto.abfragevarianten?.forEach((abfragevariante) => {
     abfragevarianten.push({
+      id: abfragevariante.id,
+      version: abfragevariante.version,
       abfragevariantenName: abfragevariante.abfragevariantenName as string,
       abfragevariantenNr: abfragevariante.abfragevariantenNr as number,
       planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht as AbfragevarianteDtoPlanungsrechtEnum),
@@ -58,27 +58,6 @@ export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
     id: infrastrukturabfrageDto.id,
     version: infrastrukturabfrageDto.version,
   } as AbfrageerstellungInfrastrukturabfrageAngelegtDto;
-}
-
-export function mapToSachbearbeitungInfrastrukturabfrageOffenInBearbeitung(
-  infrastrukturabfrageDto: InfrastrukturabfrageDto
-): SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto {
-  const abfragevarianten = [] as SachbearbeitungAbfragevarianteOffenInBearbeitungDto[];
-  infrastrukturabfrageDto.abfragevarianten?.forEach((abfragevariante) => {
-    abfragevarianten.push({
-      id: abfragevariante.id,
-      relevant: abfragevariante.relevant,
-    });
-  });
-  return {
-    abfrage: {
-      anmerkung: infrastrukturabfrageDto.abfrage?.anmerkung,
-      dokumente: infrastrukturabfrageDto.abfrage?.dokumente,
-    },
-    abfragevarianten: abfragevarianten,
-    id: infrastrukturabfrageDto.id,
-    version: infrastrukturabfrageDto.version,
-  } as SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto;
 }
 
 function mapPlanungsRecht(

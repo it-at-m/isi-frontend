@@ -29,6 +29,7 @@
             <div v-else-if="isItemTypeOfAbfragevariante(item)">
               <v-btn
                 :id="'abfrage_navigation_tree_button_relevant_abfragevariante_' + item.id"
+                :disabled="!isEditableBySachbearbeitung()"
                 icon
                 @click="relevantAbfragevariante(item)"
               >
@@ -99,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, VModel, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
 import {
@@ -110,6 +111,7 @@ import {
   BaurateDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 enum AbfrageTreeItemType {
   ABFRAGE,
@@ -166,7 +168,7 @@ export interface AbfrageTreeItem {
 }
 
 @Component
-export default class AbfrageNavigationTree extends Vue {
+export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) {
   private static readonly MAX_NUMBER_ABFRAGEVARIANTEN: number = 5;
 
   private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";

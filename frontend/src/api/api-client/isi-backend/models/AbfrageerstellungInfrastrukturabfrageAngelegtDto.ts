@@ -40,28 +40,10 @@ import {
 export interface AbfrageerstellungInfrastrukturabfrageAngelegtDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageerstellungInfrastrukturabfrageAngelegtDto
-     */
-    id?: string;
-    /**
-     * 
      * @type {number}
      * @memberof AbfrageerstellungInfrastrukturabfrageAngelegtDto
      */
     version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof AbfrageerstellungInfrastrukturabfrageAngelegtDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof AbfrageerstellungInfrastrukturabfrageAngelegtDto
-     */
-    lastModifiedDateTime?: Date;
     /**
      * 
      * @type {AbfrageerstellungAbfrageAngelegtDto}
@@ -130,10 +112,7 @@ export function AbfrageerstellungInfrastrukturabfrageAngelegtDtoFromJSONTyped(js
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfrage': AbfrageerstellungAbfrageAngelegtDtoFromJSON(json['abfrage']),
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
@@ -153,10 +132,7 @@ export function AbfrageerstellungInfrastrukturabfrageAngelegtDtoToJSON(value?: A
     }
     return {
         
-        'id': value.id,
         'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfrage': AbfrageerstellungAbfrageAngelegtDtoToJSON(value.abfrage),
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
         'sobonJahr': value.sobonJahr,

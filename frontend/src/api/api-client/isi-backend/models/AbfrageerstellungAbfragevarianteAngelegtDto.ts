@@ -28,28 +28,10 @@ import {
 export interface AbfrageerstellungAbfragevarianteAngelegtDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
-     */
-    id?: string;
-    /**
-     * 
      * @type {number}
      * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
     version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
-     */
-    lastModifiedDateTime?: Date;
     /**
      * 
      * @type {number}
@@ -197,10 +179,7 @@ export function AbfrageerstellungAbfragevarianteAngelegtDtoFromJSONTyped(json: a
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfragevariantenNr': json['abfragevariantenNr'],
         'abfragevariantenName': json['abfragevariantenName'],
         'planungsrecht': json['planungsrecht'],
@@ -232,10 +211,7 @@ export function AbfrageerstellungAbfragevarianteAngelegtDtoToJSON(value?: Abfrag
     }
     return {
         
-        'id': value.id,
         'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfragevariantenNr': value.abfragevariantenNr,
         'abfragevariantenName': value.abfragevariantenName,
         'planungsrecht': value.planungsrecht,

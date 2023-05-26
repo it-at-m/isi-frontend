@@ -1,18 +1,17 @@
-import { Component, Mixins } from "vue-property-decorator";
 import {
   AbfrageApi,
+  AbfrageerstellungInfrastrukturabfrageAngelegtDto,
   CreateInfrastrukturabfrageRequest,
   DeleteInfrastrukturabfrageByIdRequest,
-  InfrastrukturabfrageDto,
   GetInfrastrukturabfrageByIdRequest,
+  InfrastrukturabfrageDto,
   PatchAbfrageAngelegtRequest,
-  PatchAbfrageInBearbeitungSachbearbeitungRequest,
-  SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto,
-  AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+  PutAbfragevarianteRelevantRequest,
 } from "@/api/api-client/isi-backend";
-import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import RequestUtils from "@/utils/RequestUtils";
+import { Component, Mixins } from "vue-property-decorator";
 
 @Component
 export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, ErrorHandler) {
@@ -43,10 +42,12 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
 
   patchAbfrageAngelegt(
     dto: AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+    id: string,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageAngelegtRequest = {
       abfrageerstellungInfrastrukturabfrageAngelegtDto: dto,
+      id: id,
     };
     return this.abfrageApi
       .patchAbfrageAngelegt(requestObject, RequestUtils.getPATCHConfig())
@@ -59,15 +60,17 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  patchAbfrageInBearbeitungOffen(
-    dto: SachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto,
+  setAbfragevarianteRelevant(
+    abfrageId: string,
+    abfragevarianteId: string,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
-    const requestObject: PatchAbfrageInBearbeitungSachbearbeitungRequest = {
-      sachbearbeitungInfrastrukturabfrageOffenInBearbeitungDto: dto,
+    const requestObject: PutAbfragevarianteRelevantRequest = {
+      abfrageId: abfrageId,
+      abfragevarianteId: abfragevarianteId,
     };
     return this.abfrageApi
-      .patchAbfrageInBearbeitungSachbearbeitung(requestObject, RequestUtils.getPATCHConfig())
+      .putAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
         this.resetDirty();
         return response;
