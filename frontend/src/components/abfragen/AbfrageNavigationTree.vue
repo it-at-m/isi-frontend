@@ -25,6 +25,7 @@
               <template #activator="{ on }">
                 <v-btn
                   :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
+                  :disabled="!isNavigationTreeEditable"
                   icon
                   v-on="on"
                   @click="determineBauratenForAbfragevariante(item)"
