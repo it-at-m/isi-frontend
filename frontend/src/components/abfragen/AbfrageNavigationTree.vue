@@ -25,7 +25,6 @@
               <template #activator="{ on }">
                 <v-btn
                   :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
-                  :disabled="!isNavigationTreeEditable"
                   icon
                   v-on="on"
                   @click="determineBauratenForAbfragevariante(item)"
@@ -912,6 +911,8 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   private isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(abfrageTreeItem: AbfrageTreeItem): boolean {
     return (
       this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
+      // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
+      this.isNavigationTreeEditable &&
       // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
       (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
         !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
