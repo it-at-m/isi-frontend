@@ -73,7 +73,7 @@
     <verortung
       id="verortung_component"
       v-model="bauvorhaben.verortung"
-      usable-by-role-sachbearbeitung
+      :context="verortungContext"
       :look-at="bauvorhaben.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
@@ -217,8 +217,16 @@ import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import { VerortungContext } from "@/components/common/Verortung.vue";
 
-@Component({ components: { FieldGroupCard, Dokumente, NumField, TriSwitch } })
+@Component({
+  computed: {
+    verortungContext() {
+      return VerortungContext.BAUVORHABEN;
+    },
+  },
+  components: { FieldGroupCard, Dokumente, NumField, TriSwitch },
+})
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,

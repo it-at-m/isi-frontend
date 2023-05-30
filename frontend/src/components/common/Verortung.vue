@@ -83,6 +83,12 @@ import {
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
+export const enum VerortungContext {
+  UNDEFINED = "UNDEFINED",
+  ABFRAGE = "ABFRAGE",
+  BAUVORHABEN = "BAUVORHABEN",
+}
+
 @Component({
   components: { CityMap },
 })
@@ -91,11 +97,8 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
 
-  @Prop({ type: Boolean, default: false })
-  private readonly usableByRoleAbfrageerstellung!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly usableByRoleSachbearbeitung!: boolean;
+  @Prop({ type: String, default: VerortungContext.UNDEFINED })
+  private readonly context!: VerortungContext;
 
   @Prop()
   private readonly lookAt?: AdresseDto;
@@ -115,11 +118,13 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   get isEditable(): boolean {
-    return (
-      (this.usableByRoleAbfrageerstellung && this.isEditableByAbfrageerstellung()) ||
-      (this.usableByRoleSachbearbeitung &&
-        (this.$store.getters["userinfo/hasRoleAdmin"] || this.$store.getters["userinfo/hasRoleSachbearbeitung"]))
-    );
+    let editable = false;
+    if (this.context === VerortungContext.ABFRAGE) {
+      editable = this.isEditableByAbfrageerstellung();
+    } else if (this.context === VerortungContext.BAUVORHABEN) {
+      editable = this.isRoleAdminOrSachbearbeitung();
+    }
+    return editable;
   }
 
   get coordinate(): LatLngLiteral | undefined {
