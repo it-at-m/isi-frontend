@@ -6,6 +6,7 @@
           <v-text-field
             id="abfrage_name"
             v-model.trim="abfrage.nameAbfrage"
+            :disabled="!isEditableByAbfrageerstellung()"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="70"
             validate-on-blur
@@ -21,6 +22,7 @@
       :adresse-prop.sync="abfrage.adresse"
       :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
+      :is-editable-prop="isEditableByAbfrageerstellung()"
     />
     <verortung
       id="verortung_component"
@@ -37,6 +39,7 @@
             id="abfrage_friststellungnahme"
             ref="fristStellungnahmeDatePicker"
             v-model="abfrage.fristStellungnahme"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Termin der Stellungnahme"
             :rules="[fieldValidationRules.pflichtfeld]"
             required
@@ -49,6 +52,7 @@
           <v-select
             id="abfrage_status_dropdown"
             v-model="abfrage.statusAbfrage"
+            :disabled="!isEditableByAbfrageerstellung()"
             :items="statusAbfrageList"
             item-value="key"
             item-text="value"
@@ -67,6 +71,7 @@
           <v-select
             id="abfrage_standvorhaben_dropdown"
             v-model="abfrage.standVorhaben"
+            :disabled="!isEditableByAbfrageerstellung()"
             :items="standVorhabenList"
             item-value="key"
             item-text="value"
@@ -83,6 +88,7 @@
           <v-select
             id="abfrage_bauvorhaben_dropdown"
             v-model="abfrage.bauvorhaben"
+            :disabled="!isEditableByAbfrageerstellung()"
             :items="bauvorhabenList"
             item-text="nameVorhaben"
             item-value="id"
@@ -99,6 +105,7 @@
           <v-text-field
             id="abfrage_bebauungsplannummer"
             v-model="abfrage.bebauungsplannummer"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Bebauungsplannummer"
             maxlength="255"
             @input="formChanged"
@@ -115,6 +122,7 @@
           <v-textarea
             id="abfrage_anmerkung"
             v-model="abfrage.anmerkung"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Anmerkungen"
             auto-grow
             rows="3"
@@ -132,6 +140,7 @@
             ref="abfrageDokumente"
             v-model="abfrage.dokumente"
             :name-root-folder="nameRootFolder"
+            :is-dokumente-editable="isEditableByAbfrageerstellung()"
           />
         </v-col>
       </v-row>
@@ -151,6 +160,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import Verortung from "@/components/common/Verortung.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: {
@@ -164,7 +174,8 @@ import Verortung from "@/components/common/Verortung.vue";
 export default class AbfrageComponent extends Mixins(
   FieldValidationRulesMixin,
   BauvorhabenApiRequestMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
 

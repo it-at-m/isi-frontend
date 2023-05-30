@@ -29,6 +29,7 @@
             <v-btn
               v-else-if="isItemTypeOfAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
+              :disabled="!isNavigationTreeEditable"
               icon
               @click="deleteAbfragevariante(item)"
             >
@@ -45,6 +46,7 @@
             <v-btn
               v-else-if="isItemTypeOfBauabschnitt(item)"
               :id="'abfrage_navigation_tree_button_delete_bauabschnitt_' + item.id"
+              :disabled="!isNavigationTreeEditable"
               icon
               @click="deleteBauabschnitt(item)"
             >
@@ -61,6 +63,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaugebiet(item)"
               :id="'abfrage_navigation_tree_button_delete_baugebiet_' + item.id"
+              :disabled="!isNavigationTreeEditable"
               icon
               @click="deleteBaugebiet(item)"
             >
@@ -77,6 +80,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaurate(item)"
               :id="'abfrage_navigation_tree_button_delete_baurate_' + item.id"
+              :disabled="!isNavigationTreeEditable"
               icon
               @click="deleteBaurate(item)"
             >
@@ -90,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, VModel, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, VModel, Mixins, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
 import {
@@ -101,6 +105,7 @@ import {
   BaurateDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 enum AbfrageTreeItemType {
   ABFRAGE,
@@ -157,7 +162,7 @@ export interface AbfrageTreeItem {
 }
 
 @Component
-export default class AbfrageNavigationTree extends Vue {
+export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) {
   private static readonly MAX_NUMBER_ABFRAGEVARIANTEN: number = 5;
 
   private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
@@ -286,6 +291,13 @@ export default class AbfrageNavigationTree extends Vue {
   }
 
   /**
+   * Wertet die Rolle der angemeldeten Person sowie den Status der Abfrage aus und gibt true zurück falls Änderungen durchgeführt werden dürfen.
+   */
+  get isNavigationTreeEditable(): boolean {
+    return this.isEditableByAbfrageerstellung();
+  }
+
+  /**
    * Erstellt die AbfrageTreeItems auf Basis der Abfrage.
    * Jedes AbfrageTreeItem referenziert das in der Treeview darzustellende Objekt.
    *
@@ -331,7 +343,10 @@ export default class AbfrageNavigationTree extends Vue {
       this.createBauabschnitteTreeItems(abfragevarianteTreeItem, abfrage, abfragevariante);
       parentTreeItem.children.push(abfragevarianteTreeItem);
     });
-    if (abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN) {
+    if (
+      this.isNavigationTreeEditable &&
+      abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
+    ) {
       parentTreeItem.children.push(this.createAddAbfragevarianteTreeItem(this.treeItemKey++, parentTreeItem, abfrage));
     }
   }
@@ -342,16 +357,18 @@ export default class AbfrageNavigationTree extends Vue {
     abfragevariante: AbfragevarianteDto
   ) {
     if (_.isNil(abfragevariante.bauabschnitte) || abfragevariante.bauabschnitte.length === 0) {
-      // Fall 1: Keine Bauabschnitte vorhanden -> Bauabschnitt, Baugebiet oder Baurate kann erstellt werden
-      parentTreeItem.children.push(
-        this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-      );
-      parentTreeItem.children.push(
-        this.createAddOrphanedBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-      );
-      parentTreeItem.children.push(
-        this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-      );
+      if (this.isNavigationTreeEditable) {
+        // Fall 1: Keine Bauabschnitte vorhanden -> Bauabschnitt, Baugebiet oder Baurate kann erstellt werden
+        parentTreeItem.children.push(
+          this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+        );
+        parentTreeItem.children.push(
+          this.createAddOrphanedBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+        );
+        parentTreeItem.children.push(
+          this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+        );
+      }
     } else {
       const firstBauabschnitt = abfragevariante.bauabschnitte[0];
       if (!firstBauabschnitt.technical) {
@@ -367,9 +384,11 @@ export default class AbfrageNavigationTree extends Vue {
           parentTreeItem.children.push(bauabschnittTreeItem);
           this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
         });
-        parentTreeItem.children.push(
-          this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
-        );
+        if (this.isNavigationTreeEditable) {
+          parentTreeItem.children.push(
+            this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+          );
+        }
       } else {
         // Fall 3: Technischer Bauabschnitt vorhanden -> Baugebiete werden unter Abfragevariente angelegt
         this.createBaugebieteTreeItems(parentTreeItem, abfrage, abfragevariante, firstBauabschnitt);
@@ -404,9 +423,11 @@ export default class AbfrageNavigationTree extends Vue {
           parentTreeItem.children.push(bauabschnittTreeItem);
           this.createBauratenTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
         });
-        parentTreeItem.children.push(
-          this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
-        );
+        if (this.isNavigationTreeEditable) {
+          parentTreeItem.children.push(
+            this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
+          );
+        }
       } else {
         // Fall 3: Technisches Bauagebiet vorhanden -> Bauraten werden unter Abfragevariente angelegt
         this.createBauratenTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt, firstBaugebiet);
@@ -433,17 +454,18 @@ export default class AbfrageNavigationTree extends Vue {
       );
       parentTreeItem.children.push(baurateTreeItem);
     });
-
-    parentTreeItem.children.push(
-      this.createAddBaurateTreeItem(
-        this.treeItemKey++,
-        parentTreeItem,
-        abfrage,
-        abfragevariante,
-        bauabschnitt,
-        baugebiet
-      )
-    );
+    if (this.isNavigationTreeEditable) {
+      parentTreeItem.children.push(
+        this.createAddBaurateTreeItem(
+          this.treeItemKey++,
+          parentTreeItem,
+          abfrage,
+          abfragevariante,
+          bauabschnitt,
+          baugebiet
+        )
+      );
+    }
   }
 
   private createAbfragevarianteTreeItem(

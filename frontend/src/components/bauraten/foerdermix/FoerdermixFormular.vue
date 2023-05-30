@@ -35,6 +35,7 @@
               :id="'foerdermix_foerderart_' + foerderartIndex"
               :key="foerderartIndex"
               v-model="foerderart.anteilProzent"
+              :disabled="!isEditableByAbfrageerstellung()"
               :label="foerderart.bezeichnung"
               :suffix="fieldPrefixesSuffixes.percent"
             />
@@ -55,13 +56,15 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FormattingMixin from "@/mixins/FormattingMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({ components: { NumField, FieldGroupCard } })
 export default class FoerdermixFormular extends Mixins(
   FieldValidationRulesMixin,
   FieldPrefixesSuffixes,
   FormattingMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 

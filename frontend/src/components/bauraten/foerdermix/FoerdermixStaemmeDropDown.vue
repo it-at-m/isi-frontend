@@ -3,6 +3,7 @@
     <v-select
       id="foerdermix_stammdaten_dropdown"
       v-model="selectedItem"
+      :disabled="!isEditableByAbfrageerstellung()"
       :items="groupedStammdaten"
       label="Fördermix"
       item-text="bezeichnung"
@@ -23,11 +24,17 @@ import MappingMixin from "@/mixins/MappingMixin";
 import { createFoerdermixDto, createFoerdermixStammDto } from "@/utils/Factories";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
 @Component
-export default class FoerdermixStaemmeDropDown extends Mixins(FoerdermixApiRequestMixin, MappingMixin, SaveLeaveMixin) {
+export default class FoerdermixStaemmeDropDown extends Mixins(
+  FoerdermixApiRequestMixin,
+  MappingMixin,
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
+) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 
   private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();

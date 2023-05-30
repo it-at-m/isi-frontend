@@ -20,6 +20,7 @@
         v-bind="$attrs"
         v-model="valueAsPosition"
         :class="`slider mx-2 ${getBackgroundColor()}`"
+        :disabled="disabled"
         type="range"
         min="0"
         max="2"

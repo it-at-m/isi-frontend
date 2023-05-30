@@ -14,6 +14,7 @@
           <v-text-field
             id="baugebiet_bezeichnung"
             v-model.trim="baugebiet.bezeichnung"
+            :disabled="!isEditableByAbfrageerstellung()"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
@@ -28,6 +29,7 @@
           <v-select
             id="baugebiet_baugebietTyp"
             v-model="baugebiet.baugebietTyp"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             :items="baugebietTypList"
             item-value="key"
@@ -49,6 +51,7 @@
           <num-field
             id="baugebiet_geschossflaecheWohnenGenehmigt"
             v-model="baugebiet.geschossflaecheWohnenGenehmigt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Genehmigt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -61,6 +64,7 @@
           <num-field
             id="baugebiet_geschossflaecheWohnenFestgesetzt"
             v-model="baugebiet.geschossflaecheWohnenFestgesetzt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Festgesetzt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -77,6 +81,7 @@
           <num-field
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
             v-model="baugebiet.anzahlWohneinheitenBaurechtlichGenehmigt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Baurechtlich genehmigt"
             integer
@@ -89,6 +94,7 @@
           <num-field
             id="baugebiet_anzahlWeBaurechtlichFestgesetzt"
             v-model="baugebiet.anzahlWohneinheitenBaurechtlichFestgesetzt"
+            :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             integer
@@ -108,12 +114,14 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   private geschossFlaecheCardTitle = "Geschossfläche";
 
