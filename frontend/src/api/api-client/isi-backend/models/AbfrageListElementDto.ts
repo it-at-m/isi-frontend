@@ -62,12 +62,6 @@ export interface AbfrageListElementDto {
      * @memberof AbfrageListElementDto
      */
     type?: AbfrageListElementDtoTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof AbfrageListElementDto
-     */
-    sobonJahr?: AbfrageListElementDtoSobonJahrEnum;
 }
 
 
@@ -102,18 +96,6 @@ export const AbfrageListElementDtoTypeEnum = {
 } as const;
 export type AbfrageListElementDtoTypeEnum = typeof AbfrageListElementDtoTypeEnum[keyof typeof AbfrageListElementDtoTypeEnum];
 
-/**
- * @export
- */
-export const AbfrageListElementDtoSobonJahrEnum = {
-    Davor: 'DAVOR',
-    Jahr2014: 'JAHR_2014',
-    Jahr2017: 'JAHR_2017',
-    Jahr2017Plus: 'JAHR_2017_PLUS',
-    Jahr2021: 'JAHR_2021'
-} as const;
-export type AbfrageListElementDtoSobonJahrEnum = typeof AbfrageListElementDtoSobonJahrEnum[keyof typeof AbfrageListElementDtoSobonJahrEnum];
-
 
 export function AbfrageListElementDtoFromJSON(json: any): AbfrageListElementDto {
     return AbfrageListElementDtoFromJSONTyped(json, false);
@@ -131,7 +113,6 @@ export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminato
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
         'type': !exists(json, 'type') ? undefined : json['type'],
-        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
     };
 }
 
@@ -150,7 +131,6 @@ export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
         'type': value.type,
-        'sobonJahr': value.sobonJahr,
     };
 }
 

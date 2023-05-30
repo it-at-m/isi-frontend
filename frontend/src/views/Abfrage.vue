@@ -141,19 +141,20 @@
           id="abfrage_navigation_tree"
           ref="abfrageNavigationTree"
           v-model="abfrageWrapped"
-          @select-abfrage="handleSelectAbfrage"
-          @select-abfragevariante="handleSelectAbfragevariante"
-          @delete-abfragevariante="handleDeleteAbfragevariante"
-          @create-new-abfragevariante="handleCreateNewAbfragevariante"
-          @select-bauabschnitt="handleSelectBauabschnitt"
-          @delete-bauabschnitt="handleDeleteBauabschnitt"
-          @create-new-bauabschnitt="handleCreateNewBauabschnitt"
-          @select-baugebiet="handleSelectBaugebiet"
-          @delete-baugebiet="handleDeleteBaugebiet"
-          @create-new-baugebiet="handleCreateNewBaugebiet"
-          @select-baurate="handleSelectBaurate"
-          @delete-baurate="handleDeleteBaurate"
-          @create-new-baurate="handleCreateNewBaurate"
+          @select-abfrage="handleSelectAbfrage()"
+          @select-abfragevariante="handleSelectAbfragevariante($event)"
+          @delete-abfragevariante="handleDeleteAbfragevariante($event)"
+          @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
+          @create-new-abfragevariante="handleCreateNewAbfragevariante()"
+          @select-bauabschnitt="handleSelectBauabschnitt($event)"
+          @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
+          @create-new-bauabschnitt="handleCreateNewBauabschnitt($event)"
+          @select-baugebiet="handleSelectBaugebiet($event)"
+          @delete-baugebiet="handleDeleteBaugebiet($event)"
+          @create-new-baugebiet="handleCreateNewBaugebiet($event)"
+          @select-baurate="handleSelectBaurate($event)"
+          @delete-baurate="handleDeleteBaurate($event)"
+          @create-new-baurate="handleCreateNewBaurate($event)"
         />
         <v-spacer />
       </template>
@@ -213,6 +214,7 @@
     </default-layout>
   </v-form>
 </template>
+
 <script lang="ts">
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
@@ -232,7 +234,6 @@ import {
 } from "@/utils/Factories";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
-import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
@@ -261,6 +262,7 @@ import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
+import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 
 @Component({
   methods: { containsNotAllowedDokument },
@@ -280,8 +282,8 @@ export default class Abfrage extends Mixins(
   TransitionApiRequestMixin,
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
+  BauratenApiRequestMixin,
   StatusUebergangApiRequestMixin,
-  BaurateReqestMixin,
   ValidatorMixin,
   SaveLeaveMixin
 ) {
@@ -593,6 +595,24 @@ export default class Abfrage extends Mixins(
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
     this.isDeleteDialogAbfragevarianteOpen = true;
+  }
+
+  private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.handleSelectAbfragevariante(abfrageTreeItem);
+    this.setNewEntityToMark(this.selectedAbfragevariante);
+    this.determineBauraten(
+      this.selectedAbfragevariante.realisierungVon,
+      this.selectedAbfragevariante.gesamtanzahlWe,
+      this.selectedAbfragevariante.geschossflaecheWohnen,
+      true
+    ).then((bauraten: Array<BaurateDto>) => {
+      const technicalBaugebiet = createTechnicalBaugebietDto();
+      const technicalBauabschnitt = createTechnicalBauabschnittDto();
+      technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+      technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
+      this.selectedAbfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+      this.formChanged();
+    });
   }
 
   private handleCreateNewAbfragevariante(): void {

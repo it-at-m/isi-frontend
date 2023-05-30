@@ -9,6 +9,7 @@
   "servers": [{ "url": "http://localhost:39146", "description": "Generated server url" }],
   "tags": [
     { "name": "Koordinaten", "description": "API to interact with the Koordinaten" },
+    { "name": "Baurate", "description": "API zum interagieren mit Bauraten" },
     { "name": "Dokumente", "description": "API zum Erhalt aller Dokumente" },
     { "name": "Kinderkrippe", "description": "API to interact with the Kinderkrippe" },
     { "name": "MimeType", "description": "API zur MimeType-Prüfung" },
@@ -19,7 +20,6 @@
     },
     { "name": "Abfrage", "description": "API to interact with the Abfragen" },
     { "name": "Abfragelisten", "description": "API to get Abfragelisten" },
-    { "name": "Baurate", "description": "API zum Interagieren mit Bauraten" },
     { "name": "GsNachmittagBetreuung", "description": "API to interact with the GsNachmittagBetreuung" },
     { "name": "Mittelschule", "description": "API to interact with the Mittelschule" },
     { "name": "Grundschule", "description": "API to interact with the Grundschule" },
@@ -699,54 +699,6 @@
           "400": {
             "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          }
-        }
-      }
-    },
-    "/baurate": {
-      "put": {
-        "tags": ["Baurate"],
-        "summary": "Aktualisierung einer Baurate",
-        "operationId": "updateBaurate",
-        "requestBody": {
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BaurateDto" } } },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK -> Baurate wurde erfolgreich aktualisiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BaurateDto" } } }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Baurate mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          }
-        }
-      },
-      "post": {
-        "tags": ["Baurate"],
-        "summary": "Anlegen einer neuen Baurate",
-        "operationId": "createBaurate",
-        "requestBody": {
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BaurateDto" } } },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> Baurate konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "201": {
-            "description": "CREATED -> Baurate wurde erfolgreich erstellt.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BaurateDto" } } }
           }
         }
       }
@@ -1616,53 +1568,42 @@
         }
       }
     },
-    "/bauraten": {
+    "/baurate/determine": {
       "get": {
         "tags": ["Baurate"],
-        "summary": "Lesen aller Bauraten",
-        "operationId": "getBauraten",
+        "summary": "Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten",
+        "operationId": "determineBauraten",
+        "parameters": [
+          {
+            "name": "realisierungsbeginn",
+            "in": "query",
+            "required": true,
+            "schema": { "minimum": 0, "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "wohneinheiten",
+            "in": "query",
+            "required": false,
+            "schema": { "minimum": 0, "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "geschossflaecheWohnen",
+            "in": "query",
+            "required": false,
+            "schema": { "minimum": 0, "type": "number" }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" } } }
             }
-          }
-        }
-      }
-    },
-    "/baurate/{id}": {
-      "get": {
-        "tags": ["Baurate"],
-        "summary": "Lesen einer Baurate",
-        "operationId": "getBaurateById",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BaurateDto" } } }
           },
           "404": {
-            "description": "NOT FOUND -> Baurate mit dieser ID nicht vorhanden.",
+            "description": "NOT FOUND -> Es konnten keine Bauraten ermittelt werden, da keine idealtypischen Bauraten für die gegebenen Parameter existieren.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
-        }
-      },
-      "delete": {
-        "tags": ["Baurate"],
-        "summary": "Löschen einer Baurate",
-        "operationId": "deleteBaurateById",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
-        ],
-        "responses": {
-          "404": {
-            "description": "NOT FOUND -> Baurate mit dieser ID nicht vorhanden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "204": { "description": "NO CONTENT" }
         }
       }
     },
@@ -1941,7 +1882,6 @@
           "fisNummer": { "maxLength": 255, "minLength": 0, "type": "string" },
           "anmerkung": { "maxLength": 255, "minLength": 0, "type": "string" },
           "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
-          "sobonJahr": { "type": "string", "enum": ["DAVOR", "JAHR_2014", "JAHR_2017", "JAHR_2017_PLUS", "JAHR_2021"] },
           "planungsrecht": {
             "type": "string",
             "enum": [
@@ -2008,6 +1948,10 @@
         "required": ["multiPolygon"],
         "type": "object",
         "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "nummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
           "zaehler": { "type": "integer", "format": "int64" },
@@ -2022,6 +1966,10 @@
         "required": ["flurstuecke", "multiPolygon"],
         "type": "object",
         "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "nummer": { "type": "number" },
           "name": { "type": "string" },
           "flurstuecke": {
@@ -2050,6 +1998,10 @@
         "required": ["multiPolygon"],
         "type": "object",
         "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "nummer": { "type": "string" },
           "name": { "type": "string" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
@@ -2060,6 +2012,10 @@
         "required": ["gemarkungen", "multiPolygon", "stadtbezirke"],
         "type": "object",
         "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "stadtbezirke": {
             "uniqueItems": true,
             "type": "array",
@@ -2071,20 +2027,6 @@
             "items": { "$ref": "#/components/schemas/GemarkungDto" }
           },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
-      },
-      "BaurateDto": {
-        "required": ["foerdermix", "jahr"],
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "jahr": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
-          "anzahlWeGeplant": { "type": "integer", "format": "int32" },
-          "geschossflaecheWohnenGeplant": { "type": "number" },
-          "foerdermix": { "$ref": "#/components/schemas/FoerdermixDto" }
         }
       },
       "UtmDto": {
@@ -2228,6 +2170,20 @@
           "geschossflaecheWohnenFestgesetzt": { "type": "integer", "format": "int64" },
           "bauraten": { "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" } },
           "technical": { "type": "boolean" }
+        }
+      },
+      "BaurateDto": {
+        "required": ["foerdermix", "jahr"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "jahr": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "anzahlWeGeplant": { "type": "integer", "format": "int32" },
+          "geschossflaecheWohnenGeplant": { "type": "number" },
+          "foerdermix": { "$ref": "#/components/schemas/FoerdermixDto" }
         }
       },
       "InfrastrukturabfrageDto": {
@@ -2387,8 +2343,7 @@
           },
           "statusAbfrage": { "$ref": "#/components/schemas/StatusAbfrage" },
           "fristStellungnahme": { "type": "string", "format": "date" },
-          "type": { "type": "string", "enum": ["INFRASTRUKTURABFRAGE", "STANDORTABFRAGE"] },
-          "sobonJahr": { "type": "string", "enum": ["DAVOR", "JAHR_2014", "JAHR_2017", "JAHR_2017_PLUS", "JAHR_2021"] }
+          "type": { "type": "string", "enum": ["INFRASTRUKTURABFRAGE", "STANDORTABFRAGE"] }
         }
       },
       "AbfrageListElementsDto": {
