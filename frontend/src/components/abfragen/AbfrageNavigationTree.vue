@@ -18,6 +18,22 @@
             <a @click="setSelectedTreeItem(item)">{{ item.name }}</a>
           </template>
           <template #append="{ item }">
+            <v-tooltip
+              v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
+              top
+            >
+              <template #activator="{ on }">
+                <v-btn
+                  :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
+                  icon
+                  v-on="on"
+                  @click="determineBauratenForAbfragevariante(item)"
+                >
+                  <v-icon> mdi-calculator</v-icon>
+                </v-btn>
+              </template>
+              <span>Idealtypische Bauraten ermitteln</span>
+            </v-tooltip>
             <v-btn
               v-if="isItemTypeOfAddAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_create_new_abfragevariante_' + item.id"
@@ -892,6 +908,20 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAURATE;
   }
 
+  private isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return (
+      this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
+      // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
+      this.isNavigationTreeEditable &&
+      // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
+      (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
+        !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
+      // Die Abfragevariante darf keine Bauabschnitte referenzieren.
+      (_.isNil(abfrageTreeItem.abfragevariante?.bauabschnitte) ||
+        _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte))
+    );
+  }
+
   private isItemSelectable(abfrageTreeItem: AbfrageTreeItem): boolean {
     return (
       this.isItemTypeOfAbfrage(abfrageTreeItem) ||
@@ -910,10 +940,6 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     });
   }
 
-  private createTreeItemIds(abfrageTreeItems: Array<AbfrageTreeItem>): Array<number> {
-    return this.createFlatAbfrageTreeItem(abfrageTreeItems).map((abfrageTreeItem) => abfrageTreeItem.id);
-  }
-
   @Emit()
   private selectAbfrage(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
@@ -926,6 +952,11 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   @Emit()
   private deleteAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private determineBauratenForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 

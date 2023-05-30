@@ -145,12 +145,6 @@ export interface BauvorhabenDto {
      * @type {string}
      * @memberof BauvorhabenDto
      */
-    sobonJahr?: BauvorhabenDtoSobonJahrEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof BauvorhabenDto
-     */
     planungsrecht: BauvorhabenDtoPlanungsrechtEnum;
     /**
      * 
@@ -188,18 +182,6 @@ export const BauvorhabenDtoStandVorhabenEnum = {
     BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
 } as const;
 export type BauvorhabenDtoStandVorhabenEnum = typeof BauvorhabenDtoStandVorhabenEnum[keyof typeof BauvorhabenDtoStandVorhabenEnum];
-
-/**
- * @export
- */
-export const BauvorhabenDtoSobonJahrEnum = {
-    Davor: 'DAVOR',
-    Jahr2014: 'JAHR_2014',
-    Jahr2017: 'JAHR_2017',
-    Jahr2017Plus: 'JAHR_2017_PLUS',
-    Jahr2021: 'JAHR_2021'
-} as const;
-export type BauvorhabenDtoSobonJahrEnum = typeof BauvorhabenDtoSobonJahrEnum[keyof typeof BauvorhabenDtoSobonJahrEnum];
 
 /**
  * @export
@@ -260,7 +242,6 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'fisNummer': !exists(json, 'fisNummer') ? undefined : json['fisNummer'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
-        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'planungsrecht': json['planungsrecht'],
         'artFnp': json['artFnp'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
@@ -292,7 +273,6 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'fisNummer': value.fisNummer,
         'anmerkung': value.anmerkung,
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
-        'sobonJahr': value.sobonJahr,
         'planungsrecht': value.planungsrecht,
         'artFnp': value.artFnp,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),

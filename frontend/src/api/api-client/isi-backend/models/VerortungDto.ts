@@ -40,6 +40,30 @@ import {
 export interface VerortungDto {
     /**
      * 
+     * @type {string}
+     * @memberof VerortungDto
+     */
+    id?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof VerortungDto
+     */
+    version?: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof VerortungDto
+     */
+    createdDateTime?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof VerortungDto
+     */
+    lastModifiedDateTime?: Date;
+    /**
+     * 
      * @type {Set<StadtbezirkDto>}
      * @memberof VerortungDto
      */
@@ -68,6 +92,10 @@ export function VerortungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'stadtbezirke': (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'gemarkungen': (new Set((json['gemarkungen'] as Array<any>).map(GemarkungDtoFromJSON))),
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
@@ -83,6 +111,10 @@ export function VerortungDtoToJSON(value?: VerortungDto | null): any {
     }
     return {
         
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'stadtbezirke': (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'gemarkungen': (Array.from(value.gemarkungen as Set<any>).map(GemarkungDtoToJSON)),
         'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
