@@ -11,6 +11,7 @@
           v-model="infrastrukturabfrage.aktenzeichenProLbk"
           label="Aktenzeichen ProLBK"
           maxlength="255"
+          :disabled="!isEditableByAbfrageerstellung()"
           @input="formChanged"
         />
       </template>
@@ -24,6 +25,7 @@
           <tri-switch
             id="abfrage_infrastrukturabfrage_sobonRelevant_triswitch"
             v-model="infrastrukturabfrage.sobonRelevant"
+            :disabled="!isEditableByAbfrageerstellung()"
             off-text="Nein"
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
@@ -40,6 +42,7 @@
               v-if="sobonJahrVisible"
               id="abfrage_infrastrukturabfrage_sobonJahr_dropdown"
               v-model="infrastrukturabfrage.sobonJahr"
+              :disabled="!isEditableByAbfrageerstellung()"
               :items="sobonVerfahrensgrundsaetzeJahrList"
               item-value="key"
               item-text="value"
@@ -63,6 +66,7 @@
           <tri-switch
             id="abfrage_infrastrukturabfrage_offiziellerVerfahrensschritt_triswitch"
             v-model="infrastrukturabfrage.offiziellerVerfahrensschritt"
+            :disabled="!isEditableByAbfrageerstellung()"
             off-text="Nein"
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
@@ -84,6 +88,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: {
@@ -91,9 +96,12 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
     FieldGroupCard,
     TriSwitch,
   },
-  mixins: [FieldValidationRulesMixin],
 })
-export default class InfrastrukturabfrageComponent extends Mixins(SaveLeaveMixin) {
+export default class InfrastrukturabfrageComponent extends Mixins(
+  FieldValidationRulesMixin,
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
+) {
   @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
 
   private sobonCardTitle = "SoBoN";

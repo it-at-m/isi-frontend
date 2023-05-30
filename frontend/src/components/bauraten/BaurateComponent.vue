@@ -9,6 +9,7 @@
           <num-field
             id="bauraten_jahr"
             v-model="baurate.jahr"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Jahr (JJJJ)"
             year
             required
@@ -22,6 +23,7 @@
           <num-field
             id="bauraten_anzahlWeGeplant"
             v-model="baurate.anzahlWeGeplant"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Anzahl Wohneinheiten geplant"
             integer
           />
@@ -33,6 +35,7 @@
           <num-field
             id="bauraten_geschossflaecheWohnenGeplant"
             v-model="baurate.geschossflaecheWohnenGeplant"
+            :disabled="!isEditableByAbfrageerstellung()"
             label="Geschossfläche Wohnen geplant"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
@@ -64,11 +67,17 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: { FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
 })
-export default class BaurateComponent extends Mixins(ValidatorMixin, FieldPrefixesSuffixes, SaveLeaveMixin) {
+export default class BaurateComponent extends Mixins(
+  ValidatorMixin,
+  FieldPrefixesSuffixes,
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
+) {
   @VModel({ type: BaurateModel }) baurate!: BaurateModel;
 }
 </script>

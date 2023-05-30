@@ -4,6 +4,7 @@
       v-if="!datePickerActivated"
       id="datum"
       v-model="datumTextField"
+      :disabled="disabled"
       append-icon="mdi-calendar"
       :rules="required ? [fieldValidationRules.pflichtfeld, fieldValidationRules.datum] : [fieldValidationRules.datum]"
       validate-on-blur
@@ -40,6 +41,7 @@
       <v-date-picker
         id="datum_datePicker"
         v-model="datumDatePicker"
+        :disabled="disabled"
         locale="de"
         @change="deactivateDatePicker"
       />
@@ -83,6 +85,9 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
    */
   @Prop({ type: Boolean, default: false })
   private required!: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  private disabled!: boolean;
 
   private datePickerActivated = false;
 

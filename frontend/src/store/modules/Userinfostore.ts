@@ -1,6 +1,7 @@
 import { Userinfo } from "@/types/common/Userinfo";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
+import _ from "lodash";
 
 const state = {
   userinfo: undefined as Userinfo | undefined,
@@ -16,6 +17,26 @@ export default {
   getters: {
     userinfo: (state: UserinfoState): Userinfo | undefined => {
       return state.userinfo;
+    },
+    hasRoleAdmin: (state: UserinfoState): boolean => {
+      return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
+        ? state.userinfo?.roles?.includes("admin")
+        : false;
+    },
+    hasRoleAbfrageerstellung: (state: UserinfoState): boolean => {
+      return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
+        ? state.userinfo?.roles?.includes("abfrageerstellung")
+        : false;
+    },
+    hasRoleSachbearbeitung: (state: UserinfoState): boolean => {
+      return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
+        ? state.userinfo?.roles?.includes("sachbearbeitung")
+        : false;
+    },
+    hasRoleBedarfsmeldung: (state: UserinfoState): boolean => {
+      return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
+        ? state.userinfo?.roles?.includes("bedarfsmeldung")
+        : false;
     },
   },
 
