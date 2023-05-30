@@ -73,6 +73,7 @@
     <verortung
       id="verortung_component"
       v-model="bauvorhaben.verortung"
+      usable-by-role-sachbearbeitung
       :look-at="bauvorhaben.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">

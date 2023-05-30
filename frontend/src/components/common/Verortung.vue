@@ -4,7 +4,7 @@
       height="300"
       :zoom="14"
       expandable
-      editable
+      :editable="isEditable"
       :look-at="coordinate"
       :geo-json="geoJsonObjectsToShow"
       :geo-json-options="geoJsonOptionsToShow"
@@ -81,14 +81,21 @@ import {
   VerortungDto,
 } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: { CityMap },
 })
-export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLeaveMixin) {
+export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLeaveMixin, AbfrageSecurityMixin) {
   private verortungCardTitle = "Verortung";
 
   @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly usableByRoleAbfrageerstellung!: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly usableByRoleSachbearbeitung!: boolean;
 
   @Prop()
   private readonly lookAt?: AdresseDto;
@@ -105,6 +112,14 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   mounted(): void {
     this.onVerortungModelChanged();
+  }
+
+  get isEditable(): boolean {
+    return (
+      (this.usableByRoleAbfrageerstellung && this.isEditableByAbfrageerstellung()) ||
+      (this.usableByRoleSachbearbeitung &&
+        (this.$store.getters["userinfo/hasRoleAdmin"] || this.$store.getters["userinfo/hasRoleSachbearbeitung"]))
+    );
   }
 
   get coordinate(): LatLngLiteral | undefined {
@@ -182,11 +197,13 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   private handleClickInMap(latlng: LatLng): void {
-    const point = this.createPointGeometry(latlng);
-    this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
-      const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
-      this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
-    });
+    if (this.isEditable) {
+      const point = this.createPointGeometry(latlng);
+      this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
+        const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+        this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+      });
+    }
   }
 
   private handleDeselectGeoJson(): void {

@@ -27,6 +27,7 @@
     <verortung
       id="verortung_component"
       v-model="abfrage.verortung"
+      usable-by-role-abfrageerstellung
       :look-at="abfrage.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
