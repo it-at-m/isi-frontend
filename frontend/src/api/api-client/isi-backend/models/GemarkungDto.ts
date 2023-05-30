@@ -34,30 +34,6 @@ import {
 export interface GemarkungDto {
     /**
      * 
-     * @type {string}
-     * @memberof GemarkungDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GemarkungDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GemarkungDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GemarkungDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
      * @type {number}
      * @memberof GemarkungDto
      */
@@ -92,10 +68,6 @@ export function GemarkungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'flurstuecke': (new Set((json['flurstuecke'] as Array<any>).map(FlurstueckDtoFromJSON))),
@@ -112,10 +84,6 @@ export function GemarkungDtoToJSON(value?: GemarkungDto | null): any {
     }
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'nummer': value.nummer,
         'name': value.name,
         'flurstuecke': (Array.from(value.flurstuecke as Set<any>).map(FlurstueckDtoToJSON)),

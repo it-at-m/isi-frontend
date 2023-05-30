@@ -31,30 +31,6 @@ export interface FlurstueckDto {
      * @type {string}
      * @memberof FlurstueckDto
      */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FlurstueckDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof FlurstueckDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof FlurstueckDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof FlurstueckDto
-     */
     nummer?: string;
     /**
      * 
@@ -110,10 +86,6 @@ export function FlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
         'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
         'zaehler': !exists(json, 'zaehler') ? undefined : json['zaehler'],
@@ -134,10 +106,6 @@ export function FlurstueckDtoToJSON(value?: FlurstueckDto | null): any {
     }
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'nummer': value.nummer,
         'flaecheQm': value.flaecheQm,
         'zaehler': value.zaehler,

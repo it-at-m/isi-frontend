@@ -31,30 +31,6 @@ export interface StadtbezirkDto {
      * @type {string}
      * @memberof StadtbezirkDto
      */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof StadtbezirkDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof StadtbezirkDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof StadtbezirkDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof StadtbezirkDto
-     */
     nummer?: string;
     /**
      * 
@@ -80,10 +56,6 @@ export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
@@ -99,10 +71,6 @@ export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
     }
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'nummer': value.nummer,
         'name': value.name,
         'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
