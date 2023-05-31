@@ -28,6 +28,12 @@ import {
 export interface AbfrageerstellungAbfragevarianteAngelegtDto {
     /**
      * 
+     * @type {string}
+     * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
+     */
+    id?: string;
+    /**
+     * 
      * @type {number}
      * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
@@ -179,6 +185,7 @@ export function AbfrageerstellungAbfragevarianteAngelegtDtoFromJSONTyped(json: a
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
         'abfragevariantenNr': json['abfragevariantenNr'],
         'abfragevariantenName': json['abfragevariantenName'],
@@ -211,6 +218,7 @@ export function AbfrageerstellungAbfragevarianteAngelegtDtoToJSON(value?: Abfrag
     }
     return {
         
+        'id': value.id,
         'version': value.version,
         'abfragevariantenNr': value.abfragevariantenNr,
         'abfragevariantenName': value.abfragevariantenName,

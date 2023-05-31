@@ -181,6 +181,7 @@
           v-show="!isNewAbfrage()"
           :id="'abfrage_status_aenderung' + index + '_button'"
           :key="index"
+          :disabled="isDirty()"
           color="secondary"
           class="text-wrap mt-2 px-1"
           elevation="1"
@@ -471,7 +472,7 @@ export default class Abfrage extends Mixins(
   }
 
   private async startStatusUebergang(transition: TransitionDto) {
-    if (this.isDirty()) {
+    if (!this.isDirty()) {
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
         this.abfrageWrapped.infrastrukturabfrage
       );
