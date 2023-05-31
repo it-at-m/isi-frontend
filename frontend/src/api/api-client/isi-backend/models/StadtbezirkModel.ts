@@ -14,43 +14,43 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    MultiPolygonGeometryDto,
-    MultiPolygonGeometryDtoFromJSON,
-    MultiPolygonGeometryDtoFromJSONTyped,
-    MultiPolygonGeometryDtoToJSON,
-} from './MultiPolygonGeometryDto';
+    MultiPolygonGeometryModel,
+    MultiPolygonGeometryModelFromJSON,
+    MultiPolygonGeometryModelFromJSONTyped,
+    MultiPolygonGeometryModelToJSON,
+} from './MultiPolygonGeometryModel';
 
 /**
  * 
  * @export
- * @interface StadtbezirkDto
+ * @interface StadtbezirkModel
  */
-export interface StadtbezirkDto {
+export interface StadtbezirkModel {
     /**
      * 
      * @type {string}
-     * @memberof StadtbezirkDto
+     * @memberof StadtbezirkModel
      */
     nummer?: string;
     /**
      * 
      * @type {string}
-     * @memberof StadtbezirkDto
+     * @memberof StadtbezirkModel
      */
     name?: string;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof StadtbezirkDto
+     * @type {MultiPolygonGeometryModel}
+     * @memberof StadtbezirkModel
      */
-    multiPolygon: MultiPolygonGeometryDto;
+    multiPolygon?: MultiPolygonGeometryModel;
 }
 
-export function StadtbezirkDtoFromJSON(json: any): StadtbezirkDto {
-    return StadtbezirkDtoFromJSONTyped(json, false);
+export function StadtbezirkModelFromJSON(json: any): StadtbezirkModel {
+    return StadtbezirkModelFromJSONTyped(json, false);
 }
 
-export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): StadtbezirkDto {
+export function StadtbezirkModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): StadtbezirkModel {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -58,11 +58,11 @@ export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
         'name': !exists(json, 'name') ? undefined : json['name'],
-        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
+        'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryModelFromJSON(json['multiPolygon']),
     };
 }
 
-export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
+export function StadtbezirkModelToJSON(value?: StadtbezirkModel | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -73,7 +73,7 @@ export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
         
         'nummer': value.nummer,
         'name': value.name,
-        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
+        'multiPolygon': MultiPolygonGeometryModelToJSON(value.multiPolygon),
     };
 }
 

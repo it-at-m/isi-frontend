@@ -14,73 +14,73 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    MultiPolygonGeometryDto,
-    MultiPolygonGeometryDtoFromJSON,
-    MultiPolygonGeometryDtoFromJSONTyped,
-    MultiPolygonGeometryDtoToJSON,
-} from './MultiPolygonGeometryDto';
+    MultiPolygonGeometryModel,
+    MultiPolygonGeometryModelFromJSON,
+    MultiPolygonGeometryModelFromJSONTyped,
+    MultiPolygonGeometryModelToJSON,
+} from './MultiPolygonGeometryModel';
 
 /**
  * 
  * @export
- * @interface FlurstueckDto
+ * @interface FlurstueckModel
  */
-export interface FlurstueckDto {
+export interface FlurstueckModel {
     /**
      * 
      * @type {string}
-     * @memberof FlurstueckDto
+     * @memberof FlurstueckModel
      */
     nummer?: string;
     /**
      * 
      * @type {number}
-     * @memberof FlurstueckDto
+     * @memberof FlurstueckModel
      */
     flaecheQm?: number;
     /**
      * 
      * @type {number}
-     * @memberof FlurstueckDto
+     * @memberof FlurstueckModel
      */
     zaehler?: number;
     /**
      * 
      * @type {number}
-     * @memberof FlurstueckDto
+     * @memberof FlurstueckModel
      */
     nenner?: number;
     /**
      * 
      * @type {number}
-     * @memberof FlurstueckDto
+     * @memberof FlurstueckModel
      */
     eigentumsart?: number;
     /**
      * 
      * @type {string}
-     * @memberof FlurstueckDto
+     * @memberof FlurstueckModel
      */
     eigentumsartBedeutung?: string;
     /**
      * 
      * @type {number}
-     * @memberof FlurstueckDto
+     * @memberof FlurstueckModel
      */
     gemarkungNummer?: number;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof FlurstueckDto
+     * @type {MultiPolygonGeometryModel}
+     * @memberof FlurstueckModel
      */
-    multiPolygon: MultiPolygonGeometryDto;
+    multiPolygon?: MultiPolygonGeometryModel;
 }
 
-export function FlurstueckDtoFromJSON(json: any): FlurstueckDto {
-    return FlurstueckDtoFromJSONTyped(json, false);
+export function FlurstueckModelFromJSON(json: any): FlurstueckModel {
+    return FlurstueckModelFromJSONTyped(json, false);
 }
 
-export function FlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FlurstueckDto {
+export function FlurstueckModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): FlurstueckModel {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -93,11 +93,11 @@ export function FlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'eigentumsart': !exists(json, 'eigentumsart') ? undefined : json['eigentumsart'],
         'eigentumsartBedeutung': !exists(json, 'eigentumsartBedeutung') ? undefined : json['eigentumsartBedeutung'],
         'gemarkungNummer': !exists(json, 'gemarkungNummer') ? undefined : json['gemarkungNummer'],
-        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
+        'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryModelFromJSON(json['multiPolygon']),
     };
 }
 
-export function FlurstueckDtoToJSON(value?: FlurstueckDto | null): any {
+export function FlurstueckModelToJSON(value?: FlurstueckModel | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -113,7 +113,7 @@ export function FlurstueckDtoToJSON(value?: FlurstueckDto | null): any {
         'eigentumsart': value.eigentumsart,
         'eigentumsartBedeutung': value.eigentumsartBedeutung,
         'gemarkungNummer': value.gemarkungNummer,
-        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
+        'multiPolygon': MultiPolygonGeometryModelToJSON(value.multiPolygon),
     };
 }
 

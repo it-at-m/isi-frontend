@@ -25,6 +25,12 @@ import {
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import {
+    VerortungModel,
+    VerortungModelFromJSON,
+    VerortungModelFromJSONTyped,
+    VerortungModelToJSON,
+} from './VerortungModel';
 
 /**
  * 
@@ -50,6 +56,12 @@ export interface AbfrageerstellungAbfrageAngelegtDto {
      * @memberof AbfrageerstellungAbfrageAngelegtDto
      */
     adresse?: AdresseDto;
+    /**
+     * 
+     * @type {VerortungModel}
+     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     */
+    verortung?: VerortungModel;
     /**
      * 
      * @type {Date}
@@ -125,6 +137,7 @@ export function AbfrageerstellungAbfrageAngelegtDtoFromJSONTyped(json: any, igno
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungModelFromJSON(json['verortung']),
         'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
@@ -146,6 +159,7 @@ export function AbfrageerstellungAbfrageAngelegtDtoToJSON(value?: Abfrageerstell
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'adresse': AdresseDtoToJSON(value.adresse),
+        'verortung': VerortungModelToJSON(value.verortung),
         'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'bebauungsplannummer': value.bebauungsplannummer,

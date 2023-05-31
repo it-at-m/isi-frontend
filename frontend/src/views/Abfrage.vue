@@ -238,7 +238,7 @@ import InformationList from "@/components/common/InformationList.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
-import BaurateReqestMixin from "@/mixins/requests/BauratenApiRequestMixin";
+import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -646,6 +646,7 @@ export default class Abfrage extends Mixins(
       this.selectedAbfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
       this.formChanged();
     });
+  }
 
   private handleCreateNewAbfragevariante(): void {
     this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
