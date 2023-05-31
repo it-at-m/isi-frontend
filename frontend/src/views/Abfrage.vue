@@ -141,20 +141,21 @@
           id="abfrage_navigation_tree"
           ref="abfrageNavigationTree"
           v-model="abfrageWrapped"
-          @select-abfrage="handleSelectAbfrage"
-          @select-abfragevariante="handleSelectAbfragevariante"
-          @delete-abfragevariante="handleDeleteAbfragevariante"
+          @select-abfrage="handleSelectAbfrage()"
+          @select-abfragevariante="handleSelectAbfragevariante($event)"
           @relevant-abfragevariante="handleRelevantAbfragevariante"
-          @create-new-abfragevariante="handleCreateNewAbfragevariante"
-          @select-bauabschnitt="handleSelectBauabschnitt"
-          @delete-bauabschnitt="handleDeleteBauabschnitt"
-          @create-new-bauabschnitt="handleCreateNewBauabschnitt"
-          @select-baugebiet="handleSelectBaugebiet"
-          @delete-baugebiet="handleDeleteBaugebiet"
-          @create-new-baugebiet="handleCreateNewBaugebiet"
-          @select-baurate="handleSelectBaurate"
-          @delete-baurate="handleDeleteBaurate"
-          @create-new-baurate="handleCreateNewBaurate"
+          @delete-abfragevariante="handleDeleteAbfragevariante($event)"
+          @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
+          @create-new-abfragevariante="handleCreateNewAbfragevariante()"
+          @select-bauabschnitt="handleSelectBauabschnitt($event)"
+          @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
+          @create-new-bauabschnitt="handleCreateNewBauabschnitt($event)"
+          @select-baugebiet="handleSelectBaugebiet($event)"
+          @delete-baugebiet="handleDeleteBaugebiet($event)"
+          @create-new-baugebiet="handleCreateNewBaugebiet($event)"
+          @select-baurate="handleSelectBaurate($event)"
+          @delete-baurate="handleDeleteBaurate($event)"
+          @create-new-baurate="handleCreateNewBaurate($event)"
         />
         <v-spacer />
       </template>
@@ -215,6 +216,7 @@
     </default-layout>
   </v-form>
 </template>
+
 <script lang="ts">
 import {
   AbfragevarianteDto,
@@ -283,8 +285,8 @@ export default class Abfrage extends Mixins(
   TransitionApiRequestMixin,
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
+  BauratenApiRequestMixin,
   StatusUebergangApiRequestMixin,
-  BaurateReqestMixin,
   ValidatorMixin,
   SaveLeaveMixin,
   AbfrageSecurityMixin
@@ -627,6 +629,23 @@ export default class Abfrage extends Mixins(
       );
     }
   }
+
+  private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.handleSelectAbfragevariante(abfrageTreeItem);
+    this.setNewEntityToMark(this.selectedAbfragevariante);
+    this.determineBauraten(
+      this.selectedAbfragevariante.realisierungVon,
+      this.selectedAbfragevariante.gesamtanzahlWe,
+      this.selectedAbfragevariante.geschossflaecheWohnen,
+      true
+    ).then((bauraten: Array<BaurateDto>) => {
+      const technicalBaugebiet = createTechnicalBaugebietDto();
+      const technicalBauabschnitt = createTechnicalBauabschnittDto();
+      technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+      technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
+      this.selectedAbfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+      this.formChanged();
+    });
 
   private handleCreateNewAbfragevariante(): void {
     this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());

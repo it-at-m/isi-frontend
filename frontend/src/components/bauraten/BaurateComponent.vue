@@ -61,7 +61,6 @@
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import FoerdermixFormular from "@/components/bauraten/foerdermix/FoerdermixFormular.vue";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -74,7 +73,6 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
   components: { FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
 })
 export default class BaurateComponent extends Mixins(
-  BauratenApiRequestMixin,
   ValidatorMixin,
   FieldPrefixesSuffixes,
   SaveLeaveMixin,
