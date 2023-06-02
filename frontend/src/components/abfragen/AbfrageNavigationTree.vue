@@ -47,7 +47,7 @@
                 :id="'abfrage_navigation_tree_button_relevant_abfragevariante_' + item.id"
                 :disabled="!isEditableBySachbearbeitung()"
                 icon
-                @click="relevantAbfragevariante(item)"
+                @click="setAbfragevarianteRelevant(item)"
               >
                 <v-icon v-if="item.abfragevariante.relevant">mdi-bookmark</v-icon>
                 <v-icon v-else>mdi-bookmark-outline</v-icon>
@@ -966,7 +966,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   }
 
   @Emit()
-  private relevantAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+  private setAbfragevarianteRelevant(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 

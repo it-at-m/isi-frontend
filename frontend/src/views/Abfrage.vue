@@ -143,7 +143,7 @@
           v-model="abfrageWrapped"
           @select-abfrage="handleSelectAbfrage()"
           @select-abfragevariante="handleSelectAbfragevariante($event)"
-          @relevant-abfragevariante="handleRelevantAbfragevariante"
+          @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant($event)"
           @delete-abfragevariante="handleDeleteAbfragevariante($event)"
           @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
           @create-new-abfragevariante="handleCreateNewAbfragevariante()"
@@ -611,7 +611,7 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfragevarianteOpen = true;
   }
 
-  private async handleRelevantAbfragevariante(abfrageTreeItem: AbfrageTreeItem): Promise<void> {
+  private async handleSetAbfragevarianteRelevant(abfrageTreeItem: AbfrageTreeItem): Promise<void> {
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     if (!_.isNil(this.selectedAbfragevariante.id)) {
       await this.setAbfragevarianteRelevant(
@@ -621,12 +621,13 @@ export default class Abfrage extends Mixins(
       ).then((dto) => {
         this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
         this.$store.dispatch("search/resetAbfrage");
-        Toaster.toast("Relevante Abfragevariante wurde erfolgreich geändert", Levels.SUCCESS);
+        Toaster.toast(
+          `Abfragevariante ${this.selectedAbfragevariante.id} in Abfrage ${this.abfrageWrapped.infrastrukturabfrage.displayName} hat ihren Relevanten Status geändert.`,
+          Levels.SUCCESS
+        );
       });
     } else {
-      this.showWarningInInformationList(
-        "Um die Abfragevariante Relevant zu markieren Abfragevariante erstmal abspeichern"
-      );
+      this.showWarningInInformationList("Vor Relevantsetzung einer Abfrage ist diese zu speichern.");
     }
   }
 

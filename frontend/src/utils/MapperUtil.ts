@@ -10,9 +10,8 @@ import {
 export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
   infrastrukturabfrageDto: InfrastrukturabfrageDto
 ): AbfrageerstellungInfrastrukturabfrageAngelegtDto {
-  const abfragevarianten = [] as AbfrageerstellungAbfragevarianteAngelegtDto[];
-  infrastrukturabfrageDto.abfragevarianten?.forEach((abfragevariante) => {
-    abfragevarianten.push({
+  const abfragevarianten = infrastrukturabfrageDto.abfragevarianten?.map((abfragevariante) => {
+    return {
       id: abfragevariante.id,
       version: abfragevariante.version,
       abfragevariantenName: abfragevariante.abfragevariantenName as string,
@@ -34,7 +33,7 @@ export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
       geschossflaecheWohnenFestgesetzt: abfragevariante.geschossflaecheWohnenFestgesetzt,
       geschossflaecheWohnenGenehmigt: abfragevariante.geschossflaecheWohnenGenehmigt,
       geschossflaecheWohnenSoBoNursaechlich: abfragevariante.geschossflaecheWohnenSoBoNursaechlich,
-    });
+    } as AbfrageerstellungAbfragevarianteAngelegtDto;
   });
 
   return {

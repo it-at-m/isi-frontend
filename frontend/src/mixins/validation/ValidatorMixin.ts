@@ -94,13 +94,13 @@ export default class ValidatorMixin extends Vue {
         break;
       }
     }
-    let counter = 0;
+    let counterRelevantAbfragevarianten = 0;
     for (const abfragevariante of infrastrukturabfrage.abfragevarianten) {
       if (abfragevariante.relevant) {
-        counter++;
+        counterRelevantAbfragevarianten++;
       }
     }
-    if (counter >= 2) {
+    if (counterRelevantAbfragevarianten >= 2) {
       return "Es darf nur eine Abfragevariante als Relevant markiert werden";
     }
     return validationMessage;
