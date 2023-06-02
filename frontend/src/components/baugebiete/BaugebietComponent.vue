@@ -42,31 +42,44 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="geschossFlaecheCardTitle">
+    <field-group-card :card-title="geschossflaecheWohnenCardTitle">
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
+          md="4"
+        >
+          <num-field
+            id="baugebiet_geschossflaecheWohnenFestgesetzt"
+            v-model="baugebiet.geschossflaecheWohnen"
+            :disabled="!isEditableByAbfrageerstellung()"
+            class="mx-3"
+            label="Gesamt"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
         >
           <num-field
             id="baugebiet_geschossflaecheWohnenGenehmigt"
             v-model="baugebiet.geschossflaecheWohnenGenehmigt"
             :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
-            label="Genehmigt"
+            label="Baurechtlich Genehmigt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <num-field
             id="baugebiet_geschossflaecheWohnenFestgesetzt"
             v-model="baugebiet.geschossflaecheWohnenFestgesetzt"
             :disabled="!isEditableByAbfrageerstellung()"
             class="mx-3"
-            label="Festgesetzt"
+            label="Baurechtlich Festgesetzt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
@@ -76,7 +89,20 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
+          md="4"
+        >
+          <num-field
+            id="baugebiet_anzahlWeBaurechtlichGenehmigt"
+            v-model="baugebiet.gesamtanzahlWe"
+            :disabled="!isEditableByAbfrageerstellung()"
+            class="mx-3"
+            label="Gesamt"
+            integer
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
         >
           <num-field
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
@@ -89,7 +115,7 @@
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <num-field
             id="baugebiet_anzahlWeBaurechtlichFestgesetzt"
@@ -123,9 +149,7 @@ export default class BauabschnittComponent extends Mixins(
   SaveLeaveMixin,
   AbfrageSecurityMixin
 ) {
-  private geschossFlaecheCardTitle = "Geschossfläche";
-
-  private anzahlWohneinheitenCardTitle = "Anzahl Wohneinheiten";
+  private geschossflaecheWohnenCardTitle = "Geschossfläche Wohnen";
 
   private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
