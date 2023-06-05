@@ -43,7 +43,7 @@ export interface PatchAbfrageAngelegtRequest {
     abfrageerstellungInfrastrukturabfrageAngelegtDto: AbfrageerstellungInfrastrukturabfrageAngelegtDto;
 }
 
-export interface PutAbfragevarianteRelevantRequest {
+export interface PutChangeAbfragevarianteRelevantRequest {
     abfrageId: string;
     abfragevarianteId: string;
 }
@@ -211,15 +211,15 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
+     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant, fall diese noch nicht relevant ist.Ist die Abfragevariante bereits als relevant markiert, wird der Status auf nicht relevant gesetzt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
      */
-    async putAbfragevarianteRelevantRaw(requestParameters: PutAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
+    async putChangeAbfragevarianteRelevantRaw(requestParameters: PutChangeAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
         if (requestParameters.abfrageId === null || requestParameters.abfrageId === undefined) {
-            throw new runtime.RequiredError('abfrageId','Required parameter requestParameters.abfrageId was null or undefined when calling putAbfragevarianteRelevant.');
+            throw new runtime.RequiredError('abfrageId','Required parameter requestParameters.abfrageId was null or undefined when calling putChangeAbfragevarianteRelevant.');
         }
 
         if (requestParameters.abfragevarianteId === null || requestParameters.abfragevarianteId === undefined) {
-            throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putAbfragevarianteRelevant.');
+            throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putChangeAbfragevarianteRelevant.');
         }
 
         const queryParameters: any = {};
@@ -227,7 +227,7 @@ export class AbfrageApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/infrastruktur-abfragen/abfrage/{abfrageId}/abfragevariante/relevant/{abfragevarianteId}`.replace(`{${"abfrageId"}}`, encodeURIComponent(String(requestParameters.abfrageId))).replace(`{${"abfragevarianteId"}}`, encodeURIComponent(String(requestParameters.abfragevarianteId))),
+            path: `/infrastruktur-abfragen/abfrage/{abfrageId}/abfragevariante/change-relevant/{abfragevarianteId}`.replace(`{${"abfrageId"}}`, encodeURIComponent(String(requestParameters.abfrageId))).replace(`{${"abfragevarianteId"}}`, encodeURIComponent(String(requestParameters.abfragevarianteId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -237,10 +237,10 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
+     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant, fall diese noch nicht relevant ist.Ist die Abfragevariante bereits als relevant markiert, wird der Status auf nicht relevant gesetzt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
      */
-    async putAbfragevarianteRelevant(requestParameters: PutAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
-        const response = await this.putAbfragevarianteRelevantRaw(requestParameters, initOverrides);
+    async putChangeAbfragevarianteRelevant(requestParameters: PutChangeAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
+        const response = await this.putChangeAbfragevarianteRelevantRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

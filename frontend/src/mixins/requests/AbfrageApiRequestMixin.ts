@@ -60,7 +60,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  setAbfragevarianteRelevant(
+  changeAbfragevarianteRelevant(
     abfrageId: string,
     abfragevarianteId: string,
     showInInformationList: boolean
@@ -70,7 +70,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       abfragevarianteId: abfragevarianteId,
     };
     return this.abfrageApi
-      .putAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
+      .putChangeAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
         this.resetDirty();
         return response;

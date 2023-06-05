@@ -614,7 +614,7 @@ export default class Abfrage extends Mixins(
   private async handleSetAbfragevarianteRelevant(abfrageTreeItem: AbfrageTreeItem): Promise<void> {
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     if (!_.isNil(this.selectedAbfragevariante.id)) {
-      await this.setAbfragevarianteRelevant(
+      await this.changeAbfragevarianteRelevant(
         this.abfrageWrapped.infrastrukturabfrage.id as string,
         this.selectedAbfragevariante.id as string,
         true
@@ -622,15 +622,14 @@ export default class Abfrage extends Mixins(
         this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
         this.$store.dispatch("search/resetAbfrage");
         Toaster.toast(
-          `Die Abfragevariante ${this.selectedAbfragevariante.id} in Abfrage ${
+          `Die Abfragevariante ${this.selectedAbfragevariante.abfragevariantenName} in Abfrage ${
             this.abfrageWrapped.infrastrukturabfrage.displayName
-          }
-           hat den Status auf ${this.selectedAbfragevariante.relevant ? `relevant` : `nicht relevant`} geändert.`,
+          } hat nun den Status ${this.selectedAbfragevariante.relevant ? `nicht relevant` : `relevant`}.`,
           Levels.SUCCESS
         );
       });
     } else {
-      this.showWarningInInformationList("Vor Relevantsetzung einer Abfrage ist diese zu speichern.");
+      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
     }
   }
 
