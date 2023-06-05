@@ -622,7 +622,7 @@ export default class Abfrage extends Mixins(
         this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
         this.$store.dispatch("search/resetAbfrage");
         Toaster.toast(
-          `Abfragevariante ${this.selectedAbfragevariante.id} in Abfrage ${this.abfrageWrapped.infrastrukturabfrage.displayName} hat ihren Relevanten Status geändert.`,
+          `Abfragevariante ${this.selectedAbfragevariante.id} in Abfrage ${this.abfrageWrapped.infrastrukturabfrage.displayName} hat ihren relevanten Status geändert.`,
           Levels.SUCCESS
         );
       });
