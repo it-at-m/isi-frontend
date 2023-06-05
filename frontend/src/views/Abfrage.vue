@@ -788,6 +788,10 @@ export default class Abfrage extends Mixins(
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
+    const abfragevariante = abfrageTreeItem.abfragevariante;
+    if (!_.isNil(abfragevariante)) {
+      this.selectedBaugebiet.realisierungVon = abfragevariante.realisierungVon;
+    }
     this.setNewEntityToMark(this.selectedBaugebiet);
     selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
     this.formChanged();

@@ -67,6 +67,12 @@ export interface BaugebietDto {
      * @type {number}
      * @memberof BaugebietDto
      */
+    realisierungVon: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaugebietDto
+     */
     gesamtanzahlWe?: number;
     /**
      * 
@@ -143,6 +149,7 @@ export function BaugebietDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
         'baugebietTyp': json['baugebietTyp'],
+        'realisierungVon': json['realisierungVon'],
         'gesamtanzahlWe': !exists(json, 'gesamtanzahlWe') ? undefined : json['gesamtanzahlWe'],
         'anzahlWohneinheitenBaurechtlichGenehmigt': !exists(json, 'anzahlWohneinheitenBaurechtlichGenehmigt') ? undefined : json['anzahlWohneinheitenBaurechtlichGenehmigt'],
         'anzahlWohneinheitenBaurechtlichFestgesetzt': !exists(json, 'anzahlWohneinheitenBaurechtlichFestgesetzt') ? undefined : json['anzahlWohneinheitenBaurechtlichFestgesetzt'],
@@ -169,6 +176,7 @@ export function BaugebietDtoToJSON(value?: BaugebietDto | null): any {
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'bezeichnung': value.bezeichnung,
         'baugebietTyp': value.baugebietTyp,
+        'realisierungVon': value.realisierungVon,
         'gesamtanzahlWe': value.gesamtanzahlWe,
         'anzahlWohneinheitenBaurechtlichGenehmigt': value.anzahlWohneinheitenBaurechtlichGenehmigt,
         'anzahlWohneinheitenBaurechtlichFestgesetzt': value.anzahlWohneinheitenBaurechtlichFestgesetzt,

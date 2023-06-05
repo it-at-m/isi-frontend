@@ -42,6 +42,41 @@
         </v-col>
       </v-row>
     </field-group-card>
+
+    <field-group-card>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <num-field
+            id="abfragevariante_realisierungvon"
+            v-model="baugebiet.realisierungVon"
+            :disabled="!isEditableByAbfrageerstellung()"
+            label="Realisierung von (JJJJ)"
+            class="mx-3"
+            year
+            required
+            maxlength="4"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <num-field
+            id="abfragevariante_realisierungBis"
+            v-model="calcRealisierungBis"
+            :disabled="true"
+            label="Realisierung bis (JJJJ)"
+            class="mx-3"
+            year
+            maxlength="4"
+          />
+        </v-col>
+      </v-row>
+    </field-group-card>
+
     <field-group-card :card-title="geschossflaecheWohnenCardTitle">
       <v-row justify="center">
         <v-col
@@ -133,7 +168,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import { BaurateDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -141,8 +176,10 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import NumField from "@/components/common/NumField.vue";
+import _ from "lodash";
 
-@Component({ components: { FieldGroupCard } })
+@Component({ components: { NumField, FieldGroupCard } })
 export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
@@ -164,6 +201,10 @@ export default class BauabschnittComponent extends Mixins(
 
   set displayMode(mode: DisplayMode) {
     this.$emit("input", mode);
+  }
+
+  get calcRealisierungBis(): number | undefined {
+    return _.max(this.baugebiet.bauraten.map((baurate) => baurate.jahr));
   }
 
   get headline(): string {
