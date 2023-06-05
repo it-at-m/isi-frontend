@@ -625,8 +625,7 @@ export default class Abfrage extends Mixins(
           `Die Abfragevariante ${this.selectedAbfragevariante.id} in Abfrage ${
             this.abfrageWrapped.infrastrukturabfrage.displayName
           }
-           hat den Status von ${this.selectedAbfragevariante.relevant ? `nicht relevant` : `relevant`} auf
-            ${this.selectedAbfragevariante.relevant ? `relevant` : `nicht relevant`} geändert.`,
+           hat den Status auf ${this.selectedAbfragevariante.relevant ? `relevant` : `nicht relevant`} geändert.`,
           Levels.SUCCESS
         );
       });
