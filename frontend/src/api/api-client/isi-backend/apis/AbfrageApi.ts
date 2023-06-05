@@ -211,7 +211,7 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage im Status IN_BEARBEITUNG_SACHBEARBEITUNG.
+     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
      */
     async putAbfragevarianteRelevantRaw(requestParameters: PutAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
         if (requestParameters.abfrageId === null || requestParameters.abfrageId === undefined) {
@@ -237,7 +237,7 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage im Status IN_BEARBEITUNG_SACHBEARBEITUNG.
+     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
      */
     async putAbfragevarianteRelevant(requestParameters: PutAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
         const response = await this.putAbfragevarianteRelevantRaw(requestParameters, initOverrides);

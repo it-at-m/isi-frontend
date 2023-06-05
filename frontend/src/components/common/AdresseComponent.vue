@@ -124,14 +124,10 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 import MasterEaiApiRequestMixin from "@/mixins/requests/eai/MasterEaiApiRequestMixin";
 import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from "@/utils/Factories";
-import CityMap from "@/components/map/CityMap.vue";
 import _ from "lodash";
 import { LatLngLiteral } from "leaflet";
-import Verortung from "@/components/common/Verortung.vue";
 
-@Component({
-  components: { Verortung, CityMap },
-})
+@Component
 export default class AdresseComponent extends Mixins(
   SaveLeaveMixin,
   FieldValidationRulesMixin,
