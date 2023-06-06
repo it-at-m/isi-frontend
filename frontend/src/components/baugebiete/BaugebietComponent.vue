@@ -56,6 +56,7 @@
             label="Realisierung von (JJJJ)"
             class="mx-3"
             year
+            :min="abfragevarianteRealisierungVon"
             required
             maxlength="4"
           />
@@ -168,7 +169,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { BaurateDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, BaurateDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -193,6 +194,9 @@ export default class BauabschnittComponent extends Mixins(
   @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
 
   @Prop()
+  private abfragevariante: AbfragevarianteDto | undefined;
+
+  @Prop()
   private mode!: DisplayMode;
 
   get displayMode(): DisplayMode {
@@ -214,6 +218,10 @@ export default class BauabschnittComponent extends Mixins(
 
   get baugebietTypList(): LookupEntryDto[] {
     return this.$store.getters["lookup/baugebietTyp"];
+  }
+
+  get abfragevarianteRealisierungVon(): number | undefined {
+    return this.abfragevariante?.realisierungVon;
   }
 }
 </script>

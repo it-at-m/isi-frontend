@@ -12,6 +12,7 @@
             :disabled="!isEditableByAbfrageerstellung()"
             label="Jahr (JJJJ)"
             year
+            :min="baugebietRealisierungVon"
             required
             maxlength="4"
           />
@@ -59,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import FoerdermixFormular from "@/components/bauraten/foerdermix/FoerdermixFormular.vue";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
@@ -68,9 +69,11 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { BaugebietDto } from "@/api/api-client/isi-backend";
+import NumField from "@/components/common/NumField.vue";
 
 @Component({
-  components: { FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
+  components: { NumField, FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
 })
 export default class BaurateComponent extends Mixins(
   ValidatorMixin,
@@ -79,6 +82,13 @@ export default class BaurateComponent extends Mixins(
   AbfrageSecurityMixin
 ) {
   @VModel({ type: BaurateModel }) baurate!: BaurateModel;
+
+  @Prop()
+  private baugebiet: BaugebietDto | undefined;
+
+  get baugebietRealisierungVon(): number | undefined {
+    return this.baugebiet?.realisierungVon;
+  }
 }
 </script>
 
