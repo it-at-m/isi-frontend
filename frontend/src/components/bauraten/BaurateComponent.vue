@@ -71,7 +71,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { BaugebietDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 
@@ -88,6 +88,9 @@ export default class BaurateComponent extends Mixins(
 
   @Prop()
   private baugebiet: BaugebietDto | undefined;
+
+  @Prop()
+  private abfragevariante: AbfragevarianteDto | undefined;
 
   get baugebietRealisierungVonOr1900(): number {
     return _.isNil(this.baugebiet) ? 1900 : this.baugebiet.realisierungVon;

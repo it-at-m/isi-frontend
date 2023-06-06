@@ -122,6 +122,18 @@
           />
         </v-col>
       </v-row>
+      <v-row class="justify-start">
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-chip small> {{ 10500 }} / {{ 10500 }} </v-chip>
+        </v-col>
+        <v-col
+          cols="12"
+          md="8"
+        />
+      </v-row>
     </field-group-card>
     <field-group-card :card-title="anzahlWECardTitle">
       <v-row justify="center">
