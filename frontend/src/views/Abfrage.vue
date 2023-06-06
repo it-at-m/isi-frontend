@@ -626,9 +626,14 @@ export default class Abfrage extends Mixins(
 
   private removeSelectedAbfragevarianteFromAbfrage(): void {
     if (!_.isNil(this.abfragevarianteTreeItemToDelete)) {
-      const copyAbfragevarianten = _.cloneDeep(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
-      _.remove(copyAbfragevarianten, (abfragevariante) => _.isEqual(abfragevariante, this.selectedAbfragevariante));
-      this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = copyAbfragevarianten;
+      _.remove(
+        this.abfrageWrapped.infrastrukturabfrage.abfragevarianten,
+        (abfragevariante) => abfragevariante === this.selectedAbfragevariante
+      );
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+      this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = [
+        ...this.abfrageWrapped.infrastrukturabfrage.abfragevarianten,
+      ];
       this.renumberingAbfragevarianten();
       this.formChanged();
       this.openAbfrageFormular();
@@ -643,9 +648,9 @@ export default class Abfrage extends Mixins(
     if (!_.isNil(this.bauabschnittTreeItemToDelete)) {
       const selectedAbfragevariante = this.getSelectedAbfragevariante(this.bauabschnittTreeItemToDelete);
       if (!_.isNil(selectedAbfragevariante.bauabschnitte)) {
-        const copyBauabschnitte = _.cloneDeep(selectedAbfragevariante.bauabschnitte);
-        _.remove(copyBauabschnitte, (bauabschnitt) => _.isEqual(bauabschnitt, this.selectedBauabschnitt));
-        selectedAbfragevariante.bauabschnitte = copyBauabschnitte;
+        _.remove(selectedAbfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === this.selectedBauabschnitt);
+        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+        selectedAbfragevariante.bauabschnitte = [...selectedAbfragevariante.bauabschnitte];
         this.formChanged();
         this.openAbfragevarianteFormular();
       }
@@ -659,9 +664,9 @@ export default class Abfrage extends Mixins(
   private removeSelectedBaugebietFromBauabschnitt(): void {
     if (!_.isNil(this.baugebietTreeItemToDelete)) {
       const selectedBauabschnitt = this.getSelectedBauabschnitt(this.baugebietTreeItemToDelete);
-      const copyBaugebiete = _.cloneDeep(selectedBauabschnitt.baugebiete);
-      _.remove(copyBaugebiete, (baugebiet) => _.isEqual(baugebiet, this.selectedBaugebiet));
-      selectedBauabschnitt.baugebiete = copyBaugebiete;
+      _.remove(selectedBauabschnitt.baugebiete, (baugebiet) => baugebiet === this.selectedBaugebiet);
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+      selectedBauabschnitt.baugebiete = [...selectedBauabschnitt.baugebiete];
       this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baugebietTreeItemToDelete));
       this.formChanged();
       this.openBauabschnittFormular();
@@ -675,9 +680,9 @@ export default class Abfrage extends Mixins(
   private removeSelectedBaurateFromBaugebiet(): void {
     if (!_.isNil(this.baurateTreeItemToDelete)) {
       const selectedBaugebiet = this.getSelectedBaugebiet(this.baurateTreeItemToDelete);
-      const copyBauraten = _.cloneDeep(selectedBaugebiet.bauraten);
-      _.remove(copyBauraten, (baurate) => _.isEqual(baurate, this.selectedBaurate));
-      selectedBaugebiet.bauraten = copyBauraten;
+      _.remove(selectedBaugebiet.bauraten, (baurate) => baurate === this.selectedBaurate);
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+      selectedBaugebiet.bauraten = [...selectedBaugebiet.bauraten];
       this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baurateTreeItemToDelete));
       this.formChanged();
       this.openBaugebietFormular();
@@ -689,8 +694,8 @@ export default class Abfrage extends Mixins(
   }
 
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
-    let selectedAbfragevariante = this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.find((abfragevariante) =>
-      _.isEqual(abfragevariante, abfrageTreeItem.abfragevariante)
+    let selectedAbfragevariante = this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.find(
+      (abfragevariante) => abfragevariante === abfrageTreeItem.abfragevariante
     );
     if (_.isNil(selectedAbfragevariante)) {
       selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
@@ -702,8 +707,8 @@ export default class Abfrage extends Mixins(
     let selectedBauabschnitt = undefined;
     let selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     if (!_.isNil(selectedAbfragevariante.bauabschnitte)) {
-      selectedBauabschnitt = selectedAbfragevariante.bauabschnitte.find((bauabschnitt) =>
-        _.isEqual(bauabschnitt.bezeichnung, abfrageTreeItem.bauabschnitt?.bezeichnung)
+      selectedBauabschnitt = selectedAbfragevariante.bauabschnitte.find(
+        (bauabschnitt) => bauabschnitt === abfrageTreeItem.bauabschnitt
       );
     }
     if (_.isNil(selectedBauabschnitt)) {
@@ -719,9 +724,7 @@ export default class Abfrage extends Mixins(
     let selectedBaugebiet = undefined;
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     if (!_.isNil(selectedBauabschnitt.baugebiete)) {
-      selectedBaugebiet = selectedBauabschnitt.baugebiete.find((baugebiet) =>
-        _.isEqual(baugebiet.bezeichnung, abfrageTreeItem.baugebiet?.bezeichnung)
-      );
+      selectedBaugebiet = selectedBauabschnitt.baugebiete.find((baugebiet) => baugebiet === abfrageTreeItem.baugebiet);
     }
     if (_.isNil(selectedBaugebiet)) {
       const selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
@@ -734,9 +737,7 @@ export default class Abfrage extends Mixins(
   private getSelectedBaurate(abfrageTreeItem: AbfrageTreeItem): BaurateDto {
     let selectedBaurate = undefined;
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
-    selectedBaurate = selectedBaugebiet.bauraten.find((baurate) =>
-      _.isEqual(baurate.jahr, abfrageTreeItem.baurate?.jahr)
-    );
+    selectedBaurate = selectedBaugebiet.bauraten.find((baurate) => baurate === abfrageTreeItem.baurate);
     if (_.isNil(selectedBaurate)) {
       selectedBaurate = new BaurateModel(createBaurateDto());
     }
