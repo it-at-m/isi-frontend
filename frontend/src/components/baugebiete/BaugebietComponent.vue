@@ -215,9 +215,7 @@ import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import {
   anzahlUeberBaugebieteVerteilteWohneinheiten,
-  anzahlUeberBauratenVerteilteWohneinheiten,
   anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen,
-  anzahlUeberBauratenVerteilteGeschossflaecheWohnen,
 } from "@/utils/CalculationUtil";
 
 @Component({ components: { NumField, FieldGroupCard } })
@@ -273,11 +271,9 @@ export default class BauabschnittComponent extends Mixins(
   }
 
   get verteilteWohneinheitenAbfragevariante(): number | undefined {
-    let verteilteWohneiheiten: number | undefined;
-    if (!_.isNil(this.abfragevariante)) {
-      verteilteWohneiheiten = anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
-    }
-    return verteilteWohneiheiten;
+    return _.isNil(this.abfragevariante)
+      ? undefined
+      : anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
   }
 
   get showVerteilungGeschossflaecheWohnen(): boolean {
@@ -292,11 +288,9 @@ export default class BauabschnittComponent extends Mixins(
   }
 
   get verteilteGeschossflaecheWohnenAbfragevariante(): number | undefined {
-    let verteilteWohneiheiten: number | undefined;
-    if (!_.isNil(this.abfragevariante)) {
-      verteilteWohneiheiten = anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante);
-    }
-    return verteilteWohneiheiten;
+    return _.isNil(this.abfragevariante)
+      ? undefined
+      : anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante);
   }
 }
 </script>

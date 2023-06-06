@@ -1,6 +1,6 @@
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
-import { AbfragevarianteDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
 
 /**
  * Addiert alle Anteile eines Fördermixes zusammen und gibt die Summe zurück
@@ -25,11 +25,20 @@ export function anzahlUeberBaugebieteVerteilteWohneinheiten(abfragevariante: Abf
   return _.sum(sumWohneinheiten);
 }
 
-export function anzahlUeberBauratenVerteilteWohneinheiten(abfragevariante: AbfragevarianteDto): number {
+export function anzahlUeberBauratenVerteilteWohneinheitenForAbfragevariante(
+  abfragevariante: AbfragevarianteDto
+): number {
   const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
     .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
     .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
     .map((baurate) => (_.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant));
+  return _.sum(sumWohneinheiten);
+}
+
+export function anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(baugebiet: BaugebietDto): number {
+  const sumWohneinheiten = _.toArray(baugebiet.bauraten).map((baurate) =>
+    _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant
+  );
   return _.sum(sumWohneinheiten);
 }
 
@@ -40,10 +49,19 @@ export function anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(abfragevaria
   return _.sum(sumWohneinheiten);
 }
 
-export function anzahlUeberBauratenVerteilteGeschossflaecheWohnen(abfragevariante: AbfragevarianteDto): number {
+export function anzahlUeberBauratenVerteilteGeschossflaecheWohnenForAbfragevariante(
+  abfragevariante: AbfragevarianteDto
+): number {
   const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
     .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
     .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
     .map((baurate) => (_.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant));
+  return _.sum(sumWohneinheiten);
+}
+
+export function anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet(baugebiet: BaugebietDto): number {
+  const sumWohneinheiten = _.toArray(baugebiet.bauraten).map((baurate) =>
+    _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant
+  );
   return _.sum(sumWohneinheiten);
 }
