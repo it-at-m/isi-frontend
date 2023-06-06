@@ -15,12 +15,22 @@
             <v-icon v-if="item.changed"> mdi-exclamation</v-icon>
           </template>
           <template #label="{ item }">
-            <a @click="setSelectedTreeItem(item)">{{ item.name }}</a>
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <a
+                  v-on="on"
+                  @click="setSelectedTreeItem(item)"
+                >
+                  {{ item.name }}
+                </a>
+              </template>
+              <span>{{ item.name }}</span>
+            </v-tooltip>
           </template>
           <template #append="{ item }">
             <v-tooltip
               v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
-              top
+              bottom
             >
               <template #activator="{ on }">
                 <v-btn
