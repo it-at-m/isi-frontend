@@ -110,6 +110,8 @@ import {
   anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet,
   anzahlUeberBauratenVerteilteGeschossflaecheWohnenForAbfragevariante,
   anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet,
+  numberToFormattedStringZeroDecimals,
+  numberToFormattedStringTwoDecimals,
 } from "@/utils/CalculationUtil";
 
 @Component({
@@ -134,47 +136,74 @@ export default class BaurateComponent extends Mixins(
   }
 
   get showVerteilungWohneinheiten(): boolean {
-    return this.wohneinheiten !== undefined && this.verteilteWohneinheiten !== undefined;
-  }
-
-  get wohneinheiten(): number | undefined {
-    return this.baugebiet?.gesamtanzahlWe;
-  }
-
-  get verteilteWohneinheiten(): number | undefined {
-    let verteilteWohneiheiten: number | undefined;
     if (this.baugebiet?.technical) {
-      verteilteWohneiheiten = _.isNil(this.abfragevariante)
-        ? undefined
+      return this.abfragevariante?.gesamtanzahlWe !== undefined;
+    } else {
+      return this.baugebiet?.gesamtanzahlWe !== undefined;
+    }
+  }
+
+  get wohneinheiten(): string {
+    let value: number;
+    if (this.baugebiet?.technical) {
+      value =
+        !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.gesamtanzahlWe)
+          ? this.abfragevariante.gesamtanzahlWe
+          : 0;
+    } else {
+      value = !_.isNil(this.baugebiet) && !_.isNil(this.baugebiet?.gesamtanzahlWe) ? this.baugebiet.gesamtanzahlWe : 0;
+    }
+    return numberToFormattedStringZeroDecimals(value);
+  }
+
+  get verteilteWohneinheiten(): string {
+    let value: number;
+    if (this.baugebiet?.technical) {
+      value = _.isNil(this.abfragevariante)
+        ? 0
         : anzahlUeberBauratenVerteilteWohneinheitenForAbfragevariante(this.abfragevariante);
     } else {
-      verteilteWohneiheiten = _.isNil(this.baugebiet)
-        ? undefined
-        : anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(this.baugebiet);
+      value = _.isNil(this.baugebiet) ? 0 : anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(this.baugebiet);
     }
-    return verteilteWohneiheiten;
+    return numberToFormattedStringZeroDecimals(value);
   }
 
   get showVerteilungGeschossflaecheWohnen(): boolean {
-    return this.geschossflaecheWohnen !== undefined && this.verteilteGeschossflaecheWohnen !== undefined;
-  }
-
-  get geschossflaecheWohnen(): number | undefined {
-    return this.abfragevariante?.geschossflaecheWohnen;
-  }
-
-  get verteilteGeschossflaecheWohnen(): number | undefined {
-    let verteilteWohneiheiten: number | undefined;
     if (this.baugebiet?.technical) {
-      verteilteWohneiheiten = _.isNil(this.abfragevariante)
-        ? undefined
+      return this.abfragevariante?.geschossflaecheWohnen !== undefined;
+    } else {
+      return this.baugebiet?.geschossflaecheWohnen !== undefined;
+    }
+  }
+
+  get geschossflaecheWohnen(): string {
+    let value: number;
+    if (this.baugebiet?.technical) {
+      value =
+        !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.geschossflaecheWohnen)
+          ? this.abfragevariante.geschossflaecheWohnen
+          : 0;
+    } else {
+      value =
+        !_.isNil(this.baugebiet) && !_.isNil(this.baugebiet?.geschossflaecheWohnen)
+          ? this.baugebiet.geschossflaecheWohnen
+          : 0;
+    }
+    return numberToFormattedStringTwoDecimals(value);
+  }
+
+  get verteilteGeschossflaecheWohnen(): string {
+    let value: number;
+    if (this.baugebiet?.technical) {
+      value = _.isNil(this.abfragevariante)
+        ? 0
         : anzahlUeberBauratenVerteilteGeschossflaecheWohnenForAbfragevariante(this.abfragevariante);
     } else {
-      verteilteWohneiheiten = _.isNil(this.baugebiet)
-        ? undefined
+      value = _.isNil(this.baugebiet)
+        ? 0
         : anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet(this.baugebiet);
     }
-    return verteilteWohneiheiten;
+    return numberToFormattedStringTwoDecimals(value);
   }
 }
 </script>
