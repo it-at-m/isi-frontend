@@ -18,11 +18,36 @@ export function addiereAnteile(foerdermix: FoerdermixModel): number {
   return sum;
 }
 
-export function anzahlVerteilterWohneinheiten(abfragevariante: AbfragevarianteDto): number {
-  _.toArray(abfragevariante.bauabschnitte)
+export function anzahlUeberBaugebieteVerteilteWohneinheiten(abfragevariante: AbfragevarianteDto): number {
+  const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
     .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
     .filter((baugebiet) => !baugebiet.technical)
     .map((baugebiet) => (_.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe));
+  return _.sum(sumWohneinheiten);
+}
 
-  return sum;
+export function anzahlUeberBauratenVerteilteWohneinheiten(abfragevariante: AbfragevarianteDto): number {
+  const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
+    .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+    .filter((baugebiet) => baugebiet.technical)
+    .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
+    .map((baurate) => (_.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant));
+  return _.sum(sumWohneinheiten);
+}
+
+export function anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(abfragevariante: AbfragevarianteDto): number {
+  const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
+    .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+    .filter((baugebiet) => !baugebiet.technical)
+    .map((baugebiet) => (_.isNil(baugebiet.geschossflaecheWohnen) ? 0 : baugebiet.geschossflaecheWohnen));
+  return _.sum(sumWohneinheiten);
+}
+
+export function anzahlUeberBauratenVerteilteGeschossflaecheWohnen(abfragevariante: AbfragevarianteDto): number {
+  const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
+    .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+    .filter((baugebiet) => baugebiet.technical)
+    .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
+    .map((baurate) => (_.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant));
+  return _.sum(sumWohneinheiten);
 }
