@@ -44,6 +44,37 @@
           />
         </v-col>
       </v-row>
+      <v-row
+        v-if="showVerteilungWohneinheiten || showVerteilungGeschossflaecheWohnen"
+        class="justify-start"
+      >
+        <v-col
+          cols="12"
+          md="4"
+        />
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-chip
+            v-if="showVerteilungWohneinheiten"
+            small
+          >
+            {{ verteilteWohneinheitenAbfragevariante }} / {{ wohneinheitenAbfragevariante }}
+          </v-chip>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-chip
+            v-if="showVerteilungGeschossflaecheWohnen"
+            small
+          >
+            {{ verteilteGeschossflaecheWohnenAbfragevariante }} / {{ geschossflaecheWohnenAbfragevariante }}
+          </v-chip>
+        </v-col>
+      </v-row>
     </field-group-card>
     <v-row>
       <foerdermix-formular
@@ -74,6 +105,12 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
+import {
+  anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen,
+  anzahlUeberBaugebieteVerteilteWohneinheiten,
+  anzahlUeberBauratenVerteilteGeschossflaecheWohnen,
+  anzahlUeberBauratenVerteilteWohneinheiten,
+} from "@/utils/CalculationUtil";
 
 @Component({
   components: { NumField, FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
@@ -94,6 +131,41 @@ export default class BaurateComponent extends Mixins(
 
   get baugebietRealisierungVonOr1900(): number {
     return _.isNil(this.baugebiet) ? 1900 : this.baugebiet.realisierungVon;
+  }
+
+  get showVerteilungWohneinheiten(): boolean {
+    return this.wohneinheitenAbfragevariante !== undefined && this.verteilteWohneinheitenAbfragevariante !== undefined;
+  }
+
+  get wohneinheitenAbfragevariante(): number | undefined {
+    return this.abfragevariante?.gesamtanzahlWe;
+  }
+
+  get verteilteWohneinheitenAbfragevariante(): number | undefined {
+    let verteilteWohneiheiten: number | undefined;
+    if (!_.isNil(this.abfragevariante)) {
+      verteilteWohneiheiten = anzahlUeberBauratenVerteilteWohneinheiten(this.abfragevariante);
+    }
+    return verteilteWohneiheiten;
+  }
+
+  get showVerteilungGeschossflaecheWohnen(): boolean {
+    return (
+      this.geschossflaecheWohnenAbfragevariante !== undefined &&
+      this.verteilteGeschossflaecheWohnenAbfragevariante !== undefined
+    );
+  }
+
+  get geschossflaecheWohnenAbfragevariante(): number | undefined {
+    return this.abfragevariante?.geschossflaecheWohnen;
+  }
+
+  get verteilteGeschossflaecheWohnenAbfragevariante(): number | undefined {
+    let verteilteWohneiheiten: number | undefined;
+    if (!_.isNil(this.abfragevariante)) {
+      verteilteWohneiheiten = anzahlUeberBauratenVerteilteGeschossflaecheWohnen(this.abfragevariante);
+    }
+    return verteilteWohneiheiten;
   }
 }
 </script>

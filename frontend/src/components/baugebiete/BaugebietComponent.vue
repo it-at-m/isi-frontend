@@ -123,10 +123,7 @@
         </v-col>
       </v-row>
       <v-row
-        v-if="
-          geschossflaecheWohnenAbfragevariante !== undefined &&
-          verteilteGeschossflaecheWohnenAbfragevariante !== undefined
-        "
+        v-if="showVerteilungGeschossflaecheWohnen"
         class="justify-start"
       >
         <v-col
@@ -186,7 +183,7 @@
         </v-col>
       </v-row>
       <v-row
-        v-if="wohneinheitenAbfragevariante !== undefined && verteilteWohneinheitenAbfragevariante !== undefined"
+        v-if="showVerteilungWohneinheiten"
         class="justify-start"
       >
         <v-col
@@ -218,9 +215,9 @@ import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import {
   anzahlUeberBaugebieteVerteilteWohneinheiten,
-  anzahlUeberBauratenVerteilteWohneinheitenForTechnicalBaugebiete,
+  anzahlUeberBauratenVerteilteWohneinheiten,
   anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen,
-  anzahlUeberBauratenVerteilteGeschossflaecheWohnenForTechnicalBaugebiete,
+  anzahlUeberBauratenVerteilteGeschossflaecheWohnen,
 } from "@/utils/CalculationUtil";
 
 @Component({ components: { NumField, FieldGroupCard } })
@@ -267,6 +264,10 @@ export default class BauabschnittComponent extends Mixins(
     return _.isNil(this.abfragevariante) ? 1900 : this.abfragevariante.realisierungVon;
   }
 
+  get showVerteilungWohneinheiten(): boolean {
+    return this.wohneinheitenAbfragevariante !== undefined && this.verteilteWohneinheitenAbfragevariante !== undefined;
+  }
+
   get wohneinheitenAbfragevariante(): number | undefined {
     return this.abfragevariante?.gesamtanzahlWe;
   }
@@ -274,11 +275,16 @@ export default class BauabschnittComponent extends Mixins(
   get verteilteWohneinheitenAbfragevariante(): number | undefined {
     let verteilteWohneiheiten: number | undefined;
     if (!_.isNil(this.abfragevariante)) {
-      verteilteWohneiheiten =
-        anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante) +
-        anzahlUeberBauratenVerteilteWohneinheitenForTechnicalBaugebiete(this.abfragevariante);
+      verteilteWohneiheiten = anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
     }
     return verteilteWohneiheiten;
+  }
+
+  get showVerteilungGeschossflaecheWohnen(): boolean {
+    return (
+      this.geschossflaecheWohnenAbfragevariante !== undefined &&
+      this.verteilteGeschossflaecheWohnenAbfragevariante !== undefined
+    );
   }
 
   get geschossflaecheWohnenAbfragevariante(): number | undefined {
@@ -288,9 +294,7 @@ export default class BauabschnittComponent extends Mixins(
   get verteilteGeschossflaecheWohnenAbfragevariante(): number | undefined {
     let verteilteWohneiheiten: number | undefined;
     if (!_.isNil(this.abfragevariante)) {
-      verteilteWohneiheiten =
-        anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante) +
-        anzahlUeberBauratenVerteilteGeschossflaecheWohnenForTechnicalBaugebiete(this.abfragevariante);
+      verteilteWohneiheiten = anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante);
     }
     return verteilteWohneiheiten;
   }
