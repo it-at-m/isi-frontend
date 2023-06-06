@@ -55,8 +55,10 @@
             :disabled="!isEditableByAbfrageerstellung()"
             label="Realisierung von (JJJJ)"
             class="mx-3"
-            year
-            :min="abfragevarianteRealisierungVon"
+            :min="abfragevarianteRealisierungVonOr1900"
+            :max="2100"
+            integer
+            no-grouping
             required
             maxlength="4"
           />
@@ -169,7 +171,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { AbfragevarianteDto, BaurateDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -220,8 +222,8 @@ export default class BauabschnittComponent extends Mixins(
     return this.$store.getters["lookup/baugebietTyp"];
   }
 
-  get abfragevarianteRealisierungVon(): number | undefined {
-    return this.abfragevariante?.realisierungVon;
+  get abfragevarianteRealisierungVonOr1900(): number {
+    return _.isNil(this.abfragevariante) ? 1900 : this.abfragevariante.realisierungVon;
   }
 }
 </script>

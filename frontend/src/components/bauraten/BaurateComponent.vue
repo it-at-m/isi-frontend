@@ -11,8 +11,10 @@
             v-model="baurate.jahr"
             :disabled="!isEditableByAbfrageerstellung()"
             label="Jahr (JJJJ)"
-            year
-            :min="baugebietRealisierungVon"
+            :min="baugebietRealisierungVonOr1900"
+            :max="2100"
+            integer
+            no-grouping
             required
             maxlength="4"
           />
@@ -71,6 +73,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { BaugebietDto } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
+import _ from "lodash";
 
 @Component({
   components: { NumField, FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
@@ -86,8 +89,8 @@ export default class BaurateComponent extends Mixins(
   @Prop()
   private baugebiet: BaugebietDto | undefined;
 
-  get baugebietRealisierungVon(): number | undefined {
-    return this.baugebiet?.realisierungVon;
+  get baugebietRealisierungVonOr1900(): number {
+    return _.isNil(this.baugebiet) ? 1900 : this.baugebiet.realisierungVon;
   }
 }
 </script>
