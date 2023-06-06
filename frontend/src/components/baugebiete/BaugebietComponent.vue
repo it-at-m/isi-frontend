@@ -218,9 +218,9 @@ import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import {
   anzahlUeberBaugebieteVerteilteWohneinheiten,
-  anzahlUeberBauratenVerteilteWohneinheiten,
+  anzahlUeberBauratenVerteilteWohneinheitenForTechnicalBaugebiete,
   anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen,
-  anzahlUeberBauratenVerteilteGeschossflaecheWohnen,
+  anzahlUeberBauratenVerteilteGeschossflaecheWohnenForTechnicalBaugebiete,
 } from "@/utils/CalculationUtil";
 
 @Component({ components: { NumField, FieldGroupCard } })
@@ -276,7 +276,7 @@ export default class BauabschnittComponent extends Mixins(
     if (!_.isNil(this.abfragevariante)) {
       verteilteWohneiheiten =
         anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante) +
-        anzahlUeberBauratenVerteilteWohneinheiten(this.abfragevariante);
+        anzahlUeberBauratenVerteilteWohneinheitenForTechnicalBaugebiete(this.abfragevariante);
     }
     return verteilteWohneiheiten;
   }
@@ -290,7 +290,7 @@ export default class BauabschnittComponent extends Mixins(
     if (!_.isNil(this.abfragevariante)) {
       verteilteWohneiheiten =
         anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante) +
-        anzahlUeberBauratenVerteilteGeschossflaecheWohnen(this.abfragevariante);
+        anzahlUeberBauratenVerteilteGeschossflaecheWohnenForTechnicalBaugebiete(this.abfragevariante);
     }
     return verteilteWohneiheiten;
   }

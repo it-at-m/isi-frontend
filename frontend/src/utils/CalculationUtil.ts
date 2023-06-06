@@ -26,7 +26,9 @@ export function anzahlUeberBaugebieteVerteilteWohneinheiten(abfragevariante: Abf
   return _.sum(sumWohneinheiten);
 }
 
-export function anzahlUeberBauratenVerteilteWohneinheiten(abfragevariante: AbfragevarianteDto): number {
+export function anzahlUeberBauratenVerteilteWohneinheitenForTechnicalBaugebiete(
+  abfragevariante: AbfragevarianteDto
+): number {
   const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
     .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
     .filter((baugebiet) => baugebiet.technical)
@@ -43,7 +45,9 @@ export function anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(abfragevaria
   return _.sum(sumWohneinheiten);
 }
 
-export function anzahlUeberBauratenVerteilteGeschossflaecheWohnen(abfragevariante: AbfragevarianteDto): number {
+export function anzahlUeberBauratenVerteilteGeschossflaecheWohnenForTechnicalBaugebiete(
+  abfragevariante: AbfragevarianteDto
+): number {
   const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
     .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
     .filter((baugebiet) => baugebiet.technical)
