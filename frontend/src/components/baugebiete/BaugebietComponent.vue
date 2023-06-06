@@ -216,6 +216,10 @@ import _ from "lodash";
 import {
   anzahlUeberBaugebieteVerteilteWohneinheiten,
   anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen,
+  numberFormatterForZeroDigits,
+  numberFormatterForTwoDigits,
+  numberToFormattedStringTwoDecimals,
+  numberToFormattedStringZeroDecimals,
 } from "@/utils/CalculationUtil";
 
 @Component({ components: { NumField, FieldGroupCard } })
@@ -263,34 +267,39 @@ export default class BauabschnittComponent extends Mixins(
   }
 
   get showVerteilungWohneinheiten(): boolean {
-    return this.wohneinheitenAbfragevariante !== undefined && this.verteilteWohneinheitenAbfragevariante !== undefined;
+    return this.abfragevariante?.gesamtanzahlWe !== undefined;
   }
 
-  get wohneinheitenAbfragevariante(): number | undefined {
-    return this.abfragevariante?.gesamtanzahlWe;
+  get wohneinheitenAbfragevariante(): string {
+    const value =
+      !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.gesamtanzahlWe)
+        ? this.abfragevariante.gesamtanzahlWe
+        : 0;
+    return numberToFormattedStringZeroDecimals(value);
   }
 
-  get verteilteWohneinheitenAbfragevariante(): number | undefined {
-    return _.isNil(this.abfragevariante)
-      ? undefined
-      : anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
+  get verteilteWohneinheitenAbfragevariante(): string {
+    const value = _.isNil(this.abfragevariante) ? 0 : anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
+    return numberToFormattedStringZeroDecimals(value);
   }
 
   get showVerteilungGeschossflaecheWohnen(): boolean {
-    return (
-      this.geschossflaecheWohnenAbfragevariante !== undefined &&
-      this.verteilteGeschossflaecheWohnenAbfragevariante !== undefined
-    );
+    return this.abfragevariante?.geschossflaecheWohnen !== undefined;
   }
 
-  get geschossflaecheWohnenAbfragevariante(): number | undefined {
-    return this.abfragevariante?.geschossflaecheWohnen;
+  get geschossflaecheWohnenAbfragevariante(): string {
+    const value =
+      !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.geschossflaecheWohnen)
+        ? this.abfragevariante.geschossflaecheWohnen
+        : 0;
+    return numberToFormattedStringTwoDecimals(value);
   }
 
-  get verteilteGeschossflaecheWohnenAbfragevariante(): number | undefined {
-    return _.isNil(this.abfragevariante)
-      ? undefined
+  get verteilteGeschossflaecheWohnenAbfragevariante(): string {
+    const value = _.isNil(this.abfragevariante)
+      ? 0
       : anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante);
+    return numberToFormattedStringTwoDecimals(value);
   }
 }
 </script>

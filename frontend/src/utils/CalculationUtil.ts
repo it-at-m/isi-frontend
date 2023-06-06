@@ -65,3 +65,19 @@ export function anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet(ba
   );
   return _.sum(sumWohneinheiten);
 }
+
+export function numberToFormattedStringTwoDecimals(number: number): string {
+  const formatter = new Intl.NumberFormat("de-DE", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  return formatter.format(number);
+}
+
+export function numberToFormattedStringZeroDecimals(number: number): string {
+  const formatter = new Intl.NumberFormat("de-DE", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  return formatter.format(number);
+}
