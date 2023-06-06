@@ -42,6 +42,7 @@ export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
       nameAbfrage: infrastrukturabfrageDto.abfrage?.nameAbfrage,
       standVorhaben: infrastrukturabfrageDto.abfrage?.standVorhaben,
       adresse: infrastrukturabfrageDto.abfrage?.adresse,
+      verortung: infrastrukturabfrageDto.abfrage?.verortung,
       allgemeineOrtsangabe: infrastrukturabfrageDto.abfrage?.allgemeineOrtsangabe,
       anmerkung: infrastrukturabfrageDto.abfrage?.anmerkung,
       bauvorhaben: infrastrukturabfrageDto.abfrage?.bauvorhaben,
