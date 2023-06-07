@@ -135,9 +135,10 @@
             <template #activator="{ on }">
               <v-chip
                 small
+                :color="handleColorGeschossflaecheWohnen"
                 v-on="on"
               >
-                {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnenAbfragevariante }}
+                {{ verteilteGeschossflaecheWohnenFormatted }} / {{ geschossflaecheWohnenAbfragevarianteFormatted }}
                 {{ fieldPrefixesSuffixes.squareMeter }}
               </v-chip>
             </template>
@@ -206,9 +207,10 @@
             <template #activator="{ on }">
               <v-chip
                 small
+                :color="handleColorWohneinheiten"
                 v-on="on"
               >
-                {{ verteilteWohneinheiten }} / {{ wohneinheitenAbfragevariante }}
+                {{ verteilteWohneinheitenFormatted }} / {{ wohneinheitenAbfragevarianteFormatted }}
               </v-chip>
             </template>
             <span>{{ tooltipTextWohneinheiten }}</span>
@@ -284,49 +286,75 @@ export default class BauabschnittComponent extends Mixins(
   }
 
   get abfragevarianteRealisierungVonOr1900(): number {
-    return _.isNil(this.abfragevariante) ? 1900 : this.abfragevariante.realisierungVon;
+    return !_.isNil(this.abfragevariante) || !_.isNil(this.abfragevariante?.realisierungVon)
+      ? this.abfragevariante.realisierungVon
+      : 1900;
   }
 
-  get wohneinheitenAbfragevariante(): string {
-    const value =
-      !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.gesamtanzahlWe)
-        ? this.abfragevariante.gesamtanzahlWe
-        : 0;
+  get wohneinheitenAbfragevariante(): number {
+    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.gesamtanzahlWe)
+      ? this.abfragevariante.gesamtanzahlWe
+      : 0;
+  }
+
+  get wohneinheitenAbfragevarianteFormatted(): string {
+    const value = this.wohneinheitenAbfragevariante;
     return numberToFormattedStringZeroDecimals(value);
   }
 
-  get verteilteWohneinheiten(): string {
-    const value = _.isNil(this.abfragevariante) ? 0 : anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
+  get verteilteWohneinheiten(): number {
+    return _.isNil(this.abfragevariante) ? 0 : anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
+  }
+
+  get verteilteWohneinheitenFormatted(): string {
+    const value = this.verteilteWohneinheiten;
     return numberToFormattedStringZeroDecimals(value);
   }
 
   get tooltipTextWohneinheiten(): string {
     return (
-      `Es sind ${this.verteilteWohneinheiten} von ${this.wohneinheitenAbfragevariante} ` +
+      `Es sind ${this.verteilteWohneinheitenFormatted} von ${this.wohneinheitenAbfragevarianteFormatted} ` +
       `Wohneinheiten der Abfragevariante auf Baugebiete verteilt.`
     );
   }
 
-  get geschossflaecheWohnenAbfragevariante(): string {
-    const value =
-      !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.geschossflaecheWohnen)
-        ? this.abfragevariante.geschossflaecheWohnen
-        : 0;
+  get handleColorWohneinheiten(): string {
+    return this.verteilteWohneinheiten <= this.wohneinheitenAbfragevariante ? "grey lighten-3" : "error";
+  }
+
+  get geschossflaecheWohnenAbfragevariante(): number {
+    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.geschossflaecheWohnen)
+      ? this.abfragevariante.geschossflaecheWohnen
+      : 0;
+  }
+
+  get geschossflaecheWohnenAbfragevarianteFormatted(): string {
+    const value = this.geschossflaecheWohnenAbfragevariante;
     return numberToFormattedStringTwoDecimals(value);
   }
 
-  get verteilteGeschossflaecheWohnen(): string {
-    const value = _.isNil(this.abfragevariante)
+  get verteilteGeschossflaecheWohnen(): number {
+    return _.isNil(this.abfragevariante)
       ? 0
       : anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante);
+  }
+
+  get verteilteGeschossflaecheWohnenFormatted(): string {
+    const value = this.verteilteGeschossflaecheWohnen;
     return numberToFormattedStringTwoDecimals(value);
   }
 
   get tooltipTextGeschossflaecheWohnen(): string {
     return (
-      `Es sind ${this.verteilteGeschossflaecheWohnen} m² von ${this.geschossflaecheWohnenAbfragevariante} m² ` +
+      `Es sind ${this.verteilteGeschossflaecheWohnenFormatted} m² von ${this.geschossflaecheWohnenAbfragevarianteFormatted} m² ` +
       `Geschossfläche Wohnen der Abfragevariante auf Baugebiete verteilt.`
     );
+  }
+
+  get handleColorGeschossflaecheWohnen(): string {
+    return this.verteilteGeschossflaecheWohnen <= this.geschossflaecheWohnenAbfragevariante
+      ? "grey lighten-3"
+      : "error";
   }
 }
 </script>
