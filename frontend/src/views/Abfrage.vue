@@ -143,6 +143,7 @@
           v-model="abfrageWrapped"
           @select-abfrage="handleSelectAbfrage()"
           @select-abfragevariante="handleSelectAbfragevariante($event)"
+          @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant($event)"
           @delete-abfragevariante="handleDeleteAbfragevariante($event)"
           @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
           @create-new-abfragevariante="handleCreateNewAbfragevariante()"
@@ -181,6 +182,7 @@
           v-show="!isNewAbfrage()"
           :id="'abfrage_status_aenderung' + index + '_button'"
           :key="index"
+          :disabled="isDirty()"
           color="secondary"
           class="text-wrap mt-2 px-1"
           elevation="1"
@@ -216,54 +218,55 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Mixins, Watch } from "vue-property-decorator";
-import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
-import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
-import BaugebietComponent from "@/components/baugebiete/BaugebietComponent.vue";
-import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
-import Toaster from "../components/common/toaster.type";
 import {
-  createAbfragevarianteDto,
-  createInfrastrukturabfrageDto,
-  createBauabschnittDto,
-  createBaugebietDto,
-  createBaurateDto,
-  createTechnicalBauabschnittDto,
-  createTechnicalBaugebietDto,
-} from "@/utils/Factories";
-import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
-import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
-import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import {
-  StatusAbfrage,
   AbfragevarianteDto,
-  InfrastrukturabfrageDto,
-  TransitionDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
+  InfrastrukturabfrageDto,
+  StatusAbfrage,
+  TransitionDto,
 } from "@/api/api-client/isi-backend";
-import DefaultLayout from "@/components/DefaultLayout.vue";
-import _ from "lodash";
-import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import InformationList from "@/components/common/InformationList.vue";
 import { Levels } from "@/api/error";
-import DisplayMode from "@/types/common/DisplayMode";
-import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import AbfrageNavigationTree, { AbfrageTreeItem } from "@/components/abfragen/AbfrageNavigationTree.vue";
+import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
+import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
+import BaugebietComponent from "@/components/baugebiete/BaugebietComponent.vue";
+import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
+import InformationList from "@/components/common/InformationList.vue";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import DefaultLayout from "@/components/DefaultLayout.vue";
+import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
+import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
+import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
+import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
+import DisplayMode from "@/types/common/DisplayMode";
+import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
-import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
-import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
-
+import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
+import {
+  createAbfragevarianteDto,
+  createBauabschnittDto,
+  createBaugebietDto,
+  createBaurateDto,
+  createInfrastrukturabfrageDto,
+  createTechnicalBauabschnittDto,
+  createTechnicalBaugebietDto,
+} from "@/utils/Factories";
+import { mapToAbfrageerstellungInfrastrukturabfrageAngelegt } from "@/utils/MapperUtil";
+import _ from "lodash";
+import Vue from "vue";
+import { Component, Mixins, Watch } from "vue-property-decorator";
+import Toaster from "../components/common/toaster.type";
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
@@ -285,7 +288,8 @@ export default class Abfrage extends Mixins(
   BauratenApiRequestMixin,
   StatusUebergangApiRequestMixin,
   ValidatorMixin,
-  SaveLeaveMixin
+  SaveLeaveMixin,
+  AbfrageSecurityMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
   private buttonText = "";
@@ -436,11 +440,18 @@ export default class Abfrage extends Mixins(
     );
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.createInfrastrukturabfrage(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+        await this.createInfrastrukturabfrage(
+          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          true
+        ).then((dto) => {
           this.handleSuccess(dto);
         });
-      } else {
-        await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true).then((dto) => {
+      } else if (this.isEditableByAbfrageerstellung()) {
+        await this.patchAbfrageAngelegt(
+          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          this.abfrageWrapped.infrastrukturabfrage.id as string,
+          true
+        ).then((dto) => {
           this.handleSuccess(dto);
         });
       }
@@ -463,25 +474,28 @@ export default class Abfrage extends Mixins(
   }
 
   private async startStatusUebergang(transition: TransitionDto) {
-    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
-      this.abfrageWrapped.infrastrukturabfrage
-    );
-    if (_.isNil(validationMessage)) {
-      await this.patchAbfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage, true);
-      const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
-      if (requestSuccessful) {
-        if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
-          this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
-        } else {
-          this.setSelectedAbfrageInStore();
-          this.getTransitions(this.abfrageId, true).then((response) => {
-            this.possbileTransitions = response;
-          });
+    if (!this.isDirty()) {
+      const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
+        this.abfrageWrapped.infrastrukturabfrage
+      );
+      if (_.isNil(validationMessage)) {
+        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
+        if (requestSuccessful) {
+          if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
+            this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
+          } else {
+            this.setSelectedAbfrageInStore();
+            this.getTransitions(this.abfrageId, true).then((response) => {
+              this.possbileTransitions = response;
+            });
+          }
+          this.openAbfrageFormular();
         }
-        this.openAbfrageFormular();
+      } else {
+        this.showWarningInInformationList(validationMessage);
       }
     } else {
-      this.showWarningInInformationList(validationMessage);
+      this.showWarningInInformationList("Bitte speichern vor einem Statusübergang");
     }
   }
 
@@ -595,6 +609,28 @@ export default class Abfrage extends Mixins(
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
     this.isDeleteDialogAbfragevarianteOpen = true;
+  }
+
+  private async handleSetAbfragevarianteRelevant(abfrageTreeItem: AbfrageTreeItem): Promise<void> {
+    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
+    if (!_.isNil(this.selectedAbfragevariante.id)) {
+      await this.changeAbfragevarianteRelevant(
+        this.abfrageWrapped.infrastrukturabfrage.id as string,
+        this.selectedAbfragevariante.id as string,
+        true
+      ).then((dto) => {
+        this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
+        this.$store.dispatch("search/resetAbfrage");
+        Toaster.toast(
+          `Die Abfragevariante ${this.selectedAbfragevariante.abfragevariantenName} in Abfrage ${
+            this.abfrageWrapped.infrastrukturabfrage.displayName
+          } hat nun den Status ${this.selectedAbfragevariante.relevant ? `nicht relevant` : `relevant`}.`,
+          Levels.SUCCESS
+        );
+      });
+    } else {
+      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
+    }
   }
 
   private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {

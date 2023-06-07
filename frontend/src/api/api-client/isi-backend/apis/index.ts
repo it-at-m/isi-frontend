@@ -20,4 +20,3 @@ export * from './LookupApi';
 export * from './MimeTypeApi';
 export * from './MittelschuleApi';
 export * from './StammdatenApi';
-export * from './WohneinheitenInformationApi';

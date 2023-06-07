@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+    AbfrageerstellungInfrastrukturabfrageAngelegtDtoFromJSON,
+    AbfrageerstellungInfrastrukturabfrageAngelegtDtoToJSON,
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
@@ -24,7 +27,7 @@ import {
 } from '../models';
 
 export interface CreateInfrastrukturabfrageRequest {
-    infrastrukturabfrageDto: InfrastrukturabfrageDto;
+    abfrageerstellungInfrastrukturabfrageAngelegtDto: AbfrageerstellungInfrastrukturabfrageAngelegtDto;
 }
 
 export interface DeleteInfrastrukturabfrageByIdRequest {
@@ -36,7 +39,13 @@ export interface GetInfrastrukturabfrageByIdRequest {
 }
 
 export interface PatchAbfrageAngelegtRequest {
-    infrastrukturabfrageDto: InfrastrukturabfrageDto;
+    id: string;
+    abfrageerstellungInfrastrukturabfrageAngelegtDto: AbfrageerstellungInfrastrukturabfrageAngelegtDto;
+}
+
+export interface PutChangeAbfragevarianteRelevantRequest {
+    abfrageId: string;
+    abfragevarianteId: string;
 }
 
 /**
@@ -48,8 +57,8 @@ export class AbfrageApi extends runtime.BaseAPI {
      * Anlegen einer neuen Infrastrukturabfrage
      */
     async createInfrastrukturabfrageRaw(requestParameters: CreateInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
-        if (requestParameters.infrastrukturabfrageDto === null || requestParameters.infrastrukturabfrageDto === undefined) {
-            throw new runtime.RequiredError('infrastrukturabfrageDto','Required parameter requestParameters.infrastrukturabfrageDto was null or undefined when calling createInfrastrukturabfrage.');
+        if (requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === null || requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === undefined) {
+            throw new runtime.RequiredError('abfrageerstellungInfrastrukturabfrageAngelegtDto','Required parameter requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto was null or undefined when calling createInfrastrukturabfrage.');
         }
 
         const queryParameters: any = {};
@@ -63,7 +72,7 @@ export class AbfrageApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: InfrastrukturabfrageDtoToJSON(requestParameters.infrastrukturabfrageDto),
+            body: AbfrageerstellungInfrastrukturabfrageAngelegtDtoToJSON(requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
@@ -165,11 +174,15 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage.
+     * Aktualisierung einer Infrastrukturabfrage im Status ANGELEGT.
      */
     async patchAbfrageAngelegtRaw(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
-        if (requestParameters.infrastrukturabfrageDto === null || requestParameters.infrastrukturabfrageDto === undefined) {
-            throw new runtime.RequiredError('infrastrukturabfrageDto','Required parameter requestParameters.infrastrukturabfrageDto was null or undefined when calling patchAbfrageAngelegt.');
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchAbfrageAngelegt.');
+        }
+
+        if (requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === null || requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto === undefined) {
+            throw new runtime.RequiredError('abfrageerstellungInfrastrukturabfrageAngelegtDto','Required parameter requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto was null or undefined when calling patchAbfrageAngelegt.');
         }
 
         const queryParameters: any = {};
@@ -179,21 +192,55 @@ export class AbfrageApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/infrastruktur-abfragen/angelegt`,
+            path: `/infrastruktur-abfragen/abfrage/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: InfrastrukturabfrageDtoToJSON(requestParameters.infrastrukturabfrageDto),
+            body: AbfrageerstellungInfrastrukturabfrageAngelegtDtoToJSON(requestParameters.abfrageerstellungInfrastrukturabfrageAngelegtDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
     }
 
     /**
-     * Aktualisierung einer Infrastrukturabfrage.
+     * Aktualisierung einer Infrastrukturabfrage im Status ANGELEGT.
      */
     async patchAbfrageAngelegt(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
         const response = await this.patchAbfrageAngelegtRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant, fall diese noch nicht relevant ist.Ist die Abfragevariante bereits als relevant markiert, wird der Status auf nicht relevant gesetzt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
+     */
+    async putChangeAbfragevarianteRelevantRaw(requestParameters: PutChangeAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
+        if (requestParameters.abfrageId === null || requestParameters.abfrageId === undefined) {
+            throw new runtime.RequiredError('abfrageId','Required parameter requestParameters.abfrageId was null or undefined when calling putChangeAbfragevarianteRelevant.');
+        }
+
+        if (requestParameters.abfragevarianteId === null || requestParameters.abfragevarianteId === undefined) {
+            throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putChangeAbfragevarianteRelevant.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/infrastruktur-abfragen/abfrage/{abfrageId}/abfragevariante/change-relevant/{abfragevarianteId}`.replace(`{${"abfrageId"}}`, encodeURIComponent(String(requestParameters.abfrageId))).replace(`{${"abfragevarianteId"}}`, encodeURIComponent(String(requestParameters.abfragevarianteId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant, fall diese noch nicht relevant ist.Ist die Abfragevariante bereits als relevant markiert, wird der Status auf nicht relevant gesetzt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
+     */
+    async putChangeAbfragevarianteRelevant(requestParameters: PutChangeAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
+        const response = await this.putChangeAbfragevarianteRelevantRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

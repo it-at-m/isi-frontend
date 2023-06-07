@@ -15,9 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
-    AbfragevarianteDto,
-    AbfragevarianteDtoFromJSON,
-    AbfragevarianteDtoToJSON,
+    AbfrageerstellungAbfragevarianteAngelegtDto,
+    AbfrageerstellungAbfragevarianteAngelegtDtoFromJSON,
+    AbfrageerstellungAbfragevarianteAngelegtDtoToJSON,
     BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoToJSON,
@@ -38,7 +38,7 @@ export interface CalculateWohneinheitenInformation1Request {
 }
 
 export interface CalculateWohneinheitenInformation2Request {
-    abfragevarianteDto: AbfragevarianteDto;
+    abfrageerstellungAbfragevarianteAngelegtDto: AbfrageerstellungAbfragevarianteAngelegtDto;
 }
 
 /**
@@ -121,8 +121,8 @@ export class WohneinheitenInformationApi extends runtime.BaseAPI {
      * Berechne Informationen zu Wohneinheiten für eine Abfragevariante
      */
     async calculateWohneinheitenInformation2Raw(requestParameters: CalculateWohneinheitenInformation2Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WohneinheitenInformationDto>> {
-        if (requestParameters.abfragevarianteDto === null || requestParameters.abfragevarianteDto === undefined) {
-            throw new runtime.RequiredError('abfragevarianteDto','Required parameter requestParameters.abfragevarianteDto was null or undefined when calling calculateWohneinheitenInformation2.');
+        if (requestParameters.abfrageerstellungAbfragevarianteAngelegtDto === null || requestParameters.abfrageerstellungAbfragevarianteAngelegtDto === undefined) {
+            throw new runtime.RequiredError('abfrageerstellungAbfragevarianteAngelegtDto','Required parameter requestParameters.abfrageerstellungAbfragevarianteAngelegtDto was null or undefined when calling calculateWohneinheitenInformation2.');
         }
 
         const queryParameters: any = {};
@@ -136,7 +136,7 @@ export class WohneinheitenInformationApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AbfragevarianteDtoToJSON(requestParameters.abfragevarianteDto),
+            body: AbfrageerstellungAbfragevarianteAngelegtDtoToJSON(requestParameters.abfrageerstellungAbfragevarianteAngelegtDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WohneinheitenInformationDtoFromJSON(jsonValue));
