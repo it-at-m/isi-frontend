@@ -129,9 +129,8 @@
           md="4"
         >
           <v-chip small>
-            {{ verteilteGeschossflaecheWohnenAbfragevariante }} / {{ geschossflaecheWohnenAbfragevariante }}&nbsp;{{
-              fieldPrefixesSuffixes.squareMeter
-            }}
+            {{ verteilteGeschossflaecheWohnenAbfragevariante }} / {{ geschossflaecheWohnenAbfragevariante }}
+            {{ fieldPrefixesSuffixes.squareMeter }}
           </v-chip>
         </v-col>
         <v-col

@@ -63,9 +63,7 @@
           md="4"
         >
           <v-chip small>
-            {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnen }}&nbsp;{{
-              fieldPrefixesSuffixes.squareMeter
-            }}
+            {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnen }} {{ fieldPrefixesSuffixes.squareMeter }}
           </v-chip>
         </v-col>
       </v-row>
