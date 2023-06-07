@@ -399,7 +399,7 @@ export default class ValidatorMixin extends Vue {
     return message;
   }
 
-  public findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto) {
+  public findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {
     let validationMessage: string | null = null;
     if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
       const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.geschossflaecheWohnen)
@@ -421,7 +421,7 @@ export default class ValidatorMixin extends Vue {
     return validationMessage;
   }
 
-  public findFaultInVerteilungWohneinheitenBaugebiet(baugebiet: BaugebietDto) {
+  public findFaultInVerteilungWohneinheitenBaugebiet(baugebiet: BaugebietDto): string | null {
     let validationMessage: string | null = null;
     if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
       const wohneinheitenBaugebiet = _.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe;
