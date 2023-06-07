@@ -55,7 +55,10 @@
           cols="12"
           md="4"
         >
-          <v-tooltip right>
+          <v-tooltip
+            right
+            :open-delay="250"
+          >
             <template #activator="{ on }">
               <v-chip
                 small
@@ -64,7 +67,7 @@
                 {{ verteilteWohneinheiten }} / {{ wohneinheiten }}
               </v-chip>
             </template>
-            <span>yyy</span>
+            <span>{{ tooltipTextWohneinheiten }}</span>
           </v-tooltip>
         </v-col>
         <v-col
@@ -72,7 +75,10 @@
           cols="12"
           md="4"
         >
-          <v-tooltip right>
+          <v-tooltip
+            right
+            :open-delay="250"
+          >
             <template #activator="{ on }">
               <v-chip
                 small
@@ -82,7 +88,7 @@
                 {{ fieldPrefixesSuffixes.squareMeter }}
               </v-chip>
             </template>
-            <span>XXX</span>
+            <span>{{ tooltipTextGeschossflaecheWohnen }}</span>
           </v-tooltip>
         </v-col>
       </v-row>
@@ -171,6 +177,15 @@ export default class BaurateComponent extends Mixins(
     return numberToFormattedStringZeroDecimals(value);
   }
 
+  get tooltipTextWohneinheiten(): string {
+    return (
+      `Es sind ${this.verteilteWohneinheiten} m² von ${this.wohneinheiten} m² ` +
+      `Geschossfläche Wohnen ${
+        this.baugebiet?.technical ? "der Abfragevariante" : "des Baugebiets"
+      } auf Bauraten verteilt.`
+    );
+  }
+
   get geschossflaecheWohnen(): string {
     let value: number;
     if (this.baugebiet?.technical) {
@@ -199,6 +214,15 @@ export default class BaurateComponent extends Mixins(
         : anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet(this.baugebiet);
     }
     return numberToFormattedStringTwoDecimals(value);
+  }
+
+  get tooltipTextGeschossflaecheWohnen(): string {
+    return (
+      `Es sind ${this.verteilteGeschossflaecheWohnen} m² von ${this.geschossflaecheWohnen} m² ` +
+      `Geschossfläche Wohnen ${
+        this.baugebiet?.technical ? "der Abfragevariante" : "des Baugebiets"
+      } auf Bauraten verteilt.`
+    );
   }
 }
 </script>

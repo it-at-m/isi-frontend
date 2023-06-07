@@ -128,7 +128,10 @@
           cols="12"
           md="4"
         >
-          <v-tooltip right>
+          <v-tooltip
+            right
+            :open-delay="250"
+          >
             <template #activator="{ on }">
               <v-chip
                 small
@@ -196,7 +199,10 @@
           cols="12"
           md="4"
         >
-          <v-tooltip right>
+          <v-tooltip
+            right
+            :open-delay="250"
+          >
             <template #activator="{ on }">
               <v-chip
                 small
