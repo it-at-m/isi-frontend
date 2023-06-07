@@ -276,7 +276,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des akutellen Status
+     * Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des aktuellen Status
      */
     async transitionsInfrastrukturabfrageRaw(requestParameters: TransitionsInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<TransitionDto>>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -298,7 +298,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des akutellen Status
+     * Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des aktuellen Status
      */
     async transitionsInfrastrukturabfrage(requestParameters: TransitionsInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<TransitionDto>> {
         const response = await this.transitionsInfrastrukturabfrageRaw(requestParameters, initOverrides);

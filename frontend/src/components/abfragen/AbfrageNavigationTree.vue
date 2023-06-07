@@ -42,15 +42,25 @@
             >
               <v-icon> mdi-plus-box-outline</v-icon>
             </v-btn>
-            <v-btn
-              v-else-if="isItemTypeOfAbfragevariante(item)"
-              :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
-              :disabled="!isNavigationTreeEditable"
-              icon
-              @click="deleteAbfragevariante(item)"
-            >
-              <v-icon> mdi-trash-can-outline</v-icon>
-            </v-btn>
+            <div v-else-if="isItemTypeOfAbfragevariante(item)">
+              <v-btn
+                :id="'abfrage_navigation_tree_button_relevant_abfragevariante_' + item.id"
+                :disabled="!isEditableBySachbearbeitung()"
+                icon
+                @click="setAbfragevarianteRelevant(item)"
+              >
+                <v-icon v-if="item.abfragevariante.relevant">mdi-bookmark</v-icon>
+                <v-icon v-else>mdi-bookmark-outline</v-icon>
+              </v-btn>
+              <v-btn
+                :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
+                :disabled="!isNavigationTreeEditable"
+                icon
+                @click="deleteAbfragevariante(item)"
+              >
+                <v-icon> mdi-trash-can-outline</v-icon>
+              </v-btn>
+            </div>
             <v-btn
               v-else-if="isItemTypeOfAddBauabschnitt(item)"
               :id="'abfrage_navigation_tree_button_create_new_bauabschnitt_' + item.id"
@@ -952,6 +962,11 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   @Emit()
   private deleteAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private setAbfragevarianteRelevant(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 

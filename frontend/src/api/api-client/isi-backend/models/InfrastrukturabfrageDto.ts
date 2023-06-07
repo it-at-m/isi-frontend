@@ -67,13 +67,13 @@ export interface InfrastrukturabfrageDto {
      * @type {AbfrageDto}
      * @memberof InfrastrukturabfrageDto
      */
-    abfrage: AbfrageDto;
+    abfrage?: AbfrageDto;
     /**
      * 
      * @type {UncertainBoolean}
      * @memberof InfrastrukturabfrageDto
      */
-    sobonRelevant: UncertainBoolean;
+    sobonRelevant?: UncertainBoolean;
     /**
      * 
      * @type {string}
@@ -85,7 +85,7 @@ export interface InfrastrukturabfrageDto {
      * @type {Array<AbfragevarianteDto>}
      * @memberof InfrastrukturabfrageDto
      */
-    abfragevarianten: Array<AbfragevarianteDto>;
+    abfragevarianten?: Array<AbfragevarianteDto>;
     /**
      * 
      * @type {string}
@@ -97,7 +97,7 @@ export interface InfrastrukturabfrageDto {
      * @type {UncertainBoolean}
      * @memberof InfrastrukturabfrageDto
      */
-    offiziellerVerfahrensschritt: UncertainBoolean;
+    offiziellerVerfahrensschritt?: UncertainBoolean;
     /**
      * 
      * @type {string}
@@ -134,12 +134,12 @@ export function InfrastrukturabfrageDtoFromJSONTyped(json: any, ignoreDiscrimina
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'abfrage': AbfrageDtoFromJSON(json['abfrage']),
-        'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
+        'abfrage': !exists(json, 'abfrage') ? undefined : AbfrageDtoFromJSON(json['abfrage']),
+        'sobonRelevant': !exists(json, 'sobonRelevant') ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
-        'abfragevarianten': ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteDtoFromJSON)),
+        'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteDtoFromJSON)),
         'aktenzeichenProLbk': !exists(json, 'aktenzeichenProLbk') ? undefined : json['aktenzeichenProLbk'],
-        'offiziellerVerfahrensschritt': UncertainBooleanFromJSON(json['offiziellerVerfahrensschritt']),
+        'offiziellerVerfahrensschritt': !exists(json, 'offiziellerVerfahrensschritt') ? undefined : UncertainBooleanFromJSON(json['offiziellerVerfahrensschritt']),
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
     };
 }
@@ -160,7 +160,7 @@ export function InfrastrukturabfrageDtoToJSON(value?: InfrastrukturabfrageDto | 
         'abfrage': AbfrageDtoToJSON(value.abfrage),
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
         'sobonJahr': value.sobonJahr,
-        'abfragevarianten': ((value.abfragevarianten as Array<any>).map(AbfragevarianteDtoToJSON)),
+        'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteDtoToJSON)),
         'aktenzeichenProLbk': value.aktenzeichenProLbk,
         'offiziellerVerfahrensschritt': UncertainBooleanToJSON(value.offiziellerVerfahrensschritt),
         'displayName': value.displayName,
