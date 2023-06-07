@@ -44,34 +44,28 @@
           />
         </v-col>
       </v-row>
-      <v-row
-        v-if="showVerteilungWohneinheiten || showVerteilungGeschossflaecheWohnen"
-        class="justify-start"
-      >
+      <v-row class="justify-start">
         <v-col
+          class="pt-0 pb-2"
           cols="12"
           md="4"
         />
         <v-col
+          class="pt-0 pb-2"
           cols="12"
           md="4"
         >
-          <v-chip
-            v-if="showVerteilungWohneinheiten"
-            small
-          >
-            {{ verteilteWohneinheiten }} / {{ wohneinheiten }}
-          </v-chip>
+          <v-chip small> {{ verteilteWohneinheiten }} / {{ wohneinheiten }} </v-chip>
         </v-col>
         <v-col
+          class="pt-0 pb-2"
           cols="12"
           md="4"
         >
-          <v-chip
-            v-if="showVerteilungGeschossflaecheWohnen"
-            small
-          >
-            {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnen }}
+          <v-chip small>
+            {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnen }}&nbsp;{{
+              fieldPrefixesSuffixes.squareMeter
+            }}
           </v-chip>
         </v-col>
       </v-row>
@@ -135,14 +129,6 @@ export default class BaurateComponent extends Mixins(
     return _.isNil(this.baugebiet) ? 1900 : this.baugebiet.realisierungVon;
   }
 
-  get showVerteilungWohneinheiten(): boolean {
-    if (this.baugebiet?.technical) {
-      return this.abfragevariante?.gesamtanzahlWe !== undefined;
-    } else {
-      return this.baugebiet?.gesamtanzahlWe !== undefined;
-    }
-  }
-
   get wohneinheiten(): string {
     let value: number;
     if (this.baugebiet?.technical) {
@@ -166,14 +152,6 @@ export default class BaurateComponent extends Mixins(
       value = _.isNil(this.baugebiet) ? 0 : anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(this.baugebiet);
     }
     return numberToFormattedStringZeroDecimals(value);
-  }
-
-  get showVerteilungGeschossflaecheWohnen(): boolean {
-    if (this.baugebiet?.technical) {
-      return this.abfragevariante?.geschossflaecheWohnen !== undefined;
-    } else {
-      return this.baugebiet?.geschossflaecheWohnen !== undefined;
-    }
   }
 
   get geschossflaecheWohnen(): string {

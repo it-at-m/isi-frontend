@@ -122,19 +122,20 @@
           />
         </v-col>
       </v-row>
-      <v-row
-        v-if="showVerteilungGeschossflaecheWohnen"
-        class="justify-start"
-      >
+      <v-row class="justify-start">
         <v-col
+          class="pt-0 pb-2"
           cols="12"
           md="4"
         >
           <v-chip small>
-            {{ verteilteGeschossflaecheWohnenAbfragevariante }} / {{ geschossflaecheWohnenAbfragevariante }}
+            {{ verteilteGeschossflaecheWohnenAbfragevariante }} / {{ geschossflaecheWohnenAbfragevariante }}&nbsp;{{
+              fieldPrefixesSuffixes.squareMeter
+            }}
           </v-chip>
         </v-col>
         <v-col
+          class="pt-0 pb-2"
           cols="12"
           md="8"
         />
@@ -182,17 +183,16 @@
           />
         </v-col>
       </v-row>
-      <v-row
-        v-if="showVerteilungWohneinheiten"
-        class="justify-start"
-      >
+      <v-row class="justify-start">
         <v-col
+          class="pt-0 pb-2"
           cols="12"
           md="4"
         >
           <v-chip small> {{ verteilteWohneinheitenAbfragevariante }} / {{ wohneinheitenAbfragevariante }} </v-chip>
         </v-col>
         <v-col
+          class="pt-0 pb-2"
           cols="12"
           md="8"
         />
@@ -216,8 +216,6 @@ import _ from "lodash";
 import {
   anzahlUeberBaugebieteVerteilteWohneinheiten,
   anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen,
-  numberFormatterForZeroDigits,
-  numberFormatterForTwoDigits,
   numberToFormattedStringTwoDecimals,
   numberToFormattedStringZeroDecimals,
 } from "@/utils/CalculationUtil";
@@ -266,10 +264,6 @@ export default class BauabschnittComponent extends Mixins(
     return _.isNil(this.abfragevariante) ? 1900 : this.abfragevariante.realisierungVon;
   }
 
-  get showVerteilungWohneinheiten(): boolean {
-    return this.abfragevariante?.gesamtanzahlWe !== undefined;
-  }
-
   get wohneinheitenAbfragevariante(): string {
     const value =
       !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.gesamtanzahlWe)
@@ -281,10 +275,6 @@ export default class BauabschnittComponent extends Mixins(
   get verteilteWohneinheitenAbfragevariante(): string {
     const value = _.isNil(this.abfragevariante) ? 0 : anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
     return numberToFormattedStringZeroDecimals(value);
-  }
-
-  get showVerteilungGeschossflaecheWohnen(): boolean {
-    return this.abfragevariante?.geschossflaecheWohnen !== undefined;
   }
 
   get geschossflaecheWohnenAbfragevariante(): string {
