@@ -151,7 +151,18 @@ export default class BaurateComponent extends Mixins(
   private abfragevariante: AbfragevarianteDto | undefined;
 
   get baugebietRealisierungVonOr1900(): number {
-    return _.isNil(this.baugebiet) ? 1900 : this.baugebiet.realisierungVon;
+    let year: number;
+    if (!_.isNil(this.baugebiet) && this.baugebiet?.technical) {
+      year =
+        !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante.realisierungVon)
+          ? this.abfragevariante.realisierungVon
+          : 1900;
+    } else if (!_.isNil(this.baugebiet) && !this.baugebiet?.technical) {
+      year = !_.isNil(this.baugebiet.realisierungVon) ? this.baugebiet.realisierungVon : 1900;
+    } else {
+      year = 1900;
+    }
+    return year;
   }
 
   get wohneinheiten(): number {
