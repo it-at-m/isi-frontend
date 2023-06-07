@@ -402,10 +402,14 @@ export default class ValidatorMixin extends Vue {
   public findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto) {
     let validationMessage: string | null = null;
     if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
-      const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.geschossflaecheWohnen) ? 0 : baugebiet.gesamtanzahlWe;
+      const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.geschossflaecheWohnen)
+        ? 0
+        : baugebiet.geschossflaecheWohnen;
 
       const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
-        _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant))
+        _.toArray(baugebiet.bauraten).map((baurate) =>
+          _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant
+        )
       );
 
       validationMessage =
