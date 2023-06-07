@@ -62,9 +62,10 @@
             <template #activator="{ on }">
               <v-chip
                 small
+                :color="handleColorWohneinheiten"
                 v-on="on"
               >
-                {{ verteilteWohneinheiten }} / {{ wohneinheiten }}
+                {{ verteilteWohneinheitenFormatted }} / {{ wohneinheitenFormatted }}
               </v-chip>
             </template>
             <span>{{ tooltipTextWohneinheiten }}</span>
@@ -82,9 +83,10 @@
             <template #activator="{ on }">
               <v-chip
                 small
+                :color="handleColorGeschossflaecheWohnen"
                 v-on="on"
               >
-                {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnen }}
+                {{ verteilteGeschossflaecheWohnenFormatted }} / {{ geschossflaecheWohnenFormatted }}
                 {{ fieldPrefixesSuffixes.squareMeter }}
               </v-chip>
             </template>
@@ -152,7 +154,7 @@ export default class BaurateComponent extends Mixins(
     return _.isNil(this.baugebiet) ? 1900 : this.baugebiet.realisierungVon;
   }
 
-  get wohneinheiten(): string {
+  get wohneinheiten(): number {
     let value: number;
     if (this.baugebiet?.technical) {
       value =
@@ -162,10 +164,15 @@ export default class BaurateComponent extends Mixins(
     } else {
       value = !_.isNil(this.baugebiet) && !_.isNil(this.baugebiet?.gesamtanzahlWe) ? this.baugebiet.gesamtanzahlWe : 0;
     }
+    return value;
+  }
+
+  get wohneinheitenFormatted(): string {
+    const value = this.wohneinheiten;
     return numberToFormattedStringZeroDecimals(value);
   }
 
-  get verteilteWohneinheiten(): string {
+  get verteilteWohneinheiten(): number {
     let value: number;
     if (this.baugebiet?.technical) {
       value = _.isNil(this.abfragevariante)
@@ -174,19 +181,28 @@ export default class BaurateComponent extends Mixins(
     } else {
       value = _.isNil(this.baugebiet) ? 0 : anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(this.baugebiet);
     }
+    return value;
+  }
+
+  get verteilteWohneinheitenFormatted(): string {
+    const value = this.verteilteWohneinheiten;
     return numberToFormattedStringZeroDecimals(value);
   }
 
   get tooltipTextWohneinheiten(): string {
     return (
-      `Es sind ${this.verteilteWohneinheiten} m² von ${this.wohneinheiten} m² ` +
+      `Es sind ${this.verteilteWohneinheitenFormatted} m² von ${this.wohneinheitenFormatted} m² ` +
       `Geschossfläche Wohnen ${
         this.baugebiet?.technical ? "der Abfragevariante" : "des Baugebiets"
       } auf Bauraten verteilt.`
     );
   }
 
-  get geschossflaecheWohnen(): string {
+  get handleColorWohneinheiten(): string {
+    return this.verteilteWohneinheiten <= this.wohneinheiten ? "grey lighten-3" : "error";
+  }
+
+  get geschossflaecheWohnen(): number {
     let value: number;
     if (this.baugebiet?.technical) {
       value =
@@ -199,10 +215,15 @@ export default class BaurateComponent extends Mixins(
           ? this.baugebiet.geschossflaecheWohnen
           : 0;
     }
+    return value;
+  }
+
+  get geschossflaecheWohnenFormatted(): string {
+    const value = this.geschossflaecheWohnen;
     return numberToFormattedStringTwoDecimals(value);
   }
 
-  get verteilteGeschossflaecheWohnen(): string {
+  get verteilteGeschossflaecheWohnen(): number {
     let value: number;
     if (this.baugebiet?.technical) {
       value = _.isNil(this.abfragevariante)
@@ -213,16 +234,25 @@ export default class BaurateComponent extends Mixins(
         ? 0
         : anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet(this.baugebiet);
     }
+    return value;
+  }
+
+  get verteilteGeschossflaecheWohnenFormatted(): string {
+    const value = this.verteilteGeschossflaecheWohnen;
     return numberToFormattedStringTwoDecimals(value);
   }
 
   get tooltipTextGeschossflaecheWohnen(): string {
     return (
-      `Es sind ${this.verteilteGeschossflaecheWohnen} m² von ${this.geschossflaecheWohnen} m² ` +
+      `Es sind ${this.verteilteGeschossflaecheWohnenFormatted} m² von ${this.geschossflaecheWohnenFormatted} m² ` +
       `Geschossfläche Wohnen ${
         this.baugebiet?.technical ? "der Abfragevariante" : "des Baugebiets"
       } auf Bauraten verteilt.`
     );
+  }
+
+  get handleColorGeschossflaecheWohnen(): string {
+    return this.verteilteGeschossflaecheWohnen <= this.geschossflaecheWohnen ? "grey lighten-3" : "error";
   }
 }
 </script>

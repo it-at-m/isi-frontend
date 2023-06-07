@@ -286,7 +286,7 @@ export default class BauabschnittComponent extends Mixins(
   }
 
   get abfragevarianteRealisierungVonOr1900(): number {
-    return !_.isNil(this.abfragevariante) || !_.isNil(this.abfragevariante?.realisierungVon)
+    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante.realisierungVon)
       ? this.abfragevariante.realisierungVon
       : 1900;
   }
