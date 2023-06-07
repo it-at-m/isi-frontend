@@ -9,7 +9,7 @@ export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
   public isEditableByAbfrageerstellung(): boolean {
     const abfrage: InfrastrukturabfrageModel = this.$store.getters["search/selectedAbfrage"];
     return !_.isNil(abfrage)
-      ? this.isRoleAdminOrAbfrageerstellung() && abfrage.abfrage.statusAbfrage === StatusAbfrage.Angelegt
+      ? this.isRoleAdminOrAbfrageerstellung() && abfrage.abfrage?.statusAbfrage === StatusAbfrage.Angelegt
       : false;
   }
 
@@ -17,8 +17,7 @@ export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
     const abfrage: InfrastrukturabfrageModel = this.$store.getters["search/selectedAbfrage"];
     return !_.isNil(abfrage)
       ? this.isRoleAdminOrSachbearbeitung() &&
-          (abfrage.abfrage.statusAbfrage === StatusAbfrage.Offen ||
-            abfrage.abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung)
+          abfrage.abfrage?.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
       : false;
   }
 }

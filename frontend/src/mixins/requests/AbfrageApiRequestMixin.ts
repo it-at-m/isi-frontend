@@ -1,15 +1,17 @@
-import { Component, Mixins } from "vue-property-decorator";
 import {
   AbfrageApi,
+  AbfrageerstellungInfrastrukturabfrageAngelegtDto,
   CreateInfrastrukturabfrageRequest,
   DeleteInfrastrukturabfrageByIdRequest,
-  InfrastrukturabfrageDto,
   GetInfrastrukturabfrageByIdRequest,
+  InfrastrukturabfrageDto,
   PatchAbfrageAngelegtRequest,
+  PutAbfragevarianteRelevantRequest,
 } from "@/api/api-client/isi-backend";
-import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import RequestUtils from "@/utils/RequestUtils";
+import { Component, Mixins } from "vue-property-decorator";
 
 @Component
 export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, ErrorHandler) {
@@ -21,11 +23,11 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   }
 
   createInfrastrukturabfrage(
-    dto: InfrastrukturabfrageDto,
+    dto: AbfrageerstellungInfrastrukturabfrageAngelegtDto,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: CreateInfrastrukturabfrageRequest = {
-      infrastrukturabfrageDto: dto,
+      abfrageerstellungInfrastrukturabfrageAngelegtDto: dto,
     };
     return this.abfrageApi
       .createInfrastrukturabfrage(requestObject, RequestUtils.getPOSTConfig())
@@ -38,12 +40,37 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  patchAbfrageAngelegt(dto: InfrastrukturabfrageDto, showInInformationList: boolean): Promise<InfrastrukturabfrageDto> {
+  patchAbfrageAngelegt(
+    dto: AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+    id: string,
+    showInInformationList: boolean
+  ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageAngelegtRequest = {
-      infrastrukturabfrageDto: dto,
+      abfrageerstellungInfrastrukturabfrageAngelegtDto: dto,
+      id: id,
     };
     return this.abfrageApi
       .patchAbfrageAngelegt(requestObject, RequestUtils.getPATCHConfig())
+      .then((response) => {
+        this.resetDirty();
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  changeAbfragevarianteRelevant(
+    abfrageId: string,
+    abfragevarianteId: string,
+    showInInformationList: boolean
+  ): Promise<InfrastrukturabfrageDto> {
+    const requestObject: PutAbfragevarianteRelevantRequest = {
+      abfrageId: abfrageId,
+      abfragevarianteId: abfragevarianteId,
+    };
+    return this.abfrageApi
+      .putChangeAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
         this.resetDirty();
         return response;
