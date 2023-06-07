@@ -55,16 +55,35 @@
           cols="12"
           md="4"
         >
-          <v-chip small> {{ verteilteWohneinheiten }} / {{ wohneinheiten }} </v-chip>
+          <v-tooltip right>
+            <template #activator="{ on }">
+              <v-chip
+                small
+                v-on="on"
+              >
+                {{ verteilteWohneinheiten }} / {{ wohneinheiten }}
+              </v-chip>
+            </template>
+            <span>yyy</span>
+          </v-tooltip>
         </v-col>
         <v-col
           class="pt-0 pb-2"
           cols="12"
           md="4"
         >
-          <v-chip small>
-            {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnen }} {{ fieldPrefixesSuffixes.squareMeter }}
-          </v-chip>
+          <v-tooltip right>
+            <template #activator="{ on }">
+              <v-chip
+                small
+                v-on="on"
+              >
+                {{ verteilteGeschossflaecheWohnen }} / {{ geschossflaecheWohnen }}
+                {{ fieldPrefixesSuffixes.squareMeter }}
+              </v-chip>
+            </template>
+            <span>XXX</span>
+          </v-tooltip>
         </v-col>
       </v-row>
     </field-group-card>

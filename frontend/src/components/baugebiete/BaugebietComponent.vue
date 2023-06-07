@@ -128,10 +128,18 @@
           cols="12"
           md="4"
         >
-          <v-chip small>
-            {{ verteilteGeschossflaecheWohnenAbfragevariante }} / {{ geschossflaecheWohnenAbfragevariante }}
-            {{ fieldPrefixesSuffixes.squareMeter }}
-          </v-chip>
+          <v-tooltip right>
+            <template #activator="{ on }">
+              <v-chip
+                small
+                v-on="on"
+              >
+                {{ verteilteGeschossflaecheWohnenAbfragevariante }} / {{ geschossflaecheWohnenAbfragevariante }}
+                {{ fieldPrefixesSuffixes.squareMeter }}
+              </v-chip>
+            </template>
+            <span>{{ tooltipTextGeschossflaecheWohnen }}</span>
+          </v-tooltip>
         </v-col>
         <v-col
           class="pt-0 pb-2"
@@ -188,7 +196,17 @@
           cols="12"
           md="4"
         >
-          <v-chip small> {{ verteilteWohneinheitenAbfragevariante }} / {{ wohneinheitenAbfragevariante }} </v-chip>
+          <v-tooltip right>
+            <template #activator="{ on }">
+              <v-chip
+                small
+                v-on="on"
+              >
+                {{ verteilteWohneinheitenAbfragevariante }} / {{ wohneinheitenAbfragevariante }}
+              </v-chip>
+            </template>
+            <span>{{ tooltipTextWohneinheiten }}</span>
+          </v-tooltip>
         </v-col>
         <v-col
           class="pt-0 pb-2"
@@ -276,6 +294,10 @@ export default class BauabschnittComponent extends Mixins(
     return numberToFormattedStringZeroDecimals(value);
   }
 
+  get tooltipTextWohneinheiten(): string {
+    return `Es sind ${this.verteilteWohneinheitenAbfragevariante} von ${this.wohneinheitenAbfragevariante} Wohneinheiten der Abfragevariante auf Baugebiete verteilt.`;
+  }
+
   get geschossflaecheWohnenAbfragevariante(): string {
     const value =
       !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.geschossflaecheWohnen)
@@ -289,6 +311,10 @@ export default class BauabschnittComponent extends Mixins(
       ? 0
       : anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante);
     return numberToFormattedStringTwoDecimals(value);
+  }
+
+  get tooltipTextGeschossflaecheWohnen(): string {
+    return `Es sind ${this.verteilteGeschossflaecheWohnenAbfragevariante} m² von ${this.geschossflaecheWohnenAbfragevariante} m² Geschossfläche Wohnen der Abfragevariante auf Baugebiete verteilt.`;
   }
 }
 </script>
