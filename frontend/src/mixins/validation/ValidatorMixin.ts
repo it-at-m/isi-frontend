@@ -2,6 +2,7 @@ import { Component, Vue } from "vue-property-decorator";
 import _ from "lodash";
 import {
   AbfrageDtoStandVorhabenEnum,
+  AbfragevarianteDto,
   AbfragevarianteDtoPlanungsrechtEnum,
   AdresseDto,
   BauvorhabenDto,
@@ -132,6 +133,17 @@ export default class ValidatorMixin extends Vue {
           : "";
       return `Bitte geben Sie die 'Geschossfläche SoBoN-ursächliche' ${abfragevarianteNr}an`;
     }
+    const messageFaultVerteilungWohneinheiten = this.findFaultInVerteilungWohneinheiten(abfragevariante);
+    if (!_.isNil(messageFaultVerteilungWohneinheiten)) {
+      return messageFaultVerteilungWohneinheiten;
+    }
+    if (_.isNil(abfragevariante.gesamtanzahlWe)) {
+      const messageFaultVerteilungGeschossflaecheWohnen =
+        this.findFaultInVerteilungGeschossflaecheWohnen(abfragevariante);
+      if (!_.isNil(messageFaultVerteilungGeschossflaecheWohnen)) {
+        return messageFaultVerteilungGeschossflaecheWohnen;
+      }
+    }
     return null;
   }
 
@@ -228,5 +240,114 @@ export default class ValidatorMixin extends Vue {
     }
 
     return null;
+  }
+
+  private findFaultInVerteilungWohneinheiten(abfragevariante: AbfragevarianteDto): string | null {
+    const containsNonTechnicalBaugebiet = !_.isEmpty(
+      _.toArray(abfragevariante.bauabschnitte)
+        .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+        .filter((baugebiet) => !baugebiet.technical)
+    );
+
+    const containsBauratenInTechnicalBaugebiet = !_.isEmpty(
+      _.toArray(abfragevariante.bauabschnitte)
+        .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+        .filter((baugebiet) => baugebiet.technical)
+        .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
+    );
+
+    const checkVerteilung =
+      !_.isEmpty(abfragevariante.bauabschnitte) &&
+      (containsNonTechnicalBaugebiet || containsBauratenInTechnicalBaugebiet);
+
+    let message: string | null = null;
+
+    if (checkVerteilung) {
+      const wohneinheitenAbfragevariante = _.isNil(abfragevariante.gesamtanzahlWe) ? 0 : abfragevariante.gesamtanzahlWe;
+
+      // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
+      const sumVerteilteWohneinheitenBaugebiete = _.sum(
+        _.toArray(abfragevariante.bauabschnitte)
+          .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+          .filter((baugebiet) => !baugebiet.technical)
+          .map((baugebiet) => (_.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe))
+      );
+
+      // Die Bauraten sind direkt für einen Abfragevariante erstellt worden. Die Abfragevariante ist mit einem technischen Baugebiet versehen.
+      const sumVerteilteWohneinheitenBauraten = _.sum(
+        _.toArray(abfragevariante.bauabschnitte)
+          .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+          .filter((baugebiet) => baugebiet.technical)
+          .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
+          .map((baurate) => (_.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant))
+      );
+
+      const sumVerteilteWohneinheiten = _.max([sumVerteilteWohneinheitenBaugebiete, sumVerteilteWohneinheitenBauraten]);
+
+      message =
+        sumVerteilteWohneinheiten == wohneinheitenAbfragevariante
+          ? null
+          : `Die Anzahl von ${sumVerteilteWohneinheiten} verteilten Wohneinheiten entspricht nicht ` +
+            `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante.`;
+    }
+
+    return message;
+  }
+
+  private findFaultInVerteilungGeschossflaecheWohnen(abfragevariante: AbfragevarianteDto): string | null {
+    const containsNonTechnicalBaugebiet = !_.isEmpty(
+      _.toArray(abfragevariante.bauabschnitte)
+        .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+        .filter((baugebiet) => !baugebiet.technical)
+    );
+
+    const containsBauratenInTechnicalBaugebiet = !_.isEmpty(
+      _.toArray(abfragevariante.bauabschnitte)
+        .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+        .filter((baugebiet) => baugebiet.technical)
+        .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
+    );
+
+    const checkVerteilung =
+      !_.isEmpty(abfragevariante.bauabschnitte) &&
+      (containsNonTechnicalBaugebiet || containsBauratenInTechnicalBaugebiet);
+
+    let message: string | null = null;
+
+    if (checkVerteilung) {
+      const geschossflaecheWohnenAbfragevariante = _.isNil(abfragevariante.geschossflaecheWohnen)
+        ? 0
+        : abfragevariante.geschossflaecheWohnen;
+
+      // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
+      const sumVerteilteGeschossflaecheWohnenBaugebiete = _.sum(
+        _.toArray(abfragevariante.bauabschnitte)
+          .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+          .filter((baugebiet) => !baugebiet.technical)
+          .map((baugebiet) => (_.isNil(baugebiet.geschossflaecheWohnen) ? 0 : baugebiet.geschossflaecheWohnen))
+      );
+
+      // Die Bauraten sind direkt für einen Abfragevariante erstellt worden. Die Abfragevariante ist mit einem technischen Baugebiet versehen.
+      const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
+        _.toArray(abfragevariante.bauabschnitte)
+          .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+          .filter((baugebiet) => baugebiet.technical)
+          .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
+          .map((baurate) => (_.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant))
+      );
+
+      const sumVerteilteGeschossflaecheWohnen = _.max([
+        sumVerteilteGeschossflaecheWohnenBaugebiete,
+        sumVerteilteGeschossflaecheWohnenBauraten,
+      ]);
+
+      message =
+        sumVerteilteGeschossflaecheWohnen == geschossflaecheWohnenAbfragevariante
+          ? null
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnen} m² verteilter Geschossflaeche Wohnen entspricht nicht ` +
+            `der Anzahl von ${geschossflaecheWohnenAbfragevariante} m² in der Abfragevariante.`;
+    }
+
+    return message;
   }
 }
