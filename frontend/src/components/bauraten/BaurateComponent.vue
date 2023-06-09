@@ -74,16 +74,10 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AbfragevarianteDto, BaugebietDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import {
-  anzahlUeberBauratenVerteilteWohneinheitenForAbfragevariante,
-  anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet,
-  anzahlUeberBauratenVerteilteGeschossflaecheWohnenForAbfragevariante,
-  anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet,
-  numberToFormattedStringZeroDecimals,
-  numberToFormattedStringTwoDecimals,
   wohneinheiten,
   wohneinheitenFormatted,
   verteilteWohneinheiten,
@@ -118,7 +112,7 @@ export default class BaurateComponent extends Mixins(
     ): boolean | string => {
       return (
         verteilteWohneinheiten(baugebiet, abfragevariante) <= wohneinheiten(baugebiet, abfragevariante) ||
-        `${verteilteWohneinheitenFormatted(baugebiet, abfragevariante)} von ${wohneinheitenFormatted(
+        `Insgesamt sind ${verteilteWohneinheitenFormatted(baugebiet, abfragevariante)} von ${wohneinheitenFormatted(
           baugebiet,
           abfragevariante
         )} verteilt.`
@@ -131,10 +125,10 @@ export default class BaurateComponent extends Mixins(
       return (
         verteilteGeschossflaecheWohnen(baugebiet, abfragevariante) <=
           geschossflaecheWohnen(baugebiet, abfragevariante) ||
-        `${verteilteGeschossflaecheWohnenFormatted(baugebiet, abfragevariante)} m² von ${geschossflaecheWohnenFormatted(
+        `Insgesamt sind ${verteilteGeschossflaecheWohnenFormatted(
           baugebiet,
           abfragevariante
-        )} m² verteilt.`
+        )} m² von ${geschossflaecheWohnenFormatted(baugebiet, abfragevariante)} m² verteilt.`
       );
     },
   };

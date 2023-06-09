@@ -90,9 +90,10 @@
             id="baugebiet_geschossflaecheWohnenFestgesetzt"
             v-model="baugebiet.geschossflaecheWohnen"
             :disabled="!isEditableByAbfrageerstellung()"
+            :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
             class="mx-3"
             label="Gesamt"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+            :suffix="suffixGeschossflaecheWohnen"
           />
         </v-col>
         <v-col
@@ -122,35 +123,6 @@
           />
         </v-col>
       </v-row>
-      <v-row class="justify-start">
-        <v-col
-          class="pt-0 pb-2"
-          cols="12"
-          md="4"
-        >
-          <v-tooltip
-            right
-            :open-delay="250"
-          >
-            <template #activator="{ on }">
-              <v-chip
-                small
-                :color="handleColorGeschossflaecheWohnen"
-                v-on="on"
-              >
-                {{ verteilteGeschossflaecheWohnenFormatted }} / {{ geschossflaecheWohnenAbfragevarianteFormatted }}
-                {{ fieldPrefixesSuffixes.squareMeter }}
-              </v-chip>
-            </template>
-            <span>{{ tooltipTextGeschossflaecheWohnen }}</span>
-          </v-tooltip>
-        </v-col>
-        <v-col
-          class="pt-0 pb-2"
-          cols="12"
-          md="8"
-        />
-      </v-row>
     </field-group-card>
     <field-group-card :card-title="anzahlWECardTitle">
       <v-row justify="center">
@@ -162,8 +134,10 @@
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
             v-model="baugebiet.gesamtanzahlWe"
             :disabled="!isEditableByAbfrageerstellung()"
+            :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
             class="mx-3"
             label="Gesamt"
+            :suffix="suffixWohneinheiten"
             integer
           />
         </v-col>
@@ -194,34 +168,6 @@
           />
         </v-col>
       </v-row>
-      <v-row class="justify-start">
-        <v-col
-          class="pt-0 pb-2"
-          cols="12"
-          md="4"
-        >
-          <v-tooltip
-            right
-            :open-delay="250"
-          >
-            <template #activator="{ on }">
-              <v-chip
-                small
-                :color="handleColorWohneinheiten"
-                v-on="on"
-              >
-                {{ verteilteWohneinheitenFormatted }} / {{ wohneinheitenAbfragevarianteFormatted }}
-              </v-chip>
-            </template>
-            <span>{{ tooltipTextWohneinheiten }}</span>
-          </v-tooltip>
-        </v-col>
-        <v-col
-          class="pt-0 pb-2"
-          cols="12"
-          md="8"
-        />
-      </v-row>
     </field-group-card>
   </div>
 </template>
@@ -239,10 +185,14 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import {
-  anzahlUeberBaugebieteVerteilteWohneinheiten,
-  anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen,
-  numberToFormattedStringTwoDecimals,
-  numberToFormattedStringZeroDecimals,
+  verteilteGeschossflaecheWohnenAbfragevariante,
+  wohneinheitenAbfragevariante,
+  verteilteWohneinheitenAbfragevariante,
+  verteilteWohneinheitenAbfragevarianteFormatted,
+  wohneinheitenAbfragevarianteFormatted,
+  geschossflaecheWohnenAbfragevariante,
+  geschossflaecheWohnenAbfragevarianteFormatted,
+  verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
 
 @Component({ components: { NumField, FieldGroupCard } })
@@ -263,6 +213,26 @@ export default class BauabschnittComponent extends Mixins(
 
   @Prop()
   private mode!: DisplayMode;
+
+  private validationRules: unknown = {
+    validateWohneinheiten: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {
+      return (
+        verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+        `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+          abfragevariante
+        )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+      );
+    },
+    validateGeschossflaecheWohnen: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {
+      return (
+        verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante) <=
+          geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+        `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+          abfragevariante
+        )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
+      );
+    },
+  };
 
   get displayMode(): DisplayMode {
     return this.mode;
@@ -291,70 +261,14 @@ export default class BauabschnittComponent extends Mixins(
       : 1900;
   }
 
-  get wohneinheitenAbfragevariante(): number {
-    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.gesamtanzahlWe)
-      ? this.abfragevariante.gesamtanzahlWe
-      : 0;
+  get suffixWohneinheiten(): string {
+    return `von ${wohneinheitenAbfragevarianteFormatted(this.abfragevariante)}`;
   }
 
-  get wohneinheitenAbfragevarianteFormatted(): string {
-    const value = this.wohneinheitenAbfragevariante;
-    return numberToFormattedStringZeroDecimals(value);
-  }
-
-  get verteilteWohneinheiten(): number {
-    return _.isNil(this.abfragevariante) ? 0 : anzahlUeberBaugebieteVerteilteWohneinheiten(this.abfragevariante);
-  }
-
-  get verteilteWohneinheitenFormatted(): string {
-    const value = this.verteilteWohneinheiten;
-    return numberToFormattedStringZeroDecimals(value);
-  }
-
-  get tooltipTextWohneinheiten(): string {
-    return (
-      `Es sind ${this.verteilteWohneinheitenFormatted} von ${this.wohneinheitenAbfragevarianteFormatted} ` +
-      `Wohneinheiten der Abfragevariante auf Baugebiete verteilt.`
-    );
-  }
-
-  get handleColorWohneinheiten(): string {
-    return this.verteilteWohneinheiten <= this.wohneinheitenAbfragevariante ? "grey lighten-3" : "error";
-  }
-
-  get geschossflaecheWohnenAbfragevariante(): number {
-    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante?.geschossflaecheWohnen)
-      ? this.abfragevariante.geschossflaecheWohnen
-      : 0;
-  }
-
-  get geschossflaecheWohnenAbfragevarianteFormatted(): string {
-    const value = this.geschossflaecheWohnenAbfragevariante;
-    return numberToFormattedStringTwoDecimals(value);
-  }
-
-  get verteilteGeschossflaecheWohnen(): number {
-    return _.isNil(this.abfragevariante)
-      ? 0
-      : anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(this.abfragevariante);
-  }
-
-  get verteilteGeschossflaecheWohnenFormatted(): string {
-    const value = this.verteilteGeschossflaecheWohnen;
-    return numberToFormattedStringTwoDecimals(value);
-  }
-
-  get tooltipTextGeschossflaecheWohnen(): string {
-    return (
-      `Es sind ${this.verteilteGeschossflaecheWohnenFormatted} m² von ${this.geschossflaecheWohnenAbfragevarianteFormatted} m² ` +
-      `Geschossfläche Wohnen der Abfragevariante auf Baugebiete verteilt.`
-    );
-  }
-
-  get handleColorGeschossflaecheWohnen(): string {
-    return this.verteilteGeschossflaecheWohnen <= this.geschossflaecheWohnenAbfragevariante
-      ? "grey lighten-3"
-      : "error";
+  get suffixGeschossflaecheWohnen(): string {
+    return `von ${geschossflaecheWohnenAbfragevarianteFormatted(this.abfragevariante)} ${
+      this.fieldPrefixesSuffixes.squareMeter
+    }`;
   }
 }
 </script>

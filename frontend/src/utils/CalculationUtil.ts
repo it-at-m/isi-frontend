@@ -182,3 +182,45 @@ export function verteilteGeschossflaecheWohnenFormatted(
   const value = verteilteGeschossflaecheWohnen(baugebiet, abfragevariante);
   return numberToFormattedStringTwoDecimals(value);
 }
+
+export function wohneinheitenAbfragevariante(abfragevariante: AbfragevarianteDto | undefined): number {
+  return !_.isNil(abfragevariante) && !_.isNil(abfragevariante?.gesamtanzahlWe) ? abfragevariante.gesamtanzahlWe : 0;
+}
+
+export function wohneinheitenAbfragevarianteFormatted(abfragevariante: AbfragevarianteDto | undefined): string {
+  const value = wohneinheitenAbfragevariante(abfragevariante);
+  return numberToFormattedStringZeroDecimals(value);
+}
+
+export function verteilteWohneinheitenAbfragevariante(abfragevariante: AbfragevarianteDto | undefined): number {
+  return _.isNil(abfragevariante) ? 0 : anzahlUeberBaugebieteVerteilteWohneinheiten(abfragevariante);
+}
+
+export function verteilteWohneinheitenAbfragevarianteFormatted(
+  abfragevariante: AbfragevarianteDto | undefined
+): string {
+  const value = verteilteWohneinheitenAbfragevariante(abfragevariante);
+  return numberToFormattedStringZeroDecimals(value);
+}
+
+export function geschossflaecheWohnenAbfragevariante(abfragevariante: AbfragevarianteDto | undefined): number {
+  return !_.isNil(abfragevariante) && !_.isNil(abfragevariante?.geschossflaecheWohnen)
+    ? abfragevariante.geschossflaecheWohnen
+    : 0;
+}
+
+export function geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante: AbfragevarianteDto | undefined): string {
+  const value = geschossflaecheWohnenAbfragevariante(abfragevariante);
+  return numberToFormattedStringTwoDecimals(value);
+}
+
+export function verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante: AbfragevarianteDto | undefined): number {
+  return _.isNil(abfragevariante) ? 0 : anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(abfragevariante);
+}
+
+export function verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+  abfragevariante: AbfragevarianteDto | undefined
+): string {
+  const value = verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante);
+  return numberToFormattedStringTwoDecimals(value);
+}
