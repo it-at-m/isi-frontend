@@ -94,3 +94,91 @@ export function getBauratenFromAllTechnicalBaugebiete(abfragevariante: Abfrageva
     .filter((baugebiet) => baugebiet.technical)
     .flatMap((baugebiet) => _.toArray(baugebiet.bauraten));
 }
+
+export function wohneinheiten(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): number {
+  let value: number;
+  if (baugebiet?.technical) {
+    value = !_.isNil(abfragevariante) && !_.isNil(abfragevariante?.gesamtanzahlWe) ? abfragevariante.gesamtanzahlWe : 0;
+  } else {
+    value = !_.isNil(baugebiet) && !_.isNil(baugebiet?.gesamtanzahlWe) ? baugebiet.gesamtanzahlWe : 0;
+  }
+  return value;
+}
+
+export function wohneinheitenFormatted(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): string {
+  const value = wohneinheiten(baugebiet, abfragevariante);
+  return numberToFormattedStringZeroDecimals(value);
+}
+
+export function verteilteWohneinheiten(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): number {
+  let value: number;
+  if (baugebiet?.technical) {
+    value = _.isNil(abfragevariante) ? 0 : anzahlUeberBauratenVerteilteWohneinheitenForAbfragevariante(abfragevariante);
+  } else {
+    value = _.isNil(baugebiet) ? 0 : anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(baugebiet);
+  }
+  return value;
+}
+
+export function verteilteWohneinheitenFormatted(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): string {
+  const value = verteilteWohneinheiten(baugebiet, abfragevariante);
+  return numberToFormattedStringZeroDecimals(value);
+}
+
+export function geschossflaecheWohnen(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): number {
+  let value: number;
+  if (baugebiet?.technical) {
+    value =
+      !_.isNil(abfragevariante) && !_.isNil(abfragevariante?.geschossflaecheWohnen)
+        ? abfragevariante.geschossflaecheWohnen
+        : 0;
+  } else {
+    value = !_.isNil(baugebiet) && !_.isNil(baugebiet?.geschossflaecheWohnen) ? baugebiet.geschossflaecheWohnen : 0;
+  }
+  return value;
+}
+
+export function geschossflaecheWohnenFormatted(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): string {
+  const value = geschossflaecheWohnen(baugebiet, abfragevariante);
+  return numberToFormattedStringTwoDecimals(value);
+}
+
+export function verteilteGeschossflaecheWohnen(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): number {
+  let value: number;
+  if (baugebiet?.technical) {
+    value = _.isNil(abfragevariante)
+      ? 0
+      : anzahlUeberBauratenVerteilteGeschossflaecheWohnenForAbfragevariante(abfragevariante);
+  } else {
+    value = _.isNil(baugebiet) ? 0 : anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet(baugebiet);
+  }
+  return value;
+}
+export function verteilteGeschossflaecheWohnenFormatted(
+  baugebiet: BaugebietDto | undefined,
+  abfragevariante: AbfragevarianteDto | undefined
+): string {
+  const value = verteilteGeschossflaecheWohnen(baugebiet, abfragevariante);
+  return numberToFormattedStringTwoDecimals(value);
+}
