@@ -864,9 +864,9 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
-    this.baugebietForSelectedBaurate = abfrageTreeItem.baugebiet;
-    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
+    this.baugebietForSelectedBaurate = selectedBaugebiet;
+    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     this.selectedBaurate = new BaurateModel(createBaurateDto());
     this.setNewEntityToMark(this.selectedBaurate);
     selectedBaugebiet.bauraten.push(this.selectedBaurate);
