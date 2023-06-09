@@ -25,7 +25,11 @@ import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/G
 import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
 import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import moment from "moment";
-import { addiereAnteile } from "@/utils/CalculationUtil";
+import {
+  addiereAnteile,
+  getBauratenFromAllTechnicalBaugebiete,
+  getNonTechnicalBaugebiete,
+} from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 
 @Component
@@ -291,51 +295,39 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante: AbfragevarianteDto): string | null {
-    const containsNonTechnicalBaugebiet = !_.isEmpty(
-      _.toArray(abfragevariante.bauabschnitte)
-        .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
-        .filter((baugebiet) => !baugebiet.technical)
-    );
-
-    const containsBauratenInTechnicalBaugebiet = !_.isEmpty(
-      _.toArray(abfragevariante.bauabschnitte)
-        .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
-        .filter((baugebiet) => baugebiet.technical)
-        .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
-    );
-
-    const checkVerteilung =
-      !_.isEmpty(abfragevariante.bauabschnitte) &&
-      (containsNonTechnicalBaugebiet || containsBauratenInTechnicalBaugebiet);
-
     let message: string | null = null;
 
-    if (checkVerteilung) {
-      const wohneinheitenAbfragevariante = _.isNil(abfragevariante.gesamtanzahlWe) ? 0 : abfragevariante.gesamtanzahlWe;
+    const nonTechnicalBaugebiete = getNonTechnicalBaugebiete(abfragevariante);
+    const bauratenFromAllTechnicalBaugebiete = getBauratenFromAllTechnicalBaugebiete(abfragevariante);
 
+    const containsNonTechnicalBaugebiet = !_.isEmpty(nonTechnicalBaugebiete);
+    const containsBauratenInTechnicalBaugebiet = !_.isEmpty(bauratenFromAllTechnicalBaugebiete);
+
+    const wohneinheitenAbfragevariante = _.isNil(abfragevariante.gesamtanzahlWe) ? 0 : abfragevariante.gesamtanzahlWe;
+
+    if (containsNonTechnicalBaugebiet) {
       // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteWohneinheitenBaugebiete = _.sum(
-        _.toArray(abfragevariante.bauabschnitte)
-          .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
-          .filter((baugebiet) => !baugebiet.technical)
-          .map((baugebiet) => (_.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe))
+        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe))
       );
-
-      // Die Bauraten sind direkt für eine Abfragevariante erstellt worden. Die Abfragevariante ist somit mit einem technischen Baugebiet versehen.
-      const sumVerteilteWohneinheitenBauraten = _.sum(
-        _.toArray(abfragevariante.bauabschnitte)
-          .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
-          .filter((baugebiet) => baugebiet.technical)
-          .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
-          .map((baurate) => (_.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant))
-      );
-
-      const sumVerteilteWohneinheiten = _.max([sumVerteilteWohneinheitenBaugebiete, sumVerteilteWohneinheitenBauraten]);
 
       message =
-        sumVerteilteWohneinheiten == wohneinheitenAbfragevariante
+        sumVerteilteWohneinheitenBaugebiete == wohneinheitenAbfragevariante
           ? null
-          : `Die Anzahl von ${sumVerteilteWohneinheiten} verteilten Wohneinheiten entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteWohneinheitenBaugebiete} über Baugebiete verteilter Wohneinheiten entspricht nicht ` +
+            `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante.`;
+    } else if (containsBauratenInTechnicalBaugebiet) {
+      // Die Bauraten sind direkt für eine Abfragevariante erstellt worden. Die Abfragevariante ist somit mit einem technischen Baugebiet versehen.
+      const sumVerteilteWohneinheitenBauraten = _.sum(
+        bauratenFromAllTechnicalBaugebiete.map((baurate) =>
+          _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant
+        )
+      );
+
+      message =
+        sumVerteilteWohneinheitenBauraten == wohneinheitenAbfragevariante
+          ? null
+          : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
             `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante.`;
     }
 

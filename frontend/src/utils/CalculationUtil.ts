@@ -1,6 +1,6 @@
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
-import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 
 /**
  * Addiert alle Anteile eines Fördermixes zusammen und gibt die Summe zurück
@@ -80,4 +80,17 @@ export function numberToFormattedStringZeroDecimals(number: number): string {
     maximumFractionDigits: 0,
   });
   return formatter.format(number);
+}
+
+export function getNonTechnicalBaugebiete(abfragevariante: AbfragevarianteDto): Array<BaugebietDto> {
+  return _.toArray(abfragevariante.bauabschnitte)
+    .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+    .filter((baugebiet) => !baugebiet.technical);
+}
+
+export function getBauratenFromAllTechnicalBaugebiete(abfragevariante: AbfragevarianteDto): Array<BaurateDto> {
+  return _.toArray(abfragevariante.bauabschnitte)
+    .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+    .filter((baugebiet) => baugebiet.technical)
+    .flatMap((baugebiet) => _.toArray(baugebiet.bauraten));
 }
