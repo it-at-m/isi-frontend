@@ -416,7 +416,9 @@ export default class ValidatorMixin extends Vue {
         geschossflaecheWohnenBaugebiet == sumVerteilteGeschossflaecheWohnenBauraten
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² verteilter Geschossflaeche Wohnen entspricht nicht ` +
-            `der Anzahl von ${geschossflaecheWohnenBaugebiet} m² im Baugebiet.`;
+            `der Anzahl von ${geschossflaecheWohnenBaugebiet} m² im Baugebiet${
+              _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
+            }.`;
     }
     return validationMessage;
   }
@@ -434,7 +436,9 @@ export default class ValidatorMixin extends Vue {
         wohneinheitenBaugebiet == sumVerteilteWohneinheitenBauraten
           ? null
           : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} verteilten Wohneinheiten entspricht nicht ` +
-            `der Anzahl von ${wohneinheitenBaugebiet} im Baugebiet.`;
+            `der Anzahl von ${wohneinheitenBaugebiet} im Baugebiet${
+              _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
+            }.`;
     }
     return validationMessage;
   }
