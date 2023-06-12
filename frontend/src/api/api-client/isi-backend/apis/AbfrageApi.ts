@@ -24,6 +24,9 @@ import {
     InfrastrukturabfrageDto,
     InfrastrukturabfrageDtoFromJSON,
     InfrastrukturabfrageDtoToJSON,
+    SachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+    SachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDtoFromJSON,
+    SachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDtoToJSON,
 } from '../models';
 
 export interface CreateInfrastrukturabfrageRequest {
@@ -41,6 +44,11 @@ export interface GetInfrastrukturabfrageByIdRequest {
 export interface PatchAbfrageAngelegtRequest {
     id: string;
     abfrageerstellungInfrastrukturabfrageAngelegtDto: AbfrageerstellungInfrastrukturabfrageAngelegtDto;
+}
+
+export interface PatchAbfrageInBearbeitungSachbearbeitungRequest {
+    id: string;
+    sachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto: SachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto;
 }
 
 export interface PutChangeAbfragevarianteRelevantRequest {
@@ -192,7 +200,7 @@ export class AbfrageApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/infrastruktur-abfragen/abfrage/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/infrastruktur-abfragen/abfrage-angelegt/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -207,6 +215,43 @@ export class AbfrageApi extends runtime.BaseAPI {
      */
     async patchAbfrageAngelegt(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
         const response = await this.patchAbfrageAngelegtRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Aktualisierung einer Infrastrukturabfrage im Status ANGELEGT.
+     */
+    async patchAbfrageInBearbeitungSachbearbeitungRaw(requestParameters: PatchAbfrageInBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchAbfrageInBearbeitungSachbearbeitung.');
+        }
+
+        if (requestParameters.sachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto === null || requestParameters.sachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto === undefined) {
+            throw new runtime.RequiredError('sachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto','Required parameter requestParameters.sachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto was null or undefined when calling patchAbfrageInBearbeitungSachbearbeitung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/infrastruktur-abfragen/abfrage-in-bearbeitung-sachbearbeitung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDtoToJSON(requestParameters.sachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung einer Infrastrukturabfrage im Status ANGELEGT.
+     */
+    async patchAbfrageInBearbeitungSachbearbeitung(requestParameters: PatchAbfrageInBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
+        const response = await this.patchAbfrageInBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

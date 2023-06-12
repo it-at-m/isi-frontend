@@ -41,6 +41,8 @@ export * from './MittelschuleDto';
 export * from './MultiPolygonGeometryDto';
 export * from './MultiPolygonGeometryModel';
 export * from './PresignedUrlDto';
+export * from './SachbearbeitungAbfragevarianteInBearbeitungSachbearbeitungDto';
+export * from './SachbearbeitungInfrastrukturabfrageInBearbeitungSachbearbeitungDto';
 export * from './SchuleDto';
 export * from './StadtbezirkDto';
 export * from './StadtbezirkModel';
