@@ -14,6 +14,12 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AbfragevarianteSachbearbeitungDto,
+    AbfragevarianteSachbearbeitungDtoFromJSON,
+    AbfragevarianteSachbearbeitungDtoFromJSONTyped,
+    AbfragevarianteSachbearbeitungDtoToJSON,
+} from './AbfragevarianteSachbearbeitungDto';
+import {
     BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
@@ -166,6 +172,12 @@ export interface AbfragevarianteDto {
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
+     * @type {AbfragevarianteSachbearbeitungDto}
+     * @memberof AbfragevarianteDto
+     */
+    abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungDto;
+    /**
+     * 
      * @type {boolean}
      * @memberof AbfragevarianteDto
      */
@@ -226,6 +238,7 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'geschossflaecheSeniorenwohnungen': !exists(json, 'geschossflaecheSeniorenwohnungen') ? undefined : json['geschossflaecheSeniorenwohnungen'],
         'geschossflaecheSonstiges': !exists(json, 'geschossflaecheSonstiges') ? undefined : json['geschossflaecheSonstiges'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
+        'abfragevarianteSachbearbeitung': !exists(json, 'abfragevarianteSachbearbeitung') ? undefined : AbfragevarianteSachbearbeitungDtoFromJSON(json['abfragevarianteSachbearbeitung']),
         'relevant': !exists(json, 'relevant') ? undefined : json['relevant'],
     };
 }
@@ -262,6 +275,7 @@ export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any
         'geschossflaecheSeniorenwohnungen': value.geschossflaecheSeniorenwohnungen,
         'geschossflaecheSonstiges': value.geschossflaecheSonstiges,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoToJSON(value.abfragevarianteSachbearbeitung),
         'relevant': value.relevant,
     };
 }
