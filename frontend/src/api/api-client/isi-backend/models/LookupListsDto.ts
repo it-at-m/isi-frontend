@@ -98,6 +98,12 @@ export interface LookupListsDto {
      * @memberof LookupListsDto
      */
     artGsNachmittagBetreuung?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
+    sobonOrientierungswertJahr?: LookupListDto;
 }
 
 export function LookupListsDtoFromJSON(json: any): LookupListsDto {
@@ -122,6 +128,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
         'artGsNachmittagBetreuung': !exists(json, 'artGsNachmittagBetreuung') ? undefined : LookupListDtoFromJSON(json['artGsNachmittagBetreuung']),
+        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahr']),
     };
 }
 
@@ -146,6 +153,7 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'einrichtungstraeger': LookupListDtoToJSON(value.einrichtungstraeger),
         'infrastruktureinrichtungTyp': LookupListDtoToJSON(value.infrastruktureinrichtungTyp),
         'artGsNachmittagBetreuung': LookupListDtoToJSON(value.artGsNachmittagBetreuung),
+        'sobonOrientierungswertJahr': LookupListDtoToJSON(value.sobonOrientierungswertJahr),
     };
 }
 
