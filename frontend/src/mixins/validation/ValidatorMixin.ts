@@ -406,7 +406,7 @@ export default class ValidatorMixin extends Vue {
       validationMessage =
         geschossflaecheWohnenBaugebiet == sumVerteilteGeschossflaecheWohnenBauraten
           ? null
-          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² verteilter Geschossflaeche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenBaugebiet} m² im Baugebiet${
               _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
             }.`;
@@ -426,7 +426,7 @@ export default class ValidatorMixin extends Vue {
       validationMessage =
         wohneinheitenBaugebiet == sumVerteilteWohneinheitenBauraten
           ? null
-          : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} verteilten Wohneinheiten entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
             `der Anzahl von ${wohneinheitenBaugebiet} im Baugebiet${
               _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
             }.`;
