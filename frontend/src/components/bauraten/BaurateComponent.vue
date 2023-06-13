@@ -9,7 +9,7 @@
           <num-field
             id="bauraten_jahr"
             v-model="baurate.jahr"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Jahr (JJJJ)"
             year
             required
@@ -23,7 +23,7 @@
           <num-field
             id="bauraten_anzahlWeGeplant"
             v-model="baurate.anzahlWeGeplant"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Anzahl Wohneinheiten geplant"
             integer
           />
@@ -35,7 +35,7 @@
           <num-field
             id="bauraten_geschossflaecheWohnenGeplant"
             v-model="baurate.geschossflaecheWohnenGeplant"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Geschossfläche Wohnen geplant"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import FoerdermixFormular from "@/components/bauraten/foerdermix/FoerdermixFormular.vue";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
@@ -68,6 +68,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { AnzeigeContext } from "@/views/Abfrage.vue";
 
 @Component({
   components: { FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
@@ -79,6 +80,19 @@ export default class BaurateComponent extends Mixins(
   AbfrageSecurityMixin
 ) {
   @VModel({ type: BaurateModel }) baurate!: BaurateModel;
+
+  @Prop({ type: String, default: AnzeigeContext.UNDEFINED })
+  private readonly anzeigeContext!: AnzeigeContext;
+
+  get isEditable(): boolean {
+    let isEditable = false;
+    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
+      isEditable = this.isEditableByAbfrageerstellung();
+    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
+      isEditable = this.isEditableBySachbearbeitung();
+    }
+    return isEditable;
+  }
 }
 </script>
 

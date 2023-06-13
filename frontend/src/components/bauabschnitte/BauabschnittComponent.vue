@@ -14,7 +14,7 @@
           <v-text-field
             id="bauabschnitt_bezeichnung"
             v-model.trim="bauabschnitt.bezeichnung"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
@@ -37,6 +37,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { AnzeigeContext } from "@/views/Abfrage.vue";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauabschnittComponent extends Mixins(
@@ -50,6 +51,9 @@ export default class BauabschnittComponent extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
+  @Prop({ type: String, default: AnzeigeContext.UNDEFINED })
+  private readonly anzeigeContext!: AnzeigeContext;
+
   get displayMode(): DisplayMode {
     return this.mode;
   }
@@ -61,6 +65,16 @@ export default class BauabschnittComponent extends Mixins(
   get headline(): string {
     const headline = `Bauabschnitt ${this.bauabschnitt.bezeichnung} `;
     return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
+  }
+
+  get isEditable(): boolean {
+    let isEditable = false;
+    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
+      isEditable = this.isEditableByAbfrageerstellung();
+    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
+      isEditable = this.isEditableBySachbearbeitung();
+    }
+    return isEditable;
   }
 }
 </script>
