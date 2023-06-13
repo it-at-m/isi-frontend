@@ -56,9 +56,9 @@ export function isDokumentAllowed(dokument: DokumentDto): boolean {
   return dokument.typDokument !== mimeTypeNichtErlaubt();
 }
 
-export function containsNotAllowedDokument(dokumente: DokumentDto[]): boolean {
+export function containsNotAllowedDokument(dokumente: DokumentDto[] | undefined): boolean {
   let containsNotAllowedDokument = false;
-  dokumente.forEach((dokumente) => {
+  _.toArray(dokumente).forEach((dokumente) => {
     if (!isDokumentAllowed(dokumente)) {
       containsNotAllowedDokument = true;
     }
