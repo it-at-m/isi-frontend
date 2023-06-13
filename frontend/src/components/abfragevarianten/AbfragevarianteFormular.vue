@@ -299,6 +299,11 @@ import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
 
+export const enum BearbeitungContext {
+  ABFRAGEVARIANTE_ABFRAGEERSTELLUNG_SACHBEARBEITUNG = "ABFRAGEVARIANTE_ABFRAGEERSTELLUNG_SACHBEARBEITUNG",
+  ABFRAGEVARIANTE_SACHBEARBEITUNG = "ABFRAGEVARIANTE_SACHBEARBEITUNG",
+}
+
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
@@ -311,6 +316,9 @@ export default class AbfragevarianteForm extends Mixins(
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: String, default: BearbeitungContext.ABFRAGEVARIANTE_ABFRAGEERSTELLUNG_SACHBEARBEITUNG })
+  private readonly context!: BearbeitungContext;
 
   get displayMode(): DisplayMode {
     return this.mode;
