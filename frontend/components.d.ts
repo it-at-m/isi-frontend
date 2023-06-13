@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     AbfrageComponent: typeof import('./src/components/abfragen/AbfrageComponent.vue')['default']
     AbfrageNavigationTree: typeof import('./src/components/abfragen/AbfrageNavigationTree.vue')['default']
     AbfragevarianteFormular: typeof import('./src/components/abfragevarianten/AbfragevarianteFormular.vue')['default']
+    AbfragevarianteSachbearbeitungFormular: typeof import('./src/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue')['default']
     AdresseComponent: typeof import('./src/components/common/AdresseComponent.vue')['default']
     BauabschnittComponent: typeof import('./src/components/bauabschnitte/BauabschnittComponent.vue')['default']
     BaugebietComponent: typeof import('./src/components/baugebiete/BaugebietComponent.vue')['default']

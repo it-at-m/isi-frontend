@@ -31,7 +31,7 @@
           <v-tooltip bottom>
             <template #activator="{ on }">
               <v-btn
-                :id="abfrage_loeschen"
+                id="abfrage_loeschen"
                 :disabled="!isEditable"
                 icon
                 v-on="on"

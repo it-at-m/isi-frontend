@@ -279,6 +279,10 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <abfragevariante-sachbearbeitung-formular
+      id="abfragevariante_sachbearbeitung_formular"
+      v-model="abfragevariante.abfragevarianteSachbearbeitung"
+    />
   </div>
 </template>
 
@@ -293,13 +297,15 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
+  AbfragevarianteSachbearbeitungFormular
 ) {
   @VModel({ type: AbfragevarianteModel }) abfragevariante!: AbfragevarianteModel;
 
