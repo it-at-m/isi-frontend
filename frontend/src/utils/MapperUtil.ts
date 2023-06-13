@@ -5,7 +5,13 @@ import {
   InfrastrukturabfrageAngelegtDto,
   AbfragevarianteDtoPlanungsrechtEnum,
   InfrastrukturabfrageDto,
+  InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto,
+  AbfragevarianteSachbearbeitungDto,
+  BedarfsmeldungFachabteilungenDto,
+  AbfragevarianteInBearbeitungSachbearbeitungDto,
 } from "@/api/api-client/isi-backend";
+import _ from "lodash";
 
 export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
   infrastrukturabfrageDto: InfrastrukturabfrageDto
@@ -70,4 +76,85 @@ function mapPlanungsRecht(
     }
   });
   return enumValue;
+}
+
+export function mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(
+  infrastrukturabfrageDto: InfrastrukturabfrageDto
+): InfrastrukturabfrageInBearbeitungSachbearbeitungDto {
+  const abfragevarianten = _.toArray(infrastrukturabfrageDto.abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      abfragevarianteSachbearbeitung: mapToAbfragevarianteSachbearbeitungDto(
+        abfragevariante.abfragevarianteSachbearbeitung
+      ),
+    } as AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto;
+  });
+
+  const abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrageDto.abfragevariantenSachbearbeitung).map(
+    (abfragevariante) => {
+      return {
+        id: abfragevariante.id,
+        version: abfragevariante.version,
+        abfragevariantenName: abfragevariante.abfragevariantenName as string,
+        abfragevariantenNr: abfragevariante.abfragevariantenNr as number,
+        planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht as AbfragevarianteDtoPlanungsrechtEnum),
+        realisierungBis: abfragevariante.realisierungBis as number,
+        realisierungVon: abfragevariante.realisierungVon as number,
+        sonderwohnformen: abfragevariante.sonderwohnformen as boolean,
+        anzahlWeBaurechtlichFestgesetzt: abfragevariante.anzahlWeBaurechtlichFestgesetzt,
+        anzahlWeBaurechtlichGenehmigt: abfragevariante.anzahlWeBaurechtlichGenehmigt,
+        bauabschnitte: abfragevariante.bauabschnitte,
+        gesamtanzahlWe: abfragevariante.gesamtanzahlWe,
+        geschossflaecheGenossenschaftlicheWohnungen: abfragevariante.geschossflaecheGenossenschaftlicheWohnungen,
+        geschossflaecheSeniorenwohnungen: abfragevariante.geschossflaecheSeniorenwohnungen,
+        geschossflaecheSonstiges: abfragevariante.geschossflaecheSonstiges,
+        geschossflaecheStudentenwohnungen: abfragevariante.geschossflaecheStudentenwohnungen,
+        geschossflaecheWohnen: abfragevariante.geschossflaecheWohnen,
+        geschossflaecheWohnenBestandswohnbaurecht: abfragevariante.geschossflaecheWohnenBestandswohnbaurecht,
+        geschossflaecheWohnenFestgesetzt: abfragevariante.geschossflaecheWohnenFestgesetzt,
+        geschossflaecheWohnenGenehmigt: abfragevariante.geschossflaecheWohnenGenehmigt,
+        geschossflaecheWohnenSoBoNursaechlich: abfragevariante.geschossflaecheWohnenSoBoNursaechlich,
+        abfragevarianteSachbearbeitung: mapToAbfragevarianteSachbearbeitungDto(
+          abfragevariante.abfragevarianteSachbearbeitung
+        ),
+      } as AbfragevarianteInBearbeitungSachbearbeitungDto;
+    }
+  );
+
+  return {
+    version: infrastrukturabfrageDto.version,
+    abfragevarianten: abfragevarianten,
+    abfragevariantenSachbearbeitung: abfragevariantenSachbearbeitung,
+  } as InfrastrukturabfrageInBearbeitungSachbearbeitungDto;
+}
+
+export function mapToBedarfsmeldungFachabteilungen(
+  bedarfsmeldungFachabteilungen: Array<BedarfsmeldungFachabteilungenDto> | undefined
+): Array<BedarfsmeldungFachabteilungenDto> {
+  return _.toArray(bedarfsmeldungFachabteilungen).map((bedarfmeldung) => {
+    return {
+      id: bedarfmeldung.id,
+      version: bedarfmeldung.version,
+      anzahlEinrichtungen: bedarfmeldung.anzahlEinrichtungen,
+      infrastruktureinrichtungTyp: bedarfmeldung.infrastruktureinrichtungTyp,
+      anzahlKinderkrippengruppen: bedarfmeldung.anzahlKinderkrippengruppen,
+      anzahlKindergartengruppen: bedarfmeldung.anzahlKindergartengruppen,
+      anzahlHortgruppen: bedarfmeldung.anzahlHortgruppen,
+      anzahlGrundschulzuege: bedarfmeldung.anzahlGrundschulzuege,
+    } as BedarfsmeldungFachabteilungenDto;
+  });
+}
+
+export function mapToAbfragevarianteSachbearbeitungDto(
+  abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto | undefined
+): AbfragevarianteSachbearbeitungDto {
+  return {
+    geschossflaecheWohnenPlanungsursaechlich: abfragevarianteSachbearbeitung?.geschossflaecheWohnenPlanungsursaechlich,
+    soBoNOrientierungswertJahr: abfragevarianteSachbearbeitung?.soBoNOrientierungswertJahr,
+    anmerkung: abfragevarianteSachbearbeitung?.anmerkung,
+    bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
+      abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate
+    ),
+  } as AbfragevarianteSachbearbeitungDto;
 }
