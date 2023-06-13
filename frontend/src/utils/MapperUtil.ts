@@ -12,6 +12,14 @@ import {
   AbfragevarianteInBearbeitungSachbearbeitungDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
+import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
+import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
+
+export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: FoerdermixStammModel): FoerdermixModel {
+  const foerdermix = new FoerdermixModel({});
+  foerdermix.foerderarten = foerdermixStammModel.foerdermix.foerderarten;
+  return foerdermix;
+}
 
 export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
   infrastrukturabfrageDto: InfrastrukturabfrageDto
