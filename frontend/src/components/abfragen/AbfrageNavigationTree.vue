@@ -64,7 +64,7 @@
               </v-btn>
               <v-btn
                 :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
-                :disabled="!isNavigationTreeEditable"
+                :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
                 icon
                 @click="deleteAbfragevariante(item)"
               >
@@ -82,7 +82,7 @@
             <v-btn
               v-else-if="isItemTypeOfBauabschnitt(item)"
               :id="'abfrage_navigation_tree_button_delete_bauabschnitt_' + item.id"
-              :disabled="!isNavigationTreeEditable"
+              :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBauabschnitt(item)"
             >
@@ -99,7 +99,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaugebiet(item)"
               :id="'abfrage_navigation_tree_button_delete_baugebiet_' + item.id"
-              :disabled="!isNavigationTreeEditable"
+              :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBaugebiet(item)"
             >
@@ -116,7 +116,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaurate(item)"
               :id="'abfrage_navigation_tree_button_delete_baurate_' + item.id"
-              :disabled="!isNavigationTreeEditable"
+              :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBaurate(item)"
             >
@@ -332,14 +332,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       : `${baurate.jahr}`;
   }
 
-  /**
-   * Wertet die Rolle der angemeldeten Person sowie den Status der Abfrage aus und gibt true zurück falls Änderungen durchgeführt werden dürfen.
-   */
-  get isNavigationTreeEditable(): boolean {
-    return this.isEditableByAbfrageerstellung();
-  }
-
-  public isEditable(anzeigeContextAbfragevariante: AnzeigeContext): boolean {
+  public isEditable(anzeigeContextAbfragevariante: AnzeigeContext | undefined): boolean {
     let isEditable = false;
     if (anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE) {
       isEditable = this.isEditableByAbfrageerstellung();
@@ -1071,7 +1064,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     return (
       this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
       // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
-      this.isNavigationTreeEditable &&
+      this.isEditable(abfrageTreeItem.contextAnzeigeAbfragevariante) &&
       // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
       (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
         !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
