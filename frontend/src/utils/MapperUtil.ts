@@ -1,3 +1,4 @@
+/*
 import {
   AbfrageerstellungAbfrageAngelegtDto,
   AbfrageerstellungAbfragevarianteAngelegtDto,
@@ -72,3 +73,4 @@ function mapPlanungsRecht(
   });
   return enumValue;
 }
+*/

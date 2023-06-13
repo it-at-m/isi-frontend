@@ -3,6 +3,10 @@ import {
   AbfrageDtoStandVorhabenEnum,
   StatusAbfrage,
   AbfragevarianteDto,
+  AbfragevarianteSachbearbeitungDto,
+  AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum,
+  BedarfsmeldungFachabteilungenDto,
+  BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
   AbfragevarianteDtoPlanungsrechtEnum,
   AdresseDto,
   BaurateDto,
@@ -57,6 +61,33 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     geschossflaecheSeniorenwohnungen: undefined,
     geschossflaecheSonstiges: undefined,
     bauabschnitte: [],
+    abfragevarianteSachbearbeitung: undefined,
+  };
+}
+
+/**
+ * AbfragevarianteSachbearbeitungDto
+ */
+export function createAbfragevarianteSachbearbeitungDto(): AbfragevarianteSachbearbeitungDto {
+  return {
+    geschossflaecheWohnenPlanungsursaechlich: undefined,
+    soBoNOrientierungswertJahr: undefined,
+    anmerkung: undefined,
+    bedarfsmeldungFachreferate: [],
+  };
+}
+
+/**
+ * BedarfsmeldungFachabteilungenDto
+ */
+export function createBedarfsmeldungFachabteilungenDto(): BedarfsmeldungFachabteilungenDto {
+  return {
+    anzahlEinrichtungen: undefined,
+    infrastruktureinrichtungTyp: BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    anzahlKinderkrippengruppen: undefined,
+    anzahlKindergartengruppen: undefined,
+    anzahlHortgruppen: undefined,
+    anzahlGrundschulzuege: undefined,
   };
 }
 

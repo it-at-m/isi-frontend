@@ -438,6 +438,7 @@ export default class Abfrage extends Mixins(
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
       this.abfrageWrapped.infrastrukturabfrage
     );
+    /*
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(
@@ -454,10 +455,11 @@ export default class Abfrage extends Mixins(
         ).then((dto) => {
           this.handleSuccess(dto);
         });
-      }
+              }
     } else {
       this.showWarningInInformationList(validationMessage);
     }
+    */
   }
 
   private handleSuccess(dto: InfrastrukturabfrageDto): void {

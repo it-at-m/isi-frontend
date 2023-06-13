@@ -46,8 +46,56 @@
       </v-row>
     </field-group-card>
     <field-group-card :card-title="bedarfsmeldungenFachreferateTitle">
-      <v-row justify="center"> <v-col cols="12"></v-col></v-row
-    ></field-group-card>
+      <v-row justify="center">
+        <v-col cols="12">
+          <v-container class="table">
+            <v-data-table
+              :headers="bedarfsmeldungenHeaders"
+              :items="abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate"
+              :items-per-page="10"
+              class="elevation-1"
+              hide-default-footer
+              @click:row="(item) => enterSelected(item)"
+              @change="formChanged"
+            >
+              <template #header="{ text }">
+                <span class="text-right">
+                  {{ text }}
+                </span>
+              </template>
+            </v-data-table>
+            <v-row class="mt-4">
+              <v-col
+                cols="12"
+                md="4"
+              />
+              <v-col
+                cols="12"
+                md="4"
+                class="text-center"
+              >
+                <v-btn
+                  class="text-wrap"
+                  block
+                  @click="bedarfsmeldungErfassen()"
+                  v-text="'Bedarfsmeldung erfassen'"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="4"
+              />
+            </v-row>
+          </v-container>
+        </v-col>
+      </v-row>
+    </field-group-card>
+    <bedarfsmeldung-fachabteilungen-dialog
+      id="bedarfsmeldung_fachabteilungen"
+      v-model="bedarfsmeldungFachabteilungenDialogOpen"
+      @bedarfsmeldungUebernehmen="bedarfsmeldungUebernehmen($event)"
+      @uebernahmeAbbrechen="bedarfsmeldungFachabteilungenDialogOpen = false"
+    />
   </div>
 </template>
 
@@ -61,8 +109,10 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import BedarfsmeldungFachabteilungenDialog from "@/components/abfragevarianten/BedarfsmeldungFachabteilungenDialog.vue";
+import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
 
-@Component({ components: { FieldGroupCard, NumField } })
+@Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachabteilungenDialog } })
 export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
@@ -79,5 +129,24 @@ export default class AbfragevarianteForm extends Mixins(
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
 
   private bedarfsmeldungenFachreferateTitle = "Bedarfsmeldungen der Fachreferate";
+
+  private bedarfsmeldungFachabteilungenDialogOpen = false;
+
+  private bedarfsmeldungenHeaders = [
+    {
+      text: "Anzahl Einrichtungen",
+      align: "start",
+      sortable: false,
+      value: "anzahlEinrichtungen",
+    },
+    { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp" },
+    { text: "Anzahl der Kinderkrippengruppen", value: "anzahlKindergruppen" },
+    { text: "Anzahl der Kindergartengruppen", value: "anzahlKindergartengruppen" },
+    { text: "Anzahl der Hortgruppen", value: "anzahlHortgruppen" },
+    { text: "Anzahl der Grundschulzüge", value: "anzahlGrundschulzuege" },
+    { text: "Aktionen", value: "actions", sortable: false },
+  ];
+
+  private bedarfsmeldungUebernehmen(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {}
 }
 </script>
