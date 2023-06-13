@@ -14,6 +14,12 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AbfragevarianteSachbearbeitungDto,
+    AbfragevarianteSachbearbeitungDtoFromJSON,
+    AbfragevarianteSachbearbeitungDtoFromJSONTyped,
+    AbfragevarianteSachbearbeitungDtoToJSON,
+} from './AbfragevarianteSachbearbeitungDto';
+import {
     BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
@@ -23,142 +29,148 @@ import {
 /**
  * 
  * @export
- * @interface AbfragevarianteAngelegtDto
+ * @interface AbfragevarianteInBearbeitungSachbearbeitungDto
  */
-export interface AbfragevarianteAngelegtDto {
+export interface AbfragevarianteInBearbeitungSachbearbeitungDto {
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     version?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     abfragevariantenNr: number;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     abfragevariantenName: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
-    planungsrecht: AbfragevarianteAngelegtDtoPlanungsrechtEnum;
+    planungsrecht: AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheWohnenGenehmigt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheWohnenFestgesetzt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheWohnenSoBoNursaechlich?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheWohnenBestandswohnbaurecht?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     gesamtanzahlWe?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     anzahlWeBaurechtlichGenehmigt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     anzahlWeBaurechtlichFestgesetzt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     realisierungVon: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     realisierungBis: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheGenossenschaftlicheWohnungen?: number;
     /**
      * 
      * @type {boolean}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     sonderwohnformen: boolean;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheStudentenwohnungen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheSeniorenwohnungen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     geschossflaecheSonstiges?: number;
     /**
      * 
      * @type {Array<BauabschnittDto>}
-     * @memberof AbfragevarianteAngelegtDto
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
     bauabschnitte?: Array<BauabschnittDto>;
+    /**
+     * 
+     * @type {AbfragevarianteSachbearbeitungDto}
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
+     */
+    abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto;
 }
 
 
 /**
  * @export
  */
-export const AbfragevarianteAngelegtDtoPlanungsrechtEnum = {
+export const AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum = {
     Unspecified: 'UNSPECIFIED',
     BplanParag30: 'BPLAN_PARAG_30',
     BplanParag12: 'BPLAN_PARAG_12',
@@ -172,14 +184,14 @@ export const AbfragevarianteAngelegtDtoPlanungsrechtEnum = {
     SonstigesParag165: 'SONSTIGES_PARAG_165',
     SonstigesParag246: 'SONSTIGES_PARAG_246'
 } as const;
-export type AbfragevarianteAngelegtDtoPlanungsrechtEnum = typeof AbfragevarianteAngelegtDtoPlanungsrechtEnum[keyof typeof AbfragevarianteAngelegtDtoPlanungsrechtEnum];
+export type AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum = typeof AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum[keyof typeof AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum];
 
 
-export function AbfragevarianteAngelegtDtoFromJSON(json: any): AbfragevarianteAngelegtDto {
-    return AbfragevarianteAngelegtDtoFromJSONTyped(json, false);
+export function AbfragevarianteInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfragevarianteInBearbeitungSachbearbeitungDto {
+    return AbfragevarianteInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
 }
 
-export function AbfragevarianteAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteAngelegtDto {
+export function AbfragevarianteInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteInBearbeitungSachbearbeitungDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -206,10 +218,11 @@ export function AbfragevarianteAngelegtDtoFromJSONTyped(json: any, ignoreDiscrim
         'geschossflaecheSeniorenwohnungen': !exists(json, 'geschossflaecheSeniorenwohnungen') ? undefined : json['geschossflaecheSeniorenwohnungen'],
         'geschossflaecheSonstiges': !exists(json, 'geschossflaecheSonstiges') ? undefined : json['geschossflaecheSonstiges'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
+        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoFromJSON(json['abfragevarianteSachbearbeitung']),
     };
 }
 
-export function AbfragevarianteAngelegtDtoToJSON(value?: AbfragevarianteAngelegtDto | null): any {
+export function AbfragevarianteInBearbeitungSachbearbeitungDtoToJSON(value?: AbfragevarianteInBearbeitungSachbearbeitungDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -239,6 +252,7 @@ export function AbfragevarianteAngelegtDtoToJSON(value?: AbfragevarianteAngelegt
         'geschossflaecheSeniorenwohnungen': value.geschossflaecheSeniorenwohnungen,
         'geschossflaecheSonstiges': value.geschossflaecheSonstiges,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoToJSON(value.abfragevarianteSachbearbeitung),
     };
 }
 

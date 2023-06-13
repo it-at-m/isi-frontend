@@ -1,6 +1,6 @@
 <template>
   <div>
-    <field-group-card>
+    <field-group-card :card-title="weitereBerechnungsgrundlagenTitle">
       <v-row justify="center">
         <v-col
           cols="12"
@@ -45,6 +45,9 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <field-group-card :card-title="bedarfsmeldungenFachreferateTitle">
+      <v-row justify="center"> <v-col cols="12"></v-col></v-row
+    ></field-group-card>
   </div>
 </template>
 
@@ -72,5 +75,9 @@ export default class AbfragevarianteForm extends Mixins(
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonOrientierungswertJahr"];
   }
+
+  private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
+
+  private bedarfsmeldungenFachreferateTitle = "Bedarfsmeldungen der Fachreferate";
 }
 </script>

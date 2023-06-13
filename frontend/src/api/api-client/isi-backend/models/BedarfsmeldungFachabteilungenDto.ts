@@ -51,6 +51,12 @@ export interface BedarfsmeldungFachabteilungenDto {
     anzahlEinrichtungen?: number;
     /**
      * 
+     * @type {string}
+     * @memberof BedarfsmeldungFachabteilungenDto
+     */
+    infrastruktureinrichtungTyp?: BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum;
+    /**
+     * 
      * @type {number}
      * @memberof BedarfsmeldungFachabteilungenDto
      */
@@ -75,6 +81,22 @@ export interface BedarfsmeldungFachabteilungenDto {
     anzahlGrundschulzuege?: number;
 }
 
+
+/**
+ * @export
+ */
+export const BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Kinderkrippe: 'KINDERKRIPPE',
+    Kindergarten: 'KINDERGARTEN',
+    GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
+    HausFuerKinder: 'HAUS_FUER_KINDER',
+    Grundschule: 'GRUNDSCHULE',
+    Mittelschule: 'MITTELSCHULE'
+} as const;
+export type BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum = typeof BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum[keyof typeof BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum];
+
+
 export function BedarfsmeldungFachabteilungenDtoFromJSON(json: any): BedarfsmeldungFachabteilungenDto {
     return BedarfsmeldungFachabteilungenDtoFromJSONTyped(json, false);
 }
@@ -90,6 +112,7 @@ export function BedarfsmeldungFachabteilungenDtoFromJSONTyped(json: any, ignoreD
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'anzahlEinrichtungen': !exists(json, 'anzahlEinrichtungen') ? undefined : json['anzahlEinrichtungen'],
+        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
         'anzahlKinderkrippengruppen': !exists(json, 'anzahlKinderkrippengruppen') ? undefined : json['anzahlKinderkrippengruppen'],
         'anzahlKindergartengruppen': !exists(json, 'anzahlKindergartengruppen') ? undefined : json['anzahlKindergartengruppen'],
         'anzahlHortgruppen': !exists(json, 'anzahlHortgruppen') ? undefined : json['anzahlHortgruppen'],
@@ -111,6 +134,7 @@ export function BedarfsmeldungFachabteilungenDtoToJSON(value?: BedarfsmeldungFac
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'anzahlEinrichtungen': value.anzahlEinrichtungen,
+        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
         'anzahlKinderkrippengruppen': value.anzahlKinderkrippengruppen,
         'anzahlKindergartengruppen': value.anzahlKindergartengruppen,
         'anzahlHortgruppen': value.anzahlHortgruppen,
