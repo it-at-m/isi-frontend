@@ -369,7 +369,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   }
 
   private createAbfragevariantenTreeItems(parentTreeItem: AbfrageTreeItem, abfrage: InfrastrukturabfrageDto) {
-    abfrage.abfragevarianten.forEach((abfragevariante) => {
+    _.toArray(abfrage.abfragevarianten).forEach((abfragevariante) => {
       let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(
         this.treeItemKey++,
         parentTreeItem,
@@ -381,7 +381,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     });
     if (
       this.isNavigationTreeEditable &&
-      abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
+      _.toArray(abfrage.abfragevarianten).length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
     ) {
       parentTreeItem.children.push(this.createAddAbfragevarianteTreeItem(this.treeItemKey++, parentTreeItem, abfrage));
     }
