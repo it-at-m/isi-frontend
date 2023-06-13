@@ -299,9 +299,9 @@ import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
 
-export const enum BearbeitungContext {
-  ABFRAGEERSTELLUNG_SACHBEARBEITUNG = "ABFRAGEERSTELLUNG_SACHBEARBEITUNG",
-  EXKLUSIV_SACHBEARBEITUNG = "EXKLUSIV_SACHBEARBEITUNG",
+export const enum AnzeigeContext {
+  ABFRAGEVARIANTE = "ABFRAGEVARIANTE",
+  ABFRAGEVARIANTE_SACHBEARBEITUNG = "ABFRAGEVARIANTE_SACHBEARBEITUNG",
 }
 
 @Component({ components: { FieldGroupCard, NumField } })
@@ -317,8 +317,8 @@ export default class AbfragevarianteForm extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
-  @Prop({ type: String, default: BearbeitungContext.ABFRAGEERSTELLUNG_SACHBEARBEITUNG })
-  private readonly context!: BearbeitungContext;
+  @Prop({ type: String, default: AnzeigeContext.ABFRAGEVARIANTE })
+  private readonly context!: AnzeigeContext;
 
   private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
 
@@ -326,9 +326,9 @@ export default class AbfragevarianteForm extends Mixins(
 
   get isEditable(): boolean {
     let isEditable = false;
-    if (this.context === BearbeitungContext.ABFRAGEERSTELLUNG_SACHBEARBEITUNG) {
+    if (this.context === AnzeigeContext.ABFRAGEVARIANTE) {
       isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.context === BearbeitungContext.EXKLUSIV_SACHBEARBEITUNG) {
+    } else if (this.context === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
       isEditable = this.isEditableBySachbearbeitung();
     }
     return isEditable;
