@@ -1,12 +1,14 @@
 import {
   AbfrageApi,
-  AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+  InfrastrukturabfrageAngelegtDto,
   CreateInfrastrukturabfrageRequest,
   DeleteInfrastrukturabfrageByIdRequest,
   GetInfrastrukturabfrageByIdRequest,
   InfrastrukturabfrageDto,
   PatchAbfrageAngelegtRequest,
-  PutAbfragevarianteRelevantRequest,
+  PutChangeAbfragevarianteRelevantRequest,
+  InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  PatchAbfrageInBearbeitungSachbearbeitungRequest,
 } from "@/api/api-client/isi-backend";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -23,11 +25,11 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   }
 
   createInfrastrukturabfrage(
-    dto: AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+    dto: InfrastrukturabfrageAngelegtDto,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: CreateInfrastrukturabfrageRequest = {
-      abfrageerstellungInfrastrukturabfrageAngelegtDto: dto,
+      infrastrukturabfrageAngelegtDto: dto,
     };
     return this.abfrageApi
       .createInfrastrukturabfrage(requestObject, RequestUtils.getPOSTConfig())
@@ -41,16 +43,36 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   }
 
   patchAbfrageAngelegt(
-    dto: AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+    dto: InfrastrukturabfrageAngelegtDto,
     id: string,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageAngelegtRequest = {
-      abfrageerstellungInfrastrukturabfrageAngelegtDto: dto,
+      infrastrukturabfrageAngelegtDto: dto,
       id: id,
     };
     return this.abfrageApi
       .patchAbfrageAngelegt(requestObject, RequestUtils.getPATCHConfig())
+      .then((response) => {
+        this.resetDirty();
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  patchAbfrageInBearbeitungSachbearbeitung(
+    dto: InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+    id: string,
+    showInInformationList: boolean
+  ): Promise<InfrastrukturabfrageDto> {
+    const requestObject: PatchAbfrageInBearbeitungSachbearbeitungRequest = {
+      infrastrukturabfrageInBearbeitungSachbearbeitungDto: dto,
+      id: id,
+    };
+    return this.abfrageApi
+      .patchAbfrageInBearbeitungSachbearbeitung(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
         this.resetDirty();
         return response;
@@ -65,7 +87,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     abfragevarianteId: string,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
-    const requestObject: PutAbfragevarianteRelevantRequest = {
+    const requestObject: PutChangeAbfragevarianteRelevantRequest = {
       abfrageId: abfrageId,
       abfragevarianteId: abfragevarianteId,
     };

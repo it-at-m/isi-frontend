@@ -4,7 +4,6 @@ import {
   StatusAbfrage,
   AbfragevarianteDto,
   AbfragevarianteSachbearbeitungDto,
-  AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum,
   BedarfsmeldungFachabteilungenDto,
   BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
   AbfragevarianteDtoPlanungsrechtEnum,
