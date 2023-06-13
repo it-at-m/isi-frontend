@@ -298,11 +298,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
-
-export const enum AnzeigeContext {
-  ABFRAGEVARIANTE = "ABFRAGEVARIANTE",
-  ABFRAGEVARIANTE_SACHBEARBEITUNG = "ABFRAGEVARIANTE_SACHBEARBEITUNG",
-}
+import { AnzeigeContext } from "@/views/Abfrage.vue";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(

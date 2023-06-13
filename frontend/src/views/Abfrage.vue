@@ -270,6 +270,13 @@ import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
+
+export const enum AnzeigeContext {
+  UNDEFINED = "UNDEFINED",
+  ABFRAGEVARIANTE = "ABFRAGEVARIANTE",
+  ABFRAGEVARIANTE_SACHBEARBEITUNG = "ABFRAGEVARIANTE_SACHBEARBEITUNG",
+}
+
 @Component({
   methods: { containsNotAllowedDokument },
   components: {

@@ -142,7 +142,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AnzeigeContext } from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
+import { AnzeigeContext } from "@/views/Abfrage.vue";
 
 enum AbfrageTreeItemType {
   ABFRAGE,
@@ -381,7 +381,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAbfrage,
       AbfrageTreeItemType.ABFRAGE,
       abfrage,
-      undefined,
+      AnzeigeContext.UNDEFINED,
       undefined,
       undefined,
       undefined,
@@ -400,7 +400,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
         this.treeItemKey++,
         parentTreeItem,
         abfrage,
-        AnzeigeContext.ABFRAGEVARIANTE,
+        contextAnzeigeAbfragevariante,
         abfragevariante
       );
       this.createBauabschnitteTreeItems(
@@ -420,7 +420,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
           this.treeItemKey++,
           parentTreeItem,
           abfrage,
-          AnzeigeContext.ABFRAGEVARIANTE
+          contextAnzeigeAbfragevariante
         )
       );
     }
@@ -868,7 +868,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     baugebiet: BaugebietDto | undefined,
     baurate: BaurateDto | undefined
   ) {
-    const abfrageTreeItem: AbfrageTreeItem = {
+    return {
       id: id,
       parentTreeItem: parentTreeItem,
       name: name,
@@ -882,7 +882,6 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       baurate: baurate,
       changed: false,
     } as AbfrageTreeItem;
-    return abfrageTreeItem;
   }
 
   /**
