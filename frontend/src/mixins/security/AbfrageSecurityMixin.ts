@@ -1,6 +1,6 @@
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
-import { Component, Mixins, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import _ from "lodash";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 

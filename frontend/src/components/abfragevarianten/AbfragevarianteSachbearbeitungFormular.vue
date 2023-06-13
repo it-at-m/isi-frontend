@@ -147,6 +147,8 @@ export default class AbfragevarianteForm extends Mixins(
     { text: "Aktionen", value: "actions", sortable: false },
   ];
 
-  private bedarfsmeldungUebernehmen(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {}
+  private bedarfsmeldungUebernehmen(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {
+    bedarfsmeldung.anzahlEinrichtungen = undefined;
+  }
 }
 </script>
