@@ -1,15 +1,15 @@
 import {
-  AbfrageerstellungAbfrageAngelegtDto,
-  AbfrageerstellungAbfragevarianteAngelegtDto,
-  AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum,
-  AbfrageerstellungInfrastrukturabfrageAngelegtDto,
+  AbfrageAngelegtDto,
+  AbfragevarianteAngelegtDto,
+  AbfragevarianteAngelegtDtoPlanungsrechtEnum,
+  InfrastrukturabfrageAngelegtDto,
   AbfragevarianteDtoPlanungsrechtEnum,
   InfrastrukturabfrageDto,
 } from "@/api/api-client/isi-backend";
 
 export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
   infrastrukturabfrageDto: InfrastrukturabfrageDto
-): AbfrageerstellungInfrastrukturabfrageAngelegtDto {
+): InfrastrukturabfrageAngelegtDto {
   const abfragevarianten = infrastrukturabfrageDto.abfragevarianten?.map((abfragevariante) => {
     return {
       id: abfragevariante.id,
@@ -33,7 +33,7 @@ export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
       geschossflaecheWohnenFestgesetzt: abfragevariante.geschossflaecheWohnenFestgesetzt,
       geschossflaecheWohnenGenehmigt: abfragevariante.geschossflaecheWohnenGenehmigt,
       geschossflaecheWohnenSoBoNursaechlich: abfragevariante.geschossflaecheWohnenSoBoNursaechlich,
-    } as AbfrageerstellungAbfragevarianteAngelegtDto;
+    } as AbfragevarianteAngelegtDto;
   });
 
   return {
@@ -48,7 +48,7 @@ export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
       bauvorhaben: infrastrukturabfrageDto.abfrage?.bauvorhaben,
       bebauungsplannummer: infrastrukturabfrageDto.abfrage?.bebauungsplannummer,
       dokumente: infrastrukturabfrageDto.abfrage?.dokumente,
-    } as AbfrageerstellungAbfrageAngelegtDto,
+    } as AbfrageAngelegtDto,
     abfragevarianten: abfragevarianten,
     offiziellerVerfahrensschritt: infrastrukturabfrageDto.offiziellerVerfahrensschritt,
     sobonRelevant: infrastrukturabfrageDto.sobonRelevant,
@@ -57,17 +57,16 @@ export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
     displayName: infrastrukturabfrageDto.displayName,
     id: infrastrukturabfrageDto.id,
     version: infrastrukturabfrageDto.version,
-  } as AbfrageerstellungInfrastrukturabfrageAngelegtDto;
+  } as InfrastrukturabfrageAngelegtDto;
 }
 
 function mapPlanungsRecht(
   abfragevariantePlanungsRecht: AbfragevarianteDtoPlanungsrechtEnum
-): AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum {
-  let enumValue: AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum =
-    AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum.Unspecified;
-  Object.values(AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum).forEach((value, index) => {
+): AbfragevarianteAngelegtDtoPlanungsrechtEnum {
+  let enumValue: AbfragevarianteAngelegtDtoPlanungsrechtEnum = AbfragevarianteAngelegtDtoPlanungsrechtEnum.Unspecified;
+  Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum).forEach((value, index) => {
     if (value === abfragevariantePlanungsRecht) {
-      enumValue = Object.values(AbfrageerstellungAbfragevarianteAngelegtDtoPlanungsrechtEnum)[index];
+      enumValue = Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum)[index];
     }
   });
   return enumValue;
