@@ -21,7 +21,7 @@ export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: Foerde
   return foerdermix;
 }
 
-export function mapToAbfrageerstellungInfrastrukturabfrageAngelegt(
+export function mapToInfrastrukturabfrageAngelegt(
   infrastrukturabfrageDto: InfrastrukturabfrageDto
 ): InfrastrukturabfrageAngelegtDto {
   const abfragevarianten = infrastrukturabfrageDto.abfragevarianten?.map((abfragevariante) => {

@@ -262,7 +262,10 @@ import {
   createTechnicalBauabschnittDto,
   createTechnicalBaugebietDto,
 } from "@/utils/Factories";
-import { mapToAbfrageerstellungInfrastrukturabfrageAngelegt } from "@/utils/MapperUtil";
+import {
+  mapToInfrastrukturabfrageAngelegt,
+  mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+} from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
@@ -441,14 +444,22 @@ export default class Abfrage extends Mixins(
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(
-          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          mapToInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
           true
         ).then((dto) => {
           this.handleSuccess(dto);
         });
       } else if (this.isEditableByAbfrageerstellung()) {
         await this.patchAbfrageAngelegt(
-          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          mapToInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          this.abfrageWrapped.infrastrukturabfrage.id as string,
+          true
+        ).then((dto) => {
+          this.handleSuccess(dto);
+        });
+      } else if (this.isEditableBySachbearbeitung()) {
+        await this.patchAbfrageInBearbeitungSachbearbeitung(
+          mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrageWrapped.infrastrukturabfrage),
           this.abfrageWrapped.infrastrukturabfrage.id as string,
           true
         ).then((dto) => {
