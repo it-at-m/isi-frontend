@@ -320,6 +320,10 @@ export default class AbfragevarianteForm extends Mixins(
   @Prop({ type: String, default: BearbeitungContext.ABFRAGEVARIANTE_ABFRAGEERSTELLUNG_SACHBEARBEITUNG })
   private readonly context!: BearbeitungContext;
 
+  private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
+
+  private anzahlWECardTitle = "Anzahl Wohneinheiten";
+
   get displayMode(): DisplayMode {
     return this.mode;
   }
@@ -342,10 +346,6 @@ export default class AbfragevarianteForm extends Mixins(
         this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
     return pflichtfeld;
   }
-
-  private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
-
-  private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
   get planungsrechtList(): LookupEntryDto[] {
     return this.$store.getters["lookup/planungsrecht"];
