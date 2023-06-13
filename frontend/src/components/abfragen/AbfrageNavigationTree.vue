@@ -380,8 +380,25 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       parentTreeItem.children.push(abfragevarianteTreeItem);
     });
     if (
-      this.isNavigationTreeEditable &&
+      this.isEditableByAbfrageerstellung() &&
       _.toArray(abfrage.abfragevarianten).length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
+    ) {
+      parentTreeItem.children.push(this.createAddAbfragevarianteTreeItem(this.treeItemKey++, parentTreeItem, abfrage));
+    }
+
+    _.toArray(abfrage.abfragevariantenSachbearbeitung).forEach((abfragevariante) => {
+      let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(
+        this.treeItemKey++,
+        parentTreeItem,
+        abfrage,
+        abfragevariante
+      );
+      this.createBauabschnitteTreeItems(abfragevarianteTreeItem, abfrage, abfragevariante);
+      parentTreeItem.children.push(abfragevarianteTreeItem);
+    });
+    if (
+      this.isEditableBySachbearbeitung() &&
+      _.toArray(abfrage.abfragevariantenSachbearbeitung).length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
     ) {
       parentTreeItem.children.push(this.createAddAbfragevarianteTreeItem(this.treeItemKey++, parentTreeItem, abfrage));
     }
