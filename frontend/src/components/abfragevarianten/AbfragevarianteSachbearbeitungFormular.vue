@@ -93,8 +93,8 @@
     <bedarfsmeldung-fachabteilungen-dialog
       id="bedarfsmeldung_fachabteilungen"
       v-model="bedarfsmeldungFachabteilungenDialogOpen"
-      @bedarfsmeldungUebernehmen="bedarfsmeldungUebernehmen($event)"
-      @uebernahmeAbbrechen="bedarfsmeldungFachabteilungenDialogOpen = false"
+      @bedarfsmeldung-uebernehmen="bedarfsmeldungUebernehmen($event)"
+      @bedarfsmeldung-abbrechen="bedarfsmeldungAbbrechen()"
     />
   </div>
 </template>
@@ -111,6 +111,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import BedarfsmeldungFachabteilungenDialog from "@/components/abfragevarianten/BedarfsmeldungFachabteilungenDialog.vue";
 import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
+import { createBedarfsmeldungFachabteilungenDto } from "@/utils/Factories";
 
 @Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachabteilungenDialog } })
 export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
@@ -132,23 +133,35 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
 
   private bedarfsmeldungFachabteilungenDialogOpen = false;
 
+  private currentBedarfsmeldung = createBedarfsmeldungFachabteilungenDto();
+
   private bedarfsmeldungenHeaders = [
     {
-      text: "Anzahl Einrichtungen",
+      text: "Anz. Einrichtungen",
       align: "start",
       sortable: false,
       value: "anzahlEinrichtungen",
     },
     { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp" },
-    { text: "Anzahl der Kinderkrippengruppen", value: "anzahlKindergruppen" },
-    { text: "Anzahl der Kindergartengruppen", value: "anzahlKindergartengruppen" },
-    { text: "Anzahl der Hortgruppen", value: "anzahlHortgruppen" },
-    { text: "Anzahl der Grundschulzüge", value: "anzahlGrundschulzuege" },
+    { text: "Anz. der Kinderkrippengruppen", value: "anzahlKindergruppen" },
+    { text: "Anz. der Kindergartengruppen", value: "anzahlKindergartengruppen" },
+    { text: "Anz. der Hortgruppen", value: "anzahlHortgruppen" },
+    { text: "Anz. der Grundschulzüge", value: "anzahlGrundschulzuege" },
     { text: "Aktionen", value: "actions", sortable: false },
   ];
 
+  private bedarfsmeldungErfassen(): void {
+    this.bedarfsmeldungFachabteilungenDialogOpen = true;
+  }
+
   private bedarfsmeldungUebernehmen(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {
-    bedarfsmeldung.anzahlEinrichtungen = undefined;
+    console.log("bedarfsmeldungUebernehmen 2");
+    this.bedarfsmeldungFachabteilungenDialogOpen = false;
+  }
+
+  private bedarfsmeldungAbbrechen(): void {
+    console.log("uebernahmeAbbrechen 2");
+    this.bedarfsmeldungFachabteilungenDialogOpen = false;
   }
 }
 </script>

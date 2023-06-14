@@ -98,7 +98,7 @@
           id="bedarfsmeldung_abbrechen_button"
           class="text-wrap"
           text
-          @click="uebernahmeAbbrechen"
+          @click="bedarfsmeldungAbbrechen"
           v-text="'Abbrechen'"
         />
         <v-btn
@@ -130,11 +130,13 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SaveLeaveMixin
 
   @Emit()
   private bedarfsmeldungUebernehmen(): BedarfsmeldungFachabteilungenModel {
+    console.log("bedarfsmeldungUebernehmen 1");
     return this.bedarfsmeldung;
   }
 
   @Emit()
-  private uebernahmeAbbrechen(): void {
+  private bedarfsmeldungAbbrechen(): void {
+    console.log("bedarfsmeldungAbbrechen 1");
     return;
   }
 }
