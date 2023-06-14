@@ -652,11 +652,11 @@ export default class Abfrage extends Mixins(
       this.selectedAbfragevariante.geschossflaecheWohnen,
       true
     ).then((bauraten: Array<BaurateDto>) => {
-      const technicalBaugebiet = createTechnicalBaugebietDto();
-      const technicalBauabschnitt = createTechnicalBauabschnittDto();
-      technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
-      technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
-      this.selectedAbfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+      const technicalBaugebiet = this.getTechnicalBaugebiet(this.selectedAbfragevariante);
+      if (!_.isNil(technicalBaugebiet)) {
+        technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+        this.selectedAbfragevariante.bauabschnitte[0].baugebiete = [technicalBaugebiet];
+      }
       this.formChanged();
     });
   }
@@ -936,6 +936,7 @@ export default class Abfrage extends Mixins(
       }
 
       if (baugebietDto.technical) {
+        baugebietDto.realisierungVon = abfragevariante.realisierungVon;
         return new BaugebietModel(baugebietDto);
       }
     }
