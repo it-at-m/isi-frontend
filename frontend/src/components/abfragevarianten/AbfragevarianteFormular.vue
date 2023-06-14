@@ -37,7 +37,7 @@
           <v-select
             id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             :items="planungsrechtList"
             item-value="key"
