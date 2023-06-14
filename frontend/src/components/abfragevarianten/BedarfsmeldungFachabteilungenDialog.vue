@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :value="bedarfsmeldung"
+    :value="showBedarfsmeldungDialog"
     persistent
     width="60%"
   >
@@ -20,6 +20,7 @@
             class="mx-3"
             label="Anzahl der Einrichtungen einer Größe"
             integer
+            required
           />
         </v-col>
         <v-col
@@ -114,7 +115,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Mixins, VModel } from "vue-property-decorator";
+import { Component, Emit, Mixins, VModel, Prop } from "vue-property-decorator";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -122,7 +123,10 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component
 export default class BauvorhabenDataTransferDialog extends Mixins(SaveLeaveMixin, FieldValidationRulesMixin) {
-  @VModel({ type: Boolean }) bedarfsmeldung!: BedarfsmeldungFachabteilungenModel;
+  @VModel({ type: BedarfsmeldungFachabteilungenModel }) bedarfsmeldung!: BedarfsmeldungFachabteilungenModel;
+
+  @Prop({ type: Boolean, default: false })
+  private showBedarfsmeldungDialog!: boolean;
 
   get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
     return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
@@ -130,13 +134,11 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SaveLeaveMixin
 
   @Emit()
   private bedarfsmeldungUebernehmen(): BedarfsmeldungFachabteilungenModel {
-    console.log("bedarfsmeldungUebernehmen 1");
     return this.bedarfsmeldung;
   }
 
   @Emit()
   private bedarfsmeldungAbbrechen(): void {
-    console.log("bedarfsmeldungAbbrechen 1");
     return;
   }
 }

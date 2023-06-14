@@ -52,16 +52,45 @@
             <v-data-table
               :headers="bedarfsmeldungenHeaders"
               :items="abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate"
-              :items-per-page="10"
+              :items-per-page="5"
               class="elevation-1"
-              hide-default-footer
-              @click:row="(item) => enterSelected(item)"
               @change="formChanged"
             >
               <template #header="{ text }">
-                <span class="text-right">
-                  {{ text }}
-                </span>
+                <span class="text-right">{{ text }}</span>
+              </template>
+              <template #body="{ items }">
+                <tbody>
+                  <tr
+                    v-for="(item, index) in items"
+                    :key="index"
+                  >
+                    <td class="text-right">{{ item.anzahlEinrichtungen }}</td>
+                    <td class="text-left">
+                      {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
+                    </td>
+                    <td class="text-right">{{ item.anzahlKinderkrippengruppen }}</td>
+                    <td class="text-right">{{ item.anzahlKindergartengruppen }}</td>
+                    <td class="text-right">{{ item.anzahlHortgruppen }}</td>
+                    <td class="text-right">{{ item.anzahlGrundschulzuege }}</td>
+                    <td>
+                      <v-btn
+                        :id="'bedarfsmeldung_listitem_bearbeiten' + index"
+                        icon
+                        @click="editBedarfsmeldung(item, index)"
+                      >
+                        <v-icon> mdi-pencil-outline </v-icon>
+                      </v-btn>
+                      <v-btn
+                        :id="'bedarfsmeldung_listitem_loeschen' + index"
+                        icon
+                        @click="deleteBedarfsmeldung(index)"
+                      >
+                        <v-icon> mdi-delete</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
               </template>
             </v-data-table>
             <v-row class="mt-4">
@@ -92,7 +121,8 @@
     </field-group-card>
     <bedarfsmeldung-fachabteilungen-dialog
       id="bedarfsmeldung_fachabteilungen"
-      v-model="bedarfsmeldungFachabteilungenDialogOpen"
+      v-model="currentBedarfsmeldung"
+      :show-bedarfsmeldung-dialog="bedarfsmeldungFachabteilungenDialogOpen"
       @bedarfsmeldung-uebernehmen="bedarfsmeldungUebernehmen($event)"
       @bedarfsmeldung-abbrechen="bedarfsmeldungAbbrechen()"
     />
@@ -101,7 +131,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import { BedarfsmeldungFachabteilungenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import AbfragevarianteSachbearbeitungModel from "@/types/model/abfragevariante/AbfragevarianteSachbearbeitungModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -112,6 +142,8 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import BedarfsmeldungFachabteilungenDialog from "@/components/abfragevarianten/BedarfsmeldungFachabteilungenDialog.vue";
 import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
 import { createBedarfsmeldungFachabteilungenDto } from "@/utils/Factories";
+import _ from "lodash";
+import DisplayMode from "@/types/common/DisplayMode";
 
 @Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachabteilungenDialog } })
 export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
@@ -135,33 +167,79 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
 
   private currentBedarfsmeldung = createBedarfsmeldungFachabteilungenDto();
 
+  private displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
+
+  private selectedItemIndex = -1;
+
   private bedarfsmeldungenHeaders = [
-    {
-      text: "Anz. Einrichtungen",
-      align: "start",
-      sortable: false,
-      value: "anzahlEinrichtungen",
-    },
+    { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen" },
     { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp" },
-    { text: "Anz. der Kinderkrippengruppen", value: "anzahlKindergruppen" },
-    { text: "Anz. der Kindergartengruppen", value: "anzahlKindergartengruppen" },
-    { text: "Anz. der Hortgruppen", value: "anzahlHortgruppen" },
-    { text: "Anz. der Grundschulzüge", value: "anzahlGrundschulzuege" },
+    { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen" },
+    { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen" },
+    { text: "Anz. Hortgruppen", value: "anzahlHortgruppen" },
+    { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege" },
     { text: "Aktionen", value: "actions", sortable: false },
   ];
 
+  /**
+   * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
+   *
+   * @param key für welchen der Wert aus der Liste geholt werden soll.
+   * @param list mit den Schlüssel-Wert-Paaren.
+   * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
+   */
+  private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+    return !_.isUndefined(list) && !_.isNil(key)
+      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+      : key;
+  }
+
+  get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
+  }
+
   private bedarfsmeldungErfassen(): void {
+    this.currentBedarfsmeldung = new BedarfsmeldungFachabteilungenModel(createBedarfsmeldungFachabteilungenDto());
+    this.displayModeBedarfsmeldung = DisplayMode.NEU;
+    this.bedarfsmeldungFachabteilungenDialogOpen = true;
+  }
+
+  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel, itemIndex: number): void {
+    this.selectedItemIndex = itemIndex;
+    this.currentBedarfsmeldung = _.clone(bedarfsmeldung);
+    this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
   }
 
   private bedarfsmeldungUebernehmen(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {
-    console.log("bedarfsmeldungUebernehmen 2");
-    this.bedarfsmeldungFachabteilungenDialogOpen = false;
+    if (this.displayModeBedarfsmeldung === DisplayMode.NEU) {
+      if (_.isNil(this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)) {
+        this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate = new Array<BedarfsmeldungFachabteilungenDto>();
+      }
+      this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate.push(bedarfsmeldung);
+    } else {
+      this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate?.splice(
+        this.selectedItemIndex,
+        1,
+        this.currentBedarfsmeldung
+      );
+    }
+    this.clearBedarfsmeldungDialog();
   }
 
   private bedarfsmeldungAbbrechen(): void {
-    console.log("uebernahmeAbbrechen 2");
+    this.clearBedarfsmeldungDialog();
+  }
+
+  private clearBedarfsmeldungDialog(): void {
     this.bedarfsmeldungFachabteilungenDialogOpen = false;
+    this.displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
+    this.currentBedarfsmeldung = createBedarfsmeldungFachabteilungenDto();
+    this.selectedItemIndex = -1;
+  }
+
+  private deleteBedarfsmeldung(itemIndex: number) {
+    this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate?.splice(itemIndex, 1);
   }
 }
 </script>
