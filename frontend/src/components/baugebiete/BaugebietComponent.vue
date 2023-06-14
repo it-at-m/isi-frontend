@@ -182,7 +182,6 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AnzeigeContext } from "@/views/Abfrage.vue";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import {

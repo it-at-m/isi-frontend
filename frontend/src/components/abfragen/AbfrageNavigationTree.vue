@@ -64,7 +64,7 @@
               </v-btn>
               <v-btn
                 :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
-                :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
+                :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
                 icon
                 @click="deleteAbfragevariante(item)"
               >
@@ -82,7 +82,7 @@
             <v-btn
               v-else-if="isItemTypeOfBauabschnitt(item)"
               :id="'abfrage_navigation_tree_button_delete_bauabschnitt_' + item.id"
-              :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
+              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBauabschnitt(item)"
             >
@@ -99,7 +99,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaugebiet(item)"
               :id="'abfrage_navigation_tree_button_delete_baugebiet_' + item.id"
-              :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
+              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBaugebiet(item)"
             >
@@ -116,7 +116,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaurate(item)"
               :id="'abfrage_navigation_tree_button_delete_baurate_' + item.id"
-              :disabled="!isEditable(item.contextAnzeigeAbfragevariante)"
+              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBaurate(item)"
             >
@@ -142,7 +142,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AnzeigeContext } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 enum AbfrageTreeItemType {
   ABFRAGE,
@@ -175,7 +175,7 @@ export interface AbfrageTreeItem {
   /**
    * Der Kontext in welchem die Abfragevariante angezeigt wird.
    */
-  contextAnzeigeAbfragevariante: AnzeigeContext | undefined;
+  contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined;
 
   /**
    * Referenziert die in der Treeview darzustellende Abfragevariante.
@@ -352,13 +352,13 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       abfrageRootTreeItem,
       abfrage,
       abfrage.abfragevarianten,
-      AnzeigeContext.ABFRAGEVARIANTE
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
     );
     this.createAbfragevariantenTreeItems(
       abfrageRootTreeItem,
       abfrage,
       abfrage.abfragevariantenSachbearbeitung,
-      AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
     );
 
     return abfrageTreeItems;
@@ -371,7 +371,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAbfrage,
       AbfrageTreeItemType.ABFRAGE,
       abfrage,
-      AnzeigeContext.UNDEFINED,
+      AnzeigeContextAbfragevariante.UNDEFINED,
       undefined,
       undefined,
       undefined,
@@ -383,7 +383,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     abfragevarianten: Array<AbfragevarianteDto> | undefined,
-    contextAnzeigeAbfragevariante: AnzeigeContext
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
   ) {
     _.toArray(abfragevarianten).forEach((abfragevariante) => {
       let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(
@@ -402,7 +402,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       parentTreeItem.children.push(abfragevarianteTreeItem);
     });
     if (
-      this.isEditable(contextAnzeigeAbfragevariante) &&
+      this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante) &&
       _.toArray(abfragevarianten).length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
     ) {
       parentTreeItem.children.push(
@@ -419,11 +419,11 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   private createBauabschnitteTreeItems(
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     if (_.isNil(abfragevariante.bauabschnitte) || abfragevariante.bauabschnitte.length === 0) {
-      if (this.isEditable(contextAnzeigeAbfragevariante)) {
+      if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
         // Fall 1: Keine Bauabschnitte vorhanden -> Bauabschnitt, Baugebiet oder Baurate kann erstellt werden
         parentTreeItem.children.push(
           this.createAddBauabschnittTreeItem(
@@ -475,7 +475,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
             bauabschnitt
           );
         });
-        if (this.isEditable(contextAnzeigeAbfragevariante)) {
+        if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
           parentTreeItem.children.push(
             this.createAddBauabschnittTreeItem(
               this.treeItemKey++,
@@ -502,7 +502,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   private createBaugebieteTreeItems(
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
@@ -542,7 +542,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
             baugebiet
           );
         });
-        if (this.isEditable(contextAnzeigeAbfragevariante)) {
+        if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
           parentTreeItem.children.push(
             this.createAddBaugebietTreeItem(
               this.treeItemKey++,
@@ -571,7 +571,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   private createBauratenTreeItems(
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
@@ -589,7 +589,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       );
       parentTreeItem.children.push(baurateTreeItem);
     });
-    if (this.isEditable(contextAnzeigeAbfragevariante)) {
+    if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
       parentTreeItem.children.push(
         this.createAddBaurateTreeItem(
           this.treeItemKey++,
@@ -608,7 +608,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    conextAnzeigeAbfragevariante: AnzeigeContext,
+    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     const item = this.createAbfrageTreeItem(
@@ -635,7 +635,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    conextAnzeigeAbfragevariante: AnzeigeContext
+    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
   ) {
     return this.createAbfrageTreeItem(
       id,
@@ -655,7 +655,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
@@ -683,7 +683,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
@@ -704,7 +704,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
@@ -733,7 +733,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
@@ -755,7 +755,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
@@ -776,7 +776,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto,
@@ -806,7 +806,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
@@ -829,7 +829,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContext,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
@@ -852,7 +852,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     name: string,
     type: AbfrageTreeItemType,
     abfrage: InfrastrukturabfrageDto | undefined,
-    contextAnzeigeAbfragevariante: AnzeigeContext | undefined,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined,
     abfragevariante: AbfragevarianteDto | undefined,
     bauabschnitt: BauabschnittDto | undefined,
     baugebiet: BaugebietDto | undefined,
@@ -1053,7 +1053,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     return (
       this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
       // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
-      this.isEditable(abfrageTreeItem.contextAnzeigeAbfragevariante) &&
+      this.isEditableWithAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante) &&
       // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
       (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
         !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&

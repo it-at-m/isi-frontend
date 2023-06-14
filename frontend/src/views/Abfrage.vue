@@ -12,7 +12,7 @@
           v-else-if="isAbfragevarianteFormularOpen"
           id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
-          :is-editable="isEditable(anzeigeContextAbfragevariante)"
+          :is-editable="isEditable"
           :mode="modeAbfragevariante"
           :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
@@ -20,14 +20,14 @@
           v-else-if="isBauabschnittFormularOpen"
           id="bauabschnitt_component"
           v-model="selectedBauabschnitt"
-          :is-editable="isEditable(anzeigeContextAbfragevariante)"
+          :is-editable="isEditable"
           :mode="modeBauabschnitt"
         />
         <baugebiet-component
           v-else-if="isBaugebietFormularOpen"
           id="baugebiet_component"
           v-model="selectedBaugebiet"
-          :is-editable="isEditable(anzeigeContextAbfragevariante)"
+          :is-editable="isEditable"
           :mode="modeBaugebiet"
           :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
         />
@@ -35,7 +35,7 @@
           v-else-if="isBaurateFormularOpen"
           id="baurate_component"
           v-model="selectedBaurate"
-          :is-editable="isEditable(anzeigeContextAbfragevariante)"
+          :is-editable="isEditable"
           :mode="modeBaurate"
           :baugebiet="baugebietForSelectedBaurate"
           :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
@@ -278,7 +278,7 @@ import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 
-export const enum AnzeigeContext {
+export const enum AnzeigeContextAbfragevariante {
   UNDEFINED = 1,
   ABFRAGEVARIANTE = 2,
   ABFRAGEVARIANTE_SACHBEARBEITUNG = 3,
@@ -309,7 +309,7 @@ export default class Abfrage extends Mixins(
   AbfrageSecurityMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
-  private anzeigeContextAbfragevariante: AnzeigeContext = AnzeigeContext.UNDEFINED;
+  private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
@@ -365,6 +365,10 @@ export default class Abfrage extends Mixins(
       this.abfrageWrapped = new InfrastrukturabfrageWrapperModel(_.cloneDeep(abfrageFromStore), true);
       this.initializeFormulare();
     }
+  }
+
+  get isEditable(): boolean {
+    return this.isEditableWithAnzeigeContextAbfragevariante(this.anzeigeContextAbfragevariante);
   }
 
   async setSelectedAbfrageInStore(): Promise<void> {
@@ -557,8 +561,10 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private setAnzeigeContextAbfragevariante(anzeigeContext: AnzeigeContext | undefined) {
-    this.anzeigeContextAbfragevariante = _.isNil(anzeigeContext) ? AnzeigeContext.UNDEFINED : anzeigeContext;
+  private setAnzeigeContextAbfragevariante(anzeigeContext: AnzeigeContextAbfragevariante | undefined) {
+    this.anzeigeContextAbfragevariante = _.isNil(anzeigeContext)
+      ? AnzeigeContextAbfragevariante.UNDEFINED
+      : anzeigeContext;
   }
 
   private initializeFormulare(): void {
@@ -630,7 +636,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectAbfrage(abfrageTreeItem: AbfrageTreeItem): void {
-    this.anzeigeContextAbfragevariante = AnzeigeContext.UNDEFINED;
+    this.anzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
     this.initializeFormulare();
   }
 
@@ -695,7 +701,7 @@ export default class Abfrage extends Mixins(
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     this.setNewEntityToMark(this.selectedAbfragevariante);
-    if (this.anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE) {
+    if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
       this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
       this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
     } else {
@@ -709,13 +715,13 @@ export default class Abfrage extends Mixins(
   private removeSelectedAbfragevarianteFromAbfrage(): void {
     if (!_.isNil(this.abfragevarianteTreeItemToDelete)) {
       let abfragevarianten =
-        this.anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE
+        this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
           ? this.abfrageWrapped.infrastrukturabfrage.abfragevarianten
           : this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung;
       _.remove(abfragevarianten, (abfragevariante) => abfragevariante === this.selectedAbfragevariante);
       this.renumberingAbfragevarianten(abfragevarianten);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-      if (this.anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE) {
+      if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
         this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = [...abfragevarianten];
       } else {
         this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung = [...abfragevarianten];
@@ -780,7 +786,7 @@ export default class Abfrage extends Mixins(
 
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
     const abfragevarianten =
-      abfrageTreeItem.contextAnzeigeAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE
+      abfrageTreeItem.contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
         ? this.abfrageWrapped.infrastrukturabfrage.abfragevarianten
         : this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung;
     let selectedAbfragevariante = abfragevarianten.find(

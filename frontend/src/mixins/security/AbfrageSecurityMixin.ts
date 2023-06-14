@@ -3,15 +3,17 @@ import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import { Component, Mixins, Vue } from "vue-property-decorator";
 import _ from "lodash";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
-import { AnzeigeContext } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 @Component
 export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
-  public isEditable(anzeigeContextAbfragevariante: AnzeigeContext | undefined): boolean {
+  public isEditableWithAnzeigeContextAbfragevariante(
+    anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined
+  ): boolean {
     let isEditable = false;
-    if (anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE) {
+    if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
       isEditable = this.isEditableByAbfrageerstellung();
-    } else if (anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
+    } else if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
       isEditable = this.isEditableBySachbearbeitung();
     }
     return isEditable;

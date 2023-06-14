@@ -37,7 +37,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AnzeigeContext } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauabschnittComponent extends Mixins(

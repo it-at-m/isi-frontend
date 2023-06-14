@@ -321,7 +321,6 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
-import { AnzeigeContext } from "@/views/Abfrage.vue";
 import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, NumField } })

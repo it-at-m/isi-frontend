@@ -76,7 +76,6 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AnzeigeContext } from "@/views/Abfrage.vue";
 import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
