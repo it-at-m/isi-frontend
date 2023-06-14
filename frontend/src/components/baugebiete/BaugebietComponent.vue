@@ -215,8 +215,8 @@ export default class BauabschnittComponent extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
-  @Prop({ type: Number, default: 1 })
-  private readonly anzeigeContext!: AnzeigeContext;
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private validationRules: unknown = {
     validateWohneinheiten: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {
@@ -244,16 +244,6 @@ export default class BauabschnittComponent extends Mixins(
 
   set displayMode(mode: DisplayMode) {
     this.$emit("input", mode);
-  }
-
-  get isEditable(): boolean {
-    let isEditable = false;
-    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
   }
 
   get calcRealisierungBis(): number | undefined {

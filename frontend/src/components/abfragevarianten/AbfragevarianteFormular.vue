@@ -337,22 +337,12 @@ export default class AbfragevarianteForm extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
-  @Prop({ type: Number, default: 1 })
-  private readonly anzeigeContext!: AnzeigeContext;
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
 
   private anzahlWECardTitle = "Anzahl Wohneinheiten";
-
-  get isEditable(): boolean {
-    let isEditable = false;
-    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
-  }
 
   @Prop()
   private sobonRelevant!: UncertainBoolean;

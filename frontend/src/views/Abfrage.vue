@@ -12,7 +12,7 @@
           v-else-if="isAbfragevarianteFormularOpen"
           id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
-          :anzeige-context="anzeigeContextAbfragevariante"
+          :is-editable="isEditable"
           :mode="modeAbfragevariante"
           :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
@@ -20,14 +20,14 @@
           v-else-if="isBauabschnittFormularOpen"
           id="bauabschnitt_component"
           v-model="selectedBauabschnitt"
-          :anzeige-context="anzeigeContextAbfragevariante"
+          :is-editable="isEditable"
           :mode="modeBauabschnitt"
         />
         <baugebiet-component
           v-else-if="isBaugebietFormularOpen"
           id="baugebiet_component"
           v-model="selectedBaugebiet"
-          :anzeige-context="anzeigeContextAbfragevariante"
+          :is-editable="isEditable"
           :mode="modeBaugebiet"
           :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
         />
@@ -35,7 +35,7 @@
           v-else-if="isBaurateFormularOpen"
           id="baurate_component"
           v-model="selectedBaurate"
-          :anzeige-context="anzeigeContextAbfragevariante"
+          :is-editable="isEditable"
           :mode="modeBaurate"
           :baugebiet="baugebietForSelectedBaurate"
           :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
@@ -365,6 +365,16 @@ export default class Abfrage extends Mixins(
       this.abfrageWrapped = new InfrastrukturabfrageWrapperModel(_.cloneDeep(abfrageFromStore), true);
       this.initializeFormulare();
     }
+  }
+
+  get isEditable(): boolean {
+    let isEditable = false;
+    if (this.anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE) {
+      isEditable = this.isEditableByAbfrageerstellung();
+    } else if (this.anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
+      isEditable = this.isEditableBySachbearbeitung();
+    }
+    return isEditable;
   }
 
   async setSelectedAbfrageInStore(): Promise<void> {

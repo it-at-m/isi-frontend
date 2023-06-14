@@ -73,18 +73,8 @@ export default class FoerdermixFormular extends Mixins(
 
   private sumOver100 = false;
 
-  @Prop({ type: Number, default: 1 })
-  private anzeigeContext!: AnzeigeContext;
-
-  get isEditable(): boolean {
-    let isEditable = false;
-    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
-  }
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get gesamtsumme(): number {
     const sum: number = addiereAnteile(this.foerdermix);

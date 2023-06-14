@@ -53,13 +53,13 @@
         id="foerdermix_formular_component"
         ref="Foerdermix"
         v-model="baurate.foerdermix"
-        :anzeige-context="anzeigeContext"
+        :is-editable="isEditable"
       >
         <foerdermix-staemme-drop-down
           id="foerdermix_stammdaten_dropdown_component"
           ref="Foerdermix Staemme Drop Down"
           v-model="baurate.foerdermix"
-          :anzeige-context="anzeigeContext"
+          :is-editable="isEditable"
         />
       </foerdermix-formular>
     </v-row>
@@ -108,8 +108,8 @@ export default class BaurateComponent extends Mixins(
   @Prop()
   private abfragevariante: AbfragevarianteDto | undefined;
 
-  @Prop({ type: Number, default: 1 })
-  private readonly anzeigeContext!: AnzeigeContext;
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private validationRules: unknown = {
     validateWohneinheiten: (
@@ -138,16 +138,6 @@ export default class BaurateComponent extends Mixins(
       );
     },
   };
-
-  get isEditable(): boolean {
-    let isEditable = false;
-    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
-  }
 
   get baugebietRealisierungVonOr1900(): number {
     let year: number;

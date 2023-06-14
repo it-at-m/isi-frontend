@@ -37,8 +37,8 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
 ) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 
-  @Prop({ type: Number, default: 1 })
-  private anzeigeContext!: AnzeigeContext;
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();
 
@@ -54,16 +54,6 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
   private changeFördermixBezeichnung(): void {
     const matchedFoerdermix = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
     this.selectedItem = matchedFoerdermix;
-  }
-
-  get isEditable(): boolean {
-    let isEditable = false;
-    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
   }
 
   foerdermixSelected(item: FoerdermixStammModel): void {

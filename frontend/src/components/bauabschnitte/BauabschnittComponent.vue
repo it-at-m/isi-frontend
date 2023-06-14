@@ -51,8 +51,8 @@ export default class BauabschnittComponent extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
-  @Prop({ type: Number, default: 1 })
-  private readonly anzeigeContext!: AnzeigeContext;
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get displayMode(): DisplayMode {
     return this.mode;
@@ -65,16 +65,6 @@ export default class BauabschnittComponent extends Mixins(
   get headline(): string {
     const headline = `Bauabschnitt ${this.bauabschnitt.bezeichnung} `;
     return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
-  }
-
-  get isEditable(): boolean {
-    let isEditable = false;
-    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
   }
 }
 </script>
