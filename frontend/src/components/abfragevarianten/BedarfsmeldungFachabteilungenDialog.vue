@@ -114,12 +114,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, VModel } from "vue-property-decorator";
+import { Component, Emit, Mixins, VModel } from "vue-property-decorator";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
+import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component
-export default class BauvorhabenDataTransferDialog extends Vue {
+export default class BauvorhabenDataTransferDialog extends Mixins(SaveLeaveMixin, FieldValidationRulesMixin) {
   @VModel({ type: Boolean }) bedarfsmeldung!: BedarfsmeldungFachabteilungenModel;
 
   get infrastruktureinrichtungenTypList(): LookupEntryDto[] {

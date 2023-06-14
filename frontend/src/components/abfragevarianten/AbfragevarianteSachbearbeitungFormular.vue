@@ -102,7 +102,7 @@
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import AbfragevarianteSachbearbeitungModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import AbfragevarianteSachbearbeitungModel from "@/types/model/abfragevariante/AbfragevarianteSachbearbeitungModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -113,7 +113,7 @@ import BedarfsmeldungFachabteilungenDialog from "@/components/abfragevarianten/B
 import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
 
 @Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachabteilungenDialog } })
-export default class AbfragevarianteForm extends Mixins(
+export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,

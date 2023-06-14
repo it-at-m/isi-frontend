@@ -12,6 +12,7 @@
           v-else-if="isAbfragevarianteFormularOpen"
           id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
+          :anzeige-context="anzeigeContextAbfragevariante"
           :mode="modeAbfragevariante"
           :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
@@ -19,18 +20,21 @@
           v-else-if="isBauabschnittFormularOpen"
           id="bauabschnitt_component"
           v-model="selectedBauabschnitt"
+          :anzeige-context="anzeigeContextAbfragevariante"
           :mode="modeBauabschnitt"
         />
         <baugebiet-component
           v-else-if="isBaugebietFormularOpen"
           id="baugebiet_component"
           v-model="selectedBaugebiet"
+          :anzeige-context="anzeigeContextAbfragevariante"
           :mode="modeBaugebiet"
         />
         <baurate-component
           v-else-if="isBaurateFormularOpen"
           id="baurate_component"
           v-model="selectedBaurate"
+          :anzeige-context="anzeigeContextAbfragevariante"
           :mode="modeBaurate"
         />
         <yes-no-dialog
@@ -270,6 +274,13 @@ import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
+
+export const enum AnzeigeContext {
+  UNDEFINED = 1,
+  ABFRAGEVARIANTE = 2,
+  ABFRAGEVARIANTE_SACHBEARBEITUNG = 3,
+}
+
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
@@ -301,6 +312,7 @@ export default class Abfrage extends Mixins(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
     true
   );
+  private anzeigeContextAbfragevariante: AnzeigeContext = AnzeigeContext.UNDEFINED;
   private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
   private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
   private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());

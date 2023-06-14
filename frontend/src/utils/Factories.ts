@@ -60,7 +60,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     geschossflaecheSeniorenwohnungen: undefined,
     geschossflaecheSonstiges: undefined,
     bauabschnitte: [],
-    abfragevarianteSachbearbeitung: undefined,
+    abfragevarianteSachbearbeitung: createAbfragevarianteSachbearbeitungDto(),
   };
 }
 
