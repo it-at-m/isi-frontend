@@ -92,22 +92,29 @@ export default class ValidatorMixin extends Vue {
       infrastrukturabfrage.abfragevarianten.length < 1 ||
       infrastrukturabfrage.abfragevarianten.length > 5
     ) {
-      return "Es müssen zwischen einer und fünf Abfragevarianten angegeben werden.";
+      return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
+    }
+    if (
+      _.isNil(infrastrukturabfrage.abfragevariantenSachbearbeitung) ||
+      infrastrukturabfrage.abfragevariantenSachbearbeitung.length > 5
+    ) {
+      return "Es können durch die Sachbearbeitung maximal fünf Abfragevarianten angegeben werden.";
     }
     let validationMessage = null;
-    for (const abfragevariante of infrastrukturabfrage.abfragevarianten) {
+    const abfragevarianten = _.concat(
+      _.toArray(infrastrukturabfrage.abfragevarianten),
+      _.toArray(infrastrukturabfrage.abfragevariantenSachbearbeitung)
+    );
+    for (const abfragevariante of abfragevarianten) {
       validationMessage = this.findFaultInAbfragevariante(infrastrukturabfrage.sobonRelevant, abfragevariante, true);
       if (!_.isNil(validationMessage)) {
         break;
       }
     }
-    let counterRelevantAbfragevarianten = 0;
-    for (const abfragevariante of infrastrukturabfrage.abfragevarianten) {
-      if (abfragevariante.relevant) {
-        counterRelevantAbfragevarianten++;
-      }
-    }
-    if (counterRelevantAbfragevarianten >= 2) {
+    const numberOfRelevantAbfragevarianten = abfragevarianten.filter(
+      (abfragevariante) => abfragevariante.relevant
+    ).length;
+    if (numberOfRelevantAbfragevarianten > 1) {
       return "Es darf nur eine Abfragevariante als Relevant markiert werden";
     }
     return validationMessage;
