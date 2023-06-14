@@ -32,37 +32,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="4"
-        >
-          <num-field
-            id="abfragevariante_realisierungvon"
-            v-model="abfragevariante.realisierungVon"
-            :disabled="!isEditableByAbfrageerstellung()"
-            label="Realisierung von (JJJJ)"
-            class="mx-3"
-            year
-            required
-            maxlength="4"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="abfragevariante_realisierungBis"
-            v-model="abfragevariante.realisierungBis"
-            :disabled="!isEditableByAbfrageerstellung()"
-            label="Realisierung bis (JJJJ)"
-            class="mx-3"
-            year
-            required
-            maxlength="4"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
+          md="6"
         >
           <v-select
             id="abfragevariante_planungsrecht"
@@ -77,6 +47,41 @@
           >
             <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
+      </v-row>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <num-field
+            id="abfragevariante_realisierungvon"
+            v-model="abfragevariante.realisierungVon"
+            :disabled="!isEditableByAbfrageerstellung()"
+            label="Realisierung von (JJJJ)"
+            class="mx-3"
+            year
+            required
+            maxlength="4"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <num-field
+            id="abfragevariante_realisierungBis"
+            v-model="calcRealisierungBis"
+            :disabled="true"
+            label="Realisierung bis (JJJJ)"
+            class="mx-3"
+            year
+            maxlength="4"
+          />
         </v-col>
       </v-row>
     </field-group-card>
@@ -293,6 +298,7 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(
@@ -306,6 +312,9 @@ export default class AbfragevarianteForm extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
+  @Prop()
+  private sobonRelevant!: UncertainBoolean;
+
   get displayMode(): DisplayMode {
     return this.mode;
   }
@@ -314,8 +323,13 @@ export default class AbfragevarianteForm extends Mixins(
     this.$emit("input", mode);
   }
 
-  @Prop()
-  private sobonRelevant!: UncertainBoolean;
+  get calcRealisierungBis(): number | undefined {
+    let jahre: Array<number> | undefined = this.abfragevariante.bauabschnitte
+      ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
+      .flatMap((baugebiet) => baugebiet.bauraten)
+      .map((baurate) => baurate.jahr);
+    return _.max(jahre);
+  }
 
   get isSobonRelevant(): UncertainBoolean {
     return this.sobonRelevant;
