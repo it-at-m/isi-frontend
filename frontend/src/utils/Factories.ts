@@ -97,6 +97,7 @@ export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
     sobonRelevant: UncertainBoolean.Unspecified,
     sobonJahr: undefined,
     abfragevarianten: new Array<AbfragevarianteDto>(),
+    abfragevariantenSachbearbeitung: new Array<AbfragevarianteDto>(),
     aktenzeichenProLbk: undefined,
     offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,
   };
