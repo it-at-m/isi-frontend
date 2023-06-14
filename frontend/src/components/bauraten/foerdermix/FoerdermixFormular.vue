@@ -70,8 +70,6 @@ export default class FoerdermixFormular extends Mixins(
 
   private anteileFMCardTitle = "Anteile Fördermix";
 
-  private readonly = true;
-
   private sumOver100 = false;
 
   get gesamtsumme(): number {
