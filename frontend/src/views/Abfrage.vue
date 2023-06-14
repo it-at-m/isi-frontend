@@ -29,6 +29,7 @@
           v-model="selectedBaugebiet"
           :anzeige-context="anzeigeContextAbfragevariante"
           :mode="modeBaugebiet"
+          :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
         />
         <baurate-component
           v-else-if="isBaurateFormularOpen"
@@ -36,6 +37,8 @@
           v-model="selectedBaurate"
           :anzeige-context="anzeigeContextAbfragevariante"
           :mode="modeBaurate"
+          :baugebiet="baugebietForSelectedBaurate"
+          :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
@@ -306,13 +309,21 @@ export default class Abfrage extends Mixins(
   AbfrageSecurityMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
+  private anzeigeContextAbfragevariante: AnzeigeContext = AnzeigeContext.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
     true
   );
-  private anzeigeContextAbfragevariante: AnzeigeContext = AnzeigeContext.UNDEFINED;
+  /**
+   * Wird für die objektübergreifende Validierung im Formular des Baugebiets bzw. Baurate benötigt.
+   */
+  private abfragevarianteForSelectedBaugebietOrBaurate: AbfragevarianteDto | undefined;
+  /**
+   * Wird für die objektübergreifende Validierung im Formular der Baurate benötigt.
+   */
+  private baugebietForSelectedBaurate: BaugebietDto | undefined;
   private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
   private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
   private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
@@ -321,7 +332,6 @@ export default class Abfrage extends Mixins(
   private transition: TransitionDto | undefined;
   private isStatusUebergangDialogOpen = false;
   private isDeleteDialogAbfrageOpen = false;
-  private isFreigabeDialogOpen = false;
   private isDeleteDialogAbfragevarianteOpen = false;
   private isDeleteDialogBauabschnittOpen = false;
   private isDeleteDialogBaugebietOpen = false;
@@ -672,11 +682,11 @@ export default class Abfrage extends Mixins(
       this.selectedAbfragevariante.geschossflaecheWohnen,
       true
     ).then((bauraten: Array<BaurateDto>) => {
-      const technicalBaugebiet = createTechnicalBaugebietDto();
-      const technicalBauabschnitt = createTechnicalBauabschnittDto();
-      technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
-      technicalBauabschnitt.baugebiete = [new BaugebietModel(technicalBaugebiet)];
-      this.selectedAbfragevariante.bauabschnitte = [new BauabschnittModel(technicalBauabschnitt)];
+      const technicalBaugebiet = this.getTechnicalBaugebiet(this.selectedAbfragevariante);
+      if (!_.isNil(technicalBaugebiet)) {
+        technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+        this.selectedAbfragevariante.bauabschnitte[0].baugebiete = [technicalBaugebiet];
+      }
       this.formChanged();
     });
   }
@@ -855,6 +865,7 @@ export default class Abfrage extends Mixins(
 
   private handleSelectBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
+    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     this.initializeFormulare();
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.$nextTick(() => {
@@ -872,8 +883,13 @@ export default class Abfrage extends Mixins(
 
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
+    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
+    const abfragevariante = abfrageTreeItem.abfragevariante;
+    if (!_.isNil(abfragevariante)) {
+      this.selectedBaugebiet.realisierungVon = abfragevariante.realisierungVon;
+    }
     this.setNewEntityToMark(this.selectedBaugebiet);
     selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
     this.formChanged();
@@ -882,6 +898,8 @@ export default class Abfrage extends Mixins(
 
   private handleSelectBaurate(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
+    this.baugebietForSelectedBaurate = abfrageTreeItem.baugebiet;
+    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     this.initializeFormulare();
     this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
     this.$nextTick(() => {
@@ -900,6 +918,8 @@ export default class Abfrage extends Mixins(
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
+    this.baugebietForSelectedBaurate = selectedBaugebiet;
+    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     this.selectedBaurate = new BaurateModel(createBaurateDto());
     this.setNewEntityToMark(this.selectedBaurate);
     selectedBaugebiet.bauraten.push(this.selectedBaurate);
@@ -968,6 +988,7 @@ export default class Abfrage extends Mixins(
       }
 
       if (baugebietDto.technical) {
+        baugebietDto.realisierungVon = abfragevariante.realisierungVon;
         return new BaugebietModel(baugebietDto);
       }
     }

@@ -121,12 +121,6 @@ export interface AbfragevarianteInBearbeitungSachbearbeitungDto {
      * @type {number}
      * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
-    realisierungBis: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
-     */
     geschossflaecheGenossenschaftlicheWohnungen?: number;
     /**
      * 
@@ -211,7 +205,6 @@ export function AbfragevarianteInBearbeitungSachbearbeitungDtoFromJSONTyped(json
         'anzahlWeBaurechtlichGenehmigt': !exists(json, 'anzahlWeBaurechtlichGenehmigt') ? undefined : json['anzahlWeBaurechtlichGenehmigt'],
         'anzahlWeBaurechtlichFestgesetzt': !exists(json, 'anzahlWeBaurechtlichFestgesetzt') ? undefined : json['anzahlWeBaurechtlichFestgesetzt'],
         'realisierungVon': json['realisierungVon'],
-        'realisierungBis': json['realisierungBis'],
         'geschossflaecheGenossenschaftlicheWohnungen': !exists(json, 'geschossflaecheGenossenschaftlicheWohnungen') ? undefined : json['geschossflaecheGenossenschaftlicheWohnungen'],
         'sonderwohnformen': json['sonderwohnformen'],
         'geschossflaecheStudentenwohnungen': !exists(json, 'geschossflaecheStudentenwohnungen') ? undefined : json['geschossflaecheStudentenwohnungen'],
@@ -245,7 +238,6 @@ export function AbfragevarianteInBearbeitungSachbearbeitungDtoToJSON(value?: Abf
         'anzahlWeBaurechtlichGenehmigt': value.anzahlWeBaurechtlichGenehmigt,
         'anzahlWeBaurechtlichFestgesetzt': value.anzahlWeBaurechtlichFestgesetzt,
         'realisierungVon': value.realisierungVon,
-        'realisierungBis': value.realisierungBis,
         'geschossflaecheGenossenschaftlicheWohnungen': value.geschossflaecheGenossenschaftlicheWohnungen,
         'sonderwohnformen': value.sonderwohnformen,
         'geschossflaecheStudentenwohnungen': value.geschossflaecheStudentenwohnungen,
