@@ -133,7 +133,7 @@
           <num-field
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
             v-model="baugebiet.gesamtanzahlWe"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
             class="mx-3"
             label="Gesamt"
