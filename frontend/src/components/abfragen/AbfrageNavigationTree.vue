@@ -332,16 +332,6 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       : `${baurate.jahr}`;
   }
 
-  public isEditable(anzeigeContextAbfragevariante: AnzeigeContext | undefined): boolean {
-    let isEditable = false;
-    if (anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (anzeigeContextAbfragevariante === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
-  }
-
   /**
    * Erstellt die AbfrageTreeItems auf Basis der Abfrage.
    * Jedes AbfrageTreeItem referenziert das in der Treeview darzustellende Objekt.
