@@ -47,11 +47,13 @@
         id="foerdermix_formular_component"
         ref="Foerdermix"
         v-model="baurate.foerdermix"
+        :anzeige-context="anzeigeContext"
       >
         <foerdermix-staemme-drop-down
           id="foerdermix_stammdaten_dropdown_component"
           ref="Foerdermix Staemme Drop Down"
           v-model="baurate.foerdermix"
+          :anzeige-context="anzeigeContext"
         />
       </foerdermix-formular>
     </v-row>
@@ -81,7 +83,7 @@ export default class BaurateComponent extends Mixins(
 ) {
   @VModel({ type: BaurateModel }) baurate!: BaurateModel;
 
-  @Prop({ type: String, default: AnzeigeContext.UNDEFINED })
+  @Prop({ type: Number, default: 1 })
   private readonly anzeigeContext!: AnzeigeContext;
 
   get isEditable(): boolean {

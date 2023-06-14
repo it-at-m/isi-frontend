@@ -313,7 +313,7 @@ export default class AbfragevarianteForm extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
-  @Prop({ type: String, default: AnzeigeContext.UNDEFINED })
+  @Prop({ type: Number, default: 1 })
   private readonly anzeigeContext!: AnzeigeContext;
 
   private geschossFlaecheCardTitle = "Geschossfläche Wohnen";

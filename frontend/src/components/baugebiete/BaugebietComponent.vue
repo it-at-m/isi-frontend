@@ -135,7 +135,7 @@ export default class BauabschnittComponent extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
-  @Prop({ type: String, default: AnzeigeContext.UNDEFINED })
+  @Prop({ type: Number, default: 1 })
   private readonly anzeigeContext!: AnzeigeContext;
 
   get displayMode(): DisplayMode {

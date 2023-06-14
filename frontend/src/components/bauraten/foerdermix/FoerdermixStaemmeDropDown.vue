@@ -3,7 +3,7 @@
     <v-select
       id="foerdermix_stammdaten_dropdown"
       v-model="selectedItem"
-      :disabled="!isEditableByAbfrageerstellung()"
+      :disabled="!isEditable"
       :items="groupedStammdaten"
       label="Fördermix"
       item-text="bezeichnung"
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMixin";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
@@ -25,6 +25,7 @@ import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
+import { AnzeigeContext } from "@/views/Abfrage.vue";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
@@ -35,6 +36,9 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
   AbfrageSecurityMixin
 ) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
+
+  @Prop({ type: Number, default: 1 })
+  private anzeigeContext!: AnzeigeContext;
 
   private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();
 
@@ -50,6 +54,16 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
   private changeFördermixBezeichnung(): void {
     const matchedFoerdermix = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
     this.selectedItem = matchedFoerdermix;
+  }
+
+  get isEditable(): boolean {
+    let isEditable = false;
+    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
+      isEditable = this.isEditableByAbfrageerstellung();
+    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
+      isEditable = this.isEditableBySachbearbeitung();
+    }
+    return isEditable;
   }
 
   foerdermixSelected(item: FoerdermixStammModel): void {
