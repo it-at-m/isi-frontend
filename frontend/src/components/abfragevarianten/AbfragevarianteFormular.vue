@@ -33,6 +33,10 @@
         <v-col
           cols="12"
           md="6"
+        />
+        <v-col
+          cols="12"
+          md="6"
         >
           <v-select
             id="abfragevariante_planungsrecht"
@@ -48,10 +52,6 @@
             <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        />
       </v-row>
       <v-row justify="center">
         <v-col
