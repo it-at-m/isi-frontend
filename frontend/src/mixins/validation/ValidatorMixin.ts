@@ -16,6 +16,7 @@ import {
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import AbfragevarianteSachbearbeitungModel from "@/types/model/abfragevariante/AbfragevarianteSachbearbeitungModel";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
@@ -163,6 +164,12 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultBauschnitte)) {
       return messageFaultBauschnitte;
     }
+    const messageFaultAbfragevarianteSachbearbeitung = this.findFaultInAbfragevarianteSachbearbeitung(
+      abfragevariante.abfragevarianteSachbearbeitung
+    );
+    if (!_.isNil(messageFaultAbfragevarianteSachbearbeitung)) {
+      return messageFaultAbfragevarianteSachbearbeitung;
+    }
     return null;
   }
 
@@ -203,6 +210,23 @@ export default class ValidatorMixin extends Vue {
         if (!_.isNil(validationMessage)) {
           return validationMessage;
         }
+      }
+    }
+    return null;
+  }
+
+  public findFaultInAbfragevarianteSachbearbeitung(
+    abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungModel
+  ): string | null {
+    if (
+      !_.isNil(abfragevarianteSachbearbeitung) &&
+      !_.isNil(abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)
+    ) {
+      const messageFaultBedarfsmeldungen = this.findFaultInBedarfsmeldungen(
+        abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate
+      );
+      if (!_.isNil(messageFaultBedarfsmeldungen)) {
+        return messageFaultBedarfsmeldungen;
       }
     }
     return null;
