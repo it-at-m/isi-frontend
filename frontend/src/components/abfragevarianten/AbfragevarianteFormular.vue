@@ -34,6 +34,20 @@
           cols="12"
           md="6"
         >
+          <date-picker
+            id="abfragevariante_satzungsbeschluss"
+            v-model="abfragevariante.satzungsbeschluss"
+            class="mx-3"
+            :disabled="!isEditableByAbfrageerstellung()"
+            label="Datum Satzungsbeschluss"
+            :rules="[fieldValidationRules.requiredIfOtherEmpty(abfragevariante.realisierungVon, 'Realisierung von')]"
+            month-picker
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
           <v-select
             id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
@@ -48,10 +62,6 @@
             <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        />
       </v-row>
       <v-row justify="center">
         <v-col
@@ -65,8 +75,10 @@
             label="Realisierung von (JJJJ)"
             class="mx-3"
             year
-            required
             maxlength="4"
+            :rules="[
+              fieldValidationRules.requiredIfOtherEmpty(abfragevariante.satzungsbeschluss, 'Datum Satzungsbeschluss'),
+            ]"
           />
         </v-col>
         <v-col

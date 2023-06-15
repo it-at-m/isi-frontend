@@ -43,6 +43,7 @@
         v-model="datumDatePicker"
         :disabled="disabled"
         locale="de"
+        :type="monthPicker ? 'month' : 'date'"
         @change="deactivateDatePicker"
       />
     </v-dialog>
@@ -57,6 +58,11 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component
 export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
+  readonly ISO_FORMAT = "YYYY-MM-DD";
+  readonly DISPLAY_FORMAT = "DD.MM.YYYY";
+  readonly ISO_MONTH_FORMAT = "YYYY-MM-DD";
+  readonly DISPLAY_MONTH_FORMAT = "YYYY-MM-DD";
+
   /**
    * Bezeichnung des Datumsfelds
    */
@@ -88,6 +94,13 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
 
   @Prop({ type: Boolean, default: false })
   private disabled!: boolean;
+
+  /**
+   * Ob nur Monat und Jahr auswählbar sein sollen.
+   * Siehe https://v2.vuetifyjs.com/en/components/date-pickers-month.
+   */
+  @Prop({ type: Boolean, default: false })
+  private monthPicker!: boolean;
 
   private datePickerActivated = false;
 

@@ -5,9 +5,33 @@ import { addiereAnteile } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 
+type Input = string | number | Array<unknown>;
+
 @Component
 export default class FieldValidationRulesMixin extends Vue {
   private static readonly DATE_FORMAT = "DD.MM.YYYY";
+
+  private isEmpty(value: Input): boolean {
+    if (_.isNil(value)) {
+      return true;
+    }
+
+    if (typeof value === "number") {
+      if (_.isNaN(value)) {
+        return true;
+      }
+    } else {
+      if (value.length === 0) {
+        return true;
+      }
+
+      if (typeof value === "string" && (value === "" || value === UncertainBoolean.Unspecified)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   fieldValidationRules: unknown = {
     pflichtfeld: (v: string): boolean | string => !!v || "Pflichtfeld",
@@ -71,5 +95,12 @@ export default class FieldValidationRulesMixin extends Vue {
     notUnspecified: (v: string): boolean | string => {
       return (!_.isNil(v) && v !== UncertainBoolean.Unspecified) || "Pflichtfeld";
     },
+
+    // Nur ein Pflichtfeld, wenn das andere Feld leer ist.
+    requiredIfOtherEmpty:
+      (otherValue: string, otherName: string) =>
+      (v: string): string | boolean => {
+        return !this.isEmpty(otherValue) || !this.isEmpty(v) || `Pflichtfeld, wenn '${otherName}' leer ist`;
+      },
   };
 }
