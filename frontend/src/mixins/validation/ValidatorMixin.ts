@@ -7,6 +7,7 @@ import {
   BauvorhabenDto,
   BauvorhabenDtoPlanungsrechtEnum,
   BauvorhabenDtoStandVorhabenEnum,
+  BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
@@ -24,6 +25,7 @@ import MittelschuleModel from "@/types/model/infrastruktureinrichtung/Mittelschu
 import moment from "moment";
 import { addiereAnteile } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
+import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
 
 @Component
 export default class ValidatorMixin extends Vue {
@@ -131,6 +133,37 @@ export default class ValidatorMixin extends Vue {
           ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
           : "";
       return `Bitte geben Sie die 'Geschossfläche SoBoN-ursächliche' ${abfragevarianteNr}an`;
+    }
+    return null;
+  }
+
+  public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungFachabteilungenModel[]): string | null {
+    bedarfsmeldungen.forEach((bedarfsmeldung) => {
+      const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
+      }
+    });
+    return null;
+  }
+
+  public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): string | null {
+    if (_.isNil(bedarfsmeldung.anzahlEinrichtungen)) {
+      return `Bitte geben Sie die Anzahl der Einrichtungen an`;
+    }
+    if (
+      bedarfsmeldung.infrastruktureinrichtungTyp ===
+      BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum.Unspecified
+    ) {
+      return `Bitte geben Sie den Typ der Infrastruktureinrichtung an`;
+    }
+    if (
+      _.isNil(bedarfsmeldung.anzahlKinderkrippengruppen) &&
+      _.isNil(bedarfsmeldung.anzahlKindergartengruppen) &&
+      _.isNil(bedarfsmeldung.anzahlHortgruppen) &&
+      _.isNil(bedarfsmeldung.anzahlGrundschulzuege)
+    ) {
+      return `Bitte geben Sie den Bedarf an`;
     }
     return null;
   }

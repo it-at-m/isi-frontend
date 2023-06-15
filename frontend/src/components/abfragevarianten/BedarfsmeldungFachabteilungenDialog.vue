@@ -120,9 +120,17 @@ import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
+import Toaster from "@/components/common/toaster.type";
+import { Levels } from "@/api/error";
+import _ from "lodash";
 
 @Component
-export default class BauvorhabenDataTransferDialog extends Mixins(SaveLeaveMixin, FieldValidationRulesMixin) {
+export default class BauvorhabenDataTransferDialog extends Mixins(
+  ValidatorMixin,
+  SaveLeaveMixin,
+  FieldValidationRulesMixin
+) {
   @VModel({ type: BedarfsmeldungFachabteilungenModel }) bedarfsmeldung!: BedarfsmeldungFachabteilungenModel;
 
   @Prop({ type: Boolean, default: false })
@@ -132,9 +140,13 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SaveLeaveMixin
     return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
   }
 
-  @Emit()
-  private bedarfsmeldungUebernehmen(): BedarfsmeldungFachabteilungenModel {
-    return this.bedarfsmeldung;
+  private bedarfsmeldungUebernehmen(): void {
+    const validationMessage: string | null = this.findFaultInBedarfsmeldung(this.bedarfsmeldung);
+    if (_.isNil(validationMessage)) {
+      this.$emit("bedarfsmeldung-uebernehmen", this.bedarfsmeldung);
+    } else {
+      Toaster.toast(validationMessage, Levels.ERROR);
+    }
   }
 
   @Emit()
