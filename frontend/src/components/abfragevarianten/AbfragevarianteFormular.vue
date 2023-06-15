@@ -83,24 +83,6 @@
             maxlength="4"
           />
         </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-select
-            id="abfragevariante_planungsrecht"
-            v-model="abfragevariante.planungsrecht"
-            :disabled="!isEditable"
-            class="mx-3"
-            :items="planungsrechtList"
-            item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-            @change="formChanged"
-          >
-            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
-          </v-select>
-        </v-col>
       </v-row>
     </field-group-card>
 
