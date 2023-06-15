@@ -14,7 +14,7 @@
           <v-text-field
             id="baugebiet_bezeichnung"
             v-model.trim="baugebiet.bezeichnung"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
@@ -29,7 +29,7 @@
           <v-select
             id="baugebiet_baugebietTyp"
             v-model="baugebiet.baugebietTyp"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             :items="baugebietTypList"
             item-value="key"
@@ -42,19 +42,25 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="geschossFlaecheCardTitle">
+
+    <field-group-card>
       <v-row justify="center">
         <v-col
           cols="12"
           md="6"
         >
           <num-field
-            id="baugebiet_geschossflaecheWohnenGenehmigt"
-            v-model="baugebiet.geschossflaecheWohnenGenehmigt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            id="abfragevariante_realisierungvon"
+            v-model="baugebiet.realisierungVon"
+            :disabled="!isEditable"
+            label="Realisierung von (JJJJ)"
             class="mx-3"
-            label="Genehmigt"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+            :min="abfragevarianteRealisierungVonOr1900"
+            :max="2100"
+            integer
+            no-grouping
+            required
+            maxlength="4"
           />
         </v-col>
         <v-col
@@ -62,11 +68,57 @@
           md="6"
         >
           <num-field
+            id="abfragevariante_realisierungBis"
+            v-model="calcRealisierungBis"
+            :disabled="true"
+            label="Realisierung bis (JJJJ)"
+            class="mx-3"
+            year
+            maxlength="4"
+          />
+        </v-col>
+      </v-row>
+    </field-group-card>
+
+    <field-group-card :card-title="geschossflaecheWohnenCardTitle">
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="baugebiet_geschossflaecheWohnenFestgesetzt"
+            v-model="baugebiet.geschossflaecheWohnen"
+            :disabled="!isEditable"
+            :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
+            class="mx-3"
+            label="Gesamt"
+            :suffix="suffixGeschossflaecheWohnen"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="baugebiet_geschossflaecheWohnenGenehmigt"
+            v-model="baugebiet.geschossflaecheWohnenGenehmigt"
+            :disabled="!isEditable"
+            class="mx-3"
+            label="Baurechtlich Genehmigt"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
             id="baugebiet_geschossflaecheWohnenFestgesetzt"
             v-model="baugebiet.geschossflaecheWohnenFestgesetzt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
-            label="Festgesetzt"
+            label="Baurechtlich Festgesetzt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
@@ -76,12 +128,27 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
+          md="4"
+        >
+          <num-field
+            id="baugebiet_anzahlWeBaurechtlichGenehmigt"
+            v-model="baugebiet.gesamtanzahlWe"
+            :disabled="!isEditable"
+            :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
+            class="mx-3"
+            label="Gesamt"
+            :suffix="suffixWohneinheiten"
+            integer
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
         >
           <num-field
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
             v-model="baugebiet.anzahlWohneinheitenBaurechtlichGenehmigt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich genehmigt"
             integer
@@ -89,12 +156,12 @@
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <num-field
             id="baugebiet_anzahlWeBaurechtlichFestgesetzt"
             v-model="baugebiet.anzahlWohneinheitenBaurechtlichFestgesetzt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             integer
@@ -107,7 +174,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -115,24 +182,60 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import NumField from "@/components/common/NumField.vue";
+import _ from "lodash";
+import {
+  verteilteGeschossflaecheWohnenAbfragevariante,
+  wohneinheitenAbfragevariante,
+  verteilteWohneinheitenAbfragevariante,
+  verteilteWohneinheitenAbfragevarianteFormatted,
+  wohneinheitenAbfragevarianteFormatted,
+  geschossflaecheWohnenAbfragevariante,
+  geschossflaecheWohnenAbfragevarianteFormatted,
+  verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
+} from "@/utils/CalculationUtil";
 
-@Component({ components: { FieldGroupCard } })
+@Component({ components: { NumField, FieldGroupCard } })
 export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
   AbfrageSecurityMixin
 ) {
-  private geschossFlaecheCardTitle = "Geschossfläche";
-
-  private anzahlWohneinheitenCardTitle = "Anzahl Wohneinheiten";
+  private geschossflaecheWohnenCardTitle = "Geschossfläche Wohnen";
 
   private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
   @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
 
   @Prop()
+  private abfragevariante: AbfragevarianteDto | undefined;
+
+  @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
+
+  private validationRules: unknown = {
+    validateWohneinheiten: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {
+      return (
+        verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+        `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+          abfragevariante
+        )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+      );
+    },
+    validateGeschossflaecheWohnen: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {
+      return (
+        verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante) <=
+          geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+        `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+          abfragevariante
+        )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
+      );
+    },
+  };
 
   get displayMode(): DisplayMode {
     return this.mode;
@@ -142,6 +245,10 @@ export default class BauabschnittComponent extends Mixins(
     this.$emit("input", mode);
   }
 
+  get calcRealisierungBis(): number | undefined {
+    return _.max(this.baugebiet.bauraten.map((baurate) => baurate.jahr));
+  }
+
   get headline(): string {
     const headline = `Baugebiet ${this.baugebiet.bezeichnung} `;
     return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
@@ -149,6 +256,22 @@ export default class BauabschnittComponent extends Mixins(
 
   get baugebietTypList(): LookupEntryDto[] {
     return this.$store.getters["lookup/baugebietTyp"];
+  }
+
+  get abfragevarianteRealisierungVonOr1900(): number {
+    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante.realisierungVon)
+      ? this.abfragevariante.realisierungVon
+      : 1900;
+  }
+
+  get suffixWohneinheiten(): string {
+    return `von ${wohneinheitenAbfragevarianteFormatted(this.abfragevariante)}`;
+  }
+
+  get suffixGeschossflaecheWohnen(): string {
+    return `von ${geschossflaecheWohnenAbfragevarianteFormatted(this.abfragevariante)} ${
+      this.fieldPrefixesSuffixes.squareMeter
+    }`;
   }
 }
 </script>

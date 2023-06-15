@@ -64,7 +64,7 @@
               </v-btn>
               <v-btn
                 :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
-                :disabled="!isNavigationTreeEditable"
+                :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
                 icon
                 @click="deleteAbfragevariante(item)"
               >
@@ -82,7 +82,7 @@
             <v-btn
               v-else-if="isItemTypeOfBauabschnitt(item)"
               :id="'abfrage_navigation_tree_button_delete_bauabschnitt_' + item.id"
-              :disabled="!isNavigationTreeEditable"
+              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBauabschnitt(item)"
             >
@@ -99,7 +99,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaugebiet(item)"
               :id="'abfrage_navigation_tree_button_delete_baugebiet_' + item.id"
-              :disabled="!isNavigationTreeEditable"
+              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBaugebiet(item)"
             >
@@ -116,7 +116,7 @@
             <v-btn
               v-else-if="isItemTypeOfBaurate(item)"
               :id="'abfrage_navigation_tree_button_delete_baurate_' + item.id"
-              :disabled="!isNavigationTreeEditable"
+              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
               icon
               @click="deleteBaurate(item)"
             >
@@ -130,18 +130,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, VModel, Mixins, Watch } from "vue-property-decorator";
+import { Component, Emit, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
 import {
   AbfragevarianteDto,
-  InfrastrukturabfrageDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
+  InfrastrukturabfrageDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 enum AbfrageTreeItemType {
   ABFRAGE,
@@ -170,6 +171,11 @@ export interface AbfrageTreeItem {
    * Referenziert die in der Treeview darzustellende Abfrage.
    */
   abfrage: InfrastrukturabfrageDto | undefined;
+
+  /**
+   * Der Kontext in welchem die Abfragevariante angezeigt wird.
+   */
+  contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined;
 
   /**
    * Referenziert die in der Treeview darzustellende Abfragevariante.
@@ -327,13 +333,6 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   }
 
   /**
-   * Wertet die Rolle der angemeldeten Person sowie den Status der Abfrage aus und gibt true zurück falls Änderungen durchgeführt werden dürfen.
-   */
-  get isNavigationTreeEditable(): boolean {
-    return this.isEditableByAbfrageerstellung();
-  }
-
-  /**
    * Erstellt die AbfrageTreeItems auf Basis der Abfrage.
    * Jedes AbfrageTreeItem referenziert das in der Treeview darzustellende Objekt.
    *
@@ -349,7 +348,18 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id); // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
       this.markTreeItem(abfrageRootTreeItem);
     }
-    this.createAbfragevariantenTreeItems(abfrageRootTreeItem, abfrage);
+    this.createAbfragevariantenTreeItems(
+      abfrageRootTreeItem,
+      abfrage,
+      abfrage.abfragevarianten,
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
+    );
+    this.createAbfragevariantenTreeItems(
+      abfrageRootTreeItem,
+      abfrage,
+      abfrage.abfragevariantenSachbearbeitung,
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
+    );
 
     return abfrageTreeItems;
   }
@@ -361,6 +371,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAbfrage,
       AbfrageTreeItemType.ABFRAGE,
       abfrage,
+      AnzeigeContextAbfragevariante.UNDEFINED,
       undefined,
       undefined,
       undefined,
@@ -368,41 +379,78 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     );
   }
 
-  private createAbfragevariantenTreeItems(parentTreeItem: AbfrageTreeItem, abfrage: InfrastrukturabfrageDto) {
-    abfrage.abfragevarianten.forEach((abfragevariante) => {
+  private createAbfragevariantenTreeItems(
+    parentTreeItem: AbfrageTreeItem,
+    abfrage: InfrastrukturabfrageDto,
+    abfragevarianten: Array<AbfragevarianteDto> | undefined,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
+  ) {
+    _.toArray(abfragevarianten).forEach((abfragevariante) => {
       let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(
         this.treeItemKey++,
         parentTreeItem,
         abfrage,
+        contextAnzeigeAbfragevariante,
         abfragevariante
       );
-      this.createBauabschnitteTreeItems(abfragevarianteTreeItem, abfrage, abfragevariante);
+      this.createBauabschnitteTreeItems(
+        abfragevarianteTreeItem,
+        abfrage,
+        contextAnzeigeAbfragevariante,
+        abfragevariante
+      );
       parentTreeItem.children.push(abfragevarianteTreeItem);
     });
     if (
-      this.isNavigationTreeEditable &&
-      abfrage.abfragevarianten.length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
+      this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante) &&
+      _.toArray(abfragevarianten).length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
     ) {
-      parentTreeItem.children.push(this.createAddAbfragevarianteTreeItem(this.treeItemKey++, parentTreeItem, abfrage));
+      parentTreeItem.children.push(
+        this.createAddAbfragevarianteTreeItem(
+          this.treeItemKey++,
+          parentTreeItem,
+          abfrage,
+          contextAnzeigeAbfragevariante
+        )
+      );
     }
   }
 
   private createBauabschnitteTreeItems(
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     if (_.isNil(abfragevariante.bauabschnitte) || abfragevariante.bauabschnitte.length === 0) {
-      if (this.isNavigationTreeEditable) {
+      if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
         // Fall 1: Keine Bauabschnitte vorhanden -> Bauabschnitt, Baugebiet oder Baurate kann erstellt werden
         parentTreeItem.children.push(
-          this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+          this.createAddBauabschnittTreeItem(
+            this.treeItemKey++,
+            parentTreeItem,
+            abfrage,
+            contextAnzeigeAbfragevariante,
+            abfragevariante
+          )
         );
         parentTreeItem.children.push(
-          this.createAddOrphanedBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+          this.createAddOrphanedBaugebietTreeItem(
+            this.treeItemKey++,
+            parentTreeItem,
+            abfrage,
+            contextAnzeigeAbfragevariante,
+            abfragevariante
+          )
         );
         parentTreeItem.children.push(
-          this.createAddOrphanedBaurateTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+          this.createAddOrphanedBaurateTreeItem(
+            this.treeItemKey++,
+            parentTreeItem,
+            abfrage,
+            contextAnzeigeAbfragevariante,
+            abfragevariante
+          )
         );
       }
     } else {
@@ -414,20 +462,39 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
             this.treeItemKey++,
             parentTreeItem,
             abfrage,
+            contextAnzeigeAbfragevariante,
             abfragevariante,
             bauabschnitt
           );
           parentTreeItem.children.push(bauabschnittTreeItem);
-          this.createBaugebieteTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt);
+          this.createBaugebieteTreeItems(
+            bauabschnittTreeItem,
+            abfrage,
+            contextAnzeigeAbfragevariante,
+            abfragevariante,
+            bauabschnitt
+          );
         });
-        if (this.isNavigationTreeEditable) {
+        if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
           parentTreeItem.children.push(
-            this.createAddBauabschnittTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante)
+            this.createAddBauabschnittTreeItem(
+              this.treeItemKey++,
+              parentTreeItem,
+              abfrage,
+              contextAnzeigeAbfragevariante,
+              abfragevariante
+            )
           );
         }
       } else {
         // Fall 3: Technischer Bauabschnitt vorhanden -> Baugebiete werden unter Abfragevariente angelegt
-        this.createBaugebieteTreeItems(parentTreeItem, abfrage, abfragevariante, firstBauabschnitt);
+        this.createBaugebieteTreeItems(
+          parentTreeItem,
+          abfrage,
+          contextAnzeigeAbfragevariante,
+          abfragevariante,
+          firstBauabschnitt
+        );
       }
     }
   }
@@ -435,13 +502,21 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   private createBaugebieteTreeItems(
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
     if (bauabschnitt.baugebiete.length === 0) {
       // Fall 1: Keine Baugebiete vorhanden -> Baugebiet kann erstellt werden
       parentTreeItem.children.push(
-        this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
+        this.createAddBaugebietTreeItem(
+          this.treeItemKey++,
+          parentTreeItem,
+          abfrage,
+          contextAnzeigeAbfragevariante,
+          abfragevariante,
+          bauabschnitt
+        )
       );
     } else {
       const firstBaugebiet = bauabschnitt.baugebiete[0];
@@ -452,21 +527,43 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
             this.treeItemKey++,
             parentTreeItem,
             abfrage,
+            contextAnzeigeAbfragevariante,
             abfragevariante,
             bauabschnitt,
             baugebiet
           );
           parentTreeItem.children.push(bauabschnittTreeItem);
-          this.createBauratenTreeItems(bauabschnittTreeItem, abfrage, abfragevariante, bauabschnitt, baugebiet);
+          this.createBauratenTreeItems(
+            bauabschnittTreeItem,
+            abfrage,
+            contextAnzeigeAbfragevariante,
+            abfragevariante,
+            bauabschnitt,
+            baugebiet
+          );
         });
-        if (this.isNavigationTreeEditable) {
+        if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
           parentTreeItem.children.push(
-            this.createAddBaugebietTreeItem(this.treeItemKey++, parentTreeItem, abfrage, abfragevariante, bauabschnitt)
+            this.createAddBaugebietTreeItem(
+              this.treeItemKey++,
+              parentTreeItem,
+              abfrage,
+              contextAnzeigeAbfragevariante,
+              abfragevariante,
+              bauabschnitt
+            )
           );
         }
       } else {
         // Fall 3: Technisches Bauagebiet vorhanden -> Bauraten werden unter Abfragevariente angelegt
-        this.createBauratenTreeItems(parentTreeItem, abfrage, abfragevariante, bauabschnitt, firstBaugebiet);
+        this.createBauratenTreeItems(
+          parentTreeItem,
+          abfrage,
+          contextAnzeigeAbfragevariante,
+          abfragevariante,
+          bauabschnitt,
+          firstBaugebiet
+        );
       }
     }
   }
@@ -474,6 +571,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   private createBauratenTreeItems(
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
@@ -483,6 +581,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
         this.treeItemKey++,
         parentTreeItem,
         abfrage,
+        contextAnzeigeAbfragevariante,
         abfragevariante,
         bauabschnitt,
         baugebiet,
@@ -490,12 +589,13 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       );
       parentTreeItem.children.push(baurateTreeItem);
     });
-    if (this.isNavigationTreeEditable) {
+    if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
       parentTreeItem.children.push(
         this.createAddBaurateTreeItem(
           this.treeItemKey++,
           parentTreeItem,
           abfrage,
+          contextAnzeigeAbfragevariante,
           abfragevariante,
           bauabschnitt,
           baugebiet
@@ -508,6 +608,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     const item = this.createAbfrageTreeItem(
@@ -516,6 +617,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.getNameTreeElementAbfragevariante(abfragevariante),
       AbfrageTreeItemType.ABFRAGEVARIANTE,
       abfrage,
+      conextAnzeigeAbfragevariante,
       abfragevariante,
       undefined,
       undefined,
@@ -532,7 +634,8 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   private createAddAbfragevarianteTreeItem(
     id: number,
     parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto
+    abfrage: InfrastrukturabfrageDto,
+    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
   ) {
     return this.createAbfrageTreeItem(
       id,
@@ -540,6 +643,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAddAbfragevariante,
       AbfrageTreeItemType.ADD_ABFRAGEVARIANTE,
       abfrage,
+      conextAnzeigeAbfragevariante,
       undefined,
       undefined,
       undefined,
@@ -551,6 +655,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
@@ -560,6 +665,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.getNameTreeElementBauabschnitt(bauabschnitt),
       AbfrageTreeItemType.BAUABSCHNITT,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       bauabschnitt,
       undefined,
@@ -577,6 +683,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
@@ -585,6 +692,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAddBauabschnitt,
       AbfrageTreeItemType.ADD_BAUABSCHNITT,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       undefined,
       undefined,
@@ -596,6 +704,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
@@ -606,6 +715,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.getNameTreeElementBaugebiet(baugebiet),
       AbfrageTreeItemType.BAUGEBIET,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       bauabschnitt,
       baugebiet,
@@ -623,6 +733,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto
   ) {
@@ -632,6 +743,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAddBaugebiet,
       AbfrageTreeItemType.ADD_BAUGEBIET,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       bauabschnitt,
       undefined,
@@ -643,6 +755,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
@@ -651,6 +764,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAddBaugebiet,
       AbfrageTreeItemType.ADD_BAUGEBIET,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       undefined,
       undefined,
@@ -662,6 +776,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto,
@@ -673,6 +788,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.getNameTreeElementBaurate(baurate),
       AbfrageTreeItemType.BAURATE,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       bauabschnitt,
       baugebiet,
@@ -690,6 +806,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto,
     bauabschnitt: BauabschnittDto,
     baugebiet: BaugebietDto
@@ -700,6 +817,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAddBaurate,
       AbfrageTreeItemType.ADD_BAURATE,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       bauabschnitt,
       baugebiet,
@@ -711,6 +829,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     return this.createAbfrageTreeItem(
@@ -719,6 +838,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.nameTreeElementAddBaurate,
       AbfrageTreeItemType.ADD_BAURATE,
       abfrage,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       undefined,
       undefined,
@@ -732,25 +852,26 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     name: string,
     type: AbfrageTreeItemType,
     abfrage: InfrastrukturabfrageDto | undefined,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined,
     abfragevariante: AbfragevarianteDto | undefined,
     bauabschnitt: BauabschnittDto | undefined,
     baugebiet: BaugebietDto | undefined,
     baurate: BaurateDto | undefined
   ) {
-    const abfrageTreeItem: AbfrageTreeItem = {
+    return {
       id: id,
       parentTreeItem: parentTreeItem,
       name: name,
       type: type,
       children: [],
       abfrage: abfrage,
+      contextAnzeigeAbfragevariante: contextAnzeigeAbfragevariante,
       abfragevariante: abfragevariante,
       bauabschnitt: bauabschnitt,
       baugebiet: baugebiet,
       baurate: baurate,
       changed: false,
-    };
-    return abfrageTreeItem;
+    } as AbfrageTreeItem;
   }
 
   /**
@@ -932,7 +1053,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     return (
       this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
       // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
-      this.isNavigationTreeEditable &&
+      this.isEditableWithAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante) &&
       // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
       (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
         !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&

@@ -32,7 +32,31 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="4"
+          md="6"
+        >
+          <v-select
+            id="abfragevariante_planungsrecht"
+            v-model="abfragevariante.planungsrecht"
+            :disabled="!isEditable"
+            class="mx-3"
+            :items="planungsrechtList"
+            item-value="key"
+            item-text="value"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            @change="formChanged"
+          >
+            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
+          </v-select>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
+      </v-row>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="6"
         >
           <num-field
             id="abfragevariante_realisierungvon"
@@ -47,16 +71,15 @@
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
           <num-field
             id="abfragevariante_realisierungBis"
-            v-model="abfragevariante.realisierungBis"
-            :disabled="!isEditable"
+            v-model="calcRealisierungBis"
+            :disabled="true"
             label="Realisierung bis (JJJJ)"
             class="mx-3"
             year
-            required
             maxlength="4"
           />
         </v-col>
@@ -298,7 +321,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
-import { AnzeigeContext } from "@/views/Abfrage.vue";
+import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(
@@ -313,22 +336,15 @@ export default class AbfragevarianteForm extends Mixins(
   @Prop()
   private mode!: DisplayMode;
 
-  @Prop({ type: Number, default: 1 })
-  private readonly anzeigeContext!: AnzeigeContext;
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
 
   private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
-  get isEditable(): boolean {
-    let isEditable = false;
-    if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE) {
-      isEditable = this.isEditableByAbfrageerstellung();
-    } else if (this.anzeigeContext === AnzeigeContext.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      isEditable = this.isEditableBySachbearbeitung();
-    }
-    return isEditable;
-  }
+  @Prop()
+  private sobonRelevant!: UncertainBoolean;
 
   get displayMode(): DisplayMode {
     return this.mode;
@@ -338,8 +354,13 @@ export default class AbfragevarianteForm extends Mixins(
     this.$emit("input", mode);
   }
 
-  @Prop()
-  private sobonRelevant!: UncertainBoolean;
+  get calcRealisierungBis(): number | undefined {
+    let jahre: Array<number> | undefined = this.abfragevariante.bauabschnitte
+      ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
+      .flatMap((baugebiet) => baugebiet.bauraten)
+      .map((baurate) => baurate.jahr);
+    return _.max(jahre);
+  }
 
   get isSobonRelevant(): UncertainBoolean {
     return this.sobonRelevant;
