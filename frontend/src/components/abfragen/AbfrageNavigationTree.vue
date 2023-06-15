@@ -130,7 +130,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
+import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import _ from "lodash";
 import {

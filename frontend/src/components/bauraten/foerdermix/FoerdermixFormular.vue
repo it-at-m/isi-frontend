@@ -57,7 +57,6 @@ import FormattingMixin from "@/mixins/FormattingMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 @Component({ components: { NumField, FieldGroupCard } })
 export default class FoerdermixFormular extends Mixins(

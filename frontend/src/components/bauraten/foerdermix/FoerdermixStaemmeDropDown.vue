@@ -25,7 +25,6 @@ import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
