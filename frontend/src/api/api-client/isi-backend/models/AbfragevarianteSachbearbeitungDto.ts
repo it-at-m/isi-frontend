@@ -57,9 +57,10 @@ export interface AbfragevarianteSachbearbeitungDto {
  * @export
  */
 export const AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum = {
-    _2014: 'JAHR_2014',
-    _2017: 'JAHR_2017',
-    _2022: 'JAHR_2022'
+    Unspecified: 'UNSPECIFIED',
+    Jahr2014: 'JAHR_2014',
+    Jahr2017: 'JAHR_2017',
+    Jahr2022: 'JAHR_2022'
 } as const;
 export type AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum = typeof AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum[keyof typeof AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum];
 

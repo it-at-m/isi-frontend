@@ -19,18 +19,20 @@
           cols="12"
           md="6"
         >
-          <v-select
-            id="abfragevarianteSachbearbeitung_soBoNOrientierungswertJahr"
-            v-model="abfragevarianteSachbearbeitung.soBoNOrientierungswertJahr"
-            :disabled="!isEditableBySachbearbeitung"
-            :items="sobonOrientierungswertJahrList"
-            item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            @change="formChanged"
-          >
-            <template #label> Jahr für SoBoN-Orientierungwerte <span class="secondary--text">*</span> </template>
-          </v-select>
+          <v-slide-y-reverse-transition>
+            <v-select
+              id="abfragevarianteSachbearbeitung_soBoNOrientierungswertJahr"
+              v-model="abfragevarianteSachbearbeitung.soBoNOrientierungswertJahr"
+              :disabled="!isEditableBySachbearbeitung"
+              :items="sobonOrientierungswertJahrList"
+              item-value="key"
+              item-text="value"
+              :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+              @change="formChanged"
+            >
+              <template #label> Jahr für SoBoN-Orientierungwerte <span class="secondary--text">*</span> </template>
+            </v-select>
+          </v-slide-y-reverse-transition>
         </v-col>
       </v-row>
       <v-row>

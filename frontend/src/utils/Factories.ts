@@ -35,6 +35,7 @@ import {
   BaugebietDto,
   BaugebietDtoBaugebietTypEnum,
   UncertainBoolean,
+  AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -69,7 +70,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
 export function createAbfragevarianteSachbearbeitungDto(): AbfragevarianteSachbearbeitungDto {
   return {
     geschossflaecheWohnenPlanungsursaechlich: undefined,
-    soBoNOrientierungswertJahr: undefined,
+    soBoNOrientierungswertJahr: AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum.Unspecified,
     anmerkung: undefined,
     bedarfsmeldungFachreferate: [],
   };
