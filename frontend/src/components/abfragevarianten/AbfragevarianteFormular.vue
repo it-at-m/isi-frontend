@@ -37,7 +37,6 @@
           <date-picker
             id="abfragevariante_satzungsbeschluss"
             v-model="abfragevariante.satzungsbeschluss"
-            class="mx-3"
             :disabled="!isEditableByAbfrageerstellung()"
             label="Datum Satzungsbeschluss"
             :rules="[fieldValidationRules.requiredIfOtherEmpty(abfragevariante.realisierungVon, 'Realisierung von')]"
@@ -52,7 +51,6 @@
             id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
             :disabled="!isEditableByAbfrageerstellung()"
-            class="mx-3"
             :items="planungsrechtList"
             item-value="key"
             item-text="value"
@@ -73,7 +71,6 @@
             v-model="abfragevariante.realisierungVon"
             :disabled="!isEditableByAbfrageerstellung()"
             label="Realisierung von (JJJJ)"
-            class="mx-3"
             year
             maxlength="4"
             :rules="[
@@ -90,7 +87,6 @@
             v-model="calcRealisierungBis"
             :disabled="true"
             label="Realisierung bis (JJJJ)"
-            class="mx-3"
             year
             maxlength="4"
           />

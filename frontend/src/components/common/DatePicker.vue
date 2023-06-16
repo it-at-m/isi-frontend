@@ -1,67 +1,55 @@
 <template>
-  <div>
-    <v-text-field
-      v-if="!datePickerActivated"
-      id="datum"
-      v-model="datumTextField"
-      :disabled="disabled"
-      append-icon="mdi-calendar"
-      :rules="required ? [fieldValidationRules.pflichtfeld, fieldValidationRules.datum] : [fieldValidationRules.datum]"
-      validate-on-blur
-      :required="required"
-      @click:append="activateDatePicker"
-    >
-      <template #label>
-        {{ label
-        }}<span
-          v-if="required"
-          class="secondary--text"
-        >
-          *</span
-        >
-      </template>
-    </v-text-field>
-    <v-dialog
-      v-else
-      ref="dialog"
-      v-model="datePickerActivated"
-      width="290px"
-    >
-      <template #activator="{ on, attrs }">
-        <v-text-field
-          id="datum_formattiertesDatum"
-          v-model="datumTextFieldFormatted"
-          append-icon="mdi-calendar"
-          readonly
-          v-bind="attrs"
-          @click:append="activateDatePicker"
-          v-on="on"
-        />
-      </template>
-      <v-date-picker
-        id="datum_datePicker"
-        v-model="datumDatePicker"
+  <v-dialog
+    v-model="datePickerActivated"
+    width="290px"
+  >
+    <template #activator="{ on }">
+      <v-text-field
+        id="datum"
+        v-model="textFieldDate"
+        :rules="getRules()"
+        validate-on-blur
+        :hint="monthPicker ? MONTH_DISPLAY_FORMAT : DISPLAY_FORMAT"
         :disabled="disabled"
-        locale="de"
-        :type="monthPicker ? 'month' : 'date'"
-        @change="deactivateDatePicker"
-      />
-    </v-dialog>
-  </div>
+        :required="required"
+      >
+        <template #label>
+          {{ label
+          }}<span
+            v-if="required"
+            class="secondary--text"
+          >
+            *</span
+          >
+        </template>
+        <template #append>
+          <v-icon v-on="on">mdi-calendar</v-icon>
+        </template>
+      </v-text-field>
+    </template>
+    <v-date-picker
+      id="datum_datePicker"
+      v-model="datePickerDate"
+      :disabled="disabled"
+      locale="de"
+      :type="monthPicker ? 'month' : 'date'"
+      @change="deactivateDatePicker"
+    />
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import { Component, Prop, Mixins } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
 import moment from "moment";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import _ from "lodash";
 
 @Component
 export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   readonly ISO_FORMAT = "YYYY-MM-DD";
   readonly DISPLAY_FORMAT = "DD.MM.YYYY";
-  readonly ISO_MONTH_FORMAT = "YYYY-MM-DD";
-  readonly DISPLAY_MONTH_FORMAT = "YYYY-MM-DD";
+  readonly MONTH_DISPLAY_FORMAT = "MM.YYYY";
 
   /**
    * Bezeichnung des Datumsfelds
@@ -73,18 +61,7 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
    * Der Datumswert der ausgewählt bzw. eingegeben wurde
    */
   @Prop({ default: undefined })
-  private value!: Date;
-
-  private isNewDateInput = false;
-
-  get datum(): Date {
-    return this.value;
-  }
-
-  set datum(date: Date) {
-    this.formChanged();
-    this.$emit("input", date);
-  }
+  private value?: Date;
 
   /**
    * Ist das Datumsfeld ein Pflichtfeld
@@ -102,16 +79,78 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
   @Prop({ type: Boolean, default: false })
   private monthPicker!: boolean;
 
+  @Prop({ type: Array })
+  private rules!: unknown[];
+
   private datePickerActivated = false;
 
-  get datumDatePicker(): string {
-    const datumAsString: string = moment.utc(this.datum).format("YYYY-MM-DD");
-    return datumAsString;
+  @Watch("value")
+  private onValueChanged(value: Date) {
+    this.formChanged();
+    this.$emit("input", value);
   }
 
-  set datumDatePicker(date: string) {
-    const datumAsDate: Date = moment.utc(date, "YYYY-MM-DD").toDate();
-    this.datum = datumAsDate;
+  get datePickerDate(): string {
+    if (!_.isNil(this.value)) {
+      const parsedValue = moment.utc(this.value);
+      if (!parsedValue.isSame(0)) {
+        return parsedValue.format(this.ISO_FORMAT);
+      }
+    }
+
+    /* undefined, null und der Unix Timestamp 0 gelten als "leere" Werte
+      und werden deshalb als heutiges Datum dargestellt. */
+    return moment.utc().format(this.ISO_FORMAT);
+  }
+
+  set datePickerDate(value: string) {
+    this.value = moment.utc(value, this.ISO_FORMAT).toDate();
+  }
+
+  get textFieldDate(): string {
+    if (!_.isNil(this.value)) {
+      const parsedValue = moment.utc(this.value);
+      if (!parsedValue.isSame(0)) {
+        return parsedValue.format(this.getDisplayFormat());
+      }
+    }
+
+    /* undefined, null und der Unix Timestamp 0 gelten als "leere" Werte
+      und werden deshalb als leerer String dargestellt. */
+    return "";
+  }
+
+  set textFieldDate(value: string) {
+    /* Hier wird das Datum im "strict mode" geparsed, um den Nutzer-Input
+      möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
+    const parsedValue = moment.utc(value, this.getDisplayFormat(), true);
+
+    if (parsedValue.isValid()) {
+      this.value = parsedValue.toDate();
+    } else {
+      this.value = undefined;
+    }
+  }
+
+  private getDisplayFormat(): string {
+    return this.monthPicker ? this.MONTH_DISPLAY_FORMAT : this.DISPLAY_FORMAT;
+  }
+
+  private getRules(): unknown[] {
+    const allRules = this.fieldValidationRules as {
+      datum: (format: string) => (v: string) => boolean | string;
+      pflichtfeld: (v: string) => boolean | string;
+    };
+    const usedRules: unknown[] = [allRules.datum(this.getDisplayFormat())];
+
+    if (this.required) {
+      usedRules.push(allRules.pflichtfeld);
+    }
+    if (this.rules) {
+      usedRules.push(...this.rules);
+    }
+
+    return usedRules;
   }
 
   private activateDatePicker() {
@@ -120,34 +159,6 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
 
   private deactivateDatePicker() {
     this.datePickerActivated = false;
-  }
-
-  get datumTextField(): string {
-    return this.datumTextFieldFormatted;
-  }
-
-  set datumTextField(datum: string) {
-    // moment in strict mode (true). Dies bewirkt, dass das Moment Objekt bei einem Parse Fehler als invalid behandelt wird
-    const datumFormattedInUtc: moment.Moment = moment.utc(datum, "DD.MM.YYYY", true);
-    if (datumFormattedInUtc.isValid()) {
-      const datumAsDate: Date = datumFormattedInUtc.toDate();
-      this.datum = datumAsDate;
-    }
-  }
-  /**
-   * Das Datum wird in den Factories immer auf den 1970-01-01 initialisert.
-   * Falls das Datum den Initailwert hat wird ein leeres Feld angezeigt.
-   * Ist aber der Datepicker geöffnet und das Datum ist immer noch der 1970-01-01 wird es auf das akutelle Datum geändert.
-   */
-  get datumTextFieldFormatted(): string {
-    if (this.datePickerActivated) {
-      if (moment(this.datum, "DD-MM-YYYY").isSame(moment("1970-01-01"), "day")) this.datum = new Date();
-      return moment(this.datum).format("DD.MM.YYYY");
-    } else {
-      return moment(this.datum, "DD-MM-YYYY").isSame(moment("1970-01-01"), "day")
-        ? ""
-        : moment(this.datum).format("DD.MM.YYYY");
-    }
   }
 }
 </script>

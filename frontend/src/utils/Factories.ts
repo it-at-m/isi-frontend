@@ -50,7 +50,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     anzahlWeBaurechtlichGenehmigt: undefined,
     anzahlWeBaurechtlichFestgesetzt: undefined,
     realisierungVon: Number.NaN,
-    satzungsbeschluss: new Date(0),
+    satzungsbeschluss: undefined,
     geschossflaecheGenossenschaftlicheWohnungen: undefined,
     sonderwohnformen: false,
     geschossflaecheStudentenwohnungen: undefined,

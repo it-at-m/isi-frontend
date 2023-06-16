@@ -60,8 +60,8 @@ describe("FieldValidationRulesMixin", () => {
     expect(theRule("1!")).toBe(thisMessage);
   });
 
-  it("should be correct Date Format", () => {
-    const theRule = (rules as any).datum;
+  it("should be a correct date format", () => {
+    const theRule = (rules as any).datum("DD.MM.YYYY");
     const thisMessage = "Muss korrekt formatiert sein";
 
     expect(theRule(null)).toBe(true);
@@ -187,7 +187,7 @@ describe("FieldValidationRulesMixin", () => {
     expect(rule(UncertainBoolean.Unspecified)).toBe(message);
     expect(rule("foo")).toBe(true);
 
-    otherValue = [] as Array<unknown>;
+    otherValue = [] as unknown[];
     rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
     expect(rule(undefined)).toBe(message);
     expect(rule(null)).toBe(message);
