@@ -9,7 +9,7 @@
           <num-field
             id="abfragevarianteSachbearbeitung_geschossflaecheWohnenPlanungsursaechlich"
             v-model="abfragevarianteSachbearbeitung.geschossflaecheWohnenPlanungsursaechlich"
-            :disabled="!isEditableBySachbearbeitung"
+            :disabled="!isEditableBySachbearbeitung()"
             class="mx-3"
             label="Planungsursächliche Geschossfläche Wohnen"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -23,7 +23,7 @@
             <v-select
               id="abfragevarianteSachbearbeitung_soBoNOrientierungswertJahr"
               v-model="abfragevarianteSachbearbeitung.soBoNOrientierungswertJahr"
-              :disabled="!isEditableBySachbearbeitung"
+              :disabled="!isEditableBySachbearbeitung()"
               :items="sobonOrientierungswertJahrList"
               item-value="key"
               item-text="value"
@@ -40,7 +40,7 @@
           <v-textarea
             id="abfragevarianteSachbearbeitung_anmerkung"
             v-model="abfragevarianteSachbearbeitung.anmerkung"
-            :disabled="!isEditableBySachbearbeitung"
+            :disabled="!isEditableBySachbearbeitung()"
             label="Anmerkungen"
             auto-grow
             rows="3"
@@ -81,7 +81,7 @@
                     <td>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                        :disabled="!isEditableBySachbearbeitung"
+                        :disabled="!isEditableBySachbearbeitung()"
                         icon
                         @click="editBedarfsmeldung(item, index)"
                       >
@@ -89,7 +89,7 @@
                       </v-btn>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_loeschen' + index"
-                        :disabled="!isEditableBySachbearbeitung"
+                        :disabled="!isEditableBySachbearbeitung()"
                         icon
                         @click="deleteBedarfsmeldung(index)"
                       >
@@ -112,7 +112,7 @@
               >
                 <v-btn
                   :id="'bedarfsmeldung_erfassen'"
-                  :disabled="!isEditableBySachbearbeitung"
+                  :disabled="!isEditableBySachbearbeitung()"
                   class="text-wrap"
                   block
                   @click="bedarfsmeldungErfassen()"
