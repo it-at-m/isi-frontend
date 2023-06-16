@@ -62,7 +62,7 @@
               @change="formChanged"
             >
               <template #header="{ text }">
-                <span class="text-right">{{ text }}</span>
+                <span>{{ text }}</span>
               </template>
               <template #body="{ items }">
                 <tbody>
@@ -70,14 +70,14 @@
                     v-for="(item, index) in items"
                     :key="index"
                   >
-                    <td class="text-right">{{ item.anzahlEinrichtungen }}</td>
-                    <td class="text-left">
+                    <td>{{ item.anzahlEinrichtungen }}</td>
+                    <td>
                       {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
                     </td>
-                    <td class="text-right">{{ item.anzahlKinderkrippengruppen }}</td>
-                    <td class="text-right">{{ item.anzahlKindergartengruppen }}</td>
-                    <td class="text-right">{{ item.anzahlHortgruppen }}</td>
-                    <td class="text-right">{{ item.anzahlGrundschulzuege }}</td>
+                    <td>{{ item.anzahlKinderkrippengruppen }}</td>
+                    <td>{{ item.anzahlKindergartengruppen }}</td>
+                    <td>{{ item.anzahlHortgruppen }}</td>
+                    <td>{{ item.anzahlGrundschulzuege }}</td>
                     <td>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_bearbeiten' + index"
@@ -181,12 +181,12 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private selectedItemIndex = -1;
 
   private bedarfsmeldungenHeaders = [
-    { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen" },
-    { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp" },
-    { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen" },
-    { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen" },
-    { text: "Anz. Hortgruppen", value: "anzahlHortgruppen" },
-    { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege" },
+    { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
+    { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
+    { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen", sortable: false },
+    { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
+    { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
+    { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
     { text: "Aktionen", value: "actions", sortable: false },
   ];
 
@@ -208,7 +208,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   }
 
   private bedarfsmeldungErfassen(): void {
-    this.currentBedarfsmeldung = new BedarfsmeldungFachabteilungenModel(createBedarfsmeldungFachabteilungenDto());
+    this.currentBedarfsmeldung = _.clone(createBedarfsmeldungFachabteilungenDto());
     this.displayModeBedarfsmeldung = DisplayMode.NEU;
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
   }
@@ -243,7 +243,6 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private clearBedarfsmeldungDialog(): void {
     this.bedarfsmeldungFachabteilungenDialogOpen = false;
     this.displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
-    this.currentBedarfsmeldung = createBedarfsmeldungFachabteilungenDto();
     this.selectedItemIndex = -1;
   }
 
