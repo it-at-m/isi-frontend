@@ -145,6 +145,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
   /**
    * Die Methode setzt die Validatierung der Dialog-Form zurück, wenn sich der Wert von showBedarfsmeldungDialog ändert.
    * Dies verhindert, dass Validator-Fehlermeldungen schon beim Öffnen des Dialogs angezeigt werden.
+   * Siehe: https://v2.vuetifyjs.com/en/components/forms/#validation-with-submit-26-clear
    */
   @Watch("showBedarfsmeldungDialog")
   private resetValidation(): void {
