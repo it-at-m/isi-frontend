@@ -210,14 +210,18 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private bedarfsmeldungErfassen(): void {
     this.currentBedarfsmeldung = _.clone(createBedarfsmeldungFachabteilungenDto());
     this.displayModeBedarfsmeldung = DisplayMode.NEU;
+    //this.$nextTick(() => {
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
+    //});
   }
 
   private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel, itemIndex: number): void {
     this.selectedItemIndex = itemIndex;
     this.currentBedarfsmeldung = _.clone(bedarfsmeldung);
     this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
+    //this.$nextTick(() => {
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
+    //});
   }
 
   private bedarfsmeldungUebernehmen(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {
@@ -241,7 +245,9 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   }
 
   private clearBedarfsmeldungDialog(): void {
+    //this.$nextTick(() => {
     this.bedarfsmeldungFachabteilungenDialogOpen = false;
+    //});
     this.displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
     this.selectedItemIndex = -1;
   }
