@@ -100,14 +100,14 @@
             id="bedarfsmeldung_abbrechen_button"
             class="text-wrap"
             text
-            @click="bedarfsmeldungAbbrechen"
+            @click="abbrechenBedarfsmeldung"
             v-text="'Abbrechen'"
           />
           <v-btn
             id="bedarfsmeldung_uebernehmen_button"
             class="text-wrap"
             color="primary"
-            @click="bedarfsmeldungUebernehmen"
+            @click="uebernehmenBedarfsmeldung"
             v-text="'Übernehmen'"
           />
         </v-card-actions>
@@ -143,7 +143,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
   }
 
   /**
-   * Die Methode setzt die Validatierung der Dialog-Form zurück, wenn sich der Wert von showBedarfsmeldungDialog ändert.
+   * Die Methode setzt die Validierung der Dialog-Form zurück, wenn sich der Wert von showBedarfsmeldungDialog ändert.
    * Dies verhindert, dass Validator-Fehlermeldungen schon beim Öffnen des Dialogs angezeigt werden.
    * Siehe: https://v2.vuetifyjs.com/en/components/forms/#validation-with-submit-26-clear
    */
@@ -154,17 +154,17 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
     }
   }
 
-  private bedarfsmeldungUebernehmen(): void {
+  private uebernehmenBedarfsmeldung(): void {
     const validationMessage: string | null = this.findFaultInBedarfsmeldung(this.bedarfsmeldung);
     if (_.isNil(validationMessage)) {
-      this.$emit("bedarfsmeldung-uebernehmen", this.bedarfsmeldung);
+      this.$emit("uebernehmen-bedarfsmeldung", this.bedarfsmeldung);
     } else {
       Toaster.toast(validationMessage, Levels.ERROR);
     }
   }
 
   @Emit()
-  private bedarfsmeldungAbbrechen(): void {
+  private abbrechenBedarfsmeldung(): void {
     return;
   }
 }

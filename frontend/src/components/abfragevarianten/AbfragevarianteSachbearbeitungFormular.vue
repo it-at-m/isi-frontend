@@ -115,7 +115,7 @@
                   :disabled="!isEditableBySachbearbeitung()"
                   class="text-wrap"
                   block
-                  @click="bedarfsmeldungErfassen()"
+                  @click="erfassenBedarfsmeldung()"
                   v-text="'Bedarfsmeldung erfassen'"
                 />
               </v-col>
@@ -132,8 +132,8 @@
       id="bedarfsmeldung_fachabteilungen"
       v-model="currentBedarfsmeldung"
       :show-bedarfsmeldung-dialog="bedarfsmeldungFachabteilungenDialogOpen"
-      @bedarfsmeldung-uebernehmen="bedarfsmeldungUebernehmen($event)"
-      @bedarfsmeldung-abbrechen="bedarfsmeldungAbbrechen()"
+      @uebernehmen-bedarfsmeldung="uebernehmenBedarfsmeldung($event)"
+      @abbrechen-bedarfsmeldung="abbrechenBedarfsmeldung()"
     />
   </div>
 </template>
@@ -222,7 +222,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
   }
 
-  private bedarfsmeldungErfassen(): void {
+  private erfassenBedarfsmeldung(): void {
     this.currentBedarfsmeldung = _.clone(createBedarfsmeldungFachabteilungenDto());
     this.displayModeBedarfsmeldung = DisplayMode.NEU;
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
@@ -235,7 +235,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
   }
 
-  private bedarfsmeldungUebernehmen(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {
+  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): void {
     if (this.displayModeBedarfsmeldung === DisplayMode.NEU) {
       if (_.isNil(this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)) {
         this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate = new Array<BedarfsmeldungFachabteilungenDto>();
@@ -251,7 +251,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     this.clearBedarfsmeldungDialog();
   }
 
-  private bedarfsmeldungAbbrechen(): void {
+  private abbrechenBedarfsmeldung(): void {
     this.clearBedarfsmeldungDialog();
   }
 
