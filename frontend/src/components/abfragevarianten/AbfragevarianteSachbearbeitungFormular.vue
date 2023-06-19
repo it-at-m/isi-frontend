@@ -27,7 +27,7 @@
               :items="sobonOrientierungswertJahrList"
               item-value="key"
               item-text="value"
-              :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+              :rules="sobonOrientierungswertJahrValidator"
               @change="formChanged"
             >
               <template #label> Jahr für SoBoN-Orientierungwerte <span class="secondary--text">*</span> </template>
@@ -166,6 +166,21 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
 
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonOrientierungswertJahr"];
+  }
+
+  get sobonOrientierungswertJahrValidator(): unknown[] {
+    if (this.isEditableBySachbearbeitung()) {
+      const usedRules: unknown[] = [];
+      // Da die Composition API keine Mixins unterstützt, müssen die Rules importiert werden.
+      const rules = new FieldValidationRulesMixin().fieldValidationRules as {
+        notUnspecified: (v: string) => boolean | string;
+        pflichtfeld: (v: string) => boolean | string;
+      };
+      usedRules.push(rules.notUnspecified);
+      usedRules.push(rules.pflichtfeld);
+      return usedRules;
+    }
+    return [];
   }
 
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
