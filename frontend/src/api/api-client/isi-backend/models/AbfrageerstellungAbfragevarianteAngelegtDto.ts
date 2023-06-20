@@ -109,7 +109,7 @@ export interface AbfrageerstellungAbfragevarianteAngelegtDto {
      * @type {number}
      * @memberof AbfrageerstellungAbfragevarianteAngelegtDto
      */
-    realisierungVon?: number;
+    realisierungVon: number;
     /**
      * 
      * @type {Date}
@@ -198,7 +198,7 @@ export function AbfrageerstellungAbfragevarianteAngelegtDtoFromJSONTyped(json: a
         'gesamtanzahlWe': !exists(json, 'gesamtanzahlWe') ? undefined : json['gesamtanzahlWe'],
         'anzahlWeBaurechtlichGenehmigt': !exists(json, 'anzahlWeBaurechtlichGenehmigt') ? undefined : json['anzahlWeBaurechtlichGenehmigt'],
         'anzahlWeBaurechtlichFestgesetzt': !exists(json, 'anzahlWeBaurechtlichFestgesetzt') ? undefined : json['anzahlWeBaurechtlichFestgesetzt'],
-        'realisierungVon': !exists(json, 'realisierungVon') ? undefined : json['realisierungVon'],
+        'realisierungVon': json['realisierungVon'],
         'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
         'geschossflaecheGenossenschaftlicheWohnungen': !exists(json, 'geschossflaecheGenossenschaftlicheWohnungen') ? undefined : json['geschossflaecheGenossenschaftlicheWohnungen'],
         'sonderwohnformen': json['sonderwohnformen'],
