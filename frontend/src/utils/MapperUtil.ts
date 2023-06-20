@@ -32,6 +32,7 @@ export function mapToInfrastrukturabfrageAngelegt(
       abfragevariantenNr: abfragevariante.abfragevariantenNr,
       planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht),
       realisierungVon: abfragevariante.realisierungVon,
+      satzungsbeschluss: abfragevariante.satzungsbeschluss,
       sonderwohnformen: abfragevariante.sonderwohnformen,
       anzahlWeBaurechtlichFestgesetzt: abfragevariante.anzahlWeBaurechtlichFestgesetzt,
       anzahlWeBaurechtlichGenehmigt: abfragevariante.anzahlWeBaurechtlichGenehmigt,

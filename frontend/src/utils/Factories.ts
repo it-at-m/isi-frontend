@@ -54,6 +54,7 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     anzahlWeBaurechtlichGenehmigt: undefined,
     anzahlWeBaurechtlichFestgesetzt: undefined,
     realisierungVon: Number.NaN,
+    satzungsbeschluss: undefined,
     geschossflaecheGenossenschaftlicheWohnungen: undefined,
     sonderwohnformen: false,
     geschossflaecheStudentenwohnungen: undefined,

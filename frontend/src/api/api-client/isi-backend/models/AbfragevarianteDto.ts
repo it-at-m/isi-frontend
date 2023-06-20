@@ -130,6 +130,12 @@ export interface AbfragevarianteDto {
     realisierungVon?: number;
     /**
      * 
+     * @type {Date}
+     * @memberof AbfragevarianteDto
+     */
+    satzungsbeschluss?: Date;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteDto
      */
@@ -225,6 +231,7 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'anzahlWeBaurechtlichGenehmigt': !exists(json, 'anzahlWeBaurechtlichGenehmigt') ? undefined : json['anzahlWeBaurechtlichGenehmigt'],
         'anzahlWeBaurechtlichFestgesetzt': !exists(json, 'anzahlWeBaurechtlichFestgesetzt') ? undefined : json['anzahlWeBaurechtlichFestgesetzt'],
         'realisierungVon': !exists(json, 'realisierungVon') ? undefined : json['realisierungVon'],
+        'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
         'geschossflaecheGenossenschaftlicheWohnungen': !exists(json, 'geschossflaecheGenossenschaftlicheWohnungen') ? undefined : json['geschossflaecheGenossenschaftlicheWohnungen'],
         'sonderwohnformen': !exists(json, 'sonderwohnformen') ? undefined : json['sonderwohnformen'],
         'geschossflaecheStudentenwohnungen': !exists(json, 'geschossflaecheStudentenwohnungen') ? undefined : json['geschossflaecheStudentenwohnungen'],
@@ -261,6 +268,7 @@ export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any
         'anzahlWeBaurechtlichGenehmigt': value.anzahlWeBaurechtlichGenehmigt,
         'anzahlWeBaurechtlichFestgesetzt': value.anzahlWeBaurechtlichFestgesetzt,
         'realisierungVon': value.realisierungVon,
+        'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),
         'geschossflaecheGenossenschaftlicheWohnungen': value.geschossflaecheGenossenschaftlicheWohnungen,
         'sonderwohnformen': value.sonderwohnformen,
         'geschossflaecheStudentenwohnungen': value.geschossflaecheStudentenwohnungen,

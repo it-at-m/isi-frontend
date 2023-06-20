@@ -1059,7 +1059,9 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
         !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
       // Die Abfragevariante darf keine Bauabschnitte referenzieren.
       (_.isNil(abfrageTreeItem.abfragevariante?.bauabschnitte) ||
-        _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte))
+        _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte)) &&
+      // Das Datum für Realisierung von muss gesetzt sein.
+      !_.isNil(abfrageTreeItem.abfragevariante?.realisierungVon)
     );
   }
 

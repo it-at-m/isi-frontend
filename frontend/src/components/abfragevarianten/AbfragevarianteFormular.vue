@@ -33,7 +33,15 @@
         <v-col
           cols="12"
           md="6"
-        />
+        >
+          <date-picker
+            id="abfragevariante_satzungsbeschluss"
+            v-model="abfragevariante.satzungsbeschluss"
+            :disabled="!isEditableByAbfrageerstellung()"
+            label="Datum Satzungsbeschluss"
+            month-picker
+          />
+        </v-col>
         <v-col
           cols="12"
           md="6"
@@ -42,7 +50,6 @@
             id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
             :disabled="!isEditable"
-            class="mx-3"
             :items="planungsrechtList"
             item-value="key"
             item-text="value"
@@ -63,10 +70,9 @@
             v-model="abfragevariante.realisierungVon"
             :disabled="!isEditable"
             label="Realisierung von (JJJJ)"
-            class="mx-3"
             year
-            required
             maxlength="4"
+            required
           />
         </v-col>
         <v-col
@@ -78,7 +84,6 @@
             v-model="calcRealisierungBis"
             :disabled="true"
             label="Realisierung bis (JJJJ)"
-            class="mx-3"
             year
             maxlength="4"
           />

@@ -60,8 +60,8 @@ describe("FieldValidationRulesMixin", () => {
     expect(theRule("1!")).toBe(thisMessage);
   });
 
-  it("should be correct Date Format", () => {
-    const theRule = (rules as any).datum;
+  it("should be a correct date format", () => {
+    const theRule = (rules as any).datum("DD.MM.YYYY");
     const thisMessage = "Muss korrekt formatiert sein";
 
     expect(theRule(null)).toBe(true);
@@ -122,8 +122,8 @@ describe("FieldValidationRulesMixin", () => {
     expect(theRule(foerdermix)).toBe(true);
 
     if (foerdermix.foerderarten !== undefined) {
-      var len = foerdermix.foerderarten.length;
-      var f = foerdermix.foerderarten[len - 1];
+      const len = foerdermix.foerderarten.length;
+      const f = foerdermix.foerderarten[len - 1];
       f.anteilProzent = 50;
 
       expect(theRule(foerdermix)).toBe(ueber100Message);
@@ -141,5 +141,80 @@ describe("FieldValidationRulesMixin", () => {
     expect(theRule(null)).toBe(thisMessage);
     expect(theRule(UncertainBoolean.Unspecified)).toBe(thisMessage);
     expect(theRule(UncertainBoolean.True)).toBe(true);
+  });
+
+  it("should be required when the other value is empty", () => {
+    let otherValue = undefined;
+    const otherName = "Feld";
+    const message = `Pflichtfeld, wenn '${otherName}' leer ist`;
+
+    let rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
+    expect(rule(undefined)).toBe(message);
+    expect(rule(null)).toBe(message);
+    expect(rule(NaN)).toBe(message);
+    expect(rule("")).toBe(message);
+    expect(rule([])).toBe(message);
+    expect(rule(UncertainBoolean.Unspecified)).toBe(message);
+    expect(rule("foo")).toBe(true);
+
+    otherValue = null;
+    rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
+    expect(rule(undefined)).toBe(message);
+    expect(rule(null)).toBe(message);
+    expect(rule(NaN)).toBe(message);
+    expect(rule("")).toBe(message);
+    expect(rule([])).toBe(message);
+    expect(rule(UncertainBoolean.Unspecified)).toBe(message);
+    expect(rule("foo")).toBe(true);
+
+    otherValue = NaN;
+    rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
+    expect(rule(undefined)).toBe(message);
+    expect(rule(null)).toBe(message);
+    expect(rule(NaN)).toBe(message);
+    expect(rule("")).toBe(message);
+    expect(rule([])).toBe(message);
+    expect(rule(UncertainBoolean.Unspecified)).toBe(message);
+    expect(rule("foo")).toBe(true);
+
+    otherValue = "";
+    rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
+    expect(rule(undefined)).toBe(message);
+    expect(rule(null)).toBe(message);
+    expect(rule(NaN)).toBe(message);
+    expect(rule("")).toBe(message);
+    expect(rule([])).toBe(message);
+    expect(rule(UncertainBoolean.Unspecified)).toBe(message);
+    expect(rule("foo")).toBe(true);
+
+    otherValue = [] as unknown[];
+    rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
+    expect(rule(undefined)).toBe(message);
+    expect(rule(null)).toBe(message);
+    expect(rule(NaN)).toBe(message);
+    expect(rule("")).toBe(message);
+    expect(rule([])).toBe(message);
+    expect(rule(UncertainBoolean.Unspecified)).toBe(message);
+    expect(rule("foo")).toBe(true);
+
+    otherValue = UncertainBoolean.Unspecified;
+    rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
+    expect(rule(undefined)).toBe(message);
+    expect(rule(null)).toBe(message);
+    expect(rule(NaN)).toBe(message);
+    expect(rule("")).toBe(message);
+    expect(rule([])).toBe(message);
+    expect(rule(UncertainBoolean.Unspecified)).toBe(message);
+    expect(rule("foo")).toBe(true);
+
+    otherValue = "foo";
+    rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
+    expect(rule(undefined)).toBe(true);
+    expect(rule(null)).toBe(true);
+    expect(rule(NaN)).toBe(true);
+    expect(rule("")).toBe(true);
+    expect(rule([])).toBe(true);
+    expect(rule(UncertainBoolean.Unspecified)).toBe(true);
+    expect(rule("foo")).toBe(true);
   });
 });
