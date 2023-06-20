@@ -39,7 +39,6 @@
             v-model="abfragevariante.satzungsbeschluss"
             :disabled="!isEditableByAbfrageerstellung()"
             label="Datum Satzungsbeschluss"
-            :rules="[fieldValidationRules.requiredIfOtherEmpty(abfragevariante.realisierungVon, 'Realisierung von')]"
             month-picker
           />
         </v-col>
@@ -73,9 +72,7 @@
             label="Realisierung von (JJJJ)"
             year
             maxlength="4"
-            :rules="[
-              fieldValidationRules.requiredIfOtherEmpty(abfragevariante.satzungsbeschluss, 'Datum Satzungsbeschluss'),
-            ]"
+            required
           />
         </v-col>
         <v-col
