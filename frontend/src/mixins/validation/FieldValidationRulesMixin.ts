@@ -5,9 +5,31 @@ import { addiereAnteile } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 
+type Input = string | number | unknown[];
+
 @Component
 export default class FieldValidationRulesMixin extends Vue {
-  private static readonly DATE_FORMAT = "DD.MM.YYYY";
+  private isEmpty(value: Input): boolean {
+    if (_.isNil(value)) {
+      return true;
+    }
+
+    if (typeof value === "number") {
+      if (_.isNaN(value)) {
+        return true;
+      }
+    } else {
+      if (value.length === 0) {
+        return true;
+      }
+
+      if (typeof value === "string" && (value === "" || value === UncertainBoolean.Unspecified)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   fieldValidationRules: unknown = {
     pflichtfeld: (v: string): boolean | string => !!v || "Pflichtfeld",
@@ -23,8 +45,10 @@ export default class FieldValidationRulesMixin extends Vue {
     hausnummer: (v: string): boolean | string =>
       !v || /^[a-zA-Z 0-9 \s]*$/.test(v) || "Nur Buchstaben und Zahlen erlaubt",
 
-    datum: (v: string) =>
-      !v || moment(v, FieldValidationRulesMixin.DATE_FORMAT, true).isValid() || "Muss korrekt formatiert sein",
+    datum:
+      (format: string) =>
+      (v: string): string | boolean =>
+        !v || moment(v, format, true).isValid() || "Muss korrekt formatiert sein",
 
     digits: (v: string): string | boolean => {
       return !v || /^\d*$/.test(v) || "Nur Ziffern erlaubt";
@@ -71,5 +95,12 @@ export default class FieldValidationRulesMixin extends Vue {
     notUnspecified: (v: string): boolean | string => {
       return (!_.isNil(v) && v !== UncertainBoolean.Unspecified) || "Pflichtfeld";
     },
+
+    // Nur ein Pflichtfeld, wenn das andere Feld leer ist.
+    requiredIfOtherEmpty:
+      (otherValue: string, otherName: string) =>
+      (v: string): string | boolean => {
+        return !this.isEmpty(otherValue) || !this.isEmpty(v) || `Pflichtfeld, wenn '${otherName}' leer ist`;
+      },
   };
 }

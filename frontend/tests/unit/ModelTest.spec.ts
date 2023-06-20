@@ -20,7 +20,6 @@ describe("ModelTest.spec.ts", () => {
     abfragevarianteDto.abfragevariantenNr = 1;
     abfragevarianteDto.planungsrecht = AbfragevarianteDtoPlanungsrechtEnum.NachverdBaurechtsausschoepfung;
     abfragevarianteDto.realisierungVon = 2022;
-    abfragevarianteDto.realisierungBis = 2023;
     abfragevarianteDto.geschossflaecheWohnen = 123.45;
     abfragevarianteDto.geschossflaecheWohnenFestgesetzt = 0.9;
     abfragevarianteDto.anzahlWeBaurechtlichGenehmigt = 120;
