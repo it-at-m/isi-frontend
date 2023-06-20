@@ -171,7 +171,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   get sobonOrientierungswertJahrValidator(): unknown[] {
     if (this.isEditableBySachbearbeitung()) {
       const usedRules: unknown[] = [];
-      // Da die Composition API keine Mixins unterstützt, müssen die Rules importiert werden.
+      // Objekte der benötigten Rules anlegen, um daraus eine Liste von Rules anlegen zu können
       const rules = new FieldValidationRulesMixin().fieldValidationRules as {
         notUnspecified: (v: string) => boolean | string;
         pflichtfeld: (v: string) => boolean | string;
@@ -223,14 +223,14 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   }
 
   private erfassenBedarfsmeldung(): void {
-    this.currentBedarfsmeldung = _.clone(createBedarfsmeldungFachabteilungenDto());
+    this.currentBedarfsmeldung = createBedarfsmeldungFachabteilungenDto();
     this.displayModeBedarfsmeldung = DisplayMode.NEU;
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
   }
 
   private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel, itemIndex: number): void {
     this.selectedItemIndex = itemIndex;
-    this.currentBedarfsmeldung = _.clone(bedarfsmeldung);
+    this.currentBedarfsmeldung = bedarfsmeldung;
     this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
   }
