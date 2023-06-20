@@ -37,7 +37,7 @@
           <date-picker
             id="abfragevariante_satzungsbeschluss"
             v-model="abfragevariante.satzungsbeschluss"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Datum Satzungsbeschluss"
             month-picker
           />
