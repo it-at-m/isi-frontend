@@ -1,6 +1,6 @@
 import {
-  AbfrageAngelegtDto,
   AbfragevarianteAngelegtDto,
+  AbfrageAngelegtDto,
   AbfragevarianteAngelegtDtoPlanungsrechtEnum,
   InfrastrukturabfrageAngelegtDto,
   AbfragevarianteDtoPlanungsrechtEnum,
@@ -28,12 +28,11 @@ export function mapToInfrastrukturabfrageAngelegt(
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
-      abfragevariantenName: abfragevariante.abfragevariantenName as string,
-      abfragevariantenNr: abfragevariante.abfragevariantenNr as number,
-      planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht as AbfragevarianteDtoPlanungsrechtEnum),
-      realisierungBis: abfragevariante.realisierungBis as number,
-      realisierungVon: abfragevariante.realisierungVon as number,
-      sonderwohnformen: abfragevariante.sonderwohnformen as boolean,
+      abfragevariantenName: abfragevariante.abfragevariantenName,
+      abfragevariantenNr: abfragevariante.abfragevariantenNr,
+      planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht),
+      realisierungVon: abfragevariante.realisierungVon,
+      sonderwohnformen: abfragevariante.sonderwohnformen,
       anzahlWeBaurechtlichFestgesetzt: abfragevariante.anzahlWeBaurechtlichFestgesetzt,
       anzahlWeBaurechtlichGenehmigt: abfragevariante.anzahlWeBaurechtlichGenehmigt,
       bauabschnitte: abfragevariante.bauabschnitte,
@@ -75,14 +74,16 @@ export function mapToInfrastrukturabfrageAngelegt(
 }
 
 function mapPlanungsRecht(
-  abfragevariantePlanungsRecht: AbfragevarianteDtoPlanungsrechtEnum
+  abfragevariantePlanungsRecht: AbfragevarianteDtoPlanungsrechtEnum | undefined
 ): AbfragevarianteAngelegtDtoPlanungsrechtEnum {
   let enumValue: AbfragevarianteAngelegtDtoPlanungsrechtEnum = AbfragevarianteAngelegtDtoPlanungsrechtEnum.Unspecified;
-  Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum).forEach((value, index) => {
-    if (value === abfragevariantePlanungsRecht) {
-      enumValue = Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum)[index];
-    }
-  });
+  if (!_.isNil(abfragevariantePlanungsRecht)) {
+    Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum).forEach((value, index) => {
+      if (value === abfragevariantePlanungsRecht) {
+        enumValue = Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum)[index];
+      }
+    });
+  }
   return enumValue;
 }
 
@@ -104,12 +105,11 @@ export function mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(
       return {
         id: abfragevariante.id,
         version: abfragevariante.version,
-        abfragevariantenName: abfragevariante.abfragevariantenName as string,
-        abfragevariantenNr: abfragevariante.abfragevariantenNr as number,
-        planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht as AbfragevarianteDtoPlanungsrechtEnum),
-        realisierungBis: abfragevariante.realisierungBis as number,
-        realisierungVon: abfragevariante.realisierungVon as number,
-        sonderwohnformen: abfragevariante.sonderwohnformen as boolean,
+        abfragevariantenName: abfragevariante.abfragevariantenName,
+        abfragevariantenNr: abfragevariante.abfragevariantenNr,
+        planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht),
+        realisierungVon: abfragevariante.realisierungVon,
+        sonderwohnformen: abfragevariante.sonderwohnformen,
         anzahlWeBaurechtlichFestgesetzt: abfragevariante.anzahlWeBaurechtlichFestgesetzt,
         anzahlWeBaurechtlichGenehmigt: abfragevariante.anzahlWeBaurechtlichGenehmigt,
         bauabschnitte: abfragevariante.bauabschnitte,
