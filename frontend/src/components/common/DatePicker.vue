@@ -12,6 +12,7 @@
         :hint="monthPicker ? MONTH_DISPLAY_FORMAT : DISPLAY_FORMAT"
         :disabled="disabled"
         :required="required"
+        @input="formChanged"
       >
         <template #label>
           {{ label
@@ -34,6 +35,7 @@
       locale="de"
       :type="monthPicker ? 'month' : 'date'"
       @change="deactivateDatePicker"
+      @input="formChanged"
     />
   </v-dialog>
 </template>
@@ -86,7 +88,6 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
 
   @Watch("value")
   private onValueChanged(value: Date) {
-    this.formChanged();
     this.$emit("input", value);
   }
 
