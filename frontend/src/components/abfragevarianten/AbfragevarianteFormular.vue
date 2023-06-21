@@ -17,7 +17,7 @@
           <v-text-field
             id="abfragevariante_name"
             v-model.trim="abfragevariante.abfragevariantenName"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="30"
             validate-on-blur
@@ -37,7 +37,7 @@
           <date-picker
             id="abfragevariante_satzungsbeschluss"
             v-model="abfragevariante.satzungsbeschluss"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Datum Satzungsbeschluss"
             month-picker
           />
@@ -49,7 +49,7 @@
           <v-select
             id="abfragevariante_planungsrecht"
             v-model="abfragevariante.planungsrecht"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :items="planungsrechtList"
             item-value="key"
             item-text="value"
@@ -68,7 +68,7 @@
           <num-field
             id="abfragevariante_realisierungvon"
             v-model="abfragevariante.realisierungVon"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Realisierung von (JJJJ)"
             year
             maxlength="4"
@@ -100,7 +100,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnen"
             v-model="abfragevariante.geschossflaecheWohnen"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Gesamt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -113,7 +113,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenGenehmigt"
             v-model="abfragevariante.geschossflaecheWohnenGenehmigt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich genehmigt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -126,7 +126,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenFestgesetzt"
             v-model="abfragevariante.geschossflaecheWohnenFestgesetzt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -142,7 +142,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenSoBoNursaechlich"
             v-model="abfragevariante.geschossflaecheWohnenSoBoNursaechlich"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="SoBoN-ursächlich"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -156,7 +156,7 @@
           <num-field
             id="abfragevariante_geschossflaecheWohnenBestandswohnbaurecht"
             v-model="abfragevariante.geschossflaecheWohnenBestandswohnbaurecht"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Bestandswohnbaurecht"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -169,7 +169,7 @@
           <num-field
             id="abfragevariante_geschossflaecheGenossenschaftlicheWohnungen"
             v-model="abfragevariante.geschossflaecheGenossenschaftlicheWohnungen"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Genossenschaftlich"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -185,7 +185,7 @@
           <v-checkbox
             id="abfragevariante_sonderwohnformen"
             v-model="abfragevariante.sonderwohnformen"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Sonderwohnformen"
             color="primary"
@@ -210,7 +210,7 @@
             <num-field
               id="abfragevariante_geschossflaecheStudentenwohnungen"
               v-model="abfragevariante.geschossflaecheStudentenwohnungen"
-              :disabled="!isEditableByAbfrageerstellung()"
+              :disabled="!isEditable"
               class="mx-3"
               label="Studentenwohnungen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -223,7 +223,7 @@
             <num-field
               id="abfragevariante_geschossflaecheSeniorenwohnungen"
               v-model="abfragevariante.geschossflaecheSeniorenwohnungen"
-              :disabled="!isEditableByAbfrageerstellung()"
+              :disabled="!isEditable"
               class="mx-3"
               label="Seniorenwohnungen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -236,7 +236,7 @@
             <num-field
               id="abfragevariante_geschossflaecheSonstiges"
               v-model="abfragevariante.geschossflaecheSonstiges"
-              :disabled="!isEditableByAbfrageerstellung()"
+              :disabled="!isEditable"
               class="mx-3"
               label="Nicht infrastrukturrelevant"
               :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -255,7 +255,7 @@
           <num-field
             id="abfragevariante_gesamtanzahlWe"
             v-model="abfragevariante.gesamtanzahlWe"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Gesamt"
             integer
@@ -268,7 +268,7 @@
           <num-field
             id="abfragevariante_anzahlWeBaurechtlichGenehmigt"
             v-model="abfragevariante.anzahlWeBaurechtlichGenehmigt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich genehmigt"
             integer
@@ -281,7 +281,7 @@
           <num-field
             id="abfragevariante_anzahlWeBaurechtlichFestgesetzt"
             v-model="abfragevariante.anzahlWeBaurechtlichFestgesetzt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             integer
@@ -289,6 +289,10 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <abfragevariante-sachbearbeitung-formular
+      id="abfragevariante_sachbearbeitung_formular"
+      v-model="abfragevariante.abfragevarianteSachbearbeitung"
+    />
   </div>
 </template>
 
@@ -303,6 +307,7 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
 import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, NumField } })
@@ -310,12 +315,20 @@ export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
+  AbfragevarianteSachbearbeitungFormular
 ) {
   @VModel({ type: AbfragevarianteModel }) abfragevariante!: AbfragevarianteModel;
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
+
+  private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
+
+  private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
   @Prop()
   private sobonRelevant!: UncertainBoolean;
@@ -347,10 +360,6 @@ export default class AbfragevarianteForm extends Mixins(
         this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
     return pflichtfeld;
   }
-
-  private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
-
-  private anzahlWECardTitle = "Anzahl Wohneinheiten";
 
   get planungsrechtList(): LookupEntryDto[] {
     return this.$store.getters["lookup/planungsrecht"];

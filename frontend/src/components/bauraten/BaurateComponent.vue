@@ -9,7 +9,7 @@
           <num-field
             id="bauraten_jahr"
             v-model="baurate.jahr"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Jahr (JJJJ)"
             :min="baugebietRealisierungVonOr1900"
             :max="2100"
@@ -26,7 +26,7 @@
           <num-field
             id="bauraten_anzahlWeGeplant"
             v-model="baurate.anzahlWeGeplant"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[validationRules.validateWohneinheiten(baugebiet, abfragevariante)]"
             label="Anzahl Wohneinheiten geplant"
             :suffix="suffixWohneinheiten"
@@ -40,7 +40,7 @@
           <num-field
             id="bauraten_geschossflaecheWohnenGeplant"
             v-model="baurate.geschossflaecheWohnenGeplant"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[validationRules.validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
             label="Geschossfläche Wohnen geplant"
             :suffix="suffixGeschossflaecheWohnen"
@@ -53,11 +53,13 @@
         id="foerdermix_formular_component"
         ref="Foerdermix"
         v-model="baurate.foerdermix"
+        :is-editable="isEditable"
       >
         <foerdermix-staemme-drop-down
           id="foerdermix_stammdaten_dropdown_component"
           ref="Foerdermix Staemme Drop Down"
           v-model="baurate.foerdermix"
+          :is-editable="isEditable"
         />
       </foerdermix-formular>
     </v-row>
@@ -104,6 +106,9 @@ export default class BaurateComponent extends Mixins(
 
   @Prop()
   private abfragevariante: AbfragevarianteDto | undefined;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private validationRules: unknown = {
     validateWohneinheiten: (

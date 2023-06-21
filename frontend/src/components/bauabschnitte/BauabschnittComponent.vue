@@ -14,7 +14,7 @@
           <v-text-field
             id="bauabschnitt_bezeichnung"
             v-model.trim="bauabschnitt.bezeichnung"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
@@ -49,6 +49,9 @@ export default class BauabschnittComponent extends Mixins(
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get displayMode(): DisplayMode {
     return this.mode;

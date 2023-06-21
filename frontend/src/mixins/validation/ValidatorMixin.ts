@@ -10,11 +10,13 @@ import {
   BauvorhabenDto,
   BauvorhabenDtoPlanungsrechtEnum,
   BauvorhabenDtoStandVorhabenEnum,
+  BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import AbfragevarianteSachbearbeitungModel from "@/types/model/abfragevariante/AbfragevarianteSachbearbeitungModel";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
@@ -31,6 +33,7 @@ import {
   getNonTechnicalBaugebiete,
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
+import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
 
 @Component
 export default class ValidatorMixin extends Vue {
@@ -92,22 +95,29 @@ export default class ValidatorMixin extends Vue {
       infrastrukturabfrage.abfragevarianten.length < 1 ||
       infrastrukturabfrage.abfragevarianten.length > 5
     ) {
-      return "Es müssen zwischen einer und fünf Abfragevarianten angegeben werden.";
+      return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
+    }
+    if (
+      _.isNil(infrastrukturabfrage.abfragevariantenSachbearbeitung) ||
+      infrastrukturabfrage.abfragevariantenSachbearbeitung.length > 5
+    ) {
+      return "Es können durch die Sachbearbeitung maximal fünf Abfragevarianten angegeben werden.";
     }
     let validationMessage = null;
-    for (const abfragevariante of infrastrukturabfrage.abfragevarianten) {
+    const abfragevarianten = _.concat(
+      _.toArray(infrastrukturabfrage.abfragevarianten),
+      _.toArray(infrastrukturabfrage.abfragevariantenSachbearbeitung)
+    );
+    for (const abfragevariante of abfragevarianten) {
       validationMessage = this.findFaultInAbfragevariante(infrastrukturabfrage.sobonRelevant, abfragevariante, true);
       if (!_.isNil(validationMessage)) {
         break;
       }
     }
-    let counterRelevantAbfragevarianten = 0;
-    for (const abfragevariante of infrastrukturabfrage.abfragevarianten) {
-      if (abfragevariante.relevant) {
-        counterRelevantAbfragevarianten++;
-      }
-    }
-    if (counterRelevantAbfragevarianten >= 2) {
+    const numberOfRelevantAbfragevarianten = abfragevarianten.filter(
+      (abfragevariante) => abfragevariante.relevant
+    ).length;
+    if (numberOfRelevantAbfragevarianten > 1) {
       return "Es darf nur eine Abfragevariante als Relevant markiert werden";
     }
     return validationMessage;
@@ -151,6 +161,12 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultBauschnitte)) {
       return messageFaultBauschnitte;
     }
+    const messageFaultAbfragevarianteSachbearbeitung = this.findFaultInAbfragevarianteSachbearbeitung(
+      abfragevariante.abfragevarianteSachbearbeitung
+    );
+    if (!_.isNil(messageFaultAbfragevarianteSachbearbeitung)) {
+      return messageFaultAbfragevarianteSachbearbeitung;
+    }
     return null;
   }
 
@@ -192,6 +208,54 @@ export default class ValidatorMixin extends Vue {
           return validationMessage;
         }
       }
+    }
+    return null;
+  }
+
+  public findFaultInAbfragevarianteSachbearbeitung(
+    abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungModel
+  ): string | null {
+    if (
+      !_.isNil(abfragevarianteSachbearbeitung) &&
+      !_.isNil(abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)
+    ) {
+      const messageFaultBedarfsmeldungen = this.findFaultInBedarfsmeldungen(
+        abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate
+      );
+      if (!_.isNil(messageFaultBedarfsmeldungen)) {
+        return messageFaultBedarfsmeldungen;
+      }
+    }
+    return null;
+  }
+
+  public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungFachabteilungenModel[]): string | null {
+    bedarfsmeldungen.forEach((bedarfsmeldung) => {
+      const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
+      }
+    });
+    return null;
+  }
+
+  public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): string | null {
+    if (_.isNil(bedarfsmeldung.anzahlEinrichtungen)) {
+      return `Bitte geben Sie die Anzahl der Einrichtungen an`;
+    }
+    if (
+      bedarfsmeldung.infrastruktureinrichtungTyp ===
+      BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum.Unspecified
+    ) {
+      return `Bitte geben Sie den Typ der Infrastruktureinrichtung an`;
+    }
+    if (
+      _.isNil(bedarfsmeldung.anzahlKinderkrippengruppen) &&
+      _.isNil(bedarfsmeldung.anzahlKindergartengruppen) &&
+      _.isNil(bedarfsmeldung.anzahlHortgruppen) &&
+      _.isNil(bedarfsmeldung.anzahlGrundschulzuege)
+    ) {
+      return `Bitte geben Sie den Bedarf an`;
     }
     return null;
   }

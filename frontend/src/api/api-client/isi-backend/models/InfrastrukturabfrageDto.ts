@@ -88,6 +88,12 @@ export interface InfrastrukturabfrageDto {
     abfragevarianten?: Array<AbfragevarianteDto>;
     /**
      * 
+     * @type {Array<AbfragevarianteDto>}
+     * @memberof InfrastrukturabfrageDto
+     */
+    abfragevariantenSachbearbeitung?: Array<AbfragevarianteDto>;
+    /**
+     * 
      * @type {string}
      * @memberof InfrastrukturabfrageDto
      */
@@ -138,6 +144,7 @@ export function InfrastrukturabfrageDtoFromJSONTyped(json: any, ignoreDiscrimina
         'sobonRelevant': !exists(json, 'sobonRelevant') ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteDtoFromJSON)),
+        'abfragevariantenSachbearbeitung': !exists(json, 'abfragevariantenSachbearbeitung') ? undefined : ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteDtoFromJSON)),
         'aktenzeichenProLbk': !exists(json, 'aktenzeichenProLbk') ? undefined : json['aktenzeichenProLbk'],
         'offiziellerVerfahrensschritt': !exists(json, 'offiziellerVerfahrensschritt') ? undefined : UncertainBooleanFromJSON(json['offiziellerVerfahrensschritt']),
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
@@ -161,6 +168,7 @@ export function InfrastrukturabfrageDtoToJSON(value?: InfrastrukturabfrageDto | 
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
         'sobonJahr': value.sobonJahr,
         'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteDtoToJSON)),
+        'abfragevariantenSachbearbeitung': value.abfragevariantenSachbearbeitung === undefined ? undefined : ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteDtoToJSON)),
         'aktenzeichenProLbk': value.aktenzeichenProLbk,
         'offiziellerVerfahrensschritt': UncertainBooleanToJSON(value.offiziellerVerfahrensschritt),
         'displayName': value.displayName,

@@ -16,6 +16,7 @@ const state = {
   einrichtungstraeger: [] as LookupEntryDto[],
   infrastruktureinrichtungTyp: [] as LookupEntryDto[],
   artGsNachmittagBetreuung: [] as LookupEntryDto[],
+  sobonOrientierungswertJahr: [] as LookupEntryDto[],
 };
 
 export type LookupState = typeof state;
@@ -62,6 +63,9 @@ export default {
     artGsNachmittagBetreuung: (state: LookupState): Array<LookupEntryDto> => {
       return state.artGsNachmittagBetreuung;
     },
+    sobonOrientierungswertJahr: (state: LookupState): Array<LookupEntryDto> => {
+      return state.sobonOrientierungswertJahr;
+    },
   },
 
   mutations: {
@@ -101,6 +105,9 @@ export default {
     artGsNachmittagBetreuung(state: LookupState, list: LookupEntryDto[]): void {
       state.artGsNachmittagBetreuung = list;
     },
+    sobonOrientierungswertJahr(state: LookupState, list: LookupEntryDto[]): void {
+      state.sobonOrientierungswertJahr = list;
+    },
   },
 
   actions: {
@@ -119,6 +126,7 @@ export default {
         context.commit("einrichtungstraeger", lookupLists.einrichtungstraeger?.list);
         context.commit("infrastruktureinrichtungTyp", lookupLists.infrastruktureinrichtungTyp?.list);
         context.commit("artGsNachmittagBetreuung", lookupLists.artGsNachmittagBetreuung?.list);
+        context.commit("sobonOrientierungswertJahr", lookupLists.sobonOrientierungswertJahr?.list);
       });
     },
     uncertainBoolean(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
@@ -156,6 +164,9 @@ export default {
     },
     artGssBetreuung(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("artGsNachmittagBetreuung", list);
+    },
+    sobonOrientierungswertJahr(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("sobonOrientierungswertJahr", list);
     },
   },
 };

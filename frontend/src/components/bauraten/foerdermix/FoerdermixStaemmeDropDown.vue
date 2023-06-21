@@ -3,7 +3,7 @@
     <v-select
       id="foerdermix_stammdaten_dropdown"
       v-model="selectedItem"
-      :disabled="!isEditableByAbfrageerstellung()"
+      :disabled="!isEditable"
       :items="groupedStammdaten"
       label="Fördermix"
       item-text="bezeichnung"
@@ -15,27 +15,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMixin";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
-import MappingMixin from "@/mixins/MappingMixin";
 import { createFoerdermixDto, createFoerdermixStammDto } from "@/utils/Factories";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
 @Component
 export default class FoerdermixStaemmeDropDown extends Mixins(
   FoerdermixApiRequestMixin,
-  MappingMixin,
   SaveLeaveMixin,
   AbfrageSecurityMixin
 ) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();
 
@@ -54,7 +56,7 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
   }
 
   foerdermixSelected(item: FoerdermixStammModel): void {
-    this.foerdermix = this.mapFoerdermixStammModelToFoerderMix(item);
+    this.foerdermix = mapFoerdermixStammModelToFoerderMix(item);
   }
 
   loadFoerdermixStaemme(): void {

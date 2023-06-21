@@ -35,7 +35,7 @@
               :id="'foerdermix_foerderart_' + foerderartIndex"
               :key="foerderartIndex"
               v-model="foerderart.anteilProzent"
-              :disabled="!isEditableByAbfrageerstellung()"
+              :disabled="!isEditable"
               :label="foerderart.bezeichnung"
               :suffix="fieldPrefixesSuffixes.percent"
             />
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
@@ -70,9 +70,10 @@ export default class FoerdermixFormular extends Mixins(
 
   private anteileFMCardTitle = "Anteile Fördermix";
 
-  private readonly = true;
-
   private sumOver100 = false;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get gesamtsumme(): number {
     const sum: number = addiereAnteile(this.foerdermix);

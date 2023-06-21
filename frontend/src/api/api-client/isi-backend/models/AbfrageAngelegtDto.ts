@@ -35,67 +35,67 @@ import {
 /**
  * 
  * @export
- * @interface AbfrageerstellungAbfrageAngelegtDto
+ * @interface AbfrageAngelegtDto
  */
-export interface AbfrageerstellungAbfrageAngelegtDto {
+export interface AbfrageAngelegtDto {
     /**
      * 
      * @type {Array<DokumentDto>}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     allgemeineOrtsangabe?: string;
     /**
      * 
      * @type {AdresseDto}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     adresse?: AdresseDto;
     /**
      * 
      * @type {VerortungModel}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     verortung?: VerortungModel;
     /**
      * 
      * @type {Date}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     fristStellungnahme: Date;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     anmerkung?: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     bebauungsplannummer?: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     nameAbfrage: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
-    standVorhaben: AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum;
+    standVorhaben: AbfrageAngelegtDtoStandVorhabenEnum;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageerstellungAbfrageAngelegtDto
+     * @memberof AbfrageAngelegtDto
      */
     bauvorhaben?: string;
 }
@@ -104,7 +104,7 @@ export interface AbfrageerstellungAbfrageAngelegtDto {
 /**
  * @export
  */
-export const AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum = {
+export const AbfrageAngelegtDtoStandVorhabenEnum = {
     Unspecified: 'UNSPECIFIED',
     GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
     Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
@@ -121,14 +121,14 @@ export const AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum = {
     BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
     BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
 } as const;
-export type AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum = typeof AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum[keyof typeof AbfrageerstellungAbfrageAngelegtDtoStandVorhabenEnum];
+export type AbfrageAngelegtDtoStandVorhabenEnum = typeof AbfrageAngelegtDtoStandVorhabenEnum[keyof typeof AbfrageAngelegtDtoStandVorhabenEnum];
 
 
-export function AbfrageerstellungAbfrageAngelegtDtoFromJSON(json: any): AbfrageerstellungAbfrageAngelegtDto {
-    return AbfrageerstellungAbfrageAngelegtDtoFromJSONTyped(json, false);
+export function AbfrageAngelegtDtoFromJSON(json: any): AbfrageAngelegtDto {
+    return AbfrageAngelegtDtoFromJSONTyped(json, false);
 }
 
-export function AbfrageerstellungAbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageerstellungAbfrageAngelegtDto {
+export function AbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -147,7 +147,7 @@ export function AbfrageerstellungAbfrageAngelegtDtoFromJSONTyped(json: any, igno
     };
 }
 
-export function AbfrageerstellungAbfrageAngelegtDtoToJSON(value?: AbfrageerstellungAbfrageAngelegtDto | null): any {
+export function AbfrageAngelegtDtoToJSON(value?: AbfrageAngelegtDto | null): any {
     if (value === undefined) {
         return undefined;
     }

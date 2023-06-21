@@ -14,7 +14,7 @@
           <v-text-field
             id="baugebiet_bezeichnung"
             v-model.trim="baugebiet.bezeichnung"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
@@ -29,7 +29,7 @@
           <v-select
             id="baugebiet_baugebietTyp"
             v-model="baugebiet.baugebietTyp"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             :items="baugebietTypList"
             item-value="key"
@@ -52,7 +52,7 @@
           <num-field
             id="abfragevariante_realisierungvon"
             v-model="baugebiet.realisierungVon"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             label="Realisierung von (JJJJ)"
             class="mx-3"
             :min="abfragevarianteRealisierungVonOr1900"
@@ -89,7 +89,7 @@
           <num-field
             id="baugebiet_geschossflaecheWohnenFestgesetzt"
             v-model="baugebiet.geschossflaecheWohnen"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
             class="mx-3"
             label="Gesamt"
@@ -103,7 +103,7 @@
           <num-field
             id="baugebiet_geschossflaecheWohnenGenehmigt"
             v-model="baugebiet.geschossflaecheWohnenGenehmigt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich Genehmigt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -116,7 +116,7 @@
           <num-field
             id="baugebiet_geschossflaecheWohnenFestgesetzt"
             v-model="baugebiet.geschossflaecheWohnenFestgesetzt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich Festgesetzt"
             :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -133,7 +133,7 @@
           <num-field
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
             v-model="baugebiet.gesamtanzahlWe"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
             class="mx-3"
             label="Gesamt"
@@ -148,7 +148,7 @@
           <num-field
             id="baugebiet_anzahlWeBaurechtlichGenehmigt"
             v-model="baugebiet.anzahlWohneinheitenBaurechtlichGenehmigt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich genehmigt"
             integer
@@ -161,7 +161,7 @@
           <num-field
             id="baugebiet_anzahlWeBaurechtlichFestgesetzt"
             v-model="baugebiet.anzahlWohneinheitenBaurechtlichFestgesetzt"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             class="mx-3"
             label="Baurechtlich festgesetzt"
             integer
@@ -213,6 +213,9 @@ export default class BauabschnittComponent extends Mixins(
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private validationRules: unknown = {
     validateWohneinheiten: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {

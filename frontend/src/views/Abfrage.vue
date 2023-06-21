@@ -12,6 +12,7 @@
           v-else-if="isAbfragevarianteFormularOpen"
           id="abfrage_abfragevariante_formular_component"
           v-model="selectedAbfragevariante"
+          :is-editable="isEditable"
           :mode="modeAbfragevariante"
           :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
@@ -19,12 +20,14 @@
           v-else-if="isBauabschnittFormularOpen"
           id="bauabschnitt_component"
           v-model="selectedBauabschnitt"
+          :is-editable="isEditable"
           :mode="modeBauabschnitt"
         />
         <baugebiet-component
           v-else-if="isBaugebietFormularOpen"
           id="baugebiet_component"
           v-model="selectedBaugebiet"
+          :is-editable="isEditable"
           :mode="modeBaugebiet"
           :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
         />
@@ -32,6 +35,7 @@
           v-else-if="isBaurateFormularOpen"
           id="baurate_component"
           v-model="selectedBaurate"
+          :is-editable="isEditable"
           :mode="modeBaurate"
           :baugebiet="baugebietForSelectedBaurate"
           :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
@@ -144,12 +148,12 @@
           id="abfrage_navigation_tree"
           ref="abfrageNavigationTree"
           v-model="abfrageWrapped"
-          @select-abfrage="handleSelectAbfrage()"
+          @select-abfrage="handleSelectAbfrage($event)"
           @select-abfragevariante="handleSelectAbfragevariante($event)"
           @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant($event)"
           @delete-abfragevariante="handleDeleteAbfragevariante($event)"
           @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
-          @create-new-abfragevariante="handleCreateNewAbfragevariante()"
+          @create-new-abfragevariante="handleCreateNewAbfragevariante($event)"
           @select-bauabschnitt="handleSelectBauabschnitt($event)"
           @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
           @create-new-bauabschnitt="handleCreateNewBauabschnitt($event)"
@@ -265,11 +269,21 @@ import {
   createTechnicalBauabschnittDto,
   createTechnicalBaugebietDto,
 } from "@/utils/Factories";
-import { mapToAbfrageerstellungInfrastrukturabfrageAngelegt } from "@/utils/MapperUtil";
+import {
+  mapToInfrastrukturabfrageAngelegt,
+  mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+} from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
+
+export const enum AnzeigeContextAbfragevariante {
+  UNDEFINED = 1,
+  ABFRAGEVARIANTE = 2,
+  ABFRAGEVARIANTE_SACHBEARBEITUNG = 3,
+}
+
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
@@ -295,6 +309,7 @@ export default class Abfrage extends Mixins(
   AbfrageSecurityMixin
 ) {
   private modeAbfrage = DisplayMode.UNDEFINED;
+  private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
   private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
@@ -350,6 +365,10 @@ export default class Abfrage extends Mixins(
       this.abfrageWrapped = new InfrastrukturabfrageWrapperModel(_.cloneDeep(abfrageFromStore), true);
       this.initializeFormulare();
     }
+  }
+
+  get isEditable(): boolean {
+    return this.isEditableWithAnzeigeContextAbfragevariante(this.anzeigeContextAbfragevariante);
   }
 
   async setSelectedAbfrageInStore(): Promise<void> {
@@ -451,14 +470,22 @@ export default class Abfrage extends Mixins(
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(
-          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          mapToInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
           true
         ).then((dto) => {
           this.handleSuccess(dto);
         });
       } else if (this.isEditableByAbfrageerstellung()) {
         await this.patchAbfrageAngelegt(
-          mapToAbfrageerstellungInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          mapToInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
+          this.abfrageWrapped.infrastrukturabfrage.id as string,
+          true
+        ).then((dto) => {
+          this.handleSuccess(dto);
+        });
+      } else if (this.isEditableBySachbearbeitung()) {
+        await this.patchAbfrageInBearbeitungSachbearbeitung(
+          mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrageWrapped.infrastrukturabfrage),
           this.abfrageWrapped.infrastrukturabfrage.id as string,
           true
         ).then((dto) => {
@@ -534,6 +561,12 @@ export default class Abfrage extends Mixins(
     }
   }
 
+  private setAnzeigeContextAbfragevariante(anzeigeContext: AnzeigeContextAbfragevariante | undefined) {
+    this.anzeigeContextAbfragevariante = _.isNil(anzeigeContext)
+      ? AnzeigeContextAbfragevariante.UNDEFINED
+      : anzeigeContext;
+  }
+
   private initializeFormulare(): void {
     this.isAbfrageFormularOpen = true;
     this.isAbfragevarianteFormularOpen = false;
@@ -602,11 +635,13 @@ export default class Abfrage extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private handleSelectAbfrage(): void {
+  private handleSelectAbfrage(abfrageTreeItem: AbfrageTreeItem): void {
+    this.anzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
     this.initializeFormulare();
   }
 
   private handleSelectAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.initializeFormulare();
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.$nextTick(() => {
@@ -615,6 +650,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.abfragevarianteTreeItemToDelete = abfrageTreeItem;
     this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.openAbfragevarianteFormular();
@@ -661,26 +697,35 @@ export default class Abfrage extends Mixins(
     });
   }
 
-  private handleCreateNewAbfragevariante(): void {
+  private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     this.setNewEntityToMark(this.selectedAbfragevariante);
-    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
-    this.renumberingAbfragevarianten();
+    if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
+      this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
+      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
+    } else {
+      this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung.push(this.selectedAbfragevariante);
+      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung);
+    }
     this.formChanged();
     this.openAbfragevarianteFormular();
   }
 
   private removeSelectedAbfragevarianteFromAbfrage(): void {
     if (!_.isNil(this.abfragevarianteTreeItemToDelete)) {
-      _.remove(
-        this.abfrageWrapped.infrastrukturabfrage.abfragevarianten,
-        (abfragevariante) => abfragevariante === this.selectedAbfragevariante
-      );
+      let abfragevarianten =
+        this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
+          ? this.abfrageWrapped.infrastrukturabfrage.abfragevarianten
+          : this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung;
+      _.remove(abfragevarianten, (abfragevariante) => abfragevariante === this.selectedAbfragevariante);
+      this.renumberingAbfragevarianten(abfragevarianten);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-      this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = [
-        ...this.abfrageWrapped.infrastrukturabfrage.abfragevarianten,
-      ];
-      this.renumberingAbfragevarianten();
+      if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
+        this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = [...abfragevarianten];
+      } else {
+        this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung = [...abfragevarianten];
+      }
       this.formChanged();
       this.openAbfrageFormular();
       this.$nextTick(() => {
@@ -740,7 +785,11 @@ export default class Abfrage extends Mixins(
   }
 
   private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
-    let selectedAbfragevariante = this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.find(
+    const abfragevarianten =
+      abfrageTreeItem.contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
+        ? this.abfrageWrapped.infrastrukturabfrage.abfragevarianten
+        : this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung;
+    let selectedAbfragevariante = abfragevarianten.find(
       (abfragevariante) => abfragevariante === abfrageTreeItem.abfragevariante
     );
     if (_.isNil(selectedAbfragevariante)) {
@@ -791,6 +840,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.initializeFormulare();
     this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.$nextTick(() => {
@@ -799,6 +849,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.bauabschnittTreeItemToDelete = abfrageTreeItem;
     this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.openBauabschnittFormular();
@@ -806,6 +857,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateNewBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     let selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
     if (_.isNil(selectedAbfragevariante.bauabschnitte)) {
@@ -818,6 +870,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     this.initializeFormulare();
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
@@ -827,6 +880,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.baugebietTreeItemToDelete = abfrageTreeItem;
     this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.openBaugebietFormular();
@@ -834,6 +888,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
     this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
@@ -848,6 +903,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.baugebietForSelectedBaurate = abfrageTreeItem.baugebiet;
     this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     this.initializeFormulare();
@@ -858,6 +914,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleDeleteBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.baurateTreeItemToDelete = abfrageTreeItem;
     this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
     this.openBaurateFormular();
@@ -865,6 +922,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.baugebietForSelectedBaurate = selectedBaugebiet;
     this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
@@ -891,8 +949,8 @@ export default class Abfrage extends Mixins(
     return _.isNil(this.selectedBaurate.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
-  private renumberingAbfragevarianten(): void {
-    this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.forEach((value, index) => {
+  private renumberingAbfragevarianten(abfragevarianten: Array<AbfragevarianteDto> | undefined): void {
+    abfragevarianten?.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });
   }

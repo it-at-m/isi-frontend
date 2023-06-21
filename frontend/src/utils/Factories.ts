@@ -3,6 +3,9 @@ import {
   AbfrageDtoStandVorhabenEnum,
   StatusAbfrage,
   AbfragevarianteDto,
+  AbfragevarianteSachbearbeitungDto,
+  BedarfsmeldungFachabteilungenDto,
+  BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
   AbfragevarianteDtoPlanungsrechtEnum,
   AdresseDto,
   BaurateDto,
@@ -32,6 +35,7 @@ import {
   BaugebietDto,
   BaugebietDtoBaugebietTypEnum,
   UncertainBoolean,
+  AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -57,6 +61,33 @@ export function createAbfragevarianteDto(): AbfragevarianteDto {
     geschossflaecheSeniorenwohnungen: undefined,
     geschossflaecheSonstiges: undefined,
     bauabschnitte: [],
+    abfragevarianteSachbearbeitung: createAbfragevarianteSachbearbeitungDto(),
+  };
+}
+
+/**
+ * AbfragevarianteSachbearbeitungDto
+ */
+export function createAbfragevarianteSachbearbeitungDto(): AbfragevarianteSachbearbeitungDto {
+  return {
+    geschossflaecheWohnenPlanungsursaechlich: undefined,
+    soBoNOrientierungswertJahr: AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum.Unspecified,
+    anmerkung: undefined,
+    bedarfsmeldungFachreferate: [],
+  };
+}
+
+/**
+ * BedarfsmeldungFachabteilungenDto
+ */
+export function createBedarfsmeldungFachabteilungenDto(): BedarfsmeldungFachabteilungenDto {
+  return {
+    anzahlEinrichtungen: undefined,
+    infrastruktureinrichtungTyp: BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    anzahlKinderkrippengruppen: undefined,
+    anzahlKindergartengruppen: undefined,
+    anzahlHortgruppen: undefined,
+    anzahlGrundschulzuege: undefined,
   };
 }
 
@@ -97,6 +128,7 @@ export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
     sobonRelevant: UncertainBoolean.Unspecified,
     sobonJahr: undefined,
     abfragevarianten: new Array<AbfragevarianteDto>(),
+    abfragevariantenSachbearbeitung: new Array<AbfragevarianteDto>(),
     aktenzeichenProLbk: undefined,
     offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,
   };
