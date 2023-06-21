@@ -230,7 +230,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
 
   private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel, itemIndex: number): void {
     this.selectedItemIndex = itemIndex;
-    this.currentBedarfsmeldung = bedarfsmeldung;
+    this.currentBedarfsmeldung = _.cloneDeep(bedarfsmeldung);
     this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
     this.bedarfsmeldungFachabteilungenDialogOpen = true;
   }
