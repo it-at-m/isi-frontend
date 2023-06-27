@@ -12,6 +12,7 @@
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
+            :disabled="!isEditable"
             @input="formChanged"
           >
             <template #label> Eigentümer <span class="secondary--text">*</span> </template>
@@ -27,6 +28,7 @@
             label="Grundstücksgröße"
             :suffix="fieldPrefixesSuffixes.squareMeter"
             required
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -42,6 +44,7 @@
             item-value="key"
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
             @change="formChanged"
           >
             <template #label> Stand des Vorhabens <span class="secondary--text">*</span> </template>
@@ -57,6 +60,7 @@
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
+            :disabled="!isEditable"
             @input="formChanged"
           >
             <template #label> Bauvorhabennummer <span class="secondary--text">*</span> </template>
@@ -69,6 +73,7 @@
       :adresse-prop.sync="bauvorhaben.adresse"
       :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
+      :is-editable-prop="isEditable"
     />
     <verortung
       id="verortung_component"
@@ -86,6 +91,7 @@
             item-value="key"
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
             @change="formChanged"
           >
             <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
@@ -103,6 +109,7 @@
             multiple
             chips
             :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
             @input="formChanged"
           >
             <template #label>
@@ -122,6 +129,7 @@
             v-model="bauvorhaben.bebauungsplannummer"
             label="Bebauungsplannummer"
             maxlength="255"
+            :disabled="!isEditable"
             @input="formChanged"
           />
         </v-col>
@@ -134,6 +142,7 @@
             v-model="bauvorhaben.fisNummer"
             label="FIS-Nummer"
             maxlength="255"
+            :disabled="!isEditable"
             @input="formChanged"
           />
         </v-col>
@@ -147,6 +156,7 @@
             rows="1"
             auto-grow
             maxlength="255"
+            :disabled="!isEditable"
             @input="formChanged"
           />
         </v-col>
@@ -159,6 +169,7 @@
             id="bauvorhaben_dokumente_component"
             v-model="bauvorhaben.dokumente"
             :name-root-folder="nameRootFolder"
+            :is-dokumente-editable="isEditable"
           />
         </v-col>
       </v-row>
@@ -175,6 +186,7 @@
             off-text="Nein"
             on-text="Ja"
             :rules="[fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
           >
             <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
           </tri-switch>
@@ -192,6 +204,7 @@
               item-value="key"
               item-text="value"
               :rules="[fieldValidationRules.pflichtfeld]"
+              :disabled="!isEditable"
               @change="formChanged"
             >
               <template #label>
@@ -206,7 +219,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -218,6 +231,7 @@ import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { VerortungContext } from "@/components/common/Verortung.vue";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   computed: {
@@ -231,7 +245,8 @@ export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AdresseComponent
+  AdresseComponent,
+  SecurityMixin
 ) {
   @VModel({ type: BauvorhabenModel })
   bauvorhaben!: BauvorhabenModel;
@@ -245,6 +260,9 @@ export default class BauvorhabenForm extends Mixins(
   private nameRootFolder = "bauvorhaben";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben";
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get standVorhabenList(): LookupEntryDto[] {
     return this.$store.getters["lookup/standVorhaben"];

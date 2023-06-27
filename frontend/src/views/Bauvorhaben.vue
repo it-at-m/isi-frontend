@@ -11,6 +11,7 @@
                 :rules="[fieldValidationRules.pflichtfeld]"
                 maxlength="255"
                 validate-on-blur
+                :disabled="!isEditable"
                 @input="formChanged"
               >
                 <template #label> Name des Bauvorhabens <span class="secondary--text">*</span> </template>
@@ -33,6 +34,7 @@
           color="primary"
           elevation="1"
           width="200px"
+          :disabled="!isEditable"
           @click="deleteDialogOpen = true"
           v-text="'Löschen'"
         />
@@ -43,6 +45,7 @@
           color="primary"
           elevation="1"
           width="200px"
+          :disabled="!isEditable"
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
@@ -59,7 +62,7 @@
           elevation="1"
           class="text-wrap mt-2 px-1"
           style="width: 200px"
-          :disabled="(!isNew && !isDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente)"
+          :disabled="(!isNew && !isDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
           @click="validateAndProceed()"
           v-text="isNew ? 'Speichern' : 'Aktualisieren'"
         />
@@ -125,6 +128,7 @@ import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
 import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   methods: { containsNotAllowedDokument },
@@ -142,7 +146,8 @@ export default class Bauvorhaben extends Mixins(
   ValidatorMixin,
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
-  InformationListMixin
+  InformationListMixin,
+  SecurityMixin
 ) {
   private bauvorhaben = new BauvorhabenModel(createBauvorhabenDto());
 
@@ -166,6 +171,10 @@ export default class Bauvorhaben extends Mixins(
     if (!_.isNil(bauvorhabenFromStore)) {
       this.bauvorhaben = new BauvorhabenModel(_.cloneDeep(bauvorhabenFromStore));
     }
+  }
+
+  get isEditable(): boolean {
+    return this.isRoleAdminOrSachbearbeitung();
   }
 
   /**
