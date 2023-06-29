@@ -56,6 +56,7 @@
               fab
               x-large
               color="secondary"
+              :disabled="!isEditable"
               v-on="on"
               @click="createBauvorhaben()"
             >
@@ -71,19 +72,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Mixins, Prop } from "vue-property-decorator";
 import router from "@/router";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin) {
+export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin, SecurityMixin) {
   private fetchSuccess: boolean | null = null;
 
   private options = false;
+
+  get isEditable(): boolean {
+    return this.isRoleAdminOrSachbearbeitung();
+  }
 
   get bauvorhabenList(): BauvorhabenDto[] {
     const list = this.$store.getters["search/resultBauvorhaben"];
