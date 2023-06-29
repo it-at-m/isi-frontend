@@ -87,8 +87,9 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
 
   private options = false;
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+  get isEditable(): boolean {
+    return this.isRoleAdminOrSachbearbeitung();
+  }
 
   get bauvorhabenList(): BauvorhabenDto[] {
     const list = this.$store.getters["search/resultBauvorhaben"];

@@ -229,7 +229,6 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 
@@ -245,7 +244,6 @@ export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AdresseComponent,
   SecurityMixin
 ) {
   @VModel({ type: BauvorhabenModel })

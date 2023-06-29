@@ -24,6 +24,7 @@
         <bauvorhaben-form
           id="bauvorhaben_bauvorhabenForm_component"
           v-model="bauvorhaben"
+          :is-editable="isEditable"
         />
       </template>
       <template #information>
