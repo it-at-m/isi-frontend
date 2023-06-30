@@ -153,6 +153,7 @@
           @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant($event)"
           @delete-abfragevariante="handleDeleteAbfragevariante($event)"
           @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
+          @determine-bauraten-for-baugebiet="handleDetermineBauratenForBaugebiet($event)"
           @create-new-abfragevariante="handleCreateNewAbfragevariante($event)"
           @select-bauabschnitt="handleSelectBauabschnitt($event)"
           @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
@@ -693,6 +694,20 @@ export default class Abfrage extends Mixins(
         technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
         this.selectedAbfragevariante.bauabschnitte[0].baugebiete = [technicalBaugebiet];
       }
+      this.formChanged();
+    });
+  }
+
+  private handleDetermineBauratenForBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+    this.handleSelectBaugebiet(abfrageTreeItem);
+    this.setNewEntityToMark(this.selectedBaugebiet);
+    this.determineBauraten(
+      this.selectedBaugebiet.realisierungVon,
+      this.selectedBaugebiet.gesamtanzahlWe,
+      this.selectedBaugebiet.geschossflaecheWohnen,
+      true
+    ).then((bauraten: Array<BaurateDto>) => {
+      this.selectedBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
       this.formChanged();
     });
   }
