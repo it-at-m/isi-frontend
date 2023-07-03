@@ -562,6 +562,13 @@ export default class Abfrage extends Mixins(
     }
   }
 
+  private openMarkedItems(): void {
+    if (!_.isNil(this.$refs.abfrageNavigationTree)) {
+      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
+      abfrageNavitionTree.openMarkedItems();
+    }
+  }
+
   private setAnzeigeContextAbfragevariante(anzeigeContext: AnzeigeContextAbfragevariante | undefined) {
     this.anzeigeContextAbfragevariante = _.isNil(anzeigeContext)
       ? AnzeigeContextAbfragevariante.UNDEFINED
@@ -693,8 +700,9 @@ export default class Abfrage extends Mixins(
       if (!_.isNil(technicalBaugebiet)) {
         technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
         this.selectedAbfragevariante.bauabschnitte[0].baugebiete = [technicalBaugebiet];
+        this.openMarkedItems();
+        this.formChanged();
       }
-      this.formChanged();
     });
   }
 
@@ -708,6 +716,7 @@ export default class Abfrage extends Mixins(
       true
     ).then((bauraten: Array<BaurateDto>) => {
       this.selectedBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+      this.openMarkedItems();
       this.formChanged();
     });
   }

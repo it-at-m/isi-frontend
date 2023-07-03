@@ -292,6 +292,12 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     this.newEntityToMark = entity;
   }
 
+  public openMarkedItems(): void {
+    for (const id of this.markedTreeItems) {
+      this.treeItemIdsToOpen = [...this.treeItemIdsToOpen, id];
+    }
+  }
+
   private markTreeItem(item: AbfrageTreeItem): void {
     if (this.isItemSelectable(item)) {
       this.markedTreeItems = [item.id];
