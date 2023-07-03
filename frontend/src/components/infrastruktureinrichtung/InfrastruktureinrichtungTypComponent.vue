@@ -14,6 +14,7 @@
             item-value="key"
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
             @change="formChanged"
           >
             <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
@@ -72,6 +73,9 @@ export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldVa
 
   @Prop()
   private lfdNr!: string;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get lfdNrInfrastruktureinrichtung(): string {
     return this.lfdNr;
