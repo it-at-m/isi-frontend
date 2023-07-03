@@ -17,16 +17,17 @@
             :elevation="hover ? 4 : 0"
             @click="editBauvorhaben(item.id)"
           >
+            {{ bauvorhabenList[0] }}
             <v-card-title :id="'bauvorhaben_uebersicht_item_' + index + '_nameVorhaben'">
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'">
-                Bauvorhabennummer: {{ item.bauvorhabenNummer }}
+                Stadtbezirksnummer: {{ getStadtbezirke(item.adresse.coordinate) }}
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">
-                Grundstücksgröße: {{ item.grundstuecksgroesse }} m²
+                Anzahl der geplanten Wohneinheiten: {{ item.grundstuecksgroesse }} m²
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'">
@@ -76,11 +77,14 @@ import router from "@/router";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
+import { FeatureDtoStadtbezirkDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
+import { LatLng } from "leaflet";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin) {
+export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin, GeodataEaiApiRequestMixin) {
   private fetchSuccess: boolean | null = null;
 
   private options = false;
@@ -153,6 +157,21 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
   private createBauvorhaben(): void {
     router.push({
       name: "createBauvorhaben",
+    });
+  }
+
+  private createPointGeometry(latlng: LatLng): PointGeometryDto {
+    console.log("lat " + latlng);
+    return {
+      type: "Point",
+      coordinates: [latlng.lng, latlng.lat],
+    };
+  }
+
+  public getStadtbezirke(latlng: LatLng): void {
+    const point = this.createPointGeometry(latlng);
+    this.getStadtbezirkeForPoint(point, true).then((stadtbezirke: Array<FeatureDtoStadtbezirkDto>) => {
+      console.log("Stadtbezirke " + stadtbezirke.length);
     });
   }
 }
