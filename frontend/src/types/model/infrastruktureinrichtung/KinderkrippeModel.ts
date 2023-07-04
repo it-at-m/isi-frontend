@@ -1,19 +1,10 @@
-import {
-  KinderkrippeDto,
-  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
-} from "@/api/api-client/isi-backend";
-import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
+import { KinderkrippeDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface KinderkrippeModel extends KinderkrippeDto {}
 class KinderkrippeModel {
   constructor(kinderkrippe: KinderkrippeDto) {
     Object.assign(this, kinderkrippe, {});
-    this.infrastruktureinrichtung = new InfrastruktureinrichtungModel(kinderkrippe.infrastruktureinrichtung);
-  }
-
-  get infrastruktureinrichtungTyp(): InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum {
-    return InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe;
   }
 }
 export { KinderkrippeModel as default };

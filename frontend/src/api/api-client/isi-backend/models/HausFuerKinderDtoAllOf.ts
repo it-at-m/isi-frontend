@@ -13,112 +13,91 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    AdresseDto,
-    AdresseDtoFromJSON,
-    AdresseDtoFromJSONTyped,
-    AdresseDtoToJSON,
-} from './AdresseDto';
-import {
-    HausFuerKinderDtoAllOf,
-    HausFuerKinderDtoAllOfFromJSON,
-    HausFuerKinderDtoAllOfFromJSONTyped,
-    HausFuerKinderDtoAllOfToJSON,
-} from './HausFuerKinderDtoAllOf';
-import {
-    InfrastruktureinrichtungDto,
-    InfrastruktureinrichtungDtoFromJSON,
-    InfrastruktureinrichtungDtoFromJSONTyped,
-    InfrastruktureinrichtungDtoToJSON,
-} from './InfrastruktureinrichtungDto';
-
 /**
  * 
  * @export
- * @interface HausFuerKinderDto
+ * @interface HausFuerKinderDtoAllOf
  */
-export interface HausFuerKinderDto extends InfrastruktureinrichtungDto {
+export interface HausFuerKinderDtoAllOf {
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
-    anzahlKinderkrippePlaetze: number;
+    anzahlKinderkrippePlaetze?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
-    anzahlKindergartenPlaetze: number;
+    anzahlKindergartenPlaetze?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
-    anzahlHortPlaetze: number;
+    anzahlHortPlaetze?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
-    anzahlKinderkrippeGruppen: number;
+    anzahlKinderkrippeGruppen?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
-    anzahlKindergartenGruppen: number;
+    anzahlKindergartenGruppen?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
-    anzahlHortGruppen: number;
+    anzahlHortGruppen?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
     wohnungsnaheKinderkrippePlaetze?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
     wohnungsnaheKindergartenPlaetze?: number;
     /**
      * 
      * @type {number}
-     * @memberof HausFuerKinderDto
+     * @memberof HausFuerKinderDtoAllOf
      */
     wohnungsnaheHortPlaetze?: number;
 }
 
-
-
-export function HausFuerKinderDtoFromJSON(json: any): HausFuerKinderDto {
-    return HausFuerKinderDtoFromJSONTyped(json, false);
+export function HausFuerKinderDtoAllOfFromJSON(json: any): HausFuerKinderDtoAllOf {
+    return HausFuerKinderDtoAllOfFromJSONTyped(json, false);
 }
 
-export function HausFuerKinderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): HausFuerKinderDto {
+export function HausFuerKinderDtoAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): HausFuerKinderDtoAllOf {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
-        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
-        'anzahlKinderkrippePlaetze': json['anzahlKinderkrippePlaetze'],
-        'anzahlKindergartenPlaetze': json['anzahlKindergartenPlaetze'],
-        'anzahlHortPlaetze': json['anzahlHortPlaetze'],
-        'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'],
-        'anzahlKindergartenGruppen': json['anzahlKindergartenGruppen'],
-        'anzahlHortGruppen': json['anzahlHortGruppen'],
+        
+        'anzahlKinderkrippePlaetze': !exists(json, 'anzahlKinderkrippePlaetze') ? undefined : json['anzahlKinderkrippePlaetze'],
+        'anzahlKindergartenPlaetze': !exists(json, 'anzahlKindergartenPlaetze') ? undefined : json['anzahlKindergartenPlaetze'],
+        'anzahlHortPlaetze': !exists(json, 'anzahlHortPlaetze') ? undefined : json['anzahlHortPlaetze'],
+        'anzahlKinderkrippeGruppen': !exists(json, 'anzahlKinderkrippeGruppen') ? undefined : json['anzahlKinderkrippeGruppen'],
+        'anzahlKindergartenGruppen': !exists(json, 'anzahlKindergartenGruppen') ? undefined : json['anzahlKindergartenGruppen'],
+        'anzahlHortGruppen': !exists(json, 'anzahlHortGruppen') ? undefined : json['anzahlHortGruppen'],
         'wohnungsnaheKinderkrippePlaetze': !exists(json, 'wohnungsnaheKinderkrippePlaetze') ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
         'wohnungsnaheKindergartenPlaetze': !exists(json, 'wohnungsnaheKindergartenPlaetze') ? undefined : json['wohnungsnaheKindergartenPlaetze'],
         'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],
     };
 }
 
-export function HausFuerKinderDtoToJSON(value?: HausFuerKinderDto | null): any {
+export function HausFuerKinderDtoAllOfToJSON(value?: HausFuerKinderDtoAllOf | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -126,7 +105,7 @@ export function HausFuerKinderDtoToJSON(value?: HausFuerKinderDto | null): any {
         return null;
     }
     return {
-        ...InfrastruktureinrichtungDtoToJSON(value),
+        
         'anzahlKinderkrippePlaetze': value.anzahlKinderkrippePlaetze,
         'anzahlKindergartenPlaetze': value.anzahlKindergartenPlaetze,
         'anzahlHortPlaetze': value.anzahlHortPlaetze,
