@@ -148,6 +148,7 @@ import {
   GrundschuleDto,
   MittelschuleDto,
   InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
+  InfrastruktureinrichtungDto,
 } from "@/api/api-client/isi-backend";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
@@ -199,17 +200,9 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private deleteDialogOpen = false;
 
-  private kinderkrippe: KinderkrippeModel = new KinderkrippeModel(createKinderkrippeDto());
-  private kindergarten: KindergartenModel = new KindergartenModel(createKindergartenDto());
-  private hausFuerKinder: HausFuerKinderModel = new HausFuerKinderModel(createHausFuerKinderDto());
-  private gsNachmittagBetreuung: GsNachmittagBetreuungModel = new GsNachmittagBetreuungModel(
-    createGsNachmittagBetreuungDto()
-  );
-  private grundschule: GrundschuleModel = new GrundschuleModel(createGrundschuleDto());
-  private mittelschule: MittelschuleModel = new MittelschuleModel(createMittelschuleDto());
+  private infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined;
 
-  private queryParameterInfrastruktureinrichtungId: string = this.$route.params.id;
-  private queryParameterInfrastruktureinrichtungTyp: string = this.$route.params.typ;
+  private infrastruktureinrichtungId: string = this.$route.params.id;
 
   private static readonly SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG = "search/selectedInfrastruktureinrichtung";
   private static readonly SEARCH_RESET_INFRASTRUKTUREINRICHTUNG = "search/resetInfrastruktureinrichtung";
@@ -221,23 +214,22 @@ export default class Infrastruktureinrichtung extends Mixins(
     return this.currentInfrastruktureinrichtungTyp;
   }
 
-  set infrastruktureinrichtungTyp(selectedInfrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum) {
-    this.resetInfrastruktureinrichtungTyp(this.currentInfrastruktureinrichtungTyp);
+  set infrastruktureinrichtungTyp(
+    selectedInfrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum
+  ) {
     this.currentInfrastruktureinrichtungTyp = selectedInfrastruktureinrichtungTyp;
   }
 
   get lfdNr(): string {
-    const model = this.getInfrastruktureinrichtungModel();
-    return !_.isNil(model) && !_.isNil(model.lfdNr) ? model.lfdNr.toString() : "";
+    return !_.isNil(this.infrastruktureinrichtung) && !_.isNil(this.infrastruktureinrichtung.lfdNr)
+      ? this.infrastruktureinrichtung.lfdNr.toString()
+      : "";
   }
 
   get infrastruktureinrichtungDisplayName(): string {
-    if (this.isNewInfrastruktureinrichtung()) {
-      return "";
-    } else {
-      const model = this.getInfrastruktureinrichtungModel();
-      return !_.isNil(model) ? model.nameEinrichtung : "";
-    }
+    return !_.isNil(this.infrastruktureinrichtung) && !this.isNewInfrastruktureinrichtung()
+      ? this.infrastruktureinrichtung.nameEinrichtung
+      : "";
   }
 
   private yesNoDialogNo(): void {
@@ -245,10 +237,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private async yesNoDialogYes(): Promise<void> {
-    this.deleteInfrastruktureinrichtungTyp(
-      this.infrastruktureinrichtungTyp,
-      this.getInfrastruktureinrichtungModel()?.id as string
-    );
+    this.deleteInfrastruktureinrichtungTyp(this.infrastruktureinrichtung?.id as string);
     this.yesNoDialogNo();
   }
 
@@ -297,16 +286,13 @@ export default class Infrastruktureinrichtung extends Mixins(
   mounted(): void {
     this.currentInfrastruktureinrichtungTyp =
       InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Unspecified;
-    this.getInfrastruktureinrichtungById(
-      this.queryParameterInfrastruktureinrichtungTyp,
-      this.queryParameterInfrastruktureinrichtungId
-    );
+    this.getInfrastruktureinrichtung(this.infrastruktureinrichtungId);
     this.mode = this.isNewInfrastruktureinrichtung() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewInfrastruktureinrichtung() ? "Speichern" : "Aktualisieren";
   }
 
   private isNewInfrastruktureinrichtung(): boolean {
-    this.mode = _.isNil(this.queryParameterInfrastruktureinrichtungId) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+    this.mode = _.isNil(this.infrastruktureinrichtungId) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     return this.mode === DisplayMode.NEU;
   }
 
@@ -321,11 +307,11 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private async saveInfrastruktureinrichtung(): Promise<void> {
     if (this.validateForm()) {
-      const validationMessage: string | null = this.validateInfrastruktureinrichtungTyp(
-        this.infrastruktureinrichtungTyp
-      );
+      const validationMessage: string | null = this.validateInfrastruktureinrichtung(this.infrastruktureinrichtung);
       if (_.isNil(validationMessage)) {
-        this.saveInfrastruktureinrichtungTyp(this.infrastruktureinrichtungTyp);
+        this.mode === DisplayMode.NEU && !_.isNil(this.infrastruktureinrichtung)
+          ? this.createInfrastruktureinrichtung(this.infrastruktureinrichtung, true)
+          : this.updateInfrastruktureinrichtung(this.infrastruktureinrichtung, true);
       } else {
         this.showWarningInInformationList(validationMessage);
       }
@@ -338,92 +324,25 @@ export default class Infrastruktureinrichtung extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private validateInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum): string | null {
-    switch (infrastruktureinrichtungTyp) {
+  private validateInfrastruktureinrichtung(
+    infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined
+  ): string | null {
+    switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
       case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        return this.findFaultInKinderkrippeForSave(this.kinderkrippe);
+        return this.findFaultInKinderkrippeForSave(infrastruktureinrichtung as KinderkrippeDto);
       case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
-        return this.findFaultInKindergartenForSave(this.kindergarten);
+        return this.findFaultInKindergartenForSave(infrastruktureinrichtung as KindergartenDto);
       case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
-        return this.findFaultInHausFuerKinderForSave(this.hausFuerKinder);
+        return this.findFaultInHausFuerKinderForSave(infrastruktureinrichtung as HausFuerKinderDto);
       case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-        return this.findFaultInGsNachmittagBetreuungForSave(this.gsNachmittagBetreuung);
+        return this.findFaultInGsNachmittagBetreuungForSave(infrastruktureinrichtung as GsNachmittagBetreuungDto);
       case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
-        return this.findFaultInGrundschuleForSave(this.grundschule);
+        return this.findFaultInGrundschuleForSave(infrastruktureinrichtung as GrundschuleDto);
       case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
-        return this.findFaultInMittelschuleForSave(this.mittelschule);
+        return this.findFaultInMittelschuleForSave(infrastruktureinrichtung as MittelschuleDto);
       default:
         return null;
     }
-  }
-
-  private async saveInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: string): Promise<void> {
-    switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        this.callSaveInfrastruktureinrichtung(
-          this.mode === DisplayMode.NEU ? this.createKinderkrippe : this.updateKinderkrippe,
-          this.kinderkrippe,
-          true
-        );
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
-        this.callSaveInfrastruktureinrichtung(
-          this.mode === DisplayMode.NEU ? this.createKindergarten : this.updateKindergarten,
-          this.kindergarten,
-          true
-        );
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
-        this.callSaveInfrastruktureinrichtung(
-          this.mode === DisplayMode.NEU ? this.createHausFuerKinder : this.updateHausFuerKinder,
-          this.hausFuerKinder,
-          true
-        );
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
-        this.callSaveInfrastruktureinrichtung(
-          this.mode === DisplayMode.NEU ? this.createGsNachmittagBetreuung : this.updateGsNachmittagBetreuung,
-          this.gsNachmittagBetreuung,
-          true
-        );
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
-        this.callSaveInfrastruktureinrichtung(
-          this.mode === DisplayMode.NEU ? this.createGrundschule : this.updateGrundschule,
-          this.grundschule,
-          true
-        );
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
-        this.callSaveInfrastruktureinrichtung(
-          this.mode === DisplayMode.NEU ? this.createMittelschule : this.updateMittelschule,
-          this.mittelschule,
-          true
-        );
-        break;
-      default:
-        break;
-    }
-  }
-
-  private async callSaveInfrastruktureinrichtung<T>(
-    callback: (
-      model: T,
-      showInInformationList: boolean
-    ) => Promise<
-      | KinderkrippeDto
-      | KindergartenDto
-      | HausFuerKinderDto
-      | GsNachmittagBetreuungDto
-      | GrundschuleDto
-      | MittelschuleDto
-    >,
-    modelParam: T,
-    showInInformationListParam: boolean
-  ): Promise<void> {
-    await callback(modelParam, showInInformationListParam).then((dto) => {
-      this.handleSuccess(dto);
-    });
   }
 
   private handleSuccess(
@@ -462,7 +381,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private getModelOfDto(
-    infrastruktureinrichtungTyp: string,
+    infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum | undefined,
     dto:
       | KinderkrippeDto
       | KindergartenDto
@@ -480,223 +399,53 @@ export default class Infrastruktureinrichtung extends Mixins(
     | MittelschuleModel
     | undefined {
     switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
         return new KinderkrippeModel(!_.isNil(dto) ? (dto as KinderkrippeDto) : createKinderkrippeDto());
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
         return new KindergartenModel(!_.isNil(dto) ? (dto as KindergartenDto) : createKindergartenDto());
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
         return new HausFuerKinderModel(!_.isNil(dto) ? (dto as HausFuerKinderDto) : createHausFuerKinderDto());
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
         return new GsNachmittagBetreuungModel(
           !_.isNil(dto) ? (dto as GsNachmittagBetreuungDto) : createGsNachmittagBetreuungDto()
         );
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
         return new GrundschuleModel(!_.isNil(dto) ? (dto as GrundschuleDto) : createGrundschuleDto());
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
         return new MittelschuleModel(!_.isNil(dto) ? (dto as MittelschuleDto) : createMittelschuleDto());
       default:
         return undefined;
     }
   }
 
-  private setInfrastruktureinrichtungModel(
-    infrastruktureinrichtungModel:
-      | KinderkrippeModel
-      | KindergartenModel
-      | HausFuerKinderModel
-      | GsNachmittagBetreuungModel
-      | GrundschuleModel
-      | MittelschuleModel
-  ): void {
-    switch (infrastruktureinrichtungModel.infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        this.kinderkrippe = _.cloneDeep(infrastruktureinrichtungModel as KinderkrippeModel);
-        this.currentInfrastruktureinrichtungTyp =
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe;
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
-        this.kindergarten = _.cloneDeep(infrastruktureinrichtungModel as KindergartenModel);
-        this.currentInfrastruktureinrichtungTyp =
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten;
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
-        this.hausFuerKinder = _.cloneDeep(infrastruktureinrichtungModel as HausFuerKinderModel);
-        this.currentInfrastruktureinrichtungTyp =
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder;
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-        this.gsNachmittagBetreuung = _.cloneDeep(infrastruktureinrichtungModel as GsNachmittagBetreuungModel);
-        this.currentInfrastruktureinrichtungTyp =
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung;
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
-        this.grundschule = _.cloneDeep(infrastruktureinrichtungModel as GrundschuleModel);
-        this.currentInfrastruktureinrichtungTyp =
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule;
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
-        this.mittelschule = _.cloneDeep(infrastruktureinrichtungModel as MittelschuleModel);
-        this.currentInfrastruktureinrichtungTyp =
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule;
-        break;
-      default:
-        break;
+  private async getInfrastruktureinrichtung(id: string): Promise<void> {
+    if (!_.isNil(id)) {
+      this.getInfrastruktureinrichtungById(id, false)
+        .then((dto) => {
+          this.$store.commit(
+            Infrastruktureinrichtung.SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG,
+            this.getModelOfDto(dto.infrastruktureinrichtungTyp, dto)
+          );
+        })
+        .catch(() => {
+          this.$store.commit(Infrastruktureinrichtung.SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG, undefined);
+        });
+    } else {
+      this.$store.commit(
+        Infrastruktureinrichtung.SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG,
+        this.getModelOfDto(undefined, undefined)
+      );
     }
-  }
-
-  private getInfrastruktureinrichtungModel():
-    | KinderkrippeModel
-    | KindergartenModel
-    | HausFuerKinderModel
-    | GsNachmittagBetreuungModel
-    | GrundschuleModel
-    | MittelschuleModel
-    | undefined {
-    if (!_.isNil(this.infrastruktureinrichtungTyp)) {
-      switch (this.infrastruktureinrichtungTyp) {
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
-          return this.kinderkrippe;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
-          return this.kindergarten;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
-          return this.hausFuerKinder;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-          return this.gsNachmittagBetreuung;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
-          return this.grundschule;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
-          return this.mittelschule;
-        default:
-          break;
-      }
-    }
-    return undefined;
-  }
-
-  private resetInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: string) {
-    switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        this.kinderkrippe = new KinderkrippeModel(createKinderkrippeDto());
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
-        this.kindergarten = new KindergartenModel(createKindergartenDto());
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
-        this.hausFuerKinder = new HausFuerKinderModel(createHausFuerKinderDto());
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-        this.gsNachmittagBetreuung = new GsNachmittagBetreuungModel(createGsNachmittagBetreuungDto());
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
-        this.grundschule = new GrundschuleModel(createGrundschuleDto());
-        break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
-        this.mittelschule = new MittelschuleModel(createMittelschuleDto());
-        break;
-      default:
-        break;
-    }
-  }
-
-  private async getInfrastruktureinrichtungById(infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum, id: string): Promise<void> {
-    if (!_.isNil(infrastruktureinrichtungTyp)) {
-      if (!_.isNil(id)) {
-        switch (infrastruktureinrichtungTyp) {
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
-            this.callInfrastruktureinrichtungById(this.getKinderkrippeById, id, infrastruktureinrichtungTyp);
-            break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
-            this.callInfrastruktureinrichtungById(this.getKindergartenById, id, infrastruktureinrichtungTyp);
-            break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
-            this.callInfrastruktureinrichtungById(this.getHausFuerKinderById, id, infrastruktureinrichtungTyp);
-            break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-            this.callInfrastruktureinrichtungById(this.getGsNachmittagBetreuungById, id, infrastruktureinrichtungTyp);
-            break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
-            this.callInfrastruktureinrichtungById(this.getGrundschuleById, id, infrastruktureinrichtungTyp);
-            break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule):
-            this.callInfrastruktureinrichtungById(this.getMittelschuleById, id, infrastruktureinrichtungTyp);
-            break;
-          default:
-            break;
-        }
-      } else {
-        this.$store.commit(
-          Infrastruktureinrichtung.SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG,
-          this.getModelOfDto(infrastruktureinrichtungTyp, undefined)
-        );
-      }
-    }
-  }
-
-  private async callInfrastruktureinrichtungById(
-    callback: (
-      id: string,
-      showInInformationList: boolean
-    ) => Promise<
-      | KinderkrippeDto
-      | KindergartenDto
-      | HausFuerKinderDto
-      | GsNachmittagBetreuungDto
-      | GrundschuleDto
-      | MittelschuleDto
-    >,
-    idParam: string,
-    infrastruktureinrichtungTyp: string
-  ): Promise<void> {
-    await callback(idParam, true)
-      .then((dto) => {
-        this.$store.commit(
-          Infrastruktureinrichtung.SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG,
-          this.getModelOfDto(infrastruktureinrichtungTyp, dto)
-        );
-      })
-      .catch(() => {
-        this.$store.commit(Infrastruktureinrichtung.SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG, undefined);
-      });
   }
 
   private deleteInfrastruktureinrichtung(): void {
     this.deleteDialogOpen = true;
   }
 
-  private async deleteInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: string, id: string): Promise<void> {
-    if (!_.isNil(infrastruktureinrichtungTyp) && !_.isNil(id)) {
-      switch (infrastruktureinrichtungTyp) {
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
-          this.callDeleteInfrastruktureinrichtungById(this.deleteKinderkrippeById, id);
-          break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
-          this.callDeleteInfrastruktureinrichtungById(this.deleteKindergartenById, id);
-          break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
-          this.callDeleteInfrastruktureinrichtungById(this.deleteHausFuerKinderById, id);
-          break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-          this.callDeleteInfrastruktureinrichtungById(this.deleteGsNachmittagBetreuungById, id);
-          break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
-          this.callDeleteInfrastruktureinrichtungById(this.deleteGrundschuleById, id);
-          break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
-          this.callDeleteInfrastruktureinrichtungById(this.deleteMittelschuleById, id);
-          break;
-        default:
-          break;
-      }
+  private async deleteInfrastruktureinrichtungTyp(id: string): Promise<void> {
+    if (!_.isNil(id)) {
+      await this.deleteInfrastruktureinrichtungById(id, false);
     }
-  }
-
-  private async callDeleteInfrastruktureinrichtungById(
-    callback: (id: string, showInInformationList: boolean) => Promise<void>,
-    idParam: string
-  ): Promise<void> {
-    await callback(idParam, true).then(() => {
-      this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS);
-    });
   }
 
   private returnToUebersicht(message?: string, level?: Levels): void {

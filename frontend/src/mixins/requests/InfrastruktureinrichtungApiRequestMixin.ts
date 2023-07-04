@@ -55,17 +55,17 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
   }
 
   createInfrastruktureinrichtung(
-    dto: UpdateInfrastruktureinrichtungRequest,
+    dto: InfrastruktureinrichtungDto,
     showInInformationList: boolean
-  ): Promise<UpdateInfrastruktureinrichtungRequest> {
+  ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: CreateInfrastruktureinrichtungRequest = {
-      updateInfrastruktureinrichtungRequest: dto,
+      updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,
     };
     return this.infrastruktureinrichtungApi
       .createInfrastruktureinrichtung(requestObject, RequestUtils.getPOSTConfig())
       .then((response) => {
         this.resetDirty();
-        return response;
+        return response as InfrastruktureinrichtungDto;
       })
       .catch((error) => {
         throw this.handleError(showInInformationList, error);
@@ -73,17 +73,17 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
   }
 
   updateInfrastruktureinrichtung(
-    dto: UpdateInfrastruktureinrichtungRequest,
+    dto: InfrastruktureinrichtungDto,
     showInInformationList: boolean
-  ): Promise<UpdateInfrastruktureinrichtungRequest> {
+  ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: UpdateInfrastruktureinrichtungOperationRequest = {
-      updateInfrastruktureinrichtungRequest: dto,
+      updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,
     };
     return this.infrastruktureinrichtungApi
       .updateInfrastruktureinrichtung(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
         this.resetDirty();
-        return response;
+        return response as InfrastruktureinrichtungDto;
       })
       .catch((error) => {
         throw this.handleError(showInInformationList, error);
