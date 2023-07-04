@@ -148,7 +148,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/infrastruktureinrichtungen`,
+            path: `/infrastruktureinrichtung/all`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

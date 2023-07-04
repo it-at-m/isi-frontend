@@ -149,12 +149,6 @@ import {
   MittelschuleDto,
   InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
 } from "@/api/api-client/isi-backend";
-import KinderkrippeApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/KinderkrippeApiRequestMixin";
-import KindergartenApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/KindergartenApiRequestMixin";
-import HausFuerKinderApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/HausFuerKinderApiRequestMixin";
-import GsNachmittagBetreuungApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/GsNachmittagBetreuungApiRequestMixin";
-import GrundschuleApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung/GrundschuleApiRequestMixin";
-import MittelschuleApiRequestMixin from "@/mixins/requests/infrastruktureinrichtung//MittelschuleApiRequestMixin";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
@@ -177,6 +171,7 @@ import GsNachmittagBetreuungComponent from "@/components/infrastruktureinrichtun
 import GrundschuleComponent from "@/components/infrastruktureinrichtung/GrundschuleComponent.vue";
 import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
 import _ from "lodash";
+import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 
 @Component({
   components: {
@@ -196,12 +191,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   FieldValidationRulesMixin,
   ValidatorMixin,
   SaveLeaveMixin,
-  KinderkrippeApiRequestMixin,
-  KindergartenApiRequestMixin,
-  HausFuerKinderApiRequestMixin,
-  GsNachmittagBetreuungApiRequestMixin,
-  GrundschuleApiRequestMixin,
-  MittelschuleApiRequestMixin
+  InfrastruktureinrichtungApiRequestMixin
 ) {
   private mode = DisplayMode.UNDEFINED;
 
@@ -224,23 +214,21 @@ export default class Infrastruktureinrichtung extends Mixins(
   private static readonly SEARCH_SELECTED_INFRASTRUKTUREINRICHTUNG = "search/selectedInfrastruktureinrichtung";
   private static readonly SEARCH_RESET_INFRASTRUKTUREINRICHTUNG = "search/resetInfrastruktureinrichtung";
 
-  private currentInfrastruktureinrichtungTyp: string =
-    InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Unspecified.toString();
+  private currentInfrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum =
+    InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Unspecified;
 
-  get infrastruktureinrichtungTyp(): string {
+  get infrastruktureinrichtungTyp(): InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum {
     return this.currentInfrastruktureinrichtungTyp;
   }
 
-  set infrastruktureinrichtungTyp(selectedInfrastruktureinrichtungTyp: string) {
+  set infrastruktureinrichtungTyp(selectedInfrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum) {
     this.resetInfrastruktureinrichtungTyp(this.currentInfrastruktureinrichtungTyp);
     this.currentInfrastruktureinrichtungTyp = selectedInfrastruktureinrichtungTyp;
   }
 
   get lfdNr(): string {
     const model = this.getInfrastruktureinrichtungModel();
-    return !_.isNil(model) && !_.isNil(model.infrastruktureinrichtung.lfdNr)
-      ? model.infrastruktureinrichtung.lfdNr.toString()
-      : "";
+    return !_.isNil(model) && !_.isNil(model.lfdNr) ? model.lfdNr.toString() : "";
   }
 
   get infrastruktureinrichtungDisplayName(): string {
@@ -248,7 +236,7 @@ export default class Infrastruktureinrichtung extends Mixins(
       return "";
     } else {
       const model = this.getInfrastruktureinrichtungModel();
-      return !_.isNil(model) ? model.infrastruktureinrichtung.nameEinrichtung : "";
+      return !_.isNil(model) ? model.nameEinrichtung : "";
     }
   }
 
@@ -267,48 +255,48 @@ export default class Infrastruktureinrichtung extends Mixins(
   get isKinderkrippe(): boolean {
     return (
       this.currentInfrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString()
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe
     );
   }
 
   get isKindergarten(): boolean {
     return (
       this.currentInfrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString()
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten
     );
   }
 
   get isHausFuerKinder(): boolean {
     return (
       this.currentInfrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString()
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder
     );
   }
 
   get isGsNachmittagBetreuung(): boolean {
     return (
       this.currentInfrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString()
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung
     );
   }
 
   get isGrundschule(): boolean {
     return (
       this.currentInfrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString()
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule
     );
   }
 
   get isMittelschule(): boolean {
     return (
       this.currentInfrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString()
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule
     );
   }
 
   mounted(): void {
     this.currentInfrastruktureinrichtungTyp =
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Unspecified.toString();
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Unspecified;
     this.getInfrastruktureinrichtungById(
       this.queryParameterInfrastruktureinrichtungTyp,
       this.queryParameterInfrastruktureinrichtungId
@@ -350,19 +338,19 @@ export default class Infrastruktureinrichtung extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private validateInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: string): string | null {
+  private validateInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum): string | null {
     switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
         return this.findFaultInKinderkrippeForSave(this.kinderkrippe);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
         return this.findFaultInKindergartenForSave(this.kindergarten);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
         return this.findFaultInHausFuerKinderForSave(this.hausFuerKinder);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
         return this.findFaultInGsNachmittagBetreuungForSave(this.gsNachmittagBetreuung);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
         return this.findFaultInGrundschuleForSave(this.grundschule);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
         return this.findFaultInMittelschuleForSave(this.mittelschule);
       default:
         return null;
@@ -371,7 +359,7 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private async saveInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: string): Promise<void> {
     switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
         this.callSaveInfrastruktureinrichtung(
           this.mode === DisplayMode.NEU ? this.createKinderkrippe : this.updateKinderkrippe,
           this.kinderkrippe,
@@ -520,33 +508,33 @@ export default class Infrastruktureinrichtung extends Mixins(
       | GrundschuleModel
       | MittelschuleModel
   ): void {
-    switch (infrastruktureinrichtungModel.infrastruktureinrichtungTyp.toString()) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+    switch (infrastruktureinrichtungModel.infrastruktureinrichtungTyp) {
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
         this.kinderkrippe = _.cloneDeep(infrastruktureinrichtungModel as KinderkrippeModel);
         this.currentInfrastruktureinrichtungTyp =
           InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe;
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
         this.kindergarten = _.cloneDeep(infrastruktureinrichtungModel as KindergartenModel);
         this.currentInfrastruktureinrichtungTyp =
           InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten;
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
         this.hausFuerKinder = _.cloneDeep(infrastruktureinrichtungModel as HausFuerKinderModel);
         this.currentInfrastruktureinrichtungTyp =
           InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder;
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
         this.gsNachmittagBetreuung = _.cloneDeep(infrastruktureinrichtungModel as GsNachmittagBetreuungModel);
         this.currentInfrastruktureinrichtungTyp =
           InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung;
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
         this.grundschule = _.cloneDeep(infrastruktureinrichtungModel as GrundschuleModel);
         this.currentInfrastruktureinrichtungTyp =
           InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule;
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
         this.mittelschule = _.cloneDeep(infrastruktureinrichtungModel as MittelschuleModel);
         this.currentInfrastruktureinrichtungTyp =
           InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule;
@@ -566,17 +554,17 @@ export default class Infrastruktureinrichtung extends Mixins(
     | undefined {
     if (!_.isNil(this.infrastruktureinrichtungTyp)) {
       switch (this.infrastruktureinrichtungTyp) {
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
           return this.kinderkrippe;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
           return this.kindergarten;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
           return this.hausFuerKinder;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
           return this.gsNachmittagBetreuung;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
           return this.grundschule;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
           return this.mittelschule;
         default:
           break;
@@ -587,22 +575,22 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private resetInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: string) {
     switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
         this.kinderkrippe = new KinderkrippeModel(createKinderkrippeDto());
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
         this.kindergarten = new KindergartenModel(createKindergartenDto());
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
         this.hausFuerKinder = new HausFuerKinderModel(createHausFuerKinderDto());
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
         this.gsNachmittagBetreuung = new GsNachmittagBetreuungModel(createGsNachmittagBetreuungDto());
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
         this.grundschule = new GrundschuleModel(createGrundschuleDto());
         break;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
+      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
         this.mittelschule = new MittelschuleModel(createMittelschuleDto());
         break;
       default:
@@ -610,26 +598,26 @@ export default class Infrastruktureinrichtung extends Mixins(
     }
   }
 
-  private async getInfrastruktureinrichtungById(infrastruktureinrichtungTyp: string, id: string): Promise<void> {
+  private async getInfrastruktureinrichtungById(infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum, id: string): Promise<void> {
     if (!_.isNil(infrastruktureinrichtungTyp)) {
       if (!_.isNil(id)) {
         switch (infrastruktureinrichtungTyp) {
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
             this.callInfrastruktureinrichtungById(this.getKinderkrippeById, id, infrastruktureinrichtungTyp);
             break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
+          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
             this.callInfrastruktureinrichtungById(this.getKindergartenById, id, infrastruktureinrichtungTyp);
             break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
+          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
             this.callInfrastruktureinrichtungById(this.getHausFuerKinderById, id, infrastruktureinrichtungTyp);
             break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
+          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
             this.callInfrastruktureinrichtungById(this.getGsNachmittagBetreuungById, id, infrastruktureinrichtungTyp);
             break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
+          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
             this.callInfrastruktureinrichtungById(this.getGrundschuleById, id, infrastruktureinrichtungTyp);
             break;
-          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
+          case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule):
             this.callInfrastruktureinrichtungById(this.getMittelschuleById, id, infrastruktureinrichtungTyp);
             break;
           default:
@@ -678,22 +666,22 @@ export default class Infrastruktureinrichtung extends Mixins(
   private async deleteInfrastruktureinrichtungTyp(infrastruktureinrichtungTyp: string, id: string): Promise<void> {
     if (!_.isNil(infrastruktureinrichtungTyp) && !_.isNil(id)) {
       switch (infrastruktureinrichtungTyp) {
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
           this.callDeleteInfrastruktureinrichtungById(this.deleteKinderkrippeById, id);
           break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
           this.callDeleteInfrastruktureinrichtungById(this.deleteKindergartenById, id);
           break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
           this.callDeleteInfrastruktureinrichtungById(this.deleteHausFuerKinderById, id);
           break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
           this.callDeleteInfrastruktureinrichtungById(this.deleteGsNachmittagBetreuungById, id);
           break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
           this.callDeleteInfrastruktureinrichtungById(this.deleteGrundschuleById, id);
           break;
-        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule.toString():
+        case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
           this.callDeleteInfrastruktureinrichtungById(this.deleteMittelschuleById, id);
           break;
         default:
