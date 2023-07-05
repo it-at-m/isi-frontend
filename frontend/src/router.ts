@@ -81,7 +81,7 @@ export default new Router({
       component: Bauvorhaben,
     },
     {
-      path: "/infrastruktureinrichtunguebersicht",
+      path: "/infrastruktureinrichtungenuebersicht",
       name: "infrastruktureinrichtungenuebersicht",
       meta: { tag: "infrastruktureinrichtungen" },
       component: InfrastruktureinrichtungenUebersicht,
