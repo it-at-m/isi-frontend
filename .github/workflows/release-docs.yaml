@@ -39,10 +39,13 @@ jobs:
           cache-dependency-path: "./docs/package-lock.json"
 
       - run: npm install
+        working-directory: ./docs
       
       - run: npm run
+        working-directory: ./docs
 
       - run: npm run build
+        working-directory: ./docs
 
       - name: Deploy Docs
         uses: peaceiris/actions-gh-pages@v3
