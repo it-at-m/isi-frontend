@@ -320,7 +320,7 @@ export function createFoerdermixStammDto(): FoerdermixStammDto {
  */
 export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto {
   return {
-    infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Grundschule,
+    infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
     lfdNr: undefined,
     bauvorhaben: undefined,
     allgemeineOrtsangabe: undefined,
