@@ -13,6 +13,7 @@
         :disabled="disabled"
         :required="required"
         @input="formChanged"
+        @blur="datePickerBlurred"
       >
         <template #label>
           {{ label
@@ -160,6 +161,10 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
 
   private deactivateDatePicker() {
     this.datePickerActivated = false;
+  }
+
+  private datePickerBlurred(): void {
+    this.$emit("datePickerBlurred", this.value);
   }
 }
 </script>

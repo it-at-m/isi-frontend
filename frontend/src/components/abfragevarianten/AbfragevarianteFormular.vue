@@ -40,6 +40,7 @@
             :disabled="!isEditable"
             label="Datum Satzungsbeschluss"
             month-picker
+            @datePickerBlurred="datumSatzungsbeschlussChanged"
           />
         </v-col>
         <v-col
@@ -378,6 +379,15 @@ export default class AbfragevarianteForm extends Mixins(
       this.abfragevariante.geschossflaecheStudentenwohnungen = undefined;
       this.abfragevariante.geschossflaecheSeniorenwohnungen = undefined;
       this.abfragevariante.geschossflaecheSonstiges = undefined;
+    }
+  }
+
+  private datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
+    if (!_.isNil(datumSatzungsbeschluss)) {
+      this.abfragevariante.realisierungVon =
+        datumSatzungsbeschluss.getMonth() <= 6
+          ? datumSatzungsbeschluss.getFullYear() + 3
+          : datumSatzungsbeschluss.getFullYear() + 4;
     }
   }
 }
