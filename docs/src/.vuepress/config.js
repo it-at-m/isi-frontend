@@ -5,7 +5,7 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: "ISI Frontend",
+  title: "ISI Dokumentation",
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
@@ -28,7 +28,7 @@ module.exports = {
   locales: {
     "/": {
       lang: "de-DE", // this will be set as the lang attribute on <html>
-      title: "ISI Frontend",
+      title: "ISI",
       description: "",
     },
     // '/en/': {
@@ -67,9 +67,9 @@ module.exports = {
         sidebar: {
           "/documentation/": [
             {
-              title: "ISI Frontend",
+              title: "ISI",
               collapsable: false,
-              children: ["", "roadmap"],
+              children: ["", "roadmap", "releasenotes"],
             },
             {
               title: "Guides",
