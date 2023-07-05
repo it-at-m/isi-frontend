@@ -217,20 +217,6 @@ export default class Infrastruktureinrichtung extends Mixins(
       : "";
   }
 
-  private openDeleteDialog(): void {
-    this.deleteDialogOpen = true;
-  }
-
-  private yesNoDialogNo(): void {
-    this.deleteDialogOpen = false;
-  }
-
-  private async yesNoDialogYes(): Promise<void> {
-    this.deleteInfrastruktureinrichtung();
-    this.yesNoDialogNo();
-    this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS);
-  }
-
   get isKinderkrippe(): boolean {
     return (
       this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
@@ -366,6 +352,20 @@ export default class Infrastruktureinrichtung extends Mixins(
     }
   }
 
+  private openDeleteDialog(): void {
+    this.deleteDialogOpen = true;
+  }
+
+  private yesNoDialogNo(): void {
+    this.deleteDialogOpen = false;
+  }
+
+  private async yesNoDialogYes(): Promise<void> {
+    this.deleteInfrastruktureinrichtung();
+    this.yesNoDialogNo();
+    this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS);
+  }
+
   private determineDisplayModeNeuOrAenderung(): DisplayMode {
     return _.isNil(this.infrastruktureinrichtungId) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
@@ -400,17 +400,6 @@ export default class Infrastruktureinrichtung extends Mixins(
         return this.findFaultInMittelschuleForSave(infrastruktureinrichtung as MittelschuleDto);
       default:
         return null;
-    }
-  }
-
-  private handleSuccess(dto: InfrastruktureinrichtungDto): void {
-    this.resetInfrastruktureinrichtungInStore();
-    this.setInfrastruktureinrichtungToStore(dto);
-    if (this.isNewInfrastruktureinrichtung()) {
-      this.$router.push({ path: "/infrastruktureinrichtungenuebersicht" });
-      Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich gespeichert`, Levels.SUCCESS);
-    } else {
-      Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
   }
 
@@ -503,6 +492,17 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private resetInfrastruktureinrichtungInStore(): void {
     this.$store.dispatch("search/resetInfrastruktureinrichtung");
+  }
+
+  private handleSuccess(dto: InfrastruktureinrichtungDto): void {
+    this.resetInfrastruktureinrichtungInStore();
+    this.setInfrastruktureinrichtungToStore(dto);
+    if (this.isNewInfrastruktureinrichtung()) {
+      this.$router.push({ path: "/infrastruktureinrichtungenuebersicht" });
+      Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich gespeichert`, Levels.SUCCESS);
+    } else {
+      Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich aktualisiert`, Levels.SUCCESS);
+    }
   }
 }
 </script>
