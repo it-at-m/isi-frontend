@@ -316,6 +316,26 @@ export function createFoerdermixStammDto(): FoerdermixStammDto {
 }
 
 /**
+ * InfrastruktureinrichtungDto
+ */
+export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto {
+  return {
+    infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Grundschule,
+    lfdNr: undefined,
+    bauvorhaben: undefined,
+    allgemeineOrtsangabe: undefined,
+    adresse: undefined,
+    nameEinrichtung: "",
+    fertigstellungsjahr: Number.NaN,
+    status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
+    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
+    flaecheGesamtgrundstueck: undefined,
+    flaecheTeilgrundstueck: undefined,
+    zugeordnetesBaugebiet: undefined,
+  };
+}
+
+/**
  * SchuleDto
  */
 export function createSchuleDto(): SchuleDto {
