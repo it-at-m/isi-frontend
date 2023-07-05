@@ -3,7 +3,7 @@
     <infrastruktureinrichtung-component
       id="infrastruktureinrichtung_grundschule_component"
       ref="infrastruktureinrichtungComponent"
-      v-model="grundschule.infrastruktureinrichtung"
+      v-model="grundschule"
       :mode="displayMode"
     />
     <schule-component

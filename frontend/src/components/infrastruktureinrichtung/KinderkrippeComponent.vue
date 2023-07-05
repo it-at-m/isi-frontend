@@ -3,7 +3,7 @@
     <infrastruktureinrichtung-component
       id="infrastruktureinrichtung_kinderkrippe_component"
       ref="infrastruktureinrichtungComponent"
-      v-model="kinderkrippe.infrastruktureinrichtung"
+      v-model="kinderkrippe"
       :mode="displayMode"
     />
     <field-group-card>

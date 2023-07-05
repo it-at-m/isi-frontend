@@ -3,7 +3,7 @@
     <infrastruktureinrichtung-component
       id="infrastruktureinrichtung_hausFuerKinder_component"
       ref="infrastruktureinrichtungComponent"
-      v-model="hausFuerKinder.infrastruktureinrichtung"
+      v-model="hausFuerKinder"
       :mode="displayMode"
     />
     <field-group-card>

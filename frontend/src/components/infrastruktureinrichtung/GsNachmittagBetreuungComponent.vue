@@ -3,7 +3,7 @@
     <infrastruktureinrichtung-component
       id="infrastruktureinrichtung_gsNachmittagBetreuungModel_component"
       ref="infrastruktureinrichtungComponent"
-      v-model="gsNachmittagBetreuung.infrastruktureinrichtung"
+      v-model="gsNachmittagBetreuung"
       :mode="displayMode"
     />
     <field-group-card>
