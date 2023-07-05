@@ -39,7 +39,7 @@
               block
               color="secondary"
               elevation="1"
-              :disabled="!addDokumentButtonEnabled"
+              :disabled="!addDokumentButtonEnabled || !isDokumenteEditable"
               @click="addDokument()"
               v-text="'Hinzufügen'"
             />

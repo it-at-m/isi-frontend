@@ -57,6 +57,7 @@
               fab
               x-large
               color="secondary"
+              :disabled="!isRoleAdminOrAbfrageerstellung()"
               v-on="on"
               @click="newAbfrage"
             >
@@ -79,11 +80,12 @@ import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequ
 import { convertDateForFrontend } from "@/utils/Formatter";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMixin) {
+export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMixin, SecurityMixin) {
   private abfragenUebersicht: Array<AbfrageListElementDto> = [];
 
   private options = false;

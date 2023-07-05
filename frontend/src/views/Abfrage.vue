@@ -174,6 +174,7 @@
           color="primary"
           elevation="1"
           style="width: 200px"
+          :disabled="!isButtonEditable"
           @click="deleteAbfrage()"
           v-text="'Löschen'"
         />
@@ -204,7 +205,8 @@
           elevation="1"
           :disabled="
             (!isNewAbfrage() && !isDirty()) ||
-            containsNotAllowedDokument(abfrageWrapped.infrastrukturabfrage.abfrage.dokumente)
+            containsNotAllowedDokument(abfrageWrapped.infrastrukturabfrage.abfrage.dokumente) ||
+            !isButtonEditable
           "
           style="width: 200px"
           @click="saveAbfrage()"
@@ -369,6 +371,10 @@ export default class Abfrage extends Mixins(
 
   get isEditable(): boolean {
     return this.isEditableWithAnzeigeContextAbfragevariante(this.anzeigeContextAbfragevariante);
+  }
+
+  get isButtonEditable(): boolean {
+    return this.isRoleAdminOrAbfrageerstellung();
   }
 
   async setSelectedAbfrageInStore(): Promise<void> {
