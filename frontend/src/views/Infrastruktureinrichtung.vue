@@ -5,7 +5,7 @@
         <infrastruktureinrichtung-typ-component
           id="infrastruktureinrichtung_infrastruktureinrichtungtyp_component"
           ref="infrastruktureinrichtungTypComponent"
-          v-model="infrastruktureinrichtungTyp"
+          v-model="infrastruktureinrichtung.infrastruktureinrichtungTyp"
           :lfd-nr="lfdNr"
           :mode="mode"
         />
@@ -435,7 +435,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private async getInfrastruktureinrichtungAndSetToStore(id: string): Promise<void> {
-    this.getInfrastruktureinrichtungById(id, false)
+    await this.getInfrastruktureinrichtungById(id, false)
       .then((dto) => {
         this.setInfrastruktureinrichtungToStore(dto);
       })
