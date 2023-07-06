@@ -169,19 +169,8 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   @VModel({ type: InfrastruktureinrichtungModel })
   infrastruktureinrichtung!: InfrastruktureinrichtungModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
-
-  get isNewInfrastruktureinrichtung(): boolean {
-    return this.mode === DisplayMode.NEU;
-  }
 
   private flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 

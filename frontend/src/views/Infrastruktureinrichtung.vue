@@ -10,6 +10,14 @@
           :mode="mode"
           :is-editable="isEditable"
         />
+        <infrastruktureinrichtung-component
+          v-if="isInfrastruktureinrichtungTypNotUnspecified"
+          id="infrastruktureinrichtung_kinderkrippe_component"
+          ref="infrastruktureinrichtungComponent"
+          v-model="infrastruktureinrichtung"
+          :mode="mode"
+          :is-editable="isEditable"
+        />
         <kinderkrippe-component
           v-if="isKinderkrippe"
           id="infrastruktureinrichtung_kinderkrippe_component"
@@ -183,9 +191,11 @@ import MittelschuleComponent from "@/components/infrastruktureinrichtung/Mittels
 import _ from "lodash";
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
+import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 
 @Component({
   components: {
+    InfrastruktureinrichtungComponent,
     InformationList,
     YesNoDialog,
     DefaultLayout,
@@ -229,6 +239,13 @@ export default class Infrastruktureinrichtung extends Mixins(
     return !_.isNil(this.infrastruktureinrichtung) && this.isAnderungForInfrastruktureinrichtung()
       ? this.infrastruktureinrichtung.nameEinrichtung
       : "";
+  }
+
+  get isInfrastruktureinrichtungTypNotUnspecified(): boolean {
+    return (
+      this.infrastruktureinrichtung.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Unspecified
+    );
   }
 
   get isKinderkrippe(): boolean {

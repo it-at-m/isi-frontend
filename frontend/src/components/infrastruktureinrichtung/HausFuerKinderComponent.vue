@@ -1,12 +1,5 @@
 <template>
   <div>
-    <infrastruktureinrichtung-component
-      id="infrastruktureinrichtung_hausFuerKinder_component"
-      ref="infrastruktureinrichtungComponent"
-      v-model="hausFuerKinder"
-      :mode="displayMode"
-      :is-editable="isEditable"
-    />
     <field-group-card>
       <v-row justify="center">
         <v-col

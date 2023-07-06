@@ -1,12 +1,5 @@
 <template>
   <div>
-    <infrastruktureinrichtung-component
-      id="infrastruktureinrichtung_kindergarten_component"
-      ref="infrastruktureinrichtungComponent"
-      v-model="kindergarten"
-      :mode="displayMode"
-      :is-editable="isEditable"
-    />
     <field-group-card>
       <v-row justify="center">
         <v-col

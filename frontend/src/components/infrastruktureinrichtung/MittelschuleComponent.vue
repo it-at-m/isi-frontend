@@ -1,12 +1,5 @@
 <template>
   <div>
-    <infrastruktureinrichtung-component
-      id="infrastruktureinrichtung_mittelschule_component"
-      ref="infrastruktureinrichtungComponent"
-      v-model="mittelschule"
-      :mode="displayMode"
-      :is-editable="isEditable"
-    />
     <schule-component
       id="infrastruktureinrichtung_mittelschule_schule_component"
       ref="schule-component"
