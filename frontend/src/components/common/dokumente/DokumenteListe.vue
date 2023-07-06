@@ -75,7 +75,6 @@
                         item-text="value"
                         :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
                         :readonly="isDokumentNotAllowed(item)"
-                        :disabled="!isDokumenteEditable"
                         @change="formChanged"
                       >
                         <template #label> Dokumentart <span class="secondary--text">*</span> </template>
