@@ -5,5 +5,8 @@
 ## Lokale Umgebung
 
 <DownloadArtifact
-artifact="application-local.yml"
+artifact="frontend-application-local.yml"
+type="configuration" />
+<DownloadArtifact
+artifact="backend-application-local.yml"
 type="configuration" />

@@ -93,11 +93,14 @@ export interface InfrastrukturabfrageAngelegtDto {
  * @export
  */
 export const InfrastrukturabfrageAngelegtDtoSobonJahrEnum = {
-    Davor: 'DAVOR',
-    Jahr2014: 'JAHR_2014',
-    Jahr2017: 'JAHR_2017',
-    Jahr2017Plus: 'JAHR_2017_PLUS',
-    Jahr2021: 'JAHR_2021'
+    _1995: 'JAHR_1995',
+    _1997: 'JAHR_1997',
+    _2001: 'JAHR_2001',
+    _2006: 'JAHR_2006',
+    _2012: 'JAHR_2012',
+    _2017: 'JAHR_2017',
+    _2017Plus: 'JAHR_2017_PLUS',
+    _2021: 'JAHR_2021'
 } as const;
 export type InfrastrukturabfrageAngelegtDtoSobonJahrEnum = typeof InfrastrukturabfrageAngelegtDtoSobonJahrEnum[keyof typeof InfrastrukturabfrageAngelegtDtoSobonJahrEnum];
 

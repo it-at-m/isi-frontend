@@ -5,11 +5,13 @@
       ref="infrastruktureinrichtungComponent"
       v-model="mittelschule.infrastruktureinrichtung"
       :mode="displayMode"
+      :is-editable="isEditable"
     />
     <schule-component
       id="infrastruktureinrichtung_mittelschule_schule_component"
       ref="schule-component"
       v-model="mittelschule.schule"
+      :is-editable="isEditable"
     />
   </div>
 </template>
@@ -36,6 +38,9 @@ export default class MittelschuleComponent extends Mixins(FieldValidationRulesMi
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get displayMode(): DisplayMode {
     return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
