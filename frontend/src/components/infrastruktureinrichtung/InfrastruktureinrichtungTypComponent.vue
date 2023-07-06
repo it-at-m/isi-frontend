@@ -15,7 +15,7 @@
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             :disabled="!isEditable"
-            @change="formChanged"
+            @change="typChanged"
           >
             <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
           </v-select>
@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Emit, Mixins, Prop, VModel } from "vue-property-decorator";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -109,6 +109,11 @@ export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldVa
     return !_.isUndefined(list) && !_.isNil(key)
       ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
       : key;
+  }
+
+  @Emit()
+  private typChanged(): void {
+    this.formChanged();
   }
 }
 </script>

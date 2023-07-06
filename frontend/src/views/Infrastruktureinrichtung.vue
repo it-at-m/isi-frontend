@@ -9,6 +9,7 @@
           :lfd-nr="lfdNr"
           :mode="mode"
           :is-editable="isEditable"
+          @typ-changed="infrastruktureinrichtungTypChanged()"
         />
         <infrastruktureinrichtung-component
           v-if="isInfrastruktureinrichtungTypNotUnspecified"
@@ -188,11 +189,11 @@ import HausFuerKinderComponent from "@/components/infrastruktureinrichtung/HausF
 import GsNachmittagBetreuungComponent from "@/components/infrastruktureinrichtung/GsNachmittagBetreuungComponent.vue";
 import GrundschuleComponent from "@/components/infrastruktureinrichtung/GrundschuleComponent.vue";
 import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
-import _, { isUndefined } from "lodash";
+import _ from "lodash";
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
-import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
+import NewFormWorkInProgress from "@/types/common/NewFormWorkInProgress";
 
 @Component({
   components: {
@@ -217,6 +218,8 @@ export default class Infrastruktureinrichtung extends Mixins(
   SecurityMixin
 ) {
   private mode = DisplayMode.UNDEFINED;
+
+  private newFormWip = NewFormWorkInProgress.NICHT_IN_BEARBEITUNG;
 
   private buttonText = "";
 
@@ -258,15 +261,21 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   get kinderkrippe(): KinderkrippeModel {
     if (this.isKinderkrippe) {
-      this.infrastruktureinrichtung = this.isNewInfrastruktureinrichtung()
-        ? (this.getModelOfDto(
-            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-            createKinderkrippeDto()
-          ) as KinderkrippeModel)
-        : (this.getModelOfDto(
-            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-            this.infrastruktureinrichtung
-          ) as KinderkrippeModel);
+      if (!this.isNewInfrastruktureinrichtung()) {
+        this.infrastruktureinrichtung = this.getModelOfDto(
+          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+          this.infrastruktureinrichtung
+        ) as KinderkrippeModel;
+      } else if (
+        this.isNewInfrastruktureinrichtung() &&
+        this.newFormWip === NewFormWorkInProgress.NICHT_IN_BEARBEITUNG
+      ) {
+        this.newFormWip = NewFormWorkInProgress.IN_BEARBEITUNG;
+        this.infrastruktureinrichtung = this.getModelOfDto(
+          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+          createKinderkrippeDto()
+        ) as KinderkrippeModel;
+      }
     }
     return this.infrastruktureinrichtung as KinderkrippeModel;
   }
@@ -553,6 +562,10 @@ export default class Infrastruktureinrichtung extends Mixins(
     } else {
       Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
+  }
+
+  private infrastruktureinrichtungTypChanged() {
+    this.newFormWip = NewFormWorkInProgress.NICHT_IN_BEARBEITUNG;
   }
 }
 </script>
