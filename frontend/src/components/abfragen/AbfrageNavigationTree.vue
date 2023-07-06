@@ -1080,8 +1080,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
         !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
       // Die Abfragevariante darf keine Bauabschnitte referenzieren.
-      (_.isNil(abfrageTreeItem.abfragevariante?.bauabschnitte) ||
-        _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte)) &&
+      _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte) &&
       // Das Datum für Realisierung von muss gesetzt sein.
       !_.isNil(abfrageTreeItem.abfragevariante?.realisierungVon)
     );
@@ -1096,7 +1095,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       (!_.isNil(abfrageTreeItem.baugebiet?.gesamtanzahlWe) ||
         !_.isNil(abfrageTreeItem.baugebiet?.geschossflaecheWohnen)) &&
       // Das Baugebiet darf keine Bauraten referenzieren.
-      (_.isNil(abfrageTreeItem.baugebiet?.bauraten) || _.isEmpty(abfrageTreeItem.baugebiet?.bauraten)) &&
+      _.isEmpty(abfrageTreeItem.baugebiet?.bauraten) &&
       // Das Datum für Realisierung von muss gesetzt sein.
       !_.isNil(abfrageTreeItem.baugebiet?.realisierungVon)
     );
