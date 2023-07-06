@@ -193,7 +193,11 @@ import _ from "lodash";
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
-import NewFormWorkInProgress from "@/types/common/NewFormWorkInProgress";
+
+enum NewFormWorkInProgress {
+  NICHT_IN_BEARBEITUNG = 0,
+  IN_BEARBEITUNG = 1,
+}
 
 @Component({
   components: {
