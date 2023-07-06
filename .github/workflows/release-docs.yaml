@@ -4,6 +4,9 @@ name: release docs
 
 # Controls when the workflow will run
 on:
+  push:
+    branches:
+      - 'ISI-686-GithubPages'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -43,3 +46,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/dist
+          cname: isi.oss.muenchen.de
+
