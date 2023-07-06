@@ -188,10 +188,11 @@ import HausFuerKinderComponent from "@/components/infrastruktureinrichtung/HausF
 import GsNachmittagBetreuungComponent from "@/components/infrastruktureinrichtung/GsNachmittagBetreuungComponent.vue";
 import GrundschuleComponent from "@/components/infrastruktureinrichtung/GrundschuleComponent.vue";
 import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
-import _ from "lodash";
+import _, { isUndefined } from "lodash";
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
+import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 
 @Component({
   components: {
@@ -256,15 +257,18 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   get kinderkrippe(): KinderkrippeModel {
-    return this.isKinderkrippe
-      ? (this.getModelOfDto(
-          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-          this.infrastruktureinrichtung
-        ) as KinderkrippeModel)
-      : (this.getModelOfDto(
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
-          this.infrastruktureinrichtung
-        ) as KinderkrippeModel);
+    if (this.isKinderkrippe) {
+      this.infrastruktureinrichtung = this.isNewInfrastruktureinrichtung()
+        ? (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            createKinderkrippeDto()
+          ) as KinderkrippeModel)
+        : (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            this.infrastruktureinrichtung
+          ) as KinderkrippeModel);
+    }
+    return this.infrastruktureinrichtung as KinderkrippeModel;
   }
 
   get isKindergarten(): boolean {
@@ -275,15 +279,18 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   get kindergarten(): KindergartenModel {
-    return this.isKindergarten
-      ? (this.getModelOfDto(
-          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-          this.infrastruktureinrichtung
-        ) as KindergartenModel)
-      : (this.getModelOfDto(
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten,
-          this.infrastruktureinrichtung
-        ) as KindergartenModel);
+    if (this.isKindergarten) {
+      this.infrastruktureinrichtung = this.isNewInfrastruktureinrichtung()
+        ? (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            createKindergartenDto()
+          ) as KindergartenModel)
+        : (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            this.infrastruktureinrichtung
+          ) as KindergartenModel);
+    }
+    return this.infrastruktureinrichtung as KindergartenModel;
   }
 
   get isHausFuerKinder(): boolean {
@@ -294,15 +301,18 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   get hausFuerKinder(): HausFuerKinderModel {
-    return this.isHausFuerKinder
-      ? (this.getModelOfDto(
-          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-          this.infrastruktureinrichtung
-        ) as HausFuerKinderModel)
-      : (this.getModelOfDto(
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder,
-          this.infrastruktureinrichtung
-        ) as HausFuerKinderModel);
+    if (this.isHausFuerKinder) {
+      this.infrastruktureinrichtung = this.isNewInfrastruktureinrichtung()
+        ? (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            createHausFuerKinderDto()
+          ) as HausFuerKinderModel)
+        : (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            this.infrastruktureinrichtung
+          ) as HausFuerKinderModel);
+    }
+    return this.infrastruktureinrichtung as HausFuerKinderModel;
   }
 
   get isGsNachmittagBetreuung(): boolean {
@@ -313,15 +323,18 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   get gsNachmittagBetreuung(): GsNachmittagBetreuungModel {
-    return this.isGsNachmittagBetreuung
-      ? (this.getModelOfDto(
-          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-          this.infrastruktureinrichtung
-        ) as GsNachmittagBetreuungModel)
-      : (this.getModelOfDto(
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung,
-          this.infrastruktureinrichtung
-        ) as GsNachmittagBetreuungModel);
+    if (this.isGsNachmittagBetreuung) {
+      this.infrastruktureinrichtung = this.isNewInfrastruktureinrichtung()
+        ? (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            createGsNachmittagBetreuungDto()
+          ) as GsNachmittagBetreuungModel)
+        : (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            this.infrastruktureinrichtung
+          ) as GsNachmittagBetreuungModel);
+    }
+    return this.infrastruktureinrichtung as GsNachmittagBetreuungModel;
   }
 
   get isGrundschule(): boolean {
@@ -332,15 +345,18 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   get grundschule(): GrundschuleModel {
-    return this.isGrundschule
-      ? (this.getModelOfDto(
-          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-          this.infrastruktureinrichtung
-        ) as GrundschuleModel)
-      : (this.getModelOfDto(
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule,
-          this.infrastruktureinrichtung
-        ) as GrundschuleModel);
+    if (this.isGrundschule) {
+      this.infrastruktureinrichtung = this.isNewInfrastruktureinrichtung()
+        ? (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            createGrundschuleDto()
+          ) as GrundschuleModel)
+        : (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            this.infrastruktureinrichtung
+          ) as GrundschuleModel);
+    }
+    return this.infrastruktureinrichtung as GrundschuleModel;
   }
 
   get isMittelschule(): boolean {
@@ -351,15 +367,18 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   get mittelschule(): MittelschuleModel {
-    return this.isMittelschule
-      ? (this.getModelOfDto(
-          this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-          this.infrastruktureinrichtung
-        ) as MittelschuleModel)
-      : (this.getModelOfDto(
-          InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule,
-          this.infrastruktureinrichtung
-        ) as MittelschuleModel);
+    if (this.isMittelschule) {
+      this.infrastruktureinrichtung = this.isNewInfrastruktureinrichtung()
+        ? (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            createMittelschuleDto()
+          ) as MittelschuleModel)
+        : (this.getModelOfDto(
+            this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
+            this.infrastruktureinrichtung
+          ) as MittelschuleModel);
+    }
+    return this.infrastruktureinrichtung as MittelschuleModel;
   }
 
   mounted(): void {
