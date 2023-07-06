@@ -102,8 +102,8 @@
           color="primary"
           elevation="1"
           style="width: 200px"
-          @click="openDeleteDialog"
           :disabled="!isEditable"
+          @click="openDeleteDialog"
           v-text="'Löschen'"
         />
         <information-list
