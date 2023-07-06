@@ -1,6 +1,6 @@
 # Roadmap
 
-Eine Übersicht befindet sich unter [Roadmap](https://github.com/it-at-m/isi-backend/tree/ISI-424_docs_Ordner#roadmap).
+Eine Übersicht befindet sich unter [Roadmap](https://github.com/it-at-m/isi-frontend#roadmap).
 
 Derzeit arbeitet das Team an der Fertigstellung zur Verwaltung der Infrastrukturabfragen, der Infrastruktureinrichtungen
 und der Bauvorhaben.
