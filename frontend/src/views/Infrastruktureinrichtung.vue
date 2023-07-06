@@ -8,6 +8,7 @@
           v-model="infrastruktureinrichtung.infrastruktureinrichtungTyp"
           :lfd-nr="lfdNr"
           :mode="mode"
+          :is-editable="isEditable"
         />
         <kinderkrippe-component
           v-if="isKinderkrippe"
@@ -15,6 +16,7 @@
           ref="kinderkrippeComponent"
           v-model="kinderkrippe"
           :mode="mode"
+          :is-editable="isEditable"
         />
         <kindergarten-component
           v-if="isKindergarten"
@@ -22,6 +24,7 @@
           ref="kindergartenComponent"
           v-model="kindergarten"
           :mode="mode"
+          :is-editable="isEditable"
         />
         <haus-fuer-kinder-component
           v-if="isHausFuerKinder"
@@ -29,6 +32,7 @@
           ref="hausFuerKinderComponent"
           v-model="hausFuerKinder"
           :mode="mode"
+          :is-editable="isEditable"
         />
         <gs-nachmittag-betreuung-component
           v-if="isGsNachmittagBetreuung"
@@ -36,6 +40,7 @@
           ref="gsNachmittagBetreuungComponent"
           v-model="gsNachmittagBetreuung"
           :mode="mode"
+          :is-editable="isEditable"
         />
         <grundschule-component
           v-if="isGrundschule"
@@ -43,6 +48,7 @@
           ref="grundschuleComponent"
           v-model="grundschule"
           :mode="mode"
+          :is-editable="isEditable"
         />
         <mittelschule-component
           v-if="isMittelschule"
@@ -50,6 +56,7 @@
           ref="mittelschuleComponent"
           v-model="mittelschule"
           :mode="mode"
+          :is-editable="isEditable"
         />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_löschen"
@@ -96,6 +103,7 @@
           elevation="1"
           style="width: 200px"
           @click="openDeleteDialog"
+          :disabled="!isEditable"
           v-text="'Löschen'"
         />
         <information-list
@@ -110,7 +118,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="!isDirty()"
+          :disabled="!isDirty() || !isEditable"
           style="width: 200px"
           @click="saveInfrastruktureinrichtung()"
           v-text="buttonText"
@@ -174,6 +182,7 @@ import GrundschuleComponent from "@/components/infrastruktureinrichtung/Grundsch
 import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
 import _ from "lodash";
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   components: {
@@ -193,7 +202,8 @@ export default class Infrastruktureinrichtung extends Mixins(
   FieldValidationRulesMixin,
   ValidatorMixin,
   SaveLeaveMixin,
-  InfrastruktureinrichtungApiRequestMixin
+  InfrastruktureinrichtungApiRequestMixin,
+  SecurityMixin
 ) {
   private mode = DisplayMode.UNDEFINED;
 
@@ -204,6 +214,10 @@ export default class Infrastruktureinrichtung extends Mixins(
   private infrastruktureinrichtung: InfrastruktureinrichtungDto = createInfrastruktureinrichtungDto();
 
   private infrastruktureinrichtungId: string | undefined = this.$route.params.id;
+
+  get isEditable(): boolean {
+    return this.isRoleAdminOrSachbearbeitung();
+  }
 
   get lfdNr(): string {
     return !_.isNil(this.infrastruktureinrichtung) && !_.isNil(this.infrastruktureinrichtung.lfdNr)

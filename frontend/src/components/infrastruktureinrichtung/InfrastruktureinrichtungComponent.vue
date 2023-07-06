@@ -9,6 +9,7 @@
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
             validate-on-blur
+            :disabled="!isEditable"
             @input="formChanged"
           >
             <template #label> Name der Einrichtung <span class="secondary--text">*</span> </template>
@@ -21,6 +22,7 @@
       :adresse-prop.sync="infrastruktureinrichtung.adresse"
       :allgemeine-ortsangabe-prop.sync="infrastruktureinrichtung.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
+      :is-editable-prop="isEditable"
     />
     <field-group-card>
       <v-row justify="center">
@@ -35,6 +37,7 @@
             item-value="key"
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
             @change="formChanged"
           >
             <template #label>Status der Infrastruktureinrichtung <span class="secondary--text">*</span></template>
@@ -52,6 +55,7 @@
             year
             :required="isFertigstellungsjahrRequired()"
             maxlength="4"
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -69,6 +73,7 @@
                 ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]
                 : []
             "
+            :disabled="!isEditable"
             @change="formChanged"
           >
             <template #label
@@ -93,6 +98,7 @@
             item-value="id"
             label="Bauvorhaben"
             clearable
+            :disabled="!isEditable"
             @focus="fetchBauvorhaben"
             @change="formChanged"
           />
@@ -111,6 +117,7 @@
             class="mx-3"
             label="Fläche Gesamtgrundstück"
             :suffix="fieldPrefixesSuffixes.squareMeter"
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -123,6 +130,7 @@
             class="mx-3"
             label="Fläche Teilgrundstück"
             :suffix="fieldPrefixesSuffixes.squareMeter"
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -142,6 +150,7 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   components: {
@@ -154,13 +163,17 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   FieldValidationRulesMixin,
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
-  FieldPrefixesSuffixes
+  FieldPrefixesSuffixes,
+  SecurityMixin
 ) {
   @VModel({ type: InfrastruktureinrichtungModel })
   infrastruktureinrichtung!: InfrastruktureinrichtungModel;
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get displayMode(): DisplayMode {
     return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;

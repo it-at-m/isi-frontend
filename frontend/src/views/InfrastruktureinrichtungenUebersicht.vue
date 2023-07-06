@@ -49,6 +49,7 @@
               fab
               x-large
               color="secondary"
+              :disabled="!isEditable"
               v-on="on"
               @click="newInfrastruktureinrichtung"
             >
@@ -74,16 +75,24 @@ import {
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class InfrastruktureinrichtungenUebersicht extends Mixins(InfrastruktureinrichtungApiRequestMixin) {
+export default class InfrastruktureinrichtungenUebersicht extends Mixins(
+  InfrastruktureinrichtungApiRequestMixin,
+  SecurityMixin
+) {
   private infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
 
   private options = false;
 
   private backendAccessSuccessful: boolean | null = null;
+
+  get isEditable(): boolean {
+    return this.isRoleAdminOrSachbearbeitung();
+  }
 
   get infrastruktureinrichtungTypList(): LookupEntryDto[] {
     return this.$store.getters["lookup/infrastruktureinrichtungTyp"];

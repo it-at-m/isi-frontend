@@ -5,6 +5,7 @@
       ref="infrastruktureinrichtungComponent"
       v-model="kinderkrippe"
       :mode="displayMode"
+      :is-editable="isEditable"
     />
     <field-group-card>
       <v-row justify="center">
@@ -19,6 +20,7 @@
             label="Anzahl der Kinderkrippenplätze"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -32,6 +34,7 @@
             label="Anzahl der Kinderkrippengruppen"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -46,6 +49,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kinderkrippenplätze"
             integer
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -79,6 +83,9 @@ export default class KinderkrippeComponent extends Mixins(FieldValidationRulesMi
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get displayMode(): DisplayMode {
     return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
