@@ -74,6 +74,7 @@
             year
             maxlength="4"
             required
+            help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum neu berechnet. Es kann jedoch weiterhin geändert werden."
           />
         </v-col>
         <v-col
