@@ -13,7 +13,7 @@
         />
         <infrastruktureinrichtung-component
           v-if="isInfrastruktureinrichtungTypNotUnspecified"
-          id="infrastruktureinrichtung_kinderkrippe_component"
+          id="infrastruktureinrichtung_infrastruktureinrichtung_component"
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
