@@ -17,7 +17,6 @@ import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrich
 import SchuleComponent from "@/components/infrastruktureinrichtung/SchuleComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 
 @Component({
   components: {
@@ -29,15 +28,8 @@ import DisplayMode from "@/types/common/DisplayMode";
 export default class GrundschuleComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: GrundschuleModel }) grundschule!: GrundschuleModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
 }
 </script>
 <style></style>

@@ -61,7 +61,6 @@ import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/Kinderkrip
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
 
 @Component({
@@ -74,15 +73,8 @@ import NumField from "@/components/common/NumField.vue";
 export default class KinderkrippeComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: KinderkrippeModel }) kinderkrippe!: KinderkrippeModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
 }
 </script>
 <style></style>

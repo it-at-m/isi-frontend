@@ -147,7 +147,6 @@ import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestM
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";

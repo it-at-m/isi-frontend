@@ -140,7 +140,6 @@ import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuer
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 
 @Component({
   components: {

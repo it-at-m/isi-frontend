@@ -16,7 +16,6 @@
           id="infrastruktureinrichtung_kinderkrippe_component"
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
-          :mode="mode"
           :is-editable="isEditable"
         />
         <kinderkrippe-component
@@ -24,7 +23,6 @@
           id="infrastruktureinrichtung_kinderkrippe_component"
           ref="kinderkrippeComponent"
           v-model="kinderkrippe"
-          :mode="mode"
           :is-editable="isEditable"
         />
         <kindergarten-component
@@ -32,7 +30,6 @@
           id="infrastruktureinrichtung_kindergarten_component"
           ref="kindergartenComponent"
           v-model="kindergarten"
-          :mode="mode"
           :is-editable="isEditable"
         />
         <haus-fuer-kinder-component
@@ -40,7 +37,6 @@
           id="infrastruktureinrichtung_hausFuerKinder_component"
           ref="hausFuerKinderComponent"
           v-model="hausFuerKinder"
-          :mode="mode"
           :is-editable="isEditable"
         />
         <gs-nachmittag-betreuung-component
@@ -48,7 +44,6 @@
           id="infrastruktureinrichtung_gsNachmittagBetreuung_component"
           ref="gsNachmittagBetreuungComponent"
           v-model="gsNachmittagBetreuung"
-          :mode="mode"
           :is-editable="isEditable"
         />
         <grundschule-component
@@ -56,7 +51,6 @@
           id="infrastruktureinrichtung_grundschule_component"
           ref="grundschuleComponent"
           v-model="grundschule"
-          :mode="mode"
           :is-editable="isEditable"
         />
         <mittelschule-component
@@ -64,7 +58,6 @@
           id="infrastruktureinrichtung_mittelschule_component"
           ref="mittelschuleComponent"
           v-model="mittelschule"
-          :mode="mode"
           :is-editable="isEditable"
         />
         <yes-no-dialog

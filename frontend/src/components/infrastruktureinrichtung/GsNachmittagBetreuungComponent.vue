@@ -70,7 +70,6 @@ import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrich
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 
 @Component({
   components: {
@@ -85,15 +84,8 @@ export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidati
     return this.$store.getters["lookup/artGsNachmittagBetreuung"];
   }
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
 }
 </script>
 <style></style>
