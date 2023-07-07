@@ -413,7 +413,7 @@ export default class AbfragevarianteForm extends Mixins(
   private datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
     if (!_.isNil(datumSatzungsbeschluss)) {
       this.abfragevariante.realisierungVon =
-        datumSatzungsbeschluss.getMonth() <= 6
+        datumSatzungsbeschluss.getMonth() + 1 < 7
           ? datumSatzungsbeschluss.getFullYear() + 3
           : datumSatzungsbeschluss.getFullYear() + 4;
     }
