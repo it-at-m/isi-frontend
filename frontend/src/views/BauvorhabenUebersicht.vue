@@ -17,17 +17,16 @@
             :elevation="hover ? 4 : 0"
             @click="editBauvorhaben(item.id)"
           >
-            {{ bauvorhabenList[0] }}
             <v-card-title :id="'bauvorhaben_uebersicht_item_' + index + '_nameVorhaben'">
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'">
-                Stadtbezirksnummer: {{ getStadtbezirke(item.adresse.coordinate) }}
+                Stadtbezirksnummer: {{ getStadtbezirke(item) }}
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">
-                Anzahl der geplanten Wohneinheiten: {{ item.grundstuecksgroesse }} m²
+                Grundstückgröße: {{ item.grundstuecksgroesse }} m²
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'">
@@ -75,16 +74,14 @@
 import { Component, Mixins } from "vue-property-decorator";
 import router from "@/router";
 import DefaultLayout from "@/components/DefaultLayout.vue";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { BauvorhabenDto, LookupEntryDto, StadtbezirkDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
-import { FeatureDtoStadtbezirkDto, PointGeometryDto } from "@/api/api-client/isi-geodata-eai";
-import { LatLng } from "leaflet";
+import _ from "lodash";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin, GeodataEaiApiRequestMixin) {
+export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestMixin) {
   private fetchSuccess: boolean | null = null;
 
   private options = false;
@@ -160,19 +157,19 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
     });
   }
 
-  private createPointGeometry(latlng: LatLng): PointGeometryDto {
-    console.log("lat " + latlng);
-    return {
-      type: "Point",
-      coordinates: [latlng.lng, latlng.lat],
-    };
-  }
+  private getStadtbezirke(bauvorhaben: BauvorhabenDto): string {
+    if (_.isUndefined(bauvorhaben.verortung)) {
+      return "";
+    }
+    let stadtbezirke = bauvorhaben.verortung.stadtbezirke;
+    let size = stadtbezirke.size;
+    let result: string[] = [];
 
-  public getStadtbezirke(latlng: LatLng): void {
-    const point = this.createPointGeometry(latlng);
-    this.getStadtbezirkeForPoint(point, true).then((stadtbezirke: Array<FeatureDtoStadtbezirkDto>) => {
-      console.log("Stadtbezirke " + stadtbezirke.length);
+    stadtbezirke.forEach((stadtbezirk: StadtbezirkDto) => {
+      result.push(stadtbezirk.nummer + "/" + stadtbezirk.name);
     });
+
+    return result.toString();
   }
 }
 </script>

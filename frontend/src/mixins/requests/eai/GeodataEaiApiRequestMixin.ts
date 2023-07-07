@@ -13,7 +13,6 @@ import {
   GetStadtbezirkeRequest,
   UnifyRequest,
   GetFlurstueckeRequest,
-  GetStadtbezirke1Request,
 } from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -98,28 +97,6 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       });
 
     return gemarkungen;
-  }
-
-  async getStadtbezirkeForPoint(
-    point: PointGeometryDto,
-    showInInformationList: boolean
-  ): Promise<Array<FeatureDtoStadtbezirkDto>> {
-    const request: GetStadtbezirke1Request = { pointGeometryDto: point };
-    let stadtbezirke: Array<FeatureDtoStadtbezirkDto> = [];
-
-    await this.punktApi
-      .getStadtbezirke1(request, RequestUtils.getPOSTConfig())
-      .then((response) => {
-        if (!_.isNil(response.features)) {
-          stadtbezirke = response.features;
-        }
-      })
-      .catch((error) => {
-        this.handleError(showInInformationList, error);
-        throw new Error(error);
-      });
-
-    return stadtbezirke;
   }
 
   async getStadtbezirkeForMultipolygon(
