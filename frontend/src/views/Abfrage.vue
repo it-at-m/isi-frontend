@@ -153,6 +153,7 @@
           @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant($event)"
           @delete-abfragevariante="handleDeleteAbfragevariante($event)"
           @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
+          @determine-bauraten-for-baugebiet="handleDetermineBauratenForBaugebiet($event)"
           @create-new-abfragevariante="handleCreateNewAbfragevariante($event)"
           @select-bauabschnitt="handleSelectBauabschnitt($event)"
           @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
@@ -561,6 +562,13 @@ export default class Abfrage extends Mixins(
     }
   }
 
+  private openMarkedItems(): void {
+    if (!_.isNil(this.$refs.abfrageNavigationTree)) {
+      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
+      abfrageNavitionTree.openMarkedItems();
+    }
+  }
+
   private setAnzeigeContextAbfragevariante(anzeigeContext: AnzeigeContextAbfragevariante | undefined) {
     this.anzeigeContextAbfragevariante = _.isNil(anzeigeContext)
       ? AnzeigeContextAbfragevariante.UNDEFINED
@@ -692,7 +700,23 @@ export default class Abfrage extends Mixins(
       if (!_.isNil(technicalBaugebiet)) {
         technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
         this.selectedAbfragevariante.bauabschnitte[0].baugebiete = [technicalBaugebiet];
+        this.openMarkedItems();
+        this.formChanged();
       }
+    });
+  }
+
+  private handleDetermineBauratenForBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+    this.handleSelectBaugebiet(abfrageTreeItem);
+    this.setNewEntityToMark(this.selectedBaugebiet);
+    this.determineBauraten(
+      this.selectedBaugebiet.realisierungVon,
+      this.selectedBaugebiet.gesamtanzahlWe,
+      this.selectedBaugebiet.geschossflaecheWohnen,
+      true
+    ).then((bauraten: Array<BaurateDto>) => {
+      this.selectedBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+      this.openMarkedItems();
       this.formChanged();
     });
   }
