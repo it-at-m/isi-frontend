@@ -162,7 +162,6 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
       return "";
     }
     let stadtbezirke = bauvorhaben.verortung.stadtbezirke;
-    let size = stadtbezirke.size;
     let result: string[] = [];
 
     stadtbezirke.forEach((stadtbezirk: StadtbezirkDto) => {
