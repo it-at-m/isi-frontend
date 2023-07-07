@@ -352,13 +352,21 @@ export default class ValidatorMixin extends Vue {
   }
 
   private findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungDto): string | null {
+    if (_.isNil(infrastruktureinrichtung.nameEinrichtung)) {
+      return "Bitte den Namen für die Infrastruktureinrichtung angeben.";
+    }
+    if (_.isNil(infrastruktureinrichtung.status)) {
+      return "Bitte den Status der Infrastruktureinrichtung angeben";
+    }
+    if (_.isNil(infrastruktureinrichtung.fertigstellungsjahr)) {
+      return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
+    }
     if (
       !this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
       !this.isValidAdresse(infrastruktureinrichtung.adresse)
     ) {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
-
     return null;
   }
 
