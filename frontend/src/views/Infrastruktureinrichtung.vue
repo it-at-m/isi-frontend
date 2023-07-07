@@ -187,11 +187,6 @@ import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/Infrastru
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 
-enum NewFormWorkInProgress {
-  NICHT_IN_BEARBEITUNG = 0,
-  IN_BEARBEITUNG = 1,
-}
-
 @Component({
   components: {
     InfrastruktureinrichtungComponent,
@@ -216,7 +211,7 @@ export default class Infrastruktureinrichtung extends Mixins(
 ) {
   private mode = DisplayMode.UNDEFINED;
 
-  private newFormWip = NewFormWorkInProgress.NICHT_IN_BEARBEITUNG;
+  private newInfrastruktureinrichtungInBearbeitung = false;
 
   private buttonText = "";
 
@@ -263,11 +258,8 @@ export default class Infrastruktureinrichtung extends Mixins(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           this.infrastruktureinrichtung
         ) as KinderkrippeModel;
-      } else if (
-        this.isNewInfrastruktureinrichtung() &&
-        this.newFormWip === NewFormWorkInProgress.NICHT_IN_BEARBEITUNG
-      ) {
-        this.newFormWip = NewFormWorkInProgress.IN_BEARBEITUNG;
+      } else if (this.isNewInfrastruktureinrichtung() && !this.newInfrastruktureinrichtungInBearbeitung) {
+        this.newInfrastruktureinrichtungInBearbeitung = true;
         this.infrastruktureinrichtung = this.getModelOfDto(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           createKinderkrippeDto()
@@ -291,11 +283,8 @@ export default class Infrastruktureinrichtung extends Mixins(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           this.infrastruktureinrichtung
         ) as KindergartenModel;
-      } else if (
-        this.isNewInfrastruktureinrichtung() &&
-        this.newFormWip === NewFormWorkInProgress.NICHT_IN_BEARBEITUNG
-      ) {
-        this.newFormWip = NewFormWorkInProgress.IN_BEARBEITUNG;
+      } else if (this.isNewInfrastruktureinrichtung() && !this.newInfrastruktureinrichtungInBearbeitung) {
+        this.newInfrastruktureinrichtungInBearbeitung = true;
         this.infrastruktureinrichtung = this.getModelOfDto(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           createKindergartenDto()
@@ -319,11 +308,8 @@ export default class Infrastruktureinrichtung extends Mixins(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           this.infrastruktureinrichtung
         ) as HausFuerKinderModel;
-      } else if (
-        this.isNewInfrastruktureinrichtung() &&
-        this.newFormWip === NewFormWorkInProgress.NICHT_IN_BEARBEITUNG
-      ) {
-        this.newFormWip = NewFormWorkInProgress.IN_BEARBEITUNG;
+      } else if (this.isNewInfrastruktureinrichtung() && !this.newInfrastruktureinrichtungInBearbeitung) {
+        this.newInfrastruktureinrichtungInBearbeitung = true;
         this.infrastruktureinrichtung = this.getModelOfDto(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           createHausFuerKinderDto()
@@ -347,11 +333,8 @@ export default class Infrastruktureinrichtung extends Mixins(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           this.infrastruktureinrichtung
         ) as GsNachmittagBetreuungModel;
-      } else if (
-        this.isNewInfrastruktureinrichtung() &&
-        this.newFormWip === NewFormWorkInProgress.NICHT_IN_BEARBEITUNG
-      ) {
-        this.newFormWip = NewFormWorkInProgress.IN_BEARBEITUNG;
+      } else if (this.isNewInfrastruktureinrichtung() && !this.newInfrastruktureinrichtungInBearbeitung) {
+        this.newInfrastruktureinrichtungInBearbeitung = true;
         this.infrastruktureinrichtung = this.getModelOfDto(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           createGsNachmittagBetreuungDto()
@@ -375,11 +358,8 @@ export default class Infrastruktureinrichtung extends Mixins(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           this.infrastruktureinrichtung
         ) as GrundschuleModel;
-      } else if (
-        this.isNewInfrastruktureinrichtung() &&
-        this.newFormWip === NewFormWorkInProgress.NICHT_IN_BEARBEITUNG
-      ) {
-        this.newFormWip = NewFormWorkInProgress.IN_BEARBEITUNG;
+      } else if (this.isNewInfrastruktureinrichtung() && !this.newInfrastruktureinrichtungInBearbeitung) {
+        this.newInfrastruktureinrichtungInBearbeitung = true;
         this.infrastruktureinrichtung = this.getModelOfDto(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           createGrundschuleDto()
@@ -403,11 +383,8 @@ export default class Infrastruktureinrichtung extends Mixins(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           this.infrastruktureinrichtung
         ) as MittelschuleModel;
-      } else if (
-        this.isNewInfrastruktureinrichtung() &&
-        this.newFormWip === NewFormWorkInProgress.NICHT_IN_BEARBEITUNG
-      ) {
-        this.newFormWip = NewFormWorkInProgress.IN_BEARBEITUNG;
+      } else if (this.isNewInfrastruktureinrichtung() && !this.newInfrastruktureinrichtungInBearbeitung) {
+        this.newInfrastruktureinrichtungInBearbeitung = true;
         this.infrastruktureinrichtung = this.getModelOfDto(
           this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
           createMittelschuleDto()
@@ -592,7 +569,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private infrastruktureinrichtungTypChanged() {
-    this.newFormWip = NewFormWorkInProgress.NICHT_IN_BEARBEITUNG;
+    this.newInfrastruktureinrichtungInBearbeitung = false;
   }
 }
 </script>
