@@ -21,7 +21,7 @@
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'">
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenStadtbezirke'">
                 Stadtbezirksnummer: {{ getStadtbezirke(item) }}
               </span>
               <v-spacer />
