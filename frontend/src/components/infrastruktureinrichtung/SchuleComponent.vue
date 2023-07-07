@@ -13,6 +13,7 @@
             label="Anzahl der Klassen"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -26,6 +27,7 @@
             label="Anzahl der Plätze"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -34,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -49,6 +51,9 @@ import NumField from "@/components/common/NumField.vue";
 })
 export default class SchuleComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: SchuleModel }) schule!: SchuleModel;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 }
 </script>
 <style></style>

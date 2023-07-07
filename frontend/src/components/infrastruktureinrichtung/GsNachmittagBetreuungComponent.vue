@@ -5,6 +5,7 @@
       ref="infrastruktureinrichtungComponent"
       v-model="gsNachmittagBetreuung.infrastruktureinrichtung"
       :mode="displayMode"
+      :is-editable="isEditable"
     />
     <field-group-card>
       <v-row justify="center">
@@ -18,6 +19,7 @@
             label="Anzahl der Hortplätze"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -30,6 +32,7 @@
             label="Anzahl der Hortgruppen"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -43,6 +46,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -56,6 +60,7 @@
             item-text="value"
             item-value="key"
             label="Art der Nachmittagsbetreuung für Grundschulkinder"
+            :disabled="!isEditable"
             @change="formChanged"
           />
         </v-col>
@@ -89,6 +94,9 @@ export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidati
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get displayMode(): DisplayMode {
     return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;

@@ -5,6 +5,7 @@
       ref="infrastruktureinrichtungComponent"
       v-model="hausFuerKinder.infrastruktureinrichtung"
       :mode="displayMode"
+      :is-editable="isEditable"
     />
     <field-group-card>
       <v-row justify="center">
@@ -19,6 +20,7 @@
             label="Anzahl der Kinderkrippenplätze"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -32,6 +34,7 @@
             label="Anzahl der Kindergartenplätze"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -47,6 +50,7 @@
             label="Anzahl der Hortplätze"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -60,6 +64,7 @@
             label="Anzahl der Kinderkrippengruppen"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -75,6 +80,7 @@
             label="Anzahl der Kindergartengruppen"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -88,6 +94,7 @@
             label="Anzahl der Hortgruppen"
             integer
             required
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -102,6 +109,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kinderkrippenplätze"
             integer
+            :disabled="!isEditable"
           />
         </v-col>
         <v-col
@@ -114,6 +122,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kindergartenplätze"
             integer
+            :disabled="!isEditable"
           />
         </v-col>
       </v-row>
@@ -128,6 +137,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
+            :disabled="!isEditable"
           />
         </v-col>
         <v-row />
@@ -156,6 +166,9 @@ export default class HausFuerKinderComponent extends Mixins(FieldValidationRules
 
   @Prop()
   private mode!: DisplayMode;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get displayMode(): DisplayMode {
     return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
