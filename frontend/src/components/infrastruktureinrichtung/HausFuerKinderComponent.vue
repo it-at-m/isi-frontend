@@ -46,6 +46,12 @@
         <v-col
           cols="12"
           md="6"
+        />
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
         >
           <num-field
             id="infrastruktureinrichtung_hausFuerKinder_anzahlKinderkrippeGruppen"
@@ -56,8 +62,6 @@
             :disabled="!isEditable"
           />
         </v-col>
-      </v-row>
-      <v-row>
         <v-col
           cols="12"
           md="6"
@@ -71,6 +75,8 @@
             :disabled="!isEditable"
           />
         </v-col>
+      </v-row>
+      <v-row>
         <v-col
           cols="12"
           md="6"
@@ -84,6 +90,10 @@
             :disabled="!isEditable"
           />
         </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
       </v-row>
       <v-row>
         <v-col
@@ -127,6 +137,10 @@
             :disabled="!isEditable"
           />
         </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
         <v-row />
       </v-row>
     </field-group-card>
