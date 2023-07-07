@@ -43,37 +43,37 @@ export interface HausFuerKinderDto extends InfrastruktureinrichtungDto {
      * @type {number}
      * @memberof HausFuerKinderDto
      */
-    anzahlKinderkrippePlaetze: number;
+    anzahlKinderkrippePlaetze?: number;
     /**
      * 
      * @type {number}
      * @memberof HausFuerKinderDto
      */
-    anzahlKindergartenPlaetze: number;
+    anzahlKindergartenPlaetze?: number;
     /**
      * 
      * @type {number}
      * @memberof HausFuerKinderDto
      */
-    anzahlHortPlaetze: number;
+    anzahlHortPlaetze?: number;
     /**
      * 
      * @type {number}
      * @memberof HausFuerKinderDto
      */
-    anzahlKinderkrippeGruppen: number;
+    anzahlKinderkrippeGruppen?: number;
     /**
      * 
      * @type {number}
      * @memberof HausFuerKinderDto
      */
-    anzahlKindergartenGruppen: number;
+    anzahlKindergartenGruppen?: number;
     /**
      * 
      * @type {number}
      * @memberof HausFuerKinderDto
      */
-    anzahlHortGruppen: number;
+    anzahlHortGruppen?: number;
     /**
      * 
      * @type {number}
@@ -106,12 +106,12 @@ export function HausFuerKinderDtoFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
-        'anzahlKinderkrippePlaetze': json['anzahlKinderkrippePlaetze'],
-        'anzahlKindergartenPlaetze': json['anzahlKindergartenPlaetze'],
-        'anzahlHortPlaetze': json['anzahlHortPlaetze'],
-        'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'],
-        'anzahlKindergartenGruppen': json['anzahlKindergartenGruppen'],
-        'anzahlHortGruppen': json['anzahlHortGruppen'],
+        'anzahlKinderkrippePlaetze': !exists(json, 'anzahlKinderkrippePlaetze') ? undefined : json['anzahlKinderkrippePlaetze'],
+        'anzahlKindergartenPlaetze': !exists(json, 'anzahlKindergartenPlaetze') ? undefined : json['anzahlKindergartenPlaetze'],
+        'anzahlHortPlaetze': !exists(json, 'anzahlHortPlaetze') ? undefined : json['anzahlHortPlaetze'],
+        'anzahlKinderkrippeGruppen': !exists(json, 'anzahlKinderkrippeGruppen') ? undefined : json['anzahlKinderkrippeGruppen'],
+        'anzahlKindergartenGruppen': !exists(json, 'anzahlKindergartenGruppen') ? undefined : json['anzahlKindergartenGruppen'],
+        'anzahlHortGruppen': !exists(json, 'anzahlHortGruppen') ? undefined : json['anzahlHortGruppen'],
         'wohnungsnaheKinderkrippePlaetze': !exists(json, 'wohnungsnaheKinderkrippePlaetze') ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
         'wohnungsnaheKindergartenPlaetze': !exists(json, 'wohnungsnaheKindergartenPlaetze') ? undefined : json['wohnungsnaheKindergartenPlaetze'],
         'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],

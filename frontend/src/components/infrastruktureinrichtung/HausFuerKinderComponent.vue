@@ -12,7 +12,6 @@
             class="mx-3"
             label="Anzahl der Kinderkrippenplätze"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -26,7 +25,6 @@
             class="mx-3"
             label="Anzahl der Kindergartenplätze"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -42,7 +40,6 @@
             class="mx-3"
             label="Anzahl der Hortplätze"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -56,7 +53,6 @@
             class="mx-3"
             label="Anzahl der Kinderkrippengruppen"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -72,7 +68,6 @@
             class="mx-3"
             label="Anzahl der Kindergartengruppen"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -86,7 +81,6 @@
             class="mx-3"
             label="Anzahl der Hortgruppen"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -157,15 +151,8 @@ import DisplayMode from "@/types/common/DisplayMode";
 export default class HausFuerKinderComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: HausFuerKinderModel }) hausFuerKinder!: HausFuerKinderModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
 }
 </script>
 <style></style>
