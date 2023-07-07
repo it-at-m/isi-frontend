@@ -26,7 +26,7 @@
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">
-                Grundstückgröße: {{ item.grundstuecksgroesse }} m²
+                Grundstücksgröße: {{ item.grundstuecksgroesse }} m²
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'">
