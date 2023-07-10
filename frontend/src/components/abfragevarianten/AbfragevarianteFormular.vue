@@ -74,23 +74,8 @@
             year
             maxlength="4"
             required
-          >
-            <template #help>
-              <v-tooltip
-                max-width="15%"
-                right
-              >
-                <template #activator="{ on }">
-                  <v-icon v-on="on"> mdi-help-box </v-icon>
-                </template>
-                <span>
-                  Erfolgt bei <span class="font-italic">Datum Satzungsbeschluss</span> eine Eingabe, wird das Datum
-                  <span class="font-italic">Realisierung von</span> neu berechnet.
-                  <span class="font-italic">Realisierung von</span> kann jedoch weiterhin geändert werden.
-                </span>
-              </v-tooltip>
-            </template>
-          </num-field>
+            help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden."
+          />
         </v-col>
         <v-col
           cols="12"
@@ -103,19 +88,8 @@
             label="Realisierung bis (JJJJ)"
             year
             maxlength="4"
-          >
-            <template #help>
-              <v-tooltip
-                max-width="15%"
-                right
-              >
-                <template #activator="{ on }">
-                  <v-icon v-on="on"> mdi-help-box </v-icon>
-                </template>
-                <span> Nach Angabe bzw. Berechnung der Bauraten wird das Feld automatisch befüllt.</span>
-              </v-tooltip>
-            </template>
-          </num-field>
+            help="Nach Angabe bzw. Berechnung der Bauraten wird das Feld automatisch befüllt."
+          />
         </v-col>
       </v-row>
     </field-group-card>

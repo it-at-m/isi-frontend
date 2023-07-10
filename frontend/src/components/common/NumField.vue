@@ -30,7 +30,17 @@
       >
         *</span
       >
-      <slot name="help" />
+    </template>
+    <template #append>
+      <v-tooltip
+        max-width="15%"
+        right
+      >
+        <template #activator="{ on }">
+          <v-icon v-on="on"> mdi-help-circle-outline </v-icon>
+        </template>
+        <span>{{ help }} </span>
+      </v-tooltip>
     </template>
   </v-text-field>
 </template>
@@ -73,6 +83,7 @@ interface Props {
   required?: boolean;
   label?: string;
   rules?: unknown[];
+  help?: string;
 }
 
 // <script setup> wird hier wegen technischen Einschränkungen bis zur Einführung von Vue 3 nicht genutzt.
@@ -122,6 +133,10 @@ export default {
     },
     rules: {
       type: Array,
+      required: false,
+    },
+    help: {
+      type: String,
       required: false,
     },
   },
