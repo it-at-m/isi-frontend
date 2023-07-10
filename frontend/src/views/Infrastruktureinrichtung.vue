@@ -372,7 +372,6 @@ export default class Infrastruktureinrichtung extends Mixins(
   private async yesNoDialogYes(): Promise<void> {
     this.deleteInfrastruktureinrichtung();
     this.yesNoDialogNo();
-    this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS);
   }
 
   private determineDisplayModeNeuOrAenderung(): DisplayMode {
@@ -502,7 +501,9 @@ export default class Infrastruktureinrichtung extends Mixins(
   private async deleteInfrastruktureinrichtung(): Promise<void> {
     const id: string | undefined = this.infrastruktureinrichtung?.id;
     if (!_.isNil(id)) {
-      await this.deleteInfrastruktureinrichtungById(id, false);
+      await this.deleteInfrastruktureinrichtungById(id, false).then(() =>
+        this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS)
+      );
     }
   }
 
