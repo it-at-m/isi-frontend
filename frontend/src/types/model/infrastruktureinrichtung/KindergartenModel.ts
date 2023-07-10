@@ -1,19 +1,18 @@
-import {
-  KindergartenDto,
-  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
-} from "@/api/api-client/isi-backend";
-import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
+import { KindergartenDto } from "@/api/api-client/isi-backend";
+import _ from "lodash";
+import AdresseModel from "@/types/model/common/AdresseModel";
+import { createAdresseDto } from "@/utils/Factories";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface KindergartenModel extends KindergartenDto {}
 class KindergartenModel {
   constructor(kindergarten: KindergartenDto) {
     Object.assign(this, kindergarten, {});
-    this.infrastruktureinrichtung = new InfrastruktureinrichtungModel(kindergarten.infrastruktureinrichtung);
-  }
-
-  get infrastruktureinrichtungTyp(): InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum {
-    return InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten;
+    if (_.isNil(kindergarten.adresse)) {
+      this.adresse = new AdresseModel(createAdresseDto());
+    } else {
+      this.adresse = new AdresseModel(kindergarten.adresse);
+    }
   }
 }
 export { KindergartenModel as default };

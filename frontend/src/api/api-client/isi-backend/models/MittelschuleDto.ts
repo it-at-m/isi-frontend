@@ -14,6 +14,18 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AdresseDto,
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
+import {
+    GrundschuleDtoAllOf,
+    GrundschuleDtoAllOfFromJSON,
+    GrundschuleDtoAllOfFromJSONTyped,
+    GrundschuleDtoAllOfToJSON,
+} from './GrundschuleDtoAllOf';
+import {
     InfrastruktureinrichtungDto,
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
@@ -31,37 +43,7 @@ import {
  * @export
  * @interface MittelschuleDto
  */
-export interface MittelschuleDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof MittelschuleDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof MittelschuleDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof MittelschuleDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof MittelschuleDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
-     * @type {InfrastruktureinrichtungDto}
-     * @memberof MittelschuleDto
-     */
-    infrastruktureinrichtung: InfrastruktureinrichtungDto;
+export interface MittelschuleDto extends InfrastruktureinrichtungDto {
     /**
      * 
      * @type {SchuleDto}
@@ -69,6 +51,8 @@ export interface MittelschuleDto {
      */
     schule: SchuleDto;
 }
+
+
 
 export function MittelschuleDtoFromJSON(json: any): MittelschuleDto {
     return MittelschuleDtoFromJSONTyped(json, false);
@@ -79,12 +63,7 @@ export function MittelschuleDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         return json;
     }
     return {
-        
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoFromJSON(json['infrastruktureinrichtung']),
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
         'schule': SchuleDtoFromJSON(json['schule']),
     };
 }
@@ -97,12 +76,7 @@ export function MittelschuleDtoToJSON(value?: MittelschuleDto | null): any {
         return null;
     }
     return {
-        
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),
+        ...InfrastruktureinrichtungDtoToJSON(value),
         'schule': SchuleDtoToJSON(value.schule),
     };
 }

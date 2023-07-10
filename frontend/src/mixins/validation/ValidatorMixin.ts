@@ -11,6 +11,13 @@ import {
   BauvorhabenDtoPlanungsrechtEnum,
   BauvorhabenDtoStandVorhabenEnum,
   BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
+  GrundschuleDto,
+  GsNachmittagBetreuungDto,
+  HausFuerKinderDto,
+  InfrastruktureinrichtungDto,
+  KindergartenDto,
+  KinderkrippeDto,
+  MittelschuleDto,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
@@ -320,38 +327,46 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInKinderkrippeForSave(kinderkrippe: KinderkrippeModel): string | null {
-    return this.findFaultInInfrastruktureinrichtung(kinderkrippe.infrastruktureinrichtung);
+  public findFaultInKinderkrippeForSave(kinderkrippe: KinderkrippeDto): string | null {
+    return this.findFaultInInfrastruktureinrichtung(kinderkrippe);
   }
 
-  public findFaultInKindergartenForSave(kindergarten: KindergartenModel): string | null {
-    return this.findFaultInInfrastruktureinrichtung(kindergarten.infrastruktureinrichtung);
+  public findFaultInKindergartenForSave(kindergarten: KindergartenDto): string | null {
+    return this.findFaultInInfrastruktureinrichtung(kindergarten);
   }
 
-  public findFaultInHausFuerKinderForSave(hausFuerKinder: HausFuerKinderModel): string | null {
-    return this.findFaultInInfrastruktureinrichtung(hausFuerKinder.infrastruktureinrichtung);
+  public findFaultInHausFuerKinderForSave(hausFuerKinder: HausFuerKinderDto): string | null {
+    return this.findFaultInInfrastruktureinrichtung(hausFuerKinder);
   }
 
-  public findFaultInGsNachmittagBetreuungForSave(gsNachmittagBetreuung: GsNachmittagBetreuungModel): string | null {
-    return this.findFaultInInfrastruktureinrichtung(gsNachmittagBetreuung.infrastruktureinrichtung);
+  public findFaultInGsNachmittagBetreuungForSave(gsNachmittagBetreuung: GsNachmittagBetreuungDto): string | null {
+    return this.findFaultInInfrastruktureinrichtung(gsNachmittagBetreuung);
   }
 
-  public findFaultInGrundschuleForSave(grundschule: GrundschuleModel): string | null {
-    return this.findFaultInInfrastruktureinrichtung(grundschule.infrastruktureinrichtung);
+  public findFaultInGrundschuleForSave(grundschule: GrundschuleDto): string | null {
+    return this.findFaultInInfrastruktureinrichtung(grundschule);
   }
 
-  public findFaultInMittelschuleForSave(mittelschule: MittelschuleModel): string | null {
-    return this.findFaultInInfrastruktureinrichtung(mittelschule.infrastruktureinrichtung);
+  public findFaultInMittelschuleForSave(mittelschule: MittelschuleDto): string | null {
+    return this.findFaultInInfrastruktureinrichtung(mittelschule);
   }
 
-  private findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungModel): string | null {
+  private findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungDto): string | null {
+    if (_.isNil(infrastruktureinrichtung.nameEinrichtung)) {
+      return "Bitte den Namen für die Infrastruktureinrichtung angeben.";
+    }
+    if (_.isNil(infrastruktureinrichtung.status)) {
+      return "Bitte den Status der Infrastruktureinrichtung angeben";
+    }
+    if (_.isNil(infrastruktureinrichtung.fertigstellungsjahr)) {
+      return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
+    }
     if (
       !this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
       !this.isValidAdresse(infrastruktureinrichtung.adresse)
     ) {
       return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
     }
-
     return null;
   }
 

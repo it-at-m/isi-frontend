@@ -1,6 +1,7 @@
 import {
   AbfrageListElementDto,
   BauvorhabenDto,
+  InfrastruktureinrichtungDto,
   InfrastruktureinrichtungListElementDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
@@ -22,14 +23,7 @@ const state = {
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungListElementDto[] | undefined,
   searchQueryInfrastruktureinrichtung: "",
-  selectedInfrastruktureinrichtung: undefined as
-    | KinderkrippeModel
-    | KindergartenModel
-    | HausFuerKinderModel
-    | GsNachmittagBetreuungModel
-    | GrundschuleModel
-    | MittelschuleModel
-    | undefined,
+  selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
 };
 
 export type SearchState = typeof state;
@@ -61,16 +55,7 @@ export default {
     searchQueryInfrastruktureinrichtung: (state: SearchState): string => {
       return state.searchQueryInfrastruktureinrichtung;
     },
-    selectedInfrastruktureinrichtung: (
-      state: SearchState
-    ):
-      | KinderkrippeModel
-      | KindergartenModel
-      | HausFuerKinderModel
-      | GsNachmittagBetreuungModel
-      | GrundschuleModel
-      | MittelschuleModel
-      | undefined => {
+    selectedInfrastruktureinrichtung: (state: SearchState): InfrastruktureinrichtungDto | undefined => {
       return state.selectedInfrastruktureinrichtung;
     },
   },
@@ -105,13 +90,7 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       state: SearchState,
-      selectedInfrastruktureinrichtung:
-        | KinderkrippeModel
-        | KindergartenModel
-        | HausFuerKinderModel
-        | GsNachmittagBetreuungModel
-        | GrundschuleModel
-        | MittelschuleModel
+      selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
     },
@@ -156,13 +135,7 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      infrastruktureinrichtung:
-        | KinderkrippeModel
-        | KindergartenModel
-        | HausFuerKinderModel
-        | GsNachmittagBetreuungModel
-        | GrundschuleModel
-        | MittelschuleModel
+      infrastruktureinrichtung: InfrastruktureinrichtungDto
     ): void {
       context.commit("selectedInfrastruktureinrichtung", infrastruktureinrichtung);
     },

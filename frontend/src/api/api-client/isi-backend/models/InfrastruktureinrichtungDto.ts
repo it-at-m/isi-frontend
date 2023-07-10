@@ -20,12 +20,51 @@ import {
     AdresseDtoToJSON,
 } from './AdresseDto';
 
+import {
+     GrundschuleDtoFromJSONTyped,
+     GsNachmittagBetreuungDtoFromJSONTyped,
+     HausFuerKinderDtoFromJSONTyped,
+     KindergartenDtoFromJSONTyped,
+     KinderkrippeDtoFromJSONTyped,
+     MittelschuleDtoFromJSONTyped
+} from './';
+
 /**
  * 
  * @export
  * @interface InfrastruktureinrichtungDto
  */
 export interface InfrastruktureinrichtungDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    id?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    version?: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    createdDateTime?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    infrastruktureinrichtungTyp?: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum;
     /**
      * 
      * @type {number}
@@ -98,6 +137,20 @@ export interface InfrastruktureinrichtungDto {
 /**
  * @export
  */
+export const InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Kinderkrippe: 'KINDERKRIPPE',
+    Kindergarten: 'KINDERGARTEN',
+    GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
+    HausFuerKinder: 'HAUS_FUER_KINDER',
+    Grundschule: 'GRUNDSCHULE',
+    Mittelschule: 'MITTELSCHULE'
+} as const;
+export type InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum];
+
+/**
+ * @export
+ */
 export const InfrastruktureinrichtungDtoStatusEnum = {
     Unspecified: 'UNSPECIFIED',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
@@ -141,8 +194,33 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
     if ((json === undefined) || (json === null)) {
         return json;
     }
+    if (!ignoreDiscriminator) {
+        if (json['infrastruktureinrichtungTyp'] === 'GrundschuleDto') {
+            return GrundschuleDtoFromJSONTyped(json, true);
+        }
+        if (json['infrastruktureinrichtungTyp'] === 'GsNachmittagBetreuungDto') {
+            return GsNachmittagBetreuungDtoFromJSONTyped(json, true);
+        }
+        if (json['infrastruktureinrichtungTyp'] === 'HausFuerKinderDto') {
+            return HausFuerKinderDtoFromJSONTyped(json, true);
+        }
+        if (json['infrastruktureinrichtungTyp'] === 'KindergartenDto') {
+            return KindergartenDtoFromJSONTyped(json, true);
+        }
+        if (json['infrastruktureinrichtungTyp'] === 'KinderkrippeDto') {
+            return KinderkrippeDtoFromJSONTyped(json, true);
+        }
+        if (json['infrastruktureinrichtungTyp'] === 'MittelschuleDto') {
+            return MittelschuleDtoFromJSONTyped(json, true);
+        }
+    }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
         'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
@@ -166,6 +244,11 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
     }
     return {
         
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
         'lfdNr': value.lfdNr,
         'bauvorhaben': value.bauvorhaben,
         'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
