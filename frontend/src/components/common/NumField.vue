@@ -31,7 +31,10 @@
         *</span
       >
     </template>
-    <template #append>
+    <template
+      v-if="help != undefined"
+      #append
+    >
       <v-tooltip
         max-width="15%"
         right
