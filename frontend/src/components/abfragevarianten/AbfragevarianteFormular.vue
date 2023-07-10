@@ -85,8 +85,8 @@
                 </template>
                 <span>
                   Erfolgt bei <span class="font-italic">Datum Satzungsbeschluss</span> eine Eingabe, wird das Datum
-                  <span class="font-italic">Realisierung von</span> neu berechnet. Es kann jedoch weiterhin geändert
-                  werden.
+                  <span class="font-italic">Realisierung von</span> neu berechnet.
+                  <span class="font-italic">Realisierung von</span> kann jedoch weiterhin geändert werden.
                 </span>
               </v-tooltip>
             </template>
