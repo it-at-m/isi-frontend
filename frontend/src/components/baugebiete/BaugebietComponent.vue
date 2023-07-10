@@ -20,7 +20,7 @@
             validate-on-blur
             @input="formChanged"
           >
-            <template #label> Bezeichnung des Baugegebiets <span class="secondary--text">*</span> </template>
+            <template #label> Bezeichnung des Baugebiets <span class="secondary--text">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>

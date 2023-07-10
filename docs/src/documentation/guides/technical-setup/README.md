@@ -35,6 +35,7 @@ Sourcen auf den lokalen Rechner holen
 ## Konfiguration des Services
 
 ### Frontend
+
 Für die lokale Umgebung erstellt man die Konfigurationsdatei.
 
     apigateway/src/main/resources/application-local.yml
@@ -51,20 +52,21 @@ Diese konfiguriert den API Gateway Port, die Route zum Backend Service auf dem l
 für die Entwicklung lokal gestareten Frontends.
 
 ### Backend
+
 Für die lokale Umgebung erstellt man die Konfigurationsdatei
 
     src/main/resources/application-local.yml
 
 Der Backend Service startet standardmäßig mit dem Port `8080` und sollte in der lokalen Umgebung umgestellt werden.
 
-Zusätzlich wird die Datenbank, die Anbindung an einen 
-[S3 Storages Service](https://github.com/it-at-m/digiwf-core/tree/dev/digiwf-integrations/digiwf-s3-integration) 
+Zusätzlich wird die Datenbank, die Anbindung an einen
+[S3 Storages Service](https://github.com/it-at-m/digiwf-core/tree/dev/digiwf-integrations/digiwf-s3-integration)
 mit zulässigen MIME-Types für das Dateihandling und
 optional eine Anbindung an einen Identity Provider über OpenId Connect in der Konfigurationsdatei konfiguriert.
 
 Ein Beispiel für eine Konfigurationsdatei befindet sich unter [Konfiguration lokaler Umgebung](/configuration/env/#lokale-umgebung).
 
-Diese konfiguriert den Server Port, eine HSQL Datenbank, einen lokalen Service zur Anbindung eines 
+Diese konfiguriert den Server Port, eine HSQL Datenbank, einen lokalen Service zur Anbindung eines
 [S3 Storages Services](https://github.com/it-at-m/digiwf-core/tree/dev/digiwf-integrations/digiwf-s3-integration) und
 die für den Dateiupload zulässigen MIME-Types pdf und png.
 

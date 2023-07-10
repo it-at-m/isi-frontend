@@ -1,12 +1,5 @@
 <template>
   <div>
-    <infrastruktureinrichtung-component
-      id="infrastruktureinrichtung_hausFuerKinder_component"
-      ref="infrastruktureinrichtungComponent"
-      v-model="hausFuerKinder.infrastruktureinrichtung"
-      :mode="displayMode"
-      :is-editable="isEditable"
-    />
     <field-group-card>
       <v-row justify="center">
         <v-col
@@ -19,7 +12,6 @@
             class="mx-3"
             label="Anzahl der Kinderkrippenplätze"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -33,7 +25,6 @@
             class="mx-3"
             label="Anzahl der Kindergartenplätze"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
@@ -49,10 +40,15 @@
             class="mx-3"
             label="Anzahl der Hortplätze"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
+      </v-row>
+      <v-row>
         <v-col
           cols="12"
           md="6"
@@ -63,12 +59,9 @@
             class="mx-3"
             label="Anzahl der Kinderkrippengruppen"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
-      </v-row>
-      <v-row>
         <v-col
           cols="12"
           md="6"
@@ -79,10 +72,11 @@
             class="mx-3"
             label="Anzahl der Kindergartengruppen"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
+      </v-row>
+      <v-row>
         <v-col
           cols="12"
           md="6"
@@ -93,10 +87,13 @@
             class="mx-3"
             label="Anzahl der Hortgruppen"
             integer
-            required
             :disabled="!isEditable"
           />
         </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
       </v-row>
       <v-row>
         <v-col
@@ -140,6 +137,10 @@
             :disabled="!isEditable"
           />
         </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
         <v-row />
       </v-row>
     </field-group-card>
@@ -153,7 +154,6 @@ import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuer
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 
 @Component({
   components: {
@@ -164,15 +164,8 @@ import DisplayMode from "@/types/common/DisplayMode";
 export default class HausFuerKinderComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: HausFuerKinderModel }) hausFuerKinder!: HausFuerKinderModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
 }
 </script>
 <style></style>

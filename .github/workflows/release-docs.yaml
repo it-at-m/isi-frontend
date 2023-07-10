@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       docs:
-        description: 'Release docs'
+        description: "Release docs"
         type: boolean
         required: true
         default: true
@@ -27,14 +27,14 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "16"
+          cache: "npm"
+          registry-url: "https://registry.npmjs.org"
           cache-dependency-path: "./docs/package-lock.json"
 
       - run: npm install
         working-directory: ./docs
-      
+
       - run: npm run build
         working-directory: ./docs
 
@@ -44,4 +44,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/dist
           cname: isi.oss.muenchen.de
-
