@@ -15,7 +15,7 @@
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             :disabled="!isEditable"
-            @change="typChanged"
+            @change="formChanged"
           >
             <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
           </v-select>
@@ -109,11 +109,6 @@ export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldVa
     return !_.isUndefined(list) && !_.isNil(key)
       ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
       : key;
-  }
-
-  @Emit()
-  private typChanged(): void {
-    this.formChanged();
   }
 }
 </script>
