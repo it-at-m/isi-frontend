@@ -87,14 +87,14 @@ export default new Router({
       component: InfrastruktureinrichtungenUebersicht,
     },
     {
-      path: "/infrastruktureinrichtungeninformationen/infrastruktureinrichtung",
-      name: "newInfrastruktureinrichtung",
+      path: "/infrastruktureinrichtung",
+      name: "createInfrastruktureinrichtung",
       meta: { tag: "infrastruktureinrichtungen" },
       component: Infrastruktureinrichtung,
     },
     {
-      path: "/infrastruktureinrichtungeninformationen/infrastruktureinrichtung/:typ/:id",
-      name: "updateinfrastruktureinrichtung",
+      path: "/infrastruktureinrichtung/:id",
+      name: "editInfrastruktureinrichtung",
       meta: { tag: "infrastruktureinrichtungen" },
       component: Infrastruktureinrichtung,
     },

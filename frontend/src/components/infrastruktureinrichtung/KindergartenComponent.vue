@@ -1,12 +1,5 @@
 <template>
   <div>
-    <infrastruktureinrichtung-component
-      id="infrastruktureinrichtung_kindergarten_component"
-      ref="infrastruktureinrichtungComponent"
-      v-model="kindergarten.infrastruktureinrichtung"
-      :mode="displayMode"
-      :is-editable="isEditable"
-    />
     <field-group-card>
       <v-row justify="center">
         <v-col
@@ -65,7 +58,6 @@ import KindergartenModel from "@/types/model/infrastruktureinrichtung/Kindergart
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
 
 @Component({
@@ -78,15 +70,8 @@ import NumField from "@/components/common/NumField.vue";
 export default class KindergartenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: KindergartenModel }) kindergarten!: KindergartenModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
 }
 </script>
 <style></style>

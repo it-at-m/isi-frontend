@@ -147,7 +147,6 @@ import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestM
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
@@ -169,19 +168,8 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   @VModel({ type: InfrastruktureinrichtungModel })
   infrastruktureinrichtung!: InfrastruktureinrichtungModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
-
-  get isNewInfrastruktureinrichtung(): boolean {
-    return this.mode === DisplayMode.NEU;
-  }
 
   private flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 
