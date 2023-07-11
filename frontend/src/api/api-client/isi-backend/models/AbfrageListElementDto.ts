@@ -14,6 +14,12 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    StadtbezirkDto,
+    StadtbezirkDtoFromJSON,
+    StadtbezirkDtoFromJSONTyped,
+    StadtbezirkDtoToJSON,
+} from './StadtbezirkDto';
+import {
     StatusAbfrage,
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
@@ -40,10 +46,10 @@ export interface AbfrageListElementDto {
     nameAbfrage?: string;
     /**
      * 
-     * @type {string}
+     * @type {Set<StadtbezirkDto>}
      * @memberof AbfrageListElementDto
      */
-    standVorhaben?: AbfrageListElementDtoStandVorhabenEnum;
+    stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
      * @type {StatusAbfrage}
@@ -70,28 +76,6 @@ export interface AbfrageListElementDto {
     sobonJahr?: AbfrageListElementDtoSobonJahrEnum;
 }
 
-
-/**
- * @export
- */
-export const AbfrageListElementDtoStandVorhabenEnum = {
-    Unspecified: 'UNSPECIFIED',
-    GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
-    Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
-    Parag31Baugb: 'PARAG_3_1_BAUGB',
-    Parag32Baugb: 'PARAG_3_2_BAUGB',
-    Parag412Baugb: 'PARAG_4_1_2_BAUGB',
-    Billigungsbeschluss: 'BILLIGUNGSBESCHLUSS',
-    Satzungsbeschluss: 'SATZUNGSBESCHLUSS',
-    BplanInKraft: 'BPLAN_IN_KRAFT',
-    VorbescheidEingereicht: 'VORBESCHEID_EINGEREICHT',
-    BauantragEingereicht: 'BAUANTRAG_EINGEREICHT',
-    BaugenehmigungErteilt: 'BAUGENEHMIGUNG_ERTEILT',
-    BaubeginnAngezeigt: 'BAUBEGINN_ANGEZEIGT',
-    BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
-    BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
-} as const;
-export type AbfrageListElementDtoStandVorhabenEnum = typeof AbfrageListElementDtoStandVorhabenEnum[keyof typeof AbfrageListElementDtoStandVorhabenEnum];
 
 /**
  * @export
@@ -130,7 +114,7 @@ export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminato
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
-        'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
+        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
         'type': !exists(json, 'type') ? undefined : json['type'],
@@ -149,7 +133,7 @@ export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null
         
         'id': value.id,
         'nameAbfrage': value.nameAbfrage,
-        'standVorhaben': value.standVorhaben,
+        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
         'type': value.type,

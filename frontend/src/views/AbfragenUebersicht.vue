@@ -22,12 +22,12 @@
               <v-spacer />
             </v-card-title>
             <v-card-text>
-              <span :id="'abfrage_uebersicht_item_' + index + '_statusAbfrage'">
-                Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}
+              <span :id="'abfrage_uebersicht_item_' + index + '_stadtbezirke'">
+                Stadtbezirke: {{ getStadtbezirke(item.stadtbezirke) }}
               </span>
               <v-spacer />
-              <span :id="'abfrage_uebersicht_item_' + index + '_standVorhaben'">
-                Stand: {{ getLookupValue(item.standVorhaben, standVorhabenList) }}
+              <span :id="'abfrage_uebersicht_item_' + index + '_statusAbfrage'">
+                Status: {{ getLookupValue(item.statusAbfrage, statusAbfrageList) }}
               </span>
               <v-spacer />
               <span :id="'abfrage_uebersicht_item_' + index + '_fristStellungnahme'">
@@ -75,7 +75,12 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import router from "@/router";
-import { AbfrageListElementDto, AbfrageListElementsDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import {
+  AbfrageListElementDto,
+  AbfrageListElementsDto,
+  LookupEntryDto,
+  StadtbezirkDto,
+} from "@/api/api-client/isi-backend";
 import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import DefaultLayout from "@/components/DefaultLayout.vue";
@@ -140,6 +145,20 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
       this.abfragenUebersicht = this.$store.getters["search/resultAbfrage"];
       this.fetchSuccess = true;
     }
+  }
+
+  private getStadtbezirke(stadtbezirke: Set<StadtbezirkDto>): string {
+    if (_.isUndefined(stadtbezirke)) {
+      return "";
+    }
+
+    let result: string[] = [];
+
+    stadtbezirke.forEach((stadtbezirk: StadtbezirkDto) => {
+      result.push(stadtbezirk.nummer + "/" + stadtbezirk.name);
+    });
+
+    return _.join(result, ", ");
   }
 
   /**

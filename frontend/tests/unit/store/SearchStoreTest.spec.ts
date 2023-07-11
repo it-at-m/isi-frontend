@@ -2,7 +2,7 @@ import Vuex from "vuex";
 import Vue from "vue";
 import {
   AbfrageListElementDto,
-  AbfrageListElementDtoStandVorhabenEnum,
+  AbfrageListElementDtoTypeEnum,
   BauvorhabenDto,
   BauvorhabenDtoStandVorhabenEnum,
   InfrastruktureinrichtungListElementDto,
@@ -67,19 +67,17 @@ describe("SearchStoreTest.spec.ts", () => {
   test("Save resultAbfrage", () => {
     const list: Array<AbfrageListElementDto> = [];
     list.push({
-      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt,
+      type: AbfrageListElementDtoTypeEnum.Infrastrukturabfrage,
     } as AbfrageListElementDto);
     store.commit("search/resultAbfrage", list);
     expect(store.getters["search/resultAbfrage"]).toHaveLength(1);
-    expect(store.getters["search/resultAbfrage"][0].standVorhaben).toEqual(
-      AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt
-    );
+    expect(store.getters["search/resultAbfrage"][0].type).toEqual(AbfrageListElementDtoTypeEnum.Infrastrukturabfrage);
   });
 
   test("Is initialized resultAbfrage", async () => {
     const list: Array<AbfrageListElementDto> = [];
     list.push({
-      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt,
+      type: AbfrageListElementDtoTypeEnum.Infrastrukturabfrage,
     } as AbfrageListElementDto);
     store.commit("search/resultAbfrage", list);
     expect(await store.dispatch("search/isInitializedAbfrage")).toBeTruthy;
@@ -88,7 +86,7 @@ describe("SearchStoreTest.spec.ts", () => {
   test("Reset resultAbfrage", async () => {
     const list: Array<AbfrageListElementDto> = [];
     list.push({
-      standVorhaben: AbfrageListElementDtoStandVorhabenEnum.BaugenehmigungErteilt,
+      type: AbfrageListElementDtoTypeEnum.Infrastrukturabfrage,
     } as AbfrageListElementDto);
     store.commit("search/resultAbfrage", list);
     expect(await store.dispatch("search/resetAbfrage"));
