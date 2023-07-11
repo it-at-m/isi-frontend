@@ -21,8 +21,8 @@
               {{ item.nameVorhaben }}
             </v-card-title>
             <v-card-text>
-              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenNummer'">
-                Bauvorhabennummer: {{ item.bauvorhabenNummer }}
+              <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenStadtbezirke'">
+                Stadtbezirksnummer: {{ getStadtbezirke(item) }}
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">
@@ -75,8 +75,9 @@
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import router from "@/router";
 import DefaultLayout from "@/components/DefaultLayout.vue";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { BauvorhabenDto, LookupEntryDto, StadtbezirkDto } from "@/api/api-client/isi-backend";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import _ from "lodash";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
@@ -160,6 +161,20 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
     router.push({
       name: "createBauvorhaben",
     });
+  }
+
+  private getStadtbezirke(bauvorhaben: BauvorhabenDto): string {
+    if (_.isUndefined(bauvorhaben.verortung)) {
+      return "";
+    }
+    let stadtbezirke = bauvorhaben.verortung.stadtbezirke;
+    let result: string[] = [];
+
+    stadtbezirke.forEach((stadtbezirk: StadtbezirkDto) => {
+      result.push(stadtbezirk.nummer + "/" + stadtbezirk.name);
+    });
+
+    return result.toString();
   }
 }
 </script>
