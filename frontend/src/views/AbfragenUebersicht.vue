@@ -148,12 +148,12 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
   }
 
   private getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
-    const auflistungStadtbezirke = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), ["nummer"]).map(
-      (stadtbezirk: StadtbezirkDto) => {
-        return stadtbezirk.nummer + "/" + stadtbezirk.name;
-      }
-    );
-    return _.join(auflistungStadtbezirke, ", ");
+    const auflistungStadtbezirksbezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), [
+      "nummer",
+    ]).map((stadtbezirk: StadtbezirkDto) => {
+      return stadtbezirk.nummer + "/" + stadtbezirk.name;
+    });
+    return _.join(auflistungStadtbezirksbezeichnungen, ", ");
   }
 
   /**

@@ -164,12 +164,12 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
   }
 
   private getStadtbezirke(bauvorhaben: BauvorhabenDto): string {
-    const auflistungStadtbezirke = _.sortBy(_.toArray(bauvorhaben.verortung?.stadtbezirke), ["nummer"]).map(
-      (stadtbezirk: StadtbezirkDto) => {
-        return stadtbezirk.nummer + "/" + stadtbezirk.name;
-      }
-    );
-    return _.join(auflistungStadtbezirke, ", ");
+    const auflistungStadtbezirksbezeichnungen = _.sortBy(_.toArray(bauvorhaben.verortung?.stadtbezirke), [
+      "nummer",
+    ]).map((stadtbezirk: StadtbezirkDto) => {
+      return stadtbezirk.nummer + "/" + stadtbezirk.name;
+    });
+    return _.join(auflistungStadtbezirksbezeichnungen, ", ");
   }
 }
 </script>
