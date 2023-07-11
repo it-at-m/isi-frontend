@@ -22,7 +22,7 @@
             </v-card-title>
             <v-card-text>
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_bauvorhabenStadtbezirke'">
-                Stadtbezirksnummer: {{ getStadtbezirke(item) }}
+                Stadtbezirke: {{ getStadtbezirke(item) }}
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">
@@ -164,17 +164,12 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
   }
 
   private getStadtbezirke(bauvorhaben: BauvorhabenDto): string {
-    if (_.isUndefined(bauvorhaben.verortung)) {
-      return "";
-    }
-    let stadtbezirke = bauvorhaben.verortung.stadtbezirke;
-    let result: string[] = [];
-
-    stadtbezirke.forEach((stadtbezirk: StadtbezirkDto) => {
-      result.push(stadtbezirk.nummer + "/" + stadtbezirk.name);
-    });
-
-    return result.toString();
+    const auflistungStadtbezirke = _.sortBy(_.toArray(bauvorhaben.verortung?.stadtbezirke), ["nummer"]).map(
+      (stadtbezirk: StadtbezirkDto) => {
+        return stadtbezirk.nummer + "/" + stadtbezirk.name;
+      }
+    );
+    return _.join(auflistungStadtbezirke, ", ");
   }
 }
 </script>
