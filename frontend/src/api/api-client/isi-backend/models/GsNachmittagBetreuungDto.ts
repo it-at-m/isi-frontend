@@ -14,6 +14,18 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AdresseDto,
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
+import {
+    GsNachmittagBetreuungDtoAllOf,
+    GsNachmittagBetreuungDtoAllOfFromJSON,
+    GsNachmittagBetreuungDtoAllOfFromJSONTyped,
+    GsNachmittagBetreuungDtoAllOfToJSON,
+} from './GsNachmittagBetreuungDtoAllOf';
+import {
     InfrastruktureinrichtungDto,
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
@@ -25,37 +37,7 @@ import {
  * @export
  * @interface GsNachmittagBetreuungDto
  */
-export interface GsNachmittagBetreuungDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
-     * @type {InfrastruktureinrichtungDto}
-     * @memberof GsNachmittagBetreuungDto
-     */
-    infrastruktureinrichtung: InfrastruktureinrichtungDto;
+export interface GsNachmittagBetreuungDto extends InfrastruktureinrichtungDto {
     /**
      * 
      * @type {string}
@@ -105,12 +87,7 @@ export function GsNachmittagBetreuungDtoFromJSONTyped(json: any, ignoreDiscrimin
         return json;
     }
     return {
-        
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoFromJSON(json['infrastruktureinrichtung']),
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
         'artGsNachmittagBetreuung': !exists(json, 'artGsNachmittagBetreuung') ? undefined : json['artGsNachmittagBetreuung'],
         'anzahlHortPlaetze': json['anzahlHortPlaetze'],
         'anzahlHortGruppen': json['anzahlHortGruppen'],
@@ -126,12 +103,7 @@ export function GsNachmittagBetreuungDtoToJSON(value?: GsNachmittagBetreuungDto 
         return null;
     }
     return {
-        
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),
+        ...InfrastruktureinrichtungDtoToJSON(value),
         'artGsNachmittagBetreuung': value.artGsNachmittagBetreuung,
         'anzahlHortPlaetze': value.anzahlHortPlaetze,
         'anzahlHortGruppen': value.anzahlHortGruppen,

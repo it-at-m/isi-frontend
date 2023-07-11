@@ -44,6 +44,22 @@
               </template>
               <span>Idealtypische Bauraten ermitteln</span>
             </v-tooltip>
+            <v-tooltip
+              v-if="isItemTypeOfBaugebietAndBauratenAreDeterminable(item)"
+              bottom
+            >
+              <template #activator="{ on }">
+                <v-btn
+                  :id="'abfrage_navigation_tree_button_baugebiet_determinable_bauraten_' + item.id"
+                  icon
+                  v-on="on"
+                  @click="determineBauratenForBaugebiet(item)"
+                >
+                  <v-icon> mdi-calculator</v-icon>
+                </v-btn>
+              </template>
+              <span>Idealtypische Bauraten ermitteln</span>
+            </v-tooltip>
             <v-btn
               v-if="isItemTypeOfAddAbfragevariante(item)"
               :id="'abfrage_navigation_tree_button_create_new_abfragevariante_' + item.id"
@@ -274,6 +290,12 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   public setNewEntityToMark(entity: unknown): void {
     this.newEntityToMark = entity;
+  }
+
+  public openMarkedItems(): void {
+    for (const id of this.markedTreeItems) {
+      this.treeItemIdsToOpen = [...this.treeItemIdsToOpen, id];
+    }
   }
 
   private markTreeItem(item: AbfrageTreeItem): void {
@@ -1058,10 +1080,24 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
         !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
       // Die Abfragevariante darf keine Bauabschnitte referenzieren.
-      (_.isNil(abfrageTreeItem.abfragevariante?.bauabschnitte) ||
-        _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte)) &&
+      _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte) &&
       // Das Datum für Realisierung von muss gesetzt sein.
       !_.isNil(abfrageTreeItem.abfragevariante?.realisierungVon)
+    );
+  }
+
+  private isItemTypeOfBaugebietAndBauratenAreDeterminable(abfrageTreeItem: AbfrageTreeItem): boolean {
+    return (
+      this.isItemTypeOfBaugebiet(abfrageTreeItem) &&
+      // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
+      this.isEditableWithAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante) &&
+      // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
+      (!_.isNil(abfrageTreeItem.baugebiet?.gesamtanzahlWe) ||
+        !_.isNil(abfrageTreeItem.baugebiet?.geschossflaecheWohnen)) &&
+      // Das Baugebiet darf keine Bauraten referenzieren.
+      _.isEmpty(abfrageTreeItem.baugebiet?.bauraten) &&
+      // Das Datum für Realisierung von muss gesetzt sein.
+      !_.isNil(abfrageTreeItem.baugebiet?.realisierungVon)
     );
   }
 
@@ -1105,6 +1141,11 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   @Emit()
   private determineBauratenForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
+    return selectedAbfrageTreeItem;
+  }
+
+  @Emit()
+  private determineBauratenForBaugebiet(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
     return selectedAbfrageTreeItem;
   }
 

@@ -14,48 +14,30 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AdresseDto,
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
+import {
     InfrastruktureinrichtungDto,
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
 } from './InfrastruktureinrichtungDto';
+import {
+    KinderkrippeDtoAllOf,
+    KinderkrippeDtoAllOfFromJSON,
+    KinderkrippeDtoAllOfFromJSONTyped,
+    KinderkrippeDtoAllOfToJSON,
+} from './KinderkrippeDtoAllOf';
 
 /**
  * 
  * @export
  * @interface KinderkrippeDto
  */
-export interface KinderkrippeDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof KinderkrippeDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof KinderkrippeDto
-     */
-    version?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof KinderkrippeDto
-     */
-    createdDateTime?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof KinderkrippeDto
-     */
-    lastModifiedDateTime?: Date;
-    /**
-     * 
-     * @type {InfrastruktureinrichtungDto}
-     * @memberof KinderkrippeDto
-     */
-    infrastruktureinrichtung: InfrastruktureinrichtungDto;
+export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
     /**
      * 
      * @type {number}
@@ -76,6 +58,8 @@ export interface KinderkrippeDto {
     wohnungsnaheKinderkrippePlaetze?: number;
 }
 
+
+
 export function KinderkrippeDtoFromJSON(json: any): KinderkrippeDto {
     return KinderkrippeDtoFromJSONTyped(json, false);
 }
@@ -85,12 +69,7 @@ export function KinderkrippeDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         return json;
     }
     return {
-        
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoFromJSON(json['infrastruktureinrichtung']),
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
         'anzahlKinderkrippePlaetze': json['anzahlKinderkrippePlaetze'],
         'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'],
         'wohnungsnaheKinderkrippePlaetze': !exists(json, 'wohnungsnaheKinderkrippePlaetze') ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
@@ -105,12 +84,7 @@ export function KinderkrippeDtoToJSON(value?: KinderkrippeDto | null): any {
         return null;
     }
     return {
-        
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'infrastruktureinrichtung': InfrastruktureinrichtungDtoToJSON(value.infrastruktureinrichtung),
+        ...InfrastruktureinrichtungDtoToJSON(value),
         'anzahlKinderkrippePlaetze': value.anzahlKinderkrippePlaetze,
         'anzahlKinderkrippeGruppen': value.anzahlKinderkrippeGruppen,
         'wohnungsnaheKinderkrippePlaetze': value.wohnungsnaheKinderkrippePlaetze,

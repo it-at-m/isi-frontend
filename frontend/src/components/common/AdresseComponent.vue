@@ -105,7 +105,7 @@
           ref="allgemeineOrtsangabeField"
           v-model="allgemeineOrtsangabe"
           :disabled="!isEditable"
-          label="Angabe zur Lage des Vorhabens und ergänzende Adressinformationen"
+          label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
           @input="formChanged"
         />

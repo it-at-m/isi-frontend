@@ -1,12 +1,5 @@
 <template>
   <div>
-    <infrastruktureinrichtung-component
-      id="infrastruktureinrichtung_mittelschule_component"
-      ref="infrastruktureinrichtungComponent"
-      v-model="mittelschule.infrastruktureinrichtung"
-      :mode="displayMode"
-      :is-editable="isEditable"
-    />
     <schule-component
       id="infrastruktureinrichtung_mittelschule_schule_component"
       ref="schule-component"
@@ -24,7 +17,6 @@ import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrich
 import SchuleComponent from "@/components/infrastruktureinrichtung/SchuleComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 
 @Component({
   components: {
@@ -36,15 +28,8 @@ import DisplayMode from "@/types/common/DisplayMode";
 export default class MittelschuleComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: MittelschuleModel }) mittelschule!: MittelschuleModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
 }
 </script>
 <style></style>

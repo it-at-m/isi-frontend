@@ -2,7 +2,7 @@
   <default-layout>
     <template #content>
       <div
-        v-if="infrastruktureinrichtungen.length !== 0"
+        v-if="infrastruktureinrichtungen.length > 0"
         class="py-12"
       >
         <!-- eslint-disable vue/no-unused-vars -->
@@ -15,7 +15,7 @@
             outlined
             class="mb-4 transition-swing"
             :elevation="hover ? 4 : 0"
-            @click="routeToInfrastruktureinrichtungInfo(item)"
+            @click="editInfrastruktureinrichtung(item)"
           >
             <v-card-title :id="'infrastruktureinrichtung_uebersicht_item_' + index + '_nameEinrichtung'">
               {{ item.nameEinrichtung }}
@@ -72,7 +72,7 @@ import {
   InfrastruktureinrichtungListElementsDto,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
-import InfrastruktureinrichtungenListApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungenListApiRequestMixin";
+import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
@@ -81,7 +81,7 @@ import SecurityMixin from "@/mixins/security/SecurityMixin";
   components: { DefaultLayout },
 })
 export default class InfrastruktureinrichtungenUebersicht extends Mixins(
-  InfrastruktureinrichtungenListApiRequestMixin,
+  InfrastruktureinrichtungApiRequestMixin,
   SecurityMixin
 ) {
   private infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
@@ -140,35 +140,27 @@ export default class InfrastruktureinrichtungenUebersicht extends Mixins(
   }
 
   /**
-   * Verzweigung zur Detailansicht der Infrastruktureinrichtung
+   * Routing zur View der existenten Infrastruktureinrichtung
    *
    * @param infrastruktureinrichtungListElementDto zum ermitteln der Route.
    */
-  private routeToInfrastruktureinrichtungInfo(
+  private editInfrastruktureinrichtung(
     infrastruktureinrichtungListElementDto: InfrastruktureinrichtungListElementDto
   ): void {
     if (!_.isNil(infrastruktureinrichtungListElementDto.id)) {
-      const infrastruktureinrichtungTyp: string = !_.isNil(
-        infrastruktureinrichtungListElementDto.infrastruktureinrichtungTyp
-      )
-        ? infrastruktureinrichtungListElementDto.infrastruktureinrichtungTyp.toString()
-        : "";
       router.push({
-        name: "updateinfrastruktureinrichtung",
-        params: { typ: infrastruktureinrichtungTyp, id: infrastruktureinrichtungListElementDto.id },
+        name: "editInfrastruktureinrichtung",
+        params: { id: infrastruktureinrichtungListElementDto.id },
       });
     }
   }
 
   /**
-   * Wenn man eine neue Infrastruktureinrichtung erstellt werden soll
-   *
-   * @param Infrastruktureinrichtung Typ
-   *
+   * Erstellung einer neuen Infrastruktureinrichtung.
    */
   private newInfrastruktureinrichtung(): void {
     router.push({
-      name: "newInfrastruktureinrichtung",
+      name: "createInfrastruktureinrichtung",
     });
   }
 }
