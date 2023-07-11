@@ -158,7 +158,7 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
       result.push(stadtbezirk.nummer + "/" + stadtbezirk.name);
     });
 
-    return result.toString();
+    return _.join(result, ", ");
   }
 
   /**
