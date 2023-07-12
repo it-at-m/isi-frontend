@@ -147,18 +147,13 @@ export default class AbfragenUebersicht extends Mixins(AbfragelistenApiRequestMi
     }
   }
 
-  private getStadtbezirke(stadtbezirke: Set<StadtbezirkDto>): string {
-    if (_.isUndefined(stadtbezirke)) {
-      return "";
-    }
-
-    let result: string[] = [];
-
-    stadtbezirke.forEach((stadtbezirk: StadtbezirkDto) => {
-      result.push(stadtbezirk.nummer + "/" + stadtbezirk.name);
+  private getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
+    const auflistungStadtbezirksbezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), [
+      "nummer",
+    ]).map((stadtbezirk: StadtbezirkDto) => {
+      return stadtbezirk.nummer + "/" + stadtbezirk.name;
     });
-
-    return _.join(result, ", ");
+    return _.join(auflistungStadtbezirksbezeichnungen, ", ");
   }
 
   /**
