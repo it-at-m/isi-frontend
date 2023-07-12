@@ -26,7 +26,7 @@
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_grundstueckgroesse'">
-                Grundstücksgröße: {{ item.grundstuecksgroesse }} m²
+                Grundstücksgröße: {{ getFormattedGrundstuecksgroesse(item.grundstuecksgroesse) }} m²
               </span>
               <v-spacer />
               <span :id="'bauvorhaben_uebersicht_item_' + index + '_standVorhaben'">
@@ -170,6 +170,10 @@ export default class BauvorhabenUebersicht extends Mixins(BauvorhabenApiRequestM
       return stadtbezirk.nummer + "/" + stadtbezirk.name;
     });
     return _.join(auflistungStadtbezirksbezeichnungen, ", ");
+  }
+
+  private getFormattedGrundstuecksgroesse(grundstuecksgroesse: number | undefined): string {
+    return _.isNil(grundstuecksgroesse) ? "" : grundstuecksgroesse.toLocaleString("de-DE");
   }
 }
 </script>
