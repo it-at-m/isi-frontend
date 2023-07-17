@@ -42,5 +42,5 @@ apigateway/**/logback-spring.xml
 frontend/.env.development
 frontend/.env.production
 frontend/package-lock.json
-#frontend/auto-imports.d.ts
-#frontend/components.d.ts
+frontend/auto-imports.d.ts
+frontend/components.d.ts
