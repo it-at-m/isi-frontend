@@ -292,6 +292,7 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <bauraten-aggregiert-component :abfragevariante="abfragevariante" />
     <abfragevariante-sachbearbeitung-formular
       id="abfragevariante_sachbearbeitung_formular"
       v-model="abfragevariante.abfragevarianteSachbearbeitung"
@@ -311,9 +312,10 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
+import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import _ from "lodash";
 
-@Component({ components: { FieldGroupCard, NumField } })
+@Component({ components: { FieldGroupCard, NumField, BauratenAggregiertComponent } })
 export default class AbfragevarianteForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
