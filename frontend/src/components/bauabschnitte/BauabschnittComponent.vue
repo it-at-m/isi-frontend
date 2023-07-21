@@ -25,6 +25,7 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <bauraten-aggregiert-component :bauabschnitt="bauabschnitt" />
   </div>
 </template>
 
@@ -37,8 +38,9 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 
-@Component({ components: { FieldGroupCard } })
+@Component({ components: { FieldGroupCard, BauratenAggregiertComponent } })
 export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,

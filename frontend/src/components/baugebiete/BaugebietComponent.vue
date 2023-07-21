@@ -169,6 +169,7 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <bauraten-aggregiert-component :baugebiet="baugebiet" />
   </div>
 </template>
 
@@ -194,8 +195,9 @@ import {
   geschossflaecheWohnenAbfragevarianteFormatted,
   verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
+import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 
-@Component({ components: { NumField, FieldGroupCard } })
+@Component({ components: { NumField, FieldGroupCard, BauratenAggregiertComponent } })
 export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
