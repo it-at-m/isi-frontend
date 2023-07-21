@@ -24,6 +24,12 @@ export interface InfrastruktureinrichtungListElementDto {
      * @type {string}
      * @memberof InfrastruktureinrichtungListElementDto
      */
+    type?: InfrastruktureinrichtungListElementDtoTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof InfrastruktureinrichtungListElementDto
+     */
     id?: string;
     /**
      * 
@@ -39,6 +45,16 @@ export interface InfrastruktureinrichtungListElementDto {
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum;
 }
 
+
+/**
+ * @export
+ */
+export const InfrastruktureinrichtungListElementDtoTypeEnum = {
+    Infrastrukturabfrage: 'INFRASTRUKTURABFRAGE',
+    Bauvorhaben: 'BAUVORHABEN',
+    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
+} as const;
+export type InfrastruktureinrichtungListElementDtoTypeEnum = typeof InfrastruktureinrichtungListElementDtoTypeEnum[keyof typeof InfrastruktureinrichtungListElementDtoTypeEnum];
 
 /**
  * @export
@@ -65,6 +81,7 @@ export function InfrastruktureinrichtungListElementDtoFromJSONTyped(json: any, i
     }
     return {
         
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
@@ -80,6 +97,7 @@ export function InfrastruktureinrichtungListElementDtoToJSON(value?: Infrastrukt
     }
     return {
         
+        'type': value.type,
         'id': value.id,
         'nameEinrichtung': value.nameEinrichtung,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,

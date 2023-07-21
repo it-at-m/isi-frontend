@@ -30,21 +30,31 @@
           cols="6"
           class="d-flex align-center justify-center"
         >
-          <v-text-field
-            id="app_suchfeld"
-            v-model="query"
-            dense
+          <v-autocomplete
+            id="suchfeld"
+            v-model="selectedSuggestion"
+            :items="suchwortSuggestions"
+            :search-input.sync="searchQuery"
+            clearable
+            color="black"
             flat
-            solo-inverted
-            dark
             hide-details
             label="Suche"
-            clearable
+            no-filter
             prepend-inner-icon="mdi-magnify"
-            color="black"
-            style="max-width: 800px"
-            @keyup.enter="search"
-          />
+            return-object
+            solo-inverted
+            @keyup.enter="searchForEntities"
+            @update:list-index="updateSearchQuery"
+            @update:search-input="searchForSearchwordSuggestion"
+            @click:clear="clearSearch"
+          >
+            <template v-slot:no-data>
+              <v-list class="pa-3">
+                <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
+              </v-list>
+            </template>
+          </v-autocomplete>
         </v-col>
         <v-col
           cols="3"
@@ -194,11 +204,13 @@ import { RouteTag } from "./router";
 import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
+import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import { SearchQueryForEntitiesDto, SuchwortSuggestionsDto } from "@/api/api-client/isi-backend";
 
 @Component({
   components: { TheSnackbar, VersionInfo },
 })
-export default class App extends Mixins(UserInfoApiRequestMixin) {
+export default class App extends Mixins(UserInfoApiRequestMixin, SearchApiRequestMixin) {
   public query = "";
 
   private logo: string = new URL("./assets/isi-logo.svg", import.meta.url).href;
@@ -209,9 +221,20 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   private menu = false;
 
+  // Suche
+  private searchQuery = "";
+
+  private suggestions: SuchwortSuggestionsDto = { suchwortSuggestions: [] };
+
+  private selectedSuggestion = "";
+
   // Schreibt alle Nutzerollen in einen String für die Darstellung
   get userRoles(): string {
     return _.join(this.userinfo.roles, ", ");
+  }
+
+  get suchwortSuggestions(): Array<string> {
+    return _.isNil(this.suggestions.suchwortSuggestions) ? [] : this.suggestions.suchwortSuggestions;
   }
 
   created(): void {
@@ -253,6 +276,46 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   private currentRouteHasTag(tag: RouteTag): boolean {
     return this.$router.currentRoute.meta?.tag === tag;
+  }
+
+  private updateSearchQuery(itemIndex: number) {
+    if (itemIndex >= 0) {
+      this.selectedSuggestion = this.suchwortSuggestions[itemIndex];
+    }
+  }
+
+  private suggest(query: string): void {
+    this.searchForSearchwordSuggestion(query).then((suchwortSuggestions) => {
+      this.suggestions = suchwortSuggestions;
+    });
+  }
+
+  private addSelectedSuggestionsToSearchQueryOrSearchForEntities(): void {
+    if (_.isEmpty(this.selectedSuggestion)) {
+      const searchQueryForEntitiesDto = {
+        searchQuery: this.searchQuery,
+        selectInfrastrukturabfrage: true,
+        selectBauvorhaben: true,
+        selectGrundschule: true,
+        selectGsNachmittagBetreuung: true,
+        selectHausFuerKinder: true,
+        selectKindergarten: true,
+        selectKinderkrippe: true,
+        selectMittelschule: true,
+      } as SearchQueryForEntitiesDto;
+      this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => searchResults);
+    } else {
+      this.searchQuery += " " + this.selectedSuggestion;
+      this.selectedSuggestion = "";
+    }
+  }
+
+  private clearSearch(): void {
+    this.suggestions = {
+      suchwortSuggestions: [],
+    };
+    this.searchQuery = "";
+    this.selectedSuggestion = "";
   }
 }
 </script>

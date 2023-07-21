@@ -37,6 +37,12 @@ export interface AbfrageListElementDto {
      * @type {string}
      * @memberof AbfrageListElementDto
      */
+    type?: AbfrageListElementDtoTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageListElementDto
+     */
     id?: string;
     /**
      * 
@@ -67,12 +73,6 @@ export interface AbfrageListElementDto {
      * @type {string}
      * @memberof AbfrageListElementDto
      */
-    type?: AbfrageListElementDtoTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof AbfrageListElementDto
-     */
     sobonJahr?: AbfrageListElementDtoSobonJahrEnum;
 }
 
@@ -82,7 +82,8 @@ export interface AbfrageListElementDto {
  */
 export const AbfrageListElementDtoTypeEnum = {
     Infrastrukturabfrage: 'INFRASTRUKTURABFRAGE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Bauvorhaben: 'BAUVORHABEN',
+    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
 } as const;
 export type AbfrageListElementDtoTypeEnum = typeof AbfrageListElementDtoTypeEnum[keyof typeof AbfrageListElementDtoTypeEnum];
 
@@ -112,12 +113,12 @@ export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
-        'type': !exists(json, 'type') ? undefined : json['type'],
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
     };
 }
@@ -131,12 +132,12 @@ export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null
     }
     return {
         
+        'type': value.type,
         'id': value.id,
         'nameAbfrage': value.nameAbfrage,
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
-        'type': value.type,
         'sobonJahr': value.sobonJahr,
     };
 }

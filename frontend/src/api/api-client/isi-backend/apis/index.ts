@@ -14,3 +14,4 @@ export * from './KoordinatenApi';
 export * from './LookupApi';
 export * from './MimeTypeApi';
 export * from './StammdatenApi';
+export * from './SucheApi';
