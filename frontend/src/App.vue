@@ -44,9 +44,9 @@
             prepend-inner-icon="mdi-magnify"
             return-object
             solo-inverted
-            @keyup.enter="searchForEntities"
+            @keyup.enter="addSelectedSuggestionsToSearchQueryOrSearchForEntities"
             @update:list-index="updateSearchQuery"
-            @update:search-input="searchForSearchwordSuggestion"
+            @update:search-input="suggest"
             @click:clear="clearSearch"
           >
             <template v-slot:no-data>
@@ -285,9 +285,13 @@ export default class App extends Mixins(UserInfoApiRequestMixin, SearchApiReques
   }
 
   private suggest(query: string): void {
-    this.searchForSearchwordSuggestion(query).then((suchwortSuggestions) => {
-      this.suggestions = suchwortSuggestions;
-    });
+    const splittedSearchwords = _.split(query, " ");
+    const searchQueryForSuggestion = _.last(splittedSearchwords);
+    if (!_.isEmpty(searchQueryForSuggestion)) {
+      this.searchForSearchwordSuggestion(query).then((suchwortSuggestions) => {
+        this.suggestions = suchwortSuggestions;
+      });
+    }
   }
 
   private addSelectedSuggestionsToSearchQueryOrSearchForEntities(): void {
@@ -305,7 +309,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin, SearchApiReques
       } as SearchQueryForEntitiesDto;
       this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => searchResults);
     } else {
-      this.searchQuery += " " + this.selectedSuggestion;
+      this.searchQuery += this.selectedSuggestion + " ";
       this.selectedSuggestion = "";
     }
   }
