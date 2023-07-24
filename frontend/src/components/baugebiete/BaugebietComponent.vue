@@ -169,7 +169,7 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <bauraten-aggregiert-component :baugebiet="baugebiet" />
+    <bauraten-aggregiert-component :aggregate-bauraten="baugebiet" />
   </div>
 </template>
 

@@ -45,52 +45,54 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { AbfragevarianteDto, BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
+import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
+import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { DataTableHeader } from "@/types/common/DataTableHeader";
 import _ from "lodash";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauratenAggregiertComponent extends Vue {
   @Prop()
-  private abfragevariante!: AbfragevarianteDto;
-
-  @Prop()
-  private bauabschnitt!: BauabschnittDto;
-
-  @Prop()
-  private baugebiet!: BaugebietDto;
+  private aggregateBauraten!: AbfragevarianteModel | BauabschnittModel | BaugebietModel;
 
   get showResult(): boolean {
     return this.bauratenAggregiert.length > 0;
   }
 
-  private baurateMap: Map<number, BaurateDto> = new Map<number, BaurateDto>();
+  private baurateMap: Map<number, BaurateModel> = new Map<number, BaurateModel>();
 
   /**
-   * Erstellt eine Map mit Bauraten zu dem angegeben Property (Abfragevariante, Bauabschnitt, Baugebiet)
+   * Erstellt eine Map mit Bauraten zu dem angegeben Property aggregateBauraten
    * Der Key der Map ist das Jahr und der Value die aggregierten Werte der Bauraten
    */
-  get bauratenAggregiert(): Array<BaurateDto> {
-    if (!_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante.bauabschnitte)) {
-      this.abfragevariante.bauabschnitte.forEach((bauabschnitt: BauabschnittDto) => {
-        this.addBauratenBauabschnitt(bauabschnitt);
-      });
-    } else if (!_.isNil(this.bauabschnitt)) {
-      this.addBauratenBauabschnitt(this.bauabschnitt);
-    } else if (!_.isNil(this.baugebiet)) {
-      this.addBauratenBaugebiet(this.baugebiet);
+  get bauratenAggregiert(): Array<BaurateModel> {
+    if (!_.isNil(this.aggregateBauraten)) {
+      if (this.aggregateBauraten instanceof AbfragevarianteModel) {
+        const abfragevariante: AbfragevarianteModel = this.aggregateBauraten as AbfragevarianteModel;
+        if (!_.isNil(abfragevariante.bauabschnitte)) {
+          abfragevariante.bauabschnitte.forEach((bauabschnitt: BauabschnittModel) => {
+            this.addBauratenBauabschnitt(bauabschnitt);
+          });
+        }
+      } else if (this.aggregateBauraten instanceof BauabschnittModel) {
+        this.addBauratenBauabschnitt(this.aggregateBauraten as BauabschnittModel);
+      } else if (this.aggregateBauraten instanceof BaugebietModel) {
+        this.addBauratenBaugebiet(this.aggregateBauraten as BaugebietModel);
+      }
     }
     return _.sortBy(Array.from(this.baurateMap.values()), ["jahr"]);
   }
 
-  private addBauratenBauabschnitt(bauabschnitt: BauabschnittDto): void {
-    bauabschnitt.baugebiete.forEach((baugebiet: BaugebietDto) => {
+  private addBauratenBauabschnitt(bauabschnitt: BauabschnittModel): void {
+    bauabschnitt.baugebiete.forEach((baugebiet: BaugebietModel) => {
       this.addBauratenBaugebiet(baugebiet);
     });
   }
 
-  private addBauratenBaugebiet(baugebiet: BaugebietDto): void {
-    baugebiet.bauraten.forEach((baurate: BaurateDto) => {
+  private addBauratenBaugebiet(baugebiet: BaugebietModel): void {
+    baugebiet.bauraten.forEach((baurate: BaurateModel) => {
       const aggregated = this.baurateMap.get(baurate.jahr);
       if (!_.isNil(aggregated)) {
         this.aggregateValues(aggregated, baurate);
@@ -101,7 +103,7 @@ export default class BauratenAggregiertComponent extends Vue {
     });
   }
 
-  private aggregateValues(aggregated: BaurateDto, baurate: BaurateDto) {
+  private aggregateValues(aggregated: BaurateModel, baurate: BaurateModel) {
     if (!_.isNil(baurate.anzahlWeGeplant)) {
       if (_.isNil(aggregated.anzahlWeGeplant)) {
         aggregated.anzahlWeGeplant = 0;
@@ -119,19 +121,21 @@ export default class BauratenAggregiertComponent extends Vue {
   get bauratenJahreHeaders(): DataTableHeader[] {
     const headers = new Array<DataTableHeader>();
     headers.push(new DataTableHeader("Jahr", undefined, false));
-    this.bauratenAggregiert.forEach((baurate: BaurateDto) => {
+    this.bauratenAggregiert.forEach((baurate: BaurateModel) => {
       headers.push(new DataTableHeader(baurate.jahr.toString(), undefined, false));
     });
     return headers;
   }
 
   get header(): string {
-    if (!_.isNil(this.abfragevariante)) {
-      return "Bauraten der Abfragevariante";
-    } else if (!_.isNil(this.bauabschnitt)) {
-      return "Bauraten des Bauabschnitts";
-    } else if (!_.isNil(this.baugebiet)) {
-      return "Bauraten des Baugebiets";
+    if (!_.isNil(this.aggregateBauraten)) {
+      if (this.aggregateBauraten instanceof AbfragevarianteModel) {
+        return "Bauraten der Abfragevariante";
+      } else if (this.aggregateBauraten instanceof BauabschnittModel) {
+        return "Bauraten des Bauabschnitts";
+      } else if (this.aggregateBauraten instanceof BaugebietModel) {
+        return "Bauraten des Baugebiets";
+      }
     }
     return "";
   }

@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <bauraten-aggregiert-component :bauabschnitt="bauabschnitt" />
+    <bauraten-aggregiert-component :aggregate-bauraten="bauabschnitt" />
   </div>
 </template>
 

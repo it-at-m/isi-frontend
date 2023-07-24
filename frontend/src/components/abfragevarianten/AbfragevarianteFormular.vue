@@ -292,7 +292,7 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <bauraten-aggregiert-component :abfragevariante="abfragevariante" />
+    <bauraten-aggregiert-component :aggregate-bauraten="abfragevariante" />
     <abfragevariante-sachbearbeitung-formular
       id="abfragevariante_sachbearbeitung_formular"
       v-model="abfragevariante.abfragevarianteSachbearbeitung"
