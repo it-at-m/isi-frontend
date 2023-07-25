@@ -369,7 +369,7 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get headline(): string {
-    const headline = `Abfragevariante Nr: ${this.abfragevariante.abfragevariantenNr} - `;
+    const headline = `Abfragevariante: ${this.abfragevariante.abfragevariantenNrDisplay} - `;
     return this.displayMode === DisplayMode.NEU
       ? headline.concat("anlegen")
       : headline.concat(`${this.abfragevariante.abfragevariantenName} ändern`);

@@ -727,10 +727,10 @@ export default class Abfrage extends Mixins(
     this.setNewEntityToMark(this.selectedAbfragevariante);
     if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
       this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
+      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten, true);
     } else {
       this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung.push(this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung);
+      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung, false);
     }
     this.formChanged();
     this.openAbfragevarianteFormular();
@@ -743,7 +743,10 @@ export default class Abfrage extends Mixins(
           ? this.abfrageWrapped.infrastrukturabfrage.abfragevarianten
           : this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung;
       _.remove(abfragevarianten, (abfragevariante) => abfragevariante === this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(abfragevarianten);
+      this.renumberingAbfragevarianten(
+        abfragevarianten,
+        this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
+      );
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
         this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = [...abfragevarianten];
@@ -973,9 +976,13 @@ export default class Abfrage extends Mixins(
     return _.isNil(this.selectedBaurate.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
-  private renumberingAbfragevarianten(abfragevarianten: Array<AbfragevarianteDto> | undefined): void {
+  private renumberingAbfragevarianten(
+    abfragevarianten: Array<AbfragevarianteDto> | undefined,
+    isAbfragevariante: boolean
+  ): void {
     abfragevarianten?.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
+      value.abfragevariantenNrDisplay = `${isAbfragevariante ? "1." : "2."}${value.abfragevariantenNr}`;
     });
   }
 

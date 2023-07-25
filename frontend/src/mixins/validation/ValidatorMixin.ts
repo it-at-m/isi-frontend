@@ -149,7 +149,7 @@ export default class ValidatorMixin extends Vue {
     ) {
       const abfragevarianteNr: string =
         showAbfragevarianteNr && !_.isNaN(abfragevariante.abfragevariantenNr)
-          ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
+          ? `für Abfragevariante ${abfragevariante.abfragevariantenNr} `
           : "";
       return `Bitte geben Sie die 'Geschossfläche SoBoN-ursächliche' ${abfragevarianteNr}an`;
     }

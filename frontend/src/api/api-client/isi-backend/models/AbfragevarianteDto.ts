@@ -67,6 +67,12 @@ export interface AbfragevarianteDto {
      * @type {string}
      * @memberof AbfragevarianteDto
      */
+    abfragevariantenNrDisplay?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteDto
+     */
     abfragevariantenName?: string;
     /**
      * 
@@ -220,6 +226,7 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
+        'abfragevariantenNrDisplay': !exists(json, 'abfragevariantenNrDisplay') ? undefined : json['abfragevariantenNrDisplay'],
         'abfragevariantenName': !exists(json, 'abfragevariantenName') ? undefined : json['abfragevariantenName'],
         'planungsrecht': !exists(json, 'planungsrecht') ? undefined : json['planungsrecht'],
         'geschossflaecheWohnen': !exists(json, 'geschossflaecheWohnen') ? undefined : json['geschossflaecheWohnen'],
@@ -257,6 +264,7 @@ export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfragevariantenNr': value.abfragevariantenNr,
+        'abfragevariantenNrDisplay': value.abfragevariantenNrDisplay,
         'abfragevariantenName': value.abfragevariantenName,
         'planungsrecht': value.planungsrecht,
         'geschossflaecheWohnen': value.geschossflaecheWohnen,

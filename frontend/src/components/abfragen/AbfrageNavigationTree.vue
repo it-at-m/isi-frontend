@@ -225,11 +225,9 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
 
-  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
+  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Daten zur Abfrage";
 
   private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante anlegen";
-
-  private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
 
   private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT: string = "Bauabschnitt anlegen";
 
@@ -333,7 +331,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   }
 
   private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
-    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0-\xa0${
+    return `${abfragevariante.abfragevariantenNrDisplay}\xa0-\xa0${
       _.isNil(abfragevariante.abfragevariantenName)
         ? AbfrageNavigationTree.NICHT_GEPFLEGT
         : abfragevariante.abfragevariantenName
