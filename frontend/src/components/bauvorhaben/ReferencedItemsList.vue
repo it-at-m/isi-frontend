@@ -94,16 +94,15 @@ export default class ReferencedItemsList extends Mixins(
     }
   }
 
+  /**
+   * Methode um Datum für die Anzeige zu formatieren
+   */
   formatDate(dateTime: Date): string {
     return moment(dateTime).format("DD.MM.YYYY");
   }
 
-  private getLookupValue(key: string, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
-  }
-
   /**
-   * Verzweigung zur Detailansicht der Infrastrukturabfrage
+   * Routing zur Detailansicht der Infrastrukturabfrage
    *
    * @param abfrageListElementDto zum ermitteln der Route.
    */
@@ -117,7 +116,7 @@ export default class ReferencedItemsList extends Mixins(
   }
 
   /**
-   * Routing zur View der existenten Infrastruktureinrichtung
+   * Routing zur Detailansicht der Infrastruktureinrichtung
    *
    * @param infrastruktureinrichtungListElementDto zum ermitteln der Route.
    */
@@ -131,7 +130,11 @@ export default class ReferencedItemsList extends Mixins(
       });
     }
   }
-
+  /**
+   * GET-Methode um alle Abfragen die dem Bauvorhaben angehören sortiert zurückzugeben.
+   *
+   * @param bauvorhabenId zum ermitteln des Bauvorhabens.
+   */
   private async getReferencedAbfragen(bauvorhabenId: string): Promise<void> {
     await this.getReferencedAbfrageListElements(bauvorhabenId, true).then(
       (abfrageListElementsDto: AbfrageListElementsDto) => {
@@ -144,6 +147,11 @@ export default class ReferencedItemsList extends Mixins(
     );
   }
 
+  /**
+   * GET-Methode um alle Infrastruktureinrichtungen die dem Bauvorhaben angehören sortiert zurückzugeben.
+   *
+   * @param bauvorhabenId zum ermitteln des Bauvorhabens.
+   */
   private async getReferencedInfrastruktureinrichtungen(bauvorhabenId: string): Promise<void> {
     await this.getReferencedInfrastruktureinrichtungenListElements(bauvorhabenId, true).then(
       (infrastruktureinrichtungListElementsDto: InfrastruktureinrichtungListElementsDto) => {
@@ -154,6 +162,10 @@ export default class ReferencedItemsList extends Mixins(
         }
       }
     );
+  }
+
+  private getLookupValue(key: string, list: Array<LookupEntryDto>): string | undefined {
+    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 }
 </script>
