@@ -20,6 +20,10 @@ import {
     AbfrageListElementsDtoToJSON,
 } from '../models';
 
+export interface GetAbfrageListElementsThatReferenceBauvorhabenRequest {
+    id: string;
+}
+
 /**
  * 
  */
@@ -48,6 +52,36 @@ export class AbfragelistenApi extends runtime.BaseAPI {
      */
     async getAbfrageListElements(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AbfrageListElementsDto> {
         const response = await this.getAbfrageListElementsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Lade alle Abfragen die ein Bauvorhaben referenzieren für die Listendarstellung
+     */
+    async getAbfrageListElementsThatReferenceBauvorhabenRaw(requestParameters: GetAbfrageListElementsThatReferenceBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AbfrageListElementsDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAbfrageListElementsThatReferenceBauvorhaben.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/abfragen/bauvorhaben/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AbfrageListElementsDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Lade alle Abfragen die ein Bauvorhaben referenzieren für die Listendarstellung
+     */
+    async getAbfrageListElementsThatReferenceBauvorhaben(requestParameters: GetAbfrageListElementsThatReferenceBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AbfrageListElementsDto> {
+        const response = await this.getAbfrageListElementsThatReferenceBauvorhabenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

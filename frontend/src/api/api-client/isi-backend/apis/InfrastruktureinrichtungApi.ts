@@ -34,6 +34,10 @@ export interface DeleteInfrastruktureinrichtungByIdRequest {
     id: string;
 }
 
+export interface GetAllReferencedInfrastruktureinrichtungForBauvorhabenRequest {
+    id: string;
+}
+
 export interface GetInfrastruktureinrichtungByIdRequest {
     id: string;
 }
@@ -107,6 +111,36 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
      */
     async deleteInfrastruktureinrichtungById(requestParameters: DeleteInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.deleteInfrastruktureinrichtungByIdRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Lade alle Infrastruktureinrichtungen welche einem Bauvorhaben zugeordnet sind für die Listendarstellung
+     */
+    async getAllReferencedInfrastruktureinrichtungForBauvorhabenRaw(requestParameters: GetAllReferencedInfrastruktureinrichtungForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastruktureinrichtungListElementsDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAllReferencedInfrastruktureinrichtungForBauvorhaben.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/infrastruktureinrichtung/bauvorhaben/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InfrastruktureinrichtungListElementsDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Lade alle Infrastruktureinrichtungen welche einem Bauvorhaben zugeordnet sind für die Listendarstellung
+     */
+    async getAllReferencedInfrastruktureinrichtungForBauvorhaben(requestParameters: GetAllReferencedInfrastruktureinrichtungForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastruktureinrichtungListElementsDto> {
+        const response = await this.getAllReferencedInfrastruktureinrichtungForBauvorhabenRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
