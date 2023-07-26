@@ -71,10 +71,7 @@ export default class BauratenAggregiertComponent extends Vue {
 
   get aggregatedBauraten(): Array<BaurateModel> {
     if (!_.isNil(this.aggregateBauraten)) {
-      const bauraten = this.extraktBauraten(this.aggregateBauraten);
-      if (!_.isNil(bauraten)) {
-        this.bauratenAggregation(bauraten);
-      }
+      this.bauratenAggregation(this.extraktBauraten(this.aggregateBauraten));
     }
     return _.sortBy(Array.from(this.baurateMap.values()), ["jahr"]);
   }
