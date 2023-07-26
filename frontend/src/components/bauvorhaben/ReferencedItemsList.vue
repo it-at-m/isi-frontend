@@ -59,39 +59,27 @@ import { AbfrageListElementDto } from '@/api/api-client/isi-backend' import { Ab
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import {
   AbfrageListElementDto,
-  AbfrageListElementsDto,
   InfrastruktureinrichtungListElementDto,
-  InfrastruktureinrichtungListElementsDto,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import store from "@/store/index";
 import _ from "lodash";
 import router from "@/router";
 import moment from "moment";
-import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
-import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 
 @Component
-export default class ReferencedItemsList extends Mixins(
-  InfrastruktureinrichtungApiRequestMixin,
-  AbfragelistenApiRequestMixin
-) {
+export default class ReferencedItemsList extends Vue {
+  @Prop()
   abfragen: Array<AbfrageListElementDto> = [];
 
+  @Prop()
   infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
 
   get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
     return store.getters["lookup/infrastruktureinrichtungTyp"];
-  }
-
-  mounted(): void {
-    if (!_.isNil(this.$route.params.id)) {
-      this.getReferencedAbfragen(this.$route.params.id);
-      this.getReferencedInfrastruktureinrichtungen(this.$route.params.id);
-    }
   }
 
   /**
@@ -129,39 +117,6 @@ export default class ReferencedItemsList extends Mixins(
         params: { id: infrastruktureinrichtungListElementDto.id },
       });
     }
-  }
-  /**
-   * GET-Methode um alle Abfragen die dem Bauvorhaben angehören sortiert zurückzugeben.
-   *
-   * @param bauvorhabenId zum ermitteln des Bauvorhabens.
-   */
-  private async getReferencedAbfragen(bauvorhabenId: string): Promise<void> {
-    await this.getReferencedAbfrageListElements(bauvorhabenId, true).then(
-      (abfrageListElementsDto: AbfrageListElementsDto) => {
-        if (!_.isUndefined(abfrageListElementsDto.listElements)) {
-          this.abfragen = abfrageListElementsDto.listElements;
-        } else {
-          this.abfragen = [];
-        }
-      }
-    );
-  }
-
-  /**
-   * GET-Methode um alle Infrastruktureinrichtungen die dem Bauvorhaben angehören sortiert zurückzugeben.
-   *
-   * @param bauvorhabenId zum ermitteln des Bauvorhabens.
-   */
-  private async getReferencedInfrastruktureinrichtungen(bauvorhabenId: string): Promise<void> {
-    await this.getReferencedInfrastruktureinrichtungenListElements(bauvorhabenId, true).then(
-      (infrastruktureinrichtungListElementsDto: InfrastruktureinrichtungListElementsDto) => {
-        if (!_.isUndefined(infrastruktureinrichtungListElementsDto.listElements)) {
-          this.infrastruktureinrichtungen = infrastruktureinrichtungListElementsDto.listElements;
-        } else {
-          this.infrastruktureinrichtungen = [];
-        }
-      }
-    );
   }
 
   private getLookupValue(key: string, list: Array<LookupEntryDto>): string | undefined {

@@ -219,14 +219,23 @@
       v-if="!isNew"
       :card-title="referencedObjectsCardTitle"
     >
-      <referenced-items-list />
+      <referenced-items-list
+        :abfragen="abfragen"
+        :infrastruktureinrichtungen="infrastruktureinrichtungen"
+      />
     </field-group-card>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import {
+  AbfrageListElementDto,
+  BauvorhabenReferencedElementsDto,
+  InfrastruktureinrichtungListElementDto,
+  LookupEntryDto,
+  UncertainBoolean,
+} from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -238,6 +247,8 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import _ from "lodash";
 
 @Component({
   computed: {
@@ -251,7 +262,8 @@ export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  SecurityMixin
+  SecurityMixin,
+  BauvorhabenApiRequestMixin
 ) {
   @VModel({ type: BauvorhabenModel })
   bauvorhaben!: BauvorhabenModel;
@@ -269,6 +281,10 @@ export default class BauvorhabenForm extends Mixins(
   private referencedObjectsCardTitle = "Zugehörige Infrastruktureinrichtungen und Abfragen";
 
   private isNew = true;
+
+  private abfragen: Array<AbfrageListElementDto> = [];
+
+  private infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
@@ -291,6 +307,9 @@ export default class BauvorhabenForm extends Mixins(
 
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
+    if (!this.isNew) {
+      this.getReferencedElements(this.$route.params.id);
+    }
   }
 
   @Watch("bauvorhaben.sobonRelevant", { immediate: true })
@@ -301,6 +320,28 @@ export default class BauvorhabenForm extends Mixins(
       this.sobonJahrVisible = false;
       this.bauvorhaben.sobonJahr = undefined;
     }
+  }
+
+  /**
+   * GET-Methode um alle Abfragen die dem Bauvorhaben angehören sortiert zurückzugeben.
+   *
+   * @param bauvorhabenId zum ermitteln des Bauvorhabens.
+   */
+  private async getReferencedElements(bauvorhabenId: string): Promise<void> {
+    await this.getReferencedBauvorhabenElements(bauvorhabenId, true).then(
+      (bauvorhabenReferencedElementsDto: BauvorhabenReferencedElementsDto) => {
+        if (
+          !_.isUndefined(bauvorhabenReferencedElementsDto.infrastruktureinrichtungen) &&
+          !_.isUndefined(bauvorhabenReferencedElementsDto.infrastrukturabfragen)
+        ) {
+          this.abfragen = bauvorhabenReferencedElementsDto.infrastrukturabfragen;
+          this.infrastruktureinrichtungen = bauvorhabenReferencedElementsDto.infrastruktureinrichtungen;
+        } else {
+          this.abfragen = [];
+          this.infrastruktureinrichtungen = [];
+        }
+      }
+    );
   }
 }
 </script>

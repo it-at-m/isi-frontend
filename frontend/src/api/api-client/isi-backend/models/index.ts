@@ -14,6 +14,7 @@ export * from './BauabschnittDto';
 export * from './BaugebietDto';
 export * from './BaurateDto';
 export * from './BauvorhabenDto';
+export * from './BauvorhabenReferencedElementsDto';
 export * from './BedarfsmeldungFachabteilungenDto';
 export * from './DokumentDto';
 export * from './DokumenteDto';

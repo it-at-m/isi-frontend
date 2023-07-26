@@ -2,9 +2,11 @@ import { Component, Mixins } from "vue-property-decorator";
 import {
   BauvorhabenApi,
   BauvorhabenDto,
+  BauvorhabenReferencedElementsDto,
   CreateBauvorhabenRequest,
   DeleteBauvorhabenRequest,
   GetBauvorhabenByIdRequest,
+  GetBauvorhabenReferencedElementsRequest,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
@@ -24,6 +26,23 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     return this.bauvorhabenApi
       .getBauvorhaben(RequestUtils.getGETConfig())
       .then((response) => response)
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  getReferencedBauvorhabenElements(
+    bauvorhabenId: string,
+    showInInformationList: boolean
+  ): Promise<BauvorhabenReferencedElementsDto> {
+    const requestObject: GetBauvorhabenReferencedElementsRequest = {
+      id: bauvorhabenId,
+    };
+    return this.bauvorhabenApi
+      .getBauvorhabenReferencedElements(requestObject, RequestUtils.getGETConfig())
+      .then((response) => {
+        return response;
+      })
       .catch((error) => {
         throw this.handleError(showInInformationList, error);
       });

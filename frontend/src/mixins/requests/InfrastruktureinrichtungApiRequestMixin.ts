@@ -2,7 +2,6 @@ import { Component, Mixins } from "vue-property-decorator";
 import {
   CreateInfrastruktureinrichtungRequest,
   DeleteInfrastruktureinrichtungByIdRequest,
-  GetAllReferencedInfrastruktureinrichtungForBauvorhabenRequest,
   GetInfrastrukturabfrageByIdRequest,
   InfrastruktureinrichtungApi,
   InfrastruktureinrichtungDto,
@@ -30,23 +29,6 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
   ): Promise<InfrastruktureinrichtungListElementsDto> {
     return this.infrastruktureinrichtungApi
       .getInfrastruktureinrichtungListElements(RequestUtils.getGETConfig())
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
-  }
-
-  getReferencedInfrastruktureinrichtungenListElements(
-    bauvorhabenId: string,
-    showInInformationList: boolean
-  ): Promise<InfrastruktureinrichtungListElementsDto> {
-    const requestObject: GetAllReferencedInfrastruktureinrichtungForBauvorhabenRequest = {
-      id: bauvorhabenId,
-    };
-    return this.infrastruktureinrichtungApi
-      .getAllReferencedInfrastruktureinrichtungForBauvorhaben(requestObject, RequestUtils.getGETConfig())
       .then((response) => {
         return response;
       })
