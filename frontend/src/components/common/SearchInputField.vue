@@ -48,9 +48,9 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
 
   private suggest(query: string): void {
     const splittedSearchwords = _.split(query, " ");
-    const searchQueryForSuggestion = _.last(splittedSearchwords);
-    if (!_.isNil(searchQueryForSuggestion) && !_.isEmpty(searchQueryForSuggestion)) {
-      this.searchForSearchwordSuggestion(searchQueryForSuggestion).then((suchwortSuggestions) => {
+    const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
+    if (!_.isEmpty(queryForSearchwordSuggestion)) {
+      this.searchForSearchwordSuggestion(queryForSearchwordSuggestion).then((suchwortSuggestions) => {
         const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
           const numberOfSplittedSearchwords = splittedSearchwords.length;
           if (numberOfSplittedSearchwords > 0) {
