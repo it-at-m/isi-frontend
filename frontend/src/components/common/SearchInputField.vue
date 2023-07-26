@@ -12,7 +12,7 @@
     prepend-inner-icon="mdi-magnify"
     return-object
     solo-inverted
-    @keyup.enter="searchForEntitiesWithSearchQuery"
+    @keyup.enter="searchEntitiesForSelectedSuggestion"
     @update:list-index="updateSearchQuery"
     @update:search-input="suggest"
     @click:clear="clearSearch"
@@ -36,15 +36,11 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   // Suche
   private searchQuery = "";
 
-  private currentIndexSuchwortSuggestion = -1;
-
   private suggestions: Array<string> = [];
 
   private selectedSuggestion = "";
 
   private updateSearchQuery(itemIndex: number) {
-    this.currentIndexSuchwortSuggestion = itemIndex;
-    console.log(itemIndex);
     if (itemIndex > -1) {
       this.searchQuery = this.suggestions[itemIndex];
     }
@@ -54,23 +50,22 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     const splittedSearchwords = _.split(query, " ");
     const searchQueryForSuggestion = _.last(splittedSearchwords);
     if (!_.isNil(searchQueryForSuggestion) && !_.isEmpty(searchQueryForSuggestion)) {
-      console.log("suggest: " + searchQueryForSuggestion);
       this.searchForSearchwordSuggestion(searchQueryForSuggestion).then((suchwortSuggestions) => {
-        this.suggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
+        const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
           const numberOfSplittedSearchwords = splittedSearchwords.length;
           if (numberOfSplittedSearchwords > 0) {
             splittedSearchwords[numberOfSplittedSearchwords - 1] = suchwortSuggestion;
           }
           return _.join(splittedSearchwords, " ");
         });
+        this.suggestions = [query].concat(foundSuggestions);
       });
     }
   }
 
-  private searchForEntitiesWithSearchQuery(): void {
-    console.log("Do Search: " + this.currentIndexSuchwortSuggestion);
+  private searchEntitiesForSelectedSuggestion(): void {
     const searchQueryForEntitiesDto = {
-      searchQuery: this.searchQuery,
+      searchQuery: _.isNil(this.searchQuery) ? "" : this.searchQuery,
       selectInfrastrukturabfrage: true,
       selectBauvorhaben: true,
       selectGrundschule: true,
@@ -80,7 +75,6 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
       selectKinderkrippe: true,
       selectMittelschule: true,
     } as SearchQueryForEntitiesDto;
-    console.log("Do Search: " + this.searchQuery);
     this.suggestions = [];
     this.selectedSuggestion = "";
     this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => searchResults);
