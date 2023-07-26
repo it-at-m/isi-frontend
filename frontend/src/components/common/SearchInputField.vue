@@ -2,7 +2,7 @@
   <v-autocomplete
     id="suchfeld"
     v-model="selectedSuggestion"
-    :items="suchwortSuggestions"
+    :items="suggestions"
     :search-input.sync="searchQuery"
     clearable
     flat
@@ -12,7 +12,7 @@
     prepend-inner-icon="mdi-magnify"
     return-object
     solo-inverted
-    @keyup.enter="addSelectedSuggestionsToSearchQueryOrSearchForEntities"
+    @keyup.enter="searchForEntitiesWithSearchQuery"
     @update:list-index="updateSearchQuery"
     @update:search-input="suggest"
     @click:clear="clearSearch"
@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import { SearchQueryForEntitiesDto, SuchwortSuggestionsDto } from "@/api/api-client/isi-backend";
+import { SearchQueryForEntitiesDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
@@ -38,56 +38,56 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
 
   private currentIndexSuchwortSuggestion = -1;
 
-  private suggestions: SuchwortSuggestionsDto = { suchwortSuggestions: [] };
+  private suggestions: Array<string> = [];
 
   private selectedSuggestion = "";
-
-  get suchwortSuggestions(): Array<string> {
-    return _.isNil(this.suggestions.suchwortSuggestions) ? [] : this.suggestions.suchwortSuggestions;
-  }
 
   private updateSearchQuery(itemIndex: number) {
     this.currentIndexSuchwortSuggestion = itemIndex;
     console.log(itemIndex);
+    if (itemIndex > -1) {
+      this.searchQuery = this.suggestions[itemIndex];
+    }
   }
 
   private suggest(query: string): void {
     const splittedSearchwords = _.split(query, " ");
     const searchQueryForSuggestion = _.last(splittedSearchwords);
     if (!_.isNil(searchQueryForSuggestion) && !_.isEmpty(searchQueryForSuggestion)) {
+      console.log("suggest: " + searchQueryForSuggestion);
       this.searchForSearchwordSuggestion(searchQueryForSuggestion).then((suchwortSuggestions) => {
-        this.suggestions = suchwortSuggestions;
+        this.suggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
+          const numberOfSplittedSearchwords = splittedSearchwords.length;
+          if (numberOfSplittedSearchwords > 0) {
+            splittedSearchwords[numberOfSplittedSearchwords - 1] = suchwortSuggestion;
+          }
+          return _.join(splittedSearchwords, " ");
+        });
       });
     }
   }
 
-  private addSelectedSuggestionsToSearchQueryOrSearchForEntities(): void {
-    if (this.currentIndexSuchwortSuggestion < 0) {
-      const searchQueryForEntitiesDto = {
-        searchQuery: this.searchQuery,
-        selectInfrastrukturabfrage: true,
-        selectBauvorhaben: true,
-        selectGrundschule: true,
-        selectGsNachmittagBetreuung: true,
-        selectHausFuerKinder: true,
-        selectKindergarten: true,
-        selectKinderkrippe: true,
-        selectMittelschule: true,
-      } as SearchQueryForEntitiesDto;
-      console.log("Do Search: " + this.searchQuery);
-      this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => searchResults);
-    } else {
-      this.selectedSuggestion += this.suchwortSuggestions[this.currentIndexSuchwortSuggestion] + " ";
-      this.searchQuery += this.selectedSuggestion + "";
-      console.log("selectedSuggestion: " + this.selectedSuggestion);
-      console.log("this.searchQuery: " + this.searchQuery);
-    }
+  private searchForEntitiesWithSearchQuery(): void {
+    console.log("Do Search: " + this.currentIndexSuchwortSuggestion);
+    const searchQueryForEntitiesDto = {
+      searchQuery: this.searchQuery,
+      selectInfrastrukturabfrage: true,
+      selectBauvorhaben: true,
+      selectGrundschule: true,
+      selectGsNachmittagBetreuung: true,
+      selectHausFuerKinder: true,
+      selectKindergarten: true,
+      selectKinderkrippe: true,
+      selectMittelschule: true,
+    } as SearchQueryForEntitiesDto;
+    console.log("Do Search: " + this.searchQuery);
+    this.suggestions = [];
+    this.selectedSuggestion = "";
+    this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => searchResults);
   }
 
   private clearSearch(): void {
-    this.suggestions = {
-      suchwortSuggestions: [],
-    };
+    this.suggestions = [];
     this.searchQuery = "";
     this.selectedSuggestion = "";
   }
