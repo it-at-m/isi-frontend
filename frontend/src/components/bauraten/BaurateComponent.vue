@@ -42,7 +42,7 @@
             v-model="baurate.geschossflaecheWohnenGeplant"
             :disabled="!isEditable"
             :rules="[validationRules.validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
-            label="Geschossfläche Wohnen geplant"
+            label="GF Wohnen geplant"
             :suffix="suffixGeschossflaecheWohnen"
           />
         </v-col>
