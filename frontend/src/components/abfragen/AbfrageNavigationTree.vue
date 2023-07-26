@@ -369,13 +369,13 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
       this.markTreeItem(abfrageRootTreeItem);
     }
     this.createAbfragevariantenTreeItems(
-      abfrageRootTreeItem,
+      abfrageTreeItems,
       abfrage,
       abfrage.abfragevarianten,
       AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
     );
     this.createAbfragevariantenTreeItems(
-      abfrageRootTreeItem,
+      abfrageTreeItems,
       abfrage,
       abfrage.abfragevariantenSachbearbeitung,
       AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
@@ -400,7 +400,7 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
   }
 
   private createAbfragevariantenTreeItems(
-    parentTreeItem: AbfrageTreeItem,
+    abfrageTreeItems: AbfrageTreeItem[],
     abfrage: InfrastrukturabfrageDto,
     abfragevarianten: Array<AbfragevarianteDto> | undefined,
     contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
@@ -408,7 +408,6 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     _.toArray(abfragevarianten).forEach((abfragevariante) => {
       let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(
         this.treeItemKey++,
-        parentTreeItem,
         abfrage,
         contextAnzeigeAbfragevariante,
         abfragevariante
@@ -419,19 +418,14 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
         contextAnzeigeAbfragevariante,
         abfragevariante
       );
-      parentTreeItem.children.push(abfragevarianteTreeItem);
+      abfrageTreeItems.push(abfragevarianteTreeItem);
     });
     if (
       this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante) &&
       _.toArray(abfragevarianten).length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
     ) {
-      parentTreeItem.children.push(
-        this.createAddAbfragevarianteTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          contextAnzeigeAbfragevariante
-        )
+      abfrageTreeItems.push(
+        this.createAddAbfragevarianteTreeItem(this.treeItemKey++, abfrage, contextAnzeigeAbfragevariante)
       );
     }
   }
@@ -626,14 +620,13 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   private createAbfragevarianteTreeItem(
     id: number,
-    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     const item = this.createAbfrageTreeItem(
       id,
-      parentTreeItem,
+      undefined,
       this.getNameTreeElementAbfragevariante(abfragevariante),
       AbfrageTreeItemType.ABFRAGEVARIANTE,
       abfrage,
@@ -653,13 +646,12 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   private createAddAbfragevarianteTreeItem(
     id: number,
-    parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
     conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
   ) {
     return this.createAbfrageTreeItem(
       id,
-      parentTreeItem,
+      undefined,
       this.nameTreeElementAddAbfragevariante,
       AbfrageTreeItemType.ADD_ABFRAGEVARIANTE,
       abfrage,
