@@ -71,27 +71,30 @@ export default class BauratenAggregiertComponent extends Vue {
 
   get aggregatedBauraten(): Array<BaurateModel> {
     if (!_.isNil(this.aggregateBauraten)) {
-      this.deepLayerAggregation(this.aggregateBauraten);
+      const bauraten = this.extraktBauraten(this.aggregateBauraten);
+      if (!_.isNil(bauraten)) {
+        this.bauratenAggregation(bauraten);
+      }
     }
     return _.sortBy(Array.from(this.baurateMap.values()), ["jahr"]);
   }
 
-  private deepLayerAggregation(layer: AbfragevarianteModel | BauabschnittModel | BaugebietModel) {
+  private extraktBauraten(layer: AbfragevarianteModel | BauabschnittModel | BaugebietModel): Array<BaurateModel> {
     if (layer instanceof AbfragevarianteModel) {
       const abfragevariante: AbfragevarianteModel = this.aggregateBauraten as AbfragevarianteModel;
       if (!_.isNil(abfragevariante.bauabschnitte)) {
-        abfragevariante.bauabschnitte.forEach((bauabschnitt: BauabschnittDto) => {
-          this.deepLayerAggregation(new BauabschnittModel(bauabschnitt));
+        return abfragevariante.bauabschnitte.flatMap((bauabschnitt: BauabschnittDto) => {
+          return this.extraktBauraten(new BauabschnittModel(bauabschnitt));
         });
+      } else {
+        return [];
       }
     } else if (layer instanceof BauabschnittModel) {
-      (layer as BauabschnittModel).baugebiete.forEach((baugebiet: BaugebietDto) => {
-        this.deepLayerAggregation(new BaugebietModel(baugebiet));
+      return (layer as BauabschnittModel).baugebiete.flatMap((baugebiet: BaugebietDto) => {
+        return this.extraktBauraten(new BaugebietModel(baugebiet));
       });
-    } else if (layer instanceof BaugebietModel) {
-      this.bauratenAggregation(
-        (layer as BaugebietModel).bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate))
-      );
+    } else {
+      return (layer as BaugebietModel).bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
     }
   }
 
@@ -99,27 +102,23 @@ export default class BauratenAggregiertComponent extends Vue {
     bauraten.forEach((baurate: BaurateModel) => {
       const aggregated = this.baurateMap.get(baurate.jahr);
       if (!_.isNil(aggregated)) {
-        this.baurateAggreation(aggregated, baurate);
+        if (!_.isNil(baurate.anzahlWeGeplant)) {
+          if (_.isNil(aggregated.anzahlWeGeplant)) {
+            aggregated.anzahlWeGeplant = 0;
+          }
+          aggregated.anzahlWeGeplant += baurate.anzahlWeGeplant;
+        }
+        if (!_.isNil(baurate.geschossflaecheWohnenGeplant)) {
+          if (_.isNil(aggregated.geschossflaecheWohnenGeplant)) {
+            aggregated.geschossflaecheWohnenGeplant = 0;
+          }
+          aggregated.geschossflaecheWohnenGeplant += baurate.geschossflaecheWohnenGeplant;
+        }
       } else {
         const clone = _.clone(baurate);
         this.baurateMap.set(clone.jahr, clone);
       }
     });
-  }
-
-  private baurateAggreation(aggregated: BaurateModel, baurate: BaurateModel) {
-    if (!_.isNil(baurate.anzahlWeGeplant)) {
-      if (_.isNil(aggregated.anzahlWeGeplant)) {
-        aggregated.anzahlWeGeplant = 0;
-      }
-      aggregated.anzahlWeGeplant += baurate.anzahlWeGeplant;
-    }
-    if (!_.isNil(baurate.geschossflaecheWohnenGeplant)) {
-      if (_.isNil(aggregated.geschossflaecheWohnenGeplant)) {
-        aggregated.geschossflaecheWohnenGeplant = 0;
-      }
-      aggregated.geschossflaecheWohnenGeplant += baurate.geschossflaecheWohnenGeplant;
-    }
   }
 
   get bauratenJahreHeaders(): DataTableHeader[] {
