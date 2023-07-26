@@ -13,18 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    InfrastruktureinrichtungListElementDtoAllOf,
+    InfrastruktureinrichtungListElementDtoAllOfFromJSON,
+    InfrastruktureinrichtungListElementDtoAllOfFromJSONTyped,
+    InfrastruktureinrichtungListElementDtoAllOfToJSON,
+} from './InfrastruktureinrichtungListElementDtoAllOf';
+import {
+    SearchResultDto,
+    SearchResultDtoFromJSON,
+    SearchResultDtoFromJSONTyped,
+    SearchResultDtoToJSON,
+} from './SearchResultDto';
+
 /**
  * 
  * @export
  * @interface InfrastruktureinrichtungListElementDto
  */
-export interface InfrastruktureinrichtungListElementDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungListElementDto
-     */
-    type?: InfrastruktureinrichtungListElementDtoTypeEnum;
+export interface InfrastruktureinrichtungListElementDto extends SearchResultDto {
     /**
      * 
      * @type {string}
@@ -45,16 +52,6 @@ export interface InfrastruktureinrichtungListElementDto {
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum;
 }
 
-
-/**
- * @export
- */
-export const InfrastruktureinrichtungListElementDtoTypeEnum = {
-    Infrastrukturabfrage: 'INFRASTRUKTURABFRAGE',
-    Bauvorhaben: 'BAUVORHABEN',
-    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
-} as const;
-export type InfrastruktureinrichtungListElementDtoTypeEnum = typeof InfrastruktureinrichtungListElementDtoTypeEnum[keyof typeof InfrastruktureinrichtungListElementDtoTypeEnum];
 
 /**
  * @export
@@ -80,8 +77,7 @@ export function InfrastruktureinrichtungListElementDtoFromJSONTyped(json: any, i
         return json;
     }
     return {
-        
-        'type': !exists(json, 'type') ? undefined : json['type'],
+        ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
@@ -96,8 +92,7 @@ export function InfrastruktureinrichtungListElementDtoToJSON(value?: Infrastrukt
         return null;
     }
     return {
-        
-        'type': value.type,
+        ...SearchResultDtoToJSON(value),
         'id': value.id,
         'nameEinrichtung': value.nameEinrichtung,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,

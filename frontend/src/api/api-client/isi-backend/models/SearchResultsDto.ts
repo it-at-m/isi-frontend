@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    SearchResultDto,
-    SearchResultDtoFromJSON,
-    SearchResultDtoFromJSONTyped,
-    SearchResultDtoToJSON,
-} from './SearchResultDto';
+    SearchResultsDtoSearchResultsInner,
+    SearchResultsDtoSearchResultsInnerFromJSON,
+    SearchResultsDtoSearchResultsInnerFromJSONTyped,
+    SearchResultsDtoSearchResultsInnerToJSON,
+} from './SearchResultsDtoSearchResultsInner';
 
 /**
  * 
@@ -28,10 +28,10 @@ import {
 export interface SearchResultsDto {
     /**
      * 
-     * @type {Array<SearchResultDto>}
+     * @type {Array<SearchResultsDtoSearchResultsInner>}
      * @memberof SearchResultsDto
      */
-    searchResults?: Array<SearchResultDto>;
+    searchResults?: Array<SearchResultsDtoSearchResultsInner>;
 }
 
 export function SearchResultsDtoFromJSON(json: any): SearchResultsDto {
@@ -44,7 +44,7 @@ export function SearchResultsDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'searchResults': !exists(json, 'searchResults') ? undefined : ((json['searchResults'] as Array<any>).map(SearchResultDtoFromJSON)),
+        'searchResults': !exists(json, 'searchResults') ? undefined : ((json['searchResults'] as Array<any>).map(SearchResultsDtoSearchResultsInnerFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function SearchResultsDtoToJSON(value?: SearchResultsDto | null): any {
     }
     return {
         
-        'searchResults': value.searchResults === undefined ? undefined : ((value.searchResults as Array<any>).map(SearchResultDtoToJSON)),
+        'searchResults': value.searchResults === undefined ? undefined : ((value.searchResults as Array<any>).map(SearchResultsDtoSearchResultsInnerToJSON)),
     };
 }
 

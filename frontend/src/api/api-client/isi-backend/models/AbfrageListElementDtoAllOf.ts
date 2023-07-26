@@ -14,18 +14,6 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    AbfrageListElementDtoAllOf,
-    AbfrageListElementDtoAllOfFromJSON,
-    AbfrageListElementDtoAllOfFromJSONTyped,
-    AbfrageListElementDtoAllOfToJSON,
-} from './AbfrageListElementDtoAllOf';
-import {
-    SearchResultDto,
-    SearchResultDtoFromJSON,
-    SearchResultDtoFromJSONTyped,
-    SearchResultDtoToJSON,
-} from './SearchResultDto';
-import {
     StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
@@ -41,52 +29,52 @@ import {
 /**
  * 
  * @export
- * @interface AbfrageListElementDto
+ * @interface AbfrageListElementDtoAllOf
  */
-export interface AbfrageListElementDto extends SearchResultDto {
+export interface AbfrageListElementDtoAllOf {
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageListElementDtoAllOf
      */
     id?: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageListElementDtoAllOf
      */
     nameAbfrage?: string;
     /**
      * 
      * @type {Set<StadtbezirkDto>}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageListElementDtoAllOf
      */
     stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
      * @type {StatusAbfrage}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageListElementDtoAllOf
      */
     statusAbfrage?: StatusAbfrage;
     /**
      * 
      * @type {Date}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageListElementDtoAllOf
      */
     fristStellungnahme?: Date;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageListElementDtoAllOf
      */
-    sobonJahr?: AbfrageListElementDtoSobonJahrEnum;
+    sobonJahr?: AbfrageListElementDtoAllOfSobonJahrEnum;
 }
 
 
 /**
  * @export
  */
-export const AbfrageListElementDtoSobonJahrEnum = {
+export const AbfrageListElementDtoAllOfSobonJahrEnum = {
     _1995: 'JAHR_1995',
     _1997: 'JAHR_1997',
     _2001: 'JAHR_2001',
@@ -96,19 +84,19 @@ export const AbfrageListElementDtoSobonJahrEnum = {
     _2017Plus: 'JAHR_2017_PLUS',
     _2021: 'JAHR_2021'
 } as const;
-export type AbfrageListElementDtoSobonJahrEnum = typeof AbfrageListElementDtoSobonJahrEnum[keyof typeof AbfrageListElementDtoSobonJahrEnum];
+export type AbfrageListElementDtoAllOfSobonJahrEnum = typeof AbfrageListElementDtoAllOfSobonJahrEnum[keyof typeof AbfrageListElementDtoAllOfSobonJahrEnum];
 
 
-export function AbfrageListElementDtoFromJSON(json: any): AbfrageListElementDto {
-    return AbfrageListElementDtoFromJSONTyped(json, false);
+export function AbfrageListElementDtoAllOfFromJSON(json: any): AbfrageListElementDtoAllOf {
+    return AbfrageListElementDtoAllOfFromJSONTyped(json, false);
 }
 
-export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageListElementDto {
+export function AbfrageListElementDtoAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageListElementDtoAllOf {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
-        ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
+        
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
@@ -118,7 +106,7 @@ export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null): any {
+export function AbfrageListElementDtoAllOfToJSON(value?: AbfrageListElementDtoAllOf | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -126,7 +114,7 @@ export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null
         return null;
     }
     return {
-        ...SearchResultDtoToJSON(value),
+        
         'id': value.id,
         'nameAbfrage': value.nameAbfrage,
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),

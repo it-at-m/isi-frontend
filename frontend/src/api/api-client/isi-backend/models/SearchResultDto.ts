@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+     AbfrageListElementDtoFromJSONTyped,
+     BauvorhabenListElementDtoFromJSONTyped,
+     InfrastruktureinrichtungListElementDtoFromJSONTyped
+} from './';
+
 /**
  * 
  * @export
@@ -46,6 +52,17 @@ export function SearchResultDtoFromJSON(json: any): SearchResultDto {
 export function SearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
+        if (json['type'] === 'AbfrageListElementDto') {
+            return AbfrageListElementDtoFromJSONTyped(json, true);
+        }
+        if (json['type'] === 'BauvorhabenListElementDto') {
+            return BauvorhabenListElementDtoFromJSONTyped(json, true);
+        }
+        if (json['type'] === 'InfrastruktureinrichtungListElementDto') {
+            return InfrastruktureinrichtungListElementDtoFromJSONTyped(json, true);
+        }
     }
     return {
         
