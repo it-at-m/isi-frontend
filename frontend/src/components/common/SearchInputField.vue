@@ -33,7 +33,6 @@ import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixi
 
 @Component({})
 export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
-  // Suche
   private searchQuery = "";
 
   private suggestions: Array<string> = [];
