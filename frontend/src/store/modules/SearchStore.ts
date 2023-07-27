@@ -3,13 +3,16 @@ import {
   BauvorhabenDto,
   InfrastruktureinrichtungDto,
   InfrastruktureinrichtungListElementDto,
+  SearchResultDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
+import _ from "lodash";
 
 const state = {
+  searchResults: [] as Array<SearchResultDto>,
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
@@ -28,6 +31,9 @@ export default {
   state,
 
   getters: {
+    searchResults: (): Array<SearchResultDto> => {
+      return state.searchResults;
+    },
     resultAbfrage: (state: SearchState): Array<AbfrageListElementDto> | undefined => {
       return state.resultAbfrage;
     },
@@ -55,6 +61,9 @@ export default {
   },
 
   mutations: {
+    searchResults(state: SearchState, items: SearchResultDto[]): void {
+      state.searchResults = _.toArray(items);
+    },
     resultAbfrage(state: SearchState, items: AbfrageListElementDto[]): void {
       state.resultAbfrage = items;
     },
@@ -94,6 +103,9 @@ export default {
   },
 
   actions: {
+    searchResults(context: ActionContext<SearchState, RootState>, items: SearchResultDto[]): void {
+      context.commit("searchResults", _.toArray(items));
+    },
     resultAbfrage(context: ActionContext<SearchState, RootState>, items: AbfrageListElementDto[]): void {
       context.commit("resultAbfrage", items);
     },

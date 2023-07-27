@@ -78,8 +78,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     this.suggestions = [];
     this.selectedSuggestion = "";
     this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
-      // Suchergebnisse in Store einfügen.
-      console.log(searchResults);
+      this.$store.commit("search/searchResults", _.cloneDeep(_.toArray(searchResults.searchResults)));
     });
   }
 
