@@ -111,34 +111,20 @@ import { convertDateForFrontend } from "@/utils/Formatter";
   components: { DefaultLayout },
 })
 export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
-  private searchResults: Array<SearchResultDto> = [];
-
-  @Watch("$store.state.search.searchResults", { immediate: true, deep: true })
-  private watchSearchResults(): void {
-    this.searchResults = this.$store.getters["search/searchResults"];
+  get searchResults(): Array<SearchResultDto> {
+    return this.$store.getters["search/searchResults"];
   }
 
-  get infrastruktureinrichtungTypList(): LookupEntryDto[] {
+  get infrastruktureinrichtungTypList(): Array<LookupEntryDto> {
     return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
   }
 
-  get statusAbfrageList(): LookupEntryDto[] {
+  get statusAbfrageList(): Array<LookupEntryDto> {
     return this.$store.getters["lookup/statusAbfrage"];
   }
 
-  get standVorhabenList(): LookupEntryDto[] {
-    const list = this.$store.getters["lookup/standVorhaben"];
-    return list ? list : [];
-  }
-
-  private getIdSearchResult(searchResult: SearchResultDto): string | undefined {
-    if (this.isTypeOfInfrastrukturabfrage(searchResult)) {
-      return this.castToAbfrageListElementDto(searchResult).id;
-    } else if (this.isTypeOfBauvorhaben(searchResult)) {
-      return this.castToBauvorhabenListElementDto(searchResult).id;
-    } else {
-      return this.castToInfrastruktureinrichtungListElementDto(searchResult).id;
-    }
+  get standVorhabenList(): Array<LookupEntryDto> {
+    return this.$store.getters["lookup/standVorhaben"];
   }
 
   // Infrastrukturabfragen
@@ -199,15 +185,8 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     return _.isNil(grundstuecksgroesse) ? "" : grundstuecksgroesse.toLocaleString("de-DE");
   }
 
-  private getLookupValueBauvorhaben(key: string, list: Array<LookupEntryDto>): string {
-    if (list) {
-      const value = list.find((obj: LookupEntryDto) => obj.key === key)?.value;
-      if (value) {
-        return value;
-      }
-    }
-
-    return key;
+  private getLookupValueBauvorhaben(key: string, list: Array<LookupEntryDto>): string | undefined {
+    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 
   // Infrastruktureinrichtungen
