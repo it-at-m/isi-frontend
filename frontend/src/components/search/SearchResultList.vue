@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from "vue-property-decorator";
-import { SearchQueryForEntitiesDto, SearchResultDto } from "@/api/api-client/isi-backend";
+import { SearchResultDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
