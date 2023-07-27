@@ -11,7 +11,7 @@
             v-model="abfragevarianteSachbearbeitung.geschossflaecheWohnenPlanungsursaechlich"
             :disabled="!isEditableBySachbearbeitung()"
             class="mx-3"
-            label="Planungsursächliche Geschossfläche Wohnen"
+            label="Planungsursächliche GF Wohnen"
             :suffix="fieldPrefixesSuffixes.squareMeter"
           />
         </v-col>
