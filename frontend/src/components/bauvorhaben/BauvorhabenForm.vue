@@ -219,10 +219,7 @@
       v-if="!isNew"
       :card-title="referencedObjectsCardTitle"
     >
-      <referenced-items-list
-        :abfragen="abfragen"
-        :infrastruktureinrichtungen="infrastruktureinrichtungen"
-      />
+      <referenced-items-list />
     </field-group-card>
   </v-container>
 </template>
@@ -231,7 +228,6 @@
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import {
   AbfrageListElementDto,
-  BauvorhabenReferencedElementsDto,
   InfrastruktureinrichtungListElementDto,
   LookupEntryDto,
   UncertainBoolean,
@@ -248,7 +244,6 @@ import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import _ from "lodash";
 
 @Component({
   computed: {
@@ -307,9 +302,6 @@ export default class BauvorhabenForm extends Mixins(
 
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
-    if (!this.isNew) {
-      this.getReferencedElements(this.$route.params.id);
-    }
   }
 
   @Watch("bauvorhaben.sobonRelevant", { immediate: true })
@@ -320,28 +312,6 @@ export default class BauvorhabenForm extends Mixins(
       this.sobonJahrVisible = false;
       this.bauvorhaben.sobonJahr = undefined;
     }
-  }
-
-  /**
-   * GET-Methode um alle Abfragen die dem Bauvorhaben angehören sortiert zurückzugeben.
-   *
-   * @param bauvorhabenId zum ermitteln des Bauvorhabens.
-   */
-  private async getReferencedElements(bauvorhabenId: string): Promise<void> {
-    await this.getReferencedBauvorhabenElements(bauvorhabenId, true).then(
-      (bauvorhabenReferencedElementsDto: BauvorhabenReferencedElementsDto) => {
-        if (
-          !_.isUndefined(bauvorhabenReferencedElementsDto.infrastruktureinrichtungen) &&
-          !_.isUndefined(bauvorhabenReferencedElementsDto.infrastrukturabfragen)
-        ) {
-          this.abfragen = bauvorhabenReferencedElementsDto.infrastrukturabfragen;
-          this.infrastruktureinrichtungen = bauvorhabenReferencedElementsDto.infrastruktureinrichtungen;
-        } else {
-          this.abfragen = [];
-          this.infrastruktureinrichtungen = [];
-        }
-      }
-    );
   }
 }
 </script>

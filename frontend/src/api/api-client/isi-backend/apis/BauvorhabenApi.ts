@@ -15,15 +15,18 @@
 
 import * as runtime from '../runtime';
 import {
+    AbfrageListElementDto,
+    AbfrageListElementDtoFromJSON,
+    AbfrageListElementDtoToJSON,
     BauvorhabenDto,
     BauvorhabenDtoFromJSON,
     BauvorhabenDtoToJSON,
-    BauvorhabenReferencedElementsDto,
-    BauvorhabenReferencedElementsDtoFromJSON,
-    BauvorhabenReferencedElementsDtoToJSON,
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+    InfrastruktureinrichtungListElementDto,
+    InfrastruktureinrichtungListElementDtoFromJSON,
+    InfrastruktureinrichtungListElementDtoToJSON,
 } from '../models';
 
 export interface CreateBauvorhabenRequest {
@@ -38,7 +41,11 @@ export interface GetBauvorhabenByIdRequest {
     id: string;
 }
 
-export interface GetBauvorhabenReferencedElementsRequest {
+export interface GetReferencedInfrastrukturabfragenRequest {
+    id: string;
+}
+
+export interface GetReferencedInfrastruktureinrichtungRequest {
     id: string;
 }
 
@@ -172,12 +179,12 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Das Ergebnis der Abfrage wird anhand des Erstellungsdatums aufsteigend sortiert.  Das Ergebenis der Infrastruktureinrichtungen wird anhand des Infrastruktureinrichtungstypen und innerhalb der Infrastruktureinrichtungen alphabetisch sortiert.
-     * Lade alle Abfragen und Infrastruktureinrichtungen die einem Bauvorhaben angehören
+     * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
+     * Lade alle Infrastrukturabfragen die einem Bauvorhaben angehören
      */
-    async getBauvorhabenReferencedElementsRaw(requestParameters: GetBauvorhabenReferencedElementsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenReferencedElementsDto>> {
+    async getReferencedInfrastrukturabfragenRaw(requestParameters: GetReferencedInfrastrukturabfragenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AbfrageListElementDto>>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getBauvorhabenReferencedElements.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedInfrastrukturabfragen.');
         }
 
         const queryParameters: any = {};
@@ -185,21 +192,53 @@ export class BauvorhabenApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/bauvorhaben/referenced/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/bauvorhaben/referenced/abfragen/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenReferencedElementsDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AbfrageListElementDtoFromJSON));
     }
 
     /**
-     * Das Ergebnis der Abfrage wird anhand des Erstellungsdatums aufsteigend sortiert.  Das Ergebenis der Infrastruktureinrichtungen wird anhand des Infrastruktureinrichtungstypen und innerhalb der Infrastruktureinrichtungen alphabetisch sortiert.
-     * Lade alle Abfragen und Infrastruktureinrichtungen die einem Bauvorhaben angehören
+     * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
+     * Lade alle Infrastrukturabfragen die einem Bauvorhaben angehören
      */
-    async getBauvorhabenReferencedElements(requestParameters: GetBauvorhabenReferencedElementsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BauvorhabenReferencedElementsDto> {
-        const response = await this.getBauvorhabenReferencedElementsRaw(requestParameters, initOverrides);
+    async getReferencedInfrastrukturabfragen(requestParameters: GetReferencedInfrastrukturabfragenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AbfrageListElementDto>> {
+        const response = await this.getReferencedInfrastrukturabfragenRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Das Ergebnis wird anhand des InfrastruktureinrichtungTyps und innerhalb des Types alphabetisch sortiert
+     * Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören
+     */
+    async getReferencedInfrastruktureinrichtungRaw(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<InfrastruktureinrichtungListElementDto>>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedInfrastruktureinrichtung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/bauvorhaben/referenced/infrastruktureinrichtung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(InfrastruktureinrichtungListElementDtoFromJSON));
+    }
+
+    /**
+     * Das Ergebnis wird anhand des InfrastruktureinrichtungTyps und innerhalb des Types alphabetisch sortiert
+     * Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören
+     */
+    async getReferencedInfrastruktureinrichtung(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<InfrastruktureinrichtungListElementDto>> {
+        const response = await this.getReferencedInfrastruktureinrichtungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

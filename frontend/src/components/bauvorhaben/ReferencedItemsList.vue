@@ -2,64 +2,69 @@ import { AbfrageListElementDto } from '@/api/api-client/isi-backend' import { Ab
 '@/api/api-client/isi-backend' import { AbfrageListElementDto } from '@/api/api-client/isi-backend'
 <template>
   <div>
-    <div>
-      <!-- Abfragen List -->
-      <v-card
-        outlined
-        class="mb-12 transition-swing"
-      >
-        <v-list>
-          <v-subheader class="text-h5">Abfragen</v-subheader>
+    <!-- Abfragen List -->
+    <v-card
+      outlined
+      class="mb-12 transition-swing"
+    >
+      <v-list>
+        <v-list-group
+          :value="isAbfrageListOpen"
+          @click="isAbfrageListOpen = !isAbfrageListOpen"
+        >
+          <template #activator>
+            <v-list-item-title class="text-h5">Abfragen</v-list-item-title>
+          </template>
           <v-list-item-group color="primary">
             <v-list-item
               v-for="(abfrage, index) in abfragen"
               :key="index"
+              link
             >
-              <v-list-item-content @click="routeToAbfrageInfo(abfrage)">
-                <v-list-item-title :id="'abfragen_bauvorhaben_reference_' + index"
-                  >Name der Abfrage: {{ abfrage.nameAbfrage }}</v-list-item-title
-                >
-                <v-list-item-subtitle>Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}</v-list-item-subtitle>
+              <v-list-item-content
+                :id="'abfragen_bauvorhaben_reference_' + index"
+                @click="routeToAbfrageInfo(abfrage)"
+              >
+                <v-list-item-title>Name der Abfrage: {{ abfrage.nameAbfrage }}</v-list-item-title>
+                <v-list-item-subtitle
+                  >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
-        </v-list>
-      </v-card>
-    </div>
-    <div>
-      <!-- Infrastruktureinrichtung List -->
-      <v-card
-        outlined
-        class="transition-swing"
-      >
-        <v-list>
-          <v-subheader class="text-h5">Infrastruktureinrichtungen</v-subheader>
+        </v-list-group>
+        <v-list-group
+          :value="isInfraListOpen"
+          @click="isInfraListOpen = !isInfraListOpen"
+        >
+          <template #activator>
+            <v-list-item-title class="text-h5">Infrastruktureinrichtungen</v-list-item-title>
+          </template>
           <v-list-item-group color="primary">
             <v-list-item
               v-for="(infra, index) in infrastruktureinrichtungen"
               :key="index"
             >
-              <v-list-item-content @click="routeToInfrastruktureinrichtungInfo(infra)">
-                <v-list-item-title :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
-                  >Name der Einrichtung: {{ infra.nameEinrichtung }}</v-list-item-title
-                >
-                <v-list-item-subtitle
-                  >Infrastruktureinrichtung Typ:
-                  {{
-                    getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList)
-                  }}</v-list-item-subtitle
-                >
+              <v-list-item-content
+                :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
+                @click="routeToInfrastruktureinrichtungInfo(infra)"
+              >
+                <v-list-item-title> Name der Einrichtung: {{ infra.nameEinrichtung }} </v-list-item-title>
+                <v-list-item-subtitle>
+                  Infrastruktureinrichtung Typ:
+                  {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
-        </v-list>
-      </v-card>
-    </div>
+        </v-list-group>
+      </v-list>
+    </v-card>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Watch, Mixins } from "vue-property-decorator";
 import {
   AbfrageListElementDto,
   InfrastruktureinrichtungListElementDto,
@@ -69,14 +74,45 @@ import store from "@/store/index";
 import _ from "lodash";
 import router from "@/router";
 import moment from "moment";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 
 @Component
-export default class ReferencedItemsList extends Vue {
-  @Prop()
+export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMixin) {
+  private isAbfrageListOpen = false;
+
+  private isInfraListOpen = false;
+
   abfragen: Array<AbfrageListElementDto> = [];
 
-  @Prop()
   infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
+
+  @Watch("isAbfrageListOpen", { immediate: true })
+  private getReferencedInfrastrukturabfragen(): void {
+    if (this.isAbfrageListOpen && this.$route.params.id !== undefined) {
+      this.getReferencedInfrastrukturabfragenList(this.$route.params.id, true).then(
+        (abfrageListElements: AbfrageListElementDto[]) => {
+          if (!_.isUndefined(abfrageListElements)) {
+            this.abfragen = abfrageListElements;
+          }
+        }
+      );
+    }
+  }
+
+  @Watch("isInfraListOpen", { immediate: true })
+  private getReferencedInfrastruktureinrichtungen(): void {
+    if (this.isInfraListOpen && this.$route.params.id !== undefined) {
+      this.getReferencedInfrastruktureinrichtungenList(this.$route.params.id, true).then(
+        (infraListElements: InfrastruktureinrichtungListElementDto[]) => {
+          if (!_.isUndefined(infraListElements)) {
+            this.infrastruktureinrichtungen = infraListElements;
+            // eslint-disable-next-line no-console
+            console.log(this.infrastruktureinrichtungen);
+          }
+        }
+      );
+    }
+  }
 
   get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
     return store.getters["lookup/infrastruktureinrichtungTyp"];
