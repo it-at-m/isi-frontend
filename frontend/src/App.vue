@@ -180,7 +180,7 @@ import { RouteTag } from "./router";
 import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
-import SearchInputField from "@/components/common/SearchInputField.vue";
+import SearchInputField from "@/components/search/SearchInputField.vue";
 
 @Component({
   components: { SearchInputField, TheSnackbar, VersionInfo },
