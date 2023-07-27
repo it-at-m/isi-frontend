@@ -8,6 +8,7 @@
       v-for="(item, index) in searchResults"
       :key="index"
       v-slot="{ hover }"
+      class="overflow-y-auto"
     >
       <v-card
         v-if="isTypeOfInfrastrukturabfrage(item)"
@@ -91,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import {
   AbfrageListElementDto,
   BauvorhabenListElementDto,
