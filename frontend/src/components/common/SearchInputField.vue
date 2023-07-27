@@ -4,6 +4,7 @@
     v-model="selectedSuggestion"
     :items="suggestions"
     :search-input.sync="searchQuery"
+    dense
     clearable
     flat
     hide-details
