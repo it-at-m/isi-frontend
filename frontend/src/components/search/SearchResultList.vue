@@ -89,6 +89,13 @@
       </v-card>
     </v-hover>
   </div>
+  <div
+    v-else
+    class="d-flex justify-center align-center"
+    style="height: 100%; min-height: 100px"
+  >
+    <span>Keine Suchergebnisse vorhanden</span>
+  </div>
 </template>
 
 <script lang="ts">
