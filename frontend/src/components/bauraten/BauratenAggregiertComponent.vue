@@ -68,7 +68,6 @@ export default class BauratenAggregiertComponent extends Vue {
    * Erstellt eine Map mit Bauraten zu dem angegebenen Property aggregateBauraten
    * Der Key der Map ist das Jahr und der Value die aggregierten Werte der Bauraten
    */
-
   get aggregatedBauraten(): Array<BaurateModel> {
     if (!_.isNil(this.aggregateBauraten)) {
       this.bauratenAggregation(this.extraktBauraten(this.aggregateBauraten));
