@@ -26,11 +26,11 @@ import {
     SearchResultDtoToJSON,
 } from './SearchResultDto';
 import {
-    StadtbezirkModel,
-    StadtbezirkModelFromJSON,
-    StadtbezirkModelFromJSONTyped,
-    StadtbezirkModelToJSON,
-} from './StadtbezirkModel';
+    StadtbezirkDto,
+    StadtbezirkDtoFromJSON,
+    StadtbezirkDtoFromJSONTyped,
+    StadtbezirkDtoToJSON,
+} from './StadtbezirkDto';
 
 /**
  * 
@@ -46,10 +46,16 @@ export interface BauvorhabenListElementDto extends SearchResultDto {
     id?: string;
     /**
      * 
-     * @type {Set<StadtbezirkModel>}
+     * @type {string}
      * @memberof BauvorhabenListElementDto
      */
-    stadtbezirke?: Set<StadtbezirkModel>;
+    nameVorhaben?: string;
+    /**
+     * 
+     * @type {Set<StadtbezirkDto>}
+     * @memberof BauvorhabenListElementDto
+     */
+    stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
      * @type {number}
@@ -99,7 +105,8 @@ export function BauvorhabenListElementDtoFromJSONTyped(json: any, ignoreDiscrimi
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkModelFromJSON))),
+        'nameVorhaben': !exists(json, 'nameVorhaben') ? undefined : json['nameVorhaben'],
+        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
     };
@@ -115,7 +122,8 @@ export function BauvorhabenListElementDtoToJSON(value?: BauvorhabenListElementDt
     return {
         ...SearchResultDtoToJSON(value),
         'id': value.id,
-        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkModelToJSON)),
+        'nameVorhaben': value.nameVorhaben,
+        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVorhaben': value.standVorhaben,
     };

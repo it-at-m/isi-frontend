@@ -1,20 +1,240 @@
 <template>
-  <div></div>
+  <div
+    v-if="searchResults.length > 0"
+    class="py-12"
+  >
+    <!-- eslint-disable vue/no-unused-vars -->
+    <v-hover
+      v-for="(item, index) in searchResults"
+      :key="index"
+      v-slot="{ hover }"
+    >
+      <v-card
+        v-if="isTypeOfInfrastrukturabfrage(item)"
+        :id="'search_result_item_' + index"
+        outlined
+        class="mb-4 transition-swing"
+        :elevation="hover ? 4 : 0"
+        @click="routeToInfrastrukturabfrageForm(item)"
+      >
+        <v-card-title :id="'search_result_item_' + index + '_infrastrukturabfrage_nameAbfrage'">
+          {{ castToAbfrageListElementDto(item).nameAbfrage }}
+          <v-spacer />
+        </v-card-title>
+        <v-card-text>
+          <span :id="'search_result_item_' + index + '_infrastrukturabfrage_stadtbezirke'">
+            Stadtbezirke: {{ getStadtbezirke(castToAbfrageListElementDto(item).stadtbezirke) }}
+          </span>
+          <v-spacer />
+          <span :id="'search_result_item_' + index + '_infrastrukturabfrage_statusAbfrage'">
+            Status:
+            {{ getLookupValueInfrastrukturabfrage(castToAbfrageListElementDto(item).statusAbfrage, statusAbfrageList) }}
+          </span>
+          <v-spacer />
+          <span :id="'search_result_item_' + index + '_infrastrukturabfrage_fristStellungnahme'">
+            Frist: {{ datumFormatted(castToAbfrageListElementDto(item).fristStellungnahme) }}
+          </span>
+        </v-card-text>
+      </v-card>
+      <v-card
+        v-else-if="isTypeOfBauvorhaben(item)"
+        :id="'search_result_item_' + index"
+        outlined
+        class="mb-4 transition-swing"
+        :elevation="hover ? 4 : 0"
+        @click="routeToBauvorhabenForm(item)"
+      >
+        <v-card-title :id="'search_result_item_' + index + '_bauvorhaben_nameVorhaben'">
+          {{ castToBauvorhabenListElementDto(item).nameVorhaben }}
+        </v-card-title>
+        <v-card-text>
+          <span :id="'search_result_item_' + index + '_bauvorhaben_stadtbezirke'">
+            Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenListElementDto(item).stadtbezirke) }}
+          </span>
+          <v-spacer />
+          <span :id="'search_result_item_' + index + '_bauvorhaben_grundstueckgroesse'">
+            Grundstücksgröße:
+            {{ getFormattedGrundstuecksgroesse(castToBauvorhabenListElementDto(item).grundstuecksgroesse) }} m²
+          </span>
+          <v-spacer />
+          <span :id="'search_result_item_' + index + '_bauvorhaben__standVorhaben'">
+            Stand:
+            {{ getLookupValueBauvorhaben(castToBauvorhabenListElementDto(item).standVorhaben, standVorhabenList) }}
+          </span>
+        </v-card-text>
+      </v-card>
+      <v-card
+        v-else
+        :id="'search_result_item_' + index"
+        outlined
+        class="mb-4 transition-swing"
+        :elevation="hover ? 4 : 0"
+        @click="routeToInfrastruktureinrichtungForm(item)"
+      >
+        <v-card-title :id="'search_result_item_' + index + '_infrastruktureinrichtung_nameEinrichtung'">
+          {{ castToInfrastruktureinrichtungListElementDto(item).nameEinrichtung }}
+          <v-spacer />
+        </v-card-title>
+        <v-card-text>
+          <span :id="'search_result_item_' + index + '_infrastruktureinrichtung_infrastruktureinrichtungtyp'">
+            {{
+              getLookupValueInfrastruktureinrichtung(
+                castToInfrastruktureinrichtungListElementDto(item).infrastruktureinrichtungTyp,
+                infrastruktureinrichtungTypList
+              )
+            }}</span
+          >
+        </v-card-text>
+      </v-card>
+    </v-hover>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from "vue-property-decorator";
-import { SearchResultDto } from "@/api/api-client/isi-backend";
+import {
+  AbfrageListElementDto,
+  BauvorhabenListElementDto,
+  InfrastruktureinrichtungListElementDto,
+  LookupEntryDto,
+  SearchResultDto,
+  SearchResultDtoTypeEnum,
+  StadtbezirkDto,
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import DefaultLayout from "@/components/DefaultLayout.vue";
+import router from "@/router";
+import { convertDateForFrontend } from "@/utils/Formatter";
 
-@Component({})
+@Component({
+  components: { DefaultLayout },
+})
 export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
   private searchResults: Array<SearchResultDto> = [];
 
   @Watch("$store.state.search.searchResults", { immediate: true, deep: true })
   private watchSearchResults(): void {
     this.searchResults = this.$store.getters["search/searchResults"];
+  }
+
+  get infrastruktureinrichtungTypList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
+  }
+
+  get statusAbfrageList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/statusAbfrage"];
+  }
+
+  get standVorhabenList(): LookupEntryDto[] {
+    const list = this.$store.getters["lookup/standVorhaben"];
+    return list ? list : [];
+  }
+
+  private getIdSearchResult(searchResult: SearchResultDto): string | undefined {
+    if (this.isTypeOfInfrastrukturabfrage(searchResult)) {
+      return this.castToAbfrageListElementDto(searchResult).id;
+    } else if (this.isTypeOfBauvorhaben(searchResult)) {
+      return this.castToBauvorhabenListElementDto(searchResult).id;
+    } else {
+      return this.castToInfrastruktureinrichtungListElementDto(searchResult).id;
+    }
+  }
+
+  // Infrastrukturabfragen
+
+  private isTypeOfInfrastrukturabfrage(searchResult: SearchResultDto): boolean {
+    return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage);
+  }
+
+  private castToAbfrageListElementDto(searchResult: SearchResultDto): AbfrageListElementDto {
+    return searchResult as AbfrageListElementDto;
+  }
+
+  private routeToInfrastrukturabfrageForm(abfrageListElement: AbfrageListElementDto): void {
+    if (!_.isUndefined(abfrageListElement.id)) {
+      router.push({
+        name: "updateabfrage",
+        params: { id: abfrageListElement.id },
+      });
+    }
+  }
+
+  private getLookupValueInfrastrukturabfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
+    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+  }
+
+  private getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
+    const auflistungStadtbezirksbezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), [
+      "nummer",
+    ]).map((stadtbezirk: StadtbezirkDto) => {
+      return stadtbezirk.nummer + "/" + stadtbezirk.name;
+    });
+    return _.join(auflistungStadtbezirksbezeichnungen, ", ");
+  }
+
+  private datumFormatted(datum: Date): string {
+    return convertDateForFrontend(datum);
+  }
+
+  // Bauvorhaben
+
+  private isTypeOfBauvorhaben(searchResult: SearchResultDto): boolean {
+    return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben);
+  }
+
+  private castToBauvorhabenListElementDto(searchResult: SearchResultDto): BauvorhabenListElementDto {
+    return searchResult as BauvorhabenListElementDto;
+  }
+
+  private routeToBauvorhabenForm(bauvorhabenListElement: BauvorhabenListElementDto): void {
+    if (!_.isNil(bauvorhabenListElement.id)) {
+      router.push({
+        name: "editBauvorhaben",
+        params: { id: bauvorhabenListElement.id },
+      });
+    }
+  }
+  private getFormattedGrundstuecksgroesse(grundstuecksgroesse: number | undefined): string {
+    return _.isNil(grundstuecksgroesse) ? "" : grundstuecksgroesse.toLocaleString("de-DE");
+  }
+
+  private getLookupValueBauvorhaben(key: string, list: Array<LookupEntryDto>): string {
+    if (list) {
+      const value = list.find((obj: LookupEntryDto) => obj.key === key)?.value;
+      if (value) {
+        return value;
+      }
+    }
+
+    return key;
+  }
+
+  // Infrastruktureinrichtungen
+
+  private isTypeOfInfrastruktureinrichtung(searchResult: SearchResultDto): boolean {
+    return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastruktureinrichtung);
+  }
+
+  private castToInfrastruktureinrichtungListElementDto(
+    searchResult: SearchResultDto
+  ): InfrastruktureinrichtungListElementDto {
+    return searchResult as InfrastruktureinrichtungListElementDto;
+  }
+
+  private routeToInfrastruktureinrichtungForm(
+    infrastruktureinrichtungListElement: InfrastruktureinrichtungListElementDto
+  ): void {
+    if (!_.isNil(infrastruktureinrichtungListElement.id)) {
+      router.push({
+        name: "editInfrastruktureinrichtung",
+        params: { id: infrastruktureinrichtungListElement.id },
+      });
+    }
+  }
+
+  private getLookupValueInfrastruktureinrichtung(key: string, list: Array<LookupEntryDto>): string | undefined {
+    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 }
 </script>
