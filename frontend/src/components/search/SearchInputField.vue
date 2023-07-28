@@ -40,6 +40,10 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
 
   private selectedSuggestion = "";
 
+  mounted() {
+    this.searchEntitiesForSelectedSuggestion();
+  }
+
   private updateSearchQuery(itemIndex: number) {
     if (itemIndex > -1) {
       this.searchQuery = this.suggestions[itemIndex];
