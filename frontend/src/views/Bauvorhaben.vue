@@ -256,7 +256,7 @@ export default class Bauvorhaben extends Mixins(
       Toaster.toast(message, level);
     }
 
-    this.$router.push({ name: "viewAllBauvorhaben" });
+    this.$router.push({ name: "karte" });
   }
 
   /**

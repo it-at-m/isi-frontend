@@ -512,7 +512,7 @@ export default class Infrastruktureinrichtung extends Mixins(
       Toaster.toast(message, level);
     }
     this.resetInfrastruktureinrichtungInStore();
-    this.$router.push({ path: "/infrastruktureinrichtungenuebersicht" });
+    this.$router.push({ path: "/karte" });
   }
 
   private setInfrastruktureinrichtungToStore(dto: InfrastruktureinrichtungDto | undefined): void {

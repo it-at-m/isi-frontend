@@ -636,7 +636,7 @@ export default class Abfrage extends Mixins(
       Toaster.toast(message, level);
     }
     this.$store.dispatch("search/resetAbfrage");
-    this.$router.push({ path: "/abfragenuebersicht" });
+    this.$router.push({ path: "/karte" });
   }
 
   private validate(): boolean {
