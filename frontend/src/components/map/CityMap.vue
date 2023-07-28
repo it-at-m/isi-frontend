@@ -166,7 +166,7 @@ export default class CityMap extends Vue {
   /**
    * Die Feature welche in der Karte dargestellt werden sollen.
    */
-  @Prop({ default: [] })
+  @Prop({ default: () => [] })
   private readonly geoJson?: Feature[];
 
   /**
