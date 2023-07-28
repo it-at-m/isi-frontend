@@ -30,7 +30,6 @@
             class="text-h6"
             fab
             dark
-            large
             color="red"
             @click="createInfrastruktureinrichtung"
             v-text="'I'"
@@ -39,7 +38,6 @@
             class="text-h6"
             fab
             dark
-            large
             color="indigo"
             @click="createBauvorhaben"
             v-text="'B'"
@@ -48,7 +46,6 @@
             class="text-h6"
             fab
             dark
-            large
             color="green"
             @click="createAbfrage"
             v-text="'A'"
