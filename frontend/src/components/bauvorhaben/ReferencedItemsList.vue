@@ -106,8 +106,6 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
         (infraListElements: InfrastruktureinrichtungListElementDto[]) => {
           if (!_.isNil(infraListElements)) {
             this.infrastruktureinrichtungen = infraListElements;
-            // eslint-disable-next-line no-console
-            console.log(this.infrastruktureinrichtungen);
           }
         }
       );
