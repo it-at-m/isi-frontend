@@ -88,10 +88,10 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
 
   @Watch("isAbfrageListOpen", { immediate: true })
   private getReferencedInfrastrukturabfragen(): void {
-    if (this.isAbfrageListOpen && this.$route.params.id !== undefined) {
+    if (this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
       this.getReferencedInfrastrukturabfragenList(this.$route.params.id, true).then(
         (abfrageListElements: AbfrageListElementDto[]) => {
-          if (!_.isUndefined(abfrageListElements)) {
+          if (!_.isNil(abfrageListElements)) {
             this.abfragen = abfrageListElements;
           }
         }
@@ -104,7 +104,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
     if (this.isInfraListOpen && this.$route.params.id !== undefined) {
       this.getReferencedInfrastruktureinrichtungenList(this.$route.params.id, true).then(
         (infraListElements: InfrastruktureinrichtungListElementDto[]) => {
-          if (!_.isUndefined(infraListElements)) {
+          if (!_.isNil(infraListElements)) {
             this.infrastruktureinrichtungen = infraListElements;
             // eslint-disable-next-line no-console
             console.log(this.infrastruktureinrichtungen);
@@ -131,7 +131,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
    * @param abfrageListElementDto zum ermitteln der Route.
    */
   routeToAbfrageInfo(abfrageListElementDto: AbfrageListElementDto): void {
-    if (!_.isUndefined(abfrageListElementDto.id)) {
+    if (!_.isNil(abfrageListElementDto.id)) {
       router.push({
         name: "updateabfrage",
         params: { id: abfrageListElementDto.id },
@@ -156,7 +156,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
   }
 
   private getLookupValue(key: string, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+    return !_.isNil(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 }
 </script>
