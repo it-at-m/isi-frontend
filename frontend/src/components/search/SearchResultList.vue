@@ -17,23 +17,18 @@
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastrukturabfrageForm(item)"
       >
-        <v-card-subtitle :id="'search_result_item_' + index + '_infrastrukturabfrage_nameAbfrage'">
+        <v-card-title>
           {{ castToAbfrageListElementDto(item).nameAbfrage }}
-          <v-spacer />
-        </v-card-subtitle>
+        </v-card-title>
         <v-card-text>
-          <span :id="'search_result_item_' + index + '_infrastrukturabfrage_stadtbezirke'">
-            Stadtbezirke: {{ getStadtbezirke(castToAbfrageListElementDto(item).stadtbezirke) }}
-          </span>
+          <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageListElementDto(item).stadtbezirke) }} </span>
           <v-spacer />
-          <span :id="'search_result_item_' + index + '_infrastrukturabfrage_statusAbfrage'">
+          <span>
             Status:
             {{ getLookupValueInfrastrukturabfrage(castToAbfrageListElementDto(item).statusAbfrage, statusAbfrageList) }}
           </span>
           <v-spacer />
-          <span :id="'search_result_item_' + index + '_infrastrukturabfrage_fristStellungnahme'">
-            Frist: {{ datumFormatted(castToAbfrageListElementDto(item).fristStellungnahme) }}
-          </span>
+          <span> Frist: {{ datumFormatted(castToAbfrageListElementDto(item).fristStellungnahme) }} </span>
         </v-card-text>
       </v-card>
       <v-card
@@ -44,20 +39,18 @@
         :elevation="hover ? 4 : 0"
         @click="routeToBauvorhabenForm(item)"
       >
-        <v-card-subtitle :id="'search_result_item_' + index + '_bauvorhaben_nameVorhaben'">
+        <v-card-title>
           {{ castToBauvorhabenListElementDto(item).nameVorhaben }}
-        </v-card-subtitle>
+        </v-card-title>
         <v-card-text>
-          <span :id="'search_result_item_' + index + '_bauvorhaben_stadtbezirke'">
-            Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenListElementDto(item).stadtbezirke) }}
-          </span>
+          <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenListElementDto(item).stadtbezirke) }} </span>
           <v-spacer />
-          <span :id="'search_result_item_' + index + '_bauvorhaben_grundstueckgroesse'">
+          <span>
             Grundstücksgröße:
             {{ getFormattedGrundstuecksgroesse(castToBauvorhabenListElementDto(item).grundstuecksgroesse) }} m²
           </span>
           <v-spacer />
-          <span :id="'search_result_item_' + index + '_bauvorhaben__standVorhaben'">
+          <span>
             Stand:
             {{ getLookupValueBauvorhaben(castToBauvorhabenListElementDto(item).standVorhaben, standVorhabenList) }}
           </span>
@@ -71,12 +64,11 @@
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastruktureinrichtungForm(item)"
       >
-        <v-card-subtitle :id="'search_result_item_' + index + '_infrastruktureinrichtung_nameEinrichtung'">
+        <v-card-title>
           {{ castToInfrastruktureinrichtungListElementDto(item).nameEinrichtung }}
-          <v-spacer />
-        </v-card-subtitle>
+        </v-card-title>
         <v-card-text>
-          <span :id="'search_result_item_' + index + '_infrastruktureinrichtung_infrastruktureinrichtungtyp'">
+          <span>
             {{
               getLookupValueInfrastruktureinrichtung(
                 castToInfrastruktureinrichtungListElementDto(item).infrastruktureinrichtungTyp,
