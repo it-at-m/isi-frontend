@@ -144,26 +144,26 @@
         </v-container>
       </template>
       <template #navigation>
-        <abfrage-navigation-tree
+        <abfrage-tree
           id="abfrage_navigation_tree"
-          ref="abfrageNavigationTree"
-          v-model="abfrageWrapped"
-          @select-abfrage="handleSelectAbfrage($event)"
-          @select-abfragevariante="handleSelectAbfragevariante($event)"
-          @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant($event)"
-          @delete-abfragevariante="handleDeleteAbfragevariante($event)"
-          @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
-          @determine-bauraten-for-baugebiet="handleDetermineBauratenForBaugebiet($event)"
-          @create-new-abfragevariante="handleCreateNewAbfragevariante($event)"
-          @select-bauabschnitt="handleSelectBauabschnitt($event)"
-          @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
-          @create-new-bauabschnitt="handleCreateNewBauabschnitt($event)"
-          @select-baugebiet="handleSelectBaugebiet($event)"
-          @delete-baugebiet="handleDeleteBaugebiet($event)"
-          @create-new-baugebiet="handleCreateNewBaugebiet($event)"
-          @select-baurate="handleSelectBaurate($event)"
-          @delete-baurate="handleDeleteBaurate($event)"
-          @create-new-baurate="handleCreateNewBaurate($event)"
+          :abfrage="abfrageWrapped"
+          :selected="selectedEntity"
+          @select-abfrage="handleSelectAbfrage"
+          @select-abfragevariante="handleSelectAbfragevariante"
+          @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant"
+          @delete-abfragevariante="handleDeleteAbfragevariante"
+          @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante"
+          @determine-bauraten-for-baugebiet="handleDetermineBauratenForBaugebiet"
+          @create-abfragevariante="handleCreateAbfragevariante"
+          @select-bauabschnitt="handleSelectBauabschnitt"
+          @delete-bauabschnitt="handleDeleteBauabschnitt"
+          @create-bauabschnitt="handleCreateBauabschnitt"
+          @select-baugebiet="handleSelectBaugebiet"
+          @delete-baugebiet="handleDeleteBaugebiet"
+          @create-baugebiet="handleCreateBaugebiet"
+          @select-baurate="handleSelectBaurate"
+          @delete-baurate="handleDeleteBaurate"
+          @create-baurate="handleCreateBaurate"
         />
         <v-spacer />
       </template>
@@ -237,6 +237,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import AbfrageNavigationTree, { AbfrageTreeItem } from "@/components/abfragen/AbfrageNavigationTree.vue";
+import AbfrageTree from "@/components/abfragen/AbfrageTree.vue";
 import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
@@ -254,6 +255,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
+import DtoWithForm from "@/types/common/DtoWithForm";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
@@ -290,6 +292,7 @@ export const enum AnzeigeContextAbfragevariante {
   components: {
     AbfragevarianteFormular,
     AbfrageNavigationTree,
+    AbfrageTree,
     InformationList,
     InfrastrukturabfrageComponent,
     YesNoDialog,
@@ -317,6 +320,7 @@ export default class Abfrage extends Mixins(
     new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
     true
   );
+  private selectedEntity: DtoWithForm = this.abfrageWrapped;
   /**
    * Wird für die objektübergreifende Validierung im Formular des Baugebiets bzw. Baurate benötigt.
    */
@@ -721,7 +725,7 @@ export default class Abfrage extends Mixins(
     });
   }
 
-  private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleCreateAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     this.setNewEntityToMark(this.selectedAbfragevariante);
@@ -880,7 +884,7 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogBauabschnittOpen = true;
   }
 
-  private handleCreateNewBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleCreateBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     let selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
     this.selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
@@ -911,7 +915,7 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogBaugebietOpen = true;
   }
 
-  private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleCreateBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
     let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
@@ -945,7 +949,7 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogBaurateOpen = true;
   }
 
-  private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
+  private handleCreateBaurate(abfrageTreeItem: AbfrageTreeItem): void {
     this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
     let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
     this.baugebietForSelectedBaurate = selectedBaugebiet;
