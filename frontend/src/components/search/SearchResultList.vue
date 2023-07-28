@@ -1,7 +1,7 @@
 <template>
-  <div
+  <v-container
     v-if="searchResults.length > 0"
-    class="py-12"
+    class="pa-0 ma-0"
   >
     <!-- eslint-disable vue/no-unused-vars -->
     <v-hover
@@ -13,7 +13,7 @@
         v-if="isTypeOfInfrastrukturabfrage(item)"
         :id="'search_result_item_' + index"
         outlined
-        class="mb-4 transition-swing"
+        class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastrukturabfrageForm(item)"
       >
@@ -40,7 +40,7 @@
         v-else-if="isTypeOfBauvorhaben(item)"
         :id="'search_result_item_' + index"
         outlined
-        class="mb-4 transition-swing"
+        class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
         @click="routeToBauvorhabenForm(item)"
       >
@@ -67,7 +67,7 @@
         v-else
         :id="'search_result_item_' + index"
         outlined
-        class="mb-4 transition-swing"
+        class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastruktureinrichtungForm(item)"
       >
@@ -87,14 +87,14 @@
         </v-card-text>
       </v-card>
     </v-hover>
-  </div>
-  <div
+  </v-container>
+  <v-container
     v-else
-    class="d-flex justify-center align-center"
+    class="pa-0 ma-0 w-100 d-flex justify-center align-center"
     style="height: 100%; min-height: 100px"
   >
     <span>Keine Suchergebnisse vorhanden</span>
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
