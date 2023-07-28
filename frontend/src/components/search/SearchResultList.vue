@@ -18,10 +18,10 @@
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastrukturabfrageForm(item)"
       >
-        <v-card-title :id="'search_result_item_' + index + '_infrastrukturabfrage_nameAbfrage'">
+        <v-card-subtitle :id="'search_result_item_' + index + '_infrastrukturabfrage_nameAbfrage'">
           {{ castToAbfrageListElementDto(item).nameAbfrage }}
           <v-spacer />
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <span :id="'search_result_item_' + index + '_infrastrukturabfrage_stadtbezirke'">
             Stadtbezirke: {{ getStadtbezirke(castToAbfrageListElementDto(item).stadtbezirke) }}
@@ -45,9 +45,9 @@
         :elevation="hover ? 4 : 0"
         @click="routeToBauvorhabenForm(item)"
       >
-        <v-card-title :id="'search_result_item_' + index + '_bauvorhaben_nameVorhaben'">
+        <v-card-subtitle :id="'search_result_item_' + index + '_bauvorhaben_nameVorhaben'">
           {{ castToBauvorhabenListElementDto(item).nameVorhaben }}
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <span :id="'search_result_item_' + index + '_bauvorhaben_stadtbezirke'">
             Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenListElementDto(item).stadtbezirke) }}
@@ -72,10 +72,10 @@
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastruktureinrichtungForm(item)"
       >
-        <v-card-title :id="'search_result_item_' + index + '_infrastruktureinrichtung_nameEinrichtung'">
+        <v-card-subtitle :id="'search_result_item_' + index + '_infrastruktureinrichtung_nameEinrichtung'">
           {{ castToInfrastruktureinrichtungListElementDto(item).nameEinrichtung }}
           <v-spacer />
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <span :id="'search_result_item_' + index + '_infrastruktureinrichtung_infrastruktureinrichtungtyp'">
             {{
