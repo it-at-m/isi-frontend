@@ -8,7 +8,6 @@
       v-for="(item, index) in searchResults"
       :key="index"
       v-slot="{ hover }"
-      class="overflow-y-auto"
     >
       <v-card
         v-if="isTypeOfInfrastrukturabfrage(item)"
