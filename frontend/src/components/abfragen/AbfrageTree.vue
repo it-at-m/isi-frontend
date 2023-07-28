@@ -1,4 +1,3 @@
-<!-- eslint-disable @typescript-eslint/no-non-null-assertion -->
 <script setup lang="ts">
 import {
   AbfragevarianteDto,
@@ -45,11 +44,6 @@ const MARK_AS_RELEVANT = "Als relevant markieren";
 const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
 
 const ABFRAGEVARIANTEN_LIMIT = 5;
-const ABFRAGE_INDEX = 0;
-const ABFRAGEVARIANTE_INDEX_BASE = 10;
-const BAUABSCHNITT_INDEX_BASE = 20;
-const BAUGEBIET_INDEX_BASE = 30;
-const BAURATE_INDEX_BASE = 40;
 
 const props = defineProps<Props>();
 const emit = defineEmits([
@@ -80,37 +74,35 @@ watch(props.abfrage, () => (items.value = [buildTree(props.abfrage)]));
 
 function buildTree(abfrage: InfrastrukturabfrageDto): Item {
   let children: Item[] = [];
-  if (!_.isEmpty(abfrage.abfragevarianten)) {
-    children = abfrage.abfragevarianten!.map((value, index) => parseAbfragevariante(value, index));
+  if (abfrage.abfragevarianten) {
+    children = abfrage.abfragevarianten.map((value) => parseAbfragevariante(value));
   }
 
   const actions: Action[] = [];
   actions.push({ name: CREATE_ABFRAGEVARIANTE, disabled: false, effect: () => emit("createAbfragevariante") });
   actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteAbfrage") });
 
-  const id = ABFRAGE_INDEX;
-  if (abfrage === props.selected) {
-    selectItem(id);
-  }
+  const root = { id: 0, name: ABFRAGE_NAME, children, actions, onSelection: () => emit("selectAbfrage") };
+  assignIds(root);
 
-  return { id, name: ABFRAGE_NAME, children, actions, onSelection: () => emit("selectAbfrage") };
+  return root;
 }
 
-function parseAbfragevariante(abfragevariante: AbfragevarianteDto, index: number): Item {
+function parseAbfragevariante(abfragevariante: AbfragevarianteDto): Item {
   let children: Item[] = [];
   const actions: Action[] = [];
 
-  if (!_.isEmpty(abfragevariante.bauabschnitte)) {
-    const firstBauabschnitt = abfragevariante.bauabschnitte![0];
+  if (abfragevariante.bauabschnitte) {
+    const firstBauabschnitt = abfragevariante.bauabschnitte[0];
     if (firstBauabschnitt.technical) {
       const firstBaugebiet = firstBauabschnitt.baugebiete[0];
       if (firstBaugebiet && firstBaugebiet.technical) {
         // Fall 1: Platzhalter-Bauabschnitt und -Baugebiet -> Bauraten werden angezeigt und können angelegt werden
-        children = firstBaugebiet.bauraten.map((value, index) => parseBaurate(value, index));
+        children = firstBaugebiet.bauraten.map((value) => parseBaurate(value));
         actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => emit("createBaurate", abfragevariante) });
       } else {
         // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
-        children = firstBauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, index));
+        children = firstBauabschnitt.baugebiete.map((value) => parseBaugebiet(value));
         actions.push({
           name: CREATE_BAUGEBIET,
           disabled: false,
@@ -119,7 +111,7 @@ function parseAbfragevariante(abfragevariante: AbfragevarianteDto, index: number
       }
     } else {
       // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
-      children = abfragevariante.bauabschnitte!.map((value, index) => parseBauabschnitt(value, index));
+      children = abfragevariante.bauabschnitte.map((value) => parseBauabschnitt(value));
       actions.push({
         name: CREATE_BAUABSCHNITT,
         disabled: false,
@@ -149,16 +141,11 @@ function parseAbfragevariante(abfragevariante: AbfragevarianteDto, index: number
   });
   actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteAbfragevariante", abfragevariante) });
 
-  const id = ABFRAGEVARIANTE_INDEX_BASE + index;
-  if (abfragevariante === props.selected) {
-    selectItem(id);
-  }
-
   const prefix = ABRAGEVARIANTE_PREFIX + _.defaultTo(abfragevariante.abfragevariantenNr, "");
   const name = _.defaultTo(abfragevariante.abfragevariantenName, DEFAULT_NAME);
 
   return {
-    id,
+    id: 0,
     name: `${prefix} - ${name}`,
     children,
     actions,
@@ -166,20 +153,15 @@ function parseAbfragevariante(abfragevariante: AbfragevarianteDto, index: number
   };
 }
 
-function parseBauabschnitt(bauabschnitt: BauabschnittDto, index: number): Item {
-  let children: Item[] = bauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, index));
+function parseBauabschnitt(bauabschnitt: BauabschnittDto): Item {
+  let children: Item[] = bauabschnitt.baugebiete.map((value) => parseBaugebiet(value));
 
   const actions: Action[] = [];
   actions.push({ name: CREATE_BAUGEBIET, disabled: false, effect: () => console.log("Test") });
   actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBauabschnitt", bauabschnitt) });
 
-  const id = BAUABSCHNITT_INDEX_BASE + index;
-  if (bauabschnitt === props.selected) {
-    selectItem(id);
-  }
-
   return {
-    id,
+    id: 0,
     name: _.defaultTo(bauabschnitt.bezeichnung, DEFAULT_NAME),
     children,
     actions,
@@ -187,8 +169,8 @@ function parseBauabschnitt(bauabschnitt: BauabschnittDto, index: number): Item {
   };
 }
 
-function parseBaugebiet(baugebiet: BaugebietDto, index: number): Item {
-  const children = baugebiet.bauraten.map((value, index) => parseBaurate(value, index));
+function parseBaugebiet(baugebiet: BaugebietDto): Item {
+  const children = baugebiet.bauraten.map((value) => parseBaurate(value));
 
   const actions: Action[] = [];
   actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => console.log("Test") });
@@ -199,13 +181,8 @@ function parseBaugebiet(baugebiet: BaugebietDto, index: number): Item {
   });
   actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaugebiet", baugebiet) });
 
-  const id = BAUGEBIET_INDEX_BASE + index;
-  if (baugebiet === props.selected) {
-    selectItem(id);
-  }
-
   return {
-    id,
+    id: 0,
     name: _.defaultTo(baugebiet.bezeichnung, DEFAULT_NAME),
     children,
     actions,
@@ -213,17 +190,12 @@ function parseBaugebiet(baugebiet: BaugebietDto, index: number): Item {
   };
 }
 
-function parseBaurate(baurate: BaurateDto, index: number): Item {
+function parseBaurate(baurate: BaurateDto): Item {
   const actions: Action[] = [];
   actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaurate", baurate) });
 
-  const id = BAURATE_INDEX_BASE + index;
-  if (baurate === props.selected) {
-    selectItem(id);
-  }
-
   return {
-    id,
+    id: 0,
     name: _.defaultTo(baurate.jahr.toString(), DEFAULT_NAME),
     children: [],
     actions,
@@ -231,8 +203,17 @@ function parseBaurate(baurate: BaurateDto, index: number): Item {
   };
 }
 
-function selectItem(id: number): void {
-  selectedItemIds.value = [id];
+function assignIds(root: Item): void {
+  const queue: Item[] = [root];
+  let currentId = 0;
+
+  while (queue.length > 0) {
+    const item = queue.shift();
+    if (item) {
+      item.id = currentId++;
+      queue.push(...item.children);
+    }
+  }
 }
 </script>
 
