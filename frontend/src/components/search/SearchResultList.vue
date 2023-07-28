@@ -1,7 +1,7 @@
 <template>
   <v-container
     v-if="searchResults.length > 0"
-    class="pa-0 ma-0"
+    class="pa-0 ma-0 overflow-y-auto"
   >
     <!-- eslint-disable vue/no-unused-vars -->
     <v-hover
@@ -17,9 +17,9 @@
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastrukturabfrageForm(item)"
       >
-        <v-card-title>
+        <v-card-subtitle class="black--text">
           {{ castToAbfrageListElementDto(item).nameAbfrage }}
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageListElementDto(item).stadtbezirke) }} </span>
           <v-spacer />
@@ -39,9 +39,9 @@
         :elevation="hover ? 4 : 0"
         @click="routeToBauvorhabenForm(item)"
       >
-        <v-card-title>
+        <v-card-subtitle class="black--text">
           {{ castToBauvorhabenListElementDto(item).nameVorhaben }}
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenListElementDto(item).stadtbezirke) }} </span>
           <v-spacer />
@@ -64,9 +64,9 @@
         :elevation="hover ? 4 : 0"
         @click="routeToInfrastruktureinrichtungForm(item)"
       >
-        <v-card-title>
+        <v-card-subtitle class="black--text">
           {{ castToInfrastruktureinrichtungListElementDto(item).nameEinrichtung }}
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <span>
             {{
