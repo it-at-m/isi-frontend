@@ -61,7 +61,7 @@ export interface BaugebietDto {
      * @type {string}
      * @memberof BaugebietDto
      */
-    baugebietTyp: BaugebietDtoBaugebietTypEnum;
+    baugebietArt: BaugebietDtoBaugebietArtEnum;
     /**
      * 
      * @type {number}
@@ -122,15 +122,15 @@ export interface BaugebietDto {
 /**
  * @export
  */
-export const BaugebietDtoBaugebietTypEnum = {
-    Mi: 'MI',
+export const BaugebietDtoBaugebietArtEnum = {
+    Wr: 'WR',
     Wa: 'WA',
     Mu: 'MU',
     Mk: 'MK',
-    Wr: 'WR',
+    Mi: 'MI',
     Ge: 'GE'
 } as const;
-export type BaugebietDtoBaugebietTypEnum = typeof BaugebietDtoBaugebietTypEnum[keyof typeof BaugebietDtoBaugebietTypEnum];
+export type BaugebietDtoBaugebietArtEnum = typeof BaugebietDtoBaugebietArtEnum[keyof typeof BaugebietDtoBaugebietArtEnum];
 
 
 export function BaugebietDtoFromJSON(json: any): BaugebietDto {
@@ -148,7 +148,7 @@ export function BaugebietDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
-        'baugebietTyp': json['baugebietTyp'],
+        'baugebietArt': json['baugebietArt'],
         'realisierungVon': json['realisierungVon'],
         'gesamtanzahlWe': !exists(json, 'gesamtanzahlWe') ? undefined : json['gesamtanzahlWe'],
         'anzahlWohneinheitenBaurechtlichGenehmigt': !exists(json, 'anzahlWohneinheitenBaurechtlichGenehmigt') ? undefined : json['anzahlWohneinheitenBaurechtlichGenehmigt'],
@@ -175,7 +175,7 @@ export function BaugebietDtoToJSON(value?: BaugebietDto | null): any {
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'bezeichnung': value.bezeichnung,
-        'baugebietTyp': value.baugebietTyp,
+        'baugebietArt': value.baugebietArt,
         'realisierungVon': value.realisierungVon,
         'gesamtanzahlWe': value.gesamtanzahlWe,
         'anzahlWohneinheitenBaurechtlichGenehmigt': value.anzahlWohneinheitenBaurechtlichGenehmigt,

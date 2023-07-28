@@ -73,7 +73,7 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    baugebietTyp?: LookupListDto;
+    baugebietArt?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
@@ -123,7 +123,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'standVorhaben': !exists(json, 'standVorhaben') ? undefined : LookupListDtoFromJSON(json['standVorhaben']),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
         'planungsrecht': !exists(json, 'planungsrecht') ? undefined : LookupListDtoFromJSON(json['planungsrecht']),
-        'baugebietTyp': !exists(json, 'baugebietTyp') ? undefined : LookupListDtoFromJSON(json['baugebietTyp']),
+        'baugebietArt': !exists(json, 'baugebietArt') ? undefined : LookupListDtoFromJSON(json['baugebietArt']),
         'statusInfrastruktureinrichtung': !exists(json, 'statusInfrastruktureinrichtung') ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
         'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
@@ -148,7 +148,7 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'standVorhaben': LookupListDtoToJSON(value.standVorhaben),
         'statusAbfrage': LookupListDtoToJSON(value.statusAbfrage),
         'planungsrecht': LookupListDtoToJSON(value.planungsrecht),
-        'baugebietTyp': LookupListDtoToJSON(value.baugebietTyp),
+        'baugebietArt': LookupListDtoToJSON(value.baugebietArt),
         'statusInfrastruktureinrichtung': LookupListDtoToJSON(value.statusInfrastruktureinrichtung),
         'einrichtungstraeger': LookupListDtoToJSON(value.einrichtungstraeger),
         'infrastruktureinrichtungTyp': LookupListDtoToJSON(value.infrastruktureinrichtungTyp),

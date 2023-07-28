@@ -10,7 +10,7 @@ const state = {
   sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
   standVorhaben: [] as LookupEntryDto[],
   statusAbfrage: [] as LookupEntryDto[],
-  baugebietTyp: [] as LookupEntryDto[],
+  baugebietArt: [] as LookupEntryDto[],
   artDokument: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
   einrichtungstraeger: [] as LookupEntryDto[],
@@ -45,8 +45,8 @@ export default {
     statusAbfrage: (state: LookupState): Array<LookupEntryDto> => {
       return state.statusAbfrage;
     },
-    baugebietTyp: (state: LookupState): Array<LookupEntryDto> => {
-      return state.baugebietTyp;
+    baugebietArt: (state: LookupState): Array<LookupEntryDto> => {
+      return state.baugebietArt;
     },
     artDokument: (state: LookupState): Array<LookupEntryDto> => {
       return state.artDokument;
@@ -87,8 +87,8 @@ export default {
     statusAbfrage(state: LookupState, list: LookupEntryDto[]): void {
       state.statusAbfrage = list;
     },
-    baugebietTyp(state: LookupState, list: LookupEntryDto[]): void {
-      state.baugebietTyp = list;
+    baugebietArt(state: LookupState, list: LookupEntryDto[]): void {
+      state.baugebietArt = list;
     },
     artDokument(state: LookupState, list: LookupEntryDto[]): void {
       state.artDokument = list;
@@ -120,7 +120,7 @@ export default {
         context.commit("sobonVerfahrensgrundsaetzeJahr", lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
         context.commit("standVorhaben", lookupLists.standVorhaben?.list);
         context.commit("statusAbfrage", lookupLists.statusAbfrage?.list);
-        context.commit("baugebietTyp", lookupLists.baugebietTyp?.list);
+        context.commit("baugebietArt", lookupLists.baugebietArt?.list);
         context.commit("artDokument", lookupLists.artDokument?.list);
         context.commit("statusInfrastruktureinrichtung", lookupLists.statusInfrastruktureinrichtung?.list);
         context.commit("einrichtungstraeger", lookupLists.einrichtungstraeger?.list);
@@ -147,8 +147,8 @@ export default {
     statusAbfrage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("statusAbfrage", list);
     },
-    baugebietTyp(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit("baugebietTyp", list);
+    baugebietArt(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("baugebietArt", list);
     },
     artDokument(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("artDokument", list);
