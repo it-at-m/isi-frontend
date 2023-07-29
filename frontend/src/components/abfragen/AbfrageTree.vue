@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import {
-  AbfragevarianteDto,
-  BauabschnittDto,
-  BaugebietDto,
-  BaurateDto,
-  InfrastrukturabfrageDto,
-} from "@/api/api-client/isi-backend";
+import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
+import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 import {
   isEditableWithAnzeigeContextAbfragevariante,
@@ -15,17 +13,23 @@ import {
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
 
-export interface TreeItem<T extends DtoWithForm> {
+export interface TreeItem<T extends ModelWithForm> {
   id: number;
   name: string;
-  parent: TreeItem<DtoWithForm> | null;
-  children: TreeItem<DtoWithForm>[];
+  parent: TreeItem<ModelWithForm> | null;
+  children: TreeItem<ModelWithForm>[];
   actions: Action[];
   onSelection: () => void;
   value: T;
 }
 
-export type DtoWithForm = InfrastrukturabfrageDto | AbfragevarianteDto | BauabschnittDto | BaugebietDto | BaurateDto;
+// Ein Union aller im Rahmen der Abfrage relevanten Models, welche ein eigenes Formular haben.
+export type ModelWithForm =
+  | InfrastrukturabfrageModel
+  | AbfragevarianteModel
+  | BauabschnittModel
+  | BaugebietModel
+  | BaurateModel;
 
 /*
  * Hinweis zu disabled: Wenn true, ist die Aktion sichtbar, aber ausgegraut und nicht aktivierbar.
@@ -39,7 +43,7 @@ interface Action {
 }
 
 interface Props {
-  abfrage: InfrastrukturabfrageDto;
+  abfrage: InfrastrukturabfrageModel;
   selectedItemId: number;
 }
 
@@ -78,14 +82,14 @@ const emit = defineEmits([
   "determineBauratenForBaugebiet",
 ]);
 
-const items = ref<TreeItem<InfrastrukturabfrageDto>[]>([]);
+const items = ref<TreeItem<InfrastrukturabfrageModel>[]>([]);
 const selectedItemIds = computed(() => [props.selectedItemId]);
 const openItemIds = ref<number[]>([]);
 
 watch(props.abfrage, () => (items.value = [buildTree(props.abfrage)]));
 
-function buildTree(abfrage: InfrastrukturabfrageDto): TreeItem<InfrastrukturabfrageDto> {
-  const item: TreeItem<InfrastrukturabfrageDto> = {
+function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<InfrastrukturabfrageModel> {
+  const item: TreeItem<InfrastrukturabfrageModel> = {
     id: 0,
     name: ABFRAGE_NAME,
     parent: null,
@@ -131,14 +135,14 @@ function buildTree(abfrage: InfrastrukturabfrageDto): TreeItem<Infrastrukturabfr
 }
 
 function parseAbfragevariante(
-  abfragevariante: AbfragevarianteDto,
-  parent: TreeItem<InfrastrukturabfrageDto>,
+  abfragevariante: AbfragevarianteModel,
+  parent: TreeItem<InfrastrukturabfrageModel>,
   editable: boolean
-): TreeItem<AbfragevarianteDto> {
+): TreeItem<AbfragevarianteModel> {
   const prefix = ABRAGEVARIANTE_PREFIX + _.defaultTo(abfragevariante.abfragevariantenNr, "");
   const name = _.defaultTo(abfragevariante.abfragevariantenName, DEFAULT_NAME);
 
-  const item: TreeItem<AbfragevarianteDto> = {
+  const item: TreeItem<AbfragevarianteModel> = {
     id: 0,
     name: `${prefix} - ${name}`,
     parent,
@@ -223,11 +227,11 @@ function parseAbfragevariante(
 }
 
 function parseBauabschnitt(
-  bauabschnitt: BauabschnittDto,
-  parent: TreeItem<AbfragevarianteDto>,
+  bauabschnitt: BauabschnittModel,
+  parent: TreeItem<AbfragevarianteModel>,
   editable: boolean
-): TreeItem<BauabschnittDto> {
-  const item: TreeItem<BauabschnittDto> = {
+): TreeItem<BauabschnittModel> {
+  const item: TreeItem<BauabschnittModel> = {
     id: 0,
     name: _.defaultTo(bauabschnitt.bezeichnung, DEFAULT_NAME),
     parent,
@@ -248,11 +252,11 @@ function parseBauabschnitt(
 }
 
 function parseBaugebiet(
-  baugebiet: BaugebietDto,
-  parent: TreeItem<AbfragevarianteDto | BauabschnittDto>,
+  baugebiet: BaugebietModel,
+  parent: TreeItem<AbfragevarianteModel | BauabschnittModel>,
   editable: boolean
-): TreeItem<BaugebietDto> {
-  const item: TreeItem<BaugebietDto> = {
+): TreeItem<BaugebietModel> {
+  const item: TreeItem<BaugebietModel> = {
     id: 0,
     name: _.defaultTo(baugebiet.bezeichnung, DEFAULT_NAME),
     parent,
@@ -279,11 +283,11 @@ function parseBaugebiet(
 }
 
 function parseBaurate(
-  baurate: BaurateDto,
-  parent: TreeItem<AbfragevarianteDto | BaugebietDto>,
+  baurate: BaurateModel,
+  parent: TreeItem<AbfragevarianteModel | BaugebietModel>,
   editable: boolean
-): TreeItem<BaurateDto> {
-  const item: TreeItem<BaurateDto> = {
+): TreeItem<BaurateModel> {
+  const item: TreeItem<BaurateModel> = {
     id: 0,
     name: _.defaultTo(baurate.jahr.toString(), DEFAULT_NAME),
     parent,
@@ -300,7 +304,7 @@ function parseBaurate(
   return item;
 }
 
-function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteDto): boolean {
+function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteModel): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(abfragevariante.gesamtanzahlWe) || !_.isNil(abfragevariante.geschossflaecheWohnen)) &&
@@ -311,7 +315,7 @@ function bauratenDeterminableForAbfragevariante(abfragevariante: Abfragevariante
   );
 }
 
-function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
+function bauratenDeterminableForBaugebiet(baugebiet: BaugebietModel): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(baugebiet.gesamtanzahlWe) || !_.isNil(baugebiet.geschossflaecheWohnen)) &&
@@ -322,8 +326,8 @@ function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
   );
 }
 
-function assignIds(root: TreeItem<InfrastrukturabfrageDto>): void {
-  const queue: TreeItem<DtoWithForm>[] = [root];
+function assignIds(root: TreeItem<InfrastrukturabfrageModel>): void {
+  const queue: TreeItem<ModelWithForm>[] = [root];
   let currentId = 0;
 
   while (queue.length > 0) {
