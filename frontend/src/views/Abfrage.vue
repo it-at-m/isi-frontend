@@ -154,6 +154,7 @@
           @select-baugebiet="handleSelectBaugebiet"
           @select-baurate="handleSelectBaurate"
           @create-abfragevariante="handleCreateAbfragevariante"
+          @create-abfragevariante-sachbearbeitung="handleCreateAbfragevarianteSachbearbeitung"
           @create-bauabschnitt="handleCreateBauabschnitt"
           @create-baugebiet="handleCreateBaugebiet"
           @create-baurate="handleCreateBaurate"
@@ -320,7 +321,7 @@ export default class Abfrage extends Mixins(
    * Wird für die objektübergreifende Validierung im Formular der Baurate benötigt.
    */
   private baugebietForSelectedBaurate: BaugebietDto | undefined;
-  private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
+  private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto(), false);
   private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
   private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
   private selectedBaurate: BaurateModel = new BaurateModel(createBaurateDto());
@@ -665,14 +666,18 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateAbfragevariante(): void {
-    this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
-    if (this.getAnzeigeContextAbfragevariante() === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
-      this.abfrage.abfragevarianten?.push(this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
-    } else {
-      this.abfrage.abfragevariantenSachbearbeitung?.push(this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(this.abfrage.abfragevariantenSachbearbeitung);
-    }
+    this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto(), false);
+    this.abfrage.abfragevarianten?.push(this.selectedAbfragevariante);
+    this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
+    this.formChanged();
+    this.openAbfragevarianteFormular();
+    this.selectedItemId = 0;
+  }
+
+  private handleCreateAbfragevarianteSachbearbeitung(): void {
+    this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto(), true);
+    this.abfrage.abfragevarianten?.push(this.selectedAbfragevariante);
+    this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
     this.formChanged();
     this.openAbfragevarianteFormular();
     this.selectedItemId = 0;
@@ -908,7 +913,7 @@ export default class Abfrage extends Mixins(
 
   private getAnzeigeContextAbfragevariante(): AnzeigeContextAbfragevariante {
     if (this.selectedAbfragevariante) {
-      return this.selectedAbfragevariante.abfragevarianteSachbearbeitung
+      return this.selectedAbfragevariante.sachbearbeitung
         ? AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
         : AnzeigeContextAbfragevariante.ABFRAGEVARIANTE;
     }

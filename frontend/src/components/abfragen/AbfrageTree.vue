@@ -6,6 +6,12 @@ import {
   BaurateDto,
   InfrastrukturabfrageDto,
 } from "@/api/api-client/isi-backend";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import {
+  isEditableWithAnzeigeContextAbfragevariante,
+  isEditableByAbfrageerstellung,
+  isEditableBySachbearbeitung,
+} from "@/mixins/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
 
@@ -21,6 +27,11 @@ export interface TreeItem<T extends DtoWithForm> {
 
 export type DtoWithForm = InfrastrukturabfrageDto | AbfragevarianteDto | BauabschnittDto | BaugebietDto | BaurateDto;
 
+/*
+ * Hinweis zu disabled: Wenn true, ist die Aktion sichtbar, aber ausgegraut und nicht aktivierbar.
+ * Es ist für Aktionen gedacht, welche abhängig von den Daten der Abfrage-Hierarchie verfügbar sind.
+ * Aktionen, welche in der aktuellen Rolle nicht oder nur ein Mal relevant sind, sollten ausgelassen werden.
+ */
 interface Action {
   name: string;
   disabled: boolean;
@@ -54,6 +65,7 @@ const emit = defineEmits([
   "selectBaugebiet",
   "selectBaurate",
   "createAbfragevariante",
+  "createAbfragevarianteSachbarbeitung",
   "createBauabschnitt",
   "createBaugebiet",
   "createBaurate",
@@ -84,14 +96,34 @@ function buildTree(abfrage: InfrastrukturabfrageDto): TreeItem<Infrastrukturabfr
   };
 
   if (abfrage.abfragevarianten) {
-    item.children = abfrage.abfragevarianten.map((value) => parseAbfragevariante(value, item));
+    const editable = isEditableWithAnzeigeContextAbfragevariante(AnzeigeContextAbfragevariante.ABFRAGEVARIANTE);
+    const abfragevarianten = abfrage.abfragevarianten.map((value) => parseAbfragevariante(value, item, editable));
+    item.children.push(...abfragevarianten);
   }
 
-  item.actions.push({
-    name: CREATE_ABFRAGEVARIANTE,
-    disabled: false,
-    effect: () => emit("createAbfragevariante", item),
-  });
+  if (abfrage.abfragevariantenSachbearbeitung) {
+    const editable = isEditableWithAnzeigeContextAbfragevariante(
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
+    );
+    const abfragevarianten = abfrage.abfragevariantenSachbearbeitung.map((value) =>
+      parseAbfragevariante(value, item, editable)
+    );
+    item.children.push(...abfragevarianten);
+  }
+
+  if (isEditableByAbfrageerstellung()) {
+    item.actions.push({
+      name: CREATE_ABFRAGEVARIANTE,
+      disabled: _.defaultTo(abfrage.abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      effect: () => emit("createAbfragevariante", item),
+    });
+  } else {
+    item.actions.push({
+      name: CREATE_ABFRAGEVARIANTE,
+      disabled: _.defaultTo(abfrage.abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      effect: () => emit("createAbfragevarianteSachbarbeitung", item),
+    });
+  }
 
   assignIds(item);
 
@@ -100,7 +132,8 @@ function buildTree(abfrage: InfrastrukturabfrageDto): TreeItem<Infrastrukturabfr
 
 function parseAbfragevariante(
   abfragevariante: AbfragevarianteDto,
-  parent: TreeItem<InfrastrukturabfrageDto>
+  parent: TreeItem<InfrastrukturabfrageDto>,
+  editable: boolean
 ): TreeItem<AbfragevarianteDto> {
   const prefix = ABRAGEVARIANTE_PREFIX + _.defaultTo(abfragevariante.abfragevariantenNr, "");
   const name = _.defaultTo(abfragevariante.abfragevariantenName, DEFAULT_NAME);
@@ -115,61 +148,75 @@ function parseAbfragevariante(
     value: abfragevariante,
   };
 
+  if (isEditableBySachbearbeitung()) {
+    item.actions.push({
+      name: MARK_AS_RELEVANT,
+      disabled: false,
+      effect: () => emit("setAbfragevarianteRelevant", item),
+    });
+  }
+
+  if (editable) {
+    item.actions.push({
+      name: DETERMINE_BAURATEN,
+      disabled: !bauratenDeterminableForAbfragevariante(abfragevariante),
+      effect: () => emit("determineBauratenForAbfragevariante", item),
+    });
+  }
+
   if (abfragevariante.bauabschnitte) {
     const firstBauabschnitt = abfragevariante.bauabschnitte[0];
     if (firstBauabschnitt.technical) {
       const firstBaugebiet = firstBauabschnitt.baugebiete[0];
       if (firstBaugebiet && firstBaugebiet.technical) {
         // Fall 1: Platzhalter-Bauabschnitt und -Baugebiet -> Bauraten werden angezeigt und können angelegt werden
-        item.children = firstBaugebiet.bauraten.map((value) => parseBaurate(value, item));
-        item.actions.push({
-          name: CREATE_BAURATE,
-          disabled: false,
-          effect: () => emit("createBaurate", item),
-        });
+        item.children = firstBaugebiet.bauraten.map((value) => parseBaurate(value, item, editable));
+        if (editable) {
+          item.actions.push({
+            name: CREATE_BAURATE,
+            disabled: false,
+            effect: () => emit("createBaurate", item),
+          });
+        }
       } else {
         // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
-        item.children = firstBauabschnitt.baugebiete.map((value) => parseBaugebiet(value, item));
-        item.actions.push({
-          name: CREATE_BAUGEBIET,
-          disabled: false,
-          effect: () => emit("createBaugebiet", item),
-        });
+        item.children = firstBauabschnitt.baugebiete.map((value) => parseBaugebiet(value, item, editable));
+        if (editable) {
+          item.actions.push({
+            name: CREATE_BAUGEBIET,
+            disabled: false,
+            effect: () => emit("createBaugebiet", item),
+          });
+        }
       }
     } else {
       // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
-      item.children = abfragevariante.bauabschnitte.map((value) => parseBauabschnitt(value, item));
+      item.children = abfragevariante.bauabschnitte.map((value) => parseBauabschnitt(value, item, editable));
+      if (editable) {
+        item.actions.push({
+          name: CREATE_BAUABSCHNITT,
+          disabled: false,
+          effect: () => emit("createBauabschnitt", item),
+        });
+      }
+    }
+  } else {
+    // Fall 4: Keine Bauabschnitte -> Bauabschnitt, Baugebiet oder Baurate kann angelegt werden
+    if (editable) {
       item.actions.push({
         name: CREATE_BAUABSCHNITT,
         disabled: false,
         effect: () => emit("createBauabschnitt", item),
       });
+      item.actions.push({
+        name: CREATE_BAUGEBIET,
+        disabled: false,
+        effect: () => emit("createBaugebiet", item),
+      });
+      item.actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => emit("createBaurate", item) });
     }
-  } else {
-    // Fall 4: Keine Bauabschnitte -> Bauabschnitt, Baugebiet oder Baurate kann angelegt werden
-    item.actions.push({
-      name: CREATE_BAUABSCHNITT,
-      disabled: false,
-      effect: () => emit("createBauabschnitt", item),
-    });
-    item.actions.push({
-      name: CREATE_BAUGEBIET,
-      disabled: false,
-      effect: () => emit("createBaugebiet", item),
-    });
-    item.actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => emit("createBaurate", item) });
   }
 
-  item.actions.push({
-    name: DETERMINE_BAURATEN,
-    disabled: false,
-    effect: () => emit("determineBauratenForAbfragevariante", item),
-  });
-  item.actions.push({
-    name: MARK_AS_RELEVANT,
-    disabled: false,
-    effect: () => emit("setAbfragevarianteRelevant", item),
-  });
   item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteAbfragevariante", item) });
 
   return item;
@@ -177,7 +224,8 @@ function parseAbfragevariante(
 
 function parseBauabschnitt(
   bauabschnitt: BauabschnittDto,
-  parent: TreeItem<AbfragevarianteDto>
+  parent: TreeItem<AbfragevarianteDto>,
+  editable: boolean
 ): TreeItem<BauabschnittDto> {
   const item: TreeItem<BauabschnittDto> = {
     id: 0,
@@ -189,17 +237,20 @@ function parseBauabschnitt(
     value: bauabschnitt,
   };
 
-  item.children = bauabschnitt.baugebiete.map((value) => parseBaugebiet(value, item));
+  item.children = bauabschnitt.baugebiete.map((value) => parseBaugebiet(value, item, editable));
 
-  item.actions.push({ name: CREATE_BAUGEBIET, disabled: false, effect: () => console.log("Test") });
-  item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBauabschnitt", item) });
+  if (editable) {
+    item.actions.push({ name: CREATE_BAUGEBIET, disabled: false, effect: () => emit("createBaugebiet", item) });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBauabschnitt", item) });
+  }
 
   return item;
 }
 
 function parseBaugebiet(
   baugebiet: BaugebietDto,
-  parent: TreeItem<AbfragevarianteDto | BauabschnittDto>
+  parent: TreeItem<AbfragevarianteDto | BauabschnittDto>,
+  editable: boolean
 ): TreeItem<BaugebietDto> {
   const item: TreeItem<BaugebietDto> = {
     id: 0,
@@ -211,20 +262,27 @@ function parseBaugebiet(
     value: baugebiet,
   };
 
-  item.children = baugebiet.bauraten.map((value) => parseBaurate(value, item));
+  item.children = baugebiet.bauraten.map((value) => parseBaurate(value, item, editable));
 
-  item.actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => console.log("Test") });
-  item.actions.push({
-    name: DETERMINE_BAURATEN,
-    disabled: false,
-    effect: () => emit("determineBauratenForBaugebiet", item),
-  });
-  item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaugebiet", item) });
+  if (editable) {
+    item.actions.push({
+      name: DETERMINE_BAURATEN,
+      disabled: !bauratenDeterminableForBaugebiet(baugebiet),
+      effect: () => emit("determineBauratenForBaugebiet", item),
+    });
+
+    item.actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => emit("createBaurate", item) });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaugebiet", item) });
+  }
 
   return item;
 }
 
-function parseBaurate(baurate: BaurateDto, parent: TreeItem<AbfragevarianteDto | BaugebietDto>): TreeItem<BaurateDto> {
+function parseBaurate(
+  baurate: BaurateDto,
+  parent: TreeItem<AbfragevarianteDto | BaugebietDto>,
+  editable: boolean
+): TreeItem<BaurateDto> {
   const item: TreeItem<BaurateDto> = {
     id: 0,
     name: _.defaultTo(baurate.jahr.toString(), DEFAULT_NAME),
@@ -235,9 +293,33 @@ function parseBaurate(baurate: BaurateDto, parent: TreeItem<AbfragevarianteDto |
     value: baurate,
   };
 
-  item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaurate", item) });
+  if (editable) {
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaurate", item) });
+  }
 
   return item;
+}
+
+function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteDto): boolean {
+  return (
+    // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
+    (!_.isNil(abfragevariante.gesamtanzahlWe) || !_.isNil(abfragevariante.geschossflaecheWohnen)) &&
+    // Die Abfragevariante darf keine Bauabschnitte referenzieren.
+    _.isEmpty(abfragevariante.bauabschnitte) &&
+    // Das Datum für Realisierung von muss gesetzt sein.
+    !_.isNil(abfragevariante.realisierungVon)
+  );
+}
+
+function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
+  return (
+    // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
+    (!_.isNil(baugebiet.gesamtanzahlWe) || !_.isNil(baugebiet.geschossflaecheWohnen)) &&
+    // Die Abfragevariante darf keine Bauabschnitte referenzieren.
+    _.isEmpty(baugebiet.bauraten) &&
+    // Das Datum für Realisierung von muss gesetzt sein.
+    !_.isNil(baugebiet.realisierungVon)
+  );
 }
 
 function assignIds(root: TreeItem<InfrastrukturabfrageDto>): void {
