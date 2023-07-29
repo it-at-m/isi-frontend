@@ -19,7 +19,7 @@ export interface TreeItem<T extends DtoWithForm> {
   value: T;
 }
 
-type DtoWithForm = InfrastrukturabfrageDto | AbfragevarianteDto | BauabschnittDto | BaugebietDto | BaurateDto;
+export type DtoWithForm = InfrastrukturabfrageDto | AbfragevarianteDto | BauabschnittDto | BaugebietDto | BaurateDto;
 
 interface Action {
   name: string;
