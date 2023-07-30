@@ -179,7 +179,10 @@ function parseAbfragevariante(
     item.actions.push({
       name: DETERMINE_BAURATEN,
       disabled: !bauratenDeterminableForAbfragevariante(abfragevariante),
-      effect: () => emit("determineBauratenForAbfragevariante", item),
+      effect: () => {
+        emit("determineBauratenForAbfragevariante", item);
+        openItem(item);
+      },
     });
   }
 
@@ -295,7 +298,10 @@ function parseBaugebiet(
     item.actions.push({
       name: DETERMINE_BAURATEN,
       disabled: !bauratenDeterminableForBaugebiet(baugebiet),
-      effect: () => emit("determineBauratenForBaugebiet", item),
+      effect: () => {
+        emit("determineBauratenForBaugebiet", item);
+        openItem(item);
+      },
     });
 
     item.actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => emit("createBaurate", item) });
@@ -348,6 +354,10 @@ function bauratenDeterminableForBaugebiet(baugebiet: BaugebietModel): boolean {
     // Das Datum für Realisierung von muss gesetzt sein.
     !_.isNil(baugebiet.realisierungVon)
   );
+}
+
+function openItem(item: TreeItem<ModelWithForm>): void {
+  openItemIds.value = [...openItemIds.value, item.id];
 }
 </script>
 
