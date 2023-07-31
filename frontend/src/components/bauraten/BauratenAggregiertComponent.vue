@@ -8,6 +8,9 @@
               :headers="bauratenJahreHeaders"
               :items="aggregatedBauraten"
               hide-default-footer
+              disable-pagination
+              disable-filtering
+              disable-sort
             >
               <template #header="{ text }">
                 <span>{{ text }}</span>
@@ -64,15 +67,20 @@ export default class BauratenAggregiertComponent extends Vue {
 
   private baurateMap: Map<number, BaurateModel> = new Map<number, BaurateModel>();
 
-  /**
-   * Erstellt eine Map mit Bauraten zu dem angegebenen Property aggregateBauraten
-   * Der Key der Map ist das Jahr und der Value die aggregierten Werte der Bauraten
-   */
   get aggregatedBauraten(): Array<BaurateModel> {
     if (!_.isNil(this.aggregateBauraten)) {
       this.bauratenAggregation(this.extraktBauraten(this.aggregateBauraten));
     }
     return _.sortBy(Array.from(this.baurateMap.values()), ["jahr"]);
+  }
+
+  get bauratenJahreHeaders(): DataTableHeader[] {
+    const headers = new Array<DataTableHeader>();
+    headers.push(new DataTableHeader("Jahr", undefined, false));
+    this.aggregatedBauraten.forEach((baurate: BaurateModel) => {
+      headers.push(new DataTableHeader(baurate.jahr.toString(), undefined, false));
+    });
+    return headers;
   }
 
   private extraktBauraten(layer: AbfragevarianteModel | BauabschnittModel | BaugebietModel): Array<BaurateModel> {
@@ -94,6 +102,10 @@ export default class BauratenAggregiertComponent extends Vue {
     }
   }
 
+  /**
+   * Erstellt eine Map mit Bauraten zu dem angegebenen Property aggregateBauraten
+   * Der Key der Map ist das Jahr und der Value die aggregierten Werte der Bauraten
+   */
   private bauratenAggregation(bauraten: BaurateModel[]) {
     bauraten.forEach((baurate: BaurateModel) => {
       const aggregated = this.baurateMap.get(baurate.jahr);
@@ -115,15 +127,6 @@ export default class BauratenAggregiertComponent extends Vue {
         this.baurateMap.set(clone.jahr, clone);
       }
     });
-  }
-
-  get bauratenJahreHeaders(): DataTableHeader[] {
-    const headers = new Array<DataTableHeader>();
-    headers.push(new DataTableHeader("Jahr", undefined, false));
-    this.aggregatedBauraten.forEach((baurate: BaurateModel) => {
-      headers.push(new DataTableHeader(baurate.jahr.toString(), undefined, false));
-    });
-    return headers;
   }
 
   get header(): string {
