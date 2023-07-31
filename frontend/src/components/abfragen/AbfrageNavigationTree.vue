@@ -77,31 +77,35 @@ const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
 const ABFRAGEVARIANTEN_LIMIT = 5;
 
 const props = defineProps<Props>();
-const emit = defineEmits([
-  "selectAbfrage",
-  "selectAbfragevariante",
-  "selectBauabschnitt",
-  "selectBaugebiet",
-  "selectBaurate",
-  "createAbfragevariante",
-  "createAbfragevarianteSachbarbeitung",
-  "createBauabschnitt",
-  "createBaugebiet",
-  "createBaurate",
-  "deleteAbfragevariante",
-  "deleteBauabschnitt",
-  "deleteBaugebiet",
-  "deleteBaurate",
-  "setAbfragevarianteRelevant",
-  "determineBauratenForAbfragevariante",
-  "determineBauratenForBaugebiet",
-]);
+const emit = defineEmits<{
+  (event: "select-abfrage", value: TreeItem<InfrastrukturabfrageModel>): void;
+  (event: "select-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
+  (event: "select-bauabschnitt", value: TreeItem<BauabschnittModel>): void;
+  (event: "select-baugebiet", value: TreeItem<BaugebietModel>): void;
+  (event: "select-baurate", value: TreeItem<BaurateModel>): void;
+  (event: "create-abfragevariante", value: TreeItem<InfrastrukturabfrageModel>): void;
+  (event: "create-abfragevariante-sachbearbeitung", value: TreeItem<InfrastrukturabfrageModel>): void;
+  (event: "create-bauabschnitt", value: TreeItem<AbfragevarianteModel>): void;
+  (event: "create-baugebiet", value: TreeItem<AbfragevarianteModel | BauabschnittModel>): void;
+  (event: "create-baurate", value: TreeItem<AbfragevarianteModel | BaugebietModel>): void;
+  (event: "delete-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
+  (event: "delete-bauabschnitt", value: TreeItem<BauabschnittModel>): void;
+  (event: "delete-baugebiet", value: TreeItem<BaugebietModel>): void;
+  (event: "delete-baurate", value: TreeItem<BaurateModel>): void;
+  (event: "set-abfragevariante-relevant", value: TreeItem<AbfragevarianteModel>): void;
+  (event: "determine-bauraten-for-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
+  (event: "determine-bauraten-for-baugebiet", value: TreeItem<BaugebietModel>): void;
+}>();
 
 const items = ref<TreeItem<InfrastrukturabfrageModel>[]>([]);
 const selectedItemIds = computed(() => [props.selectedItemId]);
 const openItemIds = ref<string[]>([]);
 
-watch(props.abfrage, () => (items.value = [buildTree(props.abfrage)]), { immediate: true });
+watch(
+  () => props.abfrage,
+  () => (items.value = [buildTree(props.abfrage)]),
+  { deep: true }
+);
 
 function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<InfrastrukturabfrageModel> {
   const item: TreeItem<InfrastrukturabfrageModel> = {
@@ -110,7 +114,7 @@ function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<Infrastrukturab
     parent: null,
     children: [],
     actions: [],
-    onSelection: () => emit("selectAbfrage", item),
+    onSelection: () => emit("select-abfrage", item),
     context: AnzeigeContextAbfragevariante.UNDEFINED,
     value: abfrage,
   };
@@ -133,13 +137,19 @@ function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<Infrastrukturab
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
       disabled: _.defaultTo(abfrage.abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
-      effect: () => emit("createAbfragevariante", item),
+      effect: () => {
+        emit("create-abfragevariante", item);
+        openItem(item);
+      },
     });
   } else {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
       disabled: _.defaultTo(abfrage.abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
-      effect: () => emit("createAbfragevarianteSachbarbeitung", item),
+      effect: () => {
+        emit("create-abfragevariante-sachbearbeitung", item);
+        openItem(item);
+      },
     });
   }
 
@@ -162,7 +172,7 @@ function parseAbfragevariante(
     parent,
     children: [],
     actions: [],
-    onSelection: () => emit("selectAbfragevariante", item),
+    onSelection: () => emit("select-abfragevariante", item),
     context,
     value: abfragevariante,
   };
@@ -171,7 +181,7 @@ function parseAbfragevariante(
     item.actions.push({
       name: MARK_AS_RELEVANT,
       disabled: false,
-      effect: () => emit("setAbfragevarianteRelevant", item),
+      effect: () => emit("set-abfragevariante-relevant", item),
     });
   }
 
@@ -180,15 +190,15 @@ function parseAbfragevariante(
       name: DETERMINE_BAURATEN,
       disabled: !bauratenDeterminableForAbfragevariante(abfragevariante),
       effect: () => {
-        emit("determineBauratenForAbfragevariante", item);
+        emit("determine-bauraten-for-abfragevariante", item);
         openItem(item);
       },
     });
   }
 
-  if (abfragevariante.bauabschnitte) {
+  if (abfragevariante.bauabschnitte && !_.isEmpty(abfragevariante.bauabschnitte)) {
     const firstBauabschnitt = abfragevariante.bauabschnitte[0];
-    if (firstBauabschnitt.technical) {
+    if (firstBauabschnitt && firstBauabschnitt.technical) {
       const firstBaugebiet = firstBauabschnitt.baugebiete[0];
       if (firstBaugebiet && firstBaugebiet.technical) {
         // Fall 1: Platzhalter-Bauabschnitt und -Baugebiet -> Bauraten werden angezeigt und können angelegt werden
@@ -197,7 +207,10 @@ function parseAbfragevariante(
           item.actions.push({
             name: CREATE_BAURATE,
             disabled: false,
-            effect: () => emit("createBaurate", item),
+            effect: () => {
+              emit("create-baurate", item);
+              openItem(item);
+            },
           });
         }
       } else {
@@ -207,7 +220,10 @@ function parseAbfragevariante(
           item.actions.push({
             name: CREATE_BAUGEBIET,
             disabled: false,
-            effect: () => emit("createBaugebiet", item),
+            effect: () => {
+              emit("create-baugebiet", item);
+              openItem(item);
+            },
           });
         }
       }
@@ -220,7 +236,10 @@ function parseAbfragevariante(
         item.actions.push({
           name: CREATE_BAUABSCHNITT,
           disabled: false,
-          effect: () => emit("createBauabschnitt", item),
+          effect: () => {
+            emit("create-bauabschnitt", item);
+            openItem(item);
+          },
         });
       }
     }
@@ -230,19 +249,32 @@ function parseAbfragevariante(
       item.actions.push({
         name: CREATE_BAUABSCHNITT,
         disabled: false,
-        effect: () => emit("createBauabschnitt", item),
+        effect: () => {
+          emit("create-bauabschnitt", item);
+          openItem(item);
+        },
       });
       item.actions.push({
         name: CREATE_BAUGEBIET,
         disabled: false,
-        effect: () => emit("createBaugebiet", item),
+        effect: () => {
+          emit("create-baugebiet", item);
+          openItem(item);
+        },
       });
-      item.actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => emit("createBaurate", item) });
+      item.actions.push({
+        name: CREATE_BAURATE,
+        disabled: false,
+        effect: () => {
+          emit("create-baurate", item);
+          openItem(item);
+        },
+      });
     }
   }
 
   if (editable) {
-    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteAbfragevariante", item) });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-abfragevariante", item) });
   }
 
   return item;
@@ -256,11 +288,11 @@ function parseBauabschnitt(
 ): TreeItem<BauabschnittModel> {
   const item: TreeItem<BauabschnittModel> = {
     id: generateTreeItemId(parent.id, index),
-    name: _.defaultTo(bauabschnitt.bezeichnung, DEFAULT_NAME),
+    name: bauabschnitt.bezeichnung === "" ? DEFAULT_NAME : bauabschnitt.bezeichnung,
     parent,
     children: [],
     actions: [],
-    onSelection: () => emit("selectBauabschnitt", item),
+    onSelection: () => emit("select-bauabschnitt", item),
     context,
     value: bauabschnitt,
   };
@@ -268,8 +300,15 @@ function parseBauabschnitt(
   item.children = bauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, item, index, context));
 
   if (isEditableWithAnzeigeContextAbfragevariante(context)) {
-    item.actions.push({ name: CREATE_BAUGEBIET, disabled: false, effect: () => emit("createBaugebiet", item) });
-    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBauabschnitt", item) });
+    item.actions.push({
+      name: CREATE_BAUGEBIET,
+      disabled: false,
+      effect: () => {
+        emit("create-baugebiet", item);
+        openItem(item);
+      },
+    });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-bauabschnitt", item) });
   }
 
   return item;
@@ -283,11 +322,11 @@ function parseBaugebiet(
 ): TreeItem<BaugebietModel> {
   const item: TreeItem<BaugebietModel> = {
     id: generateTreeItemId(parent.id, index),
-    name: _.defaultTo(baugebiet.bezeichnung, DEFAULT_NAME),
+    name: baugebiet.bezeichnung === "" ? DEFAULT_NAME : baugebiet.bezeichnung,
     parent,
     children: [],
     actions: [],
-    onSelection: () => emit("selectBaugebiet", item),
+    onSelection: () => emit("select-baugebiet", item),
     context,
     value: baugebiet,
   };
@@ -299,13 +338,20 @@ function parseBaugebiet(
       name: DETERMINE_BAURATEN,
       disabled: !bauratenDeterminableForBaugebiet(baugebiet),
       effect: () => {
-        emit("determineBauratenForBaugebiet", item);
+        emit("determine-bauraten-for-baugebiet", item);
         openItem(item);
       },
     });
 
-    item.actions.push({ name: CREATE_BAURATE, disabled: false, effect: () => emit("createBaurate", item) });
-    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaugebiet", item) });
+    item.actions.push({
+      name: CREATE_BAURATE,
+      disabled: false,
+      effect: () => {
+        emit("create-baurate", item);
+        openItem(item);
+      },
+    });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-baugebiet", item) });
   }
 
   return item;
@@ -319,17 +365,17 @@ function parseBaurate(
 ): TreeItem<BaurateModel> {
   const item: TreeItem<BaurateModel> = {
     id: generateTreeItemId(parent.id, index),
-    name: _.defaultTo(baurate.jahr.toString(), DEFAULT_NAME),
+    name: baurate.jahr ? baurate.jahr.toString() : DEFAULT_NAME,
     parent,
     children: [],
     actions: [],
-    onSelection: () => emit("selectBaurate", item),
+    onSelection: () => emit("select-baurate", item),
     context,
     value: baurate,
   };
 
   if (isEditableWithAnzeigeContextAbfragevariante(context)) {
-    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaurate", item) });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-baurate", item) });
   }
 
   return item;
@@ -365,7 +411,7 @@ function openItem(item: TreeItem<ModelWithForm>): void {
 <template>
   <v-treeview
     :items="items"
-    :active.sync="selectedItemIds"
+    :active="selectedItemIds"
     :open.sync="openItemIds"
     open-all
     dense
