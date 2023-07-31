@@ -14,6 +14,7 @@
           v-model="selectedAbfragevariante"
           :is-editable="isEditable"
           :mode="modeAbfragevariante"
+          :anzeige-context-abfragevariante="anzeigeContextAbfragevariante"
           :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
         />
         <bauabschnitt-component
