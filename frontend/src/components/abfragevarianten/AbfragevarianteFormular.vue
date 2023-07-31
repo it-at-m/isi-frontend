@@ -312,6 +312,7 @@ import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
 import _ from "lodash";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AbfragevarianteForm extends Mixins(
@@ -328,6 +329,9 @@ export default class AbfragevarianteForm extends Mixins(
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
+
+  @Prop()
+  private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
 
   private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
 
@@ -369,7 +373,9 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get headline(): string {
-    const headline = `Abfragevariante Nr: ${this.abfragevariante.abfragevariantenNr} - `;
+    const headline = `Abfragevariante ${this.abfragevariante.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+      this.anzeigeContextAbfragevariante
+    )} - `;
     return this.displayMode === DisplayMode.NEU
       ? headline.concat("anlegen")
       : headline.concat(`${this.abfragevariante.abfragevariantenName}`);
