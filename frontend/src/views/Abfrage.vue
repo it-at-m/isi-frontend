@@ -5,40 +5,40 @@
         <infrastrukturabfrage-component
           v-if="isAbfrageFormularOpen"
           id="abfrage_infrastrukturabfrage_component"
-          v-model="abfrage"
+          v-model="selected"
           :mode="modeAbfrage"
         />
         <abfragevariante-formular
           v-else-if="isAbfragevarianteFormularOpen"
           id="abfrage_abfragevariante_formular_component"
-          v-model="selectedAbfragevariante"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeAbfragevariante"
+          :mode="mode"
           :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauabschnitt-component
           v-else-if="isBauabschnittFormularOpen"
           id="bauabschnitt_component"
-          v-model="selectedBauabschnitt"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeBauabschnitt"
+          :mode="mode"
         />
         <baugebiet-component
           v-else-if="isBaugebietFormularOpen"
           id="baugebiet_component"
-          v-model="selectedBaugebiet"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeBaugebiet"
-          :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
+          :mode="mode"
+          :abfragevariante="currentAbfragevariante"
         />
         <baurate-component
           v-else-if="isBaurateFormularOpen"
           id="baurate_component"
-          v-model="selectedBaurate"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeBaurate"
-          :baugebiet="baugebietForSelectedBaurate"
-          :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
+          :mode="mode"
+          :baugebiet="currentBaugebiet"
+          :abfragevariante="currentAbfragevariante"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
@@ -80,7 +80,7 @@
           dialogtitle="Hinweis"
           :dialogtext="
             'Hiermit wird die Abfragevariante Nr.' +
-            selectedAbfragevariante.abfragevariantenNr +
+            selected.abfragevariantenNr +
             ' und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
@@ -95,7 +95,7 @@
           dialogtitle="Hinweis"
           :dialogtext="
             'Hiermit wird der Bauabschnitt \'' +
-            selectedBauabschnitt.bezeichnung +
+            selected.bezeichnung +
             '\' und alle dazugehörigen Baugebiete unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
@@ -110,7 +110,7 @@
           dialogtitle="Hinweis"
           :dialogtext="
             'Hiermit wird das Baugebiet \'' +
-            selectedBaugebiet.bezeichnung +
+            selected.bezeichnung +
             '\' und alle dazugehörigen Bauraten unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
@@ -123,7 +123,7 @@
           v-model="isDeleteDialogBaurateOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selectedBaurate.jahr + ' unwiderruflich gelöscht.'"
+          :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selected.jahr + ' unwiderruflich gelöscht.'"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBaurateNo"
@@ -144,10 +144,10 @@
         </v-container>
       </template>
       <template #navigation>
-        <abfrage-tree
+        <abfrage-navigation-tree
           id="abfrage_navigation_tree"
           :abfrage="abfrage"
-          :selected-item-id="selectedItemId"
+          :selected-item-id="selectedTreeItemId"
           @select-abfrage="handleSelectAbfrage"
           @select-abfragevariante="handleSelectAbfragevariante"
           @select-bauabschnitt="handleSelectBauabschnitt"
@@ -227,15 +227,13 @@
 import {
   AbfragevarianteDto,
   BauabschnittDto,
-  BaugebietDto,
   BaurateDto,
   InfrastrukturabfrageDto,
   StatusAbfrage,
   TransitionDto,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
-import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
-import AbfrageTree, { TreeItem, generateTreeItemId } from "@/components/abfragen/AbfrageTree.vue";
+import AbfrageNavigationTree, { TreeItem, generateTreeItemId } from "@/components/abfragen/AbfrageNavigationTree.vue";
 import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
@@ -283,12 +281,19 @@ export const enum AnzeigeContextAbfragevariante {
   ABFRAGEVARIANTE_SACHBEARBEITUNG = 3,
 }
 
+// Ein Union aller im Rahmen der Abfrage relevanten Models, welche ein eigenes Formular haben.
+export type ModelWithForm =
+  | InfrastrukturabfrageModel
+  | AbfragevarianteModel
+  | BauabschnittModel
+  | BaugebietModel
+  | BaurateModel;
+
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
     AbfragevarianteFormular,
     AbfrageNavigationTree,
-    AbfrageTree,
     InformationList,
     InfrastrukturabfrageComponent,
     YesNoDialog,
@@ -312,19 +317,21 @@ export default class Abfrage extends Mixins(
   private buttonText = "";
   private dialogTextStatus = "";
   private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
-  private selectedItemId = "";
+
   /**
-   * Wird für die objektübergreifende Validierung im Formular des Baugebiets bzw. Baurate benötigt.
+   * Die Entität, welche aktuell ausgewählt ist und dessen Formular angezeigt wird.
    */
-  private abfragevarianteForSelectedBaugebietOrBaurate: AbfragevarianteDto | undefined;
+  private selected: ModelWithForm = this.abfrage;
   /**
-   * Wird für die objektübergreifende Validierung im Formular der Baurate benötigt.
+   * Die Abfragevariante, welche für einen aktuellen Prozess wichtig ist.
+   *
    */
-  private baugebietForSelectedBaurate: BaugebietDto | undefined;
-  private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
-  private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
-  private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
-  private selectedBaurate: BaurateModel = new BaurateModel(createBaurateDto());
+  private currentAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
+  /**
+   * Das Baugebiet, welche für einen aktuellen Prozess wichtig ist.
+   */
+  private currentBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
+
   private abfrageId: string = this.$route.params.id;
   private transition: TransitionDto | undefined;
   private isStatusUebergangDialogOpen = false;
@@ -338,6 +345,7 @@ export default class Abfrage extends Mixins(
   private isBauabschnittFormularOpen = false;
   private isBaugebietFormularOpen = false;
   private isBaurateFormularOpen = false;
+  private selectedTreeItemId = "";
   private abfragevarianteTreeItemToDelete: TreeItem<InfrastrukturabfrageModel> | undefined = undefined;
   private bauabschnittTreeItemToDelete: TreeItem<BauabschnittModel> | undefined = undefined;
   private baugebietTreeItemToDelete: TreeItem<BaugebietModel> | undefined = undefined;
@@ -598,15 +606,16 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectAbfrage(): void {
+    this.selected = this.abfrage;
     this.initializeFormulare();
-    this.selectedItemId = "";
+    this.selectedTreeItemId = "";
   }
 
   private handleSelectAbfragevariante(item: TreeItem<AbfragevarianteModel>): void {
-    this.selectedAbfragevariante = item.value;
+    this.selected = item.value;
     this.$nextTick(() => {
       this.openAbfragevarianteFormular();
-      this.selectedItemId = item.id;
+      this.selectedTreeItemId = item.id;
     });
   }
 
@@ -666,21 +675,23 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateAbfragevariante(parent: TreeItem<InfrastrukturabfrageModel>): void {
-    this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto(), false);
-    this.abfrage.abfragevarianten?.push(this.selectedAbfragevariante);
+    this.selected = new AbfragevarianteModel(createAbfragevarianteDto(), false);
+    this.abfrage.abfragevarianten?.push(this.selected);
     this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
     this.formChanged();
     this.openAbfragevarianteFormular();
-    this.selectedItemId = generateTreeItemId(parent.id, parent.children.length);
+    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
+    this.selectedTreeItemId = generateTreeItemId(parent.id, parent.children.length);
   }
 
   private handleCreateAbfragevarianteSachbearbeitung(parent: TreeItem<InfrastrukturabfrageModel>): void {
-    this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto(), true);
-    this.abfrage.abfragevarianten?.push(this.selectedAbfragevariante);
-    this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
+    this.selected = new AbfragevarianteModel(createAbfragevarianteDto(), true);
+    this.abfrage.abfragevariantenSachbearbeitung?.push(this.selected);
+    this.renumberingAbfragevarianten(this.abfrage.abfragevariantenSachbearbeitung);
     this.formChanged();
     this.openAbfragevarianteFormular();
-    this.selectedItemId = generateTreeItemId(parent.id, parent.children.length);
+    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
+    this.selectedTreeItemId = generateTreeItemId(parent.id, parent.children.length);
   }
 
   private removeAbfragevarianteFromAbfrage(): void {
@@ -700,7 +711,7 @@ export default class Abfrage extends Mixins(
       this.formChanged();
       this.openAbfrageFormular();
       this.$nextTick(() => {
-        this.selectedItemId = _.defaultTo(this.abfragevarianteTreeItemToDelete?.parent?.id, "");
+        this.selectedTreeItemId = _.defaultTo(this.abfragevarianteTreeItemToDelete?.parent?.id, "");
         this.abfragevarianteTreeItemToDelete = undefined;
       });
     }
@@ -708,16 +719,19 @@ export default class Abfrage extends Mixins(
 
   private removeBauabschnittFromAbfragevariante(): void {
     if (!_.isNil(this.bauabschnittTreeItemToDelete)) {
-      const abfragevariante = this.getSelectedAbfragevariante(this.bauabschnittTreeItemToDelete);
+      const abfragevariante = this.getCurrentAbfragevariante(this.bauabschnittTreeItemToDelete);
       if (!_.isNil(abfragevariante.bauabschnitte)) {
-        _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === this.selectedBauabschnitt);
+        _.remove(
+          abfragevariante.bauabschnitte,
+          (bauabschnitt) => bauabschnitt === this.bauabschnittTreeItemToDelete!.value
+        );
         // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
         abfragevariante.bauabschnitte = [...abfragevariante.bauabschnitte];
         this.formChanged();
         this.openAbfragevarianteFormular();
       }
       this.$nextTick(() => {
-        this.selectedItemId = _.defaultTo(this.bauabschnittTreeItemToDelete?.parent?.id, "");
+        this.selectedTreeItemId = _.defaultTo(this.bauabschnittTreeItemToDelete?.parent?.id, "");
         this.bauabschnittTreeItemToDelete = undefined;
       });
     }
@@ -725,15 +739,15 @@ export default class Abfrage extends Mixins(
 
   private removeBaugebietFromBauabschnitt(): void {
     if (!_.isNil(this.baugebietTreeItemToDelete)) {
-      const selectedBauabschnitt = this.getSelectedBauabschnitt(this.baugebietTreeItemToDelete);
-      _.remove(selectedBauabschnitt.baugebiete, (baugebiet) => baugebiet === this.selectedBaugebiet);
+      const bauabschnitt = this.getCurrentBauabschnitt(this.baugebietTreeItemToDelete);
+      _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === this.baugebietTreeItemToDelete!.value);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-      selectedBauabschnitt.baugebiete = [...selectedBauabschnitt.baugebiete];
-      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baugebietTreeItemToDelete));
+      bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
+      this.clearTechnicalEntities(this.getCurrentAbfragevariante(this.baugebietTreeItemToDelete));
       this.formChanged();
       this.openBauabschnittFormular();
       this.$nextTick(() => {
-        this.selectedItemId = _.defaultTo(this.baugebietTreeItemToDelete?.parent?.id, "");
+        this.selectedTreeItemId = _.defaultTo(this.baugebietTreeItemToDelete?.parent?.id, "");
         this.baugebietTreeItemToDelete = undefined;
       });
     }
@@ -741,80 +755,59 @@ export default class Abfrage extends Mixins(
 
   private removeBaurateFromBaugebiet(): void {
     if (!_.isNil(this.baurateTreeItemToDelete)) {
-      const baugebiet = this.getSelectedBaugebiet(this.baurateTreeItemToDelete);
-      _.remove(baugebiet.bauraten, (baurate) => baurate === this.selectedBaurate);
+      const baugebiet = this.getCurrentBaugebiet(this.baurateTreeItemToDelete);
+      _.remove(baugebiet.bauraten, (baurate) => baurate === this.baurateTreeItemToDelete!.value);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       baugebiet.bauraten = [...baugebiet.bauraten];
-      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baurateTreeItemToDelete));
+      this.clearTechnicalEntities(this.getCurrentAbfragevariante(this.baurateTreeItemToDelete));
       this.formChanged();
       this.openBaugebietFormular();
       this.$nextTick(() => {
-        this.selectedItemId = _.defaultTo(this.baurateTreeItemToDelete?.parent?.id, "");
+        this.selectedTreeItemId = _.defaultTo(this.baurateTreeItemToDelete?.parent?.id, "");
         this.baurateTreeItemToDelete = undefined;
       });
     }
   }
 
-  /*
-  private getSelectedAbfragevariante(item: TreeItem<AbfragevarianteDto>): AbfragevarianteDto {
-    const abfragevarianten =
-      item.contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
-        ? this.abfrage.abfragevarianten
-        : this.abfrage.abfragevariantenSachbearbeitung;
-    let selectedAbfragevariante = abfragevarianten.find((abfragevariante) => abfragevariante === item.abfragevariante);
-    if (_.isNil(selectedAbfragevariante)) {
-      selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
+  private getCurrentAbfragevariante(
+    item: TreeItem<AbfragevarianteModel | BauabschnittModel | BaugebietModel | BaurateModel>
+  ): AbfragevarianteModel {
+    let currentItem: TreeItem<ModelWithForm> = item;
+
+    /**
+     * Geht entlang den Parents des TreeItems solange in der Hierarchie nach oben, bis es auf das Child der Abfrage stößt.
+     * Dieses TreeItem kann dann nur noch die aktuelle Abfragevariante sein.
+     */
+    while (currentItem.parent !== null && currentItem.parent.value !== this.abfrage) {
+      currentItem = currentItem.parent;
     }
-    return selectedAbfragevariante;
+
+    return currentItem.value;
   }
 
-  private getSelectedBauabschnitt(item: TreeItem<BauabschnittDto>): BauabschnittDto {
-    let selectedBauabschnitt = undefined;
-    let selectedAbfragevariante = this.getSelectedAbfragevariante(item);
-    if (!_.isNil(selectedAbfragevariante.bauabschnitte)) {
-      selectedBauabschnitt = selectedAbfragevariante.bauabschnitte.find(
-        (bauabschnitt) => bauabschnitt === item.bauabschnitt
-      );
+  private getCurrentBauabschnitt(item: TreeItem<BaugebietModel>): BauabschnittModel {
+    const abfragevariante = this.getCurrentAbfragevariante(item);
+    if (item.parent!.value === abfragevariante) {
+      return this.getTechnicalBauabschnitt(abfragevariante)!;
+    } else {
+      return item.parent!.value as BauabschnittModel;
     }
-    if (_.isNil(selectedBauabschnitt)) {
-      const technicalBauabschnitt = this.getTechnicalBauabschnitt(selectedAbfragevariante);
-      selectedBauabschnitt = technicalBauabschnitt
-        ? technicalBauabschnitt
-        : new BauabschnittModel(createBauabschnittDto());
-    }
-    return selectedBauabschnitt;
   }
 
-  private getSelectedBaugebiet(item: TreeItem<BaugebietDto>): BaugebietDto {
-    let selectedBaugebiet = undefined;
-    let selectedBauabschnitt = this.getSelectedBauabschnitt(item);
-    if (!_.isNil(selectedBauabschnitt.baugebiete)) {
-      selectedBaugebiet = selectedBauabschnitt.baugebiete.find((baugebiet) => baugebiet === item.baugebiet);
+  private getCurrentBaugebiet(item: TreeItem<BaurateModel>): BaugebietModel {
+    const abfragevariante = this.getCurrentAbfragevariante(item);
+    if (item.parent!.value === abfragevariante) {
+      return this.getTechnicalBaugebiet(abfragevariante)!;
+    } else {
+      return item.parent!.value as BaugebietModel;
     }
-    if (_.isNil(selectedBaugebiet)) {
-      const selectedAbfragevariante = this.getSelectedAbfragevariante(item);
-      const technicalBaugebiet = this.getTechnicalBaugebiet(selectedAbfragevariante);
-      selectedBaugebiet = technicalBaugebiet ? technicalBaugebiet : new BaugebietModel(createBaugebietDto());
-    }
-    return selectedBaugebiet;
   }
-
-  private getSelectedBaurate(item: TreeItem<BaurateDto>): BaurateDto {
-    let selectedBaurate = undefined;
-    let selectedBaugebiet = this.getSelectedBaugebiet(item);
-    selectedBaurate = selectedBaugebiet.bauraten.find((baurate) => baurate === item.baurate);
-    if (_.isNil(selectedBaurate)) {
-      selectedBaurate = new BaurateModel(createBaurateDto());
-    }
-    return selectedBaurate;
-  }
-  */
 
   private handleSelectBauabschnitt(item: TreeItem<BauabschnittModel>): void {
-    this.selectedBauabschnitt = item.value;
+    this.selected = item.value;
     this.$nextTick(() => {
       this.openBauabschnittFormular();
-      this.selectedItemId = item.id;
+      this.selectedTreeItemId = item.id;
     });
   }
 
@@ -824,23 +817,26 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateBauabschnitt(parent: TreeItem<AbfragevarianteModel>): void {
-    let selectedAbfragevariante = this.getSelectedAbfragevariante(item);
-    this.selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
-    if (_.isNil(selectedAbfragevariante.bauabschnitte)) {
-      selectedAbfragevariante.bauabschnitte = [];
+    const abfragvariante = parent.value;
+    if (_.isNil(abfragvariante.bauabschnitte)) {
+      abfragvariante.bauabschnitte = [];
     }
-    selectedAbfragevariante.bauabschnitte.push(this.selectedBauabschnitt);
+
+    const bauabschnitt = new BauabschnittModel(createBauabschnittDto());
+    abfragvariante.bauabschnitte.push(bauabschnitt);
+    this.selected = bauabschnitt;
     this.formChanged();
     this.openBauabschnittFormular();
-    this.selectedItemId = generateTreeItemId(parent.id, parent.children.length);
+    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
+    this.selectedTreeItemId = generateTreeItemId(parent.id, parent.children.length);
   }
 
   private handleSelectBaugebiet(item: TreeItem<BaugebietModel>): void {
-    this.abfragevarianteForSelectedBaugebietOrBaurate = item.abfragevariante;
-    this.selectedBaugebiet = item.value;
+    this.selected = item.value;
+    this.currentAbfragevariante = this.getCurrentAbfragevariante(item);
     this.$nextTick(() => {
       this.openBaugebietFormular();
-      this.selectedItemId = item.id;
+      this.selectedTreeItemId = item.id;
     });
   }
 
@@ -850,26 +846,32 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateBaugebiet(parent: TreeItem<AbfragevarianteModel | BauabschnittModel>): void {
-    this.abfragevarianteForSelectedBaugebietOrBaurate = item.abfragevariante;
-    let selectedBauabschnitt = this.getSelectedBauabschnitt(item);
-    this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
-    const abfragevariante = item.abfragevariante;
-    if (!_.isNil(abfragevariante)) {
-      this.selectedBaugebiet.realisierungVon = abfragevariante.realisierungVon;
+    const abfragevariante = this.getCurrentAbfragevariante(parent);
+    let bauabschnitt: BauabschnittModel;
+    if (parent.value === abfragevariante) {
+      bauabschnitt = this.getTechnicalBauabschnitt(abfragevariante)!;
+    } else {
+      bauabschnitt = parent.value as BauabschnittModel;
     }
-    selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
+
+    const baugebiet = new BaugebietModel(createBaugebietDto());
+    baugebiet.realisierungVon = abfragevariante.realisierungVon!;
+    bauabschnitt.baugebiete.push(baugebiet);
+    this.currentAbfragevariante = abfragevariante;
+    this.selected = baugebiet;
     this.formChanged();
     this.openBaugebietFormular();
-    this.selectedItemId = generateTreeItemId(parent.id, parent.children.length);
+    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
+    this.selectedTreeItemId = generateTreeItemId(parent.id, parent.children.length);
   }
 
   private handleSelectBaurate(item: TreeItem<BaurateModel>): void {
-    this.baugebietForSelectedBaurate = item.baugebiet;
-    this.abfragevarianteForSelectedBaugebietOrBaurate = item.abfragevariante;
-    this.selectedBaurate = item.value;
+    this.selected = item.value;
+    this.currentAbfragevariante = this.getCurrentAbfragevariante(item);
+    this.currentBaugebiet = this.getCurrentBaugebiet(item);
     this.$nextTick(() => {
       this.openBaurateFormular();
-      this.selectedItemId = item.id;
+      this.selectedTreeItemId = item.id;
     });
   }
 
@@ -879,30 +881,27 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateBaurate(parent: TreeItem<AbfragevarianteModel | BaugebietModel>): void {
-    let selectedBaugebiet = this.getSelectedBaugebiet(item);
-    this.baugebietForSelectedBaurate = selectedBaugebiet;
-    this.abfragevarianteForSelectedBaugebietOrBaurate = item.abfragevariante;
-    this.selectedBaurate = new BaurateModel(createBaurateDto());
-    selectedBaugebiet.bauraten.push(this.selectedBaurate);
+    const abfragevariante = this.getCurrentAbfragevariante(parent);
+    let baugebiet: BaugebietModel;
+    if (parent.value === abfragevariante) {
+      baugebiet = this.getTechnicalBaugebiet(abfragevariante)!;
+    } else {
+      baugebiet = parent.value as BaugebietModel;
+    }
+
+    const baurate = new BaurateModel(createBaurateDto());
+    baugebiet.bauraten.push(baurate);
+    this.currentAbfragevariante = abfragevariante;
+    this.currentBaugebiet = baugebiet;
+    this.selected = baurate;
     this.formChanged();
     this.openBaurateFormular();
-    this.selectedItemId = generateTreeItemId(parent.id, parent.children.length);
+    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
+    this.selectedTreeItemId = generateTreeItemId(parent.id, parent.children.length);
   }
 
-  private get modeAbfragevariante(): DisplayMode {
-    return _.isNil(this.selectedAbfragevariante.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
-  }
-
-  private get modeBauabschnitt(): DisplayMode {
-    return _.isNil(this.selectedBauabschnitt.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
-  }
-
-  private get modeBaugebiet(): DisplayMode {
-    return _.isNil(this.selectedBaugebiet.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
-  }
-
-  private get modeBaurate(): DisplayMode {
-    return _.isNil(this.selectedBaurate.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+  private get mode(): DisplayMode {
+    return _.isNil(this.selected.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
   private renumberingAbfragevarianten(abfragevarianten: Array<AbfragevarianteDto> | undefined): void {
@@ -912,8 +911,8 @@ export default class Abfrage extends Mixins(
   }
 
   private getAnzeigeContextAbfragevariante(): AnzeigeContextAbfragevariante {
-    if (this.selectedAbfragevariante) {
-      return this.selectedAbfragevariante.sachbearbeitung
+    if (this.currentAbfragevariante) {
+      return this.currentAbfragevariante.sachbearbeitung
         ? AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
         : AnzeigeContextAbfragevariante.ABFRAGEVARIANTE;
     }
