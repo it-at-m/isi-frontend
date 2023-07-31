@@ -331,7 +331,7 @@ export default class AbfragevarianteForm extends Mixins(
   private readonly isEditable!: boolean;
 
   @Prop()
-  private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined;
+  private anzeigeContextAbfragevariante!: AnzeigeContextAbfragevariante;
 
   private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
 

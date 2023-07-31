@@ -9,7 +9,7 @@ class AbfragevarianteModel {
   }
 
   public getAbfragevariantenNrForContextAnzeigeAbfragevariante(
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
   ): string {
     let numberContext = "";
     if (contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
