@@ -314,6 +314,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import AbfragevarianteSachbearbeitungFormular from "@/components/abfragevarianten/AbfragevarianteSachbearbeitungFormular.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import _ from "lodash";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 @Component({ components: { FieldGroupCard, NumField, BauratenAggregiertComponent } })
 export default class AbfragevarianteForm extends Mixins(
@@ -330,6 +331,9 @@ export default class AbfragevarianteForm extends Mixins(
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
+
+  @Prop()
+  private anzeigeContextAbfragevariante!: AnzeigeContextAbfragevariante;
 
   private geschossFlaecheCardTitle = "Geschossfläche Wohnen";
 
@@ -371,7 +375,9 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get headline(): string {
-    const headline = `Abfragevariante Nr: ${this.abfragevariante.abfragevariantenNr} - `;
+    const headline = `Abfragevariante ${this.abfragevariante.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+      this.anzeigeContextAbfragevariante
+    )} - `;
     return this.displayMode === DisplayMode.NEU
       ? headline.concat("anlegen")
       : headline.concat(`${this.abfragevariante.abfragevariantenName}`);
