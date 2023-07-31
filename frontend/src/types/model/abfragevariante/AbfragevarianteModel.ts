@@ -10,8 +10,8 @@ class AbfragevarianteModel {
 
   public getAbfragevariantenNrForContextAnzeigeAbfragevariante(
     contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined
-  ): string | undefined {
-    let numberContext: string | undefined = undefined;
+  ): string {
+    let numberContext = "";
     if (contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
       numberContext = `1.${this.abfragevariantenNr}`;
     } else if (contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
