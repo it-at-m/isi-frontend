@@ -27,17 +27,17 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-select
-            id="baugebiet_baugebietTyp"
-            v-model="baugebiet.baugebietTyp"
+            id="baugebiet_baugebietArt"
+            v-model="baugebiet.baugebietArt"
             :disabled="!isEditable"
             class="mx-3"
-            :items="baugebietTypList"
+            :items="baugebietArtList"
             item-value="key"
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld]"
             @change="formChanged"
           >
-            <template #label> Baugebiet Typ <span class="secondary--text">*</span> </template>
+            <template #label> Art des Baugebiets <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -256,8 +256,8 @@ export default class BauabschnittComponent extends Mixins(
     return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
   }
 
-  get baugebietTypList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/baugebietTyp"];
+  get baugebietArtList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/baugebietArt"];
   }
 
   get abfragevarianteRealisierungVonOr1900(): number {

@@ -33,7 +33,7 @@ import {
   SchuleDto,
   BauabschnittDto,
   BaugebietDto,
-  BaugebietDtoBaugebietTypEnum,
+  BaugebietDtoBaugebietArtEnum,
   UncertainBoolean,
   AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
@@ -259,7 +259,7 @@ export function createBaugebietDto(): BaugebietDto {
     lastModifiedDateTime: undefined,
     bezeichnung: "",
     realisierungVon: Number.NaN,
-    baugebietTyp: BaugebietDtoBaugebietTypEnum.Ge,
+    baugebietArt: BaugebietDtoBaugebietArtEnum.Ge,
     bauraten: [],
     technical: false,
   };
@@ -276,7 +276,7 @@ export function createTechnicalBaugebietDto(): BaugebietDto {
     lastModifiedDateTime: undefined,
     bezeichnung: "Platzhalter",
     realisierungVon: Number.NaN,
-    baugebietTyp: BaugebietDtoBaugebietTypEnum.Ge,
+    baugebietArt: BaugebietDtoBaugebietArtEnum.Ge,
     bauraten: [],
     technical: true,
   };
