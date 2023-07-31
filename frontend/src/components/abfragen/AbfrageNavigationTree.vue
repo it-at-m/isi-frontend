@@ -34,6 +34,7 @@ export interface TreeItem<T extends ModelWithForm> {
   children: TreeItem<ModelWithForm>[];
   actions: Action[];
   onSelection: () => void;
+  context: AnzeigeContextAbfragevariante;
   value: T;
 }
 
@@ -62,7 +63,7 @@ interface Props {
 }
 
 const DEFAULT_NAME = "Nicht gepflegt";
-const ABFRAGE_NAME = "Abfrage";
+const ABFRAGE_NAME = "Daten zur Abfrage";
 const ABRAGEVARIANTE_PREFIX = "Nr.: ";
 
 const CREATE_ABFRAGEVARIANTE = "Abfragevariante erstellen";
@@ -100,7 +101,7 @@ const items = ref<TreeItem<InfrastrukturabfrageModel>[]>([]);
 const selectedItemIds = computed(() => [props.selectedItemId]);
 const openItemIds = ref<string[]>([]);
 
-watch(props.abfrage, () => (items.value = [buildTree(props.abfrage)]));
+watch(props.abfrage, () => (items.value = [buildTree(props.abfrage)]), { immediate: true });
 
 function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<InfrastrukturabfrageModel> {
   const item: TreeItem<InfrastrukturabfrageModel> = {
@@ -110,23 +111,20 @@ function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<Infrastrukturab
     children: [],
     actions: [],
     onSelection: () => emit("selectAbfrage", item),
+    context: AnzeigeContextAbfragevariante.UNDEFINED,
     value: abfrage,
   };
 
   if (abfrage.abfragevarianten) {
-    const editable = isEditableWithAnzeigeContextAbfragevariante(AnzeigeContextAbfragevariante.ABFRAGEVARIANTE);
     const abfragevarianten = abfrage.abfragevarianten.map((value, index) =>
-      parseAbfragevariante(value, item, index, editable)
+      parseAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE)
     );
     item.children.push(...abfragevarianten);
   }
 
   if (abfrage.abfragevariantenSachbearbeitung) {
-    const editable = isEditableWithAnzeigeContextAbfragevariante(
-      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
-    );
     const abfragevarianten = abfrage.abfragevariantenSachbearbeitung.map((value, index) =>
-      parseAbfragevariante(value, item, index, editable)
+      parseAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG)
     );
     item.children.push(...abfragevarianten);
   }
@@ -152,10 +150,11 @@ function parseAbfragevariante(
   abfragevariante: AbfragevarianteModel,
   parent: TreeItem<InfrastrukturabfrageModel>,
   index: number,
-  editable: boolean
+  context: AnzeigeContextAbfragevariante
 ): TreeItem<AbfragevarianteModel> {
   const prefix = ABRAGEVARIANTE_PREFIX + _.defaultTo(abfragevariante.abfragevariantenNr, "");
   const name = _.defaultTo(abfragevariante.abfragevariantenName, DEFAULT_NAME);
+  const editable = isEditableWithAnzeigeContextAbfragevariante(context);
 
   const item: TreeItem<AbfragevarianteModel> = {
     id: generateTreeItemId(parent.id, index),
@@ -164,6 +163,7 @@ function parseAbfragevariante(
     children: [],
     actions: [],
     onSelection: () => emit("selectAbfragevariante", item),
+    context,
     value: abfragevariante,
   };
 
@@ -192,7 +192,7 @@ function parseAbfragevariante(
       const firstBaugebiet = firstBauabschnitt.baugebiete[0];
       if (firstBaugebiet && firstBaugebiet.technical) {
         // Fall 1: Platzhalter-Bauabschnitt und -Baugebiet -> Bauraten werden angezeigt und können angelegt werden
-        item.children = firstBaugebiet.bauraten.map((value, index) => parseBaurate(value, item, index, editable));
+        item.children = firstBaugebiet.bauraten.map((value, index) => parseBaurate(value, item, index, context));
         if (editable) {
           item.actions.push({
             name: CREATE_BAURATE,
@@ -202,9 +202,7 @@ function parseAbfragevariante(
         }
       } else {
         // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
-        item.children = firstBauabschnitt.baugebiete.map((value, index) =>
-          parseBaugebiet(value, item, index, editable)
-        );
+        item.children = firstBauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, item, index, context));
         if (editable) {
           item.actions.push({
             name: CREATE_BAUGEBIET,
@@ -216,7 +214,7 @@ function parseAbfragevariante(
     } else {
       // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
       item.children = abfragevariante.bauabschnitte.map((value, index) =>
-        parseBauabschnitt(value, item, index, editable)
+        parseBauabschnitt(value, item, index, context)
       );
       if (editable) {
         item.actions.push({
@@ -254,7 +252,7 @@ function parseBauabschnitt(
   bauabschnitt: BauabschnittModel,
   parent: TreeItem<AbfragevarianteModel>,
   index: number,
-  editable: boolean
+  context: AnzeigeContextAbfragevariante
 ): TreeItem<BauabschnittModel> {
   const item: TreeItem<BauabschnittModel> = {
     id: generateTreeItemId(parent.id, index),
@@ -263,12 +261,13 @@ function parseBauabschnitt(
     children: [],
     actions: [],
     onSelection: () => emit("selectBauabschnitt", item),
+    context,
     value: bauabschnitt,
   };
 
-  item.children = bauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, item, index, editable));
+  item.children = bauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, item, index, context));
 
-  if (editable) {
+  if (isEditableWithAnzeigeContextAbfragevariante(context)) {
     item.actions.push({ name: CREATE_BAUGEBIET, disabled: false, effect: () => emit("createBaugebiet", item) });
     item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBauabschnitt", item) });
   }
@@ -280,7 +279,7 @@ function parseBaugebiet(
   baugebiet: BaugebietModel,
   parent: TreeItem<AbfragevarianteModel | BauabschnittModel>,
   index: number,
-  editable: boolean
+  context: AnzeigeContextAbfragevariante
 ): TreeItem<BaugebietModel> {
   const item: TreeItem<BaugebietModel> = {
     id: generateTreeItemId(parent.id, index),
@@ -289,12 +288,13 @@ function parseBaugebiet(
     children: [],
     actions: [],
     onSelection: () => emit("selectBaugebiet", item),
+    context,
     value: baugebiet,
   };
 
-  item.children = baugebiet.bauraten.map((value, index) => parseBaurate(value, item, index, editable));
+  item.children = baugebiet.bauraten.map((value, index) => parseBaurate(value, item, index, context));
 
-  if (editable) {
+  if (isEditableWithAnzeigeContextAbfragevariante(context)) {
     item.actions.push({
       name: DETERMINE_BAURATEN,
       disabled: !bauratenDeterminableForBaugebiet(baugebiet),
@@ -315,7 +315,7 @@ function parseBaurate(
   baurate: BaurateModel,
   parent: TreeItem<AbfragevarianteModel | BaugebietModel>,
   index: number,
-  editable: boolean
+  context: AnzeigeContextAbfragevariante
 ): TreeItem<BaurateModel> {
   const item: TreeItem<BaurateModel> = {
     id: generateTreeItemId(parent.id, index),
@@ -324,10 +324,11 @@ function parseBaurate(
     children: [],
     actions: [],
     onSelection: () => emit("selectBaurate", item),
+    context,
     value: baurate,
   };
 
-  if (editable) {
+  if (isEditableWithAnzeigeContextAbfragevariante(context)) {
     item.actions.push({ name: DELETE, disabled: false, effect: () => emit("deleteBaurate", item) });
   }
 
@@ -372,11 +373,13 @@ function openItem(item: TreeItem<ModelWithForm>): void {
   >
     <template #label="{ item }">
       <v-menu
+        v-if="item.actions.length > 0"
         open-on-hover
         offset-x
       >
         <template #activator="{ on }">
           <a
+            :id="`abfrage_navigation_tree_${item.id}`"
             v-on="on"
             @click="item.onSelection"
           >
@@ -386,6 +389,7 @@ function openItem(item: TreeItem<ModelWithForm>): void {
         <v-list>
           <v-list-item
             v-for="action in item.actions"
+            :id="`abfrage_navigation_tree_${item.id}_${action.name}`"
             :key="action.name"
             :disabled="action.disabled"
             @click="action.effect"
