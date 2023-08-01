@@ -100,7 +100,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
 
   @Watch("isInfraListOpen", { immediate: true })
   private getReferencedInfrastruktureinrichtungen(): void {
-    if (this.isInfraListOpen && this.$route.params.id !== undefined) {
+    if (this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
       this.getReferencedInfrastruktureinrichtungenList(this.$route.params.id, true).then(
         (infraListElements: InfrastruktureinrichtungListElementDto[]) => {
           if (!_.isNil(infraListElements)) {
