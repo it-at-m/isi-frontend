@@ -103,7 +103,7 @@
           <v-autocomplete
             id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
-            :items="baugebietTypList"
+            :items="baugebietArtList"
             item-value="key"
             item-text="value"
             multiple
@@ -292,8 +292,8 @@ export default class BauvorhabenForm extends Mixins(
     return this.$store.getters["lookup/planungsrecht"];
   }
 
-  get baugebietTypList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/baugebietTyp"];
+  get baugebietArtList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/baugebietArt"];
   }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {

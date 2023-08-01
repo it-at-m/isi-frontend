@@ -25,7 +25,7 @@ import { AbfrageListElementDto } from '@/api/api-client/isi-backend' import { Ab
                 :id="'abfragen_bauvorhaben_reference_' + index"
                 @click="routeToAbfrageInfo(abfrage)"
               >
-                <v-list-item-title>Name der Abfrage: {{ abfrage.nameAbfrage }}</v-list-item-title>
+                <v-list-item-title>{{ abfrage.nameAbfrage }}</v-list-item-title>
                 <v-list-item-subtitle
                   >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
                 </v-list-item-subtitle>
@@ -49,10 +49,9 @@ import { AbfrageListElementDto } from '@/api/api-client/isi-backend' import { Ab
                 :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
                 @click="routeToInfrastruktureinrichtungInfo(infra)"
               >
-                <v-list-item-title> Name der Einrichtung: {{ infra.nameEinrichtung }} </v-list-item-title>
+                <v-list-item-title> {{ infra.nameEinrichtung }} </v-list-item-title>
                 <v-list-item-subtitle>
-                  Infrastruktureinrichtung Typ:
-                  {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
+                  Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>

@@ -5,12 +5,6 @@ import {
   InfrastruktureinrichtungListElementDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
-import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
-import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
-import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
-import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
-import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
