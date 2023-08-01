@@ -8,12 +8,15 @@ interface InfrastrukturabfrageModel extends InfrastrukturabfrageDto {}
 class InfrastrukturabfrageModel {
   constructor(infrastrukturabfrage: InfrastrukturabfrageDto) {
     Object.assign(this, infrastrukturabfrage, {});
-    this.abfrage = new AbfrageModel(infrastrukturabfrage.abfrage);
-    if (!_.isNil(infrastrukturabfrage.abfragevarianten)) {
-      for (let i = 0; i < infrastrukturabfrage.abfragevarianten.length; i++) {
-        infrastrukturabfrage.abfragevarianten[i] = new AbfragevarianteModel(infrastrukturabfrage.abfragevarianten[i]);
-      }
+    if (!_.isNil(infrastrukturabfrage.abfrage)) {
+      this.abfrage = new AbfrageModel(infrastrukturabfrage.abfrage);
     }
+    this.abfragevarianten = _.toArray(infrastrukturabfrage.abfragevarianten).map(
+      (abfragevariante) => new AbfragevarianteModel(abfragevariante)
+    );
+    this.abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrage.abfragevariantenSachbearbeitung).map(
+      (abfragevariante) => new AbfragevarianteModel(abfragevariante)
+    );
   }
 }
 export { InfrastrukturabfrageModel as default };
