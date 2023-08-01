@@ -1,48 +1,46 @@
 <template>
-  <div v-if="showResult">
-    <field-group-card :card-title="header">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-container class="table">
-            <v-data-table
-              :headers="bauratenJahreHeaders"
-              :items="aggregatedBauraten"
-              hide-default-footer
-              disable-pagination
-              disable-filtering
-              disable-sort
-            >
-              <template #header="{ text }">
-                <span>{{ text }}</span>
-              </template>
-              <template #body="{ items }">
-                <tbody>
-                  <tr>
-                    <td><span>Wohneinheiten</span></td>
-                    <td
-                      v-for="(item, index) in items"
-                      :key="index"
-                    >
-                      {{ item.anzahlWeGeplant }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><span>Geschossfläche</span></td>
-                    <td
-                      v-for="(item, index) in items"
-                      :key="index"
-                    >
-                      {{ item.geschossflaecheWohnenGeplant }}
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-data-table>
-          </v-container>
-        </v-col>
-      </v-row>
-    </field-group-card>
-  </div>
+  <field-group-card :card-title="header">
+    <v-row justify="center">
+      <v-col cols="12">
+        <v-container class="table">
+          <v-data-table
+            :headers="bauratenJahreHeaders"
+            :items="aggregatedBauraten"
+            hide-default-footer
+            disable-pagination
+            disable-filtering
+            disable-sort
+          >
+            <template #header="{ text }">
+              <span>{{ text }}</span>
+            </template>
+            <template #body="{ items }">
+              <tbody>
+                <tr>
+                  <td><span>Wohneinheiten</span></td>
+                  <td
+                    v-for="(item, index) in items"
+                    :key="index"
+                  >
+                    {{ formatWohneinheiten(item.anzahlWeGeplant) }}
+                  </td>
+                </tr>
+                <tr>
+                  <td><span>Geschossfläche m²</span></td>
+                  <td
+                    v-for="(item, index) in items"
+                    :key="index"
+                  >
+                    {{ formatGeschossflaecheWohnen(item.geschossflaecheWohnenGeplant) }}
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-data-table>
+        </v-container>
+      </v-col>
+    </v-row>
+  </field-group-card>
 </template>
 
 <script lang="ts">
@@ -55,15 +53,12 @@ import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { DataTableHeader } from "@/types/common/DataTableHeader";
 import { BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
+import { numberToFormattedStringTwoDecimals, numberToFormattedStringZeroDecimals } from "@/utils/CalculationUtil";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauratenAggregiertComponent extends Vue {
   @Prop()
   private aggregateBauraten!: AbfragevarianteModel | BauabschnittModel | BaugebietModel;
-
-  get showResult(): boolean {
-    return this.aggregatedBauraten.length > 0;
-  }
 
   private baurateMap: Map<number, BaurateModel> = new Map<number, BaurateModel>();
 
@@ -140,6 +135,14 @@ export default class BauratenAggregiertComponent extends Vue {
       }
     }
     return "";
+  }
+
+  private formatWohneinheiten(wohneinheiten: number): string {
+    return numberToFormattedStringZeroDecimals(wohneinheiten);
+  }
+
+  private formatGeschossflaecheWohnen(geschossflaecheWohnen: number): string {
+    return numberToFormattedStringTwoDecimals(geschossflaecheWohnen);
   }
 }
 </script>
