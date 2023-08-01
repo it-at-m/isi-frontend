@@ -837,9 +837,7 @@ export default class Abfrage extends Mixins(
         ? technicalBauabschnitt
         : new BauabschnittModel(createBauabschnittDto());
     }
-    return selectedBauabschnitt instanceof BauabschnittModel
-      ? selectedBauabschnitt
-      : new BauabschnittModel(selectedBauabschnitt);
+    return selectedBauabschnitt;
   }
 
   private getSelectedBaugebiet(abfrageTreeItem: AbfrageTreeItem): BaugebietDto {
@@ -853,7 +851,7 @@ export default class Abfrage extends Mixins(
       const technicalBaugebiet = this.getTechnicalBaugebiet(selectedAbfragevariante);
       selectedBaugebiet = technicalBaugebiet ? technicalBaugebiet : new BaugebietModel(createBaugebietDto());
     }
-    return selectedBaugebiet instanceof BaugebietModel ? selectedBaugebiet : new BaugebietModel(selectedBaugebiet);
+    return selectedBaugebiet;
   }
 
   private getSelectedBaurate(abfrageTreeItem: AbfrageTreeItem): BaurateDto {
@@ -863,7 +861,7 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedBaurate)) {
       selectedBaurate = new BaurateModel(createBaurateDto());
     }
-    return selectedBaurate instanceof BaurateModel ? selectedBaurate : new BaurateModel(selectedBaurate);
+    return selectedBaurate;
   }
 
   private handleSelectBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
