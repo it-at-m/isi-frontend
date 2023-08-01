@@ -223,12 +223,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import {
-  AbfrageListElementDto,
-  InfrastruktureinrichtungListElementDto,
-  LookupEntryDto,
-  UncertainBoolean,
-} from "@/api/api-client/isi-backend";
+import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
