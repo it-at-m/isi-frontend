@@ -820,9 +820,7 @@ export default class Abfrage extends Mixins(
     if (_.isNil(selectedAbfragevariante)) {
       selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
     }
-    return selectedAbfragevariante instanceof AbfragevarianteModel
-      ? selectedAbfragevariante
-      : new AbfragevarianteModel(selectedAbfragevariante);
+    return selectedAbfragevariante;
   }
 
   private getSelectedBauabschnitt(abfrageTreeItem: AbfrageTreeItem): BauabschnittDto {
