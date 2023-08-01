@@ -9,7 +9,7 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-subtitle
-                    >Keine Infrastrukturabfragen referenzieren dieses Bauvorhaben</v-list-item-subtitle
+                    >Dieses Bauvorhaben wird nicht durch Infrastrukturabfragen referenziert</v-list-item-subtitle
                   >
                 </v-list-item-content>
               </v-list-item>
@@ -40,7 +40,7 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-subtitle
-                    >Keine Infrastruktureinrichtungen referenzieren dieses Bauvorhaben</v-list-item-subtitle
+                    >Dieses Bauvorhaben wird nicht durch Infrastruktureinrichtungen referenziert</v-list-item-subtitle
                   >
                 </v-list-item-content>
               </v-list-item>
