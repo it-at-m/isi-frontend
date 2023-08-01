@@ -1,92 +1,70 @@
 <template>
   <div>
-    <!-- Abfragen List -->
-    <v-card
-      outlined
-      class="mb-12 transition-swing"
-    >
-      <v-list>
-        <v-list-group
-          :value="isAbfrageListOpen"
-          @click="getReferencedInfrastrukturabfragen()"
-        >
-          <template #activator>
-            <v-list-item-title class="text-h5">Abfragen</v-list-item-title>
-          </template>
-          <v-list-item-group
-            v-if="abfragenEmpty"
-            color="primary"
-          >
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-subtitle
-                  >Keine Infrastrukturabfragen referenzieren dieses Bauvorhaben</v-list-item-subtitle
-                >
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-          <v-list-item-group
-            v-else
-            color="primary"
-          >
-            <v-list-item
-              v-for="(abfrage, index) in abfragen"
-              :key="index"
-              link
-            >
-              <v-list-item-content
-                :id="'abfragen_bauvorhaben_reference_' + index"
-                @click="routeToAbfrageInfo(abfrage)"
+    <v-container class="mb-12 transition-swing">
+      <v-expansion-panels>
+        <v-expansion-panel @click="getReferencedInfrastrukturabfragen()">
+          <v-expansion-panel-header> Infrastrukturabfragen </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-list v-if="abfragenEmpty">
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-subtitle
+                    >Keine Infrastrukturabfragen referenzieren dieses Bauvorhaben</v-list-item-subtitle
+                  >
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+            <v-list v-else>
+              <v-list-item
+                v-for="(abfrage, index) in abfragen"
+                :key="index"
+                link
               >
-                <v-list-item-title>{{ abfrage.nameAbfrage }}</v-list-item-title>
-                <v-list-item-subtitle
-                  >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list-group>
-        <v-list-group
-          :value="isInfraListOpen"
-          @click="getReferencedInfrastruktureinrichtungen()"
-        >
-          <template #activator>
-            <v-list-item-title class="text-h5">Infrastruktureinrichtungen</v-list-item-title>
-          </template>
-          <v-list-item-group
-            v-if="infrastruktureinrichtungenEmpty"
-            color="primary"
-          >
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-subtitle
-                  >Keine Infrastruktureinrichtungen referenzieren dieses Bauvorhaben</v-list-item-subtitle
+                <v-list-item-content
+                  :id="'abfragen_bauvorhaben_reference_' + index"
+                  @click="routeToAbfrageInfo(abfrage)"
                 >
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-          <v-list-item-group
-            v-else
-            color="primary"
-          >
-            <v-list-item
-              v-for="(infra, index) in infrastruktureinrichtungen"
-              :key="index"
-            >
-              <v-list-item-content
-                :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
-                @click="routeToInfrastruktureinrichtungInfo(infra)"
+                  <v-list-item-title>{{ abfrage.nameAbfrage }}</v-list-item-title>
+                  <v-list-item-subtitle
+                    >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel @click="getReferencedInfrastruktureinrichtungen()">
+          <v-expansion-panel-header> Infrastruktureinrichtungen </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-list v-if="infrastruktureinrichtungenEmpty">
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-subtitle
+                    >Keine Infrastruktureinrichtungen referenzieren dieses Bauvorhaben</v-list-item-subtitle
+                  >
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+            <v-list v-else>
+              <v-list-item
+                v-for="(infra, index) in infrastruktureinrichtungen"
+                :key="index"
               >
-                <v-list-item-title> {{ infra.nameEinrichtung }} </v-list-item-title>
-                <v-list-item-subtitle>
-                  Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list-group>
-      </v-list>
-    </v-card>
+                <v-list-item-content
+                  :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
+                  @click="routeToInfrastruktureinrichtungInfo(infra)"
+                >
+                  <v-list-item-title> {{ infra.nameEinrichtung }} </v-list-item-title>
+                  <v-list-item-subtitle>
+                    Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-container>
   </div>
 </template>
 
@@ -202,10 +180,4 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
 }
 </script>
 
-<style>
-/* Adjust styles as you wish */
-.subheader {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-</style>
+<style></style>
