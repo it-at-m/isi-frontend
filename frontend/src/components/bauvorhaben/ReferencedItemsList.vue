@@ -1,5 +1,3 @@
-import { AbfrageListElementDto } from '@/api/api-client/isi-backend' import { AbfrageListElementDto } from
-'@/api/api-client/isi-backend' import { AbfrageListElementDto } from '@/api/api-client/isi-backend'
 <template>
   <div>
     <!-- Abfragen List -->
@@ -10,7 +8,7 @@ import { AbfrageListElementDto } from '@/api/api-client/isi-backend' import { Ab
       <v-list>
         <v-list-group
           :value="isAbfrageListOpen"
-          @click="isAbfrageListOpen = !isAbfrageListOpen"
+          @click="getReferencedInfrastrukturabfragen()"
         >
           <template #activator>
             <v-list-item-title class="text-h5">Abfragen</v-list-item-title>
@@ -35,7 +33,7 @@ import { AbfrageListElementDto } from '@/api/api-client/isi-backend' import { Ab
         </v-list-group>
         <v-list-group
           :value="isInfraListOpen"
-          @click="isInfraListOpen = !isInfraListOpen"
+          @click="getReferencedInfrastruktureinrichtungen()"
         >
           <template #activator>
             <v-list-item-title class="text-h5">Infrastruktureinrichtungen</v-list-item-title>
@@ -85,9 +83,9 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
 
   infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
 
-  @Watch("isAbfrageListOpen", { immediate: true })
   private getReferencedInfrastrukturabfragen(): void {
-    if (this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
+    if (!this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
+      this.isAbfrageListOpen = true;
       this.getReferencedInfrastrukturabfragenList(this.$route.params.id, true).then(
         (abfrageListElements: AbfrageListElementDto[]) => {
           if (!_.isNil(abfrageListElements)) {
@@ -95,12 +93,16 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
           }
         }
       );
+    } else if (this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
+      this.isAbfrageListOpen = false;
+    } else {
+      this.isAbfrageListOpen = false;
     }
   }
 
-  @Watch("isInfraListOpen", { immediate: true })
   private getReferencedInfrastruktureinrichtungen(): void {
-    if (this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
+    if (!this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
+      this.isInfraListOpen = true;
       this.getReferencedInfrastruktureinrichtungenList(this.$route.params.id, true).then(
         (infraListElements: InfrastruktureinrichtungListElementDto[]) => {
           if (!_.isNil(infraListElements)) {
@@ -108,6 +110,10 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
           }
         }
       );
+    } else if (this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
+      this.isInfraListOpen = false;
+    } else {
+      this.isInfraListOpen = false;
     }
   }
 
