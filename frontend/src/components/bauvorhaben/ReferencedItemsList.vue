@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container class="mb-12 transition-swing">
+    <v-container class="transition-swing">
       <v-expansion-panels>
         <v-expansion-panel @click="getReferencedInfrastrukturabfragen()">
           <v-expansion-panel-header> Infrastrukturabfragen </v-expansion-panel-header>
