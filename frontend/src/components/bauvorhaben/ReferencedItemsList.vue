@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Mixins } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import {
   AbfrageListElementDto,
   InfrastruktureinrichtungListElementDto,
