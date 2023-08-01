@@ -272,12 +272,6 @@ export default class BauvorhabenForm extends Mixins(
 
   private referencedObjectsCardTitle = "Zugehörige Infrastruktureinrichtungen und Abfragen";
 
-  private isNew = true;
-
-  private abfragen: Array<AbfrageListElementDto> = [];
-
-  private infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
@@ -295,10 +289,6 @@ export default class BauvorhabenForm extends Mixins(
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
-  }
-
-  mounted(): void {
-    this.isNew = this.$route.params.id === undefined;
   }
 
   @Watch("bauvorhaben.sobonRelevant", { immediate: true })
