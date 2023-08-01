@@ -13,7 +13,22 @@
           <template #activator>
             <v-list-item-title class="text-h5">Abfragen</v-list-item-title>
           </template>
-          <v-list-item-group color="primary">
+          <v-list-item-group
+            v-if="abfragenEmpty"
+            color="primary"
+          >
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-subtitle
+                  >Keine Infrastrukturabfragen referenzieren dieses Bauvorhaben</v-list-item-subtitle
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+          <v-list-item-group
+            v-else
+            color="primary"
+          >
             <v-list-item
               v-for="(abfrage, index) in abfragen"
               :key="index"
@@ -38,7 +53,22 @@
           <template #activator>
             <v-list-item-title class="text-h5">Infrastruktureinrichtungen</v-list-item-title>
           </template>
-          <v-list-item-group color="primary">
+          <v-list-item-group
+            v-if="infrastruktureinrichtungenEmpty"
+            color="primary"
+          >
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-subtitle
+                  >Keine Infrastruktureinrichtungen referenzieren dieses Bauvorhaben</v-list-item-subtitle
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+          <v-list-item-group
+            v-else
+            color="primary"
+          >
             <v-list-item
               v-for="(infra, index) in infrastruktureinrichtungen"
               :key="index"
@@ -82,6 +112,14 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
   abfragen: Array<AbfrageListElementDto> = [];
 
   infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
+
+  get abfragenEmpty(): boolean {
+    return _.isEmpty(this.abfragen);
+  }
+
+  get infrastruktureinrichtungenEmpty(): boolean {
+    return _.isEmpty(this.infrastruktureinrichtungen);
+  }
 
   private getReferencedInfrastrukturabfragen(): void {
     if (!this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
