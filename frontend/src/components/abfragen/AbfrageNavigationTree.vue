@@ -159,6 +159,7 @@ import {
 import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 
 enum AbfrageTreeItemType {
   ABFRAGE,
@@ -225,11 +226,9 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
 
   private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
 
-  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Abfrage";
+  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Daten zur Abfrage";
 
   private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante anlegen";
-
-  private static readonly START_NAME_ABFRAGEVARIANTE: string = "Nr.: ";
 
   private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT: string = "Bauabschnitt anlegen";
 
@@ -332,8 +331,14 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_BAURATE;
   }
 
-  private getNameTreeElementAbfragevariante(abfragevariante: AbfragevarianteDto): string {
-    return `${AbfrageNavigationTree.START_NAME_ABFRAGEVARIANTE}${abfragevariante.abfragevariantenNr}\xa0-\xa0${
+  private getNameTreeElementAbfragevariante(
+    abfragevariante: AbfragevarianteDto,
+    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
+  ): string {
+    const abfragevarianteModel = new AbfragevarianteModel(abfragevariante);
+    return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+      conextAnzeigeAbfragevariante
+    )}\xa0-\xa0${
       _.isNil(abfragevariante.abfragevariantenName)
         ? AbfrageNavigationTree.NICHT_GEPFLEGT
         : abfragevariante.abfragevariantenName
@@ -630,16 +635,16 @@ export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) 
     id: number,
     parentTreeItem: AbfrageTreeItem,
     abfrage: InfrastrukturabfrageDto,
-    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
     abfragevariante: AbfragevarianteDto
   ) {
     const item = this.createAbfrageTreeItem(
       id,
       parentTreeItem,
-      this.getNameTreeElementAbfragevariante(abfragevariante),
+      this.getNameTreeElementAbfragevariante(abfragevariante, contextAnzeigeAbfragevariante),
       AbfrageTreeItemType.ABFRAGEVARIANTE,
       abfrage,
-      conextAnzeigeAbfragevariante,
+      contextAnzeigeAbfragevariante,
       abfragevariante,
       undefined,
       undefined,
