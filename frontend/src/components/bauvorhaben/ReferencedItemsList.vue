@@ -1,71 +1,69 @@
 <template>
-  <div>
-    <v-container class="transition-swing">
-      <v-expansion-panels>
-        <v-expansion-panel @click="getReferencedInfrastrukturabfragen()">
-          <v-expansion-panel-header> Infrastrukturabfragen </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-list v-if="abfragenEmpty">
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-subtitle
-                    >Dieses Bauvorhaben wird nicht durch Infrastrukturabfragen referenziert</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-            <v-list v-else>
-              <v-list-item
-                v-for="(abfrage, index) in abfragen"
-                :key="index"
-                link
-              >
-                <v-list-item-content
-                  :id="'abfragen_bauvorhaben_reference_' + index"
-                  @click="routeToAbfrageInfo(abfrage)"
+  <v-container class="transition-swing">
+    <v-expansion-panels>
+      <v-expansion-panel @click="getReferencedInfrastrukturabfragen()">
+        <v-expansion-panel-header> Infrastrukturabfragen </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-list v-if="abfragenEmpty">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-subtitle
+                  >Dieses Bauvorhaben wird nicht durch Infrastrukturabfragen referenziert</v-list-item-subtitle
                 >
-                  <v-list-item-title>{{ abfrage.nameAbfrage }}</v-list-item-title>
-                  <v-list-item-subtitle
-                    >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel @click="getReferencedInfrastruktureinrichtungen()">
-          <v-expansion-panel-header> Infrastruktureinrichtungen </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-list v-if="infrastruktureinrichtungenEmpty">
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-subtitle
-                    >Dieses Bauvorhaben wird nicht durch Infrastruktureinrichtungen referenziert</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-            <v-list v-else>
-              <v-list-item
-                v-for="(infra, index) in infrastruktureinrichtungen"
-                :key="index"
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-list v-else>
+            <v-list-item
+              v-for="(abfrage, index) in abfragen"
+              :key="index"
+              link
+            >
+              <v-list-item-content
+                :id="'abfragen_bauvorhaben_reference_' + index"
+                @click="routeToAbfrageInfo(abfrage)"
               >
-                <v-list-item-content
-                  :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
-                  @click="routeToInfrastruktureinrichtungInfo(infra)"
+                <v-list-item-title>{{ abfrage.nameAbfrage }}</v-list-item-title>
+                <v-list-item-subtitle
+                  >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel @click="getReferencedInfrastruktureinrichtungen()">
+        <v-expansion-panel-header> Infrastruktureinrichtungen </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-list v-if="infrastruktureinrichtungenEmpty">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-subtitle
+                  >Dieses Bauvorhaben wird nicht durch Infrastruktureinrichtungen referenziert</v-list-item-subtitle
                 >
-                  <v-list-item-title> {{ infra.nameEinrichtung }} </v-list-item-title>
-                  <v-list-item-subtitle>
-                    Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-container>
-  </div>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-list v-else>
+            <v-list-item
+              v-for="(infra, index) in infrastruktureinrichtungen"
+              :key="index"
+            >
+              <v-list-item-content
+                :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
+                @click="routeToInfrastruktureinrichtungInfo(infra)"
+              >
+                <v-list-item-title> {{ infra.nameEinrichtung }} </v-list-item-title>
+                <v-list-item-subtitle>
+                  Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-container>
 </template>
 
 <script lang="ts">

@@ -215,10 +215,7 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card
-      v-if="!isNew"
-      :card-title="referencedObjectsCardTitle"
-    >
+    <field-group-card :card-title="referencedObjectsCardTitle">
       <referenced-items-list />
     </field-group-card>
   </v-container>
