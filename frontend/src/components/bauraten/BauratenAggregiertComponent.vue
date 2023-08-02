@@ -24,7 +24,7 @@
               </td>
             </tr>
             <tr>
-              <td><span>Geschossfläche m²</span></td>
+              <td><span>GF Wohnen m²</span></td>
               <td
                 v-for="(item, index) in items"
                 :key="index"
