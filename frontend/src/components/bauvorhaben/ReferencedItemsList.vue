@@ -48,6 +48,7 @@
             <v-list-item
               v-for="(infra, index) in infrastruktureinrichtungen"
               :key="index"
+              link
             >
               <v-list-item-content
                 :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
