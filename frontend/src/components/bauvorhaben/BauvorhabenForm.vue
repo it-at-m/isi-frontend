@@ -215,6 +215,9 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <field-group-card :card-title="referencedObjectsCardTitle">
+      <referenced-items-list />
+    </field-group-card>
   </v-container>
 </template>
 
@@ -231,6 +234,8 @@ import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
+import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 
 @Component({
   computed: {
@@ -238,13 +243,14 @@ import SecurityMixin from "@/mixins/security/SecurityMixin";
       return VerortungContext.BAUVORHABEN;
     },
   },
-  components: { FieldGroupCard, Dokumente, NumField, TriSwitch },
+  components: { FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },
 })
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  SecurityMixin
+  SecurityMixin,
+  BauvorhabenApiRequestMixin
 ) {
   @VModel({ type: BauvorhabenModel })
   bauvorhaben!: BauvorhabenModel;
@@ -258,6 +264,8 @@ export default class BauvorhabenForm extends Mixins(
   private nameRootFolder = "bauvorhaben";
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben";
+
+  private referencedObjectsCardTitle = "Zugehörige Infrastruktureinrichtungen und Abfragen";
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
