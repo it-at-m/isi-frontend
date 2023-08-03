@@ -31,7 +31,7 @@ export interface SearchForEntitiesRequest {
 }
 
 export interface SearchForSearchwordSuggestionRequest {
-    singleWordQuery: string;
+    searchQueryForEntitiesDto: SearchQueryForEntitiesDto;
 }
 
 /**
@@ -73,33 +73,32 @@ export class SucheApi extends runtime.BaseAPI {
     }
 
     /**
-     * Suche nach Suchwortvorschläge für ein einzelnes im Parameter gegebenes Wort.
+     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchwort.
      */
     async searchForSearchwordSuggestionRaw(requestParameters: SearchForSearchwordSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SuchwortSuggestionsDto>> {
-        if (requestParameters.singleWordQuery === null || requestParameters.singleWordQuery === undefined) {
-            throw new runtime.RequiredError('singleWordQuery','Required parameter requestParameters.singleWordQuery was null or undefined when calling searchForSearchwordSuggestion.');
+        if (requestParameters.searchQueryForEntitiesDto === null || requestParameters.searchQueryForEntitiesDto === undefined) {
+            throw new runtime.RequiredError('searchQueryForEntitiesDto','Required parameter requestParameters.searchQueryForEntitiesDto was null or undefined when calling searchForSearchwordSuggestion.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.singleWordQuery !== undefined) {
-            queryParameters['single-word-query'] = requestParameters.singleWordQuery;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/search/searchword-suggestion`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: SearchQueryForEntitiesDtoToJSON(requestParameters.searchQueryForEntitiesDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuchwortSuggestionsDtoFromJSON(jsonValue));
     }
 
     /**
-     * Suche nach Suchwortvorschläge für ein einzelnes im Parameter gegebenes Wort.
+     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchwort.
      */
     async searchForSearchwordSuggestion(requestParameters: SearchForSearchwordSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SuchwortSuggestionsDto> {
         const response = await this.searchForSearchwordSuggestionRaw(requestParameters, initOverrides);

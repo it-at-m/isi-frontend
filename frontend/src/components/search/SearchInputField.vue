@@ -54,7 +54,18 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     const splittedSearchwords = _.split(query, " ");
     const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
     if (!_.isEmpty(queryForSearchwordSuggestion)) {
-      this.searchForSearchwordSuggestion(queryForSearchwordSuggestion).then((suchwortSuggestions) => {
+      const searchQueryForEntitiesDto = {
+        searchQuery: queryForSearchwordSuggestion,
+        selectInfrastrukturabfrage: true,
+        selectBauvorhaben: true,
+        selectGrundschule: true,
+        selectGsNachmittagBetreuung: true,
+        selectHausFuerKinder: true,
+        selectKindergarten: true,
+        selectKinderkrippe: true,
+        selectMittelschule: true,
+      } as SearchQueryForEntitiesDto;
+      this.searchForSearchwordSuggestion(searchQueryForEntitiesDto).then((suchwortSuggestions) => {
         const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
           const numberOfSplittedSearchwords = splittedSearchwords.length;
           if (numberOfSplittedSearchwords > 0) {

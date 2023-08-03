@@ -19,9 +19,9 @@ export default class SearchApiRequestMixin extends Mixins(ErrorHandler) {
     this.sucheApi = new SucheApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
-  searchForSearchwordSuggestion(singleWordQuery: string): Promise<SuchwortSuggestionsDto> {
+  searchForSearchwordSuggestion(searchQueryForEntitiesDto: SearchQueryForEntitiesDto): Promise<SuchwortSuggestionsDto> {
     const requestParameters = {
-      singleWordQuery: singleWordQuery,
+      searchQueryForEntitiesDto: searchQueryForEntitiesDto,
     } as SearchForSearchwordSuggestionRequest;
     return this.sucheApi
       .searchForSearchwordSuggestion(requestParameters, RequestUtils.getGETConfig())
