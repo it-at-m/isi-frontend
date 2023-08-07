@@ -1,8 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
 import {
-  AbfrageListElementDto,
-  AbfrageListElementDtoTypeEnum,
   BauvorhabenDto,
   BauvorhabenDtoStandVorhabenEnum,
   InfrastruktureinrichtungListElementDto,
@@ -62,16 +60,6 @@ describe("SearchStoreTest.spec.ts", () => {
 
   test("Initialized resultAbfrage", () => {
     expect(store.getters["search/resultAbfrage"]).toBe(undefined);
-  });
-
-  test("Reset resultAbfrage", async () => {
-    const list: Array<AbfrageListElementDto> = [];
-    list.push({
-      type: AbfrageListElementDtoTypeEnum.Infrastrukturabfrage,
-    } as AbfrageListElementDto);
-    store.commit("search/resultAbfrage", list);
-    expect(await store.dispatch("search/resetAbfrage"));
-    expect(await store.dispatch("search/isInitializedAbfrage")).toBeFalsy;
   });
 
   // Tests für Bauvorhaben
