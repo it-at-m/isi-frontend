@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import router from "@/router";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import { BauvorhabenDto, LookupEntryDto, StadtbezirkDto } from "@/api/api-client/isi-backend";
