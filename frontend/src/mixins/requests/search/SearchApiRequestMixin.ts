@@ -2,7 +2,8 @@ import { Component, Mixins } from "vue-property-decorator";
 import {
   SearchForEntitiesRequest,
   SearchForSearchwordSuggestionRequest,
-  SearchQueryForEntitiesDto,
+  SearchQueryAndSortingDto,
+  SearchQueryDto,
   SearchResultsDto,
   SucheApi,
   SuchwortSuggestionsDto,
@@ -19,9 +20,9 @@ export default class SearchApiRequestMixin extends Mixins(ErrorHandler) {
     this.sucheApi = new SucheApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
-  searchForSearchwordSuggestion(searchQueryForEntitiesDto: SearchQueryForEntitiesDto): Promise<SuchwortSuggestionsDto> {
+  public searchForSearchwordSuggestion(searchQueryDto: SearchQueryDto): Promise<SuchwortSuggestionsDto> {
     const requestParameters = {
-      searchQueryForEntitiesDto: searchQueryForEntitiesDto,
+      searchQueryDto: searchQueryDto,
     } as SearchForSearchwordSuggestionRequest;
     return this.sucheApi
       .searchForSearchwordSuggestion(requestParameters, RequestUtils.getGETConfig())
@@ -31,9 +32,9 @@ export default class SearchApiRequestMixin extends Mixins(ErrorHandler) {
       });
   }
 
-  searchForEntities(searchQueryForEntitiesDto: SearchQueryForEntitiesDto): Promise<SearchResultsDto> {
+  public searchForEntities(searchQueryForEntitiesDto: SearchQueryAndSortingDto): Promise<SearchResultsDto> {
     const requestParameters = {
-      searchQueryForEntitiesDto: searchQueryForEntitiesDto,
+      searchQueryAndSortingDto: searchQueryForEntitiesDto,
     } as SearchForEntitiesRequest;
 
     return this.sucheApi

@@ -28,7 +28,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import { SearchQueryForEntitiesDto } from "@/api/api-client/isi-backend";
+import {
+  SearchQueryDto,
+  SearchQueryAndSortingDto,
+  SearchQueryAndSortingDtoSortByEnum,
+  SearchQueryAndSortingDtoSortOrderEnum,
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
@@ -64,7 +69,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
         selectKindergarten: true,
         selectKinderkrippe: true,
         selectMittelschule: true,
-      } as SearchQueryForEntitiesDto;
+      } as SearchQueryDto;
       this.searchForSearchwordSuggestion(searchQueryForEntitiesDto).then((suchwortSuggestions) => {
         const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
           const numberOfSplittedSearchwords = splittedSearchwords.length;
@@ -89,7 +94,9 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
       selectKindergarten: true,
       selectKinderkrippe: true,
       selectMittelschule: true,
-    } as SearchQueryForEntitiesDto;
+      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+    } as SearchQueryAndSortingDto;
     this.suggestions = [];
     this.selectedSuggestion = "";
     this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
