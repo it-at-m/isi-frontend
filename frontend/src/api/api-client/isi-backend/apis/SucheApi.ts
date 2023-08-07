@@ -76,7 +76,7 @@ export class SucheApi extends runtime.BaseAPI {
     }
 
     /**
-     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchwort.
+     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchanfrage.
      */
     async searchForSearchwordSuggestionRaw(requestParameters: SearchForSearchwordSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SuchwortSuggestionsDto>> {
         if (requestParameters.searchQueryDto === null || requestParameters.searchQueryDto === undefined) {
@@ -101,7 +101,7 @@ export class SucheApi extends runtime.BaseAPI {
     }
 
     /**
-     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchwort.
+     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchanfrage.
      */
     async searchForSearchwordSuggestion(requestParameters: SearchForSearchwordSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SuchwortSuggestionsDto> {
         const response = await this.searchForSearchwordSuggestionRaw(requestParameters, initOverrides);

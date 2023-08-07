@@ -94,8 +94,8 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
       selectKindergarten: true,
       selectKinderkrippe: true,
       selectMittelschule: true,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+      sortBy: SearchQueryAndSortingDtoSortByEnum.Name,
+      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Asc,
     } as SearchQueryAndSortingDto;
     this.suggestions = [];
     this.selectedSuggestion = "";

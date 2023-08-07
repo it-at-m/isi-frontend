@@ -84,7 +84,7 @@ export interface SearchQueryAndSortingDto {
      * @type {string}
      * @memberof SearchQueryAndSortingDto
      */
-    sortOrder?: SearchQueryAndSortingDtoSortOrderEnum;
+    sortOrder: SearchQueryAndSortingDtoSortOrderEnum;
 }
 
 
@@ -128,7 +128,7 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
         'sortBy': json['sortBy'],
-        'sortOrder': !exists(json, 'sortOrder') ? undefined : json['sortOrder'],
+        'sortOrder': json['sortOrder'],
     };
 }
 
