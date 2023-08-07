@@ -1,6 +1,9 @@
 <template>
   <v-form ref="form">
-    <default-layout solid-heading>
+    <default-layout
+      solid-heading
+      resizable
+    >
       <template #content>
         <infrastrukturabfrage-component
           v-if="isAbfrageFormularOpen"
@@ -768,9 +771,7 @@ export default class Abfrage extends Mixins(
   private removeBaurateFromBaugebiet(): void {
     if (!_.isNil(this.baurateTreeItemToDelete)) {
       const baugebiet = this.getCurrentBaugebiet(this.baurateTreeItemToDelete);
-      console.log(this.getCurrentAbfragevariante(this.baurateTreeItemToDelete));
       _.remove(baugebiet.bauraten, (baurate) => baurate === this.baurateTreeItemToDelete!.value);
-      console.log(this.getCurrentAbfragevariante(this.baurateTreeItemToDelete));
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       baugebiet.bauraten = [...baugebiet.bauraten];
       this.clearTechnicalEntities(this.getCurrentAbfragevariante(this.baurateTreeItemToDelete));

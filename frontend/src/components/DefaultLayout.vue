@@ -1,19 +1,127 @@
+<script lang="ts">
+/**
+ * Wrapper-Komponente zum Einordnen von Inhalten in das Seitenlayout.
+ * Unterscheidet zwischen fünf verschiedenen Zonen, welche jeweils einem Slot entsprechen:
+ * Seiteninhalt (content), Navigation (navigation), Aktionen (action), Titel (heading) und Pagination (pagination).
+ * content hat keine besondere Positionierung. Mit der Boolean-Property "wide" nimmt es die gesamte Bildschirmbreite ein, ansonsten nur die mittleren 60%.
+ * navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über content befinden. Sie ordnen ihre Unterelemente von unten nach oben und zentriert auf der x-Achse an.
+ * Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
+ * heading sowie pagination sind Header- bzw. Footer-artig, scrollen nicht mit und befinden sich über content. Sie zentrieren sowohl auf der x- als auch auf der y-Achse und sind dafür gedacht, ein einziges Element unterzubringen.
+ * Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
+ * Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
+ */
+export default {
+  name: "DefaultLayout",
+};
+</script>
+
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import _ from "lodash";
+
+interface Props {
+  wide?: boolean;
+  solidHeading?: boolean;
+  resizable?: boolean;
+}
+
+defineProps<Props>();
+
+// Hinweis: Die Begriffe "width" und "margin" haben hier keinen direkten Bezug zu den gleichnamigen CSS-Properties.
+
+const SIDE_BAR_BASE_WIDTH = "20%";
+const MAX_SIDE_BAR_MARGIN_RATIO = 0.1;
+
+let navigationMarginValue = 0;
+let actionMarginValue = 0;
+let navigationWidth = ref(SIDE_BAR_BASE_WIDTH);
+let actionWidth = ref(SIDE_BAR_BASE_WIDTH);
+let middleWrapperWidth = computed(() => `calc(100% - ${navigationWidth.value} - ${actionWidth.value})`);
+let resizingNavigation = ref(false);
+let resizingAction = ref(false);
+let lastClientX = 0;
+
+function resize(event: MouseEvent): void {
+  let deltaX = event.clientX - lastClientX;
+  lastClientX = event.clientX;
+
+  if (resizingNavigation.value) {
+    navigationMarginValue = _.clamp(navigationMarginValue + deltaX, -getMaxMargin(), getMaxMargin());
+    navigationWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${navigationMarginValue}px)`;
+  } else if (resizingAction.value) {
+    actionMarginValue = _.clamp(actionMarginValue - deltaX, -getMaxMargin(), getMaxMargin());
+    actionWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${actionMarginValue}px)`;
+  }
+}
+
+function getMaxMargin(): number {
+  return screen.availWidth * MAX_SIDE_BAR_MARGIN_RATIO;
+}
+
+function startResizingNavigation(event: MouseEvent) {
+  resizingNavigation.value = true;
+  lastClientX = event.clientX;
+}
+
+function startResizingAction(event: MouseEvent) {
+  resizingAction.value = true;
+  lastClientX = event.clientX;
+}
+
+function stopResizing(): void {
+  resizingNavigation.value = false;
+  resizingAction.value = false;
+}
+</script>
+
 <template>
-  <div class="wrapper">
-    <!-- Bei Angabe des 'wide'-Props bzw. des 'solid-heading'-Props wird 'h-padded' bzw. 'v-padded' von den CSS-Klassen entfernt bzw. zu den CSS-Klassen hinzugefügt. -->
-    <div :class="`content-wrapper${wide ? '' : ' h-padded'}${solidHeading ? ' v-padded' : ''}`">
+  <!-- Das `user-select` ist ein Workaround dafür, dass beim Resizen der Text auf der Seite ständig ausgewählt wird. -->
+  <div
+    class="wrapper"
+    :style="{ 'user-select': resizingNavigation || resizingAction ? 'none' : 'auto' }"
+    @mousemove="resize"
+    @mouseup="stopResizing"
+    @mouseleave="stopResizing"
+  >
+    <!--
+    Bei Angabe des `solid-heading`-Props wird dem Content oben Padding hinzugefügt, sodass es sich nicht mit dem Heading überlappt.
+    Bei Angabe des 'wide'-Props wird dem Content kein horizontales Padding hinzugefügt, sodass es sich mit dem Navigation- und Action Bereich überlappt.
+    -->
+    <div
+      :class="{ 'content-wrapper': true, 'v-padded': solidHeading }"
+      :style="{
+        'padding-left': wide ? '0px' : navigationWidth,
+        'padding-right': wide ? '0px' : actionWidth,
+      }"
+    >
       <slot name="content" />
     </div>
     <div class="control-wrapper">
-      <div class="side-bar">
+      <div
+        class="side-bar"
+        :style="{ 'flex-basis': navigationWidth }"
+      >
         <div class="side-bar-navigation">
           <slot name="navigation" />
         </div>
       </div>
-      <div class="middle-wrapper">
-        <!-- Bei Angabe des 'solid-heading'-Props wird 'transparent-edge' zu den CSS-Klassen hinzugefügt. -->
+      <div
+        v-if="resizable"
+        class="separator"
+        @mousedown="startResizingNavigation"
+      >
+        <v-divider
+          vertical
+          inset
+        />
+      </div>
+      <div
+        class="middle-wrapper"
+        :style="{ 'flex-basis': middleWrapperWidth }"
+      >
+        <!-- Bei Angabe des `solid-heading`-Props wird dem Heading eine transparente, untere Kante angehängt. -->
         <div>
-          <div :class="`middle-bar${solidHeading ? ' white' : ''}`">
+          <div :class="{ 'middle-bar': true, white: solidHeading }">
             <slot name="heading" />
           </div>
           <div
@@ -25,7 +133,20 @@
           <slot name="pagination" />
         </div>
       </div>
-      <div class="side-bar">
+      <div
+        v-if="resizable"
+        class="separator"
+        @mousedown="startResizingAction"
+      >
+        <v-divider
+          vertical
+          inset
+        />
+      </div>
+      <div
+        class="side-bar"
+        :style="{ 'flex-basis': actionWidth }"
+      >
         <div class="side-bar-information">
           <slot name="information" />
         </div>
@@ -37,46 +158,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-/**
- * Wrapper-Komponente zum Einordnen von Inhalten in das Seitenlayout.
- * Unterscheidet zwischen fünf verschiedenen Zonen, welche jeweils einem Slot entsprechen:
- * Seiteninhalt (content), Navigation (navigation), Aktionen (action), Titel (heading) und Pagination (pagination).
- * content hat keine besondere Positionierung. Mit der Boolean-Property "wide" nimmt es die gesamte Bildschirmbreite ein, ansonsten nur die mittleren 60%.
- * navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über content befinden. Sie ordnen ihre Unterelemente von unten nach oben und zentriert auf der x-Achse an.
- * Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
- * heading sowie pagination sind Header- bzw. Footer-artig, scrollen nicht mit und befinden sich über content. Sie zentrieren sowohl auf der x- als auch auf der y-Achse und sind dafür gedacht, ein einziges Element unterzubringen.
- * Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
- */
-@Component
-export default class DefaultLayout extends Vue {
-  @Prop({ type: Boolean, default: false })
-  private readonly wide!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly solidHeading!: boolean;
-}
-</script>
-
 <style scoped>
 .wrapper {
   width: 100%;
   height: 100%;
   /* Variablen für Unterelemente des Wrappers */
-  --side-bar-width: 20%;
   --middle-bar-height: 100px;
 }
 
 .content-wrapper {
   width: 100%;
   height: 100%;
-}
-
-.h-padded {
-  padding-left: var(--side-bar-width);
-  padding-right: var(--side-bar-width);
 }
 
 .v-padded {
@@ -98,7 +190,6 @@ export default class DefaultLayout extends Vue {
 }
 
 .middle-wrapper {
-  width: calc(100% - var(--side-bar-width) * 2);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -115,12 +206,12 @@ export default class DefaultLayout extends Vue {
 }
 
 .side-bar {
-  width: 20%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  overflow: auto;
 }
 
 .side-bar-navigation {
@@ -128,7 +219,6 @@ export default class DefaultLayout extends Vue {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .side-bar-information {
@@ -151,6 +241,15 @@ export default class DefaultLayout extends Vue {
   width: 100%;
   height: 10px;
   background-image: linear-gradient(white, rgba(255, 255, 255, 0));
+}
+
+.separator {
+  width: 10px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: col-resize;
 }
 
 /* Die Unterelemente der vier Zonen sollen Maus-Events wiederum wahrnehmen */

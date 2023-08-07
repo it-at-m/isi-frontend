@@ -1,5 +1,36 @@
 <script lang="ts">
 /**
+ * Treeview zur Darstellung von und Interaktion mit der Abfrage-Hierarchie.
+ *
+ * Props:
+ * - `abfrage: InfrastrukturabfrageModel`: Die darzustellende Abfrage.
+ * - `selectedItemId: string`: Id des aktuell ausgewählten Items.
+ *   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
+ *
+ * Emits:
+ * - `select-abfrage: TreeItem<InfrastrukturabfrageModel>`
+ * - `select-abfragevariante: TreeItem<AbfragevarianteModel>`
+ * - `select-bauabschnitt: TreeItem<BauabschnittModel>`
+ * - `select-baugebiet: TreeItem<BaugebietModel>`
+ * - `select-baurate: TreeItem<BaurateModel>`
+ * - `create-abfragevariante: TreeItem<InfrastrukturabfrageModel>`
+ * - `create-abfragevariante-sachbearbeitung: TreeItem<InfrastrukturabfrageModel>`
+ * - `create-bauabschnitt: TreeItem<AbfragevarianteModel>`
+ * - `create-baugebiet: TreeItem<AbfragevarianteModel | BauabschnittModel>`
+ * - `create-baurate: TreeItem<AbfragevarianteModel | BaugebietModel>`
+ * - `delete-abfragevariante: TreeItem<AbfragevarianteModel>`
+ * - `delete-bauabschnitt: TreeItem<BauabschnittModel>`
+ * - `delete-baugebiet: TreeItem<BaugebietModel>`
+ * - `delete-baurate: TreeItem<BaurateModel>`
+ * - `set-abfragevariante-relevant: TreeItem<AbfragevarianteModel>`
+ * - `determine-bauraten-for-abfragevariante: TreeItem<AbfragevarianteModel>`
+ * - `determine-bauraten-for-baugebiet: TreeItem<BaugebietModel>`
+ */
+export default {
+  name: "AbfrageNavigationTree",
+};
+
+/**
  * Erzeugt eine einzigartige Id für ein TreeItem, die auf der Id des Parents und seinem Index (unter seinen Silblings) basiert.
  * Die Id vom Root ist immer ein leerer String und braucht deshalb diese Funktion nicht.
  */
@@ -62,22 +93,7 @@ interface Props {
   selectedItemId: string;
 }
 
-const DEFAULT_NAME = "Nicht gepflegt";
-const ABFRAGE_NAME = "Daten zur Abfrage";
-const ABRAGEVARIANTE_PREFIX = "Nr.: ";
-
-const CREATE_ABFRAGEVARIANTE = "Abfragevariante erstellen";
-const CREATE_BAUABSCHNITT = "Bauabschnitt erstellen";
-const CREATE_BAUGEBIET = "Baugebiet erstellen";
-const CREATE_BAURATE = "Baurate erstellen";
-const DELETE = "Löschen";
-const MARK_AS_RELEVANT = "Als relevant markieren";
-const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
-
-const ABFRAGEVARIANTEN_LIMIT = 5;
-
-const props = defineProps<Props>();
-const emit = defineEmits<{
+interface Emits {
   (event: "select-abfrage", value: TreeItem<InfrastrukturabfrageModel>): void;
   (event: "select-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
   (event: "select-bauabschnitt", value: TreeItem<BauabschnittModel>): void;
@@ -95,7 +111,24 @@ const emit = defineEmits<{
   (event: "set-abfragevariante-relevant", value: TreeItem<AbfragevarianteModel>): void;
   (event: "determine-bauraten-for-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
   (event: "determine-bauraten-for-baugebiet", value: TreeItem<BaugebietModel>): void;
-}>();
+}
+
+const DEFAULT_NAME = "Nicht gepflegt";
+const ABFRAGE_NAME = "Daten zur Abfrage";
+const ABRAGEVARIANTE_PREFIX = "Nr.: ";
+
+const CREATE_ABFRAGEVARIANTE = "Abfragevariante erstellen";
+const CREATE_BAUABSCHNITT = "Bauabschnitt erstellen";
+const CREATE_BAUGEBIET = "Baugebiet erstellen";
+const CREATE_BAURATE = "Baurate erstellen";
+const DELETE = "Löschen";
+const MARK_AS_RELEVANT = "Als relevant markieren";
+const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
+
+const ABFRAGEVARIANTEN_LIMIT = 5;
+
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
 
 const items = ref<TreeItem<InfrastrukturabfrageModel>[]>([]);
 const selectedItemIds = computed(() => [props.selectedItemId]);
