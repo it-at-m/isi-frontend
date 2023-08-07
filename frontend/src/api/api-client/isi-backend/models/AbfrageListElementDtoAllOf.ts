@@ -68,6 +68,12 @@ export interface AbfrageListElementDtoAllOf {
      * @memberof AbfrageListElementDtoAllOf
      */
     sobonJahr?: AbfrageListElementDtoAllOfSobonJahrEnum;
+    /**
+     * 
+     * @type {Date}
+     * @memberof AbfrageListElementDtoAllOf
+     */
+    createdDateTime?: Date;
 }
 
 
@@ -103,6 +109,7 @@ export function AbfrageListElementDtoAllOfFromJSONTyped(json: any, ignoreDiscrim
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
     };
 }
 
@@ -121,6 +128,7 @@ export function AbfrageListElementDtoAllOfToJSON(value?: AbfrageListElementDtoAl
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
         'sobonJahr': value.sobonJahr,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
     };
 }
 

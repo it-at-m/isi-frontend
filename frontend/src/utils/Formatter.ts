@@ -16,9 +16,7 @@ export function convertDateForBackend(dateToFormat: string | undefined): string 
  * @param string Datum das zu formatieren ist
  */
 export function convertDateForFrontend(dateToFormat: Date | undefined): string {
-  return dateToFormat
-    ? dateToFormat.toLocaleDateString("de-DE", { year: "numeric", month: "numeric", day: "numeric" })
-    : "";
+  return dateToFormat ? moment(dateToFormat).format("DD.MM.YYYY") : "";
 }
 
 export function convertDecimalForFrontend(decimalToFormat: number | undefined): string {

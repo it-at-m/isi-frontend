@@ -9,8 +9,8 @@ import {
 
 describe("FormatterTest.spec.ts", () => {
   test("Test convertDateForFrontend", () => {
-    expect(convertDateForFrontend("1900-02-01")).toEqual("01.02.1900");
-    expect(convertDateForFrontend("2022-12-31")).toEqual("31.12.2022");
+    expect(convertDateForFrontend(new Date(new Date("1900-02-01")))).toEqual("01.02.1900");
+    expect(convertDateForFrontend(new Date("2022-12-31"))).toEqual("31.12.2022");
     expect(convertDateForFrontend(undefined)).toEqual("");
   });
 

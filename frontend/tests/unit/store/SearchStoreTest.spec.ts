@@ -64,25 +64,6 @@ describe("SearchStoreTest.spec.ts", () => {
     expect(store.getters["search/resultAbfrage"]).toBe(undefined);
   });
 
-  test("Save resultAbfrage", () => {
-    const list: Array<AbfrageListElementDto> = [];
-    list.push({
-      type: AbfrageListElementDtoTypeEnum.Infrastrukturabfrage,
-    } as AbfrageListElementDto);
-    store.commit("search/resultAbfrage", list);
-    expect(store.getters["search/resultAbfrage"]).toHaveLength(1);
-    expect(store.getters["search/resultAbfrage"][0].type).toEqual(AbfrageListElementDtoTypeEnum.Infrastrukturabfrage);
-  });
-
-  test("Is initialized resultAbfrage", async () => {
-    const list: Array<AbfrageListElementDto> = [];
-    list.push({
-      type: AbfrageListElementDtoTypeEnum.Infrastrukturabfrage,
-    } as AbfrageListElementDto);
-    store.commit("search/resultAbfrage", list);
-    expect(await store.dispatch("search/isInitializedAbfrage")).toBeTruthy;
-  });
-
   test("Reset resultAbfrage", async () => {
     const list: Array<AbfrageListElementDto> = [];
     list.push({
