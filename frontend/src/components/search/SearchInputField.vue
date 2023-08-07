@@ -46,7 +46,25 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   private selectedSuggestion = "";
 
   mounted() {
+    const searchQueryForEntitiesDto = {
+      searchQuery: "",
+      selectInfrastrukturabfrage: true,
+      selectBauvorhaben: true,
+      selectGrundschule: true,
+      selectGsNachmittagBetreuung: true,
+      selectHausFuerKinder: true,
+      selectKindergarten: true,
+      selectKinderkrippe: true,
+      selectMittelschule: true,
+      sortBy: SearchQueryAndSortingDtoSortByEnum.Name,
+      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Asc,
+    } as SearchQueryAndSortingDto;
+    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntitiesDto));
     this.searchEntitiesForSelectedSuggestion();
+  }
+
+  get getSearchQueryAndSorting(): SearchQueryAndSortingDto {
+    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
   }
 
   private updateSearchQuery(itemIndex: number) {
@@ -59,18 +77,19 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     const splittedSearchwords = _.split(query, " ");
     const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
     if (!_.isEmpty(queryForSearchwordSuggestion)) {
-      const searchQueryForEntitiesDto = {
+      const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
+      const searchQueryDto = {
         searchQuery: queryForSearchwordSuggestion,
-        selectInfrastrukturabfrage: true,
-        selectBauvorhaben: true,
-        selectGrundschule: true,
-        selectGsNachmittagBetreuung: true,
-        selectHausFuerKinder: true,
-        selectKindergarten: true,
-        selectKinderkrippe: true,
-        selectMittelschule: true,
+        selectInfrastrukturabfrage: searchQueryForEntitiesDto.selectInfrastrukturabfrage,
+        selectBauvorhaben: searchQueryForEntitiesDto.selectBauvorhaben,
+        selectGrundschule: searchQueryForEntitiesDto.selectGrundschule,
+        selectGsNachmittagBetreuung: searchQueryForEntitiesDto.selectGsNachmittagBetreuung,
+        selectHausFuerKinder: searchQueryForEntitiesDto.selectHausFuerKinder,
+        selectKindergarten: searchQueryForEntitiesDto.selectKindergarten,
+        selectKinderkrippe: searchQueryForEntitiesDto.selectKinderkrippe,
+        selectMittelschule: searchQueryForEntitiesDto.selectMittelschule,
       } as SearchQueryDto;
-      this.searchForSearchwordSuggestion(searchQueryForEntitiesDto).then((suchwortSuggestions) => {
+      this.searchForSearchwordSuggestion(searchQueryDto).then((suchwortSuggestions) => {
         const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
           const numberOfSplittedSearchwords = splittedSearchwords.length;
           if (numberOfSplittedSearchwords > 0) {
@@ -84,19 +103,8 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   }
 
   private searchEntitiesForSelectedSuggestion(): void {
-    const searchQueryForEntitiesDto = {
-      searchQuery: _.isNil(this.searchQuery) ? "" : this.searchQuery,
-      selectInfrastrukturabfrage: true,
-      selectBauvorhaben: true,
-      selectGrundschule: true,
-      selectGsNachmittagBetreuung: true,
-      selectHausFuerKinder: true,
-      selectKindergarten: true,
-      selectKinderkrippe: true,
-      selectMittelschule: true,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.Name,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Asc,
-    } as SearchQueryAndSortingDto;
+    const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
+    searchQueryForEntitiesDto.searchQuery = _.isNil(this.searchQuery) ? "" : this.searchQuery;
     this.suggestions = [];
     this.selectedSuggestion = "";
     this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {

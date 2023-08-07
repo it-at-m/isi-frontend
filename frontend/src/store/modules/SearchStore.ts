@@ -3,6 +3,7 @@ import {
   BauvorhabenDto,
   InfrastruktureinrichtungDto,
   InfrastruktureinrichtungListElementDto,
+  SearchQueryAndSortingDto,
   SearchResultDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
@@ -13,6 +14,7 @@ import _ from "lodash";
 
 const state = {
   searchResults: [] as Array<SearchResultDto>,
+  requestSearchQueryAndSorting: {} as SearchQueryAndSortingDto,
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
@@ -33,6 +35,9 @@ export default {
   getters: {
     searchResults: (): Array<SearchResultDto> => {
       return state.searchResults;
+    },
+    requestSearchQueryAndSorting: (): SearchQueryAndSortingDto => {
+      return state.requestSearchQueryAndSorting;
     },
     resultAbfrage: (state: SearchState): Array<AbfrageListElementDto> | undefined => {
       return state.resultAbfrage;
@@ -63,6 +68,9 @@ export default {
   mutations: {
     searchResults(state: SearchState, items: SearchResultDto[]): void {
       state.searchResults = _.toArray(items);
+    },
+    requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingDto): void {
+      state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
     },
     resultAbfrage(state: SearchState, items: AbfrageListElementDto[]): void {
       state.resultAbfrage = items;
@@ -105,6 +113,12 @@ export default {
   actions: {
     searchResults(context: ActionContext<SearchState, RootState>, items: SearchResultDto[]): void {
       context.commit("searchResults", _.toArray(items));
+    },
+    requestSearchQueryAndSorting(
+      context: ActionContext<SearchState, RootState>,
+      searchQueryAndSortingDto: SearchQueryAndSortingDto
+    ): void {
+      context.commit("requestSearchQueryAndSorting", searchQueryAndSortingDto);
     },
     resultAbfrage(context: ActionContext<SearchState, RootState>, items: AbfrageListElementDto[]): void {
       context.commit("resultAbfrage", items);
