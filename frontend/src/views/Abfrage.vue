@@ -358,7 +358,6 @@ export default class Abfrage extends Mixins(
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
-    this.openAbfrageFormular();
     this.setSelectedAbfrageInStore();
     if (!this.isNewAbfrage())
       this.getTransitions(this.abfrageId, true).then((response) => {
@@ -371,7 +370,7 @@ export default class Abfrage extends Mixins(
     const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
     if (!_.isNil(abfrageFromStore)) {
       this.abfrage = _.cloneDeep(abfrageFromStore);
-      this.openAbfrageFormular();
+      this.selectAbfrage();
     }
   }
 
@@ -509,7 +508,6 @@ export default class Abfrage extends Mixins(
     } else {
       Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
-    this.openAbfrageFormular();
   }
 
   private async startStatusUebergang(transition: TransitionDto) {
@@ -526,7 +524,7 @@ export default class Abfrage extends Mixins(
               this.possbileTransitions = response;
             });
           }
-          this.openAbfrageFormular();
+          this.selectAbfrage();
         }
       } else {
         this.showWarningInInformationList(validationMessage);
@@ -538,10 +536,6 @@ export default class Abfrage extends Mixins(
 
   private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
     this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
-  }
-
-  private openAbfrageFormular(): void {
-    this.openForm = AbfrageFormType.INFRASTRUKTURABFRAGE;
   }
 
   private isAbfrageFormularOpen(): boolean {
@@ -584,16 +578,16 @@ export default class Abfrage extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private handleSelectAbfrage(item: AbfrageTreeItem): void {
-    this.selectEntity(item);
+  private handleSelectAbfrage(): void {
+    this.selectAbfrage();
   }
 
   private handleSelectAbfragevariante(item: AbfrageTreeItem): void {
-    this.selectEntity(item);
+    this.selectItem(item);
   }
 
   private handleSelectBauabschnitt(item: AbfrageTreeItem): void {
-    this.selectEntity(item);
+    this.selectItem(item);
   }
 
   private handleSelectBaugebiet(item: AbfrageTreeItem): void {
@@ -601,7 +595,7 @@ export default class Abfrage extends Mixins(
 
     if (abfragevariante) {
       this.abfragevarianteAncestor = abfragevariante;
-      this.selectEntity(item);
+      this.selectItem(item);
     }
   }
 
@@ -612,7 +606,7 @@ export default class Abfrage extends Mixins(
     if (abfragevariante && baugebiet) {
       this.abfragevarianteAncestor = abfragevariante;
       this.baugebietAncestor = baugebiet;
-      this.selectEntity(item);
+      this.selectItem(item);
     }
   }
 
@@ -622,9 +616,9 @@ export default class Abfrage extends Mixins(
     this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
     this.formChanged();
     this.selectCreatedEntity(
-      parent,
       abfragevariante,
       AbfrageFormType.ABFRAGEVARIANTE,
+      parent,
       AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
     );
   }
@@ -635,9 +629,9 @@ export default class Abfrage extends Mixins(
     this.renumberingAbfragevarianten(this.abfrage.abfragevariantenSachbearbeitung);
     this.formChanged();
     this.selectCreatedEntity(
-      parent,
       abfragevariante,
       AbfrageFormType.ABFRAGEVARIANTE,
+      parent,
       AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
     );
   }
@@ -652,7 +646,7 @@ export default class Abfrage extends Mixins(
       const bauabschnitt = new BauabschnittModel(createBauabschnittDto());
       abfragevariante.bauabschnitte.push(bauabschnitt);
       this.formChanged();
-      this.selectCreatedEntity(parent, bauabschnitt, AbfrageFormType.BAUABSCHNITT, parent.context);
+      this.selectCreatedEntity(bauabschnitt, AbfrageFormType.BAUABSCHNITT, parent, parent.context);
     }
   }
 
@@ -671,7 +665,7 @@ export default class Abfrage extends Mixins(
       bauabschnitt.baugebiete.push(baugebiet);
       this.abfragevarianteAncestor = abfragevariante;
       this.formChanged();
-      this.selectCreatedEntity(parent, baugebiet, AbfrageFormType.BAUGEBIET, parent.context);
+      this.selectCreatedEntity(baugebiet, AbfrageFormType.BAUGEBIET, parent, parent.context);
     }
   }
 
@@ -690,7 +684,7 @@ export default class Abfrage extends Mixins(
       this.abfragevarianteAncestor = abfragevariante;
       this.baugebietAncestor = baugebiet;
       this.formChanged();
-      this.selectCreatedEntity(parent, baurate, AbfrageFormType.BAURATE, parent.context);
+      this.selectCreatedEntity(baurate, AbfrageFormType.BAURATE, parent, parent.context);
     }
   }
 
@@ -730,7 +724,7 @@ export default class Abfrage extends Mixins(
       }
       this.renumberingAbfragevarianten(abfragevarianten);
       this.formChanged();
-      this.selectEntity(this.treeItemToDelete.parent!);
+      this.selectItem(this.treeItemToDelete.parent!);
       this.treeItemToDelete = undefined;
     }
   }
@@ -743,7 +737,7 @@ export default class Abfrage extends Mixins(
         // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
         abfragevariante.bauabschnitte = [...abfragevariante.bauabschnitte];
         this.formChanged();
-        this.selectEntity(this.treeItemToDelete.parent!);
+        this.selectItem(this.treeItemToDelete.parent!);
         this.treeItemToDelete = undefined;
       }
     }
@@ -758,7 +752,7 @@ export default class Abfrage extends Mixins(
         // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
         bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
         this.formChanged();
-        this.selectEntity(this.treeItemToDelete.parent!);
+        this.selectItem(this.treeItemToDelete.parent!);
         this.treeItemToDelete = undefined;
       }
     }
@@ -773,7 +767,7 @@ export default class Abfrage extends Mixins(
         // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
         baugebiet.bauraten = [...baugebiet.bauraten];
         this.formChanged();
-        this.selectEntity(this.treeItemToDelete.parent!);
+        this.selectItem(this.treeItemToDelete.parent!);
         this.treeItemToDelete = undefined;
       }
     }
@@ -899,24 +893,34 @@ export default class Abfrage extends Mixins(
     });
   }
 
-  private selectEntity(item: AbfrageTreeItem): void {
-    this.anzeigeContextAbfragevariante = item.context;
-    this.selected = item.value;
-    this.openForm = item.type;
-    this.selectedTreeItemId = item.id;
+  private selectAbfrage(): void {
+    this.selectEntity(this.abfrage, AbfrageFormType.INFRASTRUKTURABFRAGE, "", AnzeigeContextAbfragevariante.UNDEFINED);
+  }
+
+  private selectItem(item: AbfrageTreeItem): void {
+    this.selectEntity(item.value, item.type, item.id, item.context);
   }
 
   private selectCreatedEntity(
-    parent: AbfrageTreeItem,
     entity: AbfrageDtoWithForm,
     type: AbfrageFormType,
+    parent: AbfrageTreeItem,
+    context: AnzeigeContextAbfragevariante
+  ): void {
+    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
+    this.selectEntity(entity, type, generateTreeItemId(parent.id, parent.children.length), context);
+  }
+
+  private selectEntity(
+    entity: AbfrageDtoWithForm,
+    type: AbfrageFormType,
+    itemId: string,
     context: AnzeigeContextAbfragevariante
   ): void {
     this.anzeigeContextAbfragevariante = context;
     this.selected = entity;
     this.openForm = type;
-    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
-    this.selectedTreeItemId = generateTreeItemId(parent.id, parent.children.length);
+    this.selectedTreeItemId = itemId;
   }
 
   private isAbfragevariante(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is AbfragevarianteModel {
