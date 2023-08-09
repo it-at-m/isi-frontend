@@ -240,6 +240,7 @@ export default class Bauvorhaben extends Mixins(
     this.deleteDialogOpen = false;
 
     await this.deleteBauvorhaben(this.$route.params.id, true).then(() => {
+      this.$store.commit("search/removeSearchResultById", this.$route.params.id);
       this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }

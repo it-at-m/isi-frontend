@@ -501,9 +501,10 @@ export default class Infrastruktureinrichtung extends Mixins(
   private async deleteInfrastruktureinrichtung(): Promise<void> {
     const id: string | undefined = this.infrastruktureinrichtung?.id;
     if (!_.isNil(id)) {
-      await this.deleteInfrastruktureinrichtungById(id, false).then(() =>
-        this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS)
-      );
+      await this.deleteInfrastruktureinrichtungById(id, false).then(() => {
+        this.$store.commit("search/removeSearchResultById", id);
+        this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS);
+      });
     }
   }
 

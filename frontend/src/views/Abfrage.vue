@@ -426,6 +426,7 @@ export default class Abfrage extends Mixins(
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
     await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+      this.$store.commit("search/removeSearchResultById", this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }

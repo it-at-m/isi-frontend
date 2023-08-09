@@ -1,9 +1,11 @@
 import {
   AbfrageListElementDto,
   BauvorhabenDto,
+  BauvorhabenListElementDto,
   InfrastruktureinrichtungDto,
   InfrastruktureinrichtungListElementDto,
   SearchResultDto,
+  SearchResultDtoTypeEnum,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import { ActionContext } from "vuex/types/index";
@@ -70,6 +72,18 @@ export default {
     searchResults(state: SearchState, items: SearchResultDto[]): void {
       state.searchResults = _.toArray(items);
     },
+    removeSearchResultById(state: SearchState, id: string): void {
+      _.remove(state.searchResults, function (searchResult: SearchResultDto) {
+        return (
+          (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage) &&
+            _.isEqual(id, (searchResult as AbfrageListElementDto).id)) ||
+          (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben) &&
+            _.isEqual(id, (searchResult as BauvorhabenListElementDto).id)) ||
+          (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastruktureinrichtung) &&
+            _.isEqual(id, (searchResult as BauvorhabenListElementDto).id))
+        );
+      });
+    },
     requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingModel): void {
       state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
     },
@@ -114,6 +128,9 @@ export default {
   actions: {
     searchResults(context: ActionContext<SearchState, RootState>, items: SearchResultDto[]): void {
       context.commit("searchResults", _.toArray(items));
+    },
+    removeSearchResultById(context: ActionContext<SearchState, RootState>, id: string): void {
+      context.commit("removeSearchResultById", id);
     },
     requestSearchQueryAndSorting(
       context: ActionContext<SearchState, RootState>,
