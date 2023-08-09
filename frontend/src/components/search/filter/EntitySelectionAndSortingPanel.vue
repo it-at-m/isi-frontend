@@ -130,10 +130,12 @@
 
 <script lang="ts">
 import { Component, VModel, Vue } from "vue-property-decorator";
-import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import PanelHeader from "@/components/search/filter/PanelHeader.vue";
 
-@Component({})
+@Component({
+  components: { PanelHeader },
+})
 export default class EntitySelectionAndSortingPanel extends Vue {
   @VModel({ type: SearchQueryAndSortingModel }) foerdermix!: SearchQueryAndSortingModel;
 

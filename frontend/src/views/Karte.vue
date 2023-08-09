@@ -7,6 +7,19 @@
       <city-map />
     </template>
     <template #action>
+      <v-btn
+        color="secondary"
+        @click="searchAndFilterDialogOpen = true"
+      >
+        <v-icon left>mdi-filter-outline</v-icon>
+        <span>Filter-/Sucheinstellungen</span>
+      </v-btn>
+      <v-dialog
+        v-model="searchAndFilterDialogOpen"
+        max-width="1024px"
+      >
+        <search-and-filter-options @close-search-and-filter-options="searchAndFilterDialogOpen = false" />
+      </v-dialog>
       <v-spacer />
       <div class="align-self-end">
         <v-speed-dial
@@ -62,15 +75,18 @@ import DefaultLayout from "@/components/DefaultLayout.vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import CityMap from "@/components/map/CityMap.vue";
 import router from "@/router";
+import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 
 @Component({
   components: {
+    SearchAndFilterOptions,
     CityMap,
     SearchResultList,
     DefaultLayout,
   },
 })
 export default class Karte extends Vue {
+  private searchAndFilterDialogOpen = false;
   private speedDialOpen = false;
 
   private createAbfrage(): void {

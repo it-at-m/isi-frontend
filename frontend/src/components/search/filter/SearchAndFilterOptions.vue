@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import _ from "lodash";
 import { SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
 import { createSearchQueryAndSortingDto } from "@/utils/Factories";
@@ -63,12 +63,17 @@ export default class SearchAndFilterOptions extends Vue {
 
   private adopt() {
     this.searchQueryAndSortingStore = this.searchQueryForEntitiesDto;
+    this.closeSearchAndFilterOptions();
   }
 
   private reset() {
     this.searchQueryForEntitiesDto = createSearchQueryAndSortingDto();
     this.adopt();
   }
+
+  @Emit()
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private closeSearchAndFilterOptions(): void {}
 }
 </script>
 
