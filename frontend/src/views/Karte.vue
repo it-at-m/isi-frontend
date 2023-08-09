@@ -1,76 +1,85 @@
 <template>
-  <default-layout>
-    <template #navigation>
-      <search-result-list />
-    </template>
-    <template #content>
-      <city-map />
-    </template>
-    <template #action>
-      <v-btn
-        color="secondary"
-        @click="openSearchAndFilterDialog"
+  <v-container class="fill-height">
+    <v-row class="fill-height justify-center">
+      <v-col
+        cols="12"
+        md="4"
       >
-        <v-icon left>mdi-filter-outline</v-icon>
-        <span>Filter-/Sucheinstellungen</span>
-      </v-btn>
-      <v-dialog
-        v-model="searchAndFilterDialogOpen"
-        max-width="1024px"
+        <search-result-list />
+      </v-col>
+      <v-col
+        cols="12"
+        md="8"
       >
-        <search-and-filter-options
-          v-model="searchQueryAndSorting"
-          @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
-          @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
-        />
-      </v-dialog>
-      <v-spacer />
-      <div class="align-self-end">
-        <v-speed-dial
+        <city-map />
+      </v-col>
+    </v-row>
+    <v-btn
+      color="secondary"
+      top
+      right
+      dark
+      fab
+      x-large
+      absolute
+      @click="openSearchAndFilterDialog"
+    >
+      <v-icon>mdi-filter-outline</v-icon>
+    </v-btn>
+    <v-dialog
+      v-model="searchAndFilterDialogOpen"
+      max-width="1024px"
+    >
+      <search-and-filter-options
+        v-model="searchQueryAndSorting"
+        @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
+        @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+      />
+    </v-dialog>
+    <v-speed-dial
+      v-model="speedDialOpen"
+      bottom
+      right
+      absolute
+    >
+      <template #activator>
+        <v-btn
           v-model="speedDialOpen"
-          bottom
-          right
+          color="secondary"
+          dark
+          fab
+          x-large
         >
-          <template #activator>
-            <v-btn
-              v-model="speedDialOpen"
-              color="secondary"
-              dark
-              fab
-              x-large
-            >
-              <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
-              <v-icon v-else> mdi-plus </v-icon>
-            </v-btn>
-          </template>
-          <v-btn
-            class="text-h6"
-            fab
-            dark
-            color="red"
-            @click="createInfrastruktureinrichtung"
-            v-text="'I'"
-          />
-          <v-btn
-            class="text-h6"
-            fab
-            dark
-            color="indigo"
-            @click="createBauvorhaben"
-            v-text="'B'"
-          />
-          <v-btn
-            class="text-h6"
-            fab
-            dark
-            color="green"
-            @click="createAbfrage"
-            v-text="'A'"
-          />
-        </v-speed-dial>
-      </div>
-    </template>
-  </default-layout>
+          <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
+          <v-icon v-else> mdi-plus </v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="red"
+        @click="createInfrastruktureinrichtung"
+        v-text="'I'"
+      />
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="indigo"
+        @click="createBauvorhaben"
+        v-text="'B'"
+      />
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="green"
+        @click="createAbfrage"
+        v-text="'A'"
+      />
+    </v-speed-dial>
+  </v-container>
 </template>
 
 <script lang="ts">

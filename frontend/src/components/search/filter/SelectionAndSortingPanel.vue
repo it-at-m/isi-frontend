@@ -14,8 +14,7 @@
         header-text="Es ist mindestens ein Objekttyp auszuwählen."
       />
       <v-row
-        align="start"
-        justify="center"
+        class="align-start justify-center"
         dense
       >
         <v-col cols="4">
@@ -113,8 +112,7 @@
         header-text="Auswahl der Art der Sortierung und der Sortierreihenfolge."
       />
       <v-row
-        align="start"
-        justify="center"
+        class="align-start justify-center"
         dense
       >
         <v-col cols="4">

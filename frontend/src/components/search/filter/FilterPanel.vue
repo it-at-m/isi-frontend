@@ -14,8 +14,7 @@
         header-text="Hier befinden sich die Filtereinstellung."
       />
       <v-row
-        align="start"
-        justify="center"
+        class="align-start justify-center"
         dense
       >
         <v-col cols="4"> </v-col>
