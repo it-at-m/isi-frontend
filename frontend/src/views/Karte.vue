@@ -3,13 +3,13 @@
     <v-row class="fill-height justify-center">
       <v-col
         cols="12"
-        md="4"
+        md="3"
       >
         <search-result-list />
       </v-col>
       <v-col
         cols="12"
-        md="8"
+        md="9"
       >
         <city-map />
       </v-col>
