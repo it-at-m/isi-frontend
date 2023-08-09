@@ -1,25 +1,152 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.png')"
-          class="my-3"
-          contain
-          height="200"
-        />
+  <v-container class="fill-height">
+    <v-row class="fill-height justify-center">
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <search-result-list />
       </v-col>
-
-      <v-col class="mb-4">
-        <h1 class="text-h3 font-weight-bold mb-3">Willkommen beim Informationssystem für soziale Infrastruktur</h1>
+      <v-col
+        cols="12"
+        md="9"
+      >
+        <city-map />
       </v-col>
     </v-row>
+    <v-btn
+      color="secondary"
+      top
+      right
+      dark
+      fab
+      x-large
+      absolute
+      @click="openSearchAndFilterDialog"
+    >
+      <v-icon>mdi-filter-outline</v-icon>
+    </v-btn>
+    <v-dialog
+      v-model="searchAndFilterDialogOpen"
+      max-width="1024px"
+    >
+      <search-and-filter-options
+        v-model="searchQueryAndSorting"
+        @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
+        @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+      />
+    </v-dialog>
+    <v-speed-dial
+      v-model="speedDialOpen"
+      bottom
+      right
+      absolute
+    >
+      <template #activator>
+        <v-btn
+          v-model="speedDialOpen"
+          color="secondary"
+          dark
+          fab
+          x-large
+        >
+          <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
+          <v-icon v-else> mdi-plus </v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="red"
+        @click="createInfrastruktureinrichtung"
+        v-text="'I'"
+      />
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="indigo"
+        @click="createBauvorhaben"
+        v-text="'B'"
+      />
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="green"
+        @click="createAbfrage"
+        v-text="'A'"
+      />
+    </v-speed-dial>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
+import DefaultLayout from "@/components/DefaultLayout.vue";
+import SearchResultList from "@/components/search/SearchResultList.vue";
+import CityMap from "@/components/map/CityMap.vue";
+import router from "@/router";
+import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import _ from "lodash";
+import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 
-@Component
-export default class App extends Vue {}
+@Component({
+  components: {
+    SearchAndFilterOptions,
+    CityMap,
+    SearchResultList,
+    DefaultLayout,
+  },
+})
+export default class Main extends Vue {
+  private searchAndFilterDialogOpen = false;
+
+  private speedDialOpen = false;
+
+  private searchQueryAndSorting: SearchQueryAndSortingModel = createSearchQueryAndSortingModel();
+
+  get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
+    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+  }
+
+  set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
+    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
+  }
+
+  private createAbfrage(): void {
+    router.push({
+      name: "newabfrage",
+    });
+  }
+
+  private createBauvorhaben(): void {
+    router.push({
+      name: "createBauvorhaben",
+    });
+  }
+
+  private createInfrastruktureinrichtung(): void {
+    router.push({
+      name: "createInfrastruktureinrichtung",
+    });
+  }
+
+  private openSearchAndFilterDialog(): void {
+    this.searchQueryAndSorting = this.searchQueryAndSortingStore;
+    this.searchAndFilterDialogOpen = true;
+  }
+
+  private handleAdoptSearchAndFilterOptions(): void {
+    this.searchQueryAndSortingStore = this.searchQueryAndSorting;
+    this.searchAndFilterDialogOpen = false;
+  }
+
+  private handleResetSearchAndFilterOptions(): void {
+    this.searchQueryAndSorting = createSearchQueryAndSortingModel();
+    this.handleAdoptSearchAndFilterOptions();
+  }
+}
 </script>

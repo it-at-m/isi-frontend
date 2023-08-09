@@ -503,7 +503,7 @@ export default class Abfrage extends Mixins(
     this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
     this.$store.dispatch("search/resetAbfrage");
     if (this.isNewAbfrage()) {
-      this.$router.push({ path: "/abfragenuebersicht" });
+      this.$router.push({ path: "/" });
       Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
     } else {
       Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
@@ -637,7 +637,7 @@ export default class Abfrage extends Mixins(
       Toaster.toast(message, level);
     }
     this.$store.dispatch("search/resetAbfrage");
-    this.$router.push({ path: "/karte" });
+    this.$router.push({ path: "/" });
   }
 
   private validate(): boolean {

@@ -512,7 +512,7 @@ export default class Infrastruktureinrichtung extends Mixins(
       Toaster.toast(message, level);
     }
     this.resetInfrastruktureinrichtungInStore();
-    this.$router.push({ path: "/karte" });
+    this.$router.push({ path: "/" });
   }
 
   private setInfrastruktureinrichtungToStore(dto: InfrastruktureinrichtungDto | undefined): void {
@@ -541,7 +541,7 @@ export default class Infrastruktureinrichtung extends Mixins(
     this.resetInfrastruktureinrichtungInStore();
     this.setInfrastruktureinrichtungToStore(dto);
     if (this.isNewInfrastruktureinrichtung()) {
-      this.$router.push({ path: "/infrastruktureinrichtungenuebersicht" });
+      this.$router.push({ path: "/" });
       Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich gespeichert`, Levels.SUCCESS);
     } else {
       Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich aktualisiert`, Levels.SUCCESS);

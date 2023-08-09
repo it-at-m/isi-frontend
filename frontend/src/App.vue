@@ -6,7 +6,6 @@
       color="primary"
       elevation="8"
       height="50"
-      extension-height="42"
     >
       <v-row align="center">
         <v-col
@@ -110,57 +109,6 @@
           </v-menu>
         </v-col>
       </v-row>
-      <template #extension>
-        <div
-          class="accent d-flex justify-space-around"
-          style="width: 100%"
-        >
-          <v-btn
-            id="app_karte_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('karte') ? 'active' : ''}`"
-            @click="goToRoute('/karte')"
-            v-text="'Karte'"
-          />
-          <v-btn
-            id="app_abfrage_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('abfragen') ? 'active' : ''}`"
-            @click="goToRoute('/abfragenuebersicht')"
-            v-text="'Abfragen'"
-          />
-          <v-btn
-            id="app_bauvorhaben_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('bauvorhaben') ? 'active' : ''}`"
-            @click="goToRoute('/bauvorhabenuebersicht')"
-            v-text="'Bauvorhaben'"
-          />
-          <v-btn
-            id="app_infrastruktureinrichtung_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('infrastruktureinrichtungen') ? 'active' : ''}`"
-            @click="goToRoute('/infrastruktureinrichtungenuebersicht')"
-            v-text="'Infrastruktureinrichtungen'"
-          />
-        </div>
-      </template>
     </v-app-bar>
     <version-info v-model="showVersionInfo" />
     <v-main>
@@ -232,14 +180,6 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
         message: "Sie haben nach " + this.query + " gesucht. ;)",
       });
     }
-  }
-
-  private goToRoute(path: string): void {
-    this.$router.push({ path });
-  }
-
-  private currentRouteHasTag(tag: RouteTag): boolean {
-    return this.$router.currentRoute.meta?.tag === tag;
   }
 }
 </script>
