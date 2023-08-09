@@ -97,7 +97,7 @@ export default class Karte extends Vue {
 
   private speedDialOpen = false;
 
-  private searchQueryAndSorting!: SearchQueryAndSortingModel;
+  private searchQueryAndSorting: SearchQueryAndSortingModel = createSearchQueryAndSortingModel();
 
   get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
     return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
