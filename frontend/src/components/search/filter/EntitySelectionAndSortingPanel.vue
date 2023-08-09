@@ -181,10 +181,6 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   private hoverArtDerSortierung = false;
   private hoverReihenfolgeDerSortierung = false;
 
-  /**
-   * Liefert den Text für die einzelnen Objekttypen,
-   * welcher bei MouseOver in der zweiten Spalte des Optionsmenüs angezeigt wird.
-   */
   get helpTextObjektauswahl(): string {
     if (this.hoverSelectInfrastrukturabfrage) {
       return "Die Infrastrukturabfragen werden in die Suche miteinbezogen.";
