@@ -117,7 +117,32 @@
         justify="center"
         dense
       >
-        <v-col cols="8"> </v-col>
+        <v-col cols="4">
+          <v-hover v-model="hoverArtDerSortierung">
+            <v-select
+              v-model="foerdermix.sortBy"
+              :items="entriesArtderSortierung"
+              label="Art der Sortierung"
+              item-value="key"
+              item-text="value"
+              filled
+              dense
+            ></v-select>
+          </v-hover>
+        </v-col>
+        <v-col cols="4">
+          <v-hover v-model="hoverReihenfolgeDerSortierung">
+            <v-select
+              v-model="foerdermix.sortOrder"
+              :items="entriesReihenfolgeDerSortierung"
+              label="Sortierreihenfolge"
+              item-value="key"
+              item-text="value"
+              filled
+              dense
+            ></v-select>
+          </v-hover>
+        </v-col>
         <v-col cols="4">
           <v-card flat>
             {{ helpTextSortierung }}
@@ -132,6 +157,11 @@
 import { Component, VModel, Vue } from "vue-property-decorator";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import PanelHeader from "@/components/search/filter/PanelHeader.vue";
+import {
+  LookupEntryDto,
+  SearchQueryAndSortingDtoSortByEnum,
+  SearchQueryAndSortingDtoSortOrderEnum,
+} from "@/api/api-client/isi-backend";
 
 @Component({
   components: { PanelHeader },
@@ -147,6 +177,9 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   private hoverSelectKinderkrippe = false;
   private hoverSelectKindergarten = false;
   private hoverSelectHausFuerKinder = false;
+
+  private hoverArtDerSortierung = false;
+  private hoverReihenfolgeDerSortierung = false;
 
   /**
    * Liefert den Text für die einzelnen Objekttypen,
@@ -181,7 +214,42 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   }
 
   get helpTextSortierung(): string {
+    if (this.hoverArtDerSortierung) {
+      return "Auswahl nach welchem Attribut sortiert werden soll.";
+    }
+    if (this.hoverReihenfolgeDerSortierung) {
+      return "Auswahl ob das sortierbare Attribut aufsteigend oder absteigend sortiert werden soll.";
+    }
     return "";
+  }
+
+  get entriesArtderSortierung(): Array<LookupEntryDto> {
+    return [
+      {
+        key: SearchQueryAndSortingDtoSortByEnum.Name,
+        value: "Name",
+      },
+      {
+        key: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+        value: "Änderungsdatum",
+      },
+      {
+        key: SearchQueryAndSortingDtoSortByEnum.CreatedDateTime,
+        value: "Erstellungsdatum",
+      },
+    ];
+  }
+  get entriesReihenfolgeDerSortierung(): Array<LookupEntryDto> {
+    return [
+      {
+        key: SearchQueryAndSortingDtoSortOrderEnum.Asc,
+        value: "aufsteigend",
+      },
+      {
+        key: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+        value: "absteigend",
+      },
+    ];
   }
 }
 </script>
