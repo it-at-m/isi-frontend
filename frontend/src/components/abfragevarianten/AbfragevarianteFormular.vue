@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-row>
       <v-col
         cols="12"
@@ -296,7 +296,7 @@
       id="abfragevariante_sachbearbeitung_formular"
       v-model="abfragevariante.abfragevarianteSachbearbeitung"
     />
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">

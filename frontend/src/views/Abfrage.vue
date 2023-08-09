@@ -32,7 +32,7 @@
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
-          :abfragevariante="currentAbfragevariante"
+          :abfragevariante="abfragevarianteAncestor"
         />
         <baurate-component
           v-else-if="isBaurateFormularOpen()"
@@ -40,8 +40,8 @@
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
-          :baugebiet="currentBaugebiet"
-          :abfragevariante="currentAbfragevariante"
+          :baugebiet="baugebietAncestor"
+          :abfragevariante="abfragevarianteAncestor"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
@@ -337,25 +337,10 @@ export default class Abfrage extends Mixins(
   private buttonText = "";
   private dialogTextStatus = "";
   private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
-
-  /**
-   * Die Entität, welche aktuell ausgewählt ist und dessen Formular angezeigt wird.
-   */
   private selected: AbfrageModelWithForm = this.abfrage;
-  /**
-   * Der Typ des derzeit offenen Formulars.
-   */
   private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
-  /**
-   * Die Abfragevariante, welche für einen aktuellen Prozess wichtig ist.
-   *
-   */
-  private currentAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
-  /**
-   * Das Baugebiet, welche für einen aktuellen Prozess wichtig ist.
-   */
-  private currentBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
-
+  private abfragevarianteAncestor: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
+  private baugebietAncestor: BaugebietModel = new BaugebietModel(createBaugebietDto());
   private abfrageId: string = this.$route.params.id;
   private transition: TransitionDto | undefined;
   private isStatusUebergangDialogOpen = false;
@@ -613,7 +598,7 @@ export default class Abfrage extends Mixins(
     const abfragevariante = this.getAncestorAbfragevariante(item);
 
     if (abfragevariante) {
-      this.currentAbfragevariante = abfragevariante;
+      this.abfragevarianteAncestor = abfragevariante;
       this.selectEntity(item);
     }
   }
@@ -623,8 +608,8 @@ export default class Abfrage extends Mixins(
     const baugebiet = this.getAncestorBaugebiet(item);
 
     if (abfragevariante && baugebiet) {
-      this.currentAbfragevariante = abfragevariante;
-      this.currentBaugebiet = baugebiet;
+      this.abfragevarianteAncestor = abfragevariante;
+      this.baugebietAncestor = baugebiet;
       this.selectEntity(item);
     }
   }
@@ -682,7 +667,7 @@ export default class Abfrage extends Mixins(
       const abfragevariante = this.getAncestorAbfragevariante(parent)!;
       baugebiet.realisierungVon = abfragevariante.realisierungVon!;
       bauabschnitt.baugebiete.push(baugebiet);
-      this.currentAbfragevariante = abfragevariante;
+      this.abfragevarianteAncestor = abfragevariante;
       this.formChanged();
       this.selectCreatedEntity(parent, baugebiet, AbfrageFormType.BAUGEBIET, parent.context);
     }
@@ -700,8 +685,8 @@ export default class Abfrage extends Mixins(
       const baurate = new BaurateModel(createBaurateDto());
       const abfragevariante = this.getAncestorAbfragevariante(parent)!;
       baugebiet.bauraten.push(baurate);
-      this.currentAbfragevariante = abfragevariante;
-      this.currentBaugebiet = baugebiet;
+      this.abfragevarianteAncestor = abfragevariante;
+      this.baugebietAncestor = baugebiet;
       this.formChanged();
       this.selectCreatedEntity(parent, baurate, AbfrageFormType.BAURATE, parent.context);
     }

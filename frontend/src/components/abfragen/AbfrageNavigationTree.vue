@@ -179,6 +179,26 @@ function buildTree(abfrage: InfrastrukturabfrageModel): AbfrageTreeItem {
     });
   }
 
+  // Rein visueller Platzhalter
+  if (item.children.length === 0) {
+    item.children = [
+      {
+        id: ".",
+        type: AbfrageFormType.INFRASTRUKTURABFRAGE,
+        name: "Keine Abfragevarianten",
+        parent: null,
+        children: [],
+        actions: [],
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onSelection: () => {},
+        context: AnzeigeContextAbfragevariante.UNDEFINED,
+        value: abfrage,
+      },
+    ];
+  }
+
+  openItem(item);
+
   return item;
 }
 
@@ -443,15 +463,14 @@ function openItem(item: AbfrageTreeItem): void {
     :items="items"
     :active="selectedItemIds"
     :open.sync="openItemIds"
-    open-all
     dense
     hoverable
   >
     <template #label="{ item }">
       <v-menu
-        v-if="item.actions.length > 0"
         open-on-hover
         offset-x
+        :disabled="item.actions.length === 0"
       >
         <template #activator="{ on }">
           <a
