@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header> Objekttyp </v-expansion-panel-header>
+    <v-expansion-panel-header> Objekttyp und Sortierung </v-expansion-panel-header>
     <v-expansion-panel-content class="mt-1">
       <panel-header
         font-size="0.875rem"
@@ -18,7 +18,7 @@
         justify="center"
         dense
       >
-        <v-col cols="6">
+        <v-col cols="4">
           <v-hover v-model="hoverSelectInfrastrukturabfrage">
             <v-checkbox
               v-model="foerdermix.selectInfrastrukturabfrage"
@@ -37,6 +37,8 @@
               dense
             />
           </v-hover>
+        </v-col>
+        <v-col cols="4">
           <v-hover v-model="hoverSelectGrundschule">
             <v-checkbox
               v-model="foerdermix.selectGrundschule"
@@ -92,7 +94,7 @@
             />
           </v-hover>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="4">
           <v-card flat>
             {{ helpTextObjektauswahl }}
           </v-card>
@@ -115,8 +117,8 @@
         justify="center"
         dense
       >
-        <v-col cols="6"> </v-col>
-        <v-col cols="6">
+        <v-col cols="8"> </v-col>
+        <v-col cols="4">
           <v-card flat>
             {{ helpTextSortierung }}
           </v-card>
@@ -129,13 +131,10 @@
 <script lang="ts">
 import { Component, VModel, Vue } from "vue-property-decorator";
 import _ from "lodash";
-import { SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
-import { createSearchQueryAndSortingDto } from "@/utils/Factories";
-import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
 @Component({})
-export default class EntitySelectionPanel extends Vue {
+export default class EntitySelectionAndSortingPanel extends Vue {
   @VModel({ type: SearchQueryAndSortingModel }) foerdermix!: SearchQueryAndSortingModel;
 
   private hoverSelectInfrastrukturabfrage = false;

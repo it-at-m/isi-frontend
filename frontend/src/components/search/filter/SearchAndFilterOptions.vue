@@ -14,6 +14,7 @@
           hover
           focusable
         >
+          <entity-selection-and-sorting-panel v-model="searchQueryForEntitiesDto" />
         </v-expansion-panels>
       </v-sheet>
     </v-card-text>
@@ -40,8 +41,11 @@ import { Component, Vue } from "vue-property-decorator";
 import _ from "lodash";
 import { SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
 import { createSearchQueryAndSortingDto } from "@/utils/Factories";
+import EntitySelectionAndSortingPanel from "@/components/search/filter/EntitySelectionAndSortingPanel.vue";
 
-@Component({})
+@Component({
+  components: { EntitySelectionAndSortingPanel },
+})
 export default class SearchAndFilterOptions extends Vue {
   private searchQueryForEntitiesDto: SearchQueryAndSortingDto = this.searchQueryAndSortingStore;
 
