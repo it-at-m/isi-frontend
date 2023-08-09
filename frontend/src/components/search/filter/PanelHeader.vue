@@ -17,7 +17,7 @@ export default class PanelHeader extends Vue {
   @Prop()
   private headerText!: string;
 
-  get headerStyle() {
+  get headerStyle(): string {
     let headerStyle = `font-size: ${this.fontSize}; font-weight: ${this.fontWeight};`;
     if (this.padding) {
       headerStyle = headerStyle + `padding: ${this.padding}`;
