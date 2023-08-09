@@ -7,13 +7,15 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class PanelHeader extends Vue {
-  // Properties
   @Prop({ default: "medium" })
   private fontSize!: string;
+
   @Prop({ default: "normal" })
   private fontWeight!: string;
+
   @Prop()
   private padding?: string;
+
   @Prop()
   private headerText!: string;
 
