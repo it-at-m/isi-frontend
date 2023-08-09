@@ -722,6 +722,12 @@ export default class Abfrage extends Mixins(
           ? this.abfrage.abfragevarianten!
           : this.abfrage.abfragevariantenSachbearbeitung!;
       _.remove(abfragevarianten, (abfragevariante) => abfragevariante === this.treeItemToDelete!.value);
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+      if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
+        this.abfrage.abfragevarianten = [...abfragevarianten];
+      } else {
+        this.abfrage.abfragevariantenSachbearbeitung = [...abfragevarianten];
+      }
       this.renumberingAbfragevarianten(abfragevarianten);
       this.formChanged();
       this.selectEntity(this.treeItemToDelete.parent!);
@@ -734,6 +740,8 @@ export default class Abfrage extends Mixins(
       const abfragevariante = this.getAncestorAbfragevariante(this.treeItemToDelete);
       if (abfragevariante && abfragevariante.bauabschnitte) {
         _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === this.treeItemToDelete!.value);
+        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+        abfragevariante.bauabschnitte = [...abfragevariante.bauabschnitte];
         this.formChanged();
         this.selectEntity(this.treeItemToDelete.parent!);
         this.treeItemToDelete = undefined;
@@ -747,6 +755,8 @@ export default class Abfrage extends Mixins(
       if (bauabschnitt) {
         _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === this.treeItemToDelete!.value);
         this.clearTechnicalEntities(this.getAncestorAbfragevariante(this.treeItemToDelete)!);
+        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+        bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
         this.formChanged();
         this.selectEntity(this.treeItemToDelete.parent!);
         this.treeItemToDelete = undefined;
@@ -760,6 +770,8 @@ export default class Abfrage extends Mixins(
       if (baugebiet) {
         _.remove(baugebiet.bauraten, (baurate) => baurate === this.treeItemToDelete!.value);
         this.clearTechnicalEntities(this.getAncestorAbfragevariante(this.treeItemToDelete)!);
+        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+        baugebiet.bauraten = [...baugebiet.bauraten];
         this.formChanged();
         this.selectEntity(this.treeItemToDelete.parent!);
         this.treeItemToDelete = undefined;

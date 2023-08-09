@@ -110,7 +110,6 @@ interface Emits {
 
 const DEFAULT_NAME = "Nicht gepflegt";
 const ABFRAGE_NAME = "Daten zur Abfrage";
-const PLACEHOLDER_NAME = "Keine Abfragevarianten";
 
 const CREATE_ABFRAGEVARIANTE = "Abfragevariante erstellen";
 const CREATE_BAUABSCHNITT = "Bauabschnitt erstellen";
@@ -180,24 +179,6 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
         openItem(item);
       },
     });
-  }
-
-  // Rein visueller Platzhalter
-  if (item.children.length === 0) {
-    item.children = [
-      {
-        id: ".",
-        type: AbfrageFormType.INFRASTRUKTURABFRAGE,
-        name: PLACEHOLDER_NAME,
-        parent: null,
-        children: [],
-        actions: [],
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onSelection: () => {},
-        context: AnzeigeContextAbfragevariante.UNDEFINED,
-        value: abfrage,
-      },
-    ];
   }
 
   openItem(item);
