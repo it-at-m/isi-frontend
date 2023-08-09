@@ -14,7 +14,7 @@
           hover
           focusable
         >
-          <entity-selection-and-sorting-panel v-model="searchQueryForEntitiesDto" />
+          <entity-selection-and-sorting-panel v-model="searchQueryAndSorting" />
         </v-expansion-panels>
       </v-sheet>
     </v-card-text>
@@ -22,13 +22,13 @@
       <v-spacer></v-spacer>
       <v-btn
         color="secondary"
-        @click="adopt"
+        @click="adoptSearchAndFilterOptions"
         >Übernehmen
       </v-btn>
       <v-spacer></v-spacer>
       <v-btn
         color="primary"
-        @click="reset"
+        @click="resetSearchAndFilterOptions"
         >Zurücksetzen
       </v-btn>
       <v-spacer></v-spacer>
@@ -37,43 +37,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from "vue-property-decorator";
-import _ from "lodash";
-import { SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
-import { createSearchQueryAndSortingDto } from "@/utils/Factories";
+import { Component, Emit, VModel, Vue } from "vue-property-decorator";
 import EntitySelectionAndSortingPanel from "@/components/search/filter/EntitySelectionAndSortingPanel.vue";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
 @Component({
   components: { EntitySelectionAndSortingPanel },
 })
 export default class SearchAndFilterOptions extends Vue {
-  private searchQueryForEntitiesDto: SearchQueryAndSortingDto = this.searchQueryAndSortingStore;
-
-  mounted() {
-    this.searchQueryForEntitiesDto = this.searchQueryAndSortingStore;
-  }
-
-  get searchQueryAndSortingStore(): SearchQueryAndSortingDto {
-    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
-  }
-
-  set searchQueryAndSortingStore(searchQueryForEntitiesDto: SearchQueryAndSortingDto) {
-    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntitiesDto));
-  }
-
-  private adopt() {
-    this.searchQueryAndSortingStore = this.searchQueryForEntitiesDto;
-    this.closeSearchAndFilterOptions();
-  }
-
-  private reset() {
-    this.searchQueryForEntitiesDto = createSearchQueryAndSortingDto();
-    this.adopt();
-  }
+  @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
 
   @Emit()
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private closeSearchAndFilterOptions(): void {}
+  private adoptSearchAndFilterOptions(): void {}
+
+  @Emit()
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private resetSearchAndFilterOptions(): void {}
 }
 </script>
 

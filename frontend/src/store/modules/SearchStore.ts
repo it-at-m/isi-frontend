@@ -3,7 +3,6 @@ import {
   BauvorhabenDto,
   InfrastruktureinrichtungDto,
   InfrastruktureinrichtungListElementDto,
-  SearchQueryAndSortingDto,
   SearchResultDto,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
@@ -11,11 +10,12 @@ import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import _ from "lodash";
-import { createSearchQueryAndSortingDto } from "@/utils/Factories";
+import { createSearchQueryAndSortingModel } from "@/utils/Factories";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
 const state = {
   searchResults: [] as Array<SearchResultDto>,
-  requestSearchQueryAndSorting: createSearchQueryAndSortingDto(),
+  requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
@@ -37,7 +37,7 @@ export default {
     searchResults: (): Array<SearchResultDto> => {
       return state.searchResults;
     },
-    requestSearchQueryAndSorting: (): SearchQueryAndSortingDto => {
+    requestSearchQueryAndSorting: (): SearchQueryAndSortingModel => {
       return state.requestSearchQueryAndSorting;
     },
     resultAbfrage: (state: SearchState): Array<AbfrageListElementDto> | undefined => {
@@ -70,7 +70,7 @@ export default {
     searchResults(state: SearchState, items: SearchResultDto[]): void {
       state.searchResults = _.toArray(items);
     },
-    requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingDto): void {
+    requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingModel): void {
       state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
     },
     resultAbfrage(state: SearchState, items: AbfrageListElementDto[]): void {
@@ -117,7 +117,7 @@ export default {
     },
     requestSearchQueryAndSorting(
       context: ActionContext<SearchState, RootState>,
-      searchQueryAndSortingDto: SearchQueryAndSortingDto
+      searchQueryAndSortingDto: SearchQueryAndSortingModel
     ): void {
       context.commit("requestSearchQueryAndSorting", searchQueryAndSortingDto);
     },

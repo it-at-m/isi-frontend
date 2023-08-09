@@ -43,9 +43,10 @@ import {
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
-export function createSearchQueryAndSortingDto(): SearchQueryAndSortingDto {
-  return {
+export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
+  const searchQueryAndSortingDto = {
     searchQuery: "",
     selectInfrastrukturabfrage: true,
     selectBauvorhaben: true,
@@ -58,6 +59,7 @@ export function createSearchQueryAndSortingDto(): SearchQueryAndSortingDto {
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   } as SearchQueryAndSortingDto;
+  return new SearchQueryAndSortingModel(searchQueryAndSortingDto);
 }
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {

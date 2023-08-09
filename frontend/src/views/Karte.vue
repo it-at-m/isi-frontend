@@ -9,7 +9,7 @@
     <template #action>
       <v-btn
         color="secondary"
-        @click="searchAndFilterDialogOpen = true"
+        @click="openSearchAndFilterDialog"
       >
         <v-icon left>mdi-filter-outline</v-icon>
         <span>Filter-/Sucheinstellungen</span>
@@ -18,7 +18,11 @@
         v-model="searchAndFilterDialogOpen"
         max-width="1024px"
       >
-        <search-and-filter-options @close-search-and-filter-options="searchAndFilterDialogOpen = false" />
+        <search-and-filter-options
+          v-model="searchQueryAndSorting"
+          @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
+          @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+        />
       </v-dialog>
       <v-spacer />
       <div class="align-self-end">
@@ -76,6 +80,9 @@ import SearchResultList from "@/components/search/SearchResultList.vue";
 import CityMap from "@/components/map/CityMap.vue";
 import router from "@/router";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import _ from "lodash";
+import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 
 @Component({
   components: {
@@ -87,7 +94,18 @@ import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOp
 })
 export default class Karte extends Vue {
   private searchAndFilterDialogOpen = false;
+
   private speedDialOpen = false;
+
+  private searchQueryAndSorting!: SearchQueryAndSortingModel;
+
+  get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
+    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+  }
+
+  set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
+    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
+  }
 
   private createAbfrage(): void {
     router.push({
@@ -105,6 +123,21 @@ export default class Karte extends Vue {
     router.push({
       name: "createInfrastruktureinrichtung",
     });
+  }
+
+  private openSearchAndFilterDialog(): void {
+    this.searchQueryAndSorting = this.searchQueryAndSortingStore;
+    this.searchAndFilterDialogOpen = true;
+  }
+
+  private handleAdoptSearchAndFilterOptions(): void {
+    this.searchQueryAndSortingStore = this.searchQueryAndSorting;
+    this.searchAndFilterDialogOpen = false;
+  }
+
+  private handleResetSearchAndFilterOptions(): void {
+    this.searchQueryAndSorting = createSearchQueryAndSortingModel();
+    this.handleAdoptSearchAndFilterOptions();
   }
 }
 </script>

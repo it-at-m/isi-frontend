@@ -21,7 +21,7 @@
         <v-col cols="4">
           <v-hover v-model="hoverSelectInfrastrukturabfrage">
             <v-checkbox
-              v-model="foerdermix.selectInfrastrukturabfrage"
+              v-model="searchQueryAndSorting.selectInfrastrukturabfrage"
               :label="'Infrastrukturabfrage'"
               color="grey darken-1"
               hide-details
@@ -30,7 +30,7 @@
           </v-hover>
           <v-hover v-model="hoverSelectBauvorhaben">
             <v-checkbox
-              v-model="foerdermix.selectBauvorhaben"
+              v-model="searchQueryAndSorting.selectBauvorhaben"
               :label="'Bauvorhaben'"
               color="grey darken-1"
               hide-details
@@ -41,7 +41,7 @@
         <v-col cols="4">
           <v-hover v-model="hoverSelectGrundschule">
             <v-checkbox
-              v-model="foerdermix.selectGrundschule"
+              v-model="searchQueryAndSorting.selectGrundschule"
               :label="'Grundschule'"
               color="grey darken-1"
               hide-details
@@ -50,7 +50,7 @@
           </v-hover>
           <v-hover v-model="hoverSelectGsNachmittagBetreuung">
             <v-checkbox
-              v-model="foerdermix.selectGsNachmittagBetreuung"
+              v-model="searchQueryAndSorting.selectGsNachmittagBetreuung"
               :label="'Nachmittagsbetreuung für Grundschulkinder'"
               color="grey darken-1"
               hide-details
@@ -59,7 +59,7 @@
           </v-hover>
           <v-hover v-model="hoverSelectMittelschule">
             <v-checkbox
-              v-model="foerdermix.selectMittelschule"
+              v-model="searchQueryAndSorting.selectMittelschule"
               :label="'Mittelschule'"
               color="grey darken-1"
               hide-details
@@ -68,7 +68,7 @@
           </v-hover>
           <v-hover v-model="hoverSelectKinderkrippe">
             <v-checkbox
-              v-model="foerdermix.selectKinderkrippe"
+              v-model="searchQueryAndSorting.selectKinderkrippe"
               :label="'Kinderkrippe'"
               color="grey darken-1"
               hide-details
@@ -77,7 +77,7 @@
           </v-hover>
           <v-hover v-model="hoverSelectKindergarten">
             <v-checkbox
-              v-model="foerdermix.selectKindergarten"
+              v-model="searchQueryAndSorting.selectKindergarten"
               :label="'Kindergarten'"
               color="grey darken-1"
               hide-details
@@ -86,7 +86,7 @@
           </v-hover>
           <v-hover v-model="hoverSelectHausFuerKinder">
             <v-checkbox
-              v-model="foerdermix.selectHausFuerKinder"
+              v-model="searchQueryAndSorting.selectHausFuerKinder"
               :label="'Haus für Kinder'"
               color="grey darken-1"
               hide-details
@@ -120,7 +120,7 @@
         <v-col cols="4">
           <v-hover v-model="hoverArtDerSortierung">
             <v-select
-              v-model="foerdermix.sortBy"
+              v-model="searchQueryAndSorting.sortBy"
               :items="entriesArtderSortierung"
               label="Art der Sortierung"
               item-value="key"
@@ -133,7 +133,7 @@
         <v-col cols="4">
           <v-hover v-model="hoverReihenfolgeDerSortierung">
             <v-select
-              v-model="foerdermix.sortOrder"
+              v-model="searchQueryAndSorting.sortOrder"
               :items="entriesReihenfolgeDerSortierung"
               label="Sortierreihenfolge"
               item-value="key"
@@ -167,7 +167,7 @@ import {
   components: { PanelHeader },
 })
 export default class EntitySelectionAndSortingPanel extends Vue {
-  @VModel({ type: SearchQueryAndSortingModel }) foerdermix!: SearchQueryAndSortingModel;
+  @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
 
   private hoverSelectInfrastrukturabfrage = false;
   private hoverSelectBauvorhaben = false;
