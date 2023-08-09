@@ -227,11 +227,11 @@ export type BauvorhabenDtoPlanungsrechtEnum = typeof BauvorhabenDtoPlanungsrecht
  * @export
  */
 export const BauvorhabenDtoArtFnpEnum = {
-    Mi: 'MI',
+    Wr: 'WR',
     Wa: 'WA',
     Mu: 'MU',
     Mk: 'MK',
-    Wr: 'WR',
+    Mi: 'MI',
     Ge: 'GE'
 } as const;
 export type BauvorhabenDtoArtFnpEnum = typeof BauvorhabenDtoArtFnpEnum[keyof typeof BauvorhabenDtoArtFnpEnum];

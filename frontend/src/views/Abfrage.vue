@@ -17,6 +17,7 @@
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
+          :anzeige-context-abfragevariante="anzeigeContextAbfragevariante"
           :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauabschnitt-component
@@ -230,6 +231,7 @@
 import {
   AbfragevarianteDto,
   BauabschnittDto,
+  BaugebietDto,
   BaurateDto,
   InfrastrukturabfrageDto,
   StatusAbfrage,
@@ -288,14 +290,14 @@ export const enum AnzeigeContextAbfragevariante {
 }
 
 /**
- * Ein Union aller im Rahmen der Abfrage relevanten Models, welche ein eigenes Formular haben.
+ * Ein Union aller im Rahmen der Abfrage relevanten DTOs, welche ein eigenes Formular haben.
  */
-export type AbfrageModelWithForm =
-  | InfrastrukturabfrageModel
-  | AbfragevarianteModel
-  | BauabschnittModel
-  | BaugebietModel
-  | BaurateModel;
+export type AbfrageDtoWithForm =
+  | InfrastrukturabfrageDto
+  | AbfragevarianteDto
+  | BauabschnittDto
+  | BaugebietDto
+  | BaurateDto;
 
 /**
  * Ein Enum für alle im Rahmen der Abfrage relevanten Entitäten, welche ein eigenes Formular haben.
@@ -337,7 +339,7 @@ export default class Abfrage extends Mixins(
   private buttonText = "";
   private dialogTextStatus = "";
   private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
-  private selected: AbfrageModelWithForm = this.abfrage;
+  private selected: AbfrageDtoWithForm = this.abfrage;
   private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
   private abfragevarianteAncestor: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
   private baugebietAncestor: BaugebietModel = new BaugebietModel(createBaugebietDto());
@@ -894,7 +896,7 @@ export default class Abfrage extends Mixins(
 
   private selectCreatedEntity(
     parent: AbfrageTreeItem,
-    entity: AbfrageModelWithForm,
+    entity: AbfrageDtoWithForm,
     type: AbfrageFormType,
     context: AnzeigeContextAbfragevariante
   ): void {
@@ -905,19 +907,19 @@ export default class Abfrage extends Mixins(
     this.selectedTreeItemId = generateTreeItemId(parent.id, parent.children.length);
   }
 
-  private isAbfragevariante(item: AbfrageTreeItem, value: AbfrageModelWithForm): value is AbfragevarianteModel {
+  private isAbfragevariante(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is AbfragevarianteModel {
     return item.type === AbfrageFormType.ABFRAGEVARIANTE;
   }
 
-  private isBauabschnitt(item: AbfrageTreeItem, value: AbfrageModelWithForm): value is BauabschnittModel {
+  private isBauabschnitt(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BauabschnittModel {
     return item.type === AbfrageFormType.BAUABSCHNITT;
   }
 
-  private isBaugebiet(item: AbfrageTreeItem, value: AbfrageModelWithForm): value is BaugebietModel {
+  private isBaugebiet(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BaugebietModel {
     return item.type === AbfrageFormType.BAUGEBIET;
   }
 
-  private isBaurate(item: AbfrageTreeItem, value: AbfrageModelWithForm): value is BaurateModel {
+  private isBaurate(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BaurateModel {
     return item.type === AbfrageFormType.BAURATE;
   }
 

@@ -1,15 +1,19 @@
-import { Component, Mixins } from "vue-property-decorator";
 import {
+  AbfrageListElementDto,
   BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,
   DeleteBauvorhabenRequest,
   GetBauvorhabenByIdRequest,
+  GetReferencedInfrastrukturabfragenRequest,
+  GetReferencedInfrastruktureinrichtungRequest,
+  InfrastruktureinrichtungListElementDto,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
-import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import RequestUtils from "@/utils/RequestUtils";
+import { Component, Mixins } from "vue-property-decorator";
 
 @Component
 export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, SaveLeaveMixin) {
@@ -24,6 +28,40 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     return this.bauvorhabenApi
       .getBauvorhaben(RequestUtils.getGETConfig())
       .then((response) => response)
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  getReferencedInfrastrukturabfragenList(
+    bauvorhabenId: string,
+    showInInformationList: boolean
+  ): Promise<Array<AbfrageListElementDto>> {
+    const requestObject: GetReferencedInfrastrukturabfragenRequest = {
+      id: bauvorhabenId,
+    };
+    return this.bauvorhabenApi
+      .getReferencedInfrastrukturabfragen(requestObject, RequestUtils.getGETConfig())
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  getReferencedInfrastruktureinrichtungenList(
+    bauvorhabenId: string,
+    showInInformationList: boolean
+  ): Promise<Array<InfrastruktureinrichtungListElementDto>> {
+    const requestObject: GetReferencedInfrastruktureinrichtungRequest = {
+      id: bauvorhabenId,
+    };
+    return this.bauvorhabenApi
+      .getReferencedInfrastruktureinrichtung(requestObject, RequestUtils.getGETConfig())
+      .then((response) => {
+        return response;
+      })
       .catch((error) => {
         throw this.handleError(showInInformationList, error);
       });

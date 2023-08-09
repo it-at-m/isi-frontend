@@ -3,7 +3,7 @@
  * Treeview zur Darstellung von und Interaktion mit der Abfrage-Hierarchie.
  *
  * Props:
- * - `abfrage: InfrastrukturabfrageModel`: Die darzustellende Abfrage.
+ * - `abfrage: InfrastrukturabfrageDto`: Die darzustellende Abfrage.
  * - `selectedItemId: string`: Id des aktuell ausgewählten Items.
  *   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
  *
@@ -44,18 +44,21 @@ export function generateTreeItemId(parentId: string, index: number): string {
 </script>
 
 <script setup lang="ts">
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
-import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
-import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import { AnzeigeContextAbfragevariante, AbfrageModelWithForm, AbfrageFormType } from "@/views/Abfrage.vue";
+import {
+  InfrastrukturabfrageDto,
+  AbfragevarianteDto,
+  BauabschnittDto,
+  BaugebietDto,
+  BaurateDto,
+} from "@/api/api-client/isi-backend";
+import { AnzeigeContextAbfragevariante, AbfrageDtoWithForm, AbfrageFormType } from "@/views/Abfrage.vue";
 import {
   isEditableWithAnzeigeContextAbfragevariante,
   isEditableBySachbearbeitung,
 } from "@/mixins/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
+import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 
 export interface AbfrageTreeItem {
   id: string;
@@ -66,7 +69,7 @@ export interface AbfrageTreeItem {
   actions: Action[];
   onSelection: () => void;
   context: AnzeigeContextAbfragevariante;
-  value: AbfrageModelWithForm;
+  value: AbfrageDtoWithForm;
 }
 
 /*
@@ -81,7 +84,7 @@ interface Action {
 }
 
 interface Props {
-  abfrage: InfrastrukturabfrageModel;
+  abfrage: InfrastrukturabfrageDto;
   selectedItemId: string;
 }
 
@@ -107,7 +110,7 @@ interface Emits {
 
 const DEFAULT_NAME = "Nicht gepflegt";
 const ABFRAGE_NAME = "Daten zur Abfrage";
-const ABRAGEVARIANTE_PREFIX = "Nr.: ";
+const PLACEHOLDER_NAME = "Keine Abfragevarianten";
 
 const CREATE_ABFRAGEVARIANTE = "Abfragevariante erstellen";
 const CREATE_BAUABSCHNITT = "Bauabschnitt erstellen";
@@ -132,7 +135,7 @@ watch(
   { deep: true }
 );
 
-function buildTree(abfrage: InfrastrukturabfrageModel): AbfrageTreeItem {
+function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: "",
     type: AbfrageFormType.INFRASTRUKTURABFRAGE,
@@ -185,7 +188,7 @@ function buildTree(abfrage: InfrastrukturabfrageModel): AbfrageTreeItem {
       {
         id: ".",
         type: AbfrageFormType.INFRASTRUKTURABFRAGE,
-        name: "Keine Abfragevarianten",
+        name: PLACEHOLDER_NAME,
         parent: null,
         children: [],
         actions: [],
@@ -203,19 +206,17 @@ function buildTree(abfrage: InfrastrukturabfrageModel): AbfrageTreeItem {
 }
 
 function parseAbfragevariante(
-  abfragevariante: AbfragevarianteModel,
+  abfragevariante: AbfragevarianteDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
 ): AbfrageTreeItem {
-  const prefix = ABRAGEVARIANTE_PREFIX + _.defaultTo(abfragevariante.abfragevariantenNr, "");
-  const name = _.defaultTo(abfragevariante.abfragevariantenName, DEFAULT_NAME);
   const editable = isEditableWithAnzeigeContextAbfragevariante(context);
 
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
     type: AbfrageFormType.ABFRAGEVARIANTE,
-    name: `${prefix} - ${name}`,
+    name: getAbfragevarianteName(abfragevariante, context),
     parent,
     children: [],
     actions: [],
@@ -328,7 +329,7 @@ function parseAbfragevariante(
 }
 
 function parseBauabschnitt(
-  bauabschnitt: BauabschnittModel,
+  bauabschnitt: BauabschnittDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
@@ -363,7 +364,7 @@ function parseBauabschnitt(
 }
 
 function parseBaugebiet(
-  baugebiet: BaugebietModel,
+  baugebiet: BaugebietDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
@@ -407,7 +408,7 @@ function parseBaugebiet(
 }
 
 function parseBaurate(
-  baurate: BaurateModel,
+  baurate: BaurateDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
@@ -431,7 +432,17 @@ function parseBaurate(
   return item;
 }
 
-function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteModel): boolean {
+function getAbfragevarianteName(
+  abfragevariante: AbfragevarianteDto,
+  conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
+): string {
+  const abfragevarianteModel = new AbfragevarianteModel(abfragevariante);
+  return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+    conextAnzeigeAbfragevariante
+  )}\xa0-\xa0${_.isNil(abfragevariante.abfragevariantenName) ? DEFAULT_NAME : abfragevariante.abfragevariantenName}`;
+}
+
+function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteDto): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(abfragevariante.gesamtanzahlWe) || !_.isNil(abfragevariante.geschossflaecheWohnen)) &&
@@ -442,7 +453,7 @@ function bauratenDeterminableForAbfragevariante(abfragevariante: Abfragevariante
   );
 }
 
-function bauratenDeterminableForBaugebiet(baugebiet: BaugebietModel): boolean {
+function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(baugebiet.gesamtanzahlWe) || !_.isNil(baugebiet.geschossflaecheWohnen)) &&
