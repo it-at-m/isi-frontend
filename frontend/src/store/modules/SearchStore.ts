@@ -11,10 +11,11 @@ import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import _ from "lodash";
+import { createSearchQueryAndSortingDto } from "@/utils/Factories";
 
 const state = {
   searchResults: [] as Array<SearchResultDto>,
-  requestSearchQueryAndSorting: {} as SearchQueryAndSortingDto,
+  requestSearchQueryAndSorting: createSearchQueryAndSortingDto(),
   resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,

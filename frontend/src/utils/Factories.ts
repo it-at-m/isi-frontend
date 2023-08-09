@@ -37,9 +37,28 @@ import {
   UncertainBoolean,
   AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
+  SearchQueryAndSortingDto,
+  SearchQueryAndSortingDtoSortByEnum,
+  SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
+
+export function createSearchQueryAndSortingDto(): SearchQueryAndSortingDto {
+  return {
+    searchQuery: "",
+    selectInfrastrukturabfrage: true,
+    selectBauvorhaben: true,
+    selectGrundschule: true,
+    selectGsNachmittagBetreuung: true,
+    selectHausFuerKinder: true,
+    selectKindergarten: true,
+    selectKinderkrippe: true,
+    selectMittelschule: true,
+    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+  } as SearchQueryAndSortingDto;
+}
 
 export function createAbfragevarianteDto(): AbfragevarianteDto {
   return {

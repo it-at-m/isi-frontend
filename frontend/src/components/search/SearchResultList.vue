@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import {
   AbfrageListElementDto,
   BauvorhabenListElementDto,
@@ -101,7 +101,6 @@ import {
   StadtbezirkDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import router from "@/router";
 import { convertDateForFrontend } from "@/utils/Formatter";
@@ -109,7 +108,7 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 @Component({
   components: { DefaultLayout },
 })
-export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
+export default class SearchResultList extends Vue {
   get searchResults(): Array<SearchResultDto> {
     return this.$store.getters["search/searchResults"];
   }

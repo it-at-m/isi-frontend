@@ -28,12 +28,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import {
-  SearchQueryDto,
-  SearchQueryAndSortingDto,
-  SearchQueryAndSortingDtoSortByEnum,
-  SearchQueryAndSortingDtoSortOrderEnum,
-} from "@/api/api-client/isi-backend";
+import { SearchQueryDto, SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
@@ -46,20 +41,6 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   private selectedSuggestion = "";
 
   mounted() {
-    const searchQueryForEntitiesDto = {
-      searchQuery: "",
-      selectInfrastrukturabfrage: true,
-      selectBauvorhaben: true,
-      selectGrundschule: true,
-      selectGsNachmittagBetreuung: true,
-      selectHausFuerKinder: true,
-      selectKindergarten: true,
-      selectKinderkrippe: true,
-      selectMittelschule: true,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.Name,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Asc,
-    } as SearchQueryAndSortingDto;
-    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntitiesDto));
     this.searchEntitiesForSelectedSuggestion();
   }
 
