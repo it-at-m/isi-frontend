@@ -14,7 +14,8 @@
           hover
           focusable
         >
-          <entity-selection-and-sorting-panel v-model="searchQueryAndSorting" />
+          <selection-and-sorting-panel v-model="searchQueryAndSorting" />
+          <filter-panel />
         </v-expansion-panels>
       </v-sheet>
     </v-card-text>
@@ -38,11 +39,12 @@
 
 <script lang="ts">
 import { Component, Emit, VModel, Vue } from "vue-property-decorator";
-import EntitySelectionAndSortingPanel from "@/components/search/filter/EntitySelectionAndSortingPanel.vue";
+import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import FilterPanel from "@/components/search/filter/FilterPanel.vue";
 
 @Component({
-  components: { EntitySelectionAndSortingPanel },
+  components: { FilterPanel, SelectionAndSortingPanel },
 })
 export default class SearchAndFilterOptions extends Vue {
   @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
