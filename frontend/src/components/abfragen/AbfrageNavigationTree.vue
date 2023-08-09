@@ -8,23 +8,23 @@
  *   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
  *
  * Emits:
- * - `select-abfrage: TreeItem<InfrastrukturabfrageModel>`
- * - `select-abfragevariante: TreeItem<AbfragevarianteModel>`
- * - `select-bauabschnitt: TreeItem<BauabschnittModel>`
- * - `select-baugebiet: TreeItem<BaugebietModel>`
- * - `select-baurate: TreeItem<BaurateModel>`
- * - `create-abfragevariante: TreeItem<InfrastrukturabfrageModel>`
- * - `create-abfragevariante-sachbearbeitung: TreeItem<InfrastrukturabfrageModel>`
- * - `create-bauabschnitt: TreeItem<AbfragevarianteModel>`
- * - `create-baugebiet: TreeItem<AbfragevarianteModel | BauabschnittModel>`
- * - `create-baurate: TreeItem<AbfragevarianteModel | BaugebietModel>`
- * - `delete-abfragevariante: TreeItem<AbfragevarianteModel>`
- * - `delete-bauabschnitt: TreeItem<BauabschnittModel>`
- * - `delete-baugebiet: TreeItem<BaugebietModel>`
- * - `delete-baurate: TreeItem<BaurateModel>`
- * - `set-abfragevariante-relevant: TreeItem<AbfragevarianteModel>`
- * - `determine-bauraten-for-abfragevariante: TreeItem<AbfragevarianteModel>`
- * - `determine-bauraten-for-baugebiet: TreeItem<BaugebietModel>`
+ * - `select-abfrage: AbfrageTreeItem`
+ * - `select-abfragevariante: AbfrageTreeItem`
+ * - `select-bauabschnitt: AbfrageTreeItem`
+ * - `select-baugebiet: AbfrageTreeItem`
+ * - `select-baurate: AbfrageTreeItem`
+ * - `create-abfragevariante: AbfrageTreeItem`
+ * - `create-abfragevariante-sachbearbeitung: AbfrageTreeItem`
+ * - `create-bauabschnitt: AbfrageTreeItem`
+ * - `create-baugebiet: AbfrageTreeItem`
+ * - `create-baurate: AbfrageTreeItem`
+ * - `delete-abfragevariante: AbfrageTreeItem`
+ * - `delete-bauabschnitt: AbfrageTreeItem`
+ * - `delete-baugebiet: AbfrageTreeItem`
+ * - `delete-baurate: AbfrageTreeItem`
+ * - `set-abfragevariante-relevant: AbfrageTreeItem`
+ * - `determine-bauraten-for-abfragevariante: AbfrageTreeItem`
+ * - `determine-bauraten-for-baugebiet: AbfrageTreeItem`
  */
 export default {
   name: "AbfrageNavigationTree",
@@ -49,33 +49,25 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante, AbfrageModelWithForm, AbfrageFormType } from "@/views/Abfrage.vue";
 import {
   isEditableWithAnzeigeContextAbfragevariante,
-  isEditableByAbfrageerstellung,
   isEditableBySachbearbeitung,
 } from "@/mixins/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
 
-export interface TreeItem<T extends ModelWithForm> {
+export interface AbfrageTreeItem {
   id: string;
+  type: AbfrageFormType;
   name: string;
-  parent: TreeItem<ModelWithForm> | null;
-  children: TreeItem<ModelWithForm>[];
+  parent: AbfrageTreeItem | null;
+  children: AbfrageTreeItem[];
   actions: Action[];
   onSelection: () => void;
   context: AnzeigeContextAbfragevariante;
-  value: T;
+  value: AbfrageModelWithForm;
 }
-
-// Ein Union aller im Rahmen der Abfrage relevanten Models, welche ein eigenes Formular haben.
-export type ModelWithForm =
-  | InfrastrukturabfrageModel
-  | AbfragevarianteModel
-  | BauabschnittModel
-  | BaugebietModel
-  | BaurateModel;
 
 /*
  * Hinweis zu disabled: Wenn true, ist die Aktion sichtbar, aber ausgegraut und nicht aktivierbar.
@@ -94,23 +86,23 @@ interface Props {
 }
 
 interface Emits {
-  (event: "select-abfrage", value: TreeItem<InfrastrukturabfrageModel>): void;
-  (event: "select-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
-  (event: "select-bauabschnitt", value: TreeItem<BauabschnittModel>): void;
-  (event: "select-baugebiet", value: TreeItem<BaugebietModel>): void;
-  (event: "select-baurate", value: TreeItem<BaurateModel>): void;
-  (event: "create-abfragevariante", value: TreeItem<InfrastrukturabfrageModel>): void;
-  (event: "create-abfragevariante-sachbearbeitung", value: TreeItem<InfrastrukturabfrageModel>): void;
-  (event: "create-bauabschnitt", value: TreeItem<AbfragevarianteModel>): void;
-  (event: "create-baugebiet", value: TreeItem<AbfragevarianteModel | BauabschnittModel>): void;
-  (event: "create-baurate", value: TreeItem<AbfragevarianteModel | BaugebietModel>): void;
-  (event: "delete-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
-  (event: "delete-bauabschnitt", value: TreeItem<BauabschnittModel>): void;
-  (event: "delete-baugebiet", value: TreeItem<BaugebietModel>): void;
-  (event: "delete-baurate", value: TreeItem<BaurateModel>): void;
-  (event: "set-abfragevariante-relevant", value: TreeItem<AbfragevarianteModel>): void;
-  (event: "determine-bauraten-for-abfragevariante", value: TreeItem<AbfragevarianteModel>): void;
-  (event: "determine-bauraten-for-baugebiet", value: TreeItem<BaugebietModel>): void;
+  (event: "select-abfrage", value: AbfrageTreeItem): void;
+  (event: "select-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "select-bauabschnitt", value: AbfrageTreeItem): void;
+  (event: "select-baugebiet", value: AbfrageTreeItem): void;
+  (event: "select-baurate", value: AbfrageTreeItem): void;
+  (event: "create-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "create-abfragevariante-sachbearbeitung", value: AbfrageTreeItem): void;
+  (event: "create-bauabschnitt", value: AbfrageTreeItem): void;
+  (event: "create-baugebiet", value: AbfrageTreeItem): void;
+  (event: "create-baurate", value: AbfrageTreeItem): void;
+  (event: "delete-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "delete-bauabschnitt", value: AbfrageTreeItem): void;
+  (event: "delete-baugebiet", value: AbfrageTreeItem): void;
+  (event: "delete-baurate", value: AbfrageTreeItem): void;
+  (event: "set-abfragevariante-relevant", value: AbfrageTreeItem): void;
+  (event: "determine-bauraten-for-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "determine-bauraten-for-baugebiet", value: AbfrageTreeItem): void;
 }
 
 const DEFAULT_NAME = "Nicht gepflegt";
@@ -130,7 +122,7 @@ const ABFRAGEVARIANTEN_LIMIT = 5;
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
-const items = ref<TreeItem<InfrastrukturabfrageModel>[]>([]);
+const items = ref<AbfrageTreeItem[]>([]);
 const selectedItemIds = computed(() => [props.selectedItemId]);
 const openItemIds = ref<string[]>([]);
 
@@ -140,9 +132,10 @@ watch(
   { deep: true }
 );
 
-function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<InfrastrukturabfrageModel> {
-  const item: TreeItem<InfrastrukturabfrageModel> = {
+function buildTree(abfrage: InfrastrukturabfrageModel): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
     id: "",
+    type: AbfrageFormType.INFRASTRUKTURABFRAGE,
     name: ABFRAGE_NAME,
     parent: null,
     children: [],
@@ -166,21 +159,21 @@ function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<Infrastrukturab
     item.children.push(...abfragevarianten);
   }
 
-  if (isEditableByAbfrageerstellung()) {
+  if (isEditableBySachbearbeitung()) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
-      disabled: _.defaultTo(abfrage.abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      disabled: _.defaultTo(abfrage.abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
       effect: () => {
-        emit("create-abfragevariante", item);
+        emit("create-abfragevariante-sachbearbeitung", item);
         openItem(item);
       },
     });
   } else {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
-      disabled: _.defaultTo(abfrage.abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      disabled: _.defaultTo(abfrage.abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
       effect: () => {
-        emit("create-abfragevariante-sachbearbeitung", item);
+        emit("create-abfragevariante", item);
         openItem(item);
       },
     });
@@ -191,16 +184,17 @@ function buildTree(abfrage: InfrastrukturabfrageModel): TreeItem<Infrastrukturab
 
 function parseAbfragevariante(
   abfragevariante: AbfragevarianteModel,
-  parent: TreeItem<InfrastrukturabfrageModel>,
+  parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
-): TreeItem<AbfragevarianteModel> {
+): AbfrageTreeItem {
   const prefix = ABRAGEVARIANTE_PREFIX + _.defaultTo(abfragevariante.abfragevariantenNr, "");
   const name = _.defaultTo(abfragevariante.abfragevariantenName, DEFAULT_NAME);
   const editable = isEditableWithAnzeigeContextAbfragevariante(context);
 
-  const item: TreeItem<AbfragevarianteModel> = {
+  const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.ABFRAGEVARIANTE,
     name: `${prefix} - ${name}`,
     parent,
     children: [],
@@ -315,12 +309,13 @@ function parseAbfragevariante(
 
 function parseBauabschnitt(
   bauabschnitt: BauabschnittModel,
-  parent: TreeItem<AbfragevarianteModel>,
+  parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
-): TreeItem<BauabschnittModel> {
-  const item: TreeItem<BauabschnittModel> = {
+): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.BAUABSCHNITT,
     name: bauabschnitt.bezeichnung === "" ? DEFAULT_NAME : bauabschnitt.bezeichnung,
     parent,
     children: [],
@@ -349,12 +344,13 @@ function parseBauabschnitt(
 
 function parseBaugebiet(
   baugebiet: BaugebietModel,
-  parent: TreeItem<AbfragevarianteModel | BauabschnittModel>,
+  parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
-): TreeItem<BaugebietModel> {
-  const item: TreeItem<BaugebietModel> = {
+): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.BAUGEBIET,
     name: baugebiet.bezeichnung === "" ? DEFAULT_NAME : baugebiet.bezeichnung,
     parent,
     children: [],
@@ -392,12 +388,13 @@ function parseBaugebiet(
 
 function parseBaurate(
   baurate: BaurateModel,
-  parent: TreeItem<AbfragevarianteModel | BaugebietModel>,
+  parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante
-): TreeItem<BaurateModel> {
-  const item: TreeItem<BaurateModel> = {
+): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.BAURATE,
     name: baurate.jahr ? baurate.jahr.toString() : DEFAULT_NAME,
     parent,
     children: [],
@@ -436,7 +433,7 @@ function bauratenDeterminableForBaugebiet(baugebiet: BaugebietModel): boolean {
   );
 }
 
-function openItem(item: TreeItem<ModelWithForm>): void {
+function openItem(item: AbfrageTreeItem): void {
   openItemIds.value = [...openItemIds.value, item.id];
 }
 </script>
