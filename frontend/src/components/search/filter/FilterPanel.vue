@@ -26,14 +26,8 @@
 </template>
 
 <script lang="ts">
-import { Component, VModel, Vue } from "vue-property-decorator";
-import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import { Component, Vue } from "vue-property-decorator";
 import PanelHeader from "@/components/search/filter/PanelHeader.vue";
-import {
-  LookupEntryDto,
-  SearchQueryAndSortingDtoSortByEnum,
-  SearchQueryAndSortingDtoSortOrderEnum,
-} from "@/api/api-client/isi-backend";
 
 @Component({
   components: { PanelHeader },
