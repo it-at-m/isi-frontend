@@ -32,7 +32,7 @@ import PanelHeader from "@/components/search/filter/PanelHeader.vue";
 @Component({
   components: { PanelHeader },
 })
-export default class EntitySelectionAndSortingPanel extends Vue {}
+export default class FilterPanel extends Vue {}
 </script>
 
 <style scoped></style>
