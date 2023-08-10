@@ -9,6 +9,7 @@
       <v-sheet
         width="100%"
         class="overflow-y-auto"
+        :max-height="getContentSheetHeight"
       >
         <v-expansion-panels
           hover
@@ -48,6 +49,13 @@ import FilterPanel from "@/components/search/filter/FilterPanel.vue";
 })
 export default class SearchAndFilterOptions extends Vue {
   @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
+
+  get getContentSheetHeight(): string {
+    if (this.$vuetify.breakpoint.xl) {
+      return "650px";
+    }
+    return "400px";
+  }
 
   @Emit()
   // eslint-disable-next-line @typescript-eslint/no-empty-function
