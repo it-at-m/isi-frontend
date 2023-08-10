@@ -24,7 +24,7 @@
           <v-hover v-model="hoverSelectAll">
             <v-chip
               class="ma-2"
-              :input-value="allSelected"
+              :input-value="searchQueryAndSorting.allObjectTypesSelected()"
               filter
               @click="selectAll"
             >
@@ -57,7 +57,7 @@
           <v-hover v-model="hoverDeselectAll">
             <v-chip
               class="ma-2"
-              :input-value="allDeSelected"
+              :input-value="searchQueryAndSorting.allObjectTypesDeselected()"
               filter
               @click="deselectAll"
             >
@@ -218,32 +218,6 @@ export default class EntitySelectionAndSortingPanel extends Vue {
 
   private hoverArtDerSortierung = false;
   private hoverReihenfolgeDerSortierung = false;
-
-  get allSelected(): boolean {
-    return (
-      this.searchQueryAndSorting.selectInfrastrukturabfrage &&
-      this.searchQueryAndSorting.selectBauvorhaben &&
-      this.searchQueryAndSorting.selectGrundschule &&
-      this.searchQueryAndSorting.selectGsNachmittagBetreuung &&
-      this.searchQueryAndSorting.selectHausFuerKinder &&
-      this.searchQueryAndSorting.selectKinderkrippe &&
-      this.searchQueryAndSorting.selectKindergarten &&
-      this.searchQueryAndSorting.selectMittelschule
-    );
-  }
-
-  get allDeSelected(): boolean {
-    return (
-      !this.searchQueryAndSorting.selectInfrastrukturabfrage &&
-      !this.searchQueryAndSorting.selectBauvorhaben &&
-      !this.searchQueryAndSorting.selectGrundschule &&
-      !this.searchQueryAndSorting.selectGsNachmittagBetreuung &&
-      !this.searchQueryAndSorting.selectHausFuerKinder &&
-      !this.searchQueryAndSorting.selectKinderkrippe &&
-      !this.searchQueryAndSorting.selectKindergarten &&
-      !this.searchQueryAndSorting.selectMittelschule
-    );
-  }
 
   get helpTextObjektauswahl(): string {
     if (this.hoverSelectAll) {

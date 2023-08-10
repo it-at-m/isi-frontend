@@ -23,6 +23,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
+        :disabled="searchQueryAndSorting.allObjectTypesDeselected()"
         color="secondary"
         @click="adoptSearchAndFilterOptions"
         >Übernehmen

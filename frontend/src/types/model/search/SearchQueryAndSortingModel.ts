@@ -6,5 +6,31 @@ class SearchQueryAndSortingModel {
   constructor(searchQueryAndSortingDto: SearchQueryAndSortingDto) {
     Object.assign(this, searchQueryAndSortingDto, {});
   }
+
+  public allObjectTypesSelected(): boolean {
+    return (
+      this.selectInfrastrukturabfrage &&
+      this.selectBauvorhaben &&
+      this.selectGrundschule &&
+      this.selectGsNachmittagBetreuung &&
+      this.selectHausFuerKinder &&
+      this.selectKinderkrippe &&
+      this.selectKindergarten &&
+      this.selectMittelschule
+    );
+  }
+
+  public allObjectTypesDeselected(): boolean {
+    return (
+      !this.selectInfrastrukturabfrage &&
+      !this.selectBauvorhaben &&
+      !this.selectGrundschule &&
+      !this.selectGsNachmittagBetreuung &&
+      !this.selectHausFuerKinder &&
+      !this.selectKinderkrippe &&
+      !this.selectKindergarten &&
+      !this.selectMittelschule
+    );
+  }
 }
 export { SearchQueryAndSortingModel as default };
