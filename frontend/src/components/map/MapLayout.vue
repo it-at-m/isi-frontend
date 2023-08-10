@@ -26,8 +26,8 @@ Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizab
     <div
       :class="{ 'content-wrapper': true, 'v-padded': solidHeading }"
       :style="{
-        'padding-left': wide ? '0px' : navigationWidth,
-        'padding-right': wide ? '0px' : actionWidth,
+        'padding-left': wide ? '0px' : navigationWidth + 'px',
+        'padding-right': wide ? '0px' : actionWidth + 'px',
       }"
     >
       <slot name="content" />
@@ -35,7 +35,7 @@ Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizab
     <div class="control-wrapper">
       <div
         class="side-bar"
-        :style="{ 'flex-basis': navigationWidth }"
+        :style="{ 'flex-basis': navigationWidth + 'px' }"
       >
         <div class="side-bar-navigation">
           <slot name="navigation" />
@@ -53,7 +53,7 @@ Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizab
       </div>
       <div
         class="middle-wrapper"
-        :style="{ 'flex-basis': middleWrapperWidth }"
+        :style="{ 'flex-basis': middleWrapperWidth + 'px' }"
       >
         <!-- Bei Angabe des `solid-heading`-Props wird dem Heading eine transparente, untere Kante angehängt. -->
         <div>
@@ -81,7 +81,7 @@ Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizab
       </div>
       <div
         class="side-bar"
-        :style="{ 'flex-basis': actionWidth }"
+        :style="{ 'flex-basis': actionWidth + 'px' }"
       >
         <div class="side-bar-information">
           <slot name="information" />
@@ -108,33 +108,46 @@ defineProps<Props>();
 
 // Hinweis: Die Begriffe "width" und "margin" haben hier keinen direkten Bezug zu den gleichnamigen CSS-Properties.
 
-const SIDE_BAR_BASE_WIDTH = "20%";
-const MAX_SIDE_BAR_MARGIN_RATIO = 0.1;
+const SIDE_BAR_RATIO = 0.2; // Anteil der Bildschirmbreite
+const MAX_SIDE_BAR_RATIO = 0.3; // Anteil der Bildschirmbreite
+const MIN_SIDE_BAR_WIDTH = 250; // Pixel
 
-let navigationMarginValue = 0;
-let actionMarginValue = 0;
-let navigationWidth = ref(SIDE_BAR_BASE_WIDTH);
-let actionWidth = ref(SIDE_BAR_BASE_WIDTH);
-let middleWrapperWidth = computed(() => `calc(100% - ${navigationWidth.value} - ${actionWidth.value})`);
-let resizingNavigation = ref(false);
-let resizingAction = ref(false);
+const resizingNavigation = ref(false);
+const resizingAction = ref(false);
+const navigationMargin = ref(0);
+const actionMargin = ref(0);
 let lastClientX = 0;
+
+const windowWidth = ref(innerWidth);
+window.addEventListener("resize", () => {
+  windowWidth.value = innerWidth;
+});
+
+const navigationWidth = computed(() => {
+  const value = windowWidth.value * SIDE_BAR_RATIO + navigationMargin.value;
+  return _.clamp(value, MIN_SIDE_BAR_WIDTH, windowWidth.value * MAX_SIDE_BAR_RATIO);
+});
+const actionWidth = computed(() => {
+  const value = windowWidth.value * SIDE_BAR_RATIO + actionMargin.value;
+  return _.clamp(value, MIN_SIDE_BAR_WIDTH, windowWidth.value * MAX_SIDE_BAR_RATIO);
+});
+const middleWrapperWidth = computed(() => {
+  return windowWidth.value - navigationWidth.value - actionWidth.value;
+});
 
 function resize(event: MouseEvent): void {
   let deltaX = event.clientX - lastClientX;
   lastClientX = event.clientX;
 
   if (resizingNavigation.value) {
-    navigationMarginValue = _.clamp(navigationMarginValue + deltaX, -getMaxMargin(), getMaxMargin());
-    navigationWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${navigationMarginValue}px)`;
+    const min = -(windowWidth.value * SIDE_BAR_RATIO - MIN_SIDE_BAR_WIDTH);
+    const max = windowWidth.value * MAX_SIDE_BAR_RATIO - windowWidth.value * SIDE_BAR_RATIO;
+    navigationMargin.value = _.clamp(navigationMargin.value + deltaX, min, max);
   } else if (resizingAction.value) {
-    actionMarginValue = _.clamp(actionMarginValue - deltaX, -getMaxMargin(), getMaxMargin());
-    actionWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${actionMarginValue}px)`;
+    const min = -(windowWidth.value * MAX_SIDE_BAR_RATIO - windowWidth.value * SIDE_BAR_RATIO);
+    const max = windowWidth.value * SIDE_BAR_RATIO - MIN_SIDE_BAR_WIDTH;
+    actionMargin.value = _.clamp(actionMargin.value - deltaX, min, max);
   }
-}
-
-function getMaxMargin(): number {
-  return screen.availWidth * MAX_SIDE_BAR_MARGIN_RATIO;
 }
 
 function startResizingNavigation(event: MouseEvent) {
