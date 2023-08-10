@@ -591,7 +591,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectBaugebiet(item: AbfrageTreeItem): void {
-    const abfragevariante = this.getAncestorAbfragevariante(item);
+    const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(item);
 
     if (abfragevariante) {
       this.abfragevarianteAncestor = abfragevariante;
@@ -600,8 +600,8 @@ export default class Abfrage extends Mixins(
   }
 
   private handleSelectBaurate(item: AbfrageTreeItem): void {
-    const abfragevariante = this.getAncestorAbfragevariante(item);
-    const baugebiet = this.getAncestorBaugebiet(item);
+    const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(item);
+    const baugebiet = this.getFirstAncestorOfTypeBaugebiet(item);
 
     if (abfragevariante && baugebiet) {
       this.abfragevarianteAncestor = abfragevariante;
@@ -660,7 +660,7 @@ export default class Abfrage extends Mixins(
 
     if (bauabschnitt) {
       const baugebiet = new BaugebietModel(createBaugebietDto());
-      const abfragevariante = this.getAncestorAbfragevariante(parent)!;
+      const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(parent)!;
       baugebiet.realisierungVon = abfragevariante.realisierungVon!;
       bauabschnitt.baugebiete.push(baugebiet);
       this.abfragevarianteAncestor = abfragevariante;
@@ -679,7 +679,7 @@ export default class Abfrage extends Mixins(
 
     if (baugebiet) {
       const baurate = new BaurateModel(createBaurateDto());
-      const abfragevariante = this.getAncestorAbfragevariante(parent)!;
+      const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(parent)!;
       baugebiet.bauraten.push(baurate);
       this.abfragevarianteAncestor = abfragevariante;
       this.baugebietAncestor = baugebiet;
@@ -731,7 +731,7 @@ export default class Abfrage extends Mixins(
 
   private removeBauabschnittFromAbfragevariante(): void {
     if (this.treeItemToDelete && this.isBauabschnitt(this.treeItemToDelete, this.treeItemToDelete.value)) {
-      const abfragevariante = this.getAncestorAbfragevariante(this.treeItemToDelete);
+      const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(this.treeItemToDelete);
       if (abfragevariante && abfragevariante.bauabschnitte) {
         _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === this.treeItemToDelete!.value);
         // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
@@ -745,10 +745,10 @@ export default class Abfrage extends Mixins(
 
   private removeBaugebietFromBauabschnitt(): void {
     if (this.treeItemToDelete && this.isBaugebiet(this.treeItemToDelete, this.treeItemToDelete.value)) {
-      const bauabschnitt = this.getAncestorBauabschnitt(this.treeItemToDelete);
+      const bauabschnitt = this.getFirstAncestorOfTypeBauabschnitt(this.treeItemToDelete);
       if (bauabschnitt) {
         _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === this.treeItemToDelete!.value);
-        this.clearTechnicalEntities(this.getAncestorAbfragevariante(this.treeItemToDelete)!);
+        this.clearTechnicalEntities(this.getFirstAncestorOfTypeAbfragevariante(this.treeItemToDelete)!);
         // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
         bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
         this.formChanged();
@@ -760,10 +760,10 @@ export default class Abfrage extends Mixins(
 
   private removeBaurateFromBaugebiet(): void {
     if (this.treeItemToDelete && this.isBaurate(this.treeItemToDelete, this.treeItemToDelete.value)) {
-      const baugebiet = this.getAncestorBaugebiet(this.treeItemToDelete);
+      const baugebiet = this.getFirstAncestorOfTypeBaugebiet(this.treeItemToDelete);
       if (baugebiet) {
         _.remove(baugebiet.bauraten, (baurate) => baurate === this.treeItemToDelete!.value);
-        this.clearTechnicalEntities(this.getAncestorAbfragevariante(this.treeItemToDelete)!);
+        this.clearTechnicalEntities(this.getFirstAncestorOfTypeAbfragevariante(this.treeItemToDelete)!);
         // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
         baugebiet.bauraten = [...baugebiet.bauraten];
         this.formChanged();
@@ -834,7 +834,7 @@ export default class Abfrage extends Mixins(
    * Jedoch können sie auch das übergebene Item selbst zurückgeben, wenn es dem Typen entspricht.
    */
 
-  private getAncestorAbfragevariante(item: AbfrageTreeItem): AbfragevarianteModel | undefined {
+  private getFirstAncestorOfTypeAbfragevariante(item: AbfrageTreeItem): AbfragevarianteModel | undefined {
     while (item.parent) {
       if (this.isAbfragevariante(item, item.value)) {
         return item.value;
@@ -845,7 +845,7 @@ export default class Abfrage extends Mixins(
     return undefined;
   }
 
-  private getAncestorBauabschnitt(item: AbfrageTreeItem): BauabschnittModel | undefined {
+  private getFirstAncestorOfTypeBauabschnitt(item: AbfrageTreeItem): BauabschnittModel | undefined {
     if (this.isBauabschnitt(item, item.value)) {
       return item.value;
     }
@@ -866,7 +866,7 @@ export default class Abfrage extends Mixins(
     return undefined;
   }
 
-  private getAncestorBaugebiet(item: AbfrageTreeItem): BaugebietModel | undefined {
+  private getFirstAncestorOfTypeBaugebiet(item: AbfrageTreeItem): BaugebietModel | undefined {
     if (this.isBaugebiet(item, item.value)) {
       return item.value;
     }

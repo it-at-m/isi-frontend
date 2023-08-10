@@ -1,78 +1,14 @@
-<script lang="ts">
-/**
- * Wrapper-Komponente zum Einordnen von Inhalten in das Seitenlayout.
- * Unterscheidet zwischen fünf verschiedenen Zonen, welche jeweils einem Slot entsprechen:
- * Seiteninhalt (content), Navigation (navigation), Aktionen (action), Titel (heading) und Pagination (pagination).
- * content hat keine besondere Positionierung. Mit der Boolean-Property "wide" nimmt es die gesamte Bildschirmbreite ein, ansonsten nur die mittleren 60%.
- * navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über content befinden. Sie ordnen ihre Unterelemente von unten nach oben und zentriert auf der x-Achse an.
- * Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
- * heading sowie pagination sind Header- bzw. Footer-artig, scrollen nicht mit und befinden sich über content. Sie zentrieren sowohl auf der x- als auch auf der y-Achse und sind dafür gedacht, ein einziges Element unterzubringen.
- * Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
- * Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
- */
-export default {
-  name: "DefaultLayout",
-};
-</script>
-
-<script setup lang="ts">
-import { ref, computed } from "vue";
-import _ from "lodash";
-
-interface Props {
-  wide?: boolean;
-  solidHeading?: boolean;
-  resizable?: boolean;
-}
-
-defineProps<Props>();
-
-// Hinweis: Die Begriffe "width" und "margin" haben hier keinen direkten Bezug zu den gleichnamigen CSS-Properties.
-
-const SIDE_BAR_BASE_WIDTH = "20%";
-const MAX_SIDE_BAR_MARGIN_RATIO = 0.1;
-
-let navigationMarginValue = 0;
-let actionMarginValue = 0;
-let navigationWidth = ref(SIDE_BAR_BASE_WIDTH);
-let actionWidth = ref(SIDE_BAR_BASE_WIDTH);
-let middleWrapperWidth = computed(() => `calc(100% - ${navigationWidth.value} - ${actionWidth.value})`);
-let resizingNavigation = ref(false);
-let resizingAction = ref(false);
-let lastClientX = 0;
-
-function resize(event: MouseEvent): void {
-  let deltaX = event.clientX - lastClientX;
-  lastClientX = event.clientX;
-
-  if (resizingNavigation.value) {
-    navigationMarginValue = _.clamp(navigationMarginValue + deltaX, -getMaxMargin(), getMaxMargin());
-    navigationWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${navigationMarginValue}px)`;
-  } else if (resizingAction.value) {
-    actionMarginValue = _.clamp(actionMarginValue - deltaX, -getMaxMargin(), getMaxMargin());
-    actionWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${actionMarginValue}px)`;
-  }
-}
-
-function getMaxMargin(): number {
-  return screen.availWidth * MAX_SIDE_BAR_MARGIN_RATIO;
-}
-
-function startResizingNavigation(event: MouseEvent) {
-  resizingNavigation.value = true;
-  lastClientX = event.clientX;
-}
-
-function startResizingAction(event: MouseEvent) {
-  resizingAction.value = true;
-  lastClientX = event.clientX;
-}
-
-function stopResizing(): void {
-  resizingNavigation.value = false;
-  resizingAction.value = false;
-}
-</script>
+<!--
+Wrapper-Komponente zum Einordnen von Inhalten in das Seitenlayout.
+Unterscheidet zwischen fünf verschiedenen Zonen, welche jeweils einem Slot entsprechen:
+Seiteninhalt (content), Navigation (navigation), Aktionen (action), Titel (heading) und Pagination (pagination).
+content hat keine besondere Positionierung. Mit der Boolean-Property "wide" nimmt es die gesamte Bildschirmbreite ein, ansonsten nur die mittleren 60%.
+navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über content befinden. Sie ordnen ihre Unterelemente von unten nach oben und zentriert auf der x-Achse an.
+Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
+heading sowie pagination sind Header- bzw. Footer-artig, scrollen nicht mit und befinden sich über content. Sie zentrieren sowohl auf der x- als auch auf der y-Achse und sind dafür gedacht, ein einziges Element unterzubringen.
+Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
+Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
+-->
 
 <template>
   <!-- Das `user-select` ist ein Workaround dafür, dass beim Resizen der Text auf der Seite ständig ausgewählt wird. -->
@@ -157,6 +93,65 @@ function stopResizing(): void {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import _ from "lodash";
+
+interface Props {
+  wide?: boolean;
+  solidHeading?: boolean;
+  resizable?: boolean;
+}
+
+defineProps<Props>();
+
+// Hinweis: Die Begriffe "width" und "margin" haben hier keinen direkten Bezug zu den gleichnamigen CSS-Properties.
+
+const SIDE_BAR_BASE_WIDTH = "20%";
+const MAX_SIDE_BAR_MARGIN_RATIO = 0.1;
+
+let navigationMarginValue = 0;
+let actionMarginValue = 0;
+let navigationWidth = ref(SIDE_BAR_BASE_WIDTH);
+let actionWidth = ref(SIDE_BAR_BASE_WIDTH);
+let middleWrapperWidth = computed(() => `calc(100% - ${navigationWidth.value} - ${actionWidth.value})`);
+let resizingNavigation = ref(false);
+let resizingAction = ref(false);
+let lastClientX = 0;
+
+function resize(event: MouseEvent): void {
+  let deltaX = event.clientX - lastClientX;
+  lastClientX = event.clientX;
+
+  if (resizingNavigation.value) {
+    navigationMarginValue = _.clamp(navigationMarginValue + deltaX, -getMaxMargin(), getMaxMargin());
+    navigationWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${navigationMarginValue}px)`;
+  } else if (resizingAction.value) {
+    actionMarginValue = _.clamp(actionMarginValue - deltaX, -getMaxMargin(), getMaxMargin());
+    actionWidth.value = `calc(${SIDE_BAR_BASE_WIDTH} + ${actionMarginValue}px)`;
+  }
+}
+
+function getMaxMargin(): number {
+  return screen.availWidth * MAX_SIDE_BAR_MARGIN_RATIO;
+}
+
+function startResizingNavigation(event: MouseEvent) {
+  resizingNavigation.value = true;
+  lastClientX = event.clientX;
+}
+
+function startResizingAction(event: MouseEvent) {
+  resizingAction.value = true;
+  lastClientX = event.clientX;
+}
+
+function stopResizing(): void {
+  resizingNavigation.value = false;
+  resizingAction.value = false;
+}
+</script>
 
 <style scoped>
 .wrapper {

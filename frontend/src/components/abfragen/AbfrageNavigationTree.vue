@@ -1,35 +1,71 @@
-<script lang="ts">
-/**
- * Treeview zur Darstellung von und Interaktion mit der Abfrage-Hierarchie.
- *
- * Props:
- * - `abfrage: InfrastrukturabfrageDto`: Die darzustellende Abfrage.
- * - `selectedItemId: string`: Id des aktuell ausgewählten Items.
- *   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
- *
- * Emits:
- * - `select-abfrage: AbfrageTreeItem`
- * - `select-abfragevariante: AbfrageTreeItem`
- * - `select-bauabschnitt: AbfrageTreeItem`
- * - `select-baugebiet: AbfrageTreeItem`
- * - `select-baurate: AbfrageTreeItem`
- * - `create-abfragevariante: AbfrageTreeItem`
- * - `create-abfragevariante-sachbearbeitung: AbfrageTreeItem`
- * - `create-bauabschnitt: AbfrageTreeItem`
- * - `create-baugebiet: AbfrageTreeItem`
- * - `create-baurate: AbfrageTreeItem`
- * - `delete-abfragevariante: AbfrageTreeItem`
- * - `delete-bauabschnitt: AbfrageTreeItem`
- * - `delete-baugebiet: AbfrageTreeItem`
- * - `delete-baurate: AbfrageTreeItem`
- * - `set-abfragevariante-relevant: AbfrageTreeItem`
- * - `determine-bauraten-for-abfragevariante: AbfrageTreeItem`
- * - `determine-bauraten-for-baugebiet: AbfrageTreeItem`
- */
-export default {
-  name: "AbfrageNavigationTree",
-};
+<!--
+Treeview zur Darstellung von und Interaktion mit der Abfrage-Hierarchie.
 
+Props:
+- `abfrage: InfrastrukturabfrageDto`: Die darzustellende Abfrage.
+- `selectedItemId: string`: Id des aktuell ausgewählten Items.
+  Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
+
+Emits:
+- `select-abfrage: AbfrageTreeItem`
+- `select-abfragevariante: AbfrageTreeItem`
+- `select-bauabschnitt: AbfrageTreeItem`
+- `select-baugebiet: AbfrageTreeItem`
+- `select-baurate: AbfrageTreeItem`
+- `create-abfragevariante: AbfrageTreeItem`
+- `create-abfragevariante-sachbearbeitung: AbfrageTreeItem`
+- `create-bauabschnitt: AbfrageTreeItem`
+- `create-baugebiet: AbfrageTreeItem`
+- `create-baurate: AbfrageTreeItem`
+- `delete-abfragevariante: AbfrageTreeItem`
+- `delete-bauabschnitt: AbfrageTreeItem`
+- `delete-baugebiet: AbfrageTreeItem`
+- `delete-baurate: AbfrageTreeItem`
+- `set-abfragevariante-relevant: AbfrageTreeItem`
+- `determine-bauraten-for-abfragevariante: AbfrageTreeItem`
+- `determine-bauraten-for-baugebiet: AbfrageTreeItem`
+-->
+
+<template>
+  <v-treeview
+    :items="items"
+    :active="selectedItemIds"
+    :open.sync="openItemIds"
+    dense
+    hoverable
+  >
+    <template #label="{ item }">
+      <v-menu
+        open-on-hover
+        offset-y
+        :disabled="item.actions.length === 0"
+      >
+        <template #activator="{ on }">
+          <a
+            :id="`abfrage_navigation_tree_${item.id}`"
+            v-on="on"
+            @click="item.onSelection"
+          >
+            {{ item.name }}
+          </a>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="action in item.actions"
+            :id="`abfrage_navigation_tree_${item.id}_${action.name}`"
+            :key="action.name"
+            :disabled="action.disabled"
+            @click="action.effect"
+          >
+            <v-list-item-title>{{ action.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+  </v-treeview>
+</template>
+
+<script lang="ts">
 /**
  * Erzeugt eine einzigartige Id für ein TreeItem, die auf der Id des Parents und seinem Index (unter seinen Silblings) basiert.
  * Die Id vom Root ist immer ein leerer String und braucht deshalb diese Funktion nicht.
@@ -451,42 +487,3 @@ function openItem(item: AbfrageTreeItem): void {
   openItemIds.value = [...openItemIds.value, item.id];
 }
 </script>
-
-<template>
-  <v-treeview
-    :items="items"
-    :active="selectedItemIds"
-    :open.sync="openItemIds"
-    dense
-    hoverable
-  >
-    <template #label="{ item }">
-      <v-menu
-        open-on-hover
-        offset-y
-        :disabled="item.actions.length === 0"
-      >
-        <template #activator="{ on }">
-          <a
-            :id="`abfrage_navigation_tree_${item.id}`"
-            v-on="on"
-            @click="item.onSelection"
-          >
-            {{ item.name }}
-          </a>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="action in item.actions"
-            :id="`abfrage_navigation_tree_${item.id}_${action.name}`"
-            :key="action.name"
-            :disabled="action.disabled"
-            @click="action.effect"
-          >
-            <v-list-item-title>{{ action.name }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </template>
-  </v-treeview>
-</template>
