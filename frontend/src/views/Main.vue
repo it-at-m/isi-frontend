@@ -1,5 +1,8 @@
 <template>
-  <v-container class="fill-height">
+  <v-container
+    fluid
+    class="fill-height pa-1"
+  >
     <v-row class="fill-height justify-center">
       <v-col
         cols="12"
@@ -14,33 +17,12 @@
         <city-map />
       </v-col>
     </v-row>
-    <v-btn
-      color="secondary"
-      top
-      right
-      dark
-      fab
-      x-large
-      absolute
-      @click="openSearchAndFilterDialog"
-    >
-      <v-icon>mdi-filter-outline</v-icon>
-    </v-btn>
-    <v-dialog
-      v-model="searchAndFilterDialogOpen"
-      max-width="1024px"
-    >
-      <search-and-filter-options
-        v-model="searchQueryAndSorting"
-        @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
-        @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
-      />
-    </v-dialog>
     <v-speed-dial
       v-model="speedDialOpen"
       bottom
       right
       absolute
+      open-on-hover
     >
       <template #activator>
         <v-btn
@@ -78,7 +60,25 @@
         @click="createAbfrage"
         v-text="'A'"
       />
+      <v-btn
+        color="grey"
+        dark
+        fab
+        @click="openSearchAndFilterDialog"
+      >
+        <v-icon>mdi-filter-outline</v-icon>
+      </v-btn>
     </v-speed-dial>
+    <v-dialog
+      v-model="searchAndFilterDialogOpen"
+      max-width="1024px"
+    >
+      <search-and-filter-options
+        v-model="searchQueryAndSorting"
+        @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
+        @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+      />
+    </v-dialog>
   </v-container>
 </template>
 
