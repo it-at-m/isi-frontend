@@ -463,7 +463,7 @@ function openItem(item: AbfrageTreeItem): void {
     <template #label="{ item }">
       <v-menu
         open-on-hover
-        offset-x
+        offset-y
         :disabled="item.actions.length === 0"
       >
         <template #activator="{ on }">
