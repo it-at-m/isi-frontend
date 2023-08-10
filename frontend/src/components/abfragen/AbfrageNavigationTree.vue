@@ -37,6 +37,7 @@ Emits:
     <template #label="{ item }">
       <v-menu
         open-on-hover
+        :open-delay="500"
         offset-y
         :disabled="item.actions.length === 0"
       >
