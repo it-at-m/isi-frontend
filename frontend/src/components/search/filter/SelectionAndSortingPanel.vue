@@ -17,7 +17,10 @@
         class="align-start justify-center"
         dense
       >
-        <v-col cols="4">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-hover v-model="hoverSelectInfrastrukturabfrage">
             <v-checkbox
               v-model="searchQueryAndSorting.selectInfrastrukturabfrage"
@@ -37,7 +40,10 @@
             />
           </v-hover>
         </v-col>
-        <v-col cols="4">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-hover v-model="hoverSelectGrundschule">
             <v-checkbox
               v-model="searchQueryAndSorting.selectGrundschule"
@@ -93,7 +99,10 @@
             />
           </v-hover>
         </v-col>
-        <v-col cols="4">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-card flat>
             {{ helpTextObjektauswahl }}
           </v-card>
@@ -115,7 +124,10 @@
         class="align-start justify-center"
         dense
       >
-        <v-col cols="4">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-hover v-model="hoverArtDerSortierung">
             <v-select
               v-model="searchQueryAndSorting.sortBy"
@@ -128,7 +140,10 @@
             ></v-select>
           </v-hover>
         </v-col>
-        <v-col cols="4">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-hover v-model="hoverReihenfolgeDerSortierung">
             <v-select
               v-model="searchQueryAndSorting.sortOrder"
@@ -141,7 +156,10 @@
             ></v-select>
           </v-hover>
         </v-col>
-        <v-col cols="4">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-card flat>
             {{ helpTextSortierung }}
           </v-card>
