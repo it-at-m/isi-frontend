@@ -19,10 +19,10 @@
     </v-row>
     <v-speed-dial
       v-model="speedDialOpen"
+      class="button-speed-dial-entity-creation"
       bottom
       right
       absolute
-      open-on-hover
     >
       <template #activator>
         <v-btn
@@ -60,15 +60,20 @@
         @click="createAbfrage"
         v-text="'A'"
       />
-      <v-btn
-        color="grey"
-        dark
-        fab
-        @click="openSearchAndFilterDialog"
-      >
-        <v-icon>mdi-filter-outline</v-icon>
-      </v-btn>
     </v-speed-dial>
+    <v-btn
+      class="button-search-and-filter-options"
+      color="secondary"
+      dark
+      fab
+      bottom
+      right
+      x-large
+      absolute
+      @click="openSearchAndFilterDialog"
+    >
+      <v-icon>mdi-filter-outline</v-icon>
+    </v-btn>
     <v-dialog
       v-model="searchAndFilterDialogOpen"
       max-width="1024px"
@@ -150,3 +155,13 @@ export default class Main extends Vue {
   }
 }
 </script>
+
+<style>
+.button-speed-dial-entity-creation {
+  margin-bottom: 96px;
+}
+
+.button-search-and-filter-options {
+  margin-bottom: 64px;
+}
+</style>
