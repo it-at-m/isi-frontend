@@ -17,9 +17,21 @@
         class="align-start justify-center"
         dense
       >
-        <v-col cols="4"> </v-col>
-        <v-col cols="4"> </v-col>
-        <v-col cols="4"> </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
       </v-row>
     </v-expansion-panel-content>
   </v-expansion-panel>
