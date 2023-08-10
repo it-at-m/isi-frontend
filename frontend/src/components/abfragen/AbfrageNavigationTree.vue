@@ -149,14 +149,14 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
 
   if (abfrage.abfragevarianten) {
     const abfragevarianten = abfrage.abfragevarianten.map((value, index) =>
-      parseAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE)
+      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE)
     );
     item.children.push(...abfragevarianten);
   }
 
   if (abfrage.abfragevariantenSachbearbeitung) {
     const abfragevarianten = abfrage.abfragevariantenSachbearbeitung.map((value, index) =>
-      parseAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG)
+      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG)
     );
     item.children.push(...abfragevarianten);
   }
@@ -186,7 +186,7 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
   return item;
 }
 
-function parseAbfragevariante(
+function buildSubTreeAbfragevariante(
   abfragevariante: AbfragevarianteDto,
   parent: AbfrageTreeItem,
   index: number,
@@ -231,7 +231,7 @@ function parseAbfragevariante(
       const firstBaugebiet = firstBauabschnitt.baugebiete[0];
       if (firstBaugebiet && firstBaugebiet.technical) {
         // Fall 1: Platzhalter-Bauabschnitt und -Baugebiet -> Bauraten werden angezeigt und können angelegt werden
-        item.children = firstBaugebiet.bauraten.map((value, index) => parseBaurate(value, item, index, context));
+        item.children = firstBaugebiet.bauraten.map((value, index) => buildSubTreeBaurate(value, item, index, context));
         if (editable) {
           item.actions.push({
             name: CREATE_BAURATE,
@@ -244,7 +244,9 @@ function parseAbfragevariante(
         }
       } else {
         // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
-        item.children = firstBauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, item, index, context));
+        item.children = firstBauabschnitt.baugebiete.map((value, index) =>
+          buildSubTreeBaugebiet(value, item, index, context)
+        );
         if (editable) {
           item.actions.push({
             name: CREATE_BAUGEBIET,
@@ -259,7 +261,7 @@ function parseAbfragevariante(
     } else {
       // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
       item.children = abfragevariante.bauabschnitte.map((value, index) =>
-        parseBauabschnitt(value, item, index, context)
+        buildSubTreeBauabschnitt(value, item, index, context)
       );
       if (editable) {
         item.actions.push({
@@ -309,7 +311,7 @@ function parseAbfragevariante(
   return item;
 }
 
-function parseBauabschnitt(
+function buildSubTreeBauabschnitt(
   bauabschnitt: BauabschnittDto,
   parent: AbfrageTreeItem,
   index: number,
@@ -327,7 +329,7 @@ function parseBauabschnitt(
     value: bauabschnitt,
   };
 
-  item.children = bauabschnitt.baugebiete.map((value, index) => parseBaugebiet(value, item, index, context));
+  item.children = bauabschnitt.baugebiete.map((value, index) => buildSubTreeBaugebiet(value, item, index, context));
 
   if (isEditableWithAnzeigeContextAbfragevariante(context)) {
     item.actions.push({
@@ -344,7 +346,7 @@ function parseBauabschnitt(
   return item;
 }
 
-function parseBaugebiet(
+function buildSubTreeBaugebiet(
   baugebiet: BaugebietDto,
   parent: AbfrageTreeItem,
   index: number,
@@ -362,7 +364,7 @@ function parseBaugebiet(
     value: baugebiet,
   };
 
-  item.children = baugebiet.bauraten.map((value, index) => parseBaurate(value, item, index, context));
+  item.children = baugebiet.bauraten.map((value, index) => buildSubTreeBaurate(value, item, index, context));
 
   if (isEditableWithAnzeigeContextAbfragevariante(context)) {
     item.actions.push({
@@ -388,7 +390,7 @@ function parseBaugebiet(
   return item;
 }
 
-function parseBaurate(
+function buildSubTreeBaurate(
   baurate: BaurateDto,
   parent: AbfrageTreeItem,
   index: number,
