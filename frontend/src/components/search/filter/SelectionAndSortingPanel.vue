@@ -21,6 +21,16 @@
           cols="12"
           md="4"
         >
+          <v-hover v-model="hoverSelectAll">
+            <v-chip
+              class="ma-2"
+              :input-value="allSelected"
+              filter
+              @click="selectAll"
+            >
+              Alle auswählen
+            </v-chip>
+          </v-hover>
           <v-hover v-model="hoverSelectInfrastrukturabfrage">
             <v-checkbox
               v-model="searchQueryAndSorting.selectInfrastrukturabfrage"
@@ -44,6 +54,16 @@
           cols="12"
           md="4"
         >
+          <v-hover v-model="hoverDeselectAll">
+            <v-chip
+              class="ma-2"
+              :input-value="allDeSelected"
+              filter
+              @click="deselectAll"
+            >
+              Alle abwählen
+            </v-chip>
+          </v-hover>
           <v-hover v-model="hoverSelectGrundschule">
             <v-checkbox
               v-model="searchQueryAndSorting.selectGrundschule"
@@ -185,6 +205,8 @@ import {
 export default class EntitySelectionAndSortingPanel extends Vue {
   @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
 
+  private hoverSelectAll = false;
+  private hoverDeselectAll = false;
   private hoverSelectInfrastrukturabfrage = false;
   private hoverSelectBauvorhaben = false;
   private hoverSelectGrundschule = false;
@@ -197,7 +219,39 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   private hoverArtDerSortierung = false;
   private hoverReihenfolgeDerSortierung = false;
 
+  get allSelected(): boolean {
+    return (
+      this.searchQueryAndSorting.selectInfrastrukturabfrage &&
+      this.searchQueryAndSorting.selectBauvorhaben &&
+      this.searchQueryAndSorting.selectGrundschule &&
+      this.searchQueryAndSorting.selectGsNachmittagBetreuung &&
+      this.searchQueryAndSorting.selectHausFuerKinder &&
+      this.searchQueryAndSorting.selectKinderkrippe &&
+      this.searchQueryAndSorting.selectKindergarten &&
+      this.searchQueryAndSorting.selectMittelschule
+    );
+  }
+
+  get allDeSelected(): boolean {
+    return (
+      !this.searchQueryAndSorting.selectInfrastrukturabfrage &&
+      !this.searchQueryAndSorting.selectBauvorhaben &&
+      !this.searchQueryAndSorting.selectGrundschule &&
+      !this.searchQueryAndSorting.selectGsNachmittagBetreuung &&
+      !this.searchQueryAndSorting.selectHausFuerKinder &&
+      !this.searchQueryAndSorting.selectKinderkrippe &&
+      !this.searchQueryAndSorting.selectKindergarten &&
+      !this.searchQueryAndSorting.selectMittelschule
+    );
+  }
+
   get helpTextObjektauswahl(): string {
+    if (this.hoverSelectAll) {
+      return "Es werden all Objekttypen ausgewählt.";
+    }
+    if (this.hoverDeselectAll) {
+      return "Es werden all Objekttypen abgewählt.";
+    }
     if (this.hoverSelectInfrastrukturabfrage) {
       return "Die Infrastrukturabfragen werden in die Suche miteinbezogen.";
     }
@@ -233,6 +287,28 @@ export default class EntitySelectionAndSortingPanel extends Vue {
       return "Auswahl ob das sortierbare Attribut aufsteigend oder absteigend sortiert werden soll.";
     }
     return "";
+  }
+
+  private selectAll() {
+    this.searchQueryAndSorting.selectInfrastrukturabfrage = true;
+    this.searchQueryAndSorting.selectBauvorhaben = true;
+    this.searchQueryAndSorting.selectGrundschule = true;
+    this.searchQueryAndSorting.selectGsNachmittagBetreuung = true;
+    this.searchQueryAndSorting.selectHausFuerKinder = true;
+    this.searchQueryAndSorting.selectKinderkrippe = true;
+    this.searchQueryAndSorting.selectKindergarten = true;
+    this.searchQueryAndSorting.selectMittelschule = true;
+  }
+
+  private deselectAll() {
+    this.searchQueryAndSorting.selectInfrastrukturabfrage = false;
+    this.searchQueryAndSorting.selectBauvorhaben = false;
+    this.searchQueryAndSorting.selectGrundschule = false;
+    this.searchQueryAndSorting.selectGsNachmittagBetreuung = false;
+    this.searchQueryAndSorting.selectHausFuerKinder = false;
+    this.searchQueryAndSorting.selectKinderkrippe = false;
+    this.searchQueryAndSorting.selectKindergarten = false;
+    this.searchQueryAndSorting.selectMittelschule = false;
   }
 
   get entriesArtderSortierung(): Array<LookupEntryDto> {
