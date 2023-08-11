@@ -1,11 +1,11 @@
 <!--
 Wrapper-Komponente zum Einordnen von Inhalten in das Seitenlayout.
 Unterscheidet zwischen fünf verschiedenen Zonen, welche jeweils einem Slot entsprechen:
-Seiteninhalt (content), Navigation (navigation), Aktionen (action), Titel (heading) und Pagination (pagination).
+Seiteninhalt (content), Navigation (navigation), Aktionen (action) und Titel (heading).
 content nimmt standardmäßig die mittleren 60% des Bildschirms ein.
 navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über content befinden. Sie ordnen ihre Unterelemente von unten nach oben und zentriert auf der x-Achse an.
 Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
-heading sowie pagination sind Header- bzw. Footer-artig, scrollen nicht mit und befinden sich über content. Sie zentrieren sowohl auf der x- als auch auf der y-Achse und sind dafür gedacht, ein einziges Element unterzubringen.
+heading ist Header-artig, scrollt nicht mit und befindet sich über content. Es zentriert sowohl auf der x- als auch auf der y-Achse und ist dafür gedacht, ein einziges Element unterzubringen.
 Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
 Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
 -->
@@ -63,9 +63,6 @@ Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizab
             v-if="solidHeading"
             class="transparent-edge"
           />
-        </div>
-        <div class="middle-bar">
-          <slot name="pagination" />
         </div>
       </div>
       <div
