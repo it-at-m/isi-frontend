@@ -7,14 +7,14 @@ navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über c
 Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
 heading sowie pagination sind Header- bzw. Footer-artig, scrollen nicht mit und befinden sich über content. Sie zentrieren sowohl auf der x- als auch auf der y-Achse und sind dafür gedacht, ein einziges Element unterzubringen.
 Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
-Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
+Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
 -->
 
 <template>
   <!-- Das `user-select` ist ein Workaround dafür, dass beim Resizen der Text auf der Seite ständig ausgewählt wird. -->
   <div
     class="wrapper"
-    :style="{ 'user-select': resizingNavigation || resizingAction ? 'none' : 'auto' }"
+    :style="{ 'user-select': resizing ? 'none' : 'auto' }"
     @mousemove="resize"
     @mouseup="stopResizing"
     @mouseleave="stopResizing"
@@ -44,7 +44,7 @@ Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizab
       <div
         v-if="resizable"
         class="separator"
-        @mousedown="startResizingNavigation"
+        @mousedown="startResizing"
       >
         <v-divider
           vertical
@@ -68,16 +68,6 @@ Sollen die zwei Seitenbereiche eine verstellbare Breite haben, kann der `resizab
         <div class="middle-bar">
           <slot name="pagination" />
         </div>
-      </div>
-      <div
-        v-if="resizable"
-        class="separator"
-        @mousedown="startResizingAction"
-      >
-        <v-divider
-          vertical
-          inset
-        />
       </div>
       <div
         class="side-bar"
@@ -109,13 +99,11 @@ defineProps<Props>();
 // Hinweis: Die Begriffe "width" und "margin" haben hier keinen direkten Bezug zu den gleichnamigen CSS-Properties.
 
 const SIDE_BAR_RATIO = 0.2; // Anteil der Bildschirmbreite
-const MAX_SIDE_BAR_RATIO = 0.3; // Anteil der Bildschirmbreite
-const MIN_SIDE_BAR_WIDTH = 250; // Pixel
+const MAX_NAVIGATION_RATIO = 0.4; // Anteil der Bildschirmbreite
+const MIN_NAVIGATION_WIDTH = 150; // Pixel
 
-const resizingNavigation = ref(false);
-const resizingAction = ref(false);
+const resizing = ref(false);
 const navigationMargin = ref(0);
-const actionMargin = ref(0);
 let lastClientX = 0;
 
 const windowWidth = ref(innerWidth);
@@ -125,44 +113,32 @@ window.addEventListener("resize", () => {
 
 const navigationWidth = computed(() => {
   const value = windowWidth.value * SIDE_BAR_RATIO + navigationMargin.value;
-  return _.clamp(value, MIN_SIDE_BAR_WIDTH, windowWidth.value * MAX_SIDE_BAR_RATIO);
+  return _.clamp(value, MIN_NAVIGATION_WIDTH, windowWidth.value * MAX_NAVIGATION_RATIO);
 });
 const actionWidth = computed(() => {
-  const value = windowWidth.value * SIDE_BAR_RATIO + actionMargin.value;
-  return _.clamp(value, MIN_SIDE_BAR_WIDTH, windowWidth.value * MAX_SIDE_BAR_RATIO);
+  return windowWidth.value * SIDE_BAR_RATIO;
 });
 const middleWrapperWidth = computed(() => {
   return windowWidth.value - navigationWidth.value - actionWidth.value;
 });
 
 function resize(event: MouseEvent): void {
-  let deltaX = event.clientX - lastClientX;
-  lastClientX = event.clientX;
-
-  if (resizingNavigation.value) {
-    const min = -(windowWidth.value * SIDE_BAR_RATIO - MIN_SIDE_BAR_WIDTH);
-    const max = windowWidth.value * MAX_SIDE_BAR_RATIO - windowWidth.value * SIDE_BAR_RATIO;
+  if (resizing.value) {
+    const deltaX = event.clientX - lastClientX;
+    lastClientX = event.clientX;
+    const min = -(windowWidth.value * SIDE_BAR_RATIO - MIN_NAVIGATION_WIDTH);
+    const max = windowWidth.value * MAX_NAVIGATION_RATIO - windowWidth.value * SIDE_BAR_RATIO;
     navigationMargin.value = _.clamp(navigationMargin.value + deltaX, min, max);
-  } else if (resizingAction.value) {
-    const min = -(windowWidth.value * MAX_SIDE_BAR_RATIO - windowWidth.value * SIDE_BAR_RATIO);
-    const max = windowWidth.value * SIDE_BAR_RATIO - MIN_SIDE_BAR_WIDTH;
-    actionMargin.value = _.clamp(actionMargin.value - deltaX, min, max);
   }
 }
 
-function startResizingNavigation(event: MouseEvent) {
-  resizingNavigation.value = true;
-  lastClientX = event.clientX;
-}
-
-function startResizingAction(event: MouseEvent) {
-  resizingAction.value = true;
+function startResizing(event: MouseEvent) {
+  resizing.value = true;
   lastClientX = event.clientX;
 }
 
 function stopResizing(): void {
-  resizingNavigation.value = false;
-  resizingAction.value = false;
+  resizing.value = false;
 }
 </script>
 
