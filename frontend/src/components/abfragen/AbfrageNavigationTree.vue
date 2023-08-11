@@ -91,6 +91,7 @@ import {
 import { AnzeigeContextAbfragevariante, AbfrageDtoWithForm, AbfrageFormType } from "@/views/Abfrage.vue";
 import {
   isEditableWithAnzeigeContextAbfragevariante,
+  isEditableByAbfrageerstellung,
   isEditableBySachbearbeitung,
 } from "@/mixins/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
@@ -198,21 +199,23 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
     item.children.push(...abfragevarianten);
   }
 
+  if (isEditableByAbfrageerstellung()) {
+    item.actions.push({
+      name: CREATE_ABFRAGEVARIANTE,
+      disabled: _.defaultTo(abfrage.abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      effect: () => {
+        emit("create-abfragevariante", item);
+        openItem(item);
+      },
+    });
+  }
+
   if (isEditableBySachbearbeitung()) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
       disabled: _.defaultTo(abfrage.abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
       effect: () => {
         emit("create-abfragevariante-sachbearbeitung", item);
-        openItem(item);
-      },
-    });
-  } else {
-    item.actions.push({
-      name: CREATE_ABFRAGEVARIANTE,
-      disabled: _.defaultTo(abfrage.abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
-      effect: () => {
-        emit("create-abfragevariante", item);
         openItem(item);
       },
     });
