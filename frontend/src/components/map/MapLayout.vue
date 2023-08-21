@@ -1,11 +1,11 @@
 <!--
 Wrapper-Komponente zum Einordnen von Inhalten in das Seitenlayout.
 Unterscheidet zwischen fünf verschiedenen Zonen, welche jeweils einem Slot entsprechen:
-Seiteninhalt (content), Navigation (navigation), Aktionen (action) und Titel (heading).
-content nimmt standardmäßig die mittleren 60% des Bildschirms ein.
+Seiteninhalt (content), Navigation (navigation), Aktionen (action), Titel (heading) und Pagination (pagination).
+content hat keine besondere Positionierung. Mit der Boolean-Property "wide" nimmt es die gesamte Bildschirmbreite ein, ansonsten nur die mittleren 60%.
 navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über content befinden. Sie ordnen ihre Unterelemente von unten nach oben und zentriert auf der x-Achse an.
 Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
-heading ist Header-artig, scrollt nicht mit und befindet sich über content. Es zentriert sowohl auf der x- als auch auf der y-Achse und ist dafür gedacht, ein einziges Element unterzubringen.
+heading sowie pagination sind Header- bzw. Footer-artig, scrollen nicht mit und befinden sich über content. Sie zentrieren sowohl auf der x- als auch auf der y-Achse und sind dafür gedacht, ein einziges Element unterzubringen.
 Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
 Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
 -->
@@ -21,12 +21,13 @@ Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutz
   >
     <!--
     Bei Angabe des `solid-heading`-Props wird dem Content oben Padding hinzugefügt, sodass es sich nicht mit dem Heading überlappt.
+    Bei Angabe des 'wide'-Props wird dem Content kein horizontales Padding hinzugefügt, sodass es sich mit dem Navigation- und Action Bereich überlappt.
     -->
     <div
       :class="{ 'content-wrapper': true, 'v-padded': solidHeading }"
       :style="{
-        'padding-left': navigationWidth + 'px',
-        'padding-right': actionWidth + 'px',
+        'padding-left': wide ? '0px' : navigationWidth + 'px',
+        'padding-right': wide ? '0px' : actionWidth + 'px',
       }"
     >
       <slot name="content" />
@@ -64,6 +65,9 @@ Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutz
             class="transparent-edge"
           />
         </div>
+        <div class="middle-bar">
+          <slot name="pagination" />
+        </div>
       </div>
       <div
         class="side-bar"
@@ -85,6 +89,7 @@ import { ref, computed } from "vue";
 import _ from "lodash";
 
 interface Props {
+  wide?: boolean;
   solidHeading?: boolean;
   resizable?: boolean;
 }
@@ -182,7 +187,6 @@ function stopResizing(): void {
   justify-content: center;
   align-items: center;
   padding-top: 20px;
-  pointer-events: auto;
 }
 
 .side-bar {
@@ -191,7 +195,6 @@ function stopResizing(): void {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  pointer-events: auto;
   overflow: auto;
 }
 
@@ -231,5 +234,23 @@ function stopResizing(): void {
   justify-content: center;
   pointer-events: auto;
   cursor: col-resize;
+}
+
+/* Die Unterelemente der vier Zonen sollen Maus-Events wiederum wahrnehmen */
+
+.middle-bar > * {
+  pointer-events: auto;
+}
+
+.side-bar-navigation > * {
+  pointer-events: auto;
+}
+
+.side-bar-information > * {
+  pointer-events: auto;
+}
+
+.side-bar-action > * {
+  pointer-events: auto;
 }
 </style>

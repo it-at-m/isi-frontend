@@ -1,1208 +1,493 @@
+<!--
+Treeview zur Darstellung von und Interaktion mit der Abfrage-Hierarchie.
+
+Props:
+- `abfrage: InfrastrukturabfrageDto`: Die darzustellende Abfrage.
+- `selectedItemId: string`: Id des aktuell ausgewählten Items.
+  Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
+
+Emits:
+- `select-abfrage: AbfrageTreeItem`
+- `select-abfragevariante: AbfrageTreeItem`
+- `select-bauabschnitt: AbfrageTreeItem`
+- `select-baugebiet: AbfrageTreeItem`
+- `select-baurate: AbfrageTreeItem`
+- `create-abfragevariante: AbfrageTreeItem`
+- `create-abfragevariante-sachbearbeitung: AbfrageTreeItem`
+- `create-bauabschnitt: AbfrageTreeItem`
+- `create-baugebiet: AbfrageTreeItem`
+- `create-baurate: AbfrageTreeItem`
+- `delete-abfragevariante: AbfrageTreeItem`
+- `delete-bauabschnitt: AbfrageTreeItem`
+- `delete-baugebiet: AbfrageTreeItem`
+- `delete-baurate: AbfrageTreeItem`
+- `set-abfragevariante-relevant: AbfrageTreeItem`
+- `determine-bauraten-for-abfragevariante: AbfrageTreeItem`
+- `determine-bauraten-for-baugebiet: AbfrageTreeItem`
+-->
+
 <template>
-  <v-container>
-    <v-row class="justify-start">
-      <v-col>
-        <v-treeview
-          id="abfrage_navigation_tree_treeview"
-          ref="abfrageTreeview"
-          dense
-          :active.sync="markedTreeItems"
-          :open.sync="treeItemIdsToOpen"
-          :items="abfrageTreeItems"
-          active-class="font-weight-black v-treeview-node--active"
-        >
-          <template #prepend="{ item }">
-            <v-icon v-if="item.changed"> mdi-exclamation</v-icon>
-          </template>
-          <template #label="{ item }">
-            <v-tooltip bottom>
-              <template #activator="{ on }">
-                <a
-                  v-on="on"
-                  @click="setSelectedTreeItem(item)"
-                >
-                  {{ item.name }}
-                </a>
-              </template>
-              <span>{{ item.name }}</span>
-            </v-tooltip>
-          </template>
-          <template #append="{ item }">
-            <v-tooltip
-              v-if="isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(item)"
-              bottom
-            >
-              <template #activator="{ on }">
-                <v-btn
-                  :id="'abfrage_navigation_tree_button_abfragevariante_determinable_bauraten_' + item.id"
-                  icon
-                  v-on="on"
-                  @click="determineBauratenForAbfragevariante(item)"
-                >
-                  <v-icon> mdi-calculator</v-icon>
-                </v-btn>
-              </template>
-              <span>Idealtypische Bauraten ermitteln</span>
-            </v-tooltip>
-            <v-tooltip
-              v-if="isItemTypeOfBaugebietAndBauratenAreDeterminable(item)"
-              bottom
-            >
-              <template #activator="{ on }">
-                <v-btn
-                  :id="'abfrage_navigation_tree_button_baugebiet_determinable_bauraten_' + item.id"
-                  icon
-                  v-on="on"
-                  @click="determineBauratenForBaugebiet(item)"
-                >
-                  <v-icon> mdi-calculator</v-icon>
-                </v-btn>
-              </template>
-              <span>Idealtypische Bauraten ermitteln</span>
-            </v-tooltip>
-            <v-btn
-              v-if="isItemTypeOfAddAbfragevariante(item)"
-              :id="'abfrage_navigation_tree_button_create_new_abfragevariante_' + item.id"
-              icon
-              @click="createNewAbfragevariante(item)"
-            >
-              <v-icon> mdi-plus-box-outline</v-icon>
-            </v-btn>
-            <div v-else-if="isItemTypeOfAbfragevariante(item)">
-              <v-btn
-                :id="'abfrage_navigation_tree_button_relevant_abfragevariante_' + item.id"
-                :disabled="!isEditableBySachbearbeitung()"
-                icon
-                @click="setAbfragevarianteRelevant(item)"
-              >
-                <v-icon v-if="item.abfragevariante.relevant">mdi-bookmark</v-icon>
-                <v-icon v-else>mdi-bookmark-outline</v-icon>
-              </v-btn>
-              <v-btn
-                :id="'abfrage_navigation_tree_button_delete_abfragevariante_' + item.id"
-                :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
-                icon
-                @click="deleteAbfragevariante(item)"
-              >
-                <v-icon> mdi-trash-can-outline</v-icon>
-              </v-btn>
-            </div>
-            <v-btn
-              v-else-if="isItemTypeOfAddBauabschnitt(item)"
-              :id="'abfrage_navigation_tree_button_create_new_bauabschnitt_' + item.id"
-              icon
-              @click="createNewBauabschnitt(item)"
-            >
-              <v-icon> mdi-plus-box-outline</v-icon>
-            </v-btn>
-            <v-btn
-              v-else-if="isItemTypeOfBauabschnitt(item)"
-              :id="'abfrage_navigation_tree_button_delete_bauabschnitt_' + item.id"
-              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
-              icon
-              @click="deleteBauabschnitt(item)"
-            >
-              <v-icon> mdi-trash-can-outline</v-icon>
-            </v-btn>
-            <v-btn
-              v-else-if="isItemTypeOfAddBaugebiet(item)"
-              :id="'abfrage_navigation_tree_button_create_new_baugebiet_' + item.id"
-              icon
-              @click="createNewBaugebiet(item)"
-            >
-              <v-icon> mdi-plus-box-outline</v-icon>
-            </v-btn>
-            <v-btn
-              v-else-if="isItemTypeOfBaugebiet(item)"
-              :id="'abfrage_navigation_tree_button_delete_baugebiet_' + item.id"
-              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
-              icon
-              @click="deleteBaugebiet(item)"
-            >
-              <v-icon> mdi-trash-can-outline</v-icon>
-            </v-btn>
-            <v-btn
-              v-else-if="isItemTypeOfAddBaurate(item)"
-              :id="'abfrage_navigation_tree_button_create_new_baurate_' + item.id"
-              icon
-              @click="createNewBaurate(item)"
-            >
-              <v-icon> mdi-plus-box-outline</v-icon>
-            </v-btn>
-            <v-btn
-              v-else-if="isItemTypeOfBaurate(item)"
-              :id="'abfrage_navigation_tree_button_delete_baurate_' + item.id"
-              :disabled="!isEditableWithAnzeigeContextAbfragevariante(item.contextAnzeigeAbfragevariante)"
-              icon
-              @click="deleteBaurate(item)"
-            >
-              <v-icon> mdi-trash-can-outline</v-icon>
-            </v-btn>
-          </template>
-        </v-treeview>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-treeview
+    :items="items"
+    :active="selectedItemIds"
+    :open.sync="openItemIds"
+    dense
+    hoverable
+  >
+    <template #label="{ item }">
+      <v-menu
+        open-on-hover
+        :open-delay="500"
+        offset-y
+        :disabled="item.actions.length === 0"
+      >
+        <template #activator="{ on }">
+          <a
+            :id="`abfrage_navigation_tree_${item.id}`"
+            v-on="on"
+            @click="item.onSelection"
+          >
+            {{ item.name }}
+          </a>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="action in item.actions"
+            :id="`abfrage_navigation_tree_${item.id}_${action.name}`"
+            :key="action.name"
+            :disabled="action.disabled"
+            @click="action.effect"
+          >
+            <v-list-item-title>{{ action.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+  </v-treeview>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import _ from "lodash";
+/**
+ * Erzeugt eine einzigartige Id für ein TreeItem, die auf der Id des Parents und seinem Index (unter seinen Silblings) basiert.
+ * Die Id vom Root ist immer ein leerer String und braucht deshalb diese Funktion nicht.
+ */
+export function generateTreeItemId(parentId: string, index: number): string {
+  if (parentId === "") {
+    return index.toString();
+  }
+
+  return `${parentId}.${index}`;
+}
+</script>
+
+<script setup lang="ts">
 import {
+  InfrastrukturabfrageDto,
   AbfragevarianteDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
-  InfrastrukturabfrageDto,
 } from "@/api/api-client/isi-backend";
-import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante, AbfrageDtoWithForm, AbfrageFormType } from "@/views/Abfrage.vue";
+import {
+  isEditableWithAnzeigeContextAbfragevariante,
+  isEditableByAbfrageerstellung,
+  isEditableBySachbearbeitung,
+} from "@/mixins/security/AbfrageSecurity";
+import { ref, computed, watch } from "vue";
+import _ from "lodash";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 
-enum AbfrageTreeItemType {
-  ABFRAGE,
-  ABFRAGEVARIANTE,
-  ADD_ABFRAGEVARIANTE,
-  BAUABSCHNITT,
-  ADD_BAUABSCHNITT,
-  BAUGEBIET,
-  ADD_BAUGEBIET,
-  BAURATE,
-  ADD_BAURATE,
-}
-
 export interface AbfrageTreeItem {
-  id: number;
-
+  id: string;
+  type: AbfrageFormType;
   name: string;
-
-  type: AbfrageTreeItemType;
-
-  parentTreeItem: AbfrageTreeItem | undefined;
-
-  children: Array<AbfrageTreeItem>;
-
-  /**
-   * Referenziert die in der Treeview darzustellende Abfrage.
-   */
-  abfrage: InfrastrukturabfrageDto | undefined;
-
-  /**
-   * Der Kontext in welchem die Abfragevariante angezeigt wird.
-   */
-  contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined;
-
-  /**
-   * Referenziert die in der Treeview darzustellende Abfragevariante.
-   */
-  abfragevariante: AbfragevarianteDto | undefined;
-
-  /**
-   * Referenziert den in der Treeview darzustellenden Bauabschnitt.
-   */
-  bauabschnitt: BauabschnittDto | undefined;
-
-  /**
-   * Referenziert das in der Treeview darzustellende Bauagebiet.
-   */
-  baugebiet: BaugebietDto | undefined;
-
-  /**
-   * Referenziert die in der Treeview darzustellende Baurate.
-   */
-  baurate: BaurateDto | undefined;
-
-  /**
-   * True falls das referenzierte Objekt geändert wurde, andernfalls false.
-   */
-  changed: boolean;
+  parent: AbfrageTreeItem | null;
+  children: AbfrageTreeItem[];
+  actions: Action[];
+  onSelection: () => void;
+  context: AnzeigeContextAbfragevariante;
+  value: AbfrageDtoWithForm;
 }
 
-@Component
-export default class AbfrageNavigationTree extends Mixins(AbfrageSecurityMixin) {
-  private static readonly MAX_NUMBER_ABFRAGEVARIANTEN: number = 5;
+/*
+ * Hinweis zu disabled: Wenn true, ist die Aktion sichtbar, aber ausgegraut und nicht aktivierbar.
+ * Es ist für Aktionen gedacht, welche abhängig von den Daten der Abfrage-Hierarchie verfügbar sind.
+ * Aktionen, welche in der aktuellen Rolle nicht oder nur ein Mal relevant sind, sollten ausgelassen werden.
+ */
+interface Action {
+  name: string;
+  disabled: boolean;
+  effect: () => void;
+}
 
-  private static readonly NICHT_GEPFLEGT: string = "NICHT GEPFLEGT";
+interface Props {
+  abfrage: InfrastrukturabfrageDto;
+  selectedItemId: string;
+}
 
-  private static readonly NAME_TREE_ELEMENT_ABFRAGE: string = "Daten zur Abfrage";
+interface Emits {
+  (event: "select-abfrage", value: AbfrageTreeItem): void;
+  (event: "select-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "select-bauabschnitt", value: AbfrageTreeItem): void;
+  (event: "select-baugebiet", value: AbfrageTreeItem): void;
+  (event: "select-baurate", value: AbfrageTreeItem): void;
+  (event: "create-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "create-abfragevariante-sachbearbeitung", value: AbfrageTreeItem): void;
+  (event: "create-bauabschnitt", value: AbfrageTreeItem): void;
+  (event: "create-baugebiet", value: AbfrageTreeItem): void;
+  (event: "create-baurate", value: AbfrageTreeItem): void;
+  (event: "delete-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "delete-bauabschnitt", value: AbfrageTreeItem): void;
+  (event: "delete-baugebiet", value: AbfrageTreeItem): void;
+  (event: "delete-baurate", value: AbfrageTreeItem): void;
+  (event: "set-abfragevariante-relevant", value: AbfrageTreeItem): void;
+  (event: "determine-bauraten-for-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "determine-bauraten-for-baugebiet", value: AbfrageTreeItem): void;
+}
 
-  private static readonly NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE: string = "Abfragevariante anlegen";
+const DEFAULT_NAME = "Nicht gepflegt";
+const ABFRAGE_NAME = "Daten zur Abfrage";
 
-  private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT: string = "Bauabschnitt anlegen";
+const CREATE_ABFRAGEVARIANTE = "Abfragevariante erstellen";
+const CREATE_BAUABSCHNITT = "Bauabschnitt erstellen";
+const CREATE_BAUGEBIET = "Baugebiet erstellen";
+const CREATE_BAURATE = "Baurate erstellen";
+const DELETE = "Löschen";
+const MARK_AS_RELEVANT = "Als relevant markieren";
+const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
 
-  private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAUGEBIET: string = "Baugebiet anlegen";
+const ABFRAGEVARIANTEN_LIMIT = 5;
 
-  private static readonly NAME_TREE_ELEMENT_ADD_NEW_BAURATE: string = "Baurate anlegen";
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
 
-  @VModel({ type: InfrastrukturabfrageWrapperModel }) infrastrukturabfrageWrapped!: InfrastrukturabfrageWrapperModel;
+const items = ref<AbfrageTreeItem[]>([]);
+const selectedItemIds = computed(() => [props.selectedItemId]);
+const openItemIds = ref<string[]>([]);
 
-  private initialAbfrageTreeItems: Array<AbfrageTreeItem> = [];
+watch(
+  () => props.abfrage,
+  () => (items.value = [buildTree(props.abfrage)]),
+  { deep: true }
+);
 
-  private abfrageTreeItems: Array<AbfrageTreeItem> = [];
+function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
+    id: "",
+    type: AbfrageFormType.INFRASTRUKTURABFRAGE,
+    name: ABFRAGE_NAME,
+    parent: null,
+    children: [],
+    actions: [],
+    onSelection: () => emit("select-abfrage", item),
+    context: AnzeigeContextAbfragevariante.UNDEFINED,
+    value: abfrage,
+  };
 
-  private markedTreeItems: Array<number> = [];
-
-  private treeItemKey = 0;
-
-  private abfrageTreeItemsToOpen: Array<number> = [];
-
-  private newEntityToMark: unknown;
-
-  /**
-   * Der Watcher reagiert, falls sich der übergebene AbfrageWrapper ändert oder durch einen Neuen ersetzt wird.
-   * Hat das Attribut "initial" die Ausprägung true, so wird eine Kopie der AbfrageTreeItems erstellt,
-   * welche als Referenz zur Erkennung von möglichen Änderungen der in den AbfrageTreeItems referenzierten Objekten dient.
-   */
-  @Watch("infrastrukturabfrageWrapped", { deep: true })
-  private abfrageChanged(): void {
-    if (!_.isNil(this.infrastrukturabfrageWrapped.infrastrukturabfrage)) {
-      this.abfrageTreeItems = this.createAbfrageTreeItems(this.infrastrukturabfrageWrapped.infrastrukturabfrage);
-      if (this.infrastrukturabfrageWrapped.initial) {
-        this.initialAbfrageTreeItems = _.cloneDeep(this.abfrageTreeItems);
-        this.infrastrukturabfrageWrapped.initial = false;
-      }
-      this.markNewAbfrageTreeItemsAsChanged(this.abfrageTreeItems, this.initialAbfrageTreeItems);
-    }
-  }
-
-  public initializTreeItemsToOpen(): void {
-    this.abfrageTreeItemsToOpen = [];
-  }
-
-  public setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem): void {
-    this.markTreeItem(selectedTreeItem);
-
-    if (this.isItemTypeOfAbfrage(selectedTreeItem)) {
-      this.selectAbfrage(selectedTreeItem);
-    } else if (this.isItemTypeOfAbfragevariante(selectedTreeItem)) {
-      this.selectAbfragevariante(selectedTreeItem);
-    } else if (this.isItemTypeOfBauabschnitt(selectedTreeItem)) {
-      this.selectBauabschnitt(selectedTreeItem);
-    } else if (this.isItemTypeOfBaugebiet(selectedTreeItem)) {
-      this.selectBaugebiet(selectedTreeItem);
-    } else if (this.isItemTypeOfBaurate(selectedTreeItem)) {
-      this.selectBaurate(selectedTreeItem);
-    }
-  }
-
-  public setNewEntityToMark(entity: unknown): void {
-    this.newEntityToMark = entity;
-  }
-
-  public openMarkedItems(): void {
-    for (const id of this.markedTreeItems) {
-      this.treeItemIdsToOpen = [...this.treeItemIdsToOpen, id];
-    }
-  }
-
-  private markTreeItem(item: AbfrageTreeItem): void {
-    if (this.isItemSelectable(item)) {
-      this.markedTreeItems = [item.id];
-    }
-  }
-
-  get treeItemIdsToOpen(): Array<number> {
-    return this.abfrageTreeItemsToOpen;
-  }
-
-  set treeItemIdsToOpen(treeItemIds: Array<number>) {
-    this.abfrageTreeItemsToOpen = treeItemIds;
-  }
-
-  get nameTreeElementAbfrage(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ABFRAGE;
-  }
-
-  get nameTreeElementAddAbfragevariante(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_ABFRAGEVARIANTE;
-  }
-
-  get nameTreeElementAddBauabschnitt(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_BAUABSCHNITT;
-  }
-
-  get nameTreeElementAddBaugebiet(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_BAUGEBIET;
-  }
-
-  get nameTreeElementAddBaurate(): string {
-    return AbfrageNavigationTree.NAME_TREE_ELEMENT_ADD_NEW_BAURATE;
-  }
-
-  private getNameTreeElementAbfragevariante(
-    abfragevariante: AbfragevarianteDto,
-    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
-  ): string {
-    const abfragevarianteModel = new AbfragevarianteModel(abfragevariante);
-    return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
-      conextAnzeigeAbfragevariante
-    )}\xa0-\xa0${
-      _.isNil(abfragevariante.abfragevariantenName)
-        ? AbfrageNavigationTree.NICHT_GEPFLEGT
-        : abfragevariante.abfragevariantenName
-    }`;
-  }
-
-  private getNameTreeElementBauabschnitt(bauabschnitt: BauabschnittDto): string {
-    return _.isEmpty(bauabschnitt.bezeichnung) ? AbfrageNavigationTree.NICHT_GEPFLEGT : `${bauabschnitt.bezeichnung}`;
-  }
-
-  private getNameTreeElementBaugebiet(baugebiet: BaugebietDto): string {
-    return _.isEmpty(baugebiet.bezeichnung) ? AbfrageNavigationTree.NICHT_GEPFLEGT : `${baugebiet.bezeichnung}`;
-  }
-
-  private getNameTreeElementBaurate(baurate: BaurateDto): string {
-    return _.isNil(baurate.jahr) || Number.isNaN(baurate.jahr)
-      ? AbfrageNavigationTree.NICHT_GEPFLEGT
-      : `${baurate.jahr}`;
-  }
-
-  /**
-   * Erstellt die AbfrageTreeItems auf Basis der Abfrage.
-   * Jedes AbfrageTreeItem referenziert das in der Treeview darzustellende Objekt.
-   *
-   * @param abfrage zur Erstellung der AbfrageTreeItems
-   */
-  public createAbfrageTreeItems(abfrage: InfrastrukturabfrageModel): Array<AbfrageTreeItem> {
-    const abfrageTreeItems: Array<AbfrageTreeItem> = [];
-    this.treeItemKey = 0;
-
-    const abfrageRootTreeItem = this.createRootAbfrageTreeItem(this.treeItemKey++, abfrage);
-    abfrageTreeItems.push(abfrageRootTreeItem);
-    if (this.abfrageTreeItemsToOpen.length === 0) {
-      this.abfrageTreeItemsToOpen.push(abfrageRootTreeItem.id); // initial mit Root-Element Id füllen. Danach erfolgt Aktualisierung über "set treeItemIdsToOpen"
-      this.markTreeItem(abfrageRootTreeItem);
-    }
-    this.createAbfragevariantenTreeItems(
-      abfrageRootTreeItem,
-      abfrage,
-      abfrage.abfragevarianten,
-      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
+  if (abfrage.abfragevarianten) {
+    const abfragevarianten = abfrage.abfragevarianten.map((value, index) =>
+      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE)
     );
-    this.createAbfragevariantenTreeItems(
-      abfrageRootTreeItem,
-      abfrage,
-      abfrage.abfragevariantenSachbearbeitung,
-      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
-    );
-
-    return abfrageTreeItems;
+    item.children.push(...abfragevarianten);
   }
 
-  private createRootAbfrageTreeItem(id: number, abfrage: InfrastrukturabfrageDto) {
-    return this.createAbfrageTreeItem(
-      id,
-      undefined,
-      this.nameTreeElementAbfrage,
-      AbfrageTreeItemType.ABFRAGE,
-      abfrage,
-      AnzeigeContextAbfragevariante.UNDEFINED,
-      undefined,
-      undefined,
-      undefined,
-      undefined
+  if (abfrage.abfragevariantenSachbearbeitung) {
+    const abfragevarianten = abfrage.abfragevariantenSachbearbeitung.map((value, index) =>
+      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG)
     );
+    item.children.push(...abfragevarianten);
   }
 
-  private createAbfragevariantenTreeItems(
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    abfragevarianten: Array<AbfragevarianteDto> | undefined,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
-  ) {
-    _.toArray(abfragevarianten).forEach((abfragevariante) => {
-      let abfragevarianteTreeItem = this.createAbfragevarianteTreeItem(
-        this.treeItemKey++,
-        parentTreeItem,
-        abfrage,
-        contextAnzeigeAbfragevariante,
-        abfragevariante
-      );
-      this.createBauabschnitteTreeItems(
-        abfragevarianteTreeItem,
-        abfrage,
-        contextAnzeigeAbfragevariante,
-        abfragevariante
-      );
-      parentTreeItem.children.push(abfragevarianteTreeItem);
+  if (isEditableByAbfrageerstellung()) {
+    item.actions.push({
+      name: CREATE_ABFRAGEVARIANTE,
+      disabled: _.defaultTo(abfrage.abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      effect: () => {
+        emit("create-abfragevariante", item);
+        openItem(item);
+      },
     });
-    if (
-      this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante) &&
-      _.toArray(abfragevarianten).length < AbfrageNavigationTree.MAX_NUMBER_ABFRAGEVARIANTEN
-    ) {
-      parentTreeItem.children.push(
-        this.createAddAbfragevarianteTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          contextAnzeigeAbfragevariante
-        )
-      );
-    }
   }
 
-  private createBauabschnitteTreeItems(
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto
-  ) {
-    if (_.isNil(abfragevariante.bauabschnitte) || abfragevariante.bauabschnitte.length === 0) {
-      if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
-        // Fall 1: Keine Bauabschnitte vorhanden -> Bauabschnitt, Baugebiet oder Baurate kann erstellt werden
-        parentTreeItem.children.push(
-          this.createAddBauabschnittTreeItem(
-            this.treeItemKey++,
-            parentTreeItem,
-            abfrage,
-            contextAnzeigeAbfragevariante,
-            abfragevariante
-          )
-        );
-        parentTreeItem.children.push(
-          this.createAddOrphanedBaugebietTreeItem(
-            this.treeItemKey++,
-            parentTreeItem,
-            abfrage,
-            contextAnzeigeAbfragevariante,
-            abfragevariante
-          )
-        );
-        parentTreeItem.children.push(
-          this.createAddOrphanedBaurateTreeItem(
-            this.treeItemKey++,
-            parentTreeItem,
-            abfrage,
-            contextAnzeigeAbfragevariante,
-            abfragevariante
-          )
-        );
-      }
-    } else {
-      const firstBauabschnitt = abfragevariante.bauabschnitte[0];
-      if (!firstBauabschnitt.technical) {
-        // Fall 2: Nicht-technischer Bauabschnitt vorhanden -> Bauabschnitte werden aufgelistet und können erstellt werden
-        abfragevariante.bauabschnitte.forEach((bauabschnitt) => {
-          let bauabschnittTreeItem = this.createBauabschnittTreeItem(
-            this.treeItemKey++,
-            parentTreeItem,
-            abfrage,
-            contextAnzeigeAbfragevariante,
-            abfragevariante,
-            bauabschnitt
-          );
-          parentTreeItem.children.push(bauabschnittTreeItem);
-          this.createBaugebieteTreeItems(
-            bauabschnittTreeItem,
-            abfrage,
-            contextAnzeigeAbfragevariante,
-            abfragevariante,
-            bauabschnitt
-          );
-        });
-        if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
-          parentTreeItem.children.push(
-            this.createAddBauabschnittTreeItem(
-              this.treeItemKey++,
-              parentTreeItem,
-              abfrage,
-              contextAnzeigeAbfragevariante,
-              abfragevariante
-            )
-          );
+  if (isEditableBySachbearbeitung()) {
+    item.actions.push({
+      name: CREATE_ABFRAGEVARIANTE,
+      disabled: _.defaultTo(abfrage.abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      effect: () => {
+        emit("create-abfragevariante-sachbearbeitung", item);
+        openItem(item);
+      },
+    });
+  }
+
+  openItem(item);
+
+  return item;
+}
+
+function buildSubTreeAbfragevariante(
+  abfragevariante: AbfragevarianteDto,
+  parent: AbfrageTreeItem,
+  index: number,
+  context: AnzeigeContextAbfragevariante
+): AbfrageTreeItem {
+  const editable = isEditableWithAnzeigeContextAbfragevariante(context);
+
+  const item: AbfrageTreeItem = {
+    id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.ABFRAGEVARIANTE,
+    name: getAbfragevarianteName(abfragevariante, context),
+    parent,
+    children: [],
+    actions: [],
+    onSelection: () => emit("select-abfragevariante", item),
+    context,
+    value: abfragevariante,
+  };
+
+  if (isEditableBySachbearbeitung()) {
+    item.actions.push({
+      name: MARK_AS_RELEVANT,
+      disabled: false,
+      effect: () => emit("set-abfragevariante-relevant", item),
+    });
+  }
+
+  if (editable) {
+    item.actions.push({
+      name: DETERMINE_BAURATEN,
+      disabled: !bauratenDeterminableForAbfragevariante(abfragevariante),
+      effect: () => {
+        emit("determine-bauraten-for-abfragevariante", item);
+        openItem(item);
+      },
+    });
+  }
+
+  if (abfragevariante.bauabschnitte && !_.isEmpty(abfragevariante.bauabschnitte)) {
+    const firstBauabschnitt = abfragevariante.bauabschnitte[0];
+    if (firstBauabschnitt && firstBauabschnitt.technical) {
+      const firstBaugebiet = firstBauabschnitt.baugebiete[0];
+      if (firstBaugebiet && firstBaugebiet.technical) {
+        // Fall 1: Platzhalter-Bauabschnitt und -Baugebiet -> Bauraten werden angezeigt und können angelegt werden
+        item.children = firstBaugebiet.bauraten.map((value, index) => buildSubTreeBaurate(value, item, index, context));
+        if (editable) {
+          item.actions.push({
+            name: CREATE_BAURATE,
+            disabled: false,
+            effect: () => {
+              emit("create-baurate", item);
+              openItem(item);
+            },
+          });
         }
       } else {
-        // Fall 3: Technischer Bauabschnitt vorhanden -> Baugebiete werden unter Abfragevariente angelegt
-        this.createBaugebieteTreeItems(
-          parentTreeItem,
-          abfrage,
-          contextAnzeigeAbfragevariante,
-          abfragevariante,
-          firstBauabschnitt
+        // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
+        item.children = firstBauabschnitt.baugebiete.map((value, index) =>
+          buildSubTreeBaugebiet(value, item, index, context)
         );
+        if (editable) {
+          item.actions.push({
+            name: CREATE_BAUGEBIET,
+            disabled: false,
+            effect: () => {
+              emit("create-baugebiet", item);
+              openItem(item);
+            },
+          });
+        }
       }
-    }
-  }
-
-  private createBaugebieteTreeItems(
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto,
-    bauabschnitt: BauabschnittDto
-  ) {
-    if (bauabschnitt.baugebiete.length === 0) {
-      // Fall 1: Keine Baugebiete vorhanden -> Baugebiet kann erstellt werden
-      parentTreeItem.children.push(
-        this.createAddBaugebietTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          contextAnzeigeAbfragevariante,
-          abfragevariante,
-          bauabschnitt
-        )
-      );
     } else {
-      const firstBaugebiet = bauabschnitt.baugebiete[0];
-      if (!firstBaugebiet.technical) {
-        // Fall 2: Nicht-technisches Bauagebiet vorhanden -> Baugebiete werden aufgelistet und können erstellt werden
-        bauabschnitt.baugebiete.forEach((baugebiet) => {
-          let bauabschnittTreeItem = this.createBaugebietTreeItem(
-            this.treeItemKey++,
-            parentTreeItem,
-            abfrage,
-            contextAnzeigeAbfragevariante,
-            abfragevariante,
-            bauabschnitt,
-            baugebiet
-          );
-          parentTreeItem.children.push(bauabschnittTreeItem);
-          this.createBauratenTreeItems(
-            bauabschnittTreeItem,
-            abfrage,
-            contextAnzeigeAbfragevariante,
-            abfragevariante,
-            bauabschnitt,
-            baugebiet
-          );
+      // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
+      item.children = abfragevariante.bauabschnitte.map((value, index) =>
+        buildSubTreeBauabschnitt(value, item, index, context)
+      );
+      if (editable) {
+        item.actions.push({
+          name: CREATE_BAUABSCHNITT,
+          disabled: false,
+          effect: () => {
+            emit("create-bauabschnitt", item);
+            openItem(item);
+          },
         });
-        if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
-          parentTreeItem.children.push(
-            this.createAddBaugebietTreeItem(
-              this.treeItemKey++,
-              parentTreeItem,
-              abfrage,
-              contextAnzeigeAbfragevariante,
-              abfragevariante,
-              bauabschnitt
-            )
-          );
-        }
-      } else {
-        // Fall 3: Technisches Bauagebiet vorhanden -> Bauraten werden unter Abfragevariente angelegt
-        this.createBauratenTreeItems(
-          parentTreeItem,
-          abfrage,
-          contextAnzeigeAbfragevariante,
-          abfragevariante,
-          bauabschnitt,
-          firstBaugebiet
-        );
       }
     }
-  }
-
-  private createBauratenTreeItems(
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto,
-    bauabschnitt: BauabschnittDto,
-    baugebiet: BaugebietDto
-  ) {
-    baugebiet.bauraten.forEach((baurate) => {
-      let baurateTreeItem = this.createBaurateTreeItem(
-        this.treeItemKey++,
-        parentTreeItem,
-        abfrage,
-        contextAnzeigeAbfragevariante,
-        abfragevariante,
-        bauabschnitt,
-        baugebiet,
-        baurate
-      );
-      parentTreeItem.children.push(baurateTreeItem);
-    });
-    if (this.isEditableWithAnzeigeContextAbfragevariante(contextAnzeigeAbfragevariante)) {
-      parentTreeItem.children.push(
-        this.createAddBaurateTreeItem(
-          this.treeItemKey++,
-          parentTreeItem,
-          abfrage,
-          contextAnzeigeAbfragevariante,
-          abfragevariante,
-          bauabschnitt,
-          baugebiet
-        )
-      );
-    }
-  }
-
-  private createAbfragevarianteTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto
-  ) {
-    const item = this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.getNameTreeElementAbfragevariante(abfragevariante, contextAnzeigeAbfragevariante),
-      AbfrageTreeItemType.ABFRAGEVARIANTE,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      undefined,
-      undefined,
-      undefined
-    );
-
-    if (abfragevariante === this.newEntityToMark) {
-      this.markTreeItem(item);
-    }
-
-    return item;
-  }
-
-  private createAddAbfragevarianteTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
-  ) {
-    return this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.nameTreeElementAddAbfragevariante,
-      AbfrageTreeItemType.ADD_ABFRAGEVARIANTE,
-      abfrage,
-      conextAnzeigeAbfragevariante,
-      undefined,
-      undefined,
-      undefined,
-      undefined
-    );
-  }
-
-  private createBauabschnittTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto,
-    bauabschnitt: BauabschnittDto
-  ) {
-    const item = this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.getNameTreeElementBauabschnitt(bauabschnitt),
-      AbfrageTreeItemType.BAUABSCHNITT,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      bauabschnitt,
-      undefined,
-      undefined
-    );
-
-    if (bauabschnitt === this.newEntityToMark) {
-      this.markTreeItem(item);
-    }
-
-    return item;
-  }
-
-  private createAddBauabschnittTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto
-  ) {
-    return this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.nameTreeElementAddBauabschnitt,
-      AbfrageTreeItemType.ADD_BAUABSCHNITT,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      undefined,
-      undefined,
-      undefined
-    );
-  }
-
-  private createBaugebietTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto,
-    bauabschnitt: BauabschnittDto,
-    baugebiet: BaugebietDto
-  ) {
-    const item = this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.getNameTreeElementBaugebiet(baugebiet),
-      AbfrageTreeItemType.BAUGEBIET,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      bauabschnitt,
-      baugebiet,
-      undefined
-    );
-
-    if (baugebiet === this.newEntityToMark) {
-      this.markTreeItem(item);
-    }
-
-    return item;
-  }
-
-  private createAddBaugebietTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto,
-    bauabschnitt: BauabschnittDto
-  ) {
-    return this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.nameTreeElementAddBaugebiet,
-      AbfrageTreeItemType.ADD_BAUGEBIET,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      bauabschnitt,
-      undefined,
-      undefined
-    );
-  }
-
-  private createAddOrphanedBaugebietTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto
-  ) {
-    return this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.nameTreeElementAddBaugebiet,
-      AbfrageTreeItemType.ADD_BAUGEBIET,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      undefined,
-      undefined,
-      undefined
-    );
-  }
-
-  private createBaurateTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto,
-    bauabschnitt: BauabschnittDto,
-    baugebiet: BaugebietDto,
-    baurate: BaurateDto
-  ) {
-    const item = this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.getNameTreeElementBaurate(baurate),
-      AbfrageTreeItemType.BAURATE,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      bauabschnitt,
-      baugebiet,
-      baurate
-    );
-
-    if (baurate === this.newEntityToMark) {
-      this.markTreeItem(item);
-    }
-
-    return item;
-  }
-
-  private createAddBaurateTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto,
-    bauabschnitt: BauabschnittDto,
-    baugebiet: BaugebietDto
-  ) {
-    return this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.nameTreeElementAddBaurate,
-      AbfrageTreeItemType.ADD_BAURATE,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      bauabschnitt,
-      baugebiet,
-      undefined
-    );
-  }
-
-  private createAddOrphanedBaurateTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem,
-    abfrage: InfrastrukturabfrageDto,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
-    abfragevariante: AbfragevarianteDto
-  ) {
-    return this.createAbfrageTreeItem(
-      id,
-      parentTreeItem,
-      this.nameTreeElementAddBaurate,
-      AbfrageTreeItemType.ADD_BAURATE,
-      abfrage,
-      contextAnzeigeAbfragevariante,
-      abfragevariante,
-      undefined,
-      undefined,
-      undefined
-    );
-  }
-
-  private createAbfrageTreeItem(
-    id: number,
-    parentTreeItem: AbfrageTreeItem | undefined,
-    name: string,
-    type: AbfrageTreeItemType,
-    abfrage: InfrastrukturabfrageDto | undefined,
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante | undefined,
-    abfragevariante: AbfragevarianteDto | undefined,
-    bauabschnitt: BauabschnittDto | undefined,
-    baugebiet: BaugebietDto | undefined,
-    baurate: BaurateDto | undefined
-  ) {
-    return {
-      id: id,
-      parentTreeItem: parentTreeItem,
-      name: name,
-      type: type,
-      children: [],
-      abfrage: abfrage,
-      contextAnzeigeAbfragevariante: contextAnzeigeAbfragevariante,
-      abfragevariante: abfragevariante,
-      bauabschnitt: bauabschnitt,
-      baugebiet: baugebiet,
-      baurate: baurate,
-      changed: false,
-    } as AbfrageTreeItem;
-  }
-
-  /**
-   * Markiert jedes Element im Parameter newAbfrageTreeItems als geändert, falls sich zur Referenz im Parameter
-   * oldAbfrageTreeItems eine Änderung ergeben hat.
-   *
-   * @param newAbfrageTreeItems zum Prüfen auf Änderung
-   * @param oldAbfrageTreeItems welche als Referenz zur Änderungsprüfung herangezogen werden
-   */
-  private markNewAbfrageTreeItemsAsChanged(
-    newAbfrageTreeItems: Array<AbfrageTreeItem>,
-    oldAbfrageTreeItems: Array<AbfrageTreeItem>
-  ): void {
-    const flatNewAbfrageTreeItems = this.createFlatAbfrageTreeItem(newAbfrageTreeItems).filter(this.isItemSelectable);
-    const flatOldAbfrageTreeItems = this.createFlatAbfrageTreeItem(oldAbfrageTreeItems).filter(this.isItemSelectable);
-    flatNewAbfrageTreeItems.forEach((newAbfrageTreeItem) => {
-      // Grundannahme: Es hat sich eine Änderung ergeben.
-      newAbfrageTreeItem.changed = true;
-      flatOldAbfrageTreeItems.forEach((oldAbfrageTreeItem) => {
-        /*
-          notChanged == true -> So existiert im neuen AbfrageItem ein referenziertes Objekt,
-          welches mit dem referenzierten Objekt im alten AbfrageItem identisch ist.
-          Folglich hat sich keine Änderung ergeben.
-         */
-        const notChanged = this.isNotChanged(newAbfrageTreeItem, oldAbfrageTreeItem);
-        if (notChanged) {
-          newAbfrageTreeItem.changed = false;
-        }
+  } else {
+    // Fall 4: Keine Bauabschnitte -> Bauabschnitt, Baugebiet oder Baurate kann angelegt werden
+    if (editable) {
+      item.actions.push({
+        name: CREATE_BAUABSCHNITT,
+        disabled: false,
+        effect: () => {
+          emit("create-bauabschnitt", item);
+          openItem(item);
+        },
       });
-    });
-  }
-
-  /**
-   * Prüft auf Basis von flachen Kopien der in den Parametern referenzierten Objekten, ob diese gleich sind.
-   * Bei Gleichheit der flachen Kopien hat sich keine Änderung ergeben.
-   *
-   * Bei der Prüfung auf gleichheit werden z.B. bei der Abfrage die referenzierten Abfragevarianten ignoriert.
-   * Die Prüfung auf Gleichheit wird bei der Abfrage z.B. nur auf Basis von nichtreferenziellen Attributen durchgeführt.
-   *
-   * @param newAbfrageTreeItem zum Prüfen auf Änderung
-   * @param oldAbfrageTreeItem welche als Referenz zur Änderungsprüfung herangezogen werden
-   * @return true falls sich keine Änderung ergeben hat, andernfalls false
-   */
-  private isNotChanged(newAbfrageTreeItem: AbfrageTreeItem, oldAbfrageTreeItem: AbfrageTreeItem): boolean {
-    let notChanged = false;
-    let clonedNewAbfrageTreeItem = _.cloneDeep(newAbfrageTreeItem);
-    let clonedOldAbfrageTreeItem = _.cloneDeep(oldAbfrageTreeItem);
-
-    if (this.isItemTypeOfAbfrage(clonedNewAbfrageTreeItem) && this.isItemTypeOfAbfrage(clonedOldAbfrageTreeItem)) {
-      return this.isNotChangedAbfrage(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
-    } else if (
-      this.isItemTypeOfAbfragevariante(clonedNewAbfrageTreeItem) &&
-      this.isItemTypeOfAbfragevariante(clonedOldAbfrageTreeItem)
-    ) {
-      return this.isNotChangedAbfragevariante(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
-    } else if (
-      this.isItemTypeOfBauabschnitt(clonedNewAbfrageTreeItem) &&
-      this.isItemTypeOfBauabschnitt(clonedOldAbfrageTreeItem)
-    ) {
-      return this.isNotChangedBauabschnitt(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
-    } else if (
-      this.isItemTypeOfBaugebiet(clonedNewAbfrageTreeItem) &&
-      this.isItemTypeOfBaugebiet(clonedOldAbfrageTreeItem)
-    ) {
-      return this.isNotChangedBaugebiet(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
-    } else if (
-      this.isItemTypeOfBaurate(clonedNewAbfrageTreeItem) &&
-      this.isItemTypeOfBaurate(clonedOldAbfrageTreeItem)
-    ) {
-      return this.isNotChangedBaurate(clonedNewAbfrageTreeItem, clonedOldAbfrageTreeItem);
+      item.actions.push({
+        name: CREATE_BAUGEBIET,
+        disabled: false,
+        effect: () => {
+          emit("create-baugebiet", item);
+          openItem(item);
+        },
+      });
+      item.actions.push({
+        name: CREATE_BAURATE,
+        disabled: false,
+        effect: () => {
+          emit("create-baurate", item);
+          openItem(item);
+        },
+      });
     }
-    return notChanged;
   }
 
-  private isNotChangedAbfrage(
-    clonedNewAbfrageTreeItem: AbfrageTreeItem,
-    clonedOldAbfrageTreeItem: AbfrageTreeItem
-  ): boolean {
-    // Entfernen der Abfragevarianten aus Klon zur Vermeidung eines isEqual bei Abfragevarianten.
-    if (!_.isNil(clonedNewAbfrageTreeItem.abfrage)) clonedNewAbfrageTreeItem.abfrage.abfragevarianten = [];
-    if (!_.isNil(clonedOldAbfrageTreeItem.abfrage)) clonedOldAbfrageTreeItem.abfrage.abfragevarianten = [];
-    return (
-      !_.isNil(clonedNewAbfrageTreeItem.abfrage) &&
-      !_.isNil(clonedNewAbfrageTreeItem.abfrage.id) &&
-      _.isEqual(clonedNewAbfrageTreeItem.abfrage, clonedOldAbfrageTreeItem.abfrage)
-    );
+  if (editable) {
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-abfragevariante", item) });
   }
 
-  private isNotChangedAbfragevariante(
-    clonedNewAbfrageTreeItem: AbfrageTreeItem,
-    clonedOldAbfrageTreeItem: AbfrageTreeItem
-  ): boolean {
-    // Entfernen der Bauabschnitte aus Klon zur Vermeidung eines isEqual bei Bauabschnitten.
-    if (!_.isNil(clonedNewAbfrageTreeItem.abfragevariante)) clonedNewAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-    if (!_.isNil(clonedOldAbfrageTreeItem.abfragevariante)) clonedOldAbfrageTreeItem.abfragevariante.bauabschnitte = [];
-    return (
-      !_.isNil(clonedNewAbfrageTreeItem.abfragevariante) &&
-      !_.isNil(clonedNewAbfrageTreeItem.abfragevariante.id) &&
-      _.isEqual(clonedNewAbfrageTreeItem.abfragevariante, clonedOldAbfrageTreeItem.abfragevariante)
-    );
-  }
+  return item;
+}
 
-  private isNotChangedBauabschnitt(
-    clonedNewAbfrageTreeItem: AbfrageTreeItem,
-    clonedOldAbfrageTreeItem: AbfrageTreeItem
-  ): boolean {
-    // Entfernen der Baugebiete aus Klon zur Vermeidung eines isEqual bei Baugebieten.
-    if (!_.isNil(clonedNewAbfrageTreeItem.bauabschnitt)) clonedNewAbfrageTreeItem.bauabschnitt.baugebiete = [];
-    if (!_.isNil(clonedOldAbfrageTreeItem.bauabschnitt)) clonedOldAbfrageTreeItem.bauabschnitt.baugebiete = [];
-    return (
-      !_.isNil(clonedNewAbfrageTreeItem.bauabschnitt) &&
-      !_.isNil(clonedNewAbfrageTreeItem.bauabschnitt.id) &&
-      _.isEqual(clonedNewAbfrageTreeItem.bauabschnitt, clonedOldAbfrageTreeItem.bauabschnitt)
-    );
-  }
+function buildSubTreeBauabschnitt(
+  bauabschnitt: BauabschnittDto,
+  parent: AbfrageTreeItem,
+  index: number,
+  context: AnzeigeContextAbfragevariante
+): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
+    id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.BAUABSCHNITT,
+    name: bauabschnitt.bezeichnung === "" ? DEFAULT_NAME : bauabschnitt.bezeichnung,
+    parent,
+    children: [],
+    actions: [],
+    onSelection: () => emit("select-bauabschnitt", item),
+    context,
+    value: bauabschnitt,
+  };
 
-  private isNotChangedBaugebiet(
-    clonedNewAbfrageTreeItem: AbfrageTreeItem,
-    clonedOldAbfrageTreeItem: AbfrageTreeItem
-  ): boolean {
-    // Entfernen der Bauraten aus Klon zur Vermeidung eines isEqual bei Bauraten.
-    if (!_.isNil(clonedNewAbfrageTreeItem.baugebiet)) clonedNewAbfrageTreeItem.baugebiet.bauraten = [];
-    if (!_.isNil(clonedOldAbfrageTreeItem.baugebiet)) clonedOldAbfrageTreeItem.baugebiet.bauraten = [];
-    return (
-      !_.isNil(clonedNewAbfrageTreeItem.baugebiet) &&
-      !_.isNil(clonedNewAbfrageTreeItem.baugebiet.id) &&
-      _.isEqual(clonedNewAbfrageTreeItem.baugebiet, clonedOldAbfrageTreeItem.baugebiet)
-    );
-  }
+  item.children = bauabschnitt.baugebiete.map((value, index) => buildSubTreeBaugebiet(value, item, index, context));
 
-  private isNotChangedBaurate(
-    clonedNewAbfrageTreeItem: AbfrageTreeItem,
-    clonedOldAbfrageTreeItem: AbfrageTreeItem
-  ): boolean {
-    return (
-      !_.isNil(clonedNewAbfrageTreeItem.baurate) &&
-      !_.isNil(clonedNewAbfrageTreeItem.baurate.id) &&
-      _.isEqual(clonedNewAbfrageTreeItem.baurate, clonedOldAbfrageTreeItem.baurate)
-    );
-  }
-
-  private isItemTypeOfAbfrage(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.ABFRAGE;
-  }
-
-  private isItemTypeOfAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.ABFRAGEVARIANTE;
-  }
-
-  private isItemTypeOfAddAbfragevariante(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.ADD_ABFRAGEVARIANTE;
-  }
-
-  private isItemTypeOfBauabschnitt(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.BAUABSCHNITT;
-  }
-
-  private isItemTypeOfAddBauabschnitt(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAUABSCHNITT;
-  }
-
-  private isItemTypeOfBaugebiet(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.BAUGEBIET;
-  }
-
-  private isItemTypeOfAddBaugebiet(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAUGEBIET;
-  }
-
-  private isItemTypeOfBaurate(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.BAURATE;
-  }
-
-  private isItemTypeOfAddBaurate(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return abfrageTreeItem.type === AbfrageTreeItemType.ADD_BAURATE;
-  }
-
-  private isItemTypeOfAbfragevarianteAndBauratenAreDeterminable(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return (
-      this.isItemTypeOfAbfragevariante(abfrageTreeItem) &&
-      // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
-      this.isEditableWithAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante) &&
-      // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
-      (!_.isNil(abfrageTreeItem.abfragevariante?.gesamtanzahlWe) ||
-        !_.isNil(abfrageTreeItem.abfragevariante?.geschossflaecheWohnen)) &&
-      // Die Abfragevariante darf keine Bauabschnitte referenzieren.
-      _.isEmpty(abfrageTreeItem.abfragevariante?.bauabschnitte) &&
-      // Das Datum für Realisierung von muss gesetzt sein.
-      !_.isNil(abfrageTreeItem.abfragevariante?.realisierungVon)
-    );
-  }
-
-  private isItemTypeOfBaugebietAndBauratenAreDeterminable(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return (
-      this.isItemTypeOfBaugebiet(abfrageTreeItem) &&
-      // Prüfen ob die idealtypischen Bauraten ermittelt werden dürfen.
-      this.isEditableWithAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante) &&
-      // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
-      (!_.isNil(abfrageTreeItem.baugebiet?.gesamtanzahlWe) ||
-        !_.isNil(abfrageTreeItem.baugebiet?.geschossflaecheWohnen)) &&
-      // Das Baugebiet darf keine Bauraten referenzieren.
-      _.isEmpty(abfrageTreeItem.baugebiet?.bauraten) &&
-      // Das Datum für Realisierung von muss gesetzt sein.
-      !_.isNil(abfrageTreeItem.baugebiet?.realisierungVon)
-    );
-  }
-
-  private isItemSelectable(abfrageTreeItem: AbfrageTreeItem): boolean {
-    return (
-      this.isItemTypeOfAbfrage(abfrageTreeItem) ||
-      this.isItemTypeOfAbfragevariante(abfrageTreeItem) ||
-      this.isItemTypeOfBauabschnitt(abfrageTreeItem) ||
-      this.isItemTypeOfBaugebiet(abfrageTreeItem) ||
-      this.isItemTypeOfBaurate(abfrageTreeItem)
-    );
-  }
-
-  private createFlatAbfrageTreeItem(abfrageTreeItems: Array<AbfrageTreeItem>): Array<AbfrageTreeItem> {
-    return abfrageTreeItems.flatMap((abfrageTreeItem) => {
-      const flatChildren = this.createFlatAbfrageTreeItem(abfrageTreeItem.children);
-      flatChildren.push(abfrageTreeItem);
-      return flatChildren;
+  if (isEditableWithAnzeigeContextAbfragevariante(context)) {
+    item.actions.push({
+      name: CREATE_BAUGEBIET,
+      disabled: false,
+      effect: () => {
+        emit("create-baugebiet", item);
+        openItem(item);
+      },
     });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-bauabschnitt", item) });
   }
 
-  @Emit()
-  private selectAbfrage(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
+  return item;
+}
+
+function buildSubTreeBaugebiet(
+  baugebiet: BaugebietDto,
+  parent: AbfrageTreeItem,
+  index: number,
+  context: AnzeigeContextAbfragevariante
+): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
+    id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.BAUGEBIET,
+    name: baugebiet.bezeichnung === "" ? DEFAULT_NAME : baugebiet.bezeichnung,
+    parent,
+    children: [],
+    actions: [],
+    onSelection: () => emit("select-baugebiet", item),
+    context,
+    value: baugebiet,
+  };
+
+  item.children = baugebiet.bauraten.map((value, index) => buildSubTreeBaurate(value, item, index, context));
+
+  if (isEditableWithAnzeigeContextAbfragevariante(context)) {
+    item.actions.push({
+      name: DETERMINE_BAURATEN,
+      disabled: !bauratenDeterminableForBaugebiet(baugebiet),
+      effect: () => {
+        emit("determine-bauraten-for-baugebiet", item);
+        openItem(item);
+      },
+    });
+
+    item.actions.push({
+      name: CREATE_BAURATE,
+      disabled: false,
+      effect: () => {
+        emit("create-baurate", item);
+        openItem(item);
+      },
+    });
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-baugebiet", item) });
   }
 
-  @Emit()
-  private selectAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
+  return item;
+}
+
+function buildSubTreeBaurate(
+  baurate: BaurateDto,
+  parent: AbfrageTreeItem,
+  index: number,
+  context: AnzeigeContextAbfragevariante
+): AbfrageTreeItem {
+  const item: AbfrageTreeItem = {
+    id: generateTreeItemId(parent.id, index),
+    type: AbfrageFormType.BAURATE,
+    name: baurate.jahr ? baurate.jahr.toString() : DEFAULT_NAME,
+    parent,
+    children: [],
+    actions: [],
+    onSelection: () => emit("select-baurate", item),
+    context,
+    value: baurate,
+  };
+
+  if (isEditableWithAnzeigeContextAbfragevariante(context)) {
+    item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-baurate", item) });
   }
 
-  @Emit()
-  private deleteAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
+  return item;
+}
 
-  @Emit()
-  private setAbfragevarianteRelevant(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
+function getAbfragevarianteName(
+  abfragevariante: AbfragevarianteDto,
+  conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
+): string {
+  const abfragevarianteModel = new AbfragevarianteModel(abfragevariante);
+  return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+    conextAnzeigeAbfragevariante
+  )}\xa0-\xa0${_.isNil(abfragevariante.abfragevariantenName) ? DEFAULT_NAME : abfragevariante.abfragevariantenName}`;
+}
 
-  @Emit()
-  private determineBauratenForAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
+function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteDto): boolean {
+  return (
+    // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
+    (!_.isNil(abfragevariante.gesamtanzahlWe) || !_.isNil(abfragevariante.geschossflaecheWohnen)) &&
+    // Die Abfragevariante darf keine Bauabschnitte referenzieren.
+    _.isEmpty(abfragevariante.bauabschnitte) &&
+    // Das Datum für Realisierung von muss gesetzt sein.
+    !_.isNil(abfragevariante.realisierungVon)
+  );
+}
 
-  @Emit()
-  private determineBauratenForBaugebiet(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
+function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
+  return (
+    // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
+    (!_.isNil(baugebiet.gesamtanzahlWe) || !_.isNil(baugebiet.geschossflaecheWohnen)) &&
+    // Die Abfragevariante darf keine Bauabschnitte referenzieren.
+    _.isEmpty(baugebiet.bauraten) &&
+    // Das Datum für Realisierung von muss gesetzt sein.
+    !_.isNil(baugebiet.realisierungVon)
+  );
+}
 
-  @Emit()
-  private createNewAbfragevariante(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private selectBauabschnitt(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private deleteBauabschnitt(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private createNewBauabschnitt(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private selectBaugebiet(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private deleteBaugebiet(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private createNewBaugebiet(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-  @Emit()
-  private selectBaurate(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private deleteBaurate(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
-
-  @Emit()
-  private createNewBaurate(selectedAbfrageTreeItem: AbfrageTreeItem): AbfrageTreeItem {
-    return selectedAbfrageTreeItem;
-  }
+function openItem(item: AbfrageTreeItem): void {
+  openItemIds.value = [...openItemIds.value, item.id];
 }
 </script>
-
-<style scoped></style>

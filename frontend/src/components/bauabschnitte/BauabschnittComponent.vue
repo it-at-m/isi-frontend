@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-row>
       <v-col cols="12">
         <span
@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
     </field-group-card>
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
