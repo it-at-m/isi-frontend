@@ -180,6 +180,7 @@
           color="primary"
           elevation="1"
           style="width: 200px"
+          :disabled="disableDeleteButton()"
           @click="deleteAbfrage()"
           v-text="'Löschen'"
         />
@@ -394,6 +395,16 @@ export default class Abfrage extends Mixins(
 
   private deleteAbfrage(): void {
     this.isDeleteDialogAbfrageOpen = true;
+  }
+
+  private disableDeleteButton(): boolean {
+    if (this.isEditableByAdmin()) {
+      return false;
+    } else if (this.isEditableByAbfrageerstellung()) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   private statusUebergang(transition: TransitionDto): void {

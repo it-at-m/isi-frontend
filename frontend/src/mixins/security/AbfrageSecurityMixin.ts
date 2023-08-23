@@ -33,4 +33,8 @@ export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
           abfrage.abfrage?.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
       : false;
   }
+
+  public isEditableByAdmin(): boolean {
+    return this.isRoleAdmin();
+  }
 }
