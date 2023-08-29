@@ -34,10 +34,8 @@ export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
       : false;
   }
 
-  public isEditableByBedarfsmeldung(): boolean {
+  public isEditableByAdmin(): boolean {
     const abfrage: InfrastrukturabfrageModel = this.$store.getters["search/selectedAbfrage"];
-    return !_.isNil(abfrage)
-      ? this.isRoleAdminOrBedarfsmeldung() && abfrage.abfrage?.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
-      : false;
+    return !_.isNil(abfrage) ? this.isRoleAdmin() : false;
   }
 }
