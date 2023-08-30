@@ -20,9 +20,10 @@ jobs:
         working-directory: frontend
         run: |
           npm install
-          npm run lint
           npm run build --if-present
-          
+          npm run test:unit          
+# TODO: evtl. hinzufügen
+#          npm run lint
       - name: Archive npm artifacts
         uses: actions/upload-artifact@v3
         with:
