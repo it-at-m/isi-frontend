@@ -51,11 +51,6 @@ export interface PatchAbfrageInBearbeitungSachbearbeitungRequest {
     infrastrukturabfrageInBearbeitungSachbearbeitungDto: InfrastrukturabfrageInBearbeitungSachbearbeitungDto;
 }
 
-export interface PutAbfrageAnmerkungRequest {
-    abfrageId: string;
-    anmerkung: string;
-}
-
 export interface PutChangeAbfragevarianteRelevantRequest {
     abfrageId: string;
     abfragevarianteId: string;
@@ -257,44 +252,6 @@ export class AbfrageApi extends runtime.BaseAPI {
      */
     async patchAbfrageInBearbeitungSachbearbeitung(requestParameters: PatchAbfrageInBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
         const response = await this.patchAbfrageInBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Fügt Anmerkung bei der Abfrage Anmerkung hinzu falls die Abfrage im Status IN_BEARBEITUNG_PLAN zu ERLEDIGT wechselt.
-     */
-    async putAbfrageAnmerkungRaw(requestParameters: PutAbfrageAnmerkungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
-        if (requestParameters.abfrageId === null || requestParameters.abfrageId === undefined) {
-            throw new runtime.RequiredError('abfrageId','Required parameter requestParameters.abfrageId was null or undefined when calling putAbfrageAnmerkung.');
-        }
-
-        if (requestParameters.anmerkung === null || requestParameters.anmerkung === undefined) {
-            throw new runtime.RequiredError('anmerkung','Required parameter requestParameters.anmerkung was null or undefined when calling putAbfrageAnmerkung.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.anmerkung !== undefined) {
-            queryParameters['anmerkung'] = requestParameters.anmerkung;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/infrastruktur-abfragen/abfrage/{abfrageId}/change-anmerkung`.replace(`{${"abfrageId"}}`, encodeURIComponent(String(requestParameters.abfrageId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Fügt Anmerkung bei der Abfrage Anmerkung hinzu falls die Abfrage im Status IN_BEARBEITUNG_PLAN zu ERLEDIGT wechselt.
-     */
-    async putAbfrageAnmerkung(requestParameters: PutAbfrageAnmerkungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
-        const response = await this.putAbfrageAnmerkungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

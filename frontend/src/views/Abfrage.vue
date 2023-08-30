@@ -528,12 +528,11 @@ export default class Abfrage extends Mixins(
     if (!this.isDirty()) {
       let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
       if (transition.url === "abfrage-schliessen") {
-        await this.changeAbfrageAnmerkung(this.abfrageId, this.anmerkungValue, true);
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
       }
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
-        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
+        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkungValue);
         if (requestSuccessful) {
           if (!(transition.url === "in-bearbeitung-setzen")) {
             this.returnToUebersicht(toastMessage, Levels.SUCCESS);

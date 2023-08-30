@@ -9,7 +9,6 @@ import {
   PutChangeAbfragevarianteRelevantRequest,
   InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
   PatchAbfrageInBearbeitungSachbearbeitungRequest,
-  PutAbfrageAnmerkungRequest,
 } from "@/api/api-client/isi-backend";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -94,26 +93,6 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     };
     return this.abfrageApi
       .putChangeAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
-      .then((response) => {
-        this.resetDirty();
-        return response;
-      })
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
-  }
-
-  changeAbfrageAnmerkung(
-    abfrageId: string,
-    anmerkung: string,
-    showInInformationList: boolean
-  ): Promise<InfrastrukturabfrageDto> {
-    const requestObject: PutAbfrageAnmerkungRequest = {
-      abfrageId: abfrageId,
-      anmerkung: anmerkung,
-    };
-    return this.abfrageApi
-      .putAbfrageAnmerkung(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
         this.resetDirty();
         return response;
