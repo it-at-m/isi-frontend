@@ -30,7 +30,6 @@ jobs:
           name: npm-artifacts
           path: |
             frontend/dist
-            frontend/node_modules
           retention-days: 10
 
   build-test-java:
