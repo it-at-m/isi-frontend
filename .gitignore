@@ -38,6 +38,7 @@ $(pwd)
 
 # do not check in application profile yml
 apigateway/**/application-*.yml
+!apigateway/**/application-test.yml
 apigateway/**/logback-spring.xml
 frontend/.env.development
 frontend/.env.production
