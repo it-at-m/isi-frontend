@@ -341,7 +341,7 @@ export default class Abfrage extends Mixins(
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
-  private anmerkungValue = "";
+  private anmerkung = "";
   private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
   private selected: AbfrageDtoWithForm = this.abfrage;
   private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
@@ -413,7 +413,7 @@ export default class Abfrage extends Mixins(
   }
 
   private handleAnmerkung(val: string): void {
-    this.anmerkungValue = val;
+    this.anmerkung = val;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -532,7 +532,7 @@ export default class Abfrage extends Mixins(
       }
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
-        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkungValue);
+        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
         if (requestSuccessful) {
           if (!(transition.url === "in-bearbeitung-setzen")) {
             this.returnToUebersicht(toastMessage, Levels.SUCCESS);
