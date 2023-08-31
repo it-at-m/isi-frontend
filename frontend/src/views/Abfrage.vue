@@ -237,6 +237,7 @@ import {
   BaugebietDto,
   BaurateDto,
   InfrastrukturabfrageDto,
+  ResponseError,
   StatusAbfrage,
   TransitionDto,
 } from "@/api/api-client/isi-backend";
@@ -532,17 +533,22 @@ export default class Abfrage extends Mixins(
       }
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
-        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
-        if (requestSuccessful) {
-          if (!(transition.url === "in-bearbeitung-setzen")) {
-            this.returnToUebersicht(toastMessage, Levels.SUCCESS);
+        const response = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
+        if (response instanceof Response) {
+          if (response.ok) {
+            if (!(transition.url === "in-bearbeitung-setzen")) {
+              this.returnToUebersicht(toastMessage, Levels.SUCCESS);
+            } else {
+              this.setSelectedAbfrageInStore();
+              this.getTransitions(this.abfrageId, true).then((response) => {
+                this.possbileTransitions = response;
+              });
+            }
+            this.selectAbfrage();
           } else {
-            this.setSelectedAbfrageInStore();
-            this.getTransitions(this.abfrageId, true).then((response) => {
-              this.possbileTransitions = response;
-            });
+            this.anmerkung = "";
+            this.handleResponseNotOk(true, response);
           }
-          this.selectAbfrage();
         }
       } else {
         this.showWarningInInformationList(validationMessage);

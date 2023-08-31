@@ -72,6 +72,44 @@ export default class ErrorHandler extends Mixins(InformationListMixin) {
     return error;
   }
 
+  public handleResponseNotOk(showInInformationList: boolean, error: Response): Response {
+    if (!error.ok) {
+      if (error.type === "opaqueredirect") {
+        location.reload();
+      } else if (error.status === 403) {
+        const errorMessage = ErrorHandler.ERROR_MESSAGE_NOT_AUTHORIZED;
+        this.showErrorInformation(showInInformationList, errorMessage);
+      } else if (error.status === 503) {
+        // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
+        const errorMessage = ErrorHandler.ERROR_MESSAGE_GATEWAY;
+        this.showErrorInformation(showInInformationList, errorMessage);
+      } else if (error.status !== 500) {
+        // Das Backend reagiert mit einer fachlichen Fehlermeldung.
+        error.json().then((json: unknown) => {
+          const informationResponseDto: InformationResponseDto = InformationResponseDtoFromJSON(json);
+
+          if (showInInformationList) {
+            this.showInformationResponseDtoInInformationList(informationResponseDto);
+          } else {
+            // Show as Toast
+            const messages: string = _.join(informationResponseDto.messages, "; ");
+            const toastLevel: Levels = this.getToastLevel(informationResponseDto.type);
+            Toaster.toast(messages, toastLevel);
+          }
+        });
+      } else if (error.status === 500) {
+        // ResponseError vom Gateway. D.h. das Gateway aber nicht das Backend konnte erreicht werden.
+        const errorMessage = ErrorHandler.ERROR_MESSAGE_BACKEND;
+        this.showErrorInformation(showInInformationList, errorMessage);
+      } else {
+        // TypeError -> Der fetch-Request ist fehlgeschlagen.
+        const errorMessage = ErrorHandler.ERROR_MESSAGE_GATEWAY;
+        this.showErrorInformation(showInInformationList, errorMessage);
+      }
+    }
+    return error;
+  }
+
   /**
    * @param showInInformationList falls true. Andernfalls wird der Fehler als Toast gezeigt.
    * @param errorMessage welche angezeigt werden soll.

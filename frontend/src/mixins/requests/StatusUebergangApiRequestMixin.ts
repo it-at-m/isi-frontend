@@ -9,15 +9,16 @@ export default class StatusUebergangApiRequestMixin extends Mixins(ErrorHandler)
     transition: TransitionDto,
     abfrageId: string | undefined,
     anmerkung: string | undefined
-  ): Promise<boolean> {
+  ): Promise<Response | void> {
     const fetchUrl =
       import.meta.env.VITE_VUE_APP_API_URL +
       `/api/isi-backend-service/infrastruktur-abfrage/${abfrageId}/${transition.url}?anmerkung=${anmerkung}`;
     return fetch(fetchUrl, RequestUtils.getPUTConfig())
-      .then((response) => response.ok)
-      .catch((error) => {
+      .then((response) => {
+        return response;
+      })
+      .catch((error: Error) => {
         this.handleError(true, error);
-        return false;
       });
   }
 }
