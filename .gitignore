@@ -31,7 +31,6 @@ nbdist/
 
 /node_modules/
 /build.cmd
-package-lock.json
 
 # Sonstiges
 $(pwd)
@@ -42,6 +41,5 @@ apigateway/**/application-*.yml
 apigateway/**/logback-spring.xml
 frontend/.env.development
 frontend/.env.production
-frontend/package-lock.json
 frontend/auto-imports.d.ts
 frontend/components.d.ts
