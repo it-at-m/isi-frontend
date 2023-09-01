@@ -21,8 +21,10 @@ jobs:
           npm ci
           npm run build --if-present
           npm run test:unit
-      # TODO: evtl. hinzufügen
-      #          npm run lint
+      - name: Check with eslint
+        run: |
+          npm install
+          npm run check
       - name: Archive npm artifacts
         uses: actions/upload-artifact@v3
         with:
