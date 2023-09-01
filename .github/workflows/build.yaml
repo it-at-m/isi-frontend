@@ -8,21 +8,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'npm'
+          node-version: "16"
+          cache: "npm"
           cache-dependency-path: "./frontend/package-lock.json"
       - name: Execute npm install, test, build
         working-directory: frontend
         run: |
           npm ci
           npm run build --if-present
-          npm run test:unit          
-# TODO: evtl. hinzufügen
-#          npm run lint
+          npm run test:unit
+      # TODO: evtl. hinzufügen
+      #          npm run lint
       - name: Archive npm artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -42,7 +42,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: npm-artifacts
-          
+
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
@@ -51,10 +51,10 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-# TODO: Tests vom API Gateway funktionieren nur mit dem SSO. Muss noch konfiguriert werden.
+        # TODO: Tests vom API Gateway funktionieren nur mit dem SSO. Muss noch konfiguriert werden.
         run: mvn -B -Pgitlab-cicd verify -DskipTests -Dspring.security.logging.requests=all --file pom.xml
-#        run: mvn -B -s ./.m2/settings.xml -Pgitlab-cicd verify -Dspring.security.logging.requests=all --file pom.xml
-        
+  #        run: mvn -B -s ./.m2/settings.xml -Pgitlab-cicd verify -Dspring.security.logging.requests=all --file pom.xml
+
   compliance:
     runs-on: ubuntu-latest
 
