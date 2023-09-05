@@ -75,6 +75,18 @@ export interface SearchQueryAndSortingDto {
     selectMittelschule: boolean;
     /**
      * 
+     * @type {number}
+     * @memberof SearchQueryAndSortingDto
+     */
+    page?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryAndSortingDto
+     */
+    pageSize?: number;
+    /**
+     * 
      * @type {string}
      * @memberof SearchQueryAndSortingDto
      */
@@ -127,6 +139,8 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'page': !exists(json, 'page') ? undefined : json['page'],
+        'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
         'sortBy': json['sortBy'],
         'sortOrder': json['sortOrder'],
     };
@@ -150,6 +164,8 @@ export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto 
         'selectKindergarten': value.selectKindergarten,
         'selectKinderkrippe': value.selectKinderkrippe,
         'selectMittelschule': value.selectMittelschule,
+        'page': value.page,
+        'pageSize': value.pageSize,
         'sortBy': value.sortBy,
         'sortOrder': value.sortOrder,
     };

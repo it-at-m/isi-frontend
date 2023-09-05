@@ -69,6 +69,8 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
         selectKindergarten: searchQueryForEntitiesDto.selectKindergarten,
         selectKinderkrippe: searchQueryForEntitiesDto.selectKinderkrippe,
         selectMittelschule: searchQueryForEntitiesDto.selectMittelschule,
+        page: undefined,
+        pageSize: undefined,
       } as SearchQueryDto;
       this.searchForSearchwordSuggestion(searchQueryDto).then((suchwortSuggestions) => {
         const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {

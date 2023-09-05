@@ -32,6 +32,12 @@ export interface SearchResultsDto {
      * @memberof SearchResultsDto
      */
     searchResults?: Array<SearchResultsDtoSearchResultsInner>;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchResultsDto
+     */
+    numberOfPages?: number;
 }
 
 export function SearchResultsDtoFromJSON(json: any): SearchResultsDto {
@@ -45,6 +51,7 @@ export function SearchResultsDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
     return {
         
         'searchResults': !exists(json, 'searchResults') ? undefined : ((json['searchResults'] as Array<any>).map(SearchResultsDtoSearchResultsInnerFromJSON)),
+        'numberOfPages': !exists(json, 'numberOfPages') ? undefined : json['numberOfPages'],
     };
 }
 
@@ -58,6 +65,7 @@ export function SearchResultsDtoToJSON(value?: SearchResultsDto | null): any {
     return {
         
         'searchResults': value.searchResults === undefined ? undefined : ((value.searchResults as Array<any>).map(SearchResultsDtoSearchResultsInnerToJSON)),
+        'numberOfPages': value.numberOfPages,
     };
 }
 

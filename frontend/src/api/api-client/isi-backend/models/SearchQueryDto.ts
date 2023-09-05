@@ -73,6 +73,18 @@ export interface SearchQueryDto {
      * @memberof SearchQueryDto
      */
     selectMittelschule: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
+    page?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
+    pageSize?: number;
 }
 
 export function SearchQueryDtoFromJSON(json: any): SearchQueryDto {
@@ -94,6 +106,8 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'page': !exists(json, 'page') ? undefined : json['page'],
+        'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
     };
 }
 
@@ -115,6 +129,8 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'selectKindergarten': value.selectKindergarten,
         'selectKinderkrippe': value.selectKinderkrippe,
         'selectMittelschule': value.selectMittelschule,
+        'page': value.page,
+        'pageSize': value.pageSize,
     };
 }
 

@@ -56,6 +56,8 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     selectKindergarten: true,
     selectKinderkrippe: true,
     selectMittelschule: true,
+    pageSize: undefined,
+    page: undefined,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   } as SearchQueryAndSortingDto;

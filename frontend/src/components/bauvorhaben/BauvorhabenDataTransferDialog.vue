@@ -133,6 +133,8 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
       selectKindergarten: false,
       selectKinderkrippe: false,
       selectMittelschule: false,
+      page: undefined,
+      pageSize: undefined,
       sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
       sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
     } as SearchQueryAndSortingDto;
