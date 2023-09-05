@@ -97,9 +97,11 @@ import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOp
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import _ from "lodash";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
+import MapLayout from "@/components/map/MapLayout.vue";
 
 @Component({
   components: {
+    MapLayout,
     SearchAndFilterOptions,
     CityMap,
     SearchResultList,
