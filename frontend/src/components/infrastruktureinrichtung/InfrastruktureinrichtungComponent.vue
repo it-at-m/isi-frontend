@@ -93,7 +93,7 @@
           <v-select
             id="infrastruktureinrichtung_bauvorhaben_dropdown"
             v-model="infrastruktureinrichtung.bauvorhaben"
-            :items="bauvorhabenList"
+            :items="bauvorhaben"
             item-text="nameVorhaben"
             item-value="id"
             label="Bauvorhaben"
@@ -140,7 +140,14 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import { BauvorhabenDto, InfrastruktureinrichtungDtoStatusEnum, LookupEntryDto } from "@/api/api-client/isi-backend";
+import {
+  BauvorhabenSearchResultDto,
+  InfrastruktureinrichtungDtoStatusEnum,
+  LookupEntryDto,
+  SearchQueryAndSortingDto,
+  SearchQueryAndSortingDtoSortByEnum,
+  SearchQueryAndSortingDtoSortOrderEnum,
+} from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
@@ -150,6 +157,7 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import NumField from "@/components/common/NumField.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
+import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
 @Component({
   components: {
@@ -163,6 +171,7 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
   FieldPrefixesSuffixes,
+  SearchApiRequestMixin,
   SecurityMixin
 ) {
   @VModel({ type: InfrastruktureinrichtungModel })
@@ -172,6 +181,8 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   private readonly isEditable!: boolean;
 
   private flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
+
+  private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
   mounted(): void {
     this.fetchBauvorhaben();
@@ -183,10 +194,6 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
 
   get einrichtungstraegerList(): LookupEntryDto[] {
     return this.$store.getters["lookup/einrichtungstraeger"];
-  }
-
-  get bauvorhabenList(): BauvorhabenDto[] {
-    return this.$store.getters["search/resultBauvorhaben"];
   }
 
   private isFertigstellungsjahrRequired(): boolean {
@@ -204,8 +211,23 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
    * Holt alle Bauvorhaben vom Backend.
    */
   private async fetchBauvorhaben(): Promise<void> {
-    await this.getBauvorhaben(true).then((bauvorhaben: BauvorhabenDto[]) => {
-      this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
+    const searchQueryAndSortingDto = {
+      searchQuery: "",
+      selectInfrastrukturabfrage: false,
+      selectBauvorhaben: true,
+      selectGrundschule: false,
+      selectGsNachmittagBetreuung: false,
+      selectHausFuerKinder: false,
+      selectKindergarten: false,
+      selectKinderkrippe: false,
+      selectMittelschule: false,
+      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+    } as SearchQueryAndSortingDto;
+    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
+      this.bauvorhaben = searchResults.searchResults?.map(
+        (searchResults) => searchResults as BauvorhabenSearchResultDto
+      ) as Array<BauvorhabenSearchResultDto>;
     });
   }
 }

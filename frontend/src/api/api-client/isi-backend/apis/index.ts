@@ -2,7 +2,6 @@
 /* eslint-disable */
 export * from './AbfrageApi';
 export * from './AbfrageStatusApi';
-export * from './AbfragelistenApi';
 export * from './BaurateApi';
 export * from './BauvorhabenApi';
 export * from './DateihandlingApi';

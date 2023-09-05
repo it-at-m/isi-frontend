@@ -155,7 +155,7 @@ import {
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
   InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
+  InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
   KindergartenDto,
   KinderkrippeDto,
   MittelschuleDto,
@@ -237,14 +237,14 @@ export default class Infrastruktureinrichtung extends Mixins(
   get isInfrastruktureinrichtungTypNotUnspecified(): boolean {
     return (
       this.infrastruktureinrichtung?.infrastruktureinrichtungTyp !==
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Unspecified
+      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Unspecified
     );
   }
 
   get isKinderkrippe(): boolean {
     return (
       this.infrastruktureinrichtung?.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe
+      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe
     );
   }
 
@@ -259,7 +259,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   get isKindergarten(): boolean {
     return (
       this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten
+      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten
     );
   }
 
@@ -274,7 +274,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   get isHausFuerKinder(): boolean {
     return (
       this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder
+      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder
     );
   }
 
@@ -289,7 +289,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   get isGsNachmittagBetreuung(): boolean {
     return (
       this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung
+      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung
     );
   }
 
@@ -304,7 +304,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   get isGrundschule(): boolean {
     return (
       this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule
+      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule
     );
   }
 
@@ -319,7 +319,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   get isMittelschule(): boolean {
     return (
       this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule
+      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule
     );
   }
 
@@ -394,17 +394,17 @@ export default class Infrastruktureinrichtung extends Mixins(
     infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined
   ): string | null {
     switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
         return this.findFaultInKinderkrippeForSave(infrastruktureinrichtung as KinderkrippeDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
         return this.findFaultInKindergartenForSave(infrastruktureinrichtung as KindergartenDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
         return this.findFaultInHausFuerKinderForSave(infrastruktureinrichtung as HausFuerKinderDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
         return this.findFaultInGsNachmittagBetreuungForSave(infrastruktureinrichtung as GsNachmittagBetreuungDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
         return this.findFaultInGrundschuleForSave(infrastruktureinrichtung as GrundschuleDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
         return this.findFaultInMittelschuleForSave(infrastruktureinrichtung as MittelschuleDto);
       default:
         return null;
@@ -412,7 +412,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private getModelOfNewDtoForInfrastruktureinrichtungTyp(
-    infrastruktureinrichtungTyp: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum | undefined
+    infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum | undefined
   ):
     | KinderkrippeModel
     | KindergartenModel
@@ -422,17 +422,17 @@ export default class Infrastruktureinrichtung extends Mixins(
     | MittelschuleModel
     | InfrastruktureinrichtungDto {
     switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
         return this.getModelOfDto(createKinderkrippeDto()) as KinderkrippeModel;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
         return this.getModelOfDto(createKindergartenDto()) as KindergartenModel;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
         return this.getModelOfDto(createHausFuerKinderDto()) as HausFuerKinderModel;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
         return this.getModelOfDto(createGsNachmittagBetreuungDto()) as GsNachmittagBetreuungModel;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
         return this.getModelOfDto(createGrundschuleDto()) as GrundschuleModel;
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
         return this.getModelOfDto(createMittelschuleDto()) as MittelschuleModel;
       default:
         return createInfrastruktureinrichtungDto();
@@ -450,17 +450,17 @@ export default class Infrastruktureinrichtung extends Mixins(
     | MittelschuleModel
     | undefined {
     switch (dto?.infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
         return new KinderkrippeModel(dto as KinderkrippeDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
         return new KindergartenModel(dto as KindergartenDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
         return new HausFuerKinderModel(dto as HausFuerKinderDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
         return new GsNachmittagBetreuungModel(dto as GsNachmittagBetreuungDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Grundschule:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
         return new GrundschuleModel(dto as GrundschuleDto);
-      case InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum.Mittelschule:
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
         return new MittelschuleModel(dto as MittelschuleDto);
       default:
         return undefined;

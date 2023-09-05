@@ -18,17 +18,19 @@
         @click="routeToInfrastrukturabfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
-          {{ castToAbfrageListElementDto(item).nameAbfrage }}
+          {{ castToAbfrageSearchResultDto(item).nameAbfrage }}
         </v-card-subtitle>
         <v-card-text>
-          <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageListElementDto(item).stadtbezirke) }} </span>
+          <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
           <v-spacer />
           <span>
             Status:
-            {{ getLookupValueInfrastrukturabfrage(castToAbfrageListElementDto(item).statusAbfrage, statusAbfrageList) }}
+            {{
+              getLookupValueInfrastrukturabfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList)
+            }}
           </span>
           <v-spacer />
-          <span> Frist: {{ datumFormatted(castToAbfrageListElementDto(item).fristStellungnahme) }} </span>
+          <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristStellungnahme) }} </span>
         </v-card-text>
       </v-card>
       <v-card
@@ -40,19 +42,19 @@
         @click="routeToBauvorhabenForm(item)"
       >
         <v-card-subtitle class="black--text">
-          {{ castToBauvorhabenListElementDto(item).nameVorhaben }}
+          {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
         </v-card-subtitle>
         <v-card-text>
-          <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenListElementDto(item).stadtbezirke) }} </span>
+          <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenSearchResultDto(item).stadtbezirke) }} </span>
           <v-spacer />
           <span>
             Grundstücksgröße:
-            {{ getFormattedGrundstuecksgroesse(castToBauvorhabenListElementDto(item).grundstuecksgroesse) }} m²
+            {{ getFormattedGrundstuecksgroesse(castToBauvorhabenSearchResultDto(item).grundstuecksgroesse) }} m²
           </span>
           <v-spacer />
           <span>
             Stand:
-            {{ getLookupValueBauvorhaben(castToBauvorhabenListElementDto(item).standVorhaben, standVorhabenList) }}
+            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVorhaben, standVorhabenList) }}
           </span>
         </v-card-text>
       </v-card>
@@ -65,13 +67,13 @@
         @click="routeToInfrastruktureinrichtungForm(item)"
       >
         <v-card-subtitle class="black--text">
-          {{ castToInfrastruktureinrichtungListElementDto(item).nameEinrichtung }}
+          {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
         </v-card-subtitle>
         <v-card-text>
           <span>
             {{
               getLookupValueInfrastruktureinrichtung(
-                castToInfrastruktureinrichtungListElementDto(item).infrastruktureinrichtungTyp,
+                castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
                 infrastruktureinrichtungTypList
               )
             }}</span
@@ -92,9 +94,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import {
-  AbfrageListElementDto,
-  BauvorhabenListElementDto,
-  InfrastruktureinrichtungListElementDto,
+  AbfrageSearchResultDto,
+  BauvorhabenSearchResultDto,
+  InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
   SearchResultDto,
   SearchResultDtoTypeEnum,
@@ -131,15 +133,15 @@ export default class SearchResultList extends Vue {
     return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage);
   }
 
-  private castToAbfrageListElementDto(searchResult: SearchResultDto): AbfrageListElementDto {
-    return searchResult as AbfrageListElementDto;
+  private castToAbfrageSearchResultDto(searchResult: SearchResultDto): AbfrageSearchResultDto {
+    return searchResult as AbfrageSearchResultDto;
   }
 
-  private routeToInfrastrukturabfrageForm(abfrageListElement: AbfrageListElementDto): void {
-    if (!_.isUndefined(abfrageListElement.id)) {
+  private routeToInfrastrukturabfrageForm(abfrageSearchResult: AbfrageSearchResultDto): void {
+    if (!_.isUndefined(abfrageSearchResult.id)) {
       router.push({
         name: "updateabfrage",
-        params: { id: abfrageListElement.id },
+        params: { id: abfrageSearchResult.id },
       });
     }
   }
@@ -167,15 +169,15 @@ export default class SearchResultList extends Vue {
     return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben);
   }
 
-  private castToBauvorhabenListElementDto(searchResult: SearchResultDto): BauvorhabenListElementDto {
-    return searchResult as BauvorhabenListElementDto;
+  private castToBauvorhabenSearchResultDto(searchResult: SearchResultDto): BauvorhabenSearchResultDto {
+    return searchResult as BauvorhabenSearchResultDto;
   }
 
-  private routeToBauvorhabenForm(bauvorhabenListElement: BauvorhabenListElementDto): void {
-    if (!_.isNil(bauvorhabenListElement.id)) {
+  private routeToBauvorhabenForm(bauvorhabenSearchResult: BauvorhabenSearchResultDto): void {
+    if (!_.isNil(bauvorhabenSearchResult.id)) {
       router.push({
         name: "editBauvorhaben",
-        params: { id: bauvorhabenListElement.id },
+        params: { id: bauvorhabenSearchResult.id },
       });
     }
   }
@@ -193,19 +195,19 @@ export default class SearchResultList extends Vue {
     return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastruktureinrichtung);
   }
 
-  private castToInfrastruktureinrichtungListElementDto(
+  private castToInfrastruktureinrichtungSearchResultDto(
     searchResult: SearchResultDto
-  ): InfrastruktureinrichtungListElementDto {
-    return searchResult as InfrastruktureinrichtungListElementDto;
+  ): InfrastruktureinrichtungSearchResultDto {
+    return searchResult as InfrastruktureinrichtungSearchResultDto;
   }
 
   private routeToInfrastruktureinrichtungForm(
-    infrastruktureinrichtungListElement: InfrastruktureinrichtungListElementDto
+    infrastruktureinrichtungSearchResult: InfrastruktureinrichtungSearchResultDto
   ): void {
-    if (!_.isNil(infrastruktureinrichtungListElement.id)) {
+    if (!_.isNil(infrastruktureinrichtungSearchResult.id)) {
       router.push({
         name: "editInfrastruktureinrichtung",
-        params: { id: infrastruktureinrichtungListElement.id },
+        params: { id: infrastruktureinrichtungSearchResult.id },
       });
     }
   }

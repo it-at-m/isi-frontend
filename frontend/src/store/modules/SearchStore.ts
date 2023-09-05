@@ -1,9 +1,9 @@
 import {
-  AbfrageListElementDto,
+  AbfrageSearchResultDto,
   BauvorhabenDto,
-  BauvorhabenListElementDto,
+  BauvorhabenSearchResultDto,
   InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungListElementDto,
+  InfrastruktureinrichtungSearchResultDto,
   SearchResultDto,
   SearchResultDtoTypeEnum,
 } from "@/api/api-client/isi-backend";
@@ -18,12 +18,11 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 const state = {
   searchResults: [] as Array<SearchResultDto>,
   requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
-  resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
+  resultAbfrage: undefined as Array<AbfrageSearchResultDto> | undefined,
   searchQueryAbfrage: "",
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
-  resultBauvorhaben: undefined as BauvorhabenDto[] | undefined,
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
-  resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungListElementDto[] | undefined,
+  resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungSearchResultDto[] | undefined,
   searchQueryInfrastruktureinrichtung: "",
   selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
 };
@@ -42,7 +41,7 @@ export default {
     requestSearchQueryAndSorting: (): SearchQueryAndSortingModel => {
       return state.requestSearchQueryAndSorting;
     },
-    resultAbfrage: (state: SearchState): Array<AbfrageListElementDto> | undefined => {
+    resultAbfrage: (state: SearchState): Array<AbfrageSearchResultDto> | undefined => {
       return state.resultAbfrage;
     },
     searchQueryAbfrage: (state: SearchState): string => {
@@ -51,13 +50,12 @@ export default {
     selectedAbfrage: (state: SearchState): InfrastrukturabfrageModel | undefined => {
       return state.selectedAbfrage;
     },
-    resultBauvorhaben: (state: SearchState): Array<BauvorhabenDto> | undefined => {
-      return state.resultBauvorhaben;
-    },
     selectedBauvorhaben: (state: SearchState): BauvorhabenDto | undefined => {
       return state.selectedBauvorhaben;
     },
-    resultInfrastruktureinrichtung: (state: SearchState): Array<InfrastruktureinrichtungListElementDto> | undefined => {
+    resultInfrastruktureinrichtung: (
+      state: SearchState
+    ): Array<InfrastruktureinrichtungSearchResultDto> | undefined => {
       return state.resultInfrastruktureinrichtung;
     },
     searchQueryInfrastruktureinrichtung: (state: SearchState): string => {
@@ -76,18 +74,18 @@ export default {
       _.remove(state.searchResults, function (searchResult: SearchResultDto) {
         return (
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage) &&
-            _.isEqual(id, (searchResult as AbfrageListElementDto).id)) ||
+            _.isEqual(id, (searchResult as AbfrageSearchResultDto).id)) ||
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben) &&
-            _.isEqual(id, (searchResult as BauvorhabenListElementDto).id)) ||
+            _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id)) ||
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastruktureinrichtung) &&
-            _.isEqual(id, (searchResult as BauvorhabenListElementDto).id))
+            _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id))
         );
       });
     },
     requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingModel): void {
       state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
     },
-    resultAbfrage(state: SearchState, items: AbfrageListElementDto[]): void {
+    resultAbfrage(state: SearchState, items: AbfrageSearchResultDto[]): void {
       state.resultAbfrage = items;
     },
     searchQueryAbfrage(state: SearchState, searchQuery: string): void {
@@ -102,13 +100,7 @@ export default {
     selectedBauvorhaben: (state: SearchState, item: BauvorhabenDto): void => {
       state.selectedBauvorhaben = item;
     },
-    resultBauvorhaben: (state: SearchState, items: BauvorhabenDto[]): void => {
-      state.resultBauvorhaben = items;
-    },
-    resetBauvorhaben(state: SearchState): void {
-      state.resultBauvorhaben = undefined;
-    },
-    resultInfrastruktureinrichtung(state: SearchState, items: InfrastruktureinrichtungListElementDto[]): void {
+    resultInfrastruktureinrichtung(state: SearchState, items: InfrastruktureinrichtungSearchResultDto[]): void {
       state.resultInfrastruktureinrichtung = items;
     },
     searchQueryInfrastruktureinrichtung(state: SearchState, searchQuery: string): void {
@@ -138,7 +130,7 @@ export default {
     ): void {
       context.commit("requestSearchQueryAndSorting", searchQueryAndSortingDto);
     },
-    resultAbfrage(context: ActionContext<SearchState, RootState>, items: AbfrageListElementDto[]): void {
+    resultAbfrage(context: ActionContext<SearchState, RootState>, items: AbfrageSearchResultDto[]): void {
       context.commit("resultAbfrage", items);
     },
     searchQueryAbfrage(context: ActionContext<SearchState, RootState>, searchQuery: string): void {
@@ -153,18 +145,12 @@ export default {
     isInitializedAbfrage(): boolean {
       return this.resultAbfrage !== undefined;
     },
-    resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
-      context.commit("resultBauvorhaben", items);
-    },
     selectedBauvorhaben(context: ActionContext<SearchState, RootState>, item: BauvorhabenDto): void {
       context.commit("selectedBauvorhaben", item);
     },
-    resetBauvorhaben(context: ActionContext<SearchState, RootState>): void {
-      context.commit("resetBauvorhaben");
-    },
     resultInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      items: InfrastruktureinrichtungListElementDto[]
+      items: InfrastruktureinrichtungSearchResultDto[]
     ): void {
       context.commit("resultInfrastruktureinrichtung", items);
     },
