@@ -31,16 +31,16 @@ nbdist/
 
 /node_modules/
 /build.cmd
-package-lock.json
 
 # Sonstiges
 $(pwd)
+package-lock.json
 
 # do not check in application profile yml
 apigateway/**/application-*.yml
+!apigateway/**/application-test.yml
 apigateway/**/logback-spring.xml
 frontend/.env.development
 frontend/.env.production
-frontend/package-lock.json
 frontend/auto-imports.d.ts
 frontend/components.d.ts
