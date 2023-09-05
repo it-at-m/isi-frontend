@@ -57,6 +57,7 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_statusuebergang"
+          ref="yesNoDialogStatusuebergang"
           v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
@@ -433,6 +434,7 @@ export default class Abfrage extends Mixins(
 
   private yesNoDialogStatusUebergangeNo(): void {
     this.isStatusUebergangDialogOpen = false;
+    if (!_.isNil(this.$refs.yesNoDialogStatusuebergang)) this.$refs.yesNoDialogStatusuebergang.resetTextarea();
   }
 
   private yesNoDialogAbfragevarianteYes(): void {

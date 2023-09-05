@@ -37,6 +37,7 @@
       <v-textarea
         v-if="hasAnmerkung"
         id="yes_no_dialog-text-area"
+        ref="textarea"
         class="textarea"
         label="Anmerkung"
         auto-grow
@@ -67,6 +68,7 @@
 </template>
 
 <script lang="ts">
+import _ from "lodash";
 import { Component, Prop, VModel, Vue } from "vue-property-decorator";
 
 /**
@@ -136,6 +138,12 @@ export default class YesNoDialog extends Vue {
 
   changed(val: boolean): void {
     this.$emit("input", val);
+  }
+
+  resetTextarea(): void {
+    if (!_.isNil(this.$refs.textarea)) {
+      this.$refs.textarea.reset();
+    }
   }
 }
 </script>
