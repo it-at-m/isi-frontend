@@ -507,7 +507,6 @@ export default class Abfrage extends Mixins(
 
   private handleSuccess(dto: InfrastrukturabfrageDto): void {
     this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
-    this.$store.dispatch("search/resetAbfrage");
     if (this.isNewAbfrage()) {
       this.$router.push({ path: "/" });
       Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
@@ -576,7 +575,6 @@ export default class Abfrage extends Mixins(
     if (message && level) {
       Toaster.toast(message, level);
     }
-    this.$store.dispatch("search/resetAbfrage");
     this.$router.push({ path: "/" });
   }
 
@@ -786,7 +784,6 @@ export default class Abfrage extends Mixins(
       await this.changeAbfragevarianteRelevant(this.abfrage.id as string, abfragevariante.id as string, true).then(
         (dto) => {
           this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
-          this.$store.dispatch("search/resetAbfrage");
           Toaster.toast(
             `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${
               this.abfrage.displayName
