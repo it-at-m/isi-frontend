@@ -30,7 +30,7 @@
           color="secondary"
           dark
           fab
-          x-large
+          large
         >
           <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
           <v-icon v-else> mdi-plus </v-icon>
@@ -68,7 +68,7 @@
       fab
       bottom
       right
-      x-large
+      large
       absolute
       @click="openSearchAndFilterDialog"
     >
