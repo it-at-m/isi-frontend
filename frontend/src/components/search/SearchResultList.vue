@@ -156,12 +156,13 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
 
   private onScroll(event: any) {
     const { scrollHeight, scrollTop, clientHeight } = event.target;
+    // Prüfung ob das Ende des Scrollbereichs erreicht wurde.
     if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
-      this.getNextPage();
+      this.getAndAppendSearchResultsNextPage();
     }
   }
 
-  private getNextPage(): void {
+  private getAndAppendSearchResultsNextPage(): void {
     const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
     let currentPage = searchQueryForEntitiesDto.page;
     if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
