@@ -4,6 +4,7 @@ import {
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungDto,
   SearchResultDto,
+  SearchResultsDto,
   SearchResultDtoTypeEnum,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
@@ -15,7 +16,7 @@ import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
 const state = {
-  searchResults: [] as Array<SearchResultDto>,
+  searchResults: { searchResults: [] } as SearchResultsDto,
   requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
@@ -30,7 +31,7 @@ export default {
   state,
 
   getters: {
-    searchResults: (): Array<SearchResultDto> => {
+    searchResults: (): SearchResultsDto => {
       return state.searchResults;
     },
     requestSearchQueryAndSorting: (): SearchQueryAndSortingModel => {
@@ -48,11 +49,11 @@ export default {
   },
 
   mutations: {
-    searchResults(state: SearchState, items: SearchResultDto[]): void {
-      state.searchResults = _.toArray(items);
+    searchResults(state: SearchState, searchResults: SearchResultsDto): void {
+      state.searchResults = searchResults;
     },
     removeSearchResultById(state: SearchState, id: string): void {
-      _.remove(state.searchResults, function (searchResult: SearchResultDto) {
+      _.remove(_.toArray(state.searchResults.searchResults), function (searchResult: SearchResultDto) {
         return (
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage) &&
             _.isEqual(id, (searchResult as AbfrageSearchResultDto).id)) ||
@@ -81,8 +82,8 @@ export default {
   },
 
   actions: {
-    searchResults(context: ActionContext<SearchState, RootState>, items: SearchResultDto[]): void {
-      context.commit("searchResults", _.toArray(items));
+    searchResults(context: ActionContext<SearchState, RootState>, searchResults: SearchResultsDto): void {
+      context.commit("searchResults", searchResults);
     },
     removeSearchResultById(context: ActionContext<SearchState, RootState>, id: string): void {
       context.commit("removeSearchResultById", id);

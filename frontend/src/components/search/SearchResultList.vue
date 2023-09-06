@@ -1,11 +1,11 @@
 <template>
   <v-container
-    v-if="searchResults.length > 0"
+    v-if="searchResultsAsArray.length > 0"
     class="pa-0 ma-0 overflow-y-auto"
   >
     <!-- eslint-disable vue/no-unused-vars -->
     <v-hover
-      v-for="(item, index) in searchResults"
+      v-for="(item, index) in searchResultsAsArray"
       :key="index"
       v-slot="{ hover }"
     >
@@ -111,8 +111,8 @@ import { convertDateForFrontend } from "@/utils/Formatter";
   components: { DefaultLayout },
 })
 export default class SearchResultList extends Vue {
-  get searchResults(): Array<SearchResultDto> {
-    return this.$store.getters["search/searchResults"];
+  get searchResultsAsArray(): Array<SearchResultDto> {
+    return _.cloneDeep(this.$store.getters["search/searchResults"].searchResults);
   }
 
   get infrastruktureinrichtungTypList(): Array<LookupEntryDto> {
