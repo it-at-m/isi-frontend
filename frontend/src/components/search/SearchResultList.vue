@@ -139,10 +139,10 @@ export default class SearchResultList extends Vue {
   }
 
   private onScroll(event: any) {
-    console.log("onScroll");
-    console.log("offsetHeight: " + event.target.offsetHeight);
-    console.log("scrollTop: " + event.target.scrollTop);
-    console.log("scrollHeight: " + event.target.scrollHeight);
+    const { scrollHeight, scrollTop, clientHeight } = event.target;
+    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
+      console.log("scrolled");
+    }
   }
 
   // Infrastrukturabfragen
