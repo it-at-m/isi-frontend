@@ -6,10 +6,12 @@ import {
   AbfragevarianteDtoPlanungsrechtEnum,
   InfrastrukturabfrageDto,
   InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  InfrastrukturabfrageInBearbeitungFachreferateDto,
   AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto,
   AbfragevarianteSachbearbeitungDto,
   BedarfsmeldungFachabteilungenDto,
   AbfragevarianteInBearbeitungSachbearbeitungDto,
+  AbfragevarianteInBearbeitungFachreferateDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
@@ -137,6 +139,38 @@ export function mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(
     abfragevarianten: abfragevarianten,
     abfragevariantenSachbearbeitung: abfragevariantenSachbearbeitung,
   } as InfrastrukturabfrageInBearbeitungSachbearbeitungDto;
+}
+
+export function mapToInfrastrukturabfrageInBearbeitungFachreferateDto(
+  infrastrukturabfrageDto: InfrastrukturabfrageDto
+): InfrastrukturabfrageInBearbeitungFachreferateDto {
+  const abfragevarianten = _.toArray(infrastrukturabfrageDto.abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
+        abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate
+      ),
+    } as AbfragevarianteInBearbeitungFachreferateDto;
+  });
+
+  const abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrageDto.abfragevariantenSachbearbeitung).map(
+    (abfragevariante) => {
+      return {
+        id: abfragevariante.id,
+        version: abfragevariante.version,
+        bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
+          abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate
+        ),
+      } as AbfragevarianteInBearbeitungFachreferateDto;
+    }
+  );
+
+  return {
+    version: infrastrukturabfrageDto.version,
+    abfragevarianten: abfragevarianten,
+    abfragevariantenSachbearbeitung: abfragevariantenSachbearbeitung,
+  } as InfrastrukturabfrageInBearbeitungFachreferateDto;
 }
 
 export function mapToBedarfsmeldungFachabteilungen(

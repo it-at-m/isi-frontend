@@ -8,7 +8,9 @@ import {
   PatchAbfrageAngelegtRequest,
   PutChangeAbfragevarianteRelevantRequest,
   InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  InfrastrukturabfrageInBearbeitungFachreferateDto,
   PatchAbfrageInBearbeitungSachbearbeitungRequest,
+  PatchAbfrageInBearbeitungFachreferateRequest,
 } from "@/api/api-client/isi-backend";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -73,6 +75,26 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     };
     return this.abfrageApi
       .patchAbfrageInBearbeitungSachbearbeitung(requestObject, RequestUtils.getPATCHConfig())
+      .then((response) => {
+        this.resetDirty();
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  patchAbfrageInBearbeitungFachreferate(
+    dto: InfrastrukturabfrageInBearbeitungFachreferateDto,
+    id: string,
+    showInInformationList: boolean
+  ): Promise<InfrastrukturabfrageDto> {
+    const requestObject: PatchAbfrageInBearbeitungFachreferateRequest = {
+      infrastrukturabfrageInBearbeitungFachreferateDto: dto,
+      id: id,
+    };
+    return this.abfrageApi
+      .patchAbfrageInBearbeitungFachreferate(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
         this.resetDirty();
         return response;
