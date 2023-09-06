@@ -38,6 +38,12 @@ export interface SearchResultsDto {
      * @memberof SearchResultsDto
      */
     numberOfPages?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchResultsDto
+     */
+    page?: number;
 }
 
 export function SearchResultsDtoFromJSON(json: any): SearchResultsDto {
@@ -52,6 +58,7 @@ export function SearchResultsDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'searchResults': !exists(json, 'searchResults') ? undefined : ((json['searchResults'] as Array<any>).map(SearchResultsDtoSearchResultsInnerFromJSON)),
         'numberOfPages': !exists(json, 'numberOfPages') ? undefined : json['numberOfPages'],
+        'page': !exists(json, 'page') ? undefined : json['page'],
     };
 }
 
@@ -66,6 +73,7 @@ export function SearchResultsDtoToJSON(value?: SearchResultsDto | null): any {
         
         'searchResults': value.searchResults === undefined ? undefined : ((value.searchResults as Array<any>).map(SearchResultsDtoSearchResultsInnerToJSON)),
         'numberOfPages': value.numberOfPages,
+        'page': value.page,
     };
 }
 
