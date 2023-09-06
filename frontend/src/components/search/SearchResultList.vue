@@ -1,6 +1,8 @@
 <template>
-  <v-container
+  <v-list
     v-if="searchResultsAsArray.length > 0"
+    v-scroll.self="onScroll"
+    :height="viewportHeight"
     class="pa-0 ma-0 overflow-y-auto"
   >
     <!-- eslint-disable vue/no-unused-vars -->
@@ -81,7 +83,7 @@
         </v-card-text>
       </v-card>
     </v-hover>
-  </v-container>
+  </v-list>
   <v-container
     v-else
     class="pa-0 ma-0 w-100 d-flex justify-center align-center"
@@ -111,6 +113,14 @@ import { convertDateForFrontend } from "@/utils/Formatter";
   components: { DefaultLayout },
 })
 export default class SearchResultList extends Vue {
+  /**
+   * Berechnet die Höhe der verfübaren Listenhöhe in "vh" (Höhe Viewport in Hundert).
+   * Die Höhe des App-Headers wird mit 50px angesetzt.
+   */
+  get viewportHeight(): string {
+    const heightOfWindow = this.$vuetify.breakpoint.height;
+    return (heightOfWindow - 50) / (heightOfWindow / 100) + "vh";
+  }
   get searchResultsAsArray(): Array<SearchResultDto> {
     return _.cloneDeep(this.$store.getters["search/searchResults"].searchResults);
   }
@@ -125,6 +135,13 @@ export default class SearchResultList extends Vue {
 
   get standVorhabenList(): Array<LookupEntryDto> {
     return this.$store.getters["lookup/standVorhaben"];
+  }
+
+  private onScroll(event: any) {
+    console.log("onScroll");
+    console.log("offsetHeight: " + event.target.offsetHeight);
+    console.log("scrollTop: " + event.target.scrollTop);
+    console.log("scrollHeight: " + event.target.scrollHeight);
   }
 
   // Infrastrukturabfragen

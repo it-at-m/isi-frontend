@@ -1,16 +1,18 @@
 <template>
   <v-container
     fluid
-    class="fill-height pa-1"
+    class="fill-height pa-0"
   >
     <v-row class="fill-height justify-center">
       <v-col
+        class="py-0"
         cols="12"
         md="3"
       >
         <search-result-list />
       </v-col>
       <v-col
+        class="py-0"
         cols="12"
         md="9"
       >
