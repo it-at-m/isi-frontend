@@ -94,25 +94,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import {
   AbfrageSearchResultDto,
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
+  SearchQueryAndSortingDto,
   SearchResultDto,
   SearchResultDtoTypeEnum,
+  SearchResultsDto,
   StadtbezirkDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import router from "@/router";
 import { convertDateForFrontend } from "@/utils/Formatter";
+import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class SearchResultList extends Vue {
+export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
   /**
    * Berechnet die Höhe der verfübaren Listenhöhe in "vh" (Höhe Viewport in Hundert).
    * Die Höhe des App-Headers wird mit 50px angesetzt.
@@ -138,10 +141,40 @@ export default class SearchResultList extends Vue {
     return this.$store.getters["lookup/standVorhaben"];
   }
 
+  get getSearchQueryAndSorting(): SearchQueryAndSortingDto {
+    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+  }
+
+  get searchResults(): SearchResultsDto {
+    return _.cloneDeep(this.$store.getters["search/searchResults"]);
+  }
+
+  get numberOfPossiblePages(): number {
+    const numberOfPossiblePages = this.searchResults.numberOfPages;
+    return _.isNil(numberOfPossiblePages) ? 0 : numberOfPossiblePages;
+  }
+
   private onScroll(event: any) {
     const { scrollHeight, scrollTop, clientHeight } = event.target;
     if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
-      console.log("scrolled");
+      this.getNextPage();
+    }
+  }
+
+  private getNextPage(): void {
+    const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
+    let currentPage = searchQueryForEntitiesDto.page;
+    if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
+      searchQueryForEntitiesDto.page = currentPage;
+      this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
+      this.searchForEntities(searchQueryForEntitiesDto).then((searchResultsNextPage) => {
+        const currentSearchResults = this.searchResults;
+        searchResultsNextPage.searchResults = _.concat(
+          _.toArray(currentSearchResults.searchResults),
+          _.toArray(searchResultsNextPage.searchResults)
+        );
+        this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
+      });
     }
   }
 

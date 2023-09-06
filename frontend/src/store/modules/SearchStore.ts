@@ -16,7 +16,11 @@ import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
 const state = {
-  searchResults: { searchResults: [] } as SearchResultsDto,
+  searchResults: {
+    searchResults: [],
+    page: 0,
+    numberOfPages: 0,
+  } as SearchResultsDto,
   requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,

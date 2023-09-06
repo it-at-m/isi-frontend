@@ -89,7 +89,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
     searchQueryForEntitiesDto.searchQuery = _.isNil(this.searchQuery) ? "" : this.searchQuery;
     searchQueryForEntitiesDto.page = 1;
-    searchQueryForEntitiesDto.pageSize = 20;
+    searchQueryForEntitiesDto.pageSize = 2;
     this.suggestions = [searchQueryForEntitiesDto.searchQuery];
     this.selectedSuggestion = searchQueryForEntitiesDto.searchQuery;
     this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
