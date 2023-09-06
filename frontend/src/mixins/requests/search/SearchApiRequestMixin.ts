@@ -32,7 +32,7 @@ export default class SearchApiRequestMixin extends Mixins(ErrorHandler) {
       });
   }
 
-  public searchForEntities(searchQueryForEntitiesDto: SearchQueryAndSortingDto): Promise<SearchResultsDto> {
+  public async searchForEntities(searchQueryForEntitiesDto: SearchQueryAndSortingDto): Promise<SearchResultsDto> {
     const requestParameters = {
       searchQueryAndSortingDto: searchQueryForEntitiesDto,
     } as SearchForEntitiesRequest;

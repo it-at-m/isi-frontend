@@ -162,7 +162,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     }
   }
 
-  private async getAndAppendSearchResultsNextPage(): void {
+  private async getAndAppendSearchResultsNextPage(): Promise<void> {
     const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
     let currentPage = searchQueryForEntitiesDto.page;
     if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
