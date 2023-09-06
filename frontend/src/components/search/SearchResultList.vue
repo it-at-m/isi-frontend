@@ -121,6 +121,7 @@ export default class SearchResultList extends Vue {
     const heightOfWindow = this.$vuetify.breakpoint.height;
     return (heightOfWindow - 50) / (heightOfWindow / 100) + "vh";
   }
+
   get searchResultsAsArray(): Array<SearchResultDto> {
     return _.cloneDeep(this.$store.getters["search/searchResults"].searchResults);
   }
