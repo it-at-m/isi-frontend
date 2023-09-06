@@ -25,6 +25,8 @@
             return-object
             placeholder="Suchtext mit Adressteilen"
             prepend-inner-icon="mdi-magnify"
+            :rules="[adressSucheValidationRule()]"
+            validate-on-blur
           />
         </v-col>
         <v-col cols="1">
@@ -107,6 +109,8 @@
           :disabled="!isEditable"
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
+          :rules="[fieldValidationRules.requiredIfOtherEmpty(adresse.strasse, 'Adresse')]"
+          validate-on-blur
           @input="formChanged"
         />
       </v-col>
@@ -258,6 +262,10 @@ export default class AdresseComponent extends Mixins(
     this.searchResult = [];
     this.adressSucheItemSelected = false;
     this.formChanged();
+  }
+
+  private adressSucheValidationRule(): () => boolean | string {
+    return () => !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Angabe zur Lage leer ist";
   }
 
   //

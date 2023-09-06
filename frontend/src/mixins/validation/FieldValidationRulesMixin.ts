@@ -100,7 +100,7 @@ export default class FieldValidationRulesMixin extends Vue {
     requiredIfOtherEmpty:
       (otherValue: string, otherName: string) =>
       (v: string): string | boolean => {
-        return !this.isEmpty(otherValue) || !this.isEmpty(v) || `Pflichtfeld, wenn '${otherName}' leer ist`;
+        return !this.isEmpty(otherValue) || !this.isEmpty(v) || `Pflichtfeld, wenn ${otherName} leer ist`;
       },
   };
 }

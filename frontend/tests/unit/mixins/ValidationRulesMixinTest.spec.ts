@@ -146,7 +146,7 @@ describe("FieldValidationRulesMixin", () => {
   it("should be required when the other value is empty", () => {
     let otherValue = undefined;
     const otherName = "Feld";
-    const message = `Pflichtfeld, wenn '${otherName}' leer ist`;
+    const message = `Pflichtfeld, wenn ${otherName} leer ist`;
 
     let rule = (rules as any).requiredIfOtherEmpty(otherValue, otherName);
     expect(rule(undefined)).toBe(message);
