@@ -158,7 +158,7 @@ export default class Bauvorhaben extends Mixins(
 
   private isNew = true;
 
-  private datenuebernahmeAbfrage?: string = undefined;
+  private datenuebernahmeAbfrageId?: string = undefined;
 
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
@@ -217,7 +217,7 @@ export default class Bauvorhaben extends Mixins(
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
   private async saveBauvorhaben(): Promise<void> {
-    await this.postBauvorhaben(this.bauvorhaben, this.datenuebernahmeAbfrage, true).then(() => {
+    await this.postBauvorhaben(this.bauvorhaben, this.datenuebernahmeAbfrageId, true).then(() => {
       this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS);
     });
   }
@@ -277,7 +277,7 @@ export default class Bauvorhaben extends Mixins(
     this.bauvorhaben.bebauungsplannummer = abfrage.abfrage.bebauungsplannummer;
     this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
     this.bauvorhaben.sobonJahr = abfrage.sobonJahr;
-    this.datenuebernahmeAbfrage = abfrage.id;
+    this.datenuebernahmeAbfrageId = abfrage.id;
     this.dataTransferDialogOpen = false;
   }
 }
