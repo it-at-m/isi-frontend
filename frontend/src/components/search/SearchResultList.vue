@@ -198,6 +198,8 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
               this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
             })
             .finally(() => this.pageRequestMutex.release());
+        } else {
+          this.pageRequestMutex.release();
         }
       });
   }
