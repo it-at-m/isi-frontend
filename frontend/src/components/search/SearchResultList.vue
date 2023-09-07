@@ -111,11 +111,14 @@ import DefaultLayout from "@/components/DefaultLayout.vue";
 import router from "@/router";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import { Mutex, tryAcquire } from "async-mutex";
 
 @Component({
   components: { DefaultLayout },
 })
 export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
+  private pageRequestMutex = new Mutex();
+
   /**
    * Berechnet die Höhe der verfübaren Listenhöhe in "vh" (Höhe Viewport in Hundert).
    * Die Höhe des App-Headers wird mit 50px angesetzt.
@@ -165,18 +168,22 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
   private async getAndAppendSearchResultsNextPage(): Promise<void> {
     const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
     let currentPage = searchQueryForEntitiesDto.page;
-    if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
-      searchQueryForEntitiesDto.page = currentPage;
-      this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
-      await this.searchForEntities(searchQueryForEntitiesDto).then((searchResultsNextPage) => {
-        const currentSearchResults = this.searchResults;
-        searchResultsNextPage.searchResults = _.concat(
-          _.toArray(currentSearchResults.searchResults),
-          _.toArray(searchResultsNextPage.searchResults)
-        );
-        this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
-      });
-    }
+    tryAcquire(this.pageRequestMutex).runExclusive(() => {
+      if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
+        searchQueryForEntitiesDto.page = currentPage;
+        this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
+        this.searchForEntities(searchQueryForEntitiesDto)
+          .then((searchResultsNextPage) => {
+            const currentSearchResults = this.searchResults;
+            searchResultsNextPage.searchResults = _.concat(
+              _.toArray(currentSearchResults.searchResults),
+              _.toArray(searchResultsNextPage.searchResults)
+            );
+            this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
+          })
+          .finally(() => this.pageRequestMutex.release());
+      }
+    });
   }
 
   // Infrastrukturabfragen
