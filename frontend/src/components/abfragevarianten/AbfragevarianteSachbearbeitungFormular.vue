@@ -81,7 +81,7 @@
                     <td>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                        :disabled="!isEditableBySachbearbeitung()"
+                        :disabled="!isEditableByBedarfsmeldung()"
                         icon
                         @click="editBedarfsmeldung(item, index)"
                       >
@@ -89,7 +89,7 @@
                       </v-btn>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_loeschen' + index"
-                        :disabled="!isEditableBySachbearbeitung()"
+                        :disabled="!isEditableByBedarfsmeldung()"
                         icon
                         @click="deleteBedarfsmeldung(index)"
                       >
@@ -112,7 +112,7 @@
               >
                 <v-btn
                   :id="'bedarfsmeldung_erfassen'"
-                  :disabled="!isEditableBySachbearbeitung()"
+                  :disabled="!isEditableByBedarfsmeldung()"
                   class="text-wrap"
                   block
                   @click="erfassenBedarfsmeldung()"

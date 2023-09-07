@@ -10,6 +10,10 @@ export default class SecurityMixin extends Vue {
     return this.isRoleAdmin() || this.$store.getters["userinfo/hasRoleSachbearbeitung"];
   }
 
+  public isRoleAdminOrBedarfsmeldung(): boolean {
+    return this.isRoleAdmin() || this.$store.getters["userinfo/hasRoleBedarfsmeldung"];
+  }
+
   public isRoleAdmin(): boolean {
     return this.$store.getters["userinfo/hasRoleAdmin"] || this.isGuiWithoutSecurityContext();
   }

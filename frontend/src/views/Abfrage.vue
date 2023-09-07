@@ -280,6 +280,7 @@ import {
 } from "@/utils/Factories";
 import {
   mapToInfrastrukturabfrageAngelegt,
+  mapToInfrastrukturabfrageInBearbeitungFachreferateDto,
   mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
@@ -505,6 +506,14 @@ export default class Abfrage extends Mixins(
       } else if (this.isEditableBySachbearbeitung()) {
         await this.patchAbfrageInBearbeitungSachbearbeitung(
           mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrage),
+          this.abfrage.id as string,
+          true
+        ).then((dto) => {
+          this.handleSuccess(dto);
+        });
+      } else if (this.isEditableByBedarfsmeldung()) {
+        await this.patchAbfrageInBearbeitungFachreferate(
+          mapToInfrastrukturabfrageInBearbeitungFachreferateDto(this.abfrage),
           this.abfrage.id as string,
           true
         ).then((dto) => {
