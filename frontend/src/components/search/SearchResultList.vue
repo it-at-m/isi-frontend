@@ -180,22 +180,26 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
    * um eine Race-Condition bei mehreren schnell hintereinander ausgeführten Seitenaufrufen zu vermeiden.
    */
   private getAndAppendSearchResultsNextPage(): void {
-    tryAcquire(this.pageRequestMutex).runExclusive(() => {
-      const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
-      let currentPage = searchQueryForEntitiesDto.page;
-      if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
-        searchQueryForEntitiesDto.page = currentPage;
-        this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
-        this.searchForEntities(searchQueryForEntitiesDto).then((searchResultsNextPage) => {
-          const currentSearchResults = this.searchResults;
-          searchResultsNextPage.searchResults = _.concat(
-            _.toArray(currentSearchResults.searchResults),
-            _.toArray(searchResultsNextPage.searchResults)
-          );
-          this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
-        });
-      }
-    });
+    tryAcquire(this.pageRequestMutex)
+      .acquire()
+      .then(() => {
+        const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
+        let currentPage = searchQueryForEntitiesDto.page;
+        if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
+          searchQueryForEntitiesDto.page = currentPage;
+          this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
+          this.searchForEntities(searchQueryForEntitiesDto)
+            .then((searchResultsNextPage) => {
+              const currentSearchResults = this.searchResults;
+              searchResultsNextPage.searchResults = _.concat(
+                _.toArray(currentSearchResults.searchResults),
+                _.toArray(searchResultsNextPage.searchResults)
+              );
+              this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
+            })
+            .finally(() => this.pageRequestMutex.release());
+        }
+      });
   }
 
   // Infrastrukturabfragen
