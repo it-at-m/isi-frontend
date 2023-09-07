@@ -157,31 +157,43 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     return _.isNil(numberOfPossiblePages) ? 0 : numberOfPossiblePages;
   }
 
-  private onScroll(event: any) {
-    const { scrollHeight, scrollTop, clientHeight } = event.target;
+  /**
+   * Diese Methode prüft, ob der Scrollbalken der Suchergebnisliste am Ende der Liste angekommen ist und triggert dann
+   * den Suchrequest zum Holen der nächsten Seite und Anfügen der Suchergebnisse an die bestehenden Suchergebnisse.
+   *
+   * Des Weiteren wird der Request zum Holen der nächsten Seite nur dann getriggert, wenn kein anderer Request
+   * zum Holen der nächsten Seite ausgeführt wird.
+   */
+  private onScroll(scrollEvent: any) {
+    const { scrollHeight, scrollTop, clientHeight } = scrollEvent.target;
     // Prüfung ob das Ende des Scrollbereichs erreicht wurde.
     if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
       this.getAndAppendSearchResultsNextPage();
     }
   }
 
-  private async getAndAppendSearchResultsNextPage(): Promise<void> {
+  /**
+   * Holt die Suchergebnisse auf Basis des im Store hinterlegten SearchQueryAndSortingDto für die nächste Seite
+   * und fügt die bestehenden Suchergebnisse an die bereits vorhandenen Suchergebnisse an.
+   *
+   * Die Ausführung der Suchen und das Speichern der Suchergebnisse im Store wird mittels eines Mutex abgesichert,
+   * um eine Race-Condition bei mehreren schnell hintereinander ausgeführten Seitenaufrufen zu vermeiden.
+   */
+  private getAndAppendSearchResultsNextPage(): void {
     tryAcquire(this.pageRequestMutex).runExclusive(() => {
       const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
       let currentPage = searchQueryForEntitiesDto.page;
       if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
         searchQueryForEntitiesDto.page = currentPage;
         this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
-        this.searchForEntities(searchQueryForEntitiesDto)
-          .then((searchResultsNextPage) => {
-            const currentSearchResults = this.searchResults;
-            searchResultsNextPage.searchResults = _.concat(
-              _.toArray(currentSearchResults.searchResults),
-              _.toArray(searchResultsNextPage.searchResults)
-            );
-            this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
-          })
-          .finally(() => this.pageRequestMutex.release());
+        this.searchForEntities(searchQueryForEntitiesDto).then((searchResultsNextPage) => {
+          const currentSearchResults = this.searchResults;
+          searchResultsNextPage.searchResults = _.concat(
+            _.toArray(currentSearchResults.searchResults),
+            _.toArray(searchResultsNextPage.searchResults)
+          );
+          this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
+        });
       }
     });
   }
