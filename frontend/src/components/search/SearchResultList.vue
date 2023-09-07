@@ -166,9 +166,9 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
   }
 
   private async getAndAppendSearchResultsNextPage(): Promise<void> {
-    const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
-    let currentPage = searchQueryForEntitiesDto.page;
     tryAcquire(this.pageRequestMutex).runExclusive(() => {
+      const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
+      let currentPage = searchQueryForEntitiesDto.page;
       if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
         searchQueryForEntitiesDto.page = currentPage;
         this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
