@@ -3,7 +3,7 @@
     fluid
     class="fill-height pa-0"
   >
-    <v-row class="fill-height justify-center">
+    <v-row class="fill-height justify-center mx-0">
       <v-col
         class="py-0"
         cols="12"
@@ -12,7 +12,7 @@
         <search-result-list />
       </v-col>
       <v-col
-        class="py-0"
+        class="pa-0"
         cols="12"
         md="9"
       >
