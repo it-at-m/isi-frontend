@@ -114,12 +114,6 @@ export default class ValidatorMixin extends Vue {
         break;
       }
     }
-    const numberOfRelevantAbfragevarianten = abfragevarianten.filter(
-      (abfragevariante) => abfragevariante.relevant
-    ).length;
-    if (numberOfRelevantAbfragevarianten > 1) {
-      return "Es darf nur eine Abfragevariante als Relevant markiert werden";
-    }
     return validationMessage;
   }
 

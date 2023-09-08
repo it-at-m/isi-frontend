@@ -59,11 +59,6 @@ export interface PatchAbfrageInBearbeitungSachbearbeitungRequest {
     infrastrukturabfrageInBearbeitungSachbearbeitungDto: InfrastrukturabfrageInBearbeitungSachbearbeitungDto;
 }
 
-export interface PutChangeAbfragevarianteRelevantRequest {
-    abfrageId: string;
-    abfragevarianteId: string;
-}
-
 /**
  * 
  */
@@ -269,40 +264,6 @@ export class AbfrageApi extends runtime.BaseAPI {
      */
     async patchAbfrageInBearbeitungSachbearbeitung(requestParameters: PatchAbfrageInBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
         const response = await this.patchAbfrageInBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant, fall diese noch nicht relevant ist.Ist die Abfragevariante bereits als relevant markiert, wird der Status auf nicht relevant gesetzt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
-     */
-    async putChangeAbfragevarianteRelevantRaw(requestParameters: PutChangeAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {
-        if (requestParameters.abfrageId === null || requestParameters.abfrageId === undefined) {
-            throw new runtime.RequiredError('abfrageId','Required parameter requestParameters.abfrageId was null or undefined when calling putChangeAbfragevarianteRelevant.');
-        }
-
-        if (requestParameters.abfragevarianteId === null || requestParameters.abfragevarianteId === undefined) {
-            throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putChangeAbfragevarianteRelevant.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/infrastruktur-abfragen/abfrage/{abfrageId}/abfragevariante/change-relevant/{abfragevarianteId}`.replace(`{${"abfrageId"}}`, encodeURIComponent(String(requestParameters.abfrageId))).replace(`{${"abfragevarianteId"}}`, encodeURIComponent(String(requestParameters.abfragevarianteId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => InfrastrukturabfrageDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Markiert für Abfragen im Status IN_BEARBEITUNG_SACHBEARBEITUNG eine Abfragevariante als relevant, fall diese noch nicht relevant ist.Ist die Abfragevariante bereits als relevant markiert, wird der Status auf nicht relevant gesetzt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziertund noch keine andere Abfrage als relevant markiert wurde.
-     */
-    async putChangeAbfragevarianteRelevant(requestParameters: PutChangeAbfragevarianteRelevantRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastrukturabfrageDto> {
-        const response = await this.putChangeAbfragevarianteRelevantRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

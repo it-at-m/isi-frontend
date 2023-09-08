@@ -1,5 +1,6 @@
 import {
   AbfrageSearchResultDto,
+  AbfragevarianteDto,
   BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,
@@ -8,6 +9,7 @@ import {
   GetReferencedInfrastrukturabfragenRequest,
   GetReferencedInfrastruktureinrichtungRequest,
   InfrastruktureinrichtungSearchResultDto,
+  PutChangeRelevanteAbfragevarianteRequest,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -104,6 +106,23 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
       .deleteBauvorhaben(requestObject, RequestUtils.getDELETEConfig())
       .then((response) => {
         this.resetDirty();
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  changeRelevanteAbfragevariante(
+    abfragevarianteDto: AbfragevarianteDto,
+    showInInformationList: boolean
+  ): Promise<BauvorhabenDto> {
+    const requestObject: PutChangeRelevanteAbfragevarianteRequest = {
+      abfragevarianteDto,
+    };
+    return this.bauvorhabenApi
+      .putChangeRelevanteAbfragevariante(requestObject, RequestUtils.getPUTConfig())
+      .then((response) => {
         return response;
       })
       .catch((error) => {
