@@ -23,6 +23,23 @@
         <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
       </v-list>
     </template>
+    <template #append-outer>
+      <v-icon
+        class="white--text"
+        @click="openSearchAndFilterDialog"
+        >mdi-filter-outline</v-icon
+      >
+      <v-dialog
+        v-model="searchAndFilterDialogOpen"
+        max-width="1024px"
+      >
+        <search-and-filter-options
+          v-model="searchQueryAndSorting"
+          @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
+          @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+        />
+      </v-dialog>
+    </template>
   </v-autocomplete>
 </template>
 
@@ -31,9 +48,18 @@ import { Component, Mixins } from "vue-property-decorator";
 import { SearchQueryDto, SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import { createSearchQueryAndSortingModel } from "@/utils/Factories";
+import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 
-@Component({})
+@Component({
+  components: { SearchAndFilterOptions },
+})
 export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
+  private searchAndFilterDialogOpen = false;
+
+  private searchQueryAndSorting: SearchQueryAndSortingModel = createSearchQueryAndSortingModel();
+
   private searchQuery = "";
 
   private suggestions: Array<string> = [];
@@ -43,6 +69,33 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   mounted() {
     this.searchEntitiesForSelectedSuggestion();
   }
+
+  // Filter Dialog
+
+  get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
+    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+  }
+
+  set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
+    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
+  }
+
+  private openSearchAndFilterDialog(): void {
+    this.searchQueryAndSorting = this.searchQueryAndSortingStore;
+    this.searchAndFilterDialogOpen = true;
+  }
+
+  private handleAdoptSearchAndFilterOptions(): void {
+    this.searchQueryAndSortingStore = this.searchQueryAndSorting;
+    this.searchAndFilterDialogOpen = false;
+  }
+
+  private handleResetSearchAndFilterOptions(): void {
+    this.searchQueryAndSorting = createSearchQueryAndSortingModel();
+    this.handleAdoptSearchAndFilterOptions();
+  }
+
+  // Search
 
   get getSearchQueryAndSorting(): SearchQueryAndSortingDto {
     return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);

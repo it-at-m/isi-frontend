@@ -63,29 +63,6 @@
         v-text="'A'"
       />
     </v-speed-dial>
-    <v-btn
-      class="button-search-and-filter-options"
-      color="secondary"
-      dark
-      fab
-      bottom
-      right
-      large
-      absolute
-      @click="openSearchAndFilterDialog"
-    >
-      <v-icon>mdi-filter-outline</v-icon>
-    </v-btn>
-    <v-dialog
-      v-model="searchAndFilterDialogOpen"
-      max-width="1024px"
-    >
-      <search-and-filter-options
-        v-model="searchQueryAndSorting"
-        @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
-        @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
-      />
-    </v-dialog>
   </v-container>
 </template>
 
@@ -98,7 +75,6 @@ import router from "@/router";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import _ from "lodash";
-import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import MapLayout from "@/components/map/MapLayout.vue";
 
 @Component({
@@ -111,11 +87,7 @@ import MapLayout from "@/components/map/MapLayout.vue";
   },
 })
 export default class Main extends Vue {
-  private searchAndFilterDialogOpen = false;
-
   private speedDialOpen = false;
-
-  private searchQueryAndSorting: SearchQueryAndSortingModel = createSearchQueryAndSortingModel();
 
   get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
     return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
@@ -142,30 +114,11 @@ export default class Main extends Vue {
       name: "createInfrastruktureinrichtung",
     });
   }
-
-  private openSearchAndFilterDialog(): void {
-    this.searchQueryAndSorting = this.searchQueryAndSortingStore;
-    this.searchAndFilterDialogOpen = true;
-  }
-
-  private handleAdoptSearchAndFilterOptions(): void {
-    this.searchQueryAndSortingStore = this.searchQueryAndSorting;
-    this.searchAndFilterDialogOpen = false;
-  }
-
-  private handleResetSearchAndFilterOptions(): void {
-    this.searchQueryAndSorting = createSearchQueryAndSortingModel();
-    this.handleAdoptSearchAndFilterOptions();
-  }
 }
 </script>
 
 <style>
 .button-speed-dial-entity-creation {
-  margin-bottom: 96px;
-}
-
-.button-search-and-filter-options {
-  margin-bottom: 64px;
+  margin-bottom: 16px;
 }
 </style>
