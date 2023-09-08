@@ -26,13 +26,6 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import AbfragevarianteSachbearbeitungModel from "@/types/model/abfragevariante/AbfragevarianteSachbearbeitungModel";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
-import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
-import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
-import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
-import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
-import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
-import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
 import moment from "moment";
 import {
   addiereAnteile,
@@ -120,12 +113,6 @@ export default class ValidatorMixin extends Vue {
       if (!_.isNil(validationMessage)) {
         break;
       }
-    }
-    const numberOfRelevantAbfragevarianten = abfragevarianten.filter(
-      (abfragevariante) => abfragevariante.relevant
-    ).length;
-    if (numberOfRelevantAbfragevarianten > 1) {
-      return "Es darf nur eine Abfragevariante als Relevant markiert werden";
     }
     return validationMessage;
   }
