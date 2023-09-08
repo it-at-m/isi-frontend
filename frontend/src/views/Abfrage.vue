@@ -133,6 +133,17 @@
           @no="yesNoDialogBaurateNo"
           @yes="yesNoDialogBaurateYes"
         />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_relevante_abfragevariante_dialog"
+          v-model="isRelevanteAbfragevarianteDialogOpen"
+          icon="mdi-marker"
+          dialogtitle="Hinweis"
+          :dialogtext="relevanteAbfragevarianteDialogText"
+          no-text="Abbrechen"
+          yes-text="Überschreiben"
+          @no="yesNoDialogRelevanteAbfragevarianteNo"
+          @yes="yesNoDialogRelevanteAbfragevarianteYes"
+        />
       </template>
       <template #heading>
         <v-container>
@@ -267,7 +278,6 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import {
   createAbfragevarianteDto,
@@ -340,6 +350,8 @@ export default class Abfrage extends Mixins(
   SaveLeaveMixin,
   AbfrageSecurityMixin
 ) {
+  private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
+
   private modeAbfrage = DisplayMode.UNDEFINED;
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
@@ -357,8 +369,11 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBauabschnittOpen = false;
   private isDeleteDialogBaugebietOpen = false;
   private isDeleteDialogBaurateOpen = false;
+  private isRelevanteAbfragevarianteDialogOpen = false;
+  private relevanteAbfragevarianteDialogText = "";
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
+  private relevanteAbfragevarianteToBeSet: AbfragevarianteModel | undefined;
   private treeItemToDelete: AbfrageTreeItem | undefined;
   public possbileTransitions: Array<TransitionDto> = [];
 
@@ -480,6 +495,18 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogBaurateOpen = false;
   }
 
+  private async yesNoDialogRelevanteAbfragevarianteYes(): Promise<void> {
+    if (this.relevanteAbfragevarianteToBeSet) {
+      await this.setRelevanteAbfragevariante(null);
+      await this.setRelevanteAbfragevariante(this.relevanteAbfragevarianteToBeSet);
+    }
+    this.yesNoDialogRelevanteAbfragevarianteNo();
+  }
+
+  private yesNoDialogRelevanteAbfragevarianteNo(): void {
+    this.isRelevanteAbfragevarianteDialogOpen = false;
+  }
+
   private async saveAbfrage(): Promise<void> {
     if (this.validate()) {
       this.saveInfrastrukturabfrage();
@@ -557,6 +584,41 @@ export default class Abfrage extends Mixins(
       }
     } else {
       this.showWarningInInformationList("Bitte speichern vor einem Statusübergang");
+    }
+  }
+
+  private async setRelevanteAbfragevariante(abfragevariante: AbfragevarianteModel | null): Promise<void> {
+    if (abfragevariante === null) {
+      const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
+      if (bauvorhabenId) {
+        const bauvorhaben = await this.getBauvorhabenById(bauvorhabenId, false);
+        const relevanteAbfragevariante = bauvorhaben.relevanteAbfragevariante;
+        if (relevanteAbfragevariante) {
+          await this.changeRelevanteAbfragevariante(relevanteAbfragevariante, true);
+        }
+      }
+      return;
+    }
+
+    if (abfragevariante.id) {
+      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((result) => {
+        if (typeof result !== "string") {
+          const relevanteId = result.relevanteAbfragevariante?.id;
+          this.relevanteAbfragevarianteId = relevanteId ?? null;
+          Toaster.toast(
+            `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${
+              this.abfrage.displayName
+            } ist nun ${relevanteId ? "relevant" : "nicht mehr relevant"}.`,
+            Levels.SUCCESS
+          );
+        } else {
+          this.relevanteAbfragevarianteToBeSet = abfragevariante;
+          this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+          this.isRelevanteAbfragevarianteDialogOpen = true;
+        }
+      });
+    } else {
+      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
     }
   }
 
@@ -801,20 +863,8 @@ export default class Abfrage extends Mixins(
 
   private async handleSetAbfragevarianteRelevant(item: AbfrageTreeItem): Promise<void> {
     const abfragevariante = item.value;
-
-    if (!_.isNil(abfragevariante.id) && this.isAbfragevariante(item, abfragevariante)) {
-      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((dto) => {
-        const relevanteId = dto.relevanteAbfragevariante?.id;
-        this.relevanteAbfragevarianteId = relevanteId ?? null;
-        Toaster.toast(
-          `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${this.abfrage.displayName} ist nun ${
-            relevanteId ? "relevant" : "nicht mehr relevant"
-          }.`,
-          Levels.SUCCESS
-        );
-      });
-    } else {
-      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
+    if (this.isAbfragevariante(item, abfragevariante)) {
+      await this.setRelevanteAbfragevariante(abfragevariante);
     }
   }
 

@@ -8,8 +8,10 @@ import {
   GetBauvorhabenByIdRequest,
   GetReferencedInfrastrukturabfragenRequest,
   GetReferencedInfrastruktureinrichtungRequest,
+  InformationResponseDtoFromJSON,
   InfrastruktureinrichtungListElementDto,
   PutChangeRelevanteAbfragevarianteRequest,
+  ResponseError,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -122,20 +124,27 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
       });
   }
 
-  changeRelevanteAbfragevariante(
+  async changeRelevanteAbfragevariante(
     abfragevarianteDto: AbfragevarianteDto,
     showInInformationList: boolean
-  ): Promise<BauvorhabenDto> {
+  ): Promise<BauvorhabenDto | string> {
     const requestObject: PutChangeRelevanteAbfragevarianteRequest = {
       abfragevarianteDto,
     };
-    return this.bauvorhabenApi
-      .putChangeRelevanteAbfragevariante(requestObject, RequestUtils.getPUTConfig())
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
+    try {
+      const response = await this.bauvorhabenApi.putChangeRelevanteAbfragevariante(
+        requestObject,
+        RequestUtils.getPUTConfig()
+      );
+      return response;
+    } catch (error) {
+      if (error instanceof ResponseError && error.response.status === 409) {
+        const json = await error.response.json();
+        const dto = InformationResponseDtoFromJSON(json);
+        return dto.messages?.[0] ?? "";
+      }
+
+      throw this.handleError(showInInformationList, error as Error);
+    }
   }
 }
