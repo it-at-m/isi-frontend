@@ -12,7 +12,7 @@
     no-filter
     prepend-inner-icon="mdi-magnify"
     return-object
-    solo-inverted
+    solo
     @keyup.enter="searchEntitiesForSelectedSuggestion"
     @update:list-index="updateSearchQuery"
     @update:search-input="suggest"
@@ -54,6 +54,10 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     }
   }
 
+  /**
+   * Methode zur Ermittlung der Suchwortvorschläge auf Basis des letzen Wortes in der Suchquery.
+   * @param query zur Ermittlung der Suchwortvorschläge.
+   */
   private suggest(query: string): void {
     const splittedSearchwords = _.split(query, " ");
     const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
