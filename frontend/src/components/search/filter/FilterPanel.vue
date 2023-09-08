@@ -11,7 +11,7 @@
       <panel-header
         font-size="small"
         font-weight="normal"
-        header-text="Hier befinden sich die Filtereinstellung."
+        header-text="Hier befinden sich weitere Filtereinstellung."
       />
       <v-row
         class="align-start justify-center"
