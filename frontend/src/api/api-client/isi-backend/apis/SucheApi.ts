@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    InformationResponseDto,
+    InformationResponseDtoFromJSON,
+    InformationResponseDtoToJSON,
     SearchQueryAndSortingDto,
     SearchQueryAndSortingDtoFromJSON,
     SearchQueryAndSortingDtoToJSON,
