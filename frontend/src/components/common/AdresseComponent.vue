@@ -264,8 +264,8 @@ export default class AdresseComponent extends Mixins(
     this.formChanged();
   }
 
-  private adressSucheValidationRule(): () => boolean | string {
-    return () => !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Angabe zur Lage leer ist";
+  private adressSucheValidationRule(): boolean | string {
+    return !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Angabe zur Lage leer ist";
   }
 
   //
