@@ -58,7 +58,6 @@
           v-model="adresse.strasse"
           label="Straße"
           disabled
-          @input="formChanged"
         />
       </v-col>
       <v-col
@@ -71,7 +70,6 @@
           :rules="[fieldValidationRules.hausnummer]"
           label="Hausnummer"
           disabled
-          @input="formChanged"
         />
       </v-col>
       <v-col
@@ -84,7 +82,6 @@
           label="Postleitzahl"
           :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
           disabled
-          @input="formChanged"
         />
       </v-col>
       <v-col
@@ -96,7 +93,6 @@
           v-model="adresse.ort"
           label="Ort"
           disabled
-          @input="formChanged"
         />
       </v-col>
     </v-row>
@@ -109,7 +105,7 @@
           :disabled="!isEditable"
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
-          :rules="[fieldValidationRules.requiredIfOtherEmpty(adresse.strasse, 'Adresse')]"
+          :rules="[allgmeineOrtsangabeValidationRule()]"
           validate-on-blur
           @input="formChanged"
         />
@@ -266,6 +262,10 @@ export default class AdresseComponent extends Mixins(
 
   private adressSucheValidationRule(): boolean | string {
     return !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Angabe zur Lage leer ist";
+  }
+
+  private allgmeineOrtsangabeValidationRule(): boolean | string {
+    return !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Adresse leer ist";
   }
 
   //
