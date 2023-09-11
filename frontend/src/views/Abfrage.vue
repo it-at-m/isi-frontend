@@ -588,7 +588,7 @@ export default class Abfrage extends Mixins(
   }
 
   private async setRelevanteAbfragevariante(abfragevariante: AbfragevarianteModel | null): Promise<void> {
-    if (abfragevariante === null) {
+    if (_.isNil(abfragevariante)) {
       const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
       if (bauvorhabenId) {
         const bauvorhaben = await this.getBauvorhabenById(bauvorhabenId, false);
