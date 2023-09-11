@@ -124,7 +124,6 @@ import Component from "vue-class-component";
 import { Mixins, Watch } from "vue-property-decorator";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import VersionInfo from "@/components/common/VersionInfo.vue";
-import { RouteTag } from "./router";
 import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
