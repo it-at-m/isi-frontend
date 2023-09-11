@@ -536,21 +536,17 @@ export default class Abfrage extends Mixins(
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
         const response = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
-        if (response instanceof Response) {
-          if (response.ok) {
-            if (!(transition.url === "in-bearbeitung-setzen")) {
-              this.returnToUebersicht(toastMessage, Levels.SUCCESS);
-            } else {
-              this.setSelectedAbfrageInStore();
-              this.getTransitions(this.abfrageId, true).then((response) => {
-                this.possbileTransitions = response;
-              });
-            }
-            this.selectAbfrage();
+        if (response.ok) {
+          if (!(transition.url === "in-bearbeitung-setzen")) {
+            this.returnToUebersicht(toastMessage, Levels.SUCCESS);
           } else {
-            this.anmerkung = "";
-            this.handleResponseNotOk(true, response);
+            this.setSelectedAbfrageInStore();
+            this.getTransitions(this.abfrageId, true).then((response) => {
+              this.possbileTransitions = response;
+            });
           }
+        } else {
+          this.anmerkung = "";
         }
       } else {
         this.showWarningInInformationList(validationMessage);
