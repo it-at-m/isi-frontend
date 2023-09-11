@@ -176,12 +176,6 @@ export interface AbfragevarianteDto {
      * @memberof AbfragevarianteDto
      */
     abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungDto;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AbfragevarianteDto
-     */
-    relevant?: boolean;
 }
 
 
@@ -239,7 +233,6 @@ export function AbfragevarianteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'geschossflaecheSonstiges': !exists(json, 'geschossflaecheSonstiges') ? undefined : json['geschossflaecheSonstiges'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'abfragevarianteSachbearbeitung': !exists(json, 'abfragevarianteSachbearbeitung') ? undefined : AbfragevarianteSachbearbeitungDtoFromJSON(json['abfragevarianteSachbearbeitung']),
-        'relevant': !exists(json, 'relevant') ? undefined : json['relevant'],
     };
 }
 
@@ -276,7 +269,6 @@ export function AbfragevarianteDtoToJSON(value?: AbfragevarianteDto | null): any
         'geschossflaecheSonstiges': value.geschossflaecheSonstiges,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
         'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoToJSON(value.abfragevarianteSachbearbeitung),
-        'relevant': value.relevant,
     };
 }
 

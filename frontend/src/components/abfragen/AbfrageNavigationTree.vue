@@ -5,6 +5,7 @@ Props:
 - `abfrage: InfrastrukturabfrageDto`: Die darzustellende Abfrage.
 - `selectedItemId: string`: Id des aktuell ausgewählten Items.
   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
+- `relevanteAbfragevarianteId: string | null`: Id der relevanten Abfragevariante.
 
 Emits:
 - `select-abfrage: AbfrageTreeItem`
@@ -62,6 +63,17 @@ Emits:
           </v-list-item>
         </v-list>
       </v-menu>
+    </template>
+    <template #append="{ item }">
+      <v-tooltip
+        v-if="item.value.id === props.relevanteAbfragevarianteId"
+        bottom
+      >
+        <template #activator="{ on }">
+          <v-icon v-on="on">mdi-star</v-icon>
+        </template>
+        <span>Diese Abfragevariante ist relevant.</span>
+      </v-tooltip>
     </template>
   </v-treeview>
 </template>
@@ -124,6 +136,7 @@ interface Action {
 interface Props {
   abfrage: InfrastrukturabfrageDto;
   selectedItemId: string;
+  relevanteAbfragevarianteId: string | null;
 }
 
 interface Emits {
@@ -155,6 +168,7 @@ const CREATE_BAUGEBIET = "Baugebiet erstellen";
 const CREATE_BAURATE = "Baurate erstellen";
 const DELETE = "Löschen";
 const MARK_AS_RELEVANT = "Als relevant markieren";
+const MARK_AS_NOT_RELEVANT = "Als nicht-relevant markieren";
 const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
 
 const ABFRAGEVARIANTEN_LIMIT = 5;
@@ -170,6 +184,11 @@ watch(
   () => props.abfrage,
   () => (items.value = [buildTree(props.abfrage)]),
   { deep: true }
+);
+
+watch(
+  () => props.relevanteAbfragevarianteId,
+  () => (items.value = [buildTree(props.abfrage)])
 );
 
 function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
@@ -194,7 +213,12 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
 
   if (abfrage.abfragevariantenSachbearbeitung) {
     const abfragevarianten = abfrage.abfragevariantenSachbearbeitung.map((value, index) =>
-      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG)
+      buildSubTreeAbfragevariante(
+        value,
+        item,
+        index + (abfrage.abfragevarianten?.length ?? 0),
+        AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
+      )
     );
     item.children.push(...abfragevarianten);
   }
@@ -248,7 +272,7 @@ function buildSubTreeAbfragevariante(
 
   if (isEditableBySachbearbeitung()) {
     item.actions.push({
-      name: MARK_AS_RELEVANT,
+      name: abfragevariante.id === props.relevanteAbfragevarianteId ? MARK_AS_NOT_RELEVANT : MARK_AS_RELEVANT,
       disabled: false,
       effect: () => emit("set-abfragevariante-relevant", item),
     });

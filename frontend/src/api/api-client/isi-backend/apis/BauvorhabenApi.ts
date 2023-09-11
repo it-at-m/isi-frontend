@@ -18,6 +18,9 @@ import {
     AbfrageListElementDto,
     AbfrageListElementDtoFromJSON,
     AbfrageListElementDtoToJSON,
+    AbfragevarianteDto,
+    AbfragevarianteDtoFromJSON,
+    AbfragevarianteDtoToJSON,
     BauvorhabenDto,
     BauvorhabenDtoFromJSON,
     BauvorhabenDtoToJSON,
@@ -47,6 +50,10 @@ export interface GetReferencedInfrastrukturabfragenRequest {
 
 export interface GetReferencedInfrastruktureinrichtungRequest {
     id: string;
+}
+
+export interface PutChangeRelevanteAbfragevarianteRequest {
+    abfragevarianteDto: AbfragevarianteDto;
 }
 
 export interface UpdateBauvorhabenRequest {
@@ -239,6 +246,39 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      */
     async getReferencedInfrastruktureinrichtung(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<InfrastruktureinrichtungListElementDto>> {
         const response = await this.getReferencedInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#IN_BEARBEITUNG_SACHBEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
+     */
+    async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+        if (requestParameters.abfragevarianteDto === null || requestParameters.abfragevarianteDto === undefined) {
+            throw new runtime.RequiredError('abfragevarianteDto','Required parameter requestParameters.abfragevarianteDto was null or undefined when calling putChangeRelevanteAbfragevariante.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/bauvorhaben/change-relevante-abfragevariante`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AbfragevarianteDtoToJSON(requestParameters.abfragevarianteDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#IN_BEARBEITUNG_SACHBEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
+     */
+    async putChangeRelevanteAbfragevariante(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BauvorhabenDto> {
+        const response = await this.putChangeRelevanteAbfragevarianteRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

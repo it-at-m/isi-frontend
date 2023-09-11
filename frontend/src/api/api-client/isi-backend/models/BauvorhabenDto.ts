@@ -14,6 +14,12 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AbfragevarianteDto,
+    AbfragevarianteDtoFromJSON,
+    AbfragevarianteDtoFromJSONTyped,
+    AbfragevarianteDtoToJSON,
+} from './AbfragevarianteDto';
+import {
     AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
@@ -164,6 +170,12 @@ export interface BauvorhabenDto {
      * @memberof BauvorhabenDto
      */
     dokumente?: Array<DokumentDto>;
+    /**
+     * 
+     * @type {AbfragevarianteDto}
+     * @memberof BauvorhabenDto
+     */
+    relevanteAbfragevariante?: AbfragevarianteDto;
 }
 
 
@@ -267,6 +279,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'planungsrecht': json['planungsrecht'],
         'artFnp': json['artFnp'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : AbfragevarianteDtoFromJSON(json['relevanteAbfragevariante']),
     };
 }
 
@@ -299,6 +312,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'planungsrecht': value.planungsrecht,
         'artFnp': value.artFnp,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'relevanteAbfragevariante': AbfragevarianteDtoToJSON(value.relevanteAbfragevariante),
     };
 }
 

@@ -6,9 +6,10 @@ import {
   GetInfrastrukturabfrageByIdRequest,
   InfrastrukturabfrageDto,
   PatchAbfrageAngelegtRequest,
-  PutChangeAbfragevarianteRelevantRequest,
   InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  InfrastrukturabfrageInBearbeitungFachreferateDto,
   PatchAbfrageInBearbeitungSachbearbeitungRequest,
+  PatchAbfrageInBearbeitungFachreferateRequest,
 } from "@/api/api-client/isi-backend";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -82,17 +83,17 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  changeAbfragevarianteRelevant(
-    abfrageId: string,
-    abfragevarianteId: string,
+  patchAbfrageInBearbeitungFachreferate(
+    dto: InfrastrukturabfrageInBearbeitungFachreferateDto,
+    id: string,
     showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
-    const requestObject: PutChangeAbfragevarianteRelevantRequest = {
-      abfrageId: abfrageId,
-      abfragevarianteId: abfragevarianteId,
+    const requestObject: PatchAbfrageInBearbeitungFachreferateRequest = {
+      infrastrukturabfrageInBearbeitungFachreferateDto: dto,
+      id: id,
     };
     return this.abfrageApi
-      .putChangeAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
+      .patchAbfrageInBearbeitungFachreferate(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
         this.resetDirty();
         return response;
