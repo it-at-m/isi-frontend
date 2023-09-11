@@ -138,6 +138,11 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
       );
       return response;
     } catch (error) {
+      /* 
+      Ein 409 bedeutet, dass bereits eine andere relevante Abfragevariante existiert.
+      Dies soll aber nicht als Fehler behandelt werden und außerdem soll die Message ausgelesen werden.
+      Wegen dieser spezifischen Logik wird die handleError-Methode unter Umständen umgangen.
+      */
       if (error instanceof ResponseError && error.response.status === 409) {
         const json = await error.response.json();
         const dto = InformationResponseDtoFromJSON(json);
