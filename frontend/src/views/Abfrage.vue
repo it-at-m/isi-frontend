@@ -152,6 +152,7 @@
           id="abfrage_navigation_tree"
           :abfrage="abfrage"
           :selected-item-id="selectedTreeItemId"
+          :relevante-abfragevariante-id="relevanteAbfragevarianteId"
           @select-abfrage="handleSelectAbfrage"
           @select-abfragevariante="handleSelectAbfragevariante"
           @select-bauabschnitt="handleSelectBauabschnitt"
@@ -253,6 +254,7 @@ import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -265,6 +267,7 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
+import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import {
   createAbfragevarianteDto,
@@ -331,6 +334,7 @@ export default class Abfrage extends Mixins(
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
   BauratenApiRequestMixin,
+  BauvorhabenApiRequestMixin,
   StatusUebergangApiRequestMixin,
   ValidatorMixin,
   SaveLeaveMixin,
@@ -354,6 +358,7 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBaugebietOpen = false;
   private isDeleteDialogBaurateOpen = false;
   private selectedTreeItemId = "";
+  private relevanteAbfragevarianteId: string | null = null;
   private treeItemToDelete: AbfrageTreeItem | undefined;
   public possbileTransitions: Array<TransitionDto> = [];
 
@@ -373,6 +378,13 @@ export default class Abfrage extends Mixins(
     if (!_.isNil(abfrageFromStore)) {
       this.abfrage = _.cloneDeep(abfrageFromStore);
       this.selectAbfrage();
+
+      const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
+      if (bauvorhabenId) {
+        this.getBauvorhabenById(bauvorhabenId, false).then((dto) => {
+          this.relevanteAbfragevarianteId = dto.relevanteAbfragevariante?.id ?? null;
+        });
+      }
     }
   }
 
@@ -791,18 +803,16 @@ export default class Abfrage extends Mixins(
     const abfragevariante = item.value;
 
     if (!_.isNil(abfragevariante.id) && this.isAbfragevariante(item, abfragevariante)) {
-      await this.changeAbfragevarianteRelevant(this.abfrage.id as string, abfragevariante.id as string, true).then(
-        (dto) => {
-          this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
-          this.$store.dispatch("search/resetAbfrage");
-          Toaster.toast(
-            `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${
-              this.abfrage.displayName
-            } hat nun den Status ${abfragevariante.relevant ? `nicht relevant` : `relevant`}.`,
-            Levels.SUCCESS
-          );
-        }
-      );
+      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((dto) => {
+        const relevanteId = dto.relevanteAbfragevariante?.id;
+        this.relevanteAbfragevarianteId = relevanteId ?? null;
+        Toaster.toast(
+          `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${this.abfrage.displayName} ist nun ${
+            relevanteId ? "relevant" : "nicht mehr relevant"
+          }.`,
+          Levels.SUCCESS
+        );
+      });
     } else {
       this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
     }

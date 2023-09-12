@@ -6,7 +6,6 @@ import {
   GetInfrastrukturabfrageByIdRequest,
   InfrastrukturabfrageDto,
   PatchAbfrageAngelegtRequest,
-  PutChangeAbfragevarianteRelevantRequest,
   InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
   InfrastrukturabfrageInBearbeitungFachreferateDto,
   PatchAbfrageInBearbeitungSachbearbeitungRequest,
@@ -95,26 +94,6 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     };
     return this.abfrageApi
       .patchAbfrageInBearbeitungFachreferate(requestObject, RequestUtils.getPATCHConfig())
-      .then((response) => {
-        this.resetDirty();
-        return response;
-      })
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
-  }
-
-  changeAbfragevarianteRelevant(
-    abfrageId: string,
-    abfragevarianteId: string,
-    showInInformationList: boolean
-  ): Promise<InfrastrukturabfrageDto> {
-    const requestObject: PutChangeAbfragevarianteRelevantRequest = {
-      abfrageId: abfrageId,
-      abfragevarianteId: abfragevarianteId,
-    };
-    return this.abfrageApi
-      .putChangeAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
         this.resetDirty();
         return response;

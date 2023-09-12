@@ -177,6 +177,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     planungsrecht: BauvorhabenDtoPlanungsrechtEnum.Unspecified,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
+    relevanteAbfragevariante: undefined,
   };
 }
 
