@@ -71,8 +71,15 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
       });
   }
 
-  postBauvorhaben(bauvorhabenDto: BauvorhabenDto, showInInformationList: boolean): Promise<BauvorhabenDto> {
-    const requestObject: CreateBauvorhabenRequest = { bauvorhabenDto };
+  postBauvorhaben(
+    bauvorhabenDto: BauvorhabenDto,
+    datenuebernahmeAbfrageId: string | undefined,
+    showInInformationList: boolean
+  ): Promise<BauvorhabenDto> {
+    const requestObject: CreateBauvorhabenRequest = {
+      bauvorhabenDto: bauvorhabenDto,
+      abfrageId: datenuebernahmeAbfrageId,
+    };
 
     return this.bauvorhabenApi
       .createBauvorhaben(requestObject, RequestUtils.getPOSTConfig())

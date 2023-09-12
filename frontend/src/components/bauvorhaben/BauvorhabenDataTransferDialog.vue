@@ -139,9 +139,9 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
       sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
     } as SearchQueryAndSortingDto;
     this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
-      this.abfragen = searchResults.searchResults?.map(
-        (searchResults) => searchResults as AbfrageSearchResultDto
-      ) as Array<AbfrageSearchResultDto>;
+      this.abfragen = searchResults.searchResults
+        ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
+        .filter((abfrageSearchResult) => _.isNil(abfrageSearchResult.bauvorhaben)) as Array<AbfrageSearchResultDto>;
     });
   }
 

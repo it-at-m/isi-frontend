@@ -34,6 +34,7 @@ import {
 
 export interface CreateBauvorhabenRequest {
     bauvorhabenDto: BauvorhabenDto;
+    abfrageId?: string;
 }
 
 export interface DeleteBauvorhabenRequest {
@@ -74,6 +75,10 @@ export class BauvorhabenApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.abfrageId !== undefined) {
+            queryParameters['abfrageId'] = requestParameters.abfrageId;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 

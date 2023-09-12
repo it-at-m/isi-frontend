@@ -80,6 +80,12 @@ export interface AbfrageSearchResultDtoAllOf {
      * @memberof AbfrageSearchResultDtoAllOf
      */
     createdDateTime?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageSearchResultDtoAllOf
+     */
+    bauvorhaben?: string;
 }
 
 
@@ -139,6 +145,7 @@ export function AbfrageSearchResultDtoAllOfFromJSONTyped(json: any, ignoreDiscri
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
 }
 
@@ -159,6 +166,7 @@ export function AbfrageSearchResultDtoAllOfToJSON(value?: AbfrageSearchResultDto
         'sobonJahr': value.sobonJahr,
         'standVorhaben': value.standVorhaben,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'bauvorhaben': value.bauvorhaben,
     };
 }
 
