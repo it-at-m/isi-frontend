@@ -143,6 +143,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   }
 
   private searchEntitiesForSelectedSuggestion(): void {
+    this.routeToMainViewWhenNotInMain();
     const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
     searchQueryForEntitiesDto.searchQuery = _.isNil(this.searchQuery) ? "" : this.searchQuery;
     searchQueryForEntitiesDto.page = 1;
@@ -159,6 +160,13 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     this.suggestions = [];
     this.searchQuery = "";
     this.selectedSuggestion = "";
+  }
+
+  private routeToMainViewWhenNotInMain() {
+    const currentRoute = this.$router.currentRoute;
+    if (currentRoute.path !== "/") {
+      this.$router.push({ path: "/" });
+    }
   }
 }
 </script>
