@@ -80,6 +80,12 @@ export interface AbfrageListElementDto {
      * @memberof AbfrageListElementDto
      */
     createdDateTime?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageListElementDto
+     */
+    bauvorhaben?: string;
 }
 
 
@@ -126,6 +132,7 @@ export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminato
         'type': !exists(json, 'type') ? undefined : json['type'],
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
 }
 
@@ -146,6 +153,7 @@ export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null
         'type': value.type,
         'sobonJahr': value.sobonJahr,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'bauvorhaben': value.bauvorhaben,
     };
 }
 

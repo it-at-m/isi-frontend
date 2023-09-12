@@ -126,7 +126,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
   private async fetchAbfragen(): Promise<void> {
     await this.getAbfrageListElements(false).then((abfrageListElementsDto: AbfrageListElementsDto) => {
       if (!_.isUndefined(abfrageListElementsDto.listElements)) {
-        this.abfragen = abfrageListElementsDto.listElements;
+        this.abfragen = abfrageListElementsDto.listElements.filter((abfrage) => _.isNil(abfrage.bauvorhaben));
       }
     });
   }
