@@ -239,7 +239,6 @@ import {
   BaugebietDto,
   BaurateDto,
   InfrastrukturabfrageDto,
-  ResponseError,
   StatusAbfrage,
   TransitionDto,
 } from "@/api/api-client/isi-backend";
@@ -271,7 +270,6 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import {
   createAbfragevarianteDto,
@@ -461,6 +459,7 @@ export default class Abfrage extends Mixins(
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
     await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+      this.$store.commit("search/removeSearchResultById", this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }
@@ -539,10 +538,9 @@ export default class Abfrage extends Mixins(
 
   private handleSuccess(dto: InfrastrukturabfrageDto, showToast: boolean): void {
     this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
-    this.$store.dispatch("search/resetAbfrage");
     if (this.isNewAbfrage()) {
-      this.$router.push({ path: "/abfragenuebersicht" });
-      if (showToast) Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
+      this.$router.push({ path: "/" });
+      Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
     } else {
       if (showToast) Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
@@ -613,8 +611,7 @@ export default class Abfrage extends Mixins(
     if (message && level) {
       Toaster.toast(message, level);
     }
-    this.$store.dispatch("search/resetAbfrage");
-    this.$router.push({ path: "/abfragenuebersicht" });
+    this.$router.push({ path: "/" });
   }
 
   private validate(): boolean {

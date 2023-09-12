@@ -158,6 +158,8 @@ export default class Bauvorhaben extends Mixins(
 
   private isNew = true;
 
+  private datenuebernahmeAbfrageId?: string = undefined;
+
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
 
@@ -215,7 +217,7 @@ export default class Bauvorhaben extends Mixins(
    * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
    */
   private async saveBauvorhaben(): Promise<void> {
-    await this.postBauvorhaben(this.bauvorhaben, true).then(() => {
+    await this.postBauvorhaben(this.bauvorhaben, this.datenuebernahmeAbfrageId, true).then(() => {
       this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS);
     });
   }
@@ -227,7 +229,6 @@ export default class Bauvorhaben extends Mixins(
   private async updateBauvorhaben(): Promise<void> {
     await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
       this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
-      this.$store.dispatch("search/resetBauvorhaben");
       Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
     });
   }
@@ -240,6 +241,7 @@ export default class Bauvorhaben extends Mixins(
     this.deleteDialogOpen = false;
 
     await this.deleteBauvorhaben(this.$route.params.id, true).then(() => {
+      this.$store.commit("search/removeSearchResultById", this.$route.params.id);
       this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }
@@ -256,7 +258,7 @@ export default class Bauvorhaben extends Mixins(
       Toaster.toast(message, level);
     }
 
-    this.$router.push({ name: "viewAllBauvorhaben" });
+    this.$router.push({ name: "home" });
   }
 
   /**
@@ -275,6 +277,7 @@ export default class Bauvorhaben extends Mixins(
     this.bauvorhaben.bebauungsplannummer = abfrage.abfrage.bebauungsplannummer;
     this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
     this.bauvorhaben.sobonJahr = abfrage.sobonJahr;
+    this.datenuebernahmeAbfrageId = abfrage.id;
     this.dataTransferDialogOpen = false;
   }
 }
