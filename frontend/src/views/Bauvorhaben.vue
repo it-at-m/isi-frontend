@@ -229,7 +229,6 @@ export default class Bauvorhaben extends Mixins(
   private async updateBauvorhaben(): Promise<void> {
     await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
       this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
-      this.$store.dispatch("search/resetBauvorhaben");
       Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
     });
   }
@@ -242,6 +241,7 @@ export default class Bauvorhaben extends Mixins(
     this.deleteDialogOpen = false;
 
     await this.deleteBauvorhaben(this.$route.params.id, true).then(() => {
+      this.$store.commit("search/removeSearchResultById", this.$route.params.id);
       this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }
@@ -258,7 +258,7 @@ export default class Bauvorhaben extends Mixins(
       Toaster.toast(message, level);
     }
 
-    this.$router.push({ name: "viewAllBauvorhaben" });
+    this.$router.push({ name: "home" });
   }
 
   /**

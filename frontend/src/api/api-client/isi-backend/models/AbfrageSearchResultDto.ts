@@ -14,6 +14,18 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AbfrageSearchResultDtoAllOf,
+    AbfrageSearchResultDtoAllOfFromJSON,
+    AbfrageSearchResultDtoAllOfFromJSONTyped,
+    AbfrageSearchResultDtoAllOfToJSON,
+} from './AbfrageSearchResultDtoAllOf';
+import {
+    SearchResultDto,
+    SearchResultDtoFromJSON,
+    SearchResultDtoFromJSONTyped,
+    SearchResultDtoToJSON,
+} from './SearchResultDto';
+import {
     StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
@@ -29,61 +41,61 @@ import {
 /**
  * 
  * @export
- * @interface AbfrageListElementDto
+ * @interface AbfrageSearchResultDto
  */
-export interface AbfrageListElementDto {
+export interface AbfrageSearchResultDto extends SearchResultDto {
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
     id?: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
     nameAbfrage?: string;
     /**
      * 
      * @type {Set<StadtbezirkDto>}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
     stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
      * @type {StatusAbfrage}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
     statusAbfrage?: StatusAbfrage;
     /**
      * 
      * @type {Date}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
     fristStellungnahme?: Date;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
-    type?: AbfrageListElementDtoTypeEnum;
+    sobonJahr?: AbfrageSearchResultDtoSobonJahrEnum;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
-    sobonJahr?: AbfrageListElementDtoSobonJahrEnum;
+    standVorhaben?: AbfrageSearchResultDtoStandVorhabenEnum;
     /**
      * 
      * @type {Date}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
     createdDateTime?: Date;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageListElementDto
+     * @memberof AbfrageSearchResultDto
      */
     bauvorhaben?: string;
 }
@@ -92,16 +104,7 @@ export interface AbfrageListElementDto {
 /**
  * @export
  */
-export const AbfrageListElementDtoTypeEnum = {
-    Infrastrukturabfrage: 'INFRASTRUKTURABFRAGE',
-    Standortabfrage: 'STANDORTABFRAGE'
-} as const;
-export type AbfrageListElementDtoTypeEnum = typeof AbfrageListElementDtoTypeEnum[keyof typeof AbfrageListElementDtoTypeEnum];
-
-/**
- * @export
- */
-export const AbfrageListElementDtoSobonJahrEnum = {
+export const AbfrageSearchResultDtoSobonJahrEnum = {
     _1995: 'JAHR_1995',
     _1997: 'JAHR_1997',
     _2001: 'JAHR_2001',
@@ -111,32 +114,54 @@ export const AbfrageListElementDtoSobonJahrEnum = {
     _2017Plus: 'JAHR_2017_PLUS',
     _2021: 'JAHR_2021'
 } as const;
-export type AbfrageListElementDtoSobonJahrEnum = typeof AbfrageListElementDtoSobonJahrEnum[keyof typeof AbfrageListElementDtoSobonJahrEnum];
+export type AbfrageSearchResultDtoSobonJahrEnum = typeof AbfrageSearchResultDtoSobonJahrEnum[keyof typeof AbfrageSearchResultDtoSobonJahrEnum];
+
+/**
+ * @export
+ */
+export const AbfrageSearchResultDtoStandVorhabenEnum = {
+    Unspecified: 'UNSPECIFIED',
+    GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
+    Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
+    Parag31Baugb: 'PARAG_3_1_BAUGB',
+    Parag32Baugb: 'PARAG_3_2_BAUGB',
+    Parag412Baugb: 'PARAG_4_1_2_BAUGB',
+    Billigungsbeschluss: 'BILLIGUNGSBESCHLUSS',
+    Satzungsbeschluss: 'SATZUNGSBESCHLUSS',
+    BplanInKraft: 'BPLAN_IN_KRAFT',
+    VorbescheidEingereicht: 'VORBESCHEID_EINGEREICHT',
+    BauantragEingereicht: 'BAUANTRAG_EINGEREICHT',
+    BaugenehmigungErteilt: 'BAUGENEHMIGUNG_ERTEILT',
+    BaubeginnAngezeigt: 'BAUBEGINN_ANGEZEIGT',
+    BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
+    BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
+} as const;
+export type AbfrageSearchResultDtoStandVorhabenEnum = typeof AbfrageSearchResultDtoStandVorhabenEnum[keyof typeof AbfrageSearchResultDtoStandVorhabenEnum];
 
 
-export function AbfrageListElementDtoFromJSON(json: any): AbfrageListElementDto {
-    return AbfrageListElementDtoFromJSONTyped(json, false);
+export function AbfrageSearchResultDtoFromJSON(json: any): AbfrageSearchResultDto {
+    return AbfrageSearchResultDtoFromJSONTyped(json, false);
 }
 
-export function AbfrageListElementDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageListElementDto {
+export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageSearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
-        
+        ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
-        'type': !exists(json, 'type') ? undefined : json['type'],
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
+        'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
 }
 
-export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null): any {
+export function AbfrageSearchResultDtoToJSON(value?: AbfrageSearchResultDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -144,14 +169,14 @@ export function AbfrageListElementDtoToJSON(value?: AbfrageListElementDto | null
         return null;
     }
     return {
-        
+        ...SearchResultDtoToJSON(value),
         'id': value.id,
         'nameAbfrage': value.nameAbfrage,
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
-        'type': value.type,
         'sobonJahr': value.sobonJahr,
+        'standVorhaben': value.standVorhaben,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'bauvorhaben': value.bauvorhaben,
     };

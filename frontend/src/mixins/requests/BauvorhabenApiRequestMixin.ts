@@ -1,5 +1,5 @@
 import {
-  AbfrageListElementDto,
+  AbfrageSearchResultDto,
   AbfragevarianteDto,
   BauvorhabenApi,
   BauvorhabenDto,
@@ -8,7 +8,7 @@ import {
   GetBauvorhabenByIdRequest,
   GetReferencedInfrastrukturabfragenRequest,
   GetReferencedInfrastruktureinrichtungRequest,
-  InfrastruktureinrichtungListElementDto,
+  InfrastruktureinrichtungSearchResultDto,
   PutChangeRelevanteAbfragevarianteRequest,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
@@ -26,19 +26,10 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     this.bauvorhabenApi = new BauvorhabenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
-  getBauvorhaben(showInInformationList: boolean): Promise<Array<BauvorhabenDto>> {
-    return this.bauvorhabenApi
-      .getBauvorhaben(RequestUtils.getGETConfig())
-      .then((response) => response)
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
-  }
-
   getReferencedInfrastrukturabfragenList(
     bauvorhabenId: string,
     showInInformationList: boolean
-  ): Promise<Array<AbfrageListElementDto>> {
+  ): Promise<Array<AbfrageSearchResultDto>> {
     const requestObject: GetReferencedInfrastrukturabfragenRequest = {
       id: bauvorhabenId,
     };
@@ -55,7 +46,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
   getReferencedInfrastruktureinrichtungenList(
     bauvorhabenId: string,
     showInInformationList: boolean
-  ): Promise<Array<InfrastruktureinrichtungListElementDto>> {
+  ): Promise<Array<InfrastruktureinrichtungSearchResultDto>> {
     const requestObject: GetReferencedInfrastruktureinrichtungRequest = {
       id: bauvorhabenId,
     };

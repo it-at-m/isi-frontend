@@ -157,34 +157,6 @@ export class AbfrageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Das Ergebnis wird nach Frist Stellungnahme absteigend sortiert
-     * Lade alle Infrastrukturabfragen
-     */
-    async getInfrastrukturabfragenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<InfrastrukturabfrageDto>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/infrastruktur-abfragen`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(InfrastrukturabfrageDtoFromJSON));
-    }
-
-    /**
-     * Das Ergebnis wird nach Frist Stellungnahme absteigend sortiert
-     * Lade alle Infrastrukturabfragen
-     */
-    async getInfrastrukturabfragen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<InfrastrukturabfrageDto>> {
-        const response = await this.getInfrastrukturabfragenRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Aktualisierung einer Infrastrukturabfrage im Status ANGELEGT.
      */
     async patchAbfrageAngelegtRaw(requestParameters: PatchAbfrageAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastrukturabfrageDto>> {

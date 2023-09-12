@@ -18,9 +18,6 @@ import {
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    InfrastruktureinrichtungListElementsDto,
-    InfrastruktureinrichtungListElementsDtoFromJSON,
-    InfrastruktureinrichtungListElementsDtoToJSON,
     UpdateInfrastruktureinrichtungRequest,
     UpdateInfrastruktureinrichtungRequestFromJSON,
     UpdateInfrastruktureinrichtungRequestToJSON,
@@ -136,32 +133,6 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
      */
     async getInfrastruktureinrichtungById(requestParameters: GetInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
         const response = await this.getInfrastruktureinrichtungByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Lade alle Infrastruktureinrichtungen für die Listendarstellung
-     */
-    async getInfrastruktureinrichtungListElementsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<InfrastruktureinrichtungListElementsDto>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/infrastruktureinrichtung/all`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => InfrastruktureinrichtungListElementsDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Lade alle Infrastruktureinrichtungen für die Listendarstellung
-     */
-    async getInfrastruktureinrichtungListElements(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<InfrastruktureinrichtungListElementsDto> {
-        const response = await this.getInfrastruktureinrichtungListElementsRaw(initOverrides);
         return await response.value();
     }
 

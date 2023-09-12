@@ -16,34 +16,34 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface InfrastruktureinrichtungListElementDto
+ * @interface InfrastruktureinrichtungSearchResultDtoAllOf
  */
-export interface InfrastruktureinrichtungListElementDto {
+export interface InfrastruktureinrichtungSearchResultDtoAllOf {
     /**
      * 
      * @type {string}
-     * @memberof InfrastruktureinrichtungListElementDto
+     * @memberof InfrastruktureinrichtungSearchResultDtoAllOf
      */
     id?: string;
     /**
      * 
      * @type {string}
-     * @memberof InfrastruktureinrichtungListElementDto
+     * @memberof InfrastruktureinrichtungSearchResultDtoAllOf
      */
     nameEinrichtung?: string;
     /**
      * 
      * @type {string}
-     * @memberof InfrastruktureinrichtungListElementDto
+     * @memberof InfrastruktureinrichtungSearchResultDtoAllOf
      */
-    infrastruktureinrichtungTyp?: InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum;
+    infrastruktureinrichtungTyp?: InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum;
 }
 
 
 /**
  * @export
  */
-export const InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum = {
+export const InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum = {
     Unspecified: 'UNSPECIFIED',
     Kinderkrippe: 'KINDERKRIPPE',
     Kindergarten: 'KINDERGARTEN',
@@ -52,14 +52,14 @@ export const InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEn
     Grundschule: 'GRUNDSCHULE',
     Mittelschule: 'MITTELSCHULE'
 } as const;
-export type InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum];
+export type InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum];
 
 
-export function InfrastruktureinrichtungListElementDtoFromJSON(json: any): InfrastruktureinrichtungListElementDto {
-    return InfrastruktureinrichtungListElementDtoFromJSONTyped(json, false);
+export function InfrastruktureinrichtungSearchResultDtoAllOfFromJSON(json: any): InfrastruktureinrichtungSearchResultDtoAllOf {
+    return InfrastruktureinrichtungSearchResultDtoAllOfFromJSONTyped(json, false);
 }
 
-export function InfrastruktureinrichtungListElementDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungListElementDto {
+export function InfrastruktureinrichtungSearchResultDtoAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungSearchResultDtoAllOf {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -71,7 +71,7 @@ export function InfrastruktureinrichtungListElementDtoFromJSONTyped(json: any, i
     };
 }
 
-export function InfrastruktureinrichtungListElementDtoToJSON(value?: InfrastruktureinrichtungListElementDto | null): any {
+export function InfrastruktureinrichtungSearchResultDtoAllOfToJSON(value?: InfrastruktureinrichtungSearchResultDtoAllOf | null): any {
     if (value === undefined) {
         return undefined;
     }

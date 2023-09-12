@@ -158,7 +158,7 @@ function stopResizing(): void {
   width: 100%;
   height: 100%;
   /* Um auf der Y-Achse direkt unter der App Bar zu liegen */
-  padding-top: 92px;
+  padding-top: 50px;
   position: fixed;
   /* Um auf der Z-Achse direkt unter der App Bar zu liegen */
   z-index: 4;
