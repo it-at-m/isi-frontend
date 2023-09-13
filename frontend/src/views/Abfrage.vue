@@ -57,12 +57,15 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_statusuebergang"
+          ref="yesNoDialogStatusuebergang"
           v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
           :dialogtext="dialogTextStatus"
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
+          :has-anmerkung="hasAnmerkung"
+          @anmerkung="handleAnmerkung"
           @no="yesNoDialogStatusUebergangeNo"
           @yes="yesNoDialogStatusUebergangYes"
         />
@@ -267,7 +270,6 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import {
   createAbfragevarianteDto,
@@ -344,6 +346,7 @@ export default class Abfrage extends Mixins(
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
+  private anmerkung = "";
   private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
   private selected: AbfrageDtoWithForm = this.abfrage;
   private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
@@ -357,6 +360,7 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBauabschnittOpen = false;
   private isDeleteDialogBaugebietOpen = false;
   private isDeleteDialogBaurateOpen = false;
+  private hasAnmerkung = false;
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
   private treeItemToDelete: AbfrageTreeItem | undefined;
@@ -417,7 +421,12 @@ export default class Abfrage extends Mixins(
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
+    transition.url == "abfrage-schliessen" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
     this.isStatusUebergangDialogOpen = true;
+  }
+
+  private handleAnmerkung(val: string): void {
+    this.anmerkung = val;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -436,6 +445,7 @@ export default class Abfrage extends Mixins(
 
   private yesNoDialogStatusUebergangeNo(): void {
     this.isStatusUebergangDialogOpen = false;
+    if (!_.isNil(this.$refs.yesNoDialogStatusuebergang)) this.$refs.yesNoDialogStatusuebergang.resetTextarea();
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
@@ -483,18 +493,18 @@ export default class Abfrage extends Mixins(
 
   private async saveAbfrage(): Promise<void> {
     if (this.validate()) {
-      this.saveInfrastrukturabfrage();
+      this.saveInfrastrukturabfrage(true);
     } else {
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
     }
   }
 
-  private async saveInfrastrukturabfrage(): Promise<void> {
+  private async saveInfrastrukturabfrage(showToast: boolean): Promise<void> {
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(mapToInfrastrukturabfrageAngelegt(this.abfrage), true).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableByAbfrageerstellung()) {
         await this.patchAbfrageAngelegt(
@@ -502,7 +512,7 @@ export default class Abfrage extends Mixins(
           this.abfrage.id as string,
           true
         ).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableBySachbearbeitung()) {
         await this.patchAbfrageInBearbeitungSachbearbeitung(
@@ -510,7 +520,7 @@ export default class Abfrage extends Mixins(
           this.abfrage.id as string,
           true
         ).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableByBedarfsmeldung()) {
         await this.patchAbfrageInBearbeitungFachreferate(
@@ -526,31 +536,36 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private handleSuccess(dto: InfrastrukturabfrageDto): void {
+  private handleSuccess(dto: InfrastrukturabfrageDto, showToast: boolean): void {
     this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
     if (this.isNewAbfrage()) {
       this.$router.push({ path: "/" });
       Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
     } else {
-      Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
+      if (showToast) Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
   }
 
   private async startStatusUebergang(transition: TransitionDto) {
     if (!this.isDirty()) {
+      let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
+      if (transition.url === "abfrage-schliessen") {
+        toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
+      }
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
-        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
-        if (requestSuccessful) {
-          if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
-            this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
+        const response = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
+        if (response.ok) {
+          if (!(transition.url === "in-bearbeitung-setzen")) {
+            this.returnToUebersicht(toastMessage, Levels.SUCCESS);
           } else {
             this.setSelectedAbfrageInStore();
             this.getTransitions(this.abfrageId, true).then((response) => {
               this.possbileTransitions = response;
             });
           }
-          this.selectAbfrage();
+        } else {
+          this.anmerkung = "";
         }
       } else {
         this.showWarningInInformationList(validationMessage);
