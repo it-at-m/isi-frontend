@@ -103,17 +103,6 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  getInfrastrukturabfragen(showInInformationList: boolean): Promise<Array<InfrastrukturabfrageDto>> {
-    return this.abfrageApi
-      .getInfrastrukturabfragen(RequestUtils.getGETConfig())
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
-  }
-
   getInfrastrukturabfrageById(id: string, showInInformationList: boolean): Promise<InfrastrukturabfrageDto> {
     const requestObject: GetInfrastrukturabfrageByIdRequest = {
       id: id,

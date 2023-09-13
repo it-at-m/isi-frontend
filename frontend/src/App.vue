@@ -6,7 +6,6 @@
       color="primary"
       elevation="8"
       height="50"
-      extension-height="42"
     >
       <v-row align="center">
         <v-col
@@ -30,21 +29,7 @@
           cols="6"
           class="d-flex align-center justify-center"
         >
-          <v-text-field
-            id="app_suchfeld"
-            v-model="query"
-            dense
-            flat
-            solo-inverted
-            dark
-            hide-details
-            label="Suche"
-            clearable
-            prepend-inner-icon="mdi-magnify"
-            color="black"
-            style="max-width: 800px"
-            @keyup.enter="search"
-          />
+          <search-input-field />
         </v-col>
         <v-col
           cols="3"
@@ -124,57 +109,6 @@
           </v-menu>
         </v-col>
       </v-row>
-      <template #extension>
-        <div
-          class="accent d-flex justify-space-around"
-          style="width: 100%"
-        >
-          <v-btn
-            id="app_karte_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('karte') ? 'active' : ''}`"
-            @click="goToRoute('/karte')"
-            v-text="'Karte'"
-          />
-          <v-btn
-            id="app_abfrage_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('abfragen') ? 'active' : ''}`"
-            @click="goToRoute('/abfragenuebersicht')"
-            v-text="'Abfragen'"
-          />
-          <v-btn
-            id="app_bauvorhaben_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('bauvorhaben') ? 'active' : ''}`"
-            @click="goToRoute('/bauvorhabenuebersicht')"
-            v-text="'Bauvorhaben'"
-          />
-          <v-btn
-            id="app_infrastruktureinrichtung_button"
-            depressed
-            tile
-            text
-            color="white"
-            height="42"
-            :class="`text-wrap text-h6 tab ${currentRouteHasTag('infrastruktureinrichtungen') ? 'active' : ''}`"
-            @click="goToRoute('/infrastruktureinrichtungenuebersicht')"
-            v-text="'Infrastruktureinrichtungen'"
-          />
-        </div>
-      </template>
     </v-app-bar>
     <version-info v-model="showVersionInfo" />
     <v-main>
@@ -190,13 +124,13 @@ import Component from "vue-class-component";
 import { Mixins, Watch } from "vue-property-decorator";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import VersionInfo from "@/components/common/VersionInfo.vue";
-import { RouteTag } from "./router";
 import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
+import SearchInputField from "@/components/search/SearchInputField.vue";
 
 @Component({
-  components: { TheSnackbar, VersionInfo },
+  components: { SearchInputField, TheSnackbar, VersionInfo },
 })
 export default class App extends Mixins(UserInfoApiRequestMixin) {
   public query = "";
@@ -245,14 +179,6 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
         message: "Sie haben nach " + this.query + " gesucht. ;)",
       });
     }
-  }
-
-  private goToRoute(path: string): void {
-    this.$router.push({ path });
-  }
-
-  private currentRouteHasTag(tag: RouteTag): boolean {
-    return this.$router.currentRoute.meta?.tag === tag;
   }
 }
 </script>

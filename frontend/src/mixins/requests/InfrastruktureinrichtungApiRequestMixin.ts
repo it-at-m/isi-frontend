@@ -5,7 +5,6 @@ import {
   GetInfrastrukturabfrageByIdRequest,
   InfrastruktureinrichtungApi,
   InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungListElementsDto,
   UpdateInfrastruktureinrichtungOperationRequest,
   UpdateInfrastruktureinrichtungRequest,
 } from "@/api/api-client/isi-backend";
@@ -22,19 +21,6 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
     this.infrastruktureinrichtungApi = new InfrastruktureinrichtungApi(
       RequestUtils.getBasicFetchConfigurationForBackend()
     );
-  }
-
-  getInfrastruktureinrichtungenListElements(
-    showInInformationList: boolean
-  ): Promise<InfrastruktureinrichtungListElementsDto> {
-    return this.infrastruktureinrichtungApi
-      .getInfrastruktureinrichtungListElements(RequestUtils.getGETConfig())
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
   }
 
   getInfrastruktureinrichtungById(

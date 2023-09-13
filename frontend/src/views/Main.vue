@@ -1,25 +1,124 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.png')"
-          class="my-3"
-          contain
-          height="200"
-        />
+  <v-container
+    fluid
+    class="fill-height pa-0"
+  >
+    <v-row class="fill-height justify-center mx-0">
+      <v-col
+        class="py-0"
+        cols="12"
+        md="3"
+      >
+        <search-result-list />
       </v-col>
-
-      <v-col class="mb-4">
-        <h1 class="text-h3 font-weight-bold mb-3">Willkommen beim Informationssystem für soziale Infrastruktur</h1>
+      <v-col
+        class="pa-0"
+        cols="12"
+        md="9"
+      >
+        <city-map />
       </v-col>
     </v-row>
+    <v-speed-dial
+      v-model="speedDialOpen"
+      class="button-speed-dial-entity-creation"
+      bottom
+      right
+      absolute
+    >
+      <template #activator>
+        <v-btn
+          v-model="speedDialOpen"
+          color="secondary"
+          dark
+          fab
+          large
+        >
+          <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
+          <v-icon v-else> mdi-plus </v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="red"
+        @click="createInfrastruktureinrichtung"
+        v-text="'I'"
+      />
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="indigo"
+        @click="createBauvorhaben"
+        v-text="'B'"
+      />
+      <v-btn
+        class="text-h6"
+        fab
+        dark
+        color="green"
+        @click="createAbfrage"
+        v-text="'A'"
+      />
+    </v-speed-dial>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
+import DefaultLayout from "@/components/DefaultLayout.vue";
+import SearchResultList from "@/components/search/SearchResultList.vue";
+import CityMap from "@/components/map/CityMap.vue";
+import router from "@/router";
+import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import _ from "lodash";
+import MapLayout from "@/components/map/MapLayout.vue";
 
-@Component
-export default class App extends Vue {}
+@Component({
+  components: {
+    MapLayout,
+    SearchAndFilterOptions,
+    CityMap,
+    SearchResultList,
+    DefaultLayout,
+  },
+})
+export default class Main extends Vue {
+  private speedDialOpen = false;
+
+  get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
+    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+  }
+
+  set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
+    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
+  }
+
+  private createAbfrage(): void {
+    router.push({
+      name: "newabfrage",
+    });
+  }
+
+  private createBauvorhaben(): void {
+    router.push({
+      name: "createBauvorhaben",
+    });
+  }
+
+  private createInfrastruktureinrichtung(): void {
+    router.push({
+      name: "createInfrastruktureinrichtung",
+    });
+  }
+}
 </script>
+
+<style>
+.button-speed-dial-entity-creation {
+  margin-bottom: 16px;
+}
+</style>

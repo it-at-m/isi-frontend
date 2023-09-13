@@ -25,30 +25,37 @@ import {
 
 export interface AbbrechenInfrastrukturabfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface AbfrageSchliessenInfrastrukturAbfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface BedarfsmeldungErfolgtInfrastrukturAbfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface ErneuteBearbeitungInfrastrukturabfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface FreigabeInfrastrukturabfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface InBearbeitungSetzenInfrastrukturabfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface SpeichernVonSozialinfrastrukturVersorgungInfrastrukturAbfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface TransitionsInfrastrukturabfrageRequest {
@@ -57,14 +64,17 @@ export interface TransitionsInfrastrukturabfrageRequest {
 
 export interface VerschickenDerStellungnahmeInfrastrukturabfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface ZurueckAbfrageerstellungInfrastrukturabfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 export interface ZurueckAnSachbearbeitungInfrastrukturabfrageRequest {
     id: string;
+    anmerkung?: string;
 }
 
 /**
@@ -81,6 +91,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -111,6 +125,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
@@ -139,6 +157,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -169,6 +191,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
@@ -197,6 +223,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -227,6 +257,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
@@ -255,6 +289,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -315,6 +353,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
@@ -344,6 +386,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
@@ -372,6 +418,10 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 

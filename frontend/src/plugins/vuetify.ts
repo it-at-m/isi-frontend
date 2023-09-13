@@ -2,10 +2,15 @@ import "@mdi/font/css/materialdesignicons.css";
 import "@fontsource/roboto";
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
+import { Scroll } from "vuetify/lib";
 import de from "vuetify/src/locale/de";
 import colors from "vuetify/lib/util/colors";
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+  directives: {
+    Scroll,
+  },
+});
 
 export const theme = {
   themes: {
