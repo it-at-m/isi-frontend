@@ -49,7 +49,7 @@
           v-model="isDeleteDialogAbfrageOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          dialogtext="Hiermit werden die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
+          dialogtext="Die Abfrage und ihre dazugehörigen Abfragevarianten werden gelöscht."
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogAbfrageNo"
