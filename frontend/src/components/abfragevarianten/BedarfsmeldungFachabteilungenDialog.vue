@@ -131,7 +131,7 @@ import _ from "lodash";
 export default class BauvorhabenDataTransferDialog extends Mixins(
   ValidatorMixin,
   SaveLeaveMixin,
-  FieldValidationRulesMixin
+  FieldValidationRulesMixin,
 ) {
   @VModel({ type: BedarfsmeldungFachabteilungenModel }) bedarfsmeldung!: BedarfsmeldungFachabteilungenModel;
 

@@ -76,7 +76,7 @@
             {{
               getLookupValueInfrastruktureinrichtung(
                 castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
-                infrastruktureinrichtungTypList
+                infrastruktureinrichtungTypList,
               )
             }}</span
           >
@@ -193,7 +193,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
               const currentSearchResults = this.searchResults;
               searchResultsNextPage.searchResults = _.concat(
                 _.toArray(currentSearchResults.searchResults),
-                _.toArray(searchResultsNextPage.searchResults)
+                _.toArray(searchResultsNextPage.searchResults),
               );
               this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
             })
@@ -273,13 +273,13 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
   }
 
   private castToInfrastruktureinrichtungSearchResultDto(
-    searchResult: SearchResultDto
+    searchResult: SearchResultDto,
   ): InfrastruktureinrichtungSearchResultDto {
     return searchResult as InfrastruktureinrichtungSearchResultDto;
   }
 
   private routeToInfrastruktureinrichtungForm(
-    infrastruktureinrichtungSearchResult: InfrastruktureinrichtungSearchResultDto
+    infrastruktureinrichtungSearchResult: InfrastruktureinrichtungSearchResultDto,
   ): void {
     if (!_.isNil(infrastruktureinrichtungSearchResult.id)) {
       router.push({

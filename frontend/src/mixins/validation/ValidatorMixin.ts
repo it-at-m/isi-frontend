@@ -106,7 +106,7 @@ export default class ValidatorMixin extends Vue {
     let validationMessage = null;
     const abfragevarianten = _.concat(
       _.toArray(infrastrukturabfrage.abfragevarianten),
-      _.toArray(infrastrukturabfrage.abfragevariantenSachbearbeitung)
+      _.toArray(infrastrukturabfrage.abfragevariantenSachbearbeitung),
     );
     for (const abfragevariante of abfragevarianten) {
       validationMessage = this.findFaultInAbfragevariante(infrastrukturabfrage.sobonRelevant, abfragevariante, true);
@@ -120,7 +120,7 @@ export default class ValidatorMixin extends Vue {
   public findFaultInAbfragevariante(
     sobonRelevant: UncertainBoolean,
     abfragevariante: AbfragevarianteModel,
-    showAbfragevarianteNr: boolean
+    showAbfragevarianteNr: boolean,
   ): string | null {
     if (_.isNil(abfragevariante.abfragevariantenName)) {
       return "Bitte geben Sie einen Namen für die Abfragevariante an.";
@@ -156,7 +156,7 @@ export default class ValidatorMixin extends Vue {
       return messageFaultBauschnitte;
     }
     const messageFaultAbfragevarianteSachbearbeitung = this.findFaultInAbfragevarianteSachbearbeitung(
-      abfragevariante.abfragevarianteSachbearbeitung
+      abfragevariante.abfragevarianteSachbearbeitung,
     );
     if (!_.isNil(messageFaultAbfragevarianteSachbearbeitung)) {
       return messageFaultAbfragevarianteSachbearbeitung;
@@ -207,14 +207,14 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInAbfragevarianteSachbearbeitung(
-    abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungModel
+    abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungModel,
   ): string | null {
     if (
       !_.isNil(abfragevarianteSachbearbeitung) &&
       !_.isNil(abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)
     ) {
       const messageFaultBedarfsmeldungen = this.findFaultInBedarfsmeldungen(
-        abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate
+        abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate,
       );
       if (!_.isNil(messageFaultBedarfsmeldungen)) {
         return messageFaultBedarfsmeldungen;
@@ -371,7 +371,7 @@ export default class ValidatorMixin extends Vue {
     if (containsNonTechnicalBaugebiet) {
       // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteWohneinheitenBaugebiete = _.sum(
-        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe))
+        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe)),
       );
 
       message =
@@ -385,8 +385,8 @@ export default class ValidatorMixin extends Vue {
       // Die Bauraten sind direkt für eine Abfragevariante erstellt worden. Die Abfragevariante ist somit mit einem technischen Baugebiet versehen.
       const sumVerteilteWohneinheitenBauraten = _.sum(
         bauratenFromAllTechnicalBaugebiete.map((baurate) =>
-          _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant
-        )
+          _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant,
+        ),
       );
 
       message =
@@ -422,8 +422,8 @@ export default class ValidatorMixin extends Vue {
       // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteGeschossflaecheWohnenBaugebiete = _.sum(
         nonTechnicalBaugebiete.map((baugebiet) =>
-          _.isNil(baugebiet.geschossflaecheWohnen) ? 0 : baugebiet.geschossflaecheWohnen
-        )
+          _.isNil(baugebiet.geschossflaecheWohnen) ? 0 : baugebiet.geschossflaecheWohnen,
+        ),
       );
 
       message =
@@ -437,8 +437,8 @@ export default class ValidatorMixin extends Vue {
       // Die Bauraten sind direkt für einen Abfragevariante erstellt worden. Die Abfragevariante ist mit einem technischen Baugebiet versehen.
       const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
         bauratenFromAllTechnicalBaugebiete.map((baurate) =>
-          _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant
-        )
+          _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant,
+        ),
       );
 
       message =
@@ -462,8 +462,8 @@ export default class ValidatorMixin extends Vue {
 
       const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
         _.toArray(baugebiet.bauraten).map((baurate) =>
-          _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant
-        )
+          _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant,
+        ),
       );
 
       validationMessage =
@@ -483,7 +483,9 @@ export default class ValidatorMixin extends Vue {
       const wohneinheitenBaugebiet = _.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe;
 
       const sumVerteilteWohneinheitenBauraten = _.sum(
-        _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant))
+        _.toArray(baugebiet.bauraten).map((baurate) =>
+          _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant,
+        ),
       );
 
       validationMessage =
