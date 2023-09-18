@@ -24,6 +24,19 @@
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditable"
     />
+    <field-group-card card-title="Verortung">
+      <city-map
+        height="300"
+        :zoom="14"
+        expandable
+        geo-json-disabled
+        mark-look-at
+        mark-click
+        :editable="isEditable"
+        :look-at="coordinate"
+        @click-in-map="onMapClicked"
+      />
+    </field-group-card>
     <field-group-card>
       <v-row justify="center">
         <v-col
@@ -158,12 +171,15 @@ import NumField from "@/components/common/NumField.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import CityMap from "@/components/map/CityMap.vue";
+import { LatLng, LatLngLiteral } from "leaflet";
 
 @Component({
   components: {
     FieldGroupCard,
     NumField,
     AdresseComponent,
+    CityMap,
   },
 })
 export default class InfrastruktureinrichtungComponent extends Mixins(
@@ -196,6 +212,16 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
     return this.$store.getters["lookup/einrichtungstraeger"];
   }
 
+  get coordinate(): LatLngLiteral | undefined {
+    const lat = this.infrastruktureinrichtung.adresse?.coordinate?.latitude;
+    const lng = this.infrastruktureinrichtung.adresse?.coordinate?.longitude;
+
+    if (lat && lng) {
+      return { lat, lng };
+    }
+    return undefined;
+  }
+
   private isFertigstellungsjahrRequired(): boolean {
     return this.infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand;
   }
@@ -205,6 +231,17 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
       this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
       this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
     );
+  }
+
+  private onMapClicked(latlng: LatLng): void {
+    if (!this.infrastruktureinrichtung.adresse?.strasse) {
+      this.infrastruktureinrichtung.adresse = {
+        coordinate: {
+          latitude: latlng.lat,
+          longitude: latlng.lng,
+        },
+      };
+    }
   }
 
   /**
