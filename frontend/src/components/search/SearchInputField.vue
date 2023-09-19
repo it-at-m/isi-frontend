@@ -88,11 +88,13 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   private handleAdoptSearchAndFilterOptions(): void {
     this.searchQueryAndSortingStore = this.searchQueryAndSorting;
     this.searchAndFilterDialogOpen = false;
+    this.searchEntitiesForSelectedSuggestion();
   }
 
   private handleResetSearchAndFilterOptions(): void {
     this.searchQueryAndSorting = createSearchQueryAndSortingModel();
     this.handleAdoptSearchAndFilterOptions();
+    this.searchEntitiesForSelectedSuggestion();
   }
 
   // Search
