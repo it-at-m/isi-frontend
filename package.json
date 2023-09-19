@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "check": "npx prettier --check --ignore-unknown */**",
-    "lint": "npx prettier --write --ignore-unknown */**"
+    "check": "npx prettier \"**/*\" --check --ignore-unknown",
+    "lint": "npx prettier \"**/*\" --write --ignore-unknown"
   },
   "devDependencies": {
     "husky": "^8.0.3",
