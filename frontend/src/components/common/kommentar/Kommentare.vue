@@ -9,6 +9,10 @@
 </template>
 
 <script lang="ts">
+import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin";
+import { Component, Prop, Mixins } from "vue-property-decorator";
+import { KommentarDto } from "@/api/api-client/isi-backend";
+
 export const enum KommentarContext {
   UNDEFINED = "UNDEFINED",
   ABFRAGE = "ABFRAGE",
@@ -16,20 +20,29 @@ export const enum KommentarContext {
   INFRASTRUKTUREINRICHTUNG = "INFRASTRUKTUREINRICHTUNG",
 }
 
-import { Vue, Component, VModel, Prop } from "vue-property-decorator";
-
 @Component({})
-export default class Kommentare extends Vue {
+export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
   @Prop({ type: String, default: KommentarContext.UNDEFINED })
   private readonly context!: KommentarContext;
 
+  @Prop()
+  private readonly id!: string;
+
   private isKommentarListOpen = false;
+
+  private kommentare: Array<KommentarDto> = [];
 
   private getKommentare() {
     if (!this.isKommentarListOpen) {
       this.isKommentarListOpen = true;
       if (this.context === KommentarContext.BAUVORHABEN) {
+        this.getKommentareForBauvorhaben(this.id, true).then((kommentare) => {
+          this.kommentare = kommentare;
+        });
       } else if (this.context === KommentarContext.INFRASTRUKTUREINRICHTUNG) {
+        this.getKommentareForInfrastruktureinrichtung(this.id, true).then((kommentare) => {
+          this.kommentare = kommentare;
+        });
       }
     } else {
       this.isKommentarListOpen = false;
