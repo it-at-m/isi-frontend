@@ -15,7 +15,6 @@ import { KommentarDto } from "@/api/api-client/isi-backend";
 
 export const enum KommentarContext {
   UNDEFINED = "UNDEFINED",
-  ABFRAGE = "ABFRAGE",
   BAUVORHABEN = "BAUVORHABEN",
   INFRASTRUKTUREINRICHTUNG = "INFRASTRUKTUREINRICHTUNG",
 }
