@@ -218,6 +218,7 @@
     <field-group-card :card-title="referencedObjectsCardTitle">
       <referenced-items-list />
     </field-group-card>
+    <kommentare></kommentare>
   </v-container>
 </template>
 
@@ -236,6 +237,7 @@ import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 
 @Component({
   computed: {
@@ -243,7 +245,7 @@ import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestM
       return VerortungContext.BAUVORHABEN;
     },
   },
-  components: { FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },
+  components: { Kommentare, FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },
 })
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
