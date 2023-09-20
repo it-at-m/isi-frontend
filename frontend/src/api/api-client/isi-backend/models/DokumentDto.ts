@@ -93,6 +93,8 @@ export const DokumentDtoArtDokumentEnum = {
     Berechnung: 'BERECHNUNG',
     InfosBaugenehmigung: 'INFOS_BAUGENEHMIGUNG',
     Presseartikel: 'PRESSEARTIKEL',
+    InfosZuSozInfrastruktur: 'INFOS_ZU_SOZ_INFRASTRUKTUR',
+    Protokoll: 'PROTOKOLL',
     Sonstiges: 'SONSTIGES'
 } as const;
 export type DokumentDtoArtDokumentEnum = typeof DokumentDtoArtDokumentEnum[keyof typeof DokumentDtoArtDokumentEnum];
