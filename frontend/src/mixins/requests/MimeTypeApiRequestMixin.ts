@@ -19,7 +19,7 @@ export default class MimeTypeApiRequestMixin extends Mixins(ErrorHandler) {
 
   async extractMediaTypeInformationForAllowedMediaType(
     dto: FilepathDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<MimeTypeInformationDto> {
     const requestObject: ExtractMediaTypeInformationForAllowedMediaTypeRequest = {
       filepathDto: dto,
