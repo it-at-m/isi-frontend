@@ -35,7 +35,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
 
   async getFlurstueckeForPoint(
     point: PointGeometryDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<FeatureDtoFlurstueckDto>> {
     const request: GetFlurstuecke1Request = { pointGeometryDto: point };
     let flurstuecke: Array<FeatureDtoFlurstueckDto> = [];
@@ -57,7 +57,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
 
   async getFlurstueckeForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<FeatureDtoFlurstueckDto>> {
     const request: GetFlurstueckeRequest = { multiPolygonGeometryDto: multiPolygon };
     let flurstuecke: Array<FeatureDtoFlurstueckDto> = [];
@@ -79,7 +79,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
 
   async getGemarkungenForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<FeatureDtoGemarkungDto>> {
     const request: GetGemarkungenRequest = { multiPolygonGeometryDto: multiPolygon };
     let gemarkungen: Array<FeatureDtoGemarkungDto> = [];
@@ -101,7 +101,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
 
   async getStadtbezirkeForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<FeatureDtoStadtbezirkDto>> {
     const request: GetStadtbezirkeRequest = { multiPolygonGeometryDto: multiPolygon };
     let stadtbezirke: Array<FeatureDtoStadtbezirkDto> = [];
@@ -123,7 +123,7 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
 
   async getUnionOfMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<MultiPolygonGeometryDto> {
     const request: UnifyRequest = { multiPolygonGeometryDto: multiPolygon };
     let unifiedMultipolygon: MultiPolygonGeometryDto = {

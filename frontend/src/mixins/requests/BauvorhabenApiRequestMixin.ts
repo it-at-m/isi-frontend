@@ -30,7 +30,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
 
   getReferencedInfrastrukturabfragenList(
     bauvorhabenId: string,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<AbfrageSearchResultDto>> {
     const requestObject: GetReferencedInfrastrukturabfragenRequest = {
       id: bauvorhabenId,
@@ -47,7 +47,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
 
   getReferencedInfrastruktureinrichtungenList(
     bauvorhabenId: string,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<InfrastruktureinrichtungSearchResultDto>> {
     const requestObject: GetReferencedInfrastruktureinrichtungRequest = {
       id: bauvorhabenId,
@@ -76,7 +76,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
   postBauvorhaben(
     bauvorhabenDto: BauvorhabenDto,
     datenuebernahmeAbfrageId: string | undefined,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<BauvorhabenDto> {
     const requestObject: CreateBauvorhabenRequest = {
       bauvorhabenDto: bauvorhabenDto,
@@ -124,7 +124,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
 
   async changeRelevanteAbfragevariante(
     abfragevarianteDto: AbfragevarianteDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<BauvorhabenDto | string> {
     const requestObject: PutChangeRelevanteAbfragevarianteRequest = {
       abfragevarianteDto,
@@ -132,7 +132,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     try {
       const response = await this.bauvorhabenApi.putChangeRelevanteAbfragevariante(
         requestObject,
-        RequestUtils.getPUTConfig()
+        RequestUtils.getPUTConfig(),
       );
       return response;
     } catch (error) {

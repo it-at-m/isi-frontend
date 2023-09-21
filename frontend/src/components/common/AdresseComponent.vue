@@ -132,7 +132,7 @@ export default class AdresseComponent extends Mixins(
   SaveLeaveMixin,
   FieldValidationRulesMixin,
   FieldGroupCard,
-  MasterEaiApiRequestMixin
+  MasterEaiApiRequestMixin,
 ) {
   private adressCardTitle = "Adressinformationen";
 

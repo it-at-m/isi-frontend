@@ -26,22 +26,22 @@ describe("DokumenteTest.spec.ts", () => {
     expect(
       maxNumberOfFilesReached([] as DokumentDto[], mockFileList, {
         maxNumberOfFiles: undefined,
-      } as FileInformationDto)
+      } as FileInformationDto),
     ).toBe(false);
     expect(
       maxNumberOfFilesReached([] as DokumentDto[], mockFileList, {
         maxNumberOfFiles: 3,
-      } as FileInformationDto)
+      } as FileInformationDto),
     ).toBe(false);
     expect(
       maxNumberOfFilesReached([createDokumentDto()] as DokumentDto[], mockFileList, {
         maxNumberOfFiles: 3,
-      } as FileInformationDto)
+      } as FileInformationDto),
     ).toBe(false);
     expect(
       maxNumberOfFilesReached([createDokumentDto(), createDokumentDto()] as DokumentDto[], mockFileList, {
         maxNumberOfFiles: 3,
-      } as FileInformationDto)
+      } as FileInformationDto),
     ).toBe(true);
   });
 
@@ -61,13 +61,13 @@ describe("DokumenteTest.spec.ts", () => {
 
   test("Maximale Größe einer Datei überschritten", () => {
     expect(
-      maxFileSizeExceeded({ size: 100000000 } as File, { maxFileSizeBytes: undefined } as FileInformationDto)
+      maxFileSizeExceeded({ size: 100000000 } as File, { maxFileSizeBytes: undefined } as FileInformationDto),
     ).toBe(false);
     expect(maxFileSizeExceeded({ size: 31457281 } as File, { maxFileSizeBytes: 31457280 } as FileInformationDto)).toBe(
-      true
+      true,
     );
     expect(maxFileSizeExceeded({ size: 31457280 } as File, { maxFileSizeBytes: 31457280 } as FileInformationDto)).toBe(
-      false
+      false,
     );
     expect(maxFileSizeExceeded({ size: 0 } as File, { maxFileSizeBytes: 31457280 } as FileInformationDto)).toBe(false);
   });

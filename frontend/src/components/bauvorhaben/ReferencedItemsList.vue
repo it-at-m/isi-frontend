@@ -106,7 +106,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
           if (!_.isNil(searchResults)) {
             this.abfragen = searchResults;
           }
-        }
+        },
       );
     } else if (this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
       this.isAbfrageListOpen = false;
@@ -123,7 +123,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
           if (!_.isNil(searchResults)) {
             this.infrastruktureinrichtungen = searchResults;
           }
-        }
+        },
       );
     } else if (this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
       this.isInfraListOpen = false;
@@ -163,7 +163,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
    * @param infrastruktureinrichtungSearchResultDto zum ermitteln der Route.
    */
   routeToInfrastruktureinrichtungInfo(
-    infrastruktureinrichtungSearchResultDto: InfrastruktureinrichtungSearchResultDto
+    infrastruktureinrichtungSearchResultDto: InfrastruktureinrichtungSearchResultDto,
   ): void {
     if (!_.isNil(infrastruktureinrichtungSearchResultDto.id)) {
       router.push({
