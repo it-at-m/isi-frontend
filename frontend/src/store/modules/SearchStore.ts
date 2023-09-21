@@ -1,22 +1,29 @@
 import {
-  AbfrageListElementDto,
+  AbfrageSearchResultDto,
   BauvorhabenDto,
+  BauvorhabenSearchResultDto,
   InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungListElementDto,
+  SearchResultDto,
+  SearchResultsDto,
+  SearchResultDtoTypeEnum,
 } from "@/api/api-client/isi-backend";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
+import _ from "lodash";
+import { createSearchQueryAndSortingModel } from "@/utils/Factories";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
 const state = {
-  resultAbfrage: undefined as Array<AbfrageListElementDto> | undefined,
-  searchQueryAbfrage: "",
+  searchResults: {
+    searchResults: [],
+    page: 0,
+    numberOfPages: 0,
+  } as SearchResultsDto,
+  requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
-  resultBauvorhaben: undefined as BauvorhabenDto[] | undefined,
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
-  resultInfrastruktureinrichtung: [] as InfrastruktureinrichtungListElementDto[] | undefined,
-  searchQueryInfrastruktureinrichtung: "",
   selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
 };
 
@@ -28,26 +35,17 @@ export default {
   state,
 
   getters: {
-    resultAbfrage: (state: SearchState): Array<AbfrageListElementDto> | undefined => {
-      return state.resultAbfrage;
+    searchResults: (): SearchResultsDto => {
+      return state.searchResults;
     },
-    searchQueryAbfrage: (state: SearchState): string => {
-      return state.searchQueryAbfrage;
+    requestSearchQueryAndSorting: (): SearchQueryAndSortingModel => {
+      return state.requestSearchQueryAndSorting;
     },
     selectedAbfrage: (state: SearchState): InfrastrukturabfrageModel | undefined => {
       return state.selectedAbfrage;
     },
-    resultBauvorhaben: (state: SearchState): Array<BauvorhabenDto> | undefined => {
-      return state.resultBauvorhaben;
-    },
     selectedBauvorhaben: (state: SearchState): BauvorhabenDto | undefined => {
       return state.selectedBauvorhaben;
-    },
-    resultInfrastruktureinrichtung: (state: SearchState): Array<InfrastruktureinrichtungListElementDto> | undefined => {
-      return state.resultInfrastruktureinrichtung;
-    },
-    searchQueryInfrastruktureinrichtung: (state: SearchState): string => {
-      return state.searchQueryInfrastruktureinrichtung;
     },
     selectedInfrastruktureinrichtung: (state: SearchState): InfrastruktureinrichtungDto | undefined => {
       return state.selectedInfrastruktureinrichtung;
@@ -55,89 +53,62 @@ export default {
   },
 
   mutations: {
-    resultAbfrage(state: SearchState, items: AbfrageListElementDto[]): void {
-      state.resultAbfrage = items;
+    searchResults(state: SearchState, searchResults: SearchResultsDto): void {
+      state.searchResults = searchResults;
     },
-    searchQueryAbfrage(state: SearchState, searchQuery: string): void {
-      state.searchQueryAbfrage = searchQuery;
+    removeSearchResultById(state: SearchState, id: string): void {
+      _.remove(_.toArray(state.searchResults.searchResults), function (searchResult: SearchResultDto) {
+        return (
+          (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage) &&
+            _.isEqual(id, (searchResult as AbfrageSearchResultDto).id)) ||
+          (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben) &&
+            _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id)) ||
+          (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastruktureinrichtung) &&
+            _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id))
+        );
+      });
+    },
+    requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingModel): void {
+      state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
     },
     selectedAbfrage(state: SearchState, selectedAbfrage: InfrastrukturabfrageModel): void {
       state.selectedAbfrage = selectedAbfrage;
     },
-    resetAbfrage(state: SearchState): void {
-      state.resultAbfrage = undefined;
-    },
     selectedBauvorhaben: (state: SearchState, item: BauvorhabenDto): void => {
       state.selectedBauvorhaben = item;
     },
-    resultBauvorhaben: (state: SearchState, items: BauvorhabenDto[]): void => {
-      state.resultBauvorhaben = items;
-    },
-    resetBauvorhaben(state: SearchState): void {
-      state.resultBauvorhaben = undefined;
-    },
-    resultInfrastruktureinrichtung(state: SearchState, items: InfrastruktureinrichtungListElementDto[]): void {
-      state.resultInfrastruktureinrichtung = items;
-    },
-    searchQueryInfrastruktureinrichtung(state: SearchState, searchQuery: string): void {
-      state.searchQueryInfrastruktureinrichtung = searchQuery;
-    },
     selectedInfrastruktureinrichtung(
       state: SearchState,
-      selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto
+      selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto,
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
-    },
-    resetInfrastruktureinrichtung(state: SearchState): void {
-      state.resultInfrastruktureinrichtung = undefined;
     },
   },
 
   actions: {
-    resultAbfrage(context: ActionContext<SearchState, RootState>, items: AbfrageListElementDto[]): void {
-      context.commit("resultAbfrage", items);
+    searchResults(context: ActionContext<SearchState, RootState>, searchResults: SearchResultsDto): void {
+      context.commit("searchResults", searchResults);
     },
-    searchQueryAbfrage(context: ActionContext<SearchState, RootState>, searchQuery: string): void {
-      context.commit("searchQueryAbfrage", searchQuery);
+    removeSearchResultById(context: ActionContext<SearchState, RootState>, id: string): void {
+      context.commit("removeSearchResultById", id);
+    },
+    requestSearchQueryAndSorting(
+      context: ActionContext<SearchState, RootState>,
+      searchQueryAndSortingDto: SearchQueryAndSortingModel,
+    ): void {
+      context.commit("requestSearchQueryAndSorting", searchQueryAndSortingDto);
     },
     selectedAbfrage(context: ActionContext<SearchState, RootState>, abfrage: InfrastrukturabfrageModel): void {
       context.commit("selectedAbfrage", abfrage);
     },
-    resetAbfrage(context: ActionContext<SearchState, RootState>): void {
-      context.commit("resetAbfrage");
-    },
-    isInitializedAbfrage(): boolean {
-      return this.resultAbfrage !== undefined;
-    },
-    resultBauvorhaben(context: ActionContext<SearchState, RootState>, items: BauvorhabenDto[]): void {
-      context.commit("resultBauvorhaben", items);
-    },
     selectedBauvorhaben(context: ActionContext<SearchState, RootState>, item: BauvorhabenDto): void {
       context.commit("selectedBauvorhaben", item);
     },
-    resetBauvorhaben(context: ActionContext<SearchState, RootState>): void {
-      context.commit("resetBauvorhaben");
-    },
-    resultInfrastruktureinrichtung(
-      context: ActionContext<SearchState, RootState>,
-      items: InfrastruktureinrichtungListElementDto[]
-    ): void {
-      context.commit("resultInfrastruktureinrichtung", items);
-    },
-    searchQueryInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>, searchQuery: string): void {
-      context.commit("searchQueryInfrastruktureinrichtung", searchQuery);
-    },
     selectedInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      infrastruktureinrichtung: InfrastruktureinrichtungDto
+      infrastruktureinrichtung: InfrastruktureinrichtungDto,
     ): void {
       context.commit("selectedInfrastruktureinrichtung", infrastruktureinrichtung);
-    },
-    isInitializedInfrastruktureinrichtung(): boolean {
-      return this.resultInfrastruktureinrichtung !== undefined;
-    },
-    resetInfrastruktureinrichtung(context: ActionContext<SearchState, RootState>): void {
-      context.commit("resetInfrastruktureinrichtung");
     },
   },
 };

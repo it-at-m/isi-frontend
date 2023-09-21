@@ -57,12 +57,15 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_statusuebergang"
+          ref="yesNoDialogStatusuebergang"
           v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
           :dialogtext="dialogTextStatus"
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
+          :has-anmerkung="hasAnmerkung"
+          @anmerkung="handleAnmerkung"
           @no="yesNoDialogStatusUebergangeNo"
           @yes="yesNoDialogStatusUebergangYes"
         />
@@ -132,6 +135,17 @@
           yes-text="Löschen"
           @no="yesNoDialogBaurateNo"
           @yes="yesNoDialogBaurateYes"
+        />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_relevante_abfragevariante_dialog"
+          v-model="isRelevanteAbfragevarianteDialogOpen"
+          icon="mdi-marker"
+          dialogtitle="Hinweis"
+          :dialogtext="relevanteAbfragevarianteDialogText"
+          no-text="Abbrechen"
+          yes-text="Überschreiben"
+          @no="yesNoDialogRelevanteAbfragevarianteNo"
+          @yes="yesNoDialogRelevanteAbfragevarianteYes"
         />
       </template>
       <template #heading>
@@ -267,7 +281,6 @@ import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteM
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import {
   createAbfragevarianteDto,
@@ -338,12 +351,15 @@ export default class Abfrage extends Mixins(
   StatusUebergangApiRequestMixin,
   ValidatorMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
 ) {
+  private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
+
   private modeAbfrage = DisplayMode.UNDEFINED;
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
+  private anmerkung = "";
   private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
   private selected: AbfrageDtoWithForm = this.abfrage;
   private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
@@ -357,8 +373,12 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBauabschnittOpen = false;
   private isDeleteDialogBaugebietOpen = false;
   private isDeleteDialogBaurateOpen = false;
+  private isRelevanteAbfragevarianteDialogOpen = false;
+  private relevanteAbfragevarianteDialogText = "";
+  private hasAnmerkung = false;
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
+  private relevanteAbfragevarianteToBeSet: AbfragevarianteModel | undefined;
   private treeItemToDelete: AbfrageTreeItem | undefined;
   public possbileTransitions: Array<TransitionDto> = [];
 
@@ -417,7 +437,12 @@ export default class Abfrage extends Mixins(
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
+    transition.url == "abfrage-schliessen" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
     this.isStatusUebergangDialogOpen = true;
+  }
+
+  private handleAnmerkung(val: string): void {
+    this.anmerkung = val;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -436,6 +461,7 @@ export default class Abfrage extends Mixins(
 
   private yesNoDialogStatusUebergangeNo(): void {
     this.isStatusUebergangDialogOpen = false;
+    if (!_.isNil(this.$refs.yesNoDialogStatusuebergang)) this.$refs.yesNoDialogStatusuebergang.resetTextarea();
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
@@ -449,6 +475,7 @@ export default class Abfrage extends Mixins(
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
     await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+      this.$store.commit("search/removeSearchResultById", this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }
@@ -480,42 +507,54 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogBaurateOpen = false;
   }
 
+  private async yesNoDialogRelevanteAbfragevarianteYes(): Promise<void> {
+    if (this.relevanteAbfragevarianteToBeSet) {
+      await this.setRelevanteAbfragevariante(null);
+      await this.setRelevanteAbfragevariante(this.relevanteAbfragevarianteToBeSet);
+    }
+    this.yesNoDialogRelevanteAbfragevarianteNo();
+  }
+
+  private yesNoDialogRelevanteAbfragevarianteNo(): void {
+    this.isRelevanteAbfragevarianteDialogOpen = false;
+  }
+
   private async saveAbfrage(): Promise<void> {
     if (this.validate()) {
-      this.saveInfrastrukturabfrage();
+      this.saveInfrastrukturabfrage(true);
     } else {
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
     }
   }
 
-  private async saveInfrastrukturabfrage(): Promise<void> {
+  private async saveInfrastrukturabfrage(showToast: boolean): Promise<void> {
     const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
         await this.createInfrastrukturabfrage(mapToInfrastrukturabfrageAngelegt(this.abfrage), true).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableByAbfrageerstellung()) {
         await this.patchAbfrageAngelegt(
           mapToInfrastrukturabfrageAngelegt(this.abfrage),
           this.abfrage.id as string,
-          true
+          true,
         ).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableBySachbearbeitung()) {
         await this.patchAbfrageInBearbeitungSachbearbeitung(
           mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrage),
           this.abfrage.id as string,
-          true
+          true,
         ).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableByBedarfsmeldung()) {
         await this.patchAbfrageInBearbeitungFachreferate(
           mapToInfrastrukturabfrageInBearbeitungFachreferateDto(this.abfrage),
           this.abfrage.id as string,
-          true
+          true,
         ).then((dto) => {
           this.handleSuccess(dto);
         });
@@ -525,38 +564,77 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private handleSuccess(dto: InfrastrukturabfrageDto): void {
+  private handleSuccess(dto: InfrastrukturabfrageDto, showToast: boolean): void {
     this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
-    this.$store.dispatch("search/resetAbfrage");
     if (this.isNewAbfrage()) {
-      this.$router.push({ path: "/abfragenuebersicht" });
+      this.$router.push({ path: "/" });
       Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
     } else {
-      Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
+      if (showToast) Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
   }
 
   private async startStatusUebergang(transition: TransitionDto) {
     if (!this.isDirty()) {
+      let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
+      if (transition.url === "abfrage-schliessen") {
+        toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
+      }
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
-        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
-        if (requestSuccessful) {
-          if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
-            this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
+        const response = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
+        if (response.ok) {
+          if (!(transition.url === "in-bearbeitung-setzen")) {
+            this.returnToUebersicht(toastMessage, Levels.SUCCESS);
           } else {
             this.setSelectedAbfrageInStore();
             this.getTransitions(this.abfrageId, true).then((response) => {
               this.possbileTransitions = response;
             });
           }
-          this.selectAbfrage();
+        } else {
+          this.anmerkung = "";
         }
       } else {
         this.showWarningInInformationList(validationMessage);
       }
     } else {
       this.showWarningInInformationList("Bitte speichern vor einem Statusübergang");
+    }
+  }
+
+  private async setRelevanteAbfragevariante(abfragevariante: AbfragevarianteModel | null): Promise<void> {
+    if (_.isNil(abfragevariante)) {
+      const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
+      if (bauvorhabenId) {
+        const bauvorhaben = await this.getBauvorhabenById(bauvorhabenId, false);
+        const relevanteAbfragevariante = bauvorhaben.relevanteAbfragevariante;
+        if (relevanteAbfragevariante) {
+          await this.changeRelevanteAbfragevariante(relevanteAbfragevariante, true);
+        }
+      }
+      return;
+    }
+
+    if (abfragevariante.id) {
+      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((result) => {
+        if (typeof result !== "string") {
+          const relevanteId = result.relevanteAbfragevariante?.id;
+          this.relevanteAbfragevarianteId = relevanteId ?? null;
+          Toaster.toast(
+            `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${
+              this.abfrage.displayName
+            } ist nun ${relevanteId ? "relevant" : "nicht mehr relevant"}.`,
+            Levels.SUCCESS,
+          );
+        } else {
+          this.relevanteAbfragevarianteToBeSet = abfragevariante;
+          this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+          this.isRelevanteAbfragevarianteDialogOpen = true;
+        }
+      });
+    } else {
+      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
     }
   }
 
@@ -596,8 +674,7 @@ export default class Abfrage extends Mixins(
     if (message && level) {
       Toaster.toast(message, level);
     }
-    this.$store.dispatch("search/resetAbfrage");
-    this.$router.push({ path: "/abfragenuebersicht" });
+    this.$router.push({ path: "/" });
   }
 
   private validate(): boolean {
@@ -645,7 +722,7 @@ export default class Abfrage extends Mixins(
       abfragevariante,
       AbfrageFormType.ABFRAGEVARIANTE,
       parent,
-      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE,
     );
   }
 
@@ -658,7 +735,7 @@ export default class Abfrage extends Mixins(
       abfragevariante,
       AbfrageFormType.ABFRAGEVARIANTE,
       parent,
-      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
     );
   }
 
@@ -801,20 +878,8 @@ export default class Abfrage extends Mixins(
 
   private async handleSetAbfragevarianteRelevant(item: AbfrageTreeItem): Promise<void> {
     const abfragevariante = item.value;
-
-    if (!_.isNil(abfragevariante.id) && this.isAbfragevariante(item, abfragevariante)) {
-      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((dto) => {
-        const relevanteId = dto.relevanteAbfragevariante?.id;
-        this.relevanteAbfragevarianteId = relevanteId ?? null;
-        Toaster.toast(
-          `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${this.abfrage.displayName} ist nun ${
-            relevanteId ? "relevant" : "nicht mehr relevant"
-          }.`,
-          Levels.SUCCESS
-        );
-      });
-    } else {
-      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
+    if (this.isAbfragevariante(item, abfragevariante)) {
+      await this.setRelevanteAbfragevariante(abfragevariante);
     }
   }
 
@@ -826,7 +891,7 @@ export default class Abfrage extends Mixins(
         abfragevariante.realisierungVon!,
         abfragevariante.gesamtanzahlWe,
         abfragevariante.geschossflaecheWohnen,
-        true
+        true,
       ).then((bauraten: Array<BaurateDto>) => {
         const technicalBaugebiet = this.getTechnicalBaugebiet(abfragevariante);
         if (abfragevariante.bauabschnitte && !_.isNil(technicalBaugebiet)) {
@@ -846,7 +911,7 @@ export default class Abfrage extends Mixins(
         baugebiet.realisierungVon,
         baugebiet.gesamtanzahlWe,
         baugebiet.geschossflaecheWohnen,
-        true
+        true,
       ).then((bauraten: Array<BaurateDto>) => {
         baugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
         this.formChanged();
@@ -929,7 +994,7 @@ export default class Abfrage extends Mixins(
     entity: AbfrageDtoWithForm,
     type: AbfrageFormType,
     parent: AbfrageTreeItem,
-    context: AnzeigeContextAbfragevariante
+    context: AnzeigeContextAbfragevariante,
   ): void {
     // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
     this.selectEntity(entity, type, generateTreeItemId(parent.id, parent.children.length), context);
@@ -939,7 +1004,7 @@ export default class Abfrage extends Mixins(
     entity: AbfrageDtoWithForm,
     type: AbfrageFormType,
     itemId: string,
-    context: AnzeigeContextAbfragevariante
+    context: AnzeigeContextAbfragevariante,
   ): void {
     this.anzeigeContextAbfragevariante = context;
     this.selected = entity;

@@ -26,7 +26,7 @@ export function anzahlUeberBaugebieteVerteilteWohneinheiten(abfragevariante: Abf
 }
 
 export function anzahlUeberBauratenVerteilteWohneinheitenForAbfragevariante(
-  abfragevariante: AbfragevarianteDto
+  abfragevariante: AbfragevarianteDto,
 ): number {
   const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
     .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
@@ -37,7 +37,7 @@ export function anzahlUeberBauratenVerteilteWohneinheitenForAbfragevariante(
 
 export function anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(baugebiet: BaugebietDto): number {
   const sumWohneinheiten = _.toArray(baugebiet.bauraten).map((baurate) =>
-    _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant
+    _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant,
   );
   return _.sum(sumWohneinheiten);
 }
@@ -50,7 +50,7 @@ export function anzahlUeberBaugebieteVerteilteGeschossflaecheWohnen(abfragevaria
 }
 
 export function anzahlUeberBauratenVerteilteGeschossflaecheWohnenForAbfragevariante(
-  abfragevariante: AbfragevarianteDto
+  abfragevariante: AbfragevarianteDto,
 ): number {
   const sumWohneinheiten = _.toArray(abfragevariante.bauabschnitte)
     .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
@@ -61,7 +61,7 @@ export function anzahlUeberBauratenVerteilteGeschossflaecheWohnenForAbfragevaria
 
 export function anzahlUeberBauratenVerteilteGeschossflaecheWohnenForBaugebiet(baugebiet: BaugebietDto): number {
   const sumWohneinheiten = _.toArray(baugebiet.bauraten).map((baurate) =>
-    _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant
+    _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant,
   );
   return _.sum(sumWohneinheiten);
 }
@@ -97,7 +97,7 @@ export function getBauratenFromAllTechnicalBaugebiete(abfragevariante: Abfrageva
 
 export function wohneinheiten(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): number {
   let value: number;
   if (baugebiet?.technical) {
@@ -110,7 +110,7 @@ export function wohneinheiten(
 
 export function wohneinheitenFormatted(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): string {
   const value = wohneinheiten(baugebiet, abfragevariante);
   return numberToFormattedStringZeroDecimals(value);
@@ -118,7 +118,7 @@ export function wohneinheitenFormatted(
 
 export function verteilteWohneinheiten(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): number {
   let value: number;
   if (baugebiet?.technical) {
@@ -131,7 +131,7 @@ export function verteilteWohneinheiten(
 
 export function verteilteWohneinheitenFormatted(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): string {
   const value = verteilteWohneinheiten(baugebiet, abfragevariante);
   return numberToFormattedStringZeroDecimals(value);
@@ -139,7 +139,7 @@ export function verteilteWohneinheitenFormatted(
 
 export function geschossflaecheWohnen(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): number {
   let value: number;
   if (baugebiet?.technical) {
@@ -155,7 +155,7 @@ export function geschossflaecheWohnen(
 
 export function geschossflaecheWohnenFormatted(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): string {
   const value = geschossflaecheWohnen(baugebiet, abfragevariante);
   return numberToFormattedStringTwoDecimals(value);
@@ -163,7 +163,7 @@ export function geschossflaecheWohnenFormatted(
 
 export function verteilteGeschossflaecheWohnen(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): number {
   let value: number;
   if (baugebiet?.technical) {
@@ -177,7 +177,7 @@ export function verteilteGeschossflaecheWohnen(
 }
 export function verteilteGeschossflaecheWohnenFormatted(
   baugebiet: BaugebietDto | undefined,
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): string {
   const value = verteilteGeschossflaecheWohnen(baugebiet, abfragevariante);
   return numberToFormattedStringTwoDecimals(value);
@@ -197,7 +197,7 @@ export function verteilteWohneinheitenAbfragevariante(abfragevariante: Abfrageva
 }
 
 export function verteilteWohneinheitenAbfragevarianteFormatted(
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): string {
   const value = verteilteWohneinheitenAbfragevariante(abfragevariante);
   return numberToFormattedStringZeroDecimals(value);
@@ -219,7 +219,7 @@ export function verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante: A
 }
 
 export function verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
-  abfragevariante: AbfragevarianteDto | undefined
+  abfragevariante: AbfragevarianteDto | undefined,
 ): string {
   const value = verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante);
   return numberToFormattedStringTwoDecimals(value);

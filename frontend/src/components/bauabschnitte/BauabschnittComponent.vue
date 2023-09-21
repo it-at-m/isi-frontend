@@ -43,7 +43,7 @@ export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
 ) {
   @VModel({ type: BauabschnittModel }) bauabschnitt!: BauabschnittModel;
 

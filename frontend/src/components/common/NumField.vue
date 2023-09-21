@@ -204,7 +204,7 @@ export default {
       () => props.value,
       (value) => {
         setValue(value);
-      }
+      },
     );
 
     // Da die Composition API keine Mixins unterstützt, muss diese Funktion direkt implementiert werden.
