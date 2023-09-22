@@ -1,16 +1,36 @@
 <template>
   <div>
-    <v-slider
-      v-if="abfrage.statusAbfrage === StatusAbfrage.Abbruch"
-      v-model="sliderValue"
-      readonly
-      tick-size="5"
-      min="0"
-      max="5"
-      :tick-labels="tickLabels"
-      :step="1"
-    />
-    <p v-else>Abfrage wurde storniert.</p>
+    <v-stepper
+      v-if="!isCancelled()"
+      :value="getStatusIndex()"
+      alt-labels
+      flat
+    >
+      <v-stepper-header>
+        <v-stepper-step
+          complete
+          step=""
+        >
+          {{ statusLabels[0] }}
+        </v-stepper-step>
+        <template v-for="(tick, index) in statusLabels.slice(1)">
+          <v-divider :key="index"></v-divider>
+          <v-stepper-step
+            :key="index"
+            :complete="getStatusIndex() > index"
+            step=""
+          >
+            {{ tick }}
+          </v-stepper-step>
+        </template>
+      </v-stepper-header>
+    </v-stepper>
+    <p
+      v-else
+      class="font-weight-bold"
+    >
+      Abfrage wurde storniert.
+    </p>
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
@@ -161,9 +181,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Mixins, VModel } from "vue-property-decorator";
 import {
-  BauvorhabenDto,
   BauvorhabenSearchResultDto,
   LookupEntryDto,
   SearchQueryAndSortingDto,
@@ -214,40 +233,16 @@ export default class AbfrageComponent extends Mixins(
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
-  sliderValue = 0;
+  private sliderValue = 0;
 
-  data() {
-    return {
-      tickLabels: [
-        "angelegt",
-        "Übermittelt zur Bearbeitung",
-        "Start Bearbeitung",
-        "Einpflegen Bedarfsmeldung",
-        "Einplanung Bedarfe",
-        "erledigt",
-      ],
-    };
-  }
-
-  sliderValueChange(): void {
-    if (this.abfrage.statusAbfrage === StatusAbfrage.Angelegt) {
-      this.sliderValue = 0;
-    } else if (this.abfrage.statusAbfrage === StatusAbfrage.Offen) {
-      this.sliderValue = 2;
-    } else if (this.abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
-      this.sliderValue = 4;
-    } else if (this.abfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate) {
-      this.sliderValue = 6;
-    } else if (this.abfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt) {
-      this.sliderValue = 8;
-    } else if (this.abfrage.statusAbfrage === StatusAbfrage.Erledigt) {
-      this.sliderValue = 10;
-    }
-  }
-
-  updated(): void {
-    this.sliderValueChange();
-  }
+  private statusLabels = [
+    "angelegt",
+    "Übermittelt zur Bearbeitung",
+    "Start Bearbeitung",
+    "Einpflegen Bedarfsmeldung",
+    "Einplanung Bedarfe",
+    "erledigt",
+  ];
 
   mounted(): void {
     this.fetchBauvorhaben();
@@ -259,6 +254,29 @@ export default class AbfrageComponent extends Mixins(
 
   get statusAbfrageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/statusAbfrage"];
+  }
+
+  private isCancelled(): boolean {
+    return this.abfrage.statusAbfrage === StatusAbfrage.Abbruch;
+  }
+
+  private getStatusIndex(): number {
+    switch (this.abfrage.statusAbfrage) {
+      case StatusAbfrage.Angelegt:
+        return 0;
+      case StatusAbfrage.Offen:
+        return 1;
+      case StatusAbfrage.InBearbeitungSachbearbeitung:
+        return 2;
+      case StatusAbfrage.InBearbeitungFachreferate:
+        return 3;
+      case StatusAbfrage.BedarfsmeldungErfolgt:
+        return 4;
+      case StatusAbfrage.Erledigt:
+        return 5;
+      default:
+        return 0;
+    }
   }
 
   /**
