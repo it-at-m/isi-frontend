@@ -233,8 +233,6 @@ export default class AbfrageComponent extends Mixins(
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
-  private sliderValue = 0;
-
   private statusLabels = [
     "angelegt",
     "Übermittelt zur Bearbeitung",
