@@ -11,8 +11,7 @@
             v-model="calcGrundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="fieldPrefixesSuffixes.squareMeter"
-            required
-            :disabled="!isEditable"
+            :disabled="true"
           />
         </v-col>
       </v-row>
@@ -271,9 +270,10 @@ export default class BauvorhabenForm extends Mixins(
   }
 
   get calcGrundstuecksgroesse(): number | undefined {
-    this.bauvorhaben.grundstuecksgroesse = 0;
+    this.bauvorhaben.grundstuecksgroesse = undefined;
 
     if (this.bauvorhaben.verortung) {
+      this.bauvorhaben.grundstuecksgroesse = 0;
       this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
         gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
           this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
