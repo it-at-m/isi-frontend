@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-slider
+      v-if="abfrage.statusAbfrage === StatusAbfrage.Abbruch"
+      v-model="sliderValue"
+      readonly
+      tick-size="5"
+      min="0"
+      max="5"
+      :tick-labels="tickLabels"
+      :step="1"
+    />
+    <p v-else>Abfrage wurde storniert.</p>
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
@@ -17,7 +28,6 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <v-slider> tick-size="0" min="0" max="3" :tick-labels="['angelegt', 'bearbeitet', 'fertig']" </v-slider>
     <adresse-component
       id="abfrage_adresse_component"
       :adresse-prop.sync="abfrage.adresse"
@@ -151,7 +161,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
 import {
   BauvorhabenDto,
   BauvorhabenSearchResultDto,
@@ -159,6 +169,7 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import DatePicker from "@/components/common/DatePicker.vue";
@@ -191,7 +202,7 @@ export default class AbfrageComponent extends Mixins(
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
   AbfrageSecurityMixin,
-  SearchApiRequestMixin,
+  SearchApiRequestMixin
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
 
@@ -202,6 +213,41 @@ export default class AbfrageComponent extends Mixins(
   private nameRootFolder = "abfrage";
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
+
+  sliderValue = 0;
+
+  data() {
+    return {
+      tickLabels: [
+        "angelegt",
+        "Übermittelt zur Bearbeitung",
+        "Start Bearbeitung",
+        "Einpflegen Bedarfsmeldung",
+        "Einplanung Bedarfe",
+        "erledigt",
+      ],
+    };
+  }
+
+  sliderValueChange(): void {
+    if (this.abfrage.statusAbfrage === StatusAbfrage.Angelegt) {
+      this.sliderValue = 0;
+    } else if (this.abfrage.statusAbfrage === StatusAbfrage.Offen) {
+      this.sliderValue = 2;
+    } else if (this.abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
+      this.sliderValue = 4;
+    } else if (this.abfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate) {
+      this.sliderValue = 6;
+    } else if (this.abfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt) {
+      this.sliderValue = 8;
+    } else if (this.abfrage.statusAbfrage === StatusAbfrage.Erledigt) {
+      this.sliderValue = 10;
+    }
+  }
+
+  updated(): void {
+    this.sliderValueChange();
+  }
 
   mounted(): void {
     this.fetchBauvorhaben();
@@ -236,7 +282,7 @@ export default class AbfrageComponent extends Mixins(
     } as SearchQueryAndSortingDto;
     this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
       this.bauvorhaben = searchResults.searchResults?.map(
-        (searchResults) => searchResults as BauvorhabenSearchResultDto,
+        (searchResults) => searchResults as BauvorhabenSearchResultDto
       ) as Array<BauvorhabenSearchResultDto>;
     });
   }
