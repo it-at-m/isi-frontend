@@ -3,6 +3,13 @@
     <v-expansion-panels>
       <v-expansion-panel @click="getKommentare()">
         <v-expansion-panel-header> Test </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <kommentar
+            v-for="(kommentar, index) in kommentare"
+            :key="index"
+            :kommentar="kommentar"
+          />
+        </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
   </v-container>
@@ -11,7 +18,6 @@
 <script lang="ts">
 import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin";
 import { Component, Prop, Mixins } from "vue-property-decorator";
-import { KommentarDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import KommentarModel from "@/types/model/common/KommentarModel";
 
@@ -26,29 +32,26 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
   @Prop({ type: String, default: KommentarContext.UNDEFINED })
   private readonly context!: KommentarContext;
 
-  /**
-   * Die ID des Bauvorhabens oder der Infrastruktureinrichtung.
-   */
-  private id!: string;
-
   private isKommentarListOpen = false;
 
   private kommentare: Array<KommentarModel> = [];
 
-  mounted(): void {
-    this.id = this.$route.params.id;
-  }
-
   private getKommentare() {
-    if (!this.isKommentarListOpen && !_.isNil(this.id)) {
+    const id = this.$route.params.id;
+    console.log(id);
+    if (!this.isKommentarListOpen && !_.isNil(id)) {
       this.isKommentarListOpen = true;
+      console.log("Kommentarlist opened");
+      console.log(this.context);
       if (this.context === KommentarContext.BAUVORHABEN) {
-        this.getKommentareForBauvorhaben(this.id, true).then((kommentare) => {
-          this.kommentare = this.map(kommentare);
+        this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
+          this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
+          this.kommentare.push(this.createNewUnsavedKommentarForBauvorhaben());
         });
       } else if (this.context === KommentarContext.INFRASTRUKTUREINRICHTUNG) {
-        this.getKommentareForInfrastruktureinrichtung(this.id, true).then((kommentare) => {
-          this.kommentare = this.map(kommentare);
+        this.getKommentareForInfrastruktureinrichtung(id, true).then((kommentare) => {
+          this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
+          this.kommentare.push(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
         });
       }
     } else {
@@ -57,39 +60,57 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
     }
   }
 
-  private map(kommentare: Array<KommentarDto>): Array<KommentarModel> {
-    let index = 0;
-    return kommentare.map((kommentar) => new KommentarModel(kommentar, index++));
+  private createNewUnsavedKommentar(): KommentarModel {
+    let kommentar;
+    if (this.context === KommentarContext.BAUVORHABEN) {
+      kommentar = this.createNewUnsavedKommentarForBauvorhaben();
+    } else {
+      kommentar = this.createNewUnsavedKommentarForInfrastruktureinrichtung();
+    }
+    return kommentar;
   }
 
-  private createNewUnsavedKommentarAndAppendToKommentare(): void {
-    const kommentar = new KommentarModel({}, this.kommentare.length);
-    if (this.context === KommentarContext.BAUVORHABEN) {
-      kommentar.bauvorhaben = this.id;
-    } else if (this.context === KommentarContext.INFRASTRUKTUREINRICHTUNG) {
-      kommentar.infrastruktureinrichtung = this.id;
-    }
-    this.kommentare.push(kommentar);
+  private createNewUnsavedKommentarForBauvorhaben(): KommentarModel {
+    const kommentar = new KommentarModel({});
+    kommentar.bauvorhaben = this.$route.params.id;
+    return kommentar;
+  }
+
+  private createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel {
+    const kommentar = new KommentarModel({});
+    kommentar.infrastruktureinrichtung = this.$route.params.id;
+    return kommentar;
   }
 
   private saveKommentar(kommentar: KommentarModel): void {
     if (_.isNil(kommentar.id)) {
       this.createKommentar(kommentar, true).then((createdKommentar) => {
-        const model = new KommentarModel(createdKommentar, kommentar.index);
+        const model = new KommentarModel(createdKommentar);
         this.replaceSavedKommentarInKommentare(model);
+        this.kommentare.push(this.createNewUnsavedKommentar());
       });
     } else {
       this.updateKommentar(kommentar, true).then((updatedKommentar) => {
-        const model = new KommentarModel(updatedKommentar, kommentar.index);
+        const model = new KommentarModel(updatedKommentar);
         this.replaceSavedKommentarInKommentare(model);
+        this.kommentare.push(this.createNewUnsavedKommentar());
       });
     }
   }
 
   private replaceSavedKommentarInKommentare(kommentar: KommentarModel) {
-    this.kommentare = this.kommentare.map((kommentarInArray) =>
-      kommentarInArray.index === kommentar.index ? kommentar : kommentarInArray
-    );
+    let kommentarReplacedInArray = false;
+    this.kommentare = this.kommentare.map((kommentarInArray) => {
+      if (kommentarInArray.id === kommentar.id) {
+        kommentarReplacedInArray = true;
+        return kommentar;
+      } else {
+        return kommentarInArray;
+      }
+    });
+    if (!kommentarReplacedInArray) {
+      this.kommentare.splice(this.kommentare.length - 1, 1, kommentar);
+    }
   }
 
   private deleteKommentar(kommentar: KommentarModel): void {

@@ -219,7 +219,7 @@
       <referenced-items-list />
     </field-group-card>
     <field-group-card :card-title="kommentareCardTitle">
-      <kommentare />
+      <kommentare :context="kommentareContext" />
     </field-group-card>
   </v-container>
 </template>
@@ -239,12 +239,15 @@ import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import Kommentare from "@/components/common/kommentar/Kommentare.vue";
+import Kommentare, { KommentarContext } from "@/components/common/kommentar/Kommentare.vue";
 
 @Component({
   computed: {
     verortungContext() {
       return VerortungContext.BAUVORHABEN;
+    },
+    kommentareContext() {
+      return KommentarContext.BAUVORHABEN;
     },
   },
   components: { Kommentare, FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },
