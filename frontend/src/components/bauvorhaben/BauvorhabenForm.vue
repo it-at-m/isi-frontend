@@ -8,7 +8,7 @@
         >
           <num-field
             id="bauvorhaben_grundstuecksgroesse"
-            v-model="bauvorhaben.grundstuecksgroesse"
+            v-model="calcGrundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="fieldPrefixesSuffixes.squareMeter"
             required
@@ -207,7 +207,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import { LookupEntryDto, UncertainBoolean, GemarkungDto, FlurstueckDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -268,6 +268,20 @@ export default class BauvorhabenForm extends Mixins(
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+  }
+
+  get calcGrundstuecksgroesse(): number | undefined {
+    this.bauvorhaben.grundstuecksgroesse = 0;
+
+    if (this.bauvorhaben.verortung) {
+      this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
+        gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
+          this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
+        });
+      });
+    }
+
+    return this.bauvorhaben.grundstuecksgroesse;
   }
 
   @Watch("bauvorhaben.sobonRelevant", { immediate: true })
