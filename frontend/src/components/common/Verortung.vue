@@ -51,7 +51,12 @@
         v-for="(flurstueck, index) in flurstuecke"
         :key="index"
       >
-        {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner }}
+        <div v-if="flurstueck.eigentumsart">
+          {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/nicht städtisch` }}
+        </div>
+        <div v-else>
+          {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/städtisch` }}
+        </div>
       </v-chip>
     </v-chip-group>
   </field-group-card>

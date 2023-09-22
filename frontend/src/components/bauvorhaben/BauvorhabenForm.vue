@@ -6,22 +6,6 @@
           cols="12"
           md="6"
         >
-          <v-text-field
-            id="bauvorhaben_eigentuemer"
-            v-model="bauvorhaben.eigentuemer"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            maxlength="255"
-            validate-on-blur
-            :disabled="!isEditable"
-            @input="formChanged"
-          >
-            <template #label> Eigentümer <span class="secondary--text">*</span> </template>
-          </v-text-field>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <num-field
             id="bauvorhaben_grundstuecksgroesse"
             v-model="bauvorhaben.grundstuecksgroesse"
