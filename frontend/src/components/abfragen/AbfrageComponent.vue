@@ -17,6 +17,7 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <v-slider> tick-size="0" min="0" max="3" :tick-labels="['angelegt', 'bearbeitet', 'fertig']" </v-slider>
     <adresse-component
       id="abfrage_adresse_component"
       :adresse-prop.sync="abfrage.adresse"
