@@ -16,7 +16,7 @@
         >
           <v-select
             id="bauvorhaben_abfrage_datenuebernahme_dropdown"
-            v-model="selectedAbfrageListElement"
+            v-model="selectedAbfrageSearchResult"
             :items="abfragen"
             :item-text="(item) => getItemText(item)"
             item-value="id"
@@ -51,27 +51,26 @@
 
 <script lang="ts">
 import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
-import AbfragelistenApiRequestMixin from "@/mixins/requests/AbfragelistenApiRequestMixin";
 import {
-  AbfrageListElementDto,
-  AbfrageListElementsDto,
+  AbfrageSearchResultDto,
   InfrastrukturabfrageDto,
   LookupEntryDto,
+  SearchQueryAndSortingDto,
+  SearchQueryAndSortingDtoSortByEnum,
+  SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import { createInfrastrukturabfrageDto } from "@/utils/Factories";
+import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
 @Component
-export default class BauvorhabenDataTransferDialog extends Mixins(
-  AbfragelistenApiRequestMixin,
-  AbfrageApiRequestMixin
-) {
+export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiRequestMixin, AbfrageApiRequestMixin) {
   @VModel({ type: Boolean }) steuerflag!: boolean;
 
-  private abfragen: Array<AbfrageListElementDto> = [];
+  private abfragen: Array<AbfrageSearchResultDto> = [];
 
-  private selectedAbfrageListElement: AbfrageListElementDto = {};
+  private selectedAbfrageSearchResult: AbfrageSearchResultDto = {};
 
   private selectedAbfrage: InfrastrukturabfrageDto = createInfrastrukturabfrageDto();
 
@@ -91,43 +90,58 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
   }
 
-  @Watch("selectedAbfrageListElement", { immediate: true })
+  @Watch("selectedAbfrageSearchResult", { immediate: true })
   private transferToBauvorhaben(): void {
-    if (!_.isNil(this.selectedAbfrageListElement) && !_.isNil(this.selectedAbfrageListElement.id)) {
-      const idAbfrage: string = this.selectedAbfrageListElement.id;
+    if (!_.isNil(this.selectedAbfrageSearchResult) && !_.isNil(this.selectedAbfrageSearchResult.id)) {
+      const idAbfrage: string = this.selectedAbfrageSearchResult.id;
       this.getInfrastrukturabfrageById(idAbfrage, false).then((abfrageDto: InfrastrukturabfrageDto) => {
         this.selectedAbfrage = abfrageDto;
       });
     }
   }
 
-  private getItemText(listElement: AbfrageListElementDto): string {
+  private getItemText(searchResult: AbfrageSearchResultDto): string {
     return (
       "Name: " +
-      _.defaultTo(listElement.nameAbfrage, "Kein Name vorhanden") +
+      _.defaultTo(searchResult.nameAbfrage, "Kein Name vorhanden") +
       " - Status: " +
       _.defaultTo(
-        this.getLookupValue(listElement.statusAbfrage, this.statusAbfrageList),
-        "Kein Abfragestatus vorhanden"
+        this.getLookupValue(searchResult.statusAbfrage, this.statusAbfrageList),
+        "Kein Abfragestatus vorhanden",
       ) +
       " - Stand: " +
       _.defaultTo(
-        this.getLookupValue(listElement.standVorhaben, this.standVorhabenList),
-        "Kein Vorhabensstand vorhanden"
+        this.getLookupValue(searchResult.standVorhaben, this.standVorhabenList),
+        "Kein Vorhabensstand vorhanden",
       ) +
       " - Verfahrensgrundsätze Jahr: " +
       _.defaultTo(
-        this.getLookupValue(listElement.sobonJahr, this.sobonVerfahrensgrundsaetzeJahrList),
-        "Kein Verfahrensgrundsätze Jahr vorhanden"
+        this.getLookupValue(searchResult.sobonJahr, this.sobonVerfahrensgrundsaetzeJahrList),
+        "Kein Verfahrensgrundsätze Jahr vorhanden",
       )
     );
   }
 
   private async fetchAbfragen(): Promise<void> {
-    await this.getAbfrageListElements(false).then((abfrageListElementsDto: AbfrageListElementsDto) => {
-      if (!_.isUndefined(abfrageListElementsDto.listElements)) {
-        this.abfragen = abfrageListElementsDto.listElements;
-      }
+    const searchQueryAndSortingDto = {
+      searchQuery: "",
+      selectInfrastrukturabfrage: true,
+      selectBauvorhaben: false,
+      selectGrundschule: false,
+      selectGsNachmittagBetreuung: false,
+      selectHausFuerKinder: false,
+      selectKindergarten: false,
+      selectKinderkrippe: false,
+      selectMittelschule: false,
+      page: undefined,
+      pageSize: undefined,
+      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+    } as SearchQueryAndSortingDto;
+    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
+      this.abfragen = searchResults.searchResults
+        ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
+        .filter((abfrageSearchResult) => _.isNil(abfrageSearchResult.bauvorhaben)) as Array<AbfrageSearchResultDto>;
     });
   }
 
@@ -146,13 +160,13 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
 
   @Emit()
   private abfrageUebernehmen(): InfrastrukturabfrageDto {
-    this.selectedAbfrageListElement = {};
+    this.selectedAbfrageSearchResult = {};
     return this.selectedAbfrage;
   }
 
   @Emit()
   private uebernahmeAbbrechen(): void {
-    this.selectedAbfrageListElement = {};
+    this.selectedAbfrageSearchResult = {};
   }
 }
 </script>

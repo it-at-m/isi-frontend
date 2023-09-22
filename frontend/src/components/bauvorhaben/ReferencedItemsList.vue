@@ -70,8 +70,8 @@
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
 import {
-  AbfrageListElementDto,
-  InfrastruktureinrichtungListElementDto,
+  AbfrageSearchResultDto,
+  InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import store from "@/store/index";
@@ -86,9 +86,9 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
 
   private isInfraListOpen = false;
 
-  abfragen: Array<AbfrageListElementDto> = [];
+  abfragen: Array<AbfrageSearchResultDto> = [];
 
-  infrastruktureinrichtungen: Array<InfrastruktureinrichtungListElementDto> = [];
+  infrastruktureinrichtungen: Array<InfrastruktureinrichtungSearchResultDto> = [];
 
   get abfragenEmpty(): boolean {
     return _.isEmpty(this.abfragen);
@@ -102,11 +102,11 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
     if (!this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
       this.isAbfrageListOpen = true;
       this.getReferencedInfrastrukturabfragenList(this.$route.params.id, true).then(
-        (abfrageListElements: AbfrageListElementDto[]) => {
-          if (!_.isNil(abfrageListElements)) {
-            this.abfragen = abfrageListElements;
+        (searchResults: AbfrageSearchResultDto[]) => {
+          if (!_.isNil(searchResults)) {
+            this.abfragen = searchResults;
           }
-        }
+        },
       );
     } else if (this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
       this.isAbfrageListOpen = false;
@@ -119,11 +119,11 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
     if (!this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
       this.isInfraListOpen = true;
       this.getReferencedInfrastruktureinrichtungenList(this.$route.params.id, true).then(
-        (infraListElements: InfrastruktureinrichtungListElementDto[]) => {
-          if (!_.isNil(infraListElements)) {
-            this.infrastruktureinrichtungen = infraListElements;
+        (searchResults: InfrastruktureinrichtungSearchResultDto[]) => {
+          if (!_.isNil(searchResults)) {
+            this.infrastruktureinrichtungen = searchResults;
           }
-        }
+        },
       );
     } else if (this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
       this.isInfraListOpen = false;
@@ -146,13 +146,13 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
   /**
    * Routing zur Detailansicht der Infrastrukturabfrage
    *
-   * @param abfrageListElementDto zum ermitteln der Route.
+   * @param abfrageSearchResultDto zum ermitteln der Route.
    */
-  routeToAbfrageInfo(abfrageListElementDto: AbfrageListElementDto): void {
-    if (!_.isNil(abfrageListElementDto.id)) {
+  routeToAbfrageInfo(abfrageSearchResultDto: AbfrageSearchResultDto): void {
+    if (!_.isNil(abfrageSearchResultDto.id)) {
       router.push({
         name: "updateabfrage",
-        params: { id: abfrageListElementDto.id },
+        params: { id: abfrageSearchResultDto.id },
       });
     }
   }
@@ -160,15 +160,15 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
   /**
    * Routing zur Detailansicht der Infrastruktureinrichtung
    *
-   * @param infrastruktureinrichtungListElementDto zum ermitteln der Route.
+   * @param infrastruktureinrichtungSearchResultDto zum ermitteln der Route.
    */
   routeToInfrastruktureinrichtungInfo(
-    infrastruktureinrichtungListElementDto: InfrastruktureinrichtungListElementDto
+    infrastruktureinrichtungSearchResultDto: InfrastruktureinrichtungSearchResultDto,
   ): void {
-    if (!_.isNil(infrastruktureinrichtungListElementDto.id)) {
+    if (!_.isNil(infrastruktureinrichtungSearchResultDto.id)) {
       router.push({
         name: "editInfrastruktureinrichtung",
-        params: { id: infrastruktureinrichtungListElementDto.id },
+        params: { id: infrastruktureinrichtungSearchResultDto.id },
       });
     }
   }

@@ -6,9 +6,10 @@ import {
   GetInfrastrukturabfrageByIdRequest,
   InfrastrukturabfrageDto,
   PatchAbfrageAngelegtRequest,
-  PutChangeAbfragevarianteRelevantRequest,
   InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  InfrastrukturabfrageInBearbeitungFachreferateDto,
   PatchAbfrageInBearbeitungSachbearbeitungRequest,
+  PatchAbfrageInBearbeitungFachreferateRequest,
 } from "@/api/api-client/isi-backend";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -26,7 +27,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
 
   createInfrastrukturabfrage(
     dto: InfrastrukturabfrageAngelegtDto,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: CreateInfrastrukturabfrageRequest = {
       infrastrukturabfrageAngelegtDto: dto,
@@ -45,7 +46,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   patchAbfrageAngelegt(
     dto: InfrastrukturabfrageAngelegtDto,
     id: string,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageAngelegtRequest = {
       infrastrukturabfrageAngelegtDto: dto,
@@ -65,7 +66,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   patchAbfrageInBearbeitungSachbearbeitung(
     dto: InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
     id: string,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageInBearbeitungSachbearbeitungRequest = {
       infrastrukturabfrageInBearbeitungSachbearbeitungDto: dto,
@@ -82,30 +83,19 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
       });
   }
 
-  changeAbfragevarianteRelevant(
-    abfrageId: string,
-    abfragevarianteId: string,
-    showInInformationList: boolean
+  patchAbfrageInBearbeitungFachreferate(
+    dto: InfrastrukturabfrageInBearbeitungFachreferateDto,
+    id: string,
+    showInInformationList: boolean,
   ): Promise<InfrastrukturabfrageDto> {
-    const requestObject: PutChangeAbfragevarianteRelevantRequest = {
-      abfrageId: abfrageId,
-      abfragevarianteId: abfragevarianteId,
+    const requestObject: PatchAbfrageInBearbeitungFachreferateRequest = {
+      infrastrukturabfrageInBearbeitungFachreferateDto: dto,
+      id: id,
     };
     return this.abfrageApi
-      .putChangeAbfragevarianteRelevant(requestObject, RequestUtils.getPUTConfig())
+      .patchAbfrageInBearbeitungFachreferate(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
         this.resetDirty();
-        return response;
-      })
-      .catch((error) => {
-        throw this.handleError(showInInformationList, error);
-      });
-  }
-
-  getInfrastrukturabfragen(showInInformationList: boolean): Promise<Array<InfrastrukturabfrageDto>> {
-    return this.abfrageApi
-      .getInfrastrukturabfragen(RequestUtils.getGETConfig())
-      .then((response) => {
         return response;
       })
       .catch((error) => {

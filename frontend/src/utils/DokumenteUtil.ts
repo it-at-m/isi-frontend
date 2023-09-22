@@ -17,7 +17,7 @@ export function fileAlreadyExists(dokumente: DokumentDto[], file: File): boolean
 export function maxNumberOfFilesReached(
   dokumente: DokumentDto[],
   fileList: FileList,
-  fileInformationDto: FileInformationDto
+  fileInformationDto: FileInformationDto,
 ): boolean {
   let maximumReached = false;
   if (!_.isNil(fileInformationDto.maxNumberOfFiles) && !_.isNil(dokumente)) {

@@ -8,7 +8,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 @Component
 export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
   public isEditableWithAnzeigeContextAbfragevariante(
-    anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined
+    anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
   ): boolean {
     let isEditable = false;
     if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
@@ -31,6 +31,13 @@ export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
     return !_.isNil(abfrage)
       ? this.isRoleAdminOrSachbearbeitung() &&
           abfrage.abfrage?.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
+      : false;
+  }
+
+  public isEditableByBedarfsmeldung(): boolean {
+    const abfrage: InfrastrukturabfrageModel = this.$store.getters["search/selectedAbfrage"];
+    return !_.isNil(abfrage)
+      ? this.isRoleAdminOrBedarfsmeldung() && abfrage.abfrage?.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
       : false;
   }
 

@@ -91,7 +91,7 @@
             id="abfrage_bauvorhaben_dropdown"
             v-model="abfrage.bauvorhaben"
             :disabled="!isEditableByAbfrageerstellung()"
-            :items="bauvorhabenList"
+            :items="bauvorhaben"
             item-text="nameVorhaben"
             item-value="id"
             label="Bauvorhaben"
@@ -152,7 +152,14 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import { BauvorhabenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import {
+  BauvorhabenDto,
+  BauvorhabenSearchResultDto,
+  LookupEntryDto,
+  SearchQueryAndSortingDto,
+  SearchQueryAndSortingDtoSortByEnum,
+  SearchQueryAndSortingDtoSortOrderEnum,
+} from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import DatePicker from "@/components/common/DatePicker.vue";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
@@ -163,6 +170,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import Verortung, { VerortungContext } from "@/components/common/Verortung.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
 @Component({
   computed: {
@@ -182,7 +190,8 @@ export default class AbfrageComponent extends Mixins(
   FieldValidationRulesMixin,
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
+  SearchApiRequestMixin,
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
 
@@ -192,16 +201,14 @@ export default class AbfrageComponent extends Mixins(
 
   private nameRootFolder = "abfrage";
 
+  private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
 
   get standVorhabenList(): LookupEntryDto[] {
     return this.$store.getters["lookup/standVorhaben"];
-  }
-
-  get bauvorhabenList(): BauvorhabenDto[] {
-    return this.$store.getters["search/resultBauvorhaben"];
   }
 
   get statusAbfrageList(): LookupEntryDto[] {
@@ -212,8 +219,25 @@ export default class AbfrageComponent extends Mixins(
    * Holt alle Bauvorhaben vom Backend.
    */
   private async fetchBauvorhaben(): Promise<void> {
-    await this.getBauvorhaben(true).then((bauvorhaben: BauvorhabenDto[]) => {
-      this.$store.dispatch("search/resultBauvorhaben", bauvorhaben);
+    const searchQueryAndSortingDto = {
+      searchQuery: "",
+      selectInfrastrukturabfrage: false,
+      selectBauvorhaben: true,
+      selectGrundschule: false,
+      selectGsNachmittagBetreuung: false,
+      selectHausFuerKinder: false,
+      selectKindergarten: false,
+      selectKinderkrippe: false,
+      selectMittelschule: false,
+      page: undefined,
+      pageSize: undefined,
+      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+    } as SearchQueryAndSortingDto;
+    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
+      this.bauvorhaben = searchResults.searchResults?.map(
+        (searchResults) => searchResults as BauvorhabenSearchResultDto,
+      ) as Array<BauvorhabenSearchResultDto>;
     });
   }
 }

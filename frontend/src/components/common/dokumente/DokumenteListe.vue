@@ -137,7 +137,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 export default class DokumenteListe extends Mixins(
   DokumenteApiRequestMixin,
   SaveLeaveMixin,
-  FieldValidationRulesMixin
+  FieldValidationRulesMixin,
 ) {
   @VModel({ type: Array }) dokumente!: DokumentDto[];
 

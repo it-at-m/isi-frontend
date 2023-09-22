@@ -5,6 +5,7 @@ Props:
 - `abfrage: InfrastrukturabfrageDto`: Die darzustellende Abfrage.
 - `selectedItemId: string`: Id des aktuell ausgewählten Items.
   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
+- `relevanteAbfragevarianteId: string | null`: Id der relevanten Abfragevariante.
 
 Emits:
 - `select-abfrage: AbfrageTreeItem`
@@ -62,6 +63,17 @@ Emits:
           </v-list-item>
         </v-list>
       </v-menu>
+    </template>
+    <template #append="{ item }">
+      <v-tooltip
+        v-if="item.value.id === props.relevanteAbfragevarianteId"
+        bottom
+      >
+        <template #activator="{ on }">
+          <v-icon v-on="on">mdi-star</v-icon>
+        </template>
+        <span>Diese Abfragevariante ist relevant.</span>
+      </v-tooltip>
     </template>
   </v-treeview>
 </template>
@@ -124,6 +136,7 @@ interface Action {
 interface Props {
   abfrage: InfrastrukturabfrageDto;
   selectedItemId: string;
+  relevanteAbfragevarianteId: string | null;
 }
 
 interface Emits {
@@ -155,6 +168,7 @@ const CREATE_BAUGEBIET = "Baugebiet erstellen";
 const CREATE_BAURATE = "Baurate erstellen";
 const DELETE = "Löschen";
 const MARK_AS_RELEVANT = "Als relevant markieren";
+const MARK_AS_NOT_RELEVANT = "Als nicht-relevant markieren";
 const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
 
 const ABFRAGEVARIANTEN_LIMIT = 5;
@@ -169,7 +183,12 @@ const openItemIds = ref<string[]>([]);
 watch(
   () => props.abfrage,
   () => (items.value = [buildTree(props.abfrage)]),
-  { deep: true }
+  { deep: true },
+);
+
+watch(
+  () => props.relevanteAbfragevarianteId,
+  () => (items.value = [buildTree(props.abfrage)]),
 );
 
 function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
@@ -187,14 +206,19 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
 
   if (abfrage.abfragevarianten) {
     const abfragevarianten = abfrage.abfragevarianten.map((value, index) =>
-      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE)
+      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE),
     );
     item.children.push(...abfragevarianten);
   }
 
   if (abfrage.abfragevariantenSachbearbeitung) {
     const abfragevarianten = abfrage.abfragevariantenSachbearbeitung.map((value, index) =>
-      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG)
+      buildSubTreeAbfragevariante(
+        value,
+        item,
+        index + (abfrage.abfragevarianten?.length ?? 0),
+        AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
+      ),
     );
     item.children.push(...abfragevarianten);
   }
@@ -230,7 +254,7 @@ function buildSubTreeAbfragevariante(
   abfragevariante: AbfragevarianteDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante
+  context: AnzeigeContextAbfragevariante,
 ): AbfrageTreeItem {
   const editable = isEditableWithAnzeigeContextAbfragevariante(context);
 
@@ -248,7 +272,7 @@ function buildSubTreeAbfragevariante(
 
   if (isEditableBySachbearbeitung()) {
     item.actions.push({
-      name: MARK_AS_RELEVANT,
+      name: abfragevariante.id === props.relevanteAbfragevarianteId ? MARK_AS_NOT_RELEVANT : MARK_AS_RELEVANT,
       disabled: false,
       effect: () => emit("set-abfragevariante-relevant", item),
     });
@@ -285,7 +309,7 @@ function buildSubTreeAbfragevariante(
       } else {
         // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
         item.children = firstBauabschnitt.baugebiete.map((value, index) =>
-          buildSubTreeBaugebiet(value, item, index, context)
+          buildSubTreeBaugebiet(value, item, index, context),
         );
         if (editable) {
           item.actions.push({
@@ -301,7 +325,7 @@ function buildSubTreeAbfragevariante(
     } else {
       // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
       item.children = abfragevariante.bauabschnitte.map((value, index) =>
-        buildSubTreeBauabschnitt(value, item, index, context)
+        buildSubTreeBauabschnitt(value, item, index, context),
       );
       if (editable) {
         item.actions.push({
@@ -355,7 +379,7 @@ function buildSubTreeBauabschnitt(
   bauabschnitt: BauabschnittDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante
+  context: AnzeigeContextAbfragevariante,
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -390,7 +414,7 @@ function buildSubTreeBaugebiet(
   baugebiet: BaugebietDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante
+  context: AnzeigeContextAbfragevariante,
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -434,7 +458,7 @@ function buildSubTreeBaurate(
   baurate: BaurateDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante
+  context: AnzeigeContextAbfragevariante,
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -457,11 +481,11 @@ function buildSubTreeBaurate(
 
 function getAbfragevarianteName(
   abfragevariante: AbfragevarianteDto,
-  conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
+  conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
 ): string {
   const abfragevarianteModel = new AbfragevarianteModel(abfragevariante);
   return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
-    conextAnzeigeAbfragevariante
+    conextAnzeigeAbfragevariante,
   )}\xa0-\xa0${_.isNil(abfragevariante.abfragevariantenName) ? DEFAULT_NAME : abfragevariante.abfragevariantenName}`;
 }
 

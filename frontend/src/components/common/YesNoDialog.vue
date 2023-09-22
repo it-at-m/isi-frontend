@@ -34,6 +34,18 @@
       <v-card-text>
         {{ dialogtext }}
       </v-card-text>
+      <v-textarea
+        v-if="hasAnmerkung"
+        id="yes_no_dialog-text-area"
+        ref="textarea"
+        class="textarea"
+        label="Anmerkung"
+        auto-grow
+        rows="1"
+        maxlength="255"
+        @input="anmerkung"
+      >
+      </v-textarea>
       <v-card-actions>
         <v-spacer />
         <v-btn
@@ -56,6 +68,7 @@
 </template>
 
 <script lang="ts">
+import _ from "lodash";
 import { Component, Prop, VModel, Vue } from "vue-property-decorator";
 
 /**
@@ -102,6 +115,9 @@ export default class YesNoDialog extends Vue {
   @Prop({ default: "Nein" })
   noText!: string;
 
+  @Prop({ default: false, type: Boolean })
+  hasAnmerkung!: boolean;
+
   /**
    * Steuerflag für den Dialog
    */
@@ -116,8 +132,25 @@ export default class YesNoDialog extends Vue {
     this.$emit("yes");
   }
 
+  anmerkung(val: string): void {
+    this.$emit("anmerkung", val);
+  }
+
   changed(val: boolean): void {
     this.$emit("input", val);
   }
+
+  resetTextarea(): void {
+    if (!_.isNil(this.$refs.textarea)) {
+      this.$refs.textarea.reset();
+    }
+  }
 }
 </script>
+
+<style scoped>
+.textarea {
+  max-width: 700px;
+  margin-left: 25px;
+}
+</style>
