@@ -115,7 +115,11 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private deleteKommentar(kommentar: KommentarModel): void {
     if (!_.isNil(kommentar.id)) {
-      this.delete(kommentar.id, true);
+      this.delete(kommentar.id, true).then(() => {
+        _.remove(this.kommentare, function (kommentarInArray) {
+          return kommentarInArray.id === kommentar.id;
+        });
+      });
     }
   }
 }
