@@ -20,6 +20,7 @@ import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin
 import { Component, Prop, Mixins } from "vue-property-decorator";
 import _ from "lodash";
 import KommentarModel from "@/types/model/common/KommentarModel";
+import Kommentar from "@/components/common/kommentar/Kommentar.vue";
 
 export const enum KommentarContext {
   UNDEFINED = "UNDEFINED",
@@ -27,7 +28,9 @@ export const enum KommentarContext {
   INFRASTRUKTUREINRICHTUNG = "INFRASTRUKTUREINRICHTUNG",
 }
 
-@Component({})
+@Component({
+  components: { Kommentar },
+})
 export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
   @Prop({ type: String, default: KommentarContext.UNDEFINED })
   private readonly context!: KommentarContext;
@@ -38,11 +41,8 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private getKommentare() {
     const id = this.$route.params.id;
-    console.log(id);
     if (!this.isKommentarListOpen && !_.isNil(id)) {
       this.isKommentarListOpen = true;
-      console.log("Kommentarlist opened");
-      console.log(this.context);
       if (this.context === KommentarContext.BAUVORHABEN) {
         this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
           this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));

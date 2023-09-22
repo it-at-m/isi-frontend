@@ -219,7 +219,10 @@
       <referenced-items-list />
     </field-group-card>
     <field-group-card :card-title="kommentareCardTitle">
-      <kommentare :context="kommentareContext" />
+      <kommentare
+        id="bauvorhaben_kommentare"
+        :context="kommentareContext"
+      />
     </field-group-card>
   </v-container>
 </template>
