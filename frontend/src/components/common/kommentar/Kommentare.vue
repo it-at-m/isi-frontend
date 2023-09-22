@@ -8,6 +8,8 @@
             v-for="(kommentar, index) in kommentare"
             :key="index"
             :kommentar="kommentar"
+            @save-kommentar="saveKommentar"
+            @delete-kommentar="deleteKommentar"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>
