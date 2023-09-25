@@ -94,7 +94,6 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
       this.updateKommentar(kommentar, true).then((updatedKommentar) => {
         const model = new KommentarModel(updatedKommentar);
         this.replaceSavedKommentarInKommentare(model);
-        this.kommentare.push(this.createNewUnsavedKommentar());
       });
     }
   }
@@ -115,11 +114,13 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
   }
 
   private deleteKommentar(kommentar: KommentarModel): void {
-    if (!_.isNil(kommentar.id)) {
+    if (_.isNil(kommentar.id)) {
+      this.kommentare[this.kommentare.length - 1].datum = undefined;
+      this.kommentare[this.kommentare.length - 1].text = undefined;
+    } else {
       this.delete(kommentar.id, true).then(() => {
-        _.remove(this.kommentare, function (kommentarInArray) {
-          return kommentarInArray.id === kommentar.id;
-        });
+        const removeIndex = this.kommentare.map((kommentarInArray) => kommentarInArray.id).indexOf(kommentar.id);
+        removeIndex > 0 && this.kommentare.splice(removeIndex, 1);
       });
     }
   }
