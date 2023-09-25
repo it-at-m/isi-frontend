@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-row justify="center">
+    <v-row class="justify-start">
       <v-col
         cols="12"
         md="3"
@@ -14,7 +14,7 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-row justify="center">
+    <v-row>
       <v-col
         cols="12"
         md="12"
