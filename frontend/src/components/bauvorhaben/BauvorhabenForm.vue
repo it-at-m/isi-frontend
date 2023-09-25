@@ -270,13 +270,16 @@ export default class BauvorhabenForm extends Mixins(
   }
 
   get calcGrundstuecksgroesse(): number | undefined {
-    this.bauvorhaben.grundstuecksgroesse = undefined;
+    this.bauvorhaben.grundstuecksgroesse = Number.NaN;
 
     if (this.bauvorhaben.verortung) {
       this.bauvorhaben.grundstuecksgroesse = 0;
       this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
         gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
-          this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
+          this.bauvorhaben.grundstuecksgroesse =
+            flurstueck.flaecheQm === undefined
+              ? this.bauvorhaben.grundstuecksgroesse
+              : (this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm);
         });
       });
     }
