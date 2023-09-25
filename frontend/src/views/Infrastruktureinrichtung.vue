@@ -59,6 +59,11 @@
           v-model="mittelschule"
           :is-editable="isEditable"
         />
+        <kommentare
+          id="bauvorhaben_kommentare"
+          :context="context"
+          :is-editable="isEditable"
+        />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_löschen"
           v-model="deleteDialogOpen"
@@ -185,9 +190,17 @@ import _ from "lodash";
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
+import Kommentare from "@/components/common/kommentar/Kommentare.vue";
+import { Context } from "@/utils/Context";
 
 @Component({
+  computed: {
+    context() {
+      return Context.INFRASTRUKTUREINRICHTUNG;
+    },
+  },
   components: {
+    Kommentare,
     InfrastruktureinrichtungComponent,
     InformationList,
     YesNoDialog,
