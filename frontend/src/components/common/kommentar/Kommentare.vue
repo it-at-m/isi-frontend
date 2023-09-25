@@ -120,7 +120,7 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
     } else {
       this.delete(kommentar.id, true).then(() => {
         const removeIndex = this.kommentare.map((kommentarInArray) => kommentarInArray.id).indexOf(kommentar.id);
-        removeIndex > 0 && this.kommentare.splice(removeIndex, 1);
+        removeIndex > -1 && this.kommentare.splice(removeIndex, 1);
       });
     }
   }
