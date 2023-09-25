@@ -218,12 +218,10 @@
     <field-group-card :card-title="referencedObjectsCardTitle">
       <referenced-items-list />
     </field-group-card>
-    <field-group-card :card-title="kommentareCardTitle">
-      <kommentare
-        id="bauvorhaben_kommentare"
-        :context="kommentareContext"
-      />
-    </field-group-card>
+    <kommentare
+      id="bauvorhaben_kommentare"
+      :context="kommentareContext"
+    />
   </v-container>
 </template>
 
@@ -276,8 +274,6 @@ export default class BauvorhabenForm extends Mixins(
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben";
 
   private referencedObjectsCardTitle = "Zugehörige Infrastruktureinrichtungen und Abfragen";
-
-  private kommentareCardTitle = "Kommentare";
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;

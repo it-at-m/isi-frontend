@@ -1,8 +1,11 @@
 <template>
-  <v-container class="transition-swing">
-    <v-expansion-panels>
-      <v-expansion-panel @click="getKommentare()">
-        <v-expansion-panel-header> Test </v-expansion-panel-header>
+  <v-container class="transition-swing pa-0 mb-2">
+    <v-expansion-panels class="ma-0 pa-0">
+      <v-expansion-panel
+        class="pa-0"
+        @click="getKommentare()"
+      >
+        <v-expansion-panel-header class="grey--text text-h6"> Kommentare </v-expansion-panel-header>
         <v-expansion-panel-content>
           <kommentar
             v-for="(kommentar, index) in kommentare"
@@ -43,6 +46,7 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private getKommentare() {
     const id = this.$route.params.id;
+    console.log(_.isNil(this.context));
     if (!this.isKommentarListOpen && !_.isNil(id)) {
       this.isKommentarListOpen = true;
       if (this.context === KommentarContext.BAUVORHABEN) {
