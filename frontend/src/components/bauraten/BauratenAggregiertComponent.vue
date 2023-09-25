@@ -1,46 +1,48 @@
 <template>
-  <field-group-card :card-title="header">
-    <v-container>
-      <v-data-table
-        :headers="bauratenJahreHeaders"
-        :items="aggregatedBauraten"
-        hide-default-footer
-        disable-pagination
-        disable-filtering
-        disable-sort
-      >
-        <template #header="{ text }">
-          <span>{{ text }}</span>
-        </template>
-        <template #body="{ items }">
-          <tbody>
-            <tr>
-              <td><span>Wohneinheiten</span></td>
-              <td
-                v-for="(item, index) in items"
-                :key="index"
-              >
-                {{ formatWohneinheiten(item.anzahlWeGeplant) }}
-              </td>
-            </tr>
-            <tr>
-              <td><span>GF Wohnen m²</span></td>
-              <td
-                v-for="(item, index) in items"
-                :key="index"
-              >
-                {{ formatGeschossflaecheWohnen(item.geschossflaecheWohnenGeplant) }}
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-data-table>
-    </v-container>
-  </field-group-card>
+  <div v-if="aggregatedBauraten.length !== 0">
+    <field-group-card :card-title="header">
+      <v-container>
+        <v-data-table
+          :headers="bauratenJahreHeaders"
+          :items="aggregatedBauraten"
+          hide-default-footer
+          disable-pagination
+          disable-filtering
+          disable-sort
+        >
+          <template #header="{ text }">
+            <span>{{ text }}</span>
+          </template>
+          <template #body="{ items }">
+            <tbody>
+              <tr>
+                <td><span>Wohneinheiten</span></td>
+                <td
+                  v-for="(item, index) in items"
+                  :key="index"
+                >
+                  {{ formatWohneinheiten(item.anzahlWeGeplant) }}
+                </td>
+              </tr>
+              <tr>
+                <td><span>GF Wohnen m²</span></td>
+                <td
+                  v-for="(item, index) in items"
+                  :key="index"
+                >
+                  {{ formatGeschossflaecheWohnen(item.geschossflaecheWohnenGeplant) }}
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-data-table>
+      </v-container>
+    </field-group-card>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
@@ -57,6 +59,11 @@ export default class BauratenAggregiertComponent extends Vue {
   private aggregateBauraten!: AbfragevarianteModel | BauabschnittModel | BaugebietModel;
 
   private baurateMap: Map<number, BaurateModel> = new Map<number, BaurateModel>();
+
+  @Watch("aggregateBauraten", { immediate: true, deep: true })
+  private aggregateBauratenChanged(): void {
+    this.baurateMap = new Map<number, BaurateModel>();
+  }
 
   get aggregatedBauraten(): Array<BaurateModel> {
     if (!_.isNil(this.aggregateBauraten)) {
