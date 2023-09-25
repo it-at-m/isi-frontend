@@ -9,6 +9,7 @@
           id="kommentar_datum"
           v-model.trim="kommentar.datum"
           maxlength="32"
+          :disabled="!isEditable"
         >
           <template #label> Datum </template>
         </v-text-field>
@@ -22,7 +23,7 @@
           <v-btn
             id="save_kommentar"
             icon
-            :disabled="!isSaveable"
+            :disabled="!isSaveable || !isEditable"
             @click="saveKommentar"
           >
             <v-icon> mdi-content-save</v-icon>
@@ -30,7 +31,7 @@
           <v-btn
             id="delete_kommentar"
             icon
-            :disabled="!isDeletable"
+            :disabled="!isDeletable || !isEditable"
             @click="deleteKommentar"
           >
             <v-icon> mdi-delete</v-icon>
@@ -49,6 +50,7 @@
           label="Anmerkungen"
           auto-grow
           rows="10"
+          :disabled="!isEditable"
         />
       </v-col>
     </v-row>
@@ -64,6 +66,9 @@ import _ from "lodash";
 export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
   @Prop()
   private kommentar!: KommentarModel;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get isSaveable(): boolean {
     return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);

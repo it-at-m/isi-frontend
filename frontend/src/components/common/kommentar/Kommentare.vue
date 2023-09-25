@@ -11,6 +11,7 @@
             v-for="(kommentar, index) in kommentare"
             :key="index"
             :kommentar="kommentar"
+            :is-editable="isEditable"
             @save-kommentar="saveKommentar"
             @delete-kommentar="deleteKommentar"
           />
@@ -34,6 +35,9 @@ import { Context } from "@/utils/Context";
 export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
   @Prop({ type: String, default: Context.UNDEFINED })
   private readonly context!: Context;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   private isKommentarListOpen = false;
 
