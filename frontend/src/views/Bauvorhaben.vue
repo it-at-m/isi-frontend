@@ -26,6 +26,12 @@
           v-model="bauvorhaben"
           :is-editable="isEditable"
         />
+        <kommentare
+          v-if="isEditable"
+          id="bauvorhaben_kommentare"
+          :context="context"
+          :is-editable="isEditable"
+        />
       </template>
       <template #information>
         <v-btn
@@ -130,10 +136,18 @@ import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenD
 import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
+import Kommentare from "@/components/common/kommentar/Kommentare.vue";
+import { Context } from "@/utils/Context";
 
 @Component({
+  computed: {
+    context() {
+      return Context.BAUVORHABEN;
+    },
+  },
   methods: { containsNotAllowedDokument },
   components: {
+    Kommentare,
     BauvorhabenDataTransferDialog,
     BauvorhabenForm,
     YesNoDialog,

@@ -218,12 +218,6 @@
     <field-group-card :card-title="referencedObjectsCardTitle">
       <referenced-items-list />
     </field-group-card>
-    <kommentare
-      v-if="isEditable"
-      id="bauvorhaben_kommentare"
-      :context="context"
-      :is-editable="isEditable"
-    />
   </v-container>
 </template>
 
@@ -241,7 +235,6 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
 import Verortung from "@/components/common/Verortung.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
@@ -255,7 +248,6 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
   components: {
     AdresseComponent,
     Verortung,
-    Kommentare,
     FieldGroupCard,
     Dokumente,
     NumField,
