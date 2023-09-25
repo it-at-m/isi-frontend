@@ -13,6 +13,30 @@
           <template #label> Datum </template>
         </v-text-field>
       </v-col>
+      <v-col
+        cols="12"
+        md="9"
+      >
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            id="save_kommentar"
+            icon
+            :disabled="!isSaveable"
+            @click="saveKommentar"
+          >
+            <v-icon> mdi-content-save</v-icon>
+          </v-btn>
+          <v-btn
+            id="delete_kommentar"
+            icon
+            :disabled="!isDeletable"
+            @click="deleteKommentar"
+          >
+            <v-icon> mdi-delete</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-col>
     </v-row>
     <v-row>
       <v-col
@@ -24,29 +48,11 @@
           v-model="kommentar.text"
           label="Anmerkungen"
           auto-grow
+          filled
           rows="3"
         />
       </v-col>
     </v-row>
-    <v-card-actions>
-      <v-spacer />
-      <v-btn
-        id="yes_no_dialog-btn-no"
-        class="text-wrap"
-        text
-        :disabled="!isSaveable"
-        @click="saveKommentar"
-        v-text="textSaveButton"
-      />
-      <v-btn
-        id="yes_no_dialog-btn-yes"
-        class="text-wrap"
-        color="primary"
-        :disabled="!isDeletable"
-        @click="deleteKommentar"
-        v-text="'Löschen'"
-      />
-    </v-card-actions>
   </v-card>
 </template>
 <script lang="ts">
@@ -60,16 +66,12 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
   @Prop()
   private kommentar!: KommentarModel;
 
-  get textSaveButton(): string {
-    return _.isNil(this.kommentar.id) ? "Speichern" : "Aktualisieren";
-  }
-
   get isSaveable(): boolean {
     return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);
   }
 
   get isDeletable(): boolean {
-    return !_.isNil(this.kommentar.id);
+    return !_.isNil(this.kommentar.id) || (_.isNil(this.kommentar.id) && this.isSaveable);
   }
 
   @Emit()
