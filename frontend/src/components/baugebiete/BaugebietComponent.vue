@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-row>
       <v-col cols="12">
         <span
@@ -170,7 +170,7 @@
       </v-row>
     </field-group-card>
     <bauraten-aggregiert-component :aggregate-bauraten="baugebiet" />
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -202,7 +202,7 @@ export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
 ) {
   private geschossflaecheWohnenCardTitle = "Geschossfläche Wohnen";
 
@@ -224,7 +224,7 @@ export default class BauabschnittComponent extends Mixins(
       return (
         verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
         `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
-          abfragevariante
+          abfragevariante,
         )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
       );
     },
@@ -233,7 +233,7 @@ export default class BauabschnittComponent extends Mixins(
         verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante) <=
           geschossflaecheWohnenAbfragevariante(abfragevariante) ||
         `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
-          abfragevariante
+          abfragevariante,
         )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
       );
     },

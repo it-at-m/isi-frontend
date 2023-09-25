@@ -9,12 +9,12 @@ class AbfragevarianteModel {
   constructor(abfragevariante: AbfragevarianteDto) {
     Object.assign(this, abfragevariante, {});
     this.bauabschnitte = _.toArray(abfragevariante.bauabschnitte).map(
-      (bauabschnitt) => new BauabschnittModel(bauabschnitt)
+      (bauabschnitt) => new BauabschnittModel(bauabschnitt),
     );
   }
 
   public getAbfragevariantenNrForContextAnzeigeAbfragevariante(
-    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
+    contextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
   ): string {
     let numberContext = "";
     if (contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {

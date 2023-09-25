@@ -1,10 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Main from "./views/Main.vue";
-import Karte from "./views/Karte.vue";
-import AbfragenUebersicht from "./views/AbfragenUebersicht.vue";
-import BauvorhabenUebersicht from "./views/BauvorhabenUebersicht.vue";
-import InfrastruktureinrichtungenUebersicht from "./views/InfrastruktureinrichtungenUebersicht.vue";
 import Abfrage from "./views/Abfrage.vue";
 import Bauvorhaben from "./views/Bauvorhaben.vue";
 import Infrastruktureinrichtung from "./views/Infrastruktureinrichtung.vue";
@@ -28,7 +24,7 @@ routerMethods.forEach((method: string) => {
 });
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-export type RouteTag = "karte" | "abfragen" | "bauvorhaben" | "infrastruktureinrichtungen";
+export type RouteTag = "abfragen" | "bauvorhaben" | "infrastruktureinrichtungen";
 
 export default new Router({
   base: import.meta.env.BASE_URL,
@@ -37,18 +33,6 @@ export default new Router({
       path: "/",
       name: "home",
       component: Main,
-    },
-    {
-      path: "/karte",
-      name: "karte",
-      meta: { tag: "karte" },
-      component: Karte,
-    },
-    {
-      path: "/abfragenuebersicht",
-      name: "abfragenuebersicht",
-      meta: { tag: "abfragen" },
-      component: AbfragenUebersicht,
     },
     {
       path: "/abfrageninformationen/abfrage/:id",
@@ -63,12 +47,6 @@ export default new Router({
       component: Abfrage,
     },
     {
-      path: "/bauvorhabenuebersicht",
-      name: "viewAllBauvorhaben",
-      meta: { tag: "bauvorhaben" },
-      component: BauvorhabenUebersicht,
-    },
-    {
       path: "/bauvorhaben",
       name: "createBauvorhaben",
       meta: { tag: "bauvorhaben" },
@@ -79,12 +57,6 @@ export default new Router({
       name: "editBauvorhaben",
       meta: { tag: "bauvorhaben" },
       component: Bauvorhaben,
-    },
-    {
-      path: "/infrastruktureinrichtungenuebersicht",
-      name: "infrastruktureinrichtungenuebersicht",
-      meta: { tag: "infrastruktureinrichtungen" },
-      component: InfrastruktureinrichtungenUebersicht,
     },
     {
       path: "/infrastruktureinrichtung",

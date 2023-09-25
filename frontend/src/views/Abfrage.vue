@@ -1,45 +1,48 @@
 <template>
   <v-form ref="form">
-    <default-layout solid-heading>
+    <default-layout
+      solid-heading
+      resizable
+    >
       <template #content>
         <infrastrukturabfrage-component
-          v-if="isAbfrageFormularOpen"
+          v-if="isAbfrageFormularOpen()"
           id="abfrage_infrastrukturabfrage_component"
-          v-model="abfrageWrapped.infrastrukturabfrage"
+          v-model="selected"
           :mode="modeAbfrage"
         />
         <abfragevariante-formular
-          v-else-if="isAbfragevarianteFormularOpen"
+          v-else-if="isAbfragevarianteFormularOpen()"
           id="abfrage_abfragevariante_formular_component"
-          v-model="selectedAbfragevariante"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeAbfragevariante"
+          :mode="mode"
           :anzeige-context-abfragevariante="anzeigeContextAbfragevariante"
-          :sobon-relevant="abfrageWrapped.infrastrukturabfrage.sobonRelevant"
+          :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauabschnitt-component
-          v-else-if="isBauabschnittFormularOpen"
+          v-else-if="isBauabschnittFormularOpen()"
           id="bauabschnitt_component"
-          v-model="selectedBauabschnitt"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeBauabschnitt"
+          :mode="mode"
         />
         <baugebiet-component
-          v-else-if="isBaugebietFormularOpen"
+          v-else-if="isBaugebietFormularOpen()"
           id="baugebiet_component"
-          v-model="selectedBaugebiet"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeBaugebiet"
-          :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
+          :mode="mode"
+          :abfragevariante="abfragevarianteAncestor"
         />
         <baurate-component
-          v-else-if="isBaurateFormularOpen"
+          v-else-if="isBaurateFormularOpen()"
           id="baurate_component"
-          v-model="selectedBaurate"
+          v-model="selected"
           :is-editable="isEditable"
-          :mode="modeBaurate"
-          :baugebiet="baugebietForSelectedBaurate"
-          :abfragevariante="abfragevarianteForSelectedBaugebietOrBaurate"
+          :mode="mode"
+          :baugebiet="baugebietAncestor"
+          :abfragevariante="abfragevarianteAncestor"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
@@ -54,12 +57,15 @@
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_statusuebergang"
+          ref="yesNoDialogStatusuebergang"
           v-model="isStatusUebergangDialogOpen"
           icon="mdi-account-arrow-right"
           dialogtitle="Hinweis"
           :dialogtext="dialogTextStatus"
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
+          :has-anmerkung="hasAnmerkung"
+          @anmerkung="handleAnmerkung"
           @no="yesNoDialogStatusUebergangeNo"
           @yes="yesNoDialogStatusUebergangYes"
         />
@@ -81,7 +87,7 @@
           dialogtitle="Hinweis"
           :dialogtext="
             'Hiermit wird die Abfragevariante Nr.' +
-            selectedAbfragevariante.abfragevariantenNr +
+            selected.abfragevariantenNr +
             ' und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
@@ -96,7 +102,7 @@
           dialogtitle="Hinweis"
           :dialogtext="
             'Hiermit wird der Bauabschnitt \'' +
-            selectedBauabschnitt.bezeichnung +
+            selected.bezeichnung +
             '\' und alle dazugehörigen Baugebiete unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
@@ -111,7 +117,7 @@
           dialogtitle="Hinweis"
           :dialogtext="
             'Hiermit wird das Baugebiet \'' +
-            selectedBaugebiet.bezeichnung +
+            selected.bezeichnung +
             '\' und alle dazugehörigen Bauraten unwiderruflich gelöscht.'
           "
           no-text="Abbrechen"
@@ -124,11 +130,22 @@
           v-model="isDeleteDialogBaurateOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selectedBaurate.jahr + ' unwiderruflich gelöscht.'"
+          :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selected.jahr + ' unwiderruflich gelöscht.'"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBaurateNo"
           @yes="yesNoDialogBaurateYes"
+        />
+        <yes-no-dialog
+          id="abfrage_abfragevariante_relevante_abfragevariante_dialog"
+          v-model="isRelevanteAbfragevarianteDialogOpen"
+          icon="mdi-marker"
+          dialogtitle="Hinweis"
+          :dialogtext="relevanteAbfragevarianteDialogText"
+          no-text="Abbrechen"
+          yes-text="Überschreiben"
+          @no="yesNoDialogRelevanteAbfragevarianteNo"
+          @yes="yesNoDialogRelevanteAbfragevarianteYes"
         />
       </template>
       <template #heading>
@@ -138,7 +155,7 @@
               <span
                 id="abfrage_displayName"
                 class="text-h6 font-weight-bold"
-                v-text="abfrageWrapped.infrastrukturabfrage.displayName"
+                v-text="abfrage.displayName"
               />
             </v-col>
           </v-row>
@@ -147,24 +164,26 @@
       <template #navigation>
         <abfrage-navigation-tree
           id="abfrage_navigation_tree"
-          ref="abfrageNavigationTree"
-          v-model="abfrageWrapped"
-          @select-abfrage="handleSelectAbfrage($event)"
-          @select-abfragevariante="handleSelectAbfragevariante($event)"
-          @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant($event)"
-          @delete-abfragevariante="handleDeleteAbfragevariante($event)"
-          @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante($event)"
-          @determine-bauraten-for-baugebiet="handleDetermineBauratenForBaugebiet($event)"
-          @create-new-abfragevariante="handleCreateNewAbfragevariante($event)"
-          @select-bauabschnitt="handleSelectBauabschnitt($event)"
-          @delete-bauabschnitt="handleDeleteBauabschnitt($event)"
-          @create-new-bauabschnitt="handleCreateNewBauabschnitt($event)"
-          @select-baugebiet="handleSelectBaugebiet($event)"
-          @delete-baugebiet="handleDeleteBaugebiet($event)"
-          @create-new-baugebiet="handleCreateNewBaugebiet($event)"
-          @select-baurate="handleSelectBaurate($event)"
-          @delete-baurate="handleDeleteBaurate($event)"
-          @create-new-baurate="handleCreateNewBaurate($event)"
+          :abfrage="abfrage"
+          :selected-item-id="selectedTreeItemId"
+          :relevante-abfragevariante-id="relevanteAbfragevarianteId"
+          @select-abfrage="handleSelectAbfrage"
+          @select-abfragevariante="handleSelectAbfragevariante"
+          @select-bauabschnitt="handleSelectBauabschnitt"
+          @select-baugebiet="handleSelectBaugebiet"
+          @select-baurate="handleSelectBaurate"
+          @create-abfragevariante="handleCreateAbfragevariante"
+          @create-abfragevariante-sachbearbeitung="handleCreateAbfragevarianteSachbearbeitung"
+          @create-bauabschnitt="handleCreateBauabschnitt"
+          @create-baugebiet="handleCreateBaugebiet"
+          @create-baurate="handleCreateBaurate"
+          @delete-abfragevariante="handleDeleteAbfragevariante"
+          @delete-bauabschnitt="handleDeleteBauabschnitt"
+          @delete-baugebiet="handleDeleteBaugebiet"
+          @delete-baurate="handleDeleteBaurate"
+          @set-abfragevariante-relevant="handleSetAbfragevarianteRelevant"
+          @determine-bauraten-for-abfragevariante="handleDetermineBauratenForAbfragevariante"
+          @determine-bauraten-for-baugebiet="handleDetermineBauratenForBaugebiet"
         />
         <v-spacer />
       </template>
@@ -176,6 +195,7 @@
           color="primary"
           elevation="1"
           style="width: 200px"
+          :disabled="!isDeleteable()"
           @click="deleteAbfrage()"
           v-text="'Löschen'"
         />
@@ -204,10 +224,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="
-            (!isNewAbfrage() && !isDirty()) ||
-            containsNotAllowedDokument(abfrageWrapped.infrastrukturabfrage.abfrage.dokumente)
-          "
+          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
@@ -237,7 +254,10 @@ import {
   TransitionDto,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
-import AbfrageNavigationTree, { AbfrageTreeItem } from "@/components/abfragen/AbfrageNavigationTree.vue";
+import AbfrageNavigationTree, {
+  AbfrageTreeItem,
+  generateTreeItemId,
+} from "@/components/abfragen/AbfrageNavigationTree.vue";
 import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
@@ -248,6 +268,7 @@ import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
 import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -256,7 +277,6 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import InfrastrukturabfrageWrapperModel from "@/types/model/abfrage/InfrastrukturabfrageWrapperModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
@@ -273,6 +293,7 @@ import {
 } from "@/utils/Factories";
 import {
   mapToInfrastrukturabfrageAngelegt,
+  mapToInfrastrukturabfrageInBearbeitungFachreferateDto,
   mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
@@ -284,6 +305,27 @@ export const enum AnzeigeContextAbfragevariante {
   UNDEFINED = 1,
   ABFRAGEVARIANTE = 2,
   ABFRAGEVARIANTE_SACHBEARBEITUNG = 3,
+}
+
+/**
+ * Ein Union aller im Rahmen der Abfrage relevanten DTOs, welche ein eigenes Formular haben.
+ */
+export type AbfrageDtoWithForm =
+  | InfrastrukturabfrageDto
+  | AbfragevarianteDto
+  | BauabschnittDto
+  | BaugebietDto
+  | BaurateDto;
+
+/**
+ * Ein Enum für alle im Rahmen der Abfrage relevanten Entitäten, welche ein eigenes Formular haben.
+ */
+export const enum AbfrageFormType {
+  INFRASTRUKTURABFRAGE,
+  ABFRAGEVARIANTE,
+  BAUABSCHNITT,
+  BAUGEBIET,
+  BAURATE,
 }
 
 @Component({
@@ -305,31 +347,24 @@ export default class Abfrage extends Mixins(
   FieldValidationRulesMixin,
   AbfrageApiRequestMixin,
   BauratenApiRequestMixin,
+  BauvorhabenApiRequestMixin,
   StatusUebergangApiRequestMixin,
   ValidatorMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
 ) {
+  private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
+
   private modeAbfrage = DisplayMode.UNDEFINED;
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
-  private abfrageWrapped: InfrastrukturabfrageWrapperModel = new InfrastrukturabfrageWrapperModel(
-    new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()),
-    true
-  );
-  /**
-   * Wird für die objektübergreifende Validierung im Formular des Baugebiets bzw. Baurate benötigt.
-   */
-  private abfragevarianteForSelectedBaugebietOrBaurate: AbfragevarianteDto | undefined;
-  /**
-   * Wird für die objektübergreifende Validierung im Formular der Baurate benötigt.
-   */
-  private baugebietForSelectedBaurate: BaugebietDto | undefined;
-  private selectedAbfragevariante: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
-  private selectedBauabschnitt: BauabschnittModel = new BauabschnittModel(createBauabschnittDto());
-  private selectedBaugebiet: BaugebietModel = new BaugebietModel(createBaugebietDto());
-  private selectedBaurate: BaurateModel = new BaurateModel(createBaurateDto());
+  private anmerkung = "";
+  private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
+  private selected: AbfrageDtoWithForm = this.abfrage;
+  private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
+  private abfragevarianteAncestor: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
+  private baugebietAncestor: BaugebietModel = new BaugebietModel(createBaugebietDto());
   private abfrageId: string = this.$route.params.id;
   private transition: TransitionDto | undefined;
   private isStatusUebergangDialogOpen = false;
@@ -338,21 +373,18 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBauabschnittOpen = false;
   private isDeleteDialogBaugebietOpen = false;
   private isDeleteDialogBaurateOpen = false;
-  private isAbfrageFormularOpen = true;
-  private isAbfragevarianteFormularOpen = false;
-  private isBauabschnittFormularOpen = false;
-  private isBaugebietFormularOpen = false;
-  private isBaurateFormularOpen = false;
-  private abfragevarianteTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-  private bauabschnittTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-  private baugebietTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
-  private baurateTreeItemToDelete: AbfrageTreeItem | undefined = undefined;
+  private isRelevanteAbfragevarianteDialogOpen = false;
+  private relevanteAbfragevarianteDialogText = "";
+  private hasAnmerkung = false;
+  private selectedTreeItemId = "";
+  private relevanteAbfragevarianteId: string | null = null;
+  private relevanteAbfragevarianteToBeSet: AbfragevarianteModel | undefined;
+  private treeItemToDelete: AbfrageTreeItem | undefined;
   public possbileTransitions: Array<TransitionDto> = [];
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
-    this.initializeFormulare();
     this.setSelectedAbfrageInStore();
     if (!this.isNewAbfrage())
       this.getTransitions(this.abfrageId, true).then((response) => {
@@ -364,8 +396,15 @@ export default class Abfrage extends Mixins(
   private selectedAbfrageChanged() {
     const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
     if (!_.isNil(abfrageFromStore)) {
-      this.abfrageWrapped = new InfrastrukturabfrageWrapperModel(_.cloneDeep(abfrageFromStore), true);
-      this.initializeFormulare();
+      this.abfrage = _.cloneDeep(abfrageFromStore);
+      this.selectAbfrage();
+
+      const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
+      if (bauvorhabenId) {
+        this.getBauvorhabenById(bauvorhabenId, false).then((dto) => {
+          this.relevanteAbfragevarianteId = dto.relevanteAbfragevariante?.id ?? null;
+        });
+      }
     }
   }
 
@@ -391,10 +430,19 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfrageOpen = true;
   }
 
+  private isDeleteable(): boolean {
+    return this.isEditableByAbfrageerstellung() || this.isEditableByAdmin();
+  }
+
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
+    transition.url == "abfrage-schliessen" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
     this.isStatusUebergangDialogOpen = true;
+  }
+
+  private handleAnmerkung(val: string): void {
+    this.anmerkung = val;
   }
 
   private yesNoDialogAbfrageYes(): void {
@@ -413,10 +461,11 @@ export default class Abfrage extends Mixins(
 
   private yesNoDialogStatusUebergangeNo(): void {
     this.isStatusUebergangDialogOpen = false;
+    if (!_.isNil(this.$refs.yesNoDialogStatusuebergang)) this.$refs.yesNoDialogStatusuebergang.resetTextarea();
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
-    this.removeSelectedAbfragevarianteFromAbfrage();
+    this.removeAbfragevarianteFromAbfrage();
     this.yesNoDialogAbfragevarianteNo();
   }
 
@@ -426,12 +475,13 @@ export default class Abfrage extends Mixins(
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
     await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+      this.$store.commit("search/removeSearchResultById", this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }
 
   private yesNoDialogBauabschnittYes(): void {
-    this.removeSelectedBauabschnittFromAbfragevariante();
+    this.removeBauabschnittFromAbfragevariante();
     this.yesNoDialogBauabschnittNo();
   }
 
@@ -440,7 +490,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogBaugebietYes(): void {
-    this.removeSelectedBaugebietFromBauabschnitt();
+    this.removeBaugebietFromBauabschnitt();
     this.yesNoDialogBaugebietNo();
   }
 
@@ -449,7 +499,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogBaurateYes(): void {
-    this.removeSelectedBaurateFromBaugebiet();
+    this.removeBaurateFromBaugebiet();
     this.yesNoDialogBaurateNo();
   }
 
@@ -457,39 +507,54 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogBaurateOpen = false;
   }
 
+  private async yesNoDialogRelevanteAbfragevarianteYes(): Promise<void> {
+    if (this.relevanteAbfragevarianteToBeSet) {
+      await this.setRelevanteAbfragevariante(null);
+      await this.setRelevanteAbfragevariante(this.relevanteAbfragevarianteToBeSet);
+    }
+    this.yesNoDialogRelevanteAbfragevarianteNo();
+  }
+
+  private yesNoDialogRelevanteAbfragevarianteNo(): void {
+    this.isRelevanteAbfragevarianteDialogOpen = false;
+  }
+
   private async saveAbfrage(): Promise<void> {
     if (this.validate()) {
-      this.saveInfrastrukturabfrage();
+      this.saveInfrastrukturabfrage(true);
     } else {
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
     }
   }
 
-  private async saveInfrastrukturabfrage(): Promise<void> {
-    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
-      this.abfrageWrapped.infrastrukturabfrage
-    );
+  private async saveInfrastrukturabfrage(showToast: boolean): Promise<void> {
+    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.createInfrastrukturabfrage(
-          mapToInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
-          true
-        ).then((dto) => {
-          this.handleSuccess(dto);
+        await this.createInfrastrukturabfrage(mapToInfrastrukturabfrageAngelegt(this.abfrage), true).then((dto) => {
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableByAbfrageerstellung()) {
         await this.patchAbfrageAngelegt(
-          mapToInfrastrukturabfrageAngelegt(this.abfrageWrapped.infrastrukturabfrage),
-          this.abfrageWrapped.infrastrukturabfrage.id as string,
-          true
+          mapToInfrastrukturabfrageAngelegt(this.abfrage),
+          this.abfrage.id as string,
+          true,
         ).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableBySachbearbeitung()) {
         await this.patchAbfrageInBearbeitungSachbearbeitung(
-          mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrageWrapped.infrastrukturabfrage),
-          this.abfrageWrapped.infrastrukturabfrage.id as string,
-          true
+          mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrage),
+          this.abfrage.id as string,
+          true,
+        ).then((dto) => {
+          this.handleSuccess(dto, showToast);
+        });
+      } else if (this.isEditableByBedarfsmeldung()) {
+        await this.patchAbfrageInBearbeitungFachreferate(
+          mapToInfrastrukturabfrageInBearbeitungFachreferateDto(this.abfrage),
+          this.abfrage.id as string,
+          true,
         ).then((dto) => {
           this.handleSuccess(dto);
         });
@@ -499,36 +564,36 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private handleSuccess(dto: InfrastrukturabfrageDto): void {
+  private handleSuccess(dto: InfrastrukturabfrageDto, showToast: boolean): void {
     this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
-    this.$store.dispatch("search/resetAbfrage");
     if (this.isNewAbfrage()) {
-      this.$router.push({ path: "/abfragenuebersicht" });
+      this.$router.push({ path: "/" });
       Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
     } else {
-      Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
+      if (showToast) Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
-    this.initializeFormulare();
-    this.initializTreeItemsToOpen();
   }
 
   private async startStatusUebergang(transition: TransitionDto) {
     if (!this.isDirty()) {
-      const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(
-        this.abfrageWrapped.infrastrukturabfrage
-      );
+      let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
+      if (transition.url === "abfrage-schliessen") {
+        toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
+      }
+      const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
-        const requestSuccessful = await this.statusUebergangRequest(transition, this.abfrageId);
-        if (requestSuccessful) {
-          if (!(transition.buttonName === "IN BEARBEITUNG SETZEN")) {
-            this.returnToUebersicht("Die Abfrage hatte einen erfolgreichen Statuswechsel", Levels.SUCCESS);
+        const response = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
+        if (response.ok) {
+          if (!(transition.url === "in-bearbeitung-setzen")) {
+            this.returnToUebersicht(toastMessage, Levels.SUCCESS);
           } else {
             this.setSelectedAbfrageInStore();
             this.getTransitions(this.abfrageId, true).then((response) => {
               this.possbileTransitions = response;
             });
           }
-          this.openAbfrageFormular();
+        } else {
+          this.anmerkung = "";
         }
       } else {
         this.showWarningInInformationList(validationMessage);
@@ -538,90 +603,63 @@ export default class Abfrage extends Mixins(
     }
   }
 
+  private async setRelevanteAbfragevariante(abfragevariante: AbfragevarianteModel | null): Promise<void> {
+    if (_.isNil(abfragevariante)) {
+      const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
+      if (bauvorhabenId) {
+        const bauvorhaben = await this.getBauvorhabenById(bauvorhabenId, false);
+        const relevanteAbfragevariante = bauvorhaben.relevanteAbfragevariante;
+        if (relevanteAbfragevariante) {
+          await this.changeRelevanteAbfragevariante(relevanteAbfragevariante, true);
+        }
+      }
+      return;
+    }
+
+    if (abfragevariante.id) {
+      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((result) => {
+        if (typeof result !== "string") {
+          const relevanteId = result.relevanteAbfragevariante?.id;
+          this.relevanteAbfragevarianteId = relevanteId ?? null;
+          Toaster.toast(
+            `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${
+              this.abfrage.displayName
+            } ist nun ${relevanteId ? "relevant" : "nicht mehr relevant"}.`,
+            Levels.SUCCESS,
+          );
+        } else {
+          this.relevanteAbfragevarianteToBeSet = abfragevariante;
+          this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+          this.isRelevanteAbfragevarianteDialogOpen = true;
+        }
+      });
+    } else {
+      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
+    }
+  }
+
   private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
     this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
   }
 
-  private initializTreeItemsToOpen(): void {
-    if (!_.isNil(this.$refs.abfrageNavigationTree)) {
-      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
-      abfrageNavitionTree.initializTreeItemsToOpen();
-    }
+  private isAbfrageFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.INFRASTRUKTURABFRAGE;
   }
 
-  private setSelectedTreeItem(selectedTreeItem: AbfrageTreeItem | undefined): void {
-    if (!_.isNil(selectedTreeItem) && !_.isNil(this.$refs.abfrageNavigationTree)) {
-      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
-      abfrageNavitionTree.setSelectedTreeItem(selectedTreeItem);
-    }
+  private isAbfragevarianteFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.ABFRAGEVARIANTE;
   }
 
-  private setNewEntityToMark(entity: unknown): void {
-    if (!_.isNil(entity) && !_.isNil(this.$refs.abfrageNavigationTree)) {
-      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
-      abfrageNavitionTree.setNewEntityToMark(entity);
-    }
+  private isBauabschnittFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.BAUABSCHNITT;
   }
 
-  private openMarkedItems(): void {
-    if (!_.isNil(this.$refs.abfrageNavigationTree)) {
-      const abfrageNavitionTree = this.$refs.abfrageNavigationTree as AbfrageNavigationTree;
-      abfrageNavitionTree.openMarkedItems();
-    }
+  private isBaugebietFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.BAUGEBIET;
   }
 
-  private setAnzeigeContextAbfragevariante(anzeigeContext: AnzeigeContextAbfragevariante | undefined) {
-    this.anzeigeContextAbfragevariante = _.isNil(anzeigeContext)
-      ? AnzeigeContextAbfragevariante.UNDEFINED
-      : anzeigeContext;
-  }
-
-  private initializeFormulare(): void {
-    this.isAbfrageFormularOpen = true;
-    this.isAbfragevarianteFormularOpen = false;
-    this.isBauabschnittFormularOpen = false;
-    this.isBaugebietFormularOpen = false;
-    this.isBaurateFormularOpen = false;
-  }
-
-  private openAbfrageFormular(): void {
-    this.isAbfrageFormularOpen = true;
-    this.isAbfragevarianteFormularOpen = false;
-    this.isBauabschnittFormularOpen = false;
-    this.isBaugebietFormularOpen = false;
-    this.isBaurateFormularOpen = false;
-  }
-
-  private openAbfragevarianteFormular(): void {
-    this.isAbfrageFormularOpen = false;
-    this.isAbfragevarianteFormularOpen = true;
-    this.isBauabschnittFormularOpen = false;
-    this.isBaugebietFormularOpen = false;
-    this.isBaurateFormularOpen = false;
-  }
-
-  private openBauabschnittFormular(): void {
-    this.isAbfrageFormularOpen = false;
-    this.isAbfragevarianteFormularOpen = false;
-    this.isBauabschnittFormularOpen = true;
-    this.isBaugebietFormularOpen = false;
-    this.isBaurateFormularOpen = false;
-  }
-
-  private openBaugebietFormular(): void {
-    this.isAbfrageFormularOpen = false;
-    this.isAbfragevarianteFormularOpen = false;
-    this.isBauabschnittFormularOpen = false;
-    this.isBaugebietFormularOpen = true;
-    this.isBaurateFormularOpen = false;
-  }
-
-  private openBaurateFormular(): void {
-    this.isAbfrageFormularOpen = false;
-    this.isAbfragevarianteFormularOpen = false;
-    this.isBauabschnittFormularOpen = false;
-    this.isBaugebietFormularOpen = false;
-    this.isBaurateFormularOpen = true;
+  private isBaurateFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.BAURATE;
   }
 
   private isNewAbfrage(): boolean {
@@ -629,349 +667,313 @@ export default class Abfrage extends Mixins(
   }
 
   private isAngelegt(): boolean {
-    return this.abfrageWrapped.infrastrukturabfrage.abfrage.statusAbfrage == StatusAbfrage.Angelegt;
+    return this.abfrage.abfrage?.statusAbfrage == StatusAbfrage.Angelegt;
   }
 
   private returnToUebersicht(message?: string, level?: Levels): void {
     if (message && level) {
       Toaster.toast(message, level);
     }
-    this.$store.dispatch("search/resetAbfrage");
-    this.$router.push({ path: "/abfragenuebersicht" });
+    this.$router.push({ path: "/" });
   }
 
   private validate(): boolean {
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private handleSelectAbfrage(abfrageTreeItem: AbfrageTreeItem): void {
-    this.anzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
-    this.initializeFormulare();
+  private handleSelectAbfrage(): void {
+    this.selectAbfrage();
   }
 
-  private handleSelectAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.initializeFormulare();
-    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    this.$nextTick(() => {
-      this.openAbfragevarianteFormular();
-    });
+  private handleSelectAbfragevariante(item: AbfrageTreeItem): void {
+    this.selectItem(item);
   }
 
-  private handleDeleteAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.abfragevarianteTreeItemToDelete = abfrageTreeItem;
-    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    this.openAbfragevarianteFormular();
+  private handleSelectBauabschnitt(item: AbfrageTreeItem): void {
+    this.selectItem(item);
+  }
+
+  private handleSelectBaugebiet(item: AbfrageTreeItem): void {
+    const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(item);
+
+    if (abfragevariante) {
+      this.abfragevarianteAncestor = abfragevariante;
+      this.selectItem(item);
+    }
+  }
+
+  private handleSelectBaurate(item: AbfrageTreeItem): void {
+    const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(item);
+    const baugebiet = this.getFirstAncestorOfTypeBaugebiet(item);
+
+    if (abfragevariante && baugebiet) {
+      this.abfragevarianteAncestor = abfragevariante;
+      this.baugebietAncestor = baugebiet;
+      this.selectItem(item);
+    }
+  }
+
+  private handleCreateAbfragevariante(parent: AbfrageTreeItem): void {
+    const abfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
+    this.abfrage.abfragevarianten?.push(abfragevariante);
+    this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
+    this.formChanged();
+    this.selectCreatedEntity(
+      abfragevariante,
+      AbfrageFormType.ABFRAGEVARIANTE,
+      parent,
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE,
+    );
+  }
+
+  private handleCreateAbfragevarianteSachbearbeitung(parent: AbfrageTreeItem): void {
+    const abfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
+    this.abfrage.abfragevariantenSachbearbeitung?.push(abfragevariante);
+    this.renumberingAbfragevarianten(this.abfrage.abfragevariantenSachbearbeitung);
+    this.formChanged();
+    this.selectCreatedEntity(
+      abfragevariante,
+      AbfrageFormType.ABFRAGEVARIANTE,
+      parent,
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
+    );
+  }
+
+  private handleCreateBauabschnitt(parent: AbfrageTreeItem): void {
+    const abfragevariante = parent.value;
+    if (this.isAbfragevariante(parent, abfragevariante)) {
+      if (_.isNil(abfragevariante.bauabschnitte)) {
+        abfragevariante.bauabschnitte = [];
+      }
+
+      const bauabschnitt = new BauabschnittModel(createBauabschnittDto());
+      abfragevariante.bauabschnitte.push(bauabschnitt);
+      this.formChanged();
+      this.selectCreatedEntity(bauabschnitt, AbfrageFormType.BAUABSCHNITT, parent, parent.context);
+    }
+  }
+
+  private handleCreateBaugebiet(parent: AbfrageTreeItem): void {
+    let bauabschnitt: BauabschnittModel | undefined;
+    if (this.isAbfragevariante(parent, parent.value)) {
+      bauabschnitt = this.getTechnicalBauabschnitt(parent.value);
+    } else if (this.isBauabschnitt(parent, parent.value)) {
+      bauabschnitt = parent.value;
+    }
+
+    if (bauabschnitt) {
+      const baugebiet = new BaugebietModel(createBaugebietDto());
+      const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(parent)!;
+      baugebiet.realisierungVon = abfragevariante.realisierungVon!;
+      bauabschnitt.baugebiete.push(baugebiet);
+      this.abfragevarianteAncestor = abfragevariante;
+      this.formChanged();
+      this.selectCreatedEntity(baugebiet, AbfrageFormType.BAUGEBIET, parent, parent.context);
+    }
+  }
+
+  private handleCreateBaurate(parent: AbfrageTreeItem): void {
+    let baugebiet: BaugebietModel | undefined;
+    if (this.isAbfragevariante(parent, parent.value)) {
+      baugebiet = this.getTechnicalBaugebiet(parent.value);
+    } else if (this.isBaugebiet(parent, parent.value)) {
+      baugebiet = parent.value;
+    }
+
+    if (baugebiet) {
+      const baurate = new BaurateModel(createBaurateDto());
+      const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(parent)!;
+      baugebiet.bauraten.push(baurate);
+      this.abfragevarianteAncestor = abfragevariante;
+      this.baugebietAncestor = baugebiet;
+      this.formChanged();
+      this.selectCreatedEntity(baurate, AbfrageFormType.BAURATE, parent, parent.context);
+    }
+  }
+
+  private handleDeleteAbfragevariante(item: AbfrageTreeItem): void {
+    this.treeItemToDelete = item;
     this.isDeleteDialogAbfragevarianteOpen = true;
   }
 
-  private async handleSetAbfragevarianteRelevant(abfrageTreeItem: AbfrageTreeItem): Promise<void> {
-    this.selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    if (!_.isNil(this.selectedAbfragevariante.id)) {
-      await this.changeAbfragevarianteRelevant(
-        this.abfrageWrapped.infrastrukturabfrage.id as string,
-        this.selectedAbfragevariante.id as string,
-        true
-      ).then((dto) => {
-        this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
-        this.$store.dispatch("search/resetAbfrage");
-        Toaster.toast(
-          `Die Abfragevariante ${this.selectedAbfragevariante.abfragevariantenName} in Abfrage ${
-            this.abfrageWrapped.infrastrukturabfrage.displayName
-          } hat nun den Status ${this.selectedAbfragevariante.relevant ? `nicht relevant` : `relevant`}.`,
-          Levels.SUCCESS
-        );
-      });
-    } else {
-      this.showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
-    }
-  }
-
-  private handleDetermineBauratenForAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    this.handleSelectAbfragevariante(abfrageTreeItem);
-    this.setNewEntityToMark(this.selectedAbfragevariante);
-    this.determineBauraten(
-      this.selectedAbfragevariante.realisierungVon,
-      this.selectedAbfragevariante.gesamtanzahlWe,
-      this.selectedAbfragevariante.geschossflaecheWohnen,
-      true
-    ).then((bauraten: Array<BaurateDto>) => {
-      const technicalBaugebiet = this.getTechnicalBaugebiet(this.selectedAbfragevariante);
-      if (!_.isNil(technicalBaugebiet)) {
-        technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
-        this.selectedAbfragevariante.bauabschnitte[0].baugebiete = [technicalBaugebiet];
-        this.openMarkedItems();
-        this.formChanged();
-      }
-    });
-  }
-
-  private handleDetermineBauratenForBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
-    this.handleSelectBaugebiet(abfrageTreeItem);
-    this.setNewEntityToMark(this.selectedBaugebiet);
-    this.determineBauraten(
-      this.selectedBaugebiet.realisierungVon,
-      this.selectedBaugebiet.gesamtanzahlWe,
-      this.selectedBaugebiet.geschossflaecheWohnen,
-      true
-    ).then((bauraten: Array<BaurateDto>) => {
-      this.selectedBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
-      this.openMarkedItems();
-      this.formChanged();
-    });
-  }
-
-  private handleCreateNewAbfragevariante(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
-    this.setNewEntityToMark(this.selectedAbfragevariante);
-    if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
-      this.abfrageWrapped.infrastrukturabfrage.abfragevarianten.push(this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevarianten);
-    } else {
-      this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung.push(this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung);
-    }
-    this.formChanged();
-    this.openAbfragevarianteFormular();
-  }
-
-  private removeSelectedAbfragevarianteFromAbfrage(): void {
-    if (!_.isNil(this.abfragevarianteTreeItemToDelete)) {
-      let abfragevarianten =
-        this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
-          ? this.abfrageWrapped.infrastrukturabfrage.abfragevarianten
-          : this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung;
-      _.remove(abfragevarianten, (abfragevariante) => abfragevariante === this.selectedAbfragevariante);
-      this.renumberingAbfragevarianten(abfragevarianten);
-      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-      if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
-        this.abfrageWrapped.infrastrukturabfrage.abfragevarianten = [...abfragevarianten];
-      } else {
-        this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung = [...abfragevarianten];
-      }
-      this.formChanged();
-      this.openAbfrageFormular();
-      this.$nextTick(() => {
-        this.setSelectedTreeItem(this.abfragevarianteTreeItemToDelete?.parentTreeItem);
-        this.abfragevarianteTreeItemToDelete = undefined;
-      });
-    }
-  }
-
-  private removeSelectedBauabschnittFromAbfragevariante(): void {
-    if (!_.isNil(this.bauabschnittTreeItemToDelete)) {
-      const selectedAbfragevariante = this.getSelectedAbfragevariante(this.bauabschnittTreeItemToDelete);
-      if (!_.isNil(selectedAbfragevariante.bauabschnitte)) {
-        _.remove(selectedAbfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === this.selectedBauabschnitt);
-        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-        selectedAbfragevariante.bauabschnitte = [...selectedAbfragevariante.bauabschnitte];
-        this.formChanged();
-        this.openAbfragevarianteFormular();
-      }
-      this.$nextTick(() => {
-        this.setSelectedTreeItem(this.bauabschnittTreeItemToDelete?.parentTreeItem);
-        this.bauabschnittTreeItemToDelete = undefined;
-      });
-    }
-  }
-
-  private removeSelectedBaugebietFromBauabschnitt(): void {
-    if (!_.isNil(this.baugebietTreeItemToDelete)) {
-      const selectedBauabschnitt = this.getSelectedBauabschnitt(this.baugebietTreeItemToDelete);
-      _.remove(selectedBauabschnitt.baugebiete, (baugebiet) => baugebiet === this.selectedBaugebiet);
-      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-      selectedBauabschnitt.baugebiete = [...selectedBauabschnitt.baugebiete];
-      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baugebietTreeItemToDelete));
-      this.formChanged();
-      this.openBauabschnittFormular();
-      this.$nextTick(() => {
-        this.setSelectedTreeItem(this.baugebietTreeItemToDelete?.parentTreeItem);
-        this.baugebietTreeItemToDelete = undefined;
-      });
-    }
-  }
-
-  private removeSelectedBaurateFromBaugebiet(): void {
-    if (!_.isNil(this.baurateTreeItemToDelete)) {
-      const selectedBaugebiet = this.getSelectedBaugebiet(this.baurateTreeItemToDelete);
-      _.remove(selectedBaugebiet.bauraten, (baurate) => baurate === this.selectedBaurate);
-      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-      selectedBaugebiet.bauraten = [...selectedBaugebiet.bauraten];
-      this.clearTechnicalEntities(this.getSelectedAbfragevariante(this.baurateTreeItemToDelete));
-      this.formChanged();
-      this.openBaugebietFormular();
-      this.$nextTick(() => {
-        this.setSelectedTreeItem(this.baurateTreeItemToDelete?.parentTreeItem);
-        this.baurateTreeItemToDelete = undefined;
-      });
-    }
-  }
-
-  private getSelectedAbfragevariante(abfrageTreeItem: AbfrageTreeItem): AbfragevarianteDto {
-    const abfragevarianten =
-      abfrageTreeItem.contextAnzeigeAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
-        ? this.abfrageWrapped.infrastrukturabfrage.abfragevarianten
-        : this.abfrageWrapped.infrastrukturabfrage.abfragevariantenSachbearbeitung;
-    let selectedAbfragevariante = abfragevarianten.find(
-      (abfragevariante) => abfragevariante === abfrageTreeItem.abfragevariante
-    );
-    if (_.isNil(selectedAbfragevariante)) {
-      selectedAbfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
-    }
-    return selectedAbfragevariante;
-  }
-
-  private getSelectedBauabschnitt(abfrageTreeItem: AbfrageTreeItem): BauabschnittDto {
-    let selectedBauabschnitt = undefined;
-    let selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    if (!_.isNil(selectedAbfragevariante.bauabschnitte)) {
-      selectedBauabschnitt = selectedAbfragevariante.bauabschnitte.find(
-        (bauabschnitt) => bauabschnitt === abfrageTreeItem.bauabschnitt
-      );
-    }
-    if (_.isNil(selectedBauabschnitt)) {
-      const technicalBauabschnitt = this.getTechnicalBauabschnitt(selectedAbfragevariante);
-      selectedBauabschnitt = technicalBauabschnitt
-        ? technicalBauabschnitt
-        : new BauabschnittModel(createBauabschnittDto());
-    }
-    return selectedBauabschnitt;
-  }
-
-  private getSelectedBaugebiet(abfrageTreeItem: AbfrageTreeItem): BaugebietDto {
-    let selectedBaugebiet = undefined;
-    let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
-    if (!_.isNil(selectedBauabschnitt.baugebiete)) {
-      selectedBaugebiet = selectedBauabschnitt.baugebiete.find((baugebiet) => baugebiet === abfrageTreeItem.baugebiet);
-    }
-    if (_.isNil(selectedBaugebiet)) {
-      const selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-      const technicalBaugebiet = this.getTechnicalBaugebiet(selectedAbfragevariante);
-      selectedBaugebiet = technicalBaugebiet ? technicalBaugebiet : new BaugebietModel(createBaugebietDto());
-    }
-    return selectedBaugebiet;
-  }
-
-  private getSelectedBaurate(abfrageTreeItem: AbfrageTreeItem): BaurateDto {
-    let selectedBaurate = undefined;
-    let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
-    selectedBaurate = selectedBaugebiet.bauraten.find((baurate) => baurate === abfrageTreeItem.baurate);
-    if (_.isNil(selectedBaurate)) {
-      selectedBaurate = new BaurateModel(createBaurateDto());
-    }
-    return selectedBaurate;
-  }
-
-  private handleSelectBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.initializeFormulare();
-    this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
-    this.$nextTick(() => {
-      this.openBauabschnittFormular();
-    });
-  }
-
-  private handleDeleteBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.bauabschnittTreeItemToDelete = abfrageTreeItem;
-    this.selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
-    this.openBauabschnittFormular();
+  private handleDeleteBauabschnitt(item: AbfrageTreeItem): void {
+    this.treeItemToDelete = item;
     this.isDeleteDialogBauabschnittOpen = true;
   }
 
-  private handleCreateNewBauabschnitt(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    let selectedAbfragevariante = this.getSelectedAbfragevariante(abfrageTreeItem);
-    this.selectedBauabschnitt = new BauabschnittModel(createBauabschnittDto());
-    if (_.isNil(selectedAbfragevariante.bauabschnitte)) {
-      selectedAbfragevariante.bauabschnitte = [];
-    }
-    this.setNewEntityToMark(this.selectedBauabschnitt);
-    selectedAbfragevariante.bauabschnitte.push(this.selectedBauabschnitt);
-    this.formChanged();
-    this.openBauabschnittFormular();
-  }
-
-  private handleSelectBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
-    this.initializeFormulare();
-    this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
-    this.$nextTick(() => {
-      this.openBaugebietFormular();
-    });
-  }
-
-  private handleDeleteBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.baugebietTreeItemToDelete = abfrageTreeItem;
-    this.selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
-    this.openBaugebietFormular();
+  private handleDeleteBaugebiet(item: AbfrageTreeItem): void {
+    this.treeItemToDelete = item;
     this.isDeleteDialogBaugebietOpen = true;
   }
 
-  private handleCreateNewBaugebiet(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
-    let selectedBauabschnitt = this.getSelectedBauabschnitt(abfrageTreeItem);
-    this.selectedBaugebiet = new BaugebietModel(createBaugebietDto());
-    const abfragevariante = abfrageTreeItem.abfragevariante;
-    if (!_.isNil(abfragevariante)) {
-      this.selectedBaugebiet.realisierungVon = abfragevariante.realisierungVon;
-    }
-    this.setNewEntityToMark(this.selectedBaugebiet);
-    selectedBauabschnitt.baugebiete.push(this.selectedBaugebiet);
-    this.formChanged();
-    this.openBaugebietFormular();
-  }
-
-  private handleSelectBaurate(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.baugebietForSelectedBaurate = abfrageTreeItem.baugebiet;
-    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
-    this.initializeFormulare();
-    this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
-    this.$nextTick(() => {
-      this.openBaurateFormular();
-    });
-  }
-
-  private handleDeleteBaurate(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    this.baurateTreeItemToDelete = abfrageTreeItem;
-    this.selectedBaurate = this.getSelectedBaurate(abfrageTreeItem);
-    this.openBaurateFormular();
+  private handleDeleteBaurate(item: AbfrageTreeItem): void {
+    this.treeItemToDelete = item;
     this.isDeleteDialogBaurateOpen = true;
   }
 
-  private handleCreateNewBaurate(abfrageTreeItem: AbfrageTreeItem): void {
-    this.setAnzeigeContextAbfragevariante(abfrageTreeItem.contextAnzeigeAbfragevariante);
-    let selectedBaugebiet = this.getSelectedBaugebiet(abfrageTreeItem);
-    this.baugebietForSelectedBaurate = selectedBaugebiet;
-    this.abfragevarianteForSelectedBaugebietOrBaurate = abfrageTreeItem.abfragevariante;
-    this.selectedBaurate = new BaurateModel(createBaurateDto());
-    this.setNewEntityToMark(this.selectedBaurate);
-    selectedBaugebiet.bauraten.push(this.selectedBaurate);
-    this.formChanged();
-    this.openBaurateFormular();
+  private removeAbfragevarianteFromAbfrage(): void {
+    if (this.treeItemToDelete && this.isAbfragevariante(this.treeItemToDelete, this.treeItemToDelete.value)) {
+      const context = this.treeItemToDelete.context;
+      let abfragevarianten =
+        context === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
+          ? this.abfrage.abfragevarianten!
+          : this.abfrage.abfragevariantenSachbearbeitung!;
+      _.remove(abfragevarianten, (abfragevariante) => abfragevariante === this.treeItemToDelete!.value);
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+      if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
+        this.abfrage.abfragevarianten = [...abfragevarianten];
+      } else {
+        this.abfrage.abfragevariantenSachbearbeitung = [...abfragevarianten];
+      }
+      this.renumberingAbfragevarianten(abfragevarianten);
+      this.formChanged();
+      this.selectItem(this.treeItemToDelete.parent!);
+      this.treeItemToDelete = undefined;
+    }
   }
 
-  private get modeAbfragevariante(): DisplayMode {
-    return _.isNil(this.selectedAbfragevariante.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+  private removeBauabschnittFromAbfragevariante(): void {
+    if (this.treeItemToDelete && this.isBauabschnitt(this.treeItemToDelete, this.treeItemToDelete.value)) {
+      const abfragevariante = this.getFirstAncestorOfTypeAbfragevariante(this.treeItemToDelete);
+      if (abfragevariante && abfragevariante.bauabschnitte) {
+        _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === this.treeItemToDelete!.value);
+        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+        abfragevariante.bauabschnitte = [...abfragevariante.bauabschnitte];
+        this.formChanged();
+        this.selectItem(this.treeItemToDelete.parent!);
+        this.treeItemToDelete = undefined;
+      }
+    }
   }
 
-  private get modeBauabschnitt(): DisplayMode {
-    return _.isNil(this.selectedBauabschnitt.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+  private removeBaugebietFromBauabschnitt(): void {
+    if (this.treeItemToDelete && this.isBaugebiet(this.treeItemToDelete, this.treeItemToDelete.value)) {
+      const bauabschnitt = this.getFirstAncestorOfTypeBauabschnitt(this.treeItemToDelete);
+      if (bauabschnitt) {
+        _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === this.treeItemToDelete!.value);
+        this.clearTechnicalEntities(this.getFirstAncestorOfTypeAbfragevariante(this.treeItemToDelete)!);
+        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+        bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
+        this.formChanged();
+        this.selectItem(this.treeItemToDelete.parent!);
+        this.treeItemToDelete = undefined;
+      }
+    }
   }
 
-  private get modeBaugebiet(): DisplayMode {
-    return _.isNil(this.selectedBaugebiet.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+  private removeBaurateFromBaugebiet(): void {
+    if (this.treeItemToDelete && this.isBaurate(this.treeItemToDelete, this.treeItemToDelete.value)) {
+      const baugebiet = this.getFirstAncestorOfTypeBaugebiet(this.treeItemToDelete);
+      if (baugebiet) {
+        _.remove(baugebiet.bauraten, (baurate) => baurate === this.treeItemToDelete!.value);
+        this.clearTechnicalEntities(this.getFirstAncestorOfTypeAbfragevariante(this.treeItemToDelete)!);
+        // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+        baugebiet.bauraten = [...baugebiet.bauraten];
+        this.formChanged();
+        this.selectItem(this.treeItemToDelete.parent!);
+        this.treeItemToDelete = undefined;
+      }
+    }
   }
 
-  private get modeBaurate(): DisplayMode {
-    return _.isNil(this.selectedBaurate.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+  private async handleSetAbfragevarianteRelevant(item: AbfrageTreeItem): Promise<void> {
+    const abfragevariante = item.value;
+    if (this.isAbfragevariante(item, abfragevariante)) {
+      await this.setRelevanteAbfragevariante(abfragevariante);
+    }
+  }
+
+  private handleDetermineBauratenForAbfragevariante(item: AbfrageTreeItem): void {
+    const abfragevariante = item.value;
+
+    if (this.isAbfragevariante(item, abfragevariante)) {
+      this.determineBauraten(
+        abfragevariante.realisierungVon!,
+        abfragevariante.gesamtanzahlWe,
+        abfragevariante.geschossflaecheWohnen,
+        true,
+      ).then((bauraten: Array<BaurateDto>) => {
+        const technicalBaugebiet = this.getTechnicalBaugebiet(abfragevariante);
+        if (abfragevariante.bauabschnitte && !_.isNil(technicalBaugebiet)) {
+          technicalBaugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+          abfragevariante.bauabschnitte[0].baugebiete = [technicalBaugebiet];
+          this.formChanged();
+        }
+      });
+    }
+  }
+
+  private handleDetermineBauratenForBaugebiet(item: AbfrageTreeItem): void {
+    const baugebiet = item.value;
+
+    if (this.isBaugebiet(item, baugebiet)) {
+      this.determineBauraten(
+        baugebiet.realisierungVon,
+        baugebiet.gesamtanzahlWe,
+        baugebiet.geschossflaecheWohnen,
+        true,
+      ).then((bauraten: Array<BaurateDto>) => {
+        baugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+        this.formChanged();
+      });
+    }
+  }
+
+  /* Diese "Ancestor"-Methoden sind prinzipiell dafür da, einen Vorfahren von einem bestimmten Typ zu finden.
+   * Jedoch können sie auch das übergebene Item selbst zurückgeben, wenn es dem Typen entspricht.
+   */
+
+  private getFirstAncestorOfTypeAbfragevariante(item: AbfrageTreeItem): AbfragevarianteModel | undefined {
+    while (item.parent) {
+      if (this.isAbfragevariante(item, item.value)) {
+        return item.value;
+      }
+      item = item.parent;
+    }
+
+    return undefined;
+  }
+
+  private getFirstAncestorOfTypeBauabschnitt(item: AbfrageTreeItem): BauabschnittModel | undefined {
+    if (this.isBauabschnitt(item, item.value)) {
+      return item.value;
+    }
+
+    const parent = item.parent;
+    if (parent) {
+      if (this.isAbfragevariante(parent, parent.value)) {
+        return this.getTechnicalBauabschnitt(parent.value);
+      } else if (this.isBauabschnitt(parent, parent.value)) {
+        return parent.value;
+      } else if (this.isBaugebiet(parent, parent.value)) {
+        if (parent.parent && this.isBauabschnitt(parent.parent, parent.parent.value)) {
+          return parent.parent.value;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  private getFirstAncestorOfTypeBaugebiet(item: AbfrageTreeItem): BaugebietModel | undefined {
+    if (this.isBaugebiet(item, item.value)) {
+      return item.value;
+    }
+
+    const parent = item.parent;
+    if (parent) {
+      if (this.isAbfragevariante(parent, parent.value)) {
+        return this.getTechnicalBaugebiet(parent.value);
+      } else if (this.isBaugebiet(parent, parent.value)) {
+        return parent.value;
+      }
+    }
+
+    return undefined;
+  }
+
+  private get mode(): DisplayMode {
+    return _.isNil(this.selected.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
   private renumberingAbfragevarianten(abfragevarianten: Array<AbfragevarianteDto> | undefined): void {
@@ -980,25 +982,71 @@ export default class Abfrage extends Mixins(
     });
   }
 
+  private selectAbfrage(): void {
+    this.selectEntity(this.abfrage, AbfrageFormType.INFRASTRUKTURABFRAGE, "", AnzeigeContextAbfragevariante.UNDEFINED);
+  }
+
+  private selectItem(item: AbfrageTreeItem): void {
+    this.selectEntity(item.value, item.type, item.id, item.context);
+  }
+
+  private selectCreatedEntity(
+    entity: AbfrageDtoWithForm,
+    type: AbfrageFormType,
+    parent: AbfrageTreeItem,
+    context: AnzeigeContextAbfragevariante,
+  ): void {
+    // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
+    this.selectEntity(entity, type, generateTreeItemId(parent.id, parent.children.length), context);
+  }
+
+  private selectEntity(
+    entity: AbfrageDtoWithForm,
+    type: AbfrageFormType,
+    itemId: string,
+    context: AnzeigeContextAbfragevariante,
+  ): void {
+    this.anzeigeContextAbfragevariante = context;
+    this.selected = entity;
+    this.openForm = type;
+    this.selectedTreeItemId = itemId;
+  }
+
+  private isAbfragevariante(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is AbfragevarianteModel {
+    return item.type === AbfrageFormType.ABFRAGEVARIANTE;
+  }
+
+  private isBauabschnitt(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BauabschnittModel {
+    return item.type === AbfrageFormType.BAUABSCHNITT;
+  }
+
+  private isBaugebiet(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BaugebietModel {
+    return item.type === AbfrageFormType.BAUGEBIET;
+  }
+
+  private isBaurate(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BaurateModel {
+    return item.type === AbfrageFormType.BAURATE;
+  }
+
   /**
    * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
    */
   private getTechnicalBauabschnitt(abfragevariante: AbfragevarianteModel): BauabschnittModel | undefined {
-    let bauabschnittDto: BauabschnittDto | undefined;
+    let bauabschnitt: BauabschnittModel | undefined;
 
     if (!_.isNil(abfragevariante.bauabschnitte)) {
-      bauabschnittDto = abfragevariante.bauabschnitte[0];
+      bauabschnitt = abfragevariante.bauabschnitte[0];
     } else {
       abfragevariante.bauabschnitte = [];
     }
 
-    if (_.isNil(bauabschnittDto)) {
-      bauabschnittDto = createTechnicalBauabschnittDto();
-      abfragevariante.bauabschnitte.push(bauabschnittDto);
+    if (_.isNil(bauabschnitt)) {
+      bauabschnitt = new BauabschnittModel(createTechnicalBauabschnittDto());
+      abfragevariante.bauabschnitte.push(bauabschnitt);
     }
 
-    if (bauabschnittDto.technical) {
-      return new BauabschnittModel(bauabschnittDto);
+    if (bauabschnitt.technical) {
+      return bauabschnitt;
     } else {
       return undefined;
     }
@@ -1014,13 +1062,13 @@ export default class Abfrage extends Mixins(
       let baugebietDto = bauabschnitt.baugebiete[0];
 
       if (_.isNil(baugebietDto)) {
-        baugebietDto = createTechnicalBaugebietDto();
+        baugebietDto = new BaugebietModel(createTechnicalBaugebietDto());
         bauabschnitt.baugebiete.push(baugebietDto);
       }
 
       if (baugebietDto.technical) {
-        baugebietDto.realisierungVon = abfragevariante.realisierungVon;
-        return new BaugebietModel(baugebietDto);
+        baugebietDto.realisierungVon = abfragevariante.realisierungVon!;
+        return baugebietDto;
       }
     }
 

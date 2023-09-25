@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-row>
       <v-col
         cols="12"
@@ -297,7 +297,7 @@
       id="abfragevariante_sachbearbeitung_formular"
       v-model="abfragevariante.abfragevarianteSachbearbeitung"
     />
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -322,7 +322,7 @@ export default class AbfragevarianteForm extends Mixins(
   FieldValidationRulesMixin,
   SaveLeaveMixin,
   AbfrageSecurityMixin,
-  AbfragevarianteSachbearbeitungFormular
+  AbfragevarianteSachbearbeitungFormular,
 ) {
   @VModel({ type: AbfragevarianteModel }) abfragevariante!: AbfragevarianteModel;
 
@@ -376,7 +376,7 @@ export default class AbfragevarianteForm extends Mixins(
 
   get headline(): string {
     const headline = `Abfragevariante ${new AbfragevarianteModel(
-      this.abfragevariante
+      this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
     return this.displayMode === DisplayMode.NEU
       ? headline.concat("anlegen")

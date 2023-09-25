@@ -52,7 +52,7 @@ describe("CompareUtilTest.spec.ts", () => {
 
   it("should not match FoerdermixStammdatum", () => {
     let anteilPreisgedaempfterMietwohnungsbau = foerdermixStamm.foerdermix.foerderarten?.find(
-      (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau"
+      (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau",
     );
 
     if (anteilPreisgedaempfterMietwohnungsbau !== undefined) {

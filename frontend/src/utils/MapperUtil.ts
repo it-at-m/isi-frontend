@@ -6,10 +6,12 @@ import {
   AbfragevarianteDtoPlanungsrechtEnum,
   InfrastrukturabfrageDto,
   InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  InfrastrukturabfrageInBearbeitungFachreferateDto,
   AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto,
   AbfragevarianteSachbearbeitungDto,
   BedarfsmeldungFachabteilungenDto,
   AbfragevarianteInBearbeitungSachbearbeitungDto,
+  AbfragevarianteInBearbeitungFachreferateDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
@@ -22,7 +24,7 @@ export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: Foerde
 }
 
 export function mapToInfrastrukturabfrageAngelegt(
-  infrastrukturabfrageDto: InfrastrukturabfrageDto
+  infrastrukturabfrageDto: InfrastrukturabfrageDto,
 ): InfrastrukturabfrageAngelegtDto {
   const abfragevarianten = infrastrukturabfrageDto.abfragevarianten?.map((abfragevariante) => {
     return {
@@ -75,7 +77,7 @@ export function mapToInfrastrukturabfrageAngelegt(
 }
 
 function mapPlanungsRecht(
-  abfragevariantePlanungsRecht: AbfragevarianteDtoPlanungsrechtEnum | undefined
+  abfragevariantePlanungsRecht: AbfragevarianteDtoPlanungsrechtEnum | undefined,
 ): AbfragevarianteAngelegtDtoPlanungsrechtEnum {
   let enumValue: AbfragevarianteAngelegtDtoPlanungsrechtEnum = AbfragevarianteAngelegtDtoPlanungsrechtEnum.Unspecified;
   if (!_.isNil(abfragevariantePlanungsRecht)) {
@@ -89,14 +91,14 @@ function mapPlanungsRecht(
 }
 
 export function mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(
-  infrastrukturabfrageDto: InfrastrukturabfrageDto
+  infrastrukturabfrageDto: InfrastrukturabfrageDto,
 ): InfrastrukturabfrageInBearbeitungSachbearbeitungDto {
   const abfragevarianten = _.toArray(infrastrukturabfrageDto.abfragevarianten).map((abfragevariante) => {
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
       abfragevarianteSachbearbeitung: mapToAbfragevarianteSachbearbeitungDto(
-        abfragevariante.abfragevarianteSachbearbeitung
+        abfragevariante.abfragevarianteSachbearbeitung,
       ),
     } as AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto;
   });
@@ -126,10 +128,10 @@ export function mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(
         geschossflaecheWohnenGenehmigt: abfragevariante.geschossflaecheWohnenGenehmigt,
         geschossflaecheWohnenSoBoNursaechlich: abfragevariante.geschossflaecheWohnenSoBoNursaechlich,
         abfragevarianteSachbearbeitung: mapToAbfragevarianteSachbearbeitungDto(
-          abfragevariante.abfragevarianteSachbearbeitung
+          abfragevariante.abfragevarianteSachbearbeitung,
         ),
       } as AbfragevarianteInBearbeitungSachbearbeitungDto;
-    }
+    },
   );
 
   return {
@@ -139,8 +141,40 @@ export function mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(
   } as InfrastrukturabfrageInBearbeitungSachbearbeitungDto;
 }
 
+export function mapToInfrastrukturabfrageInBearbeitungFachreferateDto(
+  infrastrukturabfrageDto: InfrastrukturabfrageDto,
+): InfrastrukturabfrageInBearbeitungFachreferateDto {
+  const abfragevarianten = _.toArray(infrastrukturabfrageDto.abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
+        abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
+      ),
+    } as AbfragevarianteInBearbeitungFachreferateDto;
+  });
+
+  const abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrageDto.abfragevariantenSachbearbeitung).map(
+    (abfragevariante) => {
+      return {
+        id: abfragevariante.id,
+        version: abfragevariante.version,
+        bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
+          abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
+        ),
+      } as AbfragevarianteInBearbeitungFachreferateDto;
+    },
+  );
+
+  return {
+    version: infrastrukturabfrageDto.version,
+    abfragevarianten: abfragevarianten,
+    abfragevariantenSachbearbeitung: abfragevariantenSachbearbeitung,
+  } as InfrastrukturabfrageInBearbeitungFachreferateDto;
+}
+
 export function mapToBedarfsmeldungFachabteilungen(
-  bedarfsmeldungFachabteilungen: Array<BedarfsmeldungFachabteilungenDto> | undefined
+  bedarfsmeldungFachabteilungen: Array<BedarfsmeldungFachabteilungenDto> | undefined,
 ): Array<BedarfsmeldungFachabteilungenDto> {
   return _.toArray(bedarfsmeldungFachabteilungen).map((bedarfmeldung) => {
     return {
@@ -157,14 +191,14 @@ export function mapToBedarfsmeldungFachabteilungen(
 }
 
 export function mapToAbfragevarianteSachbearbeitungDto(
-  abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto | undefined
+  abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto | undefined,
 ): AbfragevarianteSachbearbeitungDto {
   return {
     geschossflaecheWohnenPlanungsursaechlich: abfragevarianteSachbearbeitung?.geschossflaecheWohnenPlanungsursaechlich,
     soBoNOrientierungswertJahr: abfragevarianteSachbearbeitung?.soBoNOrientierungswertJahr,
     anmerkung: abfragevarianteSachbearbeitung?.anmerkung,
     bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
-      abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate
+      abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
     ),
   } as AbfragevarianteSachbearbeitungDto;
 }

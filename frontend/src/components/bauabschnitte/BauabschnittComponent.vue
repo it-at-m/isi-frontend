@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-row>
       <v-col cols="12">
         <span
@@ -26,7 +26,7 @@
       </v-row>
     </field-group-card>
     <bauraten-aggregiert-component :aggregate-bauraten="bauabschnitt" />
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -45,7 +45,7 @@ export default class BauabschnittComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
 ) {
   @VModel({ type: BauabschnittModel }) bauabschnitt!: BauabschnittModel;
 

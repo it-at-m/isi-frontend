@@ -1,15 +1,23 @@
-import { Component, Mixins } from "vue-property-decorator";
 import {
+  AbfrageSearchResultDto,
+  AbfragevarianteDto,
   BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,
   DeleteBauvorhabenRequest,
   GetBauvorhabenByIdRequest,
+  GetReferencedInfrastrukturabfragenRequest,
+  GetReferencedInfrastruktureinrichtungRequest,
+  InformationResponseDtoFromJSON,
+  InfrastruktureinrichtungSearchResultDto,
+  PutChangeRelevanteAbfragevarianteRequest,
+  ResponseError,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
-import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import RequestUtils from "@/utils/RequestUtils";
+import { Component, Mixins } from "vue-property-decorator";
 
 @Component
 export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, SaveLeaveMixin) {
@@ -20,10 +28,35 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     this.bauvorhabenApi = new BauvorhabenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
-  getBauvorhaben(showInInformationList: boolean): Promise<Array<BauvorhabenDto>> {
+  getReferencedInfrastrukturabfragenList(
+    bauvorhabenId: string,
+    showInInformationList: boolean,
+  ): Promise<Array<AbfrageSearchResultDto>> {
+    const requestObject: GetReferencedInfrastrukturabfragenRequest = {
+      id: bauvorhabenId,
+    };
     return this.bauvorhabenApi
-      .getBauvorhaben(RequestUtils.getGETConfig())
-      .then((response) => response)
+      .getReferencedInfrastrukturabfragen(requestObject, RequestUtils.getGETConfig())
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  getReferencedInfrastruktureinrichtungenList(
+    bauvorhabenId: string,
+    showInInformationList: boolean,
+  ): Promise<Array<InfrastruktureinrichtungSearchResultDto>> {
+    const requestObject: GetReferencedInfrastruktureinrichtungRequest = {
+      id: bauvorhabenId,
+    };
+    return this.bauvorhabenApi
+      .getReferencedInfrastruktureinrichtung(requestObject, RequestUtils.getGETConfig())
+      .then((response) => {
+        return response;
+      })
       .catch((error) => {
         throw this.handleError(showInInformationList, error);
       });
@@ -40,8 +73,15 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
       });
   }
 
-  postBauvorhaben(bauvorhabenDto: BauvorhabenDto, showInInformationList: boolean): Promise<BauvorhabenDto> {
-    const requestObject: CreateBauvorhabenRequest = { bauvorhabenDto };
+  postBauvorhaben(
+    bauvorhabenDto: BauvorhabenDto,
+    datenuebernahmeAbfrageId: string | undefined,
+    showInInformationList: boolean,
+  ): Promise<BauvorhabenDto> {
+    const requestObject: CreateBauvorhabenRequest = {
+      bauvorhabenDto: bauvorhabenDto,
+      abfrageId: datenuebernahmeAbfrageId,
+    };
 
     return this.bauvorhabenApi
       .createBauvorhaben(requestObject, RequestUtils.getPOSTConfig())
@@ -80,5 +120,34 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
       .catch((error) => {
         throw this.handleError(showInInformationList, error);
       });
+  }
+
+  async changeRelevanteAbfragevariante(
+    abfragevarianteDto: AbfragevarianteDto,
+    showInInformationList: boolean,
+  ): Promise<BauvorhabenDto | string> {
+    const requestObject: PutChangeRelevanteAbfragevarianteRequest = {
+      abfragevarianteDto,
+    };
+    try {
+      const response = await this.bauvorhabenApi.putChangeRelevanteAbfragevariante(
+        requestObject,
+        RequestUtils.getPUTConfig(),
+      );
+      return response;
+    } catch (error) {
+      /* 
+      Ein 409 bedeutet, dass bereits eine andere relevante Abfragevariante existiert.
+      Dies soll aber nicht als Fehler behandelt werden und außerdem soll die Message ausgelesen werden.
+      Wegen dieser spezifischen Logik wird die handleError-Methode unter Umständen umgangen.
+      */
+      if (error instanceof ResponseError && error.response.status === 409) {
+        const json = await error.response.json();
+        const dto = InformationResponseDtoFromJSON(json);
+        return dto.messages?.[0] ?? "";
+      }
+
+      throw this.handleError(showInInformationList, error as Error);
+    }
   }
 }
