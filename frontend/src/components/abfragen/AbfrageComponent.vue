@@ -13,14 +13,14 @@
         >
           {{ statusLabels[0] }}
         </v-stepper-step>
-        <template v-for="(tick, index) in statusLabels.slice(1)">
+        <template v-for="(statusLabel, index) in statusLabels.slice(1)">
           <v-divider :key="index"></v-divider>
           <v-stepper-step
             :key="index"
             :complete="getStatusIndex() > index"
             step=""
           >
-            {{ tick }}
+            {{ statusLabel }}
           </v-stepper-step>
         </template>
       </v-stepper-header>
