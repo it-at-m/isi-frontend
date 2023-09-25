@@ -78,7 +78,7 @@
     <verortung
       id="verortung_component"
       v-model="bauvorhaben.verortung"
-      :context="verortungContext"
+      :context="context"
       :look-at="bauvorhaben.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
@@ -220,7 +220,7 @@
     </field-group-card>
     <kommentare
       id="bauvorhaben_kommentare"
-      :context="kommentareContext"
+      :context="context"
     />
   </v-container>
 </template>
@@ -236,19 +236,16 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import Kommentare, { KommentarContext } from "@/components/common/kommentar/Kommentare.vue";
+import Kommentare from "@/components/common/kommentar/Kommentare.vue";
+import { Context } from "@/utils/Context";
 
 @Component({
   computed: {
-    verortungContext() {
-      return VerortungContext.BAUVORHABEN;
-    },
-    kommentareContext() {
-      return KommentarContext.BAUVORHABEN;
+    context() {
+      return Context.BAUVORHABEN;
     },
   },
   components: { Kommentare, FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },

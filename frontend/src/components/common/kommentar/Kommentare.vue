@@ -26,19 +26,14 @@ import { Component, Prop, Mixins } from "vue-property-decorator";
 import _ from "lodash";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import Kommentar from "@/components/common/kommentar/Kommentar.vue";
-
-export const enum KommentarContext {
-  UNDEFINED = "UNDEFINED",
-  BAUVORHABEN = "BAUVORHABEN",
-  INFRASTRUKTUREINRICHTUNG = "INFRASTRUKTUREINRICHTUNG",
-}
+import { Context } from "@/utils/Context";
 
 @Component({
   components: { Kommentar },
 })
 export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
-  @Prop({ type: String, default: KommentarContext.UNDEFINED })
-  private readonly context!: KommentarContext;
+  @Prop({ type: String, default: Context.UNDEFINED })
+  private readonly context!: Context;
 
   private isKommentarListOpen = false;
 
@@ -46,14 +41,15 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private getKommentare() {
     const id = this.$route.params.id;
+    console.log(this.context);
     if (!this.isKommentarListOpen && !_.isNil(id)) {
       this.isKommentarListOpen = true;
-      if (this.context === KommentarContext.BAUVORHABEN) {
+      if (this.context === Context.BAUVORHABEN) {
         this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
           this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
           this.kommentare.push(this.createNewUnsavedKommentarForBauvorhaben());
         });
-      } else if (this.context === KommentarContext.INFRASTRUKTUREINRICHTUNG) {
+      } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
         this.getKommentareForInfrastruktureinrichtung(id, true).then((kommentare) => {
           this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
           this.kommentare.push(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
@@ -67,7 +63,7 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private createNewUnsavedKommentar(): KommentarModel {
     let kommentar;
-    if (this.context === KommentarContext.BAUVORHABEN) {
+    if (this.context === Context.BAUVORHABEN) {
       kommentar = this.createNewUnsavedKommentarForBauvorhaben();
     } else {
       kommentar = this.createNewUnsavedKommentarForInfrastruktureinrichtung();
