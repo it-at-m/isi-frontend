@@ -241,6 +241,8 @@ import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vu
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
+import Verortung from "@/components/common/Verortung.vue";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({
   computed: {
@@ -248,7 +250,16 @@ import { Context } from "@/utils/Context";
       return Context.BAUVORHABEN;
     },
   },
-  components: { Kommentare, FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },
+  components: {
+    AdresseComponent,
+    Verortung,
+    Kommentare,
+    FieldGroupCard,
+    Dokumente,
+    NumField,
+    TriSwitch,
+    ReferencedItemsList,
+  },
 })
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
