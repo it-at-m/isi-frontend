@@ -41,7 +41,6 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private getKommentare() {
     const id = this.$route.params.id;
-    console.log(this.context);
     if (!this.isKommentarListOpen && !_.isNil(id)) {
       this.isKommentarListOpen = true;
       if (this.context === Context.BAUVORHABEN) {

@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card class="mx-3 mt-0 mb-6 px-3 pt-2 pb-3">
     <v-row class="justify-start">
       <v-col
         cols="12"
@@ -48,8 +48,7 @@
           v-model="kommentar.text"
           label="Anmerkungen"
           auto-grow
-          filled
-          rows="3"
+          rows="10"
         />
       </v-col>
     </v-row>
