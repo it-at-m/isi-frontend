@@ -219,7 +219,7 @@
       <referenced-items-list />
     </field-group-card>
     <kommentare
-      v-if="isRoleAdminOrSachbearbeitung"
+      v-if="isEditable"
       id="bauvorhaben_kommentare"
       :context="context"
       :is-editable="isEditable"
