@@ -205,6 +205,7 @@
 </template>
 
 <script lang="ts">
+import _ from "lodash";
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import { LookupEntryDto, UncertainBoolean, GemarkungDto, FlurstueckDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
