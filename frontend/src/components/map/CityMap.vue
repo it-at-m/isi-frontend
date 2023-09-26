@@ -51,7 +51,6 @@
         position="bottomleft"
       >
         <button
-          v-if="!geoJsonDisabled"
           id="save_geojson_button"
           class="map-control"
           title="Auswahl übernehmen"
@@ -102,7 +101,7 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
-import { LMap, LMarker, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
+import { LMap, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
 import L, {
   GeoJSONOptions,
   LatLng,
@@ -126,7 +125,6 @@ type Ref = Vue & { $el: HTMLElement };
 @Component({
   components: {
     LMap,
-    LMarker,
     LControlLayers,
     "l-wms-tile-layer": LWMSTileLayer,
     LControl,
@@ -176,26 +174,7 @@ export default class CityMap extends Vue {
   @Prop({ default: undefined })
   private readonly geoJsonOptions?: GeoJSONOptions;
 
-  /**
-   * Ob die Auswahl von GeoJson deaktiviert werden soll.
-   */
-  @Prop({ type: Boolean, default: false })
-  private readonly geoJsonDisabled!: boolean;
-
-  /**
-   * Ob an der Position von `lookAt` immer ein Marker erscheinen soll.
-   */
-  @Prop({ type: Boolean, default: false })
-  private readonly markLookAt!: boolean;
-
-  /**
-   * Ob an der angeklickten Position immer ein Marker erscheinen soll, wenn keiner durch `lookAt` gesetzt ist.
-   */
-  @Prop({ type: Boolean, default: false })
-  private readonly markClick!: boolean;
-
   private layerGroup: LayerGroup = new LayerGroup();
-  private marker: L.Marker | undefined;
   private map!: L.Map;
   private expanded = false;
 
@@ -214,14 +193,6 @@ export default class CityMap extends Vue {
 
   @Watch("lookAt", { deep: true })
   private onLookAtChanged(): void {
-    if (this.markLookAt) {
-      if (this.lookAt) {
-        this.setMarker(this.lookAt);
-      } else {
-        this.removeMarker();
-      }
-    }
-
     this.flyToPositionOnMap(this.lookAt);
   }
 
@@ -236,9 +207,6 @@ export default class CityMap extends Vue {
   }
 
   private onClickInMap(event: LeafletMouseEvent): void {
-    if (this.markClick && !this.lookAt) {
-      this.setMarker(event.latlng);
-    }
     this.clickInMap(event);
   }
 
@@ -310,19 +278,6 @@ export default class CityMap extends Vue {
 
   private flyToPositionOnMap(position: LatLngLiteral | undefined) {
     if (position) this.map.flyTo(position, 16);
-  }
-
-  private setMarker(latLng: LatLngLiteral): void {
-    this.removeMarker();
-    this.marker = L.marker(latLng);
-    this.marker.addTo(this.map);
-  }
-
-  private removeMarker(): void {
-    if (this.marker) {
-      this.marker.removeFrom(this.map);
-      this.marker = undefined;
-    }
   }
 
   @Emit()
