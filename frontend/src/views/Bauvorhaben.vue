@@ -162,7 +162,7 @@ export default class Bauvorhaben extends Mixins(
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
   InformationListMixin,
-  SecurityMixin
+  SecurityMixin,
 ) {
   private bauvorhaben = new BauvorhabenModel(createBauvorhabenDto());
 

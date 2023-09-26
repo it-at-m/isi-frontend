@@ -220,7 +220,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   ValidatorMixin,
   SaveLeaveMixin,
   InfrastruktureinrichtungApiRequestMixin,
-  SecurityMixin
+  SecurityMixin,
 ) {
   private mode = DisplayMode.UNDEFINED;
 
@@ -374,7 +374,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   private handleInfrastruktureinrichtungTypChanged(): void {
     if (this.isNewInfrastruktureinrichtung()) {
       this.infrastruktureinrichtung = this.getModelOfNewDtoForInfrastruktureinrichtungTyp(
-        this.infrastruktureinrichtung.infrastruktureinrichtungTyp
+        this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
       );
     }
   }
@@ -409,7 +409,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private validateInfrastruktureinrichtung(
-    infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined
+    infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined,
   ): string | null {
     switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
       case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
@@ -430,7 +430,9 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private getModelOfNewDtoForInfrastruktureinrichtungTyp(
-    infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum | undefined
+    infrastruktureinrichtungTyp:
+      | InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum
+      | undefined,
   ):
     | KinderkrippeModel
     | KindergartenModel
@@ -458,7 +460,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   private getModelOfDto(
-    dto: InfrastruktureinrichtungDto | undefined
+    dto: InfrastruktureinrichtungDto | undefined,
   ):
     | KinderkrippeModel
     | KindergartenModel
@@ -502,10 +504,10 @@ export default class Infrastruktureinrichtung extends Mixins(
         if (!_.isNil(this.infrastruktureinrichtung)) {
           this.mode === DisplayMode.NEU
             ? await this.createInfrastruktureinrichtung(this.infrastruktureinrichtung, true).then(
-                (savedInfrastruktureinrichtung) => this.handleSuccess(savedInfrastruktureinrichtung)
+                (savedInfrastruktureinrichtung) => this.handleSuccess(savedInfrastruktureinrichtung),
               )
             : await this.updateInfrastruktureinrichtung(this.infrastruktureinrichtung, true).then(
-                (savedInfrastruktureinrichtung) => this.handleSuccess(savedInfrastruktureinrichtung)
+                (savedInfrastruktureinrichtung) => this.handleSuccess(savedInfrastruktureinrichtung),
               );
         }
       } else {

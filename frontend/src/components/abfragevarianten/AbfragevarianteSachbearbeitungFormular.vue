@@ -159,7 +159,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin
+  AbfrageSecurityMixin,
 ) {
   @VModel({ type: AbfragevarianteSachbearbeitungModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteSachbearbeitungModel;
@@ -245,7 +245,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate?.splice(
         this.selectedItemIndex,
         1,
-        this.currentBedarfsmeldung
+        this.currentBedarfsmeldung,
       );
     }
     this.clearBedarfsmeldungDialog();
