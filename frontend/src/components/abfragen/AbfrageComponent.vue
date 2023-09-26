@@ -221,7 +221,7 @@ export default class AbfrageComponent extends Mixins(
   BauvorhabenApiRequestMixin,
   SaveLeaveMixin,
   AbfrageSecurityMixin,
-  SearchApiRequestMixin
+  SearchApiRequestMixin,
 ) {
   @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
 
@@ -298,7 +298,7 @@ export default class AbfrageComponent extends Mixins(
     } as SearchQueryAndSortingDto;
     this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
       this.bauvorhaben = searchResults.searchResults?.map(
-        (searchResults) => searchResults as BauvorhabenSearchResultDto
+        (searchResults) => searchResults as BauvorhabenSearchResultDto,
       ) as Array<BauvorhabenSearchResultDto>;
     });
   }
