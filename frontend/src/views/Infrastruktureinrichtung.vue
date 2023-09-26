@@ -60,6 +60,7 @@
           :is-editable="isEditable"
         />
         <kommentare
+          v-if="isDisplayModeAenderung"
           id="bauvorhaben_kommentare"
           :context="context"
           :is-editable="isEditable"
@@ -230,6 +231,10 @@ export default class Infrastruktureinrichtung extends Mixins(
   private infrastruktureinrichtung: InfrastruktureinrichtungDto = createInfrastruktureinrichtungDto();
 
   private infrastruktureinrichtungId: string | undefined = this.$route.params.id;
+
+  get isDisplayModeAenderung(): boolean {
+    return this.mode === DisplayMode.AENDERUNG;
+  }
 
   get isEditable(): boolean {
     return this.isRoleAdminOrSachbearbeitung();

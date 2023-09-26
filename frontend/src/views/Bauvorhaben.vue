@@ -27,7 +27,7 @@
           :is-editable="isEditable"
         />
         <kommentare
-          v-if="isEditable"
+          v-if="isEditable && !isNew"
           id="bauvorhaben_kommentare"
           :context="context"
           :is-editable="isEditable"

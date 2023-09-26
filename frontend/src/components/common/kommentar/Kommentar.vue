@@ -9,6 +9,7 @@
           id="kommentar_datum"
           v-model.trim="kommentar.datum"
           maxlength="32"
+          filled
           :disabled="!isEditable"
         >
           <template #label> Datum </template>
@@ -49,6 +50,7 @@
           v-model="kommentar.text"
           label="Anmerkungen"
           auto-grow
+          filled
           rows="10"
           :disabled="!isEditable"
         />
