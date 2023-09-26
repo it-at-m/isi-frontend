@@ -50,12 +50,16 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
       if (this.context === Context.BAUVORHABEN) {
         this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
           this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-          this.kommentare.unshift(this.createNewUnsavedKommentarForBauvorhaben());
+          if (this.isEditable) {
+            this.kommentare.unshift(this.createNewUnsavedKommentarForBauvorhaben());
+          }
         });
       } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
         this.getKommentareForInfrastruktureinrichtung(id, true).then((kommentare) => {
           this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-          this.kommentare.unshift(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
+          if (this.isEditable) {
+            this.kommentare.unshift(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
+          }
         });
       }
     } else {
