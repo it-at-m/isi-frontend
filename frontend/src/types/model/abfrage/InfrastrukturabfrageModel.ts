@@ -12,10 +12,10 @@ class InfrastrukturabfrageModel {
       this.abfrage = new AbfrageModel(infrastrukturabfrage.abfrage);
     }
     this.abfragevarianten = _.toArray(infrastrukturabfrage.abfragevarianten).map(
-      (abfragevariante) => new AbfragevarianteModel(abfragevariante)
+      (abfragevariante) => new AbfragevarianteModel(abfragevariante),
     );
     this.abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrage.abfragevariantenSachbearbeitung).map(
-      (abfragevariante) => new AbfragevarianteModel(abfragevariante)
+      (abfragevariante) => new AbfragevarianteModel(abfragevariante),
     );
   }
 }
