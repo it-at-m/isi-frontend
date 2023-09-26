@@ -50,12 +50,12 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
       if (this.context === Context.BAUVORHABEN) {
         this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
           this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-          this.kommentare.push(this.createNewUnsavedKommentarForBauvorhaben());
+          this.kommentare.unshift(this.createNewUnsavedKommentarForBauvorhaben());
         });
       } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
         this.getKommentareForInfrastruktureinrichtung(id, true).then((kommentare) => {
           this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-          this.kommentare.push(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
+          this.kommentare.unshift(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
         });
       }
     } else {
@@ -91,7 +91,7 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
       this.createKommentar(kommentar, true).then((createdKommentar) => {
         const model = new KommentarModel(createdKommentar);
         this.replaceSavedKommentarInKommentare(model);
-        this.kommentare.push(this.createNewUnsavedKommentar());
+        this.kommentare.unshift(this.createNewUnsavedKommentar());
       });
     } else {
       this.updateKommentar(kommentar, true).then((updatedKommentar) => {
@@ -112,14 +112,14 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
       }
     });
     if (!kommentarReplacedInArray) {
-      this.kommentare.splice(this.kommentare.length - 1, 1, kommentar);
+      this.kommentare.splice(0, 1, kommentar);
     }
   }
 
   private deleteKommentar(kommentar: KommentarModel): void {
     if (_.isNil(kommentar.id)) {
-      this.kommentare[this.kommentare.length - 1].datum = undefined;
-      this.kommentare[this.kommentare.length - 1].text = undefined;
+      this.kommentare[0].datum = undefined;
+      this.kommentare[0].text = undefined;
     } else {
       this.delete(kommentar.id, true).then(() => {
         const removeIndex = this.kommentare.map((kommentarInArray) => kommentarInArray.id).indexOf(kommentar.id);
