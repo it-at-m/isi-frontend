@@ -33,7 +33,7 @@
             id="delete_kommentar"
             icon
             :disabled="!isDeletable || !isEditable"
-            @click="deleteKommentar"
+            @click="deleteDialog = true"
           >
             <v-icon> mdi-delete</v-icon>
           </v-btn>
@@ -56,6 +56,16 @@
         />
       </v-col>
     </v-row>
+    <yes-no-dialog
+      id="kommentar_anmerkungen_yes_no_dialog_delete"
+      v-model="deleteDialog"
+      :dialogtitle="deleteDialogTitle"
+      :dialogtext="deleteDialogText"
+      :yes-text="deleteDialogYesText"
+      :no-text="deleteDialogNoText"
+      @yes="deleteKommentar"
+      @no="cancelDeletion"
+    />
   </v-card>
 </template>
 <script lang="ts">
@@ -63,14 +73,23 @@ import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin
 import { Component, Mixins, Emit, Prop } from "vue-property-decorator";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import _ from "lodash";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
 
-@Component({})
+@Component({
+  components: { YesNoDialog },
+})
 export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
   @Prop()
   private kommentar!: KommentarModel;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
+
+  private deleteDialog = false;
+  private deleteDialogTitle = "Kommentar löschen";
+  private deleteDialogText = "Hiermit wird dar Kommentar unwiderruflich gelöscht.";
+  private deleteDialogYesText = "Löschen";
+  private deleteDialogNoText = "Abbrechen";
 
   get isSaveable(): boolean {
     return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);
@@ -80,6 +99,10 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
     return !_.isNil(this.kommentar.id) || (_.isNil(this.kommentar.id) && this.isSaveable);
   }
 
+  private cancelDeletion(): void {
+    this.deleteDialog = false;
+  }
+
   @Emit()
   private saveKommentar(): KommentarModel {
     return this.kommentar;
@@ -87,6 +110,7 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
 
   @Emit()
   private deleteKommentar(): KommentarModel {
+    this.cancelDeletion();
     return this.kommentar;
   }
 }
