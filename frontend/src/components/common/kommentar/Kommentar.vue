@@ -47,7 +47,7 @@
       >
         <v-textarea
           id="kommentar_anmerkungen"
-          v-model="kommentar.text"
+          v-model.trim="kommentar.text"
           label="Anmerkungen"
           auto-grow
           filled
