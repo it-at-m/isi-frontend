@@ -51,7 +51,7 @@
           label="Anmerkungen"
           auto-grow
           filled
-          rows="10"
+          rows="5"
           :disabled="!isEditable"
         />
       </v-col>
