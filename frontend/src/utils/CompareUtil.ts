@@ -5,7 +5,7 @@ import { createFoerdermixStammDto } from "./Factories";
 
 export function matchFoerdermixStammDaten(
   foerdermixEingabe: FoerdermixModel,
-  foerdermixStammDaten: FoerdermixStammModel[]
+  foerdermixStammDaten: FoerdermixStammModel[],
 ): FoerdermixStammModel {
   const foerdermixStamm: FoerdermixStammModel = createFoerdermixStammDto();
 

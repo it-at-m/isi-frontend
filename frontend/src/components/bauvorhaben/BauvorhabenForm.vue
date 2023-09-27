@@ -250,7 +250,7 @@ export default class BauvorhabenForm extends Mixins(
   FieldValidationRulesMixin,
   SaveLeaveMixin,
   SecurityMixin,
-  BauvorhabenApiRequestMixin
+  BauvorhabenApiRequestMixin,
 ) {
   @VModel({ type: BauvorhabenModel })
   bauvorhaben!: BauvorhabenModel;
