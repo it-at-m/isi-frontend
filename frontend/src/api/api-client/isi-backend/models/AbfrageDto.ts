@@ -88,6 +88,12 @@ export interface AbfrageDto {
     statusAbfrage?: StatusAbfrage;
     /**
      * 
+     * @type {boolean}
+     * @memberof AbfrageDto
+     */
+    schnellesSchliessenAbfrage?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof AbfrageDto
      */
@@ -153,6 +159,7 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
+        'schnellesSchliessenAbfrage': !exists(json, 'schnellesSchliessenAbfrage') ? undefined : json['schnellesSchliessenAbfrage'],
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
         'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
@@ -176,6 +183,7 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
+        'schnellesSchliessenAbfrage': value.schnellesSchliessenAbfrage,
         'bebauungsplannummer': value.bebauungsplannummer,
         'nameAbfrage': value.nameAbfrage,
         'standVorhaben': value.standVorhaben,

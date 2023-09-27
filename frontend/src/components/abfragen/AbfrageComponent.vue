@@ -1,36 +1,64 @@
 <template>
   <div>
-    <v-stepper
-      v-if="!isCancelled()"
-      :value="getStatusIndex()"
-      alt-labels
-      flat
-    >
-      <v-stepper-header>
-        <v-stepper-step
-          complete
-          step=""
-        >
-          {{ statusLabels[0] }}
-        </v-stepper-step>
-        <template v-for="(statusLabel, index) in statusLabels.slice(1)">
-          <v-divider :key="index"></v-divider>
+    <div v-if="!isSchnellesErledigtStepper()">
+      <v-stepper
+        v-if="!isCancelled()"
+        :value="getStatusIndex()"
+        alt-labels
+        flat
+      >
+        <v-stepper-header>
           <v-stepper-step
-            :key="index"
-            :complete="getStatusIndex() > index"
+            complete
             step=""
           >
-            {{ statusLabel }}
+            {{ statusLabels[0] }}
           </v-stepper-step>
-        </template>
-      </v-stepper-header>
-    </v-stepper>
-    <p
-      v-else
-      class="font-weight-bold"
-    >
-      Abfrage wurde storniert.
-    </p>
+          <template v-for="(statusLabel, index) in statusLabels.slice(1)">
+            <v-divider :key="index"></v-divider>
+            <v-stepper-step
+              :key="index"
+              :complete="getStatusIndex() > index"
+              step=""
+            >
+              {{ statusLabel }}
+            </v-stepper-step>
+          </template>
+        </v-stepper-header>
+      </v-stepper>
+      <p
+        v-else
+        class="font-weight-bold"
+      >
+        Abfrage wurde storniert.
+      </p>
+    </div>
+    <div v-else>
+      <v-stepper
+        :value="getShortenedStatusIndex()"
+        alt-labels
+        flat
+      >
+        <v-stepper-header>
+          <v-stepper-step
+            complete
+            step=""
+          >
+            {{ shortenedStatusLabels[0] }}
+          </v-stepper-step>
+          <template v-for="(shortenedStatusLabel, index) in shortenedStatusLabels.slice(1)">
+            <v-divider :key="index"></v-divider>
+            <v-stepper-step
+              :key="index"
+              :complete="getShortenedStatusIndex() > index"
+              step=""
+            >
+              {{ shortenedStatusLabel }}
+            </v-stepper-step>
+          </template>
+        </v-stepper-header>
+      </v-stepper>
+    </div>
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
@@ -201,6 +229,7 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import Verortung, { VerortungContext } from "@/components/common/Verortung.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import _ from "lodash";
 
 @Component({
   computed: {
@@ -242,6 +271,8 @@ export default class AbfrageComponent extends Mixins(
     "erledigt",
   ];
 
+  private shortenedStatusLabels = ["angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "erledigt"];
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
@@ -274,6 +305,29 @@ export default class AbfrageComponent extends Mixins(
         return 5;
       default:
         return 0;
+    }
+  }
+
+  private getShortenedStatusIndex(): number {
+    switch (this.abfrage.statusAbfrage) {
+      case StatusAbfrage.Angelegt:
+        return 0;
+      case StatusAbfrage.Offen:
+        return 1;
+      case StatusAbfrage.InBearbeitungSachbearbeitung:
+        return 2;
+      case StatusAbfrage.Erledigt:
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
+  private isSchnellesErledigtStepper(): boolean {
+    if (!_.isNil(this.abfrage.schnellesSchliessenAbfrage)) {
+      return this.abfrage.schnellesSchliessenAbfrage;
+    } else {
+      return false;
     }
   }
 
