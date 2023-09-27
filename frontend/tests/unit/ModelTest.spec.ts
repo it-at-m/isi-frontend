@@ -31,7 +31,7 @@ describe("ModelTest.spec.ts", () => {
     const abfragevarianteModel = abfrageModel.abfragevarianten?.[0] as AbfragevarianteModel;
     expect(abfragevarianteModel).not.toBeUndefined();
     expect(abfragevarianteModel.planungsrecht).toEqual(
-      AbfragevarianteDtoPlanungsrechtEnum.NachverdBaurechtsausschoepfung
+      AbfragevarianteDtoPlanungsrechtEnum.NachverdBaurechtsausschoepfung,
     );
   });
 });

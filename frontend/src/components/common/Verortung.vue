@@ -156,7 +156,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
               sticky: true,
               direction: "top",
               offset: L.point(0, -2),
-            }
+            },
           );
           layer.on("mouseover", function () {
             layer.openTooltip();
@@ -179,7 +179,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   get flurstuecke(): Array<FlurstueckDto> {
     return this.gemarkungen.flatMap((gemarkung) =>
-      _.sortBy(Array.from(gemarkung.flurstuecke), ["gemarkungNummer", "zaehler", "nenner"])
+      _.sortBy(Array.from(gemarkung.flurstuecke), ["gemarkungNummer", "zaehler", "nenner"]),
     );
   }
 
@@ -191,7 +191,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   @Watch("verortungModel", { deep: true })
   private onVerortungModelChanged(): void {
     const flurstueckeFromVerortungModel = Array.from(
-      _.isNil(this.verortungModel) ? [] : this.verortungModel.gemarkungen
+      _.isNil(this.verortungModel) ? [] : this.verortungModel.gemarkungen,
     ).flatMap((gemarkung) => Array.from(gemarkung.flurstuecke));
     this.selectedFlurstuecke = this.createMapForFlurstuecke(flurstueckeFromVerortungModel);
   }
@@ -288,18 +288,18 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
       const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForMultipolygon(
         unifiedMultipolygon,
-        true
+        true,
       );
       const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
       const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
         unifiedMultipolygon,
-        true
+        true,
       );
       const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
       // Anfügen der Flurstücke an Gemarkung
       this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
         const matchingGemarkung = gemarkungenBackend.find(
-          (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer
+          (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer,
         );
         matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
       });
@@ -315,7 +315,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   private stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
-    stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>
+    stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>,
   ): Array<StadtbezirkDto> {
     return stadtbezirkeGeoDataEai.map((stadtbezirk) => {
       return {
@@ -327,7 +327,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   private gemarkungenGeoDataEaiToGemarkungenBackend(
-    gemarkungenGeoDataEai: Array<FeatureDtoGemarkungDto>
+    gemarkungenGeoDataEai: Array<FeatureDtoGemarkungDto>,
   ): Array<GemarkungDto> {
     return gemarkungenGeoDataEai.map((gemarkung) => {
       return {
@@ -340,7 +340,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   private flurstueckeGeoDataEaiToFlurstueckeBackend(
-    flurstueckGeoDataEai: Array<FeatureDtoFlurstueckDto>
+    flurstueckGeoDataEai: Array<FeatureDtoFlurstueckDto>,
   ): Array<FlurstueckDto> {
     return flurstueckGeoDataEai.map(this.flurstueckGeoDataEaiToFlurstueckBackend);
   }

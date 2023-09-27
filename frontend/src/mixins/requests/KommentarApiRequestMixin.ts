@@ -22,7 +22,7 @@ export default class KommentarApiRequestMixin extends Mixins(ErrorHandler) {
 
   async getKommentareForBauvorhaben(
     bauvorhabenId: string,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<KommentarDto>> {
     const requestObject: GetKommentareForBauvorhabenRequest = {
       bauvorhabenId: bauvorhabenId,
@@ -39,7 +39,7 @@ export default class KommentarApiRequestMixin extends Mixins(ErrorHandler) {
 
   async getKommentareForInfrastruktureinrichtung(
     infrastruktureinrichtungId: string,
-    showInInformationList: boolean
+    showInInformationList: boolean,
   ): Promise<Array<KommentarDto>> {
     const requestObject: GetKommentareForInfrastruktureinrichtungRequest = {
       infrastruktureinrichtungId: infrastruktureinrichtungId,
