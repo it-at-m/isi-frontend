@@ -25,6 +25,8 @@
             return-object
             placeholder="Suchtext mit Adressteilen"
             prepend-inner-icon="mdi-magnify"
+            :rules="[adressSucheValidationRule()]"
+            validate-on-blur
           />
         </v-col>
         <v-col cols="1">
@@ -56,7 +58,6 @@
           v-model="adresse.strasse"
           label="Straße"
           disabled
-          @input="formChanged"
         />
       </v-col>
       <v-col
@@ -69,7 +70,6 @@
           :rules="[fieldValidationRules.hausnummer]"
           label="Hausnummer"
           disabled
-          @input="formChanged"
         />
       </v-col>
       <v-col
@@ -82,7 +82,6 @@
           label="Postleitzahl"
           :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
           disabled
-          @input="formChanged"
         />
       </v-col>
       <v-col
@@ -94,7 +93,6 @@
           v-model="adresse.ort"
           label="Ort"
           disabled
-          @input="formChanged"
         />
       </v-col>
     </v-row>
@@ -107,6 +105,8 @@
           :disabled="!isEditable"
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
+          :rules="[allgmeineOrtsangabeValidationRule()]"
+          validate-on-blur
           @input="formChanged"
         />
       </v-col>
@@ -258,6 +258,14 @@ export default class AdresseComponent extends Mixins(
     this.searchResult = [];
     this.adressSucheItemSelected = false;
     this.formChanged();
+  }
+
+  private adressSucheValidationRule(): boolean | string {
+    return !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Angabe zur Lage leer ist";
+  }
+
+  private allgmeineOrtsangabeValidationRule(): boolean | string {
+    return !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Adresse leer ist";
   }
 
   //
