@@ -26,12 +26,11 @@
           </template>
         </v-stepper-header>
       </v-stepper>
-      <p
-        v-else
-        class="font-weight-bold"
-      >
-        Abfrage wurde storniert.
-      </p>
+      <v-stepper v-else>
+        <v-stepper-header>
+          <v-stepper-step :rules="[() => false]">Abfrage wurde storniert</v-stepper-step>
+        </v-stepper-header>
+      </v-stepper>
     </div>
     <div v-else>
       <v-stepper
@@ -110,25 +109,6 @@
           md="6"
         >
           <v-select
-            id="abfrage_status_dropdown"
-            v-model="abfrage.statusAbfrage"
-            :disabled="!isEditableByAbfrageerstellung()"
-            :items="statusAbfrageList"
-            item-value="key"
-            item-text="value"
-            readonly
-            :rules="[fieldValidationRules.pflichtfeld]"
-            :append-icon="null"
-            @change="formChanged"
-          >
-            <template #label> Status der Abfrage </template>
-          </v-select>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-select
             id="abfrage_standvorhaben_dropdown"
             v-model="abfrage.standVorhaben"
             :disabled="!isEditableByAbfrageerstellung()"
@@ -177,6 +157,12 @@
           md="6"
         >
           <slot name="aktenzeichenProLBK" />
+        </v-col>
+        <!-- Platzhalter fuer Darstellung -->
+        <v-col
+          cols="12"
+          md="6"
+        >
         </v-col>
         <v-col cols="12">
           <v-textarea
