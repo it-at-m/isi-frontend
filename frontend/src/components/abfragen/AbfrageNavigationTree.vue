@@ -183,12 +183,12 @@ const openItemIds = ref<string[]>([]);
 watch(
   () => props.abfrage,
   () => (items.value = [buildTree(props.abfrage)]),
-  { deep: true },
+  { deep: true }
 );
 
 watch(
   () => props.relevanteAbfragevarianteId,
-  () => (items.value = [buildTree(props.abfrage)]),
+  () => (items.value = [buildTree(props.abfrage)])
 );
 
 function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
@@ -206,7 +206,7 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
 
   if (abfrage.abfragevarianten) {
     const abfragevarianten = abfrage.abfragevarianten.map((value, index) =>
-      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE),
+      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE)
     );
     item.children.push(...abfragevarianten);
   }
@@ -217,8 +217,8 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
         value,
         item,
         index + (abfrage.abfragevarianten?.length ?? 0),
-        AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
-      ),
+        AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
+      )
     );
     item.children.push(...abfragevarianten);
   }
@@ -254,7 +254,7 @@ function buildSubTreeAbfragevariante(
   abfragevariante: AbfragevarianteDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante,
+  context: AnzeigeContextAbfragevariante
 ): AbfrageTreeItem {
   const editable = isEditableWithAnzeigeContextAbfragevariante(context);
 
@@ -309,7 +309,7 @@ function buildSubTreeAbfragevariante(
       } else {
         // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
         item.children = firstBauabschnitt.baugebiete.map((value, index) =>
-          buildSubTreeBaugebiet(value, item, index, context),
+          buildSubTreeBaugebiet(value, item, index, context)
         );
         if (editable) {
           item.actions.push({
@@ -325,7 +325,7 @@ function buildSubTreeAbfragevariante(
     } else {
       // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
       item.children = abfragevariante.bauabschnitte.map((value, index) =>
-        buildSubTreeBauabschnitt(value, item, index, context),
+        buildSubTreeBauabschnitt(value, item, index, context)
       );
       if (editable) {
         item.actions.push({
@@ -379,7 +379,7 @@ function buildSubTreeBauabschnitt(
   bauabschnitt: BauabschnittDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante,
+  context: AnzeigeContextAbfragevariante
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -414,7 +414,7 @@ function buildSubTreeBaugebiet(
   baugebiet: BaugebietDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante,
+  context: AnzeigeContextAbfragevariante
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -458,7 +458,7 @@ function buildSubTreeBaurate(
   baurate: BaurateDto,
   parent: AbfrageTreeItem,
   index: number,
-  context: AnzeigeContextAbfragevariante,
+  context: AnzeigeContextAbfragevariante
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -481,11 +481,11 @@ function buildSubTreeBaurate(
 
 function getAbfragevarianteName(
   abfragevariante: AbfragevarianteDto,
-  conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
+  conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante
 ): string {
   const abfragevarianteModel = new AbfragevarianteModel(abfragevariante);
   return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
-    conextAnzeigeAbfragevariante,
+    conextAnzeigeAbfragevariante
   )}\xa0-\xa0${_.isNil(abfragevariante.abfragevariantenName) ? DEFAULT_NAME : abfragevariante.abfragevariantenName}`;
 }
 

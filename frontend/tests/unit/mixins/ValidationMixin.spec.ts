@@ -43,7 +43,7 @@ describe("ValidatorMixin Test", () => {
     expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100");
 
     let anteilPreisgedaempfterMietwohnungsbau = baurate.foerdermix.foerderarten?.find(
-      (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau",
+      (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau"
     );
 
     if (anteilPreisgedaempfterMietwohnungsbau !== undefined) {

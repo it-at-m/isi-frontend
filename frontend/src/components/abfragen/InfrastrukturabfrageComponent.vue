@@ -100,7 +100,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 export default class InfrastrukturabfrageComponent extends Mixins(
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
 

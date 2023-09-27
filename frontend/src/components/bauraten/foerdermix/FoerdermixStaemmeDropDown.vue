@@ -32,7 +32,7 @@ type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 export default class FoerdermixStaemmeDropDown extends Mixins(
   FoerdermixApiRequestMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 

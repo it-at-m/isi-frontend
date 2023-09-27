@@ -13,7 +13,7 @@ export default class StatusUebergangApiRequestMixin extends Mixins(ErrorHandler)
   async statusUebergangRequest(
     transition: TransitionDto,
     abfrageId: string | undefined,
-    anmerkung: string | undefined,
+    anmerkung: string | undefined
   ): Promise<Response> {
     const fetchUrl =
       import.meta.env.VITE_VUE_APP_API_URL +

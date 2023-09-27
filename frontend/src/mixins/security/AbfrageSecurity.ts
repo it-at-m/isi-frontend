@@ -6,7 +6,7 @@ import _ from "lodash";
 import store from "@/store/index";
 
 export function isEditableWithAnzeigeContextAbfragevariante(
-  anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
+  anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined
 ): boolean {
   let isEditable = false;
   if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {

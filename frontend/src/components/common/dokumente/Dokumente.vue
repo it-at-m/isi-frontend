@@ -180,22 +180,22 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
       maxFileSizeExceededMessagePart += this.validateAndCreateMaxFileSizeExceededMessagePart(
         fileInformationDto,
         newFile,
-        maxFileSizeExceededMessagePart,
+        maxFileSizeExceededMessagePart
       );
       fileAlreadyExistsMessagePart += this.validateAndCreateFileAlreadyExistsMessagePart(
         this.dokumente,
         newFile,
-        fileAlreadyExistsMessagePart,
+        fileAlreadyExistsMessagePart
       );
     }
     warningMessage += this.formatValidationWarningMessagePartWith(maxNumberOfFilesMessagePart, warningMessage);
     warningMessage += this.formatValidationWarningMessagePartWith(
       this.formatFileAlreadyExistsMessagePartMessagePart(fileAlreadyExistsMessagePart),
-      warningMessage,
+      warningMessage
     );
     warningMessage += this.formatValidationWarningMessagePartWith(
       this.formatMaxFileExceededMessagePart(fileInformationDto, maxFileSizeExceededMessagePart),
-      warningMessage,
+      warningMessage
     );
     if (!_.isEmpty(warningMessage)) {
       this.showWarningInInformationList(warningMessage);
@@ -213,7 +213,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   private validateAndCreateMaxFileSizeExceededMessagePart(
     fileInformationDto: FileInformationDto,
     newFile: File,
-    maxFileSizeExceededMessage: string,
+    maxFileSizeExceededMessage: string
   ): string {
     let messagePart = "";
     if (maxFileSizeExceeded(newFile, fileInformationDto)) {
@@ -228,7 +228,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   private validateAndCreateFileAlreadyExistsMessagePart(
     dokumente: DokumentDto[],
     newFile: File,
-    fileAlreadyExistsMessage: string,
+    fileAlreadyExistsMessage: string
   ): string {
     let messagePart = "";
     if (fileAlreadyExists(dokumente, newFile)) {
@@ -246,7 +246,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
 
   private formatMaxFileExceededMessagePart(
     fileInformationDto: FileInformationDto,
-    maxFileExceededMessagePart: string,
+    maxFileExceededMessagePart: string
   ): string {
     let messagePart = "";
     if (!_.isEmpty(maxFileExceededMessagePart)) {
@@ -307,7 +307,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   }
 
   private acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(
-    mimeTypeInformation: MimeTypeInformationDto,
+    mimeTypeInformation: MimeTypeInformationDto
   ): string {
     let type: string;
     if (_.isEmpty(mimeTypeInformation.acronym)) {

@@ -79,7 +79,7 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       state: SearchState,
-      selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto,
+      selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
     },
@@ -94,7 +94,7 @@ export default {
     },
     requestSearchQueryAndSorting(
       context: ActionContext<SearchState, RootState>,
-      searchQueryAndSortingDto: SearchQueryAndSortingModel,
+      searchQueryAndSortingDto: SearchQueryAndSortingModel
     ): void {
       context.commit("requestSearchQueryAndSorting", searchQueryAndSortingDto);
     },
@@ -106,7 +106,7 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      infrastruktureinrichtung: InfrastruktureinrichtungDto,
+      infrastruktureinrichtung: InfrastruktureinrichtungDto
     ): void {
       context.commit("selectedInfrastruktureinrichtung", infrastruktureinrichtung);
     },

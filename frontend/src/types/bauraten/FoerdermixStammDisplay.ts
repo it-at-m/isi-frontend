@@ -33,7 +33,7 @@ export default class FoerdermixStammDisplay {
     anteilKonzeptionellerMietwohnungsbau: string,
     anteilBaugemeinschaften: string,
     anteilEinUndZweifamilienhaeuser: string,
-    category: string,
+    category: string
   ) {
     this.id = id;
     this.name = name;
@@ -80,40 +80,40 @@ export default class FoerdermixStammDisplay {
         ? "0"
         : foerdermixStammDto.foerdermix.anteilEinUndZweifamilienhaeuser.toFixed(2),
 
-      _.isNil(foerdermixStammDto.bezeichnungJahr) ? "" : foerdermixStammDto.bezeichnungJahr,
+      _.isNil(foerdermixStammDto.bezeichnungJahr) ? "" : foerdermixStammDto.bezeichnungJahr
     );
   }
 
   static mapDisplayToFoerderMix(display: FoerdermixStammDisplay): FoerdermixModel {
     const foerdermix = new FoerdermixModel({});
     foerdermix.anteilBaugemeinschaften = convertDecimalForBackend(
-      _.isNil(display.anteilBaugemeinschaften) ? "0" : display.anteilBaugemeinschaften,
+      _.isNil(display.anteilBaugemeinschaften) ? "0" : display.anteilBaugemeinschaften
     );
 
     foerdermix.anteilEinUndZweifamilienhaeuser = convertDecimalForBackend(
-      _.isNil(display.anteilEinUndZweifamilienhaeuser) ? "0" : display.anteilEinUndZweifamilienhaeuser,
+      _.isNil(display.anteilEinUndZweifamilienhaeuser) ? "0" : display.anteilEinUndZweifamilienhaeuser
     );
 
     foerdermix.anteilFreifinanzierterGeschosswohnungsbau = convertDecimalForBackend(
       _.isNil(display.anteilFreifinanzierterGeschosswohnungsbau)
         ? "0"
-        : display.anteilFreifinanzierterGeschosswohnungsbau,
+        : display.anteilFreifinanzierterGeschosswohnungsbau
     );
 
     foerdermix.anteilGefoerderterMietwohnungsbau = convertDecimalForBackend(
-      _.isNil(display.anteilGefoerderterMietwohnungsbau) ? "0" : display.anteilGefoerderterMietwohnungsbau,
+      _.isNil(display.anteilGefoerderterMietwohnungsbau) ? "0" : display.anteilGefoerderterMietwohnungsbau
     );
 
     foerdermix.anteilKonzeptionellerMietwohnungsbau = convertDecimalForBackend(
-      _.isNil(display.anteilKonzeptionellerMietwohnungsbau) ? "0" : display.anteilKonzeptionellerMietwohnungsbau,
+      _.isNil(display.anteilKonzeptionellerMietwohnungsbau) ? "0" : display.anteilKonzeptionellerMietwohnungsbau
     );
 
     foerdermix.anteilMuenchenModell = convertDecimalForBackend(
-      _.isNil(display.anteilMuenchenModell) ? "0" : display.anteilMuenchenModell,
+      _.isNil(display.anteilMuenchenModell) ? "0" : display.anteilMuenchenModell
     );
 
     foerdermix.anteilPreisgedaempfterMietwohnungsbau = convertDecimalForBackend(
-      _.isNil(display.anteilPreisgedaempfterMietwohnungsbau) ? "0" : display.anteilPreisgedaempfterMietwohnungsbau,
+      _.isNil(display.anteilPreisgedaempfterMietwohnungsbau) ? "0" : display.anteilPreisgedaempfterMietwohnungsbau
     );
 
     return foerdermix;

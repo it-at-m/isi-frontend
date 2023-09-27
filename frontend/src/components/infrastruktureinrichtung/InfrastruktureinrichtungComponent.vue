@@ -172,7 +172,7 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   SaveLeaveMixin,
   FieldPrefixesSuffixes,
   SearchApiRequestMixin,
-  SecurityMixin,
+  SecurityMixin
 ) {
   @VModel({ type: InfrastruktureinrichtungModel })
   infrastruktureinrichtung!: InfrastruktureinrichtungModel;
@@ -228,7 +228,7 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
     } as SearchQueryAndSortingDto;
     this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
       this.bauvorhaben = searchResults.searchResults?.map(
-        (searchResults) => searchResults as BauvorhabenSearchResultDto,
+        (searchResults) => searchResults as BauvorhabenSearchResultDto
       ) as Array<BauvorhabenSearchResultDto>;
     });
   }

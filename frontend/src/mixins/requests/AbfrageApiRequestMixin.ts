@@ -27,7 +27,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
 
   createInfrastrukturabfrage(
     dto: InfrastrukturabfrageAngelegtDto,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: CreateInfrastrukturabfrageRequest = {
       infrastrukturabfrageAngelegtDto: dto,
@@ -46,7 +46,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   patchAbfrageAngelegt(
     dto: InfrastrukturabfrageAngelegtDto,
     id: string,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageAngelegtRequest = {
       infrastrukturabfrageAngelegtDto: dto,
@@ -66,7 +66,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   patchAbfrageInBearbeitungSachbearbeitung(
     dto: InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
     id: string,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageInBearbeitungSachbearbeitungRequest = {
       infrastrukturabfrageInBearbeitungSachbearbeitungDto: dto,
@@ -86,7 +86,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
   patchAbfrageInBearbeitungFachreferate(
     dto: InfrastrukturabfrageInBearbeitungFachreferateDto,
     id: string,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<InfrastrukturabfrageDto> {
     const requestObject: PatchAbfrageInBearbeitungFachreferateRequest = {
       infrastrukturabfrageInBearbeitungFachreferateDto: dto,

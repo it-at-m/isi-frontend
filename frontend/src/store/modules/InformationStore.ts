@@ -39,7 +39,7 @@ export default {
     },
     overwriteInformationList(
       context: ActionContext<InformationState, RootState>,
-      value: Array<InformationResponseDto>,
+      value: Array<InformationResponseDto>
     ): void {
       context.commit("overwriteInformationList", value);
     },

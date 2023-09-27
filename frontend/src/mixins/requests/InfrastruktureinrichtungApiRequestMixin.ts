@@ -19,13 +19,13 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
   constructor() {
     super();
     this.infrastruktureinrichtungApi = new InfrastruktureinrichtungApi(
-      RequestUtils.getBasicFetchConfigurationForBackend(),
+      RequestUtils.getBasicFetchConfigurationForBackend()
     );
   }
 
   getInfrastruktureinrichtungById(
     id: string,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<UpdateInfrastruktureinrichtungRequest> {
     const requestObject: GetInfrastrukturabfrageByIdRequest = {
       id: id,
@@ -42,7 +42,7 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
 
   createInfrastruktureinrichtung(
     dto: InfrastruktureinrichtungDto,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: CreateInfrastruktureinrichtungRequest = {
       updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,
@@ -60,7 +60,7 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
 
   updateInfrastruktureinrichtung(
     dto: InfrastruktureinrichtungDto,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: UpdateInfrastruktureinrichtungOperationRequest = {
       updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,

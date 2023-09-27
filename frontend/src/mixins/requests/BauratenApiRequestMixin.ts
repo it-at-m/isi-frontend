@@ -17,7 +17,7 @@ export default class BauratenApiRequestMixin extends Mixins(ErrorHandler) {
     realisierungsbeginn: number,
     wohneinheiten: number | undefined,
     geschossflaecheWohnen: number | undefined,
-    showInInformationList: boolean,
+    showInInformationList: boolean
   ): Promise<Array<BaurateDto>> {
     const requestParameters = {
       realisierungsbeginn: realisierungsbeginn,

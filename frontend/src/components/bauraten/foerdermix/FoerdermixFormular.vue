@@ -64,7 +64,7 @@ export default class FoerdermixFormular extends Mixins(
   FieldPrefixesSuffixes,
   FormattingMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 

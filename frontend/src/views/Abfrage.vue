@@ -351,7 +351,7 @@ export default class Abfrage extends Mixins(
   StatusUebergangApiRequestMixin,
   ValidatorMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
+  AbfrageSecurityMixin
 ) {
   private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
 
@@ -538,7 +538,7 @@ export default class Abfrage extends Mixins(
         await this.patchAbfrageAngelegt(
           mapToInfrastrukturabfrageAngelegt(this.abfrage),
           this.abfrage.id as string,
-          true,
+          true
         ).then((dto) => {
           this.handleSuccess(dto, showToast);
         });
@@ -546,7 +546,7 @@ export default class Abfrage extends Mixins(
         await this.patchAbfrageInBearbeitungSachbearbeitung(
           mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrage),
           this.abfrage.id as string,
-          true,
+          true
         ).then((dto) => {
           this.handleSuccess(dto, showToast);
         });
@@ -554,7 +554,7 @@ export default class Abfrage extends Mixins(
         await this.patchAbfrageInBearbeitungFachreferate(
           mapToInfrastrukturabfrageInBearbeitungFachreferateDto(this.abfrage),
           this.abfrage.id as string,
-          true,
+          true
         ).then((dto) => {
           this.handleSuccess(dto);
         });
@@ -625,7 +625,7 @@ export default class Abfrage extends Mixins(
             `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${
               this.abfrage.displayName
             } ist nun ${relevanteId ? "relevant" : "nicht mehr relevant"}.`,
-            Levels.SUCCESS,
+            Levels.SUCCESS
           );
         } else {
           this.relevanteAbfragevarianteToBeSet = abfragevariante;
@@ -722,7 +722,7 @@ export default class Abfrage extends Mixins(
       abfragevariante,
       AbfrageFormType.ABFRAGEVARIANTE,
       parent,
-      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE,
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
     );
   }
 
@@ -735,7 +735,7 @@ export default class Abfrage extends Mixins(
       abfragevariante,
       AbfrageFormType.ABFRAGEVARIANTE,
       parent,
-      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
+      AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG
     );
   }
 
@@ -891,7 +891,7 @@ export default class Abfrage extends Mixins(
         abfragevariante.realisierungVon!,
         abfragevariante.gesamtanzahlWe,
         abfragevariante.geschossflaecheWohnen,
-        true,
+        true
       ).then((bauraten: Array<BaurateDto>) => {
         const technicalBaugebiet = this.getTechnicalBaugebiet(abfragevariante);
         if (abfragevariante.bauabschnitte && !_.isNil(technicalBaugebiet)) {
@@ -911,7 +911,7 @@ export default class Abfrage extends Mixins(
         baugebiet.realisierungVon,
         baugebiet.gesamtanzahlWe,
         baugebiet.geschossflaecheWohnen,
-        true,
+        true
       ).then((bauraten: Array<BaurateDto>) => {
         baugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
         this.formChanged();
@@ -994,7 +994,7 @@ export default class Abfrage extends Mixins(
     entity: AbfrageDtoWithForm,
     type: AbfrageFormType,
     parent: AbfrageTreeItem,
-    context: AnzeigeContextAbfragevariante,
+    context: AnzeigeContextAbfragevariante
   ): void {
     // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
     this.selectEntity(entity, type, generateTreeItemId(parent.id, parent.children.length), context);
@@ -1004,7 +1004,7 @@ export default class Abfrage extends Mixins(
     entity: AbfrageDtoWithForm,
     type: AbfrageFormType,
     itemId: string,
-    context: AnzeigeContextAbfragevariante,
+    context: AnzeigeContextAbfragevariante
   ): void {
     this.anzeigeContextAbfragevariante = context;
     this.selected = entity;

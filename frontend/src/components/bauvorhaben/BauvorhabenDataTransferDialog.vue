@@ -107,17 +107,17 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
       " - Status: " +
       _.defaultTo(
         this.getLookupValue(searchResult.statusAbfrage, this.statusAbfrageList),
-        "Kein Abfragestatus vorhanden",
+        "Kein Abfragestatus vorhanden"
       ) +
       " - Stand: " +
       _.defaultTo(
         this.getLookupValue(searchResult.standVorhaben, this.standVorhabenList),
-        "Kein Vorhabensstand vorhanden",
+        "Kein Vorhabensstand vorhanden"
       ) +
       " - Verfahrensgrundsätze Jahr: " +
       _.defaultTo(
         this.getLookupValue(searchResult.sobonJahr, this.sobonVerfahrensgrundsaetzeJahrList),
-        "Kein Verfahrensgrundsätze Jahr vorhanden",
+        "Kein Verfahrensgrundsätze Jahr vorhanden"
       )
     );
   }

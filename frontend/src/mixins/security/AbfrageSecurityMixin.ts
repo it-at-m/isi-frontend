@@ -8,7 +8,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 @Component
 export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
   public isEditableWithAnzeigeContextAbfragevariante(
-    anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
+    anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined
   ): boolean {
     let isEditable = false;
     if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
