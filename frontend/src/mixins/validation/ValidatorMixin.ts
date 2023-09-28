@@ -15,6 +15,7 @@ import {
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
   InfrastruktureinrichtungDto,
+  InfrastruktureinrichtungDtoStatusEnum,
   KindergartenDto,
   KinderkrippeDto,
   MittelschuleDto,
@@ -345,7 +346,10 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(infrastruktureinrichtung.status)) {
       return "Bitte den Status der Infrastruktureinrichtung angeben";
     }
-    if (_.isNil(infrastruktureinrichtung.fertigstellungsjahr)) {
+    if (
+      _.isNil(infrastruktureinrichtung.fertigstellungsjahr) &&
+      infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand
+    ) {
       return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
     }
     if (
