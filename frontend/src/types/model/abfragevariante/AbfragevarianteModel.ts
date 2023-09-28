@@ -1,11 +1,16 @@
 import { AbfragevarianteDto } from "@/api/api-client/isi-backend";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
+import _ from "lodash";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AbfragevarianteModel extends AbfragevarianteDto {}
 class AbfragevarianteModel {
   constructor(abfragevariante: AbfragevarianteDto) {
     Object.assign(this, abfragevariante, {});
+    this.bauabschnitte = _.toArray(abfragevariante.bauabschnitte).map(
+      (bauabschnitt) => new BauabschnittModel(bauabschnitt),
+    );
   }
 
   public getAbfragevariantenNrForContextAnzeigeAbfragevariante(
