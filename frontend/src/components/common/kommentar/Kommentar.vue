@@ -21,22 +21,34 @@
       >
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            id="save_kommentar"
-            icon
-            :disabled="!isSaveable || !isEditable"
-            @click="saveKommentar"
-          >
-            <v-icon> mdi-content-save</v-icon>
-          </v-btn>
-          <v-btn
-            id="delete_kommentar"
-            icon
-            :disabled="!isDeletable || !isEditable"
-            @click="deleteDialog = true"
-          >
-            <v-icon> mdi-delete</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+              <v-btn
+                id="save_kommentar"
+                icon
+                :disabled="!isSaveable || !isEditable"
+                v-on="on"
+                @click="saveKommentar"
+              >
+                <v-icon> mdi-content-save</v-icon>
+              </v-btn>
+            </template>
+            <span>Kommentar speichern</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+              <v-btn
+                id="delete_kommentar"
+                icon
+                :disabled="!isDeletable || !isEditable"
+                v-on="on"
+                @click="deleteDialog = true"
+              >
+                <v-icon> mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <span>Kommentar löschen</span>
+          </v-tooltip>
         </v-card-actions>
       </v-col>
     </v-row>
