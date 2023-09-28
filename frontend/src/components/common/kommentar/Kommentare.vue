@@ -43,7 +43,7 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private kommentare: Array<KommentarModel> = [];
 
-  private getKommentare() {
+  private getKommentare(): void {
     const id = this.$route.params.id;
     if (!this.isKommentarListOpen && !_.isNil(id)) {
       this.isKommentarListOpen = true;
@@ -105,7 +105,7 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
     }
   }
 
-  private replaceSavedKommentarInKommentare(kommentar: KommentarModel) {
+  private replaceSavedKommentarInKommentare(kommentar: KommentarModel): void {
     let kommentarReplacedInArray = false;
     this.kommentare = this.kommentare.map((kommentarInArray) => {
       if (kommentarInArray.id === kommentar.id) {
