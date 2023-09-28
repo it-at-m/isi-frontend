@@ -85,7 +85,7 @@ export interface BauvorhabenDto {
      * @type {number}
      * @memberof BauvorhabenDto
      */
-    grundstuecksgroesse: number;
+    grundstuecksgroesse?: number;
     /**
      * 
      * @type {string}
@@ -258,7 +258,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'nameVorhaben': json['nameVorhaben'],
-        'grundstuecksgroesse': json['grundstuecksgroesse'],
+        'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVorhaben': json['standVorhaben'],
         'bauvorhabenNummer': json['bauvorhabenNummer'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
