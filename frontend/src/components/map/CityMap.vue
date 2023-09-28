@@ -19,7 +19,7 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="getGeoUrl('WMS_Stadtkarte')"
+        :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
         layers="Hintergrund"
         format="image/png"
         :visible="true"

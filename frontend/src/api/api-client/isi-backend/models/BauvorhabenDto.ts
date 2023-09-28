@@ -82,12 +82,6 @@ export interface BauvorhabenDto {
     nameVorhaben: string;
     /**
      * 
-     * @type {string}
-     * @memberof BauvorhabenDto
-     */
-    eigentuemer: string;
-    /**
-     * 
      * @type {number}
      * @memberof BauvorhabenDto
      */
@@ -264,7 +258,6 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'nameVorhaben': json['nameVorhaben'],
-        'eigentuemer': json['eigentuemer'],
         'grundstuecksgroesse': json['grundstuecksgroesse'],
         'standVorhaben': json['standVorhaben'],
         'bauvorhabenNummer': json['bauvorhabenNummer'],
@@ -297,7 +290,6 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'nameVorhaben': value.nameVorhaben,
-        'eigentuemer': value.eigentuemer,
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVorhaben': value.standVorhaben,
         'bauvorhabenNummer': value.bauvorhabenNummer,

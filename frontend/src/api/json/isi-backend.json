@@ -1675,7 +1675,6 @@
         "required": [
           "artFnp",
           "bauvorhabenNummer",
-          "eigentuemer",
           "grundstuecksgroesse",
           "nameVorhaben",
           "planungsrecht",
@@ -1689,7 +1688,6 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "nameVorhaben": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "eigentuemer": { "maxLength": 255, "minLength": 0, "type": "string" },
           "grundstuecksgroesse": { "type": "number" },
           "standVorhaben": {
             "type": "string",
