@@ -19,8 +19,7 @@ export default class SaveLeaveMixin extends Vue {
   name = "saveLeaveMixin";
 
   saveLeaveDialogTitle = "Hinweis";
-  saveLeaveDialogText =
-    "Es sind ungespeicherte Änderungen vorhanden, die beim Verlassen der Seite verloren gehen werden.";
+  saveLeaveDialogText = "Es wurden Änderungen vorgenommen, die beim Verlassen der Seite verloren gehen.";
   saveLeaveNoText = "Abbrechen";
   saveLeaveYesText = "Verlassen";
   saveLeaveDialog = false;
