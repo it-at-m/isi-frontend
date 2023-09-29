@@ -7,6 +7,10 @@ import moment from "moment";
 import "vue-toastification/dist/index.css";
 import { convertDateForBackend, convertDateForFrontend } from "@/utils/Formatter";
 import VCalendar from "v-calendar";
+import { Icon } from "leaflet";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 
 Vue.config.productionTip = false;
 
@@ -36,3 +40,7 @@ Vue.prototype.$convertDateForBackend = convertDateForBackend;
  * @param string Datum das zu formatieren ist
  */
 Vue.prototype.$convertDateForFrontend = convertDateForFrontend;
+
+// Workaround für einen Bug bei vue2-leaflet, siehe https://vue2-leaflet.netlify.app/quickstart/#marker-icons-are-missing.
+delete (Icon.Default.prototype as Icon.Default & { _getIconUrl?: string })._getIconUrl;
+Icon.Default.mergeOptions({ iconUrl, iconRetinaUrl, shadowUrl });
