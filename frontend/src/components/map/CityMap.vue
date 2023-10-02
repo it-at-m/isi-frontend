@@ -9,42 +9,25 @@
       ref="map"
       :options="MAP_OPTIONS"
       :center="CITY_CENTER"
+      :max-zoom="MAX_ZOOM"
       :zoom="initialZoom"
       style="z-index: 1"
       @click="onClickInMap($event)"
     >
       <!-- Fügt ein Steuerungselement hinzu, mit welchem sich ein Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt. -->
-      <l-control-layers id="city-map-layer-control" />
+      <l-control-layers
+        id="city-map-layer-control"
+        ref="layerControl"
+        @ready="onLayerControlReady"
+      />
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
         :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
         layers="Hintergrund"
-        format="image/png"
         :visible="true"
-      />
-      <!-- Die Overlay-Layer der Karte. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen. -->
-      <!-- Damit ein Overlay-Layer nicht die darunerliegenden Layer verdeckt, ist es wichtig, :transparent="true" zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt. -->
-      <l-wms-tile-layer
-        id="karte_gemarkungen"
-        name="Gemarkungen"
-        :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
-        layers="Gemarkungen"
-        format="image/png"
-        layer-type="overlay"
-        :visible="false"
-        :transparent="true"
-      />
-      <l-wms-tile-layer
-        id="karte_flurstuecke"
-        name="Flurstücke"
-        :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
-        layers="Flurstücke"
-        format="image/png"
-        layer-type="overlay"
-        :visible="false"
-        :transparent="true"
+        :options="LAYER_OPTIONS"
       />
       <l-control
         v-if="editable"
@@ -109,9 +92,11 @@ import L, {
   LatLngBoundsLiteral,
   LatLngLiteral,
   LayerGroup,
+  WMSOptions,
   LeafletMouseEvent,
   MapOptions,
 } from "leaflet";
+import "leaflet.nontiledlayer";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
 import { Feature } from "geojson";
@@ -132,8 +117,10 @@ type Ref = Vue & { $el: HTMLElement };
   },
 })
 export default class CityMap extends Vue {
+  private readonly MAX_ZOOM = 20;
   private readonly CITY_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
   private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
+  private readonly LAYER_OPTIONS: WMSOptions = { format: "image/png", maxZoom: this.MAX_ZOOM };
 
   @Prop({ default: "100%" })
   private readonly height!: number | string;
@@ -181,6 +168,13 @@ export default class CityMap extends Vue {
   private map!: L.Map;
   private expanded = false;
 
+  /** Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers. */
+  private overlays = new Map([
+    ["Gemarkungen", "Gemarkungen"],
+    ["Flurstücke", "Flurstücke,Flst.Nr."],
+    ["Straßennamen", "Straßennamen"],
+  ]);
+
   created(): void {
     /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
        Ändert das Elternelement im Nachhinein den Wert vom "zoom"-Prop, soll dies die Karte nicht beeinflussen. */
@@ -211,6 +205,26 @@ export default class CityMap extends Vue {
 
   private onClickInMap(event: LeafletMouseEvent): void {
     this.clickInMap(event);
+  }
+
+  /**
+   * Fügt die Overlay-Layer hinzu. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen.
+   * Damit ein Overlay-Layer nicht die darunerliegenden Layer verdeckt, ist es wichtig, `transparent: true` zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt.
+   *
+   * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abschnittene" Segment zu vermeiden.
+   * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
+   */
+  private onLayerControlReady(): void {
+    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
+
+    for (const overlay of this.overlays) {
+      const layer = (L as any).nonTiledLayer.wms(this.getGeoUrl("WMS_Stadtgrundkarte"), {
+        layers: overlay[1],
+        transparent: true,
+        ...this.LAYER_OPTIONS,
+      });
+      layerControl.addOverlay(layer, overlay[0]);
+    }
   }
 
   /**
