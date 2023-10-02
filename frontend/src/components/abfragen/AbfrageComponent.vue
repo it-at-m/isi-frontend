@@ -1,63 +1,7 @@
 <template>
   <div>
-    <div v-if="!isSchnellesErledigtStepper()">
-      <v-stepper
-        v-if="!isCancelled()"
-        :value="getStatusIndex()"
-        alt-labels
-        flat
-      >
-        <v-stepper-header>
-          <v-stepper-step
-            complete
-            step=""
-          >
-            {{ statusLabels[0] }}
-          </v-stepper-step>
-          <template v-for="(statusLabel, index) in statusLabels.slice(1)">
-            <v-divider :key="index"></v-divider>
-            <v-stepper-step
-              :key="index"
-              :complete="getStatusIndex() > index"
-              step=""
-            >
-              {{ statusLabel }}
-            </v-stepper-step>
-          </template>
-        </v-stepper-header>
-      </v-stepper>
-      <v-stepper v-else>
-        <v-stepper-header>
-          <v-stepper-step :rules="[() => false]">Abfrage wurde storniert</v-stepper-step>
-        </v-stepper-header>
-      </v-stepper>
-    </div>
-    <div v-else>
-      <v-stepper
-        :value="getShortenedStatusIndex()"
-        alt-labels
-        flat
-      >
-        <v-stepper-header>
-          <v-stepper-step
-            complete
-            step=""
-          >
-            {{ shortenedStatusLabels[0] }}
-          </v-stepper-step>
-          <template v-for="(shortenedStatusLabel, index) in shortenedStatusLabels.slice(1)">
-            <v-divider :key="index"></v-divider>
-            <v-stepper-step
-              :key="index"
-              :complete="getShortenedStatusIndex() > index"
-              step=""
-            >
-              {{ shortenedStatusLabel }}
-            </v-stepper-step>
-          </template>
-        </v-stepper-header>
-      </v-stepper>
-    </div>
+    <statusleiste-component :abfrage="abfrage" />
+
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
@@ -195,28 +139,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
 import {
   BauvorhabenSearchResultDto,
   LookupEntryDto,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
-  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import DatePicker from "@/components/common/DatePicker.vue";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import Verortung, { VerortungContext } from "@/components/common/Verortung.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
-import _ from "lodash";
-
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import { Component, Mixins, VModel } from "vue-property-decorator";
+import StatusleisteComponent from "./StatusleisteComponent.vue";
 @Component({
   computed: {
     verortungContext() {
@@ -229,6 +171,7 @@ import _ from "lodash";
     Dokumente,
     FieldGroupCard,
     AdresseComponent,
+    StatusleisteComponent,
   },
 })
 export default class AbfrageComponent extends Mixins(
@@ -248,17 +191,6 @@ export default class AbfrageComponent extends Mixins(
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
-  private statusLabels = [
-    "angelegt",
-    "Übermittelt zur Bearbeitung",
-    "Start Bearbeitung",
-    "Einpflegen Bedarfsmeldung",
-    "Einplanung Bedarfe",
-    "erledigt",
-  ];
-
-  private shortenedStatusLabels = ["angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "erledigt"];
-
   mounted(): void {
     this.fetchBauvorhaben();
   }
@@ -269,52 +201,6 @@ export default class AbfrageComponent extends Mixins(
 
   get statusAbfrageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/statusAbfrage"];
-  }
-
-  private isCancelled(): boolean {
-    return this.abfrage.statusAbfrage === StatusAbfrage.Abbruch;
-  }
-
-  private getStatusIndex(): number {
-    switch (this.abfrage.statusAbfrage) {
-      case StatusAbfrage.Angelegt:
-        return 0;
-      case StatusAbfrage.Offen:
-        return 1;
-      case StatusAbfrage.InBearbeitungSachbearbeitung:
-        return 2;
-      case StatusAbfrage.InBearbeitungFachreferate:
-        return 3;
-      case StatusAbfrage.BedarfsmeldungErfolgt:
-        return 4;
-      case StatusAbfrage.Erledigt:
-        return 5;
-      default:
-        return 0;
-    }
-  }
-
-  private getShortenedStatusIndex(): number {
-    switch (this.abfrage.statusAbfrage) {
-      case StatusAbfrage.Angelegt:
-        return 0;
-      case StatusAbfrage.Offen:
-        return 1;
-      case StatusAbfrage.InBearbeitungSachbearbeitung:
-        return 2;
-      case StatusAbfrage.Erledigt:
-        return 3;
-      default:
-        return 0;
-    }
-  }
-
-  private isSchnellesErledigtStepper(): boolean {
-    if (!_.isNil(this.abfrage.schnellesSchliessenAbfrage)) {
-      return this.abfrage.schnellesSchliessenAbfrage;
-    } else {
-      return false;
-    }
   }
 
   /**
