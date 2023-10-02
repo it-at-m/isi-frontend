@@ -95,12 +95,5 @@ export default class FieldValidationRulesMixin extends Vue {
     notUnspecified: (v: string): boolean | string => {
       return (!_.isNil(v) && v !== UncertainBoolean.Unspecified) || "Pflichtfeld";
     },
-
-    // Nur ein Pflichtfeld, wenn das andere Feld leer ist.
-    requiredIfOtherEmpty:
-      (otherValue: string, otherName: string) =>
-      (v: string): string | boolean => {
-        return !this.isEmpty(otherValue) || !this.isEmpty(v) || `Pflichtfeld, wenn '${otherName}' leer ist`;
-      },
   };
 }

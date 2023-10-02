@@ -6,29 +6,12 @@
           cols="12"
           md="6"
         >
-          <v-text-field
-            id="bauvorhaben_eigentuemer"
-            v-model="bauvorhaben.eigentuemer"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            maxlength="255"
-            validate-on-blur
-            :disabled="!isEditable"
-            @input="formChanged"
-          >
-            <template #label> Eigentümer <span class="secondary--text">*</span> </template>
-          </v-text-field>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <num-field
             id="bauvorhaben_grundstuecksgroesse"
-            v-model="bauvorhaben.grundstuecksgroesse"
+            v-model="calcGrundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="fieldPrefixesSuffixes.squareMeter"
-            required
-            :disabled="!isEditable"
+            :disabled="true"
           />
         </v-col>
       </v-row>
@@ -222,8 +205,9 @@
 </template>
 
 <script lang="ts">
+import _ from "lodash";
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import { LookupEntryDto, UncertainBoolean, GemarkungDto, FlurstueckDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -284,6 +268,23 @@ export default class BauvorhabenForm extends Mixins(
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+  }
+
+  get calcGrundstuecksgroesse(): number | undefined {
+    this.bauvorhaben.grundstuecksgroesse = Number.NaN;
+
+    if (this.bauvorhaben.verortung) {
+      this.bauvorhaben.grundstuecksgroesse = 0;
+      this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
+        gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
+          if (!_.isNil(flurstueck.flaecheQm)) {
+            this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
+          }
+        });
+      });
+    }
+
+    return this.bauvorhaben.grundstuecksgroesse;
   }
 
   @Watch("bauvorhaben.sobonRelevant", { immediate: true })

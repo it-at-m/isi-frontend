@@ -180,7 +180,6 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     nameVorhaben: "",
-    eigentuemer: "",
     grundstuecksgroesse: Number.NaN,
     standVorhaben: BauvorhabenDtoStandVorhabenEnum.Unspecified,
     bauvorhabenNummer: "",
