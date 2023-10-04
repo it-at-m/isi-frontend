@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * ISI Backend API
- * ISI Backend - Serivce für das Informationssystem für soziale Infrastrukturplanung
+ * ISI Backend - Service für das Informationssystem für soziale Infrastrukturplanung
  *
  * The version of the OpenAPI document: 1.0.0
  * Contact: noreply@mail.de
@@ -97,7 +97,7 @@ export interface BauvorhabenDto {
      * @type {string}
      * @memberof BauvorhabenDto
      */
-    bauvorhabenNummer: string;
+    bauvorhabenNummer?: string;
     /**
      * 
      * @type {AdresseDto}
@@ -260,7 +260,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'nameVorhaben': json['nameVorhaben'],
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVorhaben': json['standVorhaben'],
-        'bauvorhabenNummer': json['bauvorhabenNummer'],
+        'bauvorhabenNummer': !exists(json, 'bauvorhabenNummer') ? undefined : json['bauvorhabenNummer'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],

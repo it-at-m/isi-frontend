@@ -59,6 +59,12 @@
           v-model="mittelschule"
           :is-editable="isEditable"
         />
+        <kommentare
+          v-if="isDisplayModeAenderung"
+          id="infrastruktureinrichtung_kommentare"
+          :context="context"
+          :is-editable="isEditable"
+        />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_löschen"
           v-model="deleteDialogOpen"
@@ -185,9 +191,17 @@ import _ from "lodash";
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
+import Kommentare from "@/components/common/kommentar/Kommentare.vue";
+import { Context } from "@/utils/Context";
 
 @Component({
+  computed: {
+    context() {
+      return Context.INFRASTRUKTUREINRICHTUNG;
+    },
+  },
   components: {
+    Kommentare,
     InfrastruktureinrichtungComponent,
     InformationList,
     YesNoDialog,
@@ -217,6 +231,10 @@ export default class Infrastruktureinrichtung extends Mixins(
   private infrastruktureinrichtung: InfrastruktureinrichtungDto = createInfrastruktureinrichtungDto();
 
   private infrastruktureinrichtungId: string | undefined = this.$route.params.id;
+
+  get isDisplayModeAenderung(): boolean {
+    return this.mode === DisplayMode.AENDERUNG;
+  }
 
   get isEditable(): boolean {
     return this.isRoleAdminOrSachbearbeitung();

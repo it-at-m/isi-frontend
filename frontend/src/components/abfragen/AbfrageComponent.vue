@@ -27,7 +27,7 @@
     <verortung
       id="verortung_component"
       v-model="abfrage.verortung"
-      :context="verortungContext"
+      :context="context"
       :look-at="abfrage.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
@@ -167,14 +167,15 @@ import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
-import Verortung, { VerortungContext } from "@/components/common/Verortung.vue";
+import Verortung from "@/components/common/Verortung.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import { Context } from "@/utils/Context";
 
 @Component({
   computed: {
-    verortungContext() {
-      return VerortungContext.ABFRAGE;
+    context() {
+      return Context.ABFRAGE;
     },
   },
   components: {
