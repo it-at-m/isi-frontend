@@ -99,7 +99,7 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
 
   private deleteDialog = false;
   private deleteDialogTitle = "Kommentar löschen";
-  private deleteDialogText = "Hiermit wird dar Kommentar unwiderruflich gelöscht.";
+  private deleteDialogText = "Hiermit wird der Kommentar unwiderruflich gelöscht.";
   private deleteDialogYesText = "Löschen";
   private deleteDialogNoText = "Abbrechen";
 
