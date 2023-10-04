@@ -81,7 +81,7 @@ public class WebSessionConfiguration {
     }
 
     @Bean
-    @Profile({ "dev", "kon", "demo", "prod" })
+    @Profile({ "dev", "kon", "ta", "demo", "prod" })
     public Config config(@Value("${spring.session.timeout}") int timeout) {
         final var hazelcastConfig = new Config();
         // Integrity Check
