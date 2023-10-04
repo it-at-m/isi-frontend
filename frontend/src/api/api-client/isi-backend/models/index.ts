@@ -47,6 +47,7 @@ export * from './KindergartenDto';
 export * from './KindergartenDtoAllOf';
 export * from './KinderkrippeDto';
 export * from './KinderkrippeDtoAllOf';
+export * from './KommentarDto';
 export * from './LookupEntryDto';
 export * from './LookupListDto';
 export * from './LookupListsDto';

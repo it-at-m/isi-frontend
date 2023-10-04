@@ -13,74 +13,67 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    FoerdermixDto,
-    FoerdermixDtoFromJSON,
-    FoerdermixDtoFromJSONTyped,
-    FoerdermixDtoToJSON,
-} from './FoerdermixDto';
-
 /**
  * 
  * @export
- * @interface BaurateDto
+ * @interface KommentarDto
  */
-export interface BaurateDto {
+export interface KommentarDto {
     /**
      * 
      * @type {string}
-     * @memberof BaurateDto
+     * @memberof KommentarDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof BaurateDto
+     * @memberof KommentarDto
      */
     version?: number;
     /**
      * 
      * @type {Date}
-     * @memberof BaurateDto
+     * @memberof KommentarDto
      */
     createdDateTime?: Date;
     /**
      * 
      * @type {Date}
-     * @memberof BaurateDto
+     * @memberof KommentarDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {number}
-     * @memberof BaurateDto
+     * @type {string}
+     * @memberof KommentarDto
      */
-    jahr: number;
+    datum?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BaurateDto
+     * @type {string}
+     * @memberof KommentarDto
      */
-    anzahlWeGeplant?: number;
+    text?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BaurateDto
+     * @type {string}
+     * @memberof KommentarDto
      */
-    geschossflaecheWohnenGeplant?: number;
+    bauvorhaben?: string;
     /**
      * 
-     * @type {FoerdermixDto}
-     * @memberof BaurateDto
+     * @type {string}
+     * @memberof KommentarDto
      */
-    foerdermix: FoerdermixDto;
+    infrastruktureinrichtung?: string;
 }
 
-export function BaurateDtoFromJSON(json: any): BaurateDto {
-    return BaurateDtoFromJSONTyped(json, false);
+export function KommentarDtoFromJSON(json: any): KommentarDto {
+    return KommentarDtoFromJSONTyped(json, false);
 }
 
-export function BaurateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaurateDto {
+export function KommentarDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KommentarDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -90,14 +83,14 @@ export function BaurateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'jahr': json['jahr'],
-        'anzahlWeGeplant': !exists(json, 'anzahlWeGeplant') ? undefined : json['anzahlWeGeplant'],
-        'geschossflaecheWohnenGeplant': !exists(json, 'geschossflaecheWohnenGeplant') ? undefined : json['geschossflaecheWohnenGeplant'],
-        'foerdermix': FoerdermixDtoFromJSON(json['foerdermix']),
+        'datum': !exists(json, 'datum') ? undefined : json['datum'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+        'infrastruktureinrichtung': !exists(json, 'infrastruktureinrichtung') ? undefined : json['infrastruktureinrichtung'],
     };
 }
 
-export function BaurateDtoToJSON(value?: BaurateDto | null): any {
+export function KommentarDtoToJSON(value?: KommentarDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -110,10 +103,10 @@ export function BaurateDtoToJSON(value?: BaurateDto | null): any {
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'jahr': value.jahr,
-        'anzahlWeGeplant': value.anzahlWeGeplant,
-        'geschossflaecheWohnenGeplant': value.geschossflaecheWohnenGeplant,
-        'foerdermix': FoerdermixDtoToJSON(value.foerdermix),
+        'datum': value.datum,
+        'text': value.text,
+        'bauvorhaben': value.bauvorhaben,
+        'infrastruktureinrichtung': value.infrastruktureinrichtung,
     };
 }
 

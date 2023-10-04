@@ -84,7 +84,7 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
-import { LMap, LPopup, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
+import { LMap, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
 import L, {
   GeoJSONOptions,
   LatLng,
@@ -110,7 +110,6 @@ type Ref = Vue & { $el: HTMLElement };
 @Component({
   components: {
     LMap,
-    LPopup,
     LControlLayers,
     "l-wms-tile-layer": LWMSTileLayer,
     LControl,
@@ -163,8 +162,6 @@ export default class CityMap extends Vue {
   private readonly geoJsonOptions?: GeoJSONOptions;
 
   private layerGroup: LayerGroup = new LayerGroup();
-
-  private readonly popup = L.popup();
   private map!: L.Map;
   private expanded = false;
 

@@ -40,14 +40,9 @@
           <v-text-field
             id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            maxlength="255"
-            validate-on-blur
-            :disabled="!isEditable"
-            @input="formChanged"
-          >
-            <template #label> Bauvorhabennummer <span class="secondary--text">*</span> </template>
-          </v-text-field>
+            disabled
+            label="Bauvorhabennummer"
+          />
         </v-col>
       </v-row>
     </field-group-card>
@@ -61,7 +56,7 @@
     <verortung
       id="verortung_component"
       v-model="bauvorhaben.verortung"
-      :context="verortungContext"
+      :context="context"
       :look-at="bauvorhaben.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
@@ -216,18 +211,28 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import { Context } from "@/utils/Context";
+import Verortung from "@/components/common/Verortung.vue";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({
   computed: {
-    verortungContext() {
-      return VerortungContext.BAUVORHABEN;
+    context() {
+      return Context.BAUVORHABEN;
     },
   },
-  components: { FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },
+  components: {
+    AdresseComponent,
+    Verortung,
+    FieldGroupCard,
+    Dokumente,
+    NumField,
+    TriSwitch,
+    ReferencedItemsList,
+  },
 })
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
