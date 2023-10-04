@@ -40,14 +40,9 @@
           <v-text-field
             id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            maxlength="255"
-            validate-on-blur
-            :disabled="!isEditable"
-            @input="formChanged"
-          >
-            <template #label> Bauvorhabennummer <span class="secondary--text">*</span> </template>
-          </v-text-field>
+            disabled
+            label="Bauvorhabennummer"
+          />
         </v-col>
       </v-row>
     </field-group-card>
