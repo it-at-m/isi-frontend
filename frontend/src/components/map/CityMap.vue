@@ -24,8 +24,8 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
-        layers="Hintergrund"
+        :base-url="getBackgroundMapUrl()"
+        layers="gsm:g_stadtkarte_gesamt"
         :visible="true"
         :options="LAYER_OPTIONS"
       />
@@ -165,11 +165,12 @@ export default class CityMap extends Vue {
   private map!: L.Map;
   private expanded = false;
 
-  /** Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers. */
+  /**
+   * Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers.
+   */
   private overlays = new Map([
     ["Gemarkungen", "Gemarkungen"],
     ["Flurstücke", "Flurstücke,Flst.Nr."],
-    ["Straßennamen", "Straßennamen"],
   ]);
 
   created(): void {
@@ -202,6 +203,10 @@ export default class CityMap extends Vue {
 
   private onClickInMap(event: LeafletMouseEvent): void {
     this.clickInMap(event);
+  }
+
+  private getBackgroundMapUrl(): string {
+    return import.meta.env.VITE_BACKGROUND_MAP_URL as string;
   }
 
   /**
