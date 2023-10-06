@@ -151,11 +151,15 @@ import DatePicker from "@/components/common/DatePicker.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import Verortung from "@/components/common/Verortung.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import { Context } from "@/utils/Context";
+import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import { Component, Mixins, VModel } from "vue-property-decorator";
+import StatusleisteComponent from "./StatusleisteComponent.vue";
 
 @Component({
   computed: {
