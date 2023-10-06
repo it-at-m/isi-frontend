@@ -437,7 +437,7 @@ export default class Abfrage extends Mixins(
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
-    transition.url == "abfrage-schliessen" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
+    transition.url == "keine-bearbeitung-noetig" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
     this.isStatusUebergangDialogOpen = true;
   }
 
@@ -577,7 +577,7 @@ export default class Abfrage extends Mixins(
   private async startStatusUebergang(transition: TransitionDto) {
     if (!this.isDirty()) {
       let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
-      if (transition.url === "abfrage-schliessen") {
+      if (transition.url === "abfrage-keine-bearbeitung-noetig") {
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
       }
       const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
