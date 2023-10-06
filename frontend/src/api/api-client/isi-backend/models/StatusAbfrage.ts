@@ -23,7 +23,8 @@ export const StatusAbfrage = {
     InBearbeitungSachbearbeitung: 'IN_BEARBEITUNG_SACHBEARBEITUNG',
     InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
     BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
-    Erledigt: 'ERLEDIGT',
+    ErledigtMitFachreferat: 'ERLEDIGT_MIT_FACHREFERAT',
+    ErledigtOhneFachreferat: 'ERLEDIGT_OHNE_FACHREFERAT',
     Abbruch: 'ABBRUCH'
 } as const;
 export type StatusAbfrage = typeof StatusAbfrage[keyof typeof StatusAbfrage];

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isSchnellesErledigtStepper()">
+  <div v-if="!erledigtOhneFachreferatStepper()">
     <v-stepper
       v-if="!isCancelled()"
       :value="getStatusIndex()"
@@ -97,7 +97,7 @@ export default class StatusleisteComponent extends Vue {
         return 3;
       case StatusAbfrage.BedarfsmeldungErfolgt:
         return 4;
-      case StatusAbfrage.Erledigt:
+      case StatusAbfrage.ErledigtMitFachreferat:
         return 5;
       default:
         return 0;
@@ -112,19 +112,15 @@ export default class StatusleisteComponent extends Vue {
         return 1;
       case StatusAbfrage.InBearbeitungSachbearbeitung:
         return 2;
-      case StatusAbfrage.Erledigt:
+      case StatusAbfrage.ErledigtOhneFachreferat:
         return 3;
       default:
         return 0;
     }
   }
 
-  private isSchnellesErledigtStepper(): boolean {
-    if (!_.isNil(this.abfrage.schnellesSchliessenAbfrage)) {
-      return this.abfrage.schnellesSchliessenAbfrage;
-    } else {
-      return false;
-    }
+  private erledigtOhneFachreferatStepper(): boolean {
+    return this.abfrage.statusAbfrage === StatusAbfrage.ErledigtOhneFachreferat;
   }
 }
 </script>
