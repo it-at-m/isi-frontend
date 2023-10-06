@@ -9,6 +9,7 @@ export * from './DokumenteApi';
 export * from './FileInfoStammApi';
 export * from './FoerdermixStammApi';
 export * from './InfrastruktureinrichtungApi';
+export * from './KommentareApi';
 export * from './KoordinatenApi';
 export * from './LookupApi';
 export * from './MimeTypeApi';

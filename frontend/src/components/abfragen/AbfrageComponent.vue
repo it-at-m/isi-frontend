@@ -29,7 +29,7 @@
     <verortung
       id="verortung_component"
       v-model="abfrage.verortung"
-      :context="verortungContext"
+      :context="context"
       :look-at="abfrage.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
@@ -150,19 +150,17 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import DatePicker from "@/components/common/DatePicker.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import Verortung, { VerortungContext } from "@/components/common/Verortung.vue";
-import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import Verortung from "@/components/common/Verortung.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import { Component, Mixins, VModel } from "vue-property-decorator";
-import StatusleisteComponent from "./StatusleisteComponent.vue";
+import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import { Context } from "@/utils/Context";
+
 @Component({
   computed: {
-    verortungContext() {
-      return VerortungContext.ABFRAGE;
+    context() {
+      return Context.ABFRAGE;
     },
   },
   components: {

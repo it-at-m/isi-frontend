@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * ISI Backend API
- * ISI Backend - Serivce für das Informationssystem für soziale Infrastrukturplanung
+ * ISI Backend - Service für das Informationssystem für soziale Infrastrukturplanung
  *
  * The version of the OpenAPI document: 1.0.0
  * Contact: noreply@mail.de

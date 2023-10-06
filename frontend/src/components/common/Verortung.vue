@@ -51,7 +51,12 @@
         v-for="(flurstueck, index) in flurstuecke"
         :key="index"
       >
-        {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner }}
+        <div v-if="flurstueck.eigentumsart">
+          {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/städtisch` }}
+        </div>
+        <div v-else>
+          {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/nicht städtisch` }}
+        </div>
       </v-chip>
     </v-chip-group>
   </field-group-card>
@@ -82,12 +87,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-
-export const enum VerortungContext {
-  UNDEFINED = "UNDEFINED",
-  ABFRAGE = "ABFRAGE",
-  BAUVORHABEN = "BAUVORHABEN",
-}
+import { Context } from "@/utils/Context";
 
 @Component({
   components: { CityMap },
@@ -97,8 +97,8 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
 
-  @Prop({ type: String, default: VerortungContext.UNDEFINED })
-  private readonly context!: VerortungContext;
+  @Prop({ type: String, default: Context.UNDEFINED })
+  private readonly context!: Context;
 
   @Prop()
   private readonly lookAt?: AdresseDto;
@@ -119,9 +119,9 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   get isEditable(): boolean {
     let editable = false;
-    if (this.context === VerortungContext.ABFRAGE) {
+    if (this.context === Context.ABFRAGE) {
       editable = this.isEditableByAbfrageerstellung();
-    } else if (this.context === VerortungContext.BAUVORHABEN) {
+    } else if (this.context === Context.BAUVORHABEN) {
       editable = this.isRoleAdminOrSachbearbeitung();
     }
     return editable;

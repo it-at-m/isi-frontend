@@ -12,6 +12,7 @@
     "async-mutex": "^0.4.0",
     "core-js": "^3.26.1",
     "leaflet": "^1.9.3",
+    "leaflet.nontiledlayer": "^1.0.9",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "terser": "^5.16.1",

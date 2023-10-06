@@ -6,29 +6,12 @@
           cols="12"
           md="6"
         >
-          <v-text-field
-            id="bauvorhaben_eigentuemer"
-            v-model="bauvorhaben.eigentuemer"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            maxlength="255"
-            validate-on-blur
-            :disabled="!isEditable"
-            @input="formChanged"
-          >
-            <template #label> Eigentümer <span class="secondary--text">*</span> </template>
-          </v-text-field>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <num-field
             id="bauvorhaben_grundstuecksgroesse"
-            v-model="bauvorhaben.grundstuecksgroesse"
+            v-model="calcGrundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="fieldPrefixesSuffixes.squareMeter"
-            required
-            :disabled="!isEditable"
+            :disabled="true"
           />
         </v-col>
       </v-row>
@@ -57,14 +40,9 @@
           <v-text-field
             id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            maxlength="255"
-            validate-on-blur
-            :disabled="!isEditable"
-            @input="formChanged"
-          >
-            <template #label> Bauvorhabennummer <span class="secondary--text">*</span> </template>
-          </v-text-field>
+            disabled
+            label="Bauvorhabennummer"
+          />
         </v-col>
       </v-row>
     </field-group-card>
@@ -78,7 +56,7 @@
     <verortung
       id="verortung_component"
       v-model="bauvorhaben.verortung"
-      :context="verortungContext"
+      :context="context"
       :look-at="bauvorhaben.adresse"
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
@@ -222,8 +200,9 @@
 </template>
 
 <script lang="ts">
+import _ from "lodash";
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import { LookupEntryDto, UncertainBoolean, GemarkungDto, FlurstueckDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -232,18 +211,28 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { VerortungContext } from "@/components/common/Verortung.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import { Context } from "@/utils/Context";
+import Verortung from "@/components/common/Verortung.vue";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 @Component({
   computed: {
-    verortungContext() {
-      return VerortungContext.BAUVORHABEN;
+    context() {
+      return Context.BAUVORHABEN;
     },
   },
-  components: { FieldGroupCard, Dokumente, NumField, TriSwitch, ReferencedItemsList },
+  components: {
+    AdresseComponent,
+    Verortung,
+    FieldGroupCard,
+    Dokumente,
+    NumField,
+    TriSwitch,
+    ReferencedItemsList,
+  },
 })
 export default class BauvorhabenForm extends Mixins(
   FieldPrefixesSuffixes,
@@ -284,6 +273,23 @@ export default class BauvorhabenForm extends Mixins(
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+  }
+
+  get calcGrundstuecksgroesse(): number | undefined {
+    this.bauvorhaben.grundstuecksgroesse = Number.NaN;
+
+    if (this.bauvorhaben.verortung) {
+      this.bauvorhaben.grundstuecksgroesse = 0;
+      this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
+        gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
+          if (!_.isNil(flurstueck.flaecheQm)) {
+            this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
+          }
+        });
+      });
+    }
+
+    return this.bauvorhaben.grundstuecksgroesse;
   }
 
   @Watch("bauvorhaben.sobonRelevant", { immediate: true })
