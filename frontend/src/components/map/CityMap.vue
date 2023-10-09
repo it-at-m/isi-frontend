@@ -117,9 +117,10 @@ type Ref = Vue & { $el: HTMLElement };
 })
 export default class CityMap extends Vue {
   private readonly MAX_ZOOM = 20;
+  private readonly MIN_ZOOM = 10;
   private readonly CITY_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
   private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
-  private readonly LAYER_OPTIONS: WMSOptions = { format: "image/png", maxZoom: this.MAX_ZOOM };
+  private readonly LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: this.MIN_ZOOM, maxZoom: this.MAX_ZOOM };
 
   @Prop({ default: "100%" })
   private readonly height!: number | string;
