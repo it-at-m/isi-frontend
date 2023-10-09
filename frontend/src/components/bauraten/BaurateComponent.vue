@@ -55,12 +55,6 @@
         v-model="baurate.foerdermix"
         :is-editable="isEditable"
       >
-        <foerdermix-staemme-drop-down
-          id="foerdermix_stammdaten_dropdown_component"
-          ref="Foerdermix Staemme Drop Down"
-          v-model="baurate.foerdermix"
-          :is-editable="isEditable"
-        />
       </foerdermix-formular>
     </v-row>
   </v-container>
@@ -97,7 +91,7 @@ export default class BaurateComponent extends Mixins(
   ValidatorMixin,
   FieldPrefixesSuffixes,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: BaurateModel }) baurate!: BaurateModel;
 
@@ -113,26 +107,26 @@ export default class BaurateComponent extends Mixins(
   private validationRules: unknown = {
     validateWohneinheiten: (
       baugebiet: BaugebietDto | undefined,
-      abfragevariante: AbfragevarianteDto | undefined,
+      abfragevariante: AbfragevarianteDto | undefined
     ): boolean | string => {
       return (
         verteilteWohneinheiten(baugebiet, abfragevariante) <= wohneinheiten(baugebiet, abfragevariante) ||
         `Insgesamt sind ${verteilteWohneinheitenFormatted(baugebiet, abfragevariante)} von ${wohneinheitenFormatted(
           baugebiet,
-          abfragevariante,
+          abfragevariante
         )} verteilt.`
       );
     },
     validateGeschossflaecheWohnen: (
       baugebiet: BaugebietDto | undefined,
-      abfragevariante: AbfragevarianteDto | undefined,
+      abfragevariante: AbfragevarianteDto | undefined
     ): boolean | string => {
       return (
         verteilteGeschossflaecheWohnen(baugebiet, abfragevariante) <=
           geschossflaecheWohnen(baugebiet, abfragevariante) ||
         `Insgesamt sind ${verteilteGeschossflaecheWohnenFormatted(
           baugebiet,
-          abfragevariante,
+          abfragevariante
         )} m² von ${geschossflaecheWohnenFormatted(baugebiet, abfragevariante)} m² verteilt.`
       );
     },
