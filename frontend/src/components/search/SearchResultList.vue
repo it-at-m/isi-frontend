@@ -20,6 +20,12 @@
         @click="routeToInfrastrukturabfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
+          <v-icon
+            left
+            color="green"
+          >
+            mdi-alpha-a-circle
+          </v-icon>
           {{ castToAbfrageSearchResultDto(item).nameAbfrage }}
         </v-card-subtitle>
         <v-card-text>
@@ -44,6 +50,12 @@
         @click="routeToBauvorhabenForm(item)"
       >
         <v-card-subtitle class="black--text">
+          <v-icon
+            left
+            color="indigo"
+          >
+            mdi-alpha-b-circle
+          </v-icon>
           {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
         </v-card-subtitle>
         <v-card-text>
@@ -69,6 +81,12 @@
         @click="routeToInfrastruktureinrichtungForm(item)"
       >
         <v-card-subtitle class="black--text">
+          <v-icon
+            left
+            color="red"
+          >
+            mdi-alpha-i-circle
+          </v-icon>
           {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
         </v-card-subtitle>
         <v-card-text>
