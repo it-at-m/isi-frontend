@@ -1,7 +1,6 @@
 <template>
   <div>
     <statusleiste-component :abfrage="abfrage" />
-
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
