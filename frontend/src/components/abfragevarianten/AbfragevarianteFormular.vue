@@ -47,18 +47,23 @@
           cols="12"
           md="6"
         >
-          <v-select
-            id="abfragevariante_planungsrecht"
+          <v-autocomplete
+            id="abfragevariante_weitere_rechtsgrundlage_multiplechoice"
             v-model="abfragevariante.planungsrecht"
-            :disabled="!isEditable"
-            :items="planungsrechtList"
+            :items="rechtsgrundlageList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-            @change="formChanged"
+            multiple
+            chips
+            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
+            @input="formChanged"
           >
-            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
-          </v-select>
+            <template #label>
+              Wesentliche Rechtsgrundlage
+              <span class="secondary--text">*</span>
+            </template>
+          </v-autocomplete>
         </v-col>
       </v-row>
       <v-row justify="center">
@@ -370,7 +375,7 @@ export default class AbfragevarianteForm extends Mixins(
     return pflichtfeld;
   }
 
-  get planungsrechtList(): LookupEntryDto[] {
+  get rechtsgrundlageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/planungsrecht"];
   }
 
