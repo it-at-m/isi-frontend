@@ -5,7 +5,7 @@
       resizable
     >
       <template #content>
-        <infrastrukturabfrage-component
+        <bauleitplanverfahren-component
           v-if="isAbfrageFormularOpen()"
           id="abfrage_infrastrukturabfrage_component"
           v-model="selected"
@@ -258,7 +258,7 @@ import AbfrageNavigationTree, {
   AbfrageTreeItem,
   generateTreeItemId,
 } from "@/components/abfragen/AbfrageNavigationTree.vue";
-import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
+import BauleitplanverfahrenComponent from "@/components/abfragen/BauleitplanverfahrenComponent.vue";
 import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
 import BaugebietComponent from "@/components/baugebiete/BaugebietComponent.vue";
@@ -334,7 +334,7 @@ export const enum AbfrageFormType {
     AbfragevarianteFormular,
     AbfrageNavigationTree,
     InformationList,
-    InfrastrukturabfrageComponent,
+    BauleitplanverfahrenComponent,
     YesNoDialog,
     DefaultLayout,
     BaurateComponent,
