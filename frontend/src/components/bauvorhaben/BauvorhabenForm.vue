@@ -140,18 +140,16 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="dokumentCardTitle">
-      <v-row>
-        <v-col cols="12">
-          <dokumente
-            id="bauvorhaben_dokumente_component"
-            v-model="bauvorhaben.dokumente"
-            :name-root-folder="nameRootFolder"
-            :is-dokumente-editable="isEditable"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
+    <v-row>
+      <v-col cols="12">
+        <dokumente
+          id="bauvorhaben_dokumente_component"
+          v-model="bauvorhaben.dokumente"
+          :name-root-folder="nameRootFolder"
+          :is-dokumente-editable="isEditable"
+        />
+      </v-col>
+    </v-row>
     <field-group-card :card-title="sobonCardTitle">
       <v-row justify="center">
         <v-col
@@ -243,8 +241,6 @@ export default class BauvorhabenForm extends Mixins(
 ) {
   @VModel({ type: BauvorhabenModel })
   bauvorhaben!: BauvorhabenModel;
-
-  private dokumentCardTitle = "Dokumente";
 
   private sobonCardTitle = "SoBoN";
 
