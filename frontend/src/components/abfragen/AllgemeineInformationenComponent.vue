@@ -6,9 +6,9 @@
         md="6"
       >
         <v-text-field
-          id="bebauungsplannummer_text"
-          ref="bebauungsplannummerText"
-          v-model="infrastrukturabfrage.abfrage.bebauungsplannummer"
+          id="bebauungsplannummer_field"
+          ref="bebauungsplannummerField"
+          v-model="abfrage.bebauungsplannummer"
           :disabled="!isEditableByAbfrageerstellung()"
           label="Bebauungsplannummer"
           maxlength="255"
@@ -22,7 +22,7 @@
         <v-select
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
-          v-model="infrastrukturabfrage.abfrage.bauvorhaben"
+          v-model="abfrage.bauvorhaben"
           :disabled="!isEditableByAbfrageerstellung()"
           :items="bauvorhaben"
           item-text="nameVorhaben"
@@ -42,7 +42,7 @@
         <tri-switch
           id="sobon_relevant_triswitch"
           ref="sobonRelevantTriswitch"
-          v-model="infrastrukturabfrage.sobonRelevant"
+          v-model="abfrage.sobonRelevant"
           :disabled="!isEditableByAbfrageerstellung()"
           off-text="Nein"
           on-text="Ja"
@@ -60,7 +60,7 @@
             v-if="sobonJahrVisible"
             id="sobon_jahr_dropdown"
             ref="sobonJahrDropdown"
-            v-model="infrastrukturabfrage.sobonJahr"
+            v-model="abfrage.sobonJahr"
             :disabled="!isEditableByAbfrageerstellung()"
             :items="sobonVerfahrensgrundsaetzeJahrList"
             item-value="key"
@@ -83,7 +83,7 @@
         <v-select
           id="stand_verfahren_dropdown"
           ref="standVerfahrenDropdown"
-          v-model="infrastrukturabfrage.abfrage.standVorhaben"
+          v-model="abfrage.standVorhaben"
           :disabled="!isEditableByAbfrageerstellung()"
           :items="standVerfahrenList"
           item-value="key"
@@ -101,7 +101,7 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
   BauvorhabenSearchResultDto,
   LookupEntryDto,
@@ -124,7 +124,7 @@ export default class AllgemeineInformationenComponent extends Mixins(
   FieldValidationRulesMixin,
   AbfrageSecurityMixin,
 ) {
-  @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
+  @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Vorhaben";
 
@@ -172,7 +172,7 @@ export default class AllgemeineInformationenComponent extends Mixins(
       this.sobonJahrVisible = true;
     } else {
       this.sobonJahrVisible = false;
-      this.infrastrukturabfrage.sobonJahr = undefined;
+      this.abfrage.sobonJahr = undefined;
     }
   }
 }

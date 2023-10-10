@@ -8,7 +8,7 @@
         <date-picker
           id="bearbeitungsfrist_datepicker"
           ref="bearbeitungsfristDatepicker"
-          v-model="infrastrukturabfrage.abfrage.fristStellungnahme"
+          v-model="abfrage.fristBearbeitung"
           :disabled="!isEditableByAbfrageerstellung()"
           label="Bearbeitungsfrist"
           :rules="[fieldValidationRules.pflichtfeld]"
@@ -22,7 +22,7 @@
         <tri-switch
           id="offizielle_mitteilung_triswitch"
           ref="offizielleMitteilungTriswitch"
-          v-model="infrastrukturabfrage.offiziellerVerfahrensschritt"
+          v-model="abfrage.offiziellerVerfahrensschritt"
           :disabled="!isEditableByAbfrageerstellung()"
           off-text="Nein"
           on-text="Ja"
@@ -35,8 +35,9 @@
     <v-row justify="center">
       <v-col cols="12">
         <v-textarea
-          id="abfrage_anmerkung"
-          v-model="infrastrukturabfrage.abfrage.anmerkung"
+          id="anmerkung_field"
+          ref="anmerkungField"
+          v-model="abfrage.anmerkung"
           :disabled="!isEditableByAbfrageerstellung()"
           label="Anmerkungen"
           auto-grow
@@ -52,8 +53,7 @@
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
@@ -66,7 +66,7 @@ export default class AllgemeineInformationenComponent extends Mixins(
   FieldValidationRulesMixin,
   AbfrageSecurityMixin,
 ) {
-  @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
+  @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
 
   private allgemeineInfoZurAbfrageCardTitle = "Allgemeine Informationen zur Abfrage";
 }

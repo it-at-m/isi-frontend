@@ -3,9 +3,9 @@
     <v-row justify="center">
       <v-col cols="12">
         <v-text-field
-          id="name_abfrage_text"
-          ref="nameAbfrageText"
-          v-model.trim="abfrage.nameAbfrage"
+          id="name_abfrage_field"
+          ref="nameAbfrageField"
+          v-model.trim="nameAbfrage"
           :disabled="!isEditableByAbfrageerstellung()"
           :rules="[fieldValidationRules.pflichtfeld]"
           maxlength="70"
@@ -21,7 +21,6 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -37,6 +36,6 @@ export default class AbfrageCommonComponent extends Mixins(
   SaveLeaveMixin,
   FieldValidationRulesMixin,
 ) {
-  @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
+  @VModel({ type: String }) nameAbfrage!: string;
 }
 </script>

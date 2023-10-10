@@ -3,38 +3,37 @@
     <abfrage-common-component
       id="abfrage_common_component"
       ref="abfrageCommonComponent"
-      v-model="infrastrukturabfrage.abfrage"
+      v-model="bauleitplanverfahren.name"
     />
     <allgemeine-informationen-component
       id="allgemeine_informationen_component"
       ref="allgemeineInformationenComponent"
-      v-model="infrastrukturabfrage"
+      v-model="bauleitplanverfahren"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
-      :adresse-prop.sync="infrastrukturabfrage.abfrage.adresse"
-      :allgemeine-ortsangabe-prop.sync="infrastrukturabfrage.abfrage.allgemeineOrtsangabe"
+      :adresse-prop.sync="bauleitplanverfahren.adresse"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditableByAbfrageerstellung()"
     />
     <verortung
       id="verortung_component"
       ref="verortungComponent"
-      v-model="infrastrukturabfrage.abfrage.verortung"
+      v-model="bauleitplanverfahren.verortung"
       :context="context"
-      :look-at="infrastrukturabfrage.abfrage.adresse"
+      :look-at="bauleitplanverfahren.adresse"
     />
     <allgemeine-informationen-zur-abfrage-component
       id="allgemeine_informationen_zur_abfrage_component"
       ref="allgemeineInformationenZurAbfrageComponent"
-      v-model="infrastrukturabfrage"
-      :look-at="infrastrukturabfrage"
+      v-model="bauleitplanverfahren"
+      :look-at="bauleitplanverfahren"
     />
     <dokumente
       id="dokumente_component"
       ref="dokumenteComponent"
-      v-model="infrastrukturabfrage.abfrage.dokumente"
+      v-model="bauleitplanverfahren.dokumente"
       :name-root-folder="nameRootFolder"
       :is-dokumente-editable="isEditableByAbfrageerstellung()"
     />
@@ -47,7 +46,7 @@ import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent
 import AllgemeineInformationenComponent from "@/components/abfragen/AllgemeineInformationenComponent.vue";
 import AllgemeineInformationenZurAbfrageComponent from "@/components/abfragen/AllgemeineInformationenZurAbfrageComponent.vue";
 import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
@@ -74,7 +73,7 @@ export default class BauleitplanverfahrenComponent extends Mixins(
   SaveLeaveMixin,
   AbfrageSecurityMixin,
 ) {
-  @VModel({ type: InfrastrukturabfrageModel }) infrastrukturabfrage!: InfrastrukturabfrageModel;
+  @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
 
   private sobonJahrVisible = false;
   private nameRootFolder = "bauleitplanverfahren";
@@ -89,7 +88,7 @@ export default class BauleitplanverfahrenComponent extends Mixins(
       this.sobonJahrVisible = true;
     } else {
       this.sobonJahrVisible = false;
-      this.infrastrukturabfrage.sobonJahr = undefined;
+      this.bauleitplanverfahren.sobonJahr = undefined;
     }
   }
 }
