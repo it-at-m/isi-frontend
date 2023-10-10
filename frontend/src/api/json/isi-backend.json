@@ -23,6 +23,7 @@
     { "name": "Stammdaten", "description": "API to import Stammdaten" },
     { "name": "Bauvorhaben", "description": "API um Bauvorhaben zu verwalten" },
     { "name": "AbfrageStatus", "description": "API to set the status for a Abfrage" },
+    { "name": "Bauleitplanverfahren", "description": "API zum interagieren mit Abfragen vom Typ Bauleitplanverfahren" },
     { "name": "Kommentare", "description": "API um Kommentare zu verwalten" },
     { "name": "Lookup", "description": "API zum Erhalt der LookupListen." },
     { "name": "FileInfoStamm", "description": "API zum Erhalten von dateibezogenen Stammdaten." }
@@ -52,20 +53,20 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
             "description": "OK -> FoerdermixStamm wurde erfolgreich aktualisiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -83,16 +84,16 @@
             "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "201": {
             "description": "CREATED -> FoerdermixStamm wurde erfolgreich erstellt.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -116,12 +117,12 @@
             "description": "NOT_FOUND -> Kommentar mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -139,12 +140,12 @@
             "description": "CREATED -> Kommentar wurde erfolgreich erstellt.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -264,6 +265,7 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -271,8 +273,7 @@
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." }
+          }
         }
       }
     },
@@ -286,6 +287,7 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -293,8 +295,7 @@
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." }
+          }
         }
       }
     },
@@ -352,6 +353,7 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -359,8 +361,7 @@
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." }
+          }
         }
       }
     },
@@ -440,11 +441,11 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
+          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledgit werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -466,11 +467,11 @@
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht abgebrochen werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "200": { "description": "OK -> Abfrage wurde erfolgreich abbgebrochen." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich abbgebrochen." }
+          }
         }
       }
     },
@@ -488,16 +489,16 @@
             "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "404": {
             "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -526,16 +527,16 @@
             "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "409": {
-            "description": "CONFLICT -> Bauvorhaben konnte nicht erstellt werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
             "description": "NOT_FOUND -> Die ausgewählte Abfrage existiert nicht mehr.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Bauvorhaben konnte nicht erstellt werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -551,6 +552,10 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "409": {
             "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -558,10 +563,6 @@
           "200": {
             "description": "OK -> Relevante Abfragevariante erfolgreich geändert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
             "description": "NOT_FOUND -> Abfrage oder Abfragevariante nicht gefunden.",
@@ -584,13 +585,13 @@
           "required": true
         },
         "responses": {
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Transformation der Koordinate ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK -> Transformation der Koordinate von WGS84 zu UTM32 war erfolgreich.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UtmDto" } } }
+          },
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Transformation der Koordinate ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -634,11 +635,11 @@
           "required": true
         },
         "responses": {
+          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -664,11 +665,11 @@
           "required": true
         },
         "responses": {
+          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -737,13 +738,13 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
           },
           "400": {
             "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
@@ -765,20 +766,20 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "400": {
             "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -858,20 +859,20 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InfrastrukturabfrageDto" } } }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "200": {
+            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InfrastrukturabfrageDto" } } }
+          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -894,20 +895,20 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InfrastrukturabfrageDto" } } }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "200": {
+            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InfrastrukturabfrageDto" } } }
+          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -928,28 +929,28 @@
           "required": true
         },
         "responses": {
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": {
-            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InfrastrukturabfrageDto" } } }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InfrastrukturabfrageDto" } } }
+          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -964,13 +965,13 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
-          },
           "404": {
             "description": "NOT FOUND -> FoerdermixStamm mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
           }
         }
       },
@@ -982,11 +983,11 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> FoerdermixStamm mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          }
+          },
+          "204": { "description": "NO CONTENT" }
         }
       }
     },
@@ -1097,13 +1098,13 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Infrastruktureinrichtung referenziert ein Bauvorhaben.",
+          "404": {
+            "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "204": { "description": "NO CONTENT" },
-          "404": {
-            "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
+          "409": {
+            "description": "CONFLICT -> Die Infrastruktureinrichtung referenziert ein Bauvorhaben.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -1136,13 +1137,13 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
+          "404": {
+            "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "204": { "description": "NO CONTENT" },
           "409": {
             "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "404": {
-            "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -1157,15 +1158,15 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK -> Alle mögliche Transistions gefunden",
             "content": {
               "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/TransitionDto" } } }
             }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -1224,12 +1225,12 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Das Bauvorhaben wird durch Abfragen referenziert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "204": { "description": "NO CONTENT" }
@@ -1307,15 +1308,35 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Es konnten keine Bauraten ermittelt werden, da keine idealtypischen Bauraten für die gegebenen Parameter existieren.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK",
             "content": {
               "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" } } }
             }
+          },
+          "404": {
+            "description": "NOT FOUND -> Es konnten keine Bauraten ermittelt werden, da keine idealtypischen Bauraten für die gegebenen Parameter existieren.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
+    "/bauleitplanverfahren/{id}": {
+      "get": {
+        "tags": ["Bauleitplanverfahren"],
+        "summary": "Lesen einer Abfrage vom Typ Bauleitplanverfahren.",
+        "operationId": "getBauleitplanverfahren",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BauleitplanverfahrenDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -1387,7 +1408,8 @@
           "ort": { "maxLength": 255, "minLength": 0, "type": "string" },
           "strasse": { "maxLength": 255, "minLength": 0, "type": "string" },
           "hausnummer": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" }
+          "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" },
+          "angabeLageErgaenzendeAdressinformation": { "maxLength": 255, "minLength": 0, "type": "string" }
         }
       },
       "GrundschuleDto": {
@@ -1466,7 +1488,6 @@
           },
           "lfdNr": { "type": "integer", "format": "int64" },
           "bauvorhaben": { "type": "string", "format": "uuid" },
-          "allgemeineOrtsangabe": { "maxLength": 255, "minLength": 0, "type": "string" },
           "adresse": { "$ref": "#/components/schemas/AdresseDto" },
           "nameEinrichtung": { "maxLength": 255, "minLength": 0, "type": "string" },
           "fertigstellungsjahr": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
@@ -1611,16 +1632,12 @@
       "AbfragevarianteSachbearbeitungDto": {
         "type": "object",
         "properties": {
-          "geschossflaecheWohnenPlanungsursaechlich": { "type": "number" },
-          "soBoNOrientierungswertJahr": {
+          "gfWohnenPlanungsursaechlich": { "type": "number" },
+          "sobonOrientierungswertJahr": {
             "type": "string",
             "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022"]
           },
-          "anmerkung": { "type": "string" },
-          "bedarfsmeldungFachreferate": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/BedarfsmeldungFachabteilungenDto" }
-          }
+          "anmerkung": { "type": "string" }
         }
       },
       "BauabschnittDto": {
@@ -1637,7 +1654,7 @@
         }
       },
       "BaugebietDto": {
-        "required": ["baugebietArt", "bauraten", "bezeichnung", "realisierungVon", "technical"],
+        "required": ["artBaulicheNutzung", "bauraten", "bezeichnung", "realisierungVon", "technical"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -1645,14 +1662,14 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "bezeichnung": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "baugebietArt": { "type": "string", "enum": ["WR", "WA", "MU", "MK", "MI", "GE"] },
+          "artBaulicheNutzung": { "type": "string", "enum": ["WR", "WA", "MU", "MK", "MI", "GE"] },
           "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
-          "gesamtanzahlWe": { "type": "integer", "format": "int32" },
-          "anzahlWohneinheitenBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
-          "anzahlWohneinheitenBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
-          "geschossflaecheWohnen": { "type": "number" },
-          "geschossflaecheWohnenGenehmigt": { "type": "number" },
-          "geschossflaecheWohnenFestgesetzt": { "type": "number" },
+          "gfWohnenGeplant": { "type": "number" },
+          "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
+          "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
+          "weGeplant": { "type": "integer", "format": "int32" },
+          "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
           "bauraten": { "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" } },
           "technical": { "type": "boolean" }
         }
@@ -1666,8 +1683,8 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "jahr": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
-          "anzahlWeGeplant": { "type": "integer", "format": "int32" },
-          "geschossflaecheWohnenGeplant": { "type": "number" },
+          "weGeplant": { "type": "integer", "format": "int32" },
+          "gfWohnenGeplant": { "type": "number" },
           "foerdermix": { "$ref": "#/components/schemas/FoerdermixDto" }
         }
       },
@@ -1704,7 +1721,6 @@
           "bauvorhabenNummer": { "type": "string" },
           "adresse": { "$ref": "#/components/schemas/AdresseDto" },
           "verortung": { "$ref": "#/components/schemas/VerortungDto" },
-          "allgemeineOrtsangabe": { "maxLength": 255, "minLength": 0, "type": "string" },
           "bebauungsplannummer": { "maxLength": 255, "minLength": 0, "type": "string" },
           "fisNummer": { "maxLength": 255, "minLength": 0, "type": "string" },
           "anmerkung": { "maxLength": 255, "minLength": 0, "type": "string" },
@@ -1742,32 +1758,6 @@
           "artFnp": { "type": "array", "items": { "type": "string", "enum": ["WR", "WA", "MU", "MK", "MI", "GE"] } },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
           "relevanteAbfragevariante": { "$ref": "#/components/schemas/AbfragevarianteDto" }
-        }
-      },
-      "BedarfsmeldungFachabteilungenDto": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "anzahlEinrichtungen": { "type": "integer", "format": "int32" },
-          "infrastruktureinrichtungTyp": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "KINDERKRIPPE",
-              "KINDERGARTEN",
-              "GS_NACHMITTAG_BETREUUNG",
-              "HAUS_FUER_KINDER",
-              "GRUNDSCHULE",
-              "MITTELSCHULE"
-            ]
-          },
-          "anzahlKinderkrippengruppen": { "type": "integer", "format": "int32" },
-          "anzahlKindergartengruppen": { "type": "integer", "format": "int32" },
-          "anzahlHortgruppen": { "type": "integer", "format": "int32" },
-          "anzahlGrundschulzuege": { "type": "integer", "format": "int32" }
         }
       },
       "DokumentDto": {
@@ -2306,7 +2296,6 @@
         "type": "object",
         "properties": {
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
-          "allgemeineOrtsangabe": { "type": "string" },
           "adresse": { "$ref": "#/components/schemas/AdresseDto" },
           "verortung": { "$ref": "#/components/schemas/VerortungDto" },
           "fristStellungnahme": { "type": "string", "format": "date" },
@@ -2459,6 +2448,32 @@
           }
         }
       },
+      "BedarfsmeldungFachabteilungenDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "anzahlEinrichtungen": { "type": "integer", "format": "int32" },
+          "infrastruktureinrichtungTyp": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "KINDERKRIPPE",
+              "KINDERGARTEN",
+              "GS_NACHMITTAG_BETREUUNG",
+              "HAUS_FUER_KINDER",
+              "GRUNDSCHULE",
+              "MITTELSCHULE"
+            ]
+          },
+          "anzahlKinderkrippengruppen": { "type": "integer", "format": "int32" },
+          "anzahlKindergartengruppen": { "type": "integer", "format": "int32" },
+          "anzahlHortgruppen": { "type": "integer", "format": "int32" },
+          "anzahlGrundschulzuege": { "type": "integer", "format": "int32" }
+        }
+      },
       "InfrastrukturabfrageInBearbeitungFachreferateDto": {
         "required": ["abfragevarianten", "abfragevariantenSachbearbeitung"],
         "type": "object",
@@ -2501,10 +2516,12 @@
           "artDokument": { "$ref": "#/components/schemas/LookupListDto" },
           "artAbfrage": { "$ref": "#/components/schemas/LookupListDto" },
           "sobonVerfahrensgrundsaetzeJahr": { "$ref": "#/components/schemas/LookupListDto" },
+          "standVerfahrenBauleitplanverfahrenList": { "$ref": "#/components/schemas/LookupListDto" },
           "standVorhaben": { "$ref": "#/components/schemas/LookupListDto" },
           "statusAbfrage": { "$ref": "#/components/schemas/LookupListDto" },
+          "wesentlicheRechtsgrundlageBauleitplanverfahren": { "$ref": "#/components/schemas/LookupListDto" },
           "planungsrecht": { "$ref": "#/components/schemas/LookupListDto" },
-          "baugebietArt": { "$ref": "#/components/schemas/LookupListDto" },
+          "artBaulicheNutzung": { "$ref": "#/components/schemas/LookupListDto" },
           "statusInfrastruktureinrichtung": { "$ref": "#/components/schemas/LookupListDto" },
           "einrichtungstraeger": { "$ref": "#/components/schemas/LookupListDto" },
           "infrastruktureinrichtungTyp": { "$ref": "#/components/schemas/LookupListDto" },
@@ -2530,6 +2547,110 @@
           "totalElements": { "type": "integer", "format": "int64" },
           "totalPages": { "type": "integer", "format": "int32" },
           "last": { "type": "boolean" }
+        }
+      },
+      "AbfragevarianteBauleitplanverfahrenDto": {
+        "required": ["name", "wesentlicheRechtsgrundlage"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "type": "string" },
+          "satzungsbeschlussBaugenehmigung": { "type": "string", "format": "date" },
+          "wesentlicheRechtsgrundlage": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "UNSPECIFIED",
+                "QUALIFIZIERTER_BEBAUUNGSPLAN",
+                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
+                "EINFACHER_BEBAUUNGSPLAN",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9",
+                "INFO_FEHLT",
+                "FREIE_EINGABE"
+              ]
+            }
+          },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string" },
+          "realisierungVon": { "type": "integer", "format": "int32" },
+          "gfWohnenGesamt": { "type": "number" },
+          "gfWohnenSobonUrsaechlich": { "type": "number" },
+          "gfWohnenBestandswohnbaurecht": { "type": "number" },
+          "gfWohnenSonderwohnformen": { "type": "boolean" },
+          "gfWohnenStudentischesWohnen": { "type": "number" },
+          "gfWohnenSeniorinnenWohnen": { "type": "number" },
+          "gfWohnenGenossenschaftlichesWohnen": { "type": "number" },
+          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
+          "weGesamt": { "type": "integer", "format": "int32" },
+          "weSonderwohnformen": { "type": "boolean" },
+          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
+          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
+          "weGenossenschaftlichesWohnen": { "type": "integer", "format": "int32" },
+          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
+          "abfragevarianteSachbearbeitung": { "$ref": "#/components/schemas/AbfragevarianteSachbearbeitungDto" },
+          "abfragevarianteFachreferat": { "$ref": "#/components/schemas/AbfragevarianteFachreferatDto" },
+          "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/BauabschnittDto" } }
+        }
+      },
+      "AbfragevarianteFachreferatDto": {
+        "type": "object",
+        "properties": {
+          "bedarfsmeldungFachreferate": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BedarfsmeldungFachabteilungenDto" }
+          }
+        }
+      },
+      "BauleitplanverfahrenDto": {
+        "required": ["fristBearbeitung", "name", "offizielleMitzeichnung", "sobonRelevant", "standVerfahren"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "name": { "type": "string" },
+          "bebauungsplannummer": { "type": "string" },
+          "bauvorhaben": { "type": "string", "format": "uuid" },
+          "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+          "standVerfahren": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "VORBEREITUNG_ECKDATENBESCHLUSS",
+              "VORBEREITUNG_WETTBEWERBAUSLOBUNG",
+              "VORBEREITUNG_AUFSTELLUNGSBESCHLUSS",
+              "VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG",
+              "VORLIEGENDER_SATZUNGSBESCHLUSS",
+              "RECHTSVERBINDLICHKEIT_AMTSBLATT",
+              "AUFTEILUNGSPLAN",
+              "INFO_FEHLT",
+              "FREIE_EINGABE"
+            ]
+          },
+          "standVerfahrenFreieEingabe": { "type": "string" },
+          "adresse": { "$ref": "#/components/schemas/AdresseDto" },
+          "verortung": { "$ref": "#/components/schemas/VerortungDto" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
+          "fristBearbeitung": { "type": "string", "format": "date" },
+          "offizielleMitzeichnung": { "$ref": "#/components/schemas/UncertainBoolean" },
+          "anmerkung": { "type": "string" },
+          "abfragevarianten": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenDto" }
+          },
+          "abfragevariantenSachbearbeitung": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenDto" }
+          },
+          "artAbfrage": {
+            "type": "string",
+            "enum": ["BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+          }
         }
       }
     }

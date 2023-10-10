@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    BedarfsmeldungFachabteilungenDto,
-    BedarfsmeldungFachabteilungenDtoFromJSON,
-    BedarfsmeldungFachabteilungenDtoFromJSONTyped,
-    BedarfsmeldungFachabteilungenDtoToJSON,
-} from './BedarfsmeldungFachabteilungenDto';
-
 /**
  * 
  * @export
@@ -31,38 +24,32 @@ export interface AbfragevarianteSachbearbeitungDto {
      * @type {number}
      * @memberof AbfragevarianteSachbearbeitungDto
      */
-    geschossflaecheWohnenPlanungsursaechlich?: number;
+    gfWohnenPlanungsursaechlich?: number;
     /**
      * 
      * @type {string}
      * @memberof AbfragevarianteSachbearbeitungDto
      */
-    soBoNOrientierungswertJahr?: AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum;
+    sobonOrientierungswertJahr?: AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum;
     /**
      * 
      * @type {string}
      * @memberof AbfragevarianteSachbearbeitungDto
      */
     anmerkung?: string;
-    /**
-     * 
-     * @type {Array<BedarfsmeldungFachabteilungenDto>}
-     * @memberof AbfragevarianteSachbearbeitungDto
-     */
-    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachabteilungenDto>;
 }
 
 
 /**
  * @export
  */
-export const AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum = {
+export const AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum = {
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
     Jahr2022: 'JAHR_2022'
 } as const;
-export type AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum = typeof AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum[keyof typeof AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum];
+export type AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum];
 
 
 export function AbfragevarianteSachbearbeitungDtoFromJSON(json: any): AbfragevarianteSachbearbeitungDto {
@@ -75,10 +62,9 @@ export function AbfragevarianteSachbearbeitungDtoFromJSONTyped(json: any, ignore
     }
     return {
         
-        'geschossflaecheWohnenPlanungsursaechlich': !exists(json, 'geschossflaecheWohnenPlanungsursaechlich') ? undefined : json['geschossflaecheWohnenPlanungsursaechlich'],
-        'soBoNOrientierungswertJahr': !exists(json, 'soBoNOrientierungswertJahr') ? undefined : json['soBoNOrientierungswertJahr'],
+        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
+        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachabteilungenDtoFromJSON)),
     };
 }
 
@@ -91,10 +77,9 @@ export function AbfragevarianteSachbearbeitungDtoToJSON(value?: AbfragevarianteS
     }
     return {
         
-        'geschossflaecheWohnenPlanungsursaechlich': value.geschossflaecheWohnenPlanungsursaechlich,
-        'soBoNOrientierungswertJahr': value.soBoNOrientierungswertJahr,
+        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
+        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'anmerkung': value.anmerkung,
-        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachabteilungenDtoToJSON)),
     };
 }
 

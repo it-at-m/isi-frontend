@@ -55,6 +55,12 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
+    standVerfahrenBauleitplanverfahrenList?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
     standVorhaben?: LookupListDto;
     /**
      * 
@@ -67,13 +73,19 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
+    wesentlicheRechtsgrundlageBauleitplanverfahren?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
     planungsrecht?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    baugebietArt?: LookupListDto;
+    artBaulicheNutzung?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
@@ -120,10 +132,12 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'artDokument': !exists(json, 'artDokument') ? undefined : LookupListDtoFromJSON(json['artDokument']),
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : LookupListDtoFromJSON(json['artAbfrage']),
         'sobonVerfahrensgrundsaetzeJahr': !exists(json, 'sobonVerfahrensgrundsaetzeJahr') ? undefined : LookupListDtoFromJSON(json['sobonVerfahrensgrundsaetzeJahr']),
+        'standVerfahrenBauleitplanverfahrenList': !exists(json, 'standVerfahrenBauleitplanverfahrenList') ? undefined : LookupListDtoFromJSON(json['standVerfahrenBauleitplanverfahrenList']),
         'standVorhaben': !exists(json, 'standVorhaben') ? undefined : LookupListDtoFromJSON(json['standVorhaben']),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
+        'wesentlicheRechtsgrundlageBauleitplanverfahren': !exists(json, 'wesentlicheRechtsgrundlageBauleitplanverfahren') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBauleitplanverfahren']),
         'planungsrecht': !exists(json, 'planungsrecht') ? undefined : LookupListDtoFromJSON(json['planungsrecht']),
-        'baugebietArt': !exists(json, 'baugebietArt') ? undefined : LookupListDtoFromJSON(json['baugebietArt']),
+        'artBaulicheNutzung': !exists(json, 'artBaulicheNutzung') ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzung']),
         'statusInfrastruktureinrichtung': !exists(json, 'statusInfrastruktureinrichtung') ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
         'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
@@ -145,10 +159,12 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'artDokument': LookupListDtoToJSON(value.artDokument),
         'artAbfrage': LookupListDtoToJSON(value.artAbfrage),
         'sobonVerfahrensgrundsaetzeJahr': LookupListDtoToJSON(value.sobonVerfahrensgrundsaetzeJahr),
+        'standVerfahrenBauleitplanverfahrenList': LookupListDtoToJSON(value.standVerfahrenBauleitplanverfahrenList),
         'standVorhaben': LookupListDtoToJSON(value.standVorhaben),
         'statusAbfrage': LookupListDtoToJSON(value.statusAbfrage),
+        'wesentlicheRechtsgrundlageBauleitplanverfahren': LookupListDtoToJSON(value.wesentlicheRechtsgrundlageBauleitplanverfahren),
         'planungsrecht': LookupListDtoToJSON(value.planungsrecht),
-        'baugebietArt': LookupListDtoToJSON(value.baugebietArt),
+        'artBaulicheNutzung': LookupListDtoToJSON(value.artBaulicheNutzung),
         'statusInfrastruktureinrichtung': LookupListDtoToJSON(value.statusInfrastruktureinrichtung),
         'einrichtungstraeger': LookupListDtoToJSON(value.einrichtungstraeger),
         'infrastruktureinrichtungTyp': LookupListDtoToJSON(value.infrastruktureinrichtungTyp),

@@ -61,13 +61,13 @@ export interface BaurateDto {
      * @type {number}
      * @memberof BaurateDto
      */
-    anzahlWeGeplant?: number;
+    weGeplant?: number;
     /**
      * 
      * @type {number}
      * @memberof BaurateDto
      */
-    geschossflaecheWohnenGeplant?: number;
+    gfWohnenGeplant?: number;
     /**
      * 
      * @type {FoerdermixDto}
@@ -91,8 +91,8 @@ export function BaurateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'jahr': json['jahr'],
-        'anzahlWeGeplant': !exists(json, 'anzahlWeGeplant') ? undefined : json['anzahlWeGeplant'],
-        'geschossflaecheWohnenGeplant': !exists(json, 'geschossflaecheWohnenGeplant') ? undefined : json['geschossflaecheWohnenGeplant'],
+        'weGeplant': !exists(json, 'weGeplant') ? undefined : json['weGeplant'],
+        'gfWohnenGeplant': !exists(json, 'gfWohnenGeplant') ? undefined : json['gfWohnenGeplant'],
         'foerdermix': FoerdermixDtoFromJSON(json['foerdermix']),
     };
 }
@@ -111,8 +111,8 @@ export function BaurateDtoToJSON(value?: BaurateDto | null): any {
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'jahr': value.jahr,
-        'anzahlWeGeplant': value.anzahlWeGeplant,
-        'geschossflaecheWohnenGeplant': value.geschossflaecheWohnenGeplant,
+        'weGeplant': value.weGeplant,
+        'gfWohnenGeplant': value.gfWohnenGeplant,
         'foerdermix': FoerdermixDtoToJSON(value.foerdermix),
     };
 }

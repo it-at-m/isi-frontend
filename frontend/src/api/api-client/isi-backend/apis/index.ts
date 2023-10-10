@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './AbfrageApi';
 export * from './AbfrageStatusApi';
+export * from './BauleitplanverfahrenApi';
 export * from './BaurateApi';
 export * from './BauvorhabenApi';
 export * from './DateihandlingApi';

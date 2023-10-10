@@ -61,7 +61,7 @@ export interface BaugebietDto {
      * @type {string}
      * @memberof BaugebietDto
      */
-    baugebietArt: BaugebietDtoBaugebietArtEnum;
+    artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum;
     /**
      * 
      * @type {number}
@@ -73,37 +73,37 @@ export interface BaugebietDto {
      * @type {number}
      * @memberof BaugebietDto
      */
-    gesamtanzahlWe?: number;
+    gfWohnenGeplant?: number;
     /**
      * 
      * @type {number}
      * @memberof BaugebietDto
      */
-    anzahlWohneinheitenBaurechtlichGenehmigt?: number;
+    gfWohnenBaurechtlichGenehmigt?: number;
     /**
      * 
      * @type {number}
      * @memberof BaugebietDto
      */
-    anzahlWohneinheitenBaurechtlichFestgesetzt?: number;
+    gfWohnenBaurechtlichFestgesetzt?: number;
     /**
      * 
      * @type {number}
      * @memberof BaugebietDto
      */
-    geschossflaecheWohnen?: number;
+    weGeplant?: number;
     /**
      * 
      * @type {number}
      * @memberof BaugebietDto
      */
-    geschossflaecheWohnenGenehmigt?: number;
+    weBaurechtlichGenehmigt?: number;
     /**
      * 
      * @type {number}
      * @memberof BaugebietDto
      */
-    geschossflaecheWohnenFestgesetzt?: number;
+    weBaurechtlichFestgesetzt?: number;
     /**
      * 
      * @type {Array<BaurateDto>}
@@ -122,7 +122,7 @@ export interface BaugebietDto {
 /**
  * @export
  */
-export const BaugebietDtoBaugebietArtEnum = {
+export const BaugebietDtoArtBaulicheNutzungEnum = {
     Wr: 'WR',
     Wa: 'WA',
     Mu: 'MU',
@@ -130,7 +130,7 @@ export const BaugebietDtoBaugebietArtEnum = {
     Mi: 'MI',
     Ge: 'GE'
 } as const;
-export type BaugebietDtoBaugebietArtEnum = typeof BaugebietDtoBaugebietArtEnum[keyof typeof BaugebietDtoBaugebietArtEnum];
+export type BaugebietDtoArtBaulicheNutzungEnum = typeof BaugebietDtoArtBaulicheNutzungEnum[keyof typeof BaugebietDtoArtBaulicheNutzungEnum];
 
 
 export function BaugebietDtoFromJSON(json: any): BaugebietDto {
@@ -148,14 +148,14 @@ export function BaugebietDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
-        'baugebietArt': json['baugebietArt'],
+        'artBaulicheNutzung': json['artBaulicheNutzung'],
         'realisierungVon': json['realisierungVon'],
-        'gesamtanzahlWe': !exists(json, 'gesamtanzahlWe') ? undefined : json['gesamtanzahlWe'],
-        'anzahlWohneinheitenBaurechtlichGenehmigt': !exists(json, 'anzahlWohneinheitenBaurechtlichGenehmigt') ? undefined : json['anzahlWohneinheitenBaurechtlichGenehmigt'],
-        'anzahlWohneinheitenBaurechtlichFestgesetzt': !exists(json, 'anzahlWohneinheitenBaurechtlichFestgesetzt') ? undefined : json['anzahlWohneinheitenBaurechtlichFestgesetzt'],
-        'geschossflaecheWohnen': !exists(json, 'geschossflaecheWohnen') ? undefined : json['geschossflaecheWohnen'],
-        'geschossflaecheWohnenGenehmigt': !exists(json, 'geschossflaecheWohnenGenehmigt') ? undefined : json['geschossflaecheWohnenGenehmigt'],
-        'geschossflaecheWohnenFestgesetzt': !exists(json, 'geschossflaecheWohnenFestgesetzt') ? undefined : json['geschossflaecheWohnenFestgesetzt'],
+        'gfWohnenGeplant': !exists(json, 'gfWohnenGeplant') ? undefined : json['gfWohnenGeplant'],
+        'gfWohnenBaurechtlichGenehmigt': !exists(json, 'gfWohnenBaurechtlichGenehmigt') ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
+        'gfWohnenBaurechtlichFestgesetzt': !exists(json, 'gfWohnenBaurechtlichFestgesetzt') ? undefined : json['gfWohnenBaurechtlichFestgesetzt'],
+        'weGeplant': !exists(json, 'weGeplant') ? undefined : json['weGeplant'],
+        'weBaurechtlichGenehmigt': !exists(json, 'weBaurechtlichGenehmigt') ? undefined : json['weBaurechtlichGenehmigt'],
+        'weBaurechtlichFestgesetzt': !exists(json, 'weBaurechtlichFestgesetzt') ? undefined : json['weBaurechtlichFestgesetzt'],
         'bauraten': ((json['bauraten'] as Array<any>).map(BaurateDtoFromJSON)),
         'technical': json['technical'],
     };
@@ -175,14 +175,14 @@ export function BaugebietDtoToJSON(value?: BaugebietDto | null): any {
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'bezeichnung': value.bezeichnung,
-        'baugebietArt': value.baugebietArt,
+        'artBaulicheNutzung': value.artBaulicheNutzung,
         'realisierungVon': value.realisierungVon,
-        'gesamtanzahlWe': value.gesamtanzahlWe,
-        'anzahlWohneinheitenBaurechtlichGenehmigt': value.anzahlWohneinheitenBaurechtlichGenehmigt,
-        'anzahlWohneinheitenBaurechtlichFestgesetzt': value.anzahlWohneinheitenBaurechtlichFestgesetzt,
-        'geschossflaecheWohnen': value.geschossflaecheWohnen,
-        'geschossflaecheWohnenGenehmigt': value.geschossflaecheWohnenGenehmigt,
-        'geschossflaecheWohnenFestgesetzt': value.geschossflaecheWohnenFestgesetzt,
+        'gfWohnenGeplant': value.gfWohnenGeplant,
+        'gfWohnenBaurechtlichGenehmigt': value.gfWohnenBaurechtlichGenehmigt,
+        'gfWohnenBaurechtlichFestgesetzt': value.gfWohnenBaurechtlichFestgesetzt,
+        'weGeplant': value.weGeplant,
+        'weBaurechtlichGenehmigt': value.weBaurechtlichGenehmigt,
+        'weBaurechtlichFestgesetzt': value.weBaurechtlichFestgesetzt,
         'bauraten': ((value.bauraten as Array<any>).map(BaurateDtoToJSON)),
         'technical': value.technical,
     };

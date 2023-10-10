@@ -115,12 +115,6 @@ export interface BauvorhabenDto {
      * @type {string}
      * @memberof BauvorhabenDto
      */
-    allgemeineOrtsangabe?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BauvorhabenDto
-     */
     bebauungsplannummer?: string;
     /**
      * 
@@ -263,7 +257,6 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'bauvorhabenNummer': !exists(json, 'bauvorhabenNummer') ? undefined : json['bauvorhabenNummer'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
-        'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'fisNummer': !exists(json, 'fisNummer') ? undefined : json['fisNummer'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -295,7 +288,6 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'bauvorhabenNummer': value.bauvorhabenNummer,
         'adresse': AdresseDtoToJSON(value.adresse),
         'verortung': VerortungDtoToJSON(value.verortung),
-        'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'bebauungsplannummer': value.bebauungsplannummer,
         'fisNummer': value.fisNummer,
         'anmerkung': value.anmerkung,

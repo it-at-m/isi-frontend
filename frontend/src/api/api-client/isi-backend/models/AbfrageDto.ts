@@ -52,12 +52,6 @@ export interface AbfrageDto {
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageDto
-     */
-    allgemeineOrtsangabe?: string;
-    /**
-     * 
      * @type {AdresseDto}
      * @memberof AbfrageDto
      */
@@ -147,7 +141,6 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     return {
         
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'fristStellungnahme': (new Date(json['fristStellungnahme'])),
@@ -170,7 +163,6 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
     return {
         
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
-        'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'adresse': AdresseDtoToJSON(value.adresse),
         'verortung': VerortungDtoToJSON(value.verortung),
         'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),

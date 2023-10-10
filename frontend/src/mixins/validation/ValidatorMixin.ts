@@ -63,8 +63,11 @@ export default class ValidatorMixin extends Vue {
   }
 
   private findFaultInAbfrage(abfrage: AbfrageModel): string | null {
-    if (!this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) && !this.isValidAdresse(abfrage.adresse)) {
-      return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
+    if (
+      !this.isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse.angabeLageErgaenzendeAdressinformation) &&
+      !this.isValidAdresse(abfrage.adresse)
+    ) {
+      return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
 
     if (abfrage.standVorhaben === AbfrageDtoStandVorhabenEnum.Unspecified) {
@@ -78,8 +81,10 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  private isValidAllgemeineOrtsangabe(allgemeineOrtsangabe?: string): boolean {
-    return !_.isNil(allgemeineOrtsangabe) && !_.isEmpty(allgemeineOrtsangabe.trim());
+  private isValidAngabeLageErgaenzendeAdressinformation(angabeLageErgaenzendeAdressinformation?: string): boolean {
+    return (
+      !_.isNil(angabeLageErgaenzendeAdressinformation) && !_.isEmpty(angabeLageErgaenzendeAdressinformation.trim())
+    );
   }
 
   private isValidAdresse(adresse?: AdresseDto): boolean {
@@ -295,10 +300,12 @@ export default class ValidatorMixin extends Vue {
 
   findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | null {
     if (
-      !this.isValidAllgemeineOrtsangabe(bauvorhaben.allgemeineOrtsangabe) &&
+      !this.isValidAngabeLageErgaenzendeAdressinformation(
+        bauvorhaben.adresse?.angabeLageErgaenzendeAdressinformation,
+      ) &&
       !this.isValidAdresse(bauvorhaben.adresse)
     ) {
-      return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
+      return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
     if (bauvorhaben.artFnp.length === 0) {
       return "Bitte treffen Sie eine Auswahl zur Flächennutzung laut Flächennutzungsplan";
@@ -353,10 +360,12 @@ export default class ValidatorMixin extends Vue {
       return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
     }
     if (
-      !this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
+      !this.isValidAngabeLageErgaenzendeAdressinformation(
+        infrastruktureinrichtung.adresse?.angabeLageErgaenzendeAdressinformation,
+      ) &&
       !this.isValidAdresse(infrastruktureinrichtung.adresse)
     ) {
-      return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
+      return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
     return null;
   }
