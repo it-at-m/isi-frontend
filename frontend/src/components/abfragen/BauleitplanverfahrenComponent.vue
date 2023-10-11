@@ -3,12 +3,13 @@
     <abfrage-common-component
       id="abfrage_common_component"
       ref="abfrageCommonComponent"
-      v-model="bauleitplanverfahren.name"
+      v-model="bauleitplanverfahren"
     />
     <allgemeine-informationen-component
       id="allgemeine_informationen_component"
       ref="allgemeineInformationenComponent"
       v-model="bauleitplanverfahren"
+      :is-editable-prop="isEditableByAbfrageerstellung()"
     />
     <adresse-component
       id="adresse_component"
@@ -29,6 +30,7 @@
       ref="allgemeineInformationenZurAbfrageComponent"
       v-model="bauleitplanverfahren"
       :look-at="bauleitplanverfahren"
+      :is-editable-prop="isEditableByAbfrageerstellung()"
     />
     <dokumente
       id="dokumente_component"

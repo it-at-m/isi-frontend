@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    BedarfsmeldungFachabteilungenDto,
-    BedarfsmeldungFachabteilungenDtoFromJSON,
-    BedarfsmeldungFachabteilungenDtoFromJSONTyped,
-    BedarfsmeldungFachabteilungenDtoToJSON,
-} from './BedarfsmeldungFachabteilungenDto';
+    BedarfsmeldungFachreferateDto,
+    BedarfsmeldungFachreferateDtoFromJSON,
+    BedarfsmeldungFachreferateDtoFromJSONTyped,
+    BedarfsmeldungFachreferateDtoToJSON,
+} from './BedarfsmeldungFachreferateDto';
 
 /**
  * 
@@ -40,10 +40,10 @@ export interface AbfragevarianteInBearbeitungFachreferateDto {
     version?: number;
     /**
      * 
-     * @type {Array<BedarfsmeldungFachabteilungenDto>}
+     * @type {Array<BedarfsmeldungFachreferateDto>}
      * @memberof AbfragevarianteInBearbeitungFachreferateDto
      */
-    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachabteilungenDto>;
+    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
 }
 
 export function AbfragevarianteInBearbeitungFachreferateDtoFromJSON(json: any): AbfragevarianteInBearbeitungFachreferateDto {
@@ -58,7 +58,7 @@ export function AbfragevarianteInBearbeitungFachreferateDtoFromJSONTyped(json: a
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
-        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachabteilungenDtoFromJSON)),
+        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
     };
 }
 
@@ -73,7 +73,7 @@ export function AbfragevarianteInBearbeitungFachreferateDtoToJSON(value?: Abfrag
         
         'id': value.id,
         'version': value.version,
-        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachabteilungenDtoToJSON)),
+        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
     };
 }
 

@@ -5,7 +5,7 @@
         <v-col cols="12">
           <v-text-field
             id="abfrage_name"
-            v-model.trim="abfrage.nameAbfrage"
+            v-model.trim="abfrage.name"
             :disabled="!isEditableByAbfrageerstellung()"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="70"

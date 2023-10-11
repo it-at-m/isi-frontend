@@ -5,7 +5,7 @@
         <v-text-field
           id="name_abfrage_field"
           ref="nameAbfrageField"
-          v-model.trim="nameAbfrage"
+          v-model.trim="abfrage.name"
           :disabled="!isEditableByAbfrageerstellung()"
           :rules="[fieldValidationRules.pflichtfeld]"
           maxlength="70"
@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -36,6 +37,6 @@ export default class AbfrageCommonComponent extends Mixins(
   SaveLeaveMixin,
   FieldValidationRulesMixin,
 ) {
-  @VModel({ type: String }) nameAbfrage!: string;
+  @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
 }
 </script>

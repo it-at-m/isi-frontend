@@ -9,7 +9,7 @@
           id="bebauungsplannummer_field"
           ref="bebauungsplannummerField"
           v-model="abfrage.bebauungsplannummer"
-          :disabled="!isEditableByAbfrageerstellung()"
+          :disabled="!isEditable"
           label="Bebauungsplannummer"
           maxlength="255"
           @input="formChanged"
@@ -23,7 +23,7 @@
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
           v-model="abfrage.bauvorhaben"
-          :disabled="!isEditableByAbfrageerstellung()"
+          :disabled="!isEditable"
           :items="bauvorhaben"
           item-text="nameVorhaben"
           item-value="id"
@@ -43,7 +43,7 @@
           id="sobon_relevant_triswitch"
           ref="sobonRelevantTriswitch"
           v-model="abfrage.sobonRelevant"
-          :disabled="!isEditableByAbfrageerstellung()"
+          :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"
           :rules="[fieldValidationRules.notUnspecified]"
@@ -61,7 +61,7 @@
             id="sobon_jahr_dropdown"
             ref="sobonJahrDropdown"
             v-model="abfrage.sobonJahr"
-            :disabled="!isEditableByAbfrageerstellung()"
+            :disabled="!isEditable"
             :items="sobonVerfahrensgrundsaetzeJahrList"
             item-value="key"
             item-text="value"
@@ -83,9 +83,9 @@
         <v-select
           id="stand_verfahren_dropdown"
           ref="standVerfahrenDropdown"
-          v-model="abfrage.standVorhaben"
-          :disabled="!isEditableByAbfrageerstellung()"
-          :items="standVerfahrenList"
+          v-model="abfrage.standVerfahren"
+          :disabled="!isEditable"
+          :items="standVerfahrenBauleitplanverfahrenList"
           item-value="key"
           item-text="value"
           :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import {
@@ -112,7 +112,6 @@ import {
 } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 
 @Component({
@@ -122,9 +121,15 @@ export default class AllgemeineInformationenComponent extends Mixins(
   SaveLeaveMixin,
   SearchApiRequestMixin,
   FieldValidationRulesMixin,
-  AbfrageSecurityMixin,
 ) {
   @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
+
+  @Prop({ type: Boolean, default: true })
+  private isEditableProp!: boolean;
+
+  get isEditable(): boolean {
+    return this.isEditableProp;
+  }
 
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Vorhaben";
 
@@ -136,8 +141,8 @@ export default class AllgemeineInformationenComponent extends Mixins(
     this.fetchBauvorhaben();
   }
 
-  get standVerfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVorhaben"];
+  get standVerfahrenBauleitplanverfahrenList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/standVerfahrenBauleitplanverfahren"];
   }
 
   /**

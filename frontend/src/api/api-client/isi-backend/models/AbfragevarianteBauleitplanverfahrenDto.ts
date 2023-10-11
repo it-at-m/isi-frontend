@@ -79,7 +79,7 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
      * @type {Date}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    satzungsbeschlussBaugenehmigung?: Date;
+    satzungsbeschluss?: Date;
     /**
      * 
      * @type {Array<string>}
@@ -210,8 +210,13 @@ export const AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnu
     Unspecified: 'UNSPECIFIED',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
+    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
+    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
     SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
+    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
+    Innenbereich: 'INNENBEREICH',
+    Aussenbereich: 'AUSSENBEREICH',
+    Befreiung: 'BEFREIUNG',
     InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
@@ -234,7 +239,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
         'name': json['name'],
-        'satzungsbeschlussBaugenehmigung': !exists(json, 'satzungsbeschlussBaugenehmigung') ? undefined : (new Date(json['satzungsbeschlussBaugenehmigung'])),
+        'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'realisierungVon': !exists(json, 'realisierungVon') ? undefined : json['realisierungVon'],
@@ -273,7 +278,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSON(value?: Abfragevari
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfragevariantenNr': value.abfragevariantenNr,
         'name': value.name,
-        'satzungsbeschlussBaugenehmigung': value.satzungsbeschlussBaugenehmigung === undefined ? undefined : (value.satzungsbeschlussBaugenehmigung.toISOString().substr(0,10)),
+        'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
         'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
         'realisierungVon': value.realisierungVon,

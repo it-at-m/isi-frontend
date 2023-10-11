@@ -9,7 +9,7 @@
           id="bearbeitungsfrist_datepicker"
           ref="bearbeitungsfristDatepicker"
           v-model="abfrage.fristBearbeitung"
-          :disabled="!isEditableByAbfrageerstellung()"
+          :disabled="!isEditable"
           label="Bearbeitungsfrist"
           :rules="[fieldValidationRules.pflichtfeld]"
           required
@@ -22,8 +22,8 @@
         <tri-switch
           id="offizielle_mitteilung_triswitch"
           ref="offizielleMitteilungTriswitch"
-          v-model="abfrage.offiziellerVerfahrensschritt"
-          :disabled="!isEditableByAbfrageerstellung()"
+          v-model="abfrage.offizielleMitzeichnung"
+          :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"
           :rules="[fieldValidationRules.notUnspecified]"
@@ -38,7 +38,7 @@
           id="anmerkung_field"
           ref="anmerkungField"
           v-model="abfrage.anmerkung"
-          :disabled="!isEditableByAbfrageerstellung()"
+          :disabled="!isEditable"
           label="Anmerkungen"
           auto-grow
           rows="3"
@@ -51,22 +51,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 
 @Component({
   components: { TriSwitch },
 })
-export default class AllgemeineInformationenComponent extends Mixins(
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-  AbfrageSecurityMixin,
-) {
+export default class AllgemeineInformationenComponent extends Mixins(SaveLeaveMixin, FieldValidationRulesMixin) {
   @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
+
+  @Prop({ type: Boolean, default: true })
+  private isEditableProp!: boolean;
+
+  get isEditable(): boolean {
+    return this.isEditableProp;
+  }
 
   private allgemeineInfoZurAbfrageCardTitle = "Allgemeine Informationen zur Abfrage";
 }

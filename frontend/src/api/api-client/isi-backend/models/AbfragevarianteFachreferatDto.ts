@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    BedarfsmeldungFachabteilungenDto,
-    BedarfsmeldungFachabteilungenDtoFromJSON,
-    BedarfsmeldungFachabteilungenDtoFromJSONTyped,
-    BedarfsmeldungFachabteilungenDtoToJSON,
-} from './BedarfsmeldungFachabteilungenDto';
+    BedarfsmeldungFachreferateDto,
+    BedarfsmeldungFachreferateDtoFromJSON,
+    BedarfsmeldungFachreferateDtoFromJSONTyped,
+    BedarfsmeldungFachreferateDtoToJSON,
+} from './BedarfsmeldungFachreferateDto';
 
 /**
  * 
@@ -28,10 +28,10 @@ import {
 export interface AbfragevarianteFachreferatDto {
     /**
      * 
-     * @type {Array<BedarfsmeldungFachabteilungenDto>}
+     * @type {Array<BedarfsmeldungFachreferateDto>}
      * @memberof AbfragevarianteFachreferatDto
      */
-    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachabteilungenDto>;
+    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
 }
 
 export function AbfragevarianteFachreferatDtoFromJSON(json: any): AbfragevarianteFachreferatDto {
@@ -44,7 +44,7 @@ export function AbfragevarianteFachreferatDtoFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachabteilungenDtoFromJSON)),
+        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function AbfragevarianteFachreferatDtoToJSON(value?: AbfragevarianteFachr
     }
     return {
         
-        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachabteilungenDtoToJSON)),
+        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
     };
 }
 

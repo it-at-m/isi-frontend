@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    AbfrageDto,
-    AbfrageDtoFromJSON,
-    AbfrageDtoFromJSONTyped,
-    AbfrageDtoToJSON,
-} from './AbfrageDto';
+    AbfrageAltDto,
+    AbfrageAltDtoFromJSON,
+    AbfrageAltDtoFromJSONTyped,
+    AbfrageAltDtoToJSON,
+} from './AbfrageAltDto';
 import {
     AbfragevarianteDto,
     AbfragevarianteDtoFromJSON,
@@ -64,10 +64,10 @@ export interface InfrastrukturabfrageDto {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {AbfrageDto}
+     * @type {AbfrageAltDto}
      * @memberof InfrastrukturabfrageDto
      */
-    abfrage?: AbfrageDto;
+    abfrage?: AbfrageAltDto;
     /**
      * 
      * @type {UncertainBoolean}
@@ -143,7 +143,7 @@ export function InfrastrukturabfrageDtoFromJSONTyped(json: any, ignoreDiscrimina
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'abfrage': !exists(json, 'abfrage') ? undefined : AbfrageDtoFromJSON(json['abfrage']),
+        'abfrage': !exists(json, 'abfrage') ? undefined : AbfrageAltDtoFromJSON(json['abfrage']),
         'sobonRelevant': !exists(json, 'sobonRelevant') ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteDtoFromJSON)),
@@ -167,7 +167,7 @@ export function InfrastrukturabfrageDtoToJSON(value?: InfrastrukturabfrageDto | 
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'abfrage': AbfrageDtoToJSON(value.abfrage),
+        'abfrage': AbfrageAltDtoToJSON(value.abfrage),
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
         'sobonJahr': value.sobonJahr,
         'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteDtoToJSON)),

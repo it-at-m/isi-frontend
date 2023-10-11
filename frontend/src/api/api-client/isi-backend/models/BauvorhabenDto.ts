@@ -91,7 +91,7 @@ export interface BauvorhabenDto {
      * @type {string}
      * @memberof BauvorhabenDto
      */
-    standVorhaben: BauvorhabenDtoStandVorhabenEnum;
+    standVerfahren: BauvorhabenDtoStandVerfahrenEnum;
     /**
      * 
      * @type {string}
@@ -142,10 +142,10 @@ export interface BauvorhabenDto {
     sobonJahr?: BauvorhabenDtoSobonJahrEnum;
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof BauvorhabenDto
      */
-    planungsrecht: BauvorhabenDtoPlanungsrechtEnum;
+    wesentlicheRechtsgrundlage: Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>;
     /**
      * 
      * @type {Array<string>}
@@ -170,24 +170,27 @@ export interface BauvorhabenDto {
 /**
  * @export
  */
-export const BauvorhabenDtoStandVorhabenEnum = {
+export const BauvorhabenDtoStandVerfahrenEnum = {
     Unspecified: 'UNSPECIFIED',
-    GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
-    Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
-    Parag31Baugb: 'PARAG_3_1_BAUGB',
-    Parag32Baugb: 'PARAG_3_2_BAUGB',
-    Parag412Baugb: 'PARAG_4_1_2_BAUGB',
-    Billigungsbeschluss: 'BILLIGUNGSBESCHLUSS',
-    Satzungsbeschluss: 'SATZUNGSBESCHLUSS',
-    BplanInKraft: 'BPLAN_IN_KRAFT',
-    VorbescheidEingereicht: 'VORBESCHEID_EINGEREICHT',
-    BauantragEingereicht: 'BAUANTRAG_EINGEREICHT',
-    BaugenehmigungErteilt: 'BAUGENEHMIGUNG_ERTEILT',
-    BaubeginnAngezeigt: 'BAUBEGINN_ANGEZEIGT',
-    BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
-    BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
+    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type BauvorhabenDtoStandVorhabenEnum = typeof BauvorhabenDtoStandVorhabenEnum[keyof typeof BauvorhabenDtoStandVorhabenEnum];
+export type BauvorhabenDtoStandVerfahrenEnum = typeof BauvorhabenDtoStandVerfahrenEnum[keyof typeof BauvorhabenDtoStandVerfahrenEnum];
 
 /**
  * @export
@@ -207,21 +210,21 @@ export type BauvorhabenDtoSobonJahrEnum = typeof BauvorhabenDtoSobonJahrEnum[key
 /**
  * @export
  */
-export const BauvorhabenDtoPlanungsrechtEnum = {
+export const BauvorhabenDtoWesentlicheRechtsgrundlageEnum = {
     Unspecified: 'UNSPECIFIED',
-    BplanParag30: 'BPLAN_PARAG_30',
-    BplanParag12: 'BPLAN_PARAG_12',
-    BplanParag11: 'BPLAN_PARAG_11',
-    BplanAendBbplan: 'BPLAN_AEND_BBPLAN',
-    NachverdParag34: 'NACHVERD_PARAG_34',
-    NachverdParag35: 'NACHVERD_PARAG_35',
-    NachverdParag31: 'NACHVERD_PARAG_31',
-    NachverdBaurechtsausschoepfung: 'NACHVERD_BAURECHTSAUSSCHOEPFUNG',
-    SonstigesUmstrukturierung: 'SONSTIGES_UMSTRUKTURIERUNG',
-    SonstigesParag165: 'SONSTIGES_PARAG_165',
-    SonstigesParag246: 'SONSTIGES_PARAG_246'
+    QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
+    VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
+    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
+    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
+    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
+    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
+    Innenbereich: 'INNENBEREICH',
+    Aussenbereich: 'AUSSENBEREICH',
+    Befreiung: 'BEFREIUNG',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type BauvorhabenDtoPlanungsrechtEnum = typeof BauvorhabenDtoPlanungsrechtEnum[keyof typeof BauvorhabenDtoPlanungsrechtEnum];
+export type BauvorhabenDtoWesentlicheRechtsgrundlageEnum = typeof BauvorhabenDtoWesentlicheRechtsgrundlageEnum[keyof typeof BauvorhabenDtoWesentlicheRechtsgrundlageEnum];
 
 /**
  * @export
@@ -253,7 +256,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'nameVorhaben': json['nameVorhaben'],
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
-        'standVorhaben': json['standVorhaben'],
+        'standVerfahren': json['standVerfahren'],
         'bauvorhabenNummer': !exists(json, 'bauvorhabenNummer') ? undefined : json['bauvorhabenNummer'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
@@ -262,7 +265,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
-        'planungsrecht': json['planungsrecht'],
+        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
         'artFnp': json['artFnp'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : AbfragevarianteDtoFromJSON(json['relevanteAbfragevariante']),
@@ -284,7 +287,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'nameVorhaben': value.nameVorhaben,
         'grundstuecksgroesse': value.grundstuecksgroesse,
-        'standVorhaben': value.standVorhaben,
+        'standVerfahren': value.standVerfahren,
         'bauvorhabenNummer': value.bauvorhabenNummer,
         'adresse': AdresseDtoToJSON(value.adresse),
         'verortung': VerortungDtoToJSON(value.verortung),
@@ -293,7 +296,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'anmerkung': value.anmerkung,
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
         'sobonJahr': value.sobonJahr,
-        'planungsrecht': value.planungsrecht,
+        'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
         'artFnp': value.artFnp,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'relevanteAbfragevariante': AbfragevarianteDtoToJSON(value.relevanteAbfragevariante),

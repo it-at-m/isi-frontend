@@ -119,7 +119,7 @@
 <script lang="ts">
 import { Component, Emit, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
+import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";

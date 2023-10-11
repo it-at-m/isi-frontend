@@ -1,5 +1,5 @@
 import { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
-import AnzeigeContextAbfragevariante from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import _ from "lodash";
 

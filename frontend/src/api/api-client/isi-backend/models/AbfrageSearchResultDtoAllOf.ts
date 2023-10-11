@@ -73,7 +73,7 @@ export interface AbfrageSearchResultDtoAllOf {
      * @type {string}
      * @memberof AbfrageSearchResultDtoAllOf
      */
-    standVorhaben?: AbfrageSearchResultDtoAllOfStandVorhabenEnum;
+    standVerfahren?: AbfrageSearchResultDtoAllOfStandVerfahrenEnum;
     /**
      * 
      * @type {Date}
@@ -107,24 +107,27 @@ export type AbfrageSearchResultDtoAllOfSobonJahrEnum = typeof AbfrageSearchResul
 /**
  * @export
  */
-export const AbfrageSearchResultDtoAllOfStandVorhabenEnum = {
+export const AbfrageSearchResultDtoAllOfStandVerfahrenEnum = {
     Unspecified: 'UNSPECIFIED',
-    GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
-    Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
-    Parag31Baugb: 'PARAG_3_1_BAUGB',
-    Parag32Baugb: 'PARAG_3_2_BAUGB',
-    Parag412Baugb: 'PARAG_4_1_2_BAUGB',
-    Billigungsbeschluss: 'BILLIGUNGSBESCHLUSS',
-    Satzungsbeschluss: 'SATZUNGSBESCHLUSS',
-    BplanInKraft: 'BPLAN_IN_KRAFT',
-    VorbescheidEingereicht: 'VORBESCHEID_EINGEREICHT',
-    BauantragEingereicht: 'BAUANTRAG_EINGEREICHT',
-    BaugenehmigungErteilt: 'BAUGENEHMIGUNG_ERTEILT',
-    BaubeginnAngezeigt: 'BAUBEGINN_ANGEZEIGT',
-    BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
-    BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
+    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type AbfrageSearchResultDtoAllOfStandVorhabenEnum = typeof AbfrageSearchResultDtoAllOfStandVorhabenEnum[keyof typeof AbfrageSearchResultDtoAllOfStandVorhabenEnum];
+export type AbfrageSearchResultDtoAllOfStandVerfahrenEnum = typeof AbfrageSearchResultDtoAllOfStandVerfahrenEnum[keyof typeof AbfrageSearchResultDtoAllOfStandVerfahrenEnum];
 
 
 export function AbfrageSearchResultDtoAllOfFromJSON(json: any): AbfrageSearchResultDtoAllOf {
@@ -143,7 +146,7 @@ export function AbfrageSearchResultDtoAllOfFromJSONTyped(json: any, ignoreDiscri
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
-        'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
+        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
@@ -164,7 +167,7 @@ export function AbfrageSearchResultDtoAllOfToJSON(value?: AbfrageSearchResultDto
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
         'sobonJahr': value.sobonJahr,
-        'standVorhaben': value.standVorhaben,
+        'standVerfahren': value.standVerfahren,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'bauvorhaben': value.bauvorhaben,
     };

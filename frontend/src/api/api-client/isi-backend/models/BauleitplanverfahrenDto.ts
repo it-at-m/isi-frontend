@@ -32,6 +32,12 @@ import {
     DokumentDtoToJSON,
 } from './DokumentDto';
 import {
+    StatusAbfrage,
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+} from './StatusAbfrage';
+import {
     UncertainBoolean,
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
@@ -79,13 +85,19 @@ export interface BauleitplanverfahrenDto {
      * @type {string}
      * @memberof BauleitplanverfahrenDto
      */
-    name: string;
+    artAbfrage?: BauleitplanverfahrenDtoArtAbfrageEnum;
     /**
      * 
      * @type {string}
      * @memberof BauleitplanverfahrenDto
      */
-    bebauungsplannummer?: string;
+    name: string;
+    /**
+     * 
+     * @type {StatusAbfrage}
+     * @memberof BauleitplanverfahrenDto
+     */
+    statusAbfrage?: StatusAbfrage;
     /**
      * 
      * @type {string}
@@ -94,10 +106,34 @@ export interface BauleitplanverfahrenDto {
     bauvorhaben?: string;
     /**
      * 
+     * @type {string}
+     * @memberof BauleitplanverfahrenDto
+     */
+    sub?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BauleitplanverfahrenDto
+     */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BauleitplanverfahrenDto
+     */
+    bebauungsplannummer?: string;
+    /**
+     * 
      * @type {UncertainBoolean}
      * @memberof BauleitplanverfahrenDto
      */
     sobonRelevant: UncertainBoolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof BauleitplanverfahrenDto
+     */
+    sobonJahr?: BauleitplanverfahrenDtoSobonJahrEnum;
     /**
      * 
      * @type {string}
@@ -158,14 +194,33 @@ export interface BauleitplanverfahrenDto {
      * @memberof BauleitplanverfahrenDto
      */
     abfragevariantenSachbearbeitung?: Array<AbfragevarianteBauleitplanverfahrenDto>;
-    /**
-     * 
-     * @type {string}
-     * @memberof BauleitplanverfahrenDto
-     */
-    artAbfrage?: BauleitplanverfahrenDtoArtAbfrageEnum;
 }
 
+
+/**
+ * @export
+ */
+export const BauleitplanverfahrenDtoArtAbfrageEnum = {
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type BauleitplanverfahrenDtoArtAbfrageEnum = typeof BauleitplanverfahrenDtoArtAbfrageEnum[keyof typeof BauleitplanverfahrenDtoArtAbfrageEnum];
+
+/**
+ * @export
+ */
+export const BauleitplanverfahrenDtoSobonJahrEnum = {
+    _1995: 'JAHR_1995',
+    _1997: 'JAHR_1997',
+    _2001: 'JAHR_2001',
+    _2006: 'JAHR_2006',
+    _2012: 'JAHR_2012',
+    _2017: 'JAHR_2017',
+    _2017Plus: 'JAHR_2017_PLUS',
+    _2021: 'JAHR_2021'
+} as const;
+export type BauleitplanverfahrenDtoSobonJahrEnum = typeof BauleitplanverfahrenDtoSobonJahrEnum[keyof typeof BauleitplanverfahrenDtoSobonJahrEnum];
 
 /**
  * @export
@@ -179,20 +234,18 @@ export const BauleitplanverfahrenDtoStandVerfahrenEnum = {
     VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
     RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
     Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauleitplanverfahrenDtoStandVerfahrenEnum = typeof BauleitplanverfahrenDtoStandVerfahrenEnum[keyof typeof BauleitplanverfahrenDtoStandVerfahrenEnum];
-
-/**
- * @export
- */
-export const BauleitplanverfahrenDtoArtAbfrageEnum = {
-    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
-    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
-} as const;
-export type BauleitplanverfahrenDtoArtAbfrageEnum = typeof BauleitplanverfahrenDtoArtAbfrageEnum[keyof typeof BauleitplanverfahrenDtoArtAbfrageEnum];
 
 
 export function BauleitplanverfahrenDtoFromJSON(json: any): BauleitplanverfahrenDto {
@@ -209,10 +262,15 @@ export function BauleitplanverfahrenDtoFromJSONTyped(json: any, ignoreDiscrimina
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'name': json['name'],
-        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+        'sub': !exists(json, 'sub') ? undefined : json['sub'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
+        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'standVerfahren': json['standVerfahren'],
         'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
@@ -223,7 +281,6 @@ export function BauleitplanverfahrenDtoFromJSONTyped(json: any, ignoreDiscrimina
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
         'abfragevariantenSachbearbeitung': !exists(json, 'abfragevariantenSachbearbeitung') ? undefined : ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
-        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
     };
 }
 
@@ -240,10 +297,15 @@ export function BauleitplanverfahrenDtoToJSON(value?: BauleitplanverfahrenDto | 
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'artAbfrage': value.artAbfrage,
         'name': value.name,
-        'bebauungsplannummer': value.bebauungsplannummer,
+        'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'bauvorhaben': value.bauvorhaben,
+        'sub': value.sub,
+        'displayName': value.displayName,
+        'bebauungsplannummer': value.bebauungsplannummer,
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
+        'sobonJahr': value.sobonJahr,
         'standVerfahren': value.standVerfahren,
         'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
         'adresse': AdresseDtoToJSON(value.adresse),
@@ -254,7 +316,6 @@ export function BauleitplanverfahrenDtoToJSON(value?: BauleitplanverfahrenDto | 
         'anmerkung': value.anmerkung,
         'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
         'abfragevariantenSachbearbeitung': value.abfragevariantenSachbearbeitung === undefined ? undefined : ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
-        'artAbfrage': value.artAbfrage,
     };
 }
 

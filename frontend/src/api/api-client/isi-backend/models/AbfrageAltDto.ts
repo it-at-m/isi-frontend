@@ -26,76 +26,82 @@ import {
     DokumentDtoToJSON,
 } from './DokumentDto';
 import {
-    VerortungModel,
-    VerortungModelFromJSON,
-    VerortungModelFromJSONTyped,
-    VerortungModelToJSON,
-} from './VerortungModel';
+    StatusAbfrage,
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+} from './StatusAbfrage';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 
  * @export
- * @interface AbfrageAngelegtDto
+ * @interface AbfrageAltDto
  */
-export interface AbfrageAngelegtDto {
+export interface AbfrageAltDto {
     /**
      * 
      * @type {Array<DokumentDto>}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageAngelegtDto
-     */
-    allgemeineOrtsangabe?: string;
-    /**
-     * 
      * @type {AdresseDto}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungModel}
-     * @memberof AbfrageAngelegtDto
+     * @type {VerortungDto}
+     * @memberof AbfrageAltDto
      */
-    verortung?: VerortungModel;
+    verortung?: VerortungDto;
     /**
      * 
      * @type {Date}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
     fristStellungnahme: Date;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
     anmerkung?: string;
     /**
      * 
+     * @type {StatusAbfrage}
+     * @memberof AbfrageAltDto
+     */
+    statusAbfrage?: StatusAbfrage;
+    /**
+     * 
      * @type {string}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
     bebauungsplannummer?: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
-    nameAbfrage: string;
+    nameAbfrage?: string;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
-    standVerfahren: AbfrageAngelegtDtoStandVerfahrenEnum;
+    standVerfahren?: AbfrageAltDtoStandVerfahrenEnum;
     /**
      * 
      * @type {string}
-     * @memberof AbfrageAngelegtDto
+     * @memberof AbfrageAltDto
      */
     bauvorhaben?: string;
 }
@@ -104,7 +110,7 @@ export interface AbfrageAngelegtDto {
 /**
  * @export
  */
-export const AbfrageAngelegtDtoStandVerfahrenEnum = {
+export const AbfrageAltDtoStandVerfahrenEnum = {
     Unspecified: 'UNSPECIFIED',
     VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
     VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
@@ -124,33 +130,33 @@ export const AbfrageAngelegtDtoStandVerfahrenEnum = {
     InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type AbfrageAngelegtDtoStandVerfahrenEnum = typeof AbfrageAngelegtDtoStandVerfahrenEnum[keyof typeof AbfrageAngelegtDtoStandVerfahrenEnum];
+export type AbfrageAltDtoStandVerfahrenEnum = typeof AbfrageAltDtoStandVerfahrenEnum[keyof typeof AbfrageAltDtoStandVerfahrenEnum];
 
 
-export function AbfrageAngelegtDtoFromJSON(json: any): AbfrageAngelegtDto {
-    return AbfrageAngelegtDtoFromJSONTyped(json, false);
+export function AbfrageAltDtoFromJSON(json: any): AbfrageAltDto {
+    return AbfrageAltDtoFromJSONTyped(json, false);
 }
 
-export function AbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageAngelegtDto {
+export function AbfrageAltDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageAltDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungModelFromJSON(json['verortung']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'fristStellungnahme': (new Date(json['fristStellungnahme'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
-        'nameAbfrage': json['nameAbfrage'],
-        'standVerfahren': json['standVerfahren'],
+        'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
+        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
 }
 
-export function AbfrageAngelegtDtoToJSON(value?: AbfrageAngelegtDto | null): any {
+export function AbfrageAltDtoToJSON(value?: AbfrageAltDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -160,11 +166,11 @@ export function AbfrageAngelegtDtoToJSON(value?: AbfrageAngelegtDto | null): any
     return {
         
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
-        'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'adresse': AdresseDtoToJSON(value.adresse),
-        'verortung': VerortungModelToJSON(value.verortung),
+        'verortung': VerortungDtoToJSON(value.verortung),
         'fristStellungnahme': (value.fristStellungnahme.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'bebauungsplannummer': value.bebauungsplannummer,
         'nameAbfrage': value.nameAbfrage,
         'standVerfahren': value.standVerfahren,

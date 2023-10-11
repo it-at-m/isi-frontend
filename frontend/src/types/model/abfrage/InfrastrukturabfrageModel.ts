@@ -1,5 +1,5 @@
 import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import AbfrageAltModel from "@/types/model/abfrage/AbfrageModel";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import _ from "lodash";
 
@@ -9,7 +9,7 @@ class InfrastrukturabfrageModel {
   constructor(infrastrukturabfrage: InfrastrukturabfrageDto) {
     Object.assign(this, infrastrukturabfrage, {});
     if (!_.isNil(infrastrukturabfrage.abfrage)) {
-      this.abfrage = new AbfrageModel(infrastrukturabfrage.abfrage);
+      this.abfrage = new AbfrageAltModel(infrastrukturabfrage.abfrage);
     }
     this.abfragevarianten = _.toArray(infrastrukturabfrage.abfragevarianten).map(
       (abfragevariante) => new AbfragevarianteModel(abfragevariante),

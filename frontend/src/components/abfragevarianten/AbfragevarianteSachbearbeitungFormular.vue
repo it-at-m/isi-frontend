@@ -149,7 +149,7 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import BedarfsmeldungFachabteilungenDialog from "@/components/abfragevarianten/BedarfsmeldungFachabteilungenDialog.vue";
-import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
+import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
 import { createBedarfsmeldungFachabteilungenDto } from "@/utils/Factories";
 import _ from "lodash";
 import DisplayMode from "@/types/common/DisplayMode";

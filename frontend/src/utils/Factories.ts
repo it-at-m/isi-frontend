@@ -1,18 +1,19 @@
 import {
-  AbfrageDto,
-  AbfrageDtoStandVorhabenEnum,
   StatusAbfrage,
-  AbfragevarianteDto,
   AbfragevarianteSachbearbeitungDto,
-  BedarfsmeldungFachabteilungenDto,
-  BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
-  AbfragevarianteDtoPlanungsrechtEnum,
+  AbfragevarianteFachreferatDto,
+  AbfragevarianteBauleitplanverfahrenDto,
+  BauleitplanverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
+  BedarfsmeldungFachreferateDto,
+  BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
   AdresseDto,
   BaurateDto,
   BauvorhabenDto,
   BauvorhabenDtoArtFnpEnum,
-  BauvorhabenDtoPlanungsrechtEnum,
-  BauvorhabenDtoStandVorhabenEnum,
+  BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
+  BauleitplanverfahrenDtoStandVerfahrenEnum,
+  BauvorhabenDtoStandVerfahrenEnum,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
   FilepathDto,
@@ -22,7 +23,6 @@ import {
   GrundschuleDto,
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
-  InfrastrukturabfrageDto,
   InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoEinrichtungstraegerEnum,
   InfrastruktureinrichtungDtoStatusEnum,
@@ -40,6 +40,7 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  BauleitplanverfahrenDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -64,96 +65,34 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
   return new SearchQueryAndSortingModel(searchQueryAndSortingDto);
 }
 
-export function createAbfragevarianteDto(): AbfragevarianteDto {
-  return {
-    abfragevariantenNr: Number.NaN,
-    abfragevariantenName: "",
-    planungsrecht: AbfragevarianteDtoPlanungsrechtEnum.Unspecified,
-    geschossflaecheWohnen: undefined,
-    geschossflaecheWohnenGenehmigt: undefined,
-    geschossflaecheWohnenFestgesetzt: undefined,
-    geschossflaecheWohnenSoBoNursaechlich: undefined,
-    geschossflaecheWohnenBestandswohnbaurecht: undefined,
-    gesamtanzahlWe: undefined,
-    anzahlWeBaurechtlichGenehmigt: undefined,
-    anzahlWeBaurechtlichFestgesetzt: undefined,
-    realisierungVon: Number.NaN,
-    satzungsbeschluss: undefined,
-    geschossflaecheGenossenschaftlicheWohnungen: undefined,
-    sonderwohnformen: false,
-    geschossflaecheStudentenwohnungen: undefined,
-    geschossflaecheSeniorenwohnungen: undefined,
-    geschossflaecheSonstiges: undefined,
-    bauabschnitte: [],
-    abfragevarianteSachbearbeitung: createAbfragevarianteSachbearbeitungDto(),
-  };
-}
-
 /**
- * AbfragevarianteSachbearbeitungDto
+ * BauleitplanverfahrenDto
  */
-export function createAbfragevarianteSachbearbeitungDto(): AbfragevarianteSachbearbeitungDto {
-  return {
-    gfWohnenPlanungsursaechlich: undefined,
-    sobonOrientierungswertJahr: AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum.Unspecified,
-    anmerkung: undefined,
-  };
-}
-
-/**
- * BedarfsmeldungFachabteilungenDto
- */
-export function createBedarfsmeldungFachabteilungenDto(): BedarfsmeldungFachabteilungenDto {
-  return {
-    anzahlEinrichtungen: undefined,
-    infrastruktureinrichtungTyp: BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum.Unspecified,
-    anzahlKinderkrippengruppen: undefined,
-    anzahlKindergartengruppen: undefined,
-    anzahlHortgruppen: undefined,
-    anzahlGrundschulzuege: undefined,
-  };
-}
-
-/**
- * AbfrageDto
- */
-export function createAbfrageDto(): AbfrageDto {
-  return {
-    adresse: {
-      angabeLageErgaenzendeAdressinformation: undefined,
-      strasse: "",
-      hausnummer: "",
-      plz: "",
-      ort: "",
-      coordinate: undefined,
-    },
-    verortung: undefined,
-    fristStellungnahme: new Date(0),
-    anmerkung: undefined,
-    statusAbfrage: StatusAbfrage.Angelegt,
-    bebauungsplannummer: undefined,
-    nameAbfrage: "",
-    standVorhaben: AbfrageDtoStandVorhabenEnum.Unspecified,
-    bauvorhaben: undefined,
-    dokumente: new Array<DokumentDto>(),
-  };
-}
-
-/**
- * InfrastrukturabfrageDto
- */
-export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
+export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
   return {
     id: "",
+    version: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
-    abfrage: createAbfrageDto(),
+    artAbfrage: BauleitplanverfahrenDtoArtAbfrageEnum.Bauleitplanverfahren,
+    name: "",
+    statusAbfrage: StatusAbfrage.Angelegt,
+    bauvorhaben: undefined,
+    sub: undefined,
+    displayName: undefined,
+    bebauungsplannummer: undefined,
     sobonRelevant: UncertainBoolean.Unspecified,
     sobonJahr: undefined,
-    abfragevarianten: new Array<AbfragevarianteDto>(),
-    abfragevariantenSachbearbeitung: new Array<AbfragevarianteDto>(),
-    aktenzeichenProLbk: undefined,
-    offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,
+    standVerfahren: BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified,
+    standVerfahrenFreieEingabe: undefined,
+    adresse: createAdresseDto(),
+    verortung: undefined,
+    dokumente: new Array<DokumentDto>(),
+    fristBearbeitung: new Date(0),
+    offizielleMitzeichnung: UncertainBoolean.Unspecified,
+    anmerkung: undefined,
+    abfragevarianten: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+    abfragevariantenSachbearbeitung: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
   };
 }
 
@@ -172,31 +111,95 @@ export function createAdresseDto(): AdresseDto {
 }
 
 /**
+ * AbfragevarianteBauleitplanverfahrenDto
+ */
+export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteBauleitplanverfahrenDto {
+  return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    abfragevariantenNr: Number.NaN,
+    name: "",
+    satzungsbeschluss: undefined,
+    wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>(),
+    wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    realisierungVon: Number.NaN,
+    gfWohnenGesamt: undefined,
+    gfWohnenSobonUrsaechlich: undefined,
+    gfWohnenBestandswohnbaurecht: undefined,
+    gfWohnenSonderwohnformen: false,
+    gfWohnenStudentischesWohnen: undefined,
+    gfWohnenSeniorinnenWohnen: undefined,
+    gfWohnenGenossenschaftlichesWohnen: undefined,
+    gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
+    weGesamt: undefined,
+    weSonderwohnformen: undefined,
+    weStudentischesWohnen: undefined,
+    weSeniorinnenWohnen: undefined,
+    weGenossenschaftlichesWohnen: undefined,
+    weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
+    abfragevarianteSachbearbeitung: createAbfragevarianteSachbearbeitungDto(),
+    abfragevarianteFachreferat: createAbfragevarianteFachreferatDto(),
+    bauabschnitte: [],
+  };
+}
+
+/**
+ * AbfragevarianteSachbearbeitungDto
+ */
+export function createAbfragevarianteSachbearbeitungDto(): AbfragevarianteSachbearbeitungDto {
+  return {
+    gfWohnenPlanungsursaechlich: undefined,
+    sobonOrientierungswertJahr: AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum.Unspecified,
+    anmerkung: undefined,
+  };
+}
+
+/**
+ * AbfragevarianteFachreferatDto
+ */
+export function createAbfragevarianteFachreferatDto(): AbfragevarianteFachreferatDto {
+  return {
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+  };
+}
+
+/**
+ * BedarfsmeldungFachabteilungenDto
+ */
+export function createBedarfsmeldungFachabteilungenDto(): BedarfsmeldungFachreferateDto {
+  return {
+    anzahlEinrichtungen: undefined,
+    infrastruktureinrichtungTyp: BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    anzahlKinderkrippengruppen: undefined,
+    anzahlKindergartengruppen: undefined,
+    anzahlHortgruppen: undefined,
+    anzahlGrundschulzuege: undefined,
+  };
+}
+
+/**
  * BauvorhabenDto
  */
 export function createBauvorhabenDto(): BauvorhabenDto {
   return {
     id: "",
+    version: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     nameVorhaben: "",
     grundstuecksgroesse: Number.NaN,
-    standVorhaben: BauvorhabenDtoStandVorhabenEnum.Unspecified,
-    bauvorhabenNummer: "",
-    adresse: {
-      angabeLageErgaenzendeAdressinformation: "",
-      strasse: "",
-      hausnummer: "",
-      plz: "",
-      ort: "",
-      coordinate: undefined,
-    },
+    standVerfahren: BauvorhabenDtoStandVerfahrenEnum.Unspecified,
+    bauvorhabenNummer: undefined,
+    adresse: createAdresseDto(),
     verortung: undefined,
-    bebauungsplannummer: "",
-    fisNummer: "",
-    anmerkung: "",
+    bebauungsplannummer: undefined,
+    fisNummer: undefined,
+    anmerkung: undefined,
     sobonRelevant: UncertainBoolean.Unspecified,
-    planungsrecht: BauvorhabenDtoPlanungsrechtEnum.Unspecified,
+    sobonJahr: undefined,
+    wesentlicheRechtsgrundlage: new Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>(),
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
     relevanteAbfragevariante: undefined,

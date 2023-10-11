@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AbfrageAltDto';
 export * from './AbfrageAngelegtDto';
-export * from './AbfrageDto';
 export * from './AbfrageSearchResultDto';
 export * from './AbfrageSearchResultDtoAllOf';
 export * from './AbfragevarianteAngelegtDto';
@@ -20,7 +20,7 @@ export * from './BaurateDto';
 export * from './BauvorhabenDto';
 export * from './BauvorhabenSearchResultDto';
 export * from './BauvorhabenSearchResultDtoAllOf';
-export * from './BedarfsmeldungFachabteilungenDto';
+export * from './BedarfsmeldungFachreferateDto';
 export * from './DokumentDto';
 export * from './DokumenteDto';
 export * from './FileInformationDto';

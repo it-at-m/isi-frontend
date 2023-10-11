@@ -94,8 +94,8 @@ export function generateTreeItemId(parentId: string, index: number): string {
 
 <script setup lang="ts">
 import {
-  InfrastrukturabfrageDto,
-  AbfragevarianteDto,
+  BauleitplanverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
@@ -108,7 +108,7 @@ import {
 } from "@/mixins/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
-import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 
 export interface AbfrageTreeItem {
   id: string;
@@ -134,7 +134,7 @@ interface Action {
 }
 
 interface Props {
-  abfrage: InfrastrukturabfrageDto;
+  abfrage: BauleitplanverfahrenDto;
   selectedItemId: string;
   relevanteAbfragevarianteId: string | null;
 }
@@ -191,7 +191,7 @@ watch(
   () => (items.value = [buildTree(props.abfrage)]),
 );
 
-function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
+function buildTree(abfrage: BauleitplanverfahrenDto): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: "",
     type: AbfrageFormType.INFRASTRUKTURABFRAGE,
@@ -251,7 +251,7 @@ function buildTree(abfrage: InfrastrukturabfrageDto): AbfrageTreeItem {
 }
 
 function buildSubTreeAbfragevariante(
-  abfragevariante: AbfragevarianteDto,
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
@@ -480,19 +480,19 @@ function buildSubTreeBaurate(
 }
 
 function getAbfragevarianteName(
-  abfragevariante: AbfragevarianteDto,
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto,
   conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
 ): string {
-  const abfragevarianteModel = new AbfragevarianteModel(abfragevariante);
+  const abfragevarianteModel = new AbfragevarianteBauleitplanverfahrenModel(abfragevariante);
   return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
     conextAnzeigeAbfragevariante,
-  )}\xa0-\xa0${_.isNil(abfragevariante.abfragevariantenName) ? DEFAULT_NAME : abfragevariante.abfragevariantenName}`;
+  )}\xa0-\xa0${_.isNil(abfragevariante.name) ? DEFAULT_NAME : abfragevariante.name}`;
 }
 
-function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteDto): boolean {
+function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteBauleitplanverfahrenDto): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
-    (!_.isNil(abfragevariante.gesamtanzahlWe) || !_.isNil(abfragevariante.geschossflaecheWohnen)) &&
+    (!_.isNil(abfragevariante.weGesamt) || !_.isNil(abfragevariante.gfWohnenGesamt)) &&
     // Die Abfragevariante darf keine Bauabschnitte referenzieren.
     _.isEmpty(abfragevariante.bauabschnitte) &&
     // Das Datum für Realisierung von muss gesetzt sein.
@@ -503,7 +503,7 @@ function bauratenDeterminableForAbfragevariante(abfragevariante: Abfragevariante
 function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
-    (!_.isNil(baugebiet.gesamtanzahlWe) || !_.isNil(baugebiet.geschossflaecheWohnen)) &&
+    (!_.isNil(baugebiet.weGeplant) || !_.isNil(baugebiet.weGeplant)) &&
     // Die Abfragevariante darf keine Bauabschnitte referenzieren.
     _.isEmpty(baugebiet.bauraten) &&
     // Das Datum für Realisierung von muss gesetzt sein.

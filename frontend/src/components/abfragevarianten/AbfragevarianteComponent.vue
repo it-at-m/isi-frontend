@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Component, Vue, VModel, Prop } from "vue-property-decorator";
-import GeplanteGeschossflaecheWohnenComponent from "@/components/abfragen/GeplanteGeschossflaecheWohnenComponent.vue";
+import GeplanteGeschossflaecheWohnenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenComponent.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
