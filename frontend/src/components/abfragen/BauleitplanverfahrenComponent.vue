@@ -41,16 +41,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Mixins, VModel } from "vue-property-decorator";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenComponent from "@/components/abfragen/AllgemeineInformationenComponent.vue";
 import AllgemeineInformationenZurAbfrageComponent from "@/components/abfragen/AllgemeineInformationenZurAbfrageComponent.vue";
-import { LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import TriSwitch from "@/components/common/TriSwitch.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
 
@@ -65,32 +61,12 @@ import { Context } from "@/utils/Context";
     AllgemeineInformationenComponent,
     AllgemeineInformationenZurAbfrageComponent,
     FieldGroupCard,
-    TriSwitch,
   },
 })
-export default class BauleitplanverfahrenComponent extends Mixins(
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
+export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin) {
   @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
 
-  private sobonJahrVisible = false;
   private nameRootFolder = "bauleitplanverfahren";
-
-  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
-  }
-
-  @Watch("infrastrukturabfrage.sobonRelevant", { immediate: true })
-  private sobonRelevantChanged(value: UncertainBoolean): void {
-    if (value === UncertainBoolean.True) {
-      this.sobonJahrVisible = true;
-    } else {
-      this.sobonJahrVisible = false;
-      this.bauleitplanverfahren.sobonJahr = undefined;
-    }
-  }
 }
 </script>
 
