@@ -6,7 +6,7 @@ const state = {
   foerdermixStammdaten: [] as FoerdermixStammDto[],
 };
 
-export type FoerdermixState = typeof state;
+export type StammdatenState = typeof state;
 
 export default {
   namespaced: true,
@@ -14,19 +14,19 @@ export default {
   state,
 
   getters: {
-    foerdermixStammdaten: (state: FoerdermixState): Array<FoerdermixStammDto> => {
+    foerdermixStammdaten: (state: StammdatenState): Array<FoerdermixStammDto> => {
       return state.foerdermixStammdaten;
     },
   },
 
   mutations: {
-    foerdermixStammdaten(state: FoerdermixState, value: FoerdermixStammDto[]): void {
+    foerdermixStammdaten(state: StammdatenState, value: FoerdermixStammDto[]): void {
       state.foerdermixStammdaten = value;
     },
   },
 
   actions: {
-    foerdermixStammdaten(context: ActionContext<FoerdermixState, RootState>, value: FoerdermixStammDto[]): void {
+    foerdermixStammdaten(context: ActionContext<StammdatenState, RootState>, value: FoerdermixStammDto[]): void {
       context.commit("foerdermixStammdaten", value);
     },
   },

@@ -6,7 +6,7 @@ import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
 import CommonStore, { CommonState } from "@/store/modules/CommonStore";
 import LookupStore, { LookupState } from "@/store/modules/LookupStore";
 import SearchStore, { SearchState } from "@/store/modules/SearchStore";
-import FoerdermixStore, { FoerdermixState } from "@/store/modules/FoerdermixStore";
+import StammdatenStore, { StammdatenState } from "@/store/modules/StammdatenStore";
 import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
 
 describe("BaurateStoreTest.spec.ts", () => {
@@ -14,7 +14,7 @@ describe("BaurateStoreTest.spec.ts", () => {
   interface RootState {
     snackbarState: SnackbarState;
     userState: UserState;
-    foerdermix: FoerdermixState;
+    stammdaten: StammdatenState;
     common: CommonState;
     lookup: LookupState;
     search: SearchState;
@@ -25,7 +25,7 @@ describe("BaurateStoreTest.spec.ts", () => {
     modules: {
       user: User,
       snackbar: Snackbar,
-      foerdermix: FoerdermixStore,
+      stammdaten: StammdatenStore,
       common: CommonStore,
       lookup: LookupStore,
       search: SearchStore,
@@ -34,11 +34,11 @@ describe("BaurateStoreTest.spec.ts", () => {
   });
 
   afterEach(() => {
-    store.commit("foerdermix/foerdermixStammdaten", []);
+    store.commit("stammdaten/foerdermixStammdaten", []);
   });
 
   test("Initialized foerdermixStammdaten", () => {
-    expect(store.getters["foerdermix/foerdermixStammdaten"]).toStrictEqual([]);
+    expect(store.getters["stammdaten/foerdermixStammdaten"]).toStrictEqual([]);
   });
 
   test("save foerdermixStammdaten", () => {
@@ -47,9 +47,9 @@ describe("BaurateStoreTest.spec.ts", () => {
       bezeichnungJahr: "Sobon 2017",
       bezeichnung: "Test",
     } as FoerdermixStammDto);
-    store.commit("foerdermix/foerdermixStammdaten", list);
-    expect(store.getters["foerdermix/foerdermixStammdaten"]).toHaveLength(1);
-    expect(store.getters["foerdermix/foerdermixStammdaten"][0].bezeichnungJahr).toEqual("Sobon 2017");
-    expect(store.getters["foerdermix/foerdermixStammdaten"][0].bezeichnung).toEqual("Test");
+    store.commit("stammdaten/foerdermixStammdaten", list);
+    expect(store.getters["stammdaten/foerdermixStammdaten"]).toHaveLength(1);
+    expect(store.getters["stammdaten/foerdermixStammdaten"][0].bezeichnungJahr).toEqual("Sobon 2017");
+    expect(store.getters["stammdaten/foerdermixStammdaten"][0].bezeichnung).toEqual("Test");
   });
 });

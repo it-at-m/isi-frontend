@@ -32,7 +32,7 @@ type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 export default class FoerdermixStaemmeDropDown extends Mixins(
   FoerdermixApiRequestMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
+  AbfrageSecurityMixin
 ) {
   @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
 
@@ -64,7 +64,7 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
       foerdermixStaemme.forEach((foerdermixStamm: FoerdermixStammDto) => {
         this.stammdaten.push(foerdermixStamm);
       });
-      this.$store.dispatch("foerdermix/foerdermixStammdaten", foerdermixStaemme);
+      this.$store.dispatch("stammdaten/foerdermixStammdaten", foerdermixStaemme);
       this.stammdaten.push(this.createFreieEingabe());
       this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
     });

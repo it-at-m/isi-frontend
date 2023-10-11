@@ -5,7 +5,7 @@ import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
 import CommonStore, { CommonState } from "@/store/modules/CommonStore";
 import LookupStore, { LookupState } from "@/store/modules/LookupStore";
 import SearchStore, { SearchState } from "@/store/modules/SearchStore";
-import FoerdermixStore, { FoerdermixState } from "@/store/modules/FoerdermixStore";
+import StammdatenStore, { StammdatenState } from "@/store/modules/StammdatenStore";
 import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
 
 describe("SaveLeaveMixin Test", () => {
@@ -14,7 +14,7 @@ describe("SaveLeaveMixin Test", () => {
   interface RootState {
     snackbarState: SnackbarState;
     userState: UserState;
-    foerdermix: FoerdermixState;
+    foerdermix: StammdatenState;
     common: CommonState;
     lookup: LookupState;
     search: SearchState;
@@ -25,7 +25,7 @@ describe("SaveLeaveMixin Test", () => {
     modules: {
       user: User,
       snackbar: Snackbar,
-      foerdermix: FoerdermixStore,
+      foerdermix: StammdatenStore,
       common: CommonStore,
       lookup: LookupStore,
       search: SearchStore,
