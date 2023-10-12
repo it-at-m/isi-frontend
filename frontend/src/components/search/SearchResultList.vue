@@ -22,9 +22,9 @@
         <v-card-subtitle class="black--text">
           <v-icon
             left
-            color="green"
+            color="green lighten-1"
           >
-            mdi-alpha-a-circle
+            mdi-comment-alert
           </v-icon>
           {{ castToAbfrageSearchResultDto(item).nameAbfrage }}
         </v-card-subtitle>
@@ -52,9 +52,9 @@
         <v-card-subtitle class="black--text">
           <v-icon
             left
-            color="indigo"
+            color="indigo lighten-1"
           >
-            mdi-alpha-b-circle
+            mdi-account-hard-hat
           </v-icon>
           {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
         </v-card-subtitle>
@@ -83,9 +83,9 @@
         <v-card-subtitle class="black--text">
           <v-icon
             left
-            color="red"
+            color="red lighten-1"
           >
-            mdi-alpha-i-circle
+            mdi-home
           </v-icon>
           {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
         </v-card-subtitle>
