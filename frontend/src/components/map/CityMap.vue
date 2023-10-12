@@ -172,7 +172,7 @@ export default class CityMap extends Vue {
   private overlays = new Map([
     ["Gemarkungen", "Gemarkungen"],
     ["Flurstücke", "Flurstücke,Flst.Nr."],
-    ["Baublöcke", "VABLOCK.BAUBLOCK"],
+    ["Baublöcke", "Baublöcke"],
     ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
     ["Stadtbezirke", "Stadtbezirke"],
     ["Bezirksteile", "Bezirksteile"],
