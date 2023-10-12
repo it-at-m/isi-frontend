@@ -18,7 +18,7 @@
       <l-control-layers
         id="city-map-layer-control"
         ref="layerControl"
-        @ready="onLayerControlReady"
+        @ready="getTestLayer"
       />
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
       <l-wms-tile-layer
@@ -172,6 +172,13 @@ export default class CityMap extends Vue {
   private overlays = new Map([
     ["Gemarkungen", "Gemarkungen"],
     ["Flurstücke", "Flurstücke,Flst.Nr."],
+    ["Baublöcke", "Baublöcke"],
+    ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
+    ["Stadtbezirke", "Stadtbezirke"],
+    ["Bezirksteile", "Bezirksteile"],
+    ["Stadtviertel", "Stadtviertel"],
+    ["Grundschulsprengel", "Grundschulsprengel"],
+    ["Umgriffe Bebauungspläne", "BB-Umgriff"],
   ]);
 
   created(): void {
@@ -230,11 +237,28 @@ export default class CityMap extends Vue {
     }
   }
 
+  private getTestLayer(): void {
+    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
+
+    for (const overlay of this.overlays) {
+      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("basis_feature"), {
+        layers: overlay[1],
+        transparent: true,
+        ...this.LAYER_OPTIONS,
+      });
+      layerControl.addOverlay(layer, overlay[0]);
+    }
+  }
+
   /**
    * Da der Geo-Dienst mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
    */
   private getGeoUrl(service: string): string {
     return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
+  }
+
+  private getArcgisUrl(service: string): string {
+    return (import.meta.env.VITE_TEST_URL as string).replace("{1}", service);
   }
 
   /**
