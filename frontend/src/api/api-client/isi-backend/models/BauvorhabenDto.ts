@@ -211,7 +211,6 @@ export type BauvorhabenDtoSobonJahrEnum = typeof BauvorhabenDtoSobonJahrEnum[key
  * @export
  */
 export const BauvorhabenDtoWesentlicheRechtsgrundlageEnum = {
-    Unspecified: 'UNSPECIFIED',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',

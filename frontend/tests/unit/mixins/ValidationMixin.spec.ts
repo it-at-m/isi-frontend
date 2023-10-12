@@ -8,8 +8,8 @@ describe("ValidatorMixin Test", () => {
   it("should findFaultInBaurate", () => {
     const baurate = new BaurateModel({
       jahr: 2002,
-      anzahlWeGeplant: 50,
-      geschossflaecheWohnenGeplant: 50,
+      weGeplant: 50,
+      gfWohnenGeplant: 50,
       foerdermix: {
         foerderarten: [
           { bezeichnung: "Baugemeinschaften", anteilProzent: 10 },
@@ -23,21 +23,21 @@ describe("ValidatorMixin Test", () => {
       } as FoerdermixDto,
     } as BaurateDto);
 
-    baurate.anzahlWeGeplant = undefined;
+    baurate.weGeplant = undefined;
 
     const anzahlWeFehler = validationMixin.findFaultInBaurate(baurate);
 
     expect(anzahlWeFehler).toBe("Anzahl Wohnen geplant muss angegeben werden");
 
-    baurate.anzahlWeGeplant = 50;
-    baurate.geschossflaecheWohnenGeplant = undefined;
+    baurate.weGeplant = 50;
+    baurate.gfWohnenGeplant = undefined;
 
     const geschossflaecheWohnen = validationMixin.findFaultInBaurate(baurate);
 
     expect(geschossflaecheWohnen).toBe("Geschossfläche Wohnen geplant muss angegeben werden");
 
-    baurate.geschossflaecheWohnenGeplant = 50;
-
+    baurate.gfWohnenGeplant = 50;
+    console.log("Test");
     const foerdermixErrorAbove = validationMixin.findFaultInBaurate(baurate);
 
     expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100");

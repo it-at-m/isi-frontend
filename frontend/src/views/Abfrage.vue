@@ -425,7 +425,7 @@ export default class Abfrage extends Mixins(
           this.$store.commit("search/selectedAbfrage", undefined);
         });
     } else {
-      this.saveAbfrageInStore(new BauleitplanverfahrenModel(BauleitplanverfahrenDto()));
+      this.saveAbfrageInStore(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto()));
     }
   }
 
@@ -984,7 +984,9 @@ export default class Abfrage extends Mixins(
     return _.isNil(this.selected.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
-  private renumberingAbfragevarianten(abfragevarianten: Array<AbfragevarianteDto> | undefined): void {
+  private renumberingAbfragevarianten(
+    abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
+  ): void {
     abfragevarianten?.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });

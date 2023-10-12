@@ -40,7 +40,7 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
-  BauleitplanverfahrenDtoArtAbfrageEnum,
+  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -74,7 +74,7 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     version: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
-    artAbfrage: BauleitplanverfahrenDtoArtAbfrageEnum.Bauleitplanverfahren,
+    artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
     name: "",
     statusAbfrage: StatusAbfrage.Angelegt,
     bauvorhaben: undefined,

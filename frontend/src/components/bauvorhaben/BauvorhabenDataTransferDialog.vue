@@ -61,7 +61,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
-import { createInfrastrukturabfrageDto } from "@/utils/Factories";
+import { createBauleitplanverfahrenDto } from "@/utils/Factories";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 
 @Component
@@ -72,14 +72,14 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
 
   private selectedAbfrageSearchResult: AbfrageSearchResultDto = {};
 
-  private selectedAbfrage: InfrastrukturabfrageDto = createInfrastrukturabfrageDto();
+  private selectedAbfrage: InfrastrukturabfrageDto = createBauleitplanverfahrenDto();
 
   mounted(): void {
     this.fetchAbfragen();
   }
 
-  get standVorhabenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVorhaben"];
+  get standVerfahrenList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/standVerfahren"];
   }
 
   get statusAbfrageList(): LookupEntryDto[] {
@@ -111,7 +111,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
       ) +
       " - Stand: " +
       _.defaultTo(
-        this.getLookupValue(searchResult.standVorhaben, this.standVorhabenList),
+        this.getLookupValue(searchResult.standVerfahren, this.standVerfahrenList),
         "Kein Vorhabensstand vorhanden",
       ) +
       " - Verfahrensgrundsätze Jahr: " +

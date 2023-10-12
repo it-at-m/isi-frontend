@@ -6,8 +6,8 @@
         md="4"
       >
         <num-field
-          id="geschossflaeche_wohnen_field"
-          ref="geschossflaecheWohnenField"
+          id="gf_wohnen_gesamt_field"
+          ref="gfWohnenGesamtField"
           v-model="abfragevariante.gfWohnenGesamt"
           :disabled="!isEditable"
           class="mx-3"
@@ -33,18 +33,133 @@
         cols="12"
         md="4"
       >
+        <num-field
+          id="gf_wohnen_sobon_ursaechlich_field"
+          ref="gfWohnenSobonUrsaechlichField"
+          v-model="abfragevariante.gfWohnenSobonUrsaechlich"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="SoBoN-ursächlich"
+          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :required="isGeschossflaecheSobonUrsaechlichPflichtfeld"
+        />
       </v-col>
       <v-col
         cols="12"
         md="4"
       >
+        <num-field
+          id="gf_wohnen_bestandswohnbaurecht_field"
+          ref="gfWohnenBestandswohnbaurechtField"
+          v-model="abfragevariante.gfWohnenBestandswohnbaurecht"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="Bestandswohnbaurecht"
+          :suffix="fieldPrefixesSuffixes.squareMeter"
+        />
       </v-col>
     </v-row>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <v-checkbox
+          id="gf_sonderwohnformen_checkbox"
+          ref="gfSonderwohnformenCheckbox"
+          v-model="abfragevariante.gfWohnenSonderwohnformen"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="Sonderwohnformen"
+          color="primary"
+          @change="formChanged"
+        />
+      </v-col>
+      <!-- Space für Platzhalter -->
+      <v-col
+        cols="12"
+        md="8"
+      >
+      </v-col>
+    </v-row>
+    <v-expand-transition>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <span>davon</span>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="gf_studentisches_wohnen_field"
+            ref="gfStudentischesWohnenField"
+            v-model="abfragevariante.gfWohnenStudentischesWohnen"
+            :disabled="!isEditable"
+            class="mx-3"
+            label="studentisches Wohnen"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="gf_seniorInnen_wohnen_field"
+            ref="gfSeniorInnenWohnenField"
+            v-model="abfragevariante.gfWohnenSeniorinnenWohnengfWohnenSeniorinnenWohnen"
+            :disabled="!isEditable"
+            class="mx-3"
+            label="Senior*innenwohnen"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="gf_wohnen_field"
+            ref="gfWohnenField"
+            v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
+            :disabled="!isEditable"
+            class="mx-3"
+            label="genossenschaftliches Wohnen"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="gf_nicht_infrastruktur_relevantes_wohnen_field"
+            ref="gfNichtInfrastrukturRelevantesWohnenField"
+            v-model="abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen"
+            :disabled="!isEditable"
+            class="mx-3"
+            label="weiteres nicht-infrastruktur-relevantes Wohnen"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+          />
+        </v-col>
+      </v-row>
+    </v-expand-transition>
   </field-group-card>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -64,6 +179,16 @@ export default class GeplanteGeschossflaecheWohnenComponent extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  private geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
+  private geplanteGeschossflaecheWohnenTitle = "geplante Geschossfläche Wohnen";
+
+  @Watch("abfragevariante", { immediate: true, deep: true })
+  public clearSonderwohnformData(): void {
+    if (!this.abfragevariante.gfWohnenSonderwohnformen) {
+      this.abfragevariante.gfWohnenStudentischesWohnen = undefined;
+      this.abfragevariante.gfWohnenSeniorinnenWohnen = undefined;
+      this.abfragevariante.gfWohnenGenossenschaftlichesWohnen = undefined;
+      this.abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
+    }
+  }
 }
 </script>

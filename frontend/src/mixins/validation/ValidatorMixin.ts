@@ -119,19 +119,6 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
       return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
     }
-    if (
-      sobonRelevant === UncertainBoolean.True &&
-      abfragevariante.wesentlicheRechtsgrundlage.includes(
-        AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.VorhabensbezogenerBebauungsplan,
-      ) &&
-      _.isNil(abfragevariante.gfWohnenSobonUrsaechlich)
-    ) {
-      const abfragevarianteNr: string =
-        showAbfragevarianteNr && !_.isNaN(abfragevariante.abfragevariantenNr)
-          ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
-          : "";
-      return `Bitte geben Sie die 'Geschossfläche SoBoN-ursächliche' ${abfragevarianteNr}an`;
-    }
     const messageFaultVerteilungWohneinheiten = this.findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante);
     if (!_.isNil(messageFaultVerteilungWohneinheiten)) {
       return messageFaultVerteilungWohneinheiten;
@@ -263,6 +250,8 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(baurate.weGeplant as number) && _.isNil(baurate.gfWohnenGeplant as number)) {
       return "Geschossfläche Wohnen geplant muss angegeben werden";
     }
+    console.log("weGeplant isNil: " + _.isNil(baurate.weGeplant as number));
+    console.log("gfWohnenGeplant isNil: " + _.isNil(baurate.gfWohnenGeplant as number));
     if (_.isNil(baurate.weGeplant as number) && !_.isNil(baurate.gfWohnenGeplant as number)) {
       return "Anzahl Wohnen geplant muss angegeben werden";
     }
