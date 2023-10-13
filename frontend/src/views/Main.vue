@@ -38,30 +38,51 @@
           <v-icon v-else> mdi-plus </v-icon>
         </v-btn>
       </template>
-      <v-btn
-        class="text-h6"
-        fab
-        dark
-        color="red"
-        @click="createInfrastruktureinrichtung"
-        v-text="'I'"
-      />
-      <v-btn
-        class="text-h6"
-        fab
-        dark
-        color="indigo"
-        @click="createBauvorhaben"
-        v-text="'B'"
-      />
-      <v-btn
-        class="text-h6"
-        fab
-        dark
-        color="green"
-        @click="createAbfrage"
-        v-text="'A'"
-      />
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-btn
+            class="text-h6"
+            fab
+            dark
+            color="red lighten-1"
+            v-on="on"
+            @click="createInfrastruktureinrichtung"
+          >
+            <v-icon>mdi-home</v-icon>
+          </v-btn>
+        </template>
+        <span>Infrastruktureinrichtung erstellen</span>
+      </v-tooltip>
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-btn
+            class="text-h6"
+            fab
+            dark
+            color="indigo lighten-1"
+            v-on="on"
+            @click="createBauvorhaben"
+          >
+            <v-icon>mdi-account-hard-hat</v-icon>
+          </v-btn>
+        </template>
+        <span>Bauvorhaben erstellen</span>
+      </v-tooltip>
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-btn
+            class="text-h6"
+            fab
+            dark
+            color="green lighten-1"
+            v-on="on"
+            @click="createAbfrage"
+          >
+            <v-icon>mdi-comment-alert</v-icon>
+          </v-btn>
+        </template>
+        <span>Abfrage erstellen</span>
+      </v-tooltip>
     </v-speed-dial>
   </v-container>
 </template>
