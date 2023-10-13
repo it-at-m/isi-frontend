@@ -19,13 +19,16 @@
       <v-col
         cols="12"
         md="8"
-      >
-      </v-col>
+      />
     </v-row>
     <v-row justify="center">
       <v-col
         cols="12"
-        md="4"
+        md="2"
+      />
+      <v-col
+        cols="12"
+        md="2"
       >
         <span>davon</span>
       </v-col>
@@ -41,7 +44,6 @@
           class="mx-3"
           label="SoBoN-ursächlich"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          :required="isGeschossflaecheSobonUrsaechlichPflichtfeld"
         />
       </v-col>
       <v-col
@@ -79,81 +81,92 @@
       <v-col
         cols="12"
         md="8"
-      >
-      </v-col>
+      />
     </v-row>
     <v-expand-transition>
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="4"
+      <div>
+        <v-row
+          v-if="abfragevariante.gfWohnenSonderwohnformen"
+          justify="center"
         >
-          <span>davon</span>
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="gf_studentisches_wohnen_field"
-            ref="gfStudentischesWohnenField"
-            v-model="abfragevariante.gfWohnenStudentischesWohnen"
-            :disabled="!isEditable"
-            class="mx-3"
-            label="studentisches Wohnen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+          <v-col
+            cols="12"
+            md="2"
           />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
+          <v-col
+            cols="12"
+            md="2"
+          >
+            <span>davon</span>
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <num-field
+              id="gf_studentisches_wohnen_field"
+              ref="gfStudentischesWohnenField"
+              v-model="abfragevariante.gfWohnenStudentischesWohnen"
+              :disabled="!isEditable"
+              class="mx-3"
+              label="studentisches Wohnen"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <num-field
+              id="gf_seniorInnen_wohnen_field"
+              ref="gfSeniorInnenWohnenField"
+              v-model="abfragevariante.gfWohnenSeniorinnenWohnengfWohnenSeniorinnenWohnen"
+              :disabled="!isEditable"
+              class="mx-3"
+              label="Senior*innenwohnen"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
+            />
+          </v-col>
+        </v-row>
+        <v-row
+          v-if="abfragevariante.gfWohnenSonderwohnformen"
+          justify="center"
         >
-          <num-field
-            id="gf_seniorInnen_wohnen_field"
-            ref="gfSeniorInnenWohnenField"
-            v-model="abfragevariante.gfWohnenSeniorinnenWohnengfWohnenSeniorinnenWohnen"
-            :disabled="!isEditable"
-            class="mx-3"
-            label="Senior*innenwohnen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="4"
-        >
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="gf_wohnen_field"
-            ref="gfWohnenField"
-            v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
-            :disabled="!isEditable"
-            class="mx-3"
-            label="genossenschaftliches Wohnen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="gf_nicht_infrastruktur_relevantes_wohnen_field"
-            ref="gfNichtInfrastrukturRelevantesWohnenField"
-            v-model="abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen"
-            :disabled="!isEditable"
-            class="mx-3"
-            label="weiteres nicht-infrastruktur-relevantes Wohnen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-      </v-row>
+          <v-col
+            cols="12"
+            md="4"
+          >
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <num-field
+              id="gf_wohnen_field"
+              ref="gfWohnenField"
+              v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
+              :disabled="!isEditable"
+              class="mx-3"
+              label="genossenschaftliches Wohnen"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <num-field
+              id="gf_nicht_infrastruktur_relevantes_wohnen_field"
+              ref="gfNichtInfrastrukturRelevantesWohnenField"
+              v-model="abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen"
+              :disabled="!isEditable"
+              class="mx-3"
+              label="weiteres nicht-infrastruktur-relevantes Wohnen"
+              :suffix="fieldPrefixesSuffixes.squareMeter"
+            />
+          </v-col>
+        </v-row>
+      </div>
     </v-expand-transition>
   </field-group-card>
 </template>

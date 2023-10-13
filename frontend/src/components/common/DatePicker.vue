@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
+import { Component, VModel, Prop, Mixins, Watch } from "vue-property-decorator";
 import moment from "moment";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import _ from "lodash";
@@ -63,8 +63,7 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
   /**
    * Der Datumswert der ausgewählt bzw. eingegeben wurde
    */
-  @Prop({ default: undefined })
-  private value?: Date;
+  @VModel({ type: Date }) date: Date | undefined;
 
   /**
    * Ist das Datumsfeld ein Pflichtfeld
@@ -87,14 +86,9 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
 
   private datePickerActivated = false;
 
-  @Watch("value")
-  private onValueChanged(value: Date) {
-    this.$emit("input", value);
-  }
-
   get datePickerDate(): string {
-    if (!_.isNil(this.value)) {
-      const parsedValue = moment.utc(this.value);
+    if (!_.isNil(this.date)) {
+      const parsedValue = moment.utc(this.date);
       if (!parsedValue.isSame(0)) {
         return parsedValue.format(this.ISO_FORMAT);
       }
@@ -105,13 +99,13 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
     return moment.utc().format(this.ISO_FORMAT);
   }
 
-  set datePickerDate(value: string) {
-    this.value = moment.utc(value, this.ISO_FORMAT).toDate();
+  set datePickerDate(date: string) {
+    this.date = moment.utc(date, this.ISO_FORMAT).toDate();
   }
 
   get textFieldDate(): string {
-    if (!_.isNil(this.value)) {
-      const parsedValue = moment.utc(this.value);
+    if (!_.isNil(this.date)) {
+      const parsedValue = moment.utc(this.date);
       if (!parsedValue.isSame(0)) {
         return parsedValue.format(this.getDisplayFormat());
       }
@@ -122,15 +116,15 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
     return "";
   }
 
-  set textFieldDate(value: string) {
+  set textFieldDate(date: string) {
     /* Hier wird das Datum im "strict mode" geparsed, um den Nutzer-Input
       möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
-    const parsedValue = moment.utc(value, this.getDisplayFormat(), true);
+    const parsedValue = moment.utc(date, this.getDisplayFormat(), true);
 
     if (parsedValue.isValid()) {
-      this.value = parsedValue.toDate();
+      this.date = parsedValue.toDate();
     } else {
-      this.value = undefined;
+      this.date = undefined;
     }
   }
 
@@ -164,7 +158,7 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
   }
 
   private datePickerBlurred(): void {
-    this.$emit("datePickerBlurred", this.value);
+    this.$emit("datePickerBlurred", this.date);
   }
 }
 </script>

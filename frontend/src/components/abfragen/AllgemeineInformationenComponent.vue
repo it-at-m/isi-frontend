@@ -145,6 +145,10 @@ export default class AllgemeineInformationenComponent extends Mixins(
     return this.$store.getters["lookup/standVerfahrenBauleitplanverfahren"];
   }
 
+  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+  }
+
   /**
    * Holt alle Bauvorhaben vom Backend.
    */
@@ -171,7 +175,7 @@ export default class AllgemeineInformationenComponent extends Mixins(
     });
   }
 
-  @Watch("infrastrukturabfrage.sobonRelevant", { immediate: true })
+  @Watch("abfrage.sobonRelevant", { immediate: true })
   private sobonRelevantChanged(value: UncertainBoolean): void {
     if (value === UncertainBoolean.True) {
       this.sobonJahrVisible = true;

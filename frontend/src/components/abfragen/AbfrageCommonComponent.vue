@@ -6,7 +6,7 @@
           id="name_abfrage_field"
           ref="nameAbfrageField"
           v-model.trim="abfrage.name"
-          :disabled="!isEditableByAbfrageerstellung()"
+          :disabled="!isEditable"
           :rules="[fieldValidationRules.pflichtfeld]"
           maxlength="70"
           validate-on-blur
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -38,5 +38,12 @@ export default class AbfrageCommonComponent extends Mixins(
   FieldValidationRulesMixin,
 ) {
   @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
+
+  @Prop({ type: Boolean, default: true })
+  private isEditableProp!: boolean;
+
+  get isEditable(): boolean {
+    return this.isEditableProp;
+  }
 }
 </script>

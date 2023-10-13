@@ -41,7 +41,7 @@
           <v-autocomplete
             id="wesentliche_rechtsgrundlage_dropdown"
             ref="wesentlicheRechtsgrundlageDropdown"
-            v-model="bauvorhaben.wesentlicheRechstgrundlage"
+            v-model="abfragevariante.wesentlicheRechstgrundlage"
             :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
             item-value="key"
             item-text="value"

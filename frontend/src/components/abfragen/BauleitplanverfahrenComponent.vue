@@ -4,6 +4,7 @@
       id="abfrage_common_component"
       ref="abfrageCommonComponent"
       v-model="bauleitplanverfahren"
+      :is-editable-prop="isEditableByAbfrageerstellung()"
     />
     <allgemeine-informationen-component
       id="allgemeine_informationen_component"
