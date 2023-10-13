@@ -46,16 +46,6 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
   private groupedStammdaten: GroupedStammdaten = [];
 
   mounted(): void {
-    /* eslint-disable no-console */
-    console.log("hallo");
-    console.log(this.$store.getters["stammdaten/foerdermixStammdaten"]);
-
-    /* eslint-enable no-console */
-    //this.loadFoerdermixStaemme();
-    /*
-    this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
-    this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);*/
-    //this.changeFördermixBezeichnung();
     this.setGroupedStammdatenList();
   }
 
@@ -71,20 +61,10 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
 
   private setGroupedStammdatenList(): void {
     this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    this.stammdaten.push(this.createFreieEingabe());
     this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
     this.selectedItem = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
   }
-
-  /* loadFoerdermixStaemme(): void {
-    this.getFoerdermixStaemme(true).then((foerdermixStaemme: FoerdermixStammDto[]) => {
-      foerdermixStaemme.forEach((foerdermixStamm: FoerdermixStammDto) => {
-        this.stammdaten.push(foerdermixStamm);
-      });
-      this.$store.dispatch("stammdaten/foerdermixStammdaten", foerdermixStaemme);
-      this.stammdaten.push(this.createFreieEingabe());
-      this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
-    });
-  }*/
 
   /**
    * Gruppiert eine Liste von Fördermixstämmen nach 'bezeichnungJahr' und fügt entsprechende header-Objekte hinzu.
