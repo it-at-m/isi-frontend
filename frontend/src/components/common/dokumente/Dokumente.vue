@@ -48,7 +48,7 @@
       </v-row>
     </div>
     <input
-      id="dokumente_input"
+      ref="dokumenteInput"
       type="file"
       multiple
       hidden
@@ -123,7 +123,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   }
 
   private addDokument(): void {
-    const fileSelectionDialog = document.getElementById("dokumente_input");
+    const fileSelectionDialog = this.$refs.dokumenteInput as HTMLInputElement;
     if (!_.isNil(fileSelectionDialog)) {
       fileSelectionDialog.click();
     }

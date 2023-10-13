@@ -68,6 +68,17 @@
         />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <p class="text-h6 grey--text">Anhänge</p>
+        <dokumente
+          id="kommentar_dokumente"
+          v-model="kommentar.dokumente"
+          :name-root-folder="nameRootFolder"
+          :is-dokumente-editable="isEditable"
+        />
+      </v-col>
+    </v-row>
     <yes-no-dialog
       id="kommentar_anmerkungen_yes_no_dialog_delete"
       v-model="deleteDialog"
@@ -102,6 +113,7 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
   private deleteDialogText = "Hiermit wird der Kommentar unwiderruflich gelöscht.";
   private deleteDialogYesText = "Löschen";
   private deleteDialogNoText = "Abbrechen";
+  private nameRootFolder = "kommentare";
 
   get isSaveable(): boolean {
     return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);

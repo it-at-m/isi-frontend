@@ -28,6 +28,7 @@ import _ from "lodash";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import Kommentar from "@/components/common/kommentar/Kommentar.vue";
 import { Context } from "@/utils/Context";
+import { createKommentarDto } from "@/utils/Factories";
 
 @Component({
   components: { Kommentar },
@@ -79,13 +80,13 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
   }
 
   private createNewUnsavedKommentarForBauvorhaben(): KommentarModel {
-    const kommentar = new KommentarModel({});
+    const kommentar = new KommentarModel(createKommentarDto());
     kommentar.bauvorhaben = this.$route.params.id;
     return kommentar;
   }
 
   private createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel {
-    const kommentar = new KommentarModel({});
+    const kommentar = new KommentarModel(createKommentarDto());
     kommentar.infrastruktureinrichtung = this.$route.params.id;
     return kommentar;
   }

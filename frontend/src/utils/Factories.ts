@@ -40,6 +40,7 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  KommentarDto,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -549,5 +550,11 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
     strassenname: undefined,
     position: undefined,
     geozuordnungen: undefined,
+  };
+}
+
+export function createKommentarDto(): KommentarDto {
+  return {
+    dokumente: [],
   };
 }
