@@ -6,8 +6,6 @@
           cols="12"
           md="8"
         >
-          <!-- Slot für das FoerdermixStaemmeDropDown -->
-
           <foerdermix-staemme-drop-down
             v-model="foerdermix"
             is-editable="isEditable"
