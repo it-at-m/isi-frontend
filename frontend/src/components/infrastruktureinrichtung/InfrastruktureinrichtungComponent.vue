@@ -66,29 +66,7 @@
           cols="12"
           md="6"
         >
-          <v-select
-            id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
-            v-model="infrastruktureinrichtung.einrichtungstraeger"
-            :items="einrichtungstraegerList"
-            item-value="key"
-            item-text="value"
-            :rules="
-              isEinrichtungstraegerRequired()
-                ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]
-                : []
-            "
-            :disabled="!isEditable"
-            @change="formChanged"
-          >
-            <template #label
-              >Einrichtungsträger
-              <span
-                v-if="isEinrichtungstraegerRequired()"
-                class="secondary--text"
-                >*</span
-              ></template
-            >
-          </v-select>
+          <slot name="einrichtungstraeger" />
         </v-col>
         <v-col
           cols="12"

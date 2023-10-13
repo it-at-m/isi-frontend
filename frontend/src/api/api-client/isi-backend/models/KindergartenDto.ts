@@ -56,8 +56,28 @@ export interface KindergartenDto extends InfrastruktureinrichtungDto {
      * @memberof KindergartenDto
      */
     wohnungsnaheKindergartenPlaetze?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof KindergartenDto
+     */
+    einrichtungstraeger?: KindergartenDtoEinrichtungstraegerEnum;
 }
 
+
+/**
+ * @export
+ */
+export const KindergartenDtoEinrichtungstraegerEnum = {
+    Unspecified: 'UNSPECIFIED',
+    StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
+    EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
+    FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
+    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
+    ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
+    StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG'
+} as const;
+export type KindergartenDtoEinrichtungstraegerEnum = typeof KindergartenDtoEinrichtungstraegerEnum[keyof typeof KindergartenDtoEinrichtungstraegerEnum];
 
 
 export function KindergartenDtoFromJSON(json: any): KindergartenDto {
@@ -73,6 +93,7 @@ export function KindergartenDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'anzahlKindergartenPlaetze': json['anzahlKindergartenPlaetze'],
         'anzahlKindergartenGruppen': json['anzahlKindergartenGruppen'],
         'wohnungsnaheKindergartenPlaetze': !exists(json, 'wohnungsnaheKindergartenPlaetze') ? undefined : json['wohnungsnaheKindergartenPlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
@@ -88,6 +109,7 @@ export function KindergartenDtoToJSON(value?: KindergartenDto | null): any {
         'anzahlKindergartenPlaetze': value.anzahlKindergartenPlaetze,
         'anzahlKindergartenGruppen': value.anzahlKindergartenGruppen,
         'wohnungsnaheKindergartenPlaetze': value.wohnungsnaheKindergartenPlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

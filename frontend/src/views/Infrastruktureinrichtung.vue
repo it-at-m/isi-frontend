@@ -16,7 +16,33 @@
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-        />
+        >
+          <template #einrichtungstraeger>
+            <v-select
+              id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
+              v-model="infrastruktureinrichtung.einrichtungstraeger"
+              :items="einrichtungstraegerList"
+              item-value="key"
+              item-text="value"
+              :rules="
+                isEinrichtungstraegerRequired()
+                  ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]
+                  : []
+              "
+              :disabled="!isEditable"
+              @change="formChanged"
+            >
+              <template #label
+                >Einrichtungsträger
+                <span
+                  v-if="isEinrichtungstraegerRequired()"
+                  class="secondary--text"
+                  >*</span
+                ></template
+              >
+            </v-select>
+          </template>
+        </infrastruktureinrichtung-component>
         <kinderkrippe-component
           v-if="isKinderkrippe"
           id="infrastruktureinrichtung_kinderkrippe_component"
@@ -159,12 +185,17 @@ import {
 import {
   GrundschuleDto,
   GsNachmittagBetreuungDto,
+  GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
   HausFuerKinderDto,
+  HausFuerKinderDtoEinrichtungstraegerEnum,
   InfrastruktureinrichtungDto,
   InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
   KindergartenDto,
+  KindergartenDtoEinrichtungstraegerEnum,
   KinderkrippeDto,
+  KinderkrippeDtoEinrichtungstraegerEnum,
   MittelschuleDto,
+  SchuleDtoEinrichtungstraegerEnum,
 } from "@/api/api-client/isi-backend";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
@@ -551,6 +582,33 @@ export default class Infrastruktureinrichtung extends Mixins(
     | undefined {
     const dto: InfrastruktureinrichtungDto | undefined = this.$store.getters["search/selectedInfrastruktureinrichtung"];
     return this.getModelOfDto(dto);
+  }
+
+  private getEinrichtungstraeger(
+    infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined,
+  ):
+    | SchuleDtoEinrichtungstraegerEnum
+    | KinderkrippeDtoEinrichtungstraegerEnum
+    | KindergartenDtoEinrichtungstraegerEnum
+    | HausFuerKinderDtoEinrichtungstraegerEnum
+    | GsNachmittagBetreuungDtoEinrichtungstraegerEnum
+    | undefined {
+    switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
+        return (infrastruktureinrichtung as KinderkrippeDto).einrichtungstraeger;
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
+        return (infrastruktureinrichtung as KindergartenDto).einrichtungstraeger;
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
+        return (infrastruktureinrichtung as HausFuerKinderDto).einrichtungstraeger;
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+        return (infrastruktureinrichtung as GsNachmittagBetreuungDto).einrichtungstraeger;
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
+        return (infrastruktureinrichtung as GrundschuleDto).schule.einrichtungstraeger;
+      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
+        return (infrastruktureinrichtung as MittelschuleDto).schule.einrichtungstraeger;
+      default:
+        return undefined;
+    }
   }
 
   private handleSuccess(dto: InfrastruktureinrichtungDto): void {
