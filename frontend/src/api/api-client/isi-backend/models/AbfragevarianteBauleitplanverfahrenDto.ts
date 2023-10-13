@@ -14,23 +14,17 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    AbfragevarianteFachreferatDto,
-    AbfragevarianteFachreferatDtoFromJSON,
-    AbfragevarianteFachreferatDtoFromJSONTyped,
-    AbfragevarianteFachreferatDtoToJSON,
-} from './AbfragevarianteFachreferatDto';
-import {
-    AbfragevarianteSachbearbeitungDto,
-    AbfragevarianteSachbearbeitungDtoFromJSON,
-    AbfragevarianteSachbearbeitungDtoFromJSONTyped,
-    AbfragevarianteSachbearbeitungDtoToJSON,
-} from './AbfragevarianteSachbearbeitungDto';
-import {
     BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
+import {
+    BedarfsmeldungFachreferateDto,
+    BedarfsmeldungFachreferateDtoFromJSON,
+    BedarfsmeldungFachreferateDtoFromJSONTyped,
+    BedarfsmeldungFachreferateDtoToJSON,
+} from './BedarfsmeldungFachreferateDto';
 
 /**
  * 
@@ -184,16 +178,28 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {AbfragevarianteSachbearbeitungDto}
+     * @type {number}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungDto;
+    gfWohnenPlanungsursaechlich?: number;
     /**
      * 
-     * @type {AbfragevarianteFachreferatDto}
+     * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    abfragevarianteFachreferat?: AbfragevarianteFachreferatDto;
+    sobonOrientierungswertJahr?: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenDto
+     */
+    anmerkung?: string;
+    /**
+     * 
+     * @type {Array<BedarfsmeldungFachreferateDto>}
+     * @memberof AbfragevarianteBauleitplanverfahrenDto
+     */
+    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
     /**
      * 
      * @type {Array<BauabschnittDto>}
@@ -220,6 +226,17 @@ export const AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnu
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum];
+
+/**
+ * @export
+ */
+export const AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Jahr2014: 'JAHR_2014',
+    Jahr2017: 'JAHR_2017',
+    Jahr2022: 'JAHR_2022'
+} as const;
+export type AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum];
 
 
 export function AbfragevarianteBauleitplanverfahrenDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenDto {
@@ -256,8 +273,10 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'abfragevarianteSachbearbeitung': !exists(json, 'abfragevarianteSachbearbeitung') ? undefined : AbfragevarianteSachbearbeitungDtoFromJSON(json['abfragevarianteSachbearbeitung']),
-        'abfragevarianteFachreferat': !exists(json, 'abfragevarianteFachreferat') ? undefined : AbfragevarianteFachreferatDtoFromJSON(json['abfragevarianteFachreferat']),
+        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
+        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
     };
 }
@@ -295,8 +314,10 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSON(value?: Abfragevari
         'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
-        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoToJSON(value.abfragevarianteSachbearbeitung),
-        'abfragevarianteFachreferat': AbfragevarianteFachreferatDtoToJSON(value.abfragevarianteFachreferat),
+        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
+        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'anmerkung': value.anmerkung,
+        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
     };
 }

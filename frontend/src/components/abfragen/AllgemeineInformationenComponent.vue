@@ -151,7 +151,7 @@ export default class AllgemeineInformationenComponent extends Mixins(
   private async fetchBauvorhaben(): Promise<void> {
     const searchQueryAndSortingDto = {
       searchQuery: "",
-      selectInfrastrukturabfrage: false,
+      selectBauleitplanverfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

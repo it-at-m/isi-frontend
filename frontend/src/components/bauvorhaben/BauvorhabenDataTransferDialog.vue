@@ -125,7 +125,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
   private async fetchAbfragen(): Promise<void> {
     const searchQueryAndSortingDto = {
       searchQuery: "",
-      selectInfrastrukturabfrage: true,
+      selectBauleitplanverfahren: true,
       selectBauvorhaben: false,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

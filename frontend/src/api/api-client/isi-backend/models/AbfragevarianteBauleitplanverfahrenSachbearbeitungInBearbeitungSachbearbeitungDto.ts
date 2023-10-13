@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    AbfragevarianteSachbearbeitungDto,
-    AbfragevarianteSachbearbeitungDtoFromJSON,
-    AbfragevarianteSachbearbeitungDtoFromJSONTyped,
-    AbfragevarianteSachbearbeitungDtoToJSON,
-} from './AbfragevarianteSachbearbeitungDto';
-
 /**
  * 
  * @export
@@ -40,11 +33,36 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteSachbearbeitungDto}
+     * @type {number}
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
-    abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto;
+    gfWohnenPlanungsursaechlich?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    sobonOrientierungswertJahr?: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    anmerkung?: string;
 }
+
+
+/**
+ * @export
+ */
+export const AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Jahr2014: 'JAHR_2014',
+    Jahr2017: 'JAHR_2017',
+    Jahr2022: 'JAHR_2022'
+} as const;
+export type AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum];
+
 
 export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto {
     return AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
@@ -58,7 +76,9 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
-        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoFromJSON(json['abfragevarianteSachbearbeitung']),
+        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
+        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
 }
 
@@ -73,7 +93,9 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         
         'id': value.id,
         'version': value.version,
-        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoToJSON(value.abfragevarianteSachbearbeitung),
+        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
+        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'anmerkung': value.anmerkung,
     };
 }
 

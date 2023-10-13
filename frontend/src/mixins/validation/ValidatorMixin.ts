@@ -3,7 +3,6 @@ import _ from "lodash";
 import {
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
   AdresseDto,
   BauabschnittDto,
   BaugebietDto,
@@ -250,8 +249,6 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(baurate.weGeplant as number) && _.isNil(baurate.gfWohnenGeplant as number)) {
       return "Geschossfläche Wohnen geplant muss angegeben werden";
     }
-    console.log("weGeplant isNil: " + _.isNil(baurate.weGeplant as number));
-    console.log("gfWohnenGeplant isNil: " + _.isNil(baurate.gfWohnenGeplant as number));
     if (_.isNil(baurate.weGeplant as number) && !_.isNil(baurate.gfWohnenGeplant as number)) {
       return "Anzahl Wohnen geplant muss angegeben werden";
     }

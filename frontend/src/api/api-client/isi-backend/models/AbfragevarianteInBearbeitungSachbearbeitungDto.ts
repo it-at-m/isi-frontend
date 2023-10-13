@@ -14,12 +14,6 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    AbfragevarianteSachbearbeitungDto,
-    AbfragevarianteSachbearbeitungDtoFromJSON,
-    AbfragevarianteSachbearbeitungDtoFromJSONTyped,
-    AbfragevarianteSachbearbeitungDtoToJSON,
-} from './AbfragevarianteSachbearbeitungDto';
-import {
     BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
@@ -160,10 +154,22 @@ export interface AbfragevarianteInBearbeitungSachbearbeitungDto {
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
-     * @type {AbfragevarianteSachbearbeitungDto}
+     * @type {number}
      * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
      */
-    abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto;
+    gfWohnenPlanungsursaechlich?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
+     */
+    sobonOrientierungswertJahr?: AbfragevarianteInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteInBearbeitungSachbearbeitungDto
+     */
+    anmerkung?: string;
 }
 
 
@@ -185,6 +191,17 @@ export const AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum = {
     SonstigesParag246: 'SONSTIGES_PARAG_246'
 } as const;
 export type AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum = typeof AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum[keyof typeof AbfragevarianteInBearbeitungSachbearbeitungDtoPlanungsrechtEnum];
+
+/**
+ * @export
+ */
+export const AbfragevarianteInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Jahr2014: 'JAHR_2014',
+    Jahr2017: 'JAHR_2017',
+    Jahr2022: 'JAHR_2022'
+} as const;
+export type AbfragevarianteInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum];
 
 
 export function AbfragevarianteInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfragevarianteInBearbeitungSachbearbeitungDto {
@@ -218,7 +235,9 @@ export function AbfragevarianteInBearbeitungSachbearbeitungDtoFromJSONTyped(json
         'geschossflaecheSeniorenwohnungen': !exists(json, 'geschossflaecheSeniorenwohnungen') ? undefined : json['geschossflaecheSeniorenwohnungen'],
         'geschossflaecheSonstiges': !exists(json, 'geschossflaecheSonstiges') ? undefined : json['geschossflaecheSonstiges'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
-        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoFromJSON(json['abfragevarianteSachbearbeitung']),
+        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
+        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
 }
 
@@ -252,7 +271,9 @@ export function AbfragevarianteInBearbeitungSachbearbeitungDtoToJSON(value?: Abf
         'geschossflaecheSeniorenwohnungen': value.geschossflaecheSeniorenwohnungen,
         'geschossflaecheSonstiges': value.geschossflaecheSonstiges,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
-        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoToJSON(value.abfragevarianteSachbearbeitung),
+        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
+        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'anmerkung': value.anmerkung,
     };
 }
 

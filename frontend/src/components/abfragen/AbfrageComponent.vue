@@ -20,7 +20,6 @@
     <adresse-component
       id="abfrage_adresse_component"
       :adresse-prop.sync="abfrage.adresse"
-      :allgemeine-ortsangabe-prop.sync="abfrage.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditableByAbfrageerstellung()"
     />
@@ -152,7 +151,6 @@
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
 import {
-  BauvorhabenDto,
   BauvorhabenSearchResultDto,
   LookupEntryDto,
   SearchQueryAndSortingDto,
@@ -221,7 +219,7 @@ export default class AbfrageComponent extends Mixins(
   private async fetchBauvorhaben(): Promise<void> {
     const searchQueryAndSortingDto = {
       searchQuery: "",
-      selectInfrastrukturabfrage: false,
+      selectBauleitplanverfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

@@ -5,7 +5,7 @@ import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevaria
 import { createBauleitplanverfahrenDto, createAbfragevarianteBauleitplanverfahrenDto } from "@/utils/Factories";
 
 describe("ModelTest.spec.ts", () => {
-  test("Test InfrastrukturabfrageModel", () => {
+  test("Test BauleitplanverfahrenModel", () => {
     const dto = createBauleitplanverfahrenDto();
     expect(dto.adresse).not.toBeNull();
     expect(dto.abfragevarianten).toHaveLength(0);
@@ -14,7 +14,7 @@ describe("ModelTest.spec.ts", () => {
     expect(dto.verortung).toBeUndefined();
   });
 
-  test("Test AbfragevarianteModel", () => {
+  test("Test AbfragevarianteBauleitplanverfahrenModel", () => {
     const abfrageDto = createBauleitplanverfahrenDto();
     const abfragevarianteDto = createAbfragevarianteBauleitplanverfahrenDto();
     abfragevarianteDto.abfragevariantenNr = 1;

@@ -106,7 +106,7 @@
         <v-text-field
           id="angabe_lage_ergaenzende_adressinformation_field"
           ref="angabeLageErgaenzendeAdressinformationField"
-          v-model="angabeLageErgaenzendeAdressinformation"
+          v-model="adresse.angabeLageErgaenzendeAdressinformation"
           :disabled="!isEditable"
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
@@ -160,14 +160,6 @@ export default class AdresseComponent extends Mixins(
 
   set adresse(adresse: AdresseModel) {
     this.$emit("update:adresseProp", adresse);
-  }
-
-  get angabeLageErgaenzendeAdressinformation(): string | undefined {
-    return this.adresseProp.angabeLageErgaenzendeAdressinformation;
-  }
-
-  set angabeLageErgaenzendeAdressinformation(angabeLageErgaenzendeAdressinformation: string | undefined) {
-    this.$emit("update:adresseProp", angabeLageErgaenzendeAdressinformation);
   }
 
   @Prop({ type: Boolean, default: true })
@@ -265,14 +257,16 @@ export default class AdresseComponent extends Mixins(
   private adressSucheValidationRule(): boolean | string {
     return (
       !!this.adresse.strasse ||
-      !!this.angabeLageErgaenzendeAdressinformation ||
+      !!this.adresse.angabeLageErgaenzendeAdressinformation ||
       "Pflichtfeld, wenn Angabe zur Lage leer ist"
     );
   }
 
-  private allgmeineOrtsangabeValidationRule(): boolean | string {
+  private angabeLageErgaenzendeAdressinformationValidationRule(): boolean | string {
     return (
-      !!this.adresse.strasse || !!this.angabeLageErgaenzendeAdressinformation || "Pflichtfeld, wenn Adresse leer ist"
+      !!this.adresse.strasse ||
+      !!this.adresse.angabeLageErgaenzendeAdressinformation ||
+      "Pflichtfeld, wenn Adresse leer ist"
     );
   }
 

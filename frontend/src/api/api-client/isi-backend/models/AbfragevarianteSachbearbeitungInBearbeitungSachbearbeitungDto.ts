@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    AbfragevarianteSachbearbeitungDto,
-    AbfragevarianteSachbearbeitungDtoFromJSON,
-    AbfragevarianteSachbearbeitungDtoFromJSONTyped,
-    AbfragevarianteSachbearbeitungDtoToJSON,
-} from './AbfragevarianteSachbearbeitungDto';
-
 /**
  * 
  * @export
@@ -40,11 +33,36 @@ export interface AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto {
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteSachbearbeitungDto}
+     * @type {number}
      * @memberof AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto
      */
-    abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto;
+    gfWohnenPlanungsursaechlich?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    sobonOrientierungswertJahr?: AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    anmerkung?: string;
 }
+
+
+/**
+ * @export
+ */
+export const AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Jahr2014: 'JAHR_2014',
+    Jahr2017: 'JAHR_2017',
+    Jahr2022: 'JAHR_2022'
+} as const;
+export type AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum];
+
 
 export function AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto {
     return AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
@@ -58,7 +76,9 @@ export function AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoFro
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
-        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoFromJSON(json['abfragevarianteSachbearbeitung']),
+        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
+        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
 }
 
@@ -73,7 +93,9 @@ export function AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDtoToJ
         
         'id': value.id,
         'version': value.version,
-        'abfragevarianteSachbearbeitung': AbfragevarianteSachbearbeitungDtoToJSON(value.abfragevarianteSachbearbeitung),
+        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
+        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'anmerkung': value.anmerkung,
     };
 }
 

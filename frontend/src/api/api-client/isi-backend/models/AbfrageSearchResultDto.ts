@@ -26,11 +26,11 @@ import {
     SearchResultDtoToJSON,
 } from './SearchResultDto';
 import {
-    StadtbezirkDto,
-    StadtbezirkDtoFromJSON,
-    StadtbezirkDtoFromJSONTyped,
-    StadtbezirkDtoToJSON,
-} from './StadtbezirkDto';
+    StadtbezirkModel,
+    StadtbezirkModelFromJSON,
+    StadtbezirkModelFromJSONTyped,
+    StadtbezirkModelToJSON,
+} from './StadtbezirkModel';
 import {
     StatusAbfrage,
     StatusAbfrageFromJSON,
@@ -55,13 +55,13 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
      * @type {string}
      * @memberof AbfrageSearchResultDto
      */
-    nameAbfrage?: string;
+    name?: string;
     /**
      * 
-     * @type {Set<StadtbezirkDto>}
+     * @type {Set<StadtbezirkModel>}
      * @memberof AbfrageSearchResultDto
      */
-    stadtbezirke?: Set<StadtbezirkDto>;
+    stadtbezirke?: Set<StadtbezirkModel>;
     /**
      * 
      * @type {StatusAbfrage}
@@ -73,13 +73,7 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
      * @type {Date}
      * @memberof AbfrageSearchResultDto
      */
-    fristStellungnahme?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof AbfrageSearchResultDto
-     */
-    sobonJahr?: AbfrageSearchResultDtoSobonJahrEnum;
+    fristBearbeitung?: Date;
     /**
      * 
      * @type {string}
@@ -100,21 +94,6 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
     bauvorhaben?: string;
 }
 
-
-/**
- * @export
- */
-export const AbfrageSearchResultDtoSobonJahrEnum = {
-    _1995: 'JAHR_1995',
-    _1997: 'JAHR_1997',
-    _2001: 'JAHR_2001',
-    _2006: 'JAHR_2006',
-    _2012: 'JAHR_2012',
-    _2017: 'JAHR_2017',
-    _2017Plus: 'JAHR_2017_PLUS',
-    _2021: 'JAHR_2021'
-} as const;
-export type AbfrageSearchResultDtoSobonJahrEnum = typeof AbfrageSearchResultDtoSobonJahrEnum[keyof typeof AbfrageSearchResultDtoSobonJahrEnum];
 
 /**
  * @export
@@ -153,11 +132,10 @@ export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminat
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'nameAbfrage': !exists(json, 'nameAbfrage') ? undefined : json['nameAbfrage'],
-        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkModelFromJSON))),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
-        'fristStellungnahme': !exists(json, 'fristStellungnahme') ? undefined : (new Date(json['fristStellungnahme'])),
-        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
+        'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
@@ -174,11 +152,10 @@ export function AbfrageSearchResultDtoToJSON(value?: AbfrageSearchResultDto | nu
     return {
         ...SearchResultDtoToJSON(value),
         'id': value.id,
-        'nameAbfrage': value.nameAbfrage,
-        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
+        'name': value.name,
+        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkModelToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
-        'fristStellungnahme': value.fristStellungnahme === undefined ? undefined : (value.fristStellungnahme.toISOString().substr(0,10)),
-        'sobonJahr': value.sobonJahr,
+        'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
         'standVerfahren': value.standVerfahren,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'bauvorhaben': value.bauvorhaben,

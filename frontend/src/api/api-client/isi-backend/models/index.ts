@@ -14,10 +14,8 @@ export * from './AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto'
 export * from './AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto';
 export * from './AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 export * from './AbfragevarianteDto';
-export * from './AbfragevarianteFachreferatDto';
 export * from './AbfragevarianteInBearbeitungFachreferateDto';
 export * from './AbfragevarianteInBearbeitungSachbearbeitungDto';
-export * from './AbfragevarianteSachbearbeitungDto';
 export * from './AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto';
 export * from './AdresseDto';
 export * from './BauabschnittDto';

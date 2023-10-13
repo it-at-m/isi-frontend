@@ -37,7 +37,7 @@ describe("ValidatorMixin Test", () => {
     expect(geschossflaecheWohnen).toBe("Geschossfläche Wohnen geplant muss angegeben werden");
 
     baurate.gfWohnenGeplant = 50;
-    console.log("Test");
+
     const foerdermixErrorAbove = validationMixin.findFaultInBaurate(baurate);
 
     expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100");

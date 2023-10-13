@@ -30,7 +30,7 @@ export interface SearchQueryDto {
      * @type {boolean}
      * @memberof SearchQueryDto
      */
-    selectInfrastrukturabfrage: boolean;
+    selectBauleitplanverfahren: boolean;
     /**
      * 
      * @type {boolean}
@@ -98,7 +98,7 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'searchQuery': json['searchQuery'],
-        'selectInfrastrukturabfrage': json['selectInfrastrukturabfrage'],
+        'selectBauleitplanverfahren': json['selectBauleitplanverfahren'],
         'selectBauvorhaben': json['selectBauvorhaben'],
         'selectGrundschule': json['selectGrundschule'],
         'selectGsNachmittagBetreuung': json['selectGsNachmittagBetreuung'],
@@ -121,7 +121,7 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
     return {
         
         'searchQuery': value.searchQuery,
-        'selectInfrastrukturabfrage': value.selectInfrastrukturabfrage,
+        'selectBauleitplanverfahren': value.selectBauleitplanverfahren,
         'selectBauvorhaben': value.selectBauvorhaben,
         'selectGrundschule': value.selectGrundschule,
         'selectGsNachmittagBetreuung': value.selectGsNachmittagBetreuung,

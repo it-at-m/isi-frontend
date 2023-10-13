@@ -1,10 +1,9 @@
 import {
   StatusAbfrage,
-  AbfragevarianteSachbearbeitungDto,
-  AbfragevarianteFachreferatDto,
   AbfragevarianteBauleitplanverfahrenDto,
   BauleitplanverfahrenDto,
   AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
+  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   BedarfsmeldungFachreferateDto,
   BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
   AdresseDto,
@@ -35,7 +34,6 @@ import {
   BaugebietDto,
   BaugebietDtoArtBaulicheNutzungEnum,
   UncertainBoolean,
-  AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
@@ -49,7 +47,7 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
   const searchQueryAndSortingDto = {
     searchQuery: "",
-    selectInfrastrukturabfrage: true,
+    selectBauleitplanverfahren: true,
     selectBauvorhaben: true,
     selectGrundschule: true,
     selectGsNachmittagBetreuung: true,
@@ -139,20 +137,11 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     weSeniorinnenWohnen: undefined,
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
-    abfragevarianteSachbearbeitung: createAbfragevarianteSachbearbeitungDto(),
-    abfragevarianteFachreferat: createAbfragevarianteFachreferatDto(),
-    bauabschnitte: [],
-  };
-}
-
-/**
- * AbfragevarianteSachbearbeitungDto
- */
-export function createAbfragevarianteSachbearbeitungDto(): AbfragevarianteSachbearbeitungDto {
-  return {
     gfWohnenPlanungsursaechlich: undefined,
-    sobonOrientierungswertJahr: AbfragevarianteSachbearbeitungDtoSobonOrientierungswertJahrEnum.Unspecified,
+    sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
     anmerkung: undefined,
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bauabschnitte: [],
   };
 }
 

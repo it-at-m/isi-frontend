@@ -226,7 +226,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
+          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.dokumente)"
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
