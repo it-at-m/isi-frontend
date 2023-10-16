@@ -40,6 +40,12 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitung
     version?: number;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
+     */
+    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
@@ -188,6 +194,16 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitung
 /**
  * @export
  */
+export const AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = {
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum];
+
+/**
+ * @export
+ */
 export const AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoWesentlicheRechtsgrundlageEnum = {
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
@@ -227,6 +243,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'abfragevariantenNr': json['abfragevariantenNr'],
         'name': json['name'],
         'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
@@ -265,6 +282,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         
         'id': value.id,
         'version': value.version,
+        'artAbfragevariante': value.artAbfragevariante,
         'abfragevariantenNr': value.abfragevariantenNr,
         'name': value.name,
         'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),

@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './AbfrageApi';
 export * from './AbfrageStatusApi';
 export * from './AbfragenApi';
 export * from './BaurateApi';

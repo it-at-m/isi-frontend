@@ -22,7 +22,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
+          md="12"
         >
           <date-picker
             id="satzungsbeschluss_datepicker"
@@ -34,6 +34,8 @@
             @datePickerBlurred="datumSatzungsbeschlussChanged"
           />
         </v-col>
+      </v-row>
+      <v-row justify="center">
         <v-col
           cols="12"
           md="6"
@@ -41,7 +43,7 @@
           <v-autocomplete
             id="wesentliche_rechtsgrundlage_dropdown"
             ref="wesentlicheRechtsgrundlageDropdown"
-            v-model="abfragevariante.wesentlicheRechstgrundlage"
+            v-model="abfragevariante.wesentlicheRechtsgrundlage"
             :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
             item-value="key"
             item-text="value"
@@ -56,6 +58,23 @@
               <span class="secondary--text">*</span>
             </template>
           </v-autocomplete>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
+              id="wesentliche_rechtsgrundlage_freie_eingabe_field"
+              ref="wesentlicheRechtsgrundlageFreieEingabeField"
+              v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
+              :disabled="!isEditable"
+              label="freie Eingabe"
+              maxlength="255"
+              @input="formChanged"
+            />
+          </v-slide-y-reverse-transition>
         </v-col>
       </v-row>
       <v-row justify="center">
@@ -94,19 +113,24 @@
 </template>
 
 <script lang="ts">
-import { Component, VModel, Mixins, Prop } from "vue-property-decorator";
+import { Component, VModel, Mixins, Watch, Prop } from "vue-property-decorator";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import {
+  AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
+  LookupEntryDto,
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauleitplanverfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+
+  private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
 
   @Prop()
   private mode!: DisplayMode;
@@ -140,6 +164,20 @@ export default class BauleitplanverfahrenComponent extends Mixins(FieldValidatio
         datumSatzungsbeschluss.getMonth() + 1 < 7
           ? datumSatzungsbeschluss.getFullYear() + 3
           : datumSatzungsbeschluss.getFullYear() + 4;
+    }
+  }
+
+  @Watch("abfragevariante.wesentlicheRechtsgrundlage", { immediate: true })
+  private wesentlicheRechtsgrundlageChanged(): void {
+    if (
+      this.abfragevariante.wesentlicheRechtsgrundlage.includes(
+        AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
+      )
+    ) {
+      this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;
+    } else {
+      this.abfragevariante.wesentlicheRechtsgrundlageFreieEingabe = undefined;
+      this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
     }
   }
 }

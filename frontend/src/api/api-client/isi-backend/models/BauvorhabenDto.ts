@@ -14,12 +14,6 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    AbfragevarianteDto,
-    AbfragevarianteDtoFromJSON,
-    AbfragevarianteDtoFromJSONTyped,
-    AbfragevarianteDtoToJSON,
-} from './AbfragevarianteDto';
-import {
     AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
@@ -160,10 +154,10 @@ export interface BauvorhabenDto {
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {AbfragevarianteDto}
+     * @type {string}
      * @memberof BauvorhabenDto
      */
-    relevanteAbfragevariante?: AbfragevarianteDto;
+    relevanteAbfragevariante?: string;
 }
 
 
@@ -267,7 +261,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
         'artFnp': json['artFnp'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : AbfragevarianteDtoFromJSON(json['relevanteAbfragevariante']),
+        'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : json['relevanteAbfragevariante'],
     };
 }
 
@@ -298,7 +292,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
         'artFnp': value.artFnp,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
-        'relevanteAbfragevariante': AbfragevarianteDtoToJSON(value.relevanteAbfragevariante),
+        'relevanteAbfragevariante': value.relevanteAbfragevariante,
     };
 }
 

@@ -67,6 +67,12 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
+    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenDto
+     */
     name: string;
     /**
      * 
@@ -212,6 +218,16 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
 /**
  * @export
  */
+export const AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum = {
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum];
+
+/**
+ * @export
+ */
 export const AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum = {
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
@@ -254,6 +270,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'name': json['name'],
         'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
@@ -295,6 +312,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSON(value?: Abfragevari
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'abfragevariantenNr': value.abfragevariantenNr,
+        'artAbfragevariante': value.artAbfragevariante,
         'name': value.name,
         'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,

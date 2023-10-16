@@ -302,7 +302,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { AbfragevarianteDtoPlanungsrechtEnum, LookupEntryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
+import {
+  /* AbfragevarianteDtoPlanungsrechtEnum, */ LookupEntryDto,
+  UncertainBoolean,
+} from "@/api/api-client/isi-backend";
 import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -351,11 +354,14 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get calcRealisierungBis(): number | undefined {
+    /*
     let jahre: Array<number> | undefined = this.abfragevariante.bauabschnitte
       ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
       .flatMap((baugebiet) => baugebiet.bauraten)
       .map((baurate) => baurate.jahr);
-    return _.max(jahre);
+    //return _.max(jahre);
+    */
+    return 5;
   }
 
   get isSobonRelevant(): UncertainBoolean {
@@ -363,10 +369,12 @@ export default class AbfragevarianteForm extends Mixins(
   }
 
   get isGeschossflaecheSobonUrsaechlichPflichtfeld(): boolean {
-    const pflichtfeld =
+    const pflichtfeld = false;
+    /*
       this.isSobonRelevant === UncertainBoolean.True &&
       (this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
         this.abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11);
+        */
     return pflichtfeld;
   }
 
@@ -380,25 +388,29 @@ export default class AbfragevarianteForm extends Mixins(
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
     return this.displayMode === DisplayMode.NEU
       ? headline.concat("anlegen")
-      : headline.concat(`${this.abfragevariante.abfragevariantenName}`);
+      : headline.concat(`${this.abfragevariante.name}`);
   }
 
   @Watch("abfragevariante", { immediate: true, deep: true })
   public clearSonderwohnformData(): void {
+    /*
     if (!this.abfragevariante.sonderwohnformen) {
       this.abfragevariante.geschossflaecheStudentenwohnungen = undefined;
       this.abfragevariante.geschossflaecheSeniorenwohnungen = undefined;
       this.abfragevariante.geschossflaecheSonstiges = undefined;
     }
+    */
   }
 
   private datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
+    /*
     if (!_.isNil(datumSatzungsbeschluss)) {
       this.abfragevariante.realisierungVon =
         datumSatzungsbeschluss.getMonth() + 1 < 7
           ? datumSatzungsbeschluss.getFullYear() + 3
           : datumSatzungsbeschluss.getFullYear() + 4;
     }
+    */
   }
 }
 </script>

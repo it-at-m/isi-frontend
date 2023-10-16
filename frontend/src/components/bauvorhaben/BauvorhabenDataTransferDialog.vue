@@ -60,7 +60,7 @@ import {
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
+import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
 import { createBauleitplanverfahrenDto } from "@/utils/Factories";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 

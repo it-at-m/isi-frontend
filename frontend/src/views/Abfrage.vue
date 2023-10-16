@@ -268,7 +268,7 @@ import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
 import InformationList from "@/components/common/InformationList.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
-import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
+import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
 import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
@@ -294,9 +294,9 @@ import {
   createTechnicalBaugebietDto,
 } from "@/utils/Factories";
 import {
-  mapToInfrastrukturabfrageAngelegt,
-  mapToInfrastrukturabfrageInBearbeitungFachreferateDto,
-  mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  mapToBauleitplanverfahrenAngelegt,
+  //mapToInfrastrukturabfrageInBearbeitungFachreferateDto,
+  //mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";
@@ -417,7 +417,7 @@ export default class Abfrage extends Mixins(
 
   async setSelectedAbfrageInStore(): Promise<void> {
     if (this.abfrageId !== undefined) {
-      this.getAbfrageById(this.abfrageId, true)
+      this.getById(this.abfrageId, true)
         .then((dto) => {
           this.saveAbfrageInStore(new BauleitplanverfahrenModel(dto));
         })
@@ -477,7 +477,7 @@ export default class Abfrage extends Mixins(
   }
 
   private async deleteInfrastrukturabfrage(): Promise<void> {
-    await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+    await this.deleteById(this.abfrageId, true).then(() => {
       this.$store.commit("search/removeSearchResultById", this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
@@ -534,18 +534,16 @@ export default class Abfrage extends Mixins(
     const validationMessage: string | null = this.findFaultInBauleitplanverfahrenForSave(this.abfrage);
     if (_.isNil(validationMessage)) {
       if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.createInfrastrukturabfrage(mapToInfrastrukturabfrageAngelegt(this.abfrage), true).then((dto) => {
+        await this.save(mapToBauleitplanverfahrenAngelegt(this.abfrage), true).then((dto) => {
           this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableByAbfrageerstellung()) {
-        await this.patchAbfrageAngelegt(
-          mapToInfrastrukturabfrageAngelegt(this.abfrage),
-          this.abfrage.id as string,
-          true,
-        ).then((dto) => {
-          this.handleSuccess(dto, showToast);
-        });
-      } else if (this.isEditableBySachbearbeitung()) {
+        await this.patchAngelegt(mapToBauleitplanverfahrenAngelegt(this.abfrage), this.abfrage.id as string, true).then(
+          (dto) => {
+            this.handleSuccess(dto, showToast);
+          },
+        );
+      } /*else if (this.isEditableBySachbearbeitung()) {
         await this.patchAbfrageInBearbeitungSachbearbeitung(
           mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrage),
           this.abfrage.id as string,
@@ -561,7 +559,7 @@ export default class Abfrage extends Mixins(
         ).then((dto) => {
           this.handleSuccess(dto);
         });
-      }
+      } */
     } else {
       this.showWarningInInformationList(validationMessage);
     }

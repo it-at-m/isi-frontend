@@ -40,6 +40,12 @@ export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
     version?: number;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     */
+    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
@@ -170,6 +176,16 @@ export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
 /**
  * @export
  */
+export const AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum = {
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum];
+
+/**
+ * @export
+ */
 export const AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum = {
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
@@ -198,6 +214,7 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'abfragevariantenNr': json['abfragevariantenNr'],
         'name': json['name'],
         'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
@@ -233,6 +250,7 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON(value?: Abf
         
         'id': value.id,
         'version': value.version,
+        'artAbfragevariante': value.artAbfragevariante,
         'abfragevariantenNr': value.abfragevariantenNr,
         'name': value.name,
         'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),

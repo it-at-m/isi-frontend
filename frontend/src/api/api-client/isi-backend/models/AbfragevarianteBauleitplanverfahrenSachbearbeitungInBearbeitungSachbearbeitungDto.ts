@@ -33,6 +33,12 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
     version?: number;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
@@ -51,6 +57,16 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
     anmerkung?: string;
 }
 
+
+/**
+ * @export
+ */
+export const AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = {
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum];
 
 /**
  * @export
@@ -76,6 +92,7 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -93,6 +110,7 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         
         'id': value.id,
         'version': value.version,
+        'artAbfragevariante': value.artAbfragevariante,
         'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'anmerkung': value.anmerkung,

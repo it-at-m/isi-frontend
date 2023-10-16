@@ -40,11 +40,29 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto 
     version?: number;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     */
+    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum;
+    /**
+     * 
      * @type {Array<BedarfsmeldungFachreferateDto>}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
      */
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
 }
+
+
+/**
+ * @export
+ */
+export const AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = {
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum];
+
 
 export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto {
     return AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
@@ -58,6 +76,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFr
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
     };
 }
@@ -73,6 +92,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoTo
         
         'id': value.id,
         'version': value.version,
+        'artAbfragevariante': value.artAbfragevariante,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
     };
 }
