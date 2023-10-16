@@ -86,7 +86,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     return this.bauvorhabenApi
       .createBauvorhaben(requestObject, RequestUtils.getPOSTConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -100,7 +100,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     return this.bauvorhabenApi
       .updateBauvorhaben(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -114,7 +114,7 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     return this.bauvorhabenApi
       .deleteBauvorhaben(requestObject, RequestUtils.getDELETEConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {

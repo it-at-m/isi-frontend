@@ -130,6 +130,7 @@
             v-model="abfrage.dokumente"
             :name-root-folder="nameRootFolder"
             :is-dokumente-editable="isEditableByAbfrageerstellung()"
+            @change="formchanged"
           />
         </v-col>
       </v-row>

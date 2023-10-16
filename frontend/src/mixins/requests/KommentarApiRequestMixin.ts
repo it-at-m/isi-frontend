@@ -10,9 +10,10 @@ import {
 import { Component, Mixins } from "vue-property-decorator";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "./ErrorHandler";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component
-export default class KommentarApiRequestMixin extends Mixins(ErrorHandler) {
+export default class KommentarApiRequestMixin extends Mixins(ErrorHandler, SaveLeaveMixin) {
   private kommentareApi: KommentareApi;
 
   constructor() {
@@ -61,6 +62,7 @@ export default class KommentarApiRequestMixin extends Mixins(ErrorHandler) {
     return await this.kommentareApi
       .createKommentar(requestObject, RequestUtils.getPOSTConfig())
       .then((response) => {
+        this.resetCommentDirty();
         return response;
       })
       .catch((error) => {
@@ -75,6 +77,7 @@ export default class KommentarApiRequestMixin extends Mixins(ErrorHandler) {
     return await this.kommentareApi
       .updateKommentar(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
+        this.resetCommentDirty();
         return response;
       })
       .catch((error) => {
@@ -89,6 +92,7 @@ export default class KommentarApiRequestMixin extends Mixins(ErrorHandler) {
     return await this.kommentareApi
       .deleteKommentar(requestObject, RequestUtils.getDELETEConfig())
       .then((response) => {
+        this.resetCommentDirty();
         return response;
       })
       .catch((error) => {

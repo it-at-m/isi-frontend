@@ -11,6 +11,7 @@
           maxlength="32"
           filled
           :disabled="!isEditable"
+          @input="changed"
         >
           <template #label> Datum </template>
         </v-text-field>
@@ -26,11 +27,11 @@
               <v-btn
                 id="save_kommentar"
                 icon
-                :disabled="!isSaveable || !isEditable"
+                :disabled="!isSaveable || !isEditable || !isDirty"
                 v-on="on"
                 @click="saveKommentar"
               >
-                <v-icon> mdi-content-save</v-icon>
+                <v-icon :color="isDirty ? 'secondary' : undefined">mdi-content-save</v-icon>
               </v-btn>
             </template>
             <span>Kommentar speichern</span>
@@ -65,6 +66,7 @@
           filled
           rows="5"
           :disabled="!isEditable"
+          @input="changed"
         />
       </v-col>
     </v-row>
@@ -76,6 +78,8 @@
           v-model="kommentar.dokumente"
           :name-root-folder="nameRootFolder"
           :is-dokumente-editable="isEditable"
+          in-comment
+          @change="changed"
         />
       </v-col>
     </v-row>
@@ -97,11 +101,12 @@ import { Component, Mixins, Emit, Prop } from "vue-property-decorator";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   components: { YesNoDialog },
 })
-export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
+export default class Kommentar extends Mixins(KommentarApiRequestMixin, SaveLeaveMixin) {
   @Prop()
   private kommentar!: KommentarModel;
 
@@ -114,6 +119,7 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
   private deleteDialogYesText = "Löschen";
   private deleteDialogNoText = "Abbrechen";
   private nameRootFolder = "kommentare";
+  private isDirty = false;
 
   get isSaveable(): boolean {
     return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);
@@ -127,8 +133,14 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin) {
     this.deleteDialog = false;
   }
 
+  private changed(): void {
+    this.isDirty = true;
+    this.commentChanged();
+  }
+
   @Emit()
   private saveKommentar(): KommentarModel {
+    this.isDirty = false;
     return this.kommentar;
   }
 

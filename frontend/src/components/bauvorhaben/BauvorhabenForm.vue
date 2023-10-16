@@ -148,6 +148,7 @@
             v-model="bauvorhaben.dokumente"
             :name-root-folder="nameRootFolder"
             :is-dokumente-editable="isEditable"
+            @change="formchanged"
           />
         </v-col>
       </v-row>
