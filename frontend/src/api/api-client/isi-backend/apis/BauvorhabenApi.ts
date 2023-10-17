@@ -42,7 +42,7 @@ export interface GetBauvorhabenByIdRequest {
     id: string;
 }
 
-export interface GetReferencedInfrastrukturabfragenRequest {
+export interface GetReferencedAbfrageRequest {
     id: string;
 }
 
@@ -162,11 +162,11 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
     /**
      * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
-     * Lade alle Infrastrukturabfragen die einem Bauvorhaben angehören
+     * Lade alle Abfragen die einem Bauvorhaben angehören
      */
-    async getReferencedInfrastrukturabfragenRaw(requestParameters: GetReferencedInfrastrukturabfragenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
+    async getReferencedAbfrageRaw(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedInfrastrukturabfragen.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedAbfrage.');
         }
 
         const queryParameters: any = {};
@@ -185,10 +185,10 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
     /**
      * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
-     * Lade alle Infrastrukturabfragen die einem Bauvorhaben angehören
+     * Lade alle Abfragen die einem Bauvorhaben angehören
      */
-    async getReferencedInfrastrukturabfragen(requestParameters: GetReferencedInfrastrukturabfragenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AbfrageSearchResultDto>> {
-        const response = await this.getReferencedInfrastrukturabfragenRaw(requestParameters, initOverrides);
+    async getReferencedAbfrage(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AbfrageSearchResultDto>> {
+        const response = await this.getReferencedAbfrageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

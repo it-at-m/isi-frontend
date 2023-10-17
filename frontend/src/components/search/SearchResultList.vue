@@ -12,7 +12,7 @@
       v-slot="{ hover }"
     >
       <v-card
-        v-if="isTypeOfInfrastrukturabfrage(item)"
+        v-if="isTypeOfAbfrage(item)"
         :id="'search_result_item_' + index"
         outlined
         class="my-1 mx-0 transition-swing"
@@ -204,10 +204,10 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
       });
   }
 
-  // Infrastrukturabfragen
+  // Type: ABFRAGE
 
-  private isTypeOfInfrastrukturabfrage(searchResult: SearchResultDto): boolean {
-    return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage);
+  private isTypeOfAbfrage(searchResult: SearchResultDto): boolean {
+    return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Abfrage);
   }
 
   private castToAbfrageSearchResultDto(searchResult: SearchResultDto): AbfrageSearchResultDto {
