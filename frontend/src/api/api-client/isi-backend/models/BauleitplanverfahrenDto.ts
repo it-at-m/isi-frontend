@@ -79,7 +79,7 @@ export interface BauleitplanverfahrenDto extends AbfrageDto {
      * @type {UncertainBoolean}
      * @memberof BauleitplanverfahrenDto
      */
-    sobonRelevant: UncertainBoolean;
+    sobonRelevant?: UncertainBoolean;
     /**
      * 
      * @type {string}
@@ -91,7 +91,7 @@ export interface BauleitplanverfahrenDto extends AbfrageDto {
      * @type {string}
      * @memberof BauleitplanverfahrenDto
      */
-    standVerfahren: BauleitplanverfahrenDtoStandVerfahrenEnum;
+    standVerfahren?: BauleitplanverfahrenDtoStandVerfahrenEnum;
     /**
      * 
      * @type {string}
@@ -121,13 +121,13 @@ export interface BauleitplanverfahrenDto extends AbfrageDto {
      * @type {Date}
      * @memberof BauleitplanverfahrenDto
      */
-    fristBearbeitung: Date;
+    fristBearbeitung?: Date;
     /**
      * 
      * @type {UncertainBoolean}
      * @memberof BauleitplanverfahrenDto
      */
-    offizielleMitzeichnung: UncertainBoolean;
+    offizielleMitzeichnung?: UncertainBoolean;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenDto>}
@@ -195,15 +195,15 @@ export function BauleitplanverfahrenDtoFromJSONTyped(json: any, ignoreDiscrimina
     return {
         ...AbfrageDtoFromJSONTyped(json, ignoreDiscriminator),
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
-        'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
+        'sobonRelevant': !exists(json, 'sobonRelevant') ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
-        'standVerfahren': json['standVerfahren'],
+        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
         'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'fristBearbeitung': (new Date(json['fristBearbeitung'])),
-        'offizielleMitzeichnung': UncertainBooleanFromJSON(json['offizielleMitzeichnung']),
+        'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
+        'offizielleMitzeichnung': !exists(json, 'offizielleMitzeichnung') ? undefined : UncertainBooleanFromJSON(json['offizielleMitzeichnung']),
         'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
         'abfragevariantenSachbearbeitung': !exists(json, 'abfragevariantenSachbearbeitung') ? undefined : ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
     };
@@ -226,7 +226,7 @@ export function BauleitplanverfahrenDtoToJSON(value?: BauleitplanverfahrenDto | 
         'adresse': AdresseDtoToJSON(value.adresse),
         'verortung': VerortungDtoToJSON(value.verortung),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': (value.fristBearbeitung.toISOString().substr(0,10)),
+        'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
         'offizielleMitzeichnung': UncertainBooleanToJSON(value.offizielleMitzeichnung),
         'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
         'abfragevariantenSachbearbeitung': value.abfragevariantenSachbearbeitung === undefined ? undefined : ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),

@@ -73,7 +73,7 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    name: string;
+    name?: string;
     /**
      * 
      * @type {Date}
@@ -85,7 +85,7 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
      * @type {Array<string>}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>;
+    wesentlicheRechtsgrundlage?: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>;
     /**
      * 
      * @type {string}
@@ -271,9 +271,9 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
-        'name': json['name'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
-        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
+        'wesentlicheRechtsgrundlage': !exists(json, 'wesentlicheRechtsgrundlage') ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'realisierungVon': !exists(json, 'realisierungVon') ? undefined : json['realisierungVon'],
         'gfWohnenGesamt': !exists(json, 'gfWohnenGesamt') ? undefined : json['gfWohnenGesamt'],
