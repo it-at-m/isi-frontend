@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import { Component, VModel, Prop, Mixins, Watch } from "vue-property-decorator";
+import { Component, VModel, Prop, Mixins } from "vue-property-decorator";
 import moment from "moment";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import _ from "lodash";
