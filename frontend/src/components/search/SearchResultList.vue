@@ -17,7 +17,7 @@
         outlined
         class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
-        @click="routeToInfrastrukturabfrageForm(item)"
+        @click="routeToAbfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
           {{ castToAbfrageSearchResultDto(item).nameAbfrage }}
@@ -27,9 +27,7 @@
           <v-spacer />
           <span>
             Status:
-            {{
-              getLookupValueInfrastrukturabfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList)
-            }}
+            {{ getLookupValueAbfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList) }}
           </span>
           <v-spacer />
           <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristStellungnahme) }} </span>
@@ -214,7 +212,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     return searchResult as AbfrageSearchResultDto;
   }
 
-  private routeToInfrastrukturabfrageForm(abfrageSearchResult: AbfrageSearchResultDto): void {
+  private routeToAbfrageForm(abfrageSearchResult: AbfrageSearchResultDto): void {
     if (!_.isUndefined(abfrageSearchResult.id)) {
       router.push({
         name: "updateabfrage",
@@ -223,7 +221,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     }
   }
 
-  private getLookupValueInfrastrukturabfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
+  private getLookupValueAbfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 
