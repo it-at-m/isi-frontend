@@ -11,13 +11,12 @@
         />
       </v-col>
     </v-row>
-    <abfragevariante-common-component
+    <common-component
       id="abfragevariante_common_component"
       ref="abfragevarianteCommonComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-
     <geplante-geschossflaeche-wohnen-component
       id="geplante_geschossflaeche_wohnen_component"
       ref="geplanteGeschossflaecheWohnenComponent"
@@ -30,18 +29,41 @@
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
+    <sachbearbeitung-component
+      id="sachbearbeitung_component"
+      ref="sachbearbeitungComponent"
+      v-model="abfragevariante"
+    />
+    <bedarfsmeldung-fachreferate-component
+      id="bedarfsmeldung_fachreferate_component"
+      ref="bedarfsmeldungFachreferateComponent"
+      v-model="abfragevariante"
+    />
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, VModel, Prop } from "vue-property-decorator";
-import AbfragevarianteCommonComponent from "@/components/abfragevarianten/AbfragevarianteCommonComponent.vue";
+import CommonComponent from "@/components/abfragevarianten/CommonComponent.vue";
+import GeplanteGeschossflaecheWohnenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenComponent.vue";
+import GeplanteAnzahlWohneinheitenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenComponent.vue";
+import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
+import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
-@Component({ components: { FieldGroupCard, AbfragevarianteCommonComponent } })
+@Component({
+  components: {
+    FieldGroupCard,
+    CommonComponent,
+    GeplanteGeschossflaecheWohnenComponent,
+    GeplanteAnzahlWohneinheitenComponent,
+    SachbearbeitungComponent,
+    BedarfsmeldungFachreferateComponent,
+  },
+})
 export default class BauleitplanverfahrenComponent extends Vue {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
