@@ -120,7 +120,7 @@
             <num-field
               id="gf_seniorInnen_wohnen_field"
               ref="gfSeniorInnenWohnenField"
-              v-model="abfragevariante.gfWohnenSeniorinnenWohnengfWohnenSeniorinnenWohnen"
+              v-model="abfragevariante.gfWohnenSeniorinnenWohnen"
               :disabled="!isEditable"
               class="mx-3"
               label="Senior*innenwohnen"
