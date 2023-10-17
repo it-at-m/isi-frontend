@@ -7,9 +7,9 @@
           md="6"
         >
           <num-field
-            id="gf_wohnen_sobon_ursaechlich_field"
-            ref="gfWohnenSobonUrsaechlichField"
-            v-model="abfragevarianteSachbearbeitung.gfWohnenSobonUrsaechlich"
+            id="planungsursaechliche_gf_wohnen_field"
+            ref="planungsursaechlicheGfWohnenField"
+            v-model="abfragevarianteSachbearbeitung.gfWohnenPlanungsursaechlich"
             :disabled="!isEditableBySachbearbeitung()"
             class="mx-3"
             label="Planungsursächliche GF Wohnen"
@@ -22,7 +22,8 @@
         >
           <v-slide-y-reverse-transition>
             <v-select
-              id="abfragevarianteSachbearbeitung_soBoNOrientierungswertJahr"
+              id="sobon_orientierungswert_jahr_dropdown"
+              ref="sobonOrientierungswertJahrDropdown"
               v-model="abfragevarianteSachbearbeitung.soBoNOrientierungswertJahr"
               :disabled="!isEditableBySachbearbeitung()"
               :items="sobonOrientierungswertJahrList"
