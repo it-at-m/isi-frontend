@@ -96,7 +96,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Genossenschaftswohnungen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              integer
             />
           </v-col>
           <v-col
@@ -110,7 +110,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="weitere nicht-infrastrukturrelevante Wohnungen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              integer
             />
           </v-col>
         </v-row>

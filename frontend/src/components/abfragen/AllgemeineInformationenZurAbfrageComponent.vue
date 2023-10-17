@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col
         cols="12"
-        md="6"
+        md="12"
       >
         <date-picker
           id="bearbeitungsfrist_datepicker"
@@ -15,9 +15,11 @@
           required
         />
       </v-col>
+    </v-row>
+    <v-row justify="center">
       <v-col
         cols="12"
-        md="6"
+        md="12"
       >
         <tri-switch
           id="offizielle_mitteilung_triswitch"
