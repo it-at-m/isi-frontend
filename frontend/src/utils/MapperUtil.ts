@@ -1,11 +1,13 @@
 import {
+  BauleitplanverfahrenDto,
   BauleitplanverfahrenAngelegtDto,
   BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
+  BauleitplanverfahrenInBearbeitungFachreferatDto,
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBauleitplanverfahrenAngelegtDto,
   AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
   AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
-  BauleitplanverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto,
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
@@ -126,66 +128,32 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
   });
 }
 
-/*
-export function mapToInfrastrukturabfrageInBearbeitungFachreferateDto(
-  infrastrukturabfrageDto: InfrastrukturabfrageDto,
-): InfrastrukturabfrageInBearbeitungFachreferateDto {
-  const abfragevarianten = _.toArray(infrastrukturabfrageDto.abfragevarianten).map((abfragevariante) => {
+export function mapToBauleitplanverfahrenInBearbeitungFachreferatDto(
+  bauleitplanverfahrenDto: BauleitplanverfahrenDto,
+): BauleitplanverfahrenInBearbeitungFachreferatDto {
+  return {
+    // extends: AbfrageInBearbeitungFachreferatDto
+    version: bauleitplanverfahrenDto.version,
+    artAbfrage: bauleitplanverfahrenDto.artAbfrage,
+    // AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+    abfragevarianten: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
+      bauleitplanverfahrenDto.abfragevarianten,
+    ),
+    abfragevariantenSachbearbeitung: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
+      bauleitplanverfahrenDto.abfragevariantenSachbearbeitung,
+    ),
+  } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
+}
+
+export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
+  abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
+): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
-      bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
-        abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
-      ),
-    } as AbfragevarianteInBearbeitungFachreferateDto;
-  });
-
-  const abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrageDto.abfragevariantenSachbearbeitung).map(
-    (abfragevariante) => {
-      return {
-        id: abfragevariante.id,
-        version: abfragevariante.version,
-        bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
-          abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
-        ),
-      } as AbfragevarianteInBearbeitungFachreferateDto;
-    },
-  );
-
-  return {
-    version: infrastrukturabfrageDto.version,
-    abfragevarianten: abfragevarianten,
-    abfragevariantenSachbearbeitung: abfragevariantenSachbearbeitung,
-  } as InfrastrukturabfrageInBearbeitungFachreferateDto;
-}
-
-export function mapToBedarfsmeldungFachabteilungen(
-  bedarfsmeldungFachabteilungen: Array<BedarfsmeldungFachabteilungenDto> | undefined,
-): Array<BedarfsmeldungFachabteilungenDto> {
-  return _.toArray(bedarfsmeldungFachabteilungen).map((bedarfmeldung) => {
-    return {
-      id: bedarfmeldung.id,
-      version: bedarfmeldung.version,
-      anzahlEinrichtungen: bedarfmeldung.anzahlEinrichtungen,
-      infrastruktureinrichtungTyp: bedarfmeldung.infrastruktureinrichtungTyp,
-      anzahlKinderkrippengruppen: bedarfmeldung.anzahlKinderkrippengruppen,
-      anzahlKindergartengruppen: bedarfmeldung.anzahlKindergartengruppen,
-      anzahlHortgruppen: bedarfmeldung.anzahlHortgruppen,
-      anzahlGrundschulzuege: bedarfmeldung.anzahlGrundschulzuege,
-    } as BedarfsmeldungFachabteilungenDto;
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+    } as AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto;
   });
 }
-
-export function mapToAbfragevarianteSachbearbeitungDto(
-  abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto | undefined,
-): AbfragevarianteSachbearbeitungDto {
-  return {
-    geschossflaecheWohnenPlanungsursaechlich: abfragevarianteSachbearbeitung?.geschossflaecheWohnenPlanungsursaechlich,
-    soBoNOrientierungswertJahr: abfragevarianteSachbearbeitung?.soBoNOrientierungswertJahr,
-    anmerkung: abfragevarianteSachbearbeitung?.anmerkung,
-    bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
-      abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
-    ),
-  } as AbfragevarianteSachbearbeitungDto;
-}
-*/

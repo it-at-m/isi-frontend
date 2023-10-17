@@ -295,6 +295,8 @@ import {
 } from "@/utils/Factories";
 import {
   mapToBauleitplanverfahrenAngelegt,
+  mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
+  mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   //mapToInfrastrukturabfrageInBearbeitungFachreferateDto,
   //mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
 } from "@/utils/MapperUtil";
@@ -543,23 +545,23 @@ export default class Abfrage extends Mixins(
             this.handleSuccess(dto, showToast);
           },
         );
-      } /*else if (this.isEditableBySachbearbeitung()) {
-        await this.patchAbfrageInBearbeitungSachbearbeitung(
-          mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrage),
+      } else if (this.isEditableBySachbearbeitung()) {
+        await this.patchInBearbeitungSachbearbeitung(
+          mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(this.abfrage),
           this.abfrage.id as string,
           true,
         ).then((dto) => {
           this.handleSuccess(dto, showToast);
         });
       } else if (this.isEditableByBedarfsmeldung()) {
-        await this.patchAbfrageInBearbeitungFachreferate(
-          mapToInfrastrukturabfrageInBearbeitungFachreferateDto(this.abfrage),
+        await this.patchInBearbeitungFachreferat(
+          mapToBauleitplanverfahrenInBearbeitungFachreferatDto(this.abfrage),
           this.abfrage.id as string,
           true,
         ).then((dto) => {
-          this.handleSuccess(dto);
+          this.handleSuccess(dto, showToast);
         });
-      } */
+      }
     } else {
       this.showWarningInInformationList(validationMessage);
     }
