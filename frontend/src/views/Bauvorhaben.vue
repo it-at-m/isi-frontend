@@ -133,7 +133,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
-import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
+import { BauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
@@ -284,11 +284,10 @@ export default class Bauvorhaben extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private abfrageUebernehmen(abfrage: InfrastrukturabfrageDto): void {
-    this.bauvorhaben.adresse = _.isNil(abfrage.abfrage.adresse) ? createAdresseDto() : abfrage.abfrage.adresse;
-    this.bauvorhaben.allgemeineOrtsangabe = abfrage.abfrage.allgemeineOrtsangabe;
-    this.bauvorhaben.standVorhaben = abfrage.abfrage.standVorhaben;
-    this.bauvorhaben.bebauungsplannummer = abfrage.abfrage.bebauungsplannummer;
+  private abfrageUebernehmen(abfrage: BauleitplanverfahrenDto): void {
+    this.bauvorhaben.adresse = _.isNil(abfrage.adresse) ? createAdresseDto() : abfrage.adresse;
+    this.bauvorhaben.standVerfahren = abfrage.standVerfahren;
+    this.bauvorhaben.bebauungsplannummer = abfrage.bebauungsplannummer;
     this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
     this.bauvorhaben.sobonJahr = abfrage.sobonJahr;
     this.datenuebernahmeAbfrageId = abfrage.id;
