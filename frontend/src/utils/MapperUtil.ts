@@ -90,9 +90,9 @@ export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
 }
 
 export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
-  bedarfsmeldungFachabteilungen: Array<AbfragevarianteBauleitplanverfahrenDto>,
+  abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
 ): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto> {
-  return _.toArray(bedarfsmeldungFachabteilungen).map((abfragevariante) => {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
