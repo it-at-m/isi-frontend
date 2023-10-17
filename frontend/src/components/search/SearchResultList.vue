@@ -20,7 +20,7 @@
         @click="routeToAbfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
-          {{ castToAbfrageSearchResultDto(item).nameAbfrage }}
+          {{ castToAbfrageSearchResultDto(item).name }}
         </v-card-subtitle>
         <v-card-text>
           <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
@@ -30,7 +30,7 @@
             {{ getLookupValueAbfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList) }}
           </span>
           <v-spacer />
-          <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristStellungnahme) }} </span>
+          <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristBearbeitung) }} </span>
         </v-card-text>
       </v-card>
       <v-card

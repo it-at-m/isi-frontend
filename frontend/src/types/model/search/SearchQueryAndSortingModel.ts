@@ -9,7 +9,7 @@ class SearchQueryAndSortingModel {
 
   public allObjectTypesSelected(): boolean {
     return (
-      this.selectInfrastrukturabfrage &&
+      this.selectBauleitplanverfahren &&
       this.selectBauvorhaben &&
       this.selectGrundschule &&
       this.selectGsNachmittagBetreuung &&
@@ -22,7 +22,7 @@ class SearchQueryAndSortingModel {
 
   public allObjectTypesDeselected(): boolean {
     return (
-      !this.selectInfrastrukturabfrage &&
+      !this.selectBauleitplanverfahren &&
       !this.selectBauvorhaben &&
       !this.selectGrundschule &&
       !this.selectGsNachmittagBetreuung &&
