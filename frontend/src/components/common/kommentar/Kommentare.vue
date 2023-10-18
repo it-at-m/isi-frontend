@@ -23,17 +23,18 @@
 
 <script lang="ts">
 import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin";
-import { Component, Prop, Mixins } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
 import _ from "lodash";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import Kommentar from "@/components/common/kommentar/Kommentar.vue";
 import { Context } from "@/utils/Context";
 import { createKommentarDto } from "@/utils/Factories";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   components: { Kommentar },
 })
-export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
+export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLeaveMixin) {
   @Prop({ type: String, default: Context.UNDEFINED })
   private readonly context!: Context;
 
@@ -44,28 +45,39 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
 
   private kommentare: Array<KommentarModel> = [];
 
+  @Watch("kommentare", { immediate: true, deep: true })
+  private resetCommentDirtyFlagWhenNoCommentsAreDirty(): void {
+    const existsDirtyKommentar = !_.isEmpty(this.kommentare.filter((kommentar) => kommentar.isDirty));
+    console.log("existsDirtyKommentar: " + existsDirtyKommentar);
+    if (!existsDirtyKommentar) {
+      this.resetCommentDirty();
+    }
+  }
+
   private getKommentare(): void {
-    const id = this.$route.params.id;
-    if (!this.isKommentarListOpen && !_.isNil(id)) {
-      this.isKommentarListOpen = true;
-      if (this.context === Context.BAUVORHABEN) {
-        this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
-          this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-          if (this.isEditable) {
-            this.kommentare.unshift(this.createNewUnsavedKommentarForBauvorhaben());
-          }
-        });
-      } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
-        this.getKommentareForInfrastruktureinrichtung(id, true).then((kommentare) => {
-          this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-          if (this.isEditable) {
-            this.kommentare.unshift(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
-          }
-        });
+    if (!this.isCommentDirty()) {
+      const id = this.$route.params.id;
+      if (!this.isKommentarListOpen && !_.isNil(id)) {
+        this.isKommentarListOpen = true;
+        if (this.context === Context.BAUVORHABEN) {
+          this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
+            this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
+            if (this.isEditable) {
+              this.kommentare.unshift(this.createNewUnsavedKommentarForBauvorhaben());
+            }
+          });
+        } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
+          this.getKommentareForInfrastruktureinrichtung(id, true).then((kommentare) => {
+            this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
+            if (this.isEditable) {
+              this.kommentare.unshift(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
+            }
+          });
+        }
+      } else {
+        this.isKommentarListOpen = false;
+        this.kommentare = [];
       }
-    } else {
-      this.isKommentarListOpen = false;
-      this.kommentare = [];
     }
   }
 
@@ -95,12 +107,14 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin) {
     if (_.isNil(kommentar.id)) {
       this.createKommentar(kommentar, true).then((createdKommentar) => {
         const model = new KommentarModel(createdKommentar);
+        model.isDirty = false;
         this.replaceSavedKommentarInKommentare(model);
         this.kommentare.unshift(this.createNewUnsavedKommentar());
       });
     } else {
       this.updateKommentar(kommentar, true).then((updatedKommentar) => {
         const model = new KommentarModel(updatedKommentar);
+        model.isDirty = false;
         this.replaceSavedKommentarInKommentare(model);
       });
     }

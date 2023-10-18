@@ -27,11 +27,11 @@
               <v-btn
                 id="save_kommentar"
                 icon
-                :disabled="!isSaveable || !isEditable || !isDirty"
+                :disabled="!isSaveable || !isEditable || !kommentar.isDirty"
                 v-on="on"
                 @click="saveKommentar"
               >
-                <v-icon :color="isDirty ? 'secondary' : undefined">mdi-content-save</v-icon>
+                <v-icon :color="kommentar.isDirty ? 'secondary' : undefined">mdi-content-save</v-icon>
               </v-btn>
             </template>
             <span>Kommentar speichern</span>
@@ -119,7 +119,6 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin, SaveLeav
   private deleteDialogYesText = "Löschen";
   private deleteDialogNoText = "Abbrechen";
   private nameRootFolder = "kommentare";
-  private isDirty = false;
 
   get isSaveable(): boolean {
     return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);
@@ -134,13 +133,12 @@ export default class Kommentar extends Mixins(KommentarApiRequestMixin, SaveLeav
   }
 
   private changed(): void {
-    this.isDirty = true;
+    this.kommentar.isDirty = true;
     this.commentChanged();
   }
 
   @Emit()
   private saveKommentar(): KommentarModel {
-    this.isDirty = false;
     return this.kommentar;
   }
 
