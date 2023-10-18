@@ -36,7 +36,7 @@ export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
   public isEditableByBedarfsmeldung(): boolean {
     const abfrage: BauleitplanverfahrenModel = this.$store.getters["search/selectedAbfrage"];
     return !_.isNil(abfrage)
-      ? this.isRoleAdminOrBedarfsmeldung() && abfrage.abfrage?.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
+      ? this.isRoleAdminOrBedarfsmeldung() && abfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
       : false;
   }
 
