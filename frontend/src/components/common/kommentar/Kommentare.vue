@@ -48,7 +48,6 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLea
   @Watch("kommentare", { immediate: true, deep: true })
   private resetCommentDirtyFlagWhenNoCommentsAreDirty(): void {
     const existsDirtyKommentar = !_.isEmpty(this.kommentare.filter((kommentar) => kommentar.isDirty));
-    console.log("existsDirtyKommentar: " + existsDirtyKommentar);
     if (!existsDirtyKommentar) {
       this.resetCommentDirty();
     }
