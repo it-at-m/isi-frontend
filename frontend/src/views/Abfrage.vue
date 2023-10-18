@@ -297,8 +297,6 @@ import {
   mapToBauleitplanverfahrenAngelegt,
   mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
   mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
-  //mapToInfrastrukturabfrageInBearbeitungFachreferateDto,
-  //mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";

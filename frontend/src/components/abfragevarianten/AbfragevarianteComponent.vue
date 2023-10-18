@@ -30,11 +30,6 @@
       :is-editable="isEditable"
     />
     <bauraten-aggregiert-component :aggregate-bauraten="abfragevariante" />
-    <abfragevariante-sachbearbeitung-formular
-      id="bauraten_aggregiert_component"
-      ref="bauratenAggregiertComponent"
-      v-model="abfragevariante"
-    />
     <sachbearbeitung-component
       id="sachbearbeitung_component"
       ref="sachbearbeitungComponent"
