@@ -26,6 +26,7 @@
     <template #append-outer>
       <v-icon
         class="white--text"
+        :color="checkCurrentFilter() ? '' : 'secondary'"
         @click="openSearchAndFilterDialog"
       >
         {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
