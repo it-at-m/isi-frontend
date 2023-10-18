@@ -66,7 +66,7 @@
           <v-spacer />
           <span>
             Stand:
-            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVorhaben, standVerfahrenList) }}
+            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVerfahren, standVerfahrenList) }}
           </span>
         </v-card-text>
       </v-card>
