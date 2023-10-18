@@ -170,7 +170,7 @@ export default class CommonComponent extends Mixins(FieldValidationRulesMixin, S
   @Watch("abfragevariante.wesentlicheRechtsgrundlage", { immediate: true })
   private wesentlicheRechtsgrundlageChanged(): void {
     if (
-      this.abfragevariante.wesentlicheRechtsgrundlage.includes(
+      this.abfragevariante.wesentlicheRechtsgrundlage?.includes(
         AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
       )
     ) {

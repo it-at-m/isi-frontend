@@ -1,15 +1,13 @@
 <template>
   <v-container class="transition-swing">
     <v-expansion-panels>
-      <v-expansion-panel @click="getReferencedInfrastrukturabfragen()">
+      <v-expansion-panel @click="getReferencedAbfragen()">
         <v-expansion-panel-header> Abfragen </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-list v-if="abfragenEmpty">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-subtitle
-                  >Dieses Bauvorhaben wird nicht durch Infrastrukturabfragen referenziert</v-list-item-subtitle
-                >
+                <v-list-item-subtitle>Dieses Bauvorhaben wird nicht durch Abfragen referenziert</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -98,16 +96,14 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
     return _.isEmpty(this.infrastruktureinrichtungen);
   }
 
-  private getReferencedInfrastrukturabfragen(): void {
+  private getReferencedAbfragen(): void {
     if (!this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
       this.isAbfrageListOpen = true;
-      this.getReferencedInfrastrukturabfragenList(this.$route.params.id, true).then(
-        (searchResults: AbfrageSearchResultDto[]) => {
-          if (!_.isNil(searchResults)) {
-            this.abfragen = searchResults;
-          }
-        },
-      );
+      this.getReferencedAbfrageList(this.$route.params.id, true).then((searchResults: AbfrageSearchResultDto[]) => {
+        if (!_.isNil(searchResults)) {
+          this.abfragen = searchResults;
+        }
+      });
     } else if (this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
       this.isAbfrageListOpen = false;
     } else {
@@ -144,7 +140,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
   }
 
   /**
-   * Routing zur Detailansicht der Infrastrukturabfrage
+   * Routing zur Detailansicht der Bauleitplanverfahren
    *
    * @param abfrageSearchResultDto zum ermitteln der Route.
    */

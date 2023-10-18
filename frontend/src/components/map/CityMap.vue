@@ -24,8 +24,8 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="getGeoUrl('WMS_Stadtgrundkarte')"
-        layers="Hintergrund"
+        :base-url="getBackgroundMapUrl()"
+        layers="gsm:g_stadtkarte_gesamt"
         :visible="true"
         :options="LAYER_OPTIONS"
       />
@@ -117,9 +117,10 @@ type Ref = Vue & { $el: HTMLElement };
 })
 export default class CityMap extends Vue {
   private readonly MAX_ZOOM = 20;
+  private readonly MIN_ZOOM = 10;
   private readonly CITY_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
   private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
-  private readonly LAYER_OPTIONS: WMSOptions = { format: "image/png", maxZoom: this.MAX_ZOOM };
+  private readonly LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: this.MIN_ZOOM, maxZoom: this.MAX_ZOOM };
 
   @Prop({ default: "100%" })
   private readonly height!: number | string;
@@ -165,12 +166,21 @@ export default class CityMap extends Vue {
   private map!: L.Map;
   private expanded = false;
 
-  /** Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers. */
-  private overlays = new Map([
+  /**
+   * Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers.
+   */
+  private overlaysArcgis = new Map([
     ["Gemarkungen", "Gemarkungen"],
-    ["Flurstücke", "Flurstücke,Flst.Nr."],
-    ["Straßennamen", "Straßennamen"],
+    ["Baublöcke", "Baublöcke"],
+    ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
+    ["Stadtbezirke", "Stadtbezirke"],
+    ["Bezirksteile", "Bezirksteile"],
+    ["Stadtviertel", "Stadtviertel"],
+    ["Grundschulsprengel", "Grundschulsprengel"],
+    ["Umgriffe Bebauungspläne", "BB-Umgriff"],
   ]);
+
+  private overlaysGrundkarte = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
   created(): void {
     /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
@@ -204,6 +214,10 @@ export default class CityMap extends Vue {
     this.clickInMap(event);
   }
 
+  private getBackgroundMapUrl(): string {
+    return import.meta.env.VITE_BACKGROUND_MAP_URL as string;
+  }
+
   /**
    * Fügt die Overlay-Layer hinzu. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen.
    * Damit ein Overlay-Layer nicht die darunerliegenden Layer verdeckt, ist es wichtig, `transparent: true` zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt.
@@ -214,8 +228,17 @@ export default class CityMap extends Vue {
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
 
-    for (const overlay of this.overlays) {
-      const layer = (L as any).nonTiledLayer.wms(this.getGeoUrl("WMS_Stadtgrundkarte"), {
+    for (const overlay of this.overlaysGrundkarte) {
+      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("Grundkarten"), {
+        layers: overlay[1],
+        transparent: true,
+        ...this.LAYER_OPTIONS,
+      });
+      layerControl.addOverlay(layer, overlay[0]);
+    }
+
+    for (const overlay of this.overlaysArcgis) {
+      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("basis"), {
         layers: overlay[1],
         transparent: true,
         ...this.LAYER_OPTIONS,
@@ -224,11 +247,8 @@ export default class CityMap extends Vue {
     }
   }
 
-  /**
-   * Da der Geo-Dienst mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
-   */
-  private getGeoUrl(service: string): string {
-    return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
+  private getArcgisUrl(service: string): string {
+    return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
   }
 
   /**

@@ -386,9 +386,7 @@ export default class AbfragevarianteForm extends Mixins(
     const headline = `Abfragevariante ${new AbfragevarianteModel(
       this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
-    return this.displayMode === DisplayMode.NEU
-      ? headline.concat("anlegen")
-      : headline.concat(`${this.abfragevariante.name}`);
+    return headline.concat(`${this.abfragevariante.abfragevariantenName}`);
   }
 
   @Watch("abfragevariante", { immediate: true, deep: true })

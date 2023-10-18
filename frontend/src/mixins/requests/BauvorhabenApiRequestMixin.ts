@@ -1,12 +1,11 @@
 import {
   AbfrageSearchResultDto,
-  AbfragevarianteDto,
   BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,
   DeleteBauvorhabenRequest,
   GetBauvorhabenByIdRequest,
-  GetReferencedInfrastrukturabfragenRequest,
+  GetReferencedAbfrageRequest,
   GetReferencedInfrastruktureinrichtungRequest,
   InformationResponseDtoFromJSON,
   InfrastruktureinrichtungSearchResultDto,
@@ -28,15 +27,15 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
     this.bauvorhabenApi = new BauvorhabenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
-  getReferencedInfrastrukturabfragenList(
+  getReferencedAbfrageList(
     bauvorhabenId: string,
     showInInformationList: boolean,
   ): Promise<Array<AbfrageSearchResultDto>> {
-    const requestObject: GetReferencedInfrastrukturabfragenRequest = {
+    const requestObject: GetReferencedAbfrageRequest = {
       id: bauvorhabenId,
     };
     return this.bauvorhabenApi
-      .getReferencedInfrastrukturabfragen(requestObject, RequestUtils.getGETConfig())
+      .getReferencedAbfrage(requestObject, RequestUtils.getGETConfig())
       .then((response) => {
         return response;
       })
@@ -123,11 +122,13 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
   }
 
   async changeRelevanteAbfragevariante(
-    abfragevarianteDto: AbfragevarianteDto,
+    abfrageId: string,
+    abfragevarianteId: string,
     showInInformationList: boolean,
   ): Promise<BauvorhabenDto | string> {
     const requestObject: PutChangeRelevanteAbfragevarianteRequest = {
-      abfragevarianteDto,
+      abfrageId: abfrageId,
+      abfragevarianteId: abfragevarianteId,
     };
     try {
       const response = await this.bauvorhabenApi.putChangeRelevanteAbfragevariante(

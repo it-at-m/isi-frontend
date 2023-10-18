@@ -21,16 +21,16 @@
           md="6"
         >
           <v-select
-            id="bauvorhaben_standVorhaben_dropdown"
-            v-model="bauvorhaben.standVorhaben"
-            :items="standVorhabenList"
+            id="bauvorhaben_standVerfahren_dropdown"
+            v-model="bauvorhaben.standVerfahren"
+            :items="standVerfahrenList"
             item-value="key"
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
             :disabled="!isEditable"
             @change="formChanged"
           >
-            <template #label> Stand des Vorhabens <span class="secondary--text">*</span> </template>
+            <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -62,18 +62,20 @@
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
         <v-col cols="12">
-          <v-select
-            id="bauvorhaben_planungsrecht_dropdown"
-            v-model="bauvorhaben.planungsrecht"
-            :items="planungsrechtList"
+          <v-autocomplete
+            id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
+            v-model="bauvorhaben.wesentlicheRechtsgrundlage"
+            :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            multiple
+            chips
+            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
             :disabled="!isEditable"
             @change="formChanged"
           >
-            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
-          </v-select>
+            <template #label> Wesentliche Rechtsgrundlage <span class="secondary--text">*</span> </template>
+          </v-autocomplete>
         </v-col>
       </v-row>
       <v-row>
@@ -81,7 +83,7 @@
           <v-autocomplete
             id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
-            :items="baugebietArtList"
+            :items="artBaulicheNutzungList"
             item-value="key"
             item-text="value"
             multiple
@@ -91,7 +93,7 @@
             @input="formChanged"
           >
             <template #label>
-              Flächennutzung laut Flächennutzungsplan
+              Art der baulichen Nutzung
               <span class="secondary--text">*</span>
             </template>
           </v-autocomplete>
@@ -255,16 +257,16 @@ export default class BauvorhabenForm extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  get standVorhabenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVorhaben"];
+  get standVerfahrenList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/standVerfahren"];
   }
 
-  get planungsrechtList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/planungsrecht"];
+  get wesentlicheRechtsgrundlageBauleitplanverfahrenList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/wesentlicheRechtsgrundlageBauleitplanverfahren"];
   }
 
-  get baugebietArtList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/baugebietArt"];
+  get artBaulicheNutzungList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/artBaulicheNutzung"];
   }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
@@ -279,6 +281,9 @@ export default class BauvorhabenForm extends Mixins(
       this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
         gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
           if (!_.isNil(flurstueck.flaecheQm)) {
+            if (_.isNil(this.bauvorhaben.grundstuecksgroesse)) {
+              this.bauvorhaben.grundstuecksgroesse = 0;
+            }
             this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
           }
         });

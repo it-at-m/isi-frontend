@@ -66,7 +66,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
 
   private selectedSuggestion = "";
 
-  mounted() {
+  mounted(): void {
     this.searchEntitiesForSelectedSuggestion();
   }
 

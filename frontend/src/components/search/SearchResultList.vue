@@ -20,6 +20,12 @@
         @click="routeToAbfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
+          <v-icon
+            left
+            color="green lighten-1"
+          >
+            mdi-comment-alert
+          </v-icon>
           {{ castToAbfrageSearchResultDto(item).name }}
         </v-card-subtitle>
         <v-card-text>
@@ -42,6 +48,12 @@
         @click="routeToBauvorhabenForm(item)"
       >
         <v-card-subtitle class="black--text">
+          <v-icon
+            left
+            color="indigo lighten-1"
+          >
+            mdi-account-hard-hat
+          </v-icon>
           {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
         </v-card-subtitle>
         <v-card-text>
@@ -54,7 +66,7 @@
           <v-spacer />
           <span>
             Stand:
-            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVorhaben, standVorhabenList) }}
+            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVorhaben, standVerfahrenList) }}
           </span>
         </v-card-text>
       </v-card>
@@ -67,6 +79,12 @@
         @click="routeToInfrastruktureinrichtungForm(item)"
       >
         <v-card-subtitle class="black--text">
+          <v-icon
+            left
+            color="red lighten-1"
+          >
+            mdi-home
+          </v-icon>
           {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
         </v-card-subtitle>
         <v-card-text>
@@ -138,8 +156,8 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     return this.$store.getters["lookup/statusAbfrage"];
   }
 
-  get standVorhabenList(): Array<LookupEntryDto> {
-    return this.$store.getters["lookup/standVorhaben"];
+  get standVerfahrenList(): Array<LookupEntryDto> {
+    return this.$store.getters["lookup/standVerfahren"];
   }
 
   get getSearchQueryAndSorting(): SearchQueryAndSortingDto {

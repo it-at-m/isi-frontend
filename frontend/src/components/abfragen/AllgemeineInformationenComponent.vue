@@ -101,7 +101,7 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import {
   BauvorhabenSearchResultDto,
   LookupEntryDto,

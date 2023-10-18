@@ -53,7 +53,6 @@ import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregier
 import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import DisplayMode from "@/types/common/DisplayMode";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 @Component({
@@ -71,17 +70,6 @@ export default class BauleitplanverfahrenComponent extends Vue {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
-  @Prop()
-  private mode!: DisplayMode;
-
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
-
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
-
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
@@ -92,9 +80,7 @@ export default class BauleitplanverfahrenComponent extends Vue {
     const headline = `Abfragevariante ${new AbfragevarianteBauleitplanverfahrenModel(
       this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
-    return this.displayMode === DisplayMode.NEU
-      ? headline.concat("anlegen")
-      : headline.concat(`${this.abfragevariante.name}`);
+    return headline.concat(`${this.abfragevariante.name}`);
   }
 }
 </script>

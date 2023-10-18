@@ -196,7 +196,7 @@ export default class BauabschnittComponent extends Mixins(
 
   get headline(): string {
     const headline = `Baugebiet ${this.baugebiet.bezeichnung} `;
-    return this.displayMode === DisplayMode.NEU ? headline.concat("anlegen") : headline.concat("ändern");
+    return headline;
   }
 
   get artBaulicheNutzungList(): LookupEntryDto[] {
