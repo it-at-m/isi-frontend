@@ -27,8 +27,9 @@
       <v-icon
         class="white--text"
         @click="openSearchAndFilterDialog"
-        >mdi-filter-outline</v-icon
       >
+        {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
+      </v-icon>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
         max-width="1024px"
@@ -68,6 +69,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
 
   mounted() {
     this.searchEntitiesForSelectedSuggestion();
+    this.checkCurrentFilter();
   }
 
   // Filter Dialog
@@ -89,12 +91,24 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     this.searchQueryAndSortingStore = this.searchQueryAndSorting;
     this.searchAndFilterDialogOpen = false;
     this.searchEntitiesForSelectedSuggestion();
+    this.checkCurrentFilter();
   }
 
   private handleResetSearchAndFilterOptions(): void {
     this.searchQueryAndSorting = createSearchQueryAndSortingModel();
     this.handleAdoptSearchAndFilterOptions();
     this.searchEntitiesForSelectedSuggestion();
+  }
+
+  private checkCurrentFilter(): boolean {
+    let requestSearchQueryAndSorting = this.$store.getters["search/requestSearchQueryAndSorting"];
+    let defaultSearchQueryAndSortingFilter = this.$store.getters["search/defaultSearchQueryAndSortingFilter"];
+    const excludeProperties = ["page", "pageSize", "searchQuery"];
+    requestSearchQueryAndSorting = _.omit(requestSearchQueryAndSorting, excludeProperties);
+    defaultSearchQueryAndSortingFilter = _.omit(defaultSearchQueryAndSortingFilter, excludeProperties);
+
+    const result = _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter);
+    return result;
   }
 
   // Search
