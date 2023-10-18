@@ -29,6 +29,12 @@
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
+    <bauraten-aggregiert-component :aggregate-bauraten="abfragevariante" />
+    <abfragevariante-sachbearbeitung-formular
+      id="bauraten_aggregiert_component"
+      ref="bauratenAggregiertComponent"
+      v-model="abfragevariante"
+    />
     <sachbearbeitung-component
       id="sachbearbeitung_component"
       ref="sachbearbeitungComponent"
@@ -48,6 +54,7 @@ import CommonComponent from "@/components/abfragevarianten/CommonComponent.vue";
 import GeplanteGeschossflaecheWohnenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenComponent.vue";
 import GeplanteAnzahlWohneinheitenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
+import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -62,6 +69,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
     GeplanteAnzahlWohneinheitenComponent,
     SachbearbeitungComponent,
     BedarfsmeldungFachreferateComponent,
+    BauratenAggregiertComponent,
   },
 })
 export default class BauleitplanverfahrenComponent extends Vue {
