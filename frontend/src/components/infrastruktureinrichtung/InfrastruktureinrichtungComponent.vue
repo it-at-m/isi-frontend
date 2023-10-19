@@ -66,12 +66,6 @@
           cols="12"
           md="6"
         >
-          <slot name="einrichtungstraeger" />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <v-select
             id="infrastruktureinrichtung_bauvorhaben_dropdown"
             v-model="infrastruktureinrichtung.bauvorhaben"
@@ -84,6 +78,11 @@
             @focus="fetchBauvorhaben"
             @change="formChanged"
           />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
         </v-col>
       </v-row>
     </field-group-card>
@@ -176,19 +175,8 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
     return this.$store.getters["lookup/statusInfrastruktureinrichtung"];
   }
 
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraeger"];
-  }
-
   private isFertigstellungsjahrRequired(): boolean {
     return this.infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand;
-  }
-
-  private isEinrichtungstraegerRequired(): boolean {
-    return (
-      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
-      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
-    );
   }
 
   /**

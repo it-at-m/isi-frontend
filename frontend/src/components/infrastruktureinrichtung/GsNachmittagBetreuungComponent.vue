@@ -1,5 +1,11 @@
 <template>
   <div>
+    <einrichtungstraeger-component
+      v-model="gsNachmittagBetreuung"
+      :einrichtungstraeger-list="einrichtungstraegerList"
+      :is-editable="isEditable"
+      :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
+    />
     <field-group-card>
       <v-row justify="center">
         <v-col
@@ -70,11 +76,12 @@ import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrich
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-
+import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 @Component({
   components: {
     FieldGroupCard,
     InfrastruktureinrichtungComponent,
+    EinrichtungstraegerComponent,
   },
 })
 export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
@@ -86,6 +93,13 @@ export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidati
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEinrichtungstraegerRequired!: boolean;
+
+  get einrichtungstraegerList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/einrichtungstraeger"];
+  }
 }
 </script>
 <style></style>

@@ -16,39 +16,14 @@
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-        >
-          <template #einrichtungstraeger>
-            <v-select
-              id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
-              v-model="infrastruktureinrichtung.einrichtungstraeger"
-              :items="einrichtungstraegerList"
-              item-value="key"
-              item-text="value"
-              :rules="
-                isEinrichtungstraegerRequired()
-                  ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]
-                  : []
-              "
-              :disabled="!isEditable"
-              @change="formChanged"
-            >
-              <template #label
-                >Einrichtungsträger
-                <span
-                  v-if="isEinrichtungstraegerRequired()"
-                  class="secondary--text"
-                  >*</span
-                ></template
-              >
-            </v-select>
-          </template>
-        </infrastruktureinrichtung-component>
+        />
         <kinderkrippe-component
           v-if="isKinderkrippe"
           id="infrastruktureinrichtung_kinderkrippe_component"
           ref="kinderkrippeComponent"
           v-model="kinderkrippe"
           :is-editable="isEditable"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
         />
         <kindergarten-component
           v-if="isKindergarten"
@@ -56,6 +31,7 @@
           ref="kindergartenComponent"
           v-model="kindergarten"
           :is-editable="isEditable"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
         />
         <haus-fuer-kinder-component
           v-if="isHausFuerKinder"
@@ -63,6 +39,7 @@
           ref="hausFuerKinderComponent"
           v-model="hausFuerKinder"
           :is-editable="isEditable"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
         />
         <gs-nachmittag-betreuung-component
           v-if="isGsNachmittagBetreuung"
@@ -70,6 +47,7 @@
           ref="gsNachmittagBetreuungComponent"
           v-model="gsNachmittagBetreuung"
           :is-editable="isEditable"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
         />
         <grundschule-component
           v-if="isGrundschule"
@@ -77,6 +55,7 @@
           ref="grundschuleComponent"
           v-model="grundschule"
           :is-editable="isEditable"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
         />
         <mittelschule-component
           v-if="isMittelschule"
@@ -84,6 +63,7 @@
           ref="mittelschuleComponent"
           v-model="mittelschule"
           :is-editable="isEditable"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
         />
         <kommentare
           v-if="isDisplayModeAenderung"
@@ -170,9 +150,43 @@
   </v-form>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import { Component, Mixins, Watch } from "vue-property-decorator";
-import Toaster from "../components/common/toaster.type";
+import {
+  GrundschuleDto,
+  GsNachmittagBetreuungDto,
+  HausFuerKinderDto,
+  InfrastruktureinrichtungDto,
+  InfrastruktureinrichtungDtoStatusEnum,
+  InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
+  KindergartenDto,
+  KinderkrippeDto,
+  MittelschuleDto,
+} from "@/api/api-client/isi-backend";
+import { Levels } from "@/api/error";
+import InformationList from "@/components/common/InformationList.vue";
+import Kommentare from "@/components/common/kommentar/Kommentare.vue";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import DefaultLayout from "@/components/DefaultLayout.vue";
+import GrundschuleComponent from "@/components/infrastruktureinrichtung/GrundschuleComponent.vue";
+import GsNachmittagBetreuungComponent from "@/components/infrastruktureinrichtung/GsNachmittagBetreuungComponent.vue";
+import HausFuerKinderComponent from "@/components/infrastruktureinrichtung/HausFuerKinderComponent.vue";
+import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
+import InfrastruktureinrichtungTypComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungTypComponent.vue";
+import KindergartenComponent from "@/components/infrastruktureinrichtung/KindergartenComponent.vue";
+import KinderkrippeComponent from "@/components/infrastruktureinrichtung/KinderkrippeComponent.vue";
+import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
+import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
+import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
+import DisplayMode from "@/types/common/DisplayMode";
+import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
+import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
+import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
+import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
+import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
+import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
+import { Context } from "@/utils/Context";
 import {
   createGrundschuleDto,
   createGsNachmittagBetreuungDto,
@@ -182,48 +196,10 @@ import {
   createKinderkrippeDto,
   createMittelschuleDto,
 } from "@/utils/Factories";
-import {
-  GrundschuleDto,
-  GsNachmittagBetreuungDto,
-  GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
-  HausFuerKinderDto,
-  HausFuerKinderDtoEinrichtungstraegerEnum,
-  InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
-  KindergartenDto,
-  KindergartenDtoEinrichtungstraegerEnum,
-  KinderkrippeDto,
-  KinderkrippeDtoEinrichtungstraegerEnum,
-  MittelschuleDto,
-  SchuleDtoEinrichtungstraegerEnum,
-} from "@/api/api-client/isi-backend";
-import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
-import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
-import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
-import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
-import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
-import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
-import DefaultLayout from "@/components/DefaultLayout.vue";
-import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import InformationList from "@/components/common/InformationList.vue";
-import { Levels } from "@/api/error";
-import DisplayMode from "@/types/common/DisplayMode";
-import InfrastruktureinrichtungTypComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungTypComponent.vue";
-import KinderkrippeComponent from "@/components/infrastruktureinrichtung/KinderkrippeComponent.vue";
-import KindergartenComponent from "@/components/infrastruktureinrichtung/KindergartenComponent.vue";
-import HausFuerKinderComponent from "@/components/infrastruktureinrichtung/HausFuerKinderComponent.vue";
-import GsNachmittagBetreuungComponent from "@/components/infrastruktureinrichtung/GsNachmittagBetreuungComponent.vue";
-import GrundschuleComponent from "@/components/infrastruktureinrichtung/GrundschuleComponent.vue";
-import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
 import _ from "lodash";
-import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
-import SecurityMixin from "@/mixins/security/SecurityMixin";
-import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
-import Kommentare from "@/components/common/kommentar/Kommentare.vue";
-import { Context } from "@/utils/Context";
+import Vue from "vue";
+import { Component, Mixins, Watch } from "vue-property-decorator";
+import Toaster from "../components/common/toaster.type";
 
 @Component({
   computed: {
@@ -379,7 +355,6 @@ export default class Infrastruktureinrichtung extends Mixins(
       return undefined;
     }
   }
-
   mounted(): void {
     if (!_.isNil(this.infrastruktureinrichtungId) && !_.isEmpty(this.infrastruktureinrichtungId)) {
       this.getInfrastruktureinrichtungAndSetToStore(this.infrastruktureinrichtungId);
@@ -584,33 +559,6 @@ export default class Infrastruktureinrichtung extends Mixins(
     return this.getModelOfDto(dto);
   }
 
-  private getEinrichtungstraeger(
-    infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined,
-  ):
-    | SchuleDtoEinrichtungstraegerEnum
-    | KinderkrippeDtoEinrichtungstraegerEnum
-    | KindergartenDtoEinrichtungstraegerEnum
-    | HausFuerKinderDtoEinrichtungstraegerEnum
-    | GsNachmittagBetreuungDtoEinrichtungstraegerEnum
-    | undefined {
-    switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        return (infrastruktureinrichtung as KinderkrippeDto).einrichtungstraeger;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
-        return (infrastruktureinrichtung as KindergartenDto).einrichtungstraeger;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
-        return (infrastruktureinrichtung as HausFuerKinderDto).einrichtungstraeger;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-        return (infrastruktureinrichtung as GsNachmittagBetreuungDto).einrichtungstraeger;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
-        return (infrastruktureinrichtung as GrundschuleDto).schule.einrichtungstraeger;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
-        return (infrastruktureinrichtung as MittelschuleDto).schule.einrichtungstraeger;
-      default:
-        return undefined;
-    }
-  }
-
   private handleSuccess(dto: InfrastruktureinrichtungDto): void {
     this.setInfrastruktureinrichtungToStore(dto);
     if (this.isNewInfrastruktureinrichtung()) {
@@ -619,6 +567,13 @@ export default class Infrastruktureinrichtung extends Mixins(
     } else {
       Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich aktualisiert`, Levels.SUCCESS);
     }
+  }
+
+  private isEinrichtungstraegerRequired(): boolean {
+    return (
+      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
+      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
+    );
   }
 }
 </script>
