@@ -169,10 +169,18 @@ export default class CityMap extends Vue {
   /**
    * Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers.
    */
-  private overlays = new Map([
+  private overlaysArcgis = new Map([
     ["Gemarkungen", "Gemarkungen"],
-    ["Flurstücke", "Flurstücke,Flst.Nr."],
+    ["Baublöcke", "Baublöcke"],
+    ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
+    ["Stadtbezirke", "Stadtbezirke"],
+    ["Bezirksteile", "Bezirksteile"],
+    ["Stadtviertel", "Stadtviertel"],
+    ["Grundschulsprengel", "Grundschulsprengel"],
+    ["Umgriffe Bebauungspläne", "BB-Umgriff"],
   ]);
+
+  private overlaysGrundkarte = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
   created(): void {
     /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
@@ -220,8 +228,17 @@ export default class CityMap extends Vue {
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
 
-    for (const overlay of this.overlays) {
-      const layer = (L as any).nonTiledLayer.wms(this.getGeoUrl("WMS_Stadtgrundkarte"), {
+    for (const overlay of this.overlaysGrundkarte) {
+      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("Grundkarten"), {
+        layers: overlay[1],
+        transparent: true,
+        ...this.LAYER_OPTIONS,
+      });
+      layerControl.addOverlay(layer, overlay[0]);
+    }
+
+    for (const overlay of this.overlaysArcgis) {
+      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("basis"), {
         layers: overlay[1],
         transparent: true,
         ...this.LAYER_OPTIONS,
@@ -230,11 +247,8 @@ export default class CityMap extends Vue {
     }
   }
 
-  /**
-   * Da der Geo-Dienst mehrere Services anbietet, wird mit dieser Funktion der notwendige Service ausgewählt (ohne die URL kopieren zu müssen).
-   */
-  private getGeoUrl(service: string): string {
-    return (import.meta.env.VITE_GIS_URL as string).replace("{1}", service);
+  private getArcgisUrl(service: string): string {
+    return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
   }
 
   /**

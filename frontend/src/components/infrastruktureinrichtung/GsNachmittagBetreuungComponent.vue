@@ -13,6 +13,7 @@
           md="6"
         >
           <num-field
+            id="infrastruktureinrichtung_gsNachmittagBetreuung_anzahlHortplaetzePlaetze"
             v-model="gsNachmittagBetreuung.anzahlHortPlaetze"
             class="mx-3"
             label="Anzahl der Hortplätze"
@@ -26,6 +27,7 @@
           md="6"
         >
           <num-field
+            id="infrastruktureinrichtung_gsNachmittagBetreuung_anzahlHortgruppen"
             v-model="gsNachmittagBetreuung.anzahlHortGruppen"
             class="mx-3"
             label="Anzahl der Hortgruppen"
@@ -41,6 +43,7 @@
           md="6"
         >
           <num-field
+            id="infrastruktureinrichtung_gsNachmittagBetreuung_wohnungsnaheHortPlaetze"
             v-model="gsNachmittagBetreuung.wohnungsnaheHortPlaetze"
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
@@ -53,7 +56,7 @@
           md="6"
         >
           <v-select
-            id="gsNachmittagBetreuungModel_artGsNachmittagBetreuung"
+            id="infrastruktureinrichtung_gsNachmittagBetreuung_artGsNachmittagBetreuung"
             v-model="gsNachmittagBetreuung.artGsNachmittagBetreuung"
             :items="artGsNachmittagBetreuungList"
             item-text="value"
