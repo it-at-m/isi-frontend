@@ -66,7 +66,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
     BauratenAggregiertComponent,
   },
 })
-export default class BauleitplanverfahrenComponent extends Vue {
+export default class AbfragevarianteComponent extends Vue {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 

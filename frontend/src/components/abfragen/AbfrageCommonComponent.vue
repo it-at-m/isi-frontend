@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";

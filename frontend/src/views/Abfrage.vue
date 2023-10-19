@@ -261,7 +261,8 @@ import AbfrageNavigationTree, {
   generateTreeItemId,
 } from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/BauleitplanverfahrenComponent.vue";
-import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
+import AbfragevarianteComponent from "@/components/abfragevarianten/AbfragevarianteComponent.vue";
+//import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
 import BaugebietComponent from "@/components/baugebiete/BaugebietComponent.vue";
 import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
@@ -295,8 +296,8 @@ import {
 } from "@/utils/Factories";
 import {
   mapToBauleitplanverfahrenAngelegt,
-  mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
   mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
+  mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";
@@ -323,7 +324,7 @@ export type AbfrageDtoWithForm =
  * Ein Enum für alle im Rahmen der Abfrage relevanten Entitäten, welche ein eigenes Formular haben.
  */
 export const enum AbfrageFormType {
-  INFRASTRUKTURABFRAGE,
+  BAULEITPLANVERFAHREN,
   ABFRAGEVARIANTE,
   BAUABSCHNITT,
   BAUGEBIET,
@@ -333,7 +334,8 @@ export const enum AbfrageFormType {
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
-    AbfragevarianteFormular,
+    //AbfragevarianteFormular,
+    AbfragevarianteComponent,
     AbfrageNavigationTree,
     InformationList,
     BauleitplanverfahrenComponent,
@@ -364,7 +366,7 @@ export default class Abfrage extends Mixins(
   private anmerkung = "";
   private abfrage = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
   private selected: AbfrageDtoWithForm = this.abfrage;
-  private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
+  private openForm: AbfrageFormType = AbfrageFormType.BAULEITPLANVERFAHREN;
   private abfragevarianteAncestor: AbfragevarianteBauleitplanverfahrenModel =
     new AbfragevarianteBauleitplanverfahrenModel(createAbfragevarianteBauleitplanverfahrenDto());
   private baugebietAncestor: BaugebietModel = new BaugebietModel(createBaugebietDto());
@@ -449,7 +451,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogAbfrageYes(): void {
-    this.deleteInfrastrukturabfrage();
+    this.deleteBauleitplanverfahren();
     this.yesNoDialogAbfrageNo();
   }
 
@@ -476,7 +478,7 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfragevarianteOpen = false;
   }
 
-  private async deleteInfrastrukturabfrage(): Promise<void> {
+  private async deleteBauleitplanverfahren(): Promise<void> {
     await this.deleteById(this.abfrageId, true).then(() => {
       this.$store.commit("search/removeSearchResultById", this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
@@ -603,7 +605,7 @@ export default class Abfrage extends Mixins(
       this.showWarningInInformationList("Bitte speichern vor einem Statusübergang");
     }
   }
-  // ASCHAENZ: hier weitermachen
+
   private async setRelevanteAbfragevariante(
     abfragevariante: AbfragevarianteBauleitplanverfahrenModel | null,
   ): Promise<void> {
@@ -620,7 +622,7 @@ export default class Abfrage extends Mixins(
     }
 
     if (abfragevariante.id) {
-      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((result) => {
+      await this.changeRelevanteAbfragevariante(abfragevariante.id, true).then((result) => {
         if (typeof result !== "string") {
           const relevanteId = result.relevanteAbfragevariante?.id;
           this.relevanteAbfragevarianteId = relevanteId ?? null;
@@ -646,7 +648,7 @@ export default class Abfrage extends Mixins(
   }
 
   private isAbfrageFormularOpen(): boolean {
-    return this.openForm === AbfrageFormType.INFRASTRUKTURABFRAGE;
+    return this.openForm === AbfrageFormType.BAULEITPLANVERFAHREN;
   }
 
   private isAbfragevarianteFormularOpen(): boolean {
@@ -991,7 +993,7 @@ export default class Abfrage extends Mixins(
   }
 
   private selectAbfrage(): void {
-    this.selectEntity(this.abfrage, AbfrageFormType.INFRASTRUKTURABFRAGE, "", AnzeigeContextAbfragevariante.UNDEFINED);
+    this.selectEntity(this.abfrage, AbfrageFormType.BAULEITPLANVERFAHREN, "", AnzeigeContextAbfragevariante.UNDEFINED);
   }
 
   private selectItem(item: AbfrageTreeItem): void {

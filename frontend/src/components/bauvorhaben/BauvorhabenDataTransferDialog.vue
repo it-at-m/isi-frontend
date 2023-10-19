@@ -53,7 +53,7 @@
 import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
 import {
   AbfrageSearchResultDto,
-  InfrastrukturabfrageDto,
+  BauleitplanverfahrenDto,
   LookupEntryDto,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
@@ -72,7 +72,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
 
   private selectedAbfrageSearchResult: AbfrageSearchResultDto = {};
 
-  private selectedAbfrage: InfrastrukturabfrageDto = createBauleitplanverfahrenDto();
+  private selectedAbfrage: BauleitplanverfahrenDto = createBauleitplanverfahrenDto();
 
   mounted(): void {
     this.fetchAbfragen();
@@ -86,15 +86,11 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
     return this.$store.getters["lookup/statusAbfrage"];
   }
 
-  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
-  }
-
   @Watch("selectedAbfrageSearchResult", { immediate: true })
   private transferToBauvorhaben(): void {
     if (!_.isNil(this.selectedAbfrageSearchResult) && !_.isNil(this.selectedAbfrageSearchResult.id)) {
       const idAbfrage: string = this.selectedAbfrageSearchResult.id;
-      this.getInfrastrukturabfrageById(idAbfrage, false).then((abfrageDto: InfrastrukturabfrageDto) => {
+      this.getById(idAbfrage, false).then((abfrageDto: BauleitplanverfahrenDto) => {
         this.selectedAbfrage = abfrageDto;
       });
     }
@@ -103,7 +99,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
   private getItemText(searchResult: AbfrageSearchResultDto): string {
     return (
       "Name: " +
-      _.defaultTo(searchResult.nameAbfrage, "Kein Name vorhanden") +
+      _.defaultTo(searchResult.name, "Kein Name vorhanden") +
       " - Status: " +
       _.defaultTo(
         this.getLookupValue(searchResult.statusAbfrage, this.statusAbfrageList),
@@ -112,12 +108,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
       " - Stand: " +
       _.defaultTo(
         this.getLookupValue(searchResult.standVerfahren, this.standVerfahrenList),
-        "Kein Vorhabensstand vorhanden",
-      ) +
-      " - Verfahrensgrundsätze Jahr: " +
-      _.defaultTo(
-        this.getLookupValue(searchResult.sobonJahr, this.sobonVerfahrensgrundsaetzeJahrList),
-        "Kein Verfahrensgrundsätze Jahr vorhanden",
+        "Kein Verfahrensstand vorhanden",
       )
     );
   }
@@ -159,7 +150,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
   }
 
   @Emit()
-  private abfrageUebernehmen(): InfrastrukturabfrageDto {
+  private abfrageUebernehmen(): BauleitplanverfahrenDto {
     this.selectedAbfrageSearchResult = {};
     return this.selectedAbfrage;
   }

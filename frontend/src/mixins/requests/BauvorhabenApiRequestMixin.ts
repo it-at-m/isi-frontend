@@ -1,5 +1,6 @@
 import {
   AbfrageSearchResultDto,
+  AbfragevarianteBauleitplanverfahrenDto,
   BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,
@@ -122,12 +123,10 @@ export default class BauvorhabenApiRequestMixin extends Mixins(ErrorHandler, Sav
   }
 
   async changeRelevanteAbfragevariante(
-    abfrageId: string,
     abfragevarianteId: string,
     showInInformationList: boolean,
   ): Promise<BauvorhabenDto | string> {
     const requestObject: PutChangeRelevanteAbfragevarianteRequest = {
-      abfrageId: abfrageId,
       abfragevarianteId: abfragevarianteId,
     };
     try {

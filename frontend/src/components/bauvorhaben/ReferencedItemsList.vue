@@ -21,7 +21,7 @@
                 :id="'abfragen_bauvorhaben_reference_' + index"
                 @click="routeToAbfrageInfo(abfrage)"
               >
-                <v-list-item-title>{{ abfrage.nameAbfrage }}</v-list-item-title>
+                <v-list-item-title>{{ abfrage.name }}</v-list-item-title>
                 <v-list-item-subtitle
                   >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
                 </v-list-item-subtitle>

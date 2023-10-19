@@ -142,6 +142,12 @@ export interface BauvorhabenDto {
     wesentlicheRechtsgrundlage: Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>;
     /**
      * 
+     * @type {string}
+     * @memberof BauvorhabenDto
+     */
+    wesentlicheRechtsgrundlageFreieEingabe?: string;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof BauvorhabenDto
      */
@@ -259,6 +265,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
+        'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': json['artFnp'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : json['relevanteAbfragevariante'],
@@ -290,6 +297,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
         'sobonJahr': value.sobonJahr,
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
+        'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
         'artFnp': value.artFnp,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'relevanteAbfragevariante': value.relevanteAbfragevariante,

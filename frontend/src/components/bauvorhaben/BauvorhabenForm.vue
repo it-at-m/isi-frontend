@@ -61,7 +61,10 @@
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
-        <v-col cols="12">
+        <v-col
+          cols="12"
+          md="6"
+        >
           <v-autocomplete
             id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
@@ -76,6 +79,23 @@
           >
             <template #label> Wesentliche Rechtsgrundlage <span class="secondary--text">*</span> </template>
           </v-autocomplete>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
+              id="wesentliche_rechtsgrundlage_freie_eingabe_field"
+              ref="wesentlicheRechtsgrundlageFreieEingabeField"
+              v-model="bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe"
+              :disabled="!isEditable"
+              label="freie Eingabe"
+              maxlength="255"
+              @input="formChanged"
+            />
+          </v-slide-y-reverse-transition>
         </v-col>
       </v-row>
       <v-row>
@@ -202,7 +222,13 @@
 <script lang="ts">
 import _ from "lodash";
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, UncertainBoolean, GemarkungDto, FlurstueckDto } from "@/api/api-client/isi-backend";
+import {
+  LookupEntryDto,
+  UncertainBoolean,
+  GemarkungDto,
+  FlurstueckDto,
+  BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
+} from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -254,6 +280,8 @@ export default class BauvorhabenForm extends Mixins(
 
   private referencedObjectsCardTitle = "Zugehörige Infrastruktureinrichtungen und Abfragen";
 
+  private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
@@ -300,6 +328,18 @@ export default class BauvorhabenForm extends Mixins(
     } else {
       this.sobonJahrVisible = false;
       this.bauvorhaben.sobonJahr = undefined;
+    }
+  }
+
+  @Watch("bauvorhaben.wesentlicheRechtsgrundlage", { immediate: true })
+  private wesentlicheRechtsgrundlageChanged(): void {
+    if (
+      this.bauvorhaben.wesentlicheRechtsgrundlage?.includes(BauvorhabenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe)
+    ) {
+      this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;
+    } else {
+      this.bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe = undefined;
+      this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
     }
   }
 }

@@ -48,7 +48,7 @@ import { Component, Mixins, VModel } from "vue-property-decorator";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenComponent from "@/components/abfragen/AllgemeineInformationenComponent.vue";
 import AllgemeineInformationenZurAbfrageComponent from "@/components/abfragen/AllgemeineInformationenZurAbfrageComponent.vue";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";

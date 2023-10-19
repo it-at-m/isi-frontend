@@ -51,7 +51,6 @@ export interface GetReferencedInfrastruktureinrichtungRequest {
 }
 
 export interface PutChangeRelevanteAbfragevarianteRequest {
-    abfrageId: string;
     abfragevarianteId: string;
 }
 
@@ -228,19 +227,11 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#IN_BEARBEITUNG_SACHBEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
      */
     async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
-        if (requestParameters.abfrageId === null || requestParameters.abfrageId === undefined) {
-            throw new runtime.RequiredError('abfrageId','Required parameter requestParameters.abfrageId was null or undefined when calling putChangeRelevanteAbfragevariante.');
-        }
-
         if (requestParameters.abfragevarianteId === null || requestParameters.abfragevarianteId === undefined) {
             throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putChangeRelevanteAbfragevariante.');
         }
 
         const queryParameters: any = {};
-
-        if (requestParameters.abfrageId !== undefined) {
-            queryParameters['abfrage-id'] = requestParameters.abfrageId;
-        }
 
         if (requestParameters.abfragevarianteId !== undefined) {
             queryParameters['abfragevariante-id'] = requestParameters.abfragevarianteId;

@@ -2,7 +2,7 @@
 Treeview zur Darstellung von und Interaktion mit der Abfrage-Hierarchie.
 
 Props:
-- `abfrage: InfrastrukturabfrageDto`: Die darzustellende Abfrage.
+- `abfrage: BauleitplanverfahrenDto`: Die darzustellende Abfrage.
 - `selectedItemId: string`: Id des aktuell ausgewählten Items.
   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
 - `relevanteAbfragevarianteId: string | null`: Id der relevanten Abfragevariante.
@@ -194,7 +194,7 @@ watch(
 function buildTree(abfrage: BauleitplanverfahrenDto): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: "",
-    type: AbfrageFormType.INFRASTRUKTURABFRAGE,
+    type: AbfrageFormType.BAULEITPLANVERFAHREN,
     name: ABFRAGE_NAME,
     parent: null,
     children: [],

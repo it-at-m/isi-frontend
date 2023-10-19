@@ -192,6 +192,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     sobonRelevant: UncertainBoolean.Unspecified,
     sobonJahr: undefined,
     wesentlicheRechtsgrundlage: new Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>(),
+    wesentlicheRechtsgrundlageFreieEingabe: undefined,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
     relevanteAbfragevariante: undefined,
