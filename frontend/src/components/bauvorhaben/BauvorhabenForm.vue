@@ -65,7 +65,7 @@
           <v-autocomplete
             id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
-            :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
+            :items="wesentlicheRechtsgrundlageList"
             item-value="key"
             item-text="value"
             multiple
@@ -261,8 +261,8 @@ export default class BauvorhabenForm extends Mixins(
     return this.$store.getters["lookup/standVerfahren"];
   }
 
-  get wesentlicheRechtsgrundlageBauleitplanverfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/wesentlicheRechtsgrundlageBauleitplanverfahren"];
+  get wesentlicheRechtsgrundlageList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/wesentlicheRechtsgrundlage"];
   }
 
   get artBaulicheNutzungList(): LookupEntryDto[] {

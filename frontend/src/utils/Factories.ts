@@ -40,6 +40,7 @@ import {
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
   AbfrageDtoArtAbfrageEnum,
+  AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -119,6 +120,7 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     abfragevariantenNr: Number.NaN,
+    artAbfragevariante: AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren,
     name: "",
     satzungsbeschluss: undefined,
     wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>(),

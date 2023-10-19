@@ -12,6 +12,7 @@ const state = {
   standVerfahren: [] as LookupEntryDto[],
   statusAbfrage: [] as LookupEntryDto[],
   wesentlicheRechtsgrundlageBauleitplanverfahren: [] as LookupEntryDto[],
+  wesentlicheRechtsgrundlage: [] as LookupEntryDto[],
   artBaulicheNutzung: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
   einrichtungstraeger: [] as LookupEntryDto[],
@@ -51,6 +52,9 @@ export default {
     },
     wesentlicheRechtsgrundlageBauleitplanverfahren: (state: LookupState): Array<LookupEntryDto> => {
       return state.wesentlicheRechtsgrundlageBauleitplanverfahren;
+    },
+    wesentlicheRechtsgrundlage: (state: LookupState): Array<LookupEntryDto> => {
+      return state.wesentlicheRechtsgrundlage;
     },
     artBaulicheNutzung: (state: LookupState): Array<LookupEntryDto> => {
       return state.artBaulicheNutzung;
@@ -97,6 +101,9 @@ export default {
     wesentlicheRechtsgrundlageBauleitplanverfahren(state: LookupState, list: LookupEntryDto[]): void {
       state.wesentlicheRechtsgrundlageBauleitplanverfahren = list;
     },
+    wesentlicheRechtsgrundlage(state: LookupState, list: LookupEntryDto[]): void {
+      state.wesentlicheRechtsgrundlage = list;
+    },
     artBaulicheNutzung(state: LookupState, list: LookupEntryDto[]): void {
       state.artBaulicheNutzung = list;
     },
@@ -132,6 +139,7 @@ export default {
           "wesentlicheRechtsgrundlageBauleitplanverfahren",
           lookupLists.wesentlicheRechtsgrundlageBauleitplanverfahren?.list,
         );
+        context.commit("wesentlicheRechtsgrundlage", lookupLists.wesentlicheRechtsgrundlage?.list);
         context.commit("artBaulicheNutzung", lookupLists.artBaulicheNutzung?.list);
         context.commit("statusInfrastruktureinrichtung", lookupLists.statusInfrastruktureinrichtung?.list);
         context.commit("einrichtungstraeger", lookupLists.einrichtungstraeger?.list);
@@ -166,6 +174,9 @@ export default {
       list: LookupEntryDto[],
     ): void {
       context.commit("wesentlicheRechtsgrundlageBauleitplanverfahren", list);
+    },
+    wesentlicheRechtsgrundlage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("wesentlicheRechtsgrundlage", list);
     },
     artBaulicheNutzung(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("artBaulicheNutzung", list);
