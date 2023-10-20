@@ -45,11 +45,16 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLea
 
   private kommentare: Array<KommentarModel> = [];
 
+  private get hasDirtyComment(): boolean {
+    return this.kommentare.some((kommentar) => kommentar.isDirty);
+  }
+
   @Watch("kommentare", { immediate: true, deep: true })
   private resetCommentDirtyFlagWhenNoCommentsAreDirty(): void {
-    const existsDirtyKommentar = !_.isEmpty(this.kommentare.filter((kommentar) => kommentar.isDirty));
-    if (!existsDirtyKommentar) {
+    if (!this.hasDirtyComment) {
       this.resetCommentDirty();
+    } else {
+      this.commentChanged();
     }
   }
 
@@ -93,6 +98,7 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLea
   private createNewUnsavedKommentarForBauvorhaben(): KommentarModel {
     const kommentar = new KommentarModel(createKommentarDto());
     kommentar.bauvorhaben = this.$route.params.id;
+    kommentar.isDirty = false;
     return kommentar;
   }
 
@@ -136,12 +142,22 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLea
 
   private deleteKommentar(kommentar: KommentarModel): void {
     if (_.isNil(kommentar.id)) {
-      this.kommentare[0].datum = undefined;
-      this.kommentare[0].text = undefined;
+      // Wenn es sich um ein neues, unsaved Kommentar handelt, wird es entfernt
+      const index = this.kommentare.indexOf(kommentar);
+      if (index > -1) {
+        this.kommentare.splice(index, 1);
+      }
     } else {
       this.delete(kommentar.id, true).then(() => {
-        const removeIndex = this.kommentare.map((kommentarInArray) => kommentarInArray.id).indexOf(kommentar.id);
-        removeIndex > -1 && this.kommentare.splice(removeIndex, 1);
+        const removeIndex = this.kommentare.findIndex((k) => k.id === kommentar.id);
+        if (removeIndex > -1) {
+          this.kommentare.splice(removeIndex, 1);
+          // Überprüfen, ob gelöschter Kommentar der erste im Array war
+          if (removeIndex === 0) {
+            // isDirty-Flag des ersten Kommentars auf false setzten
+            this.kommentare[0].isDirty = false;
+          }
+        }
       });
     }
   }
