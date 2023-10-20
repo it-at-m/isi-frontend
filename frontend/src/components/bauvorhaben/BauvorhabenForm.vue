@@ -6,31 +6,6 @@
           cols="12"
           md="6"
         >
-          <num-field
-            id="bauvorhaben_grundstuecksgroesse"
-            v-model="calcGrundstuecksgroesse"
-            label="Grundstücksgröße"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-            :disabled="true"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            id="bauvorhaben_bauvorhabenNummer"
-            v-model="bauvorhaben.bauvorhabenNummer"
-            disabled
-            label="Bauvorhabennummer"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
           <v-select
             id="bauvorhaben_standVerfahren_dropdown"
             v-model="bauvorhaben.standVerfahren"
@@ -60,6 +35,31 @@
               @input="formChanged"
             />
           </v-slide-y-reverse-transition>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <num-field
+            id="bauvorhaben_grundstuecksgroesse"
+            v-model="calcGrundstuecksgroesse"
+            label="Grundstücksgröße"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+            :disabled="true"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-text-field
+            id="bauvorhaben_bauvorhabenNummer"
+            v-model="bauvorhaben.bauvorhabenNummer"
+            disabled
+            label="Bauvorhabennummer"
+          />
         </v-col>
       </v-row>
     </field-group-card>
