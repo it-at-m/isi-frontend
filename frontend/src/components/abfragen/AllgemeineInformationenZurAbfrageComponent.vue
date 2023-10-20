@@ -27,15 +27,15 @@
         md="12"
       >
         <tri-switch
-          id="offizielle_mitteilung_triswitch"
-          ref="offizielleMitteilungTriswitch"
+          id="offizielle_mitzeichnung_triswitch"
+          ref="offizielleMitzeichnungTriswitch"
           v-model="abfrage.offizielleMitzeichnung"
           :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"
           :rules="[fieldValidationRules.notUnspecified]"
         >
-          <template #label> Offizielle Mitteilung <span class="secondary--text">*</span> </template>
+          <template #label> Offizielle Mitzeichnung <span class="secondary--text">*</span> </template>
         </tri-switch>
       </v-col>
     </v-row>
