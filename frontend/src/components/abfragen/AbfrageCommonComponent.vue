@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -37,7 +37,7 @@ export default class AbfrageCommonComponent extends Mixins(
   SaveLeaveMixin,
   FieldValidationRulesMixin,
 ) {
-  @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
+  @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
 
   @Prop({ type: Boolean, default: true })
   private isEditableProp!: boolean;
