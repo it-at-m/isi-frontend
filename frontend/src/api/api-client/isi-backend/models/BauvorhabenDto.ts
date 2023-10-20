@@ -91,6 +91,12 @@ export interface BauvorhabenDto {
      * @type {string}
      * @memberof BauvorhabenDto
      */
+    standVerfahrenFreieEingabe?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BauvorhabenDto
+     */
     bauvorhabenNummer?: string;
     /**
      * 
@@ -256,6 +262,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'nameVorhaben': json['nameVorhaben'],
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVerfahren': json['standVerfahren'],
+        'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
         'bauvorhabenNummer': !exists(json, 'bauvorhabenNummer') ? undefined : json['bauvorhabenNummer'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
@@ -288,6 +295,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'nameVorhaben': value.nameVorhaben,
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVerfahren': value.standVerfahren,
+        'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
         'bauvorhabenNummer': value.bauvorhabenNummer,
         'adresse': AdresseDtoToJSON(value.adresse),
         'verortung': VerortungDtoToJSON(value.verortung),

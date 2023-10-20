@@ -14,6 +14,17 @@
             :disabled="true"
           />
         </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-text-field
+            id="bauvorhaben_bauvorhabenNummer"
+            v-model="bauvorhaben.bauvorhabenNummer"
+            disabled
+            label="Bauvorhabennummer"
+          />
+        </v-col>
       </v-row>
       <v-row>
         <v-col
@@ -37,12 +48,18 @@
           cols="12"
           md="6"
         >
-          <v-text-field
-            id="bauvorhaben_bauvorhabenNummer"
-            v-model="bauvorhaben.bauvorhabenNummer"
-            disabled
-            label="Bauvorhabennummer"
-          />
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="standVerfahrenFreieEingabeVisible"
+              id="stand_verfahren_freie_freie_eingabe_field"
+              ref="standVerfahrenFreieEingabeField"
+              v-model="bauvorhaben.standVerfahrenFreieEingabe"
+              :disabled="!isEditable"
+              label="freie Eingabe"
+              maxlength="255"
+              @input="formChanged"
+            />
+          </v-slide-y-reverse-transition>
         </v-col>
       </v-row>
     </field-group-card>
@@ -228,6 +245,7 @@ import {
   GemarkungDto,
   FlurstueckDto,
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
+  BauvorhabenDtoStandVerfahrenEnum,
 } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -273,6 +291,8 @@ export default class BauvorhabenForm extends Mixins(
   private sobonCardTitle = "SoBoN";
 
   private sobonJahrVisible = false;
+
+  private standVerfahrenFreieEingabeVisible = false;
 
   private nameRootFolder = "bauvorhaben";
 
@@ -340,6 +360,16 @@ export default class BauvorhabenForm extends Mixins(
     } else {
       this.bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe = undefined;
       this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+    }
+  }
+
+  @Watch("bauvorhaben.standVerfahren", { immediate: true })
+  private standVerfahrenChanged(): void {
+    if (this.bauvorhaben.standVerfahren?.includes(BauvorhabenDtoStandVerfahrenEnum.FreieEingabe)) {
+      this.standVerfahrenFreieEingabeVisible = true;
+    } else {
+      this.bauvorhaben.standVerfahrenFreieEingabe = undefined;
+      this.standVerfahrenFreieEingabeVisible = false;
     }
   }
 }

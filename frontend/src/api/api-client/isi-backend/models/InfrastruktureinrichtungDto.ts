@@ -119,12 +119,6 @@ export interface InfrastruktureinrichtungDto {
      * @memberof InfrastruktureinrichtungDto
      */
     flaecheTeilgrundstueck?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungDto
-     */
-    zugeordnetesBaugebiet?: string;
 }
 
 
@@ -224,7 +218,6 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
         'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
-        'zugeordnetesBaugebiet': !exists(json, 'zugeordnetesBaugebiet') ? undefined : json['zugeordnetesBaugebiet'],
     };
 }
 
@@ -251,7 +244,6 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
         'einrichtungstraeger': value.einrichtungstraeger,
         'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
-        'zugeordnetesBaugebiet': value.zugeordnetesBaugebiet,
     };
 }
 
