@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col
         cols="12"
-        md="12"
+        md="6"
       >
         <date-picker
           id="bearbeitungsfrist_datepicker"
@@ -14,6 +14,11 @@
           :rules="[fieldValidationRules.pflichtfeld]"
           required
         />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
       </v-col>
     </v-row>
     <v-row justify="center">

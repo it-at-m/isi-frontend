@@ -22,7 +22,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="12"
+          md="6"
         >
           <date-picker
             id="satzungsbeschluss_datepicker"
@@ -33,6 +33,11 @@
             month-picker
             @datePickerBlurred="datumSatzungsbeschlussChanged"
           />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
         </v-col>
       </v-row>
       <v-row justify="center">
