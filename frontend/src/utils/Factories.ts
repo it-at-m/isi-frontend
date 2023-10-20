@@ -348,7 +348,6 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
   };
 }
 
@@ -380,7 +379,6 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKinderkrippeGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
@@ -405,7 +403,6 @@ export function createKindergartenDto(): KindergartenDto {
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
     wohnungsnaheKindergartenPlaetze: undefined,
@@ -430,7 +427,6 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
@@ -461,7 +457,6 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     artGsNachmittagBetreuung: undefined,
     anzahlHortGruppen: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
@@ -486,7 +481,6 @@ export function createGrundschuleDto(): GrundschuleDto {
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     schule: createSchuleDto(),
   };
 }
@@ -509,7 +503,6 @@ export function createMittelschuleDto(): MittelschuleDto {
     einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     schule: createSchuleDto(),
   };
 }

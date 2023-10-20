@@ -28,7 +28,7 @@
             v-model="baurate.weGeplant"
             :disabled="!isEditable"
             :rules="[validationRules.validateWohneinheiten(baugebiet, abfragevariante)]"
-            label="geplante Anzahl der Wohneinheiten"
+            label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
           />
@@ -42,7 +42,7 @@
             v-model="baurate.gfWohnenGeplant"
             :disabled="!isEditable"
             :rules="[validationRules.validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
-            label="geplante Geschossfläche Wohnen"
+            label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen"
           />
         </v-col>

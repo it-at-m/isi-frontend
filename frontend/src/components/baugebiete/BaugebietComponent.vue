@@ -89,7 +89,7 @@
             :disabled="!isEditable"
             :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
             class="mx-3"
-            label="Geplante Anzahl der Wohneinheiten"
+            label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
           />

@@ -39,7 +39,7 @@ export function anzahlUeberBauratenVerteilteWohneinheitenForAbfragevariante(
 
 export function anzahlUeberBauratenVerteilteWohneinheitenForBaugebiet(baugebiet: BaugebietDto): number {
   const sumWohneinheiten = _.toArray(baugebiet.bauraten).map((baurate) =>
-    _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant,
+    _.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant,
   );
   return _.sum(sumWohneinheiten);
 }
