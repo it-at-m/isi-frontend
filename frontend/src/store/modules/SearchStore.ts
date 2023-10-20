@@ -23,6 +23,7 @@ const state = {
   } as SearchResultsDto,
   requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
   selectedAbfrage: undefined as BauleitplanverfahrenModel | undefined,
+  defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
 };
@@ -43,6 +44,9 @@ export default {
     },
     selectedAbfrage: (state: SearchState): BauleitplanverfahrenModel | undefined => {
       return state.selectedAbfrage;
+    },
+    defaultSearchQueryAndSortingFilter: (): SearchQueryAndSortingModel => {
+      return state.defaultSearchQueryAndSortingFilter;
     },
     selectedBauvorhaben: (state: SearchState): BauvorhabenDto | undefined => {
       return state.selectedBauvorhaben;
