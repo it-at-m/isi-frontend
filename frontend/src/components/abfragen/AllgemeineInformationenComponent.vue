@@ -78,7 +78,7 @@
     <v-row justify="center">
       <v-col
         cols="12"
-        md="12"
+        md="6"
       >
         <v-select
           id="stand_verfahren_dropdown"
@@ -94,6 +94,23 @@
           <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
         </v-select>
       </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-slide-y-reverse-transition>
+          <v-text-field
+            v-if="standVerfahrenFreieEingabeVisible"
+            id="stand_verfahren_freie_freie_eingabe_field"
+            ref="standVerfahrenFreieEingabeField"
+            v-model="abfrage.standVerfahrenFreieEingabe"
+            :disabled="!isEditable"
+            label="freie Eingabe"
+            maxlength="255"
+            @input="formChanged"
+          />
+        </v-slide-y-reverse-transition>
+      </v-col>
     </v-row>
   </field-group-card>
 </template>
@@ -103,6 +120,7 @@ import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import {
+  BauleitplanverfahrenDtoStandVerfahrenEnum,
   BauvorhabenSearchResultDto,
   LookupEntryDto,
   UncertainBoolean,
@@ -134,6 +152,8 @@ export default class AllgemeineInformationenComponent extends Mixins(
   private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Vorhaben";
 
   private sobonJahrVisible = false;
+
+  private standVerfahrenFreieEingabeVisible = false;
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
@@ -182,6 +202,16 @@ export default class AllgemeineInformationenComponent extends Mixins(
     } else {
       this.sobonJahrVisible = false;
       this.abfrage.sobonJahr = undefined;
+    }
+  }
+
+  @Watch("abfrage.standVerfahren", { immediate: true })
+  private standVerfahrenChanged(): void {
+    if (this.abfrage.standVerfahren?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
+      this.standVerfahrenFreieEingabeVisible = true;
+    } else {
+      this.abfrage.standVerfahrenFreieEingabe = undefined;
+      this.standVerfahrenFreieEingabeVisible = false;
     }
   }
 }

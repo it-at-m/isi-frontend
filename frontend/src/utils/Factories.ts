@@ -13,7 +13,6 @@ import {
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   BauvorhabenDtoStandVerfahrenEnum,
-  BauvorhabenDtoSobonJahrEnum,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
   FilepathDto,
