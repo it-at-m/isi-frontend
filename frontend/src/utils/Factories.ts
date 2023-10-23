@@ -39,6 +39,7 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  KommentarDto,
   SchuleDtoEinrichtungstraegerEnum,
   KindergartenDtoEinrichtungstraegerEnum,
   HausFuerKinderDtoAllOfEinrichtungstraegerEnum,
@@ -550,5 +551,11 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
     strassenname: undefined,
     position: undefined,
     geozuordnungen: undefined,
+  };
+}
+
+export function createKommentarDto(): KommentarDto {
+  return {
+    dokumente: [],
   };
 }

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    DokumentDto,
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+} from './DokumentDto';
+
 /**
  * 
  * @export
@@ -67,6 +74,12 @@ export interface KommentarDto {
      * @memberof KommentarDto
      */
     infrastruktureinrichtung?: string;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof KommentarDto
+     */
+    dokumente?: Array<DokumentDto>;
 }
 
 export function KommentarDtoFromJSON(json: any): KommentarDto {
@@ -87,6 +100,7 @@ export function KommentarDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'text': !exists(json, 'text') ? undefined : json['text'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'infrastruktureinrichtung': !exists(json, 'infrastruktureinrichtung') ? undefined : json['infrastruktureinrichtung'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
@@ -107,6 +121,7 @@ export function KommentarDtoToJSON(value?: KommentarDto | null): any {
         'text': value.text,
         'bauvorhaben': value.bauvorhaben,
         'infrastruktureinrichtung': value.infrastruktureinrichtung,
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 

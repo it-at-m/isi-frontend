@@ -131,7 +131,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="!isDirty() || !isEditable"
+          :disabled="!isFormDirty() || !isEditable"
           style="width: 200px"
           @click="saveInfrastruktureinrichtung()"
           v-text="buttonText"

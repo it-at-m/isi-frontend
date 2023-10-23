@@ -35,7 +35,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     return this.abfrageApi
       .createInfrastrukturabfrage(requestObject, RequestUtils.getPOSTConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -55,7 +55,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     return this.abfrageApi
       .patchAbfrageAngelegt(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -75,7 +75,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     return this.abfrageApi
       .patchAbfrageInBearbeitungSachbearbeitung(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -95,7 +95,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     return this.abfrageApi
       .patchAbfrageInBearbeitungFachreferate(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -124,7 +124,7 @@ export default class AbfrageApiRequestMixin extends Mixins(SaveLeaveMixin, Error
     return this.abfrageApi
       .deleteInfrastrukturabfrageById(requestObject, RequestUtils.getDELETEConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
