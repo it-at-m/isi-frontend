@@ -16,6 +16,7 @@ const state = {
   artBaulicheNutzung: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
   einrichtungstraeger: [] as LookupEntryDto[],
+  einrichtungstraegerSchulen: [] as LookupEntryDto[],
   infrastruktureinrichtungTyp: [] as LookupEntryDto[],
   artGsNachmittagBetreuung: [] as LookupEntryDto[],
   sobonOrientierungswertJahr: [] as LookupEntryDto[],
@@ -65,6 +66,9 @@ export default {
     einrichtungstraeger: (state: LookupState): Array<LookupEntryDto> => {
       return state.einrichtungstraeger;
     },
+    einrichtungstraegerSchulen: (state: LookupState): Array<LookupEntryDto> => {
+      return state.einrichtungstraegerSchulen;
+    },
     infrastruktureinrichtungTyp: (state: LookupState): Array<LookupEntryDto> => {
       return state.infrastruktureinrichtungTyp;
     },
@@ -113,6 +117,9 @@ export default {
     einrichtungstraeger(state: LookupState, list: LookupEntryDto[]): void {
       state.einrichtungstraeger = list;
     },
+    einrichtungstraegerSchulen(state: LookupState, list: LookupEntryDto[]): void {
+      state.einrichtungstraegerSchulen = list;
+    },
     infrastruktureinrichtungTyp(state: LookupState, list: LookupEntryDto[]): void {
       state.infrastruktureinrichtungTyp = list;
     },
@@ -143,6 +150,7 @@ export default {
         context.commit("artBaulicheNutzung", lookupLists.artBaulicheNutzung?.list);
         context.commit("statusInfrastruktureinrichtung", lookupLists.statusInfrastruktureinrichtung?.list);
         context.commit("einrichtungstraeger", lookupLists.einrichtungstraeger?.list);
+        context.commit("einrichtungstraegerSchulen", lookupLists.einrichtungstraegerSchulen?.list);
         context.commit("infrastruktureinrichtungTyp", lookupLists.infrastruktureinrichtungTyp?.list);
         context.commit("artGsNachmittagBetreuung", lookupLists.artGsNachmittagBetreuung?.list);
         context.commit("sobonOrientierungswertJahr", lookupLists.sobonOrientierungswertJahr?.list);
@@ -186,6 +194,9 @@ export default {
     },
     einrichtungstraeger(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("einrichtungstraeger", list);
+    },
+    einrichtungstraegerSchulen(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("einrichtungstraegerSchulen", list);
     },
     infrastruktureinrichtungTyp(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("infrastruktureinrichtungTyp", list);

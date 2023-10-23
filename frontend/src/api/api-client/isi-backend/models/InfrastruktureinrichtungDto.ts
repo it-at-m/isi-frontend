@@ -103,12 +103,6 @@ export interface InfrastruktureinrichtungDto {
     status: InfrastruktureinrichtungDtoStatusEnum;
     /**
      * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungDto
-     */
-    einrichtungstraeger?: InfrastruktureinrichtungDtoEinrichtungstraegerEnum;
-    /**
-     * 
      * @type {number}
      * @memberof InfrastruktureinrichtungDto
      */
@@ -152,27 +146,6 @@ export const InfrastruktureinrichtungDtoStatusEnum = {
 } as const;
 export type InfrastruktureinrichtungDtoStatusEnum = typeof InfrastruktureinrichtungDtoStatusEnum[keyof typeof InfrastruktureinrichtungDtoStatusEnum];
 
-/**
- * @export
- */
-export const InfrastruktureinrichtungDtoEinrichtungstraegerEnum = {
-    Unspecified: 'UNSPECIFIED',
-    KitaStaedtischeEinrichtung: 'KITA_STAEDTISCHE_EINRICHTUNG',
-    KitaEinrichtungBetriebstraegerschaft: 'KITA_EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
-    KitaFreieGemeinnuetzigeSonstige: 'KITA_FREIE_GEMEINNUETZIGE_SONSTIGE',
-    KitaEinrichtungGesamtstaedtisch: 'KITA_EINRICHTUNG_GESAMTSTAEDTISCH',
-    GsBetreuungStaedtischeEinrichtung: 'GS_BETREUUNG_STAEDTISCHE_EINRICHTUNG',
-    GsBetreuungElternKindInitiative: 'GS_BETREUUNG_ELTERN_KIND_INITIATIVE',
-    GsBetreuungStaatlicheEinrichtung: 'GS_BETREUUNG_STAATLICHE_EINRICHTUNG',
-    GsBetreuungPrivateTraegerschaft: 'GS_BETREUUNG_PRIVATE_TRAEGERSCHAFT',
-    GsBetreuungKirchlicheTraegerschaft: 'GS_BETREUUNG_KIRCHLICHE_TRAEGERSCHAFT',
-    SchuleStaedtischeEinrichtung: 'SCHULE_STAEDTISCHE_EINRICHTUNG',
-    SchuleStaatlicheEinrichtung: 'SCHULE_STAATLICHE_EINRICHTUNG',
-    SchulePrivateTraegerschaft: 'SCHULE_PRIVATE_TRAEGERSCHAFT',
-    SchuleKirchlicheTraegerschaft: 'SCHULE_KIRCHLICHE_TRAEGERSCHAFT'
-} as const;
-export type InfrastruktureinrichtungDtoEinrichtungstraegerEnum = typeof InfrastruktureinrichtungDtoEinrichtungstraegerEnum[keyof typeof InfrastruktureinrichtungDtoEinrichtungstraegerEnum];
-
 
 export function InfrastruktureinrichtungDtoFromJSON(json: any): InfrastruktureinrichtungDto {
     return InfrastruktureinrichtungDtoFromJSONTyped(json, false);
@@ -215,7 +188,6 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'nameEinrichtung': json['nameEinrichtung'],
         'fertigstellungsjahr': !exists(json, 'fertigstellungsjahr') ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
-        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
         'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
     };
@@ -241,7 +213,6 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
         'nameEinrichtung': value.nameEinrichtung,
         'fertigstellungsjahr': value.fertigstellungsjahr,
         'status': value.status,
-        'einrichtungstraeger': value.einrichtungstraeger,
         'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
     };
