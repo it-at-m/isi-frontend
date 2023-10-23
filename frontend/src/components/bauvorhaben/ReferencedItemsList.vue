@@ -140,7 +140,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
   }
 
   /**
-   * Routing zur Detailansicht der Bauleitplanverfahren
+   * Routing zur Detailansicht der Abfrage
    *
    * @param abfrageSearchResultDto zum ermitteln der Route.
    */

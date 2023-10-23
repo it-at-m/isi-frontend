@@ -33,7 +33,17 @@ export interface BedarfsmeldungErfolgtRequest {
     anmerkung?: string;
 }
 
-export interface ErneuteBearbeitungAbfrageRequest {
+export interface ErledigtMitFachreferatRequest {
+    id: string;
+    anmerkung?: string;
+}
+
+export interface ErledigtOhneFachreferatRequest {
+    id: string;
+    anmerkung?: string;
+}
+
+export interface ErneuteBearbeitungSachbearbeitungRequest {
     id: string;
     anmerkung?: string;
 }
@@ -44,16 +54,6 @@ export interface FreigabeAbfrageRequest {
 }
 
 export interface InBearbeitungSetzenAbfrageRequest {
-    id: string;
-    anmerkung?: string;
-}
-
-export interface KeineBearbeitungNoetigRequest {
-    id: string;
-    anmerkung?: string;
-}
-
-export interface SpeichernVonSozialinfrastrukturVersorgungRequest {
     id: string;
     anmerkung?: string;
 }
@@ -149,11 +149,11 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     * Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
      */
-    async erneuteBearbeitungAbfrageRaw(requestParameters: ErneuteBearbeitungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async erledigtMitFachreferatRaw(requestParameters: ErledigtMitFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling erneuteBearbeitungAbfrage.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling erledigtMitFachreferat.');
         }
 
         const queryParameters: any = {};
@@ -165,7 +165,73 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/abfrage-status/{id}/erneute-bearbeitung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/abfrage-status/{id}/erledigt-mit-fachreferat`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
+     */
+    async erledigtMitFachreferat(requestParameters: ErledigtMitFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.erledigtMitFachreferatRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
+     */
+    async erledigtOhneFachreferatRaw(requestParameters: ErledigtOhneFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling erledigtOhneFachreferat.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/abfrage-status/{id}/erledigt-ohne-fachreferat`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
+     */
+    async erledigtOhneFachreferat(requestParameters: ErledigtOhneFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.erledigtOhneFachreferatRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     */
+    async erneuteBearbeitungSachbearbeitungRaw(requestParameters: ErneuteBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling erneuteBearbeitungSachbearbeitung.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/abfrage-status/{id}/erneute-bearbeitung-sachbearbeitung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -177,8 +243,8 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     /**
      * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
      */
-    async erneuteBearbeitungAbfrage(requestParameters: ErneuteBearbeitungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.erneuteBearbeitungAbfrageRaw(requestParameters, initOverrides);
+    async erneuteBearbeitungSachbearbeitung(requestParameters: ErneuteBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.erneuteBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -245,72 +311,6 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      */
     async inBearbeitungSetzenAbfrage(requestParameters: InBearbeitungSetzenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.inBearbeitungSetzenAbfrageRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
-     */
-    async keineBearbeitungNoetigRaw(requestParameters: KeineBearbeitungNoetigRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling keineBearbeitungNoetig.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.anmerkung !== undefined) {
-            queryParameters['anmerkung'] = requestParameters.anmerkung;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/abfrage-status/{id}/keine-bearbeitung-noetig`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
-     */
-    async keineBearbeitungNoetig(requestParameters: KeineBearbeitungNoetigRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.keineBearbeitungNoetigRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
-     */
-    async speichernVonSozialinfrastrukturVersorgungRaw(requestParameters: SpeichernVonSozialinfrastrukturVersorgungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling speichernVonSozialinfrastrukturVersorgung.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.anmerkung !== undefined) {
-            queryParameters['anmerkung'] = requestParameters.anmerkung;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/abfrage-status/{id}/speicher-von-soz-infrastruktur-versorgung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
-     */
-    async speichernVonSozialinfrastrukturVersorgung(requestParameters: SpeichernVonSozialinfrastrukturVersorgungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.speichernVonSozialinfrastrukturVersorgungRaw(requestParameters, initOverrides);
     }
 
     /**

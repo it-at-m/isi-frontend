@@ -1,6 +1,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import _ from "lodash";
 import {
+  AbfrageDtoArtAbfrageEnum,
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   AbfragevarianteBauleitplanverfahrenDto,
   AdresseDto,
@@ -22,6 +23,7 @@ import {
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import AbfragevarianteFachreferatModel from "@/types/model/abfragevariante/AbfragevarianteFachreferatModel";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import moment from "moment";
@@ -39,16 +41,24 @@ export default class ValidatorMixin extends Vue {
    * Prüft die komplette Abfrage vor dem Speichern
    */
 
-  public findFaultInBauleitplanverfahrenForSave(abfrage: BauleitplanverfahrenModel): string | null {
-    const validationMessage: string | null = this.findFaultInAbfrage(abfrage);
-    return !_.isNil(validationMessage) ? validationMessage : this.findFaultInAbfragevarianten(abfrage);
+  public findFaultInAbfrageForSave(abfrage: AbfrageModel): string | null {
+    if (!_.isNil(abfrage) && !_.isNil(abfrage.artAbfrage)) {
+      switch (abfrage.artAbfrage) {
+        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+          return this.findFaultInBauleitplanverfahrenForSave(abfrage);
+        default:
+          return `$'ValidatorMixin.findFaultInAbfrageForSave() AbfrageArt' {abfrage.artAbfrage} 'ist nicht implementiert'`;
+      }
+    } else {
+      return null;
+    }
   }
 
   /**
-   * Prüft die Abfrage vor dem nächsten Schritt
+   * Bauleitplanverfahren wird vor dem Speichern komplett geprüft
    */
 
-  public findFaultInAbfrage(abfrage: BauleitplanverfahrenModel): string | null {
+  public findFaultInBauleitplanverfahrenForSave(abfrage: BauleitplanverfahrenModel): string | null {
     if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
       return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
     }
@@ -65,7 +75,7 @@ export default class ValidatorMixin extends Vue {
     if (!date.isValid()) {
       return "Termin der Stellungnahme nicht im Format TT.MM.JJJJ";
     }
-    return null;
+    return this.findFaultInAbfragevarianten(abfrage);
   }
 
   private isValidAngabeLageErgaenzendeAdressinformation(angabeLageErgaenzendeAdressinformation?: string): boolean {

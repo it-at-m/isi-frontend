@@ -254,6 +254,7 @@ import {
   BauleitplanverfahrenDto,
   StatusAbfrage,
   TransitionDto,
+  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import AbfrageNavigationTree, {
@@ -526,44 +527,44 @@ export default class Abfrage extends Mixins(
 
   private async saveAbfrage(): Promise<void> {
     if (this.validate()) {
-      this.saveBauleitplanverfahren(true);
+      const validationMessage: string | null = this.findFaultInAbfrageForSave(this.abfrage);
+      if (_.isNil(validationMessage)) {
+        if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+          this.handleSaveBauleitplanverfahren(this.abfrage, true);
+        }
+      } else {
+        this.showWarningInInformationList(validationMessage);
+      }
     } else {
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
     }
   }
 
-  private async saveBauleitplanverfahren(showToast: boolean): Promise<void> {
-    const validationMessage: string | null = this.findFaultInBauleitplanverfahrenForSave(this.abfrage);
-    if (_.isNil(validationMessage)) {
-      if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.save(mapToBauleitplanverfahrenAngelegt(this.abfrage), true).then((dto) => {
-          this.handleSuccess(dto, showToast);
-        });
-      } else if (this.isEditableByAbfrageerstellung()) {
-        await this.patchAngelegt(mapToBauleitplanverfahrenAngelegt(this.abfrage), this.abfrage.id as string, true).then(
-          (dto) => {
-            this.handleSuccess(dto, showToast);
-          },
-        );
-      } else if (this.isEditableBySachbearbeitung()) {
-        await this.patchInBearbeitungSachbearbeitung(
-          mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(this.abfrage),
-          this.abfrage.id as string,
-          true,
-        ).then((dto) => {
-          this.handleSuccess(dto, showToast);
-        });
-      } else if (this.isEditableByBedarfsmeldung()) {
-        await this.patchInBearbeitungFachreferat(
-          mapToBauleitplanverfahrenInBearbeitungFachreferatDto(this.abfrage),
-          this.abfrage.id as string,
-          true,
-        ).then((dto) => {
-          this.handleSuccess(dto, showToast);
-        });
-      }
-    } else {
-      this.showWarningInInformationList(validationMessage);
+  private async handleSaveBauleitplanverfahren(model: BauleitplanverfahrenModel, showToast: boolean) {
+    if (this.modeAbfrage === DisplayMode.NEU) {
+      await this.save(mapToBauleitplanverfahrenAngelegt(model), true).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
+    } else if (this.isEditableByAbfrageerstellung()) {
+      await this.patchAngelegt(mapToBauleitplanverfahrenAngelegt(model), model.id as string, true).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
+    } else if (this.isEditableBySachbearbeitung()) {
+      await this.patchInBearbeitungSachbearbeitung(
+        mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(model),
+        model.id as string,
+        true,
+      ).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
+    } else if (this.isEditableByBedarfsmeldung()) {
+      await this.patchInBearbeitungFachreferat(
+        mapToBauleitplanverfahrenInBearbeitungFachreferatDto(model),
+        model.id as string,
+        true,
+      ).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
     }
   }
 
@@ -583,7 +584,7 @@ export default class Abfrage extends Mixins(
       if (transition.url === "keine-bearbeitung-noetig") {
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
       }
-      const validationMessage: string | null = this.findFaultInBauleitplanverfahrenForSave(this.abfrage);
+      const validationMessage: string | null = this.findFaultInAbfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
         const response = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
         if (response.ok) {
