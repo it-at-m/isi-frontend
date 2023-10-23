@@ -67,34 +67,6 @@
           md="6"
         >
           <v-select
-            id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
-            v-model="infrastruktureinrichtung.einrichtungstraeger"
-            :items="einrichtungstraegerList"
-            item-value="key"
-            item-text="value"
-            :rules="
-              isEinrichtungstraegerRequired()
-                ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]
-                : []
-            "
-            :disabled="!isEditable"
-            @change="formChanged"
-          >
-            <template #label
-              >Einrichtungsträger
-              <span
-                v-if="isEinrichtungstraegerRequired()"
-                class="secondary--text"
-                >*</span
-              ></template
-            >
-          </v-select>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-select
             id="infrastruktureinrichtung_bauvorhaben_dropdown"
             v-model="infrastruktureinrichtung.bauvorhaben"
             :items="bauvorhaben"
@@ -106,6 +78,11 @@
             @focus="fetchBauvorhaben"
             @change="formChanged"
           />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
         </v-col>
       </v-row>
     </field-group-card>
@@ -198,19 +175,8 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
     return this.$store.getters["lookup/statusInfrastruktureinrichtung"];
   }
 
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraeger"];
-  }
-
   private isFertigstellungsjahrRequired(): boolean {
     return this.infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand;
-  }
-
-  private isEinrichtungstraegerRequired(): boolean {
-    return (
-      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
-      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
-    );
   }
 
   /**

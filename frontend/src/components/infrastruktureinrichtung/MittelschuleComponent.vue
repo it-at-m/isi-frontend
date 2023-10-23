@@ -5,6 +5,7 @@
       ref="schule-component"
       v-model="mittelschule.schule"
       :is-editable="isEditable"
+      :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
     />
   </div>
 </template>
@@ -30,6 +31,9 @@ export default class MittelschuleComponent extends Mixins(FieldValidationRulesMi
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEinrichtungstraegerRequired!: boolean;
 }
 </script>
 <style></style>

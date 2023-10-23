@@ -37,7 +37,31 @@ export interface KindergartenDtoAllOf {
      * @memberof KindergartenDtoAllOf
      */
     wohnungsnaheKindergartenPlaetze?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof KindergartenDtoAllOf
+     */
+    einrichtungstraeger?: KindergartenDtoAllOfEinrichtungstraegerEnum;
 }
+
+
+/**
+ * @export
+ */
+export const KindergartenDtoAllOfEinrichtungstraegerEnum = {
+    Unspecified: 'UNSPECIFIED',
+    StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
+    EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
+    FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
+    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
+    ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
+    StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
+    PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+} as const;
+export type KindergartenDtoAllOfEinrichtungstraegerEnum = typeof KindergartenDtoAllOfEinrichtungstraegerEnum[keyof typeof KindergartenDtoAllOfEinrichtungstraegerEnum];
+
 
 export function KindergartenDtoAllOfFromJSON(json: any): KindergartenDtoAllOf {
     return KindergartenDtoAllOfFromJSONTyped(json, false);
@@ -52,6 +76,7 @@ export function KindergartenDtoAllOfFromJSONTyped(json: any, ignoreDiscriminator
         'anzahlKindergartenPlaetze': !exists(json, 'anzahlKindergartenPlaetze') ? undefined : json['anzahlKindergartenPlaetze'],
         'anzahlKindergartenGruppen': !exists(json, 'anzahlKindergartenGruppen') ? undefined : json['anzahlKindergartenGruppen'],
         'wohnungsnaheKindergartenPlaetze': !exists(json, 'wohnungsnaheKindergartenPlaetze') ? undefined : json['wohnungsnaheKindergartenPlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
@@ -67,6 +92,7 @@ export function KindergartenDtoAllOfToJSON(value?: KindergartenDtoAllOf | null):
         'anzahlKindergartenPlaetze': value.anzahlKindergartenPlaetze,
         'anzahlKindergartenGruppen': value.anzahlKindergartenGruppen,
         'wohnungsnaheKindergartenPlaetze': value.wohnungsnaheKindergartenPlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

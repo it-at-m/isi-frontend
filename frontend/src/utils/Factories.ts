@@ -24,7 +24,6 @@ import {
   HausFuerKinderDto,
   InfrastrukturabfrageDto,
   InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungDtoEinrichtungstraegerEnum,
   InfrastruktureinrichtungDtoStatusEnum,
   KindergartenDto,
   KinderkrippeDto,
@@ -40,6 +39,10 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  SchuleDtoEinrichtungstraegerEnum,
+  KindergartenDtoEinrichtungstraegerEnum,
+  HausFuerKinderDtoAllOfEinrichtungstraegerEnum,
+  GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -351,7 +354,6 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
@@ -365,6 +367,7 @@ export function createSchuleDto(): SchuleDto {
   return {
     anzahlKlassen: Number.NaN,
     anzahlPlaetze: Number.NaN,
+    einrichtungstraeger: SchuleDtoEinrichtungstraegerEnum.Unspecified,
   };
 }
 
@@ -384,7 +387,7 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
+    einrichtungstraeger: KindergartenDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
@@ -410,7 +413,7 @@ export function createKindergartenDto(): KindergartenDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
+    einrichtungstraeger: KindergartenDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
@@ -436,7 +439,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
+    einrichtungstraeger: HausFuerKinderDtoAllOfEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
@@ -468,7 +471,7 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
+    einrichtungstraeger: GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
@@ -494,7 +497,6 @@ export function createGrundschuleDto(): GrundschuleDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
@@ -518,7 +520,6 @@ export function createMittelschuleDto(): MittelschuleDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: InfrastruktureinrichtungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     zugeordnetesBaugebiet: undefined,
