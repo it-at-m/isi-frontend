@@ -56,8 +56,30 @@ export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
      * @memberof KinderkrippeDto
      */
     wohnungsnaheKinderkrippePlaetze?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof KinderkrippeDto
+     */
+    einrichtungstraeger?: KinderkrippeDtoEinrichtungstraegerEnum;
 }
 
+
+/**
+ * @export
+ */
+export const KinderkrippeDtoEinrichtungstraegerEnum = {
+    Unspecified: 'UNSPECIFIED',
+    StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
+    EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
+    FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
+    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
+    ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
+    StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
+    PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+} as const;
+export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinrichtungstraegerEnum[keyof typeof KinderkrippeDtoEinrichtungstraegerEnum];
 
 
 export function KinderkrippeDtoFromJSON(json: any): KinderkrippeDto {
@@ -73,6 +95,7 @@ export function KinderkrippeDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'anzahlKinderkrippePlaetze': json['anzahlKinderkrippePlaetze'],
         'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'],
         'wohnungsnaheKinderkrippePlaetze': !exists(json, 'wohnungsnaheKinderkrippePlaetze') ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
@@ -88,6 +111,7 @@ export function KinderkrippeDtoToJSON(value?: KinderkrippeDto | null): any {
         'anzahlKinderkrippePlaetze': value.anzahlKinderkrippePlaetze,
         'anzahlKinderkrippeGruppen': value.anzahlKinderkrippeGruppen,
         'wohnungsnaheKinderkrippePlaetze': value.wohnungsnaheKinderkrippePlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

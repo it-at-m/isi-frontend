@@ -31,7 +31,31 @@ export interface SchuleDto {
      * @memberof SchuleDto
      */
     anzahlPlaetze: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SchuleDto
+     */
+    einrichtungstraeger?: SchuleDtoEinrichtungstraegerEnum;
 }
+
+
+/**
+ * @export
+ */
+export const SchuleDtoEinrichtungstraegerEnum = {
+    Unspecified: 'UNSPECIFIED',
+    StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
+    EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
+    FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
+    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
+    ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
+    StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
+    PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+} as const;
+export type SchuleDtoEinrichtungstraegerEnum = typeof SchuleDtoEinrichtungstraegerEnum[keyof typeof SchuleDtoEinrichtungstraegerEnum];
+
 
 export function SchuleDtoFromJSON(json: any): SchuleDto {
     return SchuleDtoFromJSONTyped(json, false);
@@ -45,6 +69,7 @@ export function SchuleDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'anzahlKlassen': json['anzahlKlassen'],
         'anzahlPlaetze': json['anzahlPlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
@@ -59,6 +84,7 @@ export function SchuleDtoToJSON(value?: SchuleDto | null): any {
         
         'anzahlKlassen': value.anzahlKlassen,
         'anzahlPlaetze': value.anzahlPlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

@@ -91,6 +91,12 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
+    einrichtungstraegerSchulen?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
     infrastruktureinrichtungTyp?: LookupListDto;
     /**
      * 
@@ -126,6 +132,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'baugebietArt': !exists(json, 'baugebietArt') ? undefined : LookupListDtoFromJSON(json['baugebietArt']),
         'statusInfrastruktureinrichtung': !exists(json, 'statusInfrastruktureinrichtung') ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
         'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
+        'einrichtungstraegerSchulen': !exists(json, 'einrichtungstraegerSchulen') ? undefined : LookupListDtoFromJSON(json['einrichtungstraegerSchulen']),
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
         'artGsNachmittagBetreuung': !exists(json, 'artGsNachmittagBetreuung') ? undefined : LookupListDtoFromJSON(json['artGsNachmittagBetreuung']),
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahr']),
@@ -151,6 +158,7 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'baugebietArt': LookupListDtoToJSON(value.baugebietArt),
         'statusInfrastruktureinrichtung': LookupListDtoToJSON(value.statusInfrastruktureinrichtung),
         'einrichtungstraeger': LookupListDtoToJSON(value.einrichtungstraeger),
+        'einrichtungstraegerSchulen': LookupListDtoToJSON(value.einrichtungstraegerSchulen),
         'infrastruktureinrichtungTyp': LookupListDtoToJSON(value.infrastruktureinrichtungTyp),
         'artGsNachmittagBetreuung': LookupListDtoToJSON(value.artGsNachmittagBetreuung),
         'sobonOrientierungswertJahr': LookupListDtoToJSON(value.sobonOrientierungswertJahr),

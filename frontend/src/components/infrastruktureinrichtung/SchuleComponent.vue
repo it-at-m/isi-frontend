@@ -1,5 +1,11 @@
 <template>
   <div>
+    <einrichtungstraeger-component
+      v-model="schule"
+      :einrichtungstraeger-list="einrichtungstraegerList"
+      :is-editable="isEditable"
+      :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
+    />
     <field-group-card>
       <v-row justify="center">
         <v-col
@@ -42,11 +48,13 @@ import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
-
+import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 @Component({
   components: {
     FieldGroupCard,
     NumField,
+    EinrichtungstraegerComponent,
   },
 })
 export default class SchuleComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
@@ -54,6 +62,13 @@ export default class SchuleComponent extends Mixins(FieldValidationRulesMixin, S
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
+
+  @Prop({ type: Boolean, default: true })
+  private readonly isEinrichtungstraegerRequired!: boolean;
+
+  get einrichtungstraegerList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/einrichtungstraegerSchulen"];
+  }
 }
 </script>
 <style></style>

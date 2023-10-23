@@ -43,6 +43,12 @@ export interface GsNachmittagBetreuungDtoAllOf {
      * @memberof GsNachmittagBetreuungDtoAllOf
      */
     wohnungsnaheHortPlaetze?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GsNachmittagBetreuungDtoAllOf
+     */
+    einrichtungstraeger?: GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum;
 }
 
 
@@ -57,6 +63,22 @@ export const GsNachmittagBetreuungDtoAllOfArtGsNachmittagBetreuungEnum = {
     Mittagsbetreuung: 'MITTAGSBETREUUNG'
 } as const;
 export type GsNachmittagBetreuungDtoAllOfArtGsNachmittagBetreuungEnum = typeof GsNachmittagBetreuungDtoAllOfArtGsNachmittagBetreuungEnum[keyof typeof GsNachmittagBetreuungDtoAllOfArtGsNachmittagBetreuungEnum];
+
+/**
+ * @export
+ */
+export const GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum = {
+    Unspecified: 'UNSPECIFIED',
+    StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
+    EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
+    FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
+    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
+    ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
+    StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
+    PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+} as const;
+export type GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum = typeof GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum[keyof typeof GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum];
 
 
 export function GsNachmittagBetreuungDtoAllOfFromJSON(json: any): GsNachmittagBetreuungDtoAllOf {
@@ -73,6 +95,7 @@ export function GsNachmittagBetreuungDtoAllOfFromJSONTyped(json: any, ignoreDisc
         'anzahlHortPlaetze': !exists(json, 'anzahlHortPlaetze') ? undefined : json['anzahlHortPlaetze'],
         'anzahlHortGruppen': !exists(json, 'anzahlHortGruppen') ? undefined : json['anzahlHortGruppen'],
         'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
@@ -89,6 +112,7 @@ export function GsNachmittagBetreuungDtoAllOfToJSON(value?: GsNachmittagBetreuun
         'anzahlHortPlaetze': value.anzahlHortPlaetze,
         'anzahlHortGruppen': value.anzahlHortGruppen,
         'wohnungsnaheHortPlaetze': value.wohnungsnaheHortPlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 
