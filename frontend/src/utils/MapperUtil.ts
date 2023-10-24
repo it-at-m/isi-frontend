@@ -19,7 +19,7 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 
 export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: FoerdermixStammModel): FoerdermixModel {
   const foerdermix = new FoerdermixModel({});
-  foerdermix.foerderarten = foerdermixStammModel.foerdermix.foerderarten;
+  foerdermix.foerderarten = _.cloneDeep(foerdermixStammModel.foerdermix.foerderarten);
   return foerdermix;
 }
 
