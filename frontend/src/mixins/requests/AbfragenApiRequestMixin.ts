@@ -32,7 +32,7 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     return this.abfragenApi
       .save(requestObject, RequestUtils.getPOSTConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -52,7 +52,7 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     return this.abfragenApi
       .patchAngelegt(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -72,7 +72,7 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     return this.abfragenApi
       .patchInBearbeitungSachbearbeitung(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -92,7 +92,7 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     return this.abfragenApi
       .patchInBearbeitungFachreferat(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
@@ -121,7 +121,7 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     return this.abfragenApi
       .deleteById(requestObject, RequestUtils.getDELETEConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {

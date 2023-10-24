@@ -213,7 +213,7 @@
           v-show="!isNewAbfrage()"
           :id="'abfrage_status_aenderung' + index + '_button'"
           :key="index"
-          :disabled="isDirty()"
+          :disabled="isFormDirty()"
           color="secondary"
           class="text-wrap mt-2 px-1"
           elevation="1"
@@ -226,7 +226,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="(!isNewAbfrage() && !isDirty()) || containsNotAllowedDokument(abfrage.dokumente)"
+          :disabled="(!isNewAbfrage() && !isFormDirty()) || containsNotAllowedDokument(abfrage.dokumente)"
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
@@ -579,7 +579,7 @@ export default class Abfrage extends Mixins(
   }
 
   private async startStatusUebergang(transition: TransitionDto) {
-    if (!this.isDirty()) {
+    if (!this.isFormDirty()) {
       let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
       if (transition.url === "keine-bearbeitung-noetig") {
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";

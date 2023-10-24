@@ -76,7 +76,7 @@
                         :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
                         :readonly="isDokumentNotAllowed(item)"
                         :disabled="!isDokumenteEditable"
-                        @change="formChanged"
+                        @change="change"
                       >
                         <template #label> Dokumentart <span class="secondary--text">*</span> </template>
                       </v-select>
@@ -119,14 +119,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop, Emit } from "vue-property-decorator";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import { createFilepathDto } from "@/utils/Factories";
 import { isDokumentAllowed } from "@/utils/DokumenteUtil";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
 import { DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 
 @Component({
@@ -134,11 +133,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
     YesNoDialog,
   },
 })
-export default class DokumenteListe extends Mixins(
-  DokumenteApiRequestMixin,
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-) {
+export default class DokumenteListe extends Mixins(DokumenteApiRequestMixin, FieldValidationRulesMixin) {
   @VModel({ type: Array }) dokumente!: DokumentDto[];
 
   @Prop({ type: Boolean, default: true })
@@ -214,5 +209,9 @@ export default class DokumenteListe extends Mixins(
   private isDokumentNotAllowed(dokument: DokumentDto) {
     return !this.isDokumentAllowed(dokument);
   }
+
+  @Emit()
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private change(): void {}
 }
 </script>

@@ -50,7 +50,7 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
     return this.infrastruktureinrichtungApi
       .createInfrastruktureinrichtung(requestObject, RequestUtils.getPOSTConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response as InfrastruktureinrichtungDto;
       })
       .catch((error) => {
@@ -68,7 +68,7 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
     return this.infrastruktureinrichtungApi
       .updateInfrastruktureinrichtung(requestObject, RequestUtils.getPUTConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response as InfrastruktureinrichtungDto;
       })
       .catch((error) => {
@@ -83,7 +83,7 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
     return this.infrastruktureinrichtungApi
       .deleteInfrastruktureinrichtungById(requestObject, RequestUtils.getDELETEConfig())
       .then((response) => {
-        this.resetDirty();
+        this.resetFormDirty();
         return response;
       })
       .catch((error) => {

@@ -34,23 +34,23 @@ describe("SaveLeaveMixin Test", () => {
   });
 
   afterEach(() => {
-    store.dispatch("common/resetDirty");
+    store.dispatch("common/resetFormDirty");
   });
 
   test("Test: Keine Änderung vorgenommen", () => {
-    expect(store.getters["common/isDirty"]).toBe(false);
+    expect(store.getters["common/isFormDirty"]).toBe(false);
   });
 
   test("Test: Änderung vorgenommen, nicht gespeichert", () => {
-    expect(store.getters["common/isDirty"]).toBe(false);
+    expect(store.getters["common/isFormDirty"]).toBe(false);
     store.dispatch("common/formChanged");
-    expect(store.getters["common/isDirty"]).toBe(true);
+    expect(store.getters["common/isFormDirty"]).toBe(true);
   });
 
   test("Test: Änderung vorgenommen und gespeichert", () => {
-    expect(store.getters["common/isDirty"]).toBe(false);
+    expect(store.getters["common/isFormDirty"]).toBe(false);
     store.dispatch("common/formChanged");
-    store.dispatch("common/resetDirty");
-    expect(store.getters["common/isDirty"]).toBe(false);
+    store.dispatch("common/resetFormDirty");
+    expect(store.getters["common/isFormDirty"]).toBe(false);
   });
 });
