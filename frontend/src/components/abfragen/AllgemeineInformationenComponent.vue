@@ -149,7 +149,7 @@ export default class AllgemeineInformationenComponent extends Mixins(
     return this.isEditableProp;
   }
 
-  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Vorhaben";
+  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Bauvorhaben";
 
   private sobonJahrVisible = false;
 

@@ -22,7 +22,6 @@ import {
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import AbfragevarianteFachreferatModel from "@/types/model/abfragevariante/AbfragevarianteFachreferatModel";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
@@ -109,7 +108,10 @@ export default class ValidatorMixin extends Vue {
       _.toArray(abfrage.abfragevariantenSachbearbeitung),
     );
     for (const abfragevariante of abfragevarianten) {
-      validationMessage = this.findFaultInAbfragevariante(abfrage.sobonRelevant, abfragevariante, true);
+      validationMessage = this.findFaultInAbfragevariante(
+        abfrage.sobonRelevant,
+        abfragevariante as AbfragevarianteBauleitplanverfahrenModel,
+      );
       if (!_.isNil(validationMessage)) {
         break;
       }
@@ -118,9 +120,8 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInAbfragevariante(
-    sobonRelevant: UncertainBoolean,
+    sobonRelevant: UncertainBoolean | undefined,
     abfragevariante: AbfragevarianteBauleitplanverfahrenModel,
-    showAbfragevarianteNr: boolean,
   ): string | null {
     if (_.isNil(abfragevariante.name)) {
       return "Bitte geben Sie einen Namen für die Abfragevariante an.";
@@ -142,6 +143,12 @@ export default class ValidatorMixin extends Vue {
     const messageFaultBauschnitte = this.findFaultInBauabschnitte(abfragevariante);
     if (!_.isNil(messageFaultBauschnitte)) {
       return messageFaultBauschnitte;
+    }
+    const messageFaultInBedarfsmeldungFachreferate = this.findFaultInBedarfsmeldungenFachreferate(
+      abfragevariante.bedarfsmeldungFachreferate,
+    );
+    if (!_.isNil(messageFaultInBedarfsmeldungFachreferate)) {
+      return messageFaultInBedarfsmeldungFachreferate;
     }
     return null;
   }
@@ -188,27 +195,17 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInAbfragevarianteFachreferat(
-    abfragevarianteFachreferat?: AbfragevarianteFachreferatModel,
+  public findFaultInBedarfsmeldungenFachreferate(
+    bedarfsmeldungen: BedarfsmeldungFachreferateModel[] | undefined,
   ): string | null {
-    if (!_.isNil(abfragevarianteFachreferat) && !_.isNil(abfragevarianteFachreferat.bedarfsmeldungFachreferate)) {
-      const messageFaultBedarfsmeldungen = this.findFaultInBedarfsmeldungen(
-        abfragevarianteFachreferat.bedarfsmeldungFachreferate,
-      );
-      if (!_.isNil(messageFaultBedarfsmeldungen)) {
-        return messageFaultBedarfsmeldungen;
-      }
+    if (!_.isNil(bedarfsmeldungen)) {
+      bedarfsmeldungen.forEach((bedarfsmeldung) => {
+        const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
+        if (!_.isNil(validationMessage)) {
+          return validationMessage;
+        }
+      });
     }
-    return null;
-  }
-
-  public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungFachreferateModel[]): string | null {
-    bedarfsmeldungen.forEach((bedarfsmeldung) => {
-      const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
-      if (!_.isNil(validationMessage)) {
-        return validationMessage;
-      }
-    });
     return null;
   }
 

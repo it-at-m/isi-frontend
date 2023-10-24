@@ -140,7 +140,7 @@ export default class GeplanteGeschossflaecheWohnenComponent extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  private geplanteAnzahlWohneinheitenTitle = "geplante Anzahl Wohneinheiten";
+  private geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
 
   @Watch("abfragevariante", { immediate: true, deep: true })
   public clearSonderwohnformData(): void {

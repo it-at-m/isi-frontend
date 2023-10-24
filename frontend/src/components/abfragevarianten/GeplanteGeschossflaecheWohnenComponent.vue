@@ -161,7 +161,7 @@
               v-model="abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="weiteres nicht-infrastruktur-relevantes Wohnen"
+              label="weiteres nicht-infrastrukturrelevantes Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
@@ -192,7 +192,7 @@ export default class GeplanteGeschossflaecheWohnenComponent extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  private geplanteGeschossflaecheWohnenTitle = "geplante Geschossfläche Wohnen";
+  private geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
 
   @Watch("abfragevariante", { immediate: true, deep: true })
   public clearSonderwohnformData(): void {
