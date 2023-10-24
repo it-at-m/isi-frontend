@@ -402,7 +402,7 @@ export default class ValidatorMixin extends Vue {
 
     let message: string | null = null;
 
-    const geschossflaecheWohnenAbfragevariante = _.isNil(abfragevariante.geschossflaecheWohnen)
+    const geschossflaecheWohnenAbfragevariante = _.isNil(abfragevariante.gfWohnenGesamt)
       ? 0
       : abfragevariante.gfWohnenGesamt;
 
