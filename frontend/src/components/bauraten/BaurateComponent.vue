@@ -54,8 +54,7 @@
         ref="Foerdermix"
         v-model="baurate.foerdermix"
         :is-editable="isEditable"
-      >
-      </foerdermix-formular>
+      />
     </v-row>
   </v-container>
 </template>
