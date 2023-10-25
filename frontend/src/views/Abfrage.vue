@@ -359,6 +359,7 @@ export default class Abfrage extends Mixins(
   AbfrageSecurityMixin,
 ) {
   private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
+  private readonly TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
 
   private modeAbfrage = DisplayMode.UNDEFINED;
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
@@ -443,7 +444,9 @@ export default class Abfrage extends Mixins(
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
-    transition.url == "erledigt-ohne-fachreferat" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
+    transition.url == this.TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT
+      ? (this.hasAnmerkung = true)
+      : (this.hasAnmerkung = false);
     this.isStatusUebergangDialogOpen = true;
   }
 
@@ -581,7 +584,7 @@ export default class Abfrage extends Mixins(
   private async startStatusUebergang(transition: TransitionDto) {
     if (!this.isFormDirty()) {
       let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
-      if (transition.url === "erledigt-ohne-fachreferat") {
+      if (transition.url === this.TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT) {
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
       }
       const validationMessage: string | null = this.findFaultInAbfrageForSave(this.abfrage);
