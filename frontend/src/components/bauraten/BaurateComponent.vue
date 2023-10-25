@@ -55,12 +55,6 @@
         v-model="baurate.foerdermix"
         :is-editable="isEditable"
       >
-        <foerdermix-staemme-drop-down
-          id="foerdermix_stammdaten_dropdown_component"
-          ref="Foerdermix Staemme Drop Down"
-          v-model="baurate.foerdermix"
-          :is-editable="isEditable"
-        />
       </foerdermix-formular>
     </v-row>
   </v-container>
@@ -73,7 +67,6 @@ import FoerdermixFormular from "@/components/bauraten/foerdermix/FoerdermixFormu
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
@@ -91,7 +84,7 @@ import {
 } from "@/utils/CalculationUtil";
 
 @Component({
-  components: { NumField, FoerdermixFormular, FoerdermixStaemmeDropDown, FieldGroupCard },
+  components: { NumField, FoerdermixFormular, FieldGroupCard },
 })
 export default class BaurateComponent extends Mixins(
   ValidatorMixin,

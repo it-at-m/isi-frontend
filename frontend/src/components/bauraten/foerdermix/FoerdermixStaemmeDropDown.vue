@@ -46,7 +46,7 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
   private groupedStammdaten: GroupedStammdaten = [];
 
   mounted(): void {
-    this.loadFoerdermixStaemme();
+    this.setGroupedStammdatenList();
   }
 
   @Watch("foerdermix", { immediate: true, deep: true })
@@ -59,14 +59,10 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
     this.foerdermix = mapFoerdermixStammModelToFoerderMix(item);
   }
 
-  loadFoerdermixStaemme(): void {
-    this.getFoerdermixStaemme(true).then((foerdermixStaemme: FoerdermixStammDto[]) => {
-      foerdermixStaemme.forEach((foerdermixStamm: FoerdermixStammDto) => {
-        this.stammdaten.push(foerdermixStamm);
-      });
-      this.$store.dispatch("foerdermix/foerdermixStammdaten", foerdermixStaemme);
-      this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
-    });
+  private setGroupedStammdatenList(): void {
+    this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
+    this.selectedItem = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
   }
 
   /**
