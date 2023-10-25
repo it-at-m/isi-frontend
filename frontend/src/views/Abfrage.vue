@@ -443,7 +443,7 @@ export default class Abfrage extends Mixins(
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
-    transition.url == "keine-bearbeitung-noetig" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
+    transition.url == "erledigt-ohne-fachreferat" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
     this.isStatusUebergangDialogOpen = true;
   }
 
