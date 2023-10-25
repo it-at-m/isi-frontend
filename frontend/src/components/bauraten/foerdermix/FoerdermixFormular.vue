@@ -6,8 +6,11 @@
           cols="12"
           md="8"
         >
-          <!-- Slot für das FoerdermixStaemmeDropDown -->
-          <slot />
+          <foerdermix-staemme-drop-down
+            v-model="foerdermix"
+            is-editable="isEditable"
+          >
+          </foerdermix-staemme-drop-down>
         </v-col>
         <v-col
           cols="12"
@@ -57,8 +60,9 @@ import FormattingMixin from "@/mixins/FormattingMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 
-@Component({ components: { NumField, FieldGroupCard } })
+@Component({ components: { FoerdermixStaemmeDropDown, NumField, FieldGroupCard } })
 export default class FoerdermixFormular extends Mixins(
   FieldValidationRulesMixin,
   FieldPrefixesSuffixes,
