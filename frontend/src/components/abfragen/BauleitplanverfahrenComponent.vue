@@ -39,6 +39,7 @@
       v-model="bauleitplanverfahren.dokumente"
       :name-root-folder="nameRootFolder"
       :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      @change="formChanged"
     />
   </v-container>
 </template>
@@ -52,6 +53,8 @@ import BauleitplanverfahrenModel from "@/types/model/abfrage/Bauleitplanverfahre
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
   computed: {
@@ -60,13 +63,14 @@ import { Context } from "@/utils/Context";
     },
   },
   components: {
+    Dokumente,
     AbfrageCommonComponent,
     AllgemeineInformationenComponent,
     AllgemeineInformationenZurAbfrageComponent,
     FieldGroupCard,
   },
 })
-export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin) {
+export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
   @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
 
   private nameRootFolder = "bauleitplanverfahren";
