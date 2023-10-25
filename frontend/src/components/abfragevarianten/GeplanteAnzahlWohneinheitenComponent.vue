@@ -54,7 +54,17 @@
         >
           <v-col
             cols="12"
-            md="6"
+            md="2"
+          />
+          <v-col
+            cols="12"
+            md="2"
+          >
+            <span>davon</span>
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
           >
             <num-field
               id="we_studentenwohnungen_field"
@@ -68,7 +78,7 @@
           </v-col>
           <v-col
             cols="12"
-            md="6"
+            md="4"
           >
             <num-field
               id="we_seniorInnen_wohnungen_field"
@@ -87,7 +97,11 @@
         >
           <v-col
             cols="12"
-            md="6"
+            md="4"
+          />
+          <v-col
+            cols="12"
+            md="4"
           >
             <num-field
               id="we_genossenschaftswohnungen_field"
@@ -101,7 +115,7 @@
           </v-col>
           <v-col
             cols="12"
-            md="6"
+            md="4"
           >
             <num-field
               id="we_nicht_infrastruktur_relevante_wohnungen_field"
