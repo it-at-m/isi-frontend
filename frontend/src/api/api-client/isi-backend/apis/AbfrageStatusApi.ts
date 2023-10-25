@@ -28,11 +28,6 @@ export interface AbbrechenInfrastrukturabfrageRequest {
     anmerkung?: string;
 }
 
-export interface AbfrageSchliessenInfrastrukturAbfrageRequest {
-    id: string;
-    anmerkung?: string;
-}
-
 export interface BedarfsmeldungErfolgtInfrastrukturAbfrageRequest {
     id: string;
     anmerkung?: string;
@@ -49,6 +44,11 @@ export interface FreigabeInfrastrukturabfrageRequest {
 }
 
 export interface InBearbeitungSetzenInfrastrukturabfrageRequest {
+    id: string;
+    anmerkung?: string;
+}
+
+export interface KeineBearbeitungNoetigRequest {
     id: string;
     anmerkung?: string;
 }
@@ -113,39 +113,6 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      */
     async abbrechenInfrastrukturabfrage(requestParameters: AbbrechenInfrastrukturabfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.abbrechenInfrastrukturabfrageRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
-     */
-    async abfrageSchliessenInfrastrukturAbfrageRaw(requestParameters: AbfrageSchliessenInfrastrukturAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling abfrageSchliessenInfrastrukturAbfrage.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.anmerkung !== undefined) {
-            queryParameters['anmerkung'] = requestParameters.anmerkung;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/infrastruktur-abfrage/{id}/abfrage-schliessen`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
-     */
-    async abfrageSchliessenInfrastrukturAbfrage(requestParameters: AbfrageSchliessenInfrastrukturAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.abfrageSchliessenInfrastrukturAbfrageRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -281,7 +248,40 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
+     */
+    async keineBearbeitungNoetigRaw(requestParameters: KeineBearbeitungNoetigRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling keineBearbeitungNoetig.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/infrastruktur-abfrage/{id}/keine-bearbeitung-noetig`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
+     */
+    async keineBearbeitungNoetig(requestParameters: KeineBearbeitungNoetigRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.keineBearbeitungNoetigRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
      */
     async speichernVonSozialinfrastrukturVersorgungInfrastrukturAbfrageRaw(requestParameters: SpeichernVonSozialinfrastrukturVersorgungInfrastrukturAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -307,7 +307,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT
+     * Setzt eine Infrastrukturabfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
      */
     async speichernVonSozialinfrastrukturVersorgungInfrastrukturAbfrage(requestParameters: SpeichernVonSozialinfrastrukturVersorgungInfrastrukturAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.speichernVonSozialinfrastrukturVersorgungInfrastrukturAbfrageRaw(requestParameters, initOverrides);

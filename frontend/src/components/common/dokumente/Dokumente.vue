@@ -14,6 +14,7 @@
         v-model="dokumente"
         :is-dokumente-editable="isDokumenteEditable"
         @onDeleteDokument="deleteDokument"
+        @change="change"
       />
       <v-row class="align-end">
         <v-col
@@ -48,7 +49,7 @@
       </v-row>
     </div>
     <input
-      id="dokumente_input"
+      ref="dokumenteInput"
       type="file"
       multiple
       hidden
@@ -60,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Emit } from "vue-property-decorator";
 import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
 import DokumenteListe from "./DokumenteListe.vue";
 import {
@@ -80,7 +81,6 @@ import {
   mimeTypeNichtErlaubt,
 } from "@/utils/DokumenteUtil";
 import _ from "lodash";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import MimeTypeApiRequestMixin from "@/mixins/requests/MimeTypeApiRequestMixin";
 
 @Component({
@@ -88,7 +88,7 @@ import MimeTypeApiRequestMixin from "@/mixins/requests/MimeTypeApiRequestMixin";
     DokumenteListe,
   },
 })
-export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeaveMixin, MimeTypeApiRequestMixin) {
+export default class Dokumente extends Mixins(DokumenteApiRequestMixin, MimeTypeApiRequestMixin) {
   @VModel({ type: Array }) dokumente!: DokumentDto[];
 
   @Prop()
@@ -123,7 +123,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
   }
 
   private addDokument(): void {
-    const fileSelectionDialog = document.getElementById("dokumente_input");
+    const fileSelectionDialog = this.$refs.dokumenteInput as HTMLInputElement;
     if (!_.isNil(fileSelectionDialog)) {
       fileSelectionDialog.click();
     }
@@ -135,7 +135,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
         this.dokumente.splice(index, 1);
       }
     });
-    this.formChanged();
+    this.change();
   }
 
   /**
@@ -293,13 +293,13 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
             newDokument.typDokument =
               this.acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
             this.dokumente.push(newDokument);
-            this.formChanged();
+            this.change();
           })
           .catch((error) => {
             if (error instanceof ResponseError && error.response.status === 406) {
               newDokument.typDokument = mimeTypeNichtErlaubt();
               this.dokumente.push(newDokument);
-              this.formChanged();
+              this.change();
             }
           });
       });
@@ -326,5 +326,9 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, SaveLeav
     const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
     return _.isNil(fileInformationDto.maxNumberOfFiles) ? 0 : fileInformationDto.maxNumberOfFiles;
   }
+
+  @Emit()
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private change(): void {}
 }
 </script>

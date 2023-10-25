@@ -22,6 +22,7 @@ const state = {
     numberOfPages: 0,
   } as SearchResultsDto,
   requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
+  defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
   selectedAbfrage: undefined as InfrastrukturabfrageModel | undefined,
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
@@ -40,6 +41,9 @@ export default {
     },
     requestSearchQueryAndSorting: (): SearchQueryAndSortingModel => {
       return state.requestSearchQueryAndSorting;
+    },
+    defaultSearchQueryAndSortingFilter: (): SearchQueryAndSortingModel => {
+      return state.defaultSearchQueryAndSortingFilter;
     },
     selectedAbfrage: (state: SearchState): InfrastrukturabfrageModel | undefined => {
       return state.selectedAbfrage;

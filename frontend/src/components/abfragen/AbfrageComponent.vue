@@ -1,5 +1,6 @@
 <template>
   <div>
+    <statusleiste-component :abfrage="abfrage" />
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
@@ -45,25 +46,6 @@
             :rules="[fieldValidationRules.pflichtfeld]"
             required
           />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-select
-            id="abfrage_status_dropdown"
-            v-model="abfrage.statusAbfrage"
-            :disabled="!isEditableByAbfrageerstellung()"
-            :items="statusAbfrageList"
-            item-value="key"
-            item-text="value"
-            readonly
-            :rules="[fieldValidationRules.pflichtfeld]"
-            :append-icon="null"
-            @change="formChanged"
-          >
-            <template #label> Status der Abfrage </template>
-          </v-select>
         </v-col>
         <v-col
           cols="12"
@@ -119,6 +101,12 @@
         >
           <slot name="aktenzeichenProLBK" />
         </v-col>
+        <!-- Platzhalter fuer Darstellung -->
+        <v-col
+          cols="12"
+          md="6"
+        >
+        </v-col>
         <v-col cols="12">
           <v-textarea
             id="abfrage_anmerkung"
@@ -142,6 +130,7 @@
             v-model="abfrage.dokumente"
             :name-root-folder="nameRootFolder"
             :is-dokumente-editable="isEditableByAbfrageerstellung()"
+            @change="formChanged"
           />
         </v-col>
       </v-row>
@@ -150,27 +139,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
 import {
-  BauvorhabenDto,
   BauvorhabenSearchResultDto,
   LookupEntryDto,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import DatePicker from "@/components/common/DatePicker.vue";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import Verortung from "@/components/common/Verortung.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import { Context } from "@/utils/Context";
+import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import { Component, Mixins, VModel } from "vue-property-decorator";
+import StatusleisteComponent from "./StatusleisteComponent.vue";
 
 @Component({
   computed: {
@@ -184,6 +173,7 @@ import { Context } from "@/utils/Context";
     Dokumente,
     FieldGroupCard,
     AdresseComponent,
+    StatusleisteComponent,
   },
 })
 export default class AbfrageComponent extends Mixins(

@@ -69,7 +69,7 @@
           elevation="1"
           class="text-wrap mt-2 px-1"
           style="width: 200px"
-          :disabled="(!isNew && !isDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
+          :disabled="(!isNew && !isFormDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
           @click="validateAndProceed()"
           v-text="isNew ? 'Speichern' : 'Aktualisieren'"
         />

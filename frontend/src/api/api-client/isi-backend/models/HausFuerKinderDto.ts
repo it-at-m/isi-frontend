@@ -92,8 +92,30 @@ export interface HausFuerKinderDto extends InfrastruktureinrichtungDto {
      * @memberof HausFuerKinderDto
      */
     wohnungsnaheHortPlaetze?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof HausFuerKinderDto
+     */
+    einrichtungstraeger?: HausFuerKinderDtoEinrichtungstraegerEnum;
 }
 
+
+/**
+ * @export
+ */
+export const HausFuerKinderDtoEinrichtungstraegerEnum = {
+    Unspecified: 'UNSPECIFIED',
+    StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
+    EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
+    FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
+    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
+    ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
+    StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
+    PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+} as const;
+export type HausFuerKinderDtoEinrichtungstraegerEnum = typeof HausFuerKinderDtoEinrichtungstraegerEnum[keyof typeof HausFuerKinderDtoEinrichtungstraegerEnum];
 
 
 export function HausFuerKinderDtoFromJSON(json: any): HausFuerKinderDto {
@@ -115,6 +137,7 @@ export function HausFuerKinderDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'wohnungsnaheKinderkrippePlaetze': !exists(json, 'wohnungsnaheKinderkrippePlaetze') ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
         'wohnungsnaheKindergartenPlaetze': !exists(json, 'wohnungsnaheKindergartenPlaetze') ? undefined : json['wohnungsnaheKindergartenPlaetze'],
         'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
@@ -136,6 +159,7 @@ export function HausFuerKinderDtoToJSON(value?: HausFuerKinderDto | null): any {
         'wohnungsnaheKinderkrippePlaetze': value.wohnungsnaheKinderkrippePlaetze,
         'wohnungsnaheKindergartenPlaetze': value.wohnungsnaheKindergartenPlaetze,
         'wohnungsnaheHortPlaetze': value.wohnungsnaheHortPlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

@@ -20,7 +20,7 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMixin";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
-import { createFoerdermixDto, createFoerdermixStammDto } from "@/utils/Factories";
+import { createFoerdermixStammDto } from "@/utils/Factories";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
@@ -61,7 +61,6 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
 
   private setGroupedStammdatenList(): void {
     this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
-    this.stammdaten.push(this.createFreieEingabe());
     this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
     this.selectedItem = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
   }
@@ -97,20 +96,6 @@ export default class FoerdermixStaemmeDropDown extends Mixins(
     });
 
     return flattened;
-  }
-
-  /**
-   * Erstellt ein FoerdermixStammDto welches die Attribute für eine Freie Eingabe hat.
-   * Das heißt alle Felder sind leer und die Bezeichnung ist Freie Eingabe.
-   * Wird am Ende in der Liste hinzugefügt.
-   */
-  private createFreieEingabe(): FoerdermixStammDto {
-    const foerdermixStammDto = {
-      bezeichnung: "Freie Eingabe",
-      bezeichnungJahr: "Weitere",
-      foerdermix: createFoerdermixDto(),
-    } as FoerdermixStammDto;
-    return foerdermixStammDto;
   }
 }
 </script>

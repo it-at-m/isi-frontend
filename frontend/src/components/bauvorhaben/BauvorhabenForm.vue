@@ -148,6 +148,7 @@
             v-model="bauvorhaben.dokumente"
             :name-root-folder="nameRootFolder"
             :is-dokumente-editable="isEditable"
+            @change="formChanged"
           />
         </v-col>
       </v-row>
@@ -273,6 +274,10 @@ export default class BauvorhabenForm extends Mixins(
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
     return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+  }
+
+  set calcGrundstuecksgroesse(grundstuecksgroesse: number) {
+    // do nothing
   }
 
   get calcGrundstuecksgroesse(): number | undefined {
