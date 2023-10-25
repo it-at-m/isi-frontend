@@ -16,67 +16,67 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface BedarfsmeldungFachabteilungenDto
+ * @interface BedarfsmeldungFachreferateDto
  */
-export interface BedarfsmeldungFachabteilungenDto {
+export interface BedarfsmeldungFachreferateDto {
     /**
      * 
      * @type {string}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     version?: number;
     /**
      * 
      * @type {Date}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     createdDateTime?: Date;
     /**
      * 
      * @type {Date}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
      * @type {number}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     anzahlEinrichtungen?: number;
     /**
      * 
      * @type {string}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
-    infrastruktureinrichtungTyp?: BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum;
+    infrastruktureinrichtungTyp?: BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum;
     /**
      * 
      * @type {number}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     anzahlKinderkrippengruppen?: number;
     /**
      * 
      * @type {number}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     anzahlKindergartengruppen?: number;
     /**
      * 
      * @type {number}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     anzahlHortgruppen?: number;
     /**
      * 
      * @type {number}
-     * @memberof BedarfsmeldungFachabteilungenDto
+     * @memberof BedarfsmeldungFachreferateDto
      */
     anzahlGrundschulzuege?: number;
 }
@@ -85,7 +85,7 @@ export interface BedarfsmeldungFachabteilungenDto {
 /**
  * @export
  */
-export const BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum = {
+export const BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum = {
     Unspecified: 'UNSPECIFIED',
     Kinderkrippe: 'KINDERKRIPPE',
     Kindergarten: 'KINDERGARTEN',
@@ -94,14 +94,14 @@ export const BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum = {
     Grundschule: 'GRUNDSCHULE',
     Mittelschule: 'MITTELSCHULE'
 } as const;
-export type BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum = typeof BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum[keyof typeof BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum];
+export type BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum = typeof BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum[keyof typeof BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum];
 
 
-export function BedarfsmeldungFachabteilungenDtoFromJSON(json: any): BedarfsmeldungFachabteilungenDto {
-    return BedarfsmeldungFachabteilungenDtoFromJSONTyped(json, false);
+export function BedarfsmeldungFachreferateDtoFromJSON(json: any): BedarfsmeldungFachreferateDto {
+    return BedarfsmeldungFachreferateDtoFromJSONTyped(json, false);
 }
 
-export function BedarfsmeldungFachabteilungenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BedarfsmeldungFachabteilungenDto {
+export function BedarfsmeldungFachreferateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BedarfsmeldungFachreferateDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -120,7 +120,7 @@ export function BedarfsmeldungFachabteilungenDtoFromJSONTyped(json: any, ignoreD
     };
 }
 
-export function BedarfsmeldungFachabteilungenDtoToJSON(value?: BedarfsmeldungFachabteilungenDto | null): any {
+export function BedarfsmeldungFachreferateDtoToJSON(value?: BedarfsmeldungFachreferateDto | null): any {
     if (value === undefined) {
         return undefined;
     }

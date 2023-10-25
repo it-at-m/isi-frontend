@@ -67,31 +67,34 @@ export interface BauvorhabenSearchResultDto extends SearchResultDto {
      * @type {string}
      * @memberof BauvorhabenSearchResultDto
      */
-    standVorhaben?: BauvorhabenSearchResultDtoStandVorhabenEnum;
+    standVerfahren?: BauvorhabenSearchResultDtoStandVerfahrenEnum;
 }
 
 
 /**
  * @export
  */
-export const BauvorhabenSearchResultDtoStandVorhabenEnum = {
+export const BauvorhabenSearchResultDtoStandVerfahrenEnum = {
     Unspecified: 'UNSPECIFIED',
-    GrundsatzEckdatenbeschluss: 'GRUNDSATZ_ECKDATENBESCHLUSS',
-    Aufstellungsbeschluss: 'AUFSTELLUNGSBESCHLUSS',
-    Parag31Baugb: 'PARAG_3_1_BAUGB',
-    Parag32Baugb: 'PARAG_3_2_BAUGB',
-    Parag412Baugb: 'PARAG_4_1_2_BAUGB',
-    Billigungsbeschluss: 'BILLIGUNGSBESCHLUSS',
-    Satzungsbeschluss: 'SATZUNGSBESCHLUSS',
-    BplanInKraft: 'BPLAN_IN_KRAFT',
-    VorbescheidEingereicht: 'VORBESCHEID_EINGEREICHT',
-    BauantragEingereicht: 'BAUANTRAG_EINGEREICHT',
-    BaugenehmigungErteilt: 'BAUGENEHMIGUNG_ERTEILT',
-    BaubeginnAngezeigt: 'BAUBEGINN_ANGEZEIGT',
-    BaufertigstellungGeplant: 'BAUFERTIGSTELLUNG_GEPLANT',
-    BaufertigstellungAngezeigt: 'BAUFERTIGSTELLUNG_ANGEZEIGT'
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
+    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type BauvorhabenSearchResultDtoStandVorhabenEnum = typeof BauvorhabenSearchResultDtoStandVorhabenEnum[keyof typeof BauvorhabenSearchResultDtoStandVorhabenEnum];
+export type BauvorhabenSearchResultDtoStandVerfahrenEnum = typeof BauvorhabenSearchResultDtoStandVerfahrenEnum[keyof typeof BauvorhabenSearchResultDtoStandVerfahrenEnum];
 
 
 export function BauvorhabenSearchResultDtoFromJSON(json: any): BauvorhabenSearchResultDto {
@@ -108,7 +111,7 @@ export function BauvorhabenSearchResultDtoFromJSONTyped(json: any, ignoreDiscrim
         'nameVorhaben': !exists(json, 'nameVorhaben') ? undefined : json['nameVorhaben'],
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
-        'standVorhaben': !exists(json, 'standVorhaben') ? undefined : json['standVorhaben'],
+        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
     };
 }
 
@@ -125,7 +128,7 @@ export function BauvorhabenSearchResultDtoToJSON(value?: BauvorhabenSearchResult
         'nameVorhaben': value.nameVorhaben,
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'grundstuecksgroesse': value.grundstuecksgroesse,
-        'standVorhaben': value.standVorhaben,
+        'standVerfahren': value.standVerfahren,
     };
 }
 

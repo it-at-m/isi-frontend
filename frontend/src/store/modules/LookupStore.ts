@@ -5,13 +5,15 @@ import { RootState } from "..";
 
 const state = {
   uncertainBoolean: [] as LookupEntryDto[],
-  artAbfrage: [] as LookupEntryDto[],
-  planungsrecht: [] as LookupEntryDto[],
-  sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
-  standVorhaben: [] as LookupEntryDto[],
-  statusAbfrage: [] as LookupEntryDto[],
-  baugebietArt: [] as LookupEntryDto[],
   artDokument: [] as LookupEntryDto[],
+  artAbfrage: [] as LookupEntryDto[],
+  sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
+  standVerfahrenBauleitplanverfahren: [] as LookupEntryDto[],
+  standVerfahren: [] as LookupEntryDto[],
+  statusAbfrage: [] as LookupEntryDto[],
+  wesentlicheRechtsgrundlageBauleitplanverfahren: [] as LookupEntryDto[],
+  wesentlicheRechtsgrundlage: [] as LookupEntryDto[],
+  artBaulicheNutzung: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
   einrichtungstraeger: [] as LookupEntryDto[],
   einrichtungstraegerSchulen: [] as LookupEntryDto[],
@@ -31,26 +33,32 @@ export default {
     uncertainBoolean: (state: LookupState): Array<LookupEntryDto> => {
       return state.uncertainBoolean;
     },
+    artDokument: (state: LookupState): Array<LookupEntryDto> => {
+      return state.artDokument;
+    },
     artAbfrage: (state: LookupState): Array<LookupEntryDto> => {
       return state.artAbfrage;
-    },
-    planungsrecht: (state: LookupState): Array<LookupEntryDto> => {
-      return state.planungsrecht;
     },
     sobonVerfahrensgrundsaetzeJahr: (state: LookupState): Array<LookupEntryDto> => {
       return state.sobonVerfahrensgrundsaetzeJahr;
     },
-    standVorhaben: (state: LookupState): Array<LookupEntryDto> => {
-      return state.standVorhaben;
+    standVerfahrenBauleitplanverfahren: (state: LookupState): Array<LookupEntryDto> => {
+      return state.standVerfahrenBauleitplanverfahren;
+    },
+    standVerfahren: (state: LookupState): Array<LookupEntryDto> => {
+      return state.standVerfahren;
     },
     statusAbfrage: (state: LookupState): Array<LookupEntryDto> => {
       return state.statusAbfrage;
     },
-    baugebietArt: (state: LookupState): Array<LookupEntryDto> => {
-      return state.baugebietArt;
+    wesentlicheRechtsgrundlageBauleitplanverfahren: (state: LookupState): Array<LookupEntryDto> => {
+      return state.wesentlicheRechtsgrundlageBauleitplanverfahren;
     },
-    artDokument: (state: LookupState): Array<LookupEntryDto> => {
-      return state.artDokument;
+    wesentlicheRechtsgrundlage: (state: LookupState): Array<LookupEntryDto> => {
+      return state.wesentlicheRechtsgrundlage;
+    },
+    artBaulicheNutzung: (state: LookupState): Array<LookupEntryDto> => {
+      return state.artBaulicheNutzung;
     },
     statusInfrastruktureinrichtung: (state: LookupState): Array<LookupEntryDto> => {
       return state.statusInfrastruktureinrichtung;
@@ -76,26 +84,32 @@ export default {
     uncertainBoolean(state: LookupState, list: LookupEntryDto[]): void {
       state.uncertainBoolean = list;
     },
+    artDokument(state: LookupState, list: LookupEntryDto[]): void {
+      state.artDokument = list;
+    },
     artAbfrage(state: LookupState, list: LookupEntryDto[]): void {
       state.artAbfrage = list;
-    },
-    planungsrecht(state: LookupState, list: LookupEntryDto[]): void {
-      state.planungsrecht = list;
     },
     sobonVerfahrensgrundsaetzeJahr(state: LookupState, list: LookupEntryDto[]): void {
       state.sobonVerfahrensgrundsaetzeJahr = list;
     },
-    standVorhaben(state: LookupState, list: LookupEntryDto[]): void {
-      state.standVorhaben = list;
+    standVerfahrenBauleitplanverfahren(state: LookupState, list: LookupEntryDto[]): void {
+      state.standVerfahrenBauleitplanverfahren = list;
+    },
+    standVerfahren(state: LookupState, list: LookupEntryDto[]): void {
+      state.standVerfahren = list;
     },
     statusAbfrage(state: LookupState, list: LookupEntryDto[]): void {
       state.statusAbfrage = list;
     },
-    baugebietArt(state: LookupState, list: LookupEntryDto[]): void {
-      state.baugebietArt = list;
+    wesentlicheRechtsgrundlageBauleitplanverfahren(state: LookupState, list: LookupEntryDto[]): void {
+      state.wesentlicheRechtsgrundlageBauleitplanverfahren = list;
     },
-    artDokument(state: LookupState, list: LookupEntryDto[]): void {
-      state.artDokument = list;
+    wesentlicheRechtsgrundlage(state: LookupState, list: LookupEntryDto[]): void {
+      state.wesentlicheRechtsgrundlage = list;
+    },
+    artBaulicheNutzung(state: LookupState, list: LookupEntryDto[]): void {
+      state.artBaulicheNutzung = list;
     },
     statusInfrastruktureinrichtung(state: LookupState, list: LookupEntryDto[]): void {
       state.statusInfrastruktureinrichtung = list;
@@ -122,13 +136,18 @@ export default {
       const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfigurationForBackend());
       lookupApi.getLookupLists(RequestUtils.getGETConfig()).then((lookupLists) => {
         context.commit("uncertainBoolean", lookupLists.uncertainBoolean?.list);
-        context.commit("artAbfrage", lookupLists.artAbfrage?.list);
-        context.commit("planungsrecht", lookupLists.planungsrecht?.list);
-        context.commit("sobonVerfahrensgrundsaetzeJahr", lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
-        context.commit("standVorhaben", lookupLists.standVorhaben?.list);
-        context.commit("statusAbfrage", lookupLists.statusAbfrage?.list);
-        context.commit("baugebietArt", lookupLists.baugebietArt?.list);
         context.commit("artDokument", lookupLists.artDokument?.list);
+        context.commit("artAbfrage", lookupLists.artAbfrage?.list);
+        context.commit("sobonVerfahrensgrundsaetzeJahr", lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
+        context.commit("standVerfahrenBauleitplanverfahren", lookupLists.standVerfahrenBauleitplanverfahren?.list);
+        context.commit("standVerfahren", lookupLists.standVerfahren?.list);
+        context.commit("statusAbfrage", lookupLists.statusAbfrage?.list);
+        context.commit(
+          "wesentlicheRechtsgrundlageBauleitplanverfahren",
+          lookupLists.wesentlicheRechtsgrundlageBauleitplanverfahren?.list,
+        );
+        context.commit("wesentlicheRechtsgrundlage", lookupLists.wesentlicheRechtsgrundlage?.list);
+        context.commit("artBaulicheNutzung", lookupLists.artBaulicheNutzung?.list);
         context.commit("statusInfrastruktureinrichtung", lookupLists.statusInfrastruktureinrichtung?.list);
         context.commit("einrichtungstraeger", lookupLists.einrichtungstraeger?.list);
         context.commit("einrichtungstraegerSchulen", lookupLists.einrichtungstraegerSchulen?.list);
@@ -140,26 +159,35 @@ export default {
     uncertainBoolean(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("uncertainBoolean", list);
     },
+    artDokument(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("artDokument", list);
+    },
     artAbfrage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("artAbfrage", list);
-    },
-    planungsrecht(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit("planungsrecht", list);
     },
     sobonVerfahrensgrundsaetzeJahr(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("sobonVerfahrensgrundsaetzeJahr", list);
     },
-    standVorhaben(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit("standVorhaben", list);
+    standVerfahrenBauleitplanverfahren(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("standVerfahrenBauleitplanverfahren", list);
+    },
+    standVerfahren(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("standVerfahren", list);
     },
     statusAbfrage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("statusAbfrage", list);
     },
-    baugebietArt(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit("baugebietArt", list);
+    wesentlicheRechtsgrundlageBauleitplanverfahren(
+      context: ActionContext<LookupState, RootState>,
+      list: LookupEntryDto[],
+    ): void {
+      context.commit("wesentlicheRechtsgrundlageBauleitplanverfahren", list);
     },
-    artDokument(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
-      context.commit("artDokument", list);
+    wesentlicheRechtsgrundlage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("wesentlicheRechtsgrundlage", list);
+    },
+    artBaulicheNutzung(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("artBaulicheNutzung", list);
     },
     statusInfrastruktureinrichtung(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("statusInfrastruktureinrichtung", list);

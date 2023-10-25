@@ -1,16 +1,15 @@
 import { Component, Vue } from "vue-property-decorator";
 import _ from "lodash";
 import {
-  AbfrageDtoStandVorhabenEnum,
-  AbfragevarianteDto,
-  AbfragevarianteDtoPlanungsrechtEnum,
+  AbfrageDtoArtAbfrageEnum,
+  BauleitplanverfahrenDtoStandVerfahrenEnum,
+  AbfragevarianteBauleitplanverfahrenDto,
   AdresseDto,
   BauabschnittDto,
   BaugebietDto,
   BauvorhabenDto,
-  BauvorhabenDtoPlanungsrechtEnum,
-  BauvorhabenDtoStandVorhabenEnum,
-  BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
+  BauvorhabenDtoStandVerfahrenEnum,
+  BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
   GrundschuleDto,
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
@@ -21,11 +20,10 @@ import {
   MittelschuleDto,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import AdresseModel from "@/types/model/common/AdresseModel";
-import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
-import AbfragevarianteSachbearbeitungModel from "@/types/model/abfragevariante/AbfragevarianteSachbearbeitungModel";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import moment from "moment";
 import {
@@ -34,7 +32,7 @@ import {
   getNonTechnicalBaugebiete,
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachabteilungenModel";
+import BedarfsmeldungFachreferateModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
 
 @Component
 export default class ValidatorMixin extends Vue {
@@ -42,44 +40,47 @@ export default class ValidatorMixin extends Vue {
    * Prüft die komplette Abfrage vor dem Speichern
    */
 
-  public findFaultInInfrastrukturabfrageForSave(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
-    const validationMessage: string | null = this.findFaultInInfrastrukturabfrage(infrastrukturabfrage);
-    return !_.isNil(validationMessage) ? validationMessage : this.findFaultInAbfragevarianten(infrastrukturabfrage);
+  public findFaultInAbfrageForSave(abfrage: AbfrageModel): string | null {
+    if (!_.isNil(abfrage) && !_.isNil(abfrage.artAbfrage)) {
+      switch (abfrage.artAbfrage) {
+        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+          return this.findFaultInBauleitplanverfahrenForSave(abfrage);
+        default:
+          return `$'ValidatorMixin.findFaultInAbfrageForSave() AbfrageArt' {abfrage.artAbfrage} 'ist nicht implementiert'`;
+      }
+    } else {
+      return null;
+    }
   }
 
   /**
-   * Prüft die Abfrage vor dem nächsten Schritt
+   * Bauleitplanverfahren wird vor dem Speichern komplett geprüft
    */
 
-  public findFaultInInfrastrukturabfrage(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
-    const validationMessage: string | null = this.findFaultInAbfrage(infrastrukturabfrage.abfrage);
-    if (!_.isNil(validationMessage)) {
-      return validationMessage;
-    }
-    if (infrastrukturabfrage.sobonRelevant === UncertainBoolean.True && _.isNil(infrastrukturabfrage.sobonJahr)) {
+  public findFaultInBauleitplanverfahrenForSave(abfrage: BauleitplanverfahrenModel): string | null {
+    if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
       return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
     }
-    return null;
-  }
-
-  private findFaultInAbfrage(abfrage: AbfrageModel): string | null {
-    if (!this.isValidAllgemeineOrtsangabe(abfrage.allgemeineOrtsangabe) && !this.isValidAdresse(abfrage.adresse)) {
-      return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
+    if (
+      !this.isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse?.angabeLageErgaenzendeAdressinformation) &&
+      !this.isValidAdresse(abfrage.adresse)
+    ) {
+      return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
-
-    if (abfrage.standVorhaben === AbfrageDtoStandVorhabenEnum.Unspecified) {
-      return "Bitte Stand des Vorhabens angeben";
+    if (abfrage.standVerfahren === BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified) {
+      return "Bitte Stand des Verfahrens angeben";
     }
-
-    const date = moment(abfrage.fristStellungnahme, "DD.MM.YYYY", true);
+    const date = moment(abfrage.fristBearbeitung, "DD.MM.YYYY", true);
     if (!date.isValid()) {
       return "Termin der Stellungnahme nicht im Format TT.MM.JJJJ";
     }
-    return null;
+    return this.findFaultInAbfragevarianten(abfrage);
   }
 
-  private isValidAllgemeineOrtsangabe(allgemeineOrtsangabe?: string): boolean {
-    return !_.isNil(allgemeineOrtsangabe) && !_.isEmpty(allgemeineOrtsangabe.trim());
+  private isValidAngabeLageErgaenzendeAdressinformation(angabeLageErgaenzendeAdressinformation?: string): boolean {
+    return (
+      !_.isNil(angabeLageErgaenzendeAdressinformation) && !_.isEmpty(angabeLageErgaenzendeAdressinformation.trim())
+    );
   }
 
   private isValidAdresse(adresse?: AdresseDto): boolean {
@@ -90,27 +91,27 @@ export default class ValidatorMixin extends Vue {
     return false;
   }
 
-  public findFaultInAbfragevarianten(infrastrukturabfrage: InfrastrukturabfrageModel): string | null {
+  public findFaultInAbfragevarianten(abfrage: BauleitplanverfahrenModel): string | null {
     if (
-      _.isNil(infrastrukturabfrage.abfragevarianten) ||
-      infrastrukturabfrage.abfragevarianten.length < 1 ||
-      infrastrukturabfrage.abfragevarianten.length > 5
+      _.isNil(abfrage.abfragevarianten) ||
+      abfrage.abfragevarianten.length < 1 ||
+      abfrage.abfragevarianten.length > 5
     ) {
       return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
     }
-    if (
-      _.isNil(infrastrukturabfrage.abfragevariantenSachbearbeitung) ||
-      infrastrukturabfrage.abfragevariantenSachbearbeitung.length > 5
-    ) {
+    if (_.isNil(abfrage.abfragevariantenSachbearbeitung) || abfrage.abfragevariantenSachbearbeitung.length > 5) {
       return "Es können durch die Sachbearbeitung maximal fünf Abfragevarianten angegeben werden.";
     }
     let validationMessage = null;
     const abfragevarianten = _.concat(
-      _.toArray(infrastrukturabfrage.abfragevarianten),
-      _.toArray(infrastrukturabfrage.abfragevariantenSachbearbeitung),
+      _.toArray(abfrage.abfragevarianten),
+      _.toArray(abfrage.abfragevariantenSachbearbeitung),
     );
     for (const abfragevariante of abfragevarianten) {
-      validationMessage = this.findFaultInAbfragevariante(infrastrukturabfrage.sobonRelevant, abfragevariante, true);
+      validationMessage = this.findFaultInAbfragevariante(
+        abfrage.sobonRelevant,
+        abfragevariante as AbfragevarianteBauleitplanverfahrenModel,
+      );
       if (!_.isNil(validationMessage)) {
         break;
       }
@@ -119,33 +120,20 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInAbfragevariante(
-    sobonRelevant: UncertainBoolean,
-    abfragevariante: AbfragevarianteModel,
-    showAbfragevarianteNr: boolean,
+    sobonRelevant: UncertainBoolean | undefined,
+    abfragevariante: AbfragevarianteBauleitplanverfahrenModel,
   ): string | null {
-    if (_.isNil(abfragevariante.abfragevariantenName)) {
+    if (_.isNil(abfragevariante.name)) {
       return "Bitte geben Sie einen Namen für die Abfragevariante an.";
     }
-    if (_.isNil(abfragevariante.geschossflaecheWohnen) && _.isNil(abfragevariante.gesamtanzahlWe)) {
+    if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
       return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
-    }
-    if (
-      sobonRelevant === UncertainBoolean.True &&
-      (abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag12 ||
-        abfragevariante.planungsrecht === AbfragevarianteDtoPlanungsrechtEnum.BplanParag11) &&
-      _.isNil(abfragevariante.geschossflaecheWohnenSoBoNursaechlich)
-    ) {
-      const abfragevarianteNr: string =
-        showAbfragevarianteNr && !_.isNaN(abfragevariante.abfragevariantenNr)
-          ? `für Abfragevariante Nr. ${abfragevariante.abfragevariantenNr} `
-          : "";
-      return `Bitte geben Sie die 'Geschossfläche SoBoN-ursächliche' ${abfragevarianteNr}an`;
     }
     const messageFaultVerteilungWohneinheiten = this.findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante);
     if (!_.isNil(messageFaultVerteilungWohneinheiten)) {
       return messageFaultVerteilungWohneinheiten;
     }
-    if (_.isNil(abfragevariante.gesamtanzahlWe)) {
+    if (_.isNil(abfragevariante.weGesamt)) {
       const messageFaultVerteilungGeschossflaecheWohnen =
         this.findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(abfragevariante);
       if (!_.isNil(messageFaultVerteilungGeschossflaecheWohnen)) {
@@ -156,16 +144,16 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultBauschnitte)) {
       return messageFaultBauschnitte;
     }
-    const messageFaultAbfragevarianteSachbearbeitung = this.findFaultInAbfragevarianteSachbearbeitung(
-      abfragevariante.abfragevarianteSachbearbeitung,
+    const messageFaultInBedarfsmeldungFachreferate = this.findFaultInBedarfsmeldungenFachreferate(
+      abfragevariante.bedarfsmeldungFachreferate,
     );
-    if (!_.isNil(messageFaultAbfragevarianteSachbearbeitung)) {
-      return messageFaultAbfragevarianteSachbearbeitung;
+    if (!_.isNil(messageFaultInBedarfsmeldungFachreferate)) {
+      return messageFaultInBedarfsmeldungFachreferate;
     }
     return null;
   }
 
-  public findFaultInBauabschnitte(abfragevariante: AbfragevarianteDto): string | null {
+  public findFaultInBauabschnitte(abfragevariante: AbfragevarianteBauleitplanverfahrenDto): string | null {
     let validationMessage: string | null = null;
     for (const bauabschnitt of _.toArray(abfragevariante.bauabschnitte)) {
       validationMessage = this.findFaultInBauabschnitt(bauabschnitt);
@@ -197,7 +185,7 @@ export default class ValidatorMixin extends Vue {
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
-      if (_.isNil(baugebiet.gesamtanzahlWe)) {
+      if (_.isNil(baugebiet.weGeplant)) {
         const validationMessage = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
         if (!_.isNil(validationMessage)) {
           return validationMessage;
@@ -207,40 +195,27 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInAbfragevarianteSachbearbeitung(
-    abfragevarianteSachbearbeitung?: AbfragevarianteSachbearbeitungModel,
+  public findFaultInBedarfsmeldungenFachreferate(
+    bedarfsmeldungen: BedarfsmeldungFachreferateModel[] | undefined,
   ): string | null {
-    if (
-      !_.isNil(abfragevarianteSachbearbeitung) &&
-      !_.isNil(abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)
-    ) {
-      const messageFaultBedarfsmeldungen = this.findFaultInBedarfsmeldungen(
-        abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate,
-      );
-      if (!_.isNil(messageFaultBedarfsmeldungen)) {
-        return messageFaultBedarfsmeldungen;
-      }
+    if (!_.isNil(bedarfsmeldungen)) {
+      bedarfsmeldungen.forEach((bedarfsmeldung) => {
+        const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
+        if (!_.isNil(validationMessage)) {
+          return validationMessage;
+        }
+      });
     }
     return null;
   }
 
-  public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungFachabteilungenModel[]): string | null {
-    bedarfsmeldungen.forEach((bedarfsmeldung) => {
-      const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
-      if (!_.isNil(validationMessage)) {
-        return validationMessage;
-      }
-    });
-    return null;
-  }
-
-  public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachabteilungenModel): string | null {
+  public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel): string | null {
     if (_.isNil(bedarfsmeldung.anzahlEinrichtungen)) {
       return `Bitte geben Sie die Anzahl der Einrichtungen an`;
     }
     if (
       bedarfsmeldung.infrastruktureinrichtungTyp ===
-      BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum.Unspecified
+      BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified
     ) {
       return `Bitte geben Sie den Typ der Infrastruktureinrichtung an`;
     }
@@ -266,11 +241,11 @@ export default class ValidatorMixin extends Vue {
   }
 
   findFaultInBaurate(baurate: BaurateModel): string | null {
-    if (baurate.anzahlWeGeplant?.toString() === "") {
-      baurate.anzahlWeGeplant = undefined;
+    if (baurate.weGeplant?.toString() === "") {
+      baurate.weGeplant = undefined;
     }
-    if (baurate.geschossflaecheWohnenGeplant?.toString() === "") {
-      baurate.geschossflaecheWohnenGeplant = undefined;
+    if (baurate.gfWohnenGeplant?.toString() === "") {
+      baurate.gfWohnenGeplant = undefined;
     }
     if (_.isNil(baurate.jahr) || _.isNaN(baurate.jahr)) {
       return "Jahr wurde nicht angegeben";
@@ -278,10 +253,10 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(baurate.foerdermix)) {
       return "Fördermix ist nicht gepflegt";
     }
-    if (!_.isNil(baurate.anzahlWeGeplant as number) && _.isNil(baurate.geschossflaecheWohnenGeplant as number)) {
+    if (!_.isNil(baurate.weGeplant as number) && _.isNil(baurate.gfWohnenGeplant as number)) {
       return "Geschossfläche Wohnen geplant muss angegeben werden";
     }
-    if (_.isNil(baurate.anzahlWeGeplant as number) && !_.isNil(baurate.geschossflaecheWohnenGeplant as number)) {
+    if (_.isNil(baurate.weGeplant as number) && !_.isNil(baurate.gfWohnenGeplant as number)) {
       return "Anzahl Wohnen geplant muss angegeben werden";
     }
     const summe = addiereAnteile(new FoerdermixModel(baurate.foerdermix));
@@ -295,21 +270,23 @@ export default class ValidatorMixin extends Vue {
 
   findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | null {
     if (
-      !this.isValidAllgemeineOrtsangabe(bauvorhaben.allgemeineOrtsangabe) &&
+      !this.isValidAngabeLageErgaenzendeAdressinformation(
+        bauvorhaben.adresse?.angabeLageErgaenzendeAdressinformation,
+      ) &&
       !this.isValidAdresse(bauvorhaben.adresse)
     ) {
-      return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
+      return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
     if (bauvorhaben.artFnp.length === 0) {
       return "Bitte treffen Sie eine Auswahl zur Flächennutzung laut Flächennutzungsplan";
     }
 
-    if (bauvorhaben.standVorhaben === BauvorhabenDtoStandVorhabenEnum.Unspecified) {
-      return "Bitte Stand des Vorhaben angeben";
+    if (bauvorhaben.standVerfahren === BauvorhabenDtoStandVerfahrenEnum.Unspecified) {
+      return "Bitte den Stand des Verfahrens angeben";
     }
 
-    if (bauvorhaben.planungsrecht === BauvorhabenDtoPlanungsrechtEnum.Unspecified) {
-      return "Bitte Planungsrecht angeben";
+    if (_.isEmpty(bauvorhaben.wesentlicheRechtsgrundlage)) {
+      return "Bitte die wesentliche Rechtsgrundlage angeben";
     }
 
     return null;
@@ -353,29 +330,33 @@ export default class ValidatorMixin extends Vue {
       return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
     }
     if (
-      !this.isValidAllgemeineOrtsangabe(infrastruktureinrichtung.allgemeineOrtsangabe) &&
+      !this.isValidAngabeLageErgaenzendeAdressinformation(
+        infrastruktureinrichtung.adresse?.angabeLageErgaenzendeAdressinformation,
+      ) &&
       !this.isValidAdresse(infrastruktureinrichtung.adresse)
     ) {
-      return "Allgemeine Ortsangabe oder Adresse muss angegeben werden";
+      return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
     return null;
   }
 
-  public findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante: AbfragevarianteDto): string | null {
+  public findFaultInVerteilungWohneinheitenAbfragevariante(
+    abfragevariante: AbfragevarianteBauleitplanverfahrenDto,
+  ): string | null {
     const nonTechnicalBaugebiete = getNonTechnicalBaugebiete(abfragevariante);
     const bauratenFromAllTechnicalBaugebiete = getBauratenFromAllTechnicalBaugebiete(abfragevariante);
 
     const containsNonTechnicalBaugebiet = !_.isEmpty(nonTechnicalBaugebiete);
     const containsBauratenInTechnicalBaugebiet = !_.isEmpty(bauratenFromAllTechnicalBaugebiete);
 
-    const wohneinheitenAbfragevariante = _.isNil(abfragevariante.gesamtanzahlWe) ? 0 : abfragevariante.gesamtanzahlWe;
+    const wohneinheitenAbfragevariante = _.isNil(abfragevariante.weGesamt) ? 0 : abfragevariante.weGesamt;
 
     let message: string | null = null;
 
     if (containsNonTechnicalBaugebiet) {
       // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteWohneinheitenBaugebiete = _.sum(
-        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe)),
+        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.weGeplant) ? 0 : baugebiet.weGeplant)),
       );
 
       message =
@@ -383,14 +364,12 @@ export default class ValidatorMixin extends Vue {
           ? null
           : `Die Anzahl von ${sumVerteilteWohneinheitenBaugebiete} über Baugebiete verteilter Wohneinheiten entspricht nicht ` +
             `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante${
-              _.isNil(abfragevariante.abfragevariantenName) ? "" : " " + abfragevariante.abfragevariantenName
+              _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
     } else if (containsBauratenInTechnicalBaugebiet) {
       // Die Bauraten sind direkt für eine Abfragevariante erstellt worden. Die Abfragevariante ist somit mit einem technischen Baugebiet versehen.
       const sumVerteilteWohneinheitenBauraten = _.sum(
-        bauratenFromAllTechnicalBaugebiete.map((baurate) =>
-          _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant,
-        ),
+        bauratenFromAllTechnicalBaugebiete.map((baurate) => (_.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant)),
       );
 
       message =
@@ -398,15 +377,17 @@ export default class ValidatorMixin extends Vue {
           ? null
           : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
             `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante${
-              _.isNil(abfragevariante.abfragevariantenName) ? "" : " " + abfragevariante.abfragevariantenName
+              _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
     }
 
     return message;
   }
 
-  public findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(abfragevariante: AbfragevarianteDto): string | null {
-    if (!_.isNil(abfragevariante.gesamtanzahlWe)) {
+  public findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(
+    abfragevariante: AbfragevarianteBauleitplanverfahrenDto,
+  ): string | null {
+    if (!_.isNil(abfragevariante.weGesamt)) {
       return null;
     }
 
@@ -418,16 +399,14 @@ export default class ValidatorMixin extends Vue {
 
     let message: string | null = null;
 
-    const geschossflaecheWohnenAbfragevariante = _.isNil(abfragevariante.geschossflaecheWohnen)
+    const geschossflaecheWohnenAbfragevariante = _.isNil(abfragevariante.gfWohnenGesamt)
       ? 0
-      : abfragevariante.geschossflaecheWohnen;
+      : abfragevariante.gfWohnenGesamt;
 
     if (containsNonTechnicalBaugebiet) {
       // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteGeschossflaecheWohnenBaugebiete = _.sum(
-        nonTechnicalBaugebiete.map((baugebiet) =>
-          _.isNil(baugebiet.geschossflaecheWohnen) ? 0 : baugebiet.geschossflaecheWohnen,
-        ),
+        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.gfWohnenGeplant) ? 0 : baugebiet.gfWohnenGeplant)),
       );
 
       message =
@@ -435,13 +414,13 @@ export default class ValidatorMixin extends Vue {
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBaugebiete} m² über Baugebiete verteilter Geschossflaeche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante} m² in der Abfragevariante${
-              _.isNil(abfragevariante.abfragevariantenName) ? "" : " " + abfragevariante.abfragevariantenName
+              _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
     } else if (containsBauratenInTechnicalBaugebiet) {
       // Die Bauraten sind direkt für einen Abfragevariante erstellt worden. Die Abfragevariante ist mit einem technischen Baugebiet versehen.
       const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
         bauratenFromAllTechnicalBaugebiete.map((baurate) =>
-          _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant,
+          _.isNil(baurate.gfWohnenGeplant) ? 0 : baurate.gfWohnenGeplant,
         ),
       );
 
@@ -450,7 +429,7 @@ export default class ValidatorMixin extends Vue {
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante} m² in der Abfragevariante${
-              _.isNil(abfragevariante.abfragevariantenName) ? "" : " " + abfragevariante.abfragevariantenName
+              _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
     }
 
@@ -460,20 +439,18 @@ export default class ValidatorMixin extends Vue {
   public findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {
     let validationMessage: string | null = null;
     if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
-      const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.geschossflaecheWohnen)
-        ? 0
-        : baugebiet.geschossflaecheWohnen;
+      const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.gfWohnenGeplant) ? 0 : baugebiet.gfWohnenGeplant;
 
       const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
         _.toArray(baugebiet.bauraten).map((baurate) =>
-          _.isNil(baurate.geschossflaecheWohnenGeplant) ? 0 : baurate.geschossflaecheWohnenGeplant,
+          _.isNil(baurate.gfWohnenGeplant) ? 0 : baurate.gfWohnenGeplant,
         ),
       );
 
       validationMessage =
         geschossflaecheWohnenBaugebiet == sumVerteilteGeschossflaecheWohnenBauraten
           ? null
-          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenBaugebiet} m² im Baugebiet${
               _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
             }.`;
@@ -484,12 +461,10 @@ export default class ValidatorMixin extends Vue {
   public findFaultInVerteilungWohneinheitenBaugebiet(baugebiet: BaugebietDto): string | null {
     let validationMessage: string | null = null;
     if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
-      const wohneinheitenBaugebiet = _.isNil(baugebiet.gesamtanzahlWe) ? 0 : baugebiet.gesamtanzahlWe;
+      const wohneinheitenBaugebiet = _.isNil(baugebiet.weGeplant) ? 0 : baugebiet.weGeplant;
 
       const sumVerteilteWohneinheitenBauraten = _.sum(
-        _.toArray(baugebiet.bauraten).map((baurate) =>
-          _.isNil(baurate.anzahlWeGeplant) ? 0 : baurate.anzahlWeGeplant,
-        ),
+        _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant)),
       );
 
       validationMessage =

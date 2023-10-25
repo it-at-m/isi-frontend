@@ -20,7 +20,6 @@
     <adresse-component
       id="infrastruktureinrichtung_adresse_component"
       :adresse-prop.sync="infrastruktureinrichtung.adresse"
-      :allgemeine-ortsangabe-prop.sync="infrastruktureinrichtung.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditable"
     />
@@ -185,7 +184,7 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
   private async fetchBauvorhaben(): Promise<void> {
     const searchQueryAndSortingDto = {
       searchQuery: "",
-      selectInfrastrukturabfrage: false,
+      selectBauleitplanverfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

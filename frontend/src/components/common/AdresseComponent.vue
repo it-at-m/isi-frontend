@@ -7,7 +7,8 @@
       <v-row justify="center">
         <v-col cols="11">
           <v-autocomplete
-            id="adresse_adressSuche_dropdown"
+            id="adresse_suchen_dropdown"
+            ref="adresseSuchenDropdown"
             v-model="selectedAdresse"
             :disabled="!isEditable"
             :items="searchResult"
@@ -33,7 +34,8 @@
           <v-tooltip bottom>
             <template #activator="{ on }">
               <v-btn
-                id="abfrage_loeschen"
+                id="adresse_loeschen_button"
+                ref="adresseLoeschenButton"
                 :disabled="!isEditable"
                 icon
                 v-on="on"
@@ -53,7 +55,7 @@
         md="6"
       >
         <v-text-field
-          id="adresse_strasse"
+          id="strasse_field"
           ref="strasseField"
           v-model="adresse.strasse"
           label="Straße"
@@ -65,7 +67,8 @@
         md="6"
       >
         <v-text-field
-          id="adresse_hausnummer"
+          id="hausnummer_field"
+          ref="hausnummerField"
           v-model="adresse.hausnummer"
           :rules="[fieldValidationRules.hausnummer]"
           label="Hausnummer"
@@ -77,7 +80,8 @@
         md="6"
       >
         <v-text-field
-          id="adresse_postleitzahl"
+          id="postleitzahl_field"
+          ref="postleitzahlField"
           v-model="adresse.plz"
           label="Postleitzahl"
           :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
@@ -89,7 +93,8 @@
         md="6"
       >
         <v-text-field
-          id="adresse_ort"
+          id="ort_field"
+          ref="ortField"
           v-model="adresse.ort"
           label="Ort"
           disabled
@@ -99,13 +104,13 @@
     <v-row justify="center">
       <v-col cols="12">
         <v-text-field
-          id="adresse_allgemeineOrtsangabe"
-          ref="allgemeineOrtsangabeField"
-          v-model="allgemeineOrtsangabe"
+          id="angabe_lage_ergaenzende_adressinformation_field"
+          ref="angabeLageErgaenzendeAdressinformationField"
+          v-model="adresse.angabeLageErgaenzendeAdressinformation"
           :disabled="!isEditable"
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
-          :rules="[allgmeineOrtsangabeValidationRule()]"
+          :rules="[angabeLageErgaenzendeAdressinformationValidationRule()]"
           validate-on-blur
           @input="formChanged"
         />
@@ -155,17 +160,6 @@ export default class AdresseComponent extends Mixins(
 
   set adresse(adresse: AdresseModel) {
     this.$emit("update:adresseProp", adresse);
-  }
-
-  @Prop()
-  private allgemeineOrtsangabeProp!: string;
-
-  get allgemeineOrtsangabe(): string {
-    return this.allgemeineOrtsangabeProp;
-  }
-
-  set allgemeineOrtsangabe(allgemeineOrtsangabe: string) {
-    this.$emit("update:allgemeineOrtsangabeProp", allgemeineOrtsangabe);
   }
 
   @Prop({ type: Boolean, default: true })
@@ -261,11 +255,19 @@ export default class AdresseComponent extends Mixins(
   }
 
   private adressSucheValidationRule(): boolean | string {
-    return !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Angabe zur Lage leer ist";
+    return (
+      !!this.adresse.strasse ||
+      !!this.adresse.angabeLageErgaenzendeAdressinformation ||
+      "Pflichtfeld, wenn Angabe zur Lage leer ist"
+    );
   }
 
-  private allgmeineOrtsangabeValidationRule(): boolean | string {
-    return !!this.adresse.strasse || !!this.allgemeineOrtsangabe || "Pflichtfeld, wenn Adresse leer ist";
+  private angabeLageErgaenzendeAdressinformationValidationRule(): boolean | string {
+    return (
+      !!this.adresse.strasse ||
+      !!this.adresse.angabeLageErgaenzendeAdressinformation ||
+      "Pflichtfeld, wenn Adresse leer ist"
+    );
   }
 
   //

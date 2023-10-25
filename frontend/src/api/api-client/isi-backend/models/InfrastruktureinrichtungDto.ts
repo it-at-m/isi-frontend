@@ -79,12 +79,6 @@ export interface InfrastruktureinrichtungDto {
     bauvorhaben?: string;
     /**
      * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungDto
-     */
-    allgemeineOrtsangabe?: string;
-    /**
-     * 
      * @type {AdresseDto}
      * @memberof InfrastruktureinrichtungDto
      */
@@ -119,12 +113,6 @@ export interface InfrastruktureinrichtungDto {
      * @memberof InfrastruktureinrichtungDto
      */
     flaecheTeilgrundstueck?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungDto
-     */
-    zugeordnetesBaugebiet?: string;
 }
 
 
@@ -196,14 +184,12 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
         'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
-        'allgemeineOrtsangabe': !exists(json, 'allgemeineOrtsangabe') ? undefined : json['allgemeineOrtsangabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
         'nameEinrichtung': json['nameEinrichtung'],
         'fertigstellungsjahr': !exists(json, 'fertigstellungsjahr') ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
         'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
-        'zugeordnetesBaugebiet': !exists(json, 'zugeordnetesBaugebiet') ? undefined : json['zugeordnetesBaugebiet'],
     };
 }
 
@@ -223,14 +209,12 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
         'lfdNr': value.lfdNr,
         'bauvorhaben': value.bauvorhaben,
-        'allgemeineOrtsangabe': value.allgemeineOrtsangabe,
         'adresse': AdresseDtoToJSON(value.adresse),
         'nameEinrichtung': value.nameEinrichtung,
         'fertigstellungsjahr': value.fertigstellungsjahr,
         'status': value.status,
         'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
-        'zugeordnetesBaugebiet': value.zugeordnetesBaugebiet,
     };
 }
 

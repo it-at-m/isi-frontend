@@ -18,9 +18,6 @@ import {
     AbfrageSearchResultDto,
     AbfrageSearchResultDtoFromJSON,
     AbfrageSearchResultDtoToJSON,
-    AbfragevarianteDto,
-    AbfragevarianteDtoFromJSON,
-    AbfragevarianteDtoToJSON,
     BauvorhabenDto,
     BauvorhabenDtoFromJSON,
     BauvorhabenDtoToJSON,
@@ -45,7 +42,7 @@ export interface GetBauvorhabenByIdRequest {
     id: string;
 }
 
-export interface GetReferencedInfrastrukturabfragenRequest {
+export interface GetReferencedAbfrageRequest {
     id: string;
 }
 
@@ -54,7 +51,7 @@ export interface GetReferencedInfrastruktureinrichtungRequest {
 }
 
 export interface PutChangeRelevanteAbfragevarianteRequest {
-    abfragevarianteDto: AbfragevarianteDto;
+    abfragevarianteId: string;
 }
 
 export interface UpdateBauvorhabenRequest {
@@ -164,11 +161,11 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
     /**
      * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
-     * Lade alle Infrastrukturabfragen die einem Bauvorhaben angehören
+     * Lade alle Abfragen die einem Bauvorhaben angehören
      */
-    async getReferencedInfrastrukturabfragenRaw(requestParameters: GetReferencedInfrastrukturabfragenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
+    async getReferencedAbfrageRaw(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedInfrastrukturabfragen.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedAbfrage.');
         }
 
         const queryParameters: any = {};
@@ -187,10 +184,10 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
     /**
      * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
-     * Lade alle Infrastrukturabfragen die einem Bauvorhaben angehören
+     * Lade alle Abfragen die einem Bauvorhaben angehören
      */
-    async getReferencedInfrastrukturabfragen(requestParameters: GetReferencedInfrastrukturabfragenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AbfrageSearchResultDto>> {
-        const response = await this.getReferencedInfrastrukturabfragenRaw(requestParameters, initOverrides);
+    async getReferencedAbfrage(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AbfrageSearchResultDto>> {
+        const response = await this.getReferencedAbfrageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -230,22 +227,23 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#IN_BEARBEITUNG_SACHBEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
      */
     async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
-        if (requestParameters.abfragevarianteDto === null || requestParameters.abfragevarianteDto === undefined) {
-            throw new runtime.RequiredError('abfragevarianteDto','Required parameter requestParameters.abfragevarianteDto was null or undefined when calling putChangeRelevanteAbfragevariante.');
+        if (requestParameters.abfragevarianteId === null || requestParameters.abfragevarianteId === undefined) {
+            throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putChangeRelevanteAbfragevariante.');
         }
 
         const queryParameters: any = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+        if (requestParameters.abfragevarianteId !== undefined) {
+            queryParameters['abfragevariante-id'] = requestParameters.abfragevarianteId;
+        }
 
-        headerParameters['Content-Type'] = 'application/json';
+        const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
             path: `/bauvorhaben/change-relevante-abfragevariante`,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AbfragevarianteDtoToJSON(requestParameters.abfragevarianteDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));

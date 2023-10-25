@@ -133,7 +133,13 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
-import { InfrastrukturabfrageDto } from "@/api/api-client/isi-backend";
+import {
+  AbfrageDto,
+  BauleitplanverfahrenDto,
+  AbfrageDtoArtAbfrageEnum,
+  BauvorhabenDtoStandVerfahrenEnum,
+  UncertainBoolean,
+} from "@/api/api-client/isi-backend";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
@@ -284,14 +290,25 @@ export default class Bauvorhaben extends Mixins(
     return (this.$refs.form as Vue & { validate: () => boolean }).validate();
   }
 
-  private abfrageUebernehmen(abfrage: InfrastrukturabfrageDto): void {
-    this.bauvorhaben.adresse = _.isNil(abfrage.abfrage.adresse) ? createAdresseDto() : abfrage.abfrage.adresse;
-    this.bauvorhaben.allgemeineOrtsangabe = abfrage.abfrage.allgemeineOrtsangabe;
-    this.bauvorhaben.standVorhaben = abfrage.abfrage.standVorhaben;
-    this.bauvorhaben.bebauungsplannummer = abfrage.abfrage.bebauungsplannummer;
-    this.bauvorhaben.sobonRelevant = abfrage.sobonRelevant;
-    this.bauvorhaben.sobonJahr = abfrage.sobonJahr;
+  private abfrageUebernehmen(abfrage: AbfrageDto): void {
     this.datenuebernahmeAbfrageId = abfrage.id;
+    switch (abfrage.artAbfrage) {
+      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren: {
+        const bauleitplanverfahren = abfrage as BauleitplanverfahrenDto;
+        this.bauvorhaben.adresse = _.isNil(bauleitplanverfahren.adresse)
+          ? createAdresseDto()
+          : bauleitplanverfahren.adresse;
+        this.bauvorhaben.standVerfahren = bauleitplanverfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
+        this.bauvorhaben.bebauungsplannummer = bauleitplanverfahren.bebauungsplannummer;
+        this.bauvorhaben.sobonRelevant = _.isNil(bauleitplanverfahren.sobonRelevant)
+          ? UncertainBoolean.Unspecified
+          : bauleitplanverfahren.sobonRelevant;
+        this.bauvorhaben.sobonJahr = bauleitplanverfahren.sobonJahr;
+        break;
+      }
+      default:
+        break;
+    }
     this.dataTransferDialogOpen = false;
   }
 }

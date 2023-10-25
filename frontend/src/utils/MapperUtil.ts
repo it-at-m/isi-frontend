@@ -1,21 +1,17 @@
 import {
-  AbfragevarianteAngelegtDto,
-  AbfrageAngelegtDto,
-  AbfragevarianteAngelegtDtoPlanungsrechtEnum,
-  InfrastrukturabfrageAngelegtDto,
-  AbfragevarianteDtoPlanungsrechtEnum,
-  InfrastrukturabfrageDto,
-  InfrastrukturabfrageInBearbeitungSachbearbeitungDto,
-  InfrastrukturabfrageInBearbeitungFachreferateDto,
-  AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto,
-  AbfragevarianteSachbearbeitungDto,
-  BedarfsmeldungFachabteilungenDto,
-  AbfragevarianteInBearbeitungSachbearbeitungDto,
-  AbfragevarianteInBearbeitungFachreferateDto,
+  BauleitplanverfahrenDto,
+  BauleitplanverfahrenAngelegtDto,
+  BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
+  BauleitplanverfahrenInBearbeitungFachreferatDto,
+  AbfragevarianteBauleitplanverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenAngelegtDto,
+  AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
+  AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
+  AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto,
 } from "@/api/api-client/isi-backend";
-import _ from "lodash";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
+import _ from "lodash";
 
 export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: FoerdermixStammModel): FoerdermixModel {
   const foerdermix = new FoerdermixModel({});
@@ -23,182 +19,141 @@ export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: Foerde
   return foerdermix;
 }
 
-export function mapToInfrastrukturabfrageAngelegt(
-  infrastrukturabfrageDto: InfrastrukturabfrageDto,
-): InfrastrukturabfrageAngelegtDto {
-  const abfragevarianten = infrastrukturabfrageDto.abfragevarianten?.map((abfragevariante) => {
+export function mapToBauleitplanverfahrenAngelegt(
+  bauleitplanverfahrenDto: BauleitplanverfahrenDto,
+): BauleitplanverfahrenAngelegtDto {
+  const abfragevarianten = bauleitplanverfahrenDto.abfragevarianten?.map((abfragevariante) => {
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
-      abfragevariantenName: abfragevariante.abfragevariantenName,
+      artAbfragevariante: AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum.Bauleitplanverfahren,
       abfragevariantenNr: abfragevariante.abfragevariantenNr,
-      planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht),
-      realisierungVon: abfragevariante.realisierungVon,
+      name: abfragevariante.name,
       satzungsbeschluss: abfragevariante.satzungsbeschluss,
-      sonderwohnformen: abfragevariante.sonderwohnformen,
-      anzahlWeBaurechtlichFestgesetzt: abfragevariante.anzahlWeBaurechtlichFestgesetzt,
-      anzahlWeBaurechtlichGenehmigt: abfragevariante.anzahlWeBaurechtlichGenehmigt,
+      wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
+      wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      realisierungVon: abfragevariante.realisierungVon,
+      gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
+      gfWohnenSobonUrsaechlich: abfragevariante.gfWohnenSobonUrsaechlich,
+      gfWohnenBestandswohnbaurecht: abfragevariante.gfWohnenBestandswohnbaurecht,
+      gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
+      gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
+      gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
+      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
+      gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
+        abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      weGesamt: abfragevariante.weGesamt,
+      weSonderwohnformen: abfragevariante.weSonderwohnformen,
+      weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
+      weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
+      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
+      weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-      gesamtanzahlWe: abfragevariante.gesamtanzahlWe,
-      geschossflaecheGenossenschaftlicheWohnungen: abfragevariante.geschossflaecheGenossenschaftlicheWohnungen,
-      geschossflaecheSeniorenwohnungen: abfragevariante.geschossflaecheSeniorenwohnungen,
-      geschossflaecheSonstiges: abfragevariante.geschossflaecheSonstiges,
-      geschossflaecheStudentenwohnungen: abfragevariante.geschossflaecheStudentenwohnungen,
-      geschossflaecheWohnen: abfragevariante.geschossflaecheWohnen,
-      geschossflaecheWohnenBestandswohnbaurecht: abfragevariante.geschossflaecheWohnenBestandswohnbaurecht,
-      geschossflaecheWohnenFestgesetzt: abfragevariante.geschossflaecheWohnenFestgesetzt,
-      geschossflaecheWohnenGenehmigt: abfragevariante.geschossflaecheWohnenGenehmigt,
-      geschossflaecheWohnenSoBoNursaechlich: abfragevariante.geschossflaecheWohnenSoBoNursaechlich,
-    } as AbfragevarianteAngelegtDto;
+    } as AbfragevarianteBauleitplanverfahrenAngelegtDto;
   });
 
   return {
-    abfrage: {
-      fristStellungnahme: infrastrukturabfrageDto.abfrage?.fristStellungnahme,
-      nameAbfrage: infrastrukturabfrageDto.abfrage?.nameAbfrage,
-      standVorhaben: infrastrukturabfrageDto.abfrage?.standVorhaben,
-      adresse: infrastrukturabfrageDto.abfrage?.adresse,
-      verortung: infrastrukturabfrageDto.abfrage?.verortung,
-      allgemeineOrtsangabe: infrastrukturabfrageDto.abfrage?.allgemeineOrtsangabe,
-      anmerkung: infrastrukturabfrageDto.abfrage?.anmerkung,
-      bauvorhaben: infrastrukturabfrageDto.abfrage?.bauvorhaben,
-      bebauungsplannummer: infrastrukturabfrageDto.abfrage?.bebauungsplannummer,
-      dokumente: infrastrukturabfrageDto.abfrage?.dokumente,
-    } as AbfrageAngelegtDto,
+    // extends: AbfrageAngelegtDto
+    version: bauleitplanverfahrenDto.version,
+    artAbfrage: bauleitplanverfahrenDto.artAbfrage,
+    name: bauleitplanverfahrenDto.name,
+    anmerkung: bauleitplanverfahrenDto.anmerkung,
+    bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
+    // BauleitplanverfahrenAngelegtDto
+    bebauungsplannummer: bauleitplanverfahrenDto.bebauungsplannummer,
+    sobonRelevant: bauleitplanverfahrenDto.sobonRelevant,
+    sobonJahr: bauleitplanverfahrenDto.sobonJahr,
+    standVerfahren: bauleitplanverfahrenDto.standVerfahren,
+    standVerfahrenFreieEingabe: bauleitplanverfahrenDto.standVerfahrenFreieEingabe,
+    adresse: bauleitplanverfahrenDto.adresse,
+    verortung: bauleitplanverfahrenDto.verortung,
+    dokumente: bauleitplanverfahrenDto.dokumente,
+    fristBearbeitung: bauleitplanverfahrenDto.fristBearbeitung,
+    offizielleMitzeichnung: bauleitplanverfahrenDto.offizielleMitzeichnung,
     abfragevarianten: abfragevarianten,
-    offiziellerVerfahrensschritt: infrastrukturabfrageDto.offiziellerVerfahrensschritt,
-    sobonRelevant: infrastrukturabfrageDto.sobonRelevant,
-    sobonJahr: infrastrukturabfrageDto.sobonJahr,
-    aktenzeichenProLbk: infrastrukturabfrageDto.aktenzeichenProLbk,
-    displayName: infrastrukturabfrageDto.displayName,
-    id: infrastrukturabfrageDto.id,
-    version: infrastrukturabfrageDto.version,
-  } as InfrastrukturabfrageAngelegtDto;
+  } as BauleitplanverfahrenAngelegtDto;
 }
 
-function mapPlanungsRecht(
-  abfragevariantePlanungsRecht: AbfragevarianteDtoPlanungsrechtEnum | undefined,
-): AbfragevarianteAngelegtDtoPlanungsrechtEnum {
-  let enumValue: AbfragevarianteAngelegtDtoPlanungsrechtEnum = AbfragevarianteAngelegtDtoPlanungsrechtEnum.Unspecified;
-  if (!_.isNil(abfragevariantePlanungsRecht)) {
-    Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum).forEach((value, index) => {
-      if (value === abfragevariantePlanungsRecht) {
-        enumValue = Object.values(AbfragevarianteAngelegtDtoPlanungsrechtEnum)[index];
-      }
-    });
-  }
-  return enumValue;
-}
-
-export function mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(
-  infrastrukturabfrageDto: InfrastrukturabfrageDto,
-): InfrastrukturabfrageInBearbeitungSachbearbeitungDto {
-  const abfragevarianten = _.toArray(infrastrukturabfrageDto.abfragevarianten).map((abfragevariante) => {
-    return {
-      id: abfragevariante.id,
-      version: abfragevariante.version,
-      abfragevarianteSachbearbeitung: mapToAbfragevarianteSachbearbeitungDto(
-        abfragevariante.abfragevarianteSachbearbeitung,
-      ),
-    } as AbfragevarianteSachbearbeitungInBearbeitungSachbearbeitungDto;
-  });
-
-  const abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrageDto.abfragevariantenSachbearbeitung).map(
-    (abfragevariante) => {
-      return {
-        id: abfragevariante.id,
-        version: abfragevariante.version,
-        abfragevariantenName: abfragevariante.abfragevariantenName,
-        abfragevariantenNr: abfragevariante.abfragevariantenNr,
-        planungsrecht: mapPlanungsRecht(abfragevariante.planungsrecht),
-        realisierungVon: abfragevariante.realisierungVon,
-        satzungsbeschluss: abfragevariante.satzungsbeschluss,
-        sonderwohnformen: abfragevariante.sonderwohnformen,
-        anzahlWeBaurechtlichFestgesetzt: abfragevariante.anzahlWeBaurechtlichFestgesetzt,
-        anzahlWeBaurechtlichGenehmigt: abfragevariante.anzahlWeBaurechtlichGenehmigt,
-        bauabschnitte: abfragevariante.bauabschnitte,
-        gesamtanzahlWe: abfragevariante.gesamtanzahlWe,
-        geschossflaecheGenossenschaftlicheWohnungen: abfragevariante.geschossflaecheGenossenschaftlicheWohnungen,
-        geschossflaecheSeniorenwohnungen: abfragevariante.geschossflaecheSeniorenwohnungen,
-        geschossflaecheSonstiges: abfragevariante.geschossflaecheSonstiges,
-        geschossflaecheStudentenwohnungen: abfragevariante.geschossflaecheStudentenwohnungen,
-        geschossflaecheWohnen: abfragevariante.geschossflaecheWohnen,
-        geschossflaecheWohnenBestandswohnbaurecht: abfragevariante.geschossflaecheWohnenBestandswohnbaurecht,
-        geschossflaecheWohnenFestgesetzt: abfragevariante.geschossflaecheWohnenFestgesetzt,
-        geschossflaecheWohnenGenehmigt: abfragevariante.geschossflaecheWohnenGenehmigt,
-        geschossflaecheWohnenSoBoNursaechlich: abfragevariante.geschossflaecheWohnenSoBoNursaechlich,
-        abfragevarianteSachbearbeitung: mapToAbfragevarianteSachbearbeitungDto(
-          abfragevariante.abfragevarianteSachbearbeitung,
-        ),
-      } as AbfragevarianteInBearbeitungSachbearbeitungDto;
-    },
-  );
-
+export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
+  bauleitplanverfahrenDto: BauleitplanverfahrenDto,
+): BauleitplanverfahrenInBearbeitungSachbearbeitungDto {
   return {
-    version: infrastrukturabfrageDto.version,
-    abfragevarianten: abfragevarianten,
-    abfragevariantenSachbearbeitung: abfragevariantenSachbearbeitung,
-  } as InfrastrukturabfrageInBearbeitungSachbearbeitungDto;
-}
-
-export function mapToInfrastrukturabfrageInBearbeitungFachreferateDto(
-  infrastrukturabfrageDto: InfrastrukturabfrageDto,
-): InfrastrukturabfrageInBearbeitungFachreferateDto {
-  const abfragevarianten = _.toArray(infrastrukturabfrageDto.abfragevarianten).map((abfragevariante) => {
-    return {
-      id: abfragevariante.id,
-      version: abfragevariante.version,
-      bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
-        abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
-      ),
-    } as AbfragevarianteInBearbeitungFachreferateDto;
-  });
-
-  const abfragevariantenSachbearbeitung = _.toArray(infrastrukturabfrageDto.abfragevariantenSachbearbeitung).map(
-    (abfragevariante) => {
-      return {
-        id: abfragevariante.id,
-        version: abfragevariante.version,
-        bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
-          abfragevariante.abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
-        ),
-      } as AbfragevarianteInBearbeitungFachreferateDto;
-    },
-  );
-
-  return {
-    version: infrastrukturabfrageDto.version,
-    abfragevarianten: abfragevarianten,
-    abfragevariantenSachbearbeitung: abfragevariantenSachbearbeitung,
-  } as InfrastrukturabfrageInBearbeitungFachreferateDto;
-}
-
-export function mapToBedarfsmeldungFachabteilungen(
-  bedarfsmeldungFachabteilungen: Array<BedarfsmeldungFachabteilungenDto> | undefined,
-): Array<BedarfsmeldungFachabteilungenDto> {
-  return _.toArray(bedarfsmeldungFachabteilungen).map((bedarfmeldung) => {
-    return {
-      id: bedarfmeldung.id,
-      version: bedarfmeldung.version,
-      anzahlEinrichtungen: bedarfmeldung.anzahlEinrichtungen,
-      infrastruktureinrichtungTyp: bedarfmeldung.infrastruktureinrichtungTyp,
-      anzahlKinderkrippengruppen: bedarfmeldung.anzahlKinderkrippengruppen,
-      anzahlKindergartengruppen: bedarfmeldung.anzahlKindergartengruppen,
-      anzahlHortgruppen: bedarfmeldung.anzahlHortgruppen,
-      anzahlGrundschulzuege: bedarfmeldung.anzahlGrundschulzuege,
-    } as BedarfsmeldungFachabteilungenDto;
-  });
-}
-
-export function mapToAbfragevarianteSachbearbeitungDto(
-  abfragevarianteSachbearbeitung: AbfragevarianteSachbearbeitungDto | undefined,
-): AbfragevarianteSachbearbeitungDto {
-  return {
-    geschossflaecheWohnenPlanungsursaechlich: abfragevarianteSachbearbeitung?.geschossflaecheWohnenPlanungsursaechlich,
-    soBoNOrientierungswertJahr: abfragevarianteSachbearbeitung?.soBoNOrientierungswertJahr,
-    anmerkung: abfragevarianteSachbearbeitung?.anmerkung,
-    bedarfsmeldungFachreferate: mapToBedarfsmeldungFachabteilungen(
-      abfragevarianteSachbearbeitung?.bedarfsmeldungFachreferate,
+    // extends: AbfrageInBearbeitungSachbearbeitungDto
+    version: bauleitplanverfahrenDto.version,
+    artAbfrage: bauleitplanverfahrenDto.artAbfrage,
+    // BauleitplanverfahrenInBearbeitungSachbearbeitungDto
+    abfragevarianten: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
+      bauleitplanverfahrenDto.abfragevarianten,
     ),
-  } as AbfragevarianteSachbearbeitungDto;
+    abfragevariantenSachbearbeitung: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
+      bauleitplanverfahrenDto.abfragevariantenSachbearbeitung,
+    ),
+  } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
+}
+
+export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
+  abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
+): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      abfragevariantenNr: abfragevariante.abfragevariantenNr,
+      name: abfragevariante.name,
+      satzungsbeschluss: abfragevariante.satzungsbeschluss,
+      wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
+      wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      realisierungVon: abfragevariante.realisierungVon,
+      gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
+      gfWohnenSobonUrsaechlich: abfragevariante.gfWohnenSobonUrsaechlich,
+      gfWohnenBestandswohnbaurecht: abfragevariante.gfWohnenBestandswohnbaurecht,
+      gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
+      gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
+      gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
+      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
+      gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
+        abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      weGesamt: abfragevariante.weGesamt,
+      weSonderwohnformen: abfragevariante.weSonderwohnformen,
+      weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
+      weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
+      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
+      weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      bauabschnitte: abfragevariante.bauabschnitte,
+      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
+      sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      anmerkung: abfragevariante.anmerkung,
+    } as AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto;
+  });
+}
+
+export function mapToBauleitplanverfahrenInBearbeitungFachreferatDto(
+  bauleitplanverfahrenDto: BauleitplanverfahrenDto,
+): BauleitplanverfahrenInBearbeitungFachreferatDto {
+  return {
+    // extends: AbfrageInBearbeitungFachreferatDto
+    version: bauleitplanverfahrenDto.version,
+    artAbfrage: bauleitplanverfahrenDto.artAbfrage,
+    // AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+    abfragevarianten: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
+      bauleitplanverfahrenDto.abfragevarianten,
+    ),
+    abfragevariantenSachbearbeitung: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
+      bauleitplanverfahrenDto.abfragevariantenSachbearbeitung,
+    ),
+  } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
+}
+
+export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
+  abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
+): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+    } as AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto;
+  });
 }

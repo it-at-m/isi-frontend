@@ -25,10 +25,10 @@
         >
           <num-field
             id="bauraten_anzahlWeGeplant"
-            v-model="baurate.anzahlWeGeplant"
+            v-model="baurate.weGeplant"
             :disabled="!isEditable"
             :rules="[validationRules.validateWohneinheiten(baugebiet, abfragevariante)]"
-            label="Anzahl Wohneinheiten geplant"
+            label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
           />
@@ -39,10 +39,10 @@
         >
           <num-field
             id="bauraten_geschossflaecheWohnenGeplant"
-            v-model="baurate.geschossflaecheWohnenGeplant"
+            v-model="baurate.gfWohnenGeplant"
             :disabled="!isEditable"
             :rules="[validationRules.validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
-            label="GF Wohnen geplant"
+            label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen"
           />
         </v-col>
@@ -54,8 +54,7 @@
         ref="Foerdermix"
         v-model="baurate.foerdermix"
         :is-editable="isEditable"
-      >
-      </foerdermix-formular>
+      />
     </v-row>
   </v-container>
 </template>
@@ -69,7 +68,7 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { AbfragevarianteDto, BaugebietDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteBauleitplanverfahrenDto, BaugebietDto } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import {
@@ -98,7 +97,7 @@ export default class BaurateComponent extends Mixins(
   private baugebiet: BaugebietDto | undefined;
 
   @Prop()
-  private abfragevariante: AbfragevarianteDto | undefined;
+  private abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
@@ -106,7 +105,7 @@ export default class BaurateComponent extends Mixins(
   private validationRules: unknown = {
     validateWohneinheiten: (
       baugebiet: BaugebietDto | undefined,
-      abfragevariante: AbfragevarianteDto | undefined,
+      abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
     ): boolean | string => {
       return (
         verteilteWohneinheiten(baugebiet, abfragevariante) <= wohneinheiten(baugebiet, abfragevariante) ||
@@ -118,7 +117,7 @@ export default class BaurateComponent extends Mixins(
     },
     validateGeschossflaecheWohnen: (
       baugebiet: BaugebietDto | undefined,
-      abfragevariante: AbfragevarianteDto | undefined,
+      abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
     ): boolean | string => {
       return (
         verteilteGeschossflaecheWohnen(baugebiet, abfragevariante) <=

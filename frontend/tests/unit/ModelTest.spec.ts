@@ -1,37 +1,39 @@
 import {} from "module";
-import { AbfragevarianteDtoPlanungsrechtEnum } from "@/api/api-client/isi-backend";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
-import { createInfrastrukturabfrageDto, createAbfragevarianteDto } from "@/utils/Factories";
+import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { createBauleitplanverfahrenDto, createAbfragevarianteBauleitplanverfahrenDto } from "@/utils/Factories";
 
 describe("ModelTest.spec.ts", () => {
-  test("Test InfrastrukturabfrageModel", () => {
-    const dto = createInfrastrukturabfrageDto();
-    expect(dto.abfrage.adresse).not.toBeNull();
+  test("Test BauleitplanverfahrenModel", () => {
+    const dto = createBauleitplanverfahrenDto();
+    expect(dto.adresse).not.toBeNull();
     expect(dto.abfragevarianten).toHaveLength(0);
-    const model = new InfrastrukturabfrageModel(dto);
-    expect(model.abfrage.adresse).not.toBeNull();
-    expect(dto.abfrage.verortung).toBeUndefined();
+    const model = new BauleitplanverfahrenModel(dto);
+    expect(model.adresse).not.toBeNull();
+    expect(dto.verortung).toBeUndefined();
   });
 
-  test("Test AbfragevarianteModel", () => {
-    const abfrageDto = createInfrastrukturabfrageDto();
-    const abfragevarianteDto = createAbfragevarianteDto();
+  test("Test AbfragevarianteBauleitplanverfahrenModel", () => {
+    const abfrageDto = createBauleitplanverfahrenDto();
+    const abfragevarianteDto = createAbfragevarianteBauleitplanverfahrenDto();
     abfragevarianteDto.abfragevariantenNr = 1;
-    abfragevarianteDto.planungsrecht = AbfragevarianteDtoPlanungsrechtEnum.NachverdBaurechtsausschoepfung;
+    abfragevarianteDto.wesentlicheRechtsgrundlage.push(
+      AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.Innenbereich,
+    );
     abfragevarianteDto.realisierungVon = 2022;
-    abfragevarianteDto.geschossflaecheWohnen = 123.45;
-    abfragevarianteDto.geschossflaecheWohnenFestgesetzt = 0.9;
-    abfragevarianteDto.anzahlWeBaurechtlichGenehmigt = 120;
-    abfragevarianteDto.anzahlWeBaurechtlichFestgesetzt = 2;
-    abfragevarianteDto.anzahlWeBaurechtlichGenehmigt = 2;
+    abfragevarianteDto.gfWohnenGesamt = 123.45;
+    abfragevarianteDto.gfWohnenBestandswohnbaurecht = 0.9;
+    abfragevarianteDto.weSeniorinnenWohnen = 120;
+    abfragevarianteDto.weStudentischesWohnen = 2;
+    abfragevarianteDto.weWeiteresNichtInfrastrukturrelevantesWohnen = 2;
     abfrageDto.abfragevarianten?.push(abfragevarianteDto);
-    const abfrageModel = new InfrastrukturabfrageModel(abfrageDto);
+    const abfrageModel = new BauleitplanverfahrenModel(abfrageDto);
     expect(abfrageModel.abfragevarianten).toHaveLength(1);
-    const abfragevarianteModel = abfrageModel.abfragevarianten?.[0] as AbfragevarianteModel;
+    const abfragevarianteModel = abfrageModel.abfragevarianten?.[0] as AbfragevarianteBauleitplanverfahrenModel;
     expect(abfragevarianteModel).not.toBeUndefined();
-    expect(abfragevarianteModel.planungsrecht).toEqual(
-      AbfragevarianteDtoPlanungsrechtEnum.NachverdBaurechtsausschoepfung,
+    expect(abfragevarianteModel.wesentlicheRechtsgrundlage).contains(
+      AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.Innenbereich,
     );
   });
 });

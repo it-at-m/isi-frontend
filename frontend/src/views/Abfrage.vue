@@ -5,15 +5,17 @@
       resizable
     >
       <template #content>
-        <infrastrukturabfrage-component
+        <bauleitplanverfahren-component
           v-if="isAbfrageFormularOpen()"
-          id="abfrage_infrastrukturabfrage_component"
+          id="bauleitverfahren_component"
+          ref="bauleitverfahrenComponent"
           v-model="selected"
           :mode="modeAbfrage"
         />
-        <abfragevariante-formular
+        <abfragevariante-component
           v-else-if="isAbfragevarianteFormularOpen()"
-          id="abfrage_abfragevariante_formular_component"
+          id="abfragevariante_component"
+          ref="abfragevarianteComponent"
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
@@ -224,7 +226,7 @@
           class="text-wrap mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="(!isNewAbfrage() && !isFormDirty()) || containsNotAllowedDokument(abfrage.abfrage.dokumente)"
+          :disabled="(!isNewAbfrage() && !isFormDirty()) || containsNotAllowedDokument(abfrage.dokumente)"
           style="width: 200px"
           @click="saveAbfrage()"
           v-text="buttonText"
@@ -245,28 +247,30 @@
 
 <script lang="ts">
 import {
-  AbfragevarianteDto,
+  AbfragevarianteBauleitplanverfahrenDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
-  InfrastrukturabfrageDto,
+  BauleitplanverfahrenDto,
   StatusAbfrage,
   TransitionDto,
+  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import AbfrageNavigationTree, {
   AbfrageTreeItem,
   generateTreeItemId,
 } from "@/components/abfragen/AbfrageNavigationTree.vue";
-import InfrastrukturabfrageComponent from "@/components/abfragen/InfrastrukturabfrageComponent.vue";
-import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
+import BauleitplanverfahrenComponent from "@/components/abfragen/BauleitplanverfahrenComponent.vue";
+import AbfragevarianteComponent from "@/components/abfragevarianten/AbfragevarianteComponent.vue";
+//import AbfragevarianteFormular from "@/components/abfragevarianten/AbfragevarianteFormular.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
 import BaugebietComponent from "@/components/baugebiete/BaugebietComponent.vue";
 import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
 import InformationList from "@/components/common/InformationList.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
-import AbfrageApiRequestMixin from "@/mixins/requests/AbfrageApiRequestMixin";
+import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
 import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
@@ -276,25 +280,25 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
-import InfrastrukturabfrageModel from "@/types/model/abfrage/InfrastrukturabfrageModel";
-import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import {
-  createAbfragevarianteDto,
+  createAbfragevarianteBauleitplanverfahrenDto,
   createBauabschnittDto,
   createBaugebietDto,
   createBaurateDto,
-  createInfrastrukturabfrageDto,
+  createBauleitplanverfahrenDto,
   createTechnicalBauabschnittDto,
   createTechnicalBaugebietDto,
 } from "@/utils/Factories";
 import {
-  mapToInfrastrukturabfrageAngelegt,
-  mapToInfrastrukturabfrageInBearbeitungFachreferateDto,
-  mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto,
+  mapToBauleitplanverfahrenAngelegt,
+  mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
+  mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";
@@ -311,8 +315,8 @@ export const enum AnzeigeContextAbfragevariante {
  * Ein Union aller im Rahmen der Abfrage relevanten DTOs, welche ein eigenes Formular haben.
  */
 export type AbfrageDtoWithForm =
-  | InfrastrukturabfrageDto
-  | AbfragevarianteDto
+  | BauleitplanverfahrenDto
+  | AbfragevarianteBauleitplanverfahrenDto
   | BauabschnittDto
   | BaugebietDto
   | BaurateDto;
@@ -321,7 +325,7 @@ export type AbfrageDtoWithForm =
  * Ein Enum für alle im Rahmen der Abfrage relevanten Entitäten, welche ein eigenes Formular haben.
  */
 export const enum AbfrageFormType {
-  INFRASTRUKTURABFRAGE,
+  BAULEITPLANVERFAHREN,
   ABFRAGEVARIANTE,
   BAUABSCHNITT,
   BAUGEBIET,
@@ -331,10 +335,11 @@ export const enum AbfrageFormType {
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
-    AbfragevarianteFormular,
+    //AbfragevarianteFormular,
+    AbfragevarianteComponent,
     AbfrageNavigationTree,
     InformationList,
-    InfrastrukturabfrageComponent,
+    BauleitplanverfahrenComponent,
     YesNoDialog,
     DefaultLayout,
     BaurateComponent,
@@ -354,16 +359,18 @@ export default class Abfrage extends Mixins(
   AbfrageSecurityMixin,
 ) {
   private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
+  private readonly TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
 
   private modeAbfrage = DisplayMode.UNDEFINED;
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
   private dialogTextStatus = "";
   private anmerkung = "";
-  private abfrage = new InfrastrukturabfrageModel(createInfrastrukturabfrageDto());
+  private abfrage = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
   private selected: AbfrageDtoWithForm = this.abfrage;
-  private openForm: AbfrageFormType = AbfrageFormType.INFRASTRUKTURABFRAGE;
-  private abfragevarianteAncestor: AbfragevarianteModel = new AbfragevarianteModel(createAbfragevarianteDto());
+  private openForm: AbfrageFormType = AbfrageFormType.BAULEITPLANVERFAHREN;
+  private abfragevarianteAncestor: AbfragevarianteBauleitplanverfahrenModel =
+    new AbfragevarianteBauleitplanverfahrenModel(createAbfragevarianteBauleitplanverfahrenDto());
   private baugebietAncestor: BaugebietModel = new BaugebietModel(createBaugebietDto());
   private abfrageId: string = this.$route.params.id;
   private transition: TransitionDto | undefined;
@@ -378,7 +385,7 @@ export default class Abfrage extends Mixins(
   private hasAnmerkung = false;
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
-  private relevanteAbfragevarianteToBeSet: AbfragevarianteModel | undefined;
+  private relevanteAbfragevarianteToBeSet: AbfragevarianteBauleitplanverfahrenModel | undefined;
   private treeItemToDelete: AbfrageTreeItem | undefined;
   public possbileTransitions: Array<TransitionDto> = [];
 
@@ -399,7 +406,7 @@ export default class Abfrage extends Mixins(
       this.abfrage = _.cloneDeep(abfrageFromStore);
       this.selectAbfrage();
 
-      const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
+      const bauvorhabenId = this.abfrage.bauvorhaben;
       if (bauvorhabenId) {
         this.getBauvorhabenById(bauvorhabenId, false).then((dto) => {
           this.relevanteAbfragevarianteId = dto.relevanteAbfragevariante?.id ?? null;
@@ -414,15 +421,15 @@ export default class Abfrage extends Mixins(
 
   async setSelectedAbfrageInStore(): Promise<void> {
     if (this.abfrageId !== undefined) {
-      this.getInfrastrukturabfrageById(this.abfrageId, true)
+      this.getById(this.abfrageId, true)
         .then((dto) => {
-          this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
+          this.saveAbfrageInStore(new BauleitplanverfahrenModel(dto));
         })
         .catch(() => {
           this.$store.commit("search/selectedAbfrage", undefined);
         });
     } else {
-      this.saveAbfrageInStore(new InfrastrukturabfrageModel(createInfrastrukturabfrageDto()));
+      this.saveAbfrageInStore(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto()));
     }
   }
 
@@ -437,7 +444,9 @@ export default class Abfrage extends Mixins(
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
-    transition.url == "keine-bearbeitung-noetig" ? (this.hasAnmerkung = true) : (this.hasAnmerkung = false);
+    transition.url == this.TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT
+      ? (this.hasAnmerkung = true)
+      : (this.hasAnmerkung = false);
     this.isStatusUebergangDialogOpen = true;
   }
 
@@ -446,7 +455,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogAbfrageYes(): void {
-    this.deleteInfrastrukturabfrage();
+    this.deleteBauleitplanverfahren();
     this.yesNoDialogAbfrageNo();
   }
 
@@ -473,8 +482,8 @@ export default class Abfrage extends Mixins(
     this.isDeleteDialogAbfragevarianteOpen = false;
   }
 
-  private async deleteInfrastrukturabfrage(): Promise<void> {
-    await this.deleteInfrastrukturabfrageById(this.abfrageId, true).then(() => {
+  private async deleteBauleitplanverfahren(): Promise<void> {
+    await this.deleteById(this.abfrageId, true).then(() => {
       this.$store.commit("search/removeSearchResultById", this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
@@ -521,51 +530,49 @@ export default class Abfrage extends Mixins(
 
   private async saveAbfrage(): Promise<void> {
     if (this.validate()) {
-      this.saveInfrastrukturabfrage(true);
+      const validationMessage: string | null = this.findFaultInAbfrageForSave(this.abfrage);
+      if (_.isNil(validationMessage)) {
+        if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+          this.handleSaveBauleitplanverfahren(this.abfrage, true);
+        }
+      } else {
+        this.showWarningInInformationList(validationMessage);
+      }
     } else {
       this.showWarningInInformationList("Es gibt noch Validierungsfehler");
     }
   }
 
-  private async saveInfrastrukturabfrage(showToast: boolean): Promise<void> {
-    const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
-    if (_.isNil(validationMessage)) {
-      if (this.modeAbfrage === DisplayMode.NEU) {
-        await this.createInfrastrukturabfrage(mapToInfrastrukturabfrageAngelegt(this.abfrage), true).then((dto) => {
-          this.handleSuccess(dto, showToast);
-        });
-      } else if (this.isEditableByAbfrageerstellung()) {
-        await this.patchAbfrageAngelegt(
-          mapToInfrastrukturabfrageAngelegt(this.abfrage),
-          this.abfrage.id as string,
-          true,
-        ).then((dto) => {
-          this.handleSuccess(dto, showToast);
-        });
-      } else if (this.isEditableBySachbearbeitung()) {
-        await this.patchAbfrageInBearbeitungSachbearbeitung(
-          mapToInfrastrukturabfrageInBearbeitungSachbearbeitungDto(this.abfrage),
-          this.abfrage.id as string,
-          true,
-        ).then((dto) => {
-          this.handleSuccess(dto, showToast);
-        });
-      } else if (this.isEditableByBedarfsmeldung()) {
-        await this.patchAbfrageInBearbeitungFachreferate(
-          mapToInfrastrukturabfrageInBearbeitungFachreferateDto(this.abfrage),
-          this.abfrage.id as string,
-          true,
-        ).then((dto) => {
-          this.handleSuccess(dto);
-        });
-      }
-    } else {
-      this.showWarningInInformationList(validationMessage);
+  private async handleSaveBauleitplanverfahren(model: BauleitplanverfahrenModel, showToast: boolean) {
+    if (this.modeAbfrage === DisplayMode.NEU) {
+      await this.save(mapToBauleitplanverfahrenAngelegt(model), true).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
+    } else if (this.isEditableByAbfrageerstellung()) {
+      await this.patchAngelegt(mapToBauleitplanverfahrenAngelegt(model), model.id as string, true).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
+    } else if (this.isEditableBySachbearbeitung()) {
+      await this.patchInBearbeitungSachbearbeitung(
+        mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(model),
+        model.id as string,
+        true,
+      ).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
+    } else if (this.isEditableByBedarfsmeldung()) {
+      await this.patchInBearbeitungFachreferat(
+        mapToBauleitplanverfahrenInBearbeitungFachreferatDto(model),
+        model.id as string,
+        true,
+      ).then((dto) => {
+        this.handleSuccess(dto, showToast);
+      });
     }
   }
 
-  private handleSuccess(dto: InfrastrukturabfrageDto, showToast: boolean): void {
-    this.saveAbfrageInStore(new InfrastrukturabfrageModel(dto));
+  private handleSuccess(dto: BauleitplanverfahrenDto, showToast: boolean): void {
+    this.saveAbfrageInStore(new BauleitplanverfahrenModel(dto));
     if (this.isNewAbfrage()) {
       this.$router.push({ path: "/" });
       Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
@@ -577,10 +584,10 @@ export default class Abfrage extends Mixins(
   private async startStatusUebergang(transition: TransitionDto) {
     if (!this.isFormDirty()) {
       let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
-      if (transition.url === "keine-bearbeitung-noetig") {
+      if (transition.url === this.TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT) {
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
       }
-      const validationMessage: string | null = this.findFaultInInfrastrukturabfrageForSave(this.abfrage);
+      const validationMessage: string | null = this.findFaultInAbfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
         const response = await this.statusUebergangRequest(transition, this.abfrageId, this.anmerkung);
         if (response.ok) {
@@ -603,9 +610,11 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private async setRelevanteAbfragevariante(abfragevariante: AbfragevarianteModel | null): Promise<void> {
+  private async setRelevanteAbfragevariante(
+    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | null,
+  ): Promise<void> {
     if (_.isNil(abfragevariante)) {
-      const bauvorhabenId = this.abfrage.abfrage?.bauvorhaben;
+      const bauvorhabenId = this.abfrage.bauvorhaben;
       if (bauvorhabenId) {
         const bauvorhaben = await this.getBauvorhabenById(bauvorhabenId, false);
         const relevanteAbfragevariante = bauvorhaben.relevanteAbfragevariante;
@@ -617,14 +626,14 @@ export default class Abfrage extends Mixins(
     }
 
     if (abfragevariante.id) {
-      await this.changeRelevanteAbfragevariante(abfragevariante, true).then((result) => {
+      await this.changeRelevanteAbfragevariante(abfragevariante.id, true).then((result) => {
         if (typeof result !== "string") {
           const relevanteId = result.relevanteAbfragevariante?.id;
           this.relevanteAbfragevarianteId = relevanteId ?? null;
           Toaster.toast(
-            `Die Abfragevariante ${abfragevariante.abfragevariantenName} in Abfrage ${
-              this.abfrage.displayName
-            } ist nun ${relevanteId ? "relevant" : "nicht mehr relevant"}.`,
+            `Die Abfragevariante ${abfragevariante.name} in Abfrage ${this.abfrage.displayName} ist nun ${
+              relevanteId ? "relevant" : "nicht mehr relevant"
+            }.`,
             Levels.SUCCESS,
           );
         } else {
@@ -638,12 +647,12 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private saveAbfrageInStore(abfrage: InfrastrukturabfrageModel) {
+  private saveAbfrageInStore(abfrage: BauleitplanverfahrenModel) {
     this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
   }
 
   private isAbfrageFormularOpen(): boolean {
-    return this.openForm === AbfrageFormType.INFRASTRUKTURABFRAGE;
+    return this.openForm === AbfrageFormType.BAULEITPLANVERFAHREN;
   }
 
   private isAbfragevarianteFormularOpen(): boolean {
@@ -667,7 +676,7 @@ export default class Abfrage extends Mixins(
   }
 
   private isAngelegt(): boolean {
-    return this.abfrage.abfrage?.statusAbfrage == StatusAbfrage.Angelegt;
+    return this.abfrage.statusAbfrage == StatusAbfrage.Angelegt;
   }
 
   private returnToUebersicht(message?: string, level?: Levels): void {
@@ -714,7 +723,9 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateAbfragevariante(parent: AbfrageTreeItem): void {
-    const abfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
+    const abfragevariante = new AbfragevarianteBauleitplanverfahrenModel(
+      createAbfragevarianteBauleitplanverfahrenDto(),
+    );
     this.abfrage.abfragevarianten?.push(abfragevariante);
     this.renumberingAbfragevarianten(this.abfrage.abfragevarianten);
     this.formChanged();
@@ -727,7 +738,9 @@ export default class Abfrage extends Mixins(
   }
 
   private handleCreateAbfragevarianteSachbearbeitung(parent: AbfrageTreeItem): void {
-    const abfragevariante = new AbfragevarianteModel(createAbfragevarianteDto());
+    const abfragevariante = new AbfragevarianteBauleitplanverfahrenModel(
+      createAbfragevarianteBauleitplanverfahrenDto(),
+    );
     this.abfrage.abfragevariantenSachbearbeitung?.push(abfragevariante);
     this.renumberingAbfragevarianten(this.abfrage.abfragevariantenSachbearbeitung);
     this.formChanged();
@@ -889,8 +902,8 @@ export default class Abfrage extends Mixins(
     if (this.isAbfragevariante(item, abfragevariante)) {
       this.determineBauraten(
         abfragevariante.realisierungVon!,
-        abfragevariante.gesamtanzahlWe,
-        abfragevariante.geschossflaecheWohnen,
+        abfragevariante.weGesamt,
+        abfragevariante.gfWohnenGesamt,
         true,
       ).then((bauraten: Array<BaurateDto>) => {
         const technicalBaugebiet = this.getTechnicalBaugebiet(abfragevariante);
@@ -907,15 +920,12 @@ export default class Abfrage extends Mixins(
     const baugebiet = item.value;
 
     if (this.isBaugebiet(item, baugebiet)) {
-      this.determineBauraten(
-        baugebiet.realisierungVon,
-        baugebiet.gesamtanzahlWe,
-        baugebiet.geschossflaecheWohnen,
-        true,
-      ).then((bauraten: Array<BaurateDto>) => {
-        baugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
-        this.formChanged();
-      });
+      this.determineBauraten(baugebiet.realisierungVon, baugebiet.weGeplant, baugebiet.gfWohnenGeplant, true).then(
+        (bauraten: Array<BaurateDto>) => {
+          baugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+          this.formChanged();
+        },
+      );
     }
   }
 
@@ -923,7 +933,9 @@ export default class Abfrage extends Mixins(
    * Jedoch können sie auch das übergebene Item selbst zurückgeben, wenn es dem Typen entspricht.
    */
 
-  private getFirstAncestorOfTypeAbfragevariante(item: AbfrageTreeItem): AbfragevarianteModel | undefined {
+  private getFirstAncestorOfTypeAbfragevariante(
+    item: AbfrageTreeItem,
+  ): AbfragevarianteBauleitplanverfahrenModel | undefined {
     while (item.parent) {
       if (this.isAbfragevariante(item, item.value)) {
         return item.value;
@@ -976,14 +988,16 @@ export default class Abfrage extends Mixins(
     return _.isNil(this.selected.id) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
   }
 
-  private renumberingAbfragevarianten(abfragevarianten: Array<AbfragevarianteDto> | undefined): void {
+  private renumberingAbfragevarianten(
+    abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
+  ): void {
     abfragevarianten?.forEach((value, index) => {
       value.abfragevariantenNr = index + 1;
     });
   }
 
   private selectAbfrage(): void {
-    this.selectEntity(this.abfrage, AbfrageFormType.INFRASTRUKTURABFRAGE, "", AnzeigeContextAbfragevariante.UNDEFINED);
+    this.selectEntity(this.abfrage, AbfrageFormType.BAULEITPLANVERFAHREN, "", AnzeigeContextAbfragevariante.UNDEFINED);
   }
 
   private selectItem(item: AbfrageTreeItem): void {
@@ -1012,7 +1026,10 @@ export default class Abfrage extends Mixins(
     this.selectedTreeItemId = itemId;
   }
 
-  private isAbfragevariante(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is AbfragevarianteModel {
+  private isAbfragevariante(
+    item: AbfrageTreeItem,
+    value: AbfrageDtoWithForm,
+  ): value is AbfragevarianteBauleitplanverfahrenModel {
     return item.type === AbfrageFormType.ABFRAGEVARIANTE;
   }
 
@@ -1031,7 +1048,9 @@ export default class Abfrage extends Mixins(
   /**
    * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
    */
-  private getTechnicalBauabschnitt(abfragevariante: AbfragevarianteModel): BauabschnittModel | undefined {
+  private getTechnicalBauabschnitt(
+    abfragevariante: AbfragevarianteBauleitplanverfahrenModel,
+  ): BauabschnittModel | undefined {
     let bauabschnitt: BauabschnittModel | undefined;
 
     if (!_.isNil(abfragevariante.bauabschnitte)) {
@@ -1055,7 +1074,7 @@ export default class Abfrage extends Mixins(
   /**
    * Ermittelt oder erstellt bei Bedarf ein Platzhalter-Baugebiet für "alleinstehende" Bauraten.
    */
-  private getTechnicalBaugebiet(abfragevariante: AbfragevarianteModel): BaugebietModel | undefined {
+  private getTechnicalBaugebiet(abfragevariante: AbfragevarianteBauleitplanverfahrenModel): BaugebietModel | undefined {
     const bauabschnitt = this.getTechnicalBauabschnitt(abfragevariante);
 
     if (!_.isNil(bauabschnitt)) {
@@ -1078,7 +1097,7 @@ export default class Abfrage extends Mixins(
   /**
    * Soll nach dem Löschen von Baugebieten und -raten aufgerufen werden, um Platzhalter ohne Kinder zu beseitigen.
    */
-  private clearTechnicalEntities(abfragevariante: AbfragevarianteModel): void {
+  private clearTechnicalEntities(abfragevariante: AbfragevarianteBauleitplanverfahrenModel): void {
     if (!_.isNil(abfragevariante.bauabschnitte)) {
       const bauabschnittIndex = abfragevariante.bauabschnitte.findIndex((dto) => dto.technical);
 

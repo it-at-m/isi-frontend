@@ -21,7 +21,7 @@
                   v-for="(item, index) in items"
                   :key="index"
                 >
-                  {{ formatWohneinheiten(item.anzahlWeGeplant) }}
+                  {{ formatWohneinheiten(item.weGeplant) }}
                 </td>
               </tr>
               <tr>
@@ -30,7 +30,7 @@
                   v-for="(item, index) in items"
                   :key="index"
                 >
-                  {{ formatGeschossflaecheWohnen(item.geschossflaecheWohnenGeplant) }}
+                  {{ formatGeschossflaecheWohnen(item.gfWohnenGeplant) }}
                 </td>
               </tr>
             </tbody>
@@ -44,7 +44,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import AbfragevarianteModel from "@/types/model/abfragevariante/AbfragevarianteModel";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
@@ -56,7 +56,7 @@ import { numberToFormattedStringTwoDecimals, numberToFormattedStringZeroDecimals
 @Component({ components: { FieldGroupCard } })
 export default class BauratenAggregiertComponent extends Vue {
   @Prop()
-  private aggregateBauraten!: AbfragevarianteModel | BauabschnittModel | BaugebietModel;
+  private aggregateBauraten!: AbfragevarianteBauleitplanverfahrenModel | BauabschnittModel | BaugebietModel;
 
   private baurateMap: Map<number, BaurateModel> = new Map<number, BaurateModel>();
 
@@ -81,9 +81,12 @@ export default class BauratenAggregiertComponent extends Vue {
     return headers;
   }
 
-  private extraktBauraten(layer: AbfragevarianteModel | BauabschnittModel | BaugebietModel): Array<BaurateModel> {
-    if (layer instanceof AbfragevarianteModel) {
-      const abfragevariante: AbfragevarianteModel = this.aggregateBauraten as AbfragevarianteModel;
+  private extraktBauraten(
+    layer: AbfragevarianteBauleitplanverfahrenModel | BauabschnittModel | BaugebietModel,
+  ): Array<BaurateModel> {
+    if (layer instanceof AbfragevarianteBauleitplanverfahrenModel) {
+      const abfragevariante: AbfragevarianteBauleitplanverfahrenModel = this
+        .aggregateBauraten as AbfragevarianteBauleitplanverfahrenModel;
       if (!_.isNil(abfragevariante.bauabschnitte)) {
         return abfragevariante.bauabschnitte.flatMap((bauabschnitt: BauabschnittDto) => {
           return this.extraktBauraten(new BauabschnittModel(bauabschnitt));
@@ -108,17 +111,17 @@ export default class BauratenAggregiertComponent extends Vue {
     bauraten.forEach((baurate: BaurateModel) => {
       const aggregated = this.baurateMap.get(baurate.jahr);
       if (!_.isNil(aggregated)) {
-        if (!_.isNil(baurate.anzahlWeGeplant)) {
-          if (_.isNil(aggregated.anzahlWeGeplant)) {
-            aggregated.anzahlWeGeplant = 0;
+        if (!_.isNil(baurate.weGeplant)) {
+          if (_.isNil(aggregated.weGeplant)) {
+            aggregated.weGeplant = 0;
           }
-          aggregated.anzahlWeGeplant += baurate.anzahlWeGeplant;
+          aggregated.weGeplant += baurate.weGeplant;
         }
-        if (!_.isNil(baurate.geschossflaecheWohnenGeplant)) {
-          if (_.isNil(aggregated.geschossflaecheWohnenGeplant)) {
-            aggregated.geschossflaecheWohnenGeplant = 0;
+        if (!_.isNil(baurate.gfWohnenGeplant)) {
+          if (_.isNil(aggregated.gfWohnenGeplant)) {
+            aggregated.gfWohnenGeplant = 0;
           }
-          aggregated.geschossflaecheWohnenGeplant += baurate.geschossflaecheWohnenGeplant;
+          aggregated.gfWohnenGeplant += baurate.gfWohnenGeplant;
         }
       } else {
         const clone = _.clone(baurate);
@@ -129,7 +132,7 @@ export default class BauratenAggregiertComponent extends Vue {
 
   get header(): string {
     if (!_.isNil(this.aggregateBauraten)) {
-      if (this.aggregateBauraten instanceof AbfragevarianteModel) {
+      if (this.aggregateBauraten instanceof AbfragevarianteBauleitplanverfahrenModel) {
         return "Bauraten der Abfragevariante";
       } else if (this.aggregateBauraten instanceof BauabschnittModel) {
         return "Bauraten des Bauabschnitts";

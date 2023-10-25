@@ -27,17 +27,17 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-select
-            id="baugebiet_baugebietArt"
-            v-model="baugebiet.baugebietArt"
+            id="baugebiet_art_bauliche_nutzung"
+            v-model="baugebiet.artBaulicheNutzung"
             :disabled="!isEditable"
             class="mx-3"
-            :items="baugebietArtList"
+            :items="artBaulicheNutzungList"
             item-value="key"
             item-text="value"
             :rules="[fieldValidationRules.pflichtfeld]"
             @change="formChanged"
           >
-            <template #label> Art des Baugebiets <span class="secondary--text">*</span> </template>
+            <template #label> Art der baulichen Nutzung <span class="secondary--text">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -78,93 +78,34 @@
           />
         </v-col>
       </v-row>
-    </field-group-card>
-
-    <field-group-card :card-title="geschossflaecheWohnenCardTitle">
       <v-row justify="center">
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
           <num-field
-            id="baugebiet_geschossflaecheWohnenFestgesetzt"
-            v-model="baugebiet.geschossflaecheWohnen"
-            :disabled="!isEditable"
-            :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
-            class="mx-3"
-            label="Gesamt"
-            :suffix="suffixGeschossflaecheWohnen"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="baugebiet_geschossflaecheWohnenGenehmigt"
-            v-model="baugebiet.geschossflaecheWohnenGenehmigt"
-            :disabled="!isEditable"
-            class="mx-3"
-            label="Baurechtlich Genehmigt"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="baugebiet_geschossflaecheWohnenFestgesetzt"
-            v-model="baugebiet.geschossflaecheWohnenFestgesetzt"
-            :disabled="!isEditable"
-            class="mx-3"
-            label="Baurechtlich Festgesetzt"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-      </v-row>
-    </field-group-card>
-    <field-group-card :card-title="anzahlWECardTitle">
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="baugebiet_anzahlWeBaurechtlichGenehmigt"
-            v-model="baugebiet.gesamtanzahlWe"
+            id="baugebiet_geplante_anzahl_we"
+            v-model="baugebiet.weGeplant"
             :disabled="!isEditable"
             :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
             class="mx-3"
-            label="Gesamt"
+            label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
           />
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
           <num-field
-            id="baugebiet_anzahlWeBaurechtlichGenehmigt"
-            v-model="baugebiet.anzahlWohneinheitenBaurechtlichGenehmigt"
+            id="baugebiet_geplante_geschossflaeche_wohnen"
+            v-model="baugebiet.gfWohnenGeplant"
             :disabled="!isEditable"
+            :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
             class="mx-3"
-            label="Baurechtlich genehmigt"
-            integer
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="baugebiet_anzahlWeBaurechtlichFestgesetzt"
-            v-model="baugebiet.anzahlWohneinheitenBaurechtlichFestgesetzt"
-            :disabled="!isEditable"
-            class="mx-3"
-            label="Baurechtlich festgesetzt"
-            integer
+            label="Geplante Geschossfläche Wohnen"
+            :suffix="suffixGeschossflaecheWohnen"
           />
         </v-col>
       </v-row>
@@ -175,7 +116,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { AbfragevarianteDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteBauleitplanverfahrenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -211,7 +152,7 @@ export default class BauabschnittComponent extends Mixins(
   @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
 
   @Prop()
-  private abfragevariante: AbfragevarianteDto | undefined;
+  private abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined;
 
   @Prop()
   private mode!: DisplayMode;
@@ -220,7 +161,7 @@ export default class BauabschnittComponent extends Mixins(
   private readonly isEditable!: boolean;
 
   private validationRules: unknown = {
-    validateWohneinheiten: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {
+    validateWohneinheiten: (abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): boolean | string => {
       return (
         verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
         `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
@@ -228,7 +169,9 @@ export default class BauabschnittComponent extends Mixins(
         )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
       );
     },
-    validateGeschossflaecheWohnen: (abfragevariante: AbfragevarianteDto | undefined): boolean | string => {
+    validateGeschossflaecheWohnen: (
+      abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
+    ): boolean | string => {
       return (
         verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante) <=
           geschossflaecheWohnenAbfragevariante(abfragevariante) ||
@@ -256,8 +199,8 @@ export default class BauabschnittComponent extends Mixins(
     return headline;
   }
 
-  get baugebietArtList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/baugebietArt"];
+  get artBaulicheNutzungList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/artBaulicheNutzung"];
   }
 
   get abfragevarianteRealisierungVonOr1900(): number {

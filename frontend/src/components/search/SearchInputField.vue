@@ -68,7 +68,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
 
   private selectedSuggestion = "";
 
-  mounted() {
+  mounted(): void {
     this.searchEntitiesForSelectedSuggestion();
     this.checkCurrentFilter();
   }
@@ -135,7 +135,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
       const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
       const searchQueryDto = {
         searchQuery: queryForSearchwordSuggestion,
-        selectInfrastrukturabfrage: searchQueryForEntitiesDto.selectInfrastrukturabfrage,
+        selectBauleitplanverfahren: searchQueryForEntitiesDto.selectBauleitplanverfahren,
         selectBauvorhaben: searchQueryForEntitiesDto.selectBauvorhaben,
         selectGrundschule: searchQueryForEntitiesDto.selectGrundschule,
         selectGsNachmittagBetreuung: searchQueryForEntitiesDto.selectGsNachmittagBetreuung,

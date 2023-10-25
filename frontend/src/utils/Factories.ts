@@ -1,18 +1,18 @@
 import {
-  AbfrageDto,
-  AbfrageDtoStandVorhabenEnum,
   StatusAbfrage,
-  AbfragevarianteDto,
-  AbfragevarianteSachbearbeitungDto,
-  BedarfsmeldungFachabteilungenDto,
-  BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum,
-  AbfragevarianteDtoPlanungsrechtEnum,
+  AbfragevarianteBauleitplanverfahrenDto,
+  BauleitplanverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
+  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
+  BedarfsmeldungFachreferateDto,
+  BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
   AdresseDto,
   BaurateDto,
   BauvorhabenDto,
   BauvorhabenDtoArtFnpEnum,
-  BauvorhabenDtoPlanungsrechtEnum,
-  BauvorhabenDtoStandVorhabenEnum,
+  BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
+  BauleitplanverfahrenDtoStandVerfahrenEnum,
+  BauvorhabenDtoStandVerfahrenEnum,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
   FilepathDto,
@@ -22,7 +22,6 @@ import {
   GrundschuleDto,
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
-  InfrastrukturabfrageDto,
   InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoStatusEnum,
   KindergartenDto,
@@ -32,13 +31,14 @@ import {
   SchuleDto,
   BauabschnittDto,
   BaugebietDto,
-  BaugebietDtoBaugebietArtEnum,
+  BaugebietDtoArtBaulicheNutzungEnum,
   UncertainBoolean,
-  AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  AbfrageDtoArtAbfrageEnum,
+  AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   KommentarDto,
   SchuleDtoEinrichtungstraegerEnum,
   KindergartenDtoEinrichtungstraegerEnum,
@@ -52,7 +52,7 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
   const searchQueryAndSortingDto = {
     searchQuery: "",
-    selectInfrastrukturabfrage: true,
+    selectBauleitplanverfahren: true,
     selectBauvorhaben: true,
     selectGrundschule: true,
     selectGsNachmittagBetreuung: true,
@@ -68,97 +68,34 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
   return new SearchQueryAndSortingModel(searchQueryAndSortingDto);
 }
 
-export function createAbfragevarianteDto(): AbfragevarianteDto {
-  return {
-    abfragevariantenNr: Number.NaN,
-    abfragevariantenName: "",
-    planungsrecht: AbfragevarianteDtoPlanungsrechtEnum.Unspecified,
-    geschossflaecheWohnen: undefined,
-    geschossflaecheWohnenGenehmigt: undefined,
-    geschossflaecheWohnenFestgesetzt: undefined,
-    geschossflaecheWohnenSoBoNursaechlich: undefined,
-    geschossflaecheWohnenBestandswohnbaurecht: undefined,
-    gesamtanzahlWe: undefined,
-    anzahlWeBaurechtlichGenehmigt: undefined,
-    anzahlWeBaurechtlichFestgesetzt: undefined,
-    realisierungVon: Number.NaN,
-    satzungsbeschluss: undefined,
-    geschossflaecheGenossenschaftlicheWohnungen: undefined,
-    sonderwohnformen: false,
-    geschossflaecheStudentenwohnungen: undefined,
-    geschossflaecheSeniorenwohnungen: undefined,
-    geschossflaecheSonstiges: undefined,
-    bauabschnitte: [],
-    abfragevarianteSachbearbeitung: createAbfragevarianteSachbearbeitungDto(),
-  };
-}
-
 /**
- * AbfragevarianteSachbearbeitungDto
+ * BauleitplanverfahrenDto
  */
-export function createAbfragevarianteSachbearbeitungDto(): AbfragevarianteSachbearbeitungDto {
-  return {
-    geschossflaecheWohnenPlanungsursaechlich: undefined,
-    soBoNOrientierungswertJahr: AbfragevarianteSachbearbeitungDtoSoBoNOrientierungswertJahrEnum.Unspecified,
-    anmerkung: undefined,
-    bedarfsmeldungFachreferate: [],
-  };
-}
-
-/**
- * BedarfsmeldungFachabteilungenDto
- */
-export function createBedarfsmeldungFachabteilungenDto(): BedarfsmeldungFachabteilungenDto {
-  return {
-    anzahlEinrichtungen: undefined,
-    infrastruktureinrichtungTyp: BedarfsmeldungFachabteilungenDtoInfrastruktureinrichtungTypEnum.Unspecified,
-    anzahlKinderkrippengruppen: undefined,
-    anzahlKindergartengruppen: undefined,
-    anzahlHortgruppen: undefined,
-    anzahlGrundschulzuege: undefined,
-  };
-}
-
-/**
- * AbfrageDto
- */
-export function createAbfrageDto(): AbfrageDto {
-  return {
-    allgemeineOrtsangabe: undefined,
-    adresse: {
-      strasse: "",
-      hausnummer: "",
-      plz: "",
-      ort: "",
-      coordinate: undefined,
-    },
-    verortung: undefined,
-    fristStellungnahme: new Date(0),
-    anmerkung: undefined,
-    statusAbfrage: StatusAbfrage.Angelegt,
-    bebauungsplannummer: undefined,
-    nameAbfrage: "",
-    standVorhaben: AbfrageDtoStandVorhabenEnum.Unspecified,
-    bauvorhaben: undefined,
-    dokumente: new Array<DokumentDto>(),
-  };
-}
-
-/**
- * InfrastrukturabfrageDto
- */
-export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
+export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
   return {
     id: "",
+    version: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
-    abfrage: createAbfrageDto(),
+    artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
+    name: "",
+    statusAbfrage: StatusAbfrage.Angelegt,
+    bauvorhaben: undefined,
+    sub: undefined,
+    displayName: undefined,
+    bebauungsplannummer: undefined,
     sobonRelevant: UncertainBoolean.Unspecified,
     sobonJahr: undefined,
-    abfragevarianten: new Array<AbfragevarianteDto>(),
-    abfragevariantenSachbearbeitung: new Array<AbfragevarianteDto>(),
-    aktenzeichenProLbk: undefined,
-    offiziellerVerfahrensschritt: UncertainBoolean.Unspecified,
+    standVerfahren: BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified,
+    standVerfahrenFreieEingabe: undefined,
+    adresse: createAdresseDto(),
+    verortung: undefined,
+    dokumente: new Array<DokumentDto>(),
+    fristBearbeitung: new Date(0),
+    offizielleMitzeichnung: UncertainBoolean.Unspecified,
+    anmerkung: undefined,
+    abfragevarianten: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+    abfragevariantenSachbearbeitung: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
   };
 }
 
@@ -167,6 +104,7 @@ export function createInfrastrukturabfrageDto(): InfrastrukturabfrageDto {
  */
 export function createAdresseDto(): AdresseDto {
   return {
+    angabeLageErgaenzendeAdressinformation: undefined,
     plz: undefined,
     ort: undefined,
     strasse: undefined,
@@ -176,31 +114,88 @@ export function createAdresseDto(): AdresseDto {
 }
 
 /**
+ * AbfragevarianteBauleitplanverfahrenDto
+ */
+export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteBauleitplanverfahrenDto {
+  return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    abfragevariantenNr: Number.NaN,
+    artAbfragevariante: AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren,
+    name: "",
+    satzungsbeschluss: undefined,
+    wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>(),
+    wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    realisierungVon: Number.NaN,
+    gfWohnenGesamt: undefined,
+    gfWohnenSobonUrsaechlich: undefined,
+    gfWohnenBestandswohnbaurecht: undefined,
+    gfWohnenSonderwohnformen: false,
+    gfWohnenStudentischesWohnen: undefined,
+    gfWohnenSeniorinnenWohnen: undefined,
+    gfWohnenGenossenschaftlichesWohnen: undefined,
+    gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
+    weGesamt: undefined,
+    weSonderwohnformen: false,
+    weStudentischesWohnen: undefined,
+    weSeniorinnenWohnen: undefined,
+    weGenossenschaftlichesWohnen: undefined,
+    weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
+    gfWohnenPlanungsursaechlich: undefined,
+    sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    anmerkung: undefined,
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bauabschnitte: [],
+  };
+}
+
+/**
+ * AbfragevarianteFachreferatDto
+ */
+export function createAbfragevarianteFachreferatDto(): AbfragevarianteFachreferatDto {
+  return {
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+  };
+}
+
+/**
+ * BedarfsmeldungFachabteilungenDto
+ */
+export function createBedarfsmeldungFachabteilungenDto(): BedarfsmeldungFachreferateDto {
+  return {
+    anzahlEinrichtungen: undefined,
+    infrastruktureinrichtungTyp: BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    anzahlKinderkrippengruppen: undefined,
+    anzahlKindergartengruppen: undefined,
+    anzahlHortgruppen: undefined,
+    anzahlGrundschulzuege: undefined,
+  };
+}
+
+/**
  * BauvorhabenDto
  */
 export function createBauvorhabenDto(): BauvorhabenDto {
   return {
     id: "",
+    version: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     nameVorhaben: "",
     grundstuecksgroesse: Number.NaN,
-    standVorhaben: BauvorhabenDtoStandVorhabenEnum.Unspecified,
-    bauvorhabenNummer: "",
-    adresse: {
-      strasse: "",
-      hausnummer: "",
-      plz: "",
-      ort: "",
-      coordinate: undefined,
-    },
+    standVerfahren: BauvorhabenDtoStandVerfahrenEnum.Unspecified,
+    bauvorhabenNummer: undefined,
+    adresse: createAdresseDto(),
     verortung: undefined,
-    allgemeineOrtsangabe: "",
-    bebauungsplannummer: "",
-    fisNummer: "",
-    anmerkung: "",
+    bebauungsplannummer: undefined,
+    fisNummer: undefined,
+    anmerkung: undefined,
     sobonRelevant: UncertainBoolean.Unspecified,
-    planungsrecht: BauvorhabenDtoPlanungsrechtEnum.Unspecified,
+    sobonJahr: undefined,
+    wesentlicheRechtsgrundlage: new Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>(),
+    wesentlicheRechtsgrundlageFreieEingabe: undefined,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
     relevanteAbfragevariante: undefined,
@@ -286,7 +281,7 @@ export function createBaugebietDto(): BaugebietDto {
     lastModifiedDateTime: undefined,
     bezeichnung: "",
     realisierungVon: Number.NaN,
-    baugebietArt: BaugebietDtoBaugebietArtEnum.Ge,
+    artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum.Ge,
     bauraten: [],
     technical: false,
   };
@@ -303,7 +298,7 @@ export function createTechnicalBaugebietDto(): BaugebietDto {
     lastModifiedDateTime: undefined,
     bezeichnung: "Platzhalter",
     realisierungVon: Number.NaN,
-    baugebietArt: BaugebietDtoBaugebietArtEnum.Ge,
+    artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum.Ge,
     bauraten: [],
     technical: true,
   };
@@ -317,8 +312,8 @@ export function createBaurateDto(): BaurateDto {
     id: undefined,
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
-    geschossflaecheWohnenGeplant: undefined,
-    anzahlWeGeplant: undefined,
+    gfWohnenGeplant: undefined,
+    weGeplant: undefined,
     jahr: Number.NaN,
     foerdermix: {
       foerderarten: new Array<FoerderartDto>(),
@@ -350,14 +345,12 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
     lfdNr: undefined,
     bauvorhaben: undefined,
-    allgemeineOrtsangabe: undefined,
     adresse: createAdresseDto(),
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
   };
 }
 
@@ -383,7 +376,6 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
     lfdNr: undefined,
     bauvorhaben: undefined,
-    allgemeineOrtsangabe: undefined,
     adresse: createAdresseDto(),
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
@@ -391,7 +383,6 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     einrichtungstraeger: KindergartenDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKinderkrippeGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
@@ -409,7 +400,6 @@ export function createKindergartenDto(): KindergartenDto {
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
     lfdNr: undefined,
     bauvorhaben: undefined,
-    allgemeineOrtsangabe: undefined,
     adresse: createAdresseDto(),
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
@@ -417,7 +407,6 @@ export function createKindergartenDto(): KindergartenDto {
     einrichtungstraeger: KindergartenDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
     wohnungsnaheKindergartenPlaetze: undefined,
@@ -435,7 +424,6 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.HausFuerKinder,
     lfdNr: undefined,
     bauvorhaben: undefined,
-    allgemeineOrtsangabe: undefined,
     adresse: createAdresseDto(),
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
@@ -443,7 +431,6 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     einrichtungstraeger: HausFuerKinderDtoAllOfEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
@@ -467,7 +454,6 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung,
     lfdNr: undefined,
     bauvorhaben: undefined,
-    allgemeineOrtsangabe: undefined,
     adresse: createAdresseDto(),
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
@@ -475,7 +461,6 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     einrichtungstraeger: GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     artGsNachmittagBetreuung: undefined,
     anzahlHortGruppen: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
@@ -493,14 +478,12 @@ export function createGrundschuleDto(): GrundschuleDto {
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Grundschule,
     lfdNr: undefined,
     bauvorhaben: undefined,
-    allgemeineOrtsangabe: undefined,
     adresse: createAdresseDto(),
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     schule: createSchuleDto(),
   };
 }
@@ -516,14 +499,12 @@ export function createMittelschuleDto(): MittelschuleDto {
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Mittelschule,
     lfdNr: undefined,
     bauvorhaben: undefined,
-    allgemeineOrtsangabe: undefined,
     adresse: createAdresseDto(),
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    zugeordnetesBaugebiet: undefined,
     schule: createSchuleDto(),
   };
 }

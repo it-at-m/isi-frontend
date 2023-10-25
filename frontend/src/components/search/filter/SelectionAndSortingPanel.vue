@@ -31,10 +31,10 @@
               Alle auswählen
             </v-chip>
           </v-hover>
-          <v-hover v-model="hoverSelectInfrastrukturabfrage">
+          <v-hover v-model="hoverSelectBauleitplanverfahren">
             <v-checkbox
-              v-model="searchQueryAndSorting.selectInfrastrukturabfrage"
-              :label="'Infrastrukturabfrage'"
+              v-model="searchQueryAndSorting.selectBauleitplanverfahren"
+              :label="'Bauleitplanverfahren'"
               color="grey darken-1"
               hide-details
               dense
@@ -207,7 +207,7 @@ export default class EntitySelectionAndSortingPanel extends Vue {
 
   private hoverSelectAll = false;
   private hoverDeselectAll = false;
-  private hoverSelectInfrastrukturabfrage = false;
+  private hoverSelectBauleitplanverfahren = false;
   private hoverSelectBauvorhaben = false;
   private hoverSelectGrundschule = false;
   private hoverSelectGsNachmittagBetreuung = false;
@@ -226,8 +226,8 @@ export default class EntitySelectionAndSortingPanel extends Vue {
     if (this.hoverDeselectAll) {
       return "Es werden all Objekttypen abgewählt.";
     }
-    if (this.hoverSelectInfrastrukturabfrage) {
-      return "Die Infrastrukturabfragen werden in die Suche miteinbezogen.";
+    if (this.hoverSelectBauleitplanverfahren) {
+      return "Die Bauleitplanverfahren werden in die Suche miteinbezogen.";
     }
     if (this.hoverSelectBauvorhaben) {
       return "Die Bauvorhaben werden in die Suche miteinbezogen.";
@@ -264,7 +264,7 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   }
 
   private selectAll() {
-    this.searchQueryAndSorting.selectInfrastrukturabfrage = true;
+    this.searchQueryAndSorting.selectBauleitplanverfahren = true;
     this.searchQueryAndSorting.selectBauvorhaben = true;
     this.searchQueryAndSorting.selectGrundschule = true;
     this.searchQueryAndSorting.selectGsNachmittagBetreuung = true;
@@ -275,7 +275,7 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   }
 
   private deselectAll() {
-    this.searchQueryAndSorting.selectInfrastrukturabfrage = false;
+    this.searchQueryAndSorting.selectBauleitplanverfahren = false;
     this.searchQueryAndSorting.selectBauvorhaben = false;
     this.searchQueryAndSorting.selectGrundschule = false;
     this.searchQueryAndSorting.selectGsNachmittagBetreuung = false;

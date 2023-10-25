@@ -6,13 +6,35 @@
           cols="12"
           md="6"
         >
-          <num-field
-            id="bauvorhaben_grundstuecksgroesse"
-            v-model="calcGrundstuecksgroesse"
-            label="Grundstücksgröße"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-            :disabled="true"
-          />
+          <v-select
+            id="bauvorhaben_standVerfahren_dropdown"
+            v-model="bauvorhaben.standVerfahren"
+            :items="standVerfahrenList"
+            item-value="key"
+            item-text="value"
+            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :disabled="!isEditable"
+            @change="formChanged"
+          >
+            <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
+          </v-select>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="standVerfahrenFreieEingabeVisible"
+              id="stand_verfahren_freie_freie_eingabe_field"
+              ref="standVerfahrenFreieEingabeField"
+              v-model="bauvorhaben.standVerfahrenFreieEingabe"
+              :disabled="!isEditable"
+              label="freie Eingabe"
+              maxlength="255"
+              @input="formChanged"
+            />
+          </v-slide-y-reverse-transition>
         </v-col>
       </v-row>
       <v-row>
@@ -20,18 +42,13 @@
           cols="12"
           md="6"
         >
-          <v-select
-            id="bauvorhaben_standVorhaben_dropdown"
-            v-model="bauvorhaben.standVorhaben"
-            :items="standVorhabenList"
-            item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-            :disabled="!isEditable"
-            @change="formChanged"
-          >
-            <template #label> Stand des Vorhabens <span class="secondary--text">*</span> </template>
-          </v-select>
+          <num-field
+            id="bauvorhaben_grundstuecksgroesse"
+            v-model="calcGrundstuecksgroesse"
+            label="Grundstücksgröße"
+            :suffix="fieldPrefixesSuffixes.squareMeter"
+            :disabled="true"
+          />
         </v-col>
         <v-col
           cols="12"
@@ -49,7 +66,6 @@
     <adresse-component
       id="bauvorhaben_adresse_component"
       :adresse-prop.sync="bauvorhaben.adresse"
-      :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditable"
     />
@@ -61,19 +77,41 @@
     />
     <field-group-card :card-title="allgemeineInfoCardTitle">
       <v-row>
-        <v-col cols="12">
-          <v-select
-            id="bauvorhaben_planungsrecht_dropdown"
-            v-model="bauvorhaben.planungsrecht"
-            :items="planungsrechtList"
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-autocomplete
+            id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
+            v-model="bauvorhaben.wesentlicheRechtsgrundlage"
+            :items="wesentlicheRechtsgrundlageList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            multiple
+            chips
+            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
             :disabled="!isEditable"
             @change="formChanged"
           >
-            <template #label> Planungsrecht <span class="secondary--text">*</span> </template>
-          </v-select>
+            <template #label> Wesentliche Rechtsgrundlage <span class="secondary--text">*</span> </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
+              id="wesentliche_rechtsgrundlage_freie_eingabe_field"
+              ref="wesentlicheRechtsgrundlageFreieEingabeField"
+              v-model="bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe"
+              :disabled="!isEditable"
+              label="freie Eingabe"
+              maxlength="255"
+              @input="formChanged"
+            />
+          </v-slide-y-reverse-transition>
         </v-col>
       </v-row>
       <v-row>
@@ -81,7 +119,7 @@
           <v-autocomplete
             id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
-            :items="baugebietArtList"
+            :items="artBaulicheNutzungList"
             item-value="key"
             item-text="value"
             multiple
@@ -91,7 +129,7 @@
             @input="formChanged"
           >
             <template #label>
-              Flächennutzung laut Flächennutzungsplan
+              Art der baulichen Nutzung
               <span class="secondary--text">*</span>
             </template>
           </v-autocomplete>
@@ -203,7 +241,14 @@
 <script lang="ts">
 import _ from "lodash";
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, UncertainBoolean, GemarkungDto, FlurstueckDto } from "@/api/api-client/isi-backend";
+import {
+  LookupEntryDto,
+  UncertainBoolean,
+  GemarkungDto,
+  FlurstueckDto,
+  BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
+  BauvorhabenDtoStandVerfahrenEnum,
+} from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
@@ -245,11 +290,11 @@ export default class BauvorhabenForm extends Mixins(
   @VModel({ type: BauvorhabenModel })
   bauvorhaben!: BauvorhabenModel;
 
-  private dokumentCardTitle = "Dokumente";
-
   private sobonCardTitle = "SoBoN";
 
   private sobonJahrVisible = false;
+
+  private standVerfahrenFreieEingabeVisible = false;
 
   private nameRootFolder = "bauvorhaben";
 
@@ -257,19 +302,21 @@ export default class BauvorhabenForm extends Mixins(
 
   private referencedObjectsCardTitle = "Zugehörige Infrastruktureinrichtungen und Abfragen";
 
+  private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  get standVorhabenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVorhaben"];
+  get standVerfahrenList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/standVerfahren"];
   }
 
-  get planungsrechtList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/planungsrecht"];
+  get wesentlicheRechtsgrundlageList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/wesentlicheRechtsgrundlage"];
   }
 
-  get baugebietArtList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/baugebietArt"];
+  get artBaulicheNutzungList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/artBaulicheNutzung"];
   }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
@@ -288,6 +335,9 @@ export default class BauvorhabenForm extends Mixins(
       this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
         gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
           if (!_.isNil(flurstueck.flaecheQm)) {
+            if (_.isNil(this.bauvorhaben.grundstuecksgroesse)) {
+              this.bauvorhaben.grundstuecksgroesse = 0;
+            }
             this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
           }
         });
@@ -304,6 +354,28 @@ export default class BauvorhabenForm extends Mixins(
     } else {
       this.sobonJahrVisible = false;
       this.bauvorhaben.sobonJahr = undefined;
+    }
+  }
+
+  @Watch("bauvorhaben.wesentlicheRechtsgrundlage", { immediate: true })
+  private wesentlicheRechtsgrundlageChanged(): void {
+    if (
+      this.bauvorhaben.wesentlicheRechtsgrundlage?.includes(BauvorhabenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe)
+    ) {
+      this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;
+    } else {
+      this.bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe = undefined;
+      this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+    }
+  }
+
+  @Watch("bauvorhaben.standVerfahren", { immediate: true })
+  private standVerfahrenChanged(): void {
+    if (this.bauvorhaben.standVerfahren?.includes(BauvorhabenDtoStandVerfahrenEnum.FreieEingabe)) {
+      this.standVerfahrenFreieEingabeVisible = true;
+    } else {
+      this.bauvorhaben.standVerfahrenFreieEingabe = undefined;
+      this.standVerfahrenFreieEingabeVisible = false;
     }
   }
 }

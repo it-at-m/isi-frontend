@@ -56,6 +56,12 @@ export interface AdresseDto {
      * @memberof AdresseDto
      */
     coordinate?: Wgs84Dto;
+    /**
+     * 
+     * @type {string}
+     * @memberof AdresseDto
+     */
+    angabeLageErgaenzendeAdressinformation?: string;
 }
 
 export function AdresseDtoFromJSON(json: any): AdresseDto {
@@ -73,6 +79,7 @@ export function AdresseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'strasse': !exists(json, 'strasse') ? undefined : json['strasse'],
         'hausnummer': !exists(json, 'hausnummer') ? undefined : json['hausnummer'],
         'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
+        'angabeLageErgaenzendeAdressinformation': !exists(json, 'angabeLageErgaenzendeAdressinformation') ? undefined : json['angabeLageErgaenzendeAdressinformation'],
     };
 }
 
@@ -90,6 +97,7 @@ export function AdresseDtoToJSON(value?: AdresseDto | null): any {
         'strasse': value.strasse,
         'hausnummer': value.hausnummer,
         'coordinate': Wgs84DtoToJSON(value.coordinate),
+        'angabeLageErgaenzendeAdressinformation': value.angabeLageErgaenzendeAdressinformation,
     };
 }
 

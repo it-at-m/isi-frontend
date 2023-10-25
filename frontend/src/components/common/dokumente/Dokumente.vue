@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <div>
+  <field-group-card :card-title="dokumentCardTitle">
+    <v-container>
       <v-progress-circular
         v-if="isLoading"
         id="dokumente_ladekreis"
@@ -47,7 +47,7 @@
           </v-row>
         </v-col>
       </v-row>
-    </div>
+    </v-container>
     <input
       ref="dokumenteInput"
       type="file"
@@ -57,7 +57,7 @@
       @change="onFilesSelected"
       @click="onClick"
     />
-  </v-container>
+  </field-group-card>
 </template>
 
 <script lang="ts">
@@ -96,6 +96,8 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, MimeType
 
   @Prop({ type: Boolean, default: true })
   private isDokumenteEditable!: boolean;
+
+  private dokumentCardTitle = "Dokumente";
 
   private allowedMimeTypes = "";
 

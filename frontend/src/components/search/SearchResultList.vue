@@ -12,12 +12,12 @@
       v-slot="{ hover }"
     >
       <v-card
-        v-if="isTypeOfInfrastrukturabfrage(item)"
+        v-if="isTypeOfAbfrage(item)"
         :id="'search_result_item_' + index"
         outlined
         class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
-        @click="routeToInfrastrukturabfrageForm(item)"
+        @click="routeToAbfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
           <v-icon
@@ -26,19 +26,17 @@
           >
             mdi-comment-alert
           </v-icon>
-          {{ castToAbfrageSearchResultDto(item).nameAbfrage }}
+          {{ castToAbfrageSearchResultDto(item).name }}
         </v-card-subtitle>
         <v-card-text>
           <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
           <v-spacer />
           <span>
             Status:
-            {{
-              getLookupValueInfrastrukturabfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList)
-            }}
+            {{ getLookupValueAbfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList) }}
           </span>
           <v-spacer />
-          <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristStellungnahme) }} </span>
+          <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristBearbeitung) }} </span>
         </v-card-text>
       </v-card>
       <v-card
@@ -68,7 +66,7 @@
           <v-spacer />
           <span>
             Stand:
-            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVorhaben, standVorhabenList) }}
+            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVerfahren, standVerfahrenList) }}
           </span>
         </v-card-text>
       </v-card>
@@ -158,8 +156,8 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     return this.$store.getters["lookup/statusAbfrage"];
   }
 
-  get standVorhabenList(): Array<LookupEntryDto> {
-    return this.$store.getters["lookup/standVorhaben"];
+  get standVerfahrenList(): Array<LookupEntryDto> {
+    return this.$store.getters["lookup/standVerfahren"];
   }
 
   get getSearchQueryAndSorting(): SearchQueryAndSortingDto {
@@ -222,17 +220,17 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
       });
   }
 
-  // Infrastrukturabfragen
+  // Type: ABFRAGE
 
-  private isTypeOfInfrastrukturabfrage(searchResult: SearchResultDto): boolean {
-    return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastrukturabfrage);
+  private isTypeOfAbfrage(searchResult: SearchResultDto): boolean {
+    return _.isEqual(searchResult.type, SearchResultDtoTypeEnum.Abfrage);
   }
 
   private castToAbfrageSearchResultDto(searchResult: SearchResultDto): AbfrageSearchResultDto {
     return searchResult as AbfrageSearchResultDto;
   }
 
-  private routeToInfrastrukturabfrageForm(abfrageSearchResult: AbfrageSearchResultDto): void {
+  private routeToAbfrageForm(abfrageSearchResult: AbfrageSearchResultDto): void {
     if (!_.isUndefined(abfrageSearchResult.id)) {
       router.push({
         name: "updateabfrage",
@@ -241,7 +239,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     }
   }
 
-  private getLookupValueInfrastrukturabfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
+  private getLookupValueAbfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 

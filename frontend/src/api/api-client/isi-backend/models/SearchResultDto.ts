@@ -38,7 +38,7 @@ export interface SearchResultDto {
  * @export
  */
 export const SearchResultDtoTypeEnum = {
-    Infrastrukturabfrage: 'INFRASTRUKTURABFRAGE',
+    Abfrage: 'ABFRAGE',
     Bauvorhaben: 'BAUVORHABEN',
     Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
 } as const;

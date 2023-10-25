@@ -2,7 +2,7 @@ import { Component, Mixins } from "vue-property-decorator";
 import {
   CreateInfrastruktureinrichtungRequest,
   DeleteInfrastruktureinrichtungByIdRequest,
-  GetInfrastrukturabfrageByIdRequest,
+  GetInfrastruktureinrichtungByIdRequest,
   InfrastruktureinrichtungApi,
   InfrastruktureinrichtungDto,
   UpdateInfrastruktureinrichtungOperationRequest,
@@ -27,7 +27,7 @@ export default class InfrastruktureinrichtungApiRequestMixin extends Mixins(Erro
     id: string,
     showInInformationList: boolean,
   ): Promise<UpdateInfrastruktureinrichtungRequest> {
-    const requestObject: GetInfrastrukturabfrageByIdRequest = {
+    const requestObject: GetInfrastruktureinrichtungByIdRequest = {
       id: id,
     };
     return this.infrastruktureinrichtungApi
