@@ -581,7 +581,7 @@ export default class Abfrage extends Mixins(
   private async startStatusUebergang(transition: TransitionDto) {
     if (!this.isFormDirty()) {
       let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
-      if (transition.url === "keine-bearbeitung-noetig") {
+      if (transition.url === "erledigt-ohne-fachreferat") {
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";
       }
       const validationMessage: string | null = this.findFaultInAbfrageForSave(this.abfrage);
