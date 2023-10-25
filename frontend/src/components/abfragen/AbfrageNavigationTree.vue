@@ -503,7 +503,7 @@ function bauratenDeterminableForAbfragevariante(abfragevariante: Abfragevariante
 function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
-    (!_.isNil(baugebiet.weGeplant) || !_.isNil(baugebiet.weGeplant)) &&
+    (!_.isNil(baugebiet.weGeplant) || !_.isNil(baugebiet.gfWohnenGeplant)) &&
     // Die Abfragevariante darf keine Bauabschnitte referenzieren.
     _.isEmpty(baugebiet.bauraten) &&
     // Das Datum für Realisierung von muss gesetzt sein.
