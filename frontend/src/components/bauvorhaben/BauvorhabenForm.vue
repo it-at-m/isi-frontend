@@ -66,7 +66,6 @@
     <adresse-component
       id="bauvorhaben_adresse_component"
       :adresse-prop.sync="bauvorhaben.adresse"
-      :allgemeine-ortsangabe-prop.sync="bauvorhaben.allgemeineOrtsangabe"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditable"
     />
