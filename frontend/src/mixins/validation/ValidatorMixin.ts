@@ -310,7 +310,7 @@ export default class ValidatorMixin extends Vue {
     validationMessage = this.findFaultInInfrastruktureinrichtung(kindergarten);
     if (_.isNil(validationMessage)) {
       validationMessage = this.findFaultForWohnungsnahePlaetze(
-        "Kindergarten",
+        "Kindergartenplätze",
         kindergarten.anzahlKindergartenPlaetze,
         kindergarten.wohnungsnaheKindergartenPlaetze,
       );
@@ -330,7 +330,7 @@ export default class ValidatorMixin extends Vue {
     }
     if (_.isNil(validationMessage)) {
       validationMessage = this.findFaultForWohnungsnahePlaetze(
-        "Kindergarten",
+        "Kindergartenplätze",
         hausFuerKinder.anzahlKindergartenPlaetze,
         hausFuerKinder.wohnungsnaheKindergartenPlaetze,
       );
