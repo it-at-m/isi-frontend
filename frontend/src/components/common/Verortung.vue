@@ -120,7 +120,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   get isEditable(): boolean {
     let editable = false;
     if (this.context === Context.ABFRAGE) {
-      editable = this.isEditableByAbfrageerstellung();
+      editable = this.isEditableByAbfrageerstellung() || this.isEditableBySachbearbeitung();
     } else if (this.context === Context.BAUVORHABEN) {
       editable = this.isRoleAdminOrSachbearbeitung();
     }

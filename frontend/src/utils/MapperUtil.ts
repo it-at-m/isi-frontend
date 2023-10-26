@@ -88,6 +88,7 @@ export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
     abfragevariantenSachbearbeitung: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
       bauleitplanverfahrenDto.abfragevariantenSachbearbeitung,
     ),
+    verortung: bauleitplanverfahrenDto.verortung,
   } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
 }
 

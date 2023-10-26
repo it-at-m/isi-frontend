@@ -37,6 +37,12 @@ import {
     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSONTyped,
     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfToJSON,
 } from './BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 
@@ -56,6 +62,12 @@ export interface BauleitplanverfahrenInBearbeitungSachbearbeitungDto extends Abf
      * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
     abfragevariantenSachbearbeitung: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>;
+    /**
+     * 
+     * @type {VerortungDto}
+     * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDto
+     */
+    verortung?: VerortungDto;
 }
 
 
@@ -72,6 +84,7 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped
         ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),
         'abfragevarianten': ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
         'abfragevariantenSachbearbeitung': ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
     };
 }
 
@@ -86,6 +99,7 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON(value?
         ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value),
         'abfragevarianten': ((value.abfragevarianten as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
         'abfragevariantenSachbearbeitung': ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
+        'verortung': VerortungDtoToJSON(value.verortung),
     };
 }
 
