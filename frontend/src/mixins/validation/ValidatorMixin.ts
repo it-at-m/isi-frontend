@@ -346,7 +346,16 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInGsNachmittagBetreuungForSave(gsNachmittagBetreuung: GsNachmittagBetreuungDto): string | null {
-    return this.findFaultInInfrastruktureinrichtung(gsNachmittagBetreuung);
+    let validationMessage: string | null;
+    validationMessage = this.findFaultInInfrastruktureinrichtung(gsNachmittagBetreuung);
+    if (_.isNil(validationMessage)) {
+      validationMessage = this.findFaultForWohnungsnahePlaetze(
+        "Hortplätze",
+        gsNachmittagBetreuung.anzahlHortPlaetze,
+        gsNachmittagBetreuung.wohnungsnaheHortPlaetze,
+      );
+    }
+    return validationMessage;
   }
 
   public findFaultInGrundschuleForSave(grundschule: GrundschuleDto): string | null {
