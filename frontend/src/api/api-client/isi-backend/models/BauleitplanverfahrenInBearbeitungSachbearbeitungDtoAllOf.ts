@@ -25,6 +25,12 @@ import {
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 
@@ -44,6 +50,12 @@ export interface BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf {
      * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf
      */
     abfragevariantenSachbearbeitung?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>;
+    /**
+     * 
+     * @type {VerortungDto}
+     * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf
+     */
+    verortung?: VerortungDto;
 }
 
 export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON(json: any): BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf {
@@ -58,6 +70,7 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON
         
         'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
         'abfragevariantenSachbearbeitung': !exists(json, 'abfragevariantenSachbearbeitung') ? undefined : ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
     };
 }
 
@@ -72,6 +85,7 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfToJSON(v
         
         'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
         'abfragevariantenSachbearbeitung': value.abfragevariantenSachbearbeitung === undefined ? undefined : ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
+        'verortung': VerortungDtoToJSON(value.verortung),
     };
 }
 
