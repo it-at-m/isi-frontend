@@ -62,6 +62,7 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
  * @export
  */
 export const AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = {
+    Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
     WeitereAbfragen: 'WEITERE_ABFRAGEN'

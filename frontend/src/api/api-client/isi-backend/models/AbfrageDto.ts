@@ -21,6 +21,7 @@ import {
 } from './StatusAbfrage';
 
 import {
+     BaugenehmigungsverfahrenDtoFromJSONTyped,
      BauleitplanverfahrenDtoFromJSONTyped
 } from './';
 
@@ -65,7 +66,7 @@ export interface AbfrageDto {
      * @type {string}
      * @memberof AbfrageDto
      */
-    name: string;
+    name?: string;
     /**
      * 
      * @type {StatusAbfrage}
@@ -103,6 +104,7 @@ export interface AbfrageDto {
  * @export
  */
 export const AbfrageDtoArtAbfrageEnum = {
+    Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
     WeitereAbfragen: 'WEITERE_ABFRAGEN'
@@ -119,6 +121,9 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         return json;
     }
     if (!ignoreDiscriminator) {
+        if (json['artAbfrage'] === 'BaugenehmigungsverfahrenDto') {
+            return BaugenehmigungsverfahrenDtoFromJSONTyped(json, true);
+        }
         if (json['artAbfrage'] === 'BauleitplanverfahrenDto') {
             return BauleitplanverfahrenDtoFromJSONTyped(json, true);
         }
@@ -130,7 +135,7 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
-        'name': json['name'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],

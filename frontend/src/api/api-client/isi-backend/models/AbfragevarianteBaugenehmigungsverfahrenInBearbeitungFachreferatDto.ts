@@ -23,31 +23,31 @@ import {
 /**
  * 
  * @export
- * @interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+ * @interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto
  */
-export interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto {
+export interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto {
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto
      */
     version?: number;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto
      */
-    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum;
+    artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum;
     /**
      * 
      * @type {Array<BedarfsmeldungFachreferateDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto
      */
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
 }
@@ -56,20 +56,20 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto 
 /**
  * @export
  */
-export const AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = {
+export const AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
     WeitereAbfragen: 'WEITERE_ABFRAGEN'
 } as const;
-export type AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum];
+export type AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum];
 
 
-export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto {
-    return AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
+export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON(json: any): AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto {
+    return AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
 }
 
-export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto {
+export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -82,7 +82,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFr
     };
 }
 
-export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value?: AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto | null): any {
+export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON(value?: AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto | null): any {
     if (value === undefined) {
         return undefined;
     }

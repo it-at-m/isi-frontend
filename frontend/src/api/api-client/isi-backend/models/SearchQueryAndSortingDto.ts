@@ -36,6 +36,12 @@ export interface SearchQueryAndSortingDto {
      * @type {boolean}
      * @memberof SearchQueryAndSortingDto
      */
+    selectBaugenehmigungsverfahren: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SearchQueryAndSortingDto
+     */
     selectBauvorhaben: boolean;
     /**
      * 
@@ -132,6 +138,7 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         
         'searchQuery': json['searchQuery'],
         'selectBauleitplanverfahren': json['selectBauleitplanverfahren'],
+        'selectBaugenehmigungsverfahren': json['selectBaugenehmigungsverfahren'],
         'selectBauvorhaben': json['selectBauvorhaben'],
         'selectGrundschule': json['selectGrundschule'],
         'selectGsNachmittagBetreuung': json['selectGsNachmittagBetreuung'],
@@ -157,6 +164,7 @@ export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto 
         
         'searchQuery': value.searchQuery,
         'selectBauleitplanverfahren': value.selectBauleitplanverfahren,
+        'selectBaugenehmigungsverfahren': value.selectBaugenehmigungsverfahren,
         'selectBauvorhaben': value.selectBauvorhaben,
         'selectGrundschule': value.selectGrundschule,
         'selectGsNachmittagBetreuung': value.selectGsNachmittagBetreuung,

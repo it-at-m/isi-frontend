@@ -23,171 +23,201 @@ import {
 /**
  * 
  * @export
- * @interface AbfragevarianteBauleitplanverfahrenAngelegtDto
+ * @interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
  */
-export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
+export interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto {
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     version?: number;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
-    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum;
+    artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     abfragevariantenNr: number;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     name: string;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
-     */
-    satzungsbeschluss?: Date;
-    /**
-     * 
      * @type {Array<string>}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
-    wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>;
+    wesentlicheRechtsgrundlage: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoWesentlicheRechtsgrundlageEnum>;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     realisierungVon: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     gfWohnenGesamt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
-    gfWohnenSobonUrsaechlich?: number;
+    gfWohnenBaurechtlichGenehmigt?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    gfWohnenBaurechtlichFestgesetzt?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     gfWohnenBestandswohnbaurecht?: number;
     /**
      * 
      * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     gfWohnenSonderwohnformen: boolean;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     gfWohnenStudentischesWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     gfWohnenSeniorinnenWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     gfWohnenGenossenschaftlichesWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     weGesamt?: number;
     /**
      * 
+     * @type {number}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    weBaurechtlichGenehmigt?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    weBaurechtlichFestgesetzt?: number;
+    /**
+     * 
      * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     weSonderwohnformen: boolean;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     weStudentischesWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     weSeniorinnenWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     weGenossenschaftlichesWohnen?: number;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
      * @type {Array<BauabschnittDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     bauabschnitte?: Array<BauabschnittDto>;
+    /**
+     * 
+     * @type {number}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    gfWohnenPlanungsursaechlich?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    anmerkung?: string;
 }
 
 
 /**
  * @export
  */
-export const AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum = {
+export const AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
     WeitereAbfragen: 'WEITERE_ABFRAGEN'
 } as const;
-export type AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum];
+export type AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum];
 
 /**
  * @export
  */
-export const AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum = {
+export const AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoWesentlicheRechtsgrundlageEnum = {
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
@@ -200,14 +230,25 @@ export const AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrun
     InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum];
+export type AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoWesentlicheRechtsgrundlageEnum];
+
+/**
+ * @export
+ */
+export const AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Jahr2014: 'JAHR_2014',
+    Jahr2017: 'JAHR_2017',
+    Jahr2022: 'JAHR_2022'
+} as const;
+export type AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum];
 
 
-export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenAngelegtDto {
-    return AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json, false);
+export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto {
+    return AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
 }
 
-export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteBauleitplanverfahrenAngelegtDto {
+export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -218,12 +259,12 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'abfragevariantenNr': json['abfragevariantenNr'],
         'name': json['name'],
-        'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'realisierungVon': json['realisierungVon'],
         'gfWohnenGesamt': !exists(json, 'gfWohnenGesamt') ? undefined : json['gfWohnenGesamt'],
-        'gfWohnenSobonUrsaechlich': !exists(json, 'gfWohnenSobonUrsaechlich') ? undefined : json['gfWohnenSobonUrsaechlich'],
+        'gfWohnenBaurechtlichGenehmigt': !exists(json, 'gfWohnenBaurechtlichGenehmigt') ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
+        'gfWohnenBaurechtlichFestgesetzt': !exists(json, 'gfWohnenBaurechtlichFestgesetzt') ? undefined : json['gfWohnenBaurechtlichFestgesetzt'],
         'gfWohnenBestandswohnbaurecht': !exists(json, 'gfWohnenBestandswohnbaurecht') ? undefined : json['gfWohnenBestandswohnbaurecht'],
         'gfWohnenSonderwohnformen': json['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': !exists(json, 'gfWohnenStudentischesWohnen') ? undefined : json['gfWohnenStudentischesWohnen'],
@@ -231,16 +272,21 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json
         'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
+        'weBaurechtlichGenehmigt': !exists(json, 'weBaurechtlichGenehmigt') ? undefined : json['weBaurechtlichGenehmigt'],
+        'weBaurechtlichFestgesetzt': !exists(json, 'weBaurechtlichFestgesetzt') ? undefined : json['weBaurechtlichFestgesetzt'],
         'weSonderwohnformen': json['weSonderwohnformen'],
         'weStudentischesWohnen': !exists(json, 'weStudentischesWohnen') ? undefined : json['weStudentischesWohnen'],
         'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
+        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
+        'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
 }
 
-export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON(value?: AbfragevarianteBauleitplanverfahrenAngelegtDto | null): any {
+export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON(value?: AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -254,12 +300,12 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON(value?: Abf
         'artAbfragevariante': value.artAbfragevariante,
         'abfragevariantenNr': value.abfragevariantenNr,
         'name': value.name,
-        'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
         'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
         'realisierungVon': value.realisierungVon,
         'gfWohnenGesamt': value.gfWohnenGesamt,
-        'gfWohnenSobonUrsaechlich': value.gfWohnenSobonUrsaechlich,
+        'gfWohnenBaurechtlichGenehmigt': value.gfWohnenBaurechtlichGenehmigt,
+        'gfWohnenBaurechtlichFestgesetzt': value.gfWohnenBaurechtlichFestgesetzt,
         'gfWohnenBestandswohnbaurecht': value.gfWohnenBestandswohnbaurecht,
         'gfWohnenSonderwohnformen': value.gfWohnenSonderwohnformen,
         'gfWohnenStudentischesWohnen': value.gfWohnenStudentischesWohnen,
@@ -267,12 +313,17 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON(value?: Abf
         'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
         'weGesamt': value.weGesamt,
+        'weBaurechtlichGenehmigt': value.weBaurechtlichGenehmigt,
+        'weBaurechtlichFestgesetzt': value.weBaurechtlichFestgesetzt,
         'weSonderwohnformen': value.weSonderwohnformen,
         'weStudentischesWohnen': value.weStudentischesWohnen,
         'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
+        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'anmerkung': value.anmerkung,
     };
 }
 

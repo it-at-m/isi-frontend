@@ -55,6 +55,12 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
      * @type {string}
      * @memberof AbfrageSearchResultDto
      */
+    artAbfrage?: AbfrageSearchResultDtoArtAbfrageEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageSearchResultDto
+     */
     name?: string;
     /**
      * 
@@ -98,6 +104,17 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
 /**
  * @export
  */
+export const AbfrageSearchResultDtoArtAbfrageEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type AbfrageSearchResultDtoArtAbfrageEnum = typeof AbfrageSearchResultDtoArtAbfrageEnum[keyof typeof AbfrageSearchResultDtoArtAbfrageEnum];
+
+/**
+ * @export
+ */
 export const AbfrageSearchResultDtoStandVerfahrenEnum = {
     Unspecified: 'UNSPECIFIED',
     VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
@@ -132,6 +149,7 @@ export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminat
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkModelFromJSON))),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
@@ -152,6 +170,7 @@ export function AbfrageSearchResultDtoToJSON(value?: AbfrageSearchResultDto | nu
     return {
         ...SearchResultDtoToJSON(value),
         'id': value.id,
+        'artAbfrage': value.artAbfrage,
         'name': value.name,
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkModelToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),

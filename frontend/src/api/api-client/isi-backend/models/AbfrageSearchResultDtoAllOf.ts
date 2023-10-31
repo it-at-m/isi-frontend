@@ -43,6 +43,12 @@ export interface AbfrageSearchResultDtoAllOf {
      * @type {string}
      * @memberof AbfrageSearchResultDtoAllOf
      */
+    artAbfrage?: AbfrageSearchResultDtoAllOfArtAbfrageEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageSearchResultDtoAllOf
+     */
     name?: string;
     /**
      * 
@@ -86,6 +92,17 @@ export interface AbfrageSearchResultDtoAllOf {
 /**
  * @export
  */
+export const AbfrageSearchResultDtoAllOfArtAbfrageEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
+    Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
+    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+} as const;
+export type AbfrageSearchResultDtoAllOfArtAbfrageEnum = typeof AbfrageSearchResultDtoAllOfArtAbfrageEnum[keyof typeof AbfrageSearchResultDtoAllOfArtAbfrageEnum];
+
+/**
+ * @export
+ */
 export const AbfrageSearchResultDtoAllOfStandVerfahrenEnum = {
     Unspecified: 'UNSPECIFIED',
     VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
@@ -120,6 +137,7 @@ export function AbfrageSearchResultDtoAllOfFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkModelFromJSON))),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
@@ -140,6 +158,7 @@ export function AbfrageSearchResultDtoAllOfToJSON(value?: AbfrageSearchResultDto
     return {
         
         'id': value.id,
+        'artAbfrage': value.artAbfrage,
         'name': value.name,
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkModelToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
