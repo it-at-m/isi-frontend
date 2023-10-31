@@ -10,6 +10,7 @@ class SearchQueryAndSortingModel {
   public allObjectTypesSelected(): boolean {
     return (
       this.selectBauleitplanverfahren &&
+      this.selectBaugenehmigungsverfahren &&
       this.selectBauvorhaben &&
       this.selectGrundschule &&
       this.selectGsNachmittagBetreuung &&
@@ -23,6 +24,7 @@ class SearchQueryAndSortingModel {
   public allObjectTypesDeselected(): boolean {
     return (
       !this.selectBauleitplanverfahren &&
+      !this.selectBaugenehmigungsverfahren &&
       !this.selectBauvorhaben &&
       !this.selectGrundschule &&
       !this.selectGsNachmittagBetreuung &&

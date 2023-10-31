@@ -10,6 +10,7 @@
           id="bauleitverfahren_component"
           ref="bauleitverfahrenComponent"
           v-model="selected"
+          :is-new="isNewAbfrage()"
           :mode="modeAbfrage"
         />
         <abfragevariante-component
@@ -390,6 +391,10 @@ export default class Abfrage extends Mixins(
   public possbileTransitions: Array<TransitionDto> = [];
 
   mounted(): void {
+    const artAbfrage = this.$route.params.art;
+    if (!_.isNil(artAbfrage)) {
+      this.createAbfrage(artAbfrage);
+    }
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.setSelectedAbfrageInStore();
@@ -397,6 +402,10 @@ export default class Abfrage extends Mixins(
       this.getTransitions(this.abfrageId, true).then((response) => {
         this.possbileTransitions = response;
       });
+  }
+
+  private createAbfrage(artAbfrage: string) {
+    console.log("createAbfrage: " + artAbfrage);
   }
 
   @Watch("$store.state.search.selectedAbfrage", { deep: true })

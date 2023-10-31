@@ -1,6 +1,9 @@
 <template>
   <div>
-    <statusleiste-component :abfrage="abfrage" />
+    <statusleiste-component
+      v-if="!isNew"
+      :abfrage="abfrage"
+    />
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
@@ -50,5 +53,8 @@ export default class AbfrageCommonComponent extends Mixins(
   get isEditable(): boolean {
     return this.isEditableProp;
   }
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isNew!: boolean;
 }
 </script>

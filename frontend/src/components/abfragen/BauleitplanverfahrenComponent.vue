@@ -4,6 +4,7 @@
       id="abfrage_common_component"
       ref="abfrageCommonComponent"
       v-model="bauleitplanverfahren"
+      :is-new="isNew"
       :is-editable-prop="isEditableByAbfrageerstellung()"
     />
     <allgemeine-informationen-component
@@ -45,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenComponent from "@/components/abfragen/AllgemeineInformationenComponent.vue";
 import AllgemeineInformationenZurAbfrageComponent from "@/components/abfragen/AllgemeineInformationenZurAbfrageComponent.vue";
@@ -72,6 +73,9 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 })
 export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
   @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isNew!: boolean;
 
   private nameRootFolder = "bauleitplanverfahren";
 }
