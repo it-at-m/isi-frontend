@@ -293,19 +293,69 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInKinderkrippeForSave(kinderkrippe: KinderkrippeDto): string | null {
-    return this.findFaultInInfrastruktureinrichtung(kinderkrippe);
+    let validationMessage: string | null;
+    validationMessage = this.findFaultInInfrastruktureinrichtung(kinderkrippe);
+    if (_.isNil(validationMessage)) {
+      validationMessage = this.findFaultForWohnungsnahePlaetze(
+        "Kinderkrippenplätze",
+        kinderkrippe.anzahlKinderkrippePlaetze,
+        kinderkrippe.wohnungsnaheKinderkrippePlaetze,
+      );
+    }
+    return validationMessage;
   }
 
   public findFaultInKindergartenForSave(kindergarten: KindergartenDto): string | null {
-    return this.findFaultInInfrastruktureinrichtung(kindergarten);
+    let validationMessage: string | null;
+    validationMessage = this.findFaultInInfrastruktureinrichtung(kindergarten);
+    if (_.isNil(validationMessage)) {
+      validationMessage = this.findFaultForWohnungsnahePlaetze(
+        "Kindergartenplätze",
+        kindergarten.anzahlKindergartenPlaetze,
+        kindergarten.wohnungsnaheKindergartenPlaetze,
+      );
+    }
+    return validationMessage;
   }
 
   public findFaultInHausFuerKinderForSave(hausFuerKinder: HausFuerKinderDto): string | null {
-    return this.findFaultInInfrastruktureinrichtung(hausFuerKinder);
+    let validationMessage: string | null;
+    validationMessage = this.findFaultInInfrastruktureinrichtung(hausFuerKinder);
+    if (_.isNil(validationMessage)) {
+      validationMessage = this.findFaultForWohnungsnahePlaetze(
+        "Kinderkrippenplätze",
+        hausFuerKinder.anzahlKinderkrippePlaetze,
+        hausFuerKinder.wohnungsnaheKinderkrippePlaetze,
+      );
+    }
+    if (_.isNil(validationMessage)) {
+      validationMessage = this.findFaultForWohnungsnahePlaetze(
+        "Kindergartenplätze",
+        hausFuerKinder.anzahlKindergartenPlaetze,
+        hausFuerKinder.wohnungsnaheKindergartenPlaetze,
+      );
+    }
+    if (_.isNil(validationMessage)) {
+      validationMessage = this.findFaultForWohnungsnahePlaetze(
+        "Hortplätze",
+        hausFuerKinder.anzahlHortPlaetze,
+        hausFuerKinder.wohnungsnaheHortPlaetze,
+      );
+    }
+    return validationMessage;
   }
 
   public findFaultInGsNachmittagBetreuungForSave(gsNachmittagBetreuung: GsNachmittagBetreuungDto): string | null {
-    return this.findFaultInInfrastruktureinrichtung(gsNachmittagBetreuung);
+    let validationMessage: string | null;
+    validationMessage = this.findFaultInInfrastruktureinrichtung(gsNachmittagBetreuung);
+    if (_.isNil(validationMessage)) {
+      validationMessage = this.findFaultForWohnungsnahePlaetze(
+        "Hortplätze",
+        gsNachmittagBetreuung.anzahlHortPlaetze,
+        gsNachmittagBetreuung.wohnungsnaheHortPlaetze,
+      );
+    }
+    return validationMessage;
   }
 
   public findFaultInGrundschuleForSave(grundschule: GrundschuleDto): string | null {
@@ -336,6 +386,17 @@ export default class ValidatorMixin extends Vue {
       !this.isValidAdresse(infrastruktureinrichtung.adresse)
     ) {
       return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
+    }
+    return null;
+  }
+
+  private findFaultForWohnungsnahePlaetze(
+    artPlaetze: string,
+    plaetzeGesamt: number | undefined,
+    plaetzeWohnungsnah: number | undefined,
+  ): string | null {
+    if (_.defaultTo(plaetzeWohnungsnah, 0) > _.defaultTo(plaetzeGesamt, 0)) {
+      return `Die Anzahl der wohnungsnahen ${artPlaetze} darf nicht die Gesamtanzahl der verfügbaren ${artPlaetze} übersteigen.`;
     }
     return null;
   }
