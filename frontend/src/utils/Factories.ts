@@ -50,6 +50,7 @@ import {
   KindergartenDtoEinrichtungstraegerEnum,
   HausFuerKinderDtoAllOfEinrichtungstraegerEnum,
   GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDto,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -97,6 +98,7 @@ export function createAbfrageDto(): AbfrageDto {
 /**
  * BauleitplanverfahrenDto
  */
+
 export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
   return {
     id: "",
@@ -106,7 +108,6 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
     name: "",
     statusAbfrage: StatusAbfrage.Angelegt,
-    anmerkung: undefined,
     bauvorhaben: undefined,
     sub: undefined,
     displayName: undefined,
@@ -120,6 +121,7 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
     offizielleMitzeichnung: UncertainBoolean.Unspecified,
+    anmerkung: undefined,
     abfragevarianten: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
     abfragevariantenSachbearbeitung: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
   };
@@ -149,8 +151,8 @@ export function createBaugenehmigungsverfahrenDto(): BaugenehmigungsverfahrenDto
     verortung: undefined,
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
-    abfragevarianten: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
-    abfragevariantenSachbearbeitung: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+    abfragevarianten: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
+    abfragevariantenSachbearbeitung: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
   };
 }
 
@@ -216,7 +218,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenDto(): AbfragevarianteBau
     createdDateTime: undefined,
     lastModifiedDateTime: undefined,
     abfragevariantenNr: Number.NaN,
-    artAbfragevariante: AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren,
+    artAbfragevariante: AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren,
     name: "",
     wesentlicheRechtsgrundlage: Array<AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum>(),
     wesentlicheRechtsgrundlageFreieEingabe: undefined,
@@ -239,20 +241,10 @@ export function AbfragevarianteBaugenehmigungsverfahrenDto(): AbfragevarianteBau
     weSeniorinnenWohnen: undefined,
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
-    gfWohnenPlanungsursaechlich: undefined,
     sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
     anmerkung: undefined,
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
     bauabschnitte: [],
-  };
-}
-
-/**
- * AbfragevarianteFachreferatDto
- */
-export function createAbfragevarianteFachreferatDto(): AbfragevarianteFachreferatDto {
-  return {
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
   };
 }
 
