@@ -318,9 +318,9 @@ import {
   createBaurateDto,
   createAbfrageDto,
   createBauleitplanverfahrenDto,
+  createBaugenehmigungsverfahrenDto,
   createTechnicalBauabschnittDto,
   createTechnicalBaugebietDto,
-  createBaugenehmigungsverfahrenDto,
 } from "@/utils/Factories";
 import {
   mapToBauleitplanverfahrenAngelegt,
