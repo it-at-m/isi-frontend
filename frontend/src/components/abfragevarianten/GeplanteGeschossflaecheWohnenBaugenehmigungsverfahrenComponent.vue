@@ -37,14 +37,36 @@
         md="4"
       >
         <num-field
-          id="gf_wohnen_sobon_ursaechlich_field"
-          ref="gfWohnenSobonUrsaechlichField"
-          v-model="abfragevariante.gfWohnenSobonUrsaechlich"
+          id="gf_wohnen_baurechtlich_genehmigt_field"
+          ref="gfWohnenBaurechtlichGenehmigtField"
+          v-model="abfragevariante.gfWohnenBaurechtlichGenehmigt"
           :disabled="!isEditable"
           class="mx-3"
-          label="SoBoN-ursächlich"
+          label="Baurechtlich genehmigt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
         />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <num-field
+          id="gf_wohnen_baurechtlich_festgesetzt_field"
+          ref="gfWohnenBaurechtlichFestgesetztField"
+          v-model="abfragevariante.gfWohnenBaurechtlichFestgesetzt"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="Baurechtlich festgesetzt"
+          :suffix="fieldPrefixesSuffixes.squareMeter"
+        />
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <!-- Space für Platzhalter -->
       </v-col>
       <v-col
         cols="12"
@@ -59,6 +81,12 @@
           label="Bestandswohnbaurecht"
           :suffix="fieldPrefixesSuffixes.squareMeter"
         />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <!-- Space für Platzhalter -->
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -109,7 +137,7 @@
               v-model="abfragevariante.gfWohnenStudentischesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="studentisches Wohnen"
+              label="Studentisches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
@@ -136,6 +164,7 @@
             cols="12"
             md="4"
           >
+            <!-- Space für Platzhalter -->
           </v-col>
           <v-col
             cols="12"
@@ -147,7 +176,7 @@
               v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="genossenschaftliches Wohnen"
+              label="Genossenschaftliches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
@@ -161,7 +190,7 @@
               v-model="abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="weiteres nicht-infrastrukturrelevantes Wohnen"
+              label="Weiteres nicht-infrastrukturrelevantes Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
@@ -173,7 +202,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -181,13 +210,13 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenComponent extends Mixins(
+export default class GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
 ) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+  @VModel({ type: AbfragevarianteBaugenehmigungsverfahrenModel })
+  abfragevariante!: AbfragevarianteBaugenehmigungsverfahrenModel;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;

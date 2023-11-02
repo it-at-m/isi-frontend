@@ -131,7 +131,7 @@ import {
 import _ from "lodash";
 
 @Component({ components: { FieldGroupCard } })
-export default class CommonComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
+export default class CommonBauleitplanverfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 

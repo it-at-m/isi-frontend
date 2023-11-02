@@ -135,7 +135,7 @@ import TriSwitch from "@/components/common/TriSwitch.vue";
 @Component({
   components: { TriSwitch },
 })
-export default class AllgemeineInformationenComponent extends Mixins(
+export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
   SaveLeaveMixin,
   SearchApiRequestMixin,
   FieldValidationRulesMixin,
