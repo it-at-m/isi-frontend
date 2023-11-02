@@ -23,9 +23,9 @@
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-anzahl-wohneinheiten-component
-      id="geplante_anzahl_wohneinheiten_component"
-      ref="geplanteAnzahlWohneinheitenComponent"
+    <geplante-anzahl-wohneinheiten-bauleitplanverfahren-component
+      id="geplante_anzahl_wohneinheiten_bauleitplanverfahren_component"
+      ref="geplanteAnzahlWohneinheitenBauleitplanverfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
@@ -47,7 +47,7 @@
 import { Component, Vue, VModel, Prop } from "vue-property-decorator";
 import CommonBauleitplanverfahrenComponent from "@/components/abfragevarianten/CommonBauleitplanverfahrenComponent.vue";
 import GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent.vue";
-import GeplanteAnzahlWohneinheitenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenComponent.vue";
+import GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
@@ -60,7 +60,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
     FieldGroupCard,
     CommonBauleitplanverfahrenComponent,
     GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent,
-    GeplanteAnzahlWohneinheitenComponent,
+    GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent,
     SachbearbeitungComponent,
     BedarfsmeldungFachreferateComponent,
     BauratenAggregiertComponent,

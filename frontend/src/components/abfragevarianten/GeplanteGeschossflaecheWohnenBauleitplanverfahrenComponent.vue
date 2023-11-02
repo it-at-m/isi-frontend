@@ -74,7 +74,6 @@
           class="mx-3"
           label="Sonderwohnformen"
           color="primary"
-          @change="formChanged"
         />
       </v-col>
       <!-- Space für Platzhalter -->
