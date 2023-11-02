@@ -81,7 +81,6 @@
             year
             maxlength="4"
             required
-            help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden."
           />
         </v-col>
         <v-col

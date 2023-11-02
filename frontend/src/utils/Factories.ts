@@ -211,7 +211,7 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
 /**
  * AbfragevarianteBaugenehmigungsverfahrenDto
  */
-export function AbfragevarianteBaugenehmigungsverfahrenDto(): AbfragevarianteBaugenehmigungsverfahrenDto {
+export function createAbfragevarianteBaugenehmigungsverfahrenDto(): AbfragevarianteBaugenehmigungsverfahrenDto {
   return {
     id: "",
     version: undefined,
