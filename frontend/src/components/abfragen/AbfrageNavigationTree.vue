@@ -94,8 +94,12 @@ export function generateTreeItemId(parentId: string, index: number): string {
 
 <script setup lang="ts">
 import {
+  AbfrageDtoArtAbfrageEnum,
   BauleitplanverfahrenDto,
+  BaugenehmigungsverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBauleitplanverfahrenDto,
+  AbfragevarianteBaugenehmigungsverfahrenDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
@@ -109,6 +113,7 @@ import {
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 
 export interface AbfrageTreeItem {
   id: string;
@@ -191,10 +196,18 @@ watch(
   () => (items.value = [buildTree(props.abfrage)]),
 );
 
-function buildTree(abfrage: BauleitplanverfahrenDto): AbfrageTreeItem {
+function getAbfrageFormTypeAbfrage(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto): AbfrageFormType {
+  if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    return AbfrageFormType.BAULEITPLANVERFAHREN;
+  } else {
+    return AbfrageFormType.BAUGENEHMIGUNGSVERFAHREN;
+  }
+}
+
+function buildTree(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: "",
-    type: AbfrageFormType.BAULEITPLANVERFAHREN,
+    type: getAbfrageFormTypeAbfrage(abfrage),
     name: ABFRAGE_NAME,
     parent: null,
     children: [],
@@ -250,8 +263,21 @@ function buildTree(abfrage: BauleitplanverfahrenDto): AbfrageTreeItem {
   return item;
 }
 
+function getAbfrageFormTypeAbfragevariante(
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
+) {
+  if (
+    abfragevariante.artAbfragevariante ===
+    AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
+  ) {
+    return AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN;
+  } else {
+    return AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN;
+  }
+}
+
 function buildSubTreeAbfragevariante(
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto,
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
@@ -260,7 +286,7 @@ function buildSubTreeAbfragevariante(
 
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
-    type: AbfrageFormType.ABFRAGEVARIANTE,
+    type: getAbfrageFormTypeAbfragevariante(abfragevariante),
     name: getAbfragevarianteName(abfragevariante, context),
     parent,
     children: [],
@@ -480,13 +506,26 @@ function buildSubTreeBaurate(
 }
 
 function getAbfragevarianteName(
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto,
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
   conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
 ): string {
-  const abfragevarianteModel = new AbfragevarianteBauleitplanverfahrenModel(abfragevariante);
+  const abfragevarianteModel = createAbfragevarianteModel(abfragevariante);
   return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
     conextAnzeigeAbfragevariante,
   )}\xa0-\xa0${_.isNil(abfragevariante.name) ? DEFAULT_NAME : abfragevariante.name}`;
+}
+
+function createAbfragevarianteModel(
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
+): AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel {
+  if (
+    abfragevariante.artAbfragevariante ===
+    AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
+  ) {
+    return new AbfragevarianteBauleitplanverfahrenModel(abfragevariante);
+  } else {
+    return new AbfragevarianteBaugenehmigungsverfahrenModel(abfragevariante);
+  }
 }
 
 function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteBauleitplanverfahrenDto): boolean {

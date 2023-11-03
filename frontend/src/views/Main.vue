@@ -71,47 +71,32 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
-            slot="activator"
             class="text-h6"
             fab
             dark
             color="green lighten-1"
             v-on="on"
+            @click="createBauleitplanverfahren"
           >
             <v-icon>mdi-comment-alert</v-icon>
           </v-btn>
-          <v-tooltip left>
-            <template #activator="{ on }">
-              <v-btn
-                fab
-                dark
-                small
-                color="green lighten-1"
-                v-on="on"
-                @click="createBauleitplanverfahren"
-              >
-                <v-icon>mdi-water-well</v-icon>
-              </v-btn>
-            </template>
-            <span>Bauleitplanverfahren anlegen</span>
-          </v-tooltip>
-          <v-tooltip left>
-            <template #activator="{ on }">
-              <v-btn
-                fab
-                dark
-                small
-                color="green lighten-1"
-                v-on="on"
-                @click="createBaugenehmigungsverfahren"
-              >
-                <v-icon>mdi-pillar</v-icon>
-              </v-btn>
-            </template>
-            <span>Baugenehmigungsverfahren anlegen</span>
-          </v-tooltip>
         </template>
-        <span>Abfrage erstellen</span>
+        <span>Bauleitplanverfahren erstellen</span>
+      </v-tooltip>
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-btn
+            class="text-h6"
+            fab
+            dark
+            color="green lighten-1"
+            v-on="on"
+            @click="createBaugenehmigungsverfahren"
+          >
+            <v-icon>mdi-account-multiple-plus</v-icon>
+          </v-btn>
+        </template>
+        <span>Baugenehmigungsverfahren erstellen</span>
       </v-tooltip>
     </v-speed-dial>
   </v-container>

@@ -32,7 +32,7 @@
           :sobon-relevant="abfrage.sobonRelevant"
         />
         <abfragevariante-baugenehmigungsverfahren-component
-          v-else-if="isAbfragevarianteBaugenehmigungsverfahrenFormularOpen"
+          v-else-if="isAbfragevarianteBaugenehmigungsverfahrenFormularOpen()"
           id="abfragevariante_component"
           ref="abfragevarianteComponent"
           v-model="selected"
@@ -228,7 +228,7 @@
       <template #action>
         <v-spacer />
         <v-btn
-          v-for="(transition, index) in possbileTransitions"
+          v-for="(transition, index) in possibleTransitions"
           v-show="!isNewAbfrage()"
           :id="'abfrage_status_aenderung' + index + '_button'"
           :key="index"
@@ -272,12 +272,17 @@ import {
   BaugebietDto,
   BaurateDto,
   BauleitplanverfahrenDto,
+  BauleitplanverfahrenAngelegtDto,
+  BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
+  BauleitplanverfahrenInBearbeitungFachreferatDto,
   BaugenehmigungsverfahrenDto,
+  BaugenehmigungsverfahrenAngelegtDto,
+  BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
+  BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
   StatusAbfrage,
   TransitionDto,
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
-  AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import AbfrageNavigationTree, {
@@ -304,7 +309,6 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -319,7 +323,6 @@ import {
   createBauabschnittDto,
   createBaugebietDto,
   createBaurateDto,
-  createAbfrageDto,
   createBauleitplanverfahrenDto,
   createBaugenehmigungsverfahrenDto,
   createTechnicalBauabschnittDto,
@@ -434,7 +437,7 @@ export default class Abfrage extends Mixins(
     | AbfragevarianteBaugenehmigungsverfahrenModel
     | undefined;
   private treeItemToDelete: AbfrageTreeItem | undefined;
-  public possbileTransitions: Array<TransitionDto> = [];
+  public possibleTransitions: Array<TransitionDto> = [];
 
   mounted(): void {
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
@@ -442,7 +445,7 @@ export default class Abfrage extends Mixins(
     this.setSelectedAbfrageInStore();
     if (!this.isNewAbfrage())
       this.getTransitions(this.abfrageId, true).then((response) => {
-        this.possbileTransitions = response;
+        this.possibleTransitions = response;
       });
   }
 
@@ -452,7 +455,6 @@ export default class Abfrage extends Mixins(
     if (!_.isNil(abfrageFromStore)) {
       this.abfrage = _.cloneDeep(abfrageFromStore);
       this.selectAbfrage();
-
       const bauvorhabenId = this.abfrage.bauvorhaben;
       if (bauvorhabenId) {
         this.getBauvorhabenById(bauvorhabenId, false).then((dto) => {
@@ -480,9 +482,9 @@ export default class Abfrage extends Mixins(
           this.$store.commit("search/selectedAbfrage", undefined);
         });
     } else {
-      if (this.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren.toString()) {
+      if (this.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
         this.saveAbfrageInStore(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto()));
-      } else if (this.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren.toString()) {
+      } else if (this.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
         this.saveAbfrageInStore(new BaugenehmigungsverfahrenModel(createBaugenehmigungsverfahrenDto()));
       }
     }
@@ -595,10 +597,14 @@ export default class Abfrage extends Mixins(
     if (this.validate()) {
       const validationMessage: string | null = this.findFaultInAbfrageForSave(this.abfrage);
       if (_.isNil(validationMessage)) {
-        if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-          this.handleSaveBauleitplanverfahren(this.abfrage, true);
-        } else if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-          this.handleSaveBaugenehmigungsverfahren(this.abfrage, true);
+        if (this.modeAbfrage === DisplayMode.NEU) {
+          this.handleSave(this.abfrage);
+        } else if (this.isEditableByAbfrageerstellung()) {
+          this.handlePatchAngelegt(this.abfrage);
+        } else if (this.isEditableBySachbearbeitung()) {
+          this.handlePatchInBearbeitungSachbearbeitung(this.abfrage);
+        } else if (this.isEditableByBedarfsmeldung()) {
+          this.handlePatchInBearbeitungFachreferat(this.abfrage);
         }
       } else {
         this.showWarningInInformationList(validationMessage);
@@ -608,60 +614,70 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private async handleSaveBauleitplanverfahren(model: BauleitplanverfahrenModel, showToast: boolean) {
-    if (this.modeAbfrage === DisplayMode.NEU) {
-      await this.save(mapToBauleitplanverfahrenAngelegt(model), true).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
-    } else if (this.isEditableByAbfrageerstellung()) {
-      await this.patchAngelegt(mapToBauleitplanverfahrenAngelegt(model), model.id as string, true).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
-    } else if (this.isEditableBySachbearbeitung()) {
-      await this.patchInBearbeitungSachbearbeitung(
-        mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(model),
-        model.id as string,
-        true,
-      ).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
-    } else if (this.isEditableByBedarfsmeldung()) {
-      await this.patchInBearbeitungFachreferat(
-        mapToBauleitplanverfahrenInBearbeitungFachreferatDto(model),
-        model.id as string,
-        true,
-      ).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
+  private async handleSave(model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel): Promise<void> {
+    let abfrageAngelegtDto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | undefined =
+      undefined;
+    if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
+    } else {
+      abfrageAngelegtDto = mapToBaugenehmigungsverfahrenAngelegt(model);
     }
+    await this.save(abfrageAngelegtDto, true).then((dto) => {
+      this.handleSuccess(dto, true);
+    });
   }
 
-  private async handleSaveBaugenehmigungsverfahren(model: BaugenehmigungsverfahrenModel, showToast: boolean) {
-    if (this.modeAbfrage === DisplayMode.NEU) {
-      await this.save(mapToBaugenehmigungsverfahrenAngelegt(model), true).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
-    } else if (this.isEditableByAbfrageerstellung()) {
-      await this.patchAngelegt(mapToBaugenehmigungsverfahrenAngelegt(model), model.id as string, true).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
-    } else if (this.isEditableBySachbearbeitung()) {
-      await this.patchInBearbeitungSachbearbeitung(
-        mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(model),
-        model.id as string,
-        true,
-      ).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
-    } else if (this.isEditableByBedarfsmeldung()) {
-      await this.patchInBearbeitungFachreferat(
-        mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto(model),
-        model.id as string,
-        true,
-      ).then((dto) => {
-        this.handleSuccess(dto, showToast);
-      });
+  private async handlePatchAngelegt(model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel): Promise<void> {
+    let abfrageAngelegtDto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | undefined =
+      undefined;
+    if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
+    } else {
+      abfrageAngelegtDto = mapToBaugenehmigungsverfahrenAngelegt(model);
     }
+    await this.patchAngelegt(abfrageAngelegtDto, this.abfrage.id as string, true).then((dto) => {
+      this.handleSuccess(dto, true);
+    });
+  }
+
+  private async handlePatchInBearbeitungSachbearbeitung(
+    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+  ): Promise<void> {
+    let abfrageInBearbeitungSachbearbeitungDto:
+      | BauleitplanverfahrenInBearbeitungSachbearbeitungDto
+      | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+      | undefined = undefined;
+    if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      abfrageInBearbeitungSachbearbeitungDto = mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(model);
+    } else {
+      abfrageInBearbeitungSachbearbeitungDto = mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(model);
+    }
+    await this.patchInBearbeitungSachbearbeitung(
+      abfrageInBearbeitungSachbearbeitungDto,
+      this.abfrage.id as string,
+      true,
+    ).then((dto) => {
+      this.handleSuccess(dto, true);
+    });
+  }
+
+  private async handlePatchInBearbeitungFachreferat(
+    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+  ): Promise<void> {
+    let abfrageInBearbeitungFachreferatDto:
+      | BauleitplanverfahrenInBearbeitungFachreferatDto
+      | BaugenehmigungsverfahrenInBearbeitungFachreferatDto
+      | undefined = undefined;
+    if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      abfrageInBearbeitungFachreferatDto = mapToBauleitplanverfahrenInBearbeitungFachreferatDto(model);
+    } else {
+      abfrageInBearbeitungFachreferatDto = mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto(model);
+    }
+    await this.patchInBearbeitungFachreferat(abfrageInBearbeitungFachreferatDto, this.abfrage.id as string, true).then(
+      (dto) => {
+        this.handleSuccess(dto, true);
+      },
+    );
   }
 
   private handleSuccess(dto: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto, showToast: boolean): void {
@@ -693,7 +709,7 @@ export default class Abfrage extends Mixins(
           } else {
             this.setSelectedAbfrageInStore();
             this.getTransitions(this.abfrageId, true).then((response) => {
-              this.possbileTransitions = response;
+              this.possibleTransitions = response;
             });
           }
         } else {
@@ -835,7 +851,7 @@ export default class Abfrage extends Mixins(
       this.formChanged();
       this.selectCreatedEntity(
         abfragevariante,
-        this.getAbfrageFormType(abfragevariante),
+        this.getAbfrageFormTypeAbfragevariante(abfragevariante),
         parent,
         AnzeigeContextAbfragevariante.ABFRAGEVARIANTE,
       );
@@ -850,14 +866,14 @@ export default class Abfrage extends Mixins(
       this.formChanged();
       this.selectCreatedEntity(
         abfragevariante,
-        this.getAbfrageFormType(abfragevariante),
+        this.getAbfrageFormTypeAbfragevariante(abfragevariante),
         parent,
         AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
       );
     }
   }
 
-  private getAbfrageFormType(
+  private getAbfrageFormTypeAbfragevariante(
     abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel,
   ): AbfrageFormType {
     if (
@@ -965,6 +981,17 @@ export default class Abfrage extends Mixins(
   }
 
   private removeAbfragevarianteFromAbfrage(): void {
+    console.log("treeItemToDelete" + this.treeItemToDelete);
+    if (this.treeItemToDelete) {
+      console.log(
+        "isAbfragevarianteBauleitplanverfahren: " +
+          this.isAbfragevarianteBauleitplanverfahren(this.treeItemToDelete, this.treeItemToDelete.value),
+      );
+      console.log(
+        "isAbfragevarianteBaugenehmigungsverfahren: " +
+          this.isAbfragevarianteBaugenehmigungsverfahren(this.treeItemToDelete, this.treeItemToDelete.value),
+      );
+    }
     if (
       this.treeItemToDelete &&
       (this.isAbfragevarianteBauleitplanverfahren(this.treeItemToDelete, this.treeItemToDelete.value) ||
