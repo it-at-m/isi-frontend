@@ -122,8 +122,8 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     fristBearbeitung: new Date(0),
     offizielleMitzeichnung: UncertainBoolean.Unspecified,
     anmerkung: undefined,
-    abfragevarianten: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
-    abfragevariantenSachbearbeitung: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+    abfragevariantenBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+    abfragevariantenSachbearbeitungBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
   };
 }
 
@@ -151,8 +151,8 @@ export function createBaugenehmigungsverfahrenDto(): BaugenehmigungsverfahrenDto
     verortung: undefined,
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
-    abfragevarianten: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
-    abfragevariantenSachbearbeitung: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
+    abfragevariantenBaugenehmigungsverfahren: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
+    abfragevariantenSachbearbeitungBaugenehmigungsverfahren: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
   };
 }
 
