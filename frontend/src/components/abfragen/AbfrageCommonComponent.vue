@@ -1,9 +1,6 @@
 <template>
   <div>
-    <statusleiste-component
-      v-if="!isNew"
-      :abfrage="abfrage"
-    />
+    <statusleiste-component :abfrage="abfrage" />
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">

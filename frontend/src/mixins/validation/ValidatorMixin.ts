@@ -164,6 +164,9 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(abfragevariante.name)) {
       return "Bitte geben Sie einen Namen für die Abfragevariante an.";
     }
+    if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
+      return `Bitte geben Sie das 'Realisierung von' Datum an`;
+    }
     if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
       return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
     }

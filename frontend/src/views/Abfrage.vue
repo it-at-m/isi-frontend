@@ -268,6 +268,7 @@
 import {
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteBaugenehmigungsverfahrenAngelegtDto /* ASCHAENZ */,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
@@ -443,10 +444,11 @@ export default class Abfrage extends Mixins(
     this.modeAbfrage = this.isNewAbfrage() ? DisplayMode.NEU : DisplayMode.AENDERUNG;
     this.buttonText = this.isNewAbfrage() ? "Entwurf Speichern" : "Aktualisieren";
     this.setSelectedAbfrageInStore();
-    if (!this.isNewAbfrage())
+    if (!this.isNewAbfrage()) {
       this.getTransitions(this.abfrageId, true).then((response) => {
         this.possibleTransitions = response;
       });
+    }
   }
 
   @Watch("$store.state.search.selectedAbfrage", { deep: true })
@@ -617,10 +619,27 @@ export default class Abfrage extends Mixins(
   private async handleSave(model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel): Promise<void> {
     let abfrageAngelegtDto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | undefined =
       undefined;
+
+    console.log("artAbfrage: " + model.artAbfrage); /* ASCHAENZ */
+
     if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
     } else {
+      /* ASCHAENZ */
+      const tmp = model as BaugenehmigungsverfahrenModel;
+      if (!_.isNil(tmp) && !_.isNil(tmp.abfragevarianten)) {
+        console.log("vor map: " + tmp.abfragevarianten[0].gfWohnenBaurechtlichFestgesetzt);
+      }
+      /* ASCHAENZ */
+
       abfrageAngelegtDto = mapToBaugenehmigungsverfahrenAngelegt(model);
+
+      /* ASCHAENZ */
+      if (!_.isNil(abfrageAngelegtDto) && !_.isNil(abfrageAngelegtDto.abfragevarianten)) {
+        const test = abfrageAngelegtDto.abfragevarianten[0] as AbfragevarianteBaugenehmigungsverfahrenAngelegtDto;
+        console.log("nach map: " + test.gfWohnenBaurechtlichFestgesetzt);
+      }
+      /* ASCHAENZ */
     }
     await this.save(abfrageAngelegtDto, true).then((dto) => {
       this.handleSuccess(dto, true);
@@ -628,13 +647,31 @@ export default class Abfrage extends Mixins(
   }
 
   private async handlePatchAngelegt(model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel): Promise<void> {
+    console.log("artAbfrage: " + model.artAbfrage); /* ASCHAENZ */
+
     let abfrageAngelegtDto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | undefined =
       undefined;
+
+    /* ASCHAENZ */
+    const tmp = model as BaugenehmigungsverfahrenModel;
+    if (!_.isNil(tmp) && !_.isNil(tmp.abfragevarianten)) {
+      console.log("vor map: " + tmp.abfragevarianten[0].gfWohnenBaurechtlichFestgesetzt);
+    }
+    /* ASCHAENZ */
+
     if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
     } else {
       abfrageAngelegtDto = mapToBaugenehmigungsverfahrenAngelegt(model);
+
+      /* ASCHAENZ */
+      if (!_.isNil(abfrageAngelegtDto) && !_.isNil(abfrageAngelegtDto.abfragevarianten)) {
+        const test = abfrageAngelegtDto.abfragevarianten[0] as AbfragevarianteBaugenehmigungsverfahrenAngelegtDto;
+        console.log("nach map: " + test.gfWohnenBaurechtlichFestgesetzt);
+      }
+      /* ASCHAENZ */
     }
+
     await this.patchAngelegt(abfrageAngelegtDto, this.abfrage.id as string, true).then((dto) => {
       this.handleSuccess(dto, true);
     });
@@ -684,7 +721,7 @@ export default class Abfrage extends Mixins(
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       this.saveAbfrageInStore(new BauleitplanverfahrenModel(dto));
     } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-      this.saveAbfrageInStore(new BauleitplanverfahrenModel(dto));
+      this.saveAbfrageInStore(new BaugenehmigungsverfahrenModel(dto));
     }
     if (this.isNewAbfrage()) {
       this.$router.push({ path: "/" });
@@ -981,17 +1018,6 @@ export default class Abfrage extends Mixins(
   }
 
   private removeAbfragevarianteFromAbfrage(): void {
-    console.log("treeItemToDelete" + this.treeItemToDelete);
-    if (this.treeItemToDelete) {
-      console.log(
-        "isAbfragevarianteBauleitplanverfahren: " +
-          this.isAbfragevarianteBauleitplanverfahren(this.treeItemToDelete, this.treeItemToDelete.value),
-      );
-      console.log(
-        "isAbfragevarianteBaugenehmigungsverfahren: " +
-          this.isAbfragevarianteBaugenehmigungsverfahren(this.treeItemToDelete, this.treeItemToDelete.value),
-      );
-    }
     if (
       this.treeItemToDelete &&
       (this.isAbfragevarianteBauleitplanverfahren(this.treeItemToDelete, this.treeItemToDelete.value) ||
