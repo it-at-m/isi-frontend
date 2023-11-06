@@ -1,5 +1,5 @@
 import {
-  AbfragevarianteBaugenehmigungsverfahrenAngelegtDto /* ASCHAENZ */,
+  AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
   AbfragenApi,
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
@@ -20,7 +20,6 @@ import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import RequestUtils from "@/utils/RequestUtils";
 import { Component, Mixins } from "vue-property-decorator";
-import _ from "lodash"; /* ASCHAENZ */
 
 @Component
 export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, ErrorHandler) {
@@ -35,27 +34,9 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto,
     showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto> {
-    /* ASCHAENZ */
-    const tmp = dto as BaugenehmigungsverfahrenAngelegtDto;
-    if (!_.isNil(tmp) && !_.isNil(tmp.abfragevarianten)) {
-      console.log("in save: " + tmp.abfragevarianten[0].gfWohnenBaurechtlichFestgesetzt);
-    }
-    /* ASCHAENZ */
-
     const requestObject: SaveOperationRequest = {
       saveRequest: dto,
     };
-
-    /* ASCHAENZ */
-    const tmp2 = requestObject.saveRequest as BaugenehmigungsverfahrenAngelegtDto;
-    if (!_.isNil(tmp2) && !_.isNil(tmp2.abfragevarianten)) {
-      const tmp3 = tmp2.abfragevarianten[0] as AbfragevarianteBaugenehmigungsverfahrenAngelegtDto;
-      console.log(
-        "AbfragenApiRequest save requestObject.gfWohnenBaurechtlichFestgesetzt: " +
-          tmp3.gfWohnenBaurechtlichFestgesetzt,
-      );
-    }
-    /* ASCHAENZ */
 
     return this.abfragenApi
       .save(requestObject, RequestUtils.getPOSTConfig())
@@ -73,28 +54,10 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     id: string,
     showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto> {
-    /* ASCHAENZ */
-    const tmp = dto as BaugenehmigungsverfahrenAngelegtDto;
-    if (!_.isNil(tmp) && !_.isNil(tmp.abfragevarianten)) {
-      console.log("in patchAngelegt: " + tmp.abfragevarianten[0].gfWohnenBaurechtlichFestgesetzt);
-    }
-    /* ASCHAENZ */
-
     const requestObject: PatchAngelegtRequest = {
       saveRequest: dto,
       id: id,
     };
-
-    /* ASCHAENZ */
-    const tmp2 = requestObject.saveRequest as BaugenehmigungsverfahrenAngelegtDto;
-    if (!_.isNil(tmp2) && !_.isNil(tmp2.abfragevarianten)) {
-      const tmp3 = tmp2.abfragevarianten[0] as AbfragevarianteBaugenehmigungsverfahrenAngelegtDto;
-      console.log(
-        "AbfragenApiRequest patchAngelegt requestObject.gfWohnenBaurechtlichFestgesetzt: " +
-          tmp3.gfWohnenBaurechtlichFestgesetzt,
-      );
-    }
-    /* ASCHAENZ */
 
     return this.abfragenApi
       .patchAngelegt(requestObject, RequestUtils.getPATCHConfig())

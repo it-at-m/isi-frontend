@@ -31,13 +31,13 @@ export interface BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf {
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>}
      * @memberof BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf
      */
-    abfragevarianten?: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
     /**
      * 
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>}
      * @memberof BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf
      */
-    abfragevariantenSachbearbeitung?: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenSachbearbeitungBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
 }
 
 export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOfFromJSON(json: any): BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf {
@@ -50,8 +50,8 @@ export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOfFromJSON
     }
     return {
         
-        'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
-        'abfragevariantenSachbearbeitung': !exists(json, 'abfragevariantenSachbearbeitung') ? undefined : ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': !exists(json, 'abfragevariantenBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': !exists(json, 'abfragevariantenSachbearbeitungBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
     };
 }
 
@@ -64,8 +64,8 @@ export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOfToJSON(v
     }
     return {
         
-        'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
-        'abfragevariantenSachbearbeitung': value.abfragevariantenSachbearbeitung === undefined ? undefined : ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': value.abfragevariantenBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
     };
 }
 

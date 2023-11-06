@@ -7,7 +7,8 @@ import {
   SearchResultsDto,
   SearchResultDtoTypeEnum,
 } from "@/api/api-client/isi-backend";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
@@ -22,7 +23,7 @@ const state = {
     numberOfPages: 0,
   } as SearchResultsDto,
   requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
-  selectedAbfrage: undefined as AbfrageModel | undefined,
+  selectedAbfrage: undefined as BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | undefined,
   defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
@@ -42,7 +43,7 @@ export default {
     requestSearchQueryAndSorting: (): SearchQueryAndSortingModel => {
       return state.requestSearchQueryAndSorting;
     },
-    selectedAbfrage: (state: SearchState): AbfrageModel | undefined => {
+    selectedAbfrage: (state: SearchState): BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | undefined => {
       return state.selectedAbfrage;
     },
     defaultSearchQueryAndSortingFilter: (): SearchQueryAndSortingModel => {
@@ -75,7 +76,10 @@ export default {
     requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingModel): void {
       state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
     },
-    selectedAbfrage(state: SearchState, selectedAbfrage: AbfrageModel): void {
+    selectedAbfrage(
+      state: SearchState,
+      selectedAbfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+    ): void {
       state.selectedAbfrage = selectedAbfrage;
     },
     selectedBauvorhaben: (state: SearchState, item: BauvorhabenDto): void => {
@@ -102,7 +106,10 @@ export default {
     ): void {
       context.commit("requestSearchQueryAndSorting", searchQueryAndSortingDto);
     },
-    selectedAbfrage(context: ActionContext<SearchState, RootState>, abfrage: AbfrageModel): void {
+    selectedAbfrage(
+      context: ActionContext<SearchState, RootState>,
+      abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+    ): void {
       context.commit("selectedAbfrage", abfrage);
     },
     selectedBauvorhaben(context: ActionContext<SearchState, RootState>, item: BauvorhabenDto): void {

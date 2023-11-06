@@ -97,7 +97,7 @@ export interface BaugenehmigungsverfahrenAngelegtDtoAllOf {
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>}
      * @memberof BaugenehmigungsverfahrenAngelegtDtoAllOf
      */
-    abfragevarianten?: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>;
+    abfragevariantenBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>;
 }
 
 
@@ -145,7 +145,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoAllOfFromJSONTyped(json: any,
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
-        'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': !exists(json, 'abfragevariantenBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON)),
     };
 }
 
@@ -166,7 +166,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoAllOfToJSON(value?: Baugenehm
         'verortung': VerortungDtoToJSON(value.verortung),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
-        'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': value.abfragevariantenBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON)),
     };
 }
 

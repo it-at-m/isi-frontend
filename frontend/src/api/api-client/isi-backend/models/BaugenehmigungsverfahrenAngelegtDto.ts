@@ -109,7 +109,7 @@ export interface BaugenehmigungsverfahrenAngelegtDto extends AbfrageAngelegtDto 
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>}
      * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
-    abfragevarianten?: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>;
+    abfragevariantenBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>;
 }
 
 
@@ -157,7 +157,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json: any, igno
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': (new Date(json['fristBearbeitung'])),
-        'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': !exists(json, 'abfragevariantenBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON)),
     };
 }
 
@@ -178,7 +178,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoToJSON(value?: Baugenehmigung
         'verortung': VerortungDtoToJSON(value.verortung),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': (value.fristBearbeitung.toISOString().substr(0,10)),
-        'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': value.abfragevariantenBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON)),
     };
 }
 

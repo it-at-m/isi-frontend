@@ -15,10 +15,6 @@
 
 import * as runtime from '../runtime';
 import {
-
-    BaugenehmigungsverfahrenAngelegtDto, /* ASCHAENZ */
-    AbfragevarianteBaugenehmigungsverfahrenAngelegtDto, /* ASCHAENZ */
-  
     InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
@@ -35,7 +31,6 @@ import {
     SaveRequestFromJSON,
     SaveRequestToJSON,
 } from '../models';
-import { util } from 'vue/types/umd';
 
 export interface DeleteByIdRequest {
     id: string;
@@ -146,21 +141,6 @@ export class AbfragenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-          /* ASCHAENZ */
-          const tmp = requestParameters.saveRequest as BaugenehmigungsverfahrenAngelegtDto;
-          console.log("patchAngelegtRaw requestParameters.saveRequest: " + tmp);
-      if (tmp !== undefined && tmp.abfragevarianten !== undefined) {
-            console.log("print JSON: " + JSON.stringify(tmp.abfragevarianten[0]));
-            const tmp2 = tmp.abfragevarianten[0] as AbfragevarianteBaugenehmigungsverfahrenAngelegtDto;
-            console.log("patchAngelegtRaw requestParameters abfragevariante: " + tmp2);
-            if (tmp2 !== undefined) {
-              console.log("patchAngelegtRaw requestParameters abfragevariante.gfWohnenBaurechtlichFestgesetzt: " + tmp2.gfWohnenBaurechtlichFestgesetzt);
-            }
-          }         
-          console.log("JSON: " + (SaveRequestToJSON(requestParameters.saveRequest) as string));
-          /* ASCHAENZ */
-      
-      
         const response = await this.request({
             path: `/abfrage/angelegt/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
@@ -175,21 +155,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Abfrage im Status ANGELEGT.
      */
-  async patchAngelegt(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Save201Response> {
-      
-      /* ASCHAENZ */
-      const tmp = requestParameters.saveRequest as BaugenehmigungsverfahrenAngelegtDto;
-      console.log("patchAngelegt requestParameters.saveRequest: " + tmp);
-      if (tmp !== undefined && tmp.abfragevarianten !== undefined) {
-        const tmp2 = tmp.abfragevarianten[0] as AbfragevarianteBaugenehmigungsverfahrenAngelegtDto;
-        console.log("patchAngelegt requestParameters abfragevariante: " + tmp2);
-        if (tmp2 !== undefined) {
-          console.log("patchAngelegt requestParameters abfragevariante.gfWohnenBaurechtlichFestgesetzt: " + tmp2.gfWohnenBaurechtlichFestgesetzt);
-        }
-      }
-      /* ASCHAENZ */
-
-
+    async patchAngelegt(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Save201Response> {
         const response = await this.patchAngelegtRaw(requestParameters, initOverrides);
         return await response.value();
     }

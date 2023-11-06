@@ -61,13 +61,13 @@ export interface BauleitplanverfahrenInBearbeitungSachbearbeitungDto extends Abf
      * @type {Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>}
      * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
+    abfragevariantenBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>}
      * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevariantenSachbearbeitung: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>;
+    abfragevariantenSachbearbeitungBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>;
 }
 
 
@@ -83,8 +83,8 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
-        'abfragevarianten': ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
-        'abfragevariantenSachbearbeitung': ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenBauleitplanverfahren': ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
     };
 }
 
@@ -98,8 +98,8 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON(value?
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value),
         'verortung': VerortungDtoToJSON(value.verortung),
-        'abfragevarianten': ((value.abfragevarianten as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
-        'abfragevariantenSachbearbeitung': ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenBauleitplanverfahren': ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
     };
 }
 

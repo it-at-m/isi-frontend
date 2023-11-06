@@ -117,20 +117,24 @@ export default class ValidatorMixin extends Vue {
   public findFaultInAbfragevarianten(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
   ): string | null {
-    if (
-      _.isNil(abfrage.abfragevarianten) ||
-      abfrage.abfragevarianten.length < 1 ||
-      abfrage.abfragevarianten.length > 5
-    ) {
+    const abfragevariantenAbfrage =
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+        ? (abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren
+        : (abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren;
+    const abfragevariantenAbfrageSachbearbeitung =
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+        ? (abfrage as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren
+        : (abfrage as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
+    if (_.isNil(abfragevariantenAbfrage) || abfragevariantenAbfrage.length < 1 || abfragevariantenAbfrage.length > 5) {
       return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
     }
-    if (_.isNil(abfrage.abfragevariantenSachbearbeitung) || abfrage.abfragevariantenSachbearbeitung.length > 5) {
+    if (_.isNil(abfragevariantenAbfrageSachbearbeitung) || abfragevariantenAbfrageSachbearbeitung.length > 5) {
       return "Es können durch die Sachbearbeitung maximal fünf Abfragevarianten angegeben werden.";
     }
     let validationMessage = null;
     const abfragevarianten = _.concat(
-      _.toArray(abfrage.abfragevarianten),
-      _.toArray(abfrage.abfragevariantenSachbearbeitung),
+      _.toArray(abfragevariantenAbfrage),
+      _.toArray(abfragevariantenAbfrageSachbearbeitung),
     );
     let abfragevariante:
       | AbfragevarianteBauleitplanverfahrenModel

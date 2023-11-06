@@ -31,13 +31,13 @@ export interface BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf {
      * @type {Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>}
      * @memberof BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf
      */
-    abfragevarianten?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>}
      * @memberof BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf
      */
-    abfragevariantenSachbearbeitung?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenSachbearbeitungBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
 }
 
 export function BauleitplanverfahrenInBearbeitungFachreferatDtoAllOfFromJSON(json: any): BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf {
@@ -50,8 +50,8 @@ export function BauleitplanverfahrenInBearbeitungFachreferatDtoAllOfFromJSONType
     }
     return {
         
-        'abfragevarianten': !exists(json, 'abfragevarianten') ? undefined : ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
-        'abfragevariantenSachbearbeitung': !exists(json, 'abfragevariantenSachbearbeitung') ? undefined : ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': !exists(json, 'abfragevariantenSachbearbeitungBauleitplanverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
     };
 }
 
@@ -64,8 +64,8 @@ export function BauleitplanverfahrenInBearbeitungFachreferatDtoAllOfToJSON(value
     }
     return {
         
-        'abfragevarianten': value.abfragevarianten === undefined ? undefined : ((value.abfragevarianten as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
-        'abfragevariantenSachbearbeitung': value.abfragevariantenSachbearbeitung === undefined ? undefined : ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': value.abfragevariantenSachbearbeitungBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
     };
 }
 

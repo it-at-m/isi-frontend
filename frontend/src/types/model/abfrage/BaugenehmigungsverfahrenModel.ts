@@ -14,12 +14,12 @@ class BaugenehmigungsverfahrenModel {
     } else {
       this.adresse = new AdresseModel(this.adresse);
     }
-    this.abfragevarianten = _.toArray(baugenehmigungsverfahren.abfragevarianten).map(
-      (abfragevariante) => new AbfragevarianteBaugenehmigungsverfahrenModel(abfragevariante),
-    );
-    this.abfragevariantenSachbearbeitung = _.toArray(baugenehmigungsverfahren.abfragevariantenSachbearbeitung).map(
-      (abfragevariante) => new AbfragevarianteBaugenehmigungsverfahrenModel(abfragevariante),
-    );
+    this.abfragevariantenBaugenehmigungsverfahren = _.toArray(
+      baugenehmigungsverfahren.abfragevariantenBaugenehmigungsverfahren,
+    ).map((abfragevariante) => new AbfragevarianteBaugenehmigungsverfahrenModel(abfragevariante));
+    this.abfragevariantenSachbearbeitungBaugenehmigungsverfahren = _.toArray(
+      baugenehmigungsverfahren.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
+    ).map((abfragevariante) => new AbfragevarianteBaugenehmigungsverfahrenModel(abfragevariante));
   }
 }
 export { BaugenehmigungsverfahrenModel as default };

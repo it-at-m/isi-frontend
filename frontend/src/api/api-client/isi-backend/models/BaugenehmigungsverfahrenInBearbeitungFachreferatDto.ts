@@ -43,13 +43,13 @@ export interface BaugenehmigungsverfahrenInBearbeitungFachreferatDto extends Abf
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>}
      * @memberof BaugenehmigungsverfahrenInBearbeitungFachreferatDto
      */
-    abfragevarianten: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
     /**
      * 
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>}
      * @memberof BaugenehmigungsverfahrenInBearbeitungFachreferatDto
      */
-    abfragevariantenSachbearbeitung: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenSachbearbeitungBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
 }
 
 
@@ -64,8 +64,8 @@ export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),
-        'abfragevarianten': ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
-        'abfragevariantenSachbearbeitung': ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON)),
     };
 }
 
@@ -78,8 +78,8 @@ export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON(value?
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoToJSON(value),
-        'abfragevarianten': ((value.abfragevarianten as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
-        'abfragevariantenSachbearbeitung': ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON)),
     };
 }
 
