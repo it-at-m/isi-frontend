@@ -1010,40 +1010,42 @@ export default class Abfrage extends Mixins(
         this.isAbfragevarianteBaugenehmigungsverfahren(this.treeItemToDelete, this.treeItemToDelete.value))
     ) {
       const context = this.treeItemToDelete.context;
-      const abfragevariantenAbfrage =
+      const abfragevarianten =
         this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
           ? (this.abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren
           : (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren;
-      const abfragevariantenAbfrageSachbearbeitung =
+      const abfragevariantenSachbearbeitung =
         this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
           ? (this.abfrage as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren
           : (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
-      let abfragevarianten =
+      let abfragevariantenContext =
         context === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
-          ? abfragevariantenAbfrage!
-          : abfragevariantenAbfrageSachbearbeitung!;
-      _.remove(abfragevarianten, (abfragevariante) => abfragevariante === this.treeItemToDelete!.value);
+          ? abfragevarianten!
+          : abfragevariantenSachbearbeitung!;
+      _.remove(abfragevariantenContext, (abfragevariante) => abfragevariante === this.treeItemToDelete!.value);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       if (this.anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
         if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-          (this.abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren = [...abfragevarianten];
+          (this.abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren = [
+            ...abfragevariantenContext,
+          ];
         } else {
           (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren = [
-            ...abfragevarianten,
+            ...abfragevariantenContext,
           ];
         }
       } else {
         if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
           (this.abfrage as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren = [
-            ...abfragevarianten,
+            ...abfragevariantenContext,
           ];
         } else {
           (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [
-            ...abfragevarianten,
+            ...abfragevariantenContext,
           ];
         }
       }
-      this.renumberingAbfragevarianten(abfragevarianten);
+      this.renumberingAbfragevarianten(abfragevariantenContext);
       this.formChanged();
       this.selectItem(this.treeItemToDelete.parent!);
       this.treeItemToDelete = undefined;

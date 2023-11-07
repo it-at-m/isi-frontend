@@ -217,37 +217,37 @@ function buildTree(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDt
     value: abfrage,
   };
 
-  const abfragevariantenAbfrage =
+  const abfragevarianten =
     abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
       ? (abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren
       : (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren;
-  const abfragevariantenAbfrageSachbearbeitung =
+  const abfragevariantenSachbearbeitung =
     abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
       ? (abfrage as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren
       : (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
-  if (abfragevariantenAbfrage) {
-    const abfragevarianten = abfragevariantenAbfrage.map((value, index) =>
+  if (abfragevarianten) {
+    const abfragevariantenTree = abfragevarianten.map((value, index) =>
       buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE),
     );
-    item.children.push(...abfragevarianten);
+    item.children.push(...abfragevariantenTree);
   }
 
-  if (abfragevariantenAbfrageSachbearbeitung) {
-    const abfragevarianten = abfragevariantenAbfrageSachbearbeitung.map((value, index) =>
+  if (abfragevariantenSachbearbeitung) {
+    const abfragevariantenTree = abfragevariantenSachbearbeitung.map((value, index) =>
       buildSubTreeAbfragevariante(
         value,
         item,
-        index + (abfragevariantenAbfrage?.length ?? 0),
+        index + (abfragevarianten?.length ?? 0),
         AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
       ),
     );
-    item.children.push(...abfragevarianten);
+    item.children.push(...abfragevariantenTree);
   }
 
   if (isEditableByAbfrageerstellung()) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
-      disabled: _.defaultTo(abfragevariantenAbfrage?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      disabled: _.defaultTo(abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
       effect: () => {
         emit("create-abfragevariante", item);
         openItem(item);
@@ -258,7 +258,7 @@ function buildTree(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDt
   if (isEditableBySachbearbeitung()) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
-      disabled: _.defaultTo(abfragevariantenAbfrageSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      disabled: _.defaultTo(abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
       effect: () => {
         emit("create-abfragevariante-sachbearbeitung", item);
         openItem(item);

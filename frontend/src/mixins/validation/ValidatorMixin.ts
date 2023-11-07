@@ -117,30 +117,27 @@ export default class ValidatorMixin extends Vue {
   public findFaultInAbfragevarianten(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
   ): string | null {
-    const abfragevariantenAbfrage =
+    const abfragevarianten =
       abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
         ? (abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren
         : (abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren;
-    const abfragevariantenAbfrageSachbearbeitung =
+    const abfragevariantenSachbearbeitung =
       abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
         ? (abfrage as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren
         : (abfrage as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
-    if (_.isNil(abfragevariantenAbfrage) || abfragevariantenAbfrage.length < 1 || abfragevariantenAbfrage.length > 5) {
+    if (_.isNil(abfragevarianten) || abfragevarianten.length < 1 || abfragevarianten.length > 5) {
       return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
     }
-    if (_.isNil(abfragevariantenAbfrageSachbearbeitung) || abfragevariantenAbfrageSachbearbeitung.length > 5) {
+    if (_.isNil(abfragevariantenSachbearbeitung) || abfragevariantenSachbearbeitung.length > 5) {
       return "Es können durch die Sachbearbeitung maximal fünf Abfragevarianten angegeben werden.";
     }
     let validationMessage = null;
-    const abfragevarianten = _.concat(
-      _.toArray(abfragevariantenAbfrage),
-      _.toArray(abfragevariantenAbfrageSachbearbeitung),
-    );
+    const allAbfragevarianten = _.concat(_.toArray(abfragevarianten), _.toArray(abfragevariantenSachbearbeitung));
     let abfragevariante:
       | AbfragevarianteBauleitplanverfahrenModel
       | AbfragevarianteBaugenehmigungsverfahrenModel
       | undefined = undefined;
-    for (const abfragevarianteDto of abfragevarianten) {
+    for (const abfragevarianteDto of allAbfragevarianten) {
       switch (abfrage.artAbfrage) {
         case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
           abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
