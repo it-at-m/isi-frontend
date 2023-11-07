@@ -1,5 +1,4 @@
 import {
-  AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
   AbfragenApi,
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,

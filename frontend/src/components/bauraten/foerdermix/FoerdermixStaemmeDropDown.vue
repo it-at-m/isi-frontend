@@ -18,7 +18,6 @@
 import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixApiRequestMixin from "@/mixins/requests/FoerdermixApiRequestMixin";
-import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { createFoerdermixStammDto } from "@/utils/Factories";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
