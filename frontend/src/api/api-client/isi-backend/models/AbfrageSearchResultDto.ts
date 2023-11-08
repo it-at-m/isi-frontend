@@ -26,11 +26,11 @@ import {
     SearchResultDtoToJSON,
 } from './SearchResultDto';
 import {
-    StadtbezirkModel,
-    StadtbezirkModelFromJSON,
-    StadtbezirkModelFromJSONTyped,
-    StadtbezirkModelToJSON,
-} from './StadtbezirkModel';
+    StadtbezirkDto,
+    StadtbezirkDtoFromJSON,
+    StadtbezirkDtoFromJSONTyped,
+    StadtbezirkDtoToJSON,
+} from './StadtbezirkDto';
 import {
     StatusAbfrage,
     StatusAbfrageFromJSON,
@@ -64,10 +64,10 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
     name?: string;
     /**
      * 
-     * @type {Set<StadtbezirkModel>}
+     * @type {Set<StadtbezirkDto>}
      * @memberof AbfrageSearchResultDto
      */
-    stadtbezirke?: Set<StadtbezirkModel>;
+    stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
      * @type {StatusAbfrage}
@@ -151,7 +151,7 @@ export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminat
         'id': !exists(json, 'id') ? undefined : json['id'],
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'name': !exists(json, 'name') ? undefined : json['name'],
-        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkModelFromJSON))),
+        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
@@ -172,7 +172,7 @@ export function AbfrageSearchResultDtoToJSON(value?: AbfrageSearchResultDto | nu
         'id': value.id,
         'artAbfrage': value.artAbfrage,
         'name': value.name,
-        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkModelToJSON)),
+        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
         'standVerfahren': value.standVerfahren,
