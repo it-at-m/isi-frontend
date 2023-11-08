@@ -97,9 +97,12 @@ import {
   AbfrageDtoArtAbfrageEnum,
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
+  WeiteresVerfahrenDto,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteWeiteresVerfahrenDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
@@ -114,6 +117,7 @@ import { ref, computed, watch } from "vue";
 import _ from "lodash";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
+import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 
 export interface AbfrageTreeItem {
   id: string;
@@ -199,12 +203,16 @@ watch(
 function getAbfrageFormTypeAbfrage(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto): AbfrageFormType {
   if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
     return AbfrageFormType.BAULEITPLANVERFAHREN;
-  } else {
+  } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
     return AbfrageFormType.BAUGENEHMIGUNGSVERFAHREN;
+  } else {
+    return AbfrageFormType.WEITERES_VERFAHREN;
   }
 }
 
-function buildTree(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto): AbfrageTreeItem {
+function buildTree(
+  abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto,
+): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: "",
     type: getAbfrageFormTypeAbfrage(abfrage),
@@ -220,11 +228,15 @@ function buildTree(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDt
   const abfragevarianten =
     abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
       ? (abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren
-      : (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren;
+      : abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+      ? (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren
+      : (abfrage as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren;
   const abfragevariantenSachbearbeitung =
     abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
       ? (abfrage as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren
-      : (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
+      : abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+      ? (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren
+      : (abfrage as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren;
   if (abfragevarianten) {
     const abfragevariantenTree = abfragevarianten.map((value, index) =>
       buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE),
@@ -272,20 +284,31 @@ function buildTree(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDt
 }
 
 function getAbfrageFormTypeAbfragevariante(
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
 ) {
   if (
     abfragevariante.artAbfragevariante ===
     AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
   ) {
     return AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN;
-  } else {
+  } else if (
+    abfragevariante.artAbfragevariante ===
+    AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren
+  ) {
     return AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN;
+  } else {
+    return AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN;
   }
 }
 
 function buildSubTreeAbfragevariante(
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | WeiteresVerfahrenDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
@@ -524,19 +547,35 @@ function getAbfragevarianteName(
 }
 
 function createAbfragevarianteModel(
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
-): AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel {
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
+):
+  | AbfragevarianteBauleitplanverfahrenModel
+  | AbfragevarianteBaugenehmigungsverfahrenModel
+  | AbfragevarianteWeiteresVerfahrenModel {
   if (
     abfragevariante.artAbfragevariante ===
     AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
   ) {
     return new AbfragevarianteBauleitplanverfahrenModel(abfragevariante);
-  } else {
+  } else if (
+    abfragevariante.artAbfragevariante ===
+    AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren
+  ) {
     return new AbfragevarianteBaugenehmigungsverfahrenModel(abfragevariante);
+  } else {
+    return new AbfragevarianteWeiteresVerfahrenModel(abfragevariante);
   }
 }
 
-function bauratenDeterminableForAbfragevariante(abfragevariante: AbfragevarianteBauleitplanverfahrenDto): boolean {
+function bauratenDeterminableForAbfragevariante(
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
+): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(abfragevariante.weGesamt) || !_.isNil(abfragevariante.gfWohnenGesamt)) &&
