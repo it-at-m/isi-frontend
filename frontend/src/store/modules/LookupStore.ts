@@ -165,10 +165,7 @@ export default {
           "standVerfahrenBaugenehmigungsverfahren",
           lookupLists.standVerfahrenBaugenehmigungsverfahren?.list,
         );
-        context.commit(
-          "standVerfahrenWeiteresVerfahren",
-          lookupLists.standVerfahrenWeiteresVerfahren?.list,
-        );
+        context.commit("standVerfahrenWeiteresVerfahren", lookupLists.standVerfahrenWeiteresVerfahren?.list);
         context.commit("standVerfahren", lookupLists.standVerfahren?.list);
         context.commit("statusAbfrage", lookupLists.statusAbfrage?.list);
         context.commit(
@@ -210,10 +207,7 @@ export default {
     ): void {
       context.commit("standVerfahrenBaugenehmigungsverfahren", list);
     },
-    standVerfahrenWeiteresVerfahren(
-      context: ActionContext<LookupState, RootState>,
-      list: LookupEntryDto[],
-    ): void {
+    standVerfahrenWeiteresVerfahren(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("standVerfahrenWeiteresVerfahren", list);
     },
     standVerfahren(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
