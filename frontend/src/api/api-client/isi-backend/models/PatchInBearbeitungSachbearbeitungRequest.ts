@@ -30,13 +30,19 @@ import {
     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON,
 } from './BauleitplanverfahrenInBearbeitungSachbearbeitungDto';
+import {
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON,
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON,
+} from './WeiteresVerfahrenInBearbeitungSachbearbeitungDto';
 
 /**
  * @type PatchInBearbeitungSachbearbeitungRequest
  * 
  * @export
  */
-export type PatchInBearbeitungSachbearbeitungRequest = AbfrageInBearbeitungSachbearbeitungDto | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto | BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
+export type PatchInBearbeitungSachbearbeitungRequest = AbfrageInBearbeitungSachbearbeitungDto | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto | BauleitplanverfahrenInBearbeitungSachbearbeitungDto | WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
 
 export function PatchInBearbeitungSachbearbeitungRequestFromJSON(json: any): PatchInBearbeitungSachbearbeitungRequest {
     return PatchInBearbeitungSachbearbeitungRequestFromJSONTyped(json, false);
@@ -46,7 +52,7 @@ export function PatchInBearbeitungSachbearbeitungRequestFromJSONTyped(json: any,
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true) };
+    return { ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true) };
 }
 
 export function PatchInBearbeitungSachbearbeitungRequestToJSON(value?: PatchInBearbeitungSachbearbeitungRequest | null): any {
@@ -56,6 +62,6 @@ export function PatchInBearbeitungSachbearbeitungRequestToJSON(value?: PatchInBe
     if (value === null) {
         return null;
     }
-    return { ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value), ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON(value), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON(value) };
+    return { ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value), ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON(value), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON(value), ...WeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON(value) };
 }
 

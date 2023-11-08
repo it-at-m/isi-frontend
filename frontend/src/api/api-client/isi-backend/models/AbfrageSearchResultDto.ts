@@ -108,7 +108,7 @@ export const AbfrageSearchResultDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfrageSearchResultDtoArtAbfrageEnum = typeof AbfrageSearchResultDtoArtAbfrageEnum[keyof typeof AbfrageSearchResultDtoArtAbfrageEnum];
 

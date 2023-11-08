@@ -22,7 +22,8 @@ import {
 
 import {
      BaugenehmigungsverfahrenDtoFromJSONTyped,
-     BauleitplanverfahrenDtoFromJSONTyped
+     BauleitplanverfahrenDtoFromJSONTyped,
+     WeiteresVerfahrenDtoFromJSONTyped
 } from './';
 
 /**
@@ -107,7 +108,7 @@ export const AbfrageDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfrageDtoArtAbfrageEnum = typeof AbfrageDtoArtAbfrageEnum[keyof typeof AbfrageDtoArtAbfrageEnum];
 
@@ -126,6 +127,9 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         }
         if (json['artAbfrage'] === 'BauleitplanverfahrenDto') {
             return BauleitplanverfahrenDtoFromJSONTyped(json, true);
+        }
+        if (json['artAbfrage'] === 'WeiteresVerfahrenDto') {
+            return WeiteresVerfahrenDtoFromJSONTyped(json, true);
         }
     }
     return {

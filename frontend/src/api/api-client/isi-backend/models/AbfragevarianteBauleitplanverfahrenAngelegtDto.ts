@@ -180,7 +180,7 @@ export const AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnu
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum];
 

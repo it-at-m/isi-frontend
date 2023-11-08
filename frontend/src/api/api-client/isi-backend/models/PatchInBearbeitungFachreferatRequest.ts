@@ -30,13 +30,19 @@ import {
     BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
     BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON,
 } from './BauleitplanverfahrenInBearbeitungFachreferatDto';
+import {
+    WeiteresVerfahrenInBearbeitungFachreferatDto,
+    WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON,
+    WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped,
+    WeiteresVerfahrenInBearbeitungFachreferatDtoToJSON,
+} from './WeiteresVerfahrenInBearbeitungFachreferatDto';
 
 /**
  * @type PatchInBearbeitungFachreferatRequest
  * 
  * @export
  */
-export type PatchInBearbeitungFachreferatRequest = AbfrageInBearbeitungFachreferatDto | BaugenehmigungsverfahrenInBearbeitungFachreferatDto | BauleitplanverfahrenInBearbeitungFachreferatDto;
+export type PatchInBearbeitungFachreferatRequest = AbfrageInBearbeitungFachreferatDto | BaugenehmigungsverfahrenInBearbeitungFachreferatDto | BauleitplanverfahrenInBearbeitungFachreferatDto | WeiteresVerfahrenInBearbeitungFachreferatDto;
 
 export function PatchInBearbeitungFachreferatRequestFromJSON(json: any): PatchInBearbeitungFachreferatRequest {
     return PatchInBearbeitungFachreferatRequestFromJSONTyped(json, false);
@@ -46,7 +52,7 @@ export function PatchInBearbeitungFachreferatRequestFromJSONTyped(json: any, ign
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, true), ...BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), ...BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true) };
+    return { ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, true), ...BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), ...BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), ...WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true) };
 }
 
 export function PatchInBearbeitungFachreferatRequestToJSON(value?: PatchInBearbeitungFachreferatRequest | null): any {
@@ -56,6 +62,6 @@ export function PatchInBearbeitungFachreferatRequestToJSON(value?: PatchInBearbe
     if (value === null) {
         return null;
     }
-    return { ...AbfrageInBearbeitungFachreferatDtoToJSON(value), ...BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON(value), ...BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value) };
+    return { ...AbfrageInBearbeitungFachreferatDtoToJSON(value), ...BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON(value), ...BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value), ...WeiteresVerfahrenInBearbeitungFachreferatDtoToJSON(value) };
 }
 
