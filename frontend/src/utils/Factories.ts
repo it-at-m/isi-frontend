@@ -61,6 +61,7 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     searchQuery: "",
     selectBauleitplanverfahren: true,
     selectBaugenehmigungsverfahren: true,
+    selectWeiteresVerfahren: true,
     selectBauvorhaben: true,
     selectGrundschule: true,
     selectGsNachmittagBetreuung: true,

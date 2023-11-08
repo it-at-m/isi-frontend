@@ -145,6 +145,7 @@ export default class AllgemeineInformationenBaugenehmigungsverfahrenComponent ex
       searchQuery: "",
       selectBauleitplanverfahren: false,
       selectBaugenehmigungsverfahren: false,
+      selectWeiteresVerfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

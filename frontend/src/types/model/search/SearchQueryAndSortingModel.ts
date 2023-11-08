@@ -11,6 +11,7 @@ class SearchQueryAndSortingModel {
     return (
       this.selectBauleitplanverfahren &&
       this.selectBaugenehmigungsverfahren &&
+      this.selectWeiteresVerfahren &&
       this.selectBauvorhaben &&
       this.selectGrundschule &&
       this.selectGsNachmittagBetreuung &&
@@ -25,6 +26,7 @@ class SearchQueryAndSortingModel {
     return (
       !this.selectBauleitplanverfahren &&
       !this.selectBaugenehmigungsverfahren &&
+      !this.selectWeiteresVerfahren &&
       !this.selectBauvorhaben &&
       !this.selectGrundschule &&
       !this.selectGsNachmittagBetreuung &&

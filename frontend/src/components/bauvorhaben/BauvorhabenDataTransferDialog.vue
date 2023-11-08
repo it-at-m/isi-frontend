@@ -118,6 +118,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
       searchQuery: "",
       selectBauleitplanverfahren: true,
       selectBaugenehmigungsverfahren: true,
+      selectWeiteresVerfahren: true,
       selectBauvorhaben: false,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,
