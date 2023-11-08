@@ -10,6 +10,7 @@ const state = {
   sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
   standVerfahrenBauleitplanverfahren: [] as LookupEntryDto[],
   standVerfahrenBaugenehmigungsverfahren: [] as LookupEntryDto[],
+  standVerfahrenWeiteresVerfahren: [] as LookupEntryDto[],
   standVerfahren: [] as LookupEntryDto[],
   statusAbfrage: [] as LookupEntryDto[],
   wesentlicheRechtsgrundlageBauleitplanverfahren: [] as LookupEntryDto[],
@@ -49,6 +50,9 @@ export default {
     },
     standVerfahrenBaugenehmigungsverfahren: (state: LookupState): Array<LookupEntryDto> => {
       return state.standVerfahrenBaugenehmigungsverfahren;
+    },
+    standVerfahrenWeiteresVerfahren: (state: LookupState): Array<LookupEntryDto> => {
+      return state.standVerfahrenWeiteresVerfahren;
     },
     standVerfahren: (state: LookupState): Array<LookupEntryDto> => {
       return state.standVerfahren;
@@ -107,6 +111,9 @@ export default {
     standVerfahrenBaugenehmigungsverfahren(state: LookupState, list: LookupEntryDto[]): void {
       state.standVerfahrenBaugenehmigungsverfahren = list;
     },
+    standVerfahrenWeiteresVerfahren(state: LookupState, list: LookupEntryDto[]): void {
+      state.standVerfahrenWeiteresVerfahren = list;
+    },
     standVerfahren(state: LookupState, list: LookupEntryDto[]): void {
       state.standVerfahren = list;
     },
@@ -158,6 +165,10 @@ export default {
           "standVerfahrenBaugenehmigungsverfahren",
           lookupLists.standVerfahrenBaugenehmigungsverfahren?.list,
         );
+        context.commit(
+          "standVerfahrenWeiteresVerfahren",
+          lookupLists.standVerfahrenWeiteresVerfahren?.list,
+        );
         context.commit("standVerfahren", lookupLists.standVerfahren?.list);
         context.commit("statusAbfrage", lookupLists.statusAbfrage?.list);
         context.commit(
@@ -198,6 +209,12 @@ export default {
       list: LookupEntryDto[],
     ): void {
       context.commit("standVerfahrenBaugenehmigungsverfahren", list);
+    },
+    standVerfahrenWeiteresVerfahren(
+      context: ActionContext<LookupState, RootState>,
+      list: LookupEntryDto[],
+    ): void {
+      context.commit("standVerfahrenWeiteresVerfahren", list);
     },
     standVerfahren(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("standVerfahren", list);
