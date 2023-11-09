@@ -20,7 +20,7 @@ import {
 } from './';
 
 /**
- * 
+ * AbfrageAngelegtDto
  * @export
  * @interface AbfrageAngelegtDto
  */
@@ -79,13 +79,13 @@ export function AbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['artAbfrage'] === 'BaugenehmigungsverfahrenAngelegtDto') {
+        if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
             return BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true);
         }
-        if (json['artAbfrage'] === 'BauleitplanverfahrenAngelegtDto') {
+        if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
             return BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true);
         }
-        if (json['artAbfrage'] === 'WeiteresVerfahrenAngelegtDto') {
+        if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
             return WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, true);
         }
     }

@@ -13,12 +13,6 @@
  */
 
 import {
-    AbfrageInBearbeitungSachbearbeitungDto,
-    AbfrageInBearbeitungSachbearbeitungDtoFromJSON,
-    AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped,
-    AbfrageInBearbeitungSachbearbeitungDtoToJSON,
-} from './AbfrageInBearbeitungSachbearbeitungDto';
-import {
     BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
     BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
     BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
@@ -42,7 +36,7 @@ import {
  * 
  * @export
  */
-export type PatchInBearbeitungSachbearbeitungRequest = AbfrageInBearbeitungSachbearbeitungDto | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto | BauleitplanverfahrenInBearbeitungSachbearbeitungDto | WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
+export type PatchInBearbeitungSachbearbeitungRequest = BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto | BauleitplanverfahrenInBearbeitungSachbearbeitungDto | WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
 
 export function PatchInBearbeitungSachbearbeitungRequestFromJSON(json: any): PatchInBearbeitungSachbearbeitungRequest {
     return PatchInBearbeitungSachbearbeitungRequestFromJSONTyped(json, false);
@@ -52,7 +46,7 @@ export function PatchInBearbeitungSachbearbeitungRequestFromJSONTyped(json: any,
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true) };
+    return { ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true), ...WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true) };
 }
 
 export function PatchInBearbeitungSachbearbeitungRequestToJSON(value?: PatchInBearbeitungSachbearbeitungRequest | null): any {
@@ -62,6 +56,6 @@ export function PatchInBearbeitungSachbearbeitungRequestToJSON(value?: PatchInBe
     if (value === null) {
         return null;
     }
-    return { ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value), ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON(value), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON(value), ...WeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON(value) };
+    return { ...BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON(value), ...BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON(value), ...WeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON(value) };
 }
 

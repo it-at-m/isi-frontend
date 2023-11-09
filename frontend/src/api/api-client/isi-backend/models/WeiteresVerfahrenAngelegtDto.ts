@@ -133,7 +133,7 @@ export interface WeiteresVerfahrenAngelegtDto extends AbfrageAngelegtDto {
      * @type {Array<AbfragevarianteWeiteresVerfahrenAngelegtDto>}
      * @memberof WeiteresVerfahrenAngelegtDto
      */
-    abfragevariantenWeiteresVerfahren?: Array<AbfragevarianteWeiteresVerfahrenAngelegtDto>;
+    abfragevariantenWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenAngelegtDto>;
 }
 
 
@@ -199,7 +199,7 @@ export function WeiteresVerfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscr
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': (new Date(json['fristBearbeitung'])),
         'offizielleMitzeichnung': UncertainBooleanFromJSON(json['offizielleMitzeichnung']),
-        'abfragevariantenWeiteresVerfahren': !exists(json, 'abfragevariantenWeiteresVerfahren') ? undefined : ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON)),
+        'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON)),
     };
 }
 
@@ -223,7 +223,7 @@ export function WeiteresVerfahrenAngelegtDtoToJSON(value?: WeiteresVerfahrenAnge
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': (value.fristBearbeitung.toISOString().substr(0,10)),
         'offizielleMitzeichnung': UncertainBooleanToJSON(value.offizielleMitzeichnung),
-        'abfragevariantenWeiteresVerfahren': value.abfragevariantenWeiteresVerfahren === undefined ? undefined : ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON)),
+        'abfragevariantenWeiteresVerfahren': ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON)),
     };
 }
 

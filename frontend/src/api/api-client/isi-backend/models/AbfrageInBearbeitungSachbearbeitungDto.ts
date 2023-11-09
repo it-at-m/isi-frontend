@@ -20,7 +20,7 @@ import {
 } from './';
 
 /**
- * 
+ * AbfrageInBearbeitungSachbearbeitungDto
  * @export
  * @interface AbfrageInBearbeitungSachbearbeitungDto
  */
@@ -61,13 +61,13 @@ export function AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, i
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['artAbfrage'] === 'BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto') {
+        if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
             return BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
         }
-        if (json['artAbfrage'] === 'BauleitplanverfahrenInBearbeitungSachbearbeitungDto') {
+        if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
             return BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
         }
-        if (json['artAbfrage'] === 'WeiteresVerfahrenInBearbeitungSachbearbeitungDto') {
+        if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
             return WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
         }
     }

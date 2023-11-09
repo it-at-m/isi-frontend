@@ -61,13 +61,13 @@ export interface WeiteresVerfahrenInBearbeitungSachbearbeitungDto extends Abfrag
      * @type {Array<AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>}
      * @memberof WeiteresVerfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevariantenWeiteresVerfahren?: Array<AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
+    abfragevariantenWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
     /**
      * 
      * @type {Array<AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto>}
      * @memberof WeiteresVerfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevariantenSachbearbeitungWeiteresVerfahren?: Array<AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto>;
+    abfragevariantenSachbearbeitungWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto>;
 }
 
 
@@ -83,8 +83,8 @@ export function WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(js
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
-        'abfragevariantenWeiteresVerfahren': !exists(json, 'abfragevariantenWeiteresVerfahren') ? undefined : ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
-        'abfragevariantenSachbearbeitungWeiteresVerfahren': !exists(json, 'abfragevariantenSachbearbeitungWeiteresVerfahren') ? undefined : ((json['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((json['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
     };
 }
 
@@ -98,8 +98,8 @@ export function WeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON(value?: W
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value),
         'verortung': VerortungDtoToJSON(value.verortung),
-        'abfragevariantenWeiteresVerfahren': value.abfragevariantenWeiteresVerfahren === undefined ? undefined : ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
-        'abfragevariantenSachbearbeitungWeiteresVerfahren': value.abfragevariantenSachbearbeitungWeiteresVerfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenWeiteresVerfahren': ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value.abfragevariantenSachbearbeitungWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON)),
     };
 }
 
