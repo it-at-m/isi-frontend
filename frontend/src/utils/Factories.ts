@@ -355,9 +355,9 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
 }
 
 /**
- * BedarfsmeldungFachabteilungenDto
+ * BedarfsmeldungFachreferateDto
  */
-export function createBedarfsmeldungFachabteilungenDto(): BedarfsmeldungFachreferateDto {
+export function createBedarfsmeldungFachreferateDto(): BedarfsmeldungFachreferateDto {
   return {
     anzahlEinrichtungen: undefined,
     infrastruktureinrichtungTyp: BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified,

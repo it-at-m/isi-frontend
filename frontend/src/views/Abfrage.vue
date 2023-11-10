@@ -297,10 +297,10 @@ import AbfrageNavigationTree, {
   AbfrageTreeItem,
   generateTreeItemId,
 } from "@/components/abfragen/AbfrageNavigationTree.vue";
-import BauleitplanverfahrenComponent from "@/components/abfragen/BauleitplanverfahrenComponent.vue";
-import BaugenehmigungsverfahrenComponent from "@/components/abfragen/BaugenehmigungsverfahrenComponent.vue";
-import AbfragevarianteBauleitplanverfahrenComponent from "@/components/abfragevarianten/AbfragevarianteBauleitplanverfahrenComponent.vue";
-import AbfragevarianteBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/AbfragevarianteBaugenehmigungsverfahrenComponent.vue";
+import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
+import BaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/BaugenehmigungsverfahrenComponent.vue";
+import AbfragevarianteBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/AbfragevarianteBauleitplanverfahrenComponent.vue";
+import AbfragevarianteBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/AbfragevarianteBaugenehmigungsverfahrenComponent.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
 import BaugebietBauleitplanverfahrenComponent from "@/components/baugebiete/BaugebietBauleitplanverfahrenComponent.vue";
 import BaugebietBaugenehmigungsverfahrenComponent from "@/components/baugebiete/BaugebietBaugenehmigungsverfahrenComponent.vue";
