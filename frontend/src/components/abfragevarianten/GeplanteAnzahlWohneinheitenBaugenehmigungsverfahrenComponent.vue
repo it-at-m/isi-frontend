@@ -93,7 +93,7 @@
               v-model="abfragevariante.weStudentischesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="Studentierendenwohnungen"
+              label="Studierendenwohnungen"
               integer
             />
           </v-col>

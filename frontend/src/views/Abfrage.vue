@@ -48,9 +48,17 @@
           :is-editable="isEditable"
           :mode="mode"
         />
-        <baugebiet-component
-          v-else-if="isBaugebietFormularOpen()"
-          id="baugebiet_component"
+        <baugebiet-bauleitplanverfahren-component
+          v-else-if="isBaugebietBauleitplanverfahrenFormularOpen()"
+          id="baugebiet_bauleitplanverfahren_component"
+          v-model="selected"
+          :is-editable="isEditable"
+          :mode="mode"
+          :abfragevariante="abfragevarianteAncestor"
+        />
+        <baugebiet-baugenehmigungsverfahren-component
+          v-else-if="isBaugebietBaugenehmigungsverfahrenFormularOpen()"
+          id="baugebiet_baugenehmigungsverfahren_component"
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
@@ -294,7 +302,8 @@ import BaugenehmigungsverfahrenComponent from "@/components/abfragen/Baugenehmig
 import AbfragevarianteBauleitplanverfahrenComponent from "@/components/abfragevarianten/AbfragevarianteBauleitplanverfahrenComponent.vue";
 import AbfragevarianteBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/AbfragevarianteBaugenehmigungsverfahrenComponent.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
-import BaugebietComponent from "@/components/baugebiete/BaugebietComponent.vue";
+import BaugebietBauleitplanverfahrenComponent from "@/components/baugebiete/BaugebietBauleitplanverfahrenComponent.vue";
+import BaugebietBaugenehmigungsverfahrenComponent from "@/components/baugebiete/BaugebietBaugenehmigungsverfahrenComponent.vue";
 import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
 import InformationList from "@/components/common/InformationList.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -368,7 +377,8 @@ export const enum AbfrageFormType {
   ABFRAGEVARIANTE_BAULEITPLANVERFAHREN,
   ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN,
   BAUABSCHNITT,
-  BAUGEBIET,
+  BAUGEBIET_BAULEITPLANVERFAHREN,
+  BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN,
   BAURATE,
 }
 
@@ -385,7 +395,8 @@ export const enum AbfrageFormType {
     DefaultLayout,
     BaurateComponent,
     BauabschnittComponent,
-    BaugebietComponent,
+    BaugebietBauleitplanverfahrenComponent,
+    BaugebietBaugenehmigungsverfahrenComponent,
   },
 })
 export default class Abfrage extends Mixins(
@@ -785,8 +796,12 @@ export default class Abfrage extends Mixins(
     return this.openForm === AbfrageFormType.BAUABSCHNITT;
   }
 
-  private isBaugebietFormularOpen(): boolean {
-    return this.openForm === AbfrageFormType.BAUGEBIET;
+  private isBaugebietBauleitplanverfahrenFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN;
+  }
+
+  private isBaugebietBaugenehmigungsverfahrenFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN;
   }
 
   private isBaurateFormularOpen(): boolean {
@@ -957,7 +972,20 @@ export default class Abfrage extends Mixins(
       bauabschnitt.baugebiete.push(baugebiet);
       this.abfragevarianteAncestor = abfragevariante;
       this.formChanged();
-      this.selectCreatedEntity(baugebiet, AbfrageFormType.BAUGEBIET, parent, parent.context);
+      this.selectCreatedEntity(baugebiet, this.getAbfrageFormTypeBaugebiet(abfragevariante), parent, parent.context);
+    }
+  }
+
+  private getAbfrageFormTypeBaugebiet(
+    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel,
+  ): AbfrageFormType {
+    if (
+      abfragevariante.artAbfragevariante ===
+      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
+    ) {
+      return AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN;
+    } else {
+      return AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN;
     }
   }
 
@@ -1284,7 +1312,10 @@ export default class Abfrage extends Mixins(
   }
 
   private isBaugebiet(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BaugebietModel {
-    return item.type === AbfrageFormType.BAUGEBIET;
+    return (
+      item.type === AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN ||
+      item.type === AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN
+    );
   }
 
   private isBaurate(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BaurateModel {

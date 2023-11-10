@@ -343,7 +343,7 @@ function buildSubTreeAbfragevariante(
       } else {
         // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
         item.children = firstBauabschnitt.baugebiete.map((value, index) =>
-          buildSubTreeBaugebiet(value, item, index, context),
+          buildSubTreeBaugebiet(value, item, index, context, abfragevariante),
         );
         if (editable) {
           item.actions.push({
@@ -359,7 +359,7 @@ function buildSubTreeAbfragevariante(
     } else {
       // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
       item.children = abfragevariante.bauabschnitte.map((value, index) =>
-        buildSubTreeBauabschnitt(value, item, index, context),
+        buildSubTreeBauabschnitt(value, item, index, context, abfragevariante),
       );
       if (editable) {
         item.actions.push({
@@ -414,6 +414,7 @@ function buildSubTreeBauabschnitt(
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -427,7 +428,9 @@ function buildSubTreeBauabschnitt(
     value: bauabschnitt,
   };
 
-  item.children = bauabschnitt.baugebiete.map((value, index) => buildSubTreeBaugebiet(value, item, index, context));
+  item.children = bauabschnitt.baugebiete.map((value, index) =>
+    buildSubTreeBaugebiet(value, item, index, context, abfragevariante),
+  );
 
   if (isEditableWithAnzeigeContextAbfragevariante(context)) {
     item.actions.push({
@@ -449,10 +452,15 @@ function buildSubTreeBaugebiet(
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
+  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
 ): AbfrageTreeItem {
+  const abfrageFormTypeBaugebiet =
+    abfragevariante.artAbfragevariante === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+      ? AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN
+      : AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN;
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
-    type: AbfrageFormType.BAUGEBIET,
+    type: abfrageFormTypeBaugebiet,
     name: baugebiet.bezeichnung === "" ? DEFAULT_NAME : baugebiet.bezeichnung,
     parent,
     children: [],
