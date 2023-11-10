@@ -13,24 +13,21 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SearchResultDto } from './SearchResultDto';
 import {
-    BauvorhabenSearchResultDtoAllOf,
-    BauvorhabenSearchResultDtoAllOfFromJSON,
-    BauvorhabenSearchResultDtoAllOfFromJSONTyped,
-    BauvorhabenSearchResultDtoAllOfToJSON,
-} from './BauvorhabenSearchResultDtoAllOf';
-import {
-    SearchResultDto,
     SearchResultDtoFromJSON,
     SearchResultDtoFromJSONTyped,
     SearchResultDtoToJSON,
 } from './SearchResultDto';
+import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
-    StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -97,6 +94,15 @@ export const BauvorhabenSearchResultDtoStandVerfahrenEnum = {
 export type BauvorhabenSearchResultDtoStandVerfahrenEnum = typeof BauvorhabenSearchResultDtoStandVerfahrenEnum[keyof typeof BauvorhabenSearchResultDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the BauvorhabenSearchResultDto interface.
+ */
+export function instanceOfBauvorhabenSearchResultDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function BauvorhabenSearchResultDtoFromJSON(json: any): BauvorhabenSearchResultDto {
     return BauvorhabenSearchResultDtoFromJSONTyped(json, false);
 }
@@ -104,6 +110,8 @@ export function BauvorhabenSearchResultDtoFromJSON(json: any): BauvorhabenSearch
 export function BauvorhabenSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauvorhabenSearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),

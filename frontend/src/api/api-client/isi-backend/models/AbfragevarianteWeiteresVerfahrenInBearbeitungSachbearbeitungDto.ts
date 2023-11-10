@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BauabschnittDto } from './BauabschnittDto';
 import {
-    BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
@@ -255,6 +255,22 @@ export const AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoSobo
 } as const;
 export type AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum];
 
+
+/**
+ * Check if a given object implements the AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenNr" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "wesentlicheRechtsgrundlage" in value;
+    isInstance = isInstance && "realisierungVon" in value;
+    isInstance = isInstance && "gfWohnenSonderwohnformen" in value;
+    isInstance = isInstance && "weSonderwohnformen" in value;
+    isInstance = isInstance && "sobonOrientierungswertJahr" in value;
+
+    return isInstance;
+}
 
 export function AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto {
     return AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);

@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
-    StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
+import type { StatusAbfrage } from './StatusAbfrage';
 import {
-    StatusAbfrage,
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
@@ -125,6 +125,15 @@ export const AbfrageSearchResultDtoAllOfStandVerfahrenEnum = {
 } as const;
 export type AbfrageSearchResultDtoAllOfStandVerfahrenEnum = typeof AbfrageSearchResultDtoAllOfStandVerfahrenEnum[keyof typeof AbfrageSearchResultDtoAllOfStandVerfahrenEnum];
 
+
+/**
+ * Check if a given object implements the AbfrageSearchResultDtoAllOf interface.
+ */
+export function instanceOfAbfrageSearchResultDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfrageSearchResultDtoAllOfFromJSON(json: any): AbfrageSearchResultDtoAllOf {
     return AbfrageSearchResultDtoAllOfFromJSONTyped(json, false);

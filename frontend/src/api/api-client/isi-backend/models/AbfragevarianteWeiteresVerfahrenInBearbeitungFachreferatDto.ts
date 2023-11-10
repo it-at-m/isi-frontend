@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BedarfsmeldungFachreferateDto } from './BedarfsmeldungFachreferateDto';
 import {
-    BedarfsmeldungFachreferateDto,
     BedarfsmeldungFachreferateDtoFromJSON,
     BedarfsmeldungFachreferateDtoFromJSONTyped,
     BedarfsmeldungFachreferateDtoToJSON,
@@ -64,6 +64,15 @@ export const AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfra
 } as const;
 export type AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = typeof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum];
 
+
+/**
+ * Check if a given object implements the AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto interface.
+ */
+export function instanceOfAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON(json: any): AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto {
     return AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);

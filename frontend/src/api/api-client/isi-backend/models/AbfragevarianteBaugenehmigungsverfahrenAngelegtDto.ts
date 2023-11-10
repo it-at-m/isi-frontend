@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BauabschnittDto } from './BauabschnittDto';
 import {
-    BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
@@ -214,6 +214,21 @@ export const AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechts
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum];
 
+
+/**
+ * Check if a given object implements the AbfragevarianteBaugenehmigungsverfahrenAngelegtDto interface.
+ */
+export function instanceOfAbfragevarianteBaugenehmigungsverfahrenAngelegtDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenNr" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "wesentlicheRechtsgrundlage" in value;
+    isInstance = isInstance && "realisierungVon" in value;
+    isInstance = isInstance && "gfWohnenSonderwohnformen" in value;
+    isInstance = isInstance && "weSonderwohnformen" in value;
+
+    return isInstance;
+}
 
 export function AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON(json: any): AbfragevarianteBaugenehmigungsverfahrenAngelegtDto {
     return AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, false);

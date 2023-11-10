@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON,
@@ -38,6 +38,15 @@ export interface BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf {
      * @memberof BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf
      */
     abfragevariantenSachbearbeitungBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto>;
+}
+
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOfFromJSON(json: any): BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf {

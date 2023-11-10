@@ -81,6 +81,15 @@ export const GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum = {
 export type GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum = typeof GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum[keyof typeof GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum];
 
 
+/**
+ * Check if a given object implements the GsNachmittagBetreuungDtoAllOf interface.
+ */
+export function instanceOfGsNachmittagBetreuungDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function GsNachmittagBetreuungDtoAllOfFromJSON(json: any): GsNachmittagBetreuungDtoAllOf {
     return GsNachmittagBetreuungDtoAllOfFromJSONTyped(json, false);
 }

@@ -13,20 +13,20 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { GemarkungDto } from './GemarkungDto';
 import {
-    GemarkungDto,
     GemarkungDtoFromJSON,
     GemarkungDtoFromJSONTyped,
     GemarkungDtoToJSON,
 } from './GemarkungDto';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryDto,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
 } from './MultiPolygonGeometryDto';
+import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
-    StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
@@ -56,6 +56,18 @@ export interface VerortungDto {
      * @memberof VerortungDto
      */
     multiPolygon: MultiPolygonGeometryDto;
+}
+
+/**
+ * Check if a given object implements the VerortungDto interface.
+ */
+export function instanceOfVerortungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "stadtbezirke" in value;
+    isInstance = isInstance && "gemarkungen" in value;
+    isInstance = isInstance && "multiPolygon" in value;
+
+    return isInstance;
 }
 
 export function VerortungDtoFromJSON(json: any): VerortungDto {

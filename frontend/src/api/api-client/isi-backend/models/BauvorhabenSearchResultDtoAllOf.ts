@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
-    StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
@@ -84,6 +84,15 @@ export const BauvorhabenSearchResultDtoAllOfStandVerfahrenEnum = {
 } as const;
 export type BauvorhabenSearchResultDtoAllOfStandVerfahrenEnum = typeof BauvorhabenSearchResultDtoAllOfStandVerfahrenEnum[keyof typeof BauvorhabenSearchResultDtoAllOfStandVerfahrenEnum];
 
+
+/**
+ * Check if a given object implements the BauvorhabenSearchResultDtoAllOf interface.
+ */
+export function instanceOfBauvorhabenSearchResultDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function BauvorhabenSearchResultDtoAllOfFromJSON(json: any): BauvorhabenSearchResultDtoAllOf {
     return BauvorhabenSearchResultDtoAllOfFromJSONTyped(json, false);

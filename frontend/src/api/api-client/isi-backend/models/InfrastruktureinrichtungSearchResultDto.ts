@@ -13,18 +13,15 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SearchResultDto } from './SearchResultDto';
 import {
-    InfrastruktureinrichtungSearchResultDtoAllOf,
-    InfrastruktureinrichtungSearchResultDtoAllOfFromJSON,
-    InfrastruktureinrichtungSearchResultDtoAllOfFromJSONTyped,
-    InfrastruktureinrichtungSearchResultDtoAllOfToJSON,
-} from './InfrastruktureinrichtungSearchResultDtoAllOf';
-import {
-    SearchResultDto,
     SearchResultDtoFromJSON,
     SearchResultDtoFromJSONTyped,
     SearchResultDtoToJSON,
 } from './SearchResultDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -68,6 +65,15 @@ export const InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypE
 export type InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum];
 
 
+/**
+ * Check if a given object implements the InfrastruktureinrichtungSearchResultDto interface.
+ */
+export function instanceOfInfrastruktureinrichtungSearchResultDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function InfrastruktureinrichtungSearchResultDtoFromJSON(json: any): InfrastruktureinrichtungSearchResultDto {
     return InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, false);
 }
@@ -75,6 +81,8 @@ export function InfrastruktureinrichtungSearchResultDtoFromJSON(json: any): Infr
 export function InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungSearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),

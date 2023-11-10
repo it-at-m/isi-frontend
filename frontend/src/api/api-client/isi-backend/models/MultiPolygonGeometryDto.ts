@@ -33,6 +33,17 @@ export interface MultiPolygonGeometryDto {
     coordinates: Array<Array<Array<Array<number>>>>;
 }
 
+/**
+ * Check if a given object implements the MultiPolygonGeometryDto interface.
+ */
+export function instanceOfMultiPolygonGeometryDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "coordinates" in value;
+
+    return isInstance;
+}
+
 export function MultiPolygonGeometryDtoFromJSON(json: any): MultiPolygonGeometryDto {
     return MultiPolygonGeometryDtoFromJSONTyped(json, false);
 }

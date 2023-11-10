@@ -13,6 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto } from './BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
+import {
+    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
+    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON,
+} from './BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
+import type { BauleitplanverfahrenInBearbeitungSachbearbeitungDto } from './BauleitplanverfahrenInBearbeitungSachbearbeitungDto';
+import {
+    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
+    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON,
+} from './BauleitplanverfahrenInBearbeitungSachbearbeitungDto';
+import type { WeiteresVerfahrenInBearbeitungSachbearbeitungDto } from './WeiteresVerfahrenInBearbeitungSachbearbeitungDto';
+import {
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON,
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON,
+} from './WeiteresVerfahrenInBearbeitungSachbearbeitungDto';
+
 import {
      BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
      BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
@@ -51,6 +70,15 @@ export const AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum = {
 } as const;
 export type AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum = typeof AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum[keyof typeof AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum];
 
+
+/**
+ * Check if a given object implements the AbfrageInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfAbfrageInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfrageInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfrageInBearbeitungSachbearbeitungDto {
     return AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);

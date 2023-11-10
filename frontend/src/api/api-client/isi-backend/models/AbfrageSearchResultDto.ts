@@ -13,30 +13,27 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SearchResultDto } from './SearchResultDto';
 import {
-    AbfrageSearchResultDtoAllOf,
-    AbfrageSearchResultDtoAllOfFromJSON,
-    AbfrageSearchResultDtoAllOfFromJSONTyped,
-    AbfrageSearchResultDtoAllOfToJSON,
-} from './AbfrageSearchResultDtoAllOf';
-import {
-    SearchResultDto,
     SearchResultDtoFromJSON,
     SearchResultDtoFromJSONTyped,
     SearchResultDtoToJSON,
 } from './SearchResultDto';
+import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
-    StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
+import type { StatusAbfrage } from './StatusAbfrage';
 import {
-    StatusAbfrage,
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
+
+import {
+} from './';
 
 /**
  * 
@@ -138,6 +135,15 @@ export const AbfrageSearchResultDtoStandVerfahrenEnum = {
 export type AbfrageSearchResultDtoStandVerfahrenEnum = typeof AbfrageSearchResultDtoStandVerfahrenEnum[keyof typeof AbfrageSearchResultDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the AbfrageSearchResultDto interface.
+ */
+export function instanceOfAbfrageSearchResultDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function AbfrageSearchResultDtoFromJSON(json: any): AbfrageSearchResultDto {
     return AbfrageSearchResultDtoFromJSONTyped(json, false);
 }
@@ -145,6 +151,8 @@ export function AbfrageSearchResultDtoFromJSON(json: any): AbfrageSearchResultDt
 export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageSearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),

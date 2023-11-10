@@ -13,20 +13,20 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto } from './AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto,
     AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto } from './AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto,
     AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
@@ -56,6 +56,15 @@ export interface WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOf {
      * @memberof WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOf
      */
     abfragevariantenSachbearbeitungWeiteresVerfahren?: Array<AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto>;
+}
+
+/**
+ * Check if a given object implements the WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOf interface.
+ */
+export function instanceOfWeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON(json: any): WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOf {

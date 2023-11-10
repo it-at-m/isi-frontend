@@ -39,6 +39,15 @@ export interface FileInformationDto {
     allowedMimeTypes?: Array<string>;
 }
 
+/**
+ * Check if a given object implements the FileInformationDto interface.
+ */
+export function instanceOfFileInformationDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function FileInformationDtoFromJSON(json: any): FileInformationDto {
     return FileInformationDtoFromJSONTyped(json, false);
 }

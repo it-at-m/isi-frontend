@@ -13,48 +13,45 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageAngelegtDto } from './AbfrageAngelegtDto';
 import {
-    AbfrageAngelegtDto,
     AbfrageAngelegtDtoFromJSON,
     AbfrageAngelegtDtoFromJSONTyped,
     AbfrageAngelegtDtoToJSON,
 } from './AbfrageAngelegtDto';
+import type { AbfragevarianteWeiteresVerfahrenAngelegtDto } from './AbfragevarianteWeiteresVerfahrenAngelegtDto';
 import {
-    AbfragevarianteWeiteresVerfahrenAngelegtDto,
     AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenAngelegtDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { UncertainBoolean } from './UncertainBoolean';
 import {
-    UncertainBoolean,
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
 } from './VerortungDto';
+
 import {
-    WeiteresVerfahrenAngelegtDtoAllOf,
-    WeiteresVerfahrenAngelegtDtoAllOfFromJSON,
-    WeiteresVerfahrenAngelegtDtoAllOfFromJSONTyped,
-    WeiteresVerfahrenAngelegtDtoAllOfToJSON,
-} from './WeiteresVerfahrenAngelegtDtoAllOf';
+} from './';
 
 /**
  * 
@@ -178,6 +175,20 @@ export const WeiteresVerfahrenAngelegtDtoStandVerfahrenEnum = {
 export type WeiteresVerfahrenAngelegtDtoStandVerfahrenEnum = typeof WeiteresVerfahrenAngelegtDtoStandVerfahrenEnum[keyof typeof WeiteresVerfahrenAngelegtDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the WeiteresVerfahrenAngelegtDto interface.
+ */
+export function instanceOfWeiteresVerfahrenAngelegtDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "sobonRelevant" in value;
+    isInstance = isInstance && "standVerfahren" in value;
+    isInstance = isInstance && "fristBearbeitung" in value;
+    isInstance = isInstance && "offizielleMitzeichnung" in value;
+    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
+
+    return isInstance;
+}
+
 export function WeiteresVerfahrenAngelegtDtoFromJSON(json: any): WeiteresVerfahrenAngelegtDto {
     return WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, false);
 }
@@ -185,6 +196,8 @@ export function WeiteresVerfahrenAngelegtDtoFromJSON(json: any): WeiteresVerfahr
 export function WeiteresVerfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageAngelegtDtoFromJSONTyped(json, ignoreDiscriminator),

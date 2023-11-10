@@ -45,6 +45,15 @@ export interface TransitionDto {
     dialogText?: string;
 }
 
+/**
+ * Check if a given object implements the TransitionDto interface.
+ */
+export function instanceOfTransitionDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function TransitionDtoFromJSON(json: any): TransitionDto {
     return TransitionDtoFromJSONTyped(json, false);
 }

@@ -44,7 +44,7 @@
                     <plugin>
                         <groupId>org.openapitools</groupId>
                         <artifactId>openapi-generator-maven-plugin</artifactId>
-                        <version>6.0.0</version>
+                        <version>6.6.0</version>
                         <executions>
                             <execution>
                                 <id>isi-backend</id>
@@ -57,7 +57,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-backend</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
-                                        <legacyDiscriminatorBehaviour>false</legacyDiscriminatorBehaviour>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -72,7 +72,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-master-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
-                                        <legacyDiscriminatorBehaviour>false</legacyDiscriminatorBehaviour>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -87,7 +87,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-geodata-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
-                                        <legacyDiscriminatorBehaviour>false</legacyDiscriminatorBehaviour>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>

@@ -13,6 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenInBearbeitungFachreferatDto } from './BaugenehmigungsverfahrenInBearbeitungFachreferatDto';
+import {
+    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON,
+    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
+    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON,
+} from './BaugenehmigungsverfahrenInBearbeitungFachreferatDto';
+import type { BauleitplanverfahrenInBearbeitungFachreferatDto } from './BauleitplanverfahrenInBearbeitungFachreferatDto';
+import {
+    BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON,
+    BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
+    BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON,
+} from './BauleitplanverfahrenInBearbeitungFachreferatDto';
+import type { WeiteresVerfahrenInBearbeitungFachreferatDto } from './WeiteresVerfahrenInBearbeitungFachreferatDto';
+import {
+    WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON,
+    WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped,
+    WeiteresVerfahrenInBearbeitungFachreferatDtoToJSON,
+} from './WeiteresVerfahrenInBearbeitungFachreferatDto';
+
 import {
      BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
      BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
@@ -51,6 +70,15 @@ export const AbfrageInBearbeitungFachreferatDtoArtAbfrageEnum = {
 } as const;
 export type AbfrageInBearbeitungFachreferatDtoArtAbfrageEnum = typeof AbfrageInBearbeitungFachreferatDtoArtAbfrageEnum[keyof typeof AbfrageInBearbeitungFachreferatDtoArtAbfrageEnum];
 
+
+/**
+ * Check if a given object implements the AbfrageInBearbeitungFachreferatDto interface.
+ */
+export function instanceOfAbfrageInBearbeitungFachreferatDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfrageInBearbeitungFachreferatDtoFromJSON(json: any): AbfrageInBearbeitungFachreferatDto {
     return AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, false);
