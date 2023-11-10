@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SchuleDto } from './SchuleDto';
 import {
-    SchuleDto,
     SchuleDtoFromJSON,
     SchuleDtoFromJSONTyped,
     SchuleDtoToJSON,
@@ -32,6 +32,15 @@ export interface GrundschuleDtoAllOf {
      * @memberof GrundschuleDtoAllOf
      */
     schule?: SchuleDto;
+}
+
+/**
+ * Check if a given object implements the GrundschuleDtoAllOf interface.
+ */
+export function instanceOfGrundschuleDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function GrundschuleDtoAllOfFromJSON(json: any): GrundschuleDtoAllOf {

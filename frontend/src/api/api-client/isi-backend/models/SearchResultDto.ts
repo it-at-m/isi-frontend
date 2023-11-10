@@ -13,6 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageSearchResultDto } from './AbfrageSearchResultDto';
+import {
+    AbfrageSearchResultDtoFromJSON,
+    AbfrageSearchResultDtoFromJSONTyped,
+    AbfrageSearchResultDtoToJSON,
+} from './AbfrageSearchResultDto';
+import type { BauvorhabenSearchResultDto } from './BauvorhabenSearchResultDto';
+import {
+    BauvorhabenSearchResultDtoFromJSON,
+    BauvorhabenSearchResultDtoFromJSONTyped,
+    BauvorhabenSearchResultDtoToJSON,
+} from './BauvorhabenSearchResultDto';
+import type { InfrastruktureinrichtungSearchResultDto } from './InfrastruktureinrichtungSearchResultDto';
+import {
+    InfrastruktureinrichtungSearchResultDtoFromJSON,
+    InfrastruktureinrichtungSearchResultDtoFromJSONTyped,
+    InfrastruktureinrichtungSearchResultDtoToJSON,
+} from './InfrastruktureinrichtungSearchResultDto';
+
 import {
      AbfrageSearchResultDtoFromJSONTyped,
      BauvorhabenSearchResultDtoFromJSONTyped,
@@ -44,6 +63,15 @@ export const SearchResultDtoTypeEnum = {
 } as const;
 export type SearchResultDtoTypeEnum = typeof SearchResultDtoTypeEnum[keyof typeof SearchResultDtoTypeEnum];
 
+
+/**
+ * Check if a given object implements the SearchResultDto interface.
+ */
+export function instanceOfSearchResultDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function SearchResultDtoFromJSON(json: any): SearchResultDto {
     return SearchResultDtoFromJSONTyped(json, false);

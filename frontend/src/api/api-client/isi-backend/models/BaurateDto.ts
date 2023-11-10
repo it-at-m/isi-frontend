@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FoerdermixDto } from './FoerdermixDto';
 import {
-    FoerdermixDto,
     FoerdermixDtoFromJSON,
     FoerdermixDtoFromJSONTyped,
     FoerdermixDtoToJSON,
@@ -74,6 +74,17 @@ export interface BaurateDto {
      * @memberof BaurateDto
      */
     foerdermix: FoerdermixDto;
+}
+
+/**
+ * Check if a given object implements the BaurateDto interface.
+ */
+export function instanceOfBaurateDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "jahr" in value;
+    isInstance = isInstance && "foerdermix" in value;
+
+    return isInstance;
 }
 
 export function BaurateDtoFromJSON(json: any): BaurateDto {

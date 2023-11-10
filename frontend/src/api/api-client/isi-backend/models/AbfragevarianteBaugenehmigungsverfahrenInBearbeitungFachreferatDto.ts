@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BedarfsmeldungFachreferateDto } from './BedarfsmeldungFachreferateDto';
 import {
-    BedarfsmeldungFachreferateDto,
     BedarfsmeldungFachreferateDtoFromJSON,
     BedarfsmeldungFachreferateDtoFromJSONTyped,
     BedarfsmeldungFachreferateDtoToJSON,
@@ -60,10 +60,19 @@ export const AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoA
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum];
 
+
+/**
+ * Check if a given object implements the AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto interface.
+ */
+export function instanceOfAbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON(json: any): AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto {
     return AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);

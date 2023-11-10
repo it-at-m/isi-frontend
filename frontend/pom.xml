@@ -41,9 +41,13 @@
                 <plugins>
 
                     <plugin>
+                        <!--
+                            Verwendung von typescript-fetch:
+                            https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/typescript-fetch.md
+                         -->
                         <groupId>org.openapitools</groupId>
                         <artifactId>openapi-generator-maven-plugin</artifactId>
-                        <version>6.0.0</version>
+                        <version>6.6.0</version>
                         <executions>
                             <execution>
                                 <id>isi-backend</id>
@@ -56,6 +60,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-backend</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -70,6 +75,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-master-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -84,6 +90,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-geodata-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>

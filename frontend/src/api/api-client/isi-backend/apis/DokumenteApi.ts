@@ -14,8 +14,10 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  DokumenteDto,
+} from '../models';
 import {
-    DokumenteDto,
     DokumenteDtoFromJSON,
     DokumenteDtoToJSON,
 } from '../models';
@@ -33,7 +35,7 @@ export class DokumenteApi extends runtime.BaseAPI {
     /**
      * Holen aller in der Anwendung vorhandenen Dokumente
      */
-    async getDokumenteRaw(requestParameters: GetDokumenteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<DokumenteDto>> {
+    async getDokumenteRaw(requestParameters: GetDokumenteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DokumenteDto>> {
         const queryParameters: any = {};
 
         if (requestParameters.pageNumber !== undefined) {
@@ -59,7 +61,7 @@ export class DokumenteApi extends runtime.BaseAPI {
     /**
      * Holen aller in der Anwendung vorhandenen Dokumente
      */
-    async getDokumente(requestParameters: GetDokumenteRequest = {}, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<DokumenteDto> {
+    async getDokumente(requestParameters: GetDokumenteRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DokumenteDto> {
         const response = await this.getDokumenteRaw(requestParameters, initOverrides);
         return await response.value();
     }

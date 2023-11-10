@@ -52,14 +52,6 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -67,6 +59,14 @@
           "200": {
             "description": "OK -> FoerdermixStamm wurde erfolgreich aktualisiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       },
@@ -79,8 +79,8 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
+          "400": {
+            "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
@@ -91,8 +91,8 @@
             "description": "CREATED -> FoerdermixStamm wurde erfolgreich erstellt.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
           },
-          "400": {
-            "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -112,12 +112,12 @@
             "description": "OK -> Kommentar wurde erfolgreich aktualisiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "404": {
             "description": "NOT_FOUND -> Kommentar mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "400": {
@@ -181,10 +181,6 @@
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK -> Infrastruktureinrichtung wurde erfolgreich aktualisiert.",
             "content": {
@@ -201,6 +197,10 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       },
@@ -226,6 +226,10 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -246,10 +250,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -264,20 +264,20 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
+          "409": {
+            "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "409": {
-            "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
+          "404": {
+            "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -298,24 +298,24 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Die ausgewählte Abfrage existiert nicht mehr.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          "201": {
+            "description": "CREATED -> Bauvorhaben wurde erfolgreich erstellt.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
           },
           "400": {
             "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "201": {
-            "description": "CREATED -> Bauvorhaben wurde erfolgreich erstellt.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Die ausgewählte Abfrage existiert nicht mehr.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "409": {
             "description": "CONFLICT -> Bauvorhaben konnte nicht erstellt werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -335,24 +335,24 @@
           }
         ],
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
             "description": "OK -> Relevante Abfragevariante erfolgreich geändert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "404": {
             "description": "NOT_FOUND -> Abfrage oder Abfragevariante nicht gefunden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "409": {
-            "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -368,15 +368,15 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." }
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
         }
       }
     },
@@ -390,15 +390,15 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." }
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
         }
       }
     },
@@ -412,13 +412,13 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht weitergegeben werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": { "description": "OK -> Abfrage wurde erfolgreich an RBS oder SOZ zur Bearbeitung weitergegeben." },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht weitergegeben werden.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -434,15 +434,15 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller." }
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
         }
       }
     },
@@ -457,12 +457,12 @@
         ],
         "responses": {
           "200": { "description": "OK -> Abfrage wurde erfolgreich freigegeben." },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht freigegeben werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -478,15 +478,15 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zur bearbeitung freigestellt." },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zur bearbeitung freigestellt." }
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
         }
       }
     },
@@ -500,11 +500,11 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
+          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledgit werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -523,12 +523,12 @@
         ],
         "responses": {
           "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -566,15 +566,15 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht abgebrochen werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich abbgebrochen." }
+          "200": { "description": "OK -> Abfrage wurde erfolgreich abbgebrochen." },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
         }
       }
     },
@@ -638,6 +638,7 @@
           "required": true
         },
         "responses": {
+          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -645,8 +646,7 @@
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." }
+          }
         }
       }
     },
@@ -668,6 +668,7 @@
           "required": true
         },
         "responses": {
+          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -675,8 +676,7 @@
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." }
+          }
         }
       }
     },
@@ -741,8 +741,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Die Datei ist im S3-Storage nicht verfügbar.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -753,8 +753,8 @@
             "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
+          "404": {
+            "description": "NOT FOUND -> Die Datei ist im S3-Storage nicht verfügbar.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -769,20 +769,20 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
-          },
-          "409": {
-            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "400": {
             "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -824,9 +824,9 @@
             "application/json": {
               "schema": {
                 "oneOf": [
-                  { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
                   { "$ref": "#/components/schemas/BaugenehmigungsverfahrenAngelegtDto" },
-                  { "$ref": "#/components/schemas/BauleitplanverfahrenAngelegtDto" }
+                  { "$ref": "#/components/schemas/BauleitplanverfahrenAngelegtDto" },
+                  { "$ref": "#/components/schemas/WeiteresVerfahrenAngelegtDto" }
                 ]
               }
             }
@@ -841,11 +841,20 @@
                 "schema": {
                   "oneOf": [
                     { "$ref": "#/components/schemas/BaugenehmigungsverfahrenDto" },
-                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" }
+                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" },
+                    { "$ref": "#/components/schemas/WeiteresVerfahrenDto" }
                   ]
                 }
               }
             }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
@@ -853,14 +862,6 @@
           },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "409": {
-            "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -879,9 +880,9 @@
             "application/json": {
               "schema": {
                 "oneOf": [
-                  { "$ref": "#/components/schemas/AbfrageInBearbeitungSachbearbeitungDto" },
                   { "$ref": "#/components/schemas/BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto" },
-                  { "$ref": "#/components/schemas/BauleitplanverfahrenInBearbeitungSachbearbeitungDto" }
+                  { "$ref": "#/components/schemas/BauleitplanverfahrenInBearbeitungSachbearbeitungDto" },
+                  { "$ref": "#/components/schemas/WeiteresVerfahrenInBearbeitungSachbearbeitungDto" }
                 ]
               }
             }
@@ -889,16 +890,12 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -908,14 +905,19 @@
                 "schema": {
                   "oneOf": [
                     { "$ref": "#/components/schemas/BaugenehmigungsverfahrenDto" },
-                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" }
+                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" },
+                    { "$ref": "#/components/schemas/WeiteresVerfahrenDto" }
                   ]
                 }
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -934,9 +936,9 @@
             "application/json": {
               "schema": {
                 "oneOf": [
-                  { "$ref": "#/components/schemas/AbfrageInBearbeitungFachreferatDto" },
                   { "$ref": "#/components/schemas/BaugenehmigungsverfahrenInBearbeitungFachreferatDto" },
-                  { "$ref": "#/components/schemas/BauleitplanverfahrenInBearbeitungFachreferatDto" }
+                  { "$ref": "#/components/schemas/BauleitplanverfahrenInBearbeitungFachreferatDto" },
+                  { "$ref": "#/components/schemas/WeiteresVerfahrenInBearbeitungFachreferatDto" }
                 ]
               }
             }
@@ -944,16 +946,12 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -963,14 +961,19 @@
                 "schema": {
                   "oneOf": [
                     { "$ref": "#/components/schemas/BaugenehmigungsverfahrenDto" },
-                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" }
+                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" },
+                    { "$ref": "#/components/schemas/WeiteresVerfahrenDto" }
                   ]
                 }
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -989,9 +992,9 @@
             "application/json": {
               "schema": {
                 "oneOf": [
-                  { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
                   { "$ref": "#/components/schemas/BaugenehmigungsverfahrenAngelegtDto" },
-                  { "$ref": "#/components/schemas/BauleitplanverfahrenAngelegtDto" }
+                  { "$ref": "#/components/schemas/BauleitplanverfahrenAngelegtDto" },
+                  { "$ref": "#/components/schemas/WeiteresVerfahrenAngelegtDto" }
                 ]
               }
             }
@@ -999,8 +1002,8 @@
           "required": true
         },
         "responses": {
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
+          "409": {
+            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
@@ -1011,8 +1014,8 @@
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -1022,14 +1025,15 @@
                 "schema": {
                   "oneOf": [
                     { "$ref": "#/components/schemas/BaugenehmigungsverfahrenDto" },
-                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" }
+                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" },
+                    { "$ref": "#/components/schemas/WeiteresVerfahrenDto" }
                   ]
                 }
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -1044,13 +1048,13 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
-          },
           "404": {
             "description": "NOT FOUND -> FoerdermixStamm mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
           }
         }
       },
@@ -1247,11 +1251,11 @@
             "description": "CONFLICT -> Das Bauvorhaben wird durch Abfragen referenziert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          }
+          },
+          "204": { "description": "NO CONTENT" }
         }
       }
     },
@@ -1355,7 +1359,8 @@
                 "schema": {
                   "oneOf": [
                     { "$ref": "#/components/schemas/BaugenehmigungsverfahrenDto" },
-                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" }
+                    { "$ref": "#/components/schemas/BauleitplanverfahrenDto" },
+                    { "$ref": "#/components/schemas/WeiteresVerfahrenDto" }
                   ]
                 }
               }
@@ -1379,13 +1384,13 @@
             "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "403": {
-            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben oder die Abfrage nicht im korrekten Status ist.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "204": { "description": "NO CONTENT" },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben oder die Abfrage nicht im korrekten Status ist.",
+          "403": {
+            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -1400,15 +1405,15 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK -> Alle mögliche Transistions gefunden",
             "content": {
               "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/TransitionDto" } } }
             }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -1652,7 +1657,18 @@
           "flaecheGesamtgrundstueck": { "type": "number" },
           "flaecheTeilgrundstueck": { "type": "number" }
         },
-        "discriminator": { "propertyName": "infrastruktureinrichtungTyp" }
+        "description": "InfrastruktureinrichtungDto",
+        "discriminator": {
+          "propertyName": "infrastruktureinrichtungTyp",
+          "mapping": {
+            "GRUNDSCHULE": "#/components/schemas/GrundschuleDto",
+            "GS_NACHMITTAG_BETREUUNG": "#/components/schemas/GsNachmittagBetreuungDto",
+            "HAUS_FUER_KINDER": "#/components/schemas/HausFuerKinderDto",
+            "KINDERGARTEN": "#/components/schemas/KindergartenDto",
+            "KINDERKRIPPE": "#/components/schemas/KinderkrippeDto",
+            "MITTELSCHULE": "#/components/schemas/MittelschuleDto"
+          }
+        }
       },
       "KindergartenDto": {
         "required": ["anzahlKindergartenGruppen", "anzahlKindergartenPlaetze", "nameEinrichtung", "status"],
@@ -1918,13 +1934,15 @@
           "selectHausFuerKinder",
           "selectKindergarten",
           "selectKinderkrippe",
-          "selectMittelschule"
+          "selectMittelschule",
+          "selectWeiteresVerfahren"
         ],
         "type": "object",
         "properties": {
           "searchQuery": { "type": "string" },
           "selectBauleitplanverfahren": { "type": "boolean" },
           "selectBaugenehmigungsverfahren": { "type": "boolean" },
+          "selectWeiteresVerfahren": { "type": "boolean" },
           "selectBauvorhaben": { "type": "boolean" },
           "selectGrundschule": { "type": "boolean" },
           "selectGsNachmittagBetreuung": { "type": "boolean" },
@@ -1952,6 +1970,7 @@
           "selectKindergarten",
           "selectKinderkrippe",
           "selectMittelschule",
+          "selectWeiteresVerfahren",
           "sortBy",
           "sortOrder"
         ],
@@ -1960,6 +1979,7 @@
           "searchQuery": { "type": "string" },
           "selectBauleitplanverfahren": { "type": "boolean" },
           "selectBaugenehmigungsverfahren": { "type": "boolean" },
+          "selectWeiteresVerfahren": { "type": "boolean" },
           "selectBauvorhaben": { "type": "boolean" },
           "selectGrundschule": { "type": "boolean" },
           "selectGsNachmittagBetreuung": { "type": "boolean" },
@@ -1983,7 +2003,7 @@
               "id": { "type": "string", "format": "uuid" },
               "artAbfrage": {
                 "type": "string",
-                "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+                "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
               },
               "name": { "type": "string" },
               "stadtbezirke": {
@@ -2146,13 +2166,21 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfrage": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": { "maxLength": 70, "minLength": 0, "type": "string" },
           "anmerkung": { "maxLength": 255, "minLength": 0, "type": "string" },
           "bauvorhaben": { "type": "string", "format": "uuid" }
         },
-        "discriminator": { "propertyName": "artAbfrage" }
+        "description": "AbfrageAngelegtDto",
+        "discriminator": {
+          "propertyName": "artAbfrage",
+          "mapping": {
+            "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenAngelegtDto",
+            "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenAngelegtDto",
+            "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenAngelegtDto"
+          }
+        }
       },
       "AbfragevarianteBaugenehmigungsverfahrenAngelegtDto": {
         "required": [
@@ -2169,7 +2197,7 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
           "name": { "maxLength": 30, "minLength": 0, "type": "string" },
@@ -2229,7 +2257,7 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
           "name": { "maxLength": 30, "minLength": 0, "type": "string" },
@@ -2264,6 +2292,68 @@
           "gfWohnenGenossenschaftlichesWohnen": { "type": "number" },
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
           "weGesamt": { "type": "integer", "format": "int32" },
+          "weSonderwohnformen": { "type": "boolean" },
+          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
+          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
+          "weGenossenschaftlichesWohnen": { "type": "integer", "format": "int32" },
+          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
+          "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/BauabschnittDto" } }
+        }
+      },
+      "AbfragevarianteWeiteresVerfahrenAngelegtDto": {
+        "required": [
+          "abfragevariantenNr",
+          "gfWohnenSonderwohnformen",
+          "name",
+          "realisierungVon",
+          "weSonderwohnformen",
+          "wesentlicheRechtsgrundlage"
+        ],
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "satzungsbeschluss": { "type": "string", "format": "date" },
+          "wesentlicheRechtsgrundlage": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "QUALIFIZIERTER_BEBAUUNGSPLAN",
+                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "INNENBEREICH",
+                "AUSSENBEREICH",
+                "BEFREIUNG",
+                "INFO_FEHLT",
+                "FREIE_EINGABE"
+              ]
+            }
+          },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "gfWohnenGesamt": { "type": "number" },
+          "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
+          "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
+          "gfWohnenSobonUrsaechlich": { "type": "number" },
+          "gfWohnenBestandswohnbaurecht": { "type": "number" },
+          "gfWohnenSonderwohnformen": { "type": "boolean" },
+          "gfWohnenStudentischesWohnen": { "type": "number" },
+          "gfWohnenSeniorinnenWohnen": { "type": "number" },
+          "gfWohnenGenossenschaftlichesWohnen": { "type": "number" },
+          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
+          "weGesamt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
           "weSonderwohnformen": { "type": "boolean" },
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
@@ -2307,7 +2397,7 @@
         }
       },
       "BaugenehmigungsverfahrenAngelegtDto": {
-        "required": ["fristBearbeitung", "name", "standVerfahren"],
+        "required": ["abfragevariantenBaugenehmigungsverfahren", "fristBearbeitung", "name", "standVerfahren"],
         "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
@@ -2355,7 +2445,14 @@
         ]
       },
       "BauleitplanverfahrenAngelegtDto": {
-        "required": ["fristBearbeitung", "name", "offizielleMitzeichnung", "sobonRelevant", "standVerfahren"],
+        "required": [
+          "abfragevariantenBauleitplanverfahren",
+          "fristBearbeitung",
+          "name",
+          "offizielleMitzeichnung",
+          "sobonRelevant",
+          "standVerfahren"
+        ],
         "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
@@ -2430,6 +2527,76 @@
           "foerdermix": { "$ref": "#/components/schemas/FoerdermixDto" }
         }
       },
+      "WeiteresVerfahrenAngelegtDto": {
+        "required": [
+          "abfragevariantenWeiteresVerfahren",
+          "fristBearbeitung",
+          "name",
+          "offizielleMitzeichnung",
+          "sobonRelevant",
+          "standVerfahren"
+        ],
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
+          {
+            "type": "object",
+            "properties": {
+              "aktenzeichenProLbk": { "maxLength": 255, "minLength": 0, "type": "string" },
+              "bebauungsplannummer": { "maxLength": 255, "minLength": 0, "type": "string" },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "sobonJahr": {
+                "type": "string",
+                "enum": [
+                  "JAHR_1995",
+                  "JAHR_1997",
+                  "JAHR_2001",
+                  "JAHR_2006",
+                  "JAHR_2012",
+                  "JAHR_2017",
+                  "JAHR_2017_PLUS",
+                  "JAHR_2021"
+                ]
+              },
+              "standVerfahren": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "VORBEREITUNG_ECKDATENBESCHLUSS",
+                  "VORBEREITUNG_WETTBEWERBAUSLOBUNG",
+                  "VORBEREITUNG_AUFSTELLUNGSBESCHLUSS",
+                  "VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG",
+                  "VORLIEGENDER_SATZUNGSBESCHLUSS",
+                  "RECHTSVERBINDLICHKEIT_AMTSBLATT",
+                  "AUFTEILUNGSPLAN",
+                  "VORBEREITUNG_VORBESCHEID",
+                  "VORBEREITUNG_BAUGENEHMIGUNG",
+                  "VORABFRAGE_OHNE_KONKRETEN_STAND",
+                  "STRUKTURKONZEPT",
+                  "RAHMENPLANUNG",
+                  "POTENTIALUNTERSUCHUNG",
+                  "STAEDTEBAULICHE_SANIERUNGSMASSNAHME",
+                  "STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME",
+                  "INFO_FEHLT",
+                  "FREIE_EINGABE"
+                ]
+              },
+              "standVerfahrenFreieEingabe": { "maxLength": 255, "minLength": 0, "type": "string" },
+              "adresse": { "$ref": "#/components/schemas/AdresseDto" },
+              "verortung": { "$ref": "#/components/schemas/VerortungDto" },
+              "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
+              "fristBearbeitung": { "type": "string", "format": "date" },
+              "offizielleMitzeichnung": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "abfragevariantenWeiteresVerfahren": {
+                "maxItems": 5,
+                "minItems": 1,
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenAngelegtDto" }
+              }
+            }
+          }
+        ]
+      },
       "AbfrageDto": {
         "type": "object",
         "properties": {
@@ -2439,7 +2606,7 @@
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "artAbfrage": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": { "type": "string" },
           "statusAbfrage": { "$ref": "#/components/schemas/StatusAbfrage" },
@@ -2448,7 +2615,15 @@
           "sub": { "type": "string" },
           "displayName": { "type": "string" }
         },
-        "discriminator": { "propertyName": "artAbfrage" }
+        "description": "AbfrageDto",
+        "discriminator": {
+          "propertyName": "artAbfrage",
+          "mapping": {
+            "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenDto",
+            "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenDto",
+            "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenDto"
+          }
+        }
       },
       "AbfragevarianteBaugenehmigungsverfahrenDto": {
         "type": "object",
@@ -2460,7 +2635,7 @@
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": { "type": "string" },
           "wesentlicheRechtsgrundlage": {
@@ -2524,7 +2699,7 @@
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": { "type": "string" },
           "satzungsbeschluss": { "type": "string", "format": "date" },
@@ -2559,6 +2734,72 @@
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
           "gfWohnenPlanungsursaechlich": { "type": "number" },
           "weGesamt": { "type": "integer", "format": "int32" },
+          "weSonderwohnformen": { "type": "boolean" },
+          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
+          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
+          "weGenossenschaftlichesWohnen": { "type": "integer", "format": "int32" },
+          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
+          "sobonOrientierungswertJahr": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022"]
+          },
+          "anmerkung": { "type": "string" },
+          "bedarfsmeldungFachreferate": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BedarfsmeldungFachreferateDto" }
+          },
+          "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/BauabschnittDto" } }
+        }
+      },
+      "AbfragevarianteWeiteresVerfahrenDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "name": { "type": "string" },
+          "satzungsbeschluss": { "type": "string", "format": "date" },
+          "wesentlicheRechtsgrundlage": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "QUALIFIZIERTER_BEBAUUNGSPLAN",
+                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "INNENBEREICH",
+                "AUSSENBEREICH",
+                "BEFREIUNG",
+                "INFO_FEHLT",
+                "FREIE_EINGABE"
+              ]
+            }
+          },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string" },
+          "realisierungVon": { "type": "integer", "format": "int32" },
+          "gfWohnenGesamt": { "type": "number" },
+          "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
+          "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
+          "gfWohnenSobonUrsaechlich": { "type": "number" },
+          "gfWohnenBestandswohnbaurecht": { "type": "number" },
+          "gfWohnenSonderwohnformen": { "type": "boolean" },
+          "gfWohnenStudentischesWohnen": { "type": "number" },
+          "gfWohnenSeniorinnenWohnen": { "type": "number" },
+          "gfWohnenGenossenschaftlichesWohnen": { "type": "number" },
+          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
+          "gfWohnenPlanungsursaechlich": { "type": "number" },
+          "weGesamt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
           "weSonderwohnformen": { "type": "boolean" },
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
@@ -2714,16 +2955,88 @@
           "anzahlGrundschulzuege": { "type": "integer", "format": "int32" }
         }
       },
+      "WeiteresVerfahrenDto": {
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/AbfrageDto" },
+          {
+            "type": "object",
+            "properties": {
+              "aktenzeichenProLbk": { "type": "string" },
+              "bebauungsplannummer": { "type": "string" },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "sobonJahr": {
+                "type": "string",
+                "enum": [
+                  "JAHR_1995",
+                  "JAHR_1997",
+                  "JAHR_2001",
+                  "JAHR_2006",
+                  "JAHR_2012",
+                  "JAHR_2017",
+                  "JAHR_2017_PLUS",
+                  "JAHR_2021"
+                ]
+              },
+              "standVerfahren": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "VORBEREITUNG_ECKDATENBESCHLUSS",
+                  "VORBEREITUNG_WETTBEWERBAUSLOBUNG",
+                  "VORBEREITUNG_AUFSTELLUNGSBESCHLUSS",
+                  "VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG",
+                  "VORLIEGENDER_SATZUNGSBESCHLUSS",
+                  "RECHTSVERBINDLICHKEIT_AMTSBLATT",
+                  "AUFTEILUNGSPLAN",
+                  "VORBEREITUNG_VORBESCHEID",
+                  "VORBEREITUNG_BAUGENEHMIGUNG",
+                  "VORABFRAGE_OHNE_KONKRETEN_STAND",
+                  "STRUKTURKONZEPT",
+                  "RAHMENPLANUNG",
+                  "POTENTIALUNTERSUCHUNG",
+                  "STAEDTEBAULICHE_SANIERUNGSMASSNAHME",
+                  "STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME",
+                  "INFO_FEHLT",
+                  "FREIE_EINGABE"
+                ]
+              },
+              "standVerfahrenFreieEingabe": { "type": "string" },
+              "adresse": { "$ref": "#/components/schemas/AdresseDto" },
+              "verortung": { "$ref": "#/components/schemas/VerortungDto" },
+              "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
+              "fristBearbeitung": { "type": "string", "format": "date" },
+              "offizielleMitzeichnung": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "abfragevariantenWeiteresVerfahren": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenDto" }
+              },
+              "abfragevariantenSachbearbeitungWeiteresVerfahren": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenDto" }
+              }
+            }
+          }
+        ]
+      },
       "AbfrageInBearbeitungSachbearbeitungDto": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "artAbfrage": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         },
-        "discriminator": { "propertyName": "artAbfrage" }
+        "description": "AbfrageInBearbeitungSachbearbeitungDto",
+        "discriminator": {
+          "propertyName": "artAbfrage",
+          "mapping": {
+            "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenInBearbeitungSachbearbeitungDto",
+            "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto",
+            "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenInBearbeitungSachbearbeitungDto"
+          }
+        }
       },
       "AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto": {
         "required": [
@@ -2741,7 +3054,7 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
           "name": { "maxLength": 30, "minLength": 0, "type": "string" },
@@ -2800,7 +3113,7 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "gfWohnenPlanungsursaechlich": { "type": "number" },
           "sobonOrientierungswertJahr": {
@@ -2816,6 +3129,7 @@
           "gfWohnenSonderwohnformen",
           "name",
           "realisierungVon",
+          "sobonOrientierungswertJahr",
           "weSonderwohnformen",
           "wesentlicheRechtsgrundlage"
         ],
@@ -2825,7 +3139,7 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
           "name": { "maxLength": 30, "minLength": 0, "type": "string" },
@@ -2875,13 +3189,101 @@
         }
       },
       "AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
+        "required": ["sobonOrientierungswertJahr"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "gfWohnenPlanungsursaechlich": { "type": "number" },
+          "sobonOrientierungswertJahr": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022"]
+          },
+          "anmerkung": { "type": "string" }
+        }
+      },
+      "AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto": {
+        "required": [
+          "abfragevariantenNr",
+          "gfWohnenSonderwohnformen",
+          "name",
+          "realisierungVon",
+          "sobonOrientierungswertJahr",
+          "weSonderwohnformen",
+          "wesentlicheRechtsgrundlage"
+        ],
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "satzungsbeschluss": { "type": "string", "format": "date" },
+          "wesentlicheRechtsgrundlage": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "QUALIFIZIERTER_BEBAUUNGSPLAN",
+                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "INNENBEREICH",
+                "AUSSENBEREICH",
+                "BEFREIUNG",
+                "INFO_FEHLT",
+                "FREIE_EINGABE"
+              ]
+            }
+          },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "gfWohnenGesamt": { "type": "number" },
+          "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
+          "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
+          "gfWohnenSobonUrsaechlich": { "type": "number" },
+          "gfWohnenBestandswohnbaurecht": { "type": "number" },
+          "gfWohnenSonderwohnformen": { "type": "boolean" },
+          "gfWohnenStudentischesWohnen": { "type": "number" },
+          "gfWohnenSeniorinnenWohnen": { "type": "number" },
+          "gfWohnenGenossenschaftlichesWohnen": { "type": "number" },
+          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
+          "weGesamt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
+          "weSonderwohnformen": { "type": "boolean" },
+          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
+          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
+          "weGenossenschaftlichesWohnen": { "type": "integer", "format": "int32" },
+          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
+          "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/BauabschnittDto" } },
+          "gfWohnenPlanungsursaechlich": { "type": "number" },
+          "sobonOrientierungswertJahr": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022"]
+          },
+          "anmerkung": { "type": "string" }
+        }
+      },
+      "AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
+        "required": ["sobonOrientierungswertJahr"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "gfWohnenPlanungsursaechlich": { "type": "number" },
           "sobonOrientierungswertJahr": {
@@ -2892,6 +3294,10 @@
         }
       },
       "BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto": {
+        "required": [
+          "abfragevariantenBaugenehmigungsverfahren",
+          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
+        ],
         "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageInBearbeitungSachbearbeitungDto" },
@@ -2920,6 +3326,7 @@
         ]
       },
       "BauleitplanverfahrenInBearbeitungSachbearbeitungDto": {
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
         "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageInBearbeitungSachbearbeitungDto" },
@@ -2947,16 +3354,53 @@
           }
         ]
       },
+      "WeiteresVerfahrenInBearbeitungSachbearbeitungDto": {
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/AbfrageInBearbeitungSachbearbeitungDto" },
+          {
+            "type": "object",
+            "properties": {
+              "verortung": { "$ref": "#/components/schemas/VerortungDto" },
+              "abfragevariantenWeiteresVerfahren": {
+                "maxItems": 5,
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto"
+                }
+              },
+              "abfragevariantenSachbearbeitungWeiteresVerfahren": {
+                "maxItems": 5,
+                "minItems": 0,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto"
+                }
+              }
+            }
+          }
+        ]
+      },
       "AbfrageInBearbeitungFachreferatDto": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "artAbfrage": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         },
-        "discriminator": { "propertyName": "artAbfrage" }
+        "description": "AbfrageInBearbeitungFachreferatDto",
+        "discriminator": {
+          "propertyName": "artAbfrage",
+          "mapping": {
+            "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenInBearbeitungFachreferatDto",
+            "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenInBearbeitungFachreferatDto",
+            "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenInBearbeitungFachreferatDto"
+          }
+        }
       },
       "AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto": {
         "type": "object",
@@ -2965,7 +3409,7 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungFachreferate": {
             "type": "array",
@@ -2980,7 +3424,22 @@
           "version": { "type": "integer", "format": "int64" },
           "artAbfragevariante": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERE_ABFRAGEN"]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "bedarfsmeldungFachreferate": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BedarfsmeldungFachreferateDto" }
+          }
+        }
+      },
+      "AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungFachreferate": {
             "type": "array",
@@ -2989,6 +3448,10 @@
         }
       },
       "BaugenehmigungsverfahrenInBearbeitungFachreferatDto": {
+        "required": [
+          "abfragevariantenBaugenehmigungsverfahren",
+          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
+        ],
         "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageInBearbeitungFachreferatDto" },
@@ -3016,6 +3479,7 @@
         ]
       },
       "BauleitplanverfahrenInBearbeitungFachreferatDto": {
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
         "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageInBearbeitungFachreferatDto" },
@@ -3037,6 +3501,30 @@
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto"
                 }
+              }
+            }
+          }
+        ]
+      },
+      "WeiteresVerfahrenInBearbeitungFachreferatDto": {
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/AbfrageInBearbeitungFachreferatDto" },
+          {
+            "type": "object",
+            "properties": {
+              "abfragevariantenWeiteresVerfahren": {
+                "maxItems": 5,
+                "minItems": 1,
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto" }
+              },
+              "abfragevariantenSachbearbeitungWeiteresVerfahren": {
+                "maxItems": 5,
+                "minItems": 0,
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto" }
               }
             }
           }
@@ -3067,6 +3555,7 @@
           "sobonVerfahrensgrundsaetzeJahr": { "$ref": "#/components/schemas/LookupListDto" },
           "standVerfahrenBauleitplanverfahren": { "$ref": "#/components/schemas/LookupListDto" },
           "standVerfahrenBaugenehmigungsverfahren": { "$ref": "#/components/schemas/LookupListDto" },
+          "standVerfahrenWeiteresVerfahren": { "$ref": "#/components/schemas/LookupListDto" },
           "standVerfahren": { "$ref": "#/components/schemas/LookupListDto" },
           "statusAbfrage": { "$ref": "#/components/schemas/LookupListDto" },
           "wesentlicheRechtsgrundlageBauleitplanverfahren": { "$ref": "#/components/schemas/LookupListDto" },

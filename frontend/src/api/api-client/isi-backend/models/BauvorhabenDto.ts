@@ -13,26 +13,26 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { UncertainBoolean } from './UncertainBoolean';
 import {
-    UncertainBoolean,
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
@@ -244,6 +244,20 @@ export const BauvorhabenDtoArtFnpEnum = {
 } as const;
 export type BauvorhabenDtoArtFnpEnum = typeof BauvorhabenDtoArtFnpEnum[keyof typeof BauvorhabenDtoArtFnpEnum];
 
+
+/**
+ * Check if a given object implements the BauvorhabenDto interface.
+ */
+export function instanceOfBauvorhabenDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "nameVorhaben" in value;
+    isInstance = isInstance && "standVerfahren" in value;
+    isInstance = isInstance && "sobonRelevant" in value;
+    isInstance = isInstance && "wesentlicheRechtsgrundlage" in value;
+    isInstance = isInstance && "artFnp" in value;
+
+    return isInstance;
+}
 
 export function BauvorhabenDtoFromJSON(json: any): BauvorhabenDto {
     return BauvorhabenDtoFromJSONTyped(json, false);

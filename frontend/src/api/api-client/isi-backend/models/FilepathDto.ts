@@ -27,6 +27,16 @@ export interface FilepathDto {
     pathToFile: string;
 }
 
+/**
+ * Check if a given object implements the FilepathDto interface.
+ */
+export function instanceOfFilepathDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "pathToFile" in value;
+
+    return isInstance;
+}
+
 export function FilepathDtoFromJSON(json: any): FilepathDto {
     return FilepathDtoFromJSONTyped(json, false);
 }

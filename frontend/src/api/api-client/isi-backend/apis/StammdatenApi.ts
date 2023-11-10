@@ -14,8 +14,10 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  InformationResponseDto,
+} from '../models';
 import {
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
 } from '../models';
@@ -36,7 +38,7 @@ export class StammdatenApi extends runtime.BaseAPI {
     /**
      * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
      */
-    async importSoBoNOrientierungswerteSozialeInfrastrukturRaw(requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async importSoBoNOrientierungswerteSozialeInfrastrukturRaw(requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.file === null || requestParameters.file === undefined) {
             throw new runtime.RequiredError('file','Required parameter requestParameters.file was null or undefined when calling importSoBoNOrientierungswerteSozialeInfrastruktur.');
         }
@@ -79,14 +81,14 @@ export class StammdatenApi extends runtime.BaseAPI {
     /**
      * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
      */
-    async importSoBoNOrientierungswerteSozialeInfrastruktur(requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async importSoBoNOrientierungswerteSozialeInfrastruktur(requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.importSoBoNOrientierungswerteSozialeInfrastrukturRaw(requestParameters, initOverrides);
     }
 
     /**
      * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
      */
-    async importStaedtebaulicheOrientierungswerteRaw(requestParameters: ImportStaedtebaulicheOrientierungswerteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async importStaedtebaulicheOrientierungswerteRaw(requestParameters: ImportStaedtebaulicheOrientierungswerteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.file === null || requestParameters.file === undefined) {
             throw new runtime.RequiredError('file','Required parameter requestParameters.file was null or undefined when calling importStaedtebaulicheOrientierungswerte.');
         }
@@ -129,7 +131,7 @@ export class StammdatenApi extends runtime.BaseAPI {
     /**
      * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
      */
-    async importStaedtebaulicheOrientierungswerte(requestParameters: ImportStaedtebaulicheOrientierungswerteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async importStaedtebaulicheOrientierungswerte(requestParameters: ImportStaedtebaulicheOrientierungswerteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.importStaedtebaulicheOrientierungswerteRaw(requestParameters, initOverrides);
     }
 

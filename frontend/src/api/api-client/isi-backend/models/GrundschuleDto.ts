@@ -13,30 +13,27 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
-    GrundschuleDtoAllOf,
-    GrundschuleDtoAllOfFromJSON,
-    GrundschuleDtoAllOfFromJSONTyped,
-    GrundschuleDtoAllOfToJSON,
-} from './GrundschuleDtoAllOf';
-import {
-    InfrastruktureinrichtungDto,
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
 } from './InfrastruktureinrichtungDto';
+import type { SchuleDto } from './SchuleDto';
 import {
-    SchuleDto,
     SchuleDtoFromJSON,
     SchuleDtoFromJSONTyped,
     SchuleDtoToJSON,
 } from './SchuleDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -54,6 +51,16 @@ export interface GrundschuleDto extends InfrastruktureinrichtungDto {
 
 
 
+/**
+ * Check if a given object implements the GrundschuleDto interface.
+ */
+export function instanceOfGrundschuleDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "schule" in value;
+
+    return isInstance;
+}
+
 export function GrundschuleDtoFromJSON(json: any): GrundschuleDto {
     return GrundschuleDtoFromJSONTyped(json, false);
 }
@@ -61,6 +68,8 @@ export function GrundschuleDtoFromJSON(json: any): GrundschuleDto {
 export function GrundschuleDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GrundschuleDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),

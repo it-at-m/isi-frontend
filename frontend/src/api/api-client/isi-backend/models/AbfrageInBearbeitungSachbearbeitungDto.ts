@@ -13,13 +13,33 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto } from './BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
+import {
+    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
+    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON,
+} from './BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
+import type { BauleitplanverfahrenInBearbeitungSachbearbeitungDto } from './BauleitplanverfahrenInBearbeitungSachbearbeitungDto';
+import {
+    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
+    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON,
+} from './BauleitplanverfahrenInBearbeitungSachbearbeitungDto';
+import type { WeiteresVerfahrenInBearbeitungSachbearbeitungDto } from './WeiteresVerfahrenInBearbeitungSachbearbeitungDto';
+import {
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON,
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON,
+} from './WeiteresVerfahrenInBearbeitungSachbearbeitungDto';
+
 import {
      BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
-     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped
+     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+     WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped
 } from './';
 
 /**
- * 
+ * AbfrageInBearbeitungSachbearbeitungDto
  * @export
  * @interface AbfrageInBearbeitungSachbearbeitungDto
  */
@@ -46,10 +66,19 @@ export const AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum = typeof AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum[keyof typeof AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum];
 
+
+/**
+ * Check if a given object implements the AbfrageInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfAbfrageInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfrageInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfrageInBearbeitungSachbearbeitungDto {
     return AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
@@ -60,11 +89,14 @@ export function AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, i
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['artAbfrage'] === 'BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto') {
+        if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
             return BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
         }
-        if (json['artAbfrage'] === 'BauleitplanverfahrenInBearbeitungSachbearbeitungDto') {
+        if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
             return BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
+        }
+        if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
+            return WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
         }
     }
     return {

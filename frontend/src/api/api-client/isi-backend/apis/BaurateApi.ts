@@ -14,11 +14,13 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  BaurateDto,
+  InformationResponseDto,
+} from '../models';
 import {
-    BaurateDto,
     BaurateDtoFromJSON,
     BaurateDtoToJSON,
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
 } from '../models';
@@ -37,7 +39,7 @@ export class BaurateApi extends runtime.BaseAPI {
     /**
      * Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten
      */
-    async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
+    async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
         if (requestParameters.realisierungsbeginn === null || requestParameters.realisierungsbeginn === undefined) {
             throw new runtime.RequiredError('realisierungsbeginn','Required parameter requestParameters.realisierungsbeginn was null or undefined when calling determineBauraten.');
         }
@@ -71,7 +73,7 @@ export class BaurateApi extends runtime.BaseAPI {
     /**
      * Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten
      */
-    async determineBauraten(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<BaurateDto>> {
+    async determineBauraten(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<BaurateDto>> {
         const response = await this.determineBauratenRaw(requestParameters, initOverrides);
         return await response.value();
     }
