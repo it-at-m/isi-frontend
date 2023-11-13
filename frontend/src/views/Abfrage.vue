@@ -21,10 +21,18 @@
           :is-new="isNewAbfrage()"
           :mode="modeAbfrage"
         />
+        <weiteres-verfahren-component
+          v-else-if="isWeiteresVerfahrenFormularOpen()"
+          id="weiteres_verfahren_component"
+          ref="weiteresVerfahrenComponent"
+          v-model="selected"
+          :is-new="isNewAbfrage()"
+          :mode="modeAbfrage"
+        />
         <abfragevariante-bauleitplanverfahren-component
           v-else-if="isAbfragevarianteBauleitplanverfahrenFormularOpen()"
-          id="abfragevariante_component"
-          ref="abfragevarianteComponent"
+          id="abfragevariante_bauleitplanverfahren_component"
+          ref="abfragevarianteBauleitplanverfahrenComponent"
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
@@ -33,8 +41,18 @@
         />
         <abfragevariante-baugenehmigungsverfahren-component
           v-else-if="isAbfragevarianteBaugenehmigungsverfahrenFormularOpen()"
-          id="abfragevariante_component"
-          ref="abfragevarianteComponent"
+          id="abfragevariante_baugenehmigungsverfahren_component"
+          ref="abfragevarianteBaugenehmigungsverfahrenComponent"
+          v-model="selected"
+          :is-editable="isEditable"
+          :mode="mode"
+          :anzeige-context-abfragevariante="anzeigeContextAbfragevariante"
+          :sobon-relevant="abfrage.sobonRelevant"
+        />
+        <abfragevariante-weiteres-verfahren-component
+          v-else-if="isAbfragevarianteWeiteresVerfahrenFormularOpen()"
+          id="abfragevariante_weiteres_verfahren_component"
+          ref="abfragevarianteWeiteresVerfahrenComponent"
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
@@ -59,6 +77,14 @@
         <baugebiet-baugenehmigungsverfahren-component
           v-else-if="isBaugebietBaugenehmigungsverfahrenFormularOpen()"
           id="baugebiet_baugenehmigungsverfahren_component"
+          v-model="selected"
+          :is-editable="isEditable"
+          :mode="mode"
+          :abfragevariante="abfragevarianteAncestor"
+        />
+        <baugebiet-weiteres-verfahren-component
+          v-else-if="isBaugebietWeiteresVerfahrenFormularOpen()"
+          id="baugebiet_weiteres_verfahren_component"
           v-model="selected"
           :is-editable="isEditable"
           :mode="mode"
@@ -276,6 +302,7 @@
 import {
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteWeiteresVerfahrenDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
@@ -287,10 +314,15 @@ import {
   BaugenehmigungsverfahrenAngelegtDto,
   BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
   BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+  WeiteresVerfahrenDto,
+  WeiteresVerfahrenAngelegtDto,
+  WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
+  WeiteresVerfahrenInBearbeitungFachreferatDto,
   StatusAbfrage,
   TransitionDto,
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import AbfrageNavigationTree, {
@@ -299,11 +331,14 @@ import AbfrageNavigationTree, {
 } from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
 import BaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/BaugenehmigungsverfahrenComponent.vue";
+import WeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/WeiteresVerfahrenComponent.vue";
 import AbfragevarianteBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/AbfragevarianteBauleitplanverfahrenComponent.vue";
 import AbfragevarianteBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/AbfragevarianteBaugenehmigungsverfahrenComponent.vue";
+import AbfragevarianteWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/AbfragevarianteWeiteresVerfahrenComponent.vue";
 import BauabschnittComponent from "@/components/bauabschnitte/BauabschnittComponent.vue";
-import BaugebietBauleitplanverfahrenComponent from "@/components/baugebiete/BaugebietBauleitplanverfahrenComponent.vue";
-import BaugebietBaugenehmigungsverfahrenComponent from "@/components/baugebiete/BaugebietBaugenehmigungsverfahrenComponent.vue";
+import BaugebietBauleitplanverfahrenComponent from "@/components/baugebiete/bauleitplanverfahren/BaugebietBauleitplanverfahrenComponent.vue";
+import BaugebietBaugenehmigungsverfahrenComponent from "@/components/baugebiete/baugenehmigungsverfahren/BaugebietBaugenehmigungsverfahrenComponent.vue";
+import BaugebietWeiteresVerfahrenComponent from "@/components/baugebiete/weiteresVerfahren/BaugebietWeiteresVerfahrenComponent.vue";
 import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
 import InformationList from "@/components/common/InformationList.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -320,8 +355,10 @@ import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
+import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
@@ -329,21 +366,26 @@ import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import {
   createAbfragevarianteBauleitplanverfahrenDto,
   createAbfragevarianteBaugenehmigungsverfahrenDto,
+  createAbfragevarianteWeiteresVerfahrenDto,
   createBauabschnittDto,
   createBaugebietDto,
   createBaurateDto,
   createBauleitplanverfahrenDto,
   createBaugenehmigungsverfahrenDto,
+  createWeiteresVerfahrenDto,
   createTechnicalBauabschnittDto,
   createTechnicalBaugebietDto,
 } from "@/utils/Factories";
 import {
   mapToBauleitplanverfahrenAngelegt,
   mapToBaugenehmigungsverfahrenAngelegt,
+  mapToWeiteresVerfahrenAngelegt,
   mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
+  mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto,
   mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
   mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+  mapToWeiteresVerfahrenInBearbeitungFachreferatDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";
@@ -362,8 +404,10 @@ export const enum AnzeigeContextAbfragevariante {
 export type AbfrageDtoWithForm =
   | BauleitplanverfahrenDto
   | BaugenehmigungsverfahrenDto
+  | WeiteresVerfahrenDto
   | AbfragevarianteBauleitplanverfahrenDto
   | AbfragevarianteBaugenehmigungsverfahrenDto
+  | AbfragevarianteWeiteresVerfahrenDto
   | BauabschnittDto
   | BaugebietDto
   | BaurateDto;
@@ -381,6 +425,7 @@ export const enum AbfrageFormType {
   BAUABSCHNITT,
   BAUGEBIET_BAULEITPLANVERFAHREN,
   BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN,
+  BAUGEBIET_WEITERES_VERFAHREN,
   BAURATE,
 }
 
@@ -389,16 +434,19 @@ export const enum AbfrageFormType {
   components: {
     AbfragevarianteBauleitplanverfahrenComponent,
     AbfragevarianteBaugenehmigungsverfahrenComponent,
+    AbfragevarianteWeiteresVerfahrenComponent,
     AbfrageNavigationTree,
     InformationList,
     BauleitplanverfahrenComponent,
     BaugenehmigungsverfahrenComponent,
+    WeiteresVerfahrenComponent,
     YesNoDialog,
     DefaultLayout,
     BaurateComponent,
     BauabschnittComponent,
     BaugebietBauleitplanverfahrenComponent,
     BaugebietBaugenehmigungsverfahrenComponent,
+    BaugebietWeiteresVerfahrenComponent,
   },
 })
 export default class Abfrage extends Mixins(
@@ -420,14 +468,14 @@ export default class Abfrage extends Mixins(
   private buttonText = "";
   private dialogTextStatus = "";
   private anmerkung = "";
-  private abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel = new BauleitplanverfahrenModel(
-    createBauleitplanverfahrenDto(),
-  );
+  private abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel =
+    new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
   private selected: AbfrageDtoWithForm = this.abfrage;
   private openForm: AbfrageFormType = AbfrageFormType.BAULEITPLANVERFAHREN;
   private abfragevarianteAncestor:
     | AbfragevarianteBauleitplanverfahrenModel
-    | AbfragevarianteBaugenehmigungsverfahrenModel = new AbfragevarianteBauleitplanverfahrenModel(
+    | AbfragevarianteBaugenehmigungsverfahrenModel
+    | AbfragevarianteWeiteresVerfahrenModel = new AbfragevarianteBauleitplanverfahrenModel(
     createAbfragevarianteBauleitplanverfahrenDto(),
   );
   private baugebietAncestor: BaugebietModel = new BaugebietModel(createBaugebietDto());
@@ -448,6 +496,7 @@ export default class Abfrage extends Mixins(
   private relevanteAbfragevarianteToBeSet:
     | AbfragevarianteBauleitplanverfahrenModel
     | AbfragevarianteBaugenehmigungsverfahrenModel
+    | AbfragevarianteWeiteresVerfahrenModel
     | undefined;
   private treeItemToDelete: AbfrageTreeItem | undefined;
   public possibleTransitions: Array<TransitionDto> = [];
@@ -490,6 +539,8 @@ export default class Abfrage extends Mixins(
             this.saveAbfrageInStore(new BauleitplanverfahrenModel(dto));
           } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
             this.saveAbfrageInStore(new BaugenehmigungsverfahrenModel(dto));
+          } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+            this.saveAbfrageInStore(new WeiteresVerfahrenModel(dto));
           }
         })
         .catch(() => {
@@ -500,6 +551,8 @@ export default class Abfrage extends Mixins(
         this.saveAbfrageInStore(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto()));
       } else if (this.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
         this.saveAbfrageInStore(new BaugenehmigungsverfahrenModel(createBaugenehmigungsverfahrenDto()));
+      } else if (this.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+        this.saveAbfrageInStore(new WeiteresVerfahrenModel(createWeiteresVerfahrenDto()));
       }
     }
   }
@@ -518,6 +571,10 @@ export default class Abfrage extends Mixins(
 
   private isBaugenehmigungsverfahren(): boolean {
     return this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren;
+  }
+
+  private isWeiteresVerfahren(): boolean {
+    return this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren;
   }
 
   private statusUebergang(transition: TransitionDto): void {
@@ -628,26 +685,40 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private async handleSave(model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel): Promise<void> {
-    let abfrageAngelegtDto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | undefined =
-      undefined;
+  private async handleSave(
+    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
+  ): Promise<void> {
+    let abfrageAngelegtDto:
+      | BauleitplanverfahrenAngelegtDto
+      | BaugenehmigungsverfahrenAngelegtDto
+      | WeiteresVerfahrenAngelegtDto
+      | undefined = undefined;
     if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
-    } else {
+    } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       abfrageAngelegtDto = mapToBaugenehmigungsverfahrenAngelegt(model);
+    } else {
+      abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
     }
     await this.save(abfrageAngelegtDto, true).then((dto) => {
       this.handleSuccess(dto, true);
     });
   }
 
-  private async handlePatchAngelegt(model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel): Promise<void> {
-    let abfrageAngelegtDto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | undefined =
-      undefined;
+  private async handlePatchAngelegt(
+    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
+  ): Promise<void> {
+    let abfrageAngelegtDto:
+      | BauleitplanverfahrenAngelegtDto
+      | BaugenehmigungsverfahrenAngelegtDto
+      | WeiteresVerfahrenAngelegtDto
+      | undefined = undefined;
     if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
-    } else {
+    } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       abfrageAngelegtDto = mapToBaugenehmigungsverfahrenAngelegt(model);
+    } else {
+      abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
     }
     await this.patchAngelegt(abfrageAngelegtDto, this.abfrage.id as string, true).then((dto) => {
       this.handleSuccess(dto, true);
@@ -655,16 +726,19 @@ export default class Abfrage extends Mixins(
   }
 
   private async handlePatchInBearbeitungSachbearbeitung(
-    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): Promise<void> {
     let abfrageInBearbeitungSachbearbeitungDto:
       | BauleitplanverfahrenInBearbeitungSachbearbeitungDto
       | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+      | WeiteresVerfahrenInBearbeitungSachbearbeitungDto
       | undefined = undefined;
     if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       abfrageInBearbeitungSachbearbeitungDto = mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(model);
-    } else {
+    } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       abfrageInBearbeitungSachbearbeitungDto = mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(model);
+    } else {
+      abfrageInBearbeitungSachbearbeitungDto = mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(model);
     }
     await this.patchInBearbeitungSachbearbeitung(
       abfrageInBearbeitungSachbearbeitungDto,
@@ -676,16 +750,19 @@ export default class Abfrage extends Mixins(
   }
 
   private async handlePatchInBearbeitungFachreferat(
-    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): Promise<void> {
     let abfrageInBearbeitungFachreferatDto:
       | BauleitplanverfahrenInBearbeitungFachreferatDto
       | BaugenehmigungsverfahrenInBearbeitungFachreferatDto
+      | WeiteresVerfahrenInBearbeitungFachreferatDto
       | undefined = undefined;
     if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       abfrageInBearbeitungFachreferatDto = mapToBauleitplanverfahrenInBearbeitungFachreferatDto(model);
-    } else {
+    } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       abfrageInBearbeitungFachreferatDto = mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto(model);
+    } else {
+      abfrageInBearbeitungFachreferatDto = mapToWeiteresVerfahrenInBearbeitungFachreferatDto(model);
     }
     await this.patchInBearbeitungFachreferat(abfrageInBearbeitungFachreferatDto, this.abfrage.id as string, true).then(
       (dto) => {
@@ -738,7 +815,11 @@ export default class Abfrage extends Mixins(
   }
 
   private async setRelevanteAbfragevariante(
-    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel | null,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | null,
   ): Promise<void> {
     if (_.isNil(abfragevariante)) {
       const bauvorhabenId = this.abfrage.bauvorhaben;
@@ -774,7 +855,9 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  private saveAbfrageInStore(abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel) {
+  private saveAbfrageInStore(
+    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
+  ) {
     this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
   }
 
@@ -786,12 +869,20 @@ export default class Abfrage extends Mixins(
     return this.openForm === AbfrageFormType.BAUGENEHMIGUNGSVERFAHREN;
   }
 
+  private isWeiteresVerfahrenFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.WEITERES_VERFAHREN;
+  }
+
   private isAbfragevarianteBauleitplanverfahrenFormularOpen(): boolean {
     return this.openForm === AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN;
   }
 
   private isAbfragevarianteBaugenehmigungsverfahrenFormularOpen(): boolean {
     return this.openForm === AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN;
+  }
+
+  private isAbfragevarianteWeiteresVerfahrenFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN;
   }
 
   private isBauabschnittFormularOpen(): boolean {
@@ -804,6 +895,10 @@ export default class Abfrage extends Mixins(
 
   private isBaugebietBaugenehmigungsverfahrenFormularOpen(): boolean {
     return this.openForm === AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN;
+  }
+
+  private isBaugebietWeiteresVerfahrenFormularOpen(): boolean {
+    return this.openForm === AbfrageFormType.BAUGEBIET_WEITERES_VERFAHREN;
   }
 
   private isBaurateFormularOpen(): boolean {
@@ -869,11 +964,14 @@ export default class Abfrage extends Mixins(
         this.renumberingAbfragevarianten(
           (this.abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren,
         );
-      } else {
+      } else if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
         (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren?.push(abfragevariante);
         this.renumberingAbfragevarianten(
           (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren,
         );
+      } else {
+        (this.abfrage as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren?.push(abfragevariante);
+        this.renumberingAbfragevarianten((this.abfrage as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren);
       }
       this.formChanged();
       this.selectCreatedEntity(
@@ -895,12 +993,19 @@ export default class Abfrage extends Mixins(
         this.renumberingAbfragevarianten(
           (this.abfrage as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren,
         );
-      } else {
+      } else if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
         (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren?.push(
           abfragevariante,
         );
         this.renumberingAbfragevarianten(
           (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
+        );
+      } else {
+        (this.abfrage as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren?.push(
+          abfragevariante,
+        );
+        this.renumberingAbfragevarianten(
+          (this.abfrage as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren,
         );
       }
       this.formChanged();
@@ -914,26 +1019,37 @@ export default class Abfrage extends Mixins(
   }
 
   private getAbfrageFormTypeAbfragevariante(
-    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel,
   ): AbfrageFormType {
     if (
       abfragevariante.artAbfragevariante ===
       AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
     ) {
       return AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN;
-    } else {
+    } else if (
+      abfragevariante.artAbfragevariante ===
+      AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren
+    ) {
       return AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN;
+    } else {
+      return AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN;
     }
   }
 
   private createAbfragevarianteModel():
     | AbfragevarianteBauleitplanverfahrenModel
     | AbfragevarianteBaugenehmigungsverfahrenModel
+    | AbfragevarianteWeiteresVerfahrenModel
     | undefined {
     if (this.isBauleitplanverfahren()) {
       return new AbfragevarianteBauleitplanverfahrenModel(createAbfragevarianteBauleitplanverfahrenDto());
     } else if (this.isBaugenehmigungsverfahren()) {
       return new AbfragevarianteBaugenehmigungsverfahrenModel(createAbfragevarianteBaugenehmigungsverfahrenDto());
+    } else if (this.isWeiteresVerfahren()) {
+      return new AbfragevarianteWeiteresVerfahrenModel(createAbfragevarianteWeiteresVerfahrenDto());
     } else {
       return undefined;
     }
@@ -979,15 +1095,23 @@ export default class Abfrage extends Mixins(
   }
 
   private getAbfrageFormTypeBaugebiet(
-    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel,
   ): AbfrageFormType {
     if (
       abfragevariante.artAbfragevariante ===
       AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
     ) {
       return AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN;
-    } else {
+    } else if (
+      abfragevariante.artAbfragevariante ===
+      AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren
+    ) {
       return AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN;
+    } else {
+      return AbfrageFormType.BAUGEBIET_WEITERES_VERFAHREN;
     }
   }
 
@@ -1043,11 +1167,15 @@ export default class Abfrage extends Mixins(
       const abfragevarianten =
         this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
           ? (this.abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren
-          : (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren;
+          : this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+          ? (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren
+          : (this.abfrage as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren;
       const abfragevariantenSachbearbeitung =
         this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
           ? (this.abfrage as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren
-          : (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
+          : this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+          ? (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren
+          : (this.abfrage as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren;
       let abfragevariantenContext =
         context === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
           ? abfragevarianten!
@@ -1059,18 +1187,24 @@ export default class Abfrage extends Mixins(
           (this.abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren = [
             ...abfragevariantenContext,
           ];
-        } else {
+        } else if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
           (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren = [
             ...abfragevariantenContext,
           ];
+        } else {
+          (this.abfrage as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren = [...abfragevariantenContext];
         }
       } else {
         if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
           (this.abfrage as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren = [
             ...abfragevariantenContext,
           ];
-        } else {
+        } else if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
           (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [
+            ...abfragevariantenContext,
+          ];
+        } else {
+          (this.abfrage as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren = [
             ...abfragevariantenContext,
           ];
         }
@@ -1130,7 +1264,8 @@ export default class Abfrage extends Mixins(
     const abfragevariante = item.value;
     if (
       this.isAbfragevarianteBauleitplanverfahren(item, abfragevariante) ||
-      this.isAbfragevarianteBaugenehmigungsverfahren(item, abfragevariante)
+      this.isAbfragevarianteBaugenehmigungsverfahren(item, abfragevariante) ||
+      this.isAbfragevarianteWeiteresVerfahren(item, abfragevariante)
     ) {
       await this.setRelevanteAbfragevariante(abfragevariante);
     }
@@ -1141,7 +1276,8 @@ export default class Abfrage extends Mixins(
 
     if (
       this.isAbfragevarianteBauleitplanverfahren(item, abfragevariante) ||
-      this.isAbfragevarianteBaugenehmigungsverfahren(item, abfragevariante)
+      this.isAbfragevarianteBaugenehmigungsverfahren(item, abfragevariante) ||
+      this.isAbfragevarianteWeiteresVerfahren(item, abfragevariante)
     ) {
       this.determineBauraten(
         abfragevariante.realisierungVon!,
@@ -1182,7 +1318,8 @@ export default class Abfrage extends Mixins(
     while (item.parent) {
       if (
         this.isAbfragevarianteBauleitplanverfahren(item, item.value) ||
-        this.isAbfragevarianteBaugenehmigungsverfahren(item, item.value)
+        this.isAbfragevarianteBaugenehmigungsverfahren(item, item.value) ||
+        this.isAbfragevarianteWeiteresVerfahren(item, item.value)
       ) {
         return item.value;
       }
@@ -1201,7 +1338,8 @@ export default class Abfrage extends Mixins(
     if (parent) {
       if (
         this.isAbfragevarianteBauleitplanverfahren(parent, parent.value) ||
-        this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value)
+        this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value) ||
+        this.isAbfragevarianteWeiteresVerfahren(parent, parent.value)
       ) {
         return this.getTechnicalBauabschnitt(parent.value);
       } else if (this.isBauabschnitt(parent, parent.value)) {
@@ -1225,7 +1363,8 @@ export default class Abfrage extends Mixins(
     if (parent) {
       if (
         this.isAbfragevarianteBauleitplanverfahren(parent, parent.value) ||
-        this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value)
+        this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value) ||
+        this.isAbfragevarianteWeiteresVerfahren(parent, parent.value)
       ) {
         return this.getTechnicalBaugebiet(parent.value);
       } else if (this.isBaugebiet(parent, parent.value)) {
@@ -1244,6 +1383,7 @@ export default class Abfrage extends Mixins(
     abfragevarianten:
       | Array<AbfragevarianteBauleitplanverfahrenDto>
       | Array<AbfragevarianteBaugenehmigungsverfahrenDto>
+      | Array<AbfragevarianteWeiteresVerfahrenDto>
       | undefined,
   ): void {
     abfragevarianten?.forEach((value, index) => {
@@ -1266,6 +1406,8 @@ export default class Abfrage extends Mixins(
         "",
         AnzeigeContextAbfragevariante.UNDEFINED,
       );
+    } else if (this.isWeiteresVerfahren()) {
+      this.selectEntity(this.abfrage, AbfrageFormType.WEITERES_VERFAHREN, "", AnzeigeContextAbfragevariante.UNDEFINED);
     }
   }
 
@@ -1309,6 +1451,13 @@ export default class Abfrage extends Mixins(
     return item.type === AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN;
   }
 
+  private isAbfragevarianteWeiteresVerfahren(
+    item: AbfrageTreeItem,
+    value: AbfrageDtoWithForm,
+  ): value is AbfragevarianteWeiteresVerfahrenModel {
+    return item.type === AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN;
+  }
+
   private isBauabschnitt(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BauabschnittModel {
     return item.type === AbfrageFormType.BAUABSCHNITT;
   }
@@ -1316,7 +1465,8 @@ export default class Abfrage extends Mixins(
   private isBaugebiet(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is BaugebietModel {
     return (
       item.type === AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN ||
-      item.type === AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN
+      item.type === AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN ||
+      item.type === AbfrageFormType.BAUGEBIET_WEITERES_VERFAHREN
     );
   }
 
@@ -1328,7 +1478,10 @@ export default class Abfrage extends Mixins(
    * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
    */
   private getTechnicalBauabschnitt(
-    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel,
   ): BauabschnittModel | undefined {
     let bauabschnitt: BauabschnittModel | undefined;
 
@@ -1354,7 +1507,10 @@ export default class Abfrage extends Mixins(
    * Ermittelt oder erstellt bei Bedarf ein Platzhalter-Baugebiet für "alleinstehende" Bauraten.
    */
   private getTechnicalBaugebiet(
-    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel,
   ): BaugebietModel | undefined {
     const bauabschnitt = this.getTechnicalBauabschnitt(abfragevariante);
 
@@ -1379,7 +1535,10 @@ export default class Abfrage extends Mixins(
    * Soll nach dem Löschen von Baugebieten und -raten aufgerufen werden, um Platzhalter ohne Kinder zu beseitigen.
    */
   private clearTechnicalEntities(
-    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteBaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel,
   ): void {
     if (!_.isNil(abfragevariante.bauabschnitte)) {
       const bauabschnittIndex = abfragevariante.bauabschnitte.findIndex((dto) => dto.technical);

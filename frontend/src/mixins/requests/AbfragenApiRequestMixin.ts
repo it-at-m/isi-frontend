@@ -2,12 +2,16 @@ import {
   AbfragenApi,
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
+  WeiteresVerfahrenDto,
   BauleitplanverfahrenAngelegtDto,
   BaugenehmigungsverfahrenAngelegtDto,
+  WeiteresVerfahrenAngelegtDto,
   BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
+  WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
   BauleitplanverfahrenInBearbeitungFachreferatDto,
   BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+  WeiteresVerfahrenInBearbeitungFachreferatDto,
   SaveOperationRequest,
   PatchAngelegtRequest,
   PatchInBearbeitungSachbearbeitungOperationRequest,
@@ -30,9 +34,9 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
   }
 
   save(
-    dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto,
+    dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | WeiteresVerfahrenAngelegtDto,
     showInInformationList: boolean,
-  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto> {
+  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     const requestObject: SaveOperationRequest = {
       saveRequest: dto,
     };
@@ -49,10 +53,10 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
   }
 
   patchAngelegt(
-    dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto,
+    dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | WeiteresVerfahrenAngelegtDto,
     id: string,
     showInInformationList: boolean,
-  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto> {
+  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     const requestObject: PatchAngelegtRequest = {
       saveRequest: dto,
       id: id,
@@ -70,10 +74,13 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
   }
 
   patchInBearbeitungSachbearbeitung(
-    dto: BauleitplanverfahrenInBearbeitungSachbearbeitungDto | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
+    dto:
+      | BauleitplanverfahrenInBearbeitungSachbearbeitungDto
+      | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+      | WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
     id: string,
     showInInformationList: boolean,
-  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto> {
+  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     const requestObject: PatchInBearbeitungSachbearbeitungOperationRequest = {
       patchInBearbeitungSachbearbeitungRequest: dto,
       id: id,
@@ -90,10 +97,13 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
   }
 
   patchInBearbeitungFachreferat(
-    dto: BauleitplanverfahrenInBearbeitungFachreferatDto | BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+    dto:
+      | BauleitplanverfahrenInBearbeitungFachreferatDto
+      | BaugenehmigungsverfahrenInBearbeitungFachreferatDto
+      | WeiteresVerfahrenInBearbeitungFachreferatDto,
     id: string,
     showInInformationList: boolean,
-  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto> {
+  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     const requestObject: PatchInBearbeitungFachreferatOperationRequest = {
       patchInBearbeitungFachreferatRequest: dto,
       id: id,
@@ -109,7 +119,10 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
       });
   }
 
-  getById(id: string, showInInformationList: boolean): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto> {
+  getById(
+    id: string,
+    showInInformationList: boolean,
+  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     const requestObject: GetByIdRequest = {
       id: id,
     };

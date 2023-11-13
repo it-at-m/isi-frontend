@@ -17,7 +17,6 @@
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    // ASCHAENZ: hier weitermachen
     <geplante-geschossflaeche-wohnen-baugenehmigungsverfahren-component
       id="geplante_geschossflaeche_wohnen_baugenehmigungsverfahren_component"
       ref="geplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent"
