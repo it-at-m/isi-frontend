@@ -6,11 +6,17 @@
           cols="12"
           md="8"
         >
-          <foerdermix-staemme-drop-down
-            v-model="foerdermix"
-            is-editable="isEditable"
-          >
-          </foerdermix-staemme-drop-down>
+          <v-select
+            id="foerdermix_stammdaten_dropdown"
+            v-model="selectedItem"
+            :disabled="!isEditable"
+            :items="groupedStammdaten"
+            label="Test"
+            item-text="bezeichnung"
+            return-object
+            @input="foerdermixSelected"
+            @change="formChanged"
+          />
         </v-col>
         <v-col
           cols="12"
@@ -38,7 +44,7 @@
               :id="'foerdermix_foerderart_' + foerderartIndex"
               :key="foerderartIndex"
               v-model="foerderart.anteilProzent"
-              :disabled="isFreieEingabe"
+              :disabled="!isFreieEingabe"
               :label="foerderart.bezeichnung"
               :suffix="fieldPrefixesSuffixes.percent"
             />
@@ -50,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
@@ -61,6 +67,12 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
+import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
+import { createFoerdermixStammDto } from "@/utils/Factories";
+import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
+import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
+
+type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
 @Component({ components: { FoerdermixStaemmeDropDown, NumField, FieldGroupCard } })
 export default class FoerdermixFormular extends Mixins(
@@ -76,12 +88,22 @@ export default class FoerdermixFormular extends Mixins(
 
   private sumOver100 = false;
 
-  private isFreie = true;
+  private isFreie = false;
 
-  private FreieEingabe = "Freie Eingabe";
+  private freieEingabe = "Freie Eingabe";
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
+
+  private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();
+
+  private stammdaten: FoerdermixStammModel[] = [];
+
+  private groupedStammdaten: GroupedStammdaten = [];
+
+  mounted(): void {
+    this.setGroupedStammdatenList();
+  }
 
   get gesamtsumme(): number {
     const sum: number = addiereAnteile(this.foerdermix);
@@ -90,7 +112,61 @@ export default class FoerdermixFormular extends Mixins(
   }
 
   get isFreieEingabe(): boolean {
+    if (this.selectedItem.bezeichnung === this.freieEingabe) {
+      this.isFreie = true;
+    } else {
+      this.isFreie = false;
+    }
     return this.isFreie;
+  }
+
+  @Watch("foerdermix", { immediate: true, deep: true })
+  private changeFördermixBezeichnung(): void {
+    const matchedFoerdermix = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
+    this.selectedItem = matchedFoerdermix;
+  }
+
+  foerdermixSelected(item: FoerdermixStammModel): void {
+    this.foerdermix = mapFoerdermixStammModelToFoerderMix(item);
+  }
+
+  private setGroupedStammdatenList(): void {
+    this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
+    this.selectedItem = matchFoerdermixStammDaten(this.foerdermix, this.stammdaten);
+  }
+
+  /**
+   * Gruppiert eine Liste von Fördermixstämmen nach 'bezeichnungJahr' und fügt entsprechende header-Objekte hinzu.
+   * Gedacht zum Einsatz mit v-select.
+   *
+   * @param data Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
+   * @return Eine neue Liste, welche neben den Fördermixstämmen auch { header: string }-Objekte enthält.
+   */
+  groupItemsToHeader(data: FoerdermixStammModel[]): GroupedStammdaten {
+    // Objekt, welches pro 'bezeichnungJahr' ein Array mit den zugehörigen Fördermixen enthalten soll.
+    const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
+
+    data.forEach((foerdermix: FoerdermixStammModel) => {
+      // Falls für das 'bezeichnungJahr' des aktuellen Fördermixes kein Array vorhanden ist, wird eins erschaffen.
+      groups[foerdermix.bezeichnungJahr] = groups[foerdermix.bezeichnungJahr] || [];
+      // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
+      groups[foerdermix.bezeichnungJahr].push(foerdermix);
+    });
+
+    // Das obere Objekt soll nun zu einer "abgeflachten" Liste mit header-Objekten werden.
+    const flattened: GroupedStammdaten = [];
+
+    Object.keys(groups).forEach((bezeichnungJahr) => {
+      const foerdermixe = groups[bezeichnungJahr];
+
+      // Fügt zuerst ein header-Objekt für das aktuelle 'bezeichnungJahr' hinzu.
+      flattened.push({ header: bezeichnungJahr });
+      // Darauf werden alle Elemente des Arrays vom aktuellen 'bezeichnungJahr' hinzugefügt (siehe "Spread syntax").
+      flattened.push(...foerdermixe);
+    });
+
+    return flattened;
   }
 }
 </script>
