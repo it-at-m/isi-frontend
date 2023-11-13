@@ -38,7 +38,7 @@
               :id="'foerdermix_foerderart_' + foerderartIndex"
               :key="foerderartIndex"
               v-model="foerderart.anteilProzent"
-              :disabled="!isEditable"
+              :disabled="isFreieEingabe"
               :label="foerderart.bezeichnung"
               :suffix="fieldPrefixesSuffixes.percent"
             />
@@ -76,6 +76,10 @@ export default class FoerdermixFormular extends Mixins(
 
   private sumOver100 = false;
 
+  private isFreie = true;
+
+  private FreieEingabe = "Freie Eingabe";
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
@@ -83,6 +87,10 @@ export default class FoerdermixFormular extends Mixins(
     const sum: number = addiereAnteile(this.foerdermix);
     this.sumOver100 = sum > 100;
     return sum;
+  }
+
+  get isFreieEingabe(): boolean {
+    return this.isFreie;
   }
 }
 </script>
