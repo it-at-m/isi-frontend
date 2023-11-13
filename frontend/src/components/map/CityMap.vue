@@ -203,7 +203,6 @@ export default class CityMap extends Vue {
   @Watch("geoJson", { deep: true })
   private onGeoJsonChanged(): void {
     this.addGeoJsonToMap();
-    this.flyToCenterOfPolygonsInMap();
   }
 
   get isGeoJsonNotEmpty(): boolean {
@@ -288,26 +287,6 @@ export default class CityMap extends Vue {
     this.layerGroup = new L.LayerGroup();
     this.layerGroup.addTo(this.map);
     L.geoJSON(this.geoJson, this.geoJsonOptions).addTo(this.layerGroup);
-  }
-
-  private flyToCenterOfPolygonsInMap(): void {
-    const polygonCenter: Array<L.LatLng> = [];
-    this.map.eachLayer(function (layer) {
-      if (layer instanceof L.Polygon) {
-        const polygon = layer as L.Polygon;
-        polygonCenter.push(polygon.getBounds().getCenter());
-      }
-    });
-    if (polygonCenter.length === 1 || polygonCenter.length === 2) {
-      const center: L.LatLng = polygonCenter[0];
-      this.flyToPositionOnMap({ lat: center.lat, lng: center.lng });
-    } else if (polygonCenter.length >= 2) {
-      const bounds = polygonCenter.map((latLng) => [latLng.lat, latLng.lng]) as LatLngBoundsLiteral;
-      const center: L.LatLng = new LatLngBounds(bounds).getCenter();
-      this.flyToPositionOnMap({ lat: center.lat, lng: center.lng });
-    } else {
-      this.flyToPositionOnMap(this.lookAt);
-    }
   }
 
   private flyToPositionOnMap(position: LatLngLiteral | undefined) {
