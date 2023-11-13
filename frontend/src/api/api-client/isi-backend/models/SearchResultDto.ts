@@ -39,7 +39,7 @@ import {
 } from './';
 
 /**
- * 
+ * SearchResultDto
  * @export
  * @interface SearchResultDto
  */
@@ -82,13 +82,13 @@ export function SearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['type'] === 'AbfrageSearchResultDto') {
+        if (json['type'] === 'ABFRAGE') {
             return AbfrageSearchResultDtoFromJSONTyped(json, true);
         }
-        if (json['type'] === 'BauvorhabenSearchResultDto') {
+        if (json['type'] === 'BAUVORHABEN') {
             return BauvorhabenSearchResultDtoFromJSONTyped(json, true);
         }
-        if (json['type'] === 'InfrastruktureinrichtungSearchResultDto') {
+        if (json['type'] === 'INFRASTRUKTUREINRICHTUNG') {
             return InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true);
         }
     }

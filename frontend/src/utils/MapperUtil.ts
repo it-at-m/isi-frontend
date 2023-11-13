@@ -167,6 +167,7 @@ export function mapToWeiteresVerfahrenAngelegt(
       gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
       gfWohnenBaurechtlichGenehmigt: abfragevariante.gfWohnenBaurechtlichGenehmigt,
       gfWohnenBaurechtlichFestgesetzt: abfragevariante.gfWohnenBaurechtlichFestgesetzt,
+      gfWohnenSobonUrsaechlich: abfragevariante.gfWohnenSobonUrsaechlich,
       gfWohnenBestandswohnbaurecht: abfragevariante.gfWohnenBestandswohnbaurecht,
       gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
       gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,

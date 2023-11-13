@@ -136,7 +136,7 @@ export default class CommonWeiteresVerfahrenComponent extends Mixins(FieldValida
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  get wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList(): LookupEntryDto[] {
+  get wesentlicheRechtsgrundlageList(): LookupEntryDto[] {
     return this.$store.getters["lookup/wesentlicheRechtsgrundlage"];
   }
 

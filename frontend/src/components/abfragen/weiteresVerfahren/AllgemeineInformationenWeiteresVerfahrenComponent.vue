@@ -31,7 +31,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <v-select
           id="bauvorhaben_dropdown"
@@ -175,7 +175,7 @@ export default class AllgemeineInformationenWeiteresVerfahrenComponent extends M
     this.fetchBauvorhaben();
   }
 
-  get standVerfahrenBauleitplanverfahrenList(): LookupEntryDto[] {
+  get standVerfahrenWeiteresVerfahrenList(): LookupEntryDto[] {
     return this.$store.getters["lookup/standVerfahrenWeiteresVerfahren"];
   }
 

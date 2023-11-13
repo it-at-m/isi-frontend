@@ -17,15 +17,15 @@
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-geschossflaeche-wohnen-baugenehmigungsverfahren-component
-      id="geplante_geschossflaeche_wohnen_baugenehmigungsverfahren_component"
-      ref="geplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent"
+    <geplante-geschossflaeche-wohnen-weiteres-verfahren-component
+      id="geplante_geschossflaeche_wohnen_weiteres_verfahren_component"
+      ref="geplanteGeschossflaecheWohnenWeiteresVerfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-anzahl-wohneinheiten-baugenehmigungsverfahren-component
-      id="geplante_anzahl_wohneinheiten_baugenehmigungsverfahren_component"
-      ref="geplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent"
+    <geplante-anzahl-wohneinheiten-weiteres-verfahren-component
+      id="geplante_anzahl_wohneinheiten_weiteres_verfahren_component"
+      ref="geplanteAnzahlWohneinheitenWeiteresVerfahrenrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
@@ -46,8 +46,8 @@
 <script lang="ts">
 import { Component, Vue, VModel, Prop } from "vue-property-decorator";
 import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
-import GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent.vue";
-import GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent.vue";
+import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
+import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
@@ -59,8 +59,8 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
   components: {
     FieldGroupCard,
     CommonBaugenehmigungsverfahrenComponent,
-    GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent,
-    GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent,
+    GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent,
+    GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent,
     SachbearbeitungComponent,
     BedarfsmeldungFachreferateComponent,
     BauratenAggregiertComponent,
