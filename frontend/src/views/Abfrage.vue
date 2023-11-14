@@ -37,7 +37,6 @@
           :is-editable="isEditable"
           :mode="mode"
           :anzeige-context-abfragevariante="anzeigeContextAbfragevariante"
-          :sobon-relevant="abfrage.sobonRelevant"
         />
         <abfragevariante-baugenehmigungsverfahren-component
           v-else-if="isAbfragevarianteBaugenehmigungsverfahrenFormularOpen()"
@@ -47,7 +46,6 @@
           :is-editable="isEditable"
           :mode="mode"
           :anzeige-context-abfragevariante="anzeigeContextAbfragevariante"
-          :sobon-relevant="abfrage.sobonRelevant"
         />
         <abfragevariante-weiteres-verfahren-component
           v-else-if="isAbfragevarianteWeiteresVerfahrenFormularOpen()"
@@ -57,7 +55,6 @@
           :is-editable="isEditable"
           :mode="mode"
           :anzeige-context-abfragevariante="anzeigeContextAbfragevariante"
-          :sobon-relevant="abfrage.sobonRelevant"
         />
         <bauabschnitt-component
           v-else-if="isBauabschnittFormularOpen()"

@@ -52,16 +52,6 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
-import {
-  verteilteGeschossflaecheWohnenAbfragevariante,
-  wohneinheitenAbfragevariante,
-  verteilteWohneinheitenAbfragevariante,
-  verteilteWohneinheitenAbfragevarianteFormatted,
-  wohneinheitenAbfragevarianteFormatted,
-  geschossflaecheWohnenAbfragevariante,
-  geschossflaecheWohnenAbfragevarianteFormatted,
-  verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
-} from "@/utils/CalculationUtil";
 
 @Component({
   components: {
@@ -89,30 +79,6 @@ export default class CommonRealisierungszeitraumComponent extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  private validationRules: unknown = {
-    validateWohneinheiten: (
-      abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,
-    ): boolean | string => {
-      return (
-        verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
-        `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
-          abfragevariante,
-        )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
-      );
-    },
-    validateGeschossflaecheWohnen: (
-      abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,
-    ): boolean | string => {
-      return (
-        verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante) <=
-          geschossflaecheWohnenAbfragevariante(abfragevariante) ||
-        `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
-          abfragevariante,
-        )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
-      );
-    },
-  };
-
   get displayMode(): DisplayMode {
     return this.mode;
   }
@@ -134,16 +100,6 @@ export default class CommonRealisierungszeitraumComponent extends Mixins(
     return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante.realisierungVon)
       ? this.abfragevariante.realisierungVon
       : 1900;
-  }
-
-  get suffixWohneinheiten(): string {
-    return `von ${wohneinheitenAbfragevarianteFormatted(this.abfragevariante)}`;
-  }
-
-  get suffixGeschossflaecheWohnen(): string {
-    return `von ${geschossflaecheWohnenAbfragevarianteFormatted(this.abfragevariante)} ${
-      this.fieldPrefixesSuffixes.squareMeter
-    }`;
   }
 }
 </script>
