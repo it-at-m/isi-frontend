@@ -8,11 +8,11 @@
         >
           <v-select
             id="foerdermix_stammdaten_dropdown"
-            v-model="foerdermix"
+            v-model="selectedItem"
             :disabled="!isEditable"
             :items="groupedStammdaten"
             label="Fördermix"
-            item-text="bezeichnung"
+            item-text="foerdermix.bezeichnung"
             return-object
             @input="foerdermixSelected"
             @change="formChanged"
