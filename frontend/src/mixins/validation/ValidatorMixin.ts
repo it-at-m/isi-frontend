@@ -74,6 +74,9 @@ export default class ValidatorMixin extends Vue {
     if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
       return "Bitte geben Sie an ob die Abfrage SoBoN-relevant ist";
     }
+    if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
+      return "Bitte treffen Sie eine Auswahl bei 'Offizielle Mitzeichnung'";
+    }
     if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
       return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
     }
@@ -98,6 +101,9 @@ export default class ValidatorMixin extends Vue {
     }
     if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
       return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
+    }
+    if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
+      return "Bitte treffen Sie eine Auswahl bei 'Offizielle Mitzeichnung'";
     }
     return this.findFaultInAbfrage(abfrage);
   }
