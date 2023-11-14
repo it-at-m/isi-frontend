@@ -14,7 +14,7 @@ export function matchFoerdermixStammDaten(
       if (_.isEqual(foerdermixEingabe.foerderarten, stammdatum.foerdermix.foerderarten)) {
         foerdermixStamm.bezeichnung = stammdatum.bezeichnung;
         return foerdermixStamm;
-      } else {
+      } else if (foerdermixEingabe.foerderarten?.length != 0) {
         foerdermixStamm.bezeichnung = "Freie Eingabe";
       }
     }

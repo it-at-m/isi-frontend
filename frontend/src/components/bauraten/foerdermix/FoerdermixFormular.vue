@@ -11,7 +11,7 @@
             v-model="selectedItem"
             :disabled="!isEditable"
             :items="groupedStammdaten"
-            label="Test"
+            label="Fördermix"
             item-text="bezeichnung"
             return-object
             @input="foerdermixSelected"
@@ -66,7 +66,6 @@ import FormattingMixin from "@/mixins/FormattingMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import FoerdermixStaemmeDropDown from "@/components/bauraten/foerdermix/FoerdermixStaemmeDropDown.vue";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { createFoerdermixStammDto } from "@/utils/Factories";
 import { matchFoerdermixStammDaten } from "@/utils/CompareUtil";
@@ -74,7 +73,7 @@ import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
-@Component({ components: { FoerdermixStaemmeDropDown, NumField, FieldGroupCard } })
+@Component({ components: { NumField, FieldGroupCard } })
 export default class FoerdermixFormular extends Mixins(
   FieldValidationRulesMixin,
   FieldPrefixesSuffixes,
