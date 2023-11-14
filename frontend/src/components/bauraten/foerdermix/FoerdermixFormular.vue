@@ -111,7 +111,7 @@ export default class FoerdermixFormular extends Mixins(
   }
 
   get isFreieEingabe(): boolean {
-    if (this.selectedItem.bezeichnung === this.freieEingabe) {
+    if (this.selectedItem.bezeichnung === this.freieEingabe && this.isEditable) {
       this.isFreie = true;
     } else {
       this.isFreie = false;
