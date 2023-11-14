@@ -316,6 +316,8 @@ export function createBaurateDto(): BaurateDto {
     weGeplant: undefined,
     jahr: Number.NaN,
     foerdermix: {
+      bezeichnung: "",
+      bezeichnungJahr: "",
       foerderarten: new Array<FoerderartDto>(),
     },
   };
@@ -323,15 +325,17 @@ export function createBaurateDto(): BaurateDto {
 
 export function createFoerdermixDto(): FoerdermixDto {
   return {
+    bezeichnung: "",
+    bezeichnungJahr: "",
     foerderarten: new Array<FoerderartDto>(),
   };
 }
 
 export function createFoerdermixStammDto(): FoerdermixStammDto {
   return {
-    bezeichnung: "",
-    bezeichnungJahr: "",
     foerdermix: {
+      bezeichnung: "",
+      bezeichnungJahr: "",
       foerderarten: new Array<FoerderartDto>(),
     },
   };

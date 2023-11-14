@@ -14,8 +14,10 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
 
 export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: FoerdermixStammModel): FoerdermixModel {
-  const foerdermix = new FoerdermixModel({});
+  const foerdermix = new FoerdermixModel({ bezeichnung: "", bezeichnungJahr: "" });
   foerdermix.foerderarten = _.cloneDeep(foerdermixStammModel.foerdermix.foerderarten);
+  foerdermix.bezeichnung = _.cloneDeep(foerdermixStammModel.foerdermix.bezeichnung);
+  foerdermix.bezeichnungJahr = _.cloneDeep(foerdermixStammModel.foerdermix.bezeichnungJahr);
   return foerdermix;
 }
 
