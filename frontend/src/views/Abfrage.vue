@@ -1165,18 +1165,28 @@ export default class Abfrage extends Mixins(
         this.isAbfragevarianteWeiteresVerfahren(this.treeItemToDelete, this.treeItemToDelete.value))
     ) {
       const context = this.treeItemToDelete.context;
-      const abfragevarianten =
-        this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-          ? (this.abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren
-          : this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-          ? (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren
-          : (this.abfrage as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren;
-      const abfragevariantenSachbearbeitung =
-        this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-          ? (this.abfrage as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren
-          : this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-          ? (this.abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren
-          : (this.abfrage as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren;
+
+      let abfragevarianten = undefined;
+      if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+        abfragevarianten = (this.abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren;
+      } else if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+        abfragevarianten = (this.abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren;
+      } else {
+        abfragevarianten = (this.abfrage as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren;
+      }
+
+      let abfragevariantenSachbearbeitung = undefined;
+      if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+        abfragevariantenSachbearbeitung = (this.abfrage as BauleitplanverfahrenModel)
+          .abfragevariantenSachbearbeitungBauleitplanverfahren;
+      } else if (this.abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+        abfragevariantenSachbearbeitung = (this.abfrage as BaugenehmigungsverfahrenModel)
+          .abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
+      } else {
+        abfragevariantenSachbearbeitung = (this.abfrage as WeiteresVerfahrenModel)
+          .abfragevariantenSachbearbeitungWeiteresVerfahren;
+      }
+
       let abfragevariantenContext =
         context === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE
           ? abfragevarianten!

@@ -151,18 +151,27 @@ export default class ValidatorMixin extends Vue {
   public findFaultInAbfragevarianten(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): string | null {
-    const abfragevarianten =
-      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-        ? (abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren
-        : abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-        ? (abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren
-        : (abfrage as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren;
-    const abfragevariantenSachbearbeitung =
-      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-        ? (abfrage as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren
-        : abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-        ? (abfrage as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren
-        : (abfrage as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren;
+    let abfragevarianten = undefined;
+    if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      abfragevarianten = (abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren;
+    } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      abfragevarianten = (abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren;
+    } else {
+      abfragevarianten = (abfrage as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren;
+    }
+
+    let abfragevariantenSachbearbeitung = undefined;
+    if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      abfragevariantenSachbearbeitung = (abfrage as BauleitplanverfahrenModel)
+        .abfragevariantenSachbearbeitungBauleitplanverfahren;
+    } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      abfragevariantenSachbearbeitung = (abfrage as BaugenehmigungsverfahrenModel)
+        .abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
+    } else {
+      abfragevariantenSachbearbeitung = (abfrage as WeiteresVerfahrenModel)
+        .abfragevariantenSachbearbeitungWeiteresVerfahren;
+    }
+
     if (_.isNil(abfragevarianten) || abfragevarianten.length < 1 || abfragevarianten.length > 5) {
       return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
     }

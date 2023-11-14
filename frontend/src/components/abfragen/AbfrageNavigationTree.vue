@@ -225,18 +225,27 @@ function buildTree(
     value: abfrage,
   };
 
-  const abfragevarianten =
-    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-      ? (abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren
-      : abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-      ? (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren
-      : (abfrage as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren;
-  const abfragevariantenSachbearbeitung =
-    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-      ? (abfrage as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren
-      : abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-      ? (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren
-      : (abfrage as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren;
+  let abfragevarianten = undefined;
+  if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    abfragevarianten = (abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren;
+  } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    abfragevarianten = (abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren;
+  } else {
+    abfragevarianten = (abfrage as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren;
+  }
+
+  let abfragevariantenSachbearbeitung = undefined;
+  if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    abfragevariantenSachbearbeitung = (abfrage as BauleitplanverfahrenDto)
+      .abfragevariantenSachbearbeitungBauleitplanverfahren;
+  } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    abfragevariantenSachbearbeitung = (abfrage as BaugenehmigungsverfahrenDto)
+      .abfragevariantenSachbearbeitungBaugenehmigungsverfahren;
+  } else {
+    abfragevariantenSachbearbeitung = (abfrage as WeiteresVerfahrenDto)
+      .abfragevariantenSachbearbeitungWeiteresVerfahren;
+  }
+
   if (abfragevarianten) {
     const abfragevariantenTree = abfragevarianten.map((value, index) =>
       buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE),
@@ -308,7 +317,7 @@ function buildSubTreeAbfragevariante(
   abfragevariante:
     | AbfragevarianteBauleitplanverfahrenDto
     | AbfragevarianteBaugenehmigungsverfahrenDto
-    | WeiteresVerfahrenDto,
+    | AbfragevarianteWeiteresVerfahrenDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
@@ -437,7 +446,10 @@ function buildSubTreeBauabschnitt(
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -475,12 +487,20 @@ function buildSubTreeBaugebiet(
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
 ): AbfrageTreeItem {
-  const abfrageFormTypeBaugebiet =
-    abfragevariante.artAbfragevariante === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-      ? AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN
-      : AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN;
+  let abfrageFormTypeBaugebiet = undefined;
+  if (abfragevariante.artAbfragevariante === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    abfrageFormTypeBaugebiet = AbfrageFormType.BAUGEBIET_BAULEITPLANVERFAHREN;
+  } else if (abfragevariante.artAbfragevariante === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    abfrageFormTypeBaugebiet = AbfrageFormType.BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN;
+  } else {
+    abfrageFormTypeBaugebiet = AbfrageFormType.BAUGEBIET_WEITERES_VERFAHREN;
+  }
+
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
     type: abfrageFormTypeBaugebiet,
@@ -545,7 +565,10 @@ function buildSubTreeBaurate(
 }
 
 function getAbfragevarianteName(
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | AbfragevarianteBaugenehmigungsverfahrenDto,
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
   conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
 ): string {
   const abfragevarianteModel = createAbfragevarianteModel(abfragevariante);

@@ -38,12 +38,15 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | WeiteresVerfahrenAngelegtDto,
     showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
-    const dtoTyped =
-      dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-        ? (dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenAngelegtDto)
-        : dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-        ? (dto as { artAbfrage: "BAUGENEHMIGUNGSVERFAHREN" } & BaugenehmigungsverfahrenAngelegtDto)
-        : (dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenAngelegtDto);
+    let dtoTyped = undefined;
+    if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenAngelegtDto;
+    } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      dtoTyped = dto as { artAbfrage: "BAUGENEHMIGUNGSVERFAHREN" } & BaugenehmigungsverfahrenAngelegtDto;
+    } else {
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenAngelegtDto;
+    }
+
     const requestObject: SaveOperationRequest = {
       saveRequest: dtoTyped,
     };
@@ -64,12 +67,15 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     id: string,
     showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
-    const dtoTyped =
-      dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-        ? (dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenAngelegtDto)
-        : dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-        ? (dto as { artAbfrage: "BAUGENEHMIGUNGSVERFAHREN" } & BaugenehmigungsverfahrenAngelegtDto)
-        : (dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenAngelegtDto);
+    let dtoTyped = undefined;
+    if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenAngelegtDto;
+    } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      dtoTyped = dto as { artAbfrage: "BAUGENEHMIGUNGSVERFAHREN" } & BaugenehmigungsverfahrenAngelegtDto;
+    } else {
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenAngelegtDto;
+    }
+
     const requestObject: PatchAngelegtRequest = {
       saveRequest: dtoTyped,
       id: id,
@@ -94,12 +100,17 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     id: string,
     showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
-    const dtoTyped =
-      dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-        ? (dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenInBearbeitungSachbearbeitungDto)
-        : dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-        ? (dto as { artAbfrage: "BAUGENEHMIGUNGSVERFAHREN" } & BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto)
-        : (dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenInBearbeitungSachbearbeitungDto);
+    let dtoTyped = undefined;
+    if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
+    } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      dtoTyped = dto as {
+        artAbfrage: "BAUGENEHMIGUNGSVERFAHREN";
+      } & BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
+    } else {
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
+    }
+
     const requestObject: PatchInBearbeitungSachbearbeitungOperationRequest = {
       patchInBearbeitungSachbearbeitungRequest: dtoTyped,
       id: id,
@@ -123,12 +134,17 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     id: string,
     showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
-    const dtoTyped =
-      dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-        ? (dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenInBearbeitungFachreferatDto)
-        : dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
-        ? (dto as { artAbfrage: "BAUGENEHMIGUNGSVERFAHREN" } & BaugenehmigungsverfahrenInBearbeitungFachreferatDto)
-        : (dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenInBearbeitungFachreferatDto);
+    let dtoTyped = undefined;
+    if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenInBearbeitungFachreferatDto;
+    } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      dtoTyped = dto as {
+        artAbfrage: "BAUGENEHMIGUNGSVERFAHREN";
+      } & BaugenehmigungsverfahrenInBearbeitungFachreferatDto;
+    } else {
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenInBearbeitungFachreferatDto;
+    }
+
     const requestObject: PatchInBearbeitungFachreferatOperationRequest = {
       patchInBearbeitungFachreferatRequest: dtoTyped,
       id: id,
