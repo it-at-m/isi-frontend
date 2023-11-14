@@ -1059,7 +1059,8 @@ export default class Abfrage extends Mixins(
     const abfragevariante = parent.value;
     if (
       this.isAbfragevarianteBauleitplanverfahren(parent, abfragevariante) ||
-      this.isAbfragevarianteBaugenehmigungsverfahren(parent, abfragevariante)
+      this.isAbfragevarianteBaugenehmigungsverfahren(parent, abfragevariante) ||
+      this.isAbfragevarianteWeiteresVerfahren(parent, abfragevariante)
     ) {
       if (_.isNil(abfragevariante.bauabschnitte)) {
         abfragevariante.bauabschnitte = [];
@@ -1076,7 +1077,8 @@ export default class Abfrage extends Mixins(
     let bauabschnitt: BauabschnittModel | undefined;
     if (
       this.isAbfragevarianteBauleitplanverfahren(parent, parent.value) ||
-      this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value)
+      this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value) ||
+      this.isAbfragevarianteWeiteresVerfahren(parent, parent.value)
     ) {
       bauabschnitt = this.getTechnicalBauabschnitt(parent.value);
     } else if (this.isBauabschnitt(parent, parent.value)) {
@@ -1119,7 +1121,8 @@ export default class Abfrage extends Mixins(
     let baugebiet: BaugebietModel | undefined;
     if (
       this.isAbfragevarianteBauleitplanverfahren(parent, parent.value) ||
-      this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value)
+      this.isAbfragevarianteBaugenehmigungsverfahren(parent, parent.value) ||
+      this.isAbfragevarianteWeiteresVerfahren(parent, parent.value)
     ) {
       baugebiet = this.getTechnicalBaugebiet(parent.value);
     } else if (this.isBaugebiet(parent, parent.value)) {
@@ -1161,7 +1164,8 @@ export default class Abfrage extends Mixins(
     if (
       this.treeItemToDelete &&
       (this.isAbfragevarianteBauleitplanverfahren(this.treeItemToDelete, this.treeItemToDelete.value) ||
-        this.isAbfragevarianteBaugenehmigungsverfahren(this.treeItemToDelete, this.treeItemToDelete.value))
+        this.isAbfragevarianteBaugenehmigungsverfahren(this.treeItemToDelete, this.treeItemToDelete.value) ||
+        this.isAbfragevarianteWeiteresVerfahren(this.treeItemToDelete, this.treeItemToDelete.value))
     ) {
       const context = this.treeItemToDelete.context;
       const abfragevarianten =
