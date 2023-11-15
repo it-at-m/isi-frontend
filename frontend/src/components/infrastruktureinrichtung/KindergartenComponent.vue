@@ -18,6 +18,7 @@
             class="mx-3"
             label="Anzahl der Kindergartenplätze"
             integer
+            max-value-signed-integer
             required
             :disabled="!isEditable"
           />
@@ -32,6 +33,7 @@
             class="mx-3"
             label="Anzahl der Kindergartengruppen"
             integer
+            max-value-signed-integer
             required
             :disabled="!isEditable"
           />
@@ -48,6 +50,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kindergartenplätze"
             integer
+            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
