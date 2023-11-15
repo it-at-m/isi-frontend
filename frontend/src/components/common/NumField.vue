@@ -73,12 +73,15 @@ import { watch } from "vue";
 import { CurrencyDisplay, CurrencyInputOptions, useCurrencyInput } from "vue-currency-input";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import store from "@/store/index";
+import _ from "lodash";
 
 interface Props {
   value: number;
   precision?: number;
   min?: number;
   max?: number;
+  maxValueSignedInteger?: boolean;
+  maxValueDecimalNumeralPrecision10Scale2?: boolean;
   integer?: boolean;
   allowNegatives?: boolean;
   noGrouping?: boolean;
@@ -88,6 +91,10 @@ interface Props {
   rules?: unknown[];
   help?: string;
 }
+
+export const MAX_VALUE_SIGNED_INTEGER = _.toNumber(2147483647);
+
+export const MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2 = _.toNumber("99999999.99");
 
 // <script setup> wird hier wegen technischen Einschränkungen bis zur Einführung von Vue 3 nicht genutzt.
 export default {
@@ -106,6 +113,14 @@ export default {
     },
     max: {
       type: Number,
+      required: false,
+    },
+    maxValueSignedInteger: {
+      type: Boolean,
+      required: false,
+    },
+    maxValueDecimalNumeralPrecision10Scale2: {
+      type: Boolean,
       required: false,
     },
     integer: {
@@ -169,6 +184,12 @@ export default {
         }
         if (props.max !== undefined) {
           usedRules.push(allRules.max(props.max));
+        }
+        if (props.integer && props.maxValueSignedInteger) {
+          usedRules.push(allRules.max(MAX_VALUE_SIGNED_INTEGER));
+        }
+        if (!props.integer && props.maxValueDecimalNumeralPrecision10Scale2) {
+          usedRules.push(allRules.max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
         }
       }
 
