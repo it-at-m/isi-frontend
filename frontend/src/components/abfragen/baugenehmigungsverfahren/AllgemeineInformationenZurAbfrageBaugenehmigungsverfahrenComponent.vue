@@ -21,6 +21,21 @@
       >
       </v-col>
     </v-row>
+    <v-row justify="center">
+      <v-col cols="12">
+        <v-textarea
+          id="anmerkung_field"
+          ref="anmerkungField"
+          v-model="abfrage.anmerkung"
+          :disabled="!isEditable"
+          label="Anmerkungen"
+          auto-grow
+          rows="3"
+          maxlength="255"
+          @input="formChanged"
+        />
+      </v-col>
+    </v-row>
   </field-group-card>
 </template>
 
