@@ -4,11 +4,12 @@
       id="abfrage_common_component"
       ref="abfrageCommonComponent"
       v-model="bauleitplanverfahren"
+      :is-new="isNew"
       :is-editable-prop="isEditableByAbfrageerstellung()"
     />
-    <allgemeine-informationen-component
-      id="allgemeine_informationen_component"
-      ref="allgemeineInformationenComponent"
+    <allgemeine-informationen-bauleitplanverfahren-component
+      id="allgemeine_informationen_bauleitplanverfahren-component"
+      ref="allgemeineInformationenBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
       :is-editable-prop="isEditableByAbfrageerstellung()"
     />
@@ -26,9 +27,9 @@
       :context="context"
       :look-at="bauleitplanverfahren.adresse"
     />
-    <allgemeine-informationen-zur-abfrage-component
-      id="allgemeine_informationen_zur_abfrage_component"
-      ref="allgemeineInformationenZurAbfrageComponent"
+    <allgemeine-informationen-zur-abfrage-bauleitplanverfahren-component
+      id="allgemeine_informationen_zur_abfrage_bauleitplanverfahren-component"
+      ref="allgemeineInformationenZurAbfrageBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
       :look-at="bauleitplanverfahren"
       :is-editable-prop="isEditableByAbfrageerstellung()"
@@ -45,10 +46,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
-import AllgemeineInformationenComponent from "@/components/abfragen/AllgemeineInformationenComponent.vue";
-import AllgemeineInformationenZurAbfrageComponent from "@/components/abfragen/AllgemeineInformationenZurAbfrageComponent.vue";
+import AllgemeineInformationenBauleitplanverfahrenComponent from "@/components/abfragen/AllgemeineInformationenBauleitplanverfahrenComponent.vue";
+import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
@@ -65,13 +66,16 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
   components: {
     Dokumente,
     AbfrageCommonComponent,
-    AllgemeineInformationenComponent,
-    AllgemeineInformationenZurAbfrageComponent,
+    AllgemeineInformationenBauleitplanverfahrenComponent,
+    AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent,
     FieldGroupCard,
   },
 })
 export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
   @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isNew!: boolean;
 
   private nameRootFolder = "bauleitplanverfahren";
 }

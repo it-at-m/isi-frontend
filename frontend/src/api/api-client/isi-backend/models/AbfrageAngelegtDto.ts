@@ -14,6 +14,7 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+     BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
      BauleitplanverfahrenAngelegtDtoFromJSONTyped
 } from './';
 
@@ -60,6 +61,7 @@ export interface AbfrageAngelegtDto {
  * @export
  */
 export const AbfrageAngelegtDtoArtAbfrageEnum = {
+    Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
     WeitereAbfragen: 'WEITERE_ABFRAGEN'
@@ -76,6 +78,9 @@ export function AbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         return json;
     }
     if (!ignoreDiscriminator) {
+        if (json['artAbfrage'] === 'BaugenehmigungsverfahrenAngelegtDto') {
+            return BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true);
+        }
         if (json['artAbfrage'] === 'BauleitplanverfahrenAngelegtDto') {
             return BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true);
         }

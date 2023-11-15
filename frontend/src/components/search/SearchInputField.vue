@@ -136,6 +136,7 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
       const searchQueryDto = {
         searchQuery: queryForSearchwordSuggestion,
         selectBauleitplanverfahren: searchQueryForEntitiesDto.selectBauleitplanverfahren,
+        selectBaugenehmigungsverfahren: searchQueryForEntitiesDto.selectBaugenehmigungsverfahren,
         selectBauvorhaben: searchQueryForEntitiesDto.selectBauvorhaben,
         selectGrundschule: searchQueryForEntitiesDto.selectGrundschule,
         selectGsNachmittagBetreuung: searchQueryForEntitiesDto.selectGsNachmittagBetreuung,

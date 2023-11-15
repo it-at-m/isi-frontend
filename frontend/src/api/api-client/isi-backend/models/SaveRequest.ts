@@ -19,6 +19,12 @@ import {
     AbfrageAngelegtDtoToJSON,
 } from './AbfrageAngelegtDto';
 import {
+    BaugenehmigungsverfahrenAngelegtDto,
+    BaugenehmigungsverfahrenAngelegtDtoFromJSON,
+    BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
+    BaugenehmigungsverfahrenAngelegtDtoToJSON,
+} from './BaugenehmigungsverfahrenAngelegtDto';
+import {
     BauleitplanverfahrenAngelegtDto,
     BauleitplanverfahrenAngelegtDtoFromJSON,
     BauleitplanverfahrenAngelegtDtoFromJSONTyped,
@@ -30,7 +36,7 @@ import {
  * 
  * @export
  */
-export type SaveRequest = AbfrageAngelegtDto | BauleitplanverfahrenAngelegtDto;
+export type SaveRequest = AbfrageAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | BauleitplanverfahrenAngelegtDto;
 
 export function SaveRequestFromJSON(json: any): SaveRequest {
     return SaveRequestFromJSONTyped(json, false);
@@ -40,7 +46,7 @@ export function SaveRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...AbfrageAngelegtDtoFromJSONTyped(json, true), ...BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true) };
+    return { ...AbfrageAngelegtDtoFromJSONTyped(json, true), ...BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true), ...BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true) };
 }
 
 export function SaveRequestToJSON(value?: SaveRequest | null): any {
@@ -50,6 +56,6 @@ export function SaveRequestToJSON(value?: SaveRequest | null): any {
     if (value === null) {
         return null;
     }
-    return { ...AbfrageAngelegtDtoToJSON(value), ...BauleitplanverfahrenAngelegtDtoToJSON(value) };
+    return { ...AbfrageAngelegtDtoToJSON(value), ...BaugenehmigungsverfahrenAngelegtDtoToJSON(value), ...BauleitplanverfahrenAngelegtDtoToJSON(value) };
 }
 

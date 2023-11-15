@@ -13,6 +13,12 @@
  */
 
 import {
+    BaugenehmigungsverfahrenDto,
+    BaugenehmigungsverfahrenDtoFromJSON,
+    BaugenehmigungsverfahrenDtoFromJSONTyped,
+    BaugenehmigungsverfahrenDtoToJSON,
+} from './BaugenehmigungsverfahrenDto';
+import {
     BauleitplanverfahrenDto,
     BauleitplanverfahrenDtoFromJSON,
     BauleitplanverfahrenDtoFromJSONTyped,
@@ -24,7 +30,7 @@ import {
  * 
  * @export
  */
-export type Save201Response = BauleitplanverfahrenDto;
+export type Save201Response = BaugenehmigungsverfahrenDto | BauleitplanverfahrenDto;
 
 export function Save201ResponseFromJSON(json: any): Save201Response {
     return Save201ResponseFromJSONTyped(json, false);
@@ -34,7 +40,7 @@ export function Save201ResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...BauleitplanverfahrenDtoFromJSONTyped(json, true) };
+    return { ...BaugenehmigungsverfahrenDtoFromJSONTyped(json, true), ...BauleitplanverfahrenDtoFromJSONTyped(json, true) };
 }
 
 export function Save201ResponseToJSON(value?: Save201Response | null): any {
@@ -44,6 +50,6 @@ export function Save201ResponseToJSON(value?: Save201Response | null): any {
     if (value === null) {
         return null;
     }
-    return { ...BauleitplanverfahrenDtoToJSON(value) };
+    return { ...BaugenehmigungsverfahrenDtoToJSON(value), ...BauleitplanverfahrenDtoToJSON(value) };
 }
 

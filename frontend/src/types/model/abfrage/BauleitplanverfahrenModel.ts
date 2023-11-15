@@ -14,12 +14,12 @@ class BauleitplanverfahrenModel {
     } else {
       this.adresse = new AdresseModel(this.adresse);
     }
-    this.abfragevarianten = _.toArray(bauleitplanverfahren.abfragevarianten).map(
-      (abfragevariante) => new AbfragevarianteBauleitplanverfahrenModel(abfragevariante),
-    );
-    this.abfragevariantenSachbearbeitung = _.toArray(bauleitplanverfahren.abfragevariantenSachbearbeitung).map(
-      (abfragevariante) => new AbfragevarianteBauleitplanverfahrenModel(abfragevariante),
-    );
+    this.abfragevariantenBauleitplanverfahren = _.toArray(
+      bauleitplanverfahren.abfragevariantenBauleitplanverfahren,
+    ).map((abfragevariante) => new AbfragevarianteBauleitplanverfahrenModel(abfragevariante));
+    this.abfragevariantenSachbearbeitungBauleitplanverfahren = _.toArray(
+      bauleitplanverfahren.abfragevariantenSachbearbeitungBauleitplanverfahren,
+    ).map((abfragevariante) => new AbfragevarianteBauleitplanverfahrenModel(abfragevariante));
   }
 }
 export { BauleitplanverfahrenModel as default };

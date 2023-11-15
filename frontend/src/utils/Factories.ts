@@ -1,9 +1,13 @@
 import {
   StatusAbfrage,
   AbfragevarianteBauleitplanverfahrenDto,
+  AbfrageDto,
   BauleitplanverfahrenDto,
+  BaugenehmigungsverfahrenDto,
   AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum,
   BedarfsmeldungFachreferateDto,
   BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
   AdresseDto,
@@ -13,6 +17,7 @@ import {
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   BauvorhabenDtoStandVerfahrenEnum,
+  BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
   FilepathDto,
@@ -39,11 +44,13 @@ import {
   SearchQueryAndSortingDtoSortOrderEnum,
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
   KommentarDto,
   SchuleDtoEinrichtungstraegerEnum,
   KindergartenDtoEinrichtungstraegerEnum,
   HausFuerKinderDtoAllOfEinrichtungstraegerEnum,
   GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDto,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -53,6 +60,7 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
   const searchQueryAndSortingDto = {
     searchQuery: "",
     selectBauleitplanverfahren: true,
+    selectBaugenehmigungsverfahren: true,
     selectBauvorhaben: true,
     selectGrundschule: true,
     selectGsNachmittagBetreuung: true,
@@ -60,8 +68,8 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     selectKindergarten: true,
     selectKinderkrippe: true,
     selectMittelschule: true,
-    pageSize: undefined,
     page: undefined,
+    pageSize: undefined,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   } as SearchQueryAndSortingDto;
@@ -69,8 +77,28 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
 }
 
 /**
+ * AbfrageDto
+ */
+export function createAbfrageDto(): AbfrageDto {
+  return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    artAbfrage: AbfrageDtoArtAbfrageEnum.Unspecified,
+    name: "",
+    statusAbfrage: StatusAbfrage.Angelegt,
+    anmerkung: undefined,
+    bauvorhaben: undefined,
+    sub: undefined,
+    displayName: undefined,
+  };
+}
+
+/**
  * BauleitplanverfahrenDto
  */
+
 export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
   return {
     id: "",
@@ -94,8 +122,37 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     fristBearbeitung: new Date(0),
     offizielleMitzeichnung: UncertainBoolean.Unspecified,
     anmerkung: undefined,
-    abfragevarianten: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
-    abfragevariantenSachbearbeitung: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+    abfragevariantenBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+    abfragevariantenSachbearbeitungBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
+  };
+}
+
+/**
+ * BaugenehmigungsverfahrenDto
+ */
+export function createBaugenehmigungsverfahrenDto(): BaugenehmigungsverfahrenDto {
+  return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    artAbfrage: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
+    name: "",
+    statusAbfrage: StatusAbfrage.Angelegt,
+    anmerkung: undefined,
+    bauvorhaben: undefined,
+    sub: undefined,
+    displayName: undefined,
+    aktenzeichenProLbk: undefined,
+    bebauungsplannummer: undefined,
+    standVerfahren: BaugenehmigungsverfahrenDtoStandVerfahrenEnum.Unspecified,
+    standVerfahrenFreieEingabe: undefined,
+    adresse: createAdresseDto(),
+    verortung: undefined,
+    dokumente: new Array<DokumentDto>(),
+    fristBearbeitung: new Date(0),
+    abfragevariantenBaugenehmigungsverfahren: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
+    abfragevariantenSachbearbeitungBaugenehmigungsverfahren: new Array<AbfragevarianteBaugenehmigungsverfahrenDto>(),
   };
 }
 
@@ -152,11 +209,42 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
 }
 
 /**
- * AbfragevarianteFachreferatDto
+ * AbfragevarianteBaugenehmigungsverfahrenDto
  */
-export function createAbfragevarianteFachreferatDto(): AbfragevarianteFachreferatDto {
+export function createAbfragevarianteBaugenehmigungsverfahrenDto(): AbfragevarianteBaugenehmigungsverfahrenDto {
   return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    abfragevariantenNr: Number.NaN,
+    artAbfragevariante: AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren,
+    name: "",
+    wesentlicheRechtsgrundlage: Array<AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum>(),
+    wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    realisierungVon: Number.NaN,
+    gfWohnenGesamt: undefined,
+    gfWohnenBaurechtlichGenehmigt: undefined,
+    gfWohnenBaurechtlichFestgesetzt: undefined,
+    gfWohnenBestandswohnbaurecht: undefined,
+    gfWohnenSonderwohnformen: false,
+    gfWohnenStudentischesWohnen: undefined,
+    gfWohnenSeniorinnenWohnen: undefined,
+    gfWohnenGenossenschaftlichesWohnen: undefined,
+    gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
+    gfWohnenPlanungsursaechlich: undefined,
+    weGesamt: undefined,
+    weBaurechtlichGenehmigt: undefined,
+    weBaurechtlichFestgesetzt: undefined,
+    weSonderwohnformen: false,
+    weStudentischesWohnen: undefined,
+    weSeniorinnenWohnen: undefined,
+    weGenossenschaftlichesWohnen: undefined,
+    weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
+    sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    anmerkung: undefined,
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bauabschnitte: [],
   };
 }
 

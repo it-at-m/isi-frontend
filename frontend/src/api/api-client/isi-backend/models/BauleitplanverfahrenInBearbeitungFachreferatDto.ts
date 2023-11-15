@@ -43,13 +43,13 @@ export interface BauleitplanverfahrenInBearbeitungFachreferatDto extends Abfrage
      * @type {Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>}
      * @memberof BauleitplanverfahrenInBearbeitungFachreferatDto
      */
-    abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>}
      * @memberof BauleitplanverfahrenInBearbeitungFachreferatDto
      */
-    abfragevariantenSachbearbeitung: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
+    abfragevariantenSachbearbeitungBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
 }
 
 
@@ -64,8 +64,8 @@ export function BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(jso
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),
-        'abfragevarianten': ((json['abfragevarianten'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
-        'abfragevariantenSachbearbeitung': ((json['abfragevariantenSachbearbeitung'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': !exists(json, 'abfragevariantenSachbearbeitungBauleitplanverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON)),
     };
 }
 
@@ -78,8 +78,8 @@ export function BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value?: Ba
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoToJSON(value),
-        'abfragevarianten': ((value.abfragevarianten as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
-        'abfragevariantenSachbearbeitung': ((value.abfragevariantenSachbearbeitung as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': value.abfragevariantenSachbearbeitungBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON)),
     };
 }
 
