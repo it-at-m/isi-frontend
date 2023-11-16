@@ -21,6 +21,7 @@
               class="mx-3"
               label="Anzahl der Einrichtungen einer Größe"
               integer
+              max-value-signed-integer
               required
             />
           </v-col>
@@ -53,6 +54,7 @@
               class="mx-3"
               label="Anzahl der Kinderkrippengruppen"
               integer
+              max-value-signed-integer
             />
           </v-col>
           <v-col
@@ -65,6 +67,7 @@
               class="mx-3"
               label="Anzahl der Kindergartengruppen"
               integer
+              max-value-signed-integer
             />
           </v-col>
         </v-row>
@@ -79,6 +82,7 @@
               class="mx-3"
               label="Anzahl der Hortgruppen"
               integer
+              max-value-signed-integer
             />
           </v-col>
           <v-col
@@ -91,6 +95,7 @@
               class="mx-3"
               label="Anzahl der Grundschulzüge"
               integer
+              max-value-signed-integer
             />
           </v-col>
         </v-row>

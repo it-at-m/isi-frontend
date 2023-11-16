@@ -98,6 +98,7 @@
             label="Fläche Gesamtgrundstück"
             :suffix="fieldPrefixesSuffixes.squareMeter"
             :disabled="!isEditable"
+            max-value-decimal-numeral-precision10-scale2
           />
         </v-col>
         <v-col
@@ -111,6 +112,7 @@
             label="Fläche Teilgrundstück"
             :suffix="fieldPrefixesSuffixes.squareMeter"
             :disabled="!isEditable"
+            max-value-decimal-numeral-precision10-scale2
           />
         </v-col>
       </v-row>

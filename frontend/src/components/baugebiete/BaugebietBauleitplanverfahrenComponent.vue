@@ -92,6 +92,7 @@
             label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
+            max-value-signed-integer
           />
         </v-col>
         <v-col
@@ -106,6 +107,7 @@
             class="mx-3"
             label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen"
+            max-value-decimal-numeral-precision10-scale2
           />
         </v-col>
       </v-row>

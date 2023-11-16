@@ -31,6 +31,7 @@
             label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
+            max-value-signed-integer
           />
         </v-col>
         <v-col
@@ -44,6 +45,7 @@
             :rules="[validationRules.validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
             label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen"
+            max-value-decimal-numeral-precision10-scale2
           />
         </v-col>
       </v-row>
