@@ -24,7 +24,7 @@
             left
             color="green lighten-1"
           >
-            mdi-comment-alert
+            {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
           </v-icon>
           {{ castToAbfrageSearchResultDto(item).name }}
         </v-card-subtitle>
@@ -245,6 +245,18 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
 
   private getLookupValueAbfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+  }
+
+  private getIconArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined) {
+    let icon = "";
+    if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      icon = "mdi-comment-alert";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      icon = "mdi-account-multiple-plus";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeitereAbfragen) {
+      icon = "mdi-comment-alert";
+    }
+    return icon;
   }
 
   private getArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined): string {
