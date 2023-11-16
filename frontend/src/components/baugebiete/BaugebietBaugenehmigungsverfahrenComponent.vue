@@ -14,6 +14,7 @@
           <v-text-field
             id="baugebiet_bezeichnung"
             v-model.trim="baugebiet.bezeichnung"
+            class="coloum-field"
             :disabled="!isEditable"
             :rules="[fieldValidationRules.pflichtfeld]"
             maxlength="255"
@@ -30,7 +31,6 @@
             id="baugebiet_art_bauliche_nutzung"
             v-model="baugebiet.artBaulicheNutzung"
             :disabled="!isEditable"
-            class="mx-3"
             :items="artBaulicheNutzungList"
             item-value="key"
             item-text="value"
