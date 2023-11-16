@@ -29,6 +29,8 @@
           {{ castToAbfrageSearchResultDto(item).name }}
         </v-card-subtitle>
         <v-card-text>
+          <span> Abfrageart: {{ getArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }} </span>
+          <v-spacer />
           <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
           <v-spacer />
           <span>
@@ -89,6 +91,7 @@
         </v-card-subtitle>
         <v-card-text>
           <span>
+            Einrichtungstyp:
             {{
               getLookupValueInfrastruktureinrichtung(
                 castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
@@ -113,6 +116,7 @@
 import { Component, Mixins } from "vue-property-decorator";
 import {
   AbfrageSearchResultDto,
+  AbfrageSearchResultDtoArtAbfrageEnum,
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
@@ -241,6 +245,20 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
 
   private getLookupValueAbfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+  }
+
+  private getArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined): string {
+    let bezeichnungArtAbfrage: string;
+    if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      bezeichnungArtAbfrage = "Bauleitplanverfahren";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeitereAbfragen) {
+      bezeichnungArtAbfrage = "Weiteres Verfahren";
+    } else {
+      bezeichnungArtAbfrage = "";
+    }
+    return bezeichnungArtAbfrage;
   }
 
   private getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
