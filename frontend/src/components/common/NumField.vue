@@ -184,11 +184,9 @@ export default {
         }
         if (props.max !== undefined) {
           usedRules.push(allRules.max(props.max));
-        }
-        if (props.integer && props.maxValueSignedInteger) {
+        } else if (props.integer && props.maxValueSignedInteger) {
           usedRules.push(allRules.max(MAX_VALUE_SIGNED_INTEGER));
-        }
-        if (!props.integer && props.maxValueDecimalNumeralPrecision10Scale2) {
+        } else if (!props.integer && props.maxValueDecimalNumeralPrecision10Scale2) {
           usedRules.push(allRules.max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
         }
       }
