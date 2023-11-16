@@ -248,15 +248,13 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
   }
 
   private getArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined): string {
-    let bezeichnungArtAbfrage: string;
+    let bezeichnungArtAbfrage = "";
     if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
       bezeichnungArtAbfrage = "Bauleitplanverfahren";
     } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
     } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeitereAbfragen) {
       bezeichnungArtAbfrage = "Weiteres Verfahren";
-    } else {
-      bezeichnungArtAbfrage = "";
     }
     return bezeichnungArtAbfrage;
   }
