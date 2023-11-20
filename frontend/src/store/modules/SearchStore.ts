@@ -62,8 +62,9 @@ export default {
       state.searchResults = searchResults;
     },
     removeSearchResultById(state: SearchState, id: string): void {
-      _.remove(_.toArray(state.searchResults.searchResults), function (searchResult: SearchResultDto) {
-        return (
+      const searchResults = _.cloneDeep(state.searchResults);
+      searchResults.searchResults = _.toArray(searchResults.searchResults).filter((searchResult: SearchResultDto) => {
+        return !(
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Abfrage) &&
             _.isEqual(id, (searchResult as AbfrageSearchResultDto).id)) ||
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben) &&
@@ -72,6 +73,7 @@ export default {
             _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id))
         );
       });
+      state.searchResults = searchResults;
     },
     requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingModel): void {
       state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
