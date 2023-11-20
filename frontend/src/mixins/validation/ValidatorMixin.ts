@@ -128,7 +128,7 @@ export default class ValidatorMixin extends Vue {
       return "Bitte Stand des Verfahrens angeben";
     }
     const date = moment(abfrage.fristBearbeitung, "DD.MM.YYYY", true);
-    if (!date.isValid() || abfrage.fristBearbeitung?.getDate() === new Date(0).getDate()) {
+    if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {
       return "Bearbeitungsfrist nicht angegeben oder nicht im Format TT.MM.JJJJ";
     }
     return this.findFaultInAbfragevarianten(abfrage);
