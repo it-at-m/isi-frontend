@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
@@ -113,6 +113,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
    */
   private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
+  /**
+   * Repräsentiert den ausgewählten Punkt auf einer Karte.
+   */
+  private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
+
   mounted(): void {
     this.onVerortungModelChanged();
   }
@@ -122,6 +127,8 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     if (this.context === Context.ABFRAGE) {
       editable = this.isEditableByAbfrageerstellung() || this.isEditableBySachbearbeitung();
     } else if (this.context === Context.BAUVORHABEN) {
+      editable = this.isRoleAdminOrSachbearbeitung();
+    } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
       editable = this.isRoleAdminOrSachbearbeitung();
     }
     return editable;
@@ -204,10 +211,12 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   private handleClickInMap(latlng: LatLng): void {
     if (this.isEditable) {
       const point = this.createPointGeometry(latlng);
-      this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
-        const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
-        this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
-      });
+      if (this.context === Context.ABFRAGE || this.context === Context.BAUVORHABEN) {
+        this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
+          const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+          this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+        });
+      }
     }
   }
 
@@ -217,8 +226,12 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
     let verortung: VerortungDto | undefined;
-    if (this.selectedFlurstuecke.size !== 0) {
-      verortung = await this.createVerortungDtoFromSelectedFlurstuecke();
+    if (this.context === Context.ABFRAGE || this.context === Context.BAUVORHABEN) {
+      if (this.selectedFlurstuecke.size !== 0) {
+        verortung = await this.createVerortungDtoFromSelectedFlurstuecke();
+      } else {
+        verortung = await this.createVerortungDtoFromSelectedPoint();
+      }
       if (!_.isNil(verortung)) {
         this.verortungModel = new VerortungModel(verortung);
         this.formChanged();
