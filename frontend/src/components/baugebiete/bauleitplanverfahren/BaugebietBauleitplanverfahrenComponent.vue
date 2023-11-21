@@ -105,6 +105,7 @@ import {
   geschossflaecheWohnenAbfragevariante,
   geschossflaecheWohnenAbfragevarianteFormatted,
   verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
+  countDecimals,
 } from "@/utils/CalculationUtil";
 import CommonBezeichnungBaulicheNutzungComponent from "../CommonBezeichnungBaulicheNutzungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
@@ -146,8 +147,10 @@ export default class BaugebietBauleitplanverfahrenComponent extends Mixins(
       abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
     ): boolean | string => {
       return (
-        verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante) <=
-          geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+        _.round(
+          verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
+          countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
+        ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
         `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
           abfragevariante,
         )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
