@@ -265,7 +265,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
       bezeichnungArtAbfrage = "Bauleitplanverfahren";
     } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
-    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeitereAbfragen) {
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
       bezeichnungArtAbfrage = "Weiteres Verfahren";
     }
     return bezeichnungArtAbfrage;
