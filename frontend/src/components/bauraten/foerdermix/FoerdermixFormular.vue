@@ -125,6 +125,7 @@ export default class FoerdermixFormular extends Mixins(
   private setGroupedStammdatenList(): void {
     this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
     this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
+    this.selectedItem.foerdermix.bezeichnung = this.foerdermix.bezeichnung;
   }
 
   /**
