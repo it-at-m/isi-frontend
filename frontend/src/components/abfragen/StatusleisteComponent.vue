@@ -62,7 +62,6 @@
 <script lang="ts">
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import _ from "lodash";
 import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component

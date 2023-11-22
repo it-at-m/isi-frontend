@@ -33,6 +33,7 @@
       id="datum_datePicker"
       v-model="datePickerDate"
       :disabled="disabled"
+      :first-day-of-week="1"
       locale="de"
       :type="monthPicker ? 'month' : 'date'"
       @change="deactivateDatePicker"

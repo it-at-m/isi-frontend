@@ -67,7 +67,10 @@ import TriSwitch from "@/components/common/TriSwitch.vue";
 @Component({
   components: { TriSwitch },
 })
-export default class AllgemeineInformationenComponent extends Mixins(SaveLeaveMixin, FieldValidationRulesMixin) {
+export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
+  SaveLeaveMixin,
+  FieldValidationRulesMixin,
+) {
   @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
 
   @Prop({ type: Boolean, default: true })

@@ -8,7 +8,7 @@ describe("ModelTest.spec.ts", () => {
   test("Test BauleitplanverfahrenModel", () => {
     const dto = createBauleitplanverfahrenDto();
     expect(dto.adresse).not.toBeNull();
-    expect(dto.abfragevarianten).toHaveLength(0);
+    expect(dto.abfragevariantenBauleitplanverfahren).toHaveLength(0);
     const model = new BauleitplanverfahrenModel(dto);
     expect(model.adresse).not.toBeNull();
     expect(dto.verortung).toBeUndefined();
@@ -27,10 +27,11 @@ describe("ModelTest.spec.ts", () => {
     abfragevarianteDto.weSeniorinnenWohnen = 120;
     abfragevarianteDto.weStudentischesWohnen = 2;
     abfragevarianteDto.weWeiteresNichtInfrastrukturrelevantesWohnen = 2;
-    abfrageDto.abfragevarianten?.push(abfragevarianteDto);
+    abfrageDto.abfragevariantenBauleitplanverfahren?.push(abfragevarianteDto);
     const abfrageModel = new BauleitplanverfahrenModel(abfrageDto);
-    expect(abfrageModel.abfragevarianten).toHaveLength(1);
-    const abfragevarianteModel = abfrageModel.abfragevarianten?.[0] as AbfragevarianteBauleitplanverfahrenModel;
+    expect(abfrageModel.abfragevariantenBauleitplanverfahren).toHaveLength(1);
+    const abfragevarianteModel = abfrageModel
+      .abfragevariantenBauleitplanverfahren?.[0] as AbfragevarianteBauleitplanverfahrenModel;
     expect(abfragevarianteModel).not.toBeUndefined();
     expect(abfragevarianteModel.wesentlicheRechtsgrundlage).contains(
       AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.Innenbereich,

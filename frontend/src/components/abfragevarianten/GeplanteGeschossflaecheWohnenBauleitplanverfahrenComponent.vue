@@ -74,7 +74,6 @@
           class="mx-3"
           label="Sonderwohnformen"
           color="primary"
-          @change="formChanged"
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -109,7 +108,7 @@
               v-model="abfragevariante.gfWohnenStudentischesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="studentisches Wohnen"
+              label="Studentisches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
@@ -147,7 +146,7 @@
               v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="genossenschaftliches Wohnen"
+              label="Genossenschaftliches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>
@@ -161,7 +160,7 @@
               v-model="abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="weiteres nicht-infrastrukturrelevantes Wohnen"
+              label="Weiteres nicht-infrastrukturrelevantes Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
             />
           </v-col>

@@ -76,12 +76,27 @@
             dark
             color="green lighten-1"
             v-on="on"
-            @click="createAbfrage"
+            @click="createBauleitplanverfahren"
           >
             <v-icon>mdi-comment-alert</v-icon>
           </v-btn>
         </template>
-        <span>Abfrage erstellen</span>
+        <span>Bauleitplanverfahren erstellen</span>
+      </v-tooltip>
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-btn
+            class="text-h6"
+            fab
+            dark
+            color="green lighten-1"
+            v-on="on"
+            @click="createBaugenehmigungsverfahren"
+          >
+            <v-icon>mdi-account-multiple-plus</v-icon>
+          </v-btn>
+        </template>
+        <span>Baugenehmigungsverfahren erstellen</span>
       </v-tooltip>
     </v-speed-dial>
   </v-container>
@@ -97,6 +112,7 @@ import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOp
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import _ from "lodash";
 import MapLayout from "@/components/map/MapLayout.vue";
+import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 
 @Component({
   components: {
@@ -118,9 +134,17 @@ export default class Main extends Vue {
     this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
   }
 
-  private createAbfrage(): void {
+  private createBauleitplanverfahren(): void {
     router.push({
       name: "newabfrage",
+      params: { art: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren },
+    });
+  }
+
+  private createBaugenehmigungsverfahren(): void {
+    router.push({
+      name: "newabfrage",
+      params: { art: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren },
     });
   }
 

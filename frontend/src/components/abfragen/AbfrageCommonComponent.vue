@@ -50,5 +50,8 @@ export default class AbfrageCommonComponent extends Mixins(
   get isEditable(): boolean {
     return this.isEditableProp;
   }
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isNew!: boolean;
 }
 </script>

@@ -1,6 +1,5 @@
 import {
   AbfrageSearchResultDto,
-  AbfragevarianteBauleitplanverfahrenDto,
   BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,

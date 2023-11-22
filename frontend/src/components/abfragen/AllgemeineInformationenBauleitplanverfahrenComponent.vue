@@ -135,7 +135,7 @@ import TriSwitch from "@/components/common/TriSwitch.vue";
 @Component({
   components: { TriSwitch },
 })
-export default class AllgemeineInformationenComponent extends Mixins(
+export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
   SaveLeaveMixin,
   SearchApiRequestMixin,
   FieldValidationRulesMixin,
@@ -176,6 +176,7 @@ export default class AllgemeineInformationenComponent extends Mixins(
     const searchQueryAndSortingDto = {
       searchQuery: "",
       selectBauleitplanverfahren: false,
+      selectBaugenehmigungsverfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

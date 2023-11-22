@@ -150,6 +150,8 @@ export default class CityMap extends Vue {
   @Prop()
   private readonly lookAt?: LatLngLiteral;
 
+  private firstGeoJsonFeatureAdded = false;
+
   /**
    * Die Feature welche in der Karte dargestellt werden sollen.
    */
@@ -203,7 +205,10 @@ export default class CityMap extends Vue {
   @Watch("geoJson", { deep: true })
   private onGeoJsonChanged(): void {
     this.addGeoJsonToMap();
-    this.flyToCenterOfPolygonsInMap();
+    if (!_.isEmpty(this.geoJson) && !this.firstGeoJsonFeatureAdded) {
+      this.firstGeoJsonFeatureAdded = true;
+      this.flyToCenterOfPolygonsInMap();
+    }
   }
 
   get isGeoJsonNotEmpty(): boolean {
@@ -290,6 +295,10 @@ export default class CityMap extends Vue {
     L.geoJSON(this.geoJson, this.geoJsonOptions).addTo(this.layerGroup);
   }
 
+  private flyToPositionOnMap(position: LatLngLiteral | undefined) {
+    if (position) this.map.flyTo(position, 16);
+  }
+
   private flyToCenterOfPolygonsInMap(): void {
     const polygonCenter: Array<L.LatLng> = [];
     this.map.eachLayer(function (layer) {
@@ -305,13 +314,7 @@ export default class CityMap extends Vue {
       const bounds = polygonCenter.map((latLng) => [latLng.lat, latLng.lng]) as LatLngBoundsLiteral;
       const center: L.LatLng = new LatLngBounds(bounds).getCenter();
       this.flyToPositionOnMap({ lat: center.lat, lng: center.lng });
-    } else {
-      this.flyToPositionOnMap(this.lookAt);
     }
-  }
-
-  private flyToPositionOnMap(position: LatLngLiteral | undefined) {
-    if (position) this.map.flyTo(position, 16);
   }
 
   @Emit()

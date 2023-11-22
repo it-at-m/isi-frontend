@@ -11,21 +11,21 @@
         />
       </v-col>
     </v-row>
-    <common-component
-      id="abfragevariante_common_component"
-      ref="abfragevarianteCommonComponent"
+    <common-bauleitplanverfahren-component
+      id="common_bauleitplanverfahren_component"
+      ref="commonBauleitplanverfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-geschossflaeche-wohnen-component
-      id="geplante_geschossflaeche_wohnen_component"
-      ref="geplanteGeschossflaecheWohnenComponent"
+    <geplante-geschossflaeche-wohnen-bauleitplanverfahren-component
+      id="geplante_geschossflaeche_wohnen_bauleitplanverfahren_component"
+      ref="geplanteGeschossflaecheWohnenBauleitplanverfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-anzahl-wohneinheiten-component
-      id="geplante_anzahl_wohneinheiten_component"
-      ref="geplanteAnzahlWohneinheitenComponent"
+    <geplante-anzahl-wohneinheiten-bauleitplanverfahren-component
+      id="geplante_anzahl_wohneinheiten_bauleitplanverfahren_component"
+      ref="geplanteAnzahlWohneinheitenBauleitplanverfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
@@ -45,9 +45,9 @@
 
 <script lang="ts">
 import { Component, Vue, VModel, Prop } from "vue-property-decorator";
-import CommonComponent from "@/components/abfragevarianten/CommonComponent.vue";
-import GeplanteGeschossflaecheWohnenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenComponent.vue";
-import GeplanteAnzahlWohneinheitenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenComponent.vue";
+import CommonBauleitplanverfahrenComponent from "@/components/abfragevarianten/CommonBauleitplanverfahrenComponent.vue";
+import GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent.vue";
+import GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
@@ -58,15 +58,15 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 @Component({
   components: {
     FieldGroupCard,
-    CommonComponent,
-    GeplanteGeschossflaecheWohnenComponent,
-    GeplanteAnzahlWohneinheitenComponent,
+    CommonBauleitplanverfahrenComponent,
+    GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent,
+    GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent,
     SachbearbeitungComponent,
     BedarfsmeldungFachreferateComponent,
     BauratenAggregiertComponent,
   },
 })
-export default class AbfragevarianteComponent extends Vue {
+export default class AbfragevarianteBauleitplanverfahrenComponent extends Vue {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 

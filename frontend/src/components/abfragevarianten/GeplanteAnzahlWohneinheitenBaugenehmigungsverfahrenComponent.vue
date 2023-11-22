@@ -15,11 +15,33 @@
           integer
         />
       </v-col>
-      <!-- Space für Platzhalter -->
       <v-col
         cols="12"
-        md="8"
+        md="4"
       >
+        <num-field
+          id="we_baurechtlich_genehmigt_field"
+          ref="weBaurechtlichGenehmigtField"
+          v-model="abfragevariante.weBaurechtlichGenehmigt"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="Baurechtlich genehmigt"
+          integer
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <num-field
+          id="we_baurechtlich_festgesetzt_field"
+          ref="weBaurechtlichFestgesetztField"
+          v-model="abfragevariante.weBaurechtlichFestgesetzt"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="Baurechtlich festgesetzt"
+          integer
+        />
       </v-col>
     </v-row>
 
@@ -36,7 +58,6 @@
           class="mx-3"
           label="Sonderwohnformen"
           color="primary"
-          @change="formChanged"
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -72,7 +93,7 @@
               v-model="abfragevariante.weStudentischesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="Studentierendenwohnungen"
+              label="Studierendenwohnungen"
               integer
             />
           </v-col>
@@ -123,7 +144,7 @@
               v-model="abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen"
               :disabled="!isEditable"
               class="mx-3"
-              label="weitere nicht-infrastrukturrelevante Wohnungen"
+              label="Weitere nicht-infrastrukturrelevante Wohnungen"
               integer
             />
           </v-col>
@@ -135,7 +156,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -143,13 +164,13 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenComponent extends Mixins(
+export default class GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
 ) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+  @VModel({ type: AbfragevarianteBaugenehmigungsverfahrenModel })
+  abfragevariante!: AbfragevarianteBaugenehmigungsverfahrenModel;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;

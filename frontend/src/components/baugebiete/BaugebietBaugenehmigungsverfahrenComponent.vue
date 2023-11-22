@@ -78,45 +78,22 @@
           />
         </v-col>
       </v-row>
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <num-field
-            id="baugebiet_geplante_anzahl_we"
-            v-model="baugebiet.weGeplant"
-            :disabled="!isEditable"
-            :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
-            class="mx-3"
-            label="Geplante Anzahl Wohneinheiten"
-            :suffix="suffixWohneinheiten"
-            integer
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <num-field
-            id="baugebiet_geplante_geschossflaeche_wohnen"
-            v-model="baugebiet.gfWohnenGeplant"
-            :disabled="!isEditable"
-            :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
-            class="mx-3"
-            label="Geplante Geschossfläche Wohnen"
-            :suffix="suffixGeschossflaecheWohnen"
-          />
-        </v-col>
-      </v-row>
     </field-group-card>
+    <geschossflaeche-wohnen-baugenehmigungsverfahren-component
+      v-model="baugebiet"
+      :is-editable="isEditable"
+    />
+    <anzahl-wohneinheiten-baugenehmigungsverfahren-component
+      v-model="baugebiet"
+      :is-editable="isEditable"
+    />
     <bauraten-aggregiert-component :aggregate-bauraten="baugebiet" />
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { AbfragevarianteBauleitplanverfahrenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { AbfragevarianteBaugenehmigungsverfahrenDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -137,9 +114,19 @@ import {
   verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import GeschossflaecheWohnenBaugenehmigungsverfahrenComponent from "./GeschossflaecheWohnenBaugenehmigungsverfahrenComponent.vue";
+import AnzahlWohneinheitenBaugenehmigungsverfahrenComponent from "./AnzahlWohneinheitenBaugenehmigungsverfahrenComponent.vue";
 
-@Component({ components: { NumField, FieldGroupCard, BauratenAggregiertComponent } })
-export default class BauabschnittComponent extends Mixins(
+@Component({
+  components: {
+    NumField,
+    FieldGroupCard,
+    BauratenAggregiertComponent,
+    GeschossflaecheWohnenBaugenehmigungsverfahrenComponent,
+    AnzahlWohneinheitenBaugenehmigungsverfahrenComponent,
+  },
+})
+export default class BaugebietBaugenehmigungsverfahrenComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
@@ -152,7 +139,7 @@ export default class BauabschnittComponent extends Mixins(
   @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
 
   @Prop()
-  private abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined;
+  private abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined;
 
   @Prop()
   private mode!: DisplayMode;
@@ -161,7 +148,9 @@ export default class BauabschnittComponent extends Mixins(
   private readonly isEditable!: boolean;
 
   private validationRules: unknown = {
-    validateWohneinheiten: (abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): boolean | string => {
+    validateWohneinheiten: (
+      abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,
+    ): boolean | string => {
       return (
         verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
         `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
@@ -170,7 +159,7 @@ export default class BauabschnittComponent extends Mixins(
       );
     },
     validateGeschossflaecheWohnen: (
-      abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
+      abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,
     ): boolean | string => {
       return (
         verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante) <=

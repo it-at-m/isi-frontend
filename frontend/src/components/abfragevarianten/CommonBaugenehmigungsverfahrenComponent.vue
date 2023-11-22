@@ -22,21 +22,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
-        >
-          <date-picker
-            id="satzungsbeschluss_datepicker"
-            ref="satzungsbeschlussDatePicker"
-            v-model="abfragevariante.satzungsbeschluss"
-            :disabled="!isEditable"
-            label="Datum Satzungsbeschluss"
-            month-picker
-            @datePickerBlurred="datumSatzungsbeschlussChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
+          md="12"
         >
         </v-col>
       </v-row>
@@ -49,7 +35,7 @@
             id="wesentliche_rechtsgrundlage_dropdown"
             ref="wesentlicheRechtsgrundlageDropdown"
             v-model="abfragevariante.wesentlicheRechtsgrundlage"
-            :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
+            :items="wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList"
             item-value="key"
             item-text="value"
             multiple
@@ -95,7 +81,6 @@
             year
             maxlength="4"
             required
-            help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden."
           />
         </v-col>
         <v-col
@@ -119,21 +104,21 @@
 
 <script lang="ts">
 import { Component, VModel, Mixins, Watch, Prop } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import {
-  AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 
 @Component({ components: { FieldGroupCard } })
-export default class CommonComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+export default class CommonBaugenehmigungsverfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
+  @VModel({ type: AbfragevarianteBaugenehmigungsverfahrenModel })
+  abfragevariante!: AbfragevarianteBaugenehmigungsverfahrenModel;
 
   private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
 
@@ -151,8 +136,8 @@ export default class CommonComponent extends Mixins(FieldValidationRulesMixin, S
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  get wesentlicheRechtsgrundlageBauleitplanverfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/wesentlicheRechtsgrundlageBauleitplanverfahren"];
+  get wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/wesentlicheRechtsgrundlageBaugenehmigungsverfahren"];
   }
 
   get calcRealisierungBis(): number | undefined {
@@ -163,20 +148,11 @@ export default class CommonComponent extends Mixins(FieldValidationRulesMixin, S
     return _.max(jahre);
   }
 
-  private datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
-    if (!_.isNil(datumSatzungsbeschluss)) {
-      this.abfragevariante.realisierungVon =
-        datumSatzungsbeschluss.getMonth() + 1 < 7
-          ? datumSatzungsbeschluss.getFullYear() + 3
-          : datumSatzungsbeschluss.getFullYear() + 4;
-    }
-  }
-
   @Watch("abfragevariante.wesentlicheRechtsgrundlage", { immediate: true })
   private wesentlicheRechtsgrundlageChanged(): void {
     if (
       this.abfragevariante.wesentlicheRechtsgrundlage?.includes(
-        AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
+        AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
       )
     ) {
       this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;

@@ -9,9 +9,11 @@ const state = {
   artAbfrage: [] as LookupEntryDto[],
   sobonVerfahrensgrundsaetzeJahr: [] as LookupEntryDto[],
   standVerfahrenBauleitplanverfahren: [] as LookupEntryDto[],
+  standVerfahrenBaugenehmigungsverfahren: [] as LookupEntryDto[],
   standVerfahren: [] as LookupEntryDto[],
   statusAbfrage: [] as LookupEntryDto[],
   wesentlicheRechtsgrundlageBauleitplanverfahren: [] as LookupEntryDto[],
+  wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [] as LookupEntryDto[],
   wesentlicheRechtsgrundlage: [] as LookupEntryDto[],
   artBaulicheNutzung: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
@@ -45,6 +47,9 @@ export default {
     standVerfahrenBauleitplanverfahren: (state: LookupState): Array<LookupEntryDto> => {
       return state.standVerfahrenBauleitplanverfahren;
     },
+    standVerfahrenBaugenehmigungsverfahren: (state: LookupState): Array<LookupEntryDto> => {
+      return state.standVerfahrenBaugenehmigungsverfahren;
+    },
     standVerfahren: (state: LookupState): Array<LookupEntryDto> => {
       return state.standVerfahren;
     },
@@ -53,6 +58,9 @@ export default {
     },
     wesentlicheRechtsgrundlageBauleitplanverfahren: (state: LookupState): Array<LookupEntryDto> => {
       return state.wesentlicheRechtsgrundlageBauleitplanverfahren;
+    },
+    wesentlicheRechtsgrundlageBaugenehmigungsverfahren: (state: LookupState): Array<LookupEntryDto> => {
+      return state.wesentlicheRechtsgrundlageBaugenehmigungsverfahren;
     },
     wesentlicheRechtsgrundlage: (state: LookupState): Array<LookupEntryDto> => {
       return state.wesentlicheRechtsgrundlage;
@@ -96,6 +104,9 @@ export default {
     standVerfahrenBauleitplanverfahren(state: LookupState, list: LookupEntryDto[]): void {
       state.standVerfahrenBauleitplanverfahren = list;
     },
+    standVerfahrenBaugenehmigungsverfahren(state: LookupState, list: LookupEntryDto[]): void {
+      state.standVerfahrenBaugenehmigungsverfahren = list;
+    },
     standVerfahren(state: LookupState, list: LookupEntryDto[]): void {
       state.standVerfahren = list;
     },
@@ -104,6 +115,9 @@ export default {
     },
     wesentlicheRechtsgrundlageBauleitplanverfahren(state: LookupState, list: LookupEntryDto[]): void {
       state.wesentlicheRechtsgrundlageBauleitplanverfahren = list;
+    },
+    wesentlicheRechtsgrundlageBaugenehmigungsverfahren(state: LookupState, list: LookupEntryDto[]): void {
+      state.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = list;
     },
     wesentlicheRechtsgrundlage(state: LookupState, list: LookupEntryDto[]): void {
       state.wesentlicheRechtsgrundlage = list;
@@ -140,11 +154,19 @@ export default {
         context.commit("artAbfrage", lookupLists.artAbfrage?.list);
         context.commit("sobonVerfahrensgrundsaetzeJahr", lookupLists.sobonVerfahrensgrundsaetzeJahr?.list);
         context.commit("standVerfahrenBauleitplanverfahren", lookupLists.standVerfahrenBauleitplanverfahren?.list);
+        context.commit(
+          "standVerfahrenBaugenehmigungsverfahren",
+          lookupLists.standVerfahrenBaugenehmigungsverfahren?.list,
+        );
         context.commit("standVerfahren", lookupLists.standVerfahren?.list);
         context.commit("statusAbfrage", lookupLists.statusAbfrage?.list);
         context.commit(
           "wesentlicheRechtsgrundlageBauleitplanverfahren",
           lookupLists.wesentlicheRechtsgrundlageBauleitplanverfahren?.list,
+        );
+        context.commit(
+          "wesentlicheRechtsgrundlageBaugenehmigungsverfahren",
+          lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren?.list,
         );
         context.commit("wesentlicheRechtsgrundlage", lookupLists.wesentlicheRechtsgrundlage?.list);
         context.commit("artBaulicheNutzung", lookupLists.artBaulicheNutzung?.list);
@@ -171,6 +193,12 @@ export default {
     standVerfahrenBauleitplanverfahren(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("standVerfahrenBauleitplanverfahren", list);
     },
+    standVerfahrenBaugenehmigungsverfahren(
+      context: ActionContext<LookupState, RootState>,
+      list: LookupEntryDto[],
+    ): void {
+      context.commit("standVerfahrenBaugenehmigungsverfahren", list);
+    },
     standVerfahren(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("standVerfahren", list);
     },
@@ -182,6 +210,12 @@ export default {
       list: LookupEntryDto[],
     ): void {
       context.commit("wesentlicheRechtsgrundlageBauleitplanverfahren", list);
+    },
+    wesentlicheRechtsgrundlageBaugenehmigungsverfahren(
+      context: ActionContext<LookupState, RootState>,
+      list: LookupEntryDto[],
+    ): void {
+      context.commit("wesentlicheRechtsgrundlageBaugenehmigungsverfahren", list);
     },
     wesentlicheRechtsgrundlage(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("wesentlicheRechtsgrundlage", list);
