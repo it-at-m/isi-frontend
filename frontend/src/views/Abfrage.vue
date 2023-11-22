@@ -773,6 +773,8 @@ export default class Abfrage extends Mixins(
       this.saveAbfrageInStore(new BauleitplanverfahrenModel(dto));
     } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       this.saveAbfrageInStore(new BaugenehmigungsverfahrenModel(dto));
+    } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+      this.saveAbfrageInStore(new WeiteresVerfahrenModel(dto));
     }
     if (this.isNewAbfrage()) {
       this.$router.push({ path: "/" });
