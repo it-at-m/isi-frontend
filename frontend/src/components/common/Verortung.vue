@@ -113,11 +113,6 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
    */
   private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
-  /**
-   * Repräsentiert den ausgewählten Punkt auf einer Karte.
-   */
-  private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
-
   mounted(): void {
     this.onVerortungModelChanged();
   }
@@ -211,12 +206,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   private handleClickInMap(latlng: LatLng): void {
     if (this.isEditable) {
       const point = this.createPointGeometry(latlng);
-      if (this.context === Context.ABFRAGE || this.context === Context.BAUVORHABEN) {
-        this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
-          const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
-          this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
-        });
-      }
+      this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
+        const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+        this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+      });
     }
   }
 
@@ -227,9 +220,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   private async handleAcceptSelectedGeoJson(): Promise<void> {
     let verortung: VerortungDto | undefined;
     if (this.context === Context.ABFRAGE || this.context === Context.BAUVORHABEN) {
+      // Mulitpolygon Verortung
       if (this.selectedFlurstuecke.size !== 0) {
         verortung = await this.createVerortungDtoFromSelectedFlurstuecke();
       } else {
+        // Punktkoordinate Verortung
         verortung = await this.createVerortungDtoFromSelectedPoint();
       }
       if (!_.isNil(verortung)) {
@@ -326,6 +321,37 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
         multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
+      } as VerortungDto;
+    } catch (error) {
+      return undefined;
+    }
+  }
+
+  /**
+   * Erstellt das VerortungDto auf Basis einer Punktkoordinate.
+   * Tritt ein fehler bei der Erstellung des VerortungDtos auf, so wird undefined zurückgegeben.
+   */
+  private async createVerortungDtoFromSelectedPoint(point: PointGeometryDto): Promise<VerortungDto | undefined> {
+    try {
+      // Stadtbezirke ermitteln
+      const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForPoint(point, true);
+      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
+
+      // Gemarkungen ermitteln
+      const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForPoint(point, true);
+      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+      // Anfügen der Flurstücke an Gemarkung
+      this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
+        const matchingGemarkung = gemarkungenBackend.find(
+          (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer,
+        );
+        matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
+      });
+      // Erstellung des VerortungDto
+      return {
+        gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
+        stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
+        // hier weitermachen
       } as VerortungDto;
     } catch (error) {
       return undefined;
