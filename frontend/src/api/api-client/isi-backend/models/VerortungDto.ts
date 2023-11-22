@@ -26,6 +26,12 @@ import {
     MultiPolygonGeometryDtoToJSON,
 } from './MultiPolygonGeometryDto';
 import {
+    PointGeometryDto,
+    PointGeometryDtoFromJSON,
+    PointGeometryDtoFromJSONTyped,
+    PointGeometryDtoToJSON,
+} from './PointGeometryDto';
+import {
     StadtbezirkDto,
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
@@ -56,6 +62,12 @@ export interface VerortungDto {
      * @memberof VerortungDto
      */
     multiPolygon: MultiPolygonGeometryDto;
+    /**
+     * 
+     * @type {PointGeometryDto}
+     * @memberof VerortungDto
+     */
+    pointGeometry?: PointGeometryDto;
 }
 
 export function VerortungDtoFromJSON(json: any): VerortungDto {
@@ -71,6 +83,7 @@ export function VerortungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'stadtbezirke': (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'gemarkungen': (new Set((json['gemarkungen'] as Array<any>).map(GemarkungDtoFromJSON))),
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
+        'pointGeometry': !exists(json, 'pointGeometry') ? undefined : PointGeometryDtoFromJSON(json['pointGeometry']),
     };
 }
 
@@ -86,6 +99,7 @@ export function VerortungDtoToJSON(value?: VerortungDto | null): any {
         'stadtbezirke': (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'gemarkungen': (Array.from(value.gemarkungen as Set<any>).map(GemarkungDtoToJSON)),
         'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
+        'pointGeometry': PointGeometryDtoToJSON(value.pointGeometry),
     };
 }
 

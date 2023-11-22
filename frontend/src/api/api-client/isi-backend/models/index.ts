@@ -72,6 +72,7 @@ export * from './MittelschuleDto';
 export * from './MultiPolygonGeometryDto';
 export * from './PatchInBearbeitungFachreferatRequest';
 export * from './PatchInBearbeitungSachbearbeitungRequest';
+export * from './PointGeometryDto';
 export * from './PresignedUrlDto';
 export * from './Save201Response';
 export * from './SaveRequest';
