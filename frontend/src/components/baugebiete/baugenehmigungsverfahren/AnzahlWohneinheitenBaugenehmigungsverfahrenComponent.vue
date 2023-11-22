@@ -10,6 +10,7 @@
           ref="weGeplantField"
           v-model="baugebiet.weGeplant"
           :disabled="!isEditable"
+          :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
           class="mx-3"
           label="Geplante Anzahl Wohneinheiten"
           integer
@@ -55,6 +56,13 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { AbfragevarianteBaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
+import {
+  verteilteWohneinheitenAbfragevariante,
+  verteilteWohneinheitenAbfragevarianteFormatted,
+  wohneinheitenAbfragevariante,
+  wohneinheitenAbfragevarianteFormatted,
+} from "@/utils/CalculationUtil";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class AnzahlWohneinheitenBaugenehmigungsverfahrenComponent extends Mixins(
@@ -67,6 +75,22 @@ export default class AnzahlWohneinheitenBaugenehmigungsverfahrenComponent extend
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  @Prop()
+  private abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined;
+
   private anzahlWohneinheitenTitle = "Anzahl Wohneinheiten";
+
+  private validationRules: unknown = {
+    validateWohneinheiten: (
+      abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,
+    ): boolean | string => {
+      return (
+        verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+        `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+          abfragevariante,
+        )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+      );
+    },
+  };
 }
 </script>

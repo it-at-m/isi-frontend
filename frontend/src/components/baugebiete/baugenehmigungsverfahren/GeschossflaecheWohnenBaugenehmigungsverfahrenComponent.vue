@@ -10,6 +10,7 @@
           ref="gfWohnenGeplantField"
           v-model="baugebiet.gfWohnenGeplant"
           :disabled="!isEditable"
+          :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
           class="mx-3"
           label="Geplante Geschossfläche Wohnen"
           :suffix="fieldPrefixesSuffixes.squareMeter"
@@ -55,6 +56,15 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { AbfragevarianteBaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
+import {
+  countDecimals,
+  geschossflaecheWohnenAbfragevariante,
+  geschossflaecheWohnenAbfragevarianteFormatted,
+  verteilteGeschossflaecheWohnenAbfragevariante,
+  verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
+} from "@/utils/CalculationUtil";
+import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class GeschossflaecheWohnenBaugenehmigungsverfahrenComponent extends Mixins(
@@ -67,6 +77,25 @@ export default class GeschossflaecheWohnenBaugenehmigungsverfahrenComponent exte
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  @Prop()
+  private abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined;
+
   private geschossflaecheWohnenTitle = "Geschossfläche Wohnen";
+
+  private validationRules: unknown = {
+    validateGeschossflaecheWohnen: (
+      abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,
+    ): boolean | string => {
+      return (
+        _.round(
+          verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
+          countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
+        ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+        `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+          abfragevariante,
+        )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
+      );
+    },
+  };
 }
 </script>

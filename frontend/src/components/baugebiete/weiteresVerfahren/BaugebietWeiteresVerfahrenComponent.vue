@@ -20,10 +20,12 @@
     />
     <geschossflaeche-wohnen-weiteres-verfahren-component
       v-model="baugebiet"
+      :abfragevariante="abfragevariante"
       :is-editable="isEditable"
     />
     <anzahl-wohneinheiten-weiteres-verfahren-component
       v-model="baugebiet"
+      :abfragevariante="abfragevariante"
       :is-editable="isEditable"
     />
     <bauraten-aggregiert-component :aggregate-bauraten="baugebiet" />
