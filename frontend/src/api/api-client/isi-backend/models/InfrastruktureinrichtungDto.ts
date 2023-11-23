@@ -19,6 +19,12 @@ import {
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 import {
      GrundschuleDtoFromJSONTyped,
@@ -83,6 +89,12 @@ export interface InfrastruktureinrichtungDto {
      * @memberof InfrastruktureinrichtungDto
      */
     adresse?: AdresseDto;
+    /**
+     * 
+     * @type {VerortungDto}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    verortung?: VerortungDto;
     /**
      * 
      * @type {string}
@@ -185,6 +197,7 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'nameEinrichtung': json['nameEinrichtung'],
         'fertigstellungsjahr': !exists(json, 'fertigstellungsjahr') ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
@@ -210,6 +223,7 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
         'lfdNr': value.lfdNr,
         'bauvorhaben': value.bauvorhaben,
         'adresse': AdresseDtoToJSON(value.adresse),
+        'verortung': VerortungDtoToJSON(value.verortung),
         'nameEinrichtung': value.nameEinrichtung,
         'fertigstellungsjahr': value.fertigstellungsjahr,
         'status': value.status,

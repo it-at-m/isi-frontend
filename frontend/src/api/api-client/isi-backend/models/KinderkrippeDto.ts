@@ -31,6 +31,12 @@ import {
     KinderkrippeDtoAllOfFromJSONTyped,
     KinderkrippeDtoAllOfToJSON,
 } from './KinderkrippeDtoAllOf';
+import {
+    VerortungDto,
+    VerortungDtoFromJSON,
+    VerortungDtoFromJSONTyped,
+    VerortungDtoToJSON,
+} from './VerortungDto';
 
 /**
  * 

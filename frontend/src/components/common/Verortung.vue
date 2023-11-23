@@ -59,6 +59,11 @@
         </div>
       </v-chip>
     </v-chip-group>
+    <v-chip-group v-if="isPunktkoordinate">
+      <v-chip>
+        <span>getUtm32(selectedPoint)</span>
+      </v-chip>
+    </v-chip-group>
   </field-group-card>
 </template>
 
@@ -68,6 +73,7 @@ import CityMap from "@/components/map/CityMap.vue";
 import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
+import KoordinatenApiRequestMixin from "@/mixins/requests/KoordinatenApiRequestMixin";
 import {
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
@@ -75,6 +81,7 @@ import {
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoGeoDataEai,
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
+import { Wgs84Dto, UtmDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import VerortungModel from "@/types/model/common/VerortungModel";
 import {
@@ -92,7 +99,12 @@ import { Context } from "@/utils/Context";
 @Component({
   components: { CityMap },
 })
-export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLeaveMixin, AbfrageSecurityMixin) {
+export default class Verortung extends Mixins(
+  GeodataEaiApiRequestMixin,
+  SaveLeaveMixin,
+  AbfrageSecurityMixin,
+  KoordinatenApiRequestMixin,
+) {
   private verortungCardTitle = "Verortung";
 
   @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
@@ -113,6 +125,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
    */
   private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
+  /**
+   * Repräsentiert die Punktkoordinate im Standard EPSG:4326 (WGS84) Format
+   */
+  private selectedPoint: PointGeometryDto | undefined = undefined;
+
   mounted(): void {
     this.onVerortungModelChanged();
   }
@@ -127,6 +144,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       editable = this.isRoleAdminOrSachbearbeitung();
     }
     return editable;
+  }
+
+  get isPunktkoordinate(): boolean {
+    return this.context === Context.INFRASTRUKTUREINRICHTUNG && !_.isNil(this.selectedPoint);
   }
 
   get coordinate(): LatLngLiteral | undefined {
@@ -205,8 +226,8 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   private handleClickInMap(latlng: LatLng): void {
     if (this.isEditable) {
-      const point = this.createPointGeometry(latlng);
-      this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
+      this.selectedPoint = this.createPointGeometry(latlng);
+      this.getFlurstueckeForPoint(this.selectedPoint, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
         const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
         this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
       });
@@ -351,7 +372,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       return {
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
-        // hier weitermachen
+        pointGeometry: point,
       } as VerortungDto;
     } catch (error) {
       return undefined;
@@ -421,6 +442,19 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         },
       };
     });
+  }
+
+  private getUtm32(point: PointGeometryDto): string {
+    if (!_.isNil(point.coordinates && point.coordinates.length === 2)) {
+      const wgs84 = {
+        latitude: point.coordinates[0],
+        longitude: point.coordinates[1],
+      } as Wgs84Dto;
+      this.wgs84toUtm32(wgs84, true).then((dto: UtmDto) => {
+        return `{ dto.zone }U {dto?.north} {dto?.east}`;
+      });
+    }
+    return "";
   }
 }
 </script>
