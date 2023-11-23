@@ -145,7 +145,7 @@ interface Action {
 interface Props {
   abfrage: BauleitplanverfahrenDto;
   selectedItemId: string;
-  relevanteAbfragevarianteId: string | null;
+  relevanteAbfragevarianteId?: null | string;
 }
 
 interface Emits {
