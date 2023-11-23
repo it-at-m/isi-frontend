@@ -42,6 +42,12 @@ export interface SearchQueryDto {
      * @type {boolean}
      * @memberof SearchQueryDto
      */
+    selectWeiteresVerfahren: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SearchQueryDto
+     */
     selectBauvorhaben: boolean;
     /**
      * 
@@ -93,6 +99,26 @@ export interface SearchQueryDto {
     pageSize?: number;
 }
 
+/**
+ * Check if a given object implements the SearchQueryDto interface.
+ */
+export function instanceOfSearchQueryDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "searchQuery" in value;
+    isInstance = isInstance && "selectBauleitplanverfahren" in value;
+    isInstance = isInstance && "selectBaugenehmigungsverfahren" in value;
+    isInstance = isInstance && "selectWeiteresVerfahren" in value;
+    isInstance = isInstance && "selectBauvorhaben" in value;
+    isInstance = isInstance && "selectGrundschule" in value;
+    isInstance = isInstance && "selectGsNachmittagBetreuung" in value;
+    isInstance = isInstance && "selectHausFuerKinder" in value;
+    isInstance = isInstance && "selectKindergarten" in value;
+    isInstance = isInstance && "selectKinderkrippe" in value;
+    isInstance = isInstance && "selectMittelschule" in value;
+
+    return isInstance;
+}
+
 export function SearchQueryDtoFromJSON(json: any): SearchQueryDto {
     return SearchQueryDtoFromJSONTyped(json, false);
 }
@@ -106,6 +132,7 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'searchQuery': json['searchQuery'],
         'selectBauleitplanverfahren': json['selectBauleitplanverfahren'],
         'selectBaugenehmigungsverfahren': json['selectBaugenehmigungsverfahren'],
+        'selectWeiteresVerfahren': json['selectWeiteresVerfahren'],
         'selectBauvorhaben': json['selectBauvorhaben'],
         'selectGrundschule': json['selectGrundschule'],
         'selectGsNachmittagBetreuung': json['selectGsNachmittagBetreuung'],
@@ -130,6 +157,7 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'searchQuery': value.searchQuery,
         'selectBauleitplanverfahren': value.selectBauleitplanverfahren,
         'selectBaugenehmigungsverfahren': value.selectBaugenehmigungsverfahren,
+        'selectWeiteresVerfahren': value.selectWeiteresVerfahren,
         'selectBauvorhaben': value.selectBauvorhaben,
         'selectGrundschule': value.selectGrundschule,
         'selectGsNachmittagBetreuung': value.selectGsNachmittagBetreuung,

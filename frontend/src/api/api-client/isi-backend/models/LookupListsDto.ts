@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { LookupListDto } from './LookupListDto';
 import {
-    LookupListDto,
     LookupListDtoFromJSON,
     LookupListDtoFromJSONTyped,
     LookupListDtoToJSON,
@@ -62,6 +62,12 @@ export interface LookupListsDto {
      * @memberof LookupListsDto
      */
     standVerfahrenBaugenehmigungsverfahren?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
+    standVerfahrenWeiteresVerfahren?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
@@ -136,6 +142,15 @@ export interface LookupListsDto {
     sobonOrientierungswertJahr?: LookupListDto;
 }
 
+/**
+ * Check if a given object implements the LookupListsDto interface.
+ */
+export function instanceOfLookupListsDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function LookupListsDtoFromJSON(json: any): LookupListsDto {
     return LookupListsDtoFromJSONTyped(json, false);
 }
@@ -152,6 +167,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'sobonVerfahrensgrundsaetzeJahr': !exists(json, 'sobonVerfahrensgrundsaetzeJahr') ? undefined : LookupListDtoFromJSON(json['sobonVerfahrensgrundsaetzeJahr']),
         'standVerfahrenBauleitplanverfahren': !exists(json, 'standVerfahrenBauleitplanverfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenBauleitplanverfahren']),
         'standVerfahrenBaugenehmigungsverfahren': !exists(json, 'standVerfahrenBaugenehmigungsverfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenBaugenehmigungsverfahren']),
+        'standVerfahrenWeiteresVerfahren': !exists(json, 'standVerfahrenWeiteresVerfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenWeiteresVerfahren']),
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahren']),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
         'wesentlicheRechtsgrundlageBauleitplanverfahren': !exists(json, 'wesentlicheRechtsgrundlageBauleitplanverfahren') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBauleitplanverfahren']),
@@ -182,6 +198,7 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'sobonVerfahrensgrundsaetzeJahr': LookupListDtoToJSON(value.sobonVerfahrensgrundsaetzeJahr),
         'standVerfahrenBauleitplanverfahren': LookupListDtoToJSON(value.standVerfahrenBauleitplanverfahren),
         'standVerfahrenBaugenehmigungsverfahren': LookupListDtoToJSON(value.standVerfahrenBaugenehmigungsverfahren),
+        'standVerfahrenWeiteresVerfahren': LookupListDtoToJSON(value.standVerfahrenWeiteresVerfahren),
         'standVerfahren': LookupListDtoToJSON(value.standVerfahren),
         'statusAbfrage': LookupListDtoToJSON(value.statusAbfrage),
         'wesentlicheRechtsgrundlageBauleitplanverfahren': LookupListDtoToJSON(value.wesentlicheRechtsgrundlageBauleitplanverfahren),

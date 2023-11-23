@@ -1,3 +1,4 @@
+npm
 <template>
   <v-container>
     <abfrage-common-component
@@ -48,8 +49,8 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
-import AllgemeineInformationenBauleitplanverfahrenComponent from "@/components/abfragen/AllgemeineInformationenBauleitplanverfahrenComponent.vue";
-import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
+import AllgemeineInformationenBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenBauleitplanverfahrenComponent.vue";
+import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";

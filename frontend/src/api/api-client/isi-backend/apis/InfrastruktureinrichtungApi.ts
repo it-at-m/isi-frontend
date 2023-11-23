@@ -14,11 +14,13 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  InformationResponseDto,
+  UpdateInfrastruktureinrichtungRequest,
+} from '../models';
 import {
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    UpdateInfrastruktureinrichtungRequest,
     UpdateInfrastruktureinrichtungRequestFromJSON,
     UpdateInfrastruktureinrichtungRequestToJSON,
 } from '../models';
@@ -47,7 +49,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     /**
      * Anlegen einer neuen Infrastruktureinrichtung
      */
-    async createInfrastruktureinrichtungRaw(requestParameters: CreateInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+    async createInfrastruktureinrichtungRaw(requestParameters: CreateInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
         if (requestParameters.updateInfrastruktureinrichtungRequest === null || requestParameters.updateInfrastruktureinrichtungRequest === undefined) {
             throw new runtime.RequiredError('updateInfrastruktureinrichtungRequest','Required parameter requestParameters.updateInfrastruktureinrichtungRequest was null or undefined when calling createInfrastruktureinrichtung.');
         }
@@ -72,7 +74,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     /**
      * Anlegen einer neuen Infrastruktureinrichtung
      */
-    async createInfrastruktureinrichtung(requestParameters: CreateInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
+    async createInfrastruktureinrichtung(requestParameters: CreateInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
         const response = await this.createInfrastruktureinrichtungRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -80,7 +82,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     /**
      * Löschen einer Infrastruktureinrichtung
      */
-    async deleteInfrastruktureinrichtungByIdRaw(requestParameters: DeleteInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteInfrastruktureinrichtungByIdRaw(requestParameters: DeleteInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteInfrastruktureinrichtungById.');
         }
@@ -102,14 +104,14 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     /**
      * Löschen einer Infrastruktureinrichtung
      */
-    async deleteInfrastruktureinrichtungById(requestParameters: DeleteInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async deleteInfrastruktureinrichtungById(requestParameters: DeleteInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteInfrastruktureinrichtungByIdRaw(requestParameters, initOverrides);
     }
 
     /**
      * Lesen einer Infrastruktureinrichtung
      */
-    async getInfrastruktureinrichtungByIdRaw(requestParameters: GetInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+    async getInfrastruktureinrichtungByIdRaw(requestParameters: GetInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getInfrastruktureinrichtungById.');
         }
@@ -131,7 +133,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     /**
      * Lesen einer Infrastruktureinrichtung
      */
-    async getInfrastruktureinrichtungById(requestParameters: GetInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
+    async getInfrastruktureinrichtungById(requestParameters: GetInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
         const response = await this.getInfrastruktureinrichtungByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -139,7 +141,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Infrastruktureinrichtung
      */
-    async updateInfrastruktureinrichtungRaw(requestParameters: UpdateInfrastruktureinrichtungOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+    async updateInfrastruktureinrichtungRaw(requestParameters: UpdateInfrastruktureinrichtungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
         if (requestParameters.updateInfrastruktureinrichtungRequest === null || requestParameters.updateInfrastruktureinrichtungRequest === undefined) {
             throw new runtime.RequiredError('updateInfrastruktureinrichtungRequest','Required parameter requestParameters.updateInfrastruktureinrichtungRequest was null or undefined when calling updateInfrastruktureinrichtung.');
         }
@@ -164,7 +166,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Infrastruktureinrichtung
      */
-    async updateInfrastruktureinrichtung(requestParameters: UpdateInfrastruktureinrichtungOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
+    async updateInfrastruktureinrichtung(requestParameters: UpdateInfrastruktureinrichtungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
         const response = await this.updateInfrastruktureinrichtungRaw(requestParameters, initOverrides);
         return await response.value();
     }

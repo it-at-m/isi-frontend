@@ -39,6 +39,17 @@ export interface UtmDto {
     east: number;
 }
 
+/**
+ * Check if a given object implements the UtmDto interface.
+ */
+export function instanceOfUtmDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "north" in value;
+    isInstance = isInstance && "east" in value;
+
+    return isInstance;
+}
+
 export function UtmDtoFromJSON(json: any): UtmDto {
     return UtmDtoFromJSONTyped(json, false);
 }

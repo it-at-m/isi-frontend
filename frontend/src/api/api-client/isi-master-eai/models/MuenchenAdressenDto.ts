@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MuenchenAdresseDto } from './MuenchenAdresseDto';
 import {
-    MuenchenAdresseDto,
     MuenchenAdresseDtoFromJSON,
     MuenchenAdresseDtoFromJSONTyped,
     MuenchenAdresseDtoToJSON,
@@ -32,6 +32,15 @@ export interface MuenchenAdressenDto {
      * @memberof MuenchenAdressenDto
      */
     adressen?: Array<MuenchenAdresseDto>;
+}
+
+/**
+ * Check if a given object implements the MuenchenAdressenDto interface.
+ */
+export function instanceOfMuenchenAdressenDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function MuenchenAdressenDtoFromJSON(json: any): MuenchenAdressenDto {

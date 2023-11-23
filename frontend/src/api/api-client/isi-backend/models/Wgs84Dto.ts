@@ -33,6 +33,17 @@ export interface Wgs84Dto {
     longitude: number;
 }
 
+/**
+ * Check if a given object implements the Wgs84Dto interface.
+ */
+export function instanceOfWgs84Dto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "latitude" in value;
+    isInstance = isInstance && "longitude" in value;
+
+    return isInstance;
+}
+
 export function Wgs84DtoFromJSON(json: any): Wgs84Dto {
     return Wgs84DtoFromJSONTyped(json, false);
 }

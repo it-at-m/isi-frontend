@@ -180,7 +180,7 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenComponent extends Mixins(
+export default class GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,

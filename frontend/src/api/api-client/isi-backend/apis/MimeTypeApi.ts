@@ -14,14 +14,16 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  FilepathDto,
+  InformationResponseDto,
+  MimeTypeInformationDto,
+} from '../models';
 import {
-    FilepathDto,
     FilepathDtoFromJSON,
     FilepathDtoToJSON,
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    MimeTypeInformationDto,
     MimeTypeInformationDtoFromJSON,
     MimeTypeInformationDtoToJSON,
 } from '../models';
@@ -39,7 +41,7 @@ export class MimeTypeApi extends runtime.BaseAPI {
      * Handelt es sich um einen ungültigen Mime-Type wird die referenzierte Datei vom S3-Storage gelöscht.
      * Stellt die Mime-Type-Information für die im Parameter referenzierte und im S3-Storage befindliche Datei zur Verfügung.
      */
-    async extractMediaTypeInformationForAllowedMediaTypeRaw(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MimeTypeInformationDto>> {
+    async extractMediaTypeInformationForAllowedMediaTypeRaw(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MimeTypeInformationDto>> {
         if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
             throw new runtime.RequiredError('filepathDto','Required parameter requestParameters.filepathDto was null or undefined when calling extractMediaTypeInformationForAllowedMediaType.');
         }
@@ -65,7 +67,7 @@ export class MimeTypeApi extends runtime.BaseAPI {
      * Handelt es sich um einen ungültigen Mime-Type wird die referenzierte Datei vom S3-Storage gelöscht.
      * Stellt die Mime-Type-Information für die im Parameter referenzierte und im S3-Storage befindliche Datei zur Verfügung.
      */
-    async extractMediaTypeInformationForAllowedMediaType(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MimeTypeInformationDto> {
+    async extractMediaTypeInformationForAllowedMediaType(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MimeTypeInformationDto> {
         const response = await this.extractMediaTypeInformationForAllowedMediaTypeRaw(requestParameters, initOverrides);
         return await response.value();
     }

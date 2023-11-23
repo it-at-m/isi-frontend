@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BauabschnittDto } from './BauabschnittDto';
 import {
-    BauabschnittDto,
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
+import type { BedarfsmeldungFachreferateDto } from './BedarfsmeldungFachreferateDto';
 import {
-    BedarfsmeldungFachreferateDto,
     BedarfsmeldungFachreferateDtoFromJSON,
     BedarfsmeldungFachreferateDtoFromJSONTyped,
     BedarfsmeldungFachreferateDtoToJSON,
@@ -222,7 +222,7 @@ export const AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum];
 
@@ -255,6 +255,15 @@ export const AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnu
 } as const;
 export type AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum];
 
+
+/**
+ * Check if a given object implements the AbfragevarianteBauleitplanverfahrenDto interface.
+ */
+export function instanceOfAbfragevarianteBauleitplanverfahrenDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfragevarianteBauleitplanverfahrenDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenDto {
     return AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json, false);

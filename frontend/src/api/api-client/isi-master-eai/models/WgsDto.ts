@@ -33,6 +33,15 @@ export interface WgsDto {
     lon?: number;
 }
 
+/**
+ * Check if a given object implements the WgsDto interface.
+ */
+export function instanceOfWgsDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function WgsDtoFromJSON(json: any): WgsDto {
     return WgsDtoFromJSONTyped(json, false);
 }

@@ -14,8 +14,10 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  LookupListsDto,
+} from '../models';
 import {
-    LookupListsDto,
     LookupListsDtoFromJSON,
     LookupListsDtoToJSON,
 } from '../models';
@@ -28,7 +30,7 @@ export class LookupApi extends runtime.BaseAPI {
     /**
      * Gibt die Lookuplisten zurück.
      */
-    async getLookupListsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<LookupListsDto>> {
+    async getLookupListsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LookupListsDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -46,7 +48,7 @@ export class LookupApi extends runtime.BaseAPI {
     /**
      * Gibt die Lookuplisten zurück.
      */
-    async getLookupLists(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<LookupListsDto> {
+    async getLookupLists(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<LookupListsDto> {
         const response = await this.getLookupListsRaw(initOverrides);
         return await response.value();
     }

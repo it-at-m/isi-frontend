@@ -13,20 +13,20 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto } from './AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto,
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
@@ -56,6 +56,15 @@ export interface BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf {
      * @memberof BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf
      */
     abfragevariantenSachbearbeitungBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto>;
+}
+
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON(json: any): BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf {

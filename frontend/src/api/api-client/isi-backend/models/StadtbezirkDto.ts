@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryDto,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
@@ -44,6 +44,16 @@ export interface StadtbezirkDto {
      * @memberof StadtbezirkDto
      */
     multiPolygon: MultiPolygonGeometryDto;
+}
+
+/**
+ * Check if a given object implements the StadtbezirkDto interface.
+ */
+export function instanceOfStadtbezirkDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "multiPolygon" in value;
+
+    return isInstance;
 }
 
 export function StadtbezirkDtoFromJSON(json: any): StadtbezirkDto {

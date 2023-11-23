@@ -98,6 +98,21 @@
         </template>
         <span>Baugenehmigungsverfahren erstellen</span>
       </v-tooltip>
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-btn
+            class="text-h6"
+            fab
+            dark
+            color="green lighten-1"
+            v-on="on"
+            @click="createWeiteresVerfahren"
+          >
+            <v-icon>mdi-account-plus</v-icon>
+          </v-btn>
+        </template>
+        <span>Weiteres Verfahren erstellen</span>
+      </v-tooltip>
     </v-speed-dial>
   </v-container>
 </template>
@@ -145,6 +160,13 @@ export default class Main extends Vue {
     router.push({
       name: "newabfrage",
       params: { art: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren },
+    });
+  }
+
+  private createWeiteresVerfahren(): void {
+    router.push({
+      name: "newabfrage",
+      params: { art: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren },
     });
   }
 

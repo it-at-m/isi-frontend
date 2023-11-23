@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MuenchenAdresseGeoZuordnungenDto } from './MuenchenAdresseGeoZuordnungenDto';
 import {
-    MuenchenAdresseGeoZuordnungenDto,
     MuenchenAdresseGeoZuordnungenDtoFromJSON,
     MuenchenAdresseGeoZuordnungenDtoFromJSONTyped,
     MuenchenAdresseGeoZuordnungenDtoToJSON,
 } from './MuenchenAdresseGeoZuordnungenDto';
+import type { PositionDto } from './PositionDto';
 import {
-    PositionDto,
     PositionDtoFromJSON,
     PositionDtoFromJSONTyped,
     PositionDtoToJSON,
@@ -80,6 +80,15 @@ export interface MuenchenAdresseDto {
      * @memberof MuenchenAdresseDto
      */
     geozuordnungen?: MuenchenAdresseGeoZuordnungenDto;
+}
+
+/**
+ * Check if a given object implements the MuenchenAdresseDto interface.
+ */
+export function instanceOfMuenchenAdresseDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function MuenchenAdresseDtoFromJSON(json: any): MuenchenAdresseDto {

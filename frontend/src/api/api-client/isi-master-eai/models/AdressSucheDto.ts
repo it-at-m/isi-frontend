@@ -39,6 +39,16 @@ export interface AdressSucheDto {
     pagesize?: number;
 }
 
+/**
+ * Check if a given object implements the AdressSucheDto interface.
+ */
+export function instanceOfAdressSucheDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "query" in value;
+
+    return isInstance;
+}
+
 export function AdressSucheDtoFromJSON(json: any): AdressSucheDto {
     return AdressSucheDtoFromJSONTyped(json, false);
 }

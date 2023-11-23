@@ -13,36 +13,33 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageInBearbeitungSachbearbeitungDto } from './AbfrageInBearbeitungSachbearbeitungDto';
 import {
-    AbfrageInBearbeitungSachbearbeitungDto,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSON,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfrageInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfrageInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto } from './AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
     AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto,
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
+import type { VerortungDto } from './VerortungDto';
 import {
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf,
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON,
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSONTyped,
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfToJSON,
-} from './BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf';
-import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
 } from './VerortungDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -61,16 +58,27 @@ export interface BauleitplanverfahrenInBearbeitungSachbearbeitungDto extends Abf
      * @type {Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>}
      * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevariantenBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
+    abfragevariantenBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>}
      * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevariantenSachbearbeitungBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>;
+    abfragevariantenSachbearbeitungBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto>;
 }
 
 
+
+/**
+ * Check if a given object implements the BauleitplanverfahrenInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfBauleitplanverfahrenInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBauleitplanverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBauleitplanverfahren" in value;
+
+    return isInstance;
+}
 
 export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON(json: any): BauleitplanverfahrenInBearbeitungSachbearbeitungDto {
     return BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
@@ -80,11 +88,13 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped
     if ((json === undefined) || (json === null)) {
         return json;
     }
+    if (!ignoreDiscriminator) {
+    }
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
-        'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
-        'abfragevariantenSachbearbeitungBauleitplanverfahren': !exists(json, 'abfragevariantenSachbearbeitungBauleitplanverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenBauleitplanverfahren': ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
     };
 }
 
@@ -98,8 +108,8 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON(value?
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value),
         'verortung': VerortungDtoToJSON(value.verortung),
-        'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
-        'abfragevariantenSachbearbeitungBauleitplanverfahren': value.abfragevariantenSachbearbeitungBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenBauleitplanverfahren': ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
     };
 }
 

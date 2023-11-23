@@ -53,12 +53,53 @@
         cols="12"
         md="6"
       >
+        <tri-switch
+          id="sobon_relevant_triswitch"
+          ref="sobonRelevantTriswitch"
+          v-model="abfrage.sobonRelevant"
+          :disabled="!isEditable"
+          off-text="Nein"
+          on-text="Ja"
+          :rules="[fieldValidationRules.notUnspecified]"
+        >
+          <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
+        </tri-switch>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-slide-y-reverse-transition>
+          <v-select
+            v-if="sobonJahrVisible"
+            id="sobon_jahr_dropdown"
+            ref="sobonJahrDropdown"
+            v-model="abfrage.sobonJahr"
+            :disabled="!isEditable"
+            :items="sobonVerfahrensgrundsaetzeJahrList"
+            item-value="key"
+            item-text="value"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            @change="formChanged"
+          >
+            <template #label>
+              Jahr der anzuwendenden Verfahrensgrundsätze <span class="secondary--text">*</span>
+            </template>
+          </v-select>
+        </v-slide-y-reverse-transition>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           id="stand_verfahren_dropdown"
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           :disabled="!isEditable"
-          :items="standVerfahrenBaugenehmigungsverfahrenList"
+          :items="standVerfahrenWeiteresVerfahrenList"
           item-value="key"
           item-text="value"
           :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
@@ -91,11 +132,12 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import {
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
+  WeiteresVerfahrenDtoStandVerfahrenEnum,
   BauvorhabenSearchResultDto,
   LookupEntryDto,
+  UncertainBoolean,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
@@ -107,12 +149,12 @@ import TriSwitch from "@/components/common/TriSwitch.vue";
 @Component({
   components: { TriSwitch },
 })
-export default class AllgemeineInformationenBaugenehmigungsverfahrenComponent extends Mixins(
+export default class AllgemeineInformationenWeiteresVerfahrenComponent extends Mixins(
   SaveLeaveMixin,
   SearchApiRequestMixin,
   FieldValidationRulesMixin,
 ) {
-  @VModel({ type: BaugenehmigungsverfahrenModel }) abfrage!: BaugenehmigungsverfahrenModel;
+  @VModel({ type: WeiteresVerfahrenModel }) abfrage!: WeiteresVerfahrenModel;
 
   @Prop({ type: Boolean, default: true })
   private isEditableProp!: boolean;
@@ -133,8 +175,12 @@ export default class AllgemeineInformationenBaugenehmigungsverfahrenComponent ex
     this.fetchBauvorhaben();
   }
 
-  get standVerfahrenBaugenehmigungsverfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVerfahrenBaugenehmigungsverfahren"];
+  get standVerfahrenWeiteresVerfahrenList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/standVerfahrenWeiteresVerfahren"];
+  }
+
+  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
+    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
   }
 
   /**
@@ -145,6 +191,7 @@ export default class AllgemeineInformationenBaugenehmigungsverfahrenComponent ex
       searchQuery: "",
       selectBauleitplanverfahren: false,
       selectBaugenehmigungsverfahren: false,
+      selectWeiteresVerfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,
@@ -164,9 +211,19 @@ export default class AllgemeineInformationenBaugenehmigungsverfahrenComponent ex
     });
   }
 
+  @Watch("abfrage.sobonRelevant", { immediate: true })
+  private sobonRelevantChanged(value: UncertainBoolean): void {
+    if (value === UncertainBoolean.True) {
+      this.sobonJahrVisible = true;
+    } else {
+      this.sobonJahrVisible = false;
+      this.abfrage.sobonJahr = undefined;
+    }
+  }
+
   @Watch("abfrage.standVerfahren", { immediate: true })
   private standVerfahrenChanged(): void {
-    if (this.abfrage.standVerfahren?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
+    if (this.abfrage.standVerfahren?.includes(WeiteresVerfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
       this.standVerfahrenFreieEingabeVisible = true;
     } else {
       this.abfrage.standVerfahrenFreieEingabe = undefined;

@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FoerderartDto } from './FoerderartDto';
 import {
-    FoerderartDto,
     FoerderartDtoFromJSON,
     FoerderartDtoFromJSONTyped,
     FoerderartDtoToJSON,
@@ -32,6 +32,15 @@ export interface FoerdermixDto {
      * @memberof FoerdermixDto
      */
     foerderarten?: Array<FoerderartDto>;
+}
+
+/**
+ * Check if a given object implements the FoerdermixDto interface.
+ */
+export function instanceOfFoerdermixDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FoerdermixDtoFromJSON(json: any): FoerdermixDto {

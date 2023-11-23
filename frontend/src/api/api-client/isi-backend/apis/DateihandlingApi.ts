@@ -14,14 +14,16 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  FilepathDto,
+  InformationResponseDto,
+  PresignedUrlDto,
+} from '../models';
 import {
-    FilepathDto,
     FilepathDtoFromJSON,
     FilepathDtoToJSON,
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    PresignedUrlDto,
     PresignedUrlDtoFromJSON,
     PresignedUrlDtoToJSON,
 } from '../models';
@@ -43,7 +45,7 @@ export class DateihandlingApi extends runtime.BaseAPI {
      * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
      * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
      */
-    async getFileRaw(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+    async getFileRaw(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
         if (requestParameters.pathToFile === null || requestParameters.pathToFile === undefined) {
             throw new runtime.RequiredError('pathToFile','Required parameter requestParameters.pathToFile was null or undefined when calling getFile.');
         }
@@ -70,7 +72,7 @@ export class DateihandlingApi extends runtime.BaseAPI {
      * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
      * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
      */
-    async getFile(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PresignedUrlDto> {
+    async getFile(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PresignedUrlDto> {
         const response = await this.getFileRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -79,7 +81,7 @@ export class DateihandlingApi extends runtime.BaseAPI {
      * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
      * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
      */
-    async saveFileRaw(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+    async saveFileRaw(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
         if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
             throw new runtime.RequiredError('filepathDto','Required parameter requestParameters.filepathDto was null or undefined when calling saveFile.');
         }
@@ -105,7 +107,7 @@ export class DateihandlingApi extends runtime.BaseAPI {
      * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
      * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
      */
-    async saveFile(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PresignedUrlDto> {
+    async saveFile(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PresignedUrlDto> {
         const response = await this.saveFileRaw(requestParameters, initOverrides);
         return await response.value();
     }

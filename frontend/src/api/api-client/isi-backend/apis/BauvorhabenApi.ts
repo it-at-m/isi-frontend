@@ -14,17 +14,19 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  AbfrageSearchResultDto,
+  BauvorhabenDto,
+  InformationResponseDto,
+  InfrastruktureinrichtungSearchResultDto,
+} from '../models';
 import {
-    AbfrageSearchResultDto,
     AbfrageSearchResultDtoFromJSON,
     AbfrageSearchResultDtoToJSON,
-    BauvorhabenDto,
     BauvorhabenDtoFromJSON,
     BauvorhabenDtoToJSON,
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    InfrastruktureinrichtungSearchResultDto,
     InfrastruktureinrichtungSearchResultDtoFromJSON,
     InfrastruktureinrichtungSearchResultDtoToJSON,
 } from '../models';
@@ -66,7 +68,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Anlegen eines neuen Bauvorhabens
      */
-    async createBauvorhabenRaw(requestParameters: CreateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async createBauvorhabenRaw(requestParameters: CreateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
         if (requestParameters.bauvorhabenDto === null || requestParameters.bauvorhabenDto === undefined) {
             throw new runtime.RequiredError('bauvorhabenDto','Required parameter requestParameters.bauvorhabenDto was null or undefined when calling createBauvorhaben.');
         }
@@ -95,7 +97,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Anlegen eines neuen Bauvorhabens
      */
-    async createBauvorhaben(requestParameters: CreateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BauvorhabenDto> {
+    async createBauvorhaben(requestParameters: CreateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BauvorhabenDto> {
         const response = await this.createBauvorhabenRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -103,7 +105,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Löschen eines Bauvorhabens
      */
-    async deleteBauvorhabenRaw(requestParameters: DeleteBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteBauvorhabenRaw(requestParameters: DeleteBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteBauvorhaben.');
         }
@@ -125,14 +127,14 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Löschen eines Bauvorhabens
      */
-    async deleteBauvorhaben(requestParameters: DeleteBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async deleteBauvorhaben(requestParameters: DeleteBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteBauvorhabenRaw(requestParameters, initOverrides);
     }
 
     /**
      * Lesen eines Bauvorhabens
      */
-    async getBauvorhabenByIdRaw(requestParameters: GetBauvorhabenByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async getBauvorhabenByIdRaw(requestParameters: GetBauvorhabenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getBauvorhabenById.');
         }
@@ -154,7 +156,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Lesen eines Bauvorhabens
      */
-    async getBauvorhabenById(requestParameters: GetBauvorhabenByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BauvorhabenDto> {
+    async getBauvorhabenById(requestParameters: GetBauvorhabenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BauvorhabenDto> {
         const response = await this.getBauvorhabenByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -163,7 +165,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
      * Lade alle Abfragen die einem Bauvorhaben angehören
      */
-    async getReferencedAbfrageRaw(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
+    async getReferencedAbfrageRaw(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedAbfrage.');
         }
@@ -186,7 +188,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
      * Lade alle Abfragen die einem Bauvorhaben angehören
      */
-    async getReferencedAbfrage(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AbfrageSearchResultDto>> {
+    async getReferencedAbfrage(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AbfrageSearchResultDto>> {
         const response = await this.getReferencedAbfrageRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -195,7 +197,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Das Ergebnis wird anhand des InfrastruktureinrichtungTyps und innerhalb des Types alphabetisch sortiert
      * Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören
      */
-    async getReferencedInfrastruktureinrichtungRaw(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<InfrastruktureinrichtungSearchResultDto>>> {
+    async getReferencedInfrastruktureinrichtungRaw(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<InfrastruktureinrichtungSearchResultDto>>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedInfrastruktureinrichtung.');
         }
@@ -218,7 +220,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Das Ergebnis wird anhand des InfrastruktureinrichtungTyps und innerhalb des Types alphabetisch sortiert
      * Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören
      */
-    async getReferencedInfrastruktureinrichtung(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<InfrastruktureinrichtungSearchResultDto>> {
+    async getReferencedInfrastruktureinrichtung(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<InfrastruktureinrichtungSearchResultDto>> {
         const response = await this.getReferencedInfrastruktureinrichtungRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -226,7 +228,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#IN_BEARBEITUNG_SACHBEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
      */
-    async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
         if (requestParameters.abfragevarianteId === null || requestParameters.abfragevarianteId === undefined) {
             throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putChangeRelevanteAbfragevariante.');
         }
@@ -252,7 +254,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#IN_BEARBEITUNG_SACHBEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
      */
-    async putChangeRelevanteAbfragevariante(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BauvorhabenDto> {
+    async putChangeRelevanteAbfragevariante(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BauvorhabenDto> {
         const response = await this.putChangeRelevanteAbfragevarianteRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -260,7 +262,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung eines Bauvorhabens
      */
-    async updateBauvorhabenRaw(requestParameters: UpdateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async updateBauvorhabenRaw(requestParameters: UpdateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
         if (requestParameters.bauvorhabenDto === null || requestParameters.bauvorhabenDto === undefined) {
             throw new runtime.RequiredError('bauvorhabenDto','Required parameter requestParameters.bauvorhabenDto was null or undefined when calling updateBauvorhaben.');
         }
@@ -285,7 +287,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung eines Bauvorhabens
      */
-    async updateBauvorhaben(requestParameters: UpdateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<BauvorhabenDto> {
+    async updateBauvorhaben(requestParameters: UpdateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BauvorhabenDto> {
         const response = await this.updateBauvorhabenRaw(requestParameters, initOverrides);
         return await response.value();
     }
