@@ -11,6 +11,17 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
+    <v-label v-if="selectedPoint !== undefined">Punktkoordinate</v-label>
+    <v-chip-group
+      v-if="selectedPoint !== undefined"
+      title="Koordinate"
+      active-class="primary--text"
+      column
+    >
+      <v-chip>
+        <div><span>getUtm32(selectedPoint)</span></div>
+      </v-chip>
+    </v-chip-group>
   </field-group-card>
 </template>
 
@@ -27,6 +38,9 @@ import {
   GemarkungDto,
   StadtbezirkDto,
   VerortungPointDto,
+  MultiPolygonGeometryDto as MultiPolygonGeometryDtoBackend,
+  Wgs84Dto,
+  UtmDto,
 } from "@/api/api-client/isi-backend";
 import {
   FeatureDtoFlurstueckDto,
@@ -36,6 +50,7 @@ import {
 } from "@/api/api-client/isi-geodata-eai";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import KoordinatenApiRequestMixin from "@/mixins/requests/KoordinatenApiRequestMixin";
+import VerortungPointModel from "@/types/model/common/VerortungPointModel";
 
 @Component({
   components: { CityMap },
@@ -45,19 +60,20 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   GeodataEaiApiRequestMixin,
   KoordinatenApiRequestMixin,
 ) {
-  private verortungCardTitle = "Verortung";
+  @VModel({ type: VerortungPointModel }) verortungModel?: VerortungPointModel;
 
-  @VModel({ type: Object })
+  @Prop({ type: Object })
   private adresse?: AdresseDto;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  private verortungCardTitle = "Verortung";
+
   /**
    * Repräsentiert eine einzige Punktkoordinate.
    */
   private geoJson: Array<Feature<Point>> = [];
-  private selectedPoint: PointGeometryDto | undefined = undefined;
 
   private mounted(): void {
     if (this.adresseCoordinate) {
@@ -95,9 +111,19 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     return undefined;
   }
 
+  private getPointGeometry(): PointGeometryDto | undefined {
+    if (!_.isEmpty(this.geoJson)) {
+      const coordinates = this.geoJson[0].geometry.coordinates;
+      return {
+        type: "Point",
+        coordinates: [coordinates[0], coordinates[1]],
+      } as PointGeometryDto;
+    }
+    return undefined;
+  }
+
   private handleClickInMap(latlng: LatLng): void {
     this.setGeoJsonFromLatLng(latlng);
-    this.selectedPoint = this.createPointGeometry(latlng);
   }
 
   private handleDeselectGeoJson(): void {
@@ -107,7 +133,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
-    const verortung = await this.createVerortungPointDtoFromSelectedPoint();
+    this.verortungModel = await this.createVerortungPointDtoFromSelectedPoint(this.getPointGeometry());
     this.formChanged();
   }
 
@@ -119,13 +145,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         properties: null,
       },
     ];
-  }
-
-  private createPointGeometry(latlng: LatLng): PointGeometryDto {
-    return {
-      type: "Point",
-      coordinates: [latlng.lng, latlng.lat],
-    };
   }
 
   /**
@@ -156,11 +175,11 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         matchingGemarkung?.flurstuecke.add(flurstueck);
       });
       // Erstellung des VerortungPointDto
-      return {
+      return new VerortungPointModel({
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
         point: point,
-      } as VerortungPointDto;
+      } as VerortungPointDto);
     } catch (error) {
       return undefined;
     }
@@ -210,6 +229,19 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
       multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
     };
+  }
+
+  private getUtm32(point: PointGeometryDto): string {
+    if (!_.isNil(point.coordinates && point.coordinates.length === 2)) {
+      const wgs84 = {
+        latitude: point.coordinates[0],
+        longitude: point.coordinates[1],
+      } as Wgs84Dto;
+      this.wgs84toUtm32(wgs84, true).then((dto: UtmDto) => {
+        return `{ dto.zone }U {dto?.north} {dto?.east}`;
+      });
+    }
+    return "";
   }
 }
 </script>
