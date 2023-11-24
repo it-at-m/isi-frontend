@@ -21,12 +21,30 @@ import { LatLng, LatLngLiteral } from "leaflet";
 import { Feature, Point } from "geojson";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { AdresseDto } from "@/api/api-client/isi-backend";
+import {
+  AdresseDto,
+  FlurstueckDto,
+  GemarkungDto,
+  StadtbezirkDto,
+  VerortungPointDto,
+} from "@/api/api-client/isi-backend";
+import {
+  FeatureDtoFlurstueckDto,
+  FeatureDtoGemarkungDto,
+  FeatureDtoStadtbezirkDto,
+  PointGeometryDto,
+} from "@/api/api-client/isi-geodata-eai";
+import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
+import KoordinatenApiRequestMixin from "@/mixins/requests/KoordinatenApiRequestMixin";
 
 @Component({
   components: { CityMap },
 })
-export default class InfrastruktureinrichtungVerortung extends Mixins(SaveLeaveMixin) {
+export default class InfrastruktureinrichtungVerortung extends Mixins(
+  SaveLeaveMixin,
+  GeodataEaiApiRequestMixin,
+  KoordinatenApiRequestMixin,
+) {
   private verortungCardTitle = "Verortung";
 
   @VModel({ type: Object })
@@ -39,6 +57,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(SaveLeaveM
    * Repräsentiert eine einzige Punktkoordinate.
    */
   private geoJson: Array<Feature<Point>> = [];
+  private selectedPoint: PointGeometryDto | undefined = undefined;
 
   private mounted(): void {
     if (this.adresseCoordinate) {
@@ -77,9 +96,8 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(SaveLeaveM
   }
 
   private handleClickInMap(latlng: LatLng): void {
-    if (!this.adresse?.strasse && this.isEditable) {
-      this.setGeoJsonFromLatLng(latlng);
-    }
+    this.setGeoJsonFromLatLng(latlng);
+    this.selectedPoint = this.createPointGeometry(latlng);
   }
 
   private handleDeselectGeoJson(): void {
@@ -89,11 +107,8 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(SaveLeaveM
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
-    if (!this.adresse?.strasse && !_.isEmpty(this.geoJson)) {
-      const coordinates = this.geoJson[0].geometry.coordinates;
-      this.adresse = { coordinate: { longitude: coordinates[0], latitude: coordinates[1] } };
-      this.formChanged();
-    }
+    const verortung = await this.createVerortungPointDtoFromSelectedPoint();
+    this.formChanged();
   }
 
   private setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
@@ -104,6 +119,97 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(SaveLeaveM
         properties: null,
       },
     ];
+  }
+
+  private createPointGeometry(latlng: LatLng): PointGeometryDto {
+    return {
+      type: "Point",
+      coordinates: [latlng.lng, latlng.lat],
+    };
+  }
+
+  /**
+   * Erstellt das VerortungPointDto auf Basis einer Punktkoordinate.
+   * Tritt ein fehler bei der Erstellung des VerortungPointDtos auf, so wird undefined zurückgegeben.
+   */
+  private async createVerortungPointDtoFromSelectedPoint(
+    point: PointGeometryDto,
+  ): Promise<VerortungPointDto | undefined> {
+    try {
+      // Stadtbezirke ermitteln
+      const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForPoint(point, true);
+      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
+
+      // Gemarkungen ermitteln
+      const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForPoint(point, true);
+      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+
+      // Flurstücke ermitteln
+      const flurstuecke: Array<FeatureDtoFlurstueckDto> = await this.getFlurstueckeForPoint(point, true);
+      const flurstueckeBackend: Array<FlurstueckDto> = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+
+      // Anfügen der Flurstücke an Gemarkung
+      flurstueckeBackend.forEach((flurstueck) => {
+        const matchingGemarkung = gemarkungenBackend.find(
+          (gemarkung) => gemarkung.nummer === flurstueck.gemarkungNummer,
+        );
+        matchingGemarkung?.flurstuecke.add(flurstueck);
+      });
+      // Erstellung des VerortungPointDto
+      return {
+        gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
+        stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
+        point: point,
+      } as VerortungPointDto;
+    } catch (error) {
+      return undefined;
+    }
+  }
+  private stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
+    stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>,
+  ): Array<StadtbezirkDto> {
+    return stadtbezirkeGeoDataEai.map((stadtbezirk) => {
+      return {
+        nummer: stadtbezirk.properties?.stadtbezirkNummer,
+        name: stadtbezirk.properties?.name,
+        multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private gemarkungenGeoDataEaiToGemarkungenBackend(
+    gemarkungenGeoDataEai: Array<FeatureDtoGemarkungDto>,
+  ): Array<GemarkungDto> {
+    return gemarkungenGeoDataEai.map((gemarkung) => {
+      return {
+        flurstuecke: new Set<FlurstueckDto>(),
+        name: gemarkung.properties?.gemarkungName,
+        nummer: gemarkung.properties?.gemarkung,
+        multiPolygon: JSON.parse(JSON.stringify(gemarkung.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private flurstueckeGeoDataEaiToFlurstueckeBackend(
+    flurstueckGeoDataEai: Array<FeatureDtoFlurstueckDto>,
+  ): Array<FlurstueckDto> {
+    return flurstueckGeoDataEai.map(this.flurstueckGeoDataEaiToFlurstueckBackend);
+  }
+
+  private flurstueckGeoDataEaiToFlurstueckBackend(flurstueckGeoDataEai: FeatureDtoFlurstueckDto): FlurstueckDto {
+    return {
+      nummer: [
+        flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
+        flurstueckGeoDataEai.properties?.fluerstueckNummerN,
+      ].join("/"),
+      zaehler: flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
+      nenner: flurstueckGeoDataEai.properties?.fluerstueckNummerN,
+      flaecheQm: flurstueckGeoDataEai.properties?.flaecheQm,
+      eigentumsart: flurstueckGeoDataEai.properties?.eigentumsart,
+      eigentumsartBedeutung: flurstueckGeoDataEai.properties?.eigentumsartBedeutung,
+      gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
+      multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
   }
 }
 </script>

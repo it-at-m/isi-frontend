@@ -67,6 +67,12 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
+    standVerfahrenWeiteresVerfahren?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
     standVerfahren?: LookupListDto;
     /**
      * 
@@ -152,6 +158,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'sobonVerfahrensgrundsaetzeJahr': !exists(json, 'sobonVerfahrensgrundsaetzeJahr') ? undefined : LookupListDtoFromJSON(json['sobonVerfahrensgrundsaetzeJahr']),
         'standVerfahrenBauleitplanverfahren': !exists(json, 'standVerfahrenBauleitplanverfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenBauleitplanverfahren']),
         'standVerfahrenBaugenehmigungsverfahren': !exists(json, 'standVerfahrenBaugenehmigungsverfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenBaugenehmigungsverfahren']),
+        'standVerfahrenWeiteresVerfahren': !exists(json, 'standVerfahrenWeiteresVerfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenWeiteresVerfahren']),
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahren']),
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
         'wesentlicheRechtsgrundlageBauleitplanverfahren': !exists(json, 'wesentlicheRechtsgrundlageBauleitplanverfahren') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBauleitplanverfahren']),
@@ -182,6 +189,7 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'sobonVerfahrensgrundsaetzeJahr': LookupListDtoToJSON(value.sobonVerfahrensgrundsaetzeJahr),
         'standVerfahrenBauleitplanverfahren': LookupListDtoToJSON(value.standVerfahrenBauleitplanverfahren),
         'standVerfahrenBaugenehmigungsverfahren': LookupListDtoToJSON(value.standVerfahrenBaugenehmigungsverfahren),
+        'standVerfahrenWeiteresVerfahren': LookupListDtoToJSON(value.standVerfahrenWeiteresVerfahren),
         'standVerfahren': LookupListDtoToJSON(value.standVerfahren),
         'statusAbfrage': LookupListDtoToJSON(value.statusAbfrage),
         'wesentlicheRechtsgrundlageBauleitplanverfahren': LookupListDtoToJSON(value.wesentlicheRechtsgrundlageBauleitplanverfahren),

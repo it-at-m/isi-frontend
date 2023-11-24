@@ -59,21 +59,15 @@
         </div>
       </v-chip>
     </v-chip-group>
-    <v-chip-group v-if="isPunktkoordinate">
-      <v-chip>
-        <span>getUtm32(selectedPoint)</span>
-      </v-chip>
-    </v-chip-group>
   </field-group-card>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
-import KoordinatenApiRequestMixin from "@/mixins/requests/KoordinatenApiRequestMixin";
 import {
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
@@ -81,16 +75,15 @@ import {
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoGeoDataEai,
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
-import { Wgs84Dto, UtmDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import VerortungModel from "@/types/model/common/VerortungModel";
+import VerortungMultiPolygonModel from "@/types/model/common/VerortungMultiPolygonModel";
 import {
   AdresseDto,
   FlurstueckDto,
   GemarkungDto,
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoBackend,
   StadtbezirkDto,
-  VerortungDto,
+  VerortungMultiPolygonDto,
 } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
@@ -99,15 +92,10 @@ import { Context } from "@/utils/Context";
 @Component({
   components: { CityMap },
 })
-export default class Verortung extends Mixins(
-  GeodataEaiApiRequestMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-  KoordinatenApiRequestMixin,
-) {
+export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLeaveMixin, AbfrageSecurityMixin) {
   private verortungCardTitle = "Verortung";
 
-  @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
+  @VModel({ type: VerortungMultiPolygonModel }) verortungModel?: VerortungMultiPolygonModel;
 
   @Prop({ type: String, default: Context.UNDEFINED })
   private readonly context!: Context;
@@ -125,11 +113,6 @@ export default class Verortung extends Mixins(
    */
   private selectedFlurstuecke: Map<string, FlurstueckDto> = new Map<string, FlurstueckDto>();
 
-  /**
-   * Repräsentiert die Punktkoordinate im Standard EPSG:4326 (WGS84) Format
-   */
-  private selectedPoint: PointGeometryDto | undefined = undefined;
-
   mounted(): void {
     this.onVerortungModelChanged();
   }
@@ -140,14 +123,8 @@ export default class Verortung extends Mixins(
       editable = this.isEditableByAbfrageerstellung() || this.isEditableBySachbearbeitung();
     } else if (this.context === Context.BAUVORHABEN) {
       editable = this.isRoleAdminOrSachbearbeitung();
-    } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
-      editable = this.isRoleAdminOrSachbearbeitung();
     }
     return editable;
-  }
-
-  get isPunktkoordinate(): boolean {
-    return this.context === Context.INFRASTRUKTUREINRICHTUNG && !_.isNil(this.selectedPoint);
   }
 
   get coordinate(): LatLngLiteral | undefined {
@@ -226,8 +203,8 @@ export default class Verortung extends Mixins(
 
   private handleClickInMap(latlng: LatLng): void {
     if (this.isEditable) {
-      this.selectedPoint = this.createPointGeometry(latlng);
-      this.getFlurstueckeForPoint(this.selectedPoint, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
+      const point = this.createPointGeometry(latlng);
+      this.getFlurstueckeForPoint(point, true).then((flurstuecke: Array<FeatureDtoFlurstueckDto>) => {
         const flurstueckeBackend = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
         this.selectedFlurstuecke = this.adaptMapForSelectedFlurstuecke(flurstueckeBackend);
       });
@@ -239,17 +216,11 @@ export default class Verortung extends Mixins(
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
-    let verortung: VerortungDto | undefined;
-    if (this.context === Context.ABFRAGE || this.context === Context.BAUVORHABEN) {
-      // Mulitpolygon Verortung
-      if (this.selectedFlurstuecke.size !== 0) {
-        verortung = await this.createVerortungDtoFromSelectedFlurstuecke();
-      } else {
-        // Punktkoordinate Verortung
-        verortung = await this.createVerortungDtoFromSelectedPoint();
-      }
+    let verortung: VerortungMultiPolygonDto | undefined;
+    if (this.selectedFlurstuecke.size !== 0) {
+      verortung = await this.createVerortungMultiPolygonDtoFromSelectedFlurstuecke();
       if (!_.isNil(verortung)) {
-        this.verortungModel = new VerortungModel(verortung);
+        this.verortungModel = new VerortungMultiPolygonModel(verortung);
         this.formChanged();
       }
     } else {
@@ -313,10 +284,10 @@ export default class Verortung extends Mixins(
   }
 
   /**
-   * Erstellt das VerortungDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
-   * Tritt ein fehler bei der Erstellung des VerortungDtos auf, so wird undefined zurückgegeben.
+   * Erstellt das VerortungMultiPolygonDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
+   * Tritt ein fehler bei der Erstellung des VerortungMultiPolygonDtos auf, so wird undefined zurückgegeben.
    */
-  private async createVerortungDtoFromSelectedFlurstuecke(): Promise<VerortungDto | undefined> {
+  private async createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<VerortungMultiPolygonDto | undefined> {
     const multipolygon = this.createMultiPolygonGeometryFromSelectedFlurstuecke();
     try {
       const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
@@ -337,43 +308,12 @@ export default class Verortung extends Mixins(
         );
         matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
       });
-      // Erstellung des VerortungDto
+      // Erstellung des VerortungMultiPolygonDto
       return {
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
         multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
-      } as VerortungDto;
-    } catch (error) {
-      return undefined;
-    }
-  }
-
-  /**
-   * Erstellt das VerortungDto auf Basis einer Punktkoordinate.
-   * Tritt ein fehler bei der Erstellung des VerortungDtos auf, so wird undefined zurückgegeben.
-   */
-  private async createVerortungDtoFromSelectedPoint(point: PointGeometryDto): Promise<VerortungDto | undefined> {
-    try {
-      // Stadtbezirke ermitteln
-      const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForPoint(point, true);
-      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
-
-      // Gemarkungen ermitteln
-      const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForPoint(point, true);
-      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
-      // Anfügen der Flurstücke an Gemarkung
-      this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
-        const matchingGemarkung = gemarkungenBackend.find(
-          (gemarkung) => gemarkung.nummer === selectedFlurstueck.gemarkungNummer,
-        );
-        matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
-      });
-      // Erstellung des VerortungDto
-      return {
-        gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
-        stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
-        pointGeometry: point,
-      } as VerortungDto;
+      } as VerortungMultiPolygonDto;
     } catch (error) {
       return undefined;
     }
@@ -442,19 +382,6 @@ export default class Verortung extends Mixins(
         },
       };
     });
-  }
-
-  private getUtm32(point: PointGeometryDto): string {
-    if (!_.isNil(point.coordinates && point.coordinates.length === 2)) {
-      const wgs84 = {
-        latitude: point.coordinates[0],
-        longitude: point.coordinates[1],
-      } as Wgs84Dto;
-      this.wgs84toUtm32(wgs84, true).then((dto: UtmDto) => {
-        return `{ dto.zone }U {dto?.north} {dto?.east}`;
-      });
-    }
-    return "";
   }
 }
 </script>

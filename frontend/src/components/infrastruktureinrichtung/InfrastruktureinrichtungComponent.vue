@@ -23,11 +23,9 @@
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditable"
     />
-    <verortung
-      id="verortung_component"
-      v-model="infrastruktureinrichtung.verortung"
-      :context="context"
-      :look-at="infrastruktureinrichtung.adresse"
+    <infrastruktureinrichtung-verortung
+      v-model="infrastruktureinrichtung.adresse"
+      :is-editable="isEditable"
     />
     <field-group-card>
       <v-row justify="center">
@@ -140,20 +138,14 @@ import NumField from "@/components/common/NumField.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
-import Verortung from "@/components/common/Verortung.vue";
-import { Context } from "@/utils/Context";
+import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
 
 @Component({
-  computed: {
-    context() {
-      return Context.INFRASTRUKTUREINRICHTUNG;
-    },
-  },
   components: {
     FieldGroupCard,
     NumField,
     AdresseComponent,
-    Verortung,
+    InfrastruktureinrichtungVerortung,
   },
 })
 export default class InfrastruktureinrichtungComponent extends Mixins(
@@ -194,6 +186,7 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
       searchQuery: "",
       selectBauleitplanverfahren: false,
       selectBaugenehmigungsverfahren: false,
+      selectWeiteresVerfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

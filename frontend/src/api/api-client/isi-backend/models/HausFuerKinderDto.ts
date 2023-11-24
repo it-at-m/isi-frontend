@@ -32,11 +32,11 @@ import {
     InfrastruktureinrichtungDtoToJSON,
 } from './InfrastruktureinrichtungDto';
 import {
-    VerortungDto,
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungPointDto,
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
 
 /**
  * 

@@ -26,11 +26,11 @@ import {
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 import {
-    VerortungDto,
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungMultiPolygonDto,
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+} from './VerortungMultiPolygonDto';
 
 /**
  * 
@@ -40,10 +40,10 @@ import {
 export interface BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf {
     /**
      * 
-     * @type {VerortungDto}
+     * @type {VerortungMultiPolygonDto}
      * @memberof BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf
      */
-    verortung?: VerortungDto;
+    verortung?: VerortungMultiPolygonDto;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>}
@@ -68,7 +68,7 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON
     }
     return {
         
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': !exists(json, 'abfragevariantenSachbearbeitungBauleitplanverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
     };
@@ -83,7 +83,7 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfToJSON(v
     }
     return {
         
-        'verortung': VerortungDtoToJSON(value.verortung),
+        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
         'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': value.abfragevariantenSachbearbeitungBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
     };

@@ -23,31 +23,31 @@ import {
 /**
  * 
  * @export
- * @interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+ * @interface AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
  */
-export interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto {
+export interface AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto {
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
      */
     version?: number;
     /**
      * 
      * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
      */
-    artAbfragevariante?: AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum;
+    artAbfragevariante?: AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum;
     /**
      * 
      * @type {Array<BedarfsmeldungFachreferateDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
      */
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
 }
@@ -56,20 +56,20 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto 
 /**
  * @export
  */
-export const AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = {
+export const AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
     WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
-export type AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum];
+export type AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum = typeof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum];
 
 
-export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto {
-    return AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
+export function AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON(json: any): AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto {
+    return AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
 }
 
-export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto {
+export function AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -82,7 +82,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFr
     };
 }
 
-export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value?: AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto | null): any {
+export function AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoToJSON(value?: AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto | null): any {
     if (value === undefined) {
         return undefined;
     }

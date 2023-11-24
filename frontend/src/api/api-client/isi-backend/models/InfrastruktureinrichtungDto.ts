@@ -20,11 +20,11 @@ import {
     AdresseDtoToJSON,
 } from './AdresseDto';
 import {
-    VerortungDto,
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungPointDto,
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
 
 import {
      GrundschuleDtoFromJSONTyped,
@@ -36,7 +36,7 @@ import {
 } from './';
 
 /**
- * 
+ * InfrastruktureinrichtungDto
  * @export
  * @interface InfrastruktureinrichtungDto
  */
@@ -91,10 +91,10 @@ export interface InfrastruktureinrichtungDto {
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungDto}
+     * @type {VerortungPointDto}
      * @memberof InfrastruktureinrichtungDto
      */
-    verortung?: VerortungDto;
+    verortung?: VerortungPointDto;
     /**
      * 
      * @type {string}
@@ -168,22 +168,22 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['infrastruktureinrichtungTyp'] === 'GrundschuleDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'GRUNDSCHULE') {
             return GrundschuleDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'GsNachmittagBetreuungDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'GS_NACHMITTAG_BETREUUNG') {
             return GsNachmittagBetreuungDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'HausFuerKinderDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'HAUS_FUER_KINDER') {
             return HausFuerKinderDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'KindergartenDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'KINDERGARTEN') {
             return KindergartenDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'KinderkrippeDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'KINDERKRIPPE') {
             return KinderkrippeDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'MittelschuleDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'MITTELSCHULE') {
             return MittelschuleDtoFromJSONTyped(json, true);
         }
     }
@@ -197,7 +197,7 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungPointDtoFromJSON(json['verortung']),
         'nameEinrichtung': json['nameEinrichtung'],
         'fertigstellungsjahr': !exists(json, 'fertigstellungsjahr') ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
@@ -223,7 +223,7 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
         'lfdNr': value.lfdNr,
         'bauvorhaben': value.bauvorhaben,
         'adresse': AdresseDtoToJSON(value.adresse),
-        'verortung': VerortungDtoToJSON(value.verortung),
+        'verortung': VerortungPointDtoToJSON(value.verortung),
         'nameEinrichtung': value.nameEinrichtung,
         'fertigstellungsjahr': value.fertigstellungsjahr,
         'status': value.status,

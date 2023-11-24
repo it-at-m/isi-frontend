@@ -15,11 +15,12 @@
 import { exists, mapValues } from '../runtime';
 import {
      BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
-     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped
+     BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
+     WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped
 } from './';
 
 /**
- * 
+ * AbfrageInBearbeitungSachbearbeitungDto
  * @export
  * @interface AbfrageInBearbeitungSachbearbeitungDto
  */
@@ -46,7 +47,7 @@ export const AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum = typeof AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum[keyof typeof AbfrageInBearbeitungSachbearbeitungDtoArtAbfrageEnum];
 
@@ -60,11 +61,14 @@ export function AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, i
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['artAbfrage'] === 'BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto') {
+        if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
             return BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
         }
-        if (json['artAbfrage'] === 'BauleitplanverfahrenInBearbeitungSachbearbeitungDto') {
+        if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
             return BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
+        }
+        if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
+            return WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, true);
         }
     }
     return {

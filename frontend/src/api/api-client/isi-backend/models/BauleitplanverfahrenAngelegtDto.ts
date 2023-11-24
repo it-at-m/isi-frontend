@@ -50,11 +50,11 @@ import {
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
 import {
-    VerortungDto,
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungMultiPolygonDto,
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+} from './VerortungMultiPolygonDto';
 
 /**
  * 
@@ -100,10 +100,10 @@ export interface BauleitplanverfahrenAngelegtDto extends AbfrageAngelegtDto {
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungDto}
+     * @type {VerortungMultiPolygonDto}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
-    verortung?: VerortungDto;
+    verortung?: VerortungMultiPolygonDto;
     /**
      * 
      * @type {Array<DokumentDto>}
@@ -127,7 +127,7 @@ export interface BauleitplanverfahrenAngelegtDto extends AbfrageAngelegtDto {
      * @type {Array<AbfragevarianteBauleitplanverfahrenAngelegtDto>}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
-    abfragevariantenBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenAngelegtDto>;
+    abfragevariantenBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenAngelegtDto>;
 }
 
 
@@ -188,11 +188,11 @@ export function BauleitplanverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDi
         'standVerfahren': json['standVerfahren'],
         'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': (new Date(json['fristBearbeitung'])),
         'offizielleMitzeichnung': UncertainBooleanFromJSON(json['offizielleMitzeichnung']),
-        'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON)),
+        'abfragevariantenBauleitplanverfahren': ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON)),
     };
 }
 
@@ -211,11 +211,11 @@ export function BauleitplanverfahrenAngelegtDtoToJSON(value?: Bauleitplanverfahr
         'standVerfahren': value.standVerfahren,
         'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
         'adresse': AdresseDtoToJSON(value.adresse),
-        'verortung': VerortungDtoToJSON(value.verortung),
+        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': (value.fristBearbeitung.toISOString().substr(0,10)),
         'offizielleMitzeichnung': UncertainBooleanToJSON(value.offizielleMitzeichnung),
-        'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON)),
+        'abfragevariantenBauleitplanverfahren': ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON)),
     };
 }
 

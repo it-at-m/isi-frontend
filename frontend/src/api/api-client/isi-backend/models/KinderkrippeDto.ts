@@ -32,11 +32,11 @@ import {
     KinderkrippeDtoAllOfToJSON,
 } from './KinderkrippeDtoAllOf';
 import {
-    VerortungDto,
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungPointDto,
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
 
 /**
  * 

@@ -15,11 +15,12 @@
 import { exists, mapValues } from '../runtime';
 import {
      BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
-     BauleitplanverfahrenAngelegtDtoFromJSONTyped
+     BauleitplanverfahrenAngelegtDtoFromJSONTyped,
+     WeiteresVerfahrenAngelegtDtoFromJSONTyped
 } from './';
 
 /**
- * 
+ * AbfrageAngelegtDto
  * @export
  * @interface AbfrageAngelegtDto
  */
@@ -64,7 +65,7 @@ export const AbfrageAngelegtDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfrageAngelegtDtoArtAbfrageEnum = typeof AbfrageAngelegtDtoArtAbfrageEnum[keyof typeof AbfrageAngelegtDtoArtAbfrageEnum];
 
@@ -78,11 +79,14 @@ export function AbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['artAbfrage'] === 'BaugenehmigungsverfahrenAngelegtDto') {
+        if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
             return BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true);
         }
-        if (json['artAbfrage'] === 'BauleitplanverfahrenAngelegtDto') {
+        if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
             return BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true);
+        }
+        if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
+            return WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, true);
         }
     }
     return {

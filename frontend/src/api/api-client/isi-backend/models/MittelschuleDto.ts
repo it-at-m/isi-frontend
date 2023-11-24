@@ -38,11 +38,11 @@ import {
     SchuleDtoToJSON,
 } from './SchuleDto';
 import {
-    VerortungDto,
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungPointDto,
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
 
 /**
  * 
