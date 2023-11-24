@@ -14,6 +14,7 @@
           class="mx-3"
           label="Gesamt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
+          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <v-col
@@ -28,6 +29,7 @@
           class="mx-3"
           label="Baurechtlich genehmigt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
+          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <v-col
@@ -42,6 +44,7 @@
           class="mx-3"
           label="Baurechtlich festgesetzt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
+          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
     </v-row>

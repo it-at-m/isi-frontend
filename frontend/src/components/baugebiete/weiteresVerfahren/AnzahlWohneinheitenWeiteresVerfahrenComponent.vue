@@ -14,6 +14,7 @@
           class="mx-3"
           label="Gesamt"
           integer
+          max-value-signed-integer
         />
       </v-col>
       <v-col
@@ -28,6 +29,7 @@
           class="mx-3"
           label="Baurechtlich genehmigt"
           integer
+          max-value-signed-integer
         />
       </v-col>
       <v-col
@@ -42,6 +44,7 @@
           class="mx-3"
           label="Baurechtlich festgesetzt"
           integer
+          max-value-signed-integer
         />
       </v-col>
     </v-row>
