@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
 
@@ -41,9 +42,13 @@
                 <plugins>
 
                     <plugin>
+                        <!--
+                           Verwendung von typescript-fetch:
+                           https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/typescript-fetch.md
+                        -->
                         <groupId>org.openapitools</groupId>
                         <artifactId>openapi-generator-maven-plugin</artifactId>
-                        <version>6.0.0</version>
+                        <version>6.6.0</version>
                         <executions>
                             <execution>
                                 <id>isi-backend</id>
@@ -56,6 +61,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-backend</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -70,6 +76,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-master-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -84,6 +91,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-geodata-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>

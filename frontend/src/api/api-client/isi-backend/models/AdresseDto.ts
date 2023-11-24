@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Wgs84Dto } from './Wgs84Dto';
 import {
-    Wgs84Dto,
     Wgs84DtoFromJSON,
     Wgs84DtoFromJSONTyped,
     Wgs84DtoToJSON,
@@ -62,6 +62,15 @@ export interface AdresseDto {
      * @memberof AdresseDto
      */
     angabeLageErgaenzendeAdressinformation?: string;
+}
+
+/**
+ * Check if a given object implements the AdresseDto interface.
+ */
+export function instanceOfAdresseDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AdresseDtoFromJSON(json: any): AdresseDto {

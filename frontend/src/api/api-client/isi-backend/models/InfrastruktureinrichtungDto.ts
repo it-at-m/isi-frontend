@@ -13,14 +13,50 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { GrundschuleDto } from './GrundschuleDto';
 import {
-    VerortungPointDto,
+    GrundschuleDtoFromJSON,
+    GrundschuleDtoFromJSONTyped,
+    GrundschuleDtoToJSON,
+} from './GrundschuleDto';
+import type { GsNachmittagBetreuungDto } from './GsNachmittagBetreuungDto';
+import {
+    GsNachmittagBetreuungDtoFromJSON,
+    GsNachmittagBetreuungDtoFromJSONTyped,
+    GsNachmittagBetreuungDtoToJSON,
+} from './GsNachmittagBetreuungDto';
+import type { HausFuerKinderDto } from './HausFuerKinderDto';
+import {
+    HausFuerKinderDtoFromJSON,
+    HausFuerKinderDtoFromJSONTyped,
+    HausFuerKinderDtoToJSON,
+} from './HausFuerKinderDto';
+import type { KindergartenDto } from './KindergartenDto';
+import {
+    KindergartenDtoFromJSON,
+    KindergartenDtoFromJSONTyped,
+    KindergartenDtoToJSON,
+} from './KindergartenDto';
+import type { KinderkrippeDto } from './KinderkrippeDto';
+import {
+    KinderkrippeDtoFromJSON,
+    KinderkrippeDtoFromJSONTyped,
+    KinderkrippeDtoToJSON,
+} from './KinderkrippeDto';
+import type { MittelschuleDto } from './MittelschuleDto';
+import {
+    MittelschuleDtoFromJSON,
+    MittelschuleDtoFromJSONTyped,
+    MittelschuleDtoToJSON,
+} from './MittelschuleDto';
+import type { VerortungPointDto } from './VerortungPointDto';
+import {
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
@@ -158,6 +194,17 @@ export const InfrastruktureinrichtungDtoStatusEnum = {
 } as const;
 export type InfrastruktureinrichtungDtoStatusEnum = typeof InfrastruktureinrichtungDtoStatusEnum[keyof typeof InfrastruktureinrichtungDtoStatusEnum];
 
+
+/**
+ * Check if a given object implements the InfrastruktureinrichtungDto interface.
+ */
+export function instanceOfInfrastruktureinrichtungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "nameEinrichtung" in value;
+    isInstance = isInstance && "status" in value;
+
+    return isInstance;
+}
 
 export function InfrastruktureinrichtungDtoFromJSON(json: any): InfrastruktureinrichtungDto {
     return InfrastruktureinrichtungDtoFromJSONTyped(json, false);

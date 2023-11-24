@@ -27,6 +27,15 @@ export interface SuchwortSuggestionsDto {
     suchwortSuggestions?: Array<string>;
 }
 
+/**
+ * Check if a given object implements the SuchwortSuggestionsDto interface.
+ */
+export function instanceOfSuchwortSuggestionsDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function SuchwortSuggestionsDtoFromJSON(json: any): SuchwortSuggestionsDto {
     return SuchwortSuggestionsDtoFromJSONTyped(json, false);
 }

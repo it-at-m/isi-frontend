@@ -33,6 +33,15 @@ export interface LookupEntryDto {
     value?: string;
 }
 
+/**
+ * Check if a given object implements the LookupEntryDto interface.
+ */
+export function instanceOfLookupEntryDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function LookupEntryDtoFromJSON(json: any): LookupEntryDto {
     return LookupEntryDtoFromJSONTyped(json, false);
 }

@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { LookupListDto } from './LookupListDto';
 import {
-    LookupListDto,
     LookupListDtoFromJSON,
     LookupListDtoFromJSONTyped,
     LookupListDtoToJSON,
@@ -140,6 +140,15 @@ export interface LookupListsDto {
      * @memberof LookupListsDto
      */
     sobonOrientierungswertJahr?: LookupListDto;
+}
+
+/**
+ * Check if a given object implements the LookupListsDto interface.
+ */
+export function instanceOfLookupListsDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function LookupListsDtoFromJSON(json: any): LookupListsDto {

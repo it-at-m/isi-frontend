@@ -13,30 +13,27 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
-    InfrastruktureinrichtungDto,
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
 } from './InfrastruktureinrichtungDto';
+import type { VerortungPointDto } from './VerortungPointDto';
 import {
-    KindergartenDtoAllOf,
-    KindergartenDtoAllOfFromJSON,
-    KindergartenDtoAllOfFromJSONTyped,
-    KindergartenDtoAllOfToJSON,
-} from './KindergartenDtoAllOf';
-import {
-    VerortungPointDto,
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
 } from './VerortungPointDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -88,6 +85,17 @@ export const KindergartenDtoEinrichtungstraegerEnum = {
 export type KindergartenDtoEinrichtungstraegerEnum = typeof KindergartenDtoEinrichtungstraegerEnum[keyof typeof KindergartenDtoEinrichtungstraegerEnum];
 
 
+/**
+ * Check if a given object implements the KindergartenDto interface.
+ */
+export function instanceOfKindergartenDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "anzahlKindergartenPlaetze" in value;
+    isInstance = isInstance && "anzahlKindergartenGruppen" in value;
+
+    return isInstance;
+}
+
 export function KindergartenDtoFromJSON(json: any): KindergartenDto {
     return KindergartenDtoFromJSONTyped(json, false);
 }
@@ -95,6 +103,8 @@ export function KindergartenDtoFromJSON(json: any): KindergartenDto {
 export function KindergartenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KindergartenDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),

@@ -14,14 +14,16 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  InformationResponseDto,
+  UtmDto,
+  Wgs84Dto,
+} from '../models';
 import {
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    UtmDto,
     UtmDtoFromJSON,
     UtmDtoToJSON,
-    Wgs84Dto,
     Wgs84DtoFromJSON,
     Wgs84DtoToJSON,
 } from '../models';
@@ -42,7 +44,7 @@ export class KoordinatenApi extends runtime.BaseAPI {
     /**
      * Umrechnung UTM32 zu WGS84
      */
-    async utm32ToWgs84Raw(requestParameters: Utm32ToWgs84Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Wgs84Dto>> {
+    async utm32ToWgs84Raw(requestParameters: Utm32ToWgs84Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Wgs84Dto>> {
         if (requestParameters.utmDto === null || requestParameters.utmDto === undefined) {
             throw new runtime.RequiredError('utmDto','Required parameter requestParameters.utmDto was null or undefined when calling utm32ToWgs84.');
         }
@@ -67,7 +69,7 @@ export class KoordinatenApi extends runtime.BaseAPI {
     /**
      * Umrechnung UTM32 zu WGS84
      */
-    async utm32ToWgs84(requestParameters: Utm32ToWgs84Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Wgs84Dto> {
+    async utm32ToWgs84(requestParameters: Utm32ToWgs84Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Wgs84Dto> {
         const response = await this.utm32ToWgs84Raw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -75,7 +77,7 @@ export class KoordinatenApi extends runtime.BaseAPI {
     /**
      * Umrechnung Wgs84 zu UTM
      */
-    async wgs84toUtm32Raw(requestParameters: Wgs84toUtm32Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<UtmDto>> {
+    async wgs84toUtm32Raw(requestParameters: Wgs84toUtm32Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UtmDto>> {
         if (requestParameters.wgs84Dto === null || requestParameters.wgs84Dto === undefined) {
             throw new runtime.RequiredError('wgs84Dto','Required parameter requestParameters.wgs84Dto was null or undefined when calling wgs84toUtm32.');
         }
@@ -100,7 +102,7 @@ export class KoordinatenApi extends runtime.BaseAPI {
     /**
      * Umrechnung Wgs84 zu UTM
      */
-    async wgs84toUtm32(requestParameters: Wgs84toUtm32Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<UtmDto> {
+    async wgs84toUtm32(requestParameters: Wgs84toUtm32Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UtmDto> {
         const response = await this.wgs84toUtm32Raw(requestParameters, initOverrides);
         return await response.value();
     }

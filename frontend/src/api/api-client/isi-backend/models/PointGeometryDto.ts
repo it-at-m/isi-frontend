@@ -33,6 +33,17 @@ export interface PointGeometryDto {
     coordinates: Array<number>;
 }
 
+/**
+ * Check if a given object implements the PointGeometryDto interface.
+ */
+export function instanceOfPointGeometryDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "coordinates" in value;
+
+    return isInstance;
+}
+
 export function PointGeometryDtoFromJSON(json: any): PointGeometryDto {
     return PointGeometryDtoFromJSONTyped(json, false);
 }

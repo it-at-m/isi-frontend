@@ -11,21 +11,21 @@
         />
       </v-col>
     </v-row>
-    <common-bauleitplanverfahren-component
-      id="common_bauleitplanverfahren_component"
-      ref="commonBauleitplanverfahrenComponent"
+    <common-weiteres-verfahren-component
+      id="common_weiteres_verfahren_component"
+      ref="commonWeiteresVerfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-geschossflaeche-wohnen-bauleitplanverfahren-component
-      id="geplante_geschossflaeche_wohnen_bauleitplanverfahren_component"
-      ref="geplanteGeschossflaecheWohnenBauleitplanverfahrenComponent"
+    <geplante-geschossflaeche-wohnen-weiteres-verfahren-component
+      id="geplante_geschossflaeche_wohnen_weiteres_verfahren_component"
+      ref="geplanteGeschossflaecheWohnenWeiteresVerfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-anzahl-wohneinheiten-bauleitplanverfahren-component
-      id="geplante_anzahl_wohneinheiten_bauleitplanverfahren_component"
-      ref="geplanteAnzahlWohneinheitenBauleitplanverfahrenComponent"
+    <geplante-anzahl-wohneinheiten-weiteres-verfahren-component
+      id="geplante_anzahl_wohneinheiten_weiteres_verfahren_component"
+      ref="geplanteAnzahlWohneinheitenWeiteresVerfahrenrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
@@ -45,30 +45,30 @@
 
 <script lang="ts">
 import { Component, Vue, VModel, Prop } from "vue-property-decorator";
-import CommonBauleitplanverfahrenComponent from "@/components/abfragevarianten/CommonBauleitplanverfahrenComponent.vue";
-import GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent.vue";
-import GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent.vue";
+import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
+import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
+import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 
 @Component({
   components: {
     FieldGroupCard,
-    CommonBauleitplanverfahrenComponent,
-    GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent,
-    GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent,
+    CommonBaugenehmigungsverfahrenComponent,
+    GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent,
+    GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent,
     SachbearbeitungComponent,
     BedarfsmeldungFachreferateComponent,
     BauratenAggregiertComponent,
   },
 })
-export default class AbfragevarianteBauleitplanverfahrenComponent extends Vue {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+export default class AbfragevarianteWeiteresVerfahrenComponent extends Vue {
+  @VModel({ type: AbfragevarianteWeiteresVerfahrenModel })
+  abfragevariante!: AbfragevarianteWeiteresVerfahrenModel;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
@@ -77,7 +77,7 @@ export default class AbfragevarianteBauleitplanverfahrenComponent extends Vue {
   private anzeigeContextAbfragevariante!: AnzeigeContextAbfragevariante;
 
   get headline(): string {
-    const headline = `Abfragevariante ${new AbfragevarianteBauleitplanverfahrenModel(
+    const headline = `Abfragevariante ${new AbfragevarianteWeiteresVerfahrenModel(
       this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
     return headline.concat(`${this.abfragevariante.name}`);

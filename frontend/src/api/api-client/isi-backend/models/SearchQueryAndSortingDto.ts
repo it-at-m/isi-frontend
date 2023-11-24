@@ -132,6 +132,28 @@ export const SearchQueryAndSortingDtoSortOrderEnum = {
 export type SearchQueryAndSortingDtoSortOrderEnum = typeof SearchQueryAndSortingDtoSortOrderEnum[keyof typeof SearchQueryAndSortingDtoSortOrderEnum];
 
 
+/**
+ * Check if a given object implements the SearchQueryAndSortingDto interface.
+ */
+export function instanceOfSearchQueryAndSortingDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "searchQuery" in value;
+    isInstance = isInstance && "selectBauleitplanverfahren" in value;
+    isInstance = isInstance && "selectBaugenehmigungsverfahren" in value;
+    isInstance = isInstance && "selectWeiteresVerfahren" in value;
+    isInstance = isInstance && "selectBauvorhaben" in value;
+    isInstance = isInstance && "selectGrundschule" in value;
+    isInstance = isInstance && "selectGsNachmittagBetreuung" in value;
+    isInstance = isInstance && "selectHausFuerKinder" in value;
+    isInstance = isInstance && "selectKindergarten" in value;
+    isInstance = isInstance && "selectKinderkrippe" in value;
+    isInstance = isInstance && "selectMittelschule" in value;
+    isInstance = isInstance && "sortBy" in value;
+    isInstance = isInstance && "sortOrder" in value;
+
+    return isInstance;
+}
+
 export function SearchQueryAndSortingDtoFromJSON(json: any): SearchQueryAndSortingDto {
     return SearchQueryAndSortingDtoFromJSONTyped(json, false);
 }

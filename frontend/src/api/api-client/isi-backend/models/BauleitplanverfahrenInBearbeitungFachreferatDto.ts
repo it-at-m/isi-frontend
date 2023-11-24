@@ -13,24 +13,21 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageInBearbeitungFachreferatDto } from './AbfrageInBearbeitungFachreferatDto';
 import {
-    AbfrageInBearbeitungFachreferatDto,
     AbfrageInBearbeitungFachreferatDtoFromJSON,
     AbfrageInBearbeitungFachreferatDtoFromJSONTyped,
     AbfrageInBearbeitungFachreferatDtoToJSON,
 } from './AbfrageInBearbeitungFachreferatDto';
+import type { AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto } from './AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto';
 import {
-    AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto,
     AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto';
+
 import {
-    BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf,
-    BauleitplanverfahrenInBearbeitungFachreferatDtoAllOfFromJSON,
-    BauleitplanverfahrenInBearbeitungFachreferatDtoAllOfFromJSONTyped,
-    BauleitplanverfahrenInBearbeitungFachreferatDtoAllOfToJSON,
-} from './BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf';
+} from './';
 
 /**
  * 
@@ -54,6 +51,17 @@ export interface BauleitplanverfahrenInBearbeitungFachreferatDto extends Abfrage
 
 
 
+/**
+ * Check if a given object implements the BauleitplanverfahrenInBearbeitungFachreferatDto interface.
+ */
+export function instanceOfBauleitplanverfahrenInBearbeitungFachreferatDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBauleitplanverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBauleitplanverfahren" in value;
+
+    return isInstance;
+}
+
 export function BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON(json: any): BauleitplanverfahrenInBearbeitungFachreferatDto {
     return BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
 }
@@ -61,6 +69,8 @@ export function BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON(json: an
 export function BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),

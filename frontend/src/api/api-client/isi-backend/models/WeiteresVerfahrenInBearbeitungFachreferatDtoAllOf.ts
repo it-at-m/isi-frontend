@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto } from './AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto';
 import {
-    AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto,
     AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoToJSON,
@@ -38,6 +38,15 @@ export interface WeiteresVerfahrenInBearbeitungFachreferatDtoAllOf {
      * @memberof WeiteresVerfahrenInBearbeitungFachreferatDtoAllOf
      */
     abfragevariantenSachbearbeitungWeiteresVerfahren?: Array<AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto>;
+}
+
+/**
+ * Check if a given object implements the WeiteresVerfahrenInBearbeitungFachreferatDtoAllOf interface.
+ */
+export function instanceOfWeiteresVerfahrenInBearbeitungFachreferatDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function WeiteresVerfahrenInBearbeitungFachreferatDtoAllOfFromJSON(json: any): WeiteresVerfahrenInBearbeitungFachreferatDtoAllOf {

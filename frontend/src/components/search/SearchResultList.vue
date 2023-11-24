@@ -253,8 +253,8 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
       icon = "mdi-comment-alert";
     } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       icon = "mdi-account-multiple-plus";
-    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeitereAbfragen) {
-      icon = "mdi-comment-alert";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
+      icon = "mdi-account-plus";
     }
     return icon;
   }
@@ -265,7 +265,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
       bezeichnungArtAbfrage = "Bauleitplanverfahren";
     } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
-    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeitereAbfragen) {
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
       bezeichnungArtAbfrage = "Weiteres Verfahren";
     }
     return bezeichnungArtAbfrage;

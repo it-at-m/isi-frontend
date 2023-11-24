@@ -1,22 +1,31 @@
 import {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
+  WeiteresVerfahrenDto,
   BauleitplanverfahrenAngelegtDto,
   BaugenehmigungsverfahrenAngelegtDto,
+  WeiteresVerfahrenAngelegtDto,
   BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
+  WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
   BauleitplanverfahrenInBearbeitungFachreferatDto,
   BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+  WeiteresVerfahrenInBearbeitungFachreferatDto,
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteWeiteresVerfahrenDto,
   AbfragevarianteBauleitplanverfahrenAngelegtDto,
   AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
+  AbfragevarianteWeiteresVerfahrenAngelegtDto,
   AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum,
+  AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum,
   AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
+  AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto,
   AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto,
   AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+  AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto,
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
@@ -141,6 +150,66 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
   } as BaugenehmigungsverfahrenAngelegtDto;
 }
 
+export function mapToWeiteresVerfahrenAngelegt(
+  weiteresVerfahrenDto: WeiteresVerfahrenDto,
+): WeiteresVerfahrenAngelegtDto {
+  const abfragevarianten = weiteresVerfahrenDto.abfragevariantenWeiteresVerfahren?.map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum.WeiteresVerfahren,
+      abfragevariantenNr: abfragevariante.abfragevariantenNr,
+      name: abfragevariante.name,
+      satzungsbeschluss: abfragevariante.satzungsbeschluss,
+      wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
+      wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      realisierungVon: abfragevariante.realisierungVon,
+      gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
+      gfWohnenBaurechtlichGenehmigt: abfragevariante.gfWohnenBaurechtlichGenehmigt,
+      gfWohnenBaurechtlichFestgesetzt: abfragevariante.gfWohnenBaurechtlichFestgesetzt,
+      gfWohnenSobonUrsaechlich: abfragevariante.gfWohnenSobonUrsaechlich,
+      gfWohnenBestandswohnbaurecht: abfragevariante.gfWohnenBestandswohnbaurecht,
+      gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
+      gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
+      gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
+      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
+      gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
+        abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      weGesamt: abfragevariante.weGesamt,
+      weBaurechtlichGenehmigt: abfragevariante.weBaurechtlichGenehmigt,
+      weBaurechtlichFestgesetzt: abfragevariante.weBaurechtlichFestgesetzt,
+      weSonderwohnformen: abfragevariante.weSonderwohnformen,
+      weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
+      weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
+      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
+      weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      bauabschnitte: abfragevariante.bauabschnitte,
+    } as AbfragevarianteWeiteresVerfahrenAngelegtDto;
+  });
+
+  return {
+    // extends: AbfrageAngelegtDto
+    version: weiteresVerfahrenDto.version,
+    artAbfrage: weiteresVerfahrenDto.artAbfrage,
+    name: weiteresVerfahrenDto.name,
+    anmerkung: weiteresVerfahrenDto.anmerkung,
+    bauvorhaben: weiteresVerfahrenDto.bauvorhaben,
+    // WeiteresVerfahrenAngelegtDto
+    aktenzeichenProLbk: weiteresVerfahrenDto.aktenzeichenProLbk,
+    bebauungsplannummer: weiteresVerfahrenDto.bebauungsplannummer,
+    sobonRelevant: weiteresVerfahrenDto.sobonRelevant,
+    sobonJahr: weiteresVerfahrenDto.sobonJahr,
+    standVerfahren: weiteresVerfahrenDto.standVerfahren,
+    standVerfahrenFreieEingabe: weiteresVerfahrenDto.standVerfahrenFreieEingabe,
+    adresse: weiteresVerfahrenDto.adresse,
+    verortung: weiteresVerfahrenDto.verortung,
+    dokumente: weiteresVerfahrenDto.dokumente,
+    fristBearbeitung: weiteresVerfahrenDto.fristBearbeitung,
+    offizielleMitzeichnung: weiteresVerfahrenDto.offizielleMitzeichnung,
+    abfragevariantenWeiteresVerfahren: abfragevarianten,
+  } as WeiteresVerfahrenAngelegtDto;
+}
+
 export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
   bauleitplanverfahrenDto: BauleitplanverfahrenDto,
 ): BauleitplanverfahrenInBearbeitungSachbearbeitungDto {
@@ -177,6 +246,25 @@ export function mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
       ),
   } as BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
+}
+
+export function mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
+  weiteresVerfahrenDto: WeiteresVerfahrenDto,
+): WeiteresVerfahrenInBearbeitungSachbearbeitungDto {
+  return {
+    // extends: AbfrageInBearbeitungSachbearbeitungDto
+    version: weiteresVerfahrenDto.version,
+    artAbfrage: weiteresVerfahrenDto.artAbfrage,
+    // WeiteresVerfahrenInBearbeitungSachbearbeitungDto
+    verortung: weiteresVerfahrenDto.verortung,
+    abfragevariantenWeiteresVerfahren: mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
+      weiteresVerfahrenDto.abfragevariantenWeiteresVerfahren,
+    ),
+    abfragevariantenSachbearbeitungWeiteresVerfahren:
+      mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
+        weiteresVerfahrenDto.abfragevariantenSachbearbeitungWeiteresVerfahren,
+      ),
+  } as WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
 }
 
 export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
@@ -255,6 +343,47 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
   });
 }
 
+export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
+  abfragevarianten: Array<AbfragevarianteWeiteresVerfahrenDto> | undefined,
+): Array<AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      abfragevariantenNr: abfragevariante.abfragevariantenNr,
+      name: abfragevariante.name,
+      satzungsbeschluss: abfragevariante.satzungsbeschluss,
+      wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
+      wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      realisierungVon: abfragevariante.realisierungVon,
+      gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
+      gfWohnenBaurechtlichGenehmigt: abfragevariante.gfWohnenBaurechtlichGenehmigt,
+      gfWohnenBaurechtlichFestgesetzt: abfragevariante.gfWohnenBaurechtlichFestgesetzt,
+      gfWohnenSobonUrsaechlich: abfragevariante.gfWohnenSobonUrsaechlich,
+      gfWohnenBestandswohnbaurecht: abfragevariante.gfWohnenBestandswohnbaurecht,
+      gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
+      gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
+      gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
+      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
+      gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
+        abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      weGesamt: abfragevariante.weGesamt,
+      weBaurechtlichGenehmigt: abfragevariante.weBaurechtlichGenehmigt,
+      weBaurechtlichFestgesetzt: abfragevariante.weBaurechtlichFestgesetzt,
+      weSonderwohnformen: abfragevariante.weSonderwohnformen,
+      weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
+      weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
+      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
+      weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      bauabschnitte: abfragevariante.bauabschnitte,
+      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
+      sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      anmerkung: abfragevariante.anmerkung,
+    } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
+  });
+}
+
 export function mapToBauleitplanverfahrenInBearbeitungFachreferatDto(
   bauleitplanverfahrenDto: BauleitplanverfahrenDto,
 ): BauleitplanverfahrenInBearbeitungFachreferatDto {
@@ -291,6 +420,23 @@ export function mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto(
   } as BaugenehmigungsverfahrenInBearbeitungFachreferatDto;
 }
 
+export function mapToWeiteresVerfahrenInBearbeitungFachreferatDto(
+  weiteresVerfahrenDto: WeiteresVerfahrenDto,
+): WeiteresVerfahrenInBearbeitungFachreferatDto {
+  return {
+    // extends: AbfrageInBearbeitungFachreferatDto
+    version: weiteresVerfahrenDto.version,
+    artAbfrage: weiteresVerfahrenDto.artAbfrage,
+    // WeiteresVerfahrenInBearbeitungFachreferatDto
+    abfragevariantenWeiteresVerfahren: mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto(
+      weiteresVerfahrenDto.abfragevariantenWeiteresVerfahren,
+    ),
+    abfragevariantenSachbearbeitungWeiteresVerfahren: mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto(
+      weiteresVerfahrenDto.abfragevariantenSachbearbeitungWeiteresVerfahren,
+    ),
+  } as WeiteresVerfahrenInBearbeitungFachreferatDto;
+}
+
 export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
   abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
 ): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto> {
@@ -314,5 +460,18 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachref
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto;
+  });
+}
+
+export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto(
+  abfragevarianten: Array<AbfragevarianteWeiteresVerfahrenDto> | undefined,
+): Array<AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+    } as AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto;
   });
 }

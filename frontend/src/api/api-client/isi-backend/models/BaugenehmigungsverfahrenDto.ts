@@ -13,48 +13,45 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageDto } from './AbfrageDto';
 import {
-    AbfrageDto,
     AbfrageDtoFromJSON,
     AbfrageDtoFromJSONTyped,
     AbfrageDtoToJSON,
 } from './AbfrageDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenDto } from './AbfragevarianteBaugenehmigungsverfahrenDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenDto,
     AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    BaugenehmigungsverfahrenDtoAllOf,
-    BaugenehmigungsverfahrenDtoAllOfFromJSON,
-    BaugenehmigungsverfahrenDtoAllOfFromJSONTyped,
-    BaugenehmigungsverfahrenDtoAllOfToJSON,
-} from './BaugenehmigungsverfahrenDtoAllOf';
-import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { StatusAbfrage } from './StatusAbfrage';
 import {
-    StatusAbfrage,
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    VerortungMultiPolygonDto,
     VerortungMultiPolygonDtoFromJSON,
     VerortungMultiPolygonDtoFromJSONTyped,
     VerortungMultiPolygonDtoToJSON,
 } from './VerortungMultiPolygonDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -151,6 +148,15 @@ export const BaugenehmigungsverfahrenDtoStandVerfahrenEnum = {
 export type BaugenehmigungsverfahrenDtoStandVerfahrenEnum = typeof BaugenehmigungsverfahrenDtoStandVerfahrenEnum[keyof typeof BaugenehmigungsverfahrenDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenDto interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function BaugenehmigungsverfahrenDtoFromJSON(json: any): BaugenehmigungsverfahrenDto {
     return BaugenehmigungsverfahrenDtoFromJSONTyped(json, false);
 }
@@ -158,6 +164,8 @@ export function BaugenehmigungsverfahrenDtoFromJSON(json: any): Baugenehmigungsv
 export function BaugenehmigungsverfahrenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageDtoFromJSONTyped(json, ignoreDiscriminator),

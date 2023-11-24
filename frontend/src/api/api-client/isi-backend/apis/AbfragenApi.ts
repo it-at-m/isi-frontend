@@ -14,20 +14,22 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  InformationResponseDto,
+  PatchInBearbeitungFachreferatRequest,
+  PatchInBearbeitungSachbearbeitungRequest,
+  Save201Response,
+  SaveRequest,
+} from '../models';
 import {
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    PatchInBearbeitungFachreferatRequest,
     PatchInBearbeitungFachreferatRequestFromJSON,
     PatchInBearbeitungFachreferatRequestToJSON,
-    PatchInBearbeitungSachbearbeitungRequest,
     PatchInBearbeitungSachbearbeitungRequestFromJSON,
     PatchInBearbeitungSachbearbeitungRequestToJSON,
-    Save201Response,
     Save201ResponseFromJSON,
     Save201ResponseToJSON,
-    SaveRequest,
     SaveRequestFromJSON,
     SaveRequestToJSON,
 } from '../models';
@@ -67,7 +69,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Löschen einer Abfrage
      */
-    async deleteByIdRaw(requestParameters: DeleteByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteByIdRaw(requestParameters: DeleteByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteById.');
         }
@@ -89,14 +91,14 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Löschen einer Abfrage
      */
-    async deleteById(requestParameters: DeleteByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async deleteById(requestParameters: DeleteByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteByIdRaw(requestParameters, initOverrides);
     }
 
     /**
      * Lesen einer Abfrage.
      */
-    async getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById.');
         }
@@ -118,7 +120,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Lesen einer Abfrage.
      */
-    async getById(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Save201Response> {
+    async getById(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
         const response = await this.getByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -126,7 +128,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Abfrage im Status ANGELEGT.
      */
-    async patchAngelegtRaw(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchAngelegtRaw(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchAngelegt.');
         }
@@ -155,7 +157,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Abfrage im Status ANGELEGT.
      */
-    async patchAngelegt(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Save201Response> {
+    async patchAngelegt(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
         const response = await this.patchAngelegtRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -163,7 +165,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_FACHREFERATE.
      */
-    async patchInBearbeitungFachreferatRaw(requestParameters: PatchInBearbeitungFachreferatOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchInBearbeitungFachreferatRaw(requestParameters: PatchInBearbeitungFachreferatOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchInBearbeitungFachreferat.');
         }
@@ -192,7 +194,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_FACHREFERATE.
      */
-    async patchInBearbeitungFachreferat(requestParameters: PatchInBearbeitungFachreferatOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Save201Response> {
+    async patchInBearbeitungFachreferat(requestParameters: PatchInBearbeitungFachreferatOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
         const response = await this.patchInBearbeitungFachreferatRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -200,7 +202,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_SACHBEARBEITUNG.
      */
-    async patchInBearbeitungSachbearbeitungRaw(requestParameters: PatchInBearbeitungSachbearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchInBearbeitungSachbearbeitungRaw(requestParameters: PatchInBearbeitungSachbearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchInBearbeitungSachbearbeitung.');
         }
@@ -229,7 +231,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_SACHBEARBEITUNG.
      */
-    async patchInBearbeitungSachbearbeitung(requestParameters: PatchInBearbeitungSachbearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Save201Response> {
+    async patchInBearbeitungSachbearbeitung(requestParameters: PatchInBearbeitungSachbearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
         const response = await this.patchInBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -237,7 +239,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Anlegen einer neuen Abfrage
      */
-    async saveRaw(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async saveRaw(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
         if (requestParameters.saveRequest === null || requestParameters.saveRequest === undefined) {
             throw new runtime.RequiredError('saveRequest','Required parameter requestParameters.saveRequest was null or undefined when calling save.');
         }
@@ -262,7 +264,7 @@ export class AbfragenApi extends runtime.BaseAPI {
     /**
      * Anlegen einer neuen Abfrage
      */
-    async save(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Save201Response> {
+    async save(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
         const response = await this.saveRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -97,6 +97,15 @@ export const BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum = {
 export type BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum = typeof BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum[keyof typeof BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum];
 
 
+/**
+ * Check if a given object implements the BedarfsmeldungFachreferateDto interface.
+ */
+export function instanceOfBedarfsmeldungFachreferateDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function BedarfsmeldungFachreferateDtoFromJSON(json: any): BedarfsmeldungFachreferateDto {
     return BedarfsmeldungFachreferateDtoFromJSONTyped(json, false);
 }

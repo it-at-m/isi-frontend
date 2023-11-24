@@ -13,30 +13,27 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
-    HausFuerKinderDtoAllOf,
-    HausFuerKinderDtoAllOfFromJSON,
-    HausFuerKinderDtoAllOfFromJSONTyped,
-    HausFuerKinderDtoAllOfToJSON,
-} from './HausFuerKinderDtoAllOf';
-import {
-    InfrastruktureinrichtungDto,
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
 } from './InfrastruktureinrichtungDto';
+import type { VerortungPointDto } from './VerortungPointDto';
 import {
-    VerortungPointDto,
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
 } from './VerortungPointDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -124,6 +121,15 @@ export const HausFuerKinderDtoEinrichtungstraegerEnum = {
 export type HausFuerKinderDtoEinrichtungstraegerEnum = typeof HausFuerKinderDtoEinrichtungstraegerEnum[keyof typeof HausFuerKinderDtoEinrichtungstraegerEnum];
 
 
+/**
+ * Check if a given object implements the HausFuerKinderDto interface.
+ */
+export function instanceOfHausFuerKinderDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function HausFuerKinderDtoFromJSON(json: any): HausFuerKinderDto {
     return HausFuerKinderDtoFromJSONTyped(json, false);
 }
@@ -131,6 +137,8 @@ export function HausFuerKinderDtoFromJSON(json: any): HausFuerKinderDto {
 export function HausFuerKinderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): HausFuerKinderDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),

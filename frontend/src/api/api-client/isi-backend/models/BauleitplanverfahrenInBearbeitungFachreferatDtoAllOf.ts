@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto } from './AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto';
 import {
-    AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto,
     AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON,
@@ -38,6 +38,15 @@ export interface BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf {
      * @memberof BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf
      */
     abfragevariantenSachbearbeitungBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto>;
+}
+
+/**
+ * Check if a given object implements the BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf interface.
+ */
+export function instanceOfBauleitplanverfahrenInBearbeitungFachreferatDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function BauleitplanverfahrenInBearbeitungFachreferatDtoAllOfFromJSON(json: any): BauleitplanverfahrenInBearbeitungFachreferatDtoAllOf {

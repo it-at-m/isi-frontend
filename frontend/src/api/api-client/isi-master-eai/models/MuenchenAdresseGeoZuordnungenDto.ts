@@ -27,6 +27,15 @@ export interface MuenchenAdresseGeoZuordnungenDto {
     postleitzahl?: string;
 }
 
+/**
+ * Check if a given object implements the MuenchenAdresseGeoZuordnungenDto interface.
+ */
+export function instanceOfMuenchenAdresseGeoZuordnungenDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function MuenchenAdresseGeoZuordnungenDtoFromJSON(json: any): MuenchenAdresseGeoZuordnungenDto {
     return MuenchenAdresseGeoZuordnungenDtoFromJSONTyped(json, false);
 }

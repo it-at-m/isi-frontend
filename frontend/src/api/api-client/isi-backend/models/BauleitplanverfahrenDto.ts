@@ -13,54 +13,51 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageDto } from './AbfrageDto';
 import {
-    AbfrageDto,
     AbfrageDtoFromJSON,
     AbfrageDtoFromJSONTyped,
     AbfrageDtoToJSON,
 } from './AbfrageDto';
+import type { AbfragevarianteBauleitplanverfahrenDto } from './AbfragevarianteBauleitplanverfahrenDto';
 import {
-    AbfragevarianteBauleitplanverfahrenDto,
     AbfragevarianteBauleitplanverfahrenDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    BauleitplanverfahrenDtoAllOf,
-    BauleitplanverfahrenDtoAllOfFromJSON,
-    BauleitplanverfahrenDtoAllOfFromJSONTyped,
-    BauleitplanverfahrenDtoAllOfToJSON,
-} from './BauleitplanverfahrenDtoAllOf';
-import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { StatusAbfrage } from './StatusAbfrage';
 import {
-    StatusAbfrage,
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
+import type { UncertainBoolean } from './UncertainBoolean';
 import {
-    UncertainBoolean,
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    VerortungMultiPolygonDto,
     VerortungMultiPolygonDtoFromJSON,
     VerortungMultiPolygonDtoFromJSONTyped,
     VerortungMultiPolygonDtoToJSON,
 } from './VerortungMultiPolygonDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -184,6 +181,15 @@ export const BauleitplanverfahrenDtoStandVerfahrenEnum = {
 export type BauleitplanverfahrenDtoStandVerfahrenEnum = typeof BauleitplanverfahrenDtoStandVerfahrenEnum[keyof typeof BauleitplanverfahrenDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the BauleitplanverfahrenDto interface.
+ */
+export function instanceOfBauleitplanverfahrenDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function BauleitplanverfahrenDtoFromJSON(json: any): BauleitplanverfahrenDto {
     return BauleitplanverfahrenDtoFromJSONTyped(json, false);
 }
@@ -191,6 +197,8 @@ export function BauleitplanverfahrenDtoFromJSON(json: any): Bauleitplanverfahren
 export function BauleitplanverfahrenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageDtoFromJSONTyped(json, ignoreDiscriminator),

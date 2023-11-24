@@ -14,8 +14,10 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  FileInformationDto,
+} from '../models';
 import {
-    FileInformationDto,
     FileInformationDtoFromJSON,
     FileInformationDtoToJSON,
 } from '../models';
@@ -28,7 +30,7 @@ export class FileInfoStammApi extends runtime.BaseAPI {
     /**
      * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
      */
-    async getFileInformationRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FileInformationDto>> {
+    async getFileInformationRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FileInformationDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -46,7 +48,7 @@ export class FileInfoStammApi extends runtime.BaseAPI {
     /**
      * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
      */
-    async getFileInformation(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FileInformationDto> {
+    async getFileInformation(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FileInformationDto> {
         const response = await this.getFileInformationRaw(initOverrides);
         return await response.value();
     }

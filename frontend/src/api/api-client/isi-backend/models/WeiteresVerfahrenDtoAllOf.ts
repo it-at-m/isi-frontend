@@ -13,32 +13,32 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteWeiteresVerfahrenDto } from './AbfragevarianteWeiteresVerfahrenDto';
 import {
-    AbfragevarianteWeiteresVerfahrenDto,
     AbfragevarianteWeiteresVerfahrenDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { UncertainBoolean } from './UncertainBoolean';
 import {
-    UncertainBoolean,
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    VerortungMultiPolygonDto,
     VerortungMultiPolygonDtoFromJSON,
     VerortungMultiPolygonDtoFromJSONTyped,
     VerortungMultiPolygonDtoToJSON,
@@ -171,6 +171,15 @@ export const WeiteresVerfahrenDtoAllOfStandVerfahrenEnum = {
 } as const;
 export type WeiteresVerfahrenDtoAllOfStandVerfahrenEnum = typeof WeiteresVerfahrenDtoAllOfStandVerfahrenEnum[keyof typeof WeiteresVerfahrenDtoAllOfStandVerfahrenEnum];
 
+
+/**
+ * Check if a given object implements the WeiteresVerfahrenDtoAllOf interface.
+ */
+export function instanceOfWeiteresVerfahrenDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function WeiteresVerfahrenDtoAllOfFromJSON(json: any): WeiteresVerfahrenDtoAllOf {
     return WeiteresVerfahrenDtoAllOfFromJSONTyped(json, false);

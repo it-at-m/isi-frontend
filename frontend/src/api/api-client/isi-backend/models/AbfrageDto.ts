@@ -13,12 +13,30 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenDto } from './BaugenehmigungsverfahrenDto';
 import {
-    StatusAbfrage,
+    BaugenehmigungsverfahrenDtoFromJSON,
+    BaugenehmigungsverfahrenDtoFromJSONTyped,
+    BaugenehmigungsverfahrenDtoToJSON,
+} from './BaugenehmigungsverfahrenDto';
+import type { BauleitplanverfahrenDto } from './BauleitplanverfahrenDto';
+import {
+    BauleitplanverfahrenDtoFromJSON,
+    BauleitplanverfahrenDtoFromJSONTyped,
+    BauleitplanverfahrenDtoToJSON,
+} from './BauleitplanverfahrenDto';
+import type { StatusAbfrage } from './StatusAbfrage';
+import {
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
+import type { WeiteresVerfahrenDto } from './WeiteresVerfahrenDto';
+import {
+    WeiteresVerfahrenDtoFromJSON,
+    WeiteresVerfahrenDtoFromJSONTyped,
+    WeiteresVerfahrenDtoToJSON,
+} from './WeiteresVerfahrenDto';
 
 import {
      BaugenehmigungsverfahrenDtoFromJSONTyped,
@@ -112,6 +130,15 @@ export const AbfrageDtoArtAbfrageEnum = {
 } as const;
 export type AbfrageDtoArtAbfrageEnum = typeof AbfrageDtoArtAbfrageEnum[keyof typeof AbfrageDtoArtAbfrageEnum];
 
+
+/**
+ * Check if a given object implements the AbfrageDto interface.
+ */
+export function instanceOfAbfrageDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function AbfrageDtoFromJSON(json: any): AbfrageDto {
     return AbfrageDtoFromJSONTyped(json, false);

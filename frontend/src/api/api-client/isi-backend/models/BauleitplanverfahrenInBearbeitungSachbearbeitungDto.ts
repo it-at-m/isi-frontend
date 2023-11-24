@@ -13,36 +13,33 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageInBearbeitungSachbearbeitungDto } from './AbfrageInBearbeitungSachbearbeitungDto';
 import {
-    AbfrageInBearbeitungSachbearbeitungDto,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSON,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfrageInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfrageInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto } from './AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
     AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto,
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf,
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON,
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSONTyped,
-    BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOfToJSON,
-} from './BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf';
-import {
-    VerortungMultiPolygonDto,
     VerortungMultiPolygonDtoFromJSON,
     VerortungMultiPolygonDtoFromJSONTyped,
     VerortungMultiPolygonDtoToJSON,
 } from './VerortungMultiPolygonDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -72,6 +69,17 @@ export interface BauleitplanverfahrenInBearbeitungSachbearbeitungDto extends Abf
 
 
 
+/**
+ * Check if a given object implements the BauleitplanverfahrenInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfBauleitplanverfahrenInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBauleitplanverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBauleitplanverfahren" in value;
+
+    return isInstance;
+}
+
 export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON(json: any): BauleitplanverfahrenInBearbeitungSachbearbeitungDto {
     return BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
 }
@@ -79,6 +87,8 @@ export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSON(json
 export function BauleitplanverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenInBearbeitungSachbearbeitungDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),

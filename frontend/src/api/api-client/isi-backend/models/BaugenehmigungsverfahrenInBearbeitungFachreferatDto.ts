@@ -13,24 +13,21 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageInBearbeitungFachreferatDto } from './AbfrageInBearbeitungFachreferatDto';
 import {
-    AbfrageInBearbeitungFachreferatDto,
     AbfrageInBearbeitungFachreferatDtoFromJSON,
     AbfrageInBearbeitungFachreferatDtoFromJSONTyped,
     AbfrageInBearbeitungFachreferatDtoToJSON,
 } from './AbfrageInBearbeitungFachreferatDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto';
+
 import {
-    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf,
-    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOfFromJSON,
-    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOfFromJSONTyped,
-    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOfToJSON,
-} from './BaugenehmigungsverfahrenInBearbeitungFachreferatDtoAllOf';
+} from './';
 
 /**
  * 
@@ -54,6 +51,17 @@ export interface BaugenehmigungsverfahrenInBearbeitungFachreferatDto extends Abf
 
 
 
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenInBearbeitungFachreferatDto interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenInBearbeitungFachreferatDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBaugenehmigungsverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBaugenehmigungsverfahren" in value;
+
+    return isInstance;
+}
+
 export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON(json: any): BaugenehmigungsverfahrenInBearbeitungFachreferatDto {
     return BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
 }
@@ -61,6 +69,8 @@ export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON(json
 export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),

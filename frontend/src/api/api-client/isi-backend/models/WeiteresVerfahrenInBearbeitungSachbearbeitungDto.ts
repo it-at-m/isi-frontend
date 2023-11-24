@@ -13,36 +13,33 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageInBearbeitungSachbearbeitungDto } from './AbfrageInBearbeitungSachbearbeitungDto';
 import {
-    AbfrageInBearbeitungSachbearbeitungDto,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSON,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfrageInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfrageInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto } from './AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto,
     AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto } from './AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto,
     AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    VerortungMultiPolygonDto,
     VerortungMultiPolygonDtoFromJSON,
     VerortungMultiPolygonDtoFromJSONTyped,
     VerortungMultiPolygonDtoToJSON,
 } from './VerortungMultiPolygonDto';
+
 import {
-    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOf,
-    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON,
-    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSONTyped,
-    WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOfToJSON,
-} from './WeiteresVerfahrenInBearbeitungSachbearbeitungDtoAllOf';
+} from './';
 
 /**
  * 
@@ -72,6 +69,17 @@ export interface WeiteresVerfahrenInBearbeitungSachbearbeitungDto extends Abfrag
 
 
 
+/**
+ * Check if a given object implements the WeiteresVerfahrenInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfWeiteresVerfahrenInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungWeiteresVerfahren" in value;
+
+    return isInstance;
+}
+
 export function WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON(json: any): WeiteresVerfahrenInBearbeitungSachbearbeitungDto {
     return WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
 }
@@ -79,6 +87,8 @@ export function WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSON(json: a
 export function WeiteresVerfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenInBearbeitungSachbearbeitungDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),

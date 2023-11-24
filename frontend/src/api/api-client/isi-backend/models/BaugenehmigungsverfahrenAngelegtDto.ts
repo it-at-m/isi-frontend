@@ -13,42 +13,39 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageAngelegtDto } from './AbfrageAngelegtDto';
 import {
-    AbfrageAngelegtDto,
     AbfrageAngelegtDtoFromJSON,
     AbfrageAngelegtDtoFromJSONTyped,
     AbfrageAngelegtDtoToJSON,
 } from './AbfrageAngelegtDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenAngelegtDto } from './AbfragevarianteBaugenehmigungsverfahrenAngelegtDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenAngelegtDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    BaugenehmigungsverfahrenAngelegtDtoAllOf,
-    BaugenehmigungsverfahrenAngelegtDtoAllOfFromJSON,
-    BaugenehmigungsverfahrenAngelegtDtoAllOfFromJSONTyped,
-    BaugenehmigungsverfahrenAngelegtDtoAllOfToJSON,
-} from './BaugenehmigungsverfahrenAngelegtDtoAllOf';
-import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    VerortungMultiPolygonDto,
     VerortungMultiPolygonDtoFromJSON,
     VerortungMultiPolygonDtoFromJSONTyped,
     VerortungMultiPolygonDtoToJSON,
 } from './VerortungMultiPolygonDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -139,6 +136,18 @@ export const BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum = {
 export type BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum = typeof BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum[keyof typeof BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenAngelegtDto interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenAngelegtDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "standVerfahren" in value;
+    isInstance = isInstance && "fristBearbeitung" in value;
+    isInstance = isInstance && "abfragevariantenBaugenehmigungsverfahren" in value;
+
+    return isInstance;
+}
+
 export function BaugenehmigungsverfahrenAngelegtDtoFromJSON(json: any): BaugenehmigungsverfahrenAngelegtDto {
     return BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, false);
 }
@@ -146,6 +155,8 @@ export function BaugenehmigungsverfahrenAngelegtDtoFromJSON(json: any): Baugeneh
 export function BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageAngelegtDtoFromJSONTyped(json, ignoreDiscriminator),

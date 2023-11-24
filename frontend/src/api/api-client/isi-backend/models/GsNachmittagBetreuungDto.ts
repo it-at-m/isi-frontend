@@ -13,30 +13,27 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
-    GsNachmittagBetreuungDtoAllOf,
-    GsNachmittagBetreuungDtoAllOfFromJSON,
-    GsNachmittagBetreuungDtoAllOfFromJSONTyped,
-    GsNachmittagBetreuungDtoAllOfToJSON,
-} from './GsNachmittagBetreuungDtoAllOf';
-import {
-    InfrastruktureinrichtungDto,
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
 } from './InfrastruktureinrichtungDto';
+import type { VerortungPointDto } from './VerortungPointDto';
 import {
-    VerortungPointDto,
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
 } from './VerortungPointDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -106,6 +103,17 @@ export const GsNachmittagBetreuungDtoEinrichtungstraegerEnum = {
 export type GsNachmittagBetreuungDtoEinrichtungstraegerEnum = typeof GsNachmittagBetreuungDtoEinrichtungstraegerEnum[keyof typeof GsNachmittagBetreuungDtoEinrichtungstraegerEnum];
 
 
+/**
+ * Check if a given object implements the GsNachmittagBetreuungDto interface.
+ */
+export function instanceOfGsNachmittagBetreuungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "anzahlHortPlaetze" in value;
+    isInstance = isInstance && "anzahlHortGruppen" in value;
+
+    return isInstance;
+}
+
 export function GsNachmittagBetreuungDtoFromJSON(json: any): GsNachmittagBetreuungDto {
     return GsNachmittagBetreuungDtoFromJSONTyped(json, false);
 }
@@ -113,6 +121,8 @@ export function GsNachmittagBetreuungDtoFromJSON(json: any): GsNachmittagBetreuu
 export function GsNachmittagBetreuungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GsNachmittagBetreuungDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),

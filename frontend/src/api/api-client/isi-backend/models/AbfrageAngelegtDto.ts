@@ -13,6 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenAngelegtDto } from './BaugenehmigungsverfahrenAngelegtDto';
+import {
+    BaugenehmigungsverfahrenAngelegtDtoFromJSON,
+    BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
+    BaugenehmigungsverfahrenAngelegtDtoToJSON,
+} from './BaugenehmigungsverfahrenAngelegtDto';
+import type { BauleitplanverfahrenAngelegtDto } from './BauleitplanverfahrenAngelegtDto';
+import {
+    BauleitplanverfahrenAngelegtDtoFromJSON,
+    BauleitplanverfahrenAngelegtDtoFromJSONTyped,
+    BauleitplanverfahrenAngelegtDtoToJSON,
+} from './BauleitplanverfahrenAngelegtDto';
+import type { WeiteresVerfahrenAngelegtDto } from './WeiteresVerfahrenAngelegtDto';
+import {
+    WeiteresVerfahrenAngelegtDtoFromJSON,
+    WeiteresVerfahrenAngelegtDtoFromJSONTyped,
+    WeiteresVerfahrenAngelegtDtoToJSON,
+} from './WeiteresVerfahrenAngelegtDto';
+
 import {
      BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
      BauleitplanverfahrenAngelegtDtoFromJSONTyped,
@@ -69,6 +88,16 @@ export const AbfrageAngelegtDtoArtAbfrageEnum = {
 } as const;
 export type AbfrageAngelegtDtoArtAbfrageEnum = typeof AbfrageAngelegtDtoArtAbfrageEnum[keyof typeof AbfrageAngelegtDtoArtAbfrageEnum];
 
+
+/**
+ * Check if a given object implements the AbfrageAngelegtDto interface.
+ */
+export function instanceOfAbfrageAngelegtDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "name" in value;
+
+    return isInstance;
+}
 
 export function AbfrageAngelegtDtoFromJSON(json: any): AbfrageAngelegtDto {
     return AbfrageAngelegtDtoFromJSONTyped(json, false);

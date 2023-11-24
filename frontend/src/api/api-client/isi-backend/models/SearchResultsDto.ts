@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SearchResultsDtoSearchResultsInner } from './SearchResultsDtoSearchResultsInner';
 import {
-    SearchResultsDtoSearchResultsInner,
     SearchResultsDtoSearchResultsInnerFromJSON,
     SearchResultsDtoSearchResultsInnerFromJSONTyped,
     SearchResultsDtoSearchResultsInnerToJSON,
@@ -44,6 +44,15 @@ export interface SearchResultsDto {
      * @memberof SearchResultsDto
      */
     page?: number;
+}
+
+/**
+ * Check if a given object implements the SearchResultsDto interface.
+ */
+export function instanceOfSearchResultsDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function SearchResultsDtoFromJSON(json: any): SearchResultsDto {

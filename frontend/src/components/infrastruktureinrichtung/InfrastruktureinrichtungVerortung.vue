@@ -11,15 +11,15 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
-    <v-label v-if="selectedPoint !== undefined">Punktkoordinate</v-label>
+    <v-label v-if="pointExits">Koordinaten</v-label>
     <v-chip-group
-      v-if="selectedPoint !== undefined"
+      v-if="pointExits"
       title="Koordinate"
       active-class="primary--text"
       column
     >
       <v-chip>
-        <div><span>getUtm32(selectedPoint)</span></div>
+        <div>{{ pointToDisplay() }}</div>
       </v-chip>
     </v-chip-group>
   </field-group-card>
@@ -102,6 +102,10 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     return undefined;
   }
 
+  get pointExits(): boolean {
+    return !_.isEmpty(this.pointToDisplay());
+  }
+
   get lookAt(): LatLngLiteral | undefined {
     if (!_.isEmpty(this.geoJson)) {
       const coordinates = this.geoJson[0].geometry.coordinates;
@@ -133,8 +137,14 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
-    this.verortungModel = await this.createVerortungPointDtoFromSelectedPoint(this.getPointGeometry());
-    this.formChanged();
+    const point = this.getPointGeometry();
+    console.log("point: " + point);
+    if (!_.isNil(point)) {
+      const verortung = await this.createVerortungPointDtoFromSelectedPoint(point);
+      console.log("Verortung: " + verortung);
+      this.verortungModel = verortung;
+      this.formChanged();
+    }
   }
 
   private setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
@@ -158,14 +168,19 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       // Stadtbezirke ermitteln
       const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForPoint(point, true);
       const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
-
+      console.log("stadtbezirke: " + stadtbezirke.length);
+      console.log("stadtbezirkeBackend: " + stadtbezirkeBackend.length);
       // Gemarkungen ermitteln
       const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForPoint(point, true);
       const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+      console.log("gemarkungen: " + gemarkungen.length);
+      console.log("gemarkungenBackend: " + gemarkungenBackend.length);
 
       // Flurstücke ermitteln
       const flurstuecke: Array<FeatureDtoFlurstueckDto> = await this.getFlurstueckeForPoint(point, true);
       const flurstueckeBackend: Array<FlurstueckDto> = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+      console.log("flurstuecke: " + flurstuecke.length);
+      console.log("flurstueckeBackend: " + flurstueckeBackend.length);
 
       // Anfügen der Flurstücke an Gemarkung
       flurstueckeBackend.forEach((flurstueck) => {
@@ -231,17 +246,28 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     };
   }
 
-  private getUtm32(point: PointGeometryDto): string {
-    if (!_.isNil(point.coordinates && point.coordinates.length === 2)) {
+  async pointToDisplay(): Promise<string> {
+    const utmDto = await this.getUtm32(this.getPointGeometry());
+    console.log("pointToDisplay, utmDto: " + utmDto);
+    return !_.isNil(utmDto) ? `${utmDto.zone}U ${utmDto?.north} ${utmDto?.east}` : "";
+  }
+
+  async getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | undefined> {
+    let utmDto: UtmDto | undefined = undefined;
+    console.log("getUtm32, 1: " + point);
+    if (!_.isNil(point) && !_.isNil(point.coordinates) && point.coordinates.length === 2) {
       const wgs84 = {
-        latitude: point.coordinates[0],
-        longitude: point.coordinates[1],
+        longitude: point.coordinates[0],
+        latitude: point.coordinates[1],
       } as Wgs84Dto;
-      this.wgs84toUtm32(wgs84, true).then((dto: UtmDto) => {
-        return `{ dto.zone }U {dto?.north} {dto?.east}`;
+      console.log("getUtm32, wgs84 longitude: " + wgs84.longitude);
+      console.log("getUtm32, wgs84 latitude: " + wgs84.latitude);
+      await this.wgs84toUtm32(wgs84, true).then((dto: UtmDto) => {
+        console.log("getUtm32, dto: " + dto);
+        utmDto = dto;
       });
     }
-    return "";
+    return utmDto;
   }
 }
 </script>

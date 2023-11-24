@@ -13,24 +13,21 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageInBearbeitungFachreferatDto } from './AbfrageInBearbeitungFachreferatDto';
 import {
-    AbfrageInBearbeitungFachreferatDto,
     AbfrageInBearbeitungFachreferatDtoFromJSON,
     AbfrageInBearbeitungFachreferatDtoFromJSONTyped,
     AbfrageInBearbeitungFachreferatDtoToJSON,
 } from './AbfrageInBearbeitungFachreferatDto';
+import type { AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto } from './AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto';
 import {
-    AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto,
     AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto';
+
 import {
-    WeiteresVerfahrenInBearbeitungFachreferatDtoAllOf,
-    WeiteresVerfahrenInBearbeitungFachreferatDtoAllOfFromJSON,
-    WeiteresVerfahrenInBearbeitungFachreferatDtoAllOfFromJSONTyped,
-    WeiteresVerfahrenInBearbeitungFachreferatDtoAllOfToJSON,
-} from './WeiteresVerfahrenInBearbeitungFachreferatDtoAllOf';
+} from './';
 
 /**
  * 
@@ -54,6 +51,17 @@ export interface WeiteresVerfahrenInBearbeitungFachreferatDto extends AbfrageInB
 
 
 
+/**
+ * Check if a given object implements the WeiteresVerfahrenInBearbeitungFachreferatDto interface.
+ */
+export function instanceOfWeiteresVerfahrenInBearbeitungFachreferatDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungWeiteresVerfahren" in value;
+
+    return isInstance;
+}
+
 export function WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON(json: any): WeiteresVerfahrenInBearbeitungFachreferatDto {
     return WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, false);
 }
@@ -61,6 +69,8 @@ export function WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON(json: any):
 export function WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),

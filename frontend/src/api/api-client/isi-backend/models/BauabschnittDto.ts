@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugebietDto } from './BaugebietDto';
 import {
-    BaugebietDto,
     BaugebietDtoFromJSON,
     BaugebietDtoFromJSONTyped,
     BaugebietDtoToJSON,
@@ -68,6 +68,18 @@ export interface BauabschnittDto {
      * @memberof BauabschnittDto
      */
     technical: boolean;
+}
+
+/**
+ * Check if a given object implements the BauabschnittDto interface.
+ */
+export function instanceOfBauabschnittDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "bezeichnung" in value;
+    isInstance = isInstance && "baugebiete" in value;
+    isInstance = isInstance && "technical" in value;
+
+    return isInstance;
 }
 
 export function BauabschnittDtoFromJSON(json: any): BauabschnittDto {

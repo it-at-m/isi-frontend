@@ -19,13 +19,6 @@
         cols="12"
         md="6"
       >
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col
-        cols="12"
-        md="12"
-      >
         <tri-switch
           id="offizielle_mitzeichnung_triswitch"
           ref="offizielleMitzeichnungTriswitch"
@@ -60,7 +53,7 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 
@@ -71,7 +64,7 @@ export default class AllgemeineInformationenBauleitplanverfahrenComponent extend
   SaveLeaveMixin,
   FieldValidationRulesMixin,
 ) {
-  @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
+  @VModel({ type: WeiteresVerfahrenModel }) abfrage!: WeiteresVerfahrenModel;
 
   @Prop({ type: Boolean, default: true })
   private isEditableProp!: boolean;
