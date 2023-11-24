@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DokumentDto } from './DokumentDto';
 import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
@@ -62,6 +62,15 @@ export interface DokumenteDto {
      * @memberof DokumenteDto
      */
     last?: boolean;
+}
+
+/**
+ * Check if a given object implements the DokumenteDto interface.
+ */
+export function instanceOfDokumenteDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function DokumenteDtoFromJSON(json: any): DokumenteDto {

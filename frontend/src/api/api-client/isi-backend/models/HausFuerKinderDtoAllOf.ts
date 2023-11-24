@@ -99,6 +99,15 @@ export const HausFuerKinderDtoAllOfEinrichtungstraegerEnum = {
 export type HausFuerKinderDtoAllOfEinrichtungstraegerEnum = typeof HausFuerKinderDtoAllOfEinrichtungstraegerEnum[keyof typeof HausFuerKinderDtoAllOfEinrichtungstraegerEnum];
 
 
+/**
+ * Check if a given object implements the HausFuerKinderDtoAllOf interface.
+ */
+export function instanceOfHausFuerKinderDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function HausFuerKinderDtoAllOfFromJSON(json: any): HausFuerKinderDtoAllOf {
     return HausFuerKinderDtoAllOfFromJSONTyped(json, false);
 }

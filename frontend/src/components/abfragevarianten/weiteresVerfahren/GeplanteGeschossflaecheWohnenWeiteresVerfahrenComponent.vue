@@ -13,7 +13,6 @@
           class="mx-3"
           label="Gesamt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -45,7 +44,6 @@
           class="mx-3"
           label="SoBoN-ursächlich"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <v-col
@@ -60,7 +58,40 @@
           class="mx-3"
           label="Bestandswohnbaurecht"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="4"
+      />
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <num-field
+          id="gf_wohnen_baurechtlich_genehmigt_field"
+          ref="gfWohnenBaurechtlichGenehmigtField"
+          v-model="abfragevariante.gfWohnenBaurechtlichGenehmigt"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="Baurechtlich genehmigt"
+          :suffix="fieldPrefixesSuffixes.squareMeter"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <num-field
+          id="gf_wohnen_baurechtlich_festgesetzt_field"
+          ref="gfWohnenBaurechtlichFestgesetztField"
+          v-model="abfragevariante.gfWohnenBaurechtlichFestgesetzt"
+          :disabled="!isEditable"
+          class="mx-3"
+          label="Baurechtlich festgesetzt"
+          :suffix="fieldPrefixesSuffixes.squareMeter"
         />
       </v-col>
     </v-row>
@@ -113,7 +144,6 @@
               class="mx-3"
               label="Studentisches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
           <v-col
@@ -128,7 +158,6 @@
               class="mx-3"
               label="Senior*innenwohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
         </v-row>
@@ -153,7 +182,6 @@
               class="mx-3"
               label="Genossenschaftliches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
           <v-col
@@ -168,7 +196,6 @@
               class="mx-3"
               label="Weiteres nicht-infrastrukturrelevantes Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
         </v-row>
@@ -179,7 +206,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
@@ -187,13 +214,13 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenComponent extends Mixins(
+export default class GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
 ) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+  @VModel({ type: AbfragevarianteWeiteresVerfahrenModel })
+  abfragevariante!: AbfragevarianteWeiteresVerfahrenModel;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;

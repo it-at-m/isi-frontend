@@ -153,12 +153,12 @@ export default class DokumenteListe extends Mixins(DokumenteApiRequestMixin, Fie
 
   private getDokumentSizeInSIUnits(dokument: DokumentDto): string {
     let size: string;
-    if (dokument.sizeInBytes < 1000) {
+    if (dokument.sizeInBytes < 1024) {
       size = dokument.sizeInBytes + " Byte";
-    } else if (dokument.sizeInBytes < 1000000) {
-      size = _.round(dokument.sizeInBytes / 1000, 1) + " Kilobyte";
+    } else if (dokument.sizeInBytes < 1048576) {
+      size = _.round(dokument.sizeInBytes / 1024, 1) + " KB";
     } else {
-      size = _.round(dokument.sizeInBytes / 1000000, 1) + " Megabyte";
+      size = _.round(dokument.sizeInBytes / 1048576, 1) + " MB";
     }
     return size;
   }

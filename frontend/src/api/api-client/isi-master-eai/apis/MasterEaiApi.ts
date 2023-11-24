@@ -14,14 +14,16 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  AdressSucheDto,
+  InformationResponseDto,
+  MuenchenAdressenDto,
+} from '../models';
 import {
-    AdressSucheDto,
     AdressSucheDtoFromJSON,
     AdressSucheDtoToJSON,
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    MuenchenAdressenDto,
     MuenchenAdressenDtoFromJSON,
     MuenchenAdressenDtoToJSON,
 } from '../models';
@@ -38,7 +40,7 @@ export class MasterEaiApi extends runtime.BaseAPI {
     /**
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
-    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
+    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
         if (requestParameters.adressSucheDto === null || requestParameters.adressSucheDto === undefined) {
             throw new runtime.RequiredError('adressSucheDto','Required parameter requestParameters.adressSucheDto was null or undefined when calling getAdressen.');
         }
@@ -63,7 +65,7 @@ export class MasterEaiApi extends runtime.BaseAPI {
     /**
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
-    async getAdressen(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MuenchenAdressenDto> {
+    async getAdressen(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MuenchenAdressenDto> {
         const response = await this.getAdressenRaw(requestParameters, initOverrides);
         return await response.value();
     }

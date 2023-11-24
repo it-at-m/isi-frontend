@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FilepathDto } from './FilepathDto';
 import {
-    FilepathDto,
     FilepathDtoFromJSON,
     FilepathDtoFromJSONTyped,
     FilepathDtoToJSON,
@@ -99,6 +99,19 @@ export const DokumentDtoArtDokumentEnum = {
 } as const;
 export type DokumentDtoArtDokumentEnum = typeof DokumentDtoArtDokumentEnum[keyof typeof DokumentDtoArtDokumentEnum];
 
+
+/**
+ * Check if a given object implements the DokumentDto interface.
+ */
+export function instanceOfDokumentDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "filePath" in value;
+    isInstance = isInstance && "artDokument" in value;
+    isInstance = isInstance && "sizeInBytes" in value;
+    isInstance = isInstance && "typDokument" in value;
+
+    return isInstance;
+}
 
 export function DokumentDtoFromJSON(json: any): DokumentDto {
     return DokumentDtoFromJSONTyped(json, false);

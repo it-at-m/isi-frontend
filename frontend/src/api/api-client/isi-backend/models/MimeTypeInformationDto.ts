@@ -39,6 +39,15 @@ export interface MimeTypeInformationDto {
     acronym?: string;
 }
 
+/**
+ * Check if a given object implements the MimeTypeInformationDto interface.
+ */
+export function instanceOfMimeTypeInformationDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function MimeTypeInformationDtoFromJSON(json: any): MimeTypeInformationDto {
     return MimeTypeInformationDtoFromJSONTyped(json, false);
 }

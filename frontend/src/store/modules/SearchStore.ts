@@ -9,6 +9,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
@@ -23,7 +24,11 @@ const state = {
     numberOfPages: 0,
   } as SearchResultsDto,
   requestSearchQueryAndSorting: createSearchQueryAndSortingModel(),
-  selectedAbfrage: undefined as BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | undefined,
+  selectedAbfrage: undefined as
+    | BauleitplanverfahrenModel
+    | BaugenehmigungsverfahrenModel
+    | WeiteresVerfahrenModel
+    | undefined,
   defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
   selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
@@ -43,7 +48,9 @@ export default {
     requestSearchQueryAndSorting: (): SearchQueryAndSortingModel => {
       return state.requestSearchQueryAndSorting;
     },
-    selectedAbfrage: (state: SearchState): BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | undefined => {
+    selectedAbfrage: (
+      state: SearchState,
+    ): BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined => {
       return state.selectedAbfrage;
     },
     defaultSearchQueryAndSortingFilter: (): SearchQueryAndSortingModel => {
@@ -62,8 +69,9 @@ export default {
       state.searchResults = searchResults;
     },
     removeSearchResultById(state: SearchState, id: string): void {
-      _.remove(_.toArray(state.searchResults.searchResults), function (searchResult: SearchResultDto) {
-        return (
+      const searchResults = _.cloneDeep(state.searchResults);
+      searchResults.searchResults = _.toArray(searchResults.searchResults).filter((searchResult: SearchResultDto) => {
+        return !(
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Abfrage) &&
             _.isEqual(id, (searchResult as AbfrageSearchResultDto).id)) ||
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben) &&
@@ -72,13 +80,14 @@ export default {
             _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id))
         );
       });
+      state.searchResults = searchResults;
     },
     requestSearchQueryAndSorting(state: SearchState, searchQueryAndSortingDto: SearchQueryAndSortingModel): void {
       state.requestSearchQueryAndSorting = searchQueryAndSortingDto;
     },
     selectedAbfrage(
       state: SearchState,
-      selectedAbfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+      selectedAbfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
     ): void {
       state.selectedAbfrage = selectedAbfrage;
     },
@@ -108,7 +117,7 @@ export default {
     },
     selectedAbfrage(
       context: ActionContext<SearchState, RootState>,
-      abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel,
+      abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
     ): void {
       context.commit("selectedAbfrage", abfrage);
     },

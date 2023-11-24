@@ -45,9 +45,9 @@
 
 <script lang="ts">
 import { Component, Vue, VModel, Prop } from "vue-property-decorator";
-import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/CommonBaugenehmigungsverfahrenComponent.vue";
-import GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent.vue";
-import GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent.vue";
+import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
+import GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent.vue";
+import GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";

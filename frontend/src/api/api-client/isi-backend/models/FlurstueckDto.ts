@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryDto,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
@@ -74,6 +74,16 @@ export interface FlurstueckDto {
      * @memberof FlurstueckDto
      */
     multiPolygon: MultiPolygonGeometryDto;
+}
+
+/**
+ * Check if a given object implements the FlurstueckDto interface.
+ */
+export function instanceOfFlurstueckDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "multiPolygon" in value;
+
+    return isInstance;
 }
 
 export function FlurstueckDtoFromJSON(json: any): FlurstueckDto {

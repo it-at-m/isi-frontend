@@ -14,11 +14,13 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  FoerdermixStammDto,
+  InformationResponseDto,
+} from '../models';
 import {
-    FoerdermixStammDto,
     FoerdermixStammDtoFromJSON,
     FoerdermixStammDtoToJSON,
-    InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
 } from '../models';
@@ -47,7 +49,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Löschen eines FoerdermixStamm
      */
-    async deleteFoerdermixStammByIdRaw(requestParameters: DeleteFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteFoerdermixStammByIdRaw(requestParameters: DeleteFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteFoerdermixStammById.');
         }
@@ -69,7 +71,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Löschen eines FoerdermixStamm
      */
-    async deleteFoerdermixStammById(requestParameters: DeleteFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async deleteFoerdermixStammById(requestParameters: DeleteFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteFoerdermixStammByIdRaw(requestParameters, initOverrides);
     }
 
@@ -77,7 +79,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
      * Das Ergebnis wird nach der Bezeichnung aufsteigend sortiert
      * Lade alle Fördermix Stammdaten
      */
-    async getFoerdermixStaemmeRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<FoerdermixStammDto>>> {
+    async getFoerdermixStaemmeRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<FoerdermixStammDto>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -96,7 +98,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
      * Das Ergebnis wird nach der Bezeichnung aufsteigend sortiert
      * Lade alle Fördermix Stammdaten
      */
-    async getFoerdermixStaemme(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<FoerdermixStammDto>> {
+    async getFoerdermixStaemme(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<FoerdermixStammDto>> {
         const response = await this.getFoerdermixStaemmeRaw(initOverrides);
         return await response.value();
     }
@@ -104,7 +106,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Lesen eines FoerdermixStamm
      */
-    async getFoerdermixStammByIdRaw(requestParameters: GetFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+    async getFoerdermixStammByIdRaw(requestParameters: GetFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getFoerdermixStammById.');
         }
@@ -126,7 +128,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Lesen eines FoerdermixStamm
      */
-    async getFoerdermixStammById(requestParameters: GetFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FoerdermixStammDto> {
+    async getFoerdermixStammById(requestParameters: GetFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FoerdermixStammDto> {
         const response = await this.getFoerdermixStammByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -134,7 +136,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Anlegen eines FoerdermixStamm
      */
-    async saveFoerdermixStammRaw(requestParameters: SaveFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+    async saveFoerdermixStammRaw(requestParameters: SaveFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
         if (requestParameters.foerdermixStammDto === null || requestParameters.foerdermixStammDto === undefined) {
             throw new runtime.RequiredError('foerdermixStammDto','Required parameter requestParameters.foerdermixStammDto was null or undefined when calling saveFoerdermixStamm.');
         }
@@ -159,7 +161,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Anlegen eines FoerdermixStamm
      */
-    async saveFoerdermixStamm(requestParameters: SaveFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FoerdermixStammDto> {
+    async saveFoerdermixStamm(requestParameters: SaveFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FoerdermixStammDto> {
         const response = await this.saveFoerdermixStammRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -167,7 +169,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Aktualisierung eines FoerdermixStamm
      */
-    async updateFoerdermixStammRaw(requestParameters: UpdateFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+    async updateFoerdermixStammRaw(requestParameters: UpdateFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
         if (requestParameters.foerdermixStammDto === null || requestParameters.foerdermixStammDto === undefined) {
             throw new runtime.RequiredError('foerdermixStammDto','Required parameter requestParameters.foerdermixStammDto was null or undefined when calling updateFoerdermixStamm.');
         }
@@ -192,7 +194,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     /**
      * Aktualisierung eines FoerdermixStamm
      */
-    async updateFoerdermixStamm(requestParameters: UpdateFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<FoerdermixStammDto> {
+    async updateFoerdermixStamm(requestParameters: UpdateFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FoerdermixStammDto> {
         const response = await this.updateFoerdermixStammRaw(requestParameters, initOverrides);
         return await response.value();
     }

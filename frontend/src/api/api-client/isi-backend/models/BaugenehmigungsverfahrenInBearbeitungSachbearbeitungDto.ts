@@ -13,36 +13,33 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageInBearbeitungSachbearbeitungDto } from './AbfrageInBearbeitungSachbearbeitungDto';
 import {
-    AbfrageInBearbeitungSachbearbeitungDto,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSON,
     AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfrageInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfrageInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto } from './AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto,
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
+import type { VerortungDto } from './VerortungDto';
 import {
-    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf,
-    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSON,
-    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOfFromJSONTyped,
-    BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOfToJSON,
-} from './BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf';
-import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
 } from './VerortungDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -61,16 +58,27 @@ export interface BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto extends
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>}
      * @memberof BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevariantenBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
+    abfragevariantenBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>;
     /**
      * 
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto>}
      * @memberof BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
-    abfragevariantenSachbearbeitungBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto>;
+    abfragevariantenSachbearbeitungBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto>;
 }
 
 
+
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBaugenehmigungsverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBaugenehmigungsverfahren" in value;
+
+    return isInstance;
+}
 
 export function BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON(json: any): BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto {
     return BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
@@ -80,11 +88,13 @@ export function BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSONT
     if ((json === undefined) || (json === null)) {
         return json;
     }
+    if (!ignoreDiscriminator) {
+    }
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
-        'abfragevariantenBaugenehmigungsverfahren': !exists(json, 'abfragevariantenBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
-        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': !exists(json, 'abfragevariantenSachbearbeitungBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
     };
 }
 
@@ -98,8 +108,8 @@ export function BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON(va
     return {
         ...AbfrageInBearbeitungSachbearbeitungDtoToJSON(value),
         'verortung': VerortungDtoToJSON(value.verortung),
-        'abfragevariantenBaugenehmigungsverfahren': value.abfragevariantenBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
-        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
     };
 }
 

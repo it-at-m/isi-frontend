@@ -13,42 +13,39 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageAngelegtDto } from './AbfrageAngelegtDto';
 import {
-    AbfrageAngelegtDto,
     AbfrageAngelegtDtoFromJSON,
     AbfrageAngelegtDtoFromJSONTyped,
     AbfrageAngelegtDtoToJSON,
 } from './AbfrageAngelegtDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenAngelegtDto } from './AbfragevarianteBaugenehmigungsverfahrenAngelegtDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenAngelegtDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    BaugenehmigungsverfahrenAngelegtDtoAllOf,
-    BaugenehmigungsverfahrenAngelegtDtoAllOfFromJSON,
-    BaugenehmigungsverfahrenAngelegtDtoAllOfFromJSONTyped,
-    BaugenehmigungsverfahrenAngelegtDtoAllOfToJSON,
-} from './BaugenehmigungsverfahrenAngelegtDtoAllOf';
-import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
 } from './VerortungDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -109,7 +106,7 @@ export interface BaugenehmigungsverfahrenAngelegtDto extends AbfrageAngelegtDto 
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>}
      * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
-    abfragevariantenBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>;
+    abfragevariantenBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>;
 }
 
 
@@ -139,6 +136,18 @@ export const BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum = {
 export type BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum = typeof BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum[keyof typeof BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenAngelegtDto interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenAngelegtDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "standVerfahren" in value;
+    isInstance = isInstance && "fristBearbeitung" in value;
+    isInstance = isInstance && "abfragevariantenBaugenehmigungsverfahren" in value;
+
+    return isInstance;
+}
+
 export function BaugenehmigungsverfahrenAngelegtDtoFromJSON(json: any): BaugenehmigungsverfahrenAngelegtDto {
     return BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, false);
 }
@@ -146,6 +155,8 @@ export function BaugenehmigungsverfahrenAngelegtDtoFromJSON(json: any): Baugeneh
 export function BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageAngelegtDtoFromJSONTyped(json, ignoreDiscriminator),
@@ -157,7 +168,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json: any, igno
         'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': (new Date(json['fristBearbeitung'])),
-        'abfragevariantenBaugenehmigungsverfahren': !exists(json, 'abfragevariantenBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON)),
     };
 }
 
@@ -178,7 +189,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoToJSON(value?: Baugenehmigung
         'verortung': VerortungDtoToJSON(value.verortung),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': (value.fristBearbeitung.toISOString().substr(0,10)),
-        'abfragevariantenBaugenehmigungsverfahren': value.abfragevariantenBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON)),
+        'abfragevariantenBaugenehmigungsverfahren': ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON)),
     };
 }
 

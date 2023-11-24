@@ -33,6 +33,15 @@ export interface PresignedUrlDto {
     url?: string;
 }
 
+/**
+ * Check if a given object implements the PresignedUrlDto interface.
+ */
+export function instanceOfPresignedUrlDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function PresignedUrlDtoFromJSON(json: any): PresignedUrlDto {
     return PresignedUrlDtoFromJSONTyped(json, false);
 }

@@ -57,6 +57,17 @@ export const SchuleDtoEinrichtungstraegerEnum = {
 export type SchuleDtoEinrichtungstraegerEnum = typeof SchuleDtoEinrichtungstraegerEnum[keyof typeof SchuleDtoEinrichtungstraegerEnum];
 
 
+/**
+ * Check if a given object implements the SchuleDto interface.
+ */
+export function instanceOfSchuleDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "anzahlKlassen" in value;
+    isInstance = isInstance && "anzahlPlaetze" in value;
+
+    return isInstance;
+}
+
 export function SchuleDtoFromJSON(json: any): SchuleDto {
     return SchuleDtoFromJSONTyped(json, false);
 }

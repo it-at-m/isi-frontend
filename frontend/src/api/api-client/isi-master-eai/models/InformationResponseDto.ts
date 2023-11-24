@@ -76,6 +76,15 @@ export const InformationResponseDtoTypeEnum = {
 export type InformationResponseDtoTypeEnum = typeof InformationResponseDtoTypeEnum[keyof typeof InformationResponseDtoTypeEnum];
 
 
+/**
+ * Check if a given object implements the InformationResponseDto interface.
+ */
+export function instanceOfInformationResponseDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function InformationResponseDtoFromJSON(json: any): InformationResponseDto {
     return InformationResponseDtoFromJSONTyped(json, false);
 }

@@ -48,7 +48,7 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
-    sobonOrientierungswertJahr?: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
     /**
      * 
      * @type {string}
@@ -65,7 +65,7 @@ export const AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSach
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeitereAbfragen: 'WEITERE_ABFRAGEN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum];
 
@@ -81,6 +81,16 @@ export const AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSach
 export type AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum];
 
 
+/**
+ * Check if a given object implements the AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto interface.
+ */
+export function instanceOfAbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "sobonOrientierungswertJahr" in value;
+
+    return isInstance;
+}
+
 export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto {
     return AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped(json, false);
 }
@@ -95,7 +105,7 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
-        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
 }

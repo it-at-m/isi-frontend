@@ -13,32 +13,32 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteBauleitplanverfahrenDto } from './AbfragevarianteBauleitplanverfahrenDto';
 import {
-    AbfragevarianteBauleitplanverfahrenDto,
     AbfragevarianteBauleitplanverfahrenDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { UncertainBoolean } from './UncertainBoolean';
 import {
-    UncertainBoolean,
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
@@ -165,6 +165,15 @@ export const BauleitplanverfahrenDtoAllOfStandVerfahrenEnum = {
 } as const;
 export type BauleitplanverfahrenDtoAllOfStandVerfahrenEnum = typeof BauleitplanverfahrenDtoAllOfStandVerfahrenEnum[keyof typeof BauleitplanverfahrenDtoAllOfStandVerfahrenEnum];
 
+
+/**
+ * Check if a given object implements the BauleitplanverfahrenDtoAllOf interface.
+ */
+export function instanceOfBauleitplanverfahrenDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function BauleitplanverfahrenDtoAllOfFromJSON(json: any): BauleitplanverfahrenDtoAllOf {
     return BauleitplanverfahrenDtoAllOfFromJSONTyped(json, false);

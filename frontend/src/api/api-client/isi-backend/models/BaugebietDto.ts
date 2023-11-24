@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaurateDto } from './BaurateDto';
 import {
-    BaurateDto,
     BaurateDtoFromJSON,
     BaurateDtoFromJSONTyped,
     BaurateDtoToJSON,
@@ -132,6 +132,20 @@ export const BaugebietDtoArtBaulicheNutzungEnum = {
 } as const;
 export type BaugebietDtoArtBaulicheNutzungEnum = typeof BaugebietDtoArtBaulicheNutzungEnum[keyof typeof BaugebietDtoArtBaulicheNutzungEnum];
 
+
+/**
+ * Check if a given object implements the BaugebietDto interface.
+ */
+export function instanceOfBaugebietDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "bezeichnung" in value;
+    isInstance = isInstance && "artBaulicheNutzung" in value;
+    isInstance = isInstance && "realisierungVon" in value;
+    isInstance = isInstance && "bauraten" in value;
+    isInstance = isInstance && "technical" in value;
+
+    return isInstance;
+}
 
 export function BaugebietDtoFromJSON(json: any): BaugebietDto {
     return BaugebietDtoFromJSONTyped(json, false);

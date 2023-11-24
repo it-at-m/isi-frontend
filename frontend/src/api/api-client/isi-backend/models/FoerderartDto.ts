@@ -33,6 +33,15 @@ export interface FoerderartDto {
     anteilProzent?: number;
 }
 
+/**
+ * Check if a given object implements the FoerderartDto interface.
+ */
+export function instanceOfFoerderartDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function FoerderartDtoFromJSON(json: any): FoerderartDto {
     return FoerderartDtoFromJSONTyped(json, false);
 }

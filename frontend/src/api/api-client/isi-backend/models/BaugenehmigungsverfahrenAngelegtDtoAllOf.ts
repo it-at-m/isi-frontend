@@ -13,26 +13,26 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfragevarianteBaugenehmigungsverfahrenAngelegtDto } from './AbfragevarianteBaugenehmigungsverfahrenAngelegtDto';
 import {
-    AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenAngelegtDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
@@ -126,6 +126,15 @@ export const BaugenehmigungsverfahrenAngelegtDtoAllOfStandVerfahrenEnum = {
 } as const;
 export type BaugenehmigungsverfahrenAngelegtDtoAllOfStandVerfahrenEnum = typeof BaugenehmigungsverfahrenAngelegtDtoAllOfStandVerfahrenEnum[keyof typeof BaugenehmigungsverfahrenAngelegtDtoAllOfStandVerfahrenEnum];
 
+
+/**
+ * Check if a given object implements the BaugenehmigungsverfahrenAngelegtDtoAllOf interface.
+ */
+export function instanceOfBaugenehmigungsverfahrenAngelegtDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
 
 export function BaugenehmigungsverfahrenAngelegtDtoAllOfFromJSON(json: any): BaugenehmigungsverfahrenAngelegtDtoAllOf {
     return BaugenehmigungsverfahrenAngelegtDtoAllOfFromJSONTyped(json, false);

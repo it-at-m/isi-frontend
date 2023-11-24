@@ -188,6 +188,7 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
       searchQuery: "",
       selectBauleitplanverfahren: false,
       selectBaugenehmigungsverfahren: false,
+      selectWeiteresVerfahren: false,
       selectBauvorhaben: true,
       selectGrundschule: false,
       selectGsNachmittagBetreuung: false,

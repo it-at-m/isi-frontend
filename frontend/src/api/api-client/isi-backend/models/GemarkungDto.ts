@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FlurstueckDto } from './FlurstueckDto';
 import {
-    FlurstueckDto,
     FlurstueckDtoFromJSON,
     FlurstueckDtoFromJSONTyped,
     FlurstueckDtoToJSON,
 } from './FlurstueckDto';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryDto,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
@@ -56,6 +56,17 @@ export interface GemarkungDto {
      * @memberof GemarkungDto
      */
     multiPolygon: MultiPolygonGeometryDto;
+}
+
+/**
+ * Check if a given object implements the GemarkungDto interface.
+ */
+export function instanceOfGemarkungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "flurstuecke" in value;
+    isInstance = isInstance && "multiPolygon" in value;
+
+    return isInstance;
 }
 
 export function GemarkungDtoFromJSON(json: any): GemarkungDto {

@@ -13,48 +13,45 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageAngelegtDto } from './AbfrageAngelegtDto';
 import {
-    AbfrageAngelegtDto,
     AbfrageAngelegtDtoFromJSON,
     AbfrageAngelegtDtoFromJSONTyped,
     AbfrageAngelegtDtoToJSON,
 } from './AbfrageAngelegtDto';
+import type { AbfragevarianteBauleitplanverfahrenAngelegtDto } from './AbfragevarianteBauleitplanverfahrenAngelegtDto';
 import {
-    AbfragevarianteBauleitplanverfahrenAngelegtDto,
     AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenAngelegtDto';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
 import {
-    BauleitplanverfahrenAngelegtDtoAllOf,
-    BauleitplanverfahrenAngelegtDtoAllOfFromJSON,
-    BauleitplanverfahrenAngelegtDtoAllOfFromJSONTyped,
-    BauleitplanverfahrenAngelegtDtoAllOfToJSON,
-} from './BauleitplanverfahrenAngelegtDtoAllOf';
-import {
-    DokumentDto,
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
 } from './DokumentDto';
+import type { UncertainBoolean } from './UncertainBoolean';
 import {
-    UncertainBoolean,
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
+import type { VerortungDto } from './VerortungDto';
 import {
-    VerortungDto,
     VerortungDtoFromJSON,
     VerortungDtoFromJSONTyped,
     VerortungDtoToJSON,
 } from './VerortungDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -127,7 +124,7 @@ export interface BauleitplanverfahrenAngelegtDto extends AbfrageAngelegtDto {
      * @type {Array<AbfragevarianteBauleitplanverfahrenAngelegtDto>}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
-    abfragevariantenBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenAngelegtDto>;
+    abfragevariantenBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenAngelegtDto>;
 }
 
 
@@ -172,6 +169,20 @@ export const BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum = {
 export type BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum = typeof BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum[keyof typeof BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum];
 
 
+/**
+ * Check if a given object implements the BauleitplanverfahrenAngelegtDto interface.
+ */
+export function instanceOfBauleitplanverfahrenAngelegtDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "sobonRelevant" in value;
+    isInstance = isInstance && "standVerfahren" in value;
+    isInstance = isInstance && "fristBearbeitung" in value;
+    isInstance = isInstance && "offizielleMitzeichnung" in value;
+    isInstance = isInstance && "abfragevariantenBauleitplanverfahren" in value;
+
+    return isInstance;
+}
+
 export function BauleitplanverfahrenAngelegtDtoFromJSON(json: any): BauleitplanverfahrenAngelegtDto {
     return BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, false);
 }
@@ -179,6 +190,8 @@ export function BauleitplanverfahrenAngelegtDtoFromJSON(json: any): Bauleitplanv
 export function BauleitplanverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageAngelegtDtoFromJSONTyped(json, ignoreDiscriminator),
@@ -192,7 +205,7 @@ export function BauleitplanverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDi
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': (new Date(json['fristBearbeitung'])),
         'offizielleMitzeichnung': UncertainBooleanFromJSON(json['offizielleMitzeichnung']),
-        'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON)),
+        'abfragevariantenBauleitplanverfahren': ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON)),
     };
 }
 
@@ -215,7 +228,7 @@ export function BauleitplanverfahrenAngelegtDtoToJSON(value?: Bauleitplanverfahr
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': (value.fristBearbeitung.toISOString().substr(0,10)),
         'offizielleMitzeichnung': UncertainBooleanToJSON(value.offizielleMitzeichnung),
-        'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON)),
+        'abfragevariantenBauleitplanverfahren': ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON)),
     };
 }
 

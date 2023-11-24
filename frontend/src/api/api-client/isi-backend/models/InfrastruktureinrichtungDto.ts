@@ -13,12 +13,48 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    AdresseDto,
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { GrundschuleDto } from './GrundschuleDto';
+import {
+    GrundschuleDtoFromJSON,
+    GrundschuleDtoFromJSONTyped,
+    GrundschuleDtoToJSON,
+} from './GrundschuleDto';
+import type { GsNachmittagBetreuungDto } from './GsNachmittagBetreuungDto';
+import {
+    GsNachmittagBetreuungDtoFromJSON,
+    GsNachmittagBetreuungDtoFromJSONTyped,
+    GsNachmittagBetreuungDtoToJSON,
+} from './GsNachmittagBetreuungDto';
+import type { HausFuerKinderDto } from './HausFuerKinderDto';
+import {
+    HausFuerKinderDtoFromJSON,
+    HausFuerKinderDtoFromJSONTyped,
+    HausFuerKinderDtoToJSON,
+} from './HausFuerKinderDto';
+import type { KindergartenDto } from './KindergartenDto';
+import {
+    KindergartenDtoFromJSON,
+    KindergartenDtoFromJSONTyped,
+    KindergartenDtoToJSON,
+} from './KindergartenDto';
+import type { KinderkrippeDto } from './KinderkrippeDto';
+import {
+    KinderkrippeDtoFromJSON,
+    KinderkrippeDtoFromJSONTyped,
+    KinderkrippeDtoToJSON,
+} from './KinderkrippeDto';
+import type { MittelschuleDto } from './MittelschuleDto';
+import {
+    MittelschuleDtoFromJSON,
+    MittelschuleDtoFromJSONTyped,
+    MittelschuleDtoToJSON,
+} from './MittelschuleDto';
 
 import {
      GrundschuleDtoFromJSONTyped,
@@ -30,7 +66,7 @@ import {
 } from './';
 
 /**
- * 
+ * InfrastruktureinrichtungDto
  * @export
  * @interface InfrastruktureinrichtungDto
  */
@@ -147,6 +183,17 @@ export const InfrastruktureinrichtungDtoStatusEnum = {
 export type InfrastruktureinrichtungDtoStatusEnum = typeof InfrastruktureinrichtungDtoStatusEnum[keyof typeof InfrastruktureinrichtungDtoStatusEnum];
 
 
+/**
+ * Check if a given object implements the InfrastruktureinrichtungDto interface.
+ */
+export function instanceOfInfrastruktureinrichtungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "nameEinrichtung" in value;
+    isInstance = isInstance && "status" in value;
+
+    return isInstance;
+}
+
 export function InfrastruktureinrichtungDtoFromJSON(json: any): InfrastruktureinrichtungDto {
     return InfrastruktureinrichtungDtoFromJSONTyped(json, false);
 }
@@ -156,22 +203,22 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['infrastruktureinrichtungTyp'] === 'GrundschuleDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'GRUNDSCHULE') {
             return GrundschuleDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'GsNachmittagBetreuungDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'GS_NACHMITTAG_BETREUUNG') {
             return GsNachmittagBetreuungDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'HausFuerKinderDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'HAUS_FUER_KINDER') {
             return HausFuerKinderDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'KindergartenDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'KINDERGARTEN') {
             return KindergartenDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'KinderkrippeDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'KINDERKRIPPE') {
             return KinderkrippeDtoFromJSONTyped(json, true);
         }
-        if (json['infrastruktureinrichtungTyp'] === 'MittelschuleDto') {
+        if (json['infrastruktureinrichtungTyp'] === 'MITTELSCHULE') {
             return MittelschuleDtoFromJSONTyped(json, true);
         }
     }

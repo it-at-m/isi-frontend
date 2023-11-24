@@ -55,6 +55,15 @@ export const InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtun
 export type InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum];
 
 
+/**
+ * Check if a given object implements the InfrastruktureinrichtungSearchResultDtoAllOf interface.
+ */
+export function instanceOfInfrastruktureinrichtungSearchResultDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function InfrastruktureinrichtungSearchResultDtoAllOfFromJSON(json: any): InfrastruktureinrichtungSearchResultDtoAllOf {
     return InfrastruktureinrichtungSearchResultDtoAllOfFromJSONTyped(json, false);
 }

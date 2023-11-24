@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { UtmDto } from './UtmDto';
 import {
-    UtmDto,
     UtmDtoFromJSON,
     UtmDtoFromJSONTyped,
     UtmDtoToJSON,
 } from './UtmDto';
+import type { WgsDto } from './WgsDto';
 import {
-    WgsDto,
     WgsDtoFromJSON,
     WgsDtoFromJSONTyped,
     WgsDtoToJSON,
@@ -44,6 +44,15 @@ export interface PositionDto {
      * @memberof PositionDto
      */
     wgs?: WgsDto;
+}
+
+/**
+ * Check if a given object implements the PositionDto interface.
+ */
+export function instanceOfPositionDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PositionDtoFromJSON(json: any): PositionDto {

@@ -2,6 +2,10 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
 import { AbfragevarianteBauleitplanverfahrenDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 
+export function countDecimals(numberToCount: number): number {
+  return numberToCount % 1 ? numberToCount.toString().split(".")[1].length : 0;
+}
+
 /**
  * Addiert alle Anteile eines Fördermixes zusammen und gibt die Summe zurück
  */

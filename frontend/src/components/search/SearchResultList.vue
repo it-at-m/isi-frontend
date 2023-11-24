@@ -24,11 +24,13 @@
             left
             color="green lighten-1"
           >
-            mdi-comment-alert
+            {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
           </v-icon>
           {{ castToAbfrageSearchResultDto(item).name }}
         </v-card-subtitle>
         <v-card-text>
+          <span> Abfrageart: {{ getArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }} </span>
+          <v-spacer />
           <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
           <v-spacer />
           <span>
@@ -89,6 +91,7 @@
         </v-card-subtitle>
         <v-card-text>
           <span>
+            Einrichtungstyp:
             {{
               getLookupValueInfrastruktureinrichtung(
                 castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
@@ -113,6 +116,7 @@
 import { Component, Mixins } from "vue-property-decorator";
 import {
   AbfrageSearchResultDto,
+  AbfrageSearchResultDtoArtAbfrageEnum,
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
@@ -241,6 +245,30 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
 
   private getLookupValueAbfrage(key: string, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+  }
+
+  private getIconArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined) {
+    let icon = "";
+    if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      icon = "mdi-comment-alert";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      icon = "mdi-account-multiple-plus";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
+      icon = "mdi-account-plus";
+    }
+    return icon;
+  }
+
+  private getArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined): string {
+    let bezeichnungArtAbfrage = "";
+    if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      bezeichnungArtAbfrage = "Bauleitplanverfahren";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
+    } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
+      bezeichnungArtAbfrage = "Weiteres Verfahren";
+    }
+    return bezeichnungArtAbfrage;
   }
 
   private getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {

@@ -82,6 +82,7 @@ import {
   verteilteGeschossflaecheWohnen,
   geschossflaecheWohnen,
   verteilteGeschossflaecheWohnenFormatted,
+  countDecimals,
 } from "@/utils/CalculationUtil";
 
 @Component({
@@ -122,8 +123,10 @@ export default class BaurateComponent extends Mixins(
       abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
     ): boolean | string => {
       return (
-        verteilteGeschossflaecheWohnen(baugebiet, abfragevariante) <=
-          geschossflaecheWohnen(baugebiet, abfragevariante) ||
+        _.round(
+          verteilteGeschossflaecheWohnen(baugebiet, abfragevariante),
+          countDecimals(geschossflaecheWohnen(baugebiet, abfragevariante)),
+        ) <= geschossflaecheWohnen(baugebiet, abfragevariante) ||
         `Insgesamt sind ${verteilteGeschossflaecheWohnenFormatted(
           baugebiet,
           abfragevariante,

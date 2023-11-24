@@ -124,7 +124,7 @@
 <script lang="ts">
 import { Component, Emit, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import BedarfsmeldungFachabteilungenModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
+import BedarfsmeldungFachreferateModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
@@ -138,7 +138,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
   SaveLeaveMixin,
   FieldValidationRulesMixin,
 ) {
-  @VModel({ type: BedarfsmeldungFachabteilungenModel }) bedarfsmeldung!: BedarfsmeldungFachabteilungenModel;
+  @VModel({ type: BedarfsmeldungFachreferateModel }) bedarfsmeldung!: BedarfsmeldungFachreferateModel;
 
   @Prop({ type: Boolean, default: false })
   private showBedarfsmeldungDialog!: boolean;

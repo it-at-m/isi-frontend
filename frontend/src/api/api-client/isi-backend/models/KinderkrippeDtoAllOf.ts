@@ -63,6 +63,15 @@ export const KinderkrippeDtoAllOfEinrichtungstraegerEnum = {
 export type KinderkrippeDtoAllOfEinrichtungstraegerEnum = typeof KinderkrippeDtoAllOfEinrichtungstraegerEnum[keyof typeof KinderkrippeDtoAllOfEinrichtungstraegerEnum];
 
 
+/**
+ * Check if a given object implements the KinderkrippeDtoAllOf interface.
+ */
+export function instanceOfKinderkrippeDtoAllOf(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function KinderkrippeDtoAllOfFromJSON(json: any): KinderkrippeDtoAllOf {
     return KinderkrippeDtoAllOfFromJSONTyped(json, false);
 }

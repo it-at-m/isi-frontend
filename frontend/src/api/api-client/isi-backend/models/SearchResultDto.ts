@@ -13,6 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageSearchResultDto } from './AbfrageSearchResultDto';
+import {
+    AbfrageSearchResultDtoFromJSON,
+    AbfrageSearchResultDtoFromJSONTyped,
+    AbfrageSearchResultDtoToJSON,
+} from './AbfrageSearchResultDto';
+import type { BauvorhabenSearchResultDto } from './BauvorhabenSearchResultDto';
+import {
+    BauvorhabenSearchResultDtoFromJSON,
+    BauvorhabenSearchResultDtoFromJSONTyped,
+    BauvorhabenSearchResultDtoToJSON,
+} from './BauvorhabenSearchResultDto';
+import type { InfrastruktureinrichtungSearchResultDto } from './InfrastruktureinrichtungSearchResultDto';
+import {
+    InfrastruktureinrichtungSearchResultDtoFromJSON,
+    InfrastruktureinrichtungSearchResultDtoFromJSONTyped,
+    InfrastruktureinrichtungSearchResultDtoToJSON,
+} from './InfrastruktureinrichtungSearchResultDto';
+
 import {
      AbfrageSearchResultDtoFromJSONTyped,
      BauvorhabenSearchResultDtoFromJSONTyped,
@@ -20,7 +39,7 @@ import {
 } from './';
 
 /**
- * 
+ * SearchResultDto
  * @export
  * @interface SearchResultDto
  */
@@ -45,6 +64,15 @@ export const SearchResultDtoTypeEnum = {
 export type SearchResultDtoTypeEnum = typeof SearchResultDtoTypeEnum[keyof typeof SearchResultDtoTypeEnum];
 
 
+/**
+ * Check if a given object implements the SearchResultDto interface.
+ */
+export function instanceOfSearchResultDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function SearchResultDtoFromJSON(json: any): SearchResultDto {
     return SearchResultDtoFromJSONTyped(json, false);
 }
@@ -54,13 +82,13 @@ export function SearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['type'] === 'AbfrageSearchResultDto') {
+        if (json['type'] === 'ABFRAGE') {
             return AbfrageSearchResultDtoFromJSONTyped(json, true);
         }
-        if (json['type'] === 'BauvorhabenSearchResultDto') {
+        if (json['type'] === 'BAUVORHABEN') {
             return BauvorhabenSearchResultDtoFromJSONTyped(json, true);
         }
-        if (json['type'] === 'InfrastruktureinrichtungSearchResultDto') {
+        if (json['type'] === 'INFRASTRUKTUREINRICHTUNG') {
             return InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true);
         }
     }

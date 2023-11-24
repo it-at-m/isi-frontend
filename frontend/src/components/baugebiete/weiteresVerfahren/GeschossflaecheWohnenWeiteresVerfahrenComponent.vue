@@ -1,5 +1,5 @@
 <template>
-  <field-group-card :card-title="geschossflaecheWohnenTitle">
+  <field-group-card :card-title="geplanteGeschossflaecheWohnenTitle">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -10,10 +10,10 @@
           ref="gfWohnenGeplantField"
           v-model="baugebiet.gfWohnenGeplant"
           :disabled="!isEditable"
+          :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
           class="mx-3"
-          label="Geplante Geschossfläche Wohnen"
+          label="Gesamt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <v-col
@@ -28,7 +28,6 @@
           class="mx-3"
           label="Baurechtlich genehmigt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <v-col
@@ -43,7 +42,6 @@
           class="mx-3"
           label="Baurechtlich festgesetzt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
     </v-row>
@@ -58,9 +56,18 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { AbfragevarianteWeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
+import {
+  countDecimals,
+  geschossflaecheWohnenAbfragevariante,
+  geschossflaecheWohnenAbfragevarianteFormatted,
+  verteilteGeschossflaecheWohnenAbfragevariante,
+  verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
+} from "@/utils/CalculationUtil";
+import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, NumField } })
-export default class GeschossflaecheWohnenBaugenehmigungsverfahrenComponent extends Mixins(
+export default class GeschossflaecheWohnenWeiteresVerfahrenComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
@@ -70,6 +77,25 @@ export default class GeschossflaecheWohnenBaugenehmigungsverfahrenComponent exte
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  private geschossflaecheWohnenTitle = "Geschossfläche Wohnen";
+  @Prop()
+  private abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined;
+
+  private geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
+
+  private validationRules: unknown = {
+    validateGeschossflaecheWohnen: (
+      abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined,
+    ): boolean | string => {
+      return (
+        _.round(
+          verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
+          countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
+        ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+        `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+          abfragevariante,
+        )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
+      );
+    },
+  };
 }
 </script>
