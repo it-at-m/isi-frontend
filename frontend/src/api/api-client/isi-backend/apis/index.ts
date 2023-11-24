@@ -4,6 +4,7 @@ export * from './AbfrageStatusApi';
 export * from './AbfragenApi';
 export * from './BaurateApi';
 export * from './BauvorhabenApi';
+export * from './BerechnungenApi';
 export * from './DateihandlingApi';
 export * from './DokumenteApi';
 export * from './FileInfoStammApi';
