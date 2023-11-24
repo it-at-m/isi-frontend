@@ -3,6 +3,7 @@ import ErrorHandler from "@/mixins/requests/ErrorHandler";
 import {
   BerechnungenApi,
   CalculateLangfristigerPlanungsursaechlicherBedarfRequest,
+  LangfristigerPlanungsursaechlicherBedarfDto,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 
@@ -14,7 +15,12 @@ export default class CalculationApiRequestMixin extends Mixins(ErrorHandler) {
     this.calculationApi = new BerechnungenApi(RequestUtils.getBasicFetchConfigurationForBackend());
   }
 
-  public foo(abfrageId: string, abfragevarianteId: string, gueltigAb: Date, showInInformationList: boolean): void {
+  public calculateLangfristigerPlanungsursaechlicherBedarf(
+    abfrageId: string,
+    abfragevarianteId: string,
+    gueltigAb: Date,
+    showInInformationList: boolean,
+  ): Promise<LangfristigerPlanungsursaechlicherBedarfDto> {
     const requestObject: CalculateLangfristigerPlanungsursaechlicherBedarfRequest = {
       calculationRequestDto: {
         abfrageId,
@@ -23,7 +29,7 @@ export default class CalculationApiRequestMixin extends Mixins(ErrorHandler) {
       },
     };
 
-    this.calculationApi
+    return this.calculationApi
       .calculateLangfristigerPlanungsursaechlicherBedarf(requestObject, RequestUtils.getGETConfig())
       .then((response) => {
         return response;
