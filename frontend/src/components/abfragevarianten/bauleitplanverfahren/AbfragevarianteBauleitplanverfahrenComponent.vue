@@ -40,6 +40,10 @@
       ref="bedarfsmeldungFachreferateComponent"
       v-model="abfragevariante"
     />
+    <langfristiger-planungsursaechlicher-bedarf-component
+      :abfragevariante-id="abfragevariante?.id"
+      :stammdaten-gueltig-ab="undefined"
+    />
   </v-container>
 </template>
 
@@ -54,9 +58,11 @@ import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/B
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfragevarianten/calculation/LangfristigerPlanungsursaechlicherBedarfComponent.vue";
 
 @Component({
   components: {
+    LangfristigerPlanungsursaechlicherBedarfComponent,
     FieldGroupCard,
     CommonBauleitplanverfahrenComponent,
     GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent,
