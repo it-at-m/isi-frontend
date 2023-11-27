@@ -3,13 +3,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import CalculationApiRequestMixin from "@/mixins/requests/CalculationApiRequestMixin";
 import { AbfrageDto, LangfristigerPlanungsursaechlicherBedarfDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class LangfristigerPlanungsursaechlicherBedarfComponent extends Mixins(CalculationApiRequestMixin) {
