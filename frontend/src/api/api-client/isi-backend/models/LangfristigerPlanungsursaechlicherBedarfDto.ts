@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { InfrastrukturbedarfProJahrDto } from './InfrastrukturbedarfProJahrDto';
+import {
+    InfrastrukturbedarfProJahrDtoFromJSON,
+    InfrastrukturbedarfProJahrDtoFromJSONTyped,
+    InfrastrukturbedarfProJahrDtoToJSON,
+} from './InfrastrukturbedarfProJahrDto';
 import type { WohneinheitenProFoerderartProJahrDto } from './WohneinheitenProFoerderartProJahrDto';
 import {
     WohneinheitenProFoerderartProJahrDtoFromJSON,
@@ -32,6 +38,18 @@ export interface LangfristigerPlanungsursaechlicherBedarfDto {
      * @memberof LangfristigerPlanungsursaechlicherBedarfDto
      */
     wohneinheiten: Array<WohneinheitenProFoerderartProJahrDto>;
+    /**
+     * 
+     * @type {Array<InfrastrukturbedarfProJahrDto>}
+     * @memberof LangfristigerPlanungsursaechlicherBedarfDto
+     */
+    bedarfKinderkrippe: Array<InfrastrukturbedarfProJahrDto>;
+    /**
+     * 
+     * @type {Array<InfrastrukturbedarfProJahrDto>}
+     * @memberof LangfristigerPlanungsursaechlicherBedarfDto
+     */
+    bedarfKindergarten: Array<InfrastrukturbedarfProJahrDto>;
 }
 
 /**
@@ -40,6 +58,8 @@ export interface LangfristigerPlanungsursaechlicherBedarfDto {
 export function instanceOfLangfristigerPlanungsursaechlicherBedarfDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "wohneinheiten" in value;
+    isInstance = isInstance && "bedarfKinderkrippe" in value;
+    isInstance = isInstance && "bedarfKindergarten" in value;
 
     return isInstance;
 }
@@ -55,6 +75,8 @@ export function LangfristigerPlanungsursaechlicherBedarfDtoFromJSONTyped(json: a
     return {
         
         'wohneinheiten': ((json['wohneinheiten'] as Array<any>).map(WohneinheitenProFoerderartProJahrDtoFromJSON)),
+        'bedarfKinderkrippe': ((json['bedarfKinderkrippe'] as Array<any>).map(InfrastrukturbedarfProJahrDtoFromJSON)),
+        'bedarfKindergarten': ((json['bedarfKindergarten'] as Array<any>).map(InfrastrukturbedarfProJahrDtoFromJSON)),
     };
 }
 
@@ -68,6 +90,8 @@ export function LangfristigerPlanungsursaechlicherBedarfDtoToJSON(value?: Langfr
     return {
         
         'wohneinheiten': ((value.wohneinheiten as Array<any>).map(WohneinheitenProFoerderartProJahrDtoToJSON)),
+        'bedarfKinderkrippe': ((value.bedarfKinderkrippe as Array<any>).map(InfrastrukturbedarfProJahrDtoToJSON)),
+        'bedarfKindergarten': ((value.bedarfKindergarten as Array<any>).map(InfrastrukturbedarfProJahrDtoToJSON)),
     };
 }
 

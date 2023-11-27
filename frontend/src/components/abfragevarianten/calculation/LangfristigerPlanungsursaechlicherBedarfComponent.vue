@@ -1,5 +1,14 @@
 <template>
-  <field-group-card :card-title="'Planungsursächliche Bedarfe'"> </field-group-card>
+  <field-group-card :card-title="'Planungsursächliche Bedarfe'">
+    <infrastrukturbedarf-component
+      v-model="bedarfKinderkrippe"
+      :title="'Kinderkrippe'"
+    />
+    <infrastrukturbedarf-component
+      v-model="bedarfKindergarten"
+      :title="'Kindergarten'"
+    />
+  </field-group-card>
 </template>
 
 <script lang="ts">
@@ -7,10 +16,15 @@ import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import CalculationApiRequestMixin from "@/mixins/requests/CalculationApiRequestMixin";
-import { AbfrageDto, LangfristigerPlanungsursaechlicherBedarfDto } from "@/api/api-client/isi-backend";
+import {
+  AbfrageDto,
+  InfrastrukturbedarfProJahrDto,
+  LangfristigerPlanungsursaechlicherBedarfDto,
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
+import InfrastrukturbedarfComponent from "@/components/abfragevarianten/calculation/InfrastrukturbedarfComponent.vue";
 
-@Component({ components: { FieldGroupCard, NumField } })
+@Component({ components: { InfrastrukturbedarfComponent, FieldGroupCard, NumField } })
 export default class LangfristigerPlanungsursaechlicherBedarfComponent extends Mixins(CalculationApiRequestMixin) {
   @Prop()
   private stammdatenGueltigAb!: Date;
@@ -19,6 +33,14 @@ export default class LangfristigerPlanungsursaechlicherBedarfComponent extends M
   private abfragevarianteId!: string;
 
   private langfristigerPlanungsursaechlicherBedarf!: LangfristigerPlanungsursaechlicherBedarfDto;
+
+  get bedarfKinderkrippe(): Array<InfrastrukturbedarfProJahrDto> | undefined {
+    return this.langfristigerPlanungsursaechlicherBedarf?.bedarfKinderkrippe;
+  }
+
+  get bedarfKindergarten(): Array<InfrastrukturbedarfProJahrDto> | undefined {
+    return this.langfristigerPlanungsursaechlicherBedarf?.bedarfKindergarten;
+  }
 
   @Watch("abfragevarianteId", { immediate: true })
   private watchAbfragevarianteId(): void {

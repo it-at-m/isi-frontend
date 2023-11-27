@@ -62,6 +62,7 @@ export * from './GsNachmittagBetreuungDtoAllOf';
 export * from './HausFuerKinderDto';
 export * from './HausFuerKinderDtoAllOf';
 export * from './InformationResponseDto';
+export * from './InfrastrukturbedarfProJahrDto';
 export * from './InfrastruktureinrichtungDto';
 export * from './InfrastruktureinrichtungSearchResultDto';
 export * from './InfrastruktureinrichtungSearchResultDtoAllOf';
