@@ -69,7 +69,7 @@ export default class InfrastrukturbedarfComponent extends Vue {
 
   private rowClasses(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto) {
     if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
-      return "blue-grey lighten-4 font-weight-bold";
+      return "blue-grey lighten-5 font-weight-bold";
     }
   }
 
