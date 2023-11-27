@@ -5,7 +5,6 @@
         <v-expansion-panel-header> {{ title }} </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-data-table
-            style="border: 0.5px lightgray solid"
             :headers="headersDataTable"
             :items="infrastrukturBedarfeProJahr"
             :items-per-page="-1"
@@ -57,7 +56,7 @@ export default class InfrastrukturbedarfComponent extends Vue {
         width: "25%",
         divider: true,
       },
-      { text: "Gruppen", value: "anzahlGruppen", align: "center", sortable: false, width: "25%", divider: true },
+      { text: "Gruppen", value: "anzahlGruppen", align: "center", sortable: false, width: "25%", divider: false },
     ];
   }
 
