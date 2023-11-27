@@ -12,7 +12,11 @@
             dense
             hide-default-footer
             fixed-header
-          />
+          >
+            <template #item.anzahlGruppen="{ item }">
+              {{ roundToFixedTwoDecimals(item.anzahlGruppen) }}
+            </template>
+          </v-data-table>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -71,6 +75,10 @@ export default class InfrastrukturbedarfComponent extends Vue {
     if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
       return "blue-grey lighten-5";
     }
+  }
+
+  private roundToFixedTwoDecimals(value: number): string {
+    return value.toFixed(2);
   }
 
   mounted(): void {
