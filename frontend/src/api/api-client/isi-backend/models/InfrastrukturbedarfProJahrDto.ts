@@ -30,13 +30,13 @@ export interface InfrastrukturbedarfProJahrDto {
      * @type {number}
      * @memberof InfrastrukturbedarfProJahrDto
      */
-    anzahlKinderGesamt: number;
+    anzahlPersonenGesamt: number;
     /**
      * 
      * @type {number}
      * @memberof InfrastrukturbedarfProJahrDto
      */
-    anzahlKinderZuVersorgen: number;
+    anzahlPersonenZuVersorgen: number;
     /**
      * 
      * @type {number}
@@ -51,8 +51,8 @@ export interface InfrastrukturbedarfProJahrDto {
 export function instanceOfInfrastrukturbedarfProJahrDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "jahr" in value;
-    isInstance = isInstance && "anzahlKinderGesamt" in value;
-    isInstance = isInstance && "anzahlKinderZuVersorgen" in value;
+    isInstance = isInstance && "anzahlPersonenGesamt" in value;
+    isInstance = isInstance && "anzahlPersonenZuVersorgen" in value;
     isInstance = isInstance && "anzahlGruppen" in value;
 
     return isInstance;
@@ -69,8 +69,8 @@ export function InfrastrukturbedarfProJahrDtoFromJSONTyped(json: any, ignoreDisc
     return {
         
         'jahr': json['jahr'],
-        'anzahlKinderGesamt': json['anzahlKinderGesamt'],
-        'anzahlKinderZuVersorgen': json['anzahlKinderZuVersorgen'],
+        'anzahlPersonenGesamt': json['anzahlPersonenGesamt'],
+        'anzahlPersonenZuVersorgen': json['anzahlPersonenZuVersorgen'],
         'anzahlGruppen': json['anzahlGruppen'],
     };
 }
@@ -85,8 +85,8 @@ export function InfrastrukturbedarfProJahrDtoToJSON(value?: InfrastrukturbedarfP
     return {
         
         'jahr': value.jahr,
-        'anzahlKinderGesamt': value.anzahlKinderGesamt,
-        'anzahlKinderZuVersorgen': value.anzahlKinderZuVersorgen,
+        'anzahlPersonenGesamt': value.anzahlPersonenGesamt,
+        'anzahlPersonenZuVersorgen': value.anzahlPersonenZuVersorgen,
         'anzahlGruppen': value.anzahlGruppen,
     };
 }

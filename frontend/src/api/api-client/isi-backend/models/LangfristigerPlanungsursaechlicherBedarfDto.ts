@@ -19,6 +19,12 @@ import {
     InfrastrukturbedarfProJahrDtoFromJSONTyped,
     InfrastrukturbedarfProJahrDtoToJSON,
 } from './InfrastrukturbedarfProJahrDto';
+import type { PersonenProJahrDto } from './PersonenProJahrDto';
+import {
+    PersonenProJahrDtoFromJSON,
+    PersonenProJahrDtoFromJSONTyped,
+    PersonenProJahrDtoToJSON,
+} from './PersonenProJahrDto';
 import type { WohneinheitenProFoerderartProJahrDto } from './WohneinheitenProFoerderartProJahrDto';
 import {
     WohneinheitenProFoerderartProJahrDtoFromJSON,
@@ -50,6 +56,12 @@ export interface LangfristigerPlanungsursaechlicherBedarfDto {
      * @memberof LangfristigerPlanungsursaechlicherBedarfDto
      */
     bedarfKindergarten: Array<InfrastrukturbedarfProJahrDto>;
+    /**
+     * 
+     * @type {Array<PersonenProJahrDto>}
+     * @memberof LangfristigerPlanungsursaechlicherBedarfDto
+     */
+    alleEinwohner: Array<PersonenProJahrDto>;
 }
 
 /**
@@ -60,6 +72,7 @@ export function instanceOfLangfristigerPlanungsursaechlicherBedarfDto(value: obj
     isInstance = isInstance && "wohneinheiten" in value;
     isInstance = isInstance && "bedarfKinderkrippe" in value;
     isInstance = isInstance && "bedarfKindergarten" in value;
+    isInstance = isInstance && "alleEinwohner" in value;
 
     return isInstance;
 }
@@ -77,6 +90,7 @@ export function LangfristigerPlanungsursaechlicherBedarfDtoFromJSONTyped(json: a
         'wohneinheiten': ((json['wohneinheiten'] as Array<any>).map(WohneinheitenProFoerderartProJahrDtoFromJSON)),
         'bedarfKinderkrippe': ((json['bedarfKinderkrippe'] as Array<any>).map(InfrastrukturbedarfProJahrDtoFromJSON)),
         'bedarfKindergarten': ((json['bedarfKindergarten'] as Array<any>).map(InfrastrukturbedarfProJahrDtoFromJSON)),
+        'alleEinwohner': ((json['alleEinwohner'] as Array<any>).map(PersonenProJahrDtoFromJSON)),
     };
 }
 
@@ -92,6 +106,7 @@ export function LangfristigerPlanungsursaechlicherBedarfDtoToJSON(value?: Langfr
         'wohneinheiten': ((value.wohneinheiten as Array<any>).map(WohneinheitenProFoerderartProJahrDtoToJSON)),
         'bedarfKinderkrippe': ((value.bedarfKinderkrippe as Array<any>).map(InfrastrukturbedarfProJahrDtoToJSON)),
         'bedarfKindergarten': ((value.bedarfKindergarten as Array<any>).map(InfrastrukturbedarfProJahrDtoToJSON)),
+        'alleEinwohner': ((value.alleEinwohner as Array<any>).map(PersonenProJahrDtoToJSON)),
     };
 }
 
