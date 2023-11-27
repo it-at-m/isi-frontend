@@ -39,7 +39,14 @@ export default class InfrastrukturbedarfComponent extends Vue {
 
   get headersDataTable(): Array<DataTableHeader> {
     return [
-      { text: "Jahr", value: "jahr", align: "center", sortable: false, width: "25%", divider: true },
+      {
+        text: "Jahr",
+        value: "jahr",
+        align: "center",
+        sortable: false,
+        width: "25%",
+        divider: true,
+      },
       {
         text: "Kinder gesamt",
         value: "anzahlKinderGesamt",
