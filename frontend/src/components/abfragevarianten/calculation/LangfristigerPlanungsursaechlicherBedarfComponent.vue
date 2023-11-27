@@ -1,13 +1,14 @@
 <template>
   <field-group-card :card-title="'Planungsursächliche Bedarfe'">
     <infrastrukturbedarf-component
-      v-model="bedarfKinderkrippe"
+      :infrastruktur-bedarfe-pro-jahr="bedarfKinderkrippe"
       :title="'Kinderkrippe'"
     />
     <infrastrukturbedarf-component
-      v-model="bedarfKindergarten"
+      :infrastruktur-bedarfe-pro-jahr="bedarfKindergarten"
       :title="'Kindergarten'"
     />
+    <alle-einwohner-component :personen-pro-jahr="alleEinwohner" />
   </field-group-card>
 </template>
 
@@ -20,11 +21,13 @@ import {
   AbfrageDto,
   InfrastrukturbedarfProJahrDto,
   LangfristigerPlanungsursaechlicherBedarfDto,
+  PersonenProJahrDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import InfrastrukturbedarfComponent from "@/components/abfragevarianten/calculation/InfrastrukturbedarfComponent.vue";
+import AlleEinwohnerComponent from "@/components/abfragevarianten/calculation/AlleEinwohnerComponent.vue";
 
-@Component({ components: { InfrastrukturbedarfComponent, FieldGroupCard, NumField } })
+@Component({ components: { AlleEinwohnerComponent, InfrastrukturbedarfComponent, FieldGroupCard, NumField } })
 export default class LangfristigerPlanungsursaechlicherBedarfComponent extends Mixins(CalculationApiRequestMixin) {
   @Prop()
   private stammdatenGueltigAb!: Date;
@@ -40,6 +43,10 @@ export default class LangfristigerPlanungsursaechlicherBedarfComponent extends M
 
   get bedarfKindergarten(): Array<InfrastrukturbedarfProJahrDto> | undefined {
     return this.langfristigerPlanungsursaechlicherBedarf?.bedarfKindergarten;
+  }
+
+  get alleEinwohner(): Array<PersonenProJahrDto> | undefined {
+    return this.langfristigerPlanungsursaechlicherBedarf?.alleEinwohner;
   }
 
   @Watch("abfragevarianteId", { immediate: true })
