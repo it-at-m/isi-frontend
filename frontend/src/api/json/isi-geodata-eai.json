@@ -281,7 +281,14 @@
             "description": "Definiert den Geometrietyp in der Ausprägung als Multipolygon oder als Point."
           }
         },
-        "discriminator": { "propertyName": "type" }
+        "description": "GeometryDto",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "MultiPolygon": "#/components/schemas/MultiPolygonGeometryDto",
+            "Point": "#/components/schemas/PointGeometryDto"
+          }
+        }
       },
       "PointGeometryDto": {
         "required": ["coordinates", "type"],

@@ -32,7 +32,7 @@ import {
 } from './';
 
 /**
- * 
+ * GeometryDto
  * @export
  * @interface GeometryDto
  */
@@ -64,10 +64,10 @@ export function GeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
         return json;
     }
     if (!ignoreDiscriminator) {
-        if (json['type'] === 'MultiPolygonGeometryDto') {
+        if (json['type'] === 'MultiPolygon') {
             return MultiPolygonGeometryDtoFromJSONTyped(json, true);
         }
-        if (json['type'] === 'PointGeometryDto') {
+        if (json['type'] === 'Point') {
             return PointGeometryDtoFromJSONTyped(json, true);
         }
     }

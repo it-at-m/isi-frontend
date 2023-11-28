@@ -32,7 +32,7 @@ import {
  * 
  * @export
  */
-export type FeatureDtoStadtbezirkDtoGeometry = { type: 'MultiPolygonGeometryDto' } & MultiPolygonGeometryDto | { type: 'PointGeometryDto' } & PointGeometryDto;
+export type FeatureDtoStadtbezirkDtoGeometry = { type: 'MultiPolygon' } & MultiPolygonGeometryDto | { type: 'MultiPolygonGeometryDto' } & MultiPolygonGeometryDto | { type: 'Point' } & PointGeometryDto | { type: 'PointGeometryDto' } & PointGeometryDto;
 
 export function FeatureDtoStadtbezirkDtoGeometryFromJSON(json: any): FeatureDtoStadtbezirkDtoGeometry {
     return FeatureDtoStadtbezirkDtoGeometryFromJSONTyped(json, false);
@@ -43,8 +43,12 @@ export function FeatureDtoStadtbezirkDtoGeometryFromJSONTyped(json: any, ignoreD
         return json;
     }
     switch (json['type']) {
+        case 'MultiPolygon':
+            return {...MultiPolygonGeometryDtoFromJSONTyped(json, true), type: 'MultiPolygon'};
         case 'MultiPolygonGeometryDto':
             return {...MultiPolygonGeometryDtoFromJSONTyped(json, true), type: 'MultiPolygonGeometryDto'};
+        case 'Point':
+            return {...PointGeometryDtoFromJSONTyped(json, true), type: 'Point'};
         case 'PointGeometryDto':
             return {...PointGeometryDtoFromJSONTyped(json, true), type: 'PointGeometryDto'};
         default:
@@ -60,8 +64,12 @@ export function FeatureDtoStadtbezirkDtoGeometryToJSON(value?: FeatureDtoStadtbe
         return null;
     }
     switch (value['type']) {
+        case 'MultiPolygon':
+            return MultiPolygonGeometryDtoToJSON(value);
         case 'MultiPolygonGeometryDto':
             return MultiPolygonGeometryDtoToJSON(value);
+        case 'Point':
+            return PointGeometryDtoToJSON(value);
         case 'PointGeometryDto':
             return PointGeometryDtoToJSON(value);
         default:
