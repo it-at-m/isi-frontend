@@ -55,14 +55,11 @@ export default class LangfristigerPlanungsursaechlicherBedarfComponent extends M
       ? undefined
       : (this.$store.getters["search/selectedAbfrage"] as AbfrageDto).id;
     if (!_.isNil(abfrageId) && !_.isNil(this.stammdatenGueltigAb) && !_.isNil(this.abfragevarianteId)) {
-      this.calculateLangfristigerPlanungsursaechlicherBedarf(
-        abfrageId,
-        this.abfragevarianteId,
-        this.stammdatenGueltigAb,
-        false,
-      ).then((bedarf) => {
-        this.langfristigerPlanungsursaechlicherBedarf = bedarf;
-      });
+      this.calculateLangfristigerPlanungsursaechlicherBedarf(abfrageId, this.abfragevarianteId, false).then(
+        (bedarf) => {
+          this.langfristigerPlanungsursaechlicherBedarf = bedarf;
+        },
+      );
     }
   }
 }
