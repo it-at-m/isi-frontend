@@ -18,14 +18,12 @@ export default class CalculationApiRequestMixin extends Mixins(ErrorHandler) {
   public calculateLangfristigerPlanungsursaechlicherBedarf(
     abfrageId: string,
     abfragevarianteId: string,
-    gueltigAb: Date,
     showInInformationList: boolean,
   ): Promise<LangfristigerPlanungsursaechlicherBedarfDto> {
     const requestObject: CalculateLangfristigerPlanungsursaechlicherBedarfRequest = {
       calculationRequestDto: {
         abfrageId,
         abfragevarianteId,
-        gueltigAb,
       },
     };
 
