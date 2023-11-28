@@ -297,35 +297,30 @@ export default class Bauvorhaben extends Mixins(
 
   private abfrageUebernehmen(abfrage: AbfrageDto): void {
     this.datenuebernahmeAbfrageId = abfrage.id;
-    switch (abfrage.artAbfrage) {
-      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren: {
-        let verfahren: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto;
-        if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-          verfahren = abfrage as BauleitplanverfahrenDto;
-        } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-          verfahren = abfrage as BaugenehmigungsverfahrenDto;
-        } else {
-          verfahren = abfrage as WeiteresVerfahrenDto;
-        }
-        this.bauvorhaben.adresse = _.isNil(verfahren.adresse) ? createAdresseDto() : _.cloneDeep(verfahren.adresse);
-        this.bauvorhaben.verortung = _.cloneDeep(verfahren.verortung);
-        this.bauvorhaben.standVerfahren = verfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
-        this.bauvorhaben.standVerfahrenFreieEingabe = verfahren.standVerfahrenFreieEingabe;
-        this.bauvorhaben.bebauungsplannummer = verfahren.bebauungsplannummer;
-        if (verfahren.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-          this.bauvorhaben.sobonRelevant = UncertainBoolean.Unspecified;
-          this.bauvorhaben.sobonJahr = undefined;
-        } else {
-          const verfahrenWithSobonAttribute: BauleitplanverfahrenDto | WeiteresVerfahrenDto = verfahren;
-          this.bauvorhaben.sobonRelevant = _.isNil(verfahrenWithSobonAttribute.sobonRelevant)
-            ? UncertainBoolean.Unspecified
-            : verfahrenWithSobonAttribute.sobonRelevant;
-          this.bauvorhaben.sobonJahr = verfahrenWithSobonAttribute.sobonJahr;
-        }
-        break;
+    if (abfrage.artAbfrage !== AbfrageDtoArtAbfrageEnum.Unspecified) {
+      let verfahren: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto;
+      if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+        verfahren = abfrage as BauleitplanverfahrenDto;
+      } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+        verfahren = abfrage as BaugenehmigungsverfahrenDto;
+      } else {
+        verfahren = abfrage as WeiteresVerfahrenDto;
       }
-      default:
-        break;
+      this.bauvorhaben.adresse = _.isNil(verfahren.adresse) ? createAdresseDto() : _.cloneDeep(verfahren.adresse);
+      this.bauvorhaben.verortung = _.cloneDeep(verfahren.verortung);
+      this.bauvorhaben.standVerfahren = verfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
+      this.bauvorhaben.standVerfahrenFreieEingabe = verfahren.standVerfahrenFreieEingabe;
+      this.bauvorhaben.bebauungsplannummer = verfahren.bebauungsplannummer;
+      if (verfahren.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+        this.bauvorhaben.sobonRelevant = UncertainBoolean.Unspecified;
+        this.bauvorhaben.sobonJahr = undefined;
+      } else {
+        const verfahrenWithSobonAttribute: BauleitplanverfahrenDto | WeiteresVerfahrenDto = verfahren;
+        this.bauvorhaben.sobonRelevant = _.isNil(verfahrenWithSobonAttribute.sobonRelevant)
+          ? UncertainBoolean.Unspecified
+          : verfahrenWithSobonAttribute.sobonRelevant;
+        this.bauvorhaben.sobonJahr = verfahrenWithSobonAttribute.sobonJahr;
+      }
     }
     this.dataTransferDialogOpen = false;
   }
