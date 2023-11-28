@@ -32,15 +32,15 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -78,15 +78,15 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -101,15 +101,15 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -124,15 +124,15 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -147,15 +147,15 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -170,15 +170,15 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -281,7 +281,14 @@
             "description": "Definiert den Geometrietyp in der Ausprägung als Multipolygon oder als Point."
           }
         },
-        "discriminator": { "propertyName": "type" }
+        "description": "GeometryDto",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "MultiPolygon": "#/components/schemas/MultiPolygonGeometryDto",
+            "Point": "#/components/schemas/PointGeometryDto"
+          }
+        }
       },
       "PointGeometryDto": {
         "required": ["coordinates", "type"],
