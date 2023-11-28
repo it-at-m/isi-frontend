@@ -298,16 +298,9 @@ export default class Bauvorhaben extends Mixins(
   private abfrageUebernehmen(abfrage: AbfrageDto): void {
     this.datenuebernahmeAbfrageId = abfrage.id;
     if (abfrage.artAbfrage !== AbfrageDtoArtAbfrageEnum.Unspecified) {
-      let verfahren: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto;
-      if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-        verfahren = abfrage as BauleitplanverfahrenDto;
-      } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-        verfahren = abfrage as BaugenehmigungsverfahrenDto;
-      } else {
-        verfahren = abfrage as WeiteresVerfahrenDto;
-      }
+      let verfahren: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto = abfrage;
       this.bauvorhaben.adresse = _.isNil(verfahren.adresse) ? createAdresseDto() : _.cloneDeep(verfahren.adresse);
-      this.bauvorhaben.verortung = _.cloneDeep(verfahren.verortung);
+      this.bauvorhaben.verortung = _.isNil(verfahren.verortung) ? undefined : _.cloneDeep(verfahren.verortung);
       this.bauvorhaben.standVerfahren = verfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
       this.bauvorhaben.standVerfahrenFreieEingabe = verfahren.standVerfahrenFreieEingabe;
       this.bauvorhaben.bebauungsplannummer = verfahren.bebauungsplannummer;
