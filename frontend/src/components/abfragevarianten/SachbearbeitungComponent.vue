@@ -19,6 +19,12 @@
         <v-col
           cols="12"
           md="6"
+        />
+      </v-row>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="6"
         >
           <v-slide-y-reverse-transition>
             <v-select
@@ -35,6 +41,20 @@
               <template #label> Jahr für SoBoN-Orientierungwerte <span class="secondary--text">*</span> </template>
             </v-select>
           </v-slide-y-reverse-transition>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <date-picker
+            id="stammdaten_gueltig_ab"
+            ref="stammdatenGueltigAb"
+            v-model="abfragevarianteSachbearbeitung.stammdatenGueltigAb"
+            :disabled="!isEditableBySachbearbeitung()"
+            label="Stammdatum gültig ab"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            required
+          />
         </v-col>
       </v-row>
       <v-row>
