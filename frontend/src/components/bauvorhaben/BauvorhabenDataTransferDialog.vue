@@ -53,11 +53,13 @@
 import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
 import {
   AbfrageSearchResultDto,
+  BaugenehmigungsverfahrenDto,
   BauleitplanverfahrenDto,
   LookupEntryDto,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  WeiteresVerfahrenDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
@@ -72,7 +74,8 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
 
   private selectedAbfrageSearchResult: AbfrageSearchResultDto = {};
 
-  private selectedAbfrage: BauleitplanverfahrenDto = createBauleitplanverfahrenDto();
+  private selectedAbfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto =
+    createBauleitplanverfahrenDto();
 
   mounted(): void {
     this.fetchAbfragen();
