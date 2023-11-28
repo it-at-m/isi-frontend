@@ -30,9 +30,6 @@ import AlleEinwohnerComponent from "@/components/abfragevarianten/calculation/Al
 @Component({ components: { AlleEinwohnerComponent, InfrastrukturbedarfComponent, FieldGroupCard, NumField } })
 export default class LangfristigerPlanungsursaechlicherBedarfComponent extends Mixins(CalculationApiRequestMixin) {
   @Prop()
-  private stammdatenGueltigAb!: Date;
-
-  @Prop()
   private abfragevarianteId!: string;
 
   private langfristigerPlanungsursaechlicherBedarf!: LangfristigerPlanungsursaechlicherBedarfDto;
@@ -54,7 +51,7 @@ export default class LangfristigerPlanungsursaechlicherBedarfComponent extends M
     const abfrageId = _.isNil(this.$store.getters["search/selectedAbfrage"])
       ? undefined
       : (this.$store.getters["search/selectedAbfrage"] as AbfrageDto).id;
-    if (!_.isNil(abfrageId) && !_.isNil(this.stammdatenGueltigAb) && !_.isNil(this.abfragevarianteId)) {
+    if (!_.isNil(abfrageId) && !_.isNil(this.abfragevarianteId)) {
       this.calculateLangfristigerPlanungsursaechlicherBedarf(abfrageId, this.abfragevarianteId, false).then(
         (bedarf) => {
           this.langfristigerPlanungsursaechlicherBedarf = bedarf;

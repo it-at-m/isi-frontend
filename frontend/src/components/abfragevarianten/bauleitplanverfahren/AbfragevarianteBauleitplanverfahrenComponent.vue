@@ -40,10 +40,7 @@
       ref="bedarfsmeldungFachreferateComponent"
       v-model="abfragevariante"
     />
-    <langfristiger-planungsursaechlicher-bedarf-component
-      :abfragevariante-id="abfragevariante?.id"
-      :stammdaten-gueltig-ab="abfragevariante.stammdatenGueltigAb"
-    />
+    <langfristiger-planungsursaechlicher-bedarf-component :abfragevariante-id="abfragevariante?.id" />
   </v-container>
 </template>
 
