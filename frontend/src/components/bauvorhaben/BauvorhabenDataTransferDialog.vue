@@ -52,6 +52,7 @@
 <script lang="ts">
 import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
 import {
+  AbfrageDto,
   AbfrageSearchResultDto,
   BaugenehmigungsverfahrenDto,
   BauleitplanverfahrenDto,
@@ -74,8 +75,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
 
   private selectedAbfrageSearchResult: AbfrageSearchResultDto = {};
 
-  private selectedAbfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto =
-    createBauleitplanverfahrenDto();
+  private selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
 
   mounted(): void {
     this.fetchAbfragen();
@@ -93,11 +93,9 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
   private transferToBauvorhaben(): void {
     if (!_.isNil(this.selectedAbfrageSearchResult) && !_.isNil(this.selectedAbfrageSearchResult.id)) {
       const idAbfrage: string = this.selectedAbfrageSearchResult.id;
-      this.getById(idAbfrage, false).then(
-        (abfrageDto: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto) => {
-          this.selectedAbfrage = abfrageDto;
-        },
-      );
+      this.getById(idAbfrage, false).then((abfrageDto: AbfrageDto) => {
+        this.selectedAbfrage = abfrageDto;
+      });
     }
   }
 
@@ -157,7 +155,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
   }
 
   @Emit()
-  private abfrageUebernehmen(): BauleitplanverfahrenDto {
+  private abfrageUebernehmen(): AbfrageDto {
     this.selectedAbfrageSearchResult = {};
     return this.selectedAbfrage;
   }
