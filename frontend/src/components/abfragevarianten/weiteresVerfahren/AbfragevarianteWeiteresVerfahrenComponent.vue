@@ -42,7 +42,7 @@
     />
     <langfristiger-planungsursaechlicher-bedarf-component
       :abfragevariante-id="abfragevariante?.id"
-      :stammdaten-gueltig-ab="undefined"
+      :stammdaten-gueltig-ab="abfragevariante.stammdatenGueltigAb"
     />
   </v-container>
 </template>
