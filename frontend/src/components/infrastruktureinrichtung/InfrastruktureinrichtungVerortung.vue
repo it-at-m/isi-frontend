@@ -11,15 +11,14 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
-    <v-label v-if="pointExits">Koordinaten</v-label>
+    <v-label>Koordinaten</v-label>
     <v-chip-group
-      v-if="pointExits"
       title="Koordinate"
       active-class="primary--text"
       column
     >
       <v-chip>
-        <div>{{ pointToDisplay() }}</div>
+        {{ pointToDisplay }}
       </v-chip>
     </v-chip-group>
   </field-group-card>
@@ -100,10 +99,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     }
 
     return undefined;
-  }
-
-  get pointExits(): boolean {
-    return !_.isEmpty(this.pointToDisplay());
   }
 
   get lookAt(): LatLngLiteral | undefined {
@@ -246,10 +241,16 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     };
   }
 
-  async pointToDisplay(): Promise<string> {
-    const utmDto = await this.getUtm32(this.getPointGeometry());
-    console.log("pointToDisplay, utmDto: " + utmDto);
-    return !_.isNil(utmDto) ? `${utmDto.zone}U ${utmDto?.north} ${utmDto?.east}` : "";
+  get pointToDisplay(): string | undefined {
+    console.log("pointToDisplay");
+    if (!_.isNil(this.verortungModel) && !_.isNil(this.verortungModel.point)) {
+      this.getUtm32(this.verortungModel.point).then((utmDto) => {
+        console.log("pointToDisplay, utmDto: " + utmDto + ", :" + (!_.isNil(utmDto) ? "Test" : ""));
+        //return !_.isNil(utmDto) ? `${utmDto.zone} ${utmDto?.north} ${utmDto?.east}` : undefined;
+        return !_.isNil(utmDto) ? "TEST" : undefined;
+      });
+    }
+    return undefined;
   }
 
   async getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | undefined> {
