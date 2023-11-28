@@ -54,13 +54,10 @@ import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
 import {
   AbfrageDto,
   AbfrageSearchResultDto,
-  BaugenehmigungsverfahrenDto,
-  BauleitplanverfahrenDto,
   LookupEntryDto,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
-  WeiteresVerfahrenDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
