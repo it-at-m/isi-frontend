@@ -93,9 +93,11 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
   private transferToBauvorhaben(): void {
     if (!_.isNil(this.selectedAbfrageSearchResult) && !_.isNil(this.selectedAbfrageSearchResult.id)) {
       const idAbfrage: string = this.selectedAbfrageSearchResult.id;
-      this.getById(idAbfrage, false).then((abfrageDto: BauleitplanverfahrenDto) => {
-        this.selectedAbfrage = abfrageDto;
-      });
+      this.getById(idAbfrage, false).then(
+        (abfrageDto: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto) => {
+          this.selectedAbfrage = abfrageDto;
+        },
+      );
     }
   }
 
