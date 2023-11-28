@@ -51,6 +51,12 @@ export interface AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSac
     sobonOrientierungswertJahr: AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
     /**
      * 
+     * @type {Date}
+     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    stammdatenGueltigAb: Date;
+    /**
+     * 
      * @type {string}
      * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
@@ -87,6 +93,7 @@ export type AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbear
 export function instanceOfAbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "sobonOrientierungswertJahr" in value;
+    isInstance = isInstance && "stammdatenGueltigAb" in value;
 
     return isInstance;
 }
@@ -106,6 +113,7 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
+        'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
 }
@@ -124,6 +132,7 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'artAbfragevariante': value.artAbfragevariante,
         'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
     };
 }

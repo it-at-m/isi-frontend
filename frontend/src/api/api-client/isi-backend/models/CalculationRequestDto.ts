@@ -31,12 +31,6 @@ export interface CalculationRequestDto {
      * @memberof CalculationRequestDto
      */
     abfragevarianteId: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CalculationRequestDto
-     */
-    gueltigAb: Date;
 }
 
 /**
@@ -46,7 +40,6 @@ export function instanceOfCalculationRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "abfrageId" in value;
     isInstance = isInstance && "abfragevarianteId" in value;
-    isInstance = isInstance && "gueltigAb" in value;
 
     return isInstance;
 }
@@ -63,7 +56,6 @@ export function CalculationRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         
         'abfrageId': json['abfrageId'],
         'abfragevarianteId': json['abfragevarianteId'],
-        'gueltigAb': (new Date(json['gueltigAb'])),
     };
 }
 
@@ -78,7 +70,6 @@ export function CalculationRequestDtoToJSON(value?: CalculationRequestDto | null
         
         'abfrageId': value.abfrageId,
         'abfragevarianteId': value.abfragevarianteId,
-        'gueltigAb': (value.gueltigAb.toISOString().substr(0,10)),
     };
 }
 
