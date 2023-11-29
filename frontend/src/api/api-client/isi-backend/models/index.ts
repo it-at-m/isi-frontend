@@ -45,7 +45,6 @@ export * from './BauvorhabenDto';
 export * from './BauvorhabenSearchResultDto';
 export * from './BauvorhabenSearchResultDtoAllOf';
 export * from './BedarfsmeldungFachreferateDto';
-export * from './CalculationRequestDto';
 export * from './DokumentDto';
 export * from './DokumenteDto';
 export * from './FileInformationDto';
