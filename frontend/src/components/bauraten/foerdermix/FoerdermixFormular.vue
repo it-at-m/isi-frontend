@@ -110,11 +110,7 @@ export default class FoerdermixFormular extends Mixins(
   }
 
   get isFreieEingabe(): boolean {
-    if (this.selectedItem.foerdermix.bezeichnung === this.freieEingabe && this.isEditable) {
-      this.isFreie = true;
-    } else {
-      this.isFreie = false;
-    }
+    this.isFreie = this.selectedItem.foerdermix.bezeichnung === this.freieEingabe && this.isEditable;
     return this.isFreie;
   }
 
@@ -132,14 +128,14 @@ export default class FoerdermixFormular extends Mixins(
    * Gruppiert eine Liste von Fördermixstämmen nach 'bezeichnungJahr' und fügt entsprechende header-Objekte hinzu.
    * Gedacht zum Einsatz mit v-select.
    *
-   * @param data Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
+   * @param foerdermixStaemme Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
    * @return Eine neue Liste, welche neben den Fördermixstämmen auch { header: string }-Objekte enthält.
    */
-  groupItemsToHeader(data: FoerdermixStammModel[]): GroupedStammdaten {
+  groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[]): GroupedStammdaten {
     // Objekt, welches pro 'bezeichnungJahr' ein Array mit den zugehörigen Fördermixen enthalten soll.
     const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
 
-    data.forEach((foerdermixStammModel: FoerdermixStammModel) => {
+    foerdermixStaemme.forEach((foerdermixStammModel: FoerdermixStammModel) => {
       // Falls für das 'bezeichnungJahr' des aktuellen Fördermixes kein Array vorhanden ist, wird eins erschaffen.
       groups[foerdermixStammModel.foerdermix.bezeichnungJahr] =
         groups[foerdermixStammModel.foerdermix.bezeichnungJahr] || [];
