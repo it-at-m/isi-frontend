@@ -11,14 +11,15 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
-    <v-label>Koordinaten</v-label>
+    <v-label v-if="pointToDisplayNotEmpty">Koordinaten</v-label>
     <v-chip-group
+      v-if="pointToDisplayNotEmpty"
       title="Koordinate"
       active-class="primary--text"
       column
     >
       <v-chip>
-        <div>{{ getPointToDisplay() }}</div>
+        <div>{{ pointToDisplay }}</div>
       </v-chip>
     </v-chip-group>
   </field-group-card>
@@ -69,7 +70,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
 
   private verortungCardTitle = "Verortung";
 
-  private pointToDisplay: string | undefined = undefined;
+  private pointCoordinatesAsUtm32 = "";
 
   /**
    * Repräsentiert eine einzige Punktkoordinate.
@@ -103,33 +104,16 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     return undefined;
   }
 
-  async getPointToDisplay(): Promise<string | undefined> {
-    let display: string | undefined = undefined;
-    console.log("pointToDisplay: 1");
-    if (!_.isNil(this.verortungModel) && !_.isNil(this.verortungModel.point)) {
-      console.log("pointToDisplay: 2");
-      const utm32 = await this.getUtm32(this.verortungModel.point);
-      display = !_.isNil(utm32) ? `${utm32.zone} ${utm32.north} ${utm32.east}` : undefined;
-      console.log("pointToDisplay: 3, display: " + display);
-    }
-    console.log("pointToDisplay: 4, display: " + display);
-    return display;
+  get pointToDisplay(): string {
+    return this.pointCoordinatesAsUtm32;
   }
 
-  private async getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | undefined> {
-    let utm32: UtmDto | undefined = undefined;
-    console.log("getUtm32: 1");
-    if (!_.isNil(point) && !_.isNil(point.coordinates) && point.coordinates.length === 2) {
-      console.log("getUtm32: 2");
-      const wgs84 = {
-        longitude: point.coordinates[0],
-        latitude: point.coordinates[1],
-      } as Wgs84Dto;
-      console.log("getUtm32: 3");
-      utm32 = await this.wgs84toUtm32(wgs84, true);
-    }
-    console.log("getUtm32: 4");
-    return utm32;
+  set pointToDisplay(pointCoordinatesAsUtm32: string) {
+    this.pointCoordinatesAsUtm32 = pointCoordinatesAsUtm32;
+  }
+
+  get pointToDisplayNotEmpty(): boolean {
+    return !_.isEmpty(this.pointCoordinatesAsUtm32);
   }
 
   get lookAt(): LatLngLiteral | undefined {
@@ -166,10 +150,36 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     const point = this.getPointGeometry();
     if (!_.isNil(point)) {
       this.createVerortungPointDtoFromSelectedPoint(point).then((verortung: VerortungPointDto | undefined) => {
-        this.verortungModel = verortung;
+        if (!_.isNil(verortung)) {
+          this.verortungModel = new VerortungPointModel(verortung);
+          this.getPointCoordinatesAsUtm32(verortung.point);
+          this.formChanged();
+        }
       });
+    } else {
+      this.verortungModel = undefined;
       this.formChanged();
     }
+  }
+
+  private getPointCoordinatesAsUtm32(point: PointGeometryDto | undefined): void {
+    if (!_.isNil(point)) {
+      this.getUtm32(point).then((utm32) => {
+        this.pointToDisplay = !_.isNil(utm32) ? `${utm32.zone} ${utm32.north} ${utm32.east}` : "";
+      });
+    }
+  }
+
+  private async getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | undefined> {
+    let utm32: UtmDto | undefined = undefined;
+    if (!_.isNil(point) && !_.isNil(point.coordinates) && point.coordinates.length === 2) {
+      const wgs84 = {
+        longitude: point.coordinates[0],
+        latitude: point.coordinates[1],
+      } as Wgs84Dto;
+      utm32 = await this.wgs84toUtm32(wgs84, true);
+    }
+    return utm32;
   }
 
   private setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
