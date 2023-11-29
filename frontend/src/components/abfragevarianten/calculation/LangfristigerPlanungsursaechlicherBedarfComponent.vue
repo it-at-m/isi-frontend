@@ -1,16 +1,21 @@
 <template>
-  <field-group-card :card-title="'Planungsursächliche Bedarfe'"> </field-group-card>
+  <field-group-card card-title="Planungsursächliche Bedarfe">
+    <wohneinheiten-component
+      title="Datengrundlage für Bedarfsbestimmung"
+      :items="langfristigerPlanungsursaechlicherBedarf.wohneinheiten"
+    />
+  </field-group-card>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import NumField from "@/components/common/NumField.vue";
+import WohneinheitenComponent from "@/components/abfragevarianten/calculation/WohneinheitenComponent.vue";
 import CalculationApiRequestMixin from "@/mixins/requests/CalculationApiRequestMixin";
 import { AbfrageDto, LangfristigerPlanungsursaechlicherBedarfDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 
-@Component({ components: { FieldGroupCard, NumField } })
+@Component({ components: { FieldGroupCard, WohneinheitenComponent } })
 export default class LangfristigerPlanungsursaechlicherBedarfComponent extends Mixins(CalculationApiRequestMixin) {
   @Prop()
   private abfragevarianteId!: string;
