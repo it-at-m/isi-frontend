@@ -6,7 +6,7 @@
         <v-expansion-panel-content>
           <v-data-table
             :headers="headersDataTable"
-            :items="infrastrukturBedarfeProJahr"
+            :items="itemsDataTable"
             :items-per-page="-1"
             dense
             hide-default-footer
