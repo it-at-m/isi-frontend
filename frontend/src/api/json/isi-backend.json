@@ -56,12 +56,12 @@
             "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -79,10 +79,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -90,6 +86,10 @@
           "201": {
             "description": "CREATED -> FoerdermixStamm wurde erfolgreich erstellt.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "409": {
             "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
@@ -108,20 +108,20 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK -> Kommentar wurde erfolgreich aktualisiert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "404": {
             "description": "NOT_FOUND -> Kommentar mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "200": {
+            "description": "OK -> Kommentar wurde erfolgreich aktualisiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
+          },
           "400": {
             "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -135,16 +135,16 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "201": {
             "description": "CREATED -> Kommentar wurde erfolgreich erstellt.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -173,12 +173,16 @@
           "required": true
         },
         "responses": {
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
+          "400": {
+            "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -197,10 +201,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       },
@@ -264,16 +264,16 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
             "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "409": {
+            "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "555": {
@@ -306,12 +306,12 @@
             "description": "CONFLICT -> Bauvorhaben konnte nicht erstellt werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "404": {
             "description": "NOT_FOUND -> Die ausgewählte Abfrage existiert nicht mehr.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "400": {
@@ -335,14 +335,6 @@
           }
         ],
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": {
-            "description": "OK -> Relevante Abfragevariante erfolgreich geändert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
-          },
           "400": {
             "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -350,6 +342,14 @@
           "404": {
             "description": "NOT_FOUND -> Abfrage oder Abfragevariante nicht gefunden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "OK -> Relevante Abfragevariante erfolgreich geändert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
           },
           "409": {
             "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
@@ -457,12 +457,12 @@
         ],
         "responses": {
           "200": { "description": "OK -> Abfrage wurde erfolgreich freigegeben." },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht freigegeben werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht freigegeben werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -500,15 +500,15 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledgit werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
+          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." }
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledgit werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
         }
       }
     },
@@ -522,6 +522,7 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
+          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -529,8 +530,7 @@
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich erledigt." }
+          }
         }
       }
     },
@@ -545,12 +545,12 @@
         ],
         "responses": {
           "200": { "description": "OK -> Die Bedarfsmeldung der Fachreferate ist erfolgt" },
-          "409": {
-            "description": "CONFLICT -> Die Bedarfsmeldung konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erfolgen",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Die Bedarfsmeldung konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erfolgen",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -566,12 +566,12 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht abgebrochen werden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": { "description": "OK -> Abfrage wurde erfolgreich abbgebrochen." }
@@ -588,13 +588,13 @@
           "required": true
         },
         "responses": {
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Transformation der Koordinate ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK -> Transformation der Koordinate von WGS84 zu UTM32 war erfolgreich.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UtmDto" } } }
+          },
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Transformation der Koordinate ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -638,12 +638,12 @@
           "required": true
         },
         "responses": {
-          "422": {
-            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "422": {
+            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." }
@@ -668,12 +668,12 @@
           "required": true
         },
         "responses": {
-          "422": {
-            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "422": {
+            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." }
@@ -741,6 +741,10 @@
           }
         ],
         "responses": {
+          "400": {
+            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
@@ -751,10 +755,6 @@
           },
           "404": {
             "description": "NOT FOUND -> Die Datei ist im S3-Storage nicht verfügbar.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "400": {
-            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -769,20 +769,20 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
+          },
+          "400": {
+            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "400": {
-            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
+          "409": {
+            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -799,13 +799,13 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MimeTypeInformationDto" } } }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ermittlung des Mime-Types ist ein Fehler aufgetreten.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MimeTypeInformationDto" } } }
           },
           "406": {
             "description": "NOT ACCEPTABLE -> Die referenzierte und im S3-Storage befindliche Datei besitzt keinen zulässigen Mime-Type.",
@@ -848,20 +848,20 @@
               }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
             "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -890,16 +890,16 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -946,16 +946,16 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -1002,16 +1002,16 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID oder das referenzierte Bauvorhaben existiert nicht.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
@@ -1028,12 +1028,12 @@
               }
             }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -1185,11 +1185,11 @@
             "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "204": { "description": "NO CONTENT" },
           "409": {
             "description": "CONFLICT -> Die Infrastruktureinrichtung referenziert ein Bauvorhaben.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "204": { "description": "NO CONTENT" }
+          }
         }
       }
     },
@@ -1247,13 +1247,13 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
+          "409": {
+            "description": "CONFLICT -> Das Bauvorhaben wird durch Abfragen referenziert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
-          "409": {
-            "description": "CONFLICT -> Das Bauvorhaben wird durch Abfragen referenziert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
@@ -1330,15 +1330,15 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Es konnten keine Bauraten ermittelt werden, da keine idealtypischen Bauraten für die gegebenen Parameter existieren.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "OK",
             "content": {
               "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" } } }
             }
+          },
+          "404": {
+            "description": "NOT FOUND -> Es konnten keine Bauraten ermittelt werden, da keine idealtypischen Bauraten für die gegebenen Parameter existieren.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -1380,6 +1380,10 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
+          "409": {
+            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben oder die Abfrage nicht im korrekten Status ist.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "404": {
             "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -1388,11 +1392,7 @@
             "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
-          "204": { "description": "NO CONTENT" },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben oder die Abfrage nicht im korrekten Status ist.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          }
+          "204": { "description": "NO CONTENT" }
         }
       }
     },
@@ -2975,8 +2975,30 @@
           "anzahlGrundschulzuege": { "type": "integer", "format": "int32" }
         }
       },
+      "InfrastrukturbedarfProJahrDto": {
+        "required": ["anzahlGruppen", "anzahlPersonenGesamt", "anzahlPersonenZuVersorgen", "jahr"],
+        "type": "object",
+        "properties": {
+          "jahr": { "type": "string" },
+          "anzahlPersonenGesamt": { "type": "number" },
+          "anzahlPersonenZuVersorgen": { "type": "number" },
+          "anzahlGruppen": { "type": "number" }
+        }
+      },
       "LangfristigerPlanungsursaechlicherBedarfDto": {
         "required": [
+          "alleEinwohner",
+          "alleEinwohnerMittelwert10",
+          "alleEinwohnerMittelwert15",
+          "alleEinwohnerMittelwert20",
+          "bedarfKindergarten",
+          "bedarfKindergartenMittelwert10",
+          "bedarfKindergartenMittelwert15",
+          "bedarfKindergartenMittelwert20",
+          "bedarfKinderkrippe",
+          "bedarfKinderkrippeMittelwert10",
+          "bedarfKinderkrippeMittelwert15",
+          "bedarfKinderkrippeMittelwert20",
           "wohneinheiten",
           "wohneinheitenGesamt",
           "wohneinheitenSumme10Jahre",
@@ -3004,8 +3026,31 @@
           "wohneinheitenGesamt": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/WohneinheitenProFoerderartProJahrDto" }
-          }
+          },
+          "bedarfKinderkrippe": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" }
+          },
+          "bedarfKinderkrippeMittelwert10": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" },
+          "bedarfKinderkrippeMittelwert15": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" },
+          "bedarfKinderkrippeMittelwert20": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" },
+          "bedarfKindergarten": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" }
+          },
+          "bedarfKindergartenMittelwert10": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" },
+          "bedarfKindergartenMittelwert15": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" },
+          "bedarfKindergartenMittelwert20": { "$ref": "#/components/schemas/InfrastrukturbedarfProJahrDto" },
+          "alleEinwohner": { "type": "array", "items": { "$ref": "#/components/schemas/PersonenProJahrDto" } },
+          "alleEinwohnerMittelwert10": { "$ref": "#/components/schemas/PersonenProJahrDto" },
+          "alleEinwohnerMittelwert15": { "$ref": "#/components/schemas/PersonenProJahrDto" },
+          "alleEinwohnerMittelwert20": { "$ref": "#/components/schemas/PersonenProJahrDto" }
         }
+      },
+      "PersonenProJahrDto": {
+        "required": ["anzahlPersonenGesamt", "jahr"],
+        "type": "object",
+        "properties": { "jahr": { "type": "string" }, "anzahlPersonenGesamt": { "type": "number" } }
       },
       "WeiteresVerfahrenDto": {
         "type": "object",
