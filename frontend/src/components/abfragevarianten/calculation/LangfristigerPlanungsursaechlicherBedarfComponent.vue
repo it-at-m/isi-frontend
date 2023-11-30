@@ -2,7 +2,7 @@
   <field-group-card card-title="Planungsursächliche Bedarfe">
     <wohneinheiten-component
       title="Datengrundlage für Bedarfsbestimmung"
-      :items="wohneinheiten"
+      :wohneinheiten="wohneinheiten"
     />
     <infrastrukturbedarf-component
       :infrastruktur-bedarfe-pro-jahr="bedarfKinderkrippe"
