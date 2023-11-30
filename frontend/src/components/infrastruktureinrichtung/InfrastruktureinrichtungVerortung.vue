@@ -30,7 +30,7 @@ import { Component, Prop, Mixins, VModel, Watch } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import { LatLng, LatLngLiteral } from "leaflet";
 import { Feature, Point } from "geojson";
-import _ from "lodash";
+import _, { isNil } from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import {
   AdresseDto,
@@ -78,8 +78,10 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   private geoJson: Array<Feature<Point>> = [];
 
   private mounted(): void {
-    if (this.adresseCoordinate) {
+    if (!_.isNil(this.adresseCoordinate)) {
       this.setGeoJsonFromLatLng(this.adresseCoordinate);
+    } else if (!_.isNil(this.pointCoordinate)) {
+      this.setGeoJsonFromLatLng(this.pointCoordinate);
     }
   }
 
@@ -94,11 +96,29 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   get adresseCoordinate(): LatLngLiteral | undefined {
-    const lat = this.adresse?.coordinate?.latitude;
     const lng = this.adresse?.coordinate?.longitude;
+    const lat = this.adresse?.coordinate?.latitude;
 
-    if (lat && lng) {
-      return { lat, lng };
+    if (lng && lat) {
+      return { lng, lat };
+    }
+
+    return undefined;
+  }
+
+  get pointCoordinate(): LatLngLiteral | undefined {
+    let lng: number = Number.NaN;
+    let lat: number = Number.NaN;
+    if (
+      !_.isNil(this.verortungModel) &&
+      !_.isNil(this.verortungModel.point) &&
+      this.verortungModel.point.coordinates.length == 2
+    ) {
+      lng = this.verortungModel.point.coordinates[0];
+      lat = this.verortungModel.point.coordinates[1];
+    }
+    if (!_.isNaN(lng) && !_.isNaN(lat)) {
+      return { lng, lat };
     }
 
     return undefined;
@@ -130,7 +150,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       const coordinates = this.geoJson[0].geometry.coordinates;
       return {
         type: "Point",
-        coordinates: [coordinates[0], coordinates[1]],
+        coordinates: [coordinates[0], coordinates[1]], // [0] = longitude, [1] = latitude
       } as PointGeometryDto;
     }
     return undefined;
@@ -152,7 +172,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       this.createVerortungPointDtoFromSelectedPoint(point).then((verortung: VerortungPointDto | undefined) => {
         if (!_.isNil(verortung)) {
           this.verortungModel = new VerortungPointModel(verortung);
-          this.getPointCoordinatesAsUtm32(verortung.point);
           this.formChanged();
         }
       });
@@ -162,11 +181,15 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     }
   }
 
-  private getPointCoordinatesAsUtm32(point: PointGeometryDto | undefined): void {
+  @Watch("geoJson", { deep: true })
+  private handlePointGeometryChanged(): void {
+    const point = this.getPointGeometry();
     if (!_.isNil(point)) {
       this.getUtm32(point).then((utm32) => {
         this.pointToDisplay = !_.isNil(utm32) ? `${utm32.zone} ${utm32.north} ${utm32.east}` : "";
       });
+    } else {
+      this.pointToDisplay = "";
     }
   }
 
