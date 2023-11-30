@@ -21,7 +21,6 @@ export default class KoordinatenApiRequestMixin extends Mixins(SaveLeaveMixin, E
     return this.koordinatenApi
       .wgs84toUtm32(requestObject, RequestUtils.getPOSTConfig())
       .then((response) => {
-        this.resetFormDirty();
         return response;
       })
       .catch((error) => {
