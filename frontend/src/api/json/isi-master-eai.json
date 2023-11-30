@@ -3,24 +3,11 @@
   "info": {
     "title": "ISI MAstER EAI",
     "description": "ISI MAstER EAI - Service zum Abfragen von Adressen von MAstER",
-    "contact": {
-      "name": "ISI Management",
-      "email": "unbekannt@muenchen.de"
-    },
-    "version": "0.0.1-SNAPSHOT"
+    "contact": { "name": "ISI Management", "email": "unbekannt@muenchen.de" },
+    "version": "2.0.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:8086",
-      "description": "Generated server url"
-    }
-  ],
-  "tags": [
-    {
-      "name": "MasterEai",
-      "description": "API zum Abfragen des MAstER-Servers von Adressen."
-    }
-  ],
+  "servers": [{ "url": "http://localhost:8086", "description": "Generated server url" }],
+  "tags": [{ "name": "MasterEai", "description": "API zum Abfragen des MAstER-Servers von Adressen." }],
   "paths": {
     "/adresse/search": {
       "post": {
@@ -28,35 +15,17 @@
         "summary": "Holt die Adressen bei denen die Suchkriterien übereinstimmen.",
         "operationId": "getAdressen",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdressSucheDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdressSucheDto" } } },
           "required": true
         },
         "responses": {
           "200": {
             "description": "Adressen erfolgreich abgefragt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MuenchenAdressenDto"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MuenchenAdressenDto" } } }
           },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ausführung des MAstER-Requests ist ein serverseitiger Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -68,15 +37,8 @@
         "required": ["query"],
         "type": "object",
         "properties": {
-          "query": {
-            "type": "string",
-            "description": "Suchtext mit Adressteilen."
-          },
-          "page": {
-            "type": "integer",
-            "description": "Seitennummer (optional, default = 0)",
-            "format": "int32"
-          },
+          "query": { "type": "string", "description": "Suchtext mit Adressteilen." },
+          "page": { "type": "integer", "description": "Seitennummer (optional, default = 0)", "format": "int32" },
           "pagesize": {
             "type": "integer",
             "description": "Seitengröße. Anzahl maximal angezeigter Ergebnisse pro Seite (optional, default = 20)",
@@ -88,119 +50,54 @@
       "InformationResponseDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"]
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "traceId": {
-            "type": "string"
-          },
-          "spanId": {
-            "type": "string"
-          },
-          "httpStatus": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "originalException": {
-            "type": "string"
-          },
-          "messages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
+          "type": { "type": "string", "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "traceId": { "type": "string" },
+          "spanId": { "type": "string" },
+          "httpStatus": { "type": "integer", "format": "int32" },
+          "originalException": { "type": "string" },
+          "messages": { "type": "array", "items": { "type": "string" } }
         }
       },
       "MuenchenAdresseDto": {
         "type": "object",
         "properties": {
-          "adresse": {
-            "type": "string"
-          },
-          "adressId": {
-            "type": "string"
-          },
-          "hausnummer": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "buchstabe": {
-            "type": "string"
-          },
-          "ortsname": {
-            "type": "string"
-          },
-          "strassenname": {
-            "type": "string"
-          },
-          "position": {
-            "$ref": "#/components/schemas/PositionDto"
-          },
-          "geozuordnungen": {
-            "$ref": "#/components/schemas/MuenchenAdresseGeoZuordnungenDto"
-          }
+          "adresse": { "type": "string" },
+          "adressId": { "type": "string" },
+          "hausnummer": { "type": "integer", "format": "int64" },
+          "buchstabe": { "type": "string" },
+          "ortsname": { "type": "string" },
+          "strassenname": { "type": "string" },
+          "position": { "$ref": "#/components/schemas/PositionDto" },
+          "geozuordnungen": { "$ref": "#/components/schemas/MuenchenAdresseGeoZuordnungenDto" }
         }
       },
-      "MuenchenAdresseGeoZuordnungenDto": {
-        "type": "object",
-        "properties": {
-          "postleitzahl": {
-            "type": "string"
-          }
-        }
-      },
+      "MuenchenAdresseGeoZuordnungenDto": { "type": "object", "properties": { "postleitzahl": { "type": "string" } } },
       "MuenchenAdressenDto": {
         "type": "object",
         "properties": {
-          "adressen": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MuenchenAdresseDto"
-            }
-          }
+          "adressen": { "type": "array", "items": { "$ref": "#/components/schemas/MuenchenAdresseDto" } }
         }
       },
       "PositionDto": {
         "type": "object",
         "properties": {
-          "utm": {
-            "$ref": "#/components/schemas/UtmDto"
-          },
-          "wgs": {
-            "$ref": "#/components/schemas/WgsDto"
-          }
+          "utm": { "$ref": "#/components/schemas/UtmDto" },
+          "wgs": { "$ref": "#/components/schemas/WgsDto" }
         }
       },
       "UtmDto": {
         "type": "object",
         "properties": {
-          "north": {
-            "type": "number",
-            "format": "double"
-          },
-          "east": {
-            "type": "number",
-            "format": "double"
-          }
+          "north": { "type": "number", "format": "double" },
+          "east": { "type": "number", "format": "double" }
         }
       },
       "WgsDto": {
         "type": "object",
         "properties": {
-          "lat": {
-            "type": "number",
-            "format": "double"
-          },
-          "lon": {
-            "type": "number",
-            "format": "double"
-          }
+          "lat": { "type": "number", "format": "double" },
+          "lon": { "type": "number", "format": "double" }
         }
       }
     }

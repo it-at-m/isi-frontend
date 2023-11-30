@@ -4,7 +4,7 @@
     "title": "ISI GEODATA EAI",
     "description": "ISI GEODATA EAI - Service zum Abfragen von Geoinformationen",
     "contact": { "name": "ISI Management", "email": "unbekannt@muenchen.de" },
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [
@@ -193,13 +193,13 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Multipolygon erfolgreich vereinigt.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } }
-          },
           "500": {
             "description": "Bei der Erstellung oder Durchführung der Logik ist ein Fehler aufgetreten.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "200": {
+            "description": "Multipolygon erfolgreich vereinigt.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } }
           }
         }
       }

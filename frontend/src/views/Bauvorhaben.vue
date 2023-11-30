@@ -139,11 +139,16 @@ import {
   AbfrageDtoArtAbfrageEnum,
   BauvorhabenDtoStandVerfahrenEnum,
   UncertainBoolean,
+  BaugenehmigungsverfahrenDto,
+  WeiteresVerfahrenDto,
 } from "@/api/api-client/isi-backend";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 
 @Component({
   computed: {
@@ -292,22 +297,23 @@ export default class Bauvorhaben extends Mixins(
 
   private abfrageUebernehmen(abfrage: AbfrageDto): void {
     this.datenuebernahmeAbfrageId = abfrage.id;
-    switch (abfrage.artAbfrage) {
-      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren: {
-        const bauleitplanverfahren = abfrage as BauleitplanverfahrenDto;
-        this.bauvorhaben.adresse = _.isNil(bauleitplanverfahren.adresse)
-          ? createAdresseDto()
-          : bauleitplanverfahren.adresse;
-        this.bauvorhaben.standVerfahren = bauleitplanverfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
-        this.bauvorhaben.bebauungsplannummer = bauleitplanverfahren.bebauungsplannummer;
-        this.bauvorhaben.sobonRelevant = _.isNil(bauleitplanverfahren.sobonRelevant)
+    if (abfrage.artAbfrage !== AbfrageDtoArtAbfrageEnum.Unspecified) {
+      let verfahren: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto = abfrage;
+      this.bauvorhaben.adresse = _.isNil(verfahren.adresse) ? createAdresseDto() : _.cloneDeep(verfahren.adresse);
+      this.bauvorhaben.verortung = _.isNil(verfahren.verortung) ? undefined : _.cloneDeep(verfahren.verortung);
+      this.bauvorhaben.standVerfahren = verfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
+      this.bauvorhaben.standVerfahrenFreieEingabe = verfahren.standVerfahrenFreieEingabe;
+      this.bauvorhaben.bebauungsplannummer = verfahren.bebauungsplannummer;
+      if (verfahren.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+        this.bauvorhaben.sobonRelevant = UncertainBoolean.Unspecified;
+        this.bauvorhaben.sobonJahr = undefined;
+      } else {
+        const verfahrenWithSobonAttribute: BauleitplanverfahrenDto | WeiteresVerfahrenDto = verfahren;
+        this.bauvorhaben.sobonRelevant = _.isNil(verfahrenWithSobonAttribute.sobonRelevant)
           ? UncertainBoolean.Unspecified
-          : bauleitplanverfahren.sobonRelevant;
-        this.bauvorhaben.sobonJahr = bauleitplanverfahren.sobonJahr;
-        break;
+          : verfahrenWithSobonAttribute.sobonRelevant;
+        this.bauvorhaben.sobonJahr = verfahrenWithSobonAttribute.sobonJahr;
       }
-      default:
-        break;
     }
     this.dataTransferDialogOpen = false;
   }

@@ -1,5 +1,9 @@
 <template>
-  <field-group-card :card-title="'Planungsursächliche Bedarfe'">
+  <field-group-card card-title="Planungsursächliche Bedarfe">
+    <wohneinheiten-component
+      title="Datengrundlage für Bedarfsbestimmung"
+      :items="wohneinheiten"
+    />
     <infrastrukturbedarf-component
       :infrastruktur-bedarfe-pro-jahr="bedarfKinderkrippe"
       :title="'Kinderkrippe'"
@@ -13,51 +17,69 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import NumField from "@/components/common/NumField.vue";
-import CalculationApiRequestMixin from "@/mixins/requests/CalculationApiRequestMixin";
+
+import WohneinheitenComponent from "@/components/abfragevarianten/calculation/WohneinheitenComponent.vue";
 import {
-  AbfrageDto,
   InfrastrukturbedarfProJahrDto,
   LangfristigerPlanungsursaechlicherBedarfDto,
   PersonenProJahrDto,
+  WohneinheitenProFoerderartProJahrDto,
 } from "@/api/api-client/isi-backend";
-import _ from "lodash";
-import InfrastrukturbedarfComponent from "@/components/abfragevarianten/calculation/InfrastrukturbedarfComponent.vue";
-import AlleEinwohnerComponent from "@/components/abfragevarianten/calculation/AlleEinwohnerComponent.vue";
 
-@Component({ components: { AlleEinwohnerComponent, InfrastrukturbedarfComponent, FieldGroupCard, NumField } })
-export default class LangfristigerPlanungsursaechlicherBedarfComponent extends Mixins(CalculationApiRequestMixin) {
+@Component({ components: { FieldGroupCard, WohneinheitenComponent } })
+export default class LangfristigerPlanungsursaechlicherBedarfComponent extends Vue {
   @Prop()
-  private abfragevarianteId!: string;
+  private bedarf?: LangfristigerPlanungsursaechlicherBedarfDto;
 
-  private langfristigerPlanungsursaechlicherBedarf!: LangfristigerPlanungsursaechlicherBedarfDto;
+  get wohneinheiten(): Array<WohneinheitenProFoerderartProJahrDto> {
+    if (this.bedarf) {
+      return [
+        ...this.bedarf.wohneinheiten,
+        ...this.bedarf.wohneinheitenSumme10Jahre,
+        ...this.bedarf.wohneinheitenSumme15Jahre,
+        ...this.bedarf.wohneinheitenSumme20Jahre,
+        ...this.bedarf.wohneinheitenGesamt,
+      ];
+    }
+    return [];
+  }
 
   get bedarfKinderkrippe(): Array<InfrastrukturbedarfProJahrDto> | undefined {
-    return this.langfristigerPlanungsursaechlicherBedarf?.bedarfKinderkrippe;
+    if (this.bedarf) {
+      return [
+        ...this.bedarf.bedarfKinderkrippe,
+        this.bedarf.bedarfKinderkrippeMittelwert10,
+        this.bedarf.bedarfKinderkrippeMittelwert15,
+        this.bedarf.bedarfKinderkrippeMittelwert20,
+      ];
+    }
+    return [];
   }
 
   get bedarfKindergarten(): Array<InfrastrukturbedarfProJahrDto> | undefined {
-    return this.langfristigerPlanungsursaechlicherBedarf?.bedarfKindergarten;
+    if (this.bedarf) {
+      return [
+        ...this.bedarf.bedarfKindergarten,
+        this.bedarf.bedarfKindergartenMittelwert10,
+        this.bedarf.bedarfKindergartenMittelwert15,
+        this.bedarf.bedarfKindergartenMittelwert20,
+      ];
+    }
+    return [];
   }
 
   get alleEinwohner(): Array<PersonenProJahrDto> | undefined {
-    return this.langfristigerPlanungsursaechlicherBedarf?.alleEinwohner;
-  }
-
-  @Watch("abfragevarianteId", { immediate: true })
-  private watchAbfragevarianteId(): void {
-    const abfrageId = _.isNil(this.$store.getters["search/selectedAbfrage"])
-      ? undefined
-      : (this.$store.getters["search/selectedAbfrage"] as AbfrageDto).id;
-    if (!_.isNil(abfrageId) && !_.isNil(this.abfragevarianteId)) {
-      this.calculateLangfristigerPlanungsursaechlicherBedarf(abfrageId, this.abfragevarianteId, false).then(
-        (bedarf) => {
-          this.langfristigerPlanungsursaechlicherBedarf = bedarf;
-        },
-      );
+    if (this.bedarf) {
+      return [
+        ...this.bedarf.alleEinwohner,
+        this.bedarf.alleEinwohnerMittelwert10,
+        this.bedarf.alleEinwohnerMittelwert15,
+        this.bedarf.alleEinwohnerMittelwert20,
+      ];
     }
+    return [];
   }
 }
 </script>

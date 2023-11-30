@@ -25,6 +25,12 @@ import {
     BedarfsmeldungFachreferateDtoFromJSONTyped,
     BedarfsmeldungFachreferateDtoToJSON,
 } from './BedarfsmeldungFachreferateDto';
+import type { LangfristigerPlanungsursaechlicherBedarfDto } from './LangfristigerPlanungsursaechlicherBedarfDto';
+import {
+    LangfristigerPlanungsursaechlicherBedarfDtoFromJSON,
+    LangfristigerPlanungsursaechlicherBedarfDtoFromJSONTyped,
+    LangfristigerPlanungsursaechlicherBedarfDtoToJSON,
+} from './LangfristigerPlanungsursaechlicherBedarfDto';
 
 /**
  * 
@@ -242,6 +248,12 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     bauabschnitte?: Array<BauabschnittDto>;
+    /**
+     * 
+     * @type {LangfristigerPlanungsursaechlicherBedarfDto}
+     * @memberof AbfragevarianteWeiteresVerfahrenDto
+     */
+    langfristigerPlanungsursaechlicherBedarf?: LangfristigerPlanungsursaechlicherBedarfDto;
 }
 
 
@@ -340,6 +352,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
+        'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfDtoFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
     };
 }
 
@@ -387,6 +400,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSON(value?: Abfragevariant
         'anmerkung': value.anmerkung,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfDtoToJSON(value.langfristigerPlanungsursaechlicherBedarf),
     };
 }
 
