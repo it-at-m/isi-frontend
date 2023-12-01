@@ -84,6 +84,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   private mounted(): void {
     if (!_.isNil(this.pointCoordinate)) {
       this.setGeoJsonFromLatLng(this.pointCoordinate);
+      this.refresh();
     }
   }
 
@@ -95,8 +96,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     if (this.adresseValid()) {
       this.setGeoJsonFromLatLng(this.adresseCoordinate);
       this.createVerortung(this.getPointGeometry());
-    } else {
-      this.reset();
     }
   }
 
@@ -169,7 +168,8 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private handleDeselectGeoJson(): void {
-    this.reset();
+    this.geoJson = [];
+    this.verortungModel = undefined;
     this.formChanged();
   }
 
@@ -188,8 +188,12 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     }
   }
 
-  @Watch("geoJson", { deep: true })
-  private handlePointGeometryChanged(): void {
+  @Watch("verortungModel", { deep: true })
+  private handleVerortungModelChanged(): void {
+    this.refresh();
+  }
+
+  private refresh(): void {
     const point = this.getPointGeometry();
     if (!_.isNil(point)) {
       this.getUtm32(point).then((utm32) => {
@@ -213,13 +217,17 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
-    this.geoJson = [
-      {
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [latlng.lng, latlng.lat] },
-        properties: null,
-      },
-    ];
+    if (!_.isNil(latlng)) {
+      this.geoJson = [
+        {
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [latlng.lng, latlng.lat] },
+          properties: null,
+        },
+      ];
+    } else {
+      this.geoJson = [];
+    }
   }
 
   /**
@@ -303,11 +311,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
       multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
     };
-  }
-
-  private reset(): void {
-    this.geoJson = [];
-    this.verortungModel = undefined;
   }
 }
 </script>
