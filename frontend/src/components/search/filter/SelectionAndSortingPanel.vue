@@ -49,6 +49,15 @@
               dense
             />
           </v-hover>
+          <v-hover v-model="hoverSelectWeiteresVerfahren">
+            <v-checkbox
+              v-model="searchQueryAndSorting.selectWeiteresVerfahren"
+              :label="'Weiteres Verfahren'"
+              color="grey darken-1"
+              hide-details
+              dense
+            />
+          </v-hover>
           <v-hover v-model="hoverSelectBauvorhaben">
             <v-checkbox
               v-model="searchQueryAndSorting.selectBauvorhaben"
@@ -218,6 +227,7 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   private hoverDeselectAll = false;
   private hoverSelectBauleitplanverfahren = false;
   private hoverSelectBaugenehmigungsverfahren = false;
+  private hoverSelectWeiteresVerfahren = false;
   private hoverSelectBauvorhaben = false;
   private hoverSelectGrundschule = false;
   private hoverSelectGsNachmittagBetreuung = false;
@@ -241,6 +251,9 @@ export default class EntitySelectionAndSortingPanel extends Vue {
     }
     if (this.hoverSelectBaugenehmigungsverfahren) {
       return "Die Baugenehmigungsverfahren werden in die Suche miteinbezogen.";
+    }
+    if (this.hoverSelectWeiteresVerfahren) {
+      return "Die Weiteren Verfahren werden in die Suche miteinbezogen.";
     }
     if (this.hoverSelectBauvorhaben) {
       return "Die Bauvorhaben werden in die Suche miteinbezogen.";
@@ -279,6 +292,7 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   private selectAll() {
     this.searchQueryAndSorting.selectBauleitplanverfahren = true;
     this.searchQueryAndSorting.selectBaugenehmigungsverfahren = true;
+    this.searchQueryAndSorting.selectWeiteresVerfahren = true;
     this.searchQueryAndSorting.selectBauvorhaben = true;
     this.searchQueryAndSorting.selectGrundschule = true;
     this.searchQueryAndSorting.selectGsNachmittagBetreuung = true;
@@ -291,6 +305,7 @@ export default class EntitySelectionAndSortingPanel extends Vue {
   private deselectAll() {
     this.searchQueryAndSorting.selectBauleitplanverfahren = false;
     this.searchQueryAndSorting.selectBaugenehmigungsverfahren = false;
+    this.searchQueryAndSorting.selectWeiteresVerfahren = false;
     this.searchQueryAndSorting.selectBauvorhaben = false;
     this.searchQueryAndSorting.selectGrundschule = false;
     this.searchQueryAndSorting.selectGsNachmittagBetreuung = false;

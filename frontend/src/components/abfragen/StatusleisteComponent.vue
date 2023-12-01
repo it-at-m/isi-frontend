@@ -16,7 +16,7 @@
         <template v-for="(statusLabel, index) in statusLabels.slice(1)">
           <v-divider :key="index"></v-divider>
           <v-stepper-step
-            :key="index"
+            :key="`${index}-${statusLabel}`"
             :complete="getStatusIndex() > index"
             step=""
           >
@@ -47,7 +47,7 @@
         <template v-for="(shortenedStatusLabel, index) in shortenedStatusLabels.slice(1)">
           <v-divider :key="index"></v-divider>
           <v-stepper-step
-            :key="index"
+            :key="`${index}-${shortenedStatusLabel}`"
             :complete="getShortenedStatusIndex() > index"
             step=""
           >
