@@ -4,7 +4,7 @@
       height="300"
       :zoom="14"
       expandable
-      :editable="isEditable"
+      :editable="isVerortungEditable"
       :look-at="lookAt"
       :geo-json="geoJson"
       @click-in-map="handleClickInMap($event)"
@@ -68,6 +68,10 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  get isVerortungEditable(): boolean {
+    return this.isEditable && !this.adresseValid();
+  }
+
   private verortungCardTitle = "Verortung";
 
   private pointCoordinatesAsUtm32 = "";
@@ -78,9 +82,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   private geoJson: Array<Feature<Point>> = [];
 
   private mounted(): void {
-    if (!_.isNil(this.adresseCoordinate)) {
-      this.setGeoJsonFromLatLng(this.adresseCoordinate);
-    } else if (!_.isNil(this.pointCoordinate)) {
+    if (!_.isNil(this.pointCoordinate)) {
       this.setGeoJsonFromLatLng(this.pointCoordinate);
     }
   }
@@ -90,9 +92,16 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
    */
   @Watch("adresse", { deep: true })
   private onAdresseChanged(): void {
-    if (this.adresse?.strasse && this.adresseCoordinate) {
+    if (this.adresseValid()) {
       this.setGeoJsonFromLatLng(this.adresseCoordinate);
+      this.createVerortung(this.getPointGeometry());
+    } else {
+      this.reset();
     }
+  }
+
+  private adresseValid(): boolean {
+    return !_.isNil(this.adresse) && !_.isNil(this.adresseCoordinate);
   }
 
   get adresseCoordinate(): LatLngLiteral | undefined {
@@ -102,13 +111,13 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     if (lng && lat) {
       return { lng, lat };
     }
-
     return undefined;
   }
 
   get pointCoordinate(): LatLngLiteral | undefined {
     let lng: number = Number.NaN;
     let lat: number = Number.NaN;
+
     if (
       !_.isNil(this.verortungModel) &&
       !_.isNil(this.verortungModel.point) &&
@@ -120,7 +129,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     if (!_.isNaN(lng) && !_.isNaN(lat)) {
       return { lng, lat };
     }
-
     return undefined;
   }
 
@@ -161,23 +169,22 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private handleDeselectGeoJson(): void {
-    this.adresse = {};
-    this.geoJson = [];
+    this.reset();
     this.formChanged();
   }
 
   private handleAcceptSelectedGeoJson(): void {
-    const point = this.getPointGeometry();
+    this.createVerortung(this.getPointGeometry());
+    this.formChanged();
+  }
+
+  private createVerortung(point: PointGeometryDto | undefined): void {
     if (!_.isNil(point)) {
       this.createVerortungPointDtoFromSelectedPoint(point).then((verortung: VerortungPointDto | undefined) => {
-        if (!_.isNil(verortung)) {
-          this.verortungModel = new VerortungPointModel(verortung);
-          this.formChanged();
-        }
+        this.verortungModel = verortung;
       });
     } else {
       this.verortungModel = undefined;
-      this.formChanged();
     }
   }
 
@@ -296,6 +303,11 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
       multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
     };
+  }
+
+  private reset(): void {
+    this.geoJson = [];
+    this.verortungModel = undefined;
   }
 }
 </script>
