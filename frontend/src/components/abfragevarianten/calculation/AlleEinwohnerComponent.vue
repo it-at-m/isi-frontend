@@ -13,6 +13,9 @@
             hide-default-footer
             fixed-header
           >
+            <template #item.anzahlPersonenGesamt="{ item }">
+              {{ roundAnzahlPersonenGesamt(item) }}
+            </template>
           </v-data-table>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -61,6 +64,14 @@ export default class InfrastrukturbedarfComponent extends Vue {
   private rowClasses(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto) {
     if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
       return "blue-grey lighten-5";
+    }
+  }
+
+  private roundAnzahlPersonenGesamt(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
+    if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
+      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(2);
+    } else {
+      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(0);
     }
   }
 }

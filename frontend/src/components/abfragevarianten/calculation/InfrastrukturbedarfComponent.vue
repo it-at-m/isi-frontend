@@ -13,8 +13,14 @@
             hide-default-footer
             fixed-header
           >
+            <template #item.anzahlPersonenGesamt="{ item }">
+              {{ roundAnzahlPersonenGesamt(item) }}
+            </template>
+            <template #item.anzahlPersonenZuVersorgen="{ item }">
+              {{ roundAnzahlPersonenZuVersorgen(item) }}
+            </template>
             <template #item.anzahlGruppen="{ item }">
-              {{ roundToFixedTwoDecimals(item.anzahlGruppen) }}
+              {{ roundAnzahlGruppen(item) }}
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -77,8 +83,24 @@ export default class InfrastrukturbedarfComponent extends Vue {
     }
   }
 
-  private roundToFixedTwoDecimals(value: number): string {
-    return value.toFixed(2);
+  private roundAnzahlPersonenGesamt(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
+    if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
+      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(2);
+    } else {
+      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(0);
+    }
+  }
+
+  private roundAnzahlPersonenZuVersorgen(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
+    if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
+      return infrastrukturBedarfeProJahr.anzahlPersonenZuVersorgen.toFixed(2);
+    } else {
+      return infrastrukturBedarfeProJahr.anzahlPersonenZuVersorgen.toFixed(0);
+    }
+  }
+
+  private roundAnzahlGruppen(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
+    return infrastrukturBedarfeProJahr.anzahlGruppen.toFixed(2);
   }
 }
 </script>
