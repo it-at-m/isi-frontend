@@ -536,6 +536,10 @@ export function createFoerdermixStammDto(): FoerdermixStammDto {
  */
 export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto {
   return {
+    id: "",
+    version: undefined,
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
     infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
     lfdNr: undefined,
     bauvorhaben: undefined,

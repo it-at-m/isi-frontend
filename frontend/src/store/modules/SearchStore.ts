@@ -1,8 +1,14 @@
 import {
   AbfrageSearchResultDto,
   BauvorhabenDto,
+  KinderkrippeDto,
+  KindergartenDto,
+  HausFuerKinderDto,
+  GsNachmittagBetreuungDto,
+  GrundschuleDto,
+  MittelschuleDto,
   BauvorhabenSearchResultDto,
-  InfrastruktureinrichtungDto,
+  InfrastruktureinrichtungSearchResultDto,
   SearchResultDto,
   SearchResultsDto,
   SearchResultDtoTypeEnum,
@@ -31,7 +37,14 @@ const state = {
     | undefined,
   defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
-  selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
+  selectedInfrastruktureinrichtung: undefined as
+    | KinderkrippeDto
+    | KindergartenDto
+    | HausFuerKinderDto
+    | GsNachmittagBetreuungDto
+    | GrundschuleDto
+    | MittelschuleDto
+    | undefined,
 };
 
 export type SearchState = typeof state;
@@ -59,7 +72,16 @@ export default {
     selectedBauvorhaben: (state: SearchState): BauvorhabenDto | undefined => {
       return state.selectedBauvorhaben;
     },
-    selectedInfrastruktureinrichtung: (state: SearchState): InfrastruktureinrichtungDto | undefined => {
+    selectedInfrastruktureinrichtung: (
+      state: SearchState,
+    ):
+      | KinderkrippeDto
+      | KindergartenDto
+      | HausFuerKinderDto
+      | GsNachmittagBetreuungDto
+      | GrundschuleDto
+      | MittelschuleDto
+      | undefined => {
       return state.selectedInfrastruktureinrichtung;
     },
   },
@@ -77,7 +99,7 @@ export default {
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben) &&
             _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id)) ||
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastruktureinrichtung) &&
-            _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id))
+            _.isEqual(id, (searchResult as InfrastruktureinrichtungSearchResultDto).id))
         );
       });
       state.searchResults = searchResults;
@@ -96,7 +118,13 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       state: SearchState,
-      selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto,
+      selectedInfrastruktureinrichtung:
+        | KinderkrippeDto
+        | KindergartenDto
+        | HausFuerKinderDto
+        | GsNachmittagBetreuungDto
+        | GrundschuleDto
+        | MittelschuleDto,
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
     },
@@ -126,7 +154,13 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      infrastruktureinrichtung: InfrastruktureinrichtungDto,
+      infrastruktureinrichtung:
+        | KinderkrippeDto
+        | KindergartenDto
+        | HausFuerKinderDto
+        | GsNachmittagBetreuungDto
+        | GrundschuleDto
+        | MittelschuleDto,
     ): void {
       context.commit("selectedInfrastruktureinrichtung", infrastruktureinrichtung);
     },

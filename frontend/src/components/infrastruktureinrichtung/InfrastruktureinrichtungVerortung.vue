@@ -30,7 +30,7 @@ import { Component, Prop, Mixins, VModel, Watch } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
 import { LatLng, LatLngLiteral } from "leaflet";
 import { Feature, Point } from "geojson";
-import _, { isNil } from "lodash";
+import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import {
   AdresseDto,
@@ -72,6 +72,10 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     return this.isEditable && !this.adresseValid();
   }
 
+  private adresseValid(): boolean {
+    return !_.isNil(this.adresse) && !_.isEmpty(this.adresse.strasse) && !_.isNil(this.adresseCoordinate);
+  }
+
   private verortungCardTitle = "Verortung";
 
   private pointCoordinatesAsUtm32 = "";
@@ -80,28 +84,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
    * Repräsentiert eine einzige Punktkoordinate.
    */
   private geoJson: Array<Feature<Point>> = [];
-
-  private mounted(): void {
-    if (!_.isNil(this.pointCoordinate)) {
-      this.setGeoJsonFromLatLng(this.pointCoordinate);
-      this.refresh();
-    }
-  }
-
-  /**
-   * Dient als Reaktion auf Änderungen der Adresse aus der Elternkomponente.
-   */
-  @Watch("adresse", { deep: true })
-  private onAdresseChanged(): void {
-    if (this.adresseValid()) {
-      this.setGeoJsonFromLatLng(this.adresseCoordinate);
-      this.createVerortung(this.getPointGeometry());
-    }
-  }
-
-  private adresseValid(): boolean {
-    return !_.isNil(this.adresse) && !_.isNil(this.adresseCoordinate);
-  }
 
   get adresseCoordinate(): LatLngLiteral | undefined {
     const lng = this.adresse?.coordinate?.longitude;
@@ -113,7 +95,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     return undefined;
   }
 
-  get pointCoordinate(): LatLngLiteral | undefined {
+  get verortungPointCoordinate(): LatLngLiteral | undefined {
     let lng: number = Number.NaN;
     let lat: number = Number.NaN;
 
@@ -155,10 +137,12 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   private getPointGeometry(): PointGeometryDto | undefined {
     if (!_.isEmpty(this.geoJson)) {
       const coordinates = this.geoJson[0].geometry.coordinates;
-      return {
-        type: "Point",
-        coordinates: [coordinates[0], coordinates[1]], // [0] = longitude, [1] = latitude
-      } as PointGeometryDto;
+      if (coordinates.length == 2) {
+        return {
+          type: "Point",
+          coordinates: [coordinates[0], coordinates[1]], // [0] = longitude, [1] = latitude
+        } as PointGeometryDto;
+      }
     }
     return undefined;
   }
@@ -188,9 +172,26 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     }
   }
 
+  /**
+   * Dient als Reaktion auf Änderungen der Adresse aus der Elternkomponente.
+   */
+  @Watch("adresse", { deep: true })
+  private handleAdresseChanged(): void {
+    if (this.adresseValid()) {
+      this.geoJson = [];
+      this.verortungModel = undefined;
+      this.refresh();
+    }
+  }
+
   @Watch("verortungModel", { deep: true })
   private handleVerortungModelChanged(): void {
-    this.refresh();
+    if (!_.isNil(this.verortungPointCoordinate)) {
+      this.setGeoJsonFromLatLng(this.verortungPointCoordinate);
+      this.refresh();
+    } else {
+      this.geoJson = [];
+    }
   }
 
   private refresh(): void {
@@ -217,17 +218,13 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
-    if (!_.isNil(latlng)) {
-      this.geoJson = [
-        {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [latlng.lng, latlng.lat] },
-          properties: null,
-        },
-      ];
-    } else {
-      this.geoJson = [];
-    }
+    this.geoJson = [
+      {
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [latlng.lng, latlng.lat] },
+        properties: null,
+      },
+    ];
   }
 
   /**

@@ -151,15 +151,15 @@
 </template>
 <script lang="ts">
 import {
-  GrundschuleDto,
-  GsNachmittagBetreuungDto,
-  HausFuerKinderDto,
   InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungDtoStatusEnum,
-  InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
   KindergartenDto,
   KinderkrippeDto,
+  HausFuerKinderDto,
+  GsNachmittagBetreuungDto,
   MittelschuleDto,
+  GrundschuleDto,
+  InfrastruktureinrichtungDtoStatusEnum,
+  InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import InformationList from "@/components/common/InformationList.vue";
@@ -180,6 +180,7 @@ import SecurityMixin from "@/mixins/security/SecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
+import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
 import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
 import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
@@ -235,7 +236,14 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private deleteDialogOpen = false;
 
-  private infrastruktureinrichtung: InfrastruktureinrichtungDto = createInfrastruktureinrichtungDto();
+  private infrastruktureinrichtung:
+    | InfrastruktureinrichtungModel
+    | KinderkrippeModel
+    | KindergartenModel
+    | HausFuerKinderModel
+    | GsNachmittagBetreuungModel
+    | GrundschuleModel
+    | MittelschuleModel = new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto());
 
   private infrastruktureinrichtungId: string | undefined = this.$route.params.id;
 
@@ -359,20 +367,23 @@ export default class Infrastruktureinrichtung extends Mixins(
     if (!_.isNil(this.infrastruktureinrichtungId) && !_.isEmpty(this.infrastruktureinrichtungId)) {
       this.getInfrastruktureinrichtungAndSetToStore(this.infrastruktureinrichtungId);
     } else {
-      this.infrastruktureinrichtung = createInfrastruktureinrichtungDto();
-      this.setInfrastruktureinrichtungToStore(this.infrastruktureinrichtung);
+      this.setInfrastruktureinrichtungToStore(undefined);
     }
+    const infrastruktureinrichtungModel = this.getInfrastruktureinrichtungModelFromStore();
+    this.infrastruktureinrichtung = _.isNil(infrastruktureinrichtungModel)
+      ? new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto())
+      : infrastruktureinrichtungModel;
     this.mode = this.determineDisplayModeNeuOrAenderung();
     this.buttonText = this.isNewInfrastruktureinrichtung() ? "Speichern" : "Aktualisieren";
   }
 
   @Watch("$store.state.search.selectedInfrastruktureinrichtung", { immediate: true, deep: true })
   private handleSelectedInfrastruktureinrichtungChanged(): void {
-    const infrastruktureinrichtungFromStore = this.getInfrastruktureinrichtungFromStore();
+    const infrastruktureinrichtungFromStore = this.getInfrastruktureinrichtungModelFromStore();
     if (!_.isNil(infrastruktureinrichtungFromStore)) {
       this.infrastruktureinrichtung = infrastruktureinrichtungFromStore;
     } else {
-      this.infrastruktureinrichtung = createInfrastruktureinrichtungDto();
+      this.infrastruktureinrichtung = new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto());
     }
   }
 
@@ -547,7 +558,7 @@ export default class Infrastruktureinrichtung extends Mixins(
     }
   }
 
-  private getInfrastruktureinrichtungFromStore():
+  private getInfrastruktureinrichtungModelFromStore():
     | KinderkrippeModel
     | KindergartenModel
     | HausFuerKinderModel
