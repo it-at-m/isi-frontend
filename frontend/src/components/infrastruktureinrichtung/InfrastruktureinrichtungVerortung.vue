@@ -69,6 +69,10 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  mounted(): void {
+    this.handleVerortungModelChanged();
+  }
+
   get isVerortungEditable(): boolean {
     return this.isEditable && !this.adresseValid();
   }
