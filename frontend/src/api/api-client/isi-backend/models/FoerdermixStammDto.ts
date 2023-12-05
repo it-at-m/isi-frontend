@@ -52,18 +52,6 @@ export interface FoerdermixStammDto {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
-     * @memberof FoerdermixStammDto
-     */
-    bezeichnungJahr: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FoerdermixStammDto
-     */
-    bezeichnung: string;
-    /**
-     * 
      * @type {FoerdermixDto}
      * @memberof FoerdermixStammDto
      */
@@ -75,8 +63,6 @@ export interface FoerdermixStammDto {
  */
 export function instanceOfFoerdermixStammDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "bezeichnungJahr" in value;
-    isInstance = isInstance && "bezeichnung" in value;
     isInstance = isInstance && "foerdermix" in value;
 
     return isInstance;
@@ -96,8 +82,6 @@ export function FoerdermixStammDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bezeichnungJahr': json['bezeichnungJahr'],
-        'bezeichnung': json['bezeichnung'],
         'foerdermix': FoerdermixDtoFromJSON(json['foerdermix']),
     };
 }
@@ -115,8 +99,6 @@ export function FoerdermixStammDtoToJSON(value?: FoerdermixStammDto | null): any
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bezeichnungJahr': value.bezeichnungJahr,
-        'bezeichnung': value.bezeichnung,
         'foerdermix': FoerdermixDtoToJSON(value.foerdermix),
     };
 }
