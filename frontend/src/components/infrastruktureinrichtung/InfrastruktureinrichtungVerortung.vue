@@ -195,7 +195,11 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     let changed = false;
     // Erstaufruf?
     if (_.isNil(this.oldAdresse) && !_.isNil(this.adresse)) {
-      changed = !this.adresse.isEmpty; // Erstaufruf mit ausgewählter Adresse?
+      if (_.isNil(this.verortungModel)) {
+        changed = !this.adresse.isEmpty; // Neuanlage mit Adressauswahl
+      } else {
+        /* Infrastruktureinrichtung mit existierender Adresse */
+      }
       this.oldAdresse = _.cloneDeep(this.adresse);
     } else {
       // Folgeaufruf: Hat sich die ausgewählte Adresse geändert?
