@@ -27,6 +27,7 @@
 
 <script lang="ts">
 import { Component, Prop, Mixins, VModel, Watch } from "vue-property-decorator";
+import AdresseModel from "@/types/model/common/AdresseModel";
 import CityMap from "@/components/map/CityMap.vue";
 import { LatLng, LatLngLiteral } from "leaflet";
 import { Feature, Point } from "geojson";
@@ -63,7 +64,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   @VModel({ type: VerortungPointModel }) verortungModel?: VerortungPointModel;
 
   @Prop({ type: Object })
-  private adresse?: AdresseDto;
+  private adresse?: AdresseModel;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
@@ -77,6 +78,8 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private verortungCardTitle = "Verortung";
+
+  private oldAdresse: AdresseModel | undefined = undefined;
 
   private pointCoordinatesAsUtm32 = "";
 
@@ -154,6 +157,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   private handleDeselectGeoJson(): void {
     this.geoJson = [];
     this.verortungModel = undefined;
+    this.refresh();
     this.formChanged();
   }
 
@@ -177,21 +181,51 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
    */
   @Watch("adresse", { deep: true })
   private handleAdresseChanged(): void {
-    if (this.adresseValid()) {
-      this.geoJson = [];
-      this.verortungModel = undefined;
-      this.refresh();
+    if (this.adresseChanged) {
+      if (this.adresseValid()) {
+        this.setGeoJsonFromLatLng(this.adresseCoordinate as LatLng);
+      } else {
+        this.geoJson = [];
+      }
+      this.handleAcceptSelectedGeoJson();
     }
+  }
+
+  get adresseChanged(): boolean {
+    let changed = false;
+    if (_.isNil(this.oldAdresse) && !_.isNil(this.adresse)) {
+      this.oldAdresse = _.cloneDeep(this.adresse);
+    } else {
+      // hat sich die ausgewählte Adresse geändert?
+      if (!_.isNil(this.oldAdresse) && !_.isNil(this.adresse)) {
+        if (!this.oldAdresse.isEmpty && !this.adresse.isEmpty) {
+          changed = !this.oldAdresse.isEqual(this.adresse);
+        } else if (
+          (this.oldAdresse.isEmpty && !this.adresse.isEmpty) ||
+          (!this.oldAdresse.isEmpty && this.adresse.isEmpty)
+        ) {
+          changed = true;
+        }
+      }
+      if (changed) {
+        if (!_.isNil(this.adresse)) {
+          this.oldAdresse = _.cloneDeep(this.adresse);
+        } else {
+          this.oldAdresse = undefined;
+        }
+      }
+    }
+    return changed;
   }
 
   @Watch("verortungModel", { deep: true })
   private handleVerortungModelChanged(): void {
     if (!_.isNil(this.verortungPointCoordinate)) {
       this.setGeoJsonFromLatLng(this.verortungPointCoordinate);
-      this.refresh();
     } else {
       this.geoJson = [];
     }
+    this.refresh();
   }
 
   private refresh(): void {

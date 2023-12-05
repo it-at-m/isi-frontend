@@ -1,12 +1,6 @@
 import {
   AbfrageSearchResultDto,
   BauvorhabenDto,
-  KinderkrippeDto,
-  KindergartenDto,
-  HausFuerKinderDto,
-  GsNachmittagBetreuungDto,
-  GrundschuleDto,
-  MittelschuleDto,
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
   SearchResultDto,
@@ -37,14 +31,7 @@ const state = {
     | undefined,
   defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
   selectedBauvorhaben: undefined as BauvorhabenModel | undefined,
-  selectedInfrastruktureinrichtung: undefined as
-    | KinderkrippeDto
-    | KindergartenDto
-    | HausFuerKinderDto
-    | GsNachmittagBetreuungDto
-    | GrundschuleDto
-    | MittelschuleDto
-    | undefined,
+  selectedInfrastruktureinrichtung: undefined as InfrastruktureinrichtungDto | undefined,
 };
 
 export type SearchState = typeof state;
@@ -72,16 +59,7 @@ export default {
     selectedBauvorhaben: (state: SearchState): BauvorhabenDto | undefined => {
       return state.selectedBauvorhaben;
     },
-    selectedInfrastruktureinrichtung: (
-      state: SearchState,
-    ):
-      | KinderkrippeDto
-      | KindergartenDto
-      | HausFuerKinderDto
-      | GsNachmittagBetreuungDto
-      | GrundschuleDto
-      | MittelschuleDto
-      | undefined => {
+    selectedInfrastruktureinrichtung: (state: SearchState): InfrastruktureinrichtungDto | undefined => {
       return state.selectedInfrastruktureinrichtung;
     },
   },
@@ -118,13 +96,7 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       state: SearchState,
-      selectedInfrastruktureinrichtung:
-        | KinderkrippeDto
-        | KindergartenDto
-        | HausFuerKinderDto
-        | GsNachmittagBetreuungDto
-        | GrundschuleDto
-        | MittelschuleDto,
+      selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto,
     ): void {
       state.selectedInfrastruktureinrichtung = selectedInfrastruktureinrichtung;
     },
@@ -154,13 +126,7 @@ export default {
     },
     selectedInfrastruktureinrichtung(
       context: ActionContext<SearchState, RootState>,
-      infrastruktureinrichtung:
-        | KinderkrippeDto
-        | KindergartenDto
-        | HausFuerKinderDto
-        | GsNachmittagBetreuungDto
-        | GrundschuleDto
-        | MittelschuleDto,
+      infrastruktureinrichtung: InfrastruktureinrichtungDto,
     ): void {
       context.commit("selectedInfrastruktureinrichtung", infrastruktureinrichtung);
     },
