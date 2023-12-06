@@ -38,17 +38,28 @@ export default class WohneinheitenComponent extends Vue {
   private wohneinheiten!: Array<WohneinheitenProFoerderartProJahrDto>;
 
   get headersDataTable(): Array<DataTableHeader> {
-    const headers: Array<DataTableHeader> = this.wohneinheiten.map((entry) => {
-      return { text: entry.foerderart, value: entry.foerderart };
-    });
+    const headers: Array<DataTableHeader> = [
+      {
+        text: "",
+        value: "jahr",
+        align: "center",
+        sortable: false,
+        divider: true,
+      },
+    ];
 
-    headers.unshift({
-      text: "",
-      value: "jahr",
-      align: "center",
-      sortable: false,
-      divider: true,
-    });
+    for (const entry of this.wohneinheiten) {
+      const existingHeader = headers.find((header) => header.text === entry.foerderart);
+      if (!existingHeader) {
+        headers.push({
+          text: entry.foerderart,
+          value: entry.foerderart,
+          align: "center",
+          sortable: false,
+          divider: true,
+        });
+      }
+    }
 
     return headers;
   }
