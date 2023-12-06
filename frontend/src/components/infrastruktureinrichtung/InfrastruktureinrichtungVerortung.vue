@@ -69,10 +69,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  mounted(): void {
-    this.handleVerortungModelChanged();
-  }
-
   get isVerortungEditable(): boolean {
     return this.isEditable && !this.adresseValid();
   }
@@ -230,6 +226,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
 
   @Watch("verortungModel", { deep: true })
   private handleVerortungModelChanged(): void {
+    console.log("InfrastruktureinrichtungVerortung.handleVerortungModelChanged: " + this.verortungModel);
     if (!_.isNil(this.verortungPointCoordinate)) {
       this.setGeoJsonFromLatLng(this.verortungPointCoordinate);
     } else {
