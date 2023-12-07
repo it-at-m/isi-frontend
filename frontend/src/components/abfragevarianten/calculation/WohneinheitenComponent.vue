@@ -8,6 +8,7 @@
             :headers="headersDataTable"
             :items="itemsDataTable"
             :items-per-page="-1"
+            :item-class="rowClasses"
             dense
             hide-default-footer
             fixed-header
@@ -70,16 +71,22 @@ export default class WohneinheitenComponent extends Vue {
     for (const entry of this.wohneinheiten) {
       const existingItem = items.find((item) => item.jahr === entry.jahr);
       if (existingItem) {
-        existingItem[entry.foerderart] = entry.wohneinheiten.toFixed(2);
+        existingItem[entry.foerderart] = entry.wohneinheiten.toFixed(0);
       } else {
         items.push({
           jahr: entry.jahr,
-          [entry.foerderart]: entry.wohneinheiten.toFixed(2),
+          [entry.foerderart]: entry.wohneinheiten.toFixed(0),
         });
       }
     }
 
     return items;
+  }
+
+  private rowClasses(item: Item) {
+    if (!Number.parseInt(item.jahr)) {
+      return "blue-grey lighten-5";
+    }
   }
 }
 </script>

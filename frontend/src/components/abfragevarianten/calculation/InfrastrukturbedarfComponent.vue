@@ -84,23 +84,15 @@ export default class InfrastrukturbedarfComponent extends Vue {
   }
 
   private roundAnzahlPersonenGesamt(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
-    if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
-      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(2);
-    } else {
-      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(0);
-    }
+    return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(0);
   }
 
   private roundAnzahlPersonenZuVersorgen(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
-    if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
-      return infrastrukturBedarfeProJahr.anzahlPersonenZuVersorgen.toFixed(2);
-    } else {
-      return infrastrukturBedarfeProJahr.anzahlPersonenZuVersorgen.toFixed(0);
-    }
+    return infrastrukturBedarfeProJahr.anzahlPersonenZuVersorgen.toFixed(0);
   }
 
   private roundAnzahlGruppen(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
-    return infrastrukturBedarfeProJahr.anzahlGruppen.toFixed(2);
+    return _.round(infrastrukturBedarfeProJahr.anzahlGruppen, 2).toLocaleString();
   }
 }
 </script>

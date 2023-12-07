@@ -68,11 +68,7 @@ export default class InfrastrukturbedarfComponent extends Vue {
   }
 
   private roundAnzahlPersonenGesamt(infrastrukturBedarfeProJahr: InfrastrukturbedarfProJahrDto): string {
-    if (_.includes(infrastrukturBedarfeProJahr.jahr, this.JAHR_MITTELWERT)) {
-      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(2);
-    } else {
-      return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(0);
-    }
+    return infrastrukturBedarfeProJahr.anzahlPersonenGesamt.toFixed(0);
   }
 }
 </script>
