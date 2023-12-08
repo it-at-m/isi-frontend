@@ -69,6 +69,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { createFoerdermixStammDto } from "@/utils/Factories";
 import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
+import _ from "lodash";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
@@ -101,6 +102,21 @@ export default class FoerdermixFormular extends Mixins(
 
   mounted(): void {
     this.setGroupedStammdatenList();
+  }
+
+  @Watch("foerdermix", { immediate: true, deep: true })
+  private watchFoerdermix() {
+    this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    const stammdatumMatchingWithFoerdermix = this.stammdaten.find(
+      (value) =>
+        _.isEqual(value.foerdermix.bezeichnung, this.foerdermix?.bezeichnung) &&
+        _.isEqual(value.foerdermix.bezeichnungJahr, this.foerdermix?.bezeichnungJahr),
+    );
+    if (_.isNil(stammdatumMatchingWithFoerdermix)) {
+      this.selectedItem = createFoerdermixStammDto();
+    } else {
+      this.selectedItem = stammdatumMatchingWithFoerdermix;
+    }
   }
 
   get gesamtsumme(): number {
