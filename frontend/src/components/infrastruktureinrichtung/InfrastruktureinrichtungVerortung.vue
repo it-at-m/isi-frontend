@@ -34,11 +34,9 @@ import { Feature, Point } from "geojson";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import {
-  AdresseDto,
   FlurstueckDto,
   GemarkungDto,
   StadtbezirkDto,
-  VerortungPointDto,
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoBackend,
   Wgs84Dto,
   UtmDto,
@@ -226,7 +224,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
 
   @Watch("verortungModel", { deep: true })
   private handleVerortungModelChanged(): void {
-    console.log("InfrastruktureinrichtungVerortung.handleVerortungModelChanged: " + this.verortungModel);
     if (!_.isNil(this.verortungPointCoordinate)) {
       this.setGeoJsonFromLatLng(this.verortungPointCoordinate);
     } else {

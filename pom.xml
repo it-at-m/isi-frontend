@@ -6,7 +6,7 @@
 
     <groupId>de.muenchen.isi</groupId>
     <artifactId>isi-frontend</artifactId>
-    <version>2.0.0</version>
+    <version>1.1.0</version>
     <name>isi_frontend</name>
     <packaging>pom</packaging>
 
