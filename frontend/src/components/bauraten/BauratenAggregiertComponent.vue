@@ -101,7 +101,7 @@ export default class BauratenAggregiertComponent extends Vue {
       layer instanceof AbfragevarianteBaugenehmigungsverfahrenModel ||
       layer instanceof AbfragevarianteWeiteresVerfahrenModel
     ) {
-      const abfragevariante = this.aggregateBauraten as
+      const abfragevariante = layer as
         | AbfragevarianteBauleitplanverfahrenModel
         | AbfragevarianteBaugenehmigungsverfahrenModel
         | AbfragevarianteWeiteresVerfahrenModel;
