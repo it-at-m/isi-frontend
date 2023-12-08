@@ -31,6 +31,12 @@ import {
     SchuleDtoFromJSONTyped,
     SchuleDtoToJSON,
 } from './SchuleDto';
+import type { VerortungPointDto } from './VerortungPointDto';
+import {
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
 
 import {
 } from './';
