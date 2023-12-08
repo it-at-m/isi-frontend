@@ -108,9 +108,9 @@ export default class FoerdermixFormular extends Mixins(
   private watchFoerdermix() {
     this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
     const stammdatumMatchingWithFoerdermix = this.stammdaten.find(
-      (value) =>
-        _.isEqual(value.foerdermix.bezeichnung, this.foerdermix?.bezeichnung) &&
-        _.isEqual(value.foerdermix.bezeichnungJahr, this.foerdermix?.bezeichnungJahr),
+      (stammdatum) =>
+        _.isEqual(stammdatum.foerdermix.bezeichnung, this.foerdermix?.bezeichnung) &&
+        _.isEqual(stammdatum.foerdermix.bezeichnungJahr, this.foerdermix?.bezeichnungJahr),
     );
     if (_.isNil(stammdatumMatchingWithFoerdermix)) {
       this.selectedItem = createFoerdermixStammDto();
