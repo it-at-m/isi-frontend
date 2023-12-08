@@ -140,7 +140,7 @@ export default class BauratenAggregiertComponent extends Vue {
           aggregated.gfWohnenGeplant += baurate.gfWohnenGeplant;
         }
       } else {
-        const clone = _.clone(baurate);
+        const clone = _.cloneDeep(baurate);
         this.baurateMap.set(clone.jahr, clone);
       }
     });
