@@ -2,6 +2,112 @@
   <div>
     <field-group-card :card-title="bedarfsmeldungenFachreferateTitle">
       <v-row justify="center">
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <h3>Kindertagesbetreuung</h3>
+          <tri-switch
+            id="ausgel_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
+            ref="ausgelBedarfImBaugebietBeruecksichtigenKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfImBaugebietBeruecksichtigenKita"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Bedarf im Baugebiet berücksichtigen </template>
+          </tri-switch>
+
+          <tri-switch
+            id="ausgel_bedarf_mitversorgung_im_bplan_kita_triswitch"
+            ref="ausgelBedarfMitversorgungImBplanKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungImBplanKita"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Mitversorgung des Bedarfs in einem Bebauungsplan </template>
+          </tri-switch>
+
+          <tri-switch
+            id="ausgel_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
+            ref="ausgelBedarfMitversorgungInBestEinrichtungenKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenKita"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Mitversorgung in bestehenden Einrichtungen </template>
+          </tri-switch>
+
+          <tri-switch
+            id="ausgel_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
+            ref="ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Mitversorgung in bestehenden Einrichtungen nach deren Ausbau </template>
+          </tri-switch>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <h3>Schule</h3>
+          <tri-switch
+            id="ausgel_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
+            ref="ausgelBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfImBaugebietBeruecksichtigenSchule"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Bedarf im Baugebiet berücksichtigen </template>
+          </tri-switch>
+
+          <tri-switch
+            id="ausgel_bedarf_mitversorgung_im_bplan_schule_triswitch"
+            ref="ausgelBedarfMitversorgungImBplanSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungImBplanSchule"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Mitversorgung des Bedarfs in einem Bebauungsplan </template>
+          </tri-switch>
+
+          <tri-switch
+            id="ausgel_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
+            ref="ausgelBedarfMitversorgungInBestEinrichtungenSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenSchule"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Mitversorgung in bestehenden Einrichtungen </template>
+          </tri-switch>
+
+          <tri-switch
+            id="ausgel_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
+            ref="ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
+            off-text="Nein"
+            on-text="Ja"
+          >
+            <template #label> Mitversorgung in bestehenden Einrichtungen nach deren Ausbau </template>
+          </tri-switch>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col cols="12">
+          <v-text-field
+            id="hinweis_Versorgung_field"
+            ref="hinweisVersorgungField"
+            v-model="abfragevarianteSachbearbeitung.hinweisVersorgung"
+            label="Hinweise zur Versorgung der Bedarfe außerhalb des Verfahrens"
+            maxlength="1000"
+            @input="formChanged"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row justify="center">
         <v-col cols="12">
           <v-container class="table">
             <v-data-table
