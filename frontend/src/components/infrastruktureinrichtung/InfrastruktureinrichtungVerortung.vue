@@ -167,7 +167,9 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   private handleClickInMap(latlng: LatLng): void {
-    this.setGeoJsonFromLatLng(latlng);
+    if (this.isVerortungEditable) {
+      this.setGeoJsonFromLatLng(latlng);
+    }
   }
 
   private handleDeselectGeoJson(): void {
