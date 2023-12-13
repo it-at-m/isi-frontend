@@ -11,7 +11,7 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
-    <v-label v-if="pointToDisplayNotEmpty">Koordinaten</v-label>
+    <v-label v-if="pointToDisplayNotEmpty">Koordinate</v-label>
     <v-chip-group
       v-if="pointToDisplayNotEmpty"
       title="Koordinate"
@@ -20,6 +20,20 @@
     >
       <v-chip>
         <div>{{ pointToDisplay }}</div>
+      </v-chip>
+    </v-chip-group>
+    <v-label v-if="stadtbezirke.length !== 0">Stadtbezirk</v-label>
+    <v-chip-group
+      v-if="stadtbezirke.length !== 0"
+      title="Stadtbezirke"
+      active-class="primary--text"
+      column
+    >
+      <v-chip
+        v-for="(stadtbezirk, index) in stadtbezirke"
+        :key="index"
+      >
+        {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
       </v-chip>
     </v-chip-group>
   </field-group-card>
@@ -124,6 +138,10 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
 
   get pointToDisplayNotEmpty(): boolean {
     return !_.isEmpty(this.pointCoordinatesAsUtm32);
+  }
+
+  get stadtbezirke(): Array<StadtbezirkDto> {
+    return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.stadtbezirke), ["nummer"]);
   }
 
   get lookAt(): LatLngLiteral | undefined {
