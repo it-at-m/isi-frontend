@@ -115,8 +115,8 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "*/*": {
                 "schema": {
@@ -135,8 +135,8 @@
               }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -182,16 +182,6 @@
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "201": {
             "description": "CREATED -> FoerdermixStamm wurde erfolgreich erstellt.",
             "content": {
@@ -204,6 +194,16 @@
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": {
               "*/*": {
                 "schema": {
@@ -519,16 +519,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
             "content": {
@@ -551,6 +541,16 @@
           },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -597,16 +597,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Die ausgewählte Abfrage existiert nicht mehr.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "201": {
             "description": "CREATED -> Bauvorhaben wurde erfolgreich erstellt.",
             "content": {
@@ -629,6 +619,16 @@
           },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Die ausgewählte Abfrage existiert nicht mehr.",
             "content": {
               "*/*": {
                 "schema": {
@@ -667,18 +667,8 @@
           }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Abfrage oder Abfragevariante nicht gefunden.",
+          "400": {
+            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -697,8 +687,18 @@
               }
             }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
+          "404": {
+            "description": "NOT_FOUND -> Abfrage oder Abfragevariante nicht gefunden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
             "content": {
               "*/*": {
                 "schema": {
@@ -746,16 +746,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
             "content": {
@@ -768,6 +758,16 @@
           },
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller."
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
           }
         }
       }
@@ -798,16 +798,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
             "content": {
@@ -820,6 +810,16 @@
           },
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller."
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
           }
         }
       }
@@ -902,16 +902,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht zur Bearbeitung zurückgegeben werden.",
             "content": {
@@ -924,6 +914,16 @@
           },
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich zurückgegeben an den Abfrage Ersteller."
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
           }
         }
       }
@@ -1009,8 +1009,8 @@
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich zur bearbeitung freigestellt."
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1019,8 +1019,8 @@
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1113,8 +1113,8 @@
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich erledigt."
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1123,8 +1123,8 @@
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1224,6 +1224,9 @@
               }
             }
           },
+          "200": {
+            "description": "OK -> Abfrage wurde erfolgreich abbgebrochen."
+          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
@@ -1233,9 +1236,6 @@
                 }
               }
             }
-          },
-          "200": {
-            "description": "OK -> Abfrage wurde erfolgreich abbgebrochen."
           }
         }
       }
@@ -1513,22 +1513,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PresignedUrlDto"
-                }
-              }
-            }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUrlDto"
                 }
               }
             }
@@ -1571,8 +1571,8 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1591,8 +1591,8 @@
               }
             }
           },
-          "400": {
-            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
+          "409": {
+            "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1601,8 +1601,8 @@
               }
             }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
+          "400": {
+            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1641,8 +1641,8 @@
               }
             }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ermittlung des Mime-Types ist ein Fehler aufgetreten.",
+          "406": {
+            "description": "NOT ACCEPTABLE -> Die referenzierte und im S3-Storage befindliche Datei besitzt keinen zulässigen Mime-Type.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1651,8 +1651,8 @@
               }
             }
           },
-          "406": {
-            "description": "NOT ACCEPTABLE -> Die referenzierte und im S3-Storage befindliche Datei besitzt keinen zulässigen Mime-Type.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ermittlung des Mime-Types ist ein Fehler aufgetreten.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1710,6 +1710,16 @@
               }
             }
           },
+          "404": {
+            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
             "content": {
@@ -1732,16 +1742,6 @@
           },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1800,6 +1800,16 @@
               }
             }
           },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
             "content": {
@@ -1820,28 +1830,18 @@
               }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -1900,6 +1900,16 @@
               }
             }
           },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "200": {
             "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
             "content": {
@@ -1920,28 +1930,18 @@
               }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -2000,22 +2000,12 @@
               }
             }
           },
-          "200": {
-            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID oder das referenzierte Bauvorhaben existiert nicht.",
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/BaugenehmigungsverfahrenDto"
-                    },
-                    {
-                      "$ref": "#/components/schemas/BauleitplanverfahrenDto"
-                    },
-                    {
-                      "$ref": "#/components/schemas/WeiteresVerfahrenDto"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
@@ -2040,12 +2030,22 @@
               }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID oder das referenzierte Bauvorhaben existiert nicht.",
+          "200": {
+            "description": "OK -> Abfrage wurde erfolgreich aktualisiert.",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/BaugenehmigungsverfahrenDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BauleitplanverfahrenDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/WeiteresVerfahrenDto"
+                    }
+                  ]
                 }
               }
             }
@@ -2080,22 +2080,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FoerdermixStammDto"
-                }
-              }
-            }
-          },
           "404": {
             "description": "NOT FOUND -> FoerdermixStamm mit dieser ID nicht vorhanden.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoerdermixStammDto"
                 }
               }
             }
@@ -2312,6 +2312,16 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
+                }
+              }
+            }
+          },
           "409": {
             "description": "CONFLICT -> Die Infrastruktureinrichtung referenziert ein Bauvorhaben.",
             "content": {
@@ -2324,16 +2334,6 @@
           },
           "204": {
             "description": "NO CONTENT"
-          },
-          "404": {
-            "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
           }
         }
       }
@@ -2444,9 +2444,6 @@
               }
             }
           },
-          "204": {
-            "description": "NO CONTENT"
-          },
           "404": {
             "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": {
@@ -2456,6 +2453,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "NO CONTENT"
           }
         }
       }
@@ -2656,8 +2656,8 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
+          "404": {
+            "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
             "content": {
               "*/*": {
                 "schema": {
@@ -2679,8 +2679,8 @@
           "204": {
             "description": "NO CONTENT"
           },
-          "404": {
-            "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
+          "403": {
+            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
             "content": {
               "*/*": {
                 "schema": {
@@ -2709,16 +2709,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK -> Alle mögliche Transistions gefunden",
             "content": {
@@ -2728,6 +2718,16 @@
                   "items": {
                     "$ref": "#/components/schemas/TransitionDto"
                   }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationResponseDto"
                 }
               }
             }
@@ -4174,33 +4174,6 @@
             "items": {
               "$ref": "#/components/schemas/BauabschnittDto"
             }
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "hinweisVersorgung": {
-            "type": "string"
           }
         }
       },
@@ -4322,33 +4295,6 @@
             "items": {
               "$ref": "#/components/schemas/BauabschnittDto"
             }
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "hinweisVersorgung": {
-            "type": "string"
           }
         }
       },
@@ -4484,33 +4430,6 @@
             "items": {
               "$ref": "#/components/schemas/BauabschnittDto"
             }
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "hinweisVersorgung": {
-            "type": "string"
           }
         }
       },
@@ -5120,28 +5039,28 @@
             }
           },
           "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "hinweisVersorgung": {
             "type": "string"
@@ -5278,28 +5197,28 @@
             }
           },
           "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "hinweisVersorgung": {
             "type": "string"
@@ -5450,28 +5369,28 @@
             }
           },
           "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
+            "type": "boolean"
           },
           "hinweisVersorgung": {
             "type": "string"
@@ -5934,33 +5853,6 @@
               "$ref": "#/components/schemas/BauabschnittDto"
             }
           },
-          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "hinweisVersorgung": {
-            "type": "string"
-          },
           "gfWohnenPlanungsursaechlich": {
             "type": "number"
           },
@@ -6120,33 +6012,6 @@
             "items": {
               "$ref": "#/components/schemas/BauabschnittDto"
             }
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "hinweisVersorgung": {
-            "type": "string"
           },
           "gfWohnenPlanungsursaechlich": {
             "type": "number"
@@ -6321,33 +6186,6 @@
             "items": {
               "$ref": "#/components/schemas/BauabschnittDto"
             }
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungImBplanSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
-            "$ref": "#/components/schemas/UncertainBoolean"
-          },
-          "hinweisVersorgung": {
-            "type": "string"
           },
           "gfWohnenPlanungsursaechlich": {
             "type": "number"
@@ -6533,6 +6371,33 @@
             "items": {
               "$ref": "#/components/schemas/BedarfsmeldungFachreferateDto"
             }
+          },
+          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungImBplanKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungImBplanSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
+            "type": "boolean"
+          },
+          "hinweisVersorgung": {
+            "type": "string"
           }
         }
       },
@@ -6556,6 +6421,33 @@
             "items": {
               "$ref": "#/components/schemas/BedarfsmeldungFachreferateDto"
             }
+          },
+          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungImBplanKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungImBplanSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
+            "type": "boolean"
+          },
+          "hinweisVersorgung": {
+            "type": "string"
           }
         }
       },
@@ -6579,6 +6471,33 @@
             "items": {
               "$ref": "#/components/schemas/BedarfsmeldungFachreferateDto"
             }
+          },
+          "ausgelBedarfImBaugebietBeruecksichtigenKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungImBplanKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita": {
+            "type": "boolean"
+          },
+          "ausgelBedarfImBaugebietBeruecksichtigenSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungImBplanSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenSchule": {
+            "type": "boolean"
+          },
+          "ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": {
+            "type": "boolean"
+          },
+          "hinweisVersorgung": {
+            "type": "string"
           }
         }
       },

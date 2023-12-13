@@ -50,6 +50,60 @@ export interface AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto {
      * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
      */
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfImBaugebietBeruecksichtigenKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfMitversorgungImBplanKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfMitversorgungInBestEinrichtungenKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfImBaugebietBeruecksichtigenSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfMitversorgungImBplanSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfMitversorgungInBestEinrichtungenSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
+     */
+    hinweisVersorgung?: string;
 }
 
 
@@ -88,6 +142,15 @@ export function AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoFromJ
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
+        'ausgelBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgelBedarfImBaugebietBeruecksichtigenKita'],
+        'ausgelBedarfMitversorgungImBplanKita': !exists(json, 'ausgelBedarfMitversorgungImBplanKita') ? undefined : json['ausgelBedarfMitversorgungImBplanKita'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenKita'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
+        'ausgelBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenSchule') ? undefined : json['ausgelBedarfImBaugebietBeruecksichtigenSchule'],
+        'ausgelBedarfMitversorgungImBplanSchule': !exists(json, 'ausgelBedarfMitversorgungImBplanSchule') ? undefined : json['ausgelBedarfMitversorgungImBplanSchule'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenSchule'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
+        'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
     };
 }
 
@@ -104,6 +167,15 @@ export function AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoToJSO
         'version': value.version,
         'artAbfragevariante': value.artAbfragevariante,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
+        'ausgelBedarfImBaugebietBeruecksichtigenKita': value.ausgelBedarfImBaugebietBeruecksichtigenKita,
+        'ausgelBedarfMitversorgungImBplanKita': value.ausgelBedarfMitversorgungImBplanKita,
+        'ausgelBedarfMitversorgungInBestEinrichtungenKita': value.ausgelBedarfMitversorgungInBestEinrichtungenKita,
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+        'ausgelBedarfImBaugebietBeruecksichtigenSchule': value.ausgelBedarfImBaugebietBeruecksichtigenSchule,
+        'ausgelBedarfMitversorgungImBplanSchule': value.ausgelBedarfMitversorgungImBplanSchule,
+        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': value.ausgelBedarfMitversorgungInBestEinrichtungenSchule,
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
+        'hinweisVersorgung': value.hinweisVersorgung,
     };
 }
 

@@ -25,12 +25,6 @@ import {
     BedarfsmeldungFachreferateDtoFromJSONTyped,
     BedarfsmeldungFachreferateDtoToJSON,
 } from './BedarfsmeldungFachreferateDto';
-import type { UncertainBoolean } from './UncertainBoolean';
-import {
-    UncertainBooleanFromJSON,
-    UncertainBooleanFromJSONTyped,
-    UncertainBooleanToJSON,
-} from './UncertainBoolean';
 
 /**
  * 
@@ -220,52 +214,52 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfImBaugebietBeruecksichtigenKita?: UncertainBoolean;
+    ausgelBedarfImBaugebietBeruecksichtigenKita?: boolean;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfMitversorgungImBplanKita?: UncertainBoolean;
+    ausgelBedarfMitversorgungImBplanKita?: boolean;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfMitversorgungInBestEinrichtungenKita?: UncertainBoolean;
+    ausgelBedarfMitversorgungInBestEinrichtungenKita?: boolean;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: UncertainBoolean;
+    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: boolean;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfImBaugebietBeruecksichtigenSchule?: UncertainBoolean;
+    ausgelBedarfImBaugebietBeruecksichtigenSchule?: boolean;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfMitversorgungImBplanSchule?: UncertainBoolean;
+    ausgelBedarfMitversorgungImBplanSchule?: boolean;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfMitversorgungInBestEinrichtungenSchule?: UncertainBoolean;
+    ausgelBedarfMitversorgungInBestEinrichtungenSchule?: boolean;
     /**
      * 
-     * @type {UncertainBoolean}
+     * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: UncertainBoolean;
+    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: boolean;
     /**
      * 
      * @type {string}
@@ -365,14 +359,14 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
-        'ausgelBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfImBaugebietBeruecksichtigenKita']),
-        'ausgelBedarfMitversorgungImBplanKita': !exists(json, 'ausgelBedarfMitversorgungImBplanKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungImBplanKita']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenKita']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita']),
-        'ausgelBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfImBaugebietBeruecksichtigenSchule']),
-        'ausgelBedarfMitversorgungImBplanSchule': !exists(json, 'ausgelBedarfMitversorgungImBplanSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungImBplanSchule']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenSchule']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule']),
+        'ausgelBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgelBedarfImBaugebietBeruecksichtigenKita'],
+        'ausgelBedarfMitversorgungImBplanKita': !exists(json, 'ausgelBedarfMitversorgungImBplanKita') ? undefined : json['ausgelBedarfMitversorgungImBplanKita'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenKita'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
+        'ausgelBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenSchule') ? undefined : json['ausgelBedarfImBaugebietBeruecksichtigenSchule'],
+        'ausgelBedarfMitversorgungImBplanSchule': !exists(json, 'ausgelBedarfMitversorgungImBplanSchule') ? undefined : json['ausgelBedarfMitversorgungImBplanSchule'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenSchule'],
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
         'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
     };
 }
@@ -416,14 +410,14 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSON(value?: Abfragevari
         'anmerkung': value.anmerkung,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
-        'ausgelBedarfImBaugebietBeruecksichtigenKita': UncertainBooleanToJSON(value.ausgelBedarfImBaugebietBeruecksichtigenKita),
-        'ausgelBedarfMitversorgungImBplanKita': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungImBplanKita),
-        'ausgelBedarfMitversorgungInBestEinrichtungenKita': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenKita),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita),
-        'ausgelBedarfImBaugebietBeruecksichtigenSchule': UncertainBooleanToJSON(value.ausgelBedarfImBaugebietBeruecksichtigenSchule),
-        'ausgelBedarfMitversorgungImBplanSchule': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungImBplanSchule),
-        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenSchule),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule),
+        'ausgelBedarfImBaugebietBeruecksichtigenKita': value.ausgelBedarfImBaugebietBeruecksichtigenKita,
+        'ausgelBedarfMitversorgungImBplanKita': value.ausgelBedarfMitversorgungImBplanKita,
+        'ausgelBedarfMitversorgungInBestEinrichtungenKita': value.ausgelBedarfMitversorgungInBestEinrichtungenKita,
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+        'ausgelBedarfImBaugebietBeruecksichtigenSchule': value.ausgelBedarfImBaugebietBeruecksichtigenSchule,
+        'ausgelBedarfMitversorgungImBplanSchule': value.ausgelBedarfMitversorgungImBplanSchule,
+        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': value.ausgelBedarfMitversorgungInBestEinrichtungenSchule,
+        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
         'hinweisVersorgung': value.hinweisVersorgung,
     };
 }

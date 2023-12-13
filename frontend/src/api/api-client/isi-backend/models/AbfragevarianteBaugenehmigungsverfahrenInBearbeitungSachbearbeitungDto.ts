@@ -19,12 +19,6 @@ import {
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
-import type { UncertainBoolean } from './UncertainBoolean';
-import {
-    UncertainBooleanFromJSON,
-    UncertainBooleanFromJSONTyped,
-    UncertainBooleanToJSON,
-} from './UncertainBoolean';
 
 /**
  * 
@@ -190,60 +184,6 @@ export interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbei
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfImBaugebietBeruecksichtigenKita?: UncertainBoolean;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfMitversorgungImBplanKita?: UncertainBoolean;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfMitversorgungInBestEinrichtungenKita?: UncertainBoolean;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: UncertainBoolean;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfImBaugebietBeruecksichtigenSchule?: UncertainBoolean;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfMitversorgungImBplanSchule?: UncertainBoolean;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfMitversorgungInBestEinrichtungenSchule?: UncertainBoolean;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: UncertainBoolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-     */
-    hinweisVersorgung?: string;
-    /**
-     * 
      * @type {number}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
@@ -356,15 +296,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
-        'ausgelBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfImBaugebietBeruecksichtigenKita']),
-        'ausgelBedarfMitversorgungImBplanKita': !exists(json, 'ausgelBedarfMitversorgungImBplanKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungImBplanKita']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenKita']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita']),
-        'ausgelBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgelBedarfImBaugebietBeruecksichtigenSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfImBaugebietBeruecksichtigenSchule']),
-        'ausgelBedarfMitversorgungImBplanSchule': !exists(json, 'ausgelBedarfMitversorgungImBplanSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungImBplanSchule']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenSchule']),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : UncertainBooleanFromJSON(json['ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule']),
-        'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
         'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -406,15 +337,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
-        'ausgelBedarfImBaugebietBeruecksichtigenKita': UncertainBooleanToJSON(value.ausgelBedarfImBaugebietBeruecksichtigenKita),
-        'ausgelBedarfMitversorgungImBplanKita': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungImBplanKita),
-        'ausgelBedarfMitversorgungInBestEinrichtungenKita': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenKita),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita),
-        'ausgelBedarfImBaugebietBeruecksichtigenSchule': UncertainBooleanToJSON(value.ausgelBedarfImBaugebietBeruecksichtigenSchule),
-        'ausgelBedarfMitversorgungImBplanSchule': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungImBplanSchule),
-        'ausgelBedarfMitversorgungInBestEinrichtungenSchule': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenSchule),
-        'ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': UncertainBooleanToJSON(value.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule),
-        'hinweisVersorgung': value.hinweisVersorgung,
         'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'anmerkung': value.anmerkung,
