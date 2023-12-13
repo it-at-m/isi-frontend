@@ -44,7 +44,7 @@
                 <v-icon> mdi-delete</v-icon>
               </v-btn>
             </template>
-            <span>ausgewählte Adresse löschen</span>
+            <span>ausgewählte Adresse und ergänzende Information löschen</span>
           </v-tooltip>
         </v-col>
       </v-row>
