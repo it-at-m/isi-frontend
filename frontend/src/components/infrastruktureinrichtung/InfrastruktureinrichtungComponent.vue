@@ -24,7 +24,8 @@
       :is-editable-prop="isEditable"
     />
     <infrastruktureinrichtung-verortung
-      v-model="infrastruktureinrichtung.adresse"
+      v-model="infrastruktureinrichtung.verortung"
+      :adresse="infrastruktureinrichtung.adresse"
       :is-editable="isEditable"
     />
     <field-group-card>

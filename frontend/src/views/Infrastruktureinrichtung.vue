@@ -11,7 +11,7 @@
           :is-editable="isEditable"
         />
         <infrastruktureinrichtung-component
-          v-if="isInfrastruktureinrichtungTypNotUnspecified"
+          v-show="isInfrastruktureinrichtungTypNotUnspecified"
           id="infrastruktureinrichtung_infrastruktureinrichtung_component"
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"

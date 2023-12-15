@@ -31,12 +31,12 @@ import {
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
 } from './UncertainBoolean';
-import type { VerortungDto } from './VerortungDto';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+} from './VerortungMultiPolygonDto';
 
 /**
  * 
@@ -106,10 +106,10 @@ export interface BauvorhabenDto {
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungDto}
+     * @type {VerortungMultiPolygonDto}
      * @memberof BauvorhabenDto
      */
-    verortung?: VerortungDto;
+    verortung?: VerortungMultiPolygonDto;
     /**
      * 
      * @type {string}
@@ -279,7 +279,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
         'bauvorhabenNummer': !exists(json, 'bauvorhabenNummer') ? undefined : json['bauvorhabenNummer'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'fisNummer': !exists(json, 'fisNummer') ? undefined : json['fisNummer'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -312,7 +312,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
         'bauvorhabenNummer': value.bauvorhabenNummer,
         'adresse': AdresseDtoToJSON(value.adresse),
-        'verortung': VerortungDtoToJSON(value.verortung),
+        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
         'bebauungsplannummer': value.bebauungsplannummer,
         'fisNummer': value.fisNummer,
         'anmerkung': value.anmerkung,

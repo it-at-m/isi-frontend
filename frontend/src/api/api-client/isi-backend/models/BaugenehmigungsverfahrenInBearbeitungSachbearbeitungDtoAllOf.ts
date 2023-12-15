@@ -25,12 +25,12 @@ import {
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto';
-import type { VerortungDto } from './VerortungDto';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
-    VerortungDtoFromJSON,
-    VerortungDtoFromJSONTyped,
-    VerortungDtoToJSON,
-} from './VerortungDto';
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+} from './VerortungMultiPolygonDto';
 
 /**
  * 
@@ -40,10 +40,10 @@ import {
 export interface BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf {
     /**
      * 
-     * @type {VerortungDto}
+     * @type {VerortungMultiPolygonDto}
      * @memberof BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOf
      */
-    verortung?: VerortungDto;
+    verortung?: VerortungMultiPolygonDto;
     /**
      * 
      * @type {Array<AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto>}
@@ -77,7 +77,7 @@ export function BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOfFrom
     }
     return {
         
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungDtoFromJSON(json['verortung']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'abfragevariantenBaugenehmigungsverfahren': !exists(json, 'abfragevariantenBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoFromJSON)),
         'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': !exists(json, 'abfragevariantenSachbearbeitungBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoFromJSON)),
     };
@@ -92,7 +92,7 @@ export function BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoAllOfToJS
     }
     return {
         
-        'verortung': VerortungDtoToJSON(value.verortung),
+        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
         'abfragevariantenBaugenehmigungsverfahren': value.abfragevariantenBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoToJSON)),
         'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDtoToJSON)),
     };
