@@ -25,6 +25,12 @@ import {
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
 } from './InfrastruktureinrichtungDto';
+import type { VerortungPointDto } from './VerortungPointDto';
+import {
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
 
 import {
 } from './';
