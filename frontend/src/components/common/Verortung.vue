@@ -76,14 +76,14 @@ import {
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
 import _ from "lodash";
-import VerortungModel from "@/types/model/common/VerortungModel";
+import VerortungMultiPolygonModel from "@/types/model/common/VerortungMultiPolygonModel";
 import {
   AdresseDto,
   FlurstueckDto,
   GemarkungDto,
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoBackend,
   StadtbezirkDto,
-  VerortungDto,
+  VerortungMultiPolygonDto,
 } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
@@ -95,7 +95,7 @@ import { Context } from "@/utils/Context";
 export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLeaveMixin, AbfrageSecurityMixin) {
   private verortungCardTitle = "Verortung";
 
-  @VModel({ type: VerortungModel }) verortungModel?: VerortungModel;
+  @VModel({ type: VerortungMultiPolygonModel }) verortungModel?: VerortungMultiPolygonModel;
 
   @Prop({ type: String, default: Context.UNDEFINED })
   private readonly context!: Context;
@@ -216,11 +216,11 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   private async handleAcceptSelectedGeoJson(): Promise<void> {
-    let verortung: VerortungDto | undefined;
+    let verortung: VerortungMultiPolygonDto | undefined;
     if (this.selectedFlurstuecke.size !== 0) {
-      verortung = await this.createVerortungDtoFromSelectedFlurstuecke();
+      verortung = await this.createVerortungMultiPolygonDtoFromSelectedFlurstuecke();
       if (!_.isNil(verortung)) {
-        this.verortungModel = new VerortungModel(verortung);
+        this.verortungModel = new VerortungMultiPolygonModel(verortung);
         this.formChanged();
       }
     } else {
@@ -284,10 +284,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   /**
-   * Erstellt das VerortungDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
-   * Tritt ein fehler bei der Erstellung des VerortungDtos auf, so wird undefined zurückgegeben.
+   * Erstellt das VerortungMultiPolygonDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
+   * Tritt ein fehler bei der Erstellung des VerortungMultiPolygonDtos auf, so wird undefined zurückgegeben.
    */
-  private async createVerortungDtoFromSelectedFlurstuecke(): Promise<VerortungDto | undefined> {
+  private async createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<VerortungMultiPolygonDto | undefined> {
     const multipolygon = this.createMultiPolygonGeometryFromSelectedFlurstuecke();
     try {
       const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
@@ -308,12 +308,12 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         );
         matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
       });
-      // Erstellung des VerortungDto
+      // Erstellung des VerortungMultiPolygonDto
       return {
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
         multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
-      } as VerortungDto;
+      } as VerortungMultiPolygonDto;
     } catch (error) {
       return undefined;
     }
