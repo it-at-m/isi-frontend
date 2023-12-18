@@ -1,7 +1,7 @@
 import { Userinfo } from "@/types/common/Userinfo";
 import { ActionContext } from "vuex/types/index";
 import { RootState } from "..";
-import _ from "lodash";
+import _, { isNil } from "lodash";
 
 const state = {
   userinfo: undefined as Userinfo | undefined,
@@ -36,6 +36,11 @@ export default {
     hasRoleBedarfsmeldung: (state: UserinfoState): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("bedarfsmeldung")
+        : false;
+    },
+    hasOnlyRoleAnwender: (state: UserinfoState): boolean => {
+      return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
+        ? state.userinfo?.roles?.every((rolle) => rolle === "anwender")
         : false;
     },
   },

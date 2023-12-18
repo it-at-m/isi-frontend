@@ -17,6 +17,7 @@
         outlined
         class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
+        disabled="hasPermission(castToAbfrageSearchResultDto(item))"
         @click="routeToAbfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
@@ -125,6 +126,7 @@ import {
   SearchResultDtoTypeEnum,
   SearchResultsDto,
   StadtbezirkDto,
+  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import DefaultLayout from "@/components/DefaultLayout.vue";
@@ -132,11 +134,12 @@ import router from "@/router";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import { Mutex, tryAcquire } from "async-mutex";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
+export default class SearchResultList extends Mixins(SearchApiRequestMixin, AbfrageSecurityMixin) {
   private pageRequestMutex = new Mutex();
 
   /**
@@ -335,6 +338,18 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
 
   private getLookupValueInfrastruktureinrichtung(key: string, list: Array<LookupEntryDto>): string | undefined {
     return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+  }
+
+  private hasPermission(item: AbfrageSearchResultDto): boolean {
+    if (this.hasOnlyRoleAnwender()) {
+      if (
+        item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&
+        item.statusAbfrage != StatusAbfrage.ErledigtOhneFachreferat
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 </script>
