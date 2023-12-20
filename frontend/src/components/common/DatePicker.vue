@@ -134,20 +134,24 @@ export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLe
   }
 
   private getRules(): unknown[] {
-    const allRules = this.fieldValidationRules as {
-      datum: (format: string) => (v: string) => boolean | string;
-      pflichtfeld: (v: string) => boolean | string;
-    };
-    const usedRules: unknown[] = [allRules.datum(this.getDisplayFormat())];
+    if (this.disabled) {
+      return new Array<unknown>();
+    } else {
+      const allRules = this.fieldValidationRules as {
+        datum: (format: string) => (v: string) => boolean | string;
+        pflichtfeld: (v: string) => boolean | string;
+      };
+      const usedRules: unknown[] = [allRules.datum(this.getDisplayFormat())];
 
-    if (this.required) {
-      usedRules.push(allRules.pflichtfeld);
-    }
-    if (this.rules) {
-      usedRules.push(...this.rules);
-    }
+      if (this.required) {
+        usedRules.push(allRules.pflichtfeld);
+      }
+      if (this.rules) {
+        usedRules.push(...this.rules);
+      }
 
-    return usedRules;
+      return usedRules;
+    }
   }
 
   private activateDatePicker() {
