@@ -18,7 +18,6 @@
             class="mx-3"
             label="Anzahl der Kinderkrippenplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -32,7 +31,6 @@
             class="mx-3"
             label="Anzahl der Kindergartenplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -48,7 +46,6 @@
             class="mx-3"
             label="Anzahl der Hortplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -68,7 +65,6 @@
             class="mx-3"
             label="Anzahl der Kinderkrippengruppen"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -82,7 +78,6 @@
             class="mx-3"
             label="Anzahl der Kindergartengruppen"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -98,7 +93,6 @@
             class="mx-3"
             label="Anzahl der Hortgruppen"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -118,7 +112,6 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kinderkrippenplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -132,7 +125,6 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kindergartenplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
@@ -148,7 +140,6 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>

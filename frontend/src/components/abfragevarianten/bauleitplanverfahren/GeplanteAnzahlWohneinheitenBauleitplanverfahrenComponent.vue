@@ -13,7 +13,6 @@
           class="mx-3"
           label="Gesamt"
           integer
-          max-value-signed-integer
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -74,7 +73,6 @@
               class="mx-3"
               label="Studierendenwohnungen"
               integer
-              max-value-signed-integer
             />
           </v-col>
           <v-col
@@ -89,7 +87,6 @@
               class="mx-3"
               label="Senior*innenwohnungen"
               integer
-              max-value-signed-integer
             />
           </v-col>
         </v-row>
@@ -113,7 +110,6 @@
               class="mx-3"
               label="Genossenschaftswohnungen"
               integer
-              max-value-signed-integer
             />
           </v-col>
           <v-col
@@ -128,7 +124,6 @@
               class="mx-3"
               label="Weitere nicht-infrastrukturrelevante Wohnungen"
               integer
-              max-value-signed-integer
             />
           </v-col>
         </v-row>

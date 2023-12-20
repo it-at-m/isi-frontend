@@ -13,7 +13,6 @@
           class="mx-3"
           label="Gesamt"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -45,7 +44,6 @@
           class="mx-3"
           label="SoBoN-ursächlich"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
       <v-col
@@ -60,7 +58,6 @@
           class="mx-3"
           label="Bestandswohnbaurecht"
           :suffix="fieldPrefixesSuffixes.squareMeter"
-          max-value-decimal-numeral-precision10-scale2
         />
       </v-col>
     </v-row>
@@ -113,7 +110,6 @@
               class="mx-3"
               label="Studentisches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
           <v-col
@@ -128,7 +124,6 @@
               class="mx-3"
               label="Senior*innenwohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
         </v-row>
@@ -153,7 +148,6 @@
               class="mx-3"
               label="Genossenschaftliches Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
           <v-col
@@ -168,7 +162,6 @@
               class="mx-3"
               label="Weiteres nicht-infrastrukturrelevantes Wohnen"
               :suffix="fieldPrefixesSuffixes.squareMeter"
-              max-value-decimal-numeral-precision10-scale2
             />
           </v-col>
         </v-row>

@@ -14,7 +14,6 @@
           class="mx-3"
           label="Geplante Anzahl Wohneinheiten"
           integer
-          max-value-signed-integer
         />
       </v-col>
       <v-col
@@ -29,7 +28,6 @@
           class="mx-3"
           label="Baurechtlich genehmigt"
           integer
-          max-value-signed-integer
         />
       </v-col>
       <v-col
@@ -44,7 +42,6 @@
           class="mx-3"
           label="Baurechtlich festgesetzt"
           integer
-          max-value-signed-integer
         />
       </v-col>
     </v-row>

@@ -18,7 +18,6 @@
             class="mx-3"
             label="Anzahl der Klassen"
             integer
-            max-value-signed-integer
             required
             :disabled="!isEditable"
           />
@@ -33,7 +32,6 @@
             class="mx-3"
             label="Anzahl der Plätze"
             integer
-            max-value-signed-integer
             required
             :disabled="!isEditable"
           />

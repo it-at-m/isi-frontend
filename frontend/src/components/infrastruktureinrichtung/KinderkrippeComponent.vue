@@ -18,7 +18,6 @@
             class="mx-3"
             label="Anzahl der Kinderkrippenplätze"
             integer
-            max-value-signed-integer
             required
             :disabled="!isEditable"
           />
@@ -33,7 +32,6 @@
             class="mx-3"
             label="Anzahl der Kinderkrippengruppen"
             integer
-            max-value-signed-integer
             required
             :disabled="!isEditable"
           />
@@ -50,7 +48,6 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kinderkrippenplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>

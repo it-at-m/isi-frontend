@@ -80,8 +80,8 @@ interface Props {
   precision?: number;
   min?: number;
   max?: number;
-  maxValueSignedInteger?: boolean;
-  maxValueDecimalNumeralPrecision10Scale2?: boolean;
+  ignoreMaxValueSignedInteger?: boolean;
+  ignoreMaxValueDecimalNumeralPrecision10Scale2?: boolean;
   integer?: boolean;
   allowNegatives?: boolean;
   noGrouping?: boolean;
@@ -115,13 +115,15 @@ export default {
       type: Number,
       required: false,
     },
-    maxValueSignedInteger: {
+    ignoreMaxValueSignedInteger: {
       type: Boolean,
       required: false,
+      default: false,
     },
-    maxValueDecimalNumeralPrecision10Scale2: {
+    ignoreMaxValueDecimalNumeralPrecision10Scale2: {
       type: Boolean,
       required: false,
+      default: false,
     },
     integer: {
       type: Boolean,
@@ -184,9 +186,9 @@ export default {
         }
         if (props.max !== undefined) {
           usedRules.push(allRules.max(props.max));
-        } else if (props.integer && props.maxValueSignedInteger) {
+        } else if (props.integer && !props.ignoreMaxValueSignedInteger) {
           usedRules.push(allRules.max(MAX_VALUE_SIGNED_INTEGER));
-        } else if (!props.integer && props.maxValueDecimalNumeralPrecision10Scale2) {
+        } else if (!props.integer && !props.ignoreMaxValueDecimalNumeralPrecision10Scale2) {
           usedRules.push(allRules.max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
         }
       }
@@ -194,7 +196,6 @@ export default {
       if (props.required) {
         usedRules.push(allRules.pflichtfeld);
       }
-
       return usedRules;
     }
 

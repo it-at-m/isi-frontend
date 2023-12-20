@@ -14,7 +14,6 @@
             class="mx-3"
             label="Planungsursächliche GF Wohnen"
             :suffix="fieldPrefixesSuffixes.squareMeter"
-            max-value-decimal-numeral-precision10-scale2
           />
         </v-col>
         <v-col

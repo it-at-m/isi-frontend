@@ -18,7 +18,6 @@
             class="mx-3"
             label="Anzahl der Hortplätze"
             integer
-            max-value-signed-integer
             required
             :disabled="!isEditable"
           />
@@ -33,7 +32,6 @@
             class="mx-3"
             label="Anzahl der Hortgruppen"
             integer
-            max-value-signed-integer
             required
             :disabled="!isEditable"
           />
@@ -50,7 +48,6 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
-            max-value-signed-integer
             :disabled="!isEditable"
           />
         </v-col>
