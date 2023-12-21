@@ -2,6 +2,7 @@ variables:
   INCLUDE_CICD_REF_BRANCH:
     value: "main"
     description: "Welcher Branch soll für die Pipeline genutzt werden?"
+  MAVEN_IMAGE: "$MAVEN_IMAGE_38_JDK17"
 
 include:
   - project: "$INCLUDE_CICD_PROJECT"
