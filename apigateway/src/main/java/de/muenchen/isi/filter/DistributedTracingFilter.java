@@ -25,8 +25,9 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class DistributedTracingFilter implements WebFilter {
 
-    public static final String XB3_TRACE_ID = "x-b3-traceid";
-    public static final String XB3_SPAN_ID = "x-b3-spanid";
+    public static final String TRACE_ID = "TraceId";
+
+    public static final String SPAN_ID = "SpanId";
 
     private final Tracer tracer;
 
@@ -42,11 +43,11 @@ public class DistributedTracingFilter implements WebFilter {
     public Mono<Void> filter(final ServerWebExchange serverWebExchange, final WebFilterChain webFilterChain) {
         ServerHttpResponse response = serverWebExchange.getResponse();
         response.beforeCommit(() -> {
-            var span = tracer.currentSpan();
+            final var span = tracer.currentSpan();
             if (span != null) {
                 HttpHeaders headers = response.getHeaders();
-                headers.add(XB3_TRACE_ID, span.context().traceIdString());
-                headers.add(XB3_SPAN_ID, span.context().spanIdString());
+                headers.add(TRACE_ID, span.context().traceIdString());
+                headers.add(SPAN_ID, span.context().spanIdString());
             } else {
                 log.debug("Traceinformation missing - Skip Trace Header insertion");
             }

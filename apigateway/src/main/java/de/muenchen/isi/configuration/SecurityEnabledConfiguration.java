@@ -18,6 +18,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import reactor.core.publisher.Mono;
 
@@ -55,7 +56,11 @@ public class SecurityEnabledConfiguration {
                     .anyExchange()
                     .authenticated()
             )
-            .csrf(csrf -> csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()))
+            .csrf(csrf ->
+                csrf
+                    .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+                    .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler())
+            )
             .cors(Customizer.withDefaults())
             .oauth2Login(oauth2Login ->
                 oauth2Login.authenticationSuccessHandler(
