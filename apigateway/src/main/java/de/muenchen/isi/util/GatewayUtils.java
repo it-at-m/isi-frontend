@@ -70,7 +70,7 @@ public class GatewayUtils {
              * the body given by the parameter.
              */
             @Override
-            public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+            public Mono<Void> writeWith(final Publisher<? extends DataBuffer> body) {
                 final var responseHttpStatus = getDelegate().getStatusCode();
                 if (body instanceof Flux && responseHttpStatus.equals(httpStatus)) {
                     final var dataBufferFactory = response.bufferFactory();

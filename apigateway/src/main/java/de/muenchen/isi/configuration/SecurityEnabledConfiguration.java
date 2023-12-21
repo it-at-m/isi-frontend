@@ -38,7 +38,7 @@ public class SecurityEnabledConfiguration {
     private long springSessionTimeoutSeconds;
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain springSecurityFilterChain(final ServerHttpSecurity http) {
         return http
             .logout(logout ->
                 logout

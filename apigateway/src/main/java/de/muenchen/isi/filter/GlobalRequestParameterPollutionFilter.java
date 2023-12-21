@@ -43,7 +43,8 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
      * The exception represents a http response with status {@link HttpStatus#BAD_REQUEST}.
      */
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) throws ParameterPollutionException {
+    public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain)
+        throws ParameterPollutionException {
         log.debug("Check for parameter pollution attack.");
         ServerHttpRequest request = exchange.getRequest();
         if (!CollectionUtils.isEmpty(request.getQueryParams())) {

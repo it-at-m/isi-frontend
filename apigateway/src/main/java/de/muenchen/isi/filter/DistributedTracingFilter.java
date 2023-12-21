@@ -39,7 +39,7 @@ public class DistributedTracingFilter implements WebFilter {
      * @return {@code Mono<Void>} to indicate when request processing for adding zipkin headers is complete
      */
     @Override
-    public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
+    public Mono<Void> filter(final ServerWebExchange serverWebExchange, final WebFilterChain webFilterChain) {
         ServerHttpResponse response = serverWebExchange.getResponse();
         response.beforeCommit(() -> {
             var span = tracer.currentSpan();

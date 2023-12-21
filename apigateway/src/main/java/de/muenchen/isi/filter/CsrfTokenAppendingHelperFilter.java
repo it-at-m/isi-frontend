@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CsrfTokenAppendingHelperFilter implements WebFilter {
 
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
         log.debug("Trigger to append CSRF token to response");
         Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
         return csrfToken

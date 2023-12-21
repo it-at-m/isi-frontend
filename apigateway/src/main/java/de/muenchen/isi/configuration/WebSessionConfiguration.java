@@ -49,7 +49,7 @@ public class WebSessionConfiguration {
 
     @Bean
     public ReactiveSessionRepository<MapSession> reactiveSessionRepository(
-        @Qualifier("hazelcastInstance") @Autowired HazelcastInstance hazelcastInstance
+        @Qualifier("hazelcastInstance") @Autowired final HazelcastInstance hazelcastInstance
     ) {
         final IMap<String, Session> map = hazelcastInstance.getMap(
             HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME
@@ -59,7 +59,7 @@ public class WebSessionConfiguration {
 
     @Bean
     @Profile({ "local", "test" })
-    public Config localConfig(@Value("${spring.session.timeout}") int timeout) {
+    public Config localConfig(@Value("${spring.session.timeout}") final int timeout) {
         final var hazelcastConfig = new Config();
         // Integrity Check
         final var integrityCheckerConfig = new IntegrityCheckerConfig();
@@ -82,7 +82,7 @@ public class WebSessionConfiguration {
 
     @Bean
     @Profile({ "dev", "kon", "ta", "demo", "prod" })
-    public Config config(@Value("${spring.session.timeout}") int timeout) {
+    public Config config(@Value("${spring.session.timeout}") final int timeout) {
         final var hazelcastConfig = new Config();
         // Integrity Check
         final var integrityCheckerConfig = new IntegrityCheckerConfig();
