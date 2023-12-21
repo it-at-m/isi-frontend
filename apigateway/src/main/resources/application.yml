@@ -47,6 +47,3 @@ management:
     env:
       enabled: true
 
-info.application.name: ${spring.application.name}
-info.application.version: @project.version@
-info.application.commitHash: ${buildNumber}
