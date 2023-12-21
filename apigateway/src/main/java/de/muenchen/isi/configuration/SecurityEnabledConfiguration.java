@@ -19,8 +19,6 @@ import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.PathMatcher;
 import reactor.core.publisher.Mono;
 
 @Configuration
