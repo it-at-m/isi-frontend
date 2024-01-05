@@ -39,21 +39,33 @@
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
       v-model="abfragevariante"
+      :bedarfsmeldung-title="bedarfsmeldungFachreferate"
+      :is-editable="isEditableByBedarfsmeldung()"
+    />
+    <bedarfsmeldung-fachreferate-component
+      id="bedarfsmeldung_abfrageerstellung_component"
+      ref="bedarfsmeldungAbfrageerstellungComponent"
+      v-model="abfragevariante"
+      :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
+      :is-editable="false"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
 import GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent.vue";
 import GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
+import BedarfsmeldungFachreferateComponent, {
+  BedarfsmeldungTitle,
+} from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: {
@@ -66,7 +78,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
     BauratenAggregiertComponent,
   },
 })
-export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Vue {
+export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Mixins(AbfrageSecurityMixin) {
   @VModel({ type: AbfragevarianteBaugenehmigungsverfahrenModel })
   abfragevariante!: AbfragevarianteBaugenehmigungsverfahrenModel;
 
@@ -81,6 +93,14 @@ export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Vu
       this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
     return headline.concat(`${this.abfragevariante.name}`);
+  }
+
+  get bedarfsmeldungFachreferate() {
+    return BedarfsmeldungTitle.FACHREFERATE;
+  }
+
+  get bedarfsmeldungAbfrageerstellung() {
+    return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
   }
 }
 </script>

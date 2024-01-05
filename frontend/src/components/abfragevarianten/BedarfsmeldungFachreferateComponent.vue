@@ -1,6 +1,6 @@
 <template>
   <div>
-    <field-group-card :card-title="bedarfsmeldungenFachreferateTitle">
+    <field-group-card :card-title="getBedarfsmeldungTitle">
       <v-row justify="center">
         <v-col cols="12">
           <v-container class="table">
@@ -31,7 +31,7 @@
                     <td>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                        :disabled="!isEditableByBedarfsmeldung()"
+                        :disabled="!getIsEditable"
                         icon
                         @click="editBedarfsmeldung(item, index)"
                       >
@@ -39,7 +39,7 @@
                       </v-btn>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_loeschen' + index"
-                        :disabled="!isEditableByBedarfsmeldung()"
+                        :disabled="!getIsEditable"
                         icon
                         @click="deleteBedarfsmeldung(index)"
                       >
@@ -62,7 +62,7 @@
               >
                 <v-btn
                   :id="'bedarfsmeldung_erfassen'"
-                  :disabled="!isEditableByBedarfsmeldung()"
+                  :disabled="!getIsEditable"
                   class="text-wrap"
                   block
                   @click="erfassenBedarfsmeldung()"
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import { LookupEntryDto, BedarfsmeldungFachreferateDto } from "@/api/api-client/isi-backend";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -97,22 +97,39 @@ import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import BedarfsmeldungFachreferateDialog from "@/components/abfragevarianten/BedarfsmeldungFachreferateDialog.vue";
 import BedarfsmeldungFachreferateModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
 import { createBedarfsmeldungFachreferateDto } from "@/utils/Factories";
 import _ from "lodash";
 import DisplayMode from "@/types/common/DisplayMode";
 
+export const enum BedarfsmeldungTitle {
+  FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
+  ABFRAGEERSTELLUNG = "Bedarfsmeldungen der Abfrageerstellung",
+}
+
 @Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachreferateDialog } })
 export default class BedarfsmeldungFachreferateComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
 ) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
+
+  @Prop({ type: Enumerator, default: BedarfsmeldungTitle.FACHREFERATE })
+  private bedarfsmeldungTitle!: BedarfsmeldungTitle;
+
+  get getBedarfsmeldungTitle(): string {
+    return this.bedarfsmeldungTitle.valueOf();
+  }
+
+  @Prop({ type: Boolean, default: false })
+  private isEditable!: boolean;
+
+  get getIsEditable(): boolean {
+    return this.isEditable;
+  }
 
   private bedarfsmeldungenFachreferateTitle = "Bedarfsmeldungen der Fachreferate";
 
