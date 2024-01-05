@@ -578,14 +578,10 @@ export default class ValidatorMixin extends Vue {
         nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.gfWohnenGeplant) ? 0 : baugebiet.gfWohnenGeplant)),
       );
 
-      const roundedSumVerteilteGeschossflaecheWohnenBaugebiete = _.round(
-        sumVerteilteGeschossflaecheWohnenBaugebiete,
-        countDecimals(geschossflaecheWohnenAbfragevariante),
-      );
       message =
-        roundedSumVerteilteGeschossflaecheWohnenBaugebiete == geschossflaecheWohnenAbfragevariante
+        sumVerteilteGeschossflaecheWohnenBaugebiete == geschossflaecheWohnenAbfragevariante
           ? null
-          : `Die Anzahl von ${roundedSumVerteilteGeschossflaecheWohnenBaugebiete} m² über Baugebiete verteilter Geschossflaeche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBaugebiete} m² über Baugebiete verteilter Geschossflaeche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
@@ -597,14 +593,10 @@ export default class ValidatorMixin extends Vue {
         ),
       );
 
-      const roundedSumVerteilteGeschossflaecheWohnenBauraten = _.round(
-        sumVerteilteGeschossflaecheWohnenBauraten,
-        countDecimals(geschossflaecheWohnenAbfragevariante),
-      );
       message =
-        roundedSumVerteilteGeschossflaecheWohnenBauraten == geschossflaecheWohnenAbfragevariante
+        sumVerteilteGeschossflaecheWohnenBauraten == geschossflaecheWohnenAbfragevariante
           ? null
-          : `Die Anzahl von ${roundedSumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
@@ -624,14 +616,10 @@ export default class ValidatorMixin extends Vue {
         ),
       );
 
-      const roundedSumVerteilteGeschossflaecheWohnenBauraten = _.round(
-        sumVerteilteGeschossflaecheWohnenBauraten,
-        countDecimals(geschossflaecheWohnenBaugebiet),
-      );
       validationMessage =
-        roundedSumVerteilteGeschossflaecheWohnenBauraten == geschossflaecheWohnenBaugebiet
+        sumVerteilteGeschossflaecheWohnenBauraten == geschossflaecheWohnenBaugebiet
           ? null
-          : `Die Anzahl von ${roundedSumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenBaugebiet} m² im Baugebiet${
               _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
             }.`;
