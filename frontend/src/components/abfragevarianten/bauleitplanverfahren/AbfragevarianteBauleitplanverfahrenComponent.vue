@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import CommonBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/CommonBauleitplanverfahrenComponent.vue";
 import GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent.vue";
 import GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent.vue";
@@ -54,6 +54,7 @@ import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/B
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: {
@@ -66,7 +67,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
     BauratenAggregiertComponent,
   },
 })
-export default class AbfragevarianteBauleitplanverfahrenComponent extends Vue {
+export default class AbfragevarianteBauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 

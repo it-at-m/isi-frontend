@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import { LookupEntryDto, BedarfsmeldungFachreferateDto } from "@/api/api-client/isi-backend";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -107,7 +107,6 @@ export const enum BedarfsmeldungTitle {
   FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
   ABFRAGEERSTELLUNG = "Bedarfsmeldungen der Abfrageerstellung",
 }
-
 @Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachreferateDialog } })
 export default class BedarfsmeldungFachreferateComponent extends Mixins(
   FieldPrefixesSuffixes,
@@ -117,7 +116,7 @@ export default class BedarfsmeldungFachreferateComponent extends Mixins(
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
 
-  @Prop({ type: Enumerator, default: BedarfsmeldungTitle.FACHREFERATE })
+  @Prop()
   private bedarfsmeldungTitle!: BedarfsmeldungTitle;
 
   get getBedarfsmeldungTitle(): string {
@@ -130,8 +129,6 @@ export default class BedarfsmeldungFachreferateComponent extends Mixins(
   get getIsEditable(): boolean {
     return this.isEditable;
   }
-
-  private bedarfsmeldungenFachreferateTitle = "Bedarfsmeldungen der Fachreferate";
 
   private bedarfsmeldungFachreferateDialogOpen = false;
 

@@ -39,15 +39,15 @@
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
       v-model="abfragevariante"
-      :bedarfsmeldung-title="bedarfsmeldungFachreferate"
       :is-editable="isEditableByBedarfsmeldung()"
+      :bedarfsmeldung-title="bedarfsmeldungFachreferate"
     />
     <bedarfsmeldung-fachreferate-component
       id="bedarfsmeldung_abfrageerstellung_component"
       ref="bedarfsmeldungAbfrageerstellungComponent"
       v-model="abfragevariante"
-      :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
       :is-editable="false"
+      :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
   </v-container>
 </template>
@@ -98,7 +98,6 @@ export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Mi
   get bedarfsmeldungFachreferate() {
     return BedarfsmeldungTitle.FACHREFERATE;
   }
-
   get bedarfsmeldungAbfrageerstellung() {
     return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
   }
