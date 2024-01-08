@@ -11,6 +11,9 @@ import {
   BauleitplanverfahrenInBearbeitungFachreferatDto,
   BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
   WeiteresVerfahrenInBearbeitungFachreferatDto,
+  BauleitplanverfahrenBedarfsmeldungErfolgtDto,
+  BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
+  WeiteresVerfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
   AbfragevarianteWeiteresVerfahrenDto,
@@ -26,6 +29,9 @@ import {
   AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto,
   AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto,
   AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto,
+  AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto,
+  AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
+  AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto,
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
@@ -474,6 +480,45 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+    } as AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto;
+  });
+}
+
+export function mapToAbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto(
+  abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
+): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+    } as AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto;
+  });
+}
+
+export function mapToAbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto(
+  abfragevarianten: Array<AbfragevarianteBaugenehmigungsverfahrenDto> | undefined,
+): Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+    } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto;
+  });
+}
+
+export function mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto(
+  abfragevarianten: Array<AbfragevarianteWeiteresVerfahrenDto> | undefined,
+): Array<AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto> {
+  return _.toArray(abfragevarianten).map((abfragevariante) => {
+    return {
+      id: abfragevariante.id,
+      version: abfragevariante.version,
+      artAbfragevariante: abfragevariante.artAbfragevariante,
+      bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
     } as AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto;
   });
 }

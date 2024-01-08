@@ -307,14 +307,17 @@ import {
   BauleitplanverfahrenAngelegtDto,
   BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   BauleitplanverfahrenInBearbeitungFachreferatDto,
+  BauleitplanverfahrenBedarfsmeldungErfolgtDto,
   BaugenehmigungsverfahrenDto,
   BaugenehmigungsverfahrenAngelegtDto,
   BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
   BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+  BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   WeiteresVerfahrenDto,
   WeiteresVerfahrenAngelegtDto,
   WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
   WeiteresVerfahrenInBearbeitungFachreferatDto,
+  WeiteresVerfahrenBedarfsmeldungErfolgtDto,
   StatusAbfrage,
   TransitionDto,
   AbfrageDtoArtAbfrageEnum,
@@ -673,6 +676,8 @@ export default class Abfrage extends Mixins(
           this.handlePatchInBearbeitungSachbearbeitung(this.abfrage);
         } else if (this.isEditableByBedarfsmeldung()) {
           this.handlePatchInBearbeitungFachreferat(this.abfrage);
+        } else if (this.isBedarfsmeldungEditableByAbfrageerstellung()) {
+          this.handlePatchBearbeitungErfolgt(this.abfrage);
         }
       } else {
         this.showWarningInInformationList(validationMessage);
@@ -762,6 +767,28 @@ export default class Abfrage extends Mixins(
       abfrageInBearbeitungFachreferatDto = mapToWeiteresVerfahrenInBearbeitungFachreferatDto(model);
     }
     await this.patchInBearbeitungFachreferat(abfrageInBearbeitungFachreferatDto, this.abfrage.id as string, true).then(
+      (dto) => {
+        this.handleSuccess(dto, true);
+      },
+    );
+  }
+
+  private async handlePatchBedarfsmeldungErfolgt(
+    model: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
+  ): Promise<void> {
+    let abfrageBedarfsmeldungErfolgtDto:
+      | BauleitplanverfahrenBedarfsmeldungErfolgtDto
+      | BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto
+      | WeiteresVerfahrenBedarfsmeldungErfolgtDto
+      | undefined = undefined;
+    if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      abfrageBedarfsmeldungErfolgtDto = mapToBauleitplanverfahrenabfrageBedarfsmeldungErfolgtDtotDto(model);
+    } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      abfrageBedarfsmeldungErfolgtDto = mapToBaugenehmigungsverfahrenabfrageBedarfsmeldungErfolgtDtoDto(model);
+    } else {
+      abfrageBedarfsmeldungErfolgtDto = mapToWeiteresVerfahrenabfrageBedarfsmeldungErfolgtDtoDto(model);
+    }
+    await this.patchBedarfsmeldungErfolgt(abfrageBedarfsmeldungErfolgtDto, this.abfrage.id as string, true).then(
       (dto) => {
         this.handleSuccess(dto, true);
       },
