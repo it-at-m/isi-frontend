@@ -17,7 +17,7 @@
         outlined
         class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
-        disabled="hasPermission(castToAbfrageSearchResultDto(item))"
+        :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
         @click="routeToAbfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
@@ -134,12 +134,12 @@ import router from "@/router";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import { Mutex, tryAcquire } from "async-mutex";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class SearchResultList extends Mixins(SearchApiRequestMixin, AbfrageSecurityMixin) {
+export default class SearchResultList extends Mixins(SearchApiRequestMixin, SecurityMixin) {
   private pageRequestMutex = new Mutex();
 
   /**
@@ -340,16 +340,16 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin, Abfr
     return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
   }
 
-  private hasPermission(item: AbfrageSearchResultDto): boolean {
+  public disableAbfrageCard(item: AbfrageSearchResultDto): boolean {
     if (this.hasOnlyRoleAnwender()) {
       if (
         item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&
         item.statusAbfrage != StatusAbfrage.ErledigtOhneFachreferat
       ) {
-        return false;
+        return true;
       }
     }
-    return true;
+    return false;
   }
 }
 </script>
