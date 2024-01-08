@@ -35,25 +35,35 @@
       ref="sachbearbeitungComponent"
       v-model="abfragevariante"
     />
-    <bedarfsmeldung-fachreferate-component
+    <bedarfsmeldung-component
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
-      v-model="abfragevariante"
+      v-model="abfragevariante.bedarfsmeldungFachreferate"
+      :is-editable="isEditableByBedarfsmeldung()"
+      :bedarfsmeldung-title="bedarfsmeldungFachreferate"
+    />
+    <bedarfsmeldung-component
+      id="bedarfsmeldung_abfrageerstellung_component"
+      ref="bedarfsmeldungAbfrageerstellungComponent"
+      v-model="abfragevariante.bedarfsmeldungAbfrageersteller"
+      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
+      :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
 import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
 import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
+import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: {
@@ -66,7 +76,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
     BauratenAggregiertComponent,
   },
 })
-export default class AbfragevarianteWeiteresVerfahrenComponent extends Vue {
+export default class AbfragevarianteWeiteresVerfahrenComponent extends Mixins(AbfrageSecurityMixin) {
   @VModel({ type: AbfragevarianteWeiteresVerfahrenModel })
   abfragevariante!: AbfragevarianteWeiteresVerfahrenModel;
 
@@ -81,6 +91,14 @@ export default class AbfragevarianteWeiteresVerfahrenComponent extends Vue {
       this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
     return headline.concat(`${this.abfragevariante.name}`);
+  }
+
+  get bedarfsmeldungFachreferate() {
+    return BedarfsmeldungTitle.FACHREFERATE;
+  }
+
+  get bedarfsmeldungAbfrageerstellung() {
+    return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
   }
 }
 </script>

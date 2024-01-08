@@ -35,18 +35,18 @@
       ref="sachbearbeitungComponent"
       v-model="abfragevariante"
     />
-    <bedarfsmeldung-fachreferate-component
+    <bedarfsmeldung-component
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
-      v-model="abfragevariante"
+      v-model="abfragevariante.bedarfsmeldungFachreferate"
       :is-editable="isEditableByBedarfsmeldung()"
       :bedarfsmeldung-title="bedarfsmeldungFachreferate"
     />
-    <bedarfsmeldung-fachreferate-component
+    <bedarfsmeldung-component
       id="bedarfsmeldung_abfrageerstellung_component"
       ref="bedarfsmeldungAbfrageerstellungComponent"
-      v-model="abfragevariante"
-      :is-editable="false"
+      v-model="abfragevariante.bedarfsmeldungAbfrageersteller"
+      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
       :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
   </v-container>
@@ -59,9 +59,9 @@ import GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent from "@/co
 import GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent, {
+import BedarfsmeldungComponent, {
   BedarfsmeldungTitle,
-} from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
+} from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
@@ -74,7 +74,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
     GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent,
     GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent,
     SachbearbeitungComponent,
-    BedarfsmeldungFachreferateComponent,
+    BedarfsmeldungComponent,
     BauratenAggregiertComponent,
   },
 })
