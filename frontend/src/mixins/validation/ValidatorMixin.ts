@@ -581,7 +581,9 @@ export default class ValidatorMixin extends Vue {
       message =
         sumVerteilteGeschossflaecheWohnenBaugebiete.toFixed(2) == geschossflaecheWohnenAbfragevariante.toFixed(2)
           ? null
-          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBaugebiete.toFixed(2)} m² über Baugebiete verteilter Geschossflaeche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBaugebiete.toFixed(
+              2,
+            )} m² über Baugebiete verteilter Geschossflaeche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante.toFixed(2)} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
@@ -596,7 +598,9 @@ export default class ValidatorMixin extends Vue {
       message =
         sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2) == geschossflaecheWohnenAbfragevariante.toFixed(2)
           ? null
-          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2)} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(
+              2,
+            )} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante.toFixed(2)} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
@@ -619,7 +623,9 @@ export default class ValidatorMixin extends Vue {
       validationMessage =
         sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2) == geschossflaecheWohnenBaugebiet.toFixed(2)
           ? null
-          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2)} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
+          : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(
+              2,
+            )} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenBaugebiet.toFixed(2)} m² im Baugebiet${
               _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
             }.`;
