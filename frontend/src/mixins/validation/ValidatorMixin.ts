@@ -583,7 +583,7 @@ export default class ValidatorMixin extends Vue {
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBaugebiete.toFixed(
               2,
-            )} m² über Baugebiete verteilter Geschossflaeche Wohnen entspricht nicht ` +
+            )} m² über Baugebiete verteilter Geschossfläche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante.toFixed(2)} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
@@ -600,7 +600,7 @@ export default class ValidatorMixin extends Vue {
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(
               2,
-            )} m² über Bauraten verteilter Geschossflaeche Wohnen entspricht nicht ` +
+            )} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante.toFixed(2)} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
