@@ -539,39 +539,39 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
 
 export function mapToAbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto(
   abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
-): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto> {
+): Array<AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto> {
   return _.toArray(abfragevarianten).map((abfragevariante) => {
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
-    } as AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto;
+    } as AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto;
   });
 }
 
 export function mapToAbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto(
   abfragevarianten: Array<AbfragevarianteBaugenehmigungsverfahrenDto> | undefined,
-): Array<AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto> {
+): Array<AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto> {
   return _.toArray(abfragevarianten).map((abfragevariante) => {
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
-    } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto;
+    } as AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto;
   });
 }
 
 export function mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto(
   abfragevarianten: Array<AbfragevarianteWeiteresVerfahrenDto> | undefined,
-): Array<AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto> {
+): Array<AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto> {
   return _.toArray(abfragevarianten).map((abfragevariante) => {
     return {
       id: abfragevariante.id,
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
-    } as AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto;
+    } as AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto;
   });
 }
