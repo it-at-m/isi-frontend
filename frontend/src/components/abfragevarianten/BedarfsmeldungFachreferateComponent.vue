@@ -15,6 +15,7 @@
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
+            @change="formChanged"
           />
           <v-checkbox
             id="ausgel_bedarf_mitversorgung_im_bplan_kita_triswitch"
@@ -24,6 +25,7 @@
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
+            @change="formChanged"
           />
           <v-checkbox
             id="ausgel_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
@@ -33,6 +35,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
+            @change="formChanged"
           />
           <v-checkbox
             id="ausgel_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
@@ -42,6 +45,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
+            @change="formChanged"
           />
         </v-col>
         <v-col
@@ -57,6 +61,7 @@
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
+            @change="formChanged"
           />
           <v-checkbox
             id="ausgel_bedarf_mitversorgung_im_bplan_schule_triswitch"
@@ -66,6 +71,7 @@
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
+            @change="formChanged"
           />
           <v-checkbox
             id="ausgel_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
@@ -75,6 +81,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
+            @change="formChanged"
           />
           <v-checkbox
             id="ausgel_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
@@ -84,6 +91,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
+            @change="formChanged"
           />
         </v-col>
       </v-row>

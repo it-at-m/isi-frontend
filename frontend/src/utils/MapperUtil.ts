@@ -448,6 +448,19 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferat
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      ausgelBedarfImBaugebietBeruecksichtigenKita: abfragevariante.ausgelBedarfImBaugebietBeruecksichtigenKita,
+      ausgelBedarfMitversorgungImBplanKita: abfragevariante.ausgelBedarfMitversorgungImBplanKita,
+      ausgelBedarfMitversorgungInBestEinrichtungenKita:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenKita,
+      ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+      ausgelBedarfImBaugebietBeruecksichtigenSchule: abfragevariante.ausgelBedarfImBaugebietBeruecksichtigenSchule,
+      ausgelBedarfMitversorgungImBplanSchule: abfragevariante.ausgelBedarfMitversorgungImBplanSchule,
+      ausgelBedarfMitversorgungInBestEinrichtungenSchule:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenSchule,
+      ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto;
   });
 }
@@ -461,6 +474,19 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachref
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      ausgelBedarfImBaugebietBeruecksichtigenKita: abfragevariante.ausgelBedarfImBaugebietBeruecksichtigenKita,
+      ausgelBedarfMitversorgungImBplanKita: abfragevariante.ausgelBedarfMitversorgungImBplanKita,
+      ausgelBedarfMitversorgungInBestEinrichtungenKita:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenKita,
+      ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+      ausgelBedarfImBaugebietBeruecksichtigenSchule: abfragevariante.ausgelBedarfImBaugebietBeruecksichtigenSchule,
+      ausgelBedarfMitversorgungImBplanSchule: abfragevariante.ausgelBedarfMitversorgungImBplanSchule,
+      ausgelBedarfMitversorgungInBestEinrichtungenSchule:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenSchule,
+      ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto;
   });
 }
@@ -474,6 +500,19 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      ausgelBedarfImBaugebietBeruecksichtigenKita: abfragevariante.ausgelBedarfImBaugebietBeruecksichtigenKita,
+      ausgelBedarfMitversorgungImBplanKita: abfragevariante.ausgelBedarfMitversorgungImBplanKita,
+      ausgelBedarfMitversorgungInBestEinrichtungenKita:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenKita,
+      ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+      ausgelBedarfImBaugebietBeruecksichtigenSchule: abfragevariante.ausgelBedarfImBaugebietBeruecksichtigenSchule,
+      ausgelBedarfMitversorgungImBplanSchule: abfragevariante.ausgelBedarfMitversorgungImBplanSchule,
+      ausgelBedarfMitversorgungInBestEinrichtungenSchule:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenSchule,
+      ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule:
+        abfragevariante.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
     } as AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto;
   });
 }
