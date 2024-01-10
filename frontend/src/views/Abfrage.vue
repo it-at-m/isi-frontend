@@ -386,6 +386,12 @@ import {
   mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
   mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto,
   mapToWeiteresVerfahrenInBearbeitungFachreferatDto,
+  mapToAbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto,
+  mapToAbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
+  mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto,
+  mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto,
+  mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
+  mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import Vue from "vue";
@@ -677,7 +683,7 @@ export default class Abfrage extends Mixins(
         } else if (this.isEditableByBedarfsmeldung()) {
           this.handlePatchInBearbeitungFachreferat(this.abfrage);
         } else if (this.isBedarfsmeldungEditableByAbfrageerstellung()) {
-          this.handlePatchBearbeitungErfolgt(this.abfrage);
+          this.handlePatchBedarfsmeldungErfolgt(this.abfrage);
         }
       } else {
         this.showWarningInInformationList(validationMessage);
@@ -782,11 +788,11 @@ export default class Abfrage extends Mixins(
       | WeiteresVerfahrenBedarfsmeldungErfolgtDto
       | undefined = undefined;
     if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-      abfrageBedarfsmeldungErfolgtDto = mapToBauleitplanverfahrenabfrageBedarfsmeldungErfolgtDtotDto(model);
+      abfrageBedarfsmeldungErfolgtDto = mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto(model);
     } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-      abfrageBedarfsmeldungErfolgtDto = mapToBaugenehmigungsverfahrenabfrageBedarfsmeldungErfolgtDtoDto(model);
+      abfrageBedarfsmeldungErfolgtDto = mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto(model);
     } else {
-      abfrageBedarfsmeldungErfolgtDto = mapToWeiteresVerfahrenabfrageBedarfsmeldungErfolgtDtoDto(model);
+      abfrageBedarfsmeldungErfolgtDto = mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto(model);
     }
     await this.patchBedarfsmeldungErfolgt(abfrageBedarfsmeldungErfolgtDto, this.abfrage.id as string, true).then(
       (dto) => {

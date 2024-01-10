@@ -445,6 +445,59 @@ export function mapToWeiteresVerfahrenInBearbeitungFachreferatDto(
   } as WeiteresVerfahrenInBearbeitungFachreferatDto;
 }
 
+export function mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto(
+  bauleitplanverfahrenDto: BauleitplanverfahrenDto,
+): BauleitplanverfahrenBedarfsmeldungErfolgtDto {
+  return {
+    // extends: AbfrageBedarfsmeldungErfolgtDto
+    version: bauleitplanverfahrenDto.version,
+    artAbfrage: bauleitplanverfahrenDto.artAbfrage,
+    // BauleitplanverfahrenBedarfsmeldungErfolgtDto
+    abfragevariantenBauleitplanverfahren: mapToAbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto(
+      bauleitplanverfahrenDto.abfragevariantenBauleitplanverfahren,
+    ),
+    abfragevariantenSachbearbeitungBauleitplanverfahren:
+      mapToAbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto(
+        bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBauleitplanverfahren,
+      ),
+  } as BauleitplanverfahrenBedarfsmeldungErfolgtDto;
+}
+
+export function mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto(
+  bauleitplanverfahrenDto: BaugenehmigungsverfahrenDto,
+): BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto {
+  return {
+    // extends: AbfrageBedarfsmeldungErfolgtDto
+    version: bauleitplanverfahrenDto.version,
+    artAbfrage: bauleitplanverfahrenDto.artAbfrage,
+    // BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto
+    abfragevariantenBaugenehmigungsverfahren: mapToAbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto(
+      bauleitplanverfahrenDto.abfragevariantenBaugenehmigungsverfahren,
+    ),
+    abfragevariantenSachbearbeitungBaugenehmigungsverfahren:
+      mapToAbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto(
+        bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
+      ),
+  } as BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto;
+}
+
+export function mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto(
+  weiteresVerfahrenDto: WeiteresVerfahrenDto,
+): WeiteresVerfahrenBedarfsmeldungErfolgtDto {
+  return {
+    // extends: AbfrageBedarfsmeldungErfolgtDto
+    version: weiteresVerfahrenDto.version,
+    artAbfrage: weiteresVerfahrenDto.artAbfrage,
+    // WeiteresVerfahrenBedarfsmeldungErfolgtDto
+    abfragevariantenWeiteresVerfahren: mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto(
+      weiteresVerfahrenDto.abfragevariantenWeiteresVerfahren,
+    ),
+    abfragevariantenSachbearbeitungWeiteresVerfahren: mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto(
+      weiteresVerfahrenDto.abfragevariantenSachbearbeitungWeiteresVerfahren,
+    ),
+  } as WeiteresVerfahrenBedarfsmeldungErfolgtDto;
+}
+
 export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto(
   abfragevarianten: Array<AbfragevarianteBauleitplanverfahrenDto> | undefined,
 ): Array<AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto> {
