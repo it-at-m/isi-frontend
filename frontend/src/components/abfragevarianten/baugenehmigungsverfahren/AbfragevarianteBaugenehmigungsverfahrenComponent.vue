@@ -95,10 +95,10 @@ export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Mi
     return headline.concat(`${this.abfragevariante.name}`);
   }
 
-  get bedarfsmeldungFachreferate() {
+  get bedarfsmeldungFachreferate(): BedarfsmeldungTitle {
     return BedarfsmeldungTitle.FACHREFERATE;
   }
-  get bedarfsmeldungAbfrageerstellung() {
+  get bedarfsmeldungAbfrageerstellung(): BedarfsmeldungTitle {
     return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
   }
 }

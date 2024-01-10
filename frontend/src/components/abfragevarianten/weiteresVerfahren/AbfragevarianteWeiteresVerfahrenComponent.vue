@@ -59,7 +59,9 @@ import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/component
 import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
+import BedarfsmeldungFachreferateComponent, {
+  BedarfsmeldungTitle,
+} from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
@@ -93,11 +95,11 @@ export default class AbfragevarianteWeiteresVerfahrenComponent extends Mixins(Ab
     return headline.concat(`${this.abfragevariante.name}`);
   }
 
-  get bedarfsmeldungFachreferate() {
+  get bedarfsmeldungFachreferate(): BedarfsmeldungTitle {
     return BedarfsmeldungTitle.FACHREFERATE;
   }
 
-  get bedarfsmeldungAbfrageerstellung() {
+  get bedarfsmeldungAbfrageerstellung(): BedarfsmeldungTitle {
     return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
   }
 }
