@@ -835,8 +835,10 @@ export default class Abfrage extends Mixins(
     if (abfragevariante.id) {
       await this.changeRelevanteAbfragevariante(abfragevariante.id, true).then((result) => {
         if (typeof result !== "string") {
-          const relevanteId = result.relevanteAbfragevariante?.id;
+          const relevanteId = result.relevanteAbfragevariante;
           this.relevanteAbfragevarianteId = relevanteId ?? null;
+          // eslint-disable-next-line no-console
+          console.log("ID ERGEBNISS: " + relevanteId);
           Toaster.toast(
             `Die Abfragevariante ${abfragevariante.name} in Abfrage ${this.abfrage.displayName} ist nun ${
               relevanteId ? "relevant" : "nicht mehr relevant"

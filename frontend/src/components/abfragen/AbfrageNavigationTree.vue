@@ -66,7 +66,7 @@ Emits:
     </template>
     <template #append="{ item }">
       <v-tooltip
-        v-if="item.value.id === props.relevanteAbfragevarianteId"
+        v-if="testMethod(item)"
         bottom
       >
         <template #activator="{ on }">
@@ -290,6 +290,17 @@ function buildTree(
   openItem(item);
 
   return item;
+}
+
+function testMethod(item: AbfrageTreeItem): boolean {
+  /* eslint-disable no-console */
+  console.log("-----------");
+  console.log(item);
+  console.log("Abfragevar ID " + props.relevanteAbfragevarianteId);
+  console.log("BOOLEAN ERGEBNIS: " + (item.value.id === props.relevanteAbfragevarianteId));
+  console.log("-------------------");
+  /* eslint-disable no-console */
+  return item.value.id === props.relevanteAbfragevarianteId;
 }
 
 function getAbfrageFormTypeAbfragevariante(
