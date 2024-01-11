@@ -341,15 +341,10 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin, Secu
   }
 
   public disableAbfrageCard(item: AbfrageSearchResultDto): boolean {
-    if (this.hasOnlyRoleAnwender()) {
-      if (
-        item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&
-        item.statusAbfrage != StatusAbfrage.ErledigtOhneFachreferat
-      ) {
-        return true;
-      }
-    }
-    return false;
+    return this.hasOnlyRoleAnwender()
+      ? item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&
+          item.statusAbfrage != StatusAbfrage.ErledigtOhneFachreferat
+      : false;
   }
 }
 </script>
