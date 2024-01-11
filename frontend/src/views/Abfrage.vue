@@ -518,7 +518,7 @@ export default class Abfrage extends Mixins(
       const bauvorhabenId = this.abfrage.bauvorhaben;
       if (bauvorhabenId) {
         this.getBauvorhabenById(bauvorhabenId, false).then((dto) => {
-          this.relevanteAbfragevarianteId = dto.relevanteAbfragevariante?.id ?? null;
+          this.relevanteAbfragevarianteId = dto.relevanteAbfragevariante ?? null;
         });
       }
     }
@@ -837,8 +837,6 @@ export default class Abfrage extends Mixins(
         if (typeof result !== "string") {
           const relevanteId = result.relevanteAbfragevariante;
           this.relevanteAbfragevarianteId = relevanteId ?? null;
-          // eslint-disable-next-line no-console
-          console.log("ID ERGEBNISS: " + relevanteId);
           Toaster.toast(
             `Die Abfragevariante ${abfragevariante.name} in Abfrage ${this.abfrage.displayName} ist nun ${
               relevanteId ? "relevant" : "nicht mehr relevant"
