@@ -230,12 +230,10 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultVerteilungWohneinheiten)) {
       return messageFaultVerteilungWohneinheiten;
     }
-    if (_.isNil(abfragevariante.weGesamt)) {
-      const messageFaultVerteilungGeschossflaecheWohnen =
-        this.findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(abfragevariante);
-      if (!_.isNil(messageFaultVerteilungGeschossflaecheWohnen)) {
-        return messageFaultVerteilungGeschossflaecheWohnen;
-      }
+    const messageFaultVerteilungGeschossflaecheWohnen =
+      this.findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(abfragevariante);
+    if (!_.isNil(messageFaultVerteilungGeschossflaecheWohnen)) {
+      return messageFaultVerteilungGeschossflaecheWohnen;
     }
     const messageFaultBauschnitte = this.findFaultInBauabschnitte(abfragevariante);
     if (!_.isNil(messageFaultBauschnitte)) {
@@ -287,11 +285,9 @@ export default class ValidatorMixin extends Vue {
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
-      if (_.isNil(baugebiet.weGeplant)) {
-        const validationMessage = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
-        if (!_.isNil(validationMessage)) {
-          return validationMessage;
-        }
+      const validationMessageGF = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
+      if (!_.isNil(validationMessageGF)) {
+        return validationMessageGF;
       }
     }
     return null;
@@ -556,10 +552,6 @@ export default class ValidatorMixin extends Vue {
       | AbfragevarianteBaugenehmigungsverfahrenDto
       | AbfragevarianteWeiteresVerfahrenDto,
   ): string | null {
-    if (!_.isNil(abfragevariante.weGesamt)) {
-      return null;
-    }
-
     const nonTechnicalBaugebiete = getNonTechnicalBaugebiete(abfragevariante);
     const bauratenFromAllTechnicalBaugebiete = getBauratenFromAllTechnicalBaugebiete(abfragevariante);
 
