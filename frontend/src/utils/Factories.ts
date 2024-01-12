@@ -33,8 +33,8 @@ import {
   AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum,
   // Bedarfsmeldung
-  BedarfsmeldungFachreferateDto,
-  BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
+  BedarfsmeldungDto,
+  BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   // Baurate / Fördermix
   BaurateDto,
   FoerderartDto,
@@ -267,7 +267,8 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     gfWohnenPlanungsursaechlich: undefined,
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
@@ -307,7 +308,8 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
@@ -349,18 +351,19 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     sobonOrientierungswertJahr: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
 
 /**
- * BedarfsmeldungFachreferateDto
+ * BedarfsmeldungDto
  */
-export function createBedarfsmeldungFachreferateDto(): BedarfsmeldungFachreferateDto {
+export function createBedarfsmeldungDto(): BedarfsmeldungDto {
   return {
     anzahlEinrichtungen: undefined,
-    infrastruktureinrichtungTyp: BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    infrastruktureinrichtungTyp: BedarfsmeldungDtoInfrastruktureinrichtungTypEnum.Unspecified,
     anzahlKinderkrippengruppen: undefined,
     anzahlKindergartengruppen: undefined,
     anzahlHortgruppen: undefined,

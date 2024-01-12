@@ -90,15 +90,15 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { LookupEntryDto, BedarfsmeldungFachreferateDto } from "@/api/api-client/isi-backend";
+import { LookupEntryDto, BedarfsmeldungDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
-import BedarfsmeldungFachreferateModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
-import { createBedarfsmeldungFachreferateDto } from "@/utils/Factories";
+import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
 import DisplayMode from "@/types/common/DisplayMode";
 
@@ -112,7 +112,7 @@ export default class BedarfsmeldungComponent extends Mixins(
   FieldValidationRulesMixin,
   SaveLeaveMixin,
 ) {
-  @VModel({ type: Array }) bedarfsmeldungen!: BedarfsmeldungFachreferateModel[];
+  @VModel({ type: Array }) bedarfsmeldungen!: BedarfsmeldungModel[];
 
   @Prop()
   private bedarfsmeldungTitle!: BedarfsmeldungTitle;
@@ -130,7 +130,7 @@ export default class BedarfsmeldungComponent extends Mixins(
 
   private bedarfsmeldungDialogOpen = false;
 
-  private currentBedarfsmeldung = createBedarfsmeldungFachreferateDto();
+  private currentBedarfsmeldung = createBedarfsmeldungDto();
 
   private displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 
@@ -164,22 +164,22 @@ export default class BedarfsmeldungComponent extends Mixins(
   }
 
   private erfassenBedarfsmeldung(): void {
-    this.currentBedarfsmeldung = createBedarfsmeldungFachreferateDto();
+    this.currentBedarfsmeldung = createBedarfsmeldungDto();
     this.displayModeBedarfsmeldung = DisplayMode.NEU;
     this.bedarfsmeldungDialogOpen = true;
   }
 
-  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel, itemIndex: number): void {
+  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel, itemIndex: number): void {
     this.selectedItemIndex = itemIndex;
     this.currentBedarfsmeldung = _.cloneDeep(bedarfsmeldung);
     this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
     this.bedarfsmeldungDialogOpen = true;
   }
 
-  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel): void {
+  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): void {
     if (this.displayModeBedarfsmeldung === DisplayMode.NEU) {
       if (_.isNil(this.bedarfsmeldungen)) {
-        this.bedarfsmeldungen = new Array<BedarfsmeldungFachreferateDto>();
+        this.bedarfsmeldungen = new Array<BedarfsmeldungDto>();
       }
       this.bedarfsmeldungen.push(bedarfsmeldung);
     } else {

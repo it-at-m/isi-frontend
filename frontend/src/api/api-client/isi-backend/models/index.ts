@@ -52,7 +52,7 @@ export * from './BaurateDto';
 export * from './BauvorhabenDto';
 export * from './BauvorhabenSearchResultDto';
 export * from './BauvorhabenSearchResultDtoAllOf';
-export * from './BedarfsmeldungFachreferateDto';
+export * from './BedarfsmeldungDto';
 export * from './DokumentDto';
 export * from './DokumenteDto';
 export * from './FileInformationDto';

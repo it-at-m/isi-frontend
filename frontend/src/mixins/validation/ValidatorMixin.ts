@@ -13,7 +13,7 @@ import {
   BaugebietDto,
   BauvorhabenDto,
   BauvorhabenDtoStandVerfahrenEnum,
-  BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
+  BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   GrundschuleDto,
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
@@ -40,7 +40,7 @@ import {
   getNonTechnicalBaugebiete,
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import BedarfsmeldungFachreferateModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
+import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 
 @Component
 export default class ValidatorMixin extends Vue {
@@ -241,12 +241,19 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultBauschnitte)) {
       return messageFaultBauschnitte;
     }
-    const messageFaultInBedarfsmeldungFachreferate = this.findFaultInBedarfsmeldungenFachreferate(
+    const messageFaultInBedarfsmeldungFachreferate = this.findFaultInBedarfsmeldungen(
       abfragevariante.bedarfsmeldungFachreferate,
     );
     if (!_.isNil(messageFaultInBedarfsmeldungFachreferate)) {
       return messageFaultInBedarfsmeldungFachreferate;
     }
+    const messageFaultInBedarfsmeldungAbfrageersteller = this.findFaultInBedarfsmeldungen(
+      abfragevariante.bedarfsmeldungAbfrageersteller,
+    );
+    if (!_.isNil(messageFaultInBedarfsmeldungAbfrageersteller)) {
+      return messageFaultInBedarfsmeldungAbfrageersteller;
+    }
+
     return null;
   }
 
@@ -297,9 +304,7 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInBedarfsmeldungenFachreferate(
-    bedarfsmeldungen: BedarfsmeldungFachreferateModel[] | undefined,
-  ): string | null {
+  public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungModel[] | undefined): string | null {
     if (!_.isNil(bedarfsmeldungen)) {
       bedarfsmeldungen.forEach((bedarfsmeldung) => {
         const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
@@ -311,14 +316,11 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel): string | null {
+  public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): string | null {
     if (_.isNil(bedarfsmeldung.anzahlEinrichtungen)) {
       return `Bitte geben Sie die Anzahl der Einrichtungen an`;
     }
-    if (
-      bedarfsmeldung.infrastruktureinrichtungTyp ===
-      BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified
-    ) {
+    if (bedarfsmeldung.infrastruktureinrichtungTyp === BedarfsmeldungDtoInfrastruktureinrichtungTypEnum.Unspecified) {
       return `Bitte geben Sie den Typ der Infrastruktureinrichtung an`;
     }
     if (
