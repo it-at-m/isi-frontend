@@ -17,5 +17,17 @@ class AdresseModel {
       (_.isNil(this.coordinate) || _.isEmpty(this.coordinate))
     );
   }
+
+  public isEqual(other: AdresseModel): boolean {
+    if (!_.isNil(other)) {
+      return (
+        this.plz === other.plz &&
+        this.strasse === other.strasse &&
+        this.ort === other.ort &&
+        this.hausnummer === other.hausnummer
+      );
+    }
+    return false;
+  }
 }
 export { AdresseModel as default };

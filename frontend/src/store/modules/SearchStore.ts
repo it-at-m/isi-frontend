@@ -2,7 +2,7 @@ import {
   AbfrageSearchResultDto,
   BauvorhabenDto,
   BauvorhabenSearchResultDto,
-  InfrastruktureinrichtungDto,
+  InfrastruktureinrichtungSearchResultDto,
   SearchResultDto,
   SearchResultsDto,
   SearchResultDtoTypeEnum,
@@ -77,7 +77,7 @@ export default {
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Bauvorhaben) &&
             _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id)) ||
           (_.isEqual(searchResult.type, SearchResultDtoTypeEnum.Infrastruktureinrichtung) &&
-            _.isEqual(id, (searchResult as BauvorhabenSearchResultDto).id))
+            _.isEqual(id, (searchResult as InfrastruktureinrichtungSearchResultDto).id))
         );
       });
       state.searchResults = searchResults;

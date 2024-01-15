@@ -157,10 +157,18 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
   private uebernehmenBedarfsmeldung(): void {
     const validationMessage: string | null = this.findFaultInBedarfsmeldung(this.bedarfsmeldung);
     if (_.isNil(validationMessage)) {
-      this.$emit("uebernehmen-bedarfsmeldung", this.bedarfsmeldung);
+      if (this.validateDialogForm()) {
+        this.$emit("uebernehmen-bedarfsmeldung", this.bedarfsmeldung);
+      } else {
+        Toaster.toast("Es gibt noch Validierungsfehler", Levels.ERROR);
+      }
     } else {
       Toaster.toast(validationMessage, Levels.ERROR);
     }
+  }
+
+  private validateDialogForm(): boolean {
+    return (this.$refs.bedarfsmeldungDialogForm as Vue & { validate: () => boolean }).validate();
   }
 
   @Emit()
