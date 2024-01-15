@@ -8,9 +8,9 @@
         >
           <h3>Kindertagesbetreuung</h3>
           <v-checkbox
-            id="ausgel_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
-            ref="ausgelBedarfImBaugebietBeruecksichtigenKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfImBaugebietBeruecksichtigenKita"
+            id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
+            ref="ausgeloesterBedarfImBaugebietBeruecksichtigenKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfImBaugebietBeruecksichtigenKita"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
@@ -18,9 +18,9 @@
             @change="formChanged"
           />
           <v-checkbox
-            id="ausgel_bedarf_mitversorgung_im_bplan_kita_triswitch"
-            ref="ausgelBedarfMitversorgungImBplanKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungImBplanKita"
+            id="ausgeloester_bedarf_mitversorgung_im_bplan_kita_triswitch"
+            ref="ausgeloesterBedarfMitversorgungImBplanKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungImBplanKita"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
@@ -28,9 +28,9 @@
             @change="formChanged"
           />
           <v-checkbox
-            id="ausgel_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
-            ref="ausgelBedarfMitversorgungInBestEinrichtungenKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenKita"
+            id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
@@ -38,9 +38,9 @@
             @change="formChanged"
           />
           <v-checkbox
-            id="ausgel_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
-            ref="ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
+            id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKitaTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
@@ -54,9 +54,9 @@
         >
           <h3>Schule</h3>
           <v-checkbox
-            id="ausgel_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
-            ref="ausgelBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfImBaugebietBeruecksichtigenSchule"
+            id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
+            ref="ausgeloesterBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
@@ -64,9 +64,9 @@
             @change="formChanged"
           />
           <v-checkbox
-            id="ausgel_bedarf_mitversorgung_im_bplan_schule_triswitch"
-            ref="ausgelBedarfMitversorgungImBplanSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungImBplanSchule"
+            id="ausgeloester_bedarf_mitversorgung_im_bplan_schule_triswitch"
+            ref="ausgeloesterBedarfMitversorgungImBplanSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungImBplanSchule"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
@@ -74,9 +74,9 @@
             @change="formChanged"
           />
           <v-checkbox
-            id="ausgel_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
-            ref="ausgelBedarfMitversorgungInBestEinrichtungenSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenSchule"
+            id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
@@ -84,9 +84,9 @@
             @change="formChanged"
           />
           <v-checkbox
-            id="ausgel_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
-            ref="ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgelBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
+            id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchuleTriswitch"
+            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
             :disabled="!isEditableByBedarfsmeldung()"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
