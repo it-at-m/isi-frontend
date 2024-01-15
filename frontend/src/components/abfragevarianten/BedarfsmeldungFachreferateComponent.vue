@@ -6,7 +6,7 @@
           cols="12"
           md="6"
         >
-          <h3>Kindertagesbetreuung</h3>
+          <h3>Ausgelöste Bedarfe Kindertagesbetreuung</h3>
           <v-checkbox
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenKitaTriswitch"
@@ -52,7 +52,7 @@
           cols="12"
           md="6"
         >
-          <h3>Schule</h3>
+          <h3>Ausgelöste Bedarfe Schule</h3>
           <v-checkbox
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
