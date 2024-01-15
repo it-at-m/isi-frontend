@@ -54,16 +54,34 @@ export default class FieldValidationRulesMixin extends Vue {
       return !v || /^\d*$/.test(v) || "Nur Ziffern erlaubt";
     },
 
+    /**
+     * Rule die Überprüft, dass der minimal erlaubte Wert nicht unterschritten wird.
+     * Evtl. vorhandene Formatierungen werden entfernt (Tausender-Trennzeichen) oder
+     * umgewandelt (Komma in Punkt).
+     */
     min:
       (limit: number) =>
       (v: string): string | boolean => {
+        if (!_.isNil(v) && !_.isNaN(v)) {
+          v = _.replace(v, /\./g, "");
+          v = _.replace(v, ",", ".");
+        }
         const num = parseFloat(v);
         return _.isNaN(num) || num >= limit || `Darf nicht kleiner als ${limit} sein`;
       },
 
+    /**
+     * Rule die Überprüft, dass der maximal erlaubte Wert nicht überschritten wird.
+     * Evtl. vorhandene Formatierungen werden entfernt (Tausender-Trennzeichen) oder
+     * umgewandelt (Komma in Punkt). 999.999.999,99 -> 99999999.99
+     */
     max:
       (limit: number) =>
       (v: string): string | boolean => {
+        if (!_.isNil(v) && !_.isNaN(v)) {
+          v = _.replace(v, /\./g, "");
+          v = _.replace(v, ",", ".");
+        }
         const num = parseFloat(v);
         return _.isNaN(num) || num <= limit || `Darf nicht größer als ${limit} sein`;
       },
