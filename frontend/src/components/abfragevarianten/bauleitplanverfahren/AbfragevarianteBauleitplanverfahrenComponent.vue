@@ -11,79 +11,37 @@
         />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <common-bauleitplanverfahren-component
-          id="common_bauleitplanverfahren_component"
-          ref="commonBauleitplanverfahrenComponent"
-          v-model="abfragevariante"
-          :is-editable="isEditable"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <geplante-geschossflaeche-wohnen-bauleitplanverfahren-component
-          id="geplante_geschossflaeche_wohnen_bauleitplanverfahren_component"
-          ref="geplanteGeschossflaecheWohnenBauleitplanverfahrenComponent"
-          v-model="abfragevariante"
-          :is-editable="isEditable"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <geplante-anzahl-wohneinheiten-bauleitplanverfahren-component
-          id="geplante_anzahl_wohneinheiten_bauleitplanverfahren_component"
-          ref="geplanteAnzahlWohneinheitenBauleitplanverfahrenComponent"
-          v-model="abfragevariante"
-          :is-editable="isEditable"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <bauraten-aggregiert-component :aggregate-bauraten="abfragevariante" />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <sachbearbeitung-component
-          id="sachbearbeitung_component"
-          ref="sachbearbeitungComponent"
-          v-model="abfragevariante"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <bedarfsmeldung-component
-          id="bedarfsmeldung_fachreferate_component"
-          ref="bedarfsmeldungFachreferateComponent"
-          v-model="abfragevariante.bedarfsmeldungFachreferate"
-          :is-editable="isEditableByBedarfsmeldung()"
-          :bedarfsmeldung-title="bedarfsmeldungFachreferate"
-        />
-      </v-col>
-    </v-row>
+    <common-bauleitplanverfahren-component
+      id="common_bauleitplanverfahren_component"
+      ref="commonBauleitplanverfahrenComponent"
+      v-model="abfragevariante"
+      :is-editable="isEditable"
+    />
+    <geplante-geschossflaeche-wohnen-bauleitplanverfahren-component
+      id="geplante_geschossflaeche_wohnen_bauleitplanverfahren_component"
+      ref="geplanteGeschossflaecheWohnenBauleitplanverfahrenComponent"
+      v-model="abfragevariante"
+      :is-editable="isEditable"
+    />
+    <geplante-anzahl-wohneinheiten-bauleitplanverfahren-component
+      id="geplante_anzahl_wohneinheiten_bauleitplanverfahren_component"
+      ref="geplanteAnzahlWohneinheitenBauleitplanverfahrenComponent"
+      v-model="abfragevariante"
+      :is-editable="isEditable"
+    />
+    <bauraten-aggregiert-component :aggregate-bauraten="abfragevariante" />
+    <sachbearbeitung-component
+      id="sachbearbeitung_component"
+      ref="sachbearbeitungComponent"
+      v-model="abfragevariante"
+    />
+    <bedarfsmeldung-component
+      id="bedarfsmeldung_fachreferate_component"
+      ref="bedarfsmeldungFachreferateComponent"
+      v-model="abfragevariante.bedarfsmeldungFachreferate"
+      :is-editable="isEditableByBedarfsmeldung()"
+      :bedarfsmeldung-title="bedarfsmeldungFachreferate"
+    />
     <v-row>
       <v-col
         cols="12"
@@ -107,20 +65,13 @@
         md="4"
       />
     </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <bedarfsmeldung-component
-          id="bedarfsmeldung_abfrageerstellung_component"
-          ref="bedarfsmeldungAbfrageerstellungComponent"
-          v-model="abfragevariante.bedarfsmeldungAbfrageersteller"
-          :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
-          :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
-        />
-      </v-col>
-    </v-row>
+    <bedarfsmeldung-component
+      id="bedarfsmeldung_abfrageerstellung_component"
+      ref="bedarfsmeldungAbfrageerstellungComponent"
+      v-model="abfragevariante.bedarfsmeldungAbfrageersteller"
+      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
+      :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
+    />
   </v-container>
 </template>
 
