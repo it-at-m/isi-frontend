@@ -7,7 +7,7 @@
             <v-data-table
               :headers="bedarfsmeldungenHeaders"
               :items="bedarfsmeldungen"
-              :items-per-page="5"
+              :items-per-page="-1"
               hide-default-footer
               @change="formChanged"
             >
