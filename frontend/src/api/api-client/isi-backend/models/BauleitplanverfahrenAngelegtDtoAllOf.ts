@@ -155,7 +155,8 @@ export const BauleitplanverfahrenAngelegtDtoAllOfStandVerfahrenEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     InfoFehlt: 'INFO_FEHLT',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type BauleitplanverfahrenAngelegtDtoAllOfStandVerfahrenEnum = typeof BauleitplanverfahrenAngelegtDtoAllOfStandVerfahrenEnum[keyof typeof BauleitplanverfahrenAngelegtDtoAllOfStandVerfahrenEnum];
 

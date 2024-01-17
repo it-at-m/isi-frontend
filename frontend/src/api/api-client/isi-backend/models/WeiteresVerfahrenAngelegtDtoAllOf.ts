@@ -161,7 +161,8 @@ export const WeiteresVerfahrenAngelegtDtoAllOfStandVerfahrenEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     InfoFehlt: 'INFO_FEHLT',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type WeiteresVerfahrenAngelegtDtoAllOfStandVerfahrenEnum = typeof WeiteresVerfahrenAngelegtDtoAllOfStandVerfahrenEnum[keyof typeof WeiteresVerfahrenAngelegtDtoAllOfStandVerfahrenEnum];
 
