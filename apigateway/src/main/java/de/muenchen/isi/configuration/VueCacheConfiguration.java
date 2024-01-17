@@ -18,7 +18,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 public class VueCacheConfiguration implements WebFluxConfigurer {
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry
             .addResourceHandler("/js/**")
             .addResourceLocations("classpath:/static/js/")

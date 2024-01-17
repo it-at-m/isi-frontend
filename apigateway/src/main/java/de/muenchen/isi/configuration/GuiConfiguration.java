@@ -19,7 +19,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 /**
  * This class supplies the endpoint which provides the gui.
- *
+ * <p>
  * The default path to the gui entry point is "classpath:/static/index.html".
  */
 @Configuration

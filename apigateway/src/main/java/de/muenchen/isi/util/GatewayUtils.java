@@ -14,7 +14,6 @@ import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -41,13 +40,13 @@ public class GatewayUtils {
     /**
      * The method is used in {@link GlobalFilter}s to add the response body given in the
      * parameter when the {@link HttpStatus} given in the parameter is met.
-     *
+     * <p>
      * If the {@link HttpStatus} given in the parameter is the same as in {@link ServerHttpResponse}
      * the body within the parameter will be added otherwise the body received from upstream stays the same.
      *
-     * @param exchange Contains the response.
-     * @param chain The filter chain for delegation to the next filter.
-     * @param httpStatus Status of the http {@link ServerHttpResponse}.
+     * @param exchange        Contains the response.
+     * @param chain           The filter chain for delegation to the next filter.
+     * @param httpStatus      Status of the http {@link ServerHttpResponse}.
      * @param newResponseBody The UTF8 conform message to add into the body of the {@link ServerHttpResponse}.
      * @return An empty mono. The results are processed within the {@link GatewayFilterChain}.
      */
@@ -70,7 +69,7 @@ public class GatewayUtils {
              * the body given by the parameter.
              */
             @Override
-            public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+            public Mono<Void> writeWith(final Publisher<? extends DataBuffer> body) {
                 final var responseHttpStatus = getDelegate().getStatusCode();
                 if (body instanceof Flux && responseHttpStatus.equals(httpStatus)) {
                     final var dataBufferFactory = response.bufferFactory();

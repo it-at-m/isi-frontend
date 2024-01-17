@@ -19,6 +19,12 @@
         <v-col
           cols="12"
           md="6"
+        />
+      </v-row>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="6"
         >
           <v-slide-y-reverse-transition>
             <v-select
@@ -35,6 +41,20 @@
               <template #label> Jahr für SoBoN-Orientierungwerte <span class="secondary--text">*</span> </template>
             </v-select>
           </v-slide-y-reverse-transition>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <date-picker
+            id="stammdaten_gueltig_ab"
+            ref="stammdatenGueltigAb"
+            v-model="abfragevarianteSachbearbeitung.stammdatenGueltigAb"
+            :disabled="!isEditableBySachbearbeitung()"
+            label="Stammdatum gültig ab"
+            :rules="[fieldValidationRules.pflichtfeld]"
+            required
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -60,7 +80,10 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import {
+  AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  LookupEntryDto,
+} from "@/api/api-client/isi-backend";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -85,7 +108,14 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
 
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/sobonOrientierungswertJahr"];
+    if (
+      this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
+      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
+    ) {
+      return this.$store.getters["lookup/sobonOrientierungswertJahr"];
+    } else {
+      return this.$store.getters["lookup/sobonOrientierungswertJahrWithoutStandortabfrage"];
+    }
   }
 
   get sobonOrientierungswertJahrValidator(): unknown[] {
