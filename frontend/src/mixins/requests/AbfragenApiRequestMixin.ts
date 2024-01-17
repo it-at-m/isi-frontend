@@ -12,10 +12,14 @@ import {
   BauleitplanverfahrenInBearbeitungFachreferatDto,
   BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
   WeiteresVerfahrenInBearbeitungFachreferatDto,
+  BauleitplanverfahrenBedarfsmeldungErfolgtDto,
+  BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
+  WeiteresVerfahrenBedarfsmeldungErfolgtDto,
   SaveOperationRequest,
   PatchAngelegtRequest,
   PatchInBearbeitungSachbearbeitungOperationRequest,
   PatchInBearbeitungFachreferatOperationRequest,
+  PatchBedarfsmeldungErfolgtOperationRequest,
   GetByIdRequest,
   DeleteByIdRequest,
   AbfrageDtoArtAbfrageEnum,
@@ -151,6 +155,40 @@ export default class AbfragenApiRequestMixin extends Mixins(SaveLeaveMixin, Erro
     };
     return this.abfragenApi
       .patchInBearbeitungFachreferat(requestObject, RequestUtils.getPATCHConfig())
+      .then((response) => {
+        this.resetFormDirty();
+        return response;
+      })
+      .catch((error) => {
+        throw this.handleError(showInInformationList, error);
+      });
+  }
+
+  patchBedarfsmeldungErfolgt(
+    dto:
+      | BauleitplanverfahrenBedarfsmeldungErfolgtDto
+      | BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto
+      | WeiteresVerfahrenBedarfsmeldungErfolgtDto,
+    id: string,
+    showInInformationList: boolean,
+  ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
+    let dtoTyped = undefined;
+    if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenBedarfsmeldungErfolgtDto;
+    } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      dtoTyped = dto as {
+        artAbfrage: "BAUGENEHMIGUNGSVERFAHREN";
+      } & BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto;
+    } else {
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenBedarfsmeldungErfolgtDto;
+    }
+
+    const requestObject: PatchBedarfsmeldungErfolgtOperationRequest = {
+      patchBedarfsmeldungErfolgtRequest: dtoTyped,
+      id: id,
+    };
+    return this.abfragenApi
+      .patchBedarfsmeldungErfolgt(requestObject, RequestUtils.getPATCHConfig())
       .then((response) => {
         this.resetFormDirty();
         return response;

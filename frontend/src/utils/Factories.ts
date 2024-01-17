@@ -33,8 +33,8 @@ import {
   AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum,
   // Bedarfsmeldung
-  BedarfsmeldungFachreferateDto,
-  BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
+  BedarfsmeldungDto,
+  BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   // Baurate / Fördermix
   BaurateDto,
   FoerderartDto,
@@ -268,7 +268,8 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
     stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
@@ -309,7 +310,8 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
     stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
@@ -352,18 +354,19 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     sobonOrientierungswertJahr: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
     stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
 
 /**
- * BedarfsmeldungFachreferateDto
+ * BedarfsmeldungDto
  */
-export function createBedarfsmeldungFachreferateDto(): BedarfsmeldungFachreferateDto {
+export function createBedarfsmeldungDto(): BedarfsmeldungDto {
   return {
     anzahlEinrichtungen: undefined,
-    infrastruktureinrichtungTyp: BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    infrastruktureinrichtungTyp: BedarfsmeldungDtoInfrastruktureinrichtungTypEnum.Unspecified,
     anzahlKinderkrippengruppen: undefined,
     anzahlKindergartengruppen: undefined,
     anzahlHortgruppen: undefined,

@@ -19,12 +19,12 @@ import {
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
-import type { BedarfsmeldungFachreferateDto } from './BedarfsmeldungFachreferateDto';
+import type { BedarfsmeldungDto } from './BedarfsmeldungDto';
 import {
-    BedarfsmeldungFachreferateDtoFromJSON,
-    BedarfsmeldungFachreferateDtoFromJSONTyped,
-    BedarfsmeldungFachreferateDtoToJSON,
-} from './BedarfsmeldungFachreferateDto';
+    BedarfsmeldungDtoFromJSON,
+    BedarfsmeldungDtoFromJSONTyped,
+    BedarfsmeldungDtoToJSON,
+} from './BedarfsmeldungDto';
 import type { LangfristigerPlanungsursaechlicherBedarfDto } from './LangfristigerPlanungsursaechlicherBedarfDto';
 import {
     LangfristigerPlanungsursaechlicherBedarfDtoFromJSON,
@@ -226,10 +226,16 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
     anmerkung?: string;
     /**
      * 
-     * @type {Array<BedarfsmeldungFachreferateDto>}
+     * @type {Array<BedarfsmeldungDto>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
-    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
+    bedarfsmeldungFachreferate?: Array<BedarfsmeldungDto>;
+    /**
+     * 
+     * @type {Array<BedarfsmeldungDto>}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
+     */
+    bedarfsmeldungAbfrageersteller?: Array<BedarfsmeldungDto>;
     /**
      * 
      * @type {Array<BauabschnittDto>}
@@ -337,7 +343,8 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoFromJSONTyped(json: an
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
+        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfDtoFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
     };
@@ -383,7 +390,8 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoToJSON(value?: Abfrage
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
-        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
+        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller === undefined ? undefined : ((value.bedarfsmeldungAbfrageersteller as Array<any>).map(BedarfsmeldungDtoToJSON)),
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
         'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfDtoToJSON(value.langfristigerPlanungsursaechlicherBedarf),
     };
