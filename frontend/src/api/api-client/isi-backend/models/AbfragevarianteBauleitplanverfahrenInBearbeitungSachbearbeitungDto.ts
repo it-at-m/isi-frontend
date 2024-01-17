@@ -184,6 +184,12 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitung
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
     /**
      * 
+     * @type {Date}
+     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
+     */
+    stammdatenGueltigAb: Date;
+    /**
+     * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
@@ -227,7 +233,8 @@ export const AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoS
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
-    Jahr2022: 'JAHR_2022'
+    Jahr2022: 'JAHR_2022',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum];
 
@@ -244,6 +251,7 @@ export function instanceOfAbfragevarianteBauleitplanverfahrenInBearbeitungSachbe
     isInstance = isInstance && "gfWohnenSonderwohnformen" in value;
     isInstance = isInstance && "weSonderwohnformen" in value;
     isInstance = isInstance && "sobonOrientierungswertJahr" in value;
+    isInstance = isInstance && "stammdatenGueltigAb" in value;
 
     return isInstance;
 }
@@ -284,6 +292,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
+        'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
 }
@@ -323,6 +332,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
         'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
     };
 }

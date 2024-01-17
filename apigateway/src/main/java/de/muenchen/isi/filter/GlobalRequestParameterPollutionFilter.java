@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * This {@link GlobalFilter} is used to detect and to fend off a parameter pollution attack.
- *
+ * <p>
  * Within a {@link HttpRequest} each request parameter should only exist once.
  * This check is necessary to avoid e.g. SQL injection split over multiple request parameters with the same name.
  */
@@ -40,10 +40,11 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
      * See {@link GlobalFilter#filter(ServerWebExchange, GatewayFilterChain)}
      *
      * @throws ParameterPollutionException is throw when a request parameter exists multiple times.
-     * The exception represents a http response with status {@link HttpStatus#BAD_REQUEST}.
+     *                                     The exception represents a http response with status {@link HttpStatus#BAD_REQUEST}.
      */
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) throws ParameterPollutionException {
+    public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain)
+        throws ParameterPollutionException {
         log.debug("Check for parameter pollution attack.");
         ServerHttpRequest request = exchange.getRequest();
         if (!CollectionUtils.isEmpty(request.getQueryParams())) {

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { LangfristigerPlanungsursaechlicherBedarf } from './LangfristigerPlanungsursaechlicherBedarf';
+import {
+    LangfristigerPlanungsursaechlicherBedarfFromJSON,
+    LangfristigerPlanungsursaechlicherBedarfFromJSONTyped,
+    LangfristigerPlanungsursaechlicherBedarfToJSON,
+} from './LangfristigerPlanungsursaechlicherBedarf';
+
 /**
  * 
  * @export
@@ -177,6 +184,12 @@ export interface AbfragevarianteBauleitplanverfahrenRequestBody {
     sobonOrientierungswertJahr?: AbfragevarianteBauleitplanverfahrenRequestBodySobonOrientierungswertJahrEnum;
     /**
      * 
+     * @type {Date}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    stammdatenGueltigAb?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
      */
@@ -249,6 +262,12 @@ export interface AbfragevarianteBauleitplanverfahrenRequestBody {
     hinweisVersorgung?: string;
     /**
      * 
+     * @type {LangfristigerPlanungsursaechlicherBedarf}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    langfristigerPlanungsursaechlicherBedarf?: LangfristigerPlanungsursaechlicherBedarf;
+    /**
+     * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
      */
@@ -281,7 +300,8 @@ export const AbfragevarianteBauleitplanverfahrenRequestBodySobonOrientierungswer
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
-    Jahr2022: 'JAHR_2022'
+    Jahr2022: 'JAHR_2022',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type AbfragevarianteBauleitplanverfahrenRequestBodySobonOrientierungswertJahrEnum = typeof AbfragevarianteBauleitplanverfahrenRequestBodySobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBauleitplanverfahrenRequestBodySobonOrientierungswertJahrEnum];
 
@@ -342,6 +362,7 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyFromJSONTyped(json
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : json['bauabschnitte'],
@@ -354,6 +375,7 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyFromJSONTyped(json
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
         'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
+        'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
     };
 }
@@ -393,6 +415,7 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(value?: Abf
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bauabschnitte': value.bauabschnitte,
@@ -405,6 +428,7 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(value?: Abf
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
         'hinweisVersorgung': value.hinweisVersorgung,
+        'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfToJSON(value.langfristigerPlanungsursaechlicherBedarf),
         'artAbfragevariante': value.artAbfragevariante,
     };
 }

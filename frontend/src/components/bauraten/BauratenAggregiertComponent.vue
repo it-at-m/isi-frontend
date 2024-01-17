@@ -52,11 +52,18 @@ import { DataTableHeader } from "@/types/common/DataTableHeader";
 import { BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import { numberToFormattedStringTwoDecimals, numberToFormattedStringZeroDecimals } from "@/utils/CalculationUtil";
+import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
+import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 
 @Component({ components: { FieldGroupCard } })
 export default class BauratenAggregiertComponent extends Vue {
   @Prop()
-  private aggregateBauraten!: AbfragevarianteBauleitplanverfahrenModel | BauabschnittModel | BaugebietModel;
+  private aggregateBauraten!:
+    | AbfragevarianteBauleitplanverfahrenModel
+    | AbfragevarianteBaugenehmigungsverfahrenModel
+    | AbfragevarianteWeiteresVerfahrenModel
+    | BauabschnittModel
+    | BaugebietModel;
 
   private baurateMap: Map<number, BaurateModel> = new Map<number, BaurateModel>();
 
@@ -82,24 +89,33 @@ export default class BauratenAggregiertComponent extends Vue {
   }
 
   private extraktBauraten(
-    layer: AbfragevarianteBauleitplanverfahrenModel | BauabschnittModel | BaugebietModel,
+    layer:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | BauabschnittModel
+      | BaugebietModel,
   ): Array<BaurateModel> {
-    if (layer instanceof AbfragevarianteBauleitplanverfahrenModel) {
-      const abfragevariante: AbfragevarianteBauleitplanverfahrenModel = this
-        .aggregateBauraten as AbfragevarianteBauleitplanverfahrenModel;
-      if (!_.isNil(abfragevariante.bauabschnitte)) {
-        return abfragevariante.bauabschnitte.flatMap((bauabschnitt: BauabschnittDto) => {
-          return this.extraktBauraten(new BauabschnittModel(bauabschnitt));
-        });
-      } else {
-        return [];
-      }
+    if (
+      layer instanceof AbfragevarianteBauleitplanverfahrenModel ||
+      layer instanceof AbfragevarianteBaugenehmigungsverfahrenModel ||
+      layer instanceof AbfragevarianteWeiteresVerfahrenModel
+    ) {
+      const abfragevariante = layer as
+        | AbfragevarianteBauleitplanverfahrenModel
+        | AbfragevarianteBaugenehmigungsverfahrenModel
+        | AbfragevarianteWeiteresVerfahrenModel;
+      return _.toArray(abfragevariante.bauabschnitte).flatMap((bauabschnitt: BauabschnittDto) => {
+        return this.extraktBauraten(new BauabschnittModel(bauabschnitt));
+      });
     } else if (layer instanceof BauabschnittModel) {
-      return (layer as BauabschnittModel).baugebiete.flatMap((baugebiet: BaugebietDto) => {
+      const bauabschnitt = layer as BauabschnittModel;
+      return _.toArray(bauabschnitt.baugebiete).flatMap((baugebiet: BaugebietDto) => {
         return this.extraktBauraten(new BaugebietModel(baugebiet));
       });
     } else {
-      return (layer as BaugebietModel).bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
+      const baugebiet = layer as BaugebietModel;
+      return _.toArray(baugebiet.bauraten).map((baurate: BaurateDto) => new BaurateModel(baurate));
     }
   }
 
@@ -124,7 +140,7 @@ export default class BauratenAggregiertComponent extends Vue {
           aggregated.gfWohnenGeplant += baurate.gfWohnenGeplant;
         }
       } else {
-        const clone = _.clone(baurate);
+        const clone = _.cloneDeep(baurate);
         this.baurateMap.set(clone.jahr, clone);
       }
     });
@@ -132,7 +148,11 @@ export default class BauratenAggregiertComponent extends Vue {
 
   get header(): string {
     if (!_.isNil(this.aggregateBauraten)) {
-      if (this.aggregateBauraten instanceof AbfragevarianteBauleitplanverfahrenModel) {
+      if (
+        this.aggregateBauraten instanceof AbfragevarianteBauleitplanverfahrenModel ||
+        this.aggregateBauraten instanceof AbfragevarianteBaugenehmigungsverfahrenModel ||
+        this.aggregateBauraten instanceof AbfragevarianteWeiteresVerfahrenModel
+      ) {
         return "Bauraten der Abfragevariante";
       } else if (this.aggregateBauraten instanceof BauabschnittModel) {
         return "Bauraten des Bauabschnitts";

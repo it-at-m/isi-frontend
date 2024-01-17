@@ -140,11 +140,13 @@ export interface SobonOrientierungswertSozialeInfrastrukturRequestBody {
  * @export
  */
 export const SobonOrientierungswertSozialeInfrastrukturRequestBodyEinrichtungstypEnum = {
+    Unspecified: 'UNSPECIFIED',
     Kinderkrippe: 'KINDERKRIPPE',
     Kindergarten: 'KINDERGARTEN',
-    Kinderhort: 'KINDERHORT',
+    GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
+    HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
-    NN: 'N_N'
+    Mittelschule: 'MITTELSCHULE'
 } as const;
 export type SobonOrientierungswertSozialeInfrastrukturRequestBodyEinrichtungstypEnum = typeof SobonOrientierungswertSozialeInfrastrukturRequestBodyEinrichtungstypEnum[keyof typeof SobonOrientierungswertSozialeInfrastrukturRequestBodyEinrichtungstypEnum];
 

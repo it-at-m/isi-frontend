@@ -24,7 +24,6 @@ import {
 
 export interface ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetRequest {
     einrichtungstyp?: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum;
-    altersklasse?: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetAltersklasseEnum;
     foerderartBezeichnung?: string;
     gueltigAb?: Date;
 }
@@ -43,10 +42,6 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
             queryParameters['einrichtungstyp'] = requestParameters.einrichtungstyp;
         }
 
-        if (requestParameters.altersklasse !== undefined) {
-            queryParameters['altersklasse'] = requestParameters.altersklasse;
-        }
-
         if (requestParameters.foerderartBezeichnung !== undefined) {
             queryParameters['foerderartBezeichnung'] = requestParameters.foerderartBezeichnung;
         }
@@ -58,7 +53,7 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndAltersklasseAndFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`,
+            path: `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -80,22 +75,12 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
  * @export
  */
 export const ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum = {
+    Unspecified: 'UNSPECIFIED',
     Kinderkrippe: 'KINDERKRIPPE',
     Kindergarten: 'KINDERGARTEN',
-    Kinderhort: 'KINDERHORT',
+    GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
+    HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
-    NN: 'N_N'
+    Mittelschule: 'MITTELSCHULE'
 } as const;
 export type ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum = typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum[keyof typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum];
-/**
- * @export
- */
-export const ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetAltersklasseEnum = {
-    NullZwei: 'NULL_ZWEI',
-    DreiSechseinhalb: 'DREI_SECHSEINHALB',
-    SechseinhalbNeuneinhalb: 'SECHSEINHALB_NEUNEINHALB',
-    ZehneinhalbFuenfzehn: 'ZEHNEINHALB_FUENFZEHN',
-    SechszehnAchtzehn: 'SECHSZEHN_ACHTZEHN',
-    AlleEwo: 'ALLE_EWO'
-} as const;
-export type ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetAltersklasseEnum = typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetAltersklasseEnum[keyof typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetAltersklasseEnum];

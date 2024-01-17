@@ -301,6 +301,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       bauabschnitte: abfragevariante.bauabschnitte,
       gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto;
   });
@@ -340,6 +341,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       bauabschnitte: abfragevariante.bauabschnitte,
       gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });
@@ -381,6 +383,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       bauabschnitte: abfragevariante.bauabschnitte,
       gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });

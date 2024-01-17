@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { LangfristigerPlanungsursaechlicherBedarf } from './LangfristigerPlanungsursaechlicherBedarf';
+import {
+    LangfristigerPlanungsursaechlicherBedarfFromJSON,
+    LangfristigerPlanungsursaechlicherBedarfFromJSONTyped,
+    LangfristigerPlanungsursaechlicherBedarfToJSON,
+} from './LangfristigerPlanungsursaechlicherBedarf';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -178,6 +184,12 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
     sobonOrientierungswertJahr?: EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum;
     /**
      * 
+     * @type {Date}
+     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
+     */
+    stammdatenGueltigAb?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
@@ -238,6 +250,12 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
     hinweisVersorgung?: string;
     /**
      * 
+     * @type {LangfristigerPlanungsursaechlicherBedarf}
+     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
+     */
+    langfristigerPlanungsursaechlicherBedarf?: LangfristigerPlanungsursaechlicherBedarf;
+    /**
+     * 
      * @type {string}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
@@ -276,7 +294,8 @@ export const EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswer
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
-    Jahr2022: 'JAHR_2022'
+    Jahr2022: 'JAHR_2022',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum = typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum[keyof typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum];
 
@@ -336,6 +355,7 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
@@ -346,6 +366,7 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
         'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
+        'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -385,6 +406,7 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSON(value?: Ent
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
         'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,
@@ -395,6 +417,7 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSON(value?: Ent
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
         'hinweisVersorgung': value.hinweisVersorgung,
+        'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfToJSON(value.langfristigerPlanungsursaechlicherBedarf),
         'artAbfragevariante': value.artAbfragevariante,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };

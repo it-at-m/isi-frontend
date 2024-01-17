@@ -147,11 +147,13 @@ export interface EntityModelSobonOrientierungswertSozialeInfrastruktur {
  * @export
  */
 export const EntityModelSobonOrientierungswertSozialeInfrastrukturEinrichtungstypEnum = {
+    Unspecified: 'UNSPECIFIED',
     Kinderkrippe: 'KINDERKRIPPE',
     Kindergarten: 'KINDERGARTEN',
-    Kinderhort: 'KINDERHORT',
+    GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
+    HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
-    NN: 'N_N'
+    Mittelschule: 'MITTELSCHULE'
 } as const;
 export type EntityModelSobonOrientierungswertSozialeInfrastrukturEinrichtungstypEnum = typeof EntityModelSobonOrientierungswertSozialeInfrastrukturEinrichtungstypEnum[keyof typeof EntityModelSobonOrientierungswertSozialeInfrastrukturEinrichtungstypEnum];
 

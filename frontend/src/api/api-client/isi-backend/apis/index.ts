@@ -46,5 +46,7 @@ export * from './StaedtebaulicheOrientierungswertEntityControllerApi';
 export * from './StaedtebaulicheOrientierungswertSearchControllerApi';
 export * from './StammdatenApi';
 export * from './SucheApi';
+export * from './UmlegungFoerderartenEntityControllerApi';
+export * from './UmlegungFoerderartenSearchControllerApi';
 export * from './VersorgungsquoteGruppenstaerkeEntityControllerApi';
 export * from './VersorgungsquoteGruppenstaerkeSearchControllerApi';

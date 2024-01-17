@@ -206,7 +206,7 @@ export class ProfileControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/profile/versorgungsquoteGruppenstaerkes`,
+            path: `/profile/umlegungFoerderartens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -223,6 +223,34 @@ export class ProfileControllerApi extends runtime.BaseAPI {
      */
     async descriptor1115(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
         const response = await this.descriptor1115Raw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async descriptor1116Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/profile/versorgungsquoteGruppenstaerkes`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     */
+    async descriptor1116(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.descriptor1116Raw(initOverrides);
         return await response.value();
     }
 
