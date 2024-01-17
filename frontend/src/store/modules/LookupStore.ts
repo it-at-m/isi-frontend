@@ -23,6 +23,7 @@ const state = {
   infrastruktureinrichtungTyp: [] as LookupEntryDto[],
   artGsNachmittagBetreuung: [] as LookupEntryDto[],
   sobonOrientierungswertJahr: [] as LookupEntryDto[],
+  sobonOrientierungswertJahrWithoutStandortabfrage: [] as LookupEntryDto[],
 };
 
 export type LookupState = typeof state;
@@ -90,6 +91,9 @@ export default {
     sobonOrientierungswertJahr: (state: LookupState): Array<LookupEntryDto> => {
       return state.sobonOrientierungswertJahr;
     },
+    sobonOrientierungswertJahrWithoutStandortabfrage: (state: LookupState): Array<LookupEntryDto> => {
+      return state.sobonOrientierungswertJahrWithoutStandortabfrage;
+    },
   },
 
   mutations: {
@@ -150,6 +154,9 @@ export default {
     sobonOrientierungswertJahr(state: LookupState, list: LookupEntryDto[]): void {
       state.sobonOrientierungswertJahr = list;
     },
+    sobonOrientierungswertJahrWithoutStandortabfrage(state: LookupState, list: LookupEntryDto[]): void {
+      state.sobonOrientierungswertJahrWithoutStandortabfrage = list;
+    },
   },
 
   actions: {
@@ -184,6 +191,10 @@ export default {
         context.commit("infrastruktureinrichtungTyp", lookupLists.infrastruktureinrichtungTyp?.list);
         context.commit("artGsNachmittagBetreuung", lookupLists.artGsNachmittagBetreuung?.list);
         context.commit("sobonOrientierungswertJahr", lookupLists.sobonOrientierungswertJahr?.list);
+        context.commit(
+          "sobonOrientierungswertJahrWithoutStandortabfrage",
+          lookupLists.sobonOrientierungswertJahrWithoutStandortabfrage?.list,
+        );
       });
     },
     uncertainBoolean(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
@@ -251,6 +262,12 @@ export default {
     },
     sobonOrientierungswertJahr(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("sobonOrientierungswertJahr", list);
+    },
+    sobonOrientierungswertJahrWithoutStandortabfrage(
+      context: ActionContext<LookupState, RootState>,
+      list: LookupEntryDto[],
+    ): void {
+      context.commit("sobonOrientierungswertJahrWithoutStandortabfrage", list);
     },
   },
 };
