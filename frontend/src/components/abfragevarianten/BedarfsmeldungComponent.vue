@@ -104,7 +104,7 @@ import DisplayMode from "@/types/common/DisplayMode";
 
 export const enum BedarfsmeldungTitle {
   FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
-  ABFRAGEERSTELLUNG = "Bedarfsmeldungen der Abfrageerstellung",
+  ABFRAGEERSTELLUNG = "Geplante Einrichtungen",
 }
 @Component({ components: { FieldGroupCard, NumField, BedarfsmeldungDialog } })
 export default class BedarfsmeldungComponent extends Mixins(
