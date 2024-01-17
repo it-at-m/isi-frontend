@@ -27,7 +27,6 @@ import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
 
 /**
  * This class configures Hazelcast as the ReactiveSessionRepository.
- *
  */
 @Configuration
 @EnableSpringWebSession
@@ -49,7 +48,7 @@ public class WebSessionConfiguration {
 
     @Bean
     public ReactiveSessionRepository<MapSession> reactiveSessionRepository(
-        @Qualifier("hazelcastInstance") @Autowired HazelcastInstance hazelcastInstance
+        @Qualifier("hazelcastInstance") @Autowired final HazelcastInstance hazelcastInstance
     ) {
         final IMap<String, Session> map = hazelcastInstance.getMap(
             HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME
@@ -59,7 +58,7 @@ public class WebSessionConfiguration {
 
     @Bean
     @Profile({ "local", "test" })
-    public Config localConfig(@Value("${spring.session.timeout}") int timeout) {
+    public Config localConfig(@Value("${spring.session.timeout}") final int timeout) {
         final var hazelcastConfig = new Config();
         // Integrity Check
         final var integrityCheckerConfig = new IntegrityCheckerConfig();
@@ -82,7 +81,7 @@ public class WebSessionConfiguration {
 
     @Bean
     @Profile({ "dev", "kon", "ta", "demo", "prod" })
-    public Config config(@Value("${spring.session.timeout}") int timeout) {
+    public Config config(@Value("${spring.session.timeout}") final int timeout) {
         final var hazelcastConfig = new Config();
         // Integrity Check
         final var integrityCheckerConfig = new IntegrityCheckerConfig();
@@ -108,12 +107,12 @@ public class WebSessionConfiguration {
 
     /**
      * Adds the session timeout in seconds to the hazelcast configuration.
-     *
+     * <p>
      * Since we are creating the map it's important to evict sessions
      * by setting a reasonable value for time to live.
      *
      * @param hazelcastConfig to add the timeout.
-     * @param sessionTimeout for security session.
+     * @param sessionTimeout  for security session.
      */
     private void addSessionTimeoutToHazelcastConfig(final Config hazelcastConfig, final int sessionTimeout) {
         final var sessionConfig = new MapConfig();
