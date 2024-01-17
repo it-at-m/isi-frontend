@@ -1,13 +1,13 @@
 <template>
   <div>
-    <field-group-card :card-title="bedarfsmeldungenFachreferateTitle">
+    <field-group-card :card-title="getBedarfsmeldungTitle">
       <v-row justify="center">
         <v-col cols="12">
           <v-container class="table">
             <v-data-table
               :headers="bedarfsmeldungenHeaders"
-              :items="abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate"
-              :items-per-page="5"
+              :items="bedarfsmeldungen"
+              :items-per-page="-1"
               hide-default-footer
               @change="formChanged"
             >
@@ -31,7 +31,7 @@
                     <td>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                        :disabled="!isEditableByBedarfsmeldung()"
+                        :disabled="!getIsEditable"
                         icon
                         @click="editBedarfsmeldung(item, index)"
                       >
@@ -39,7 +39,7 @@
                       </v-btn>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_loeschen' + index"
-                        :disabled="!isEditableByBedarfsmeldung()"
+                        :disabled="!getIsEditable"
                         icon
                         @click="deleteBedarfsmeldung(index)"
                       >
@@ -62,7 +62,7 @@
               >
                 <v-btn
                   :id="'bedarfsmeldung_erfassen'"
-                  :disabled="!isEditableByBedarfsmeldung()"
+                  :disabled="!getIsEditable"
                   class="text-wrap"
                   block
                   @click="erfassenBedarfsmeldung()"
@@ -78,10 +78,10 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <bedarfsmeldung-fachreferate-dialog
-      id="bedarfsmeldung_fachreferate"
+    <bedarfsmeldung-dialog
+      id="bedarfsmeldung_dialog"
       v-model="currentBedarfsmeldung"
-      :show-bedarfsmeldung-dialog="bedarfsmeldungFachreferateDialogOpen"
+      :show-bedarfsmeldung-dialog="bedarfsmeldungDialogOpen"
       @uebernehmen-bedarfsmeldung="uebernehmenBedarfsmeldung($event)"
       @abbrechen-bedarfsmeldung="abbrechenBedarfsmeldung()"
     />
@@ -89,36 +89,48 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
-import { LookupEntryDto, BedarfsmeldungFachreferateDto } from "@/api/api-client/isi-backend";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { LookupEntryDto, BedarfsmeldungDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import BedarfsmeldungFachreferateDialog from "@/components/abfragevarianten/BedarfsmeldungFachreferateDialog.vue";
-import BedarfsmeldungFachreferateModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
-import { createBedarfsmeldungFachreferateDto } from "@/utils/Factories";
+import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
+import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
 import DisplayMode from "@/types/common/DisplayMode";
 
-@Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachreferateDialog } })
-export default class BedarfsmeldungFachreferateComponent extends Mixins(
+export const enum BedarfsmeldungTitle {
+  FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
+  ABFRAGEERSTELLUNG = "Geplante Einrichtungen",
+}
+@Component({ components: { FieldGroupCard, NumField, BedarfsmeldungDialog } })
+export default class BedarfsmeldungComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
 ) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
+  @VModel({ type: Array }) bedarfsmeldungen!: BedarfsmeldungModel[];
 
-  private bedarfsmeldungenFachreferateTitle = "Bedarfsmeldungen der Fachreferate";
+  @Prop()
+  private bedarfsmeldungTitle!: BedarfsmeldungTitle;
 
-  private bedarfsmeldungFachreferateDialogOpen = false;
+  get getBedarfsmeldungTitle(): string {
+    return this.bedarfsmeldungTitle.valueOf();
+  }
 
-  private currentBedarfsmeldung = createBedarfsmeldungFachreferateDto();
+  @Prop({ type: Boolean, default: false })
+  private isEditable!: boolean;
+
+  get getIsEditable(): boolean {
+    return this.isEditable;
+  }
+
+  private bedarfsmeldungDialogOpen = false;
+
+  private currentBedarfsmeldung = createBedarfsmeldungDto();
 
   private displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 
@@ -152,30 +164,26 @@ export default class BedarfsmeldungFachreferateComponent extends Mixins(
   }
 
   private erfassenBedarfsmeldung(): void {
-    this.currentBedarfsmeldung = createBedarfsmeldungFachreferateDto();
+    this.currentBedarfsmeldung = createBedarfsmeldungDto();
     this.displayModeBedarfsmeldung = DisplayMode.NEU;
-    this.bedarfsmeldungFachreferateDialogOpen = true;
+    this.bedarfsmeldungDialogOpen = true;
   }
 
-  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel, itemIndex: number): void {
+  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel, itemIndex: number): void {
     this.selectedItemIndex = itemIndex;
     this.currentBedarfsmeldung = _.cloneDeep(bedarfsmeldung);
     this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
-    this.bedarfsmeldungFachreferateDialogOpen = true;
+    this.bedarfsmeldungDialogOpen = true;
   }
 
-  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel): void {
+  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): void {
     if (this.displayModeBedarfsmeldung === DisplayMode.NEU) {
-      if (_.isNil(this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)) {
-        this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate = new Array<BedarfsmeldungFachreferateDto>();
+      if (_.isNil(this.bedarfsmeldungen)) {
+        this.bedarfsmeldungen = new Array<BedarfsmeldungDto>();
       }
-      this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate.push(bedarfsmeldung);
+      this.bedarfsmeldungen.push(bedarfsmeldung);
     } else {
-      this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate?.splice(
-        this.selectedItemIndex,
-        1,
-        this.currentBedarfsmeldung,
-      );
+      this.bedarfsmeldungen?.splice(this.selectedItemIndex, 1, this.currentBedarfsmeldung);
     }
     this.clearBedarfsmeldungDialog();
   }
@@ -185,13 +193,13 @@ export default class BedarfsmeldungFachreferateComponent extends Mixins(
   }
 
   private clearBedarfsmeldungDialog(): void {
-    this.bedarfsmeldungFachreferateDialogOpen = false;
+    this.bedarfsmeldungDialogOpen = false;
     this.displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
     this.selectedItemIndex = -1;
   }
 
   private deleteBedarfsmeldung(itemIndex: number) {
-    this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate?.splice(itemIndex, 1);
+    this.bedarfsmeldungen.splice(itemIndex, 1);
     this.formChanged();
   }
 }

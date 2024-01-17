@@ -35,10 +35,42 @@
       ref="sachbearbeitungComponent"
       v-model="abfragevariante"
     />
-    <bedarfsmeldung-fachreferate-component
+    <bedarfsmeldung-component
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
-      v-model="abfragevariante"
+      v-model="abfragevariante.bedarfsmeldungFachreferate"
+      :is-editable="isEditableByBedarfsmeldung()"
+      :bedarfsmeldung-title="bedarfsmeldungFachreferate"
+    />
+    <v-row>
+      <v-col
+        cols="12"
+        md="4"
+      />
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <v-btn
+          id="bedarfsmeldungenUebernehmenButton"
+          class="text-wrap"
+          block
+          :disabled="!bedarfsmeldungenUebernehmenEnabled"
+          @click="bedarfsmeldungenUebernehmen()"
+          v-text="'Bedarfsmeldungen der Fachreferate übernehmen'"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      />
+    </v-row>
+    <bedarfsmeldung-component
+      id="bedarfsmeldung_abfrageerstellung_component"
+      ref="bedarfsmeldungAbfrageerstellungComponent"
+      v-model="abfragevariante.bedarfsmeldungAbfrageersteller"
+      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
+      :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
     <langfristiger-planungsursaechlicher-bedarf-component
       :bedarf="abfragevariante?.langfristigerPlanungsursaechlicherBedarf"
@@ -47,16 +79,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
 import GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent.vue";
 import GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
+import BedarfsmeldungComponent, {
+  BedarfsmeldungTitle,
+} from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import _ from "lodash";
 import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfragevarianten/calculation/LangfristigerPlanungsursaechlicherBedarfComponent.vue";
 
 @Component({
@@ -67,11 +104,14 @@ import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfr
     GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent,
     GeplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent,
     SachbearbeitungComponent,
-    BedarfsmeldungFachreferateComponent,
+    BedarfsmeldungComponent,
     BauratenAggregiertComponent,
   },
 })
-export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Vue {
+export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Mixins(
+  AbfrageSecurityMixin,
+  SaveLeaveMixin,
+) {
   @VModel({ type: AbfragevarianteBaugenehmigungsverfahrenModel })
   abfragevariante!: AbfragevarianteBaugenehmigungsverfahrenModel;
 
@@ -86,6 +126,32 @@ export default class AbfragevarianteBaugenehmigungsverfahrenComponent extends Vu
       this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
     return headline.concat(`${this.abfragevariante.name}`);
+  }
+
+  get bedarfsmeldungFachreferate(): BedarfsmeldungTitle {
+    return BedarfsmeldungTitle.FACHREFERATE;
+  }
+  get bedarfsmeldungAbfrageerstellung(): BedarfsmeldungTitle {
+    return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
+  }
+
+  get bedarfsmeldungenUebernehmenEnabled(): boolean {
+    return (
+      this.isBedarfsmeldungEditableByAbfrageerstellung() &&
+      !_.isEmpty(this.abfragevariante.bedarfsmeldungFachreferate) &&
+      _.isEmpty(this.abfragevariante.bedarfsmeldungAbfrageersteller)
+    );
+  }
+
+  private bedarfsmeldungenUebernehmen(): void {
+    this.abfragevariante.bedarfsmeldungAbfrageersteller = _.clone(this.abfragevariante.bedarfsmeldungFachreferate);
+    this.abfragevariante.bedarfsmeldungAbfrageersteller?.forEach((bedarfsmeldung) => {
+      bedarfsmeldung.id = "";
+      bedarfsmeldung.version = undefined;
+      bedarfsmeldung.createdDateTime = undefined;
+      bedarfsmeldung.lastModifiedDateTime = undefined;
+    });
+    this.formChanged();
   }
 }
 </script>
