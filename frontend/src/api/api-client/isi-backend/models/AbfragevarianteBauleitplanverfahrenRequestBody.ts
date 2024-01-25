@@ -205,6 +205,12 @@ export interface AbfragevarianteBauleitplanverfahrenRequestBody {
      * @type {Array<string>}
      * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
      */
+    bedarfsmeldungAbfrageersteller?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
     bauabschnitte?: Array<string>;
     /**
      * 
@@ -365,6 +371,7 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyFromJSONTyped(json
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
+        'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : json['bauabschnitte'],
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
@@ -418,6 +425,7 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(value?: Abf
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
+        'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,
         'bauabschnitte': value.bauabschnitte,
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
         'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,

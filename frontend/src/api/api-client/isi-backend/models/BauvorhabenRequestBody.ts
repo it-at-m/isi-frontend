@@ -188,7 +188,8 @@ export const BauvorhabenRequestBodyStandVerfahrenEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     InfoFehlt: 'INFO_FEHLT',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type BauvorhabenRequestBodyStandVerfahrenEnum = typeof BauvorhabenRequestBodyStandVerfahrenEnum[keyof typeof BauvorhabenRequestBodyStandVerfahrenEnum];
 

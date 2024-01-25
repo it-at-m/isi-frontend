@@ -194,7 +194,8 @@ export const BauvorhabenDtoStandVerfahrenEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     InfoFehlt: 'INFO_FEHLT',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type BauvorhabenDtoStandVerfahrenEnum = typeof BauvorhabenDtoStandVerfahrenEnum[keyof typeof BauvorhabenDtoStandVerfahrenEnum];
 

@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { BedarfsmeldungFachreferateDto } from './BedarfsmeldungFachreferateDto';
+import type { BedarfsmeldungDto } from './BedarfsmeldungDto';
 import {
-    BedarfsmeldungFachreferateDtoFromJSON,
-    BedarfsmeldungFachreferateDtoFromJSONTyped,
-    BedarfsmeldungFachreferateDtoToJSON,
-} from './BedarfsmeldungFachreferateDto';
+    BedarfsmeldungDtoFromJSON,
+    BedarfsmeldungDtoFromJSONTyped,
+    BedarfsmeldungDtoToJSON,
+} from './BedarfsmeldungDto';
 
 /**
  * 
@@ -46,10 +46,10 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto 
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {Array<BedarfsmeldungFachreferateDto>}
+     * @type {Array<BedarfsmeldungDto>}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto
      */
-    bedarfsmeldungFachreferate?: Array<BedarfsmeldungFachreferateDto>;
+    bedarfsmeldungFachreferate?: Array<BedarfsmeldungDto>;
     /**
      * 
      * @type {boolean}
@@ -141,7 +141,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoFr
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
-        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFachreferateDtoFromJSON)),
+        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
@@ -166,7 +166,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoTo
         'id': value.id,
         'version': value.version,
         'artAbfragevariante': value.artAbfragevariante,
-        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungFachreferateDtoToJSON)),
+        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungDtoToJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
         'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,

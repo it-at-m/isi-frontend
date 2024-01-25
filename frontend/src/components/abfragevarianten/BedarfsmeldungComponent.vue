@@ -1,7 +1,10 @@
 <template>
   <div>
-    <field-group-card :card-title="bedarfsmeldungenFachreferateTitle">
-      <v-row justify="center">
+    <field-group-card :card-title="getBedarfsmeldungTitle">
+      <v-row
+        v-if="getIsFachreferat"
+        justify="center"
+      >
         <v-col
           cols="12"
           md="6"
@@ -10,8 +13,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfImBaugebietBeruecksichtigenKita"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
@@ -20,8 +23,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_im_bplan_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungImBplanKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungImBplanKita"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
@@ -30,8 +33,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
@@ -40,8 +43,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKitaTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
@@ -56,8 +59,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
@@ -66,8 +69,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_im_bplan_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungImBplanSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungImBplanSchule"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanSchule"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
@@ -76,8 +79,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
@@ -86,8 +89,8 @@
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchuleTriswitch"
-            v-model="abfragevarianteSachbearbeitung.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
+            :disabled="!getIsEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
@@ -95,7 +98,7 @@
           />
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="getIsFachreferat">
         <v-col
           cols="12"
           md="12"
@@ -103,8 +106,8 @@
           <v-textarea
             id="hinweis_Versorgung_field"
             ref="hinweisVersorgungField"
-            v-model="abfragevarianteSachbearbeitung.hinweisVersorgung"
-            :disabled="!isEditableByBedarfsmeldung()"
+            v-model="abfragevariante.hinweisVersorgung"
+            :disabled="!getIsEditable"
             label="Hinweise zur Versorgung der Bedarfe außerhalb des Verfahrens"
             rows="1"
             auto-grow
@@ -119,8 +122,8 @@
           <v-container class="table">
             <v-data-table
               :headers="bedarfsmeldungenHeaders"
-              :items="abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate"
-              :items-per-page="5"
+              :items="bedarfsmeldungen"
+              :items-per-page="-1"
               hide-default-footer
               @change="formChanged"
             >
@@ -144,7 +147,7 @@
                     <td>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                        :disabled="!isEditableByBedarfsmeldung()"
+                        :disabled="!getIsEditable"
                         icon
                         @click="editBedarfsmeldung(item, index)"
                       >
@@ -152,7 +155,7 @@
                       </v-btn>
                       <v-btn
                         :id="'bedarfsmeldung_listitem_loeschen' + index"
-                        :disabled="!isEditableByBedarfsmeldung()"
+                        :disabled="!getIsEditable"
                         icon
                         @click="deleteBedarfsmeldung(index)"
                       >
@@ -175,7 +178,7 @@
               >
                 <v-btn
                   :id="'bedarfsmeldung_erfassen'"
-                  :disabled="!isEditableByBedarfsmeldung()"
+                  :disabled="!getIsEditable"
                   class="text-wrap"
                   block
                   @click="erfassenBedarfsmeldung()"
@@ -191,10 +194,10 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <bedarfsmeldung-fachreferate-dialog
-      id="bedarfsmeldung_fachreferate"
+    <bedarfsmeldung-dialog
+      id="bedarfsmeldung_dialog"
       v-model="currentBedarfsmeldung"
-      :show-bedarfsmeldung-dialog="bedarfsmeldungFachreferateDialogOpen"
+      :show-bedarfsmeldung-dialog="bedarfsmeldungDialogOpen"
       @uebernehmen-bedarfsmeldung="uebernehmenBedarfsmeldung($event)"
       @abbrechen-bedarfsmeldung="abbrechenBedarfsmeldung()"
     />
@@ -202,36 +205,66 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
-import { LookupEntryDto, BedarfsmeldungFachreferateDto } from "@/api/api-client/isi-backend";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
+import { LookupEntryDto, BedarfsmeldungDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import BedarfsmeldungFachreferateDialog from "@/components/abfragevarianten/BedarfsmeldungFachreferateDialog.vue";
-import BedarfsmeldungFachreferateModel from "@/types/model/abfragevariante/BedarfsmeldungFachreferateModel";
-import { createBedarfsmeldungFachreferateDto } from "@/utils/Factories";
+import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
+import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
 import DisplayMode from "@/types/common/DisplayMode";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 
-@Component({ components: { FieldGroupCard, NumField, BedarfsmeldungFachreferateDialog } })
-export default class BedarfsmeldungFachreferateComponent extends Mixins(
+export const enum BedarfsmeldungTitle {
+  FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
+  ABFRAGEERSTELLUNG = "Geplante Einrichtungen",
+}
+@Component({ components: { FieldGroupCard, NumField, BedarfsmeldungDialog } })
+export default class BedarfsmeldungComponent extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
   SaveLeaveMixin,
-  AbfrageSecurityMixin,
 ) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
+  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
-  private bedarfsmeldungenFachreferateTitle = "Bedarfsmeldungen der Fachreferate";
+  @Prop()
+  private bedarfsmeldungTitle!: BedarfsmeldungTitle;
 
-  private bedarfsmeldungFachreferateDialogOpen = false;
+  get getBedarfsmeldungTitle(): string {
+    return this.bedarfsmeldungTitle.valueOf();
+  }
 
-  private currentBedarfsmeldung = createBedarfsmeldungFachreferateDto();
+  @Prop({ type: Boolean, default: false })
+  private isEditable!: boolean;
+
+  get getIsEditable(): boolean {
+    return this.isEditable;
+  }
+
+  @Prop({ type: Boolean, default: false })
+  private isFachreferat!: boolean;
+
+  get getIsFachreferat(): boolean {
+    return this.isFachreferat;
+  }
+
+  private bedarfsmeldungen?: BedarfsmeldungDto[];
+
+  @Watch("abfragevariante", { immediate: true })
+  private bedarfsmeldungchanged(): void {
+    this.bedarfsmeldungen = this.isFachreferat
+      ? this.abfragevariante.bedarfsmeldungFachreferate
+      : this.abfragevariante.bedarfsmeldungAbfrageersteller;
+  }
+
+  private bedarfsmeldungDialogOpen = false;
+
+  private currentBedarfsmeldung = createBedarfsmeldungDto();
 
   private displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 
@@ -265,30 +298,26 @@ export default class BedarfsmeldungFachreferateComponent extends Mixins(
   }
 
   private erfassenBedarfsmeldung(): void {
-    this.currentBedarfsmeldung = createBedarfsmeldungFachreferateDto();
+    this.currentBedarfsmeldung = createBedarfsmeldungDto();
     this.displayModeBedarfsmeldung = DisplayMode.NEU;
-    this.bedarfsmeldungFachreferateDialogOpen = true;
+    this.bedarfsmeldungDialogOpen = true;
   }
 
-  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel, itemIndex: number): void {
+  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel, itemIndex: number): void {
     this.selectedItemIndex = itemIndex;
     this.currentBedarfsmeldung = _.cloneDeep(bedarfsmeldung);
     this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
-    this.bedarfsmeldungFachreferateDialogOpen = true;
+    this.bedarfsmeldungDialogOpen = true;
   }
 
-  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungFachreferateModel): void {
+  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): void {
     if (this.displayModeBedarfsmeldung === DisplayMode.NEU) {
-      if (_.isNil(this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate)) {
-        this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate = new Array<BedarfsmeldungFachreferateDto>();
+      if (_.isNil(this.bedarfsmeldungen)) {
+        this.bedarfsmeldungen = new Array<BedarfsmeldungDto>();
       }
-      this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate.push(bedarfsmeldung);
+      this.bedarfsmeldungen.push(bedarfsmeldung);
     } else {
-      this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate?.splice(
-        this.selectedItemIndex,
-        1,
-        this.currentBedarfsmeldung,
-      );
+      this.bedarfsmeldungen?.splice(this.selectedItemIndex, 1, this.currentBedarfsmeldung);
     }
     this.clearBedarfsmeldungDialog();
   }
@@ -298,14 +327,16 @@ export default class BedarfsmeldungFachreferateComponent extends Mixins(
   }
 
   private clearBedarfsmeldungDialog(): void {
-    this.bedarfsmeldungFachreferateDialogOpen = false;
+    this.bedarfsmeldungDialogOpen = false;
     this.displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
     this.selectedItemIndex = -1;
   }
 
   private deleteBedarfsmeldung(itemIndex: number) {
-    this.abfragevarianteSachbearbeitung.bedarfsmeldungFachreferate?.splice(itemIndex, 1);
-    this.formChanged();
+    if (!_.isNil(this.bedarfsmeldungen)) {
+      this.bedarfsmeldungen.splice(itemIndex, 1);
+      this.formChanged();
+    }
   }
 }
 </script>

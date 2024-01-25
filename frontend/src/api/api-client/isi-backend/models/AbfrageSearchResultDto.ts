@@ -130,7 +130,8 @@ export const AbfrageSearchResultDtoStandVerfahrenEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     InfoFehlt: 'INFO_FEHLT',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type AbfrageSearchResultDtoStandVerfahrenEnum = typeof AbfrageSearchResultDtoStandVerfahrenEnum[keyof typeof AbfrageSearchResultDtoStandVerfahrenEnum];
 
