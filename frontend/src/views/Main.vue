@@ -141,6 +141,7 @@ import L, { GeoJSONOptions } from "leaflet";
 import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
 import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
+import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
 interface GenericSearchResult extends SearchResultDto {
   id?: string;
@@ -162,7 +163,7 @@ export default class Main extends Vue {
   private speedDialOpen = false;
 
   private iconOptions = {
-    shadowUrl: "marker-shadow.png",
+    shadowUrl: iconShadowUrl,
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
