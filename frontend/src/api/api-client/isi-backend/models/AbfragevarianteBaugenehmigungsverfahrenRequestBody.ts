@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { LangfristigerPlanungsursaechlicherBedarf } from './LangfristigerPlanungsursaechlicherBedarf';
-import {
-    LangfristigerPlanungsursaechlicherBedarfFromJSON,
-    LangfristigerPlanungsursaechlicherBedarfFromJSONTyped,
-    LangfristigerPlanungsursaechlicherBedarfToJSON,
-} from './LangfristigerPlanungsursaechlicherBedarf';
-
 /**
  * 
  * @export
@@ -226,12 +219,6 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     bauabschnitte?: Array<string>;
     /**
      * 
-     * @type {LangfristigerPlanungsursaechlicherBedarf}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
-     */
-    langfristigerPlanungsursaechlicherBedarf?: LangfristigerPlanungsursaechlicherBedarf;
-    /**
-     * 
      * @type {string}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
@@ -333,7 +320,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : json['bauabschnitte'],
-        'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
     };
 }
@@ -380,7 +366,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSON(value?:
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,
         'bauabschnitte': value.bauabschnitte,
-        'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfToJSON(value.langfristigerPlanungsursaechlicherBedarf),
         'artAbfragevariante': value.artAbfragevariante,
     };
 }

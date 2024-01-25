@@ -13,12 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { LangfristigerPlanungsursaechlicherBedarf } from './LangfristigerPlanungsursaechlicherBedarf';
-import {
-    LangfristigerPlanungsursaechlicherBedarfFromJSON,
-    LangfristigerPlanungsursaechlicherBedarfFromJSONTyped,
-    LangfristigerPlanungsursaechlicherBedarfToJSON,
-} from './LangfristigerPlanungsursaechlicherBedarf';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -196,12 +190,6 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
     anmerkung?: string;
     /**
      * 
-     * @type {LangfristigerPlanungsursaechlicherBedarf}
-     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
-     */
-    langfristigerPlanungsursaechlicherBedarf?: LangfristigerPlanungsursaechlicherBedarf;
-    /**
-     * 
      * @type {string}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
@@ -303,7 +291,6 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -345,7 +332,6 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSON(value?: Ent
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
-        'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfToJSON(value.langfristigerPlanungsursaechlicherBedarf),
         'artAbfragevariante': value.artAbfragevariante,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
