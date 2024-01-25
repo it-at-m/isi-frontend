@@ -18,10 +18,6 @@ export default class SecurityMixin extends Vue {
     return this.$store.getters["userinfo/hasRoleAdmin"] || this.isGuiWithoutSecurityContext();
   }
 
-  public hasOnlyRoleAnwender(): boolean {
-    return this.$store.getters["userinfo/hasOnlyRoleAnwender"];
-  }
-
   private isGuiWithoutSecurityContext(): boolean {
     return (import.meta.env.VITE_RUN_GUI_WITHOUT_SECURITY as string) === "true";
   }
