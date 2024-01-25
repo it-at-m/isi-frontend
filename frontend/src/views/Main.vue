@@ -16,7 +16,10 @@
         cols="12"
         md="9"
       >
-        <city-map />
+        <city-map
+          :geo-json="geoJson"
+          :geo-json-options="geoJsonOptions"
+        />
       </v-col>
     </v-row>
     <v-speed-dial
@@ -127,7 +130,24 @@ import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOp
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import _ from "lodash";
 import MapLayout from "@/components/map/MapLayout.vue";
-import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
+import {
+  AbfrageDtoArtAbfrageEnum,
+  SearchResultDto,
+  SearchResultDtoTypeEnum,
+  Wgs84Dto,
+} from "@/api/api-client/isi-backend";
+import { Feature, Point } from "geojson";
+import L, { GeoJSONOptions } from "leaflet";
+import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
+import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
+import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
+
+interface GenericSearchResult extends SearchResultDto {
+  id?: string;
+  coordinate?: Wgs84Dto;
+}
+
+type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string }>;
 
 @Component({
   components: {
@@ -141,12 +161,88 @@ import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 export default class Main extends Vue {
   private speedDialOpen = false;
 
+  private iconOptions = {
+    shadowUrl: "marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41],
+  };
+
+  private iconAbfrage = L.icon(this.iconOptions && { iconUrl: iconAbfrageUrl });
+
+  private iconBauvorhaben = L.icon(this.iconOptions && { iconUrl: iconBauvorhabenUrl });
+
+  private iconInfrastruktureinrichtung = L.icon(this.iconOptions && { iconUrl: iconInfrastruktureinrichtungUrl });
+
+  private geoJsonOptions: GeoJSONOptions = {
+    pointToLayer: (feature: EntityFeature, latlng) => {
+      let icon: L.Icon;
+      switch (feature.properties.type) {
+        case "ABFRAGE":
+          icon = this.iconAbfrage;
+          break;
+        case "BAUVORHABEN":
+          icon = this.iconBauvorhaben;
+          break;
+        case "INFRASTRUKTUREINRICHTUNG":
+          icon = this.iconInfrastruktureinrichtung;
+          break;
+        default:
+          return L.marker(latlng);
+      }
+      return L.marker(latlng, { icon });
+    },
+    onEachFeature: (feature: EntityFeature, layer) => {
+      layer.on("click", () => {
+        switch (feature.properties.type) {
+          case "ABFRAGE":
+            router.push({
+              name: "updateabfrage",
+              params: { id: feature.properties.id },
+            });
+            break;
+          case "BAUVORHABEN":
+            router.push({
+              name: "editBauvorhaben",
+              params: { id: feature.properties.id },
+            });
+            break;
+          case "INFRASTRUKTUREINRICHTUNG":
+            router.push({
+              name: "editInfrastruktureinrichtung",
+              params: { id: feature.properties.id },
+            });
+            break;
+        }
+      });
+    },
+  };
+
   get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
     return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
   }
 
   set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
     this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
+  }
+
+  get geoJson(): EntityFeature[] {
+    const results: GenericSearchResult[] = this.$store.getters["search/searchResults"].searchResults;
+    const features: EntityFeature[] = [];
+
+    for (const result of results) {
+      if (result.type && result.id && result.coordinate) {
+        features.push({
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [result.coordinate.longitude, result.coordinate.latitude] },
+          properties: { type: result.type, id: result.id },
+        });
+      }
+    }
+
+    return features;
   }
 
   private createBauleitplanverfahren(): void {
