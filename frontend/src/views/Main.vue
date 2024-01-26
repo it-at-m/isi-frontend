@@ -132,6 +132,9 @@ import _ from "lodash";
 import MapLayout from "@/components/map/MapLayout.vue";
 import {
   AbfrageDtoArtAbfrageEnum,
+  AbfrageSearchResultDto,
+  BauvorhabenSearchResultDto,
+  InfrastruktureinrichtungSearchResultDto,
   SearchResultDto,
   SearchResultDtoTypeEnum,
   Wgs84Dto,
@@ -143,12 +146,7 @@ import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
-interface GenericSearchResult extends SearchResultDto {
-  id?: string;
-  coordinate?: Wgs84Dto;
-}
-
-type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string }>;
+type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
 @Component({
   components: {
@@ -164,18 +162,18 @@ export default class Main extends Vue {
 
   private iconOptions = {
     shadowUrl: iconShadowUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    tooltipAnchor: [16, -28],
-    shadowSize: [41, 41],
+    iconSize: [25, 41] as [number, number],
+    iconAnchor: [12, 41] as [number, number],
+    popupAnchor: [1, -34] as [number, number],
+    tooltipAnchor: [16, -28] as [number, number],
+    shadowSize: [41, 41] as [number, number],
   };
 
-  private iconAbfrage = L.icon(this.iconOptions && { iconUrl: iconAbfrageUrl });
+  private iconAbfrage = L.icon({ iconUrl: iconAbfrageUrl, ...this.iconOptions });
 
-  private iconBauvorhaben = L.icon(this.iconOptions && { iconUrl: iconBauvorhabenUrl });
+  private iconBauvorhaben = L.icon({ iconUrl: iconBauvorhabenUrl, ...this.iconOptions });
 
-  private iconInfrastruktureinrichtung = L.icon(this.iconOptions && { iconUrl: iconInfrastruktureinrichtungUrl });
+  private iconInfrastruktureinrichtung = L.icon({ iconUrl: iconInfrastruktureinrichtungUrl, ...this.iconOptions });
 
   private geoJsonOptions: GeoJSONOptions = {
     pointToLayer: (feature: EntityFeature, latlng) => {
@@ -196,6 +194,7 @@ export default class Main extends Vue {
       return L.marker(latlng, { icon });
     },
     onEachFeature: (feature: EntityFeature, layer) => {
+      layer.bindTooltip(feature.properties.name).openTooltip();
       layer.on("click", () => {
         switch (feature.properties.type) {
           case "ABFRAGE":
@@ -230,15 +229,38 @@ export default class Main extends Vue {
   }
 
   get geoJson(): EntityFeature[] {
-    const results: GenericSearchResult[] = this.$store.getters["search/searchResults"].searchResults;
+    const results: SearchResultDto[] = this.$store.getters["search/searchResults"].searchResults;
     const features: EntityFeature[] = [];
 
     for (const result of results) {
-      if (result.type && result.id && result.coordinate) {
+      const type = result.type;
+      let id: string | undefined;
+      let name: string | undefined;
+      let coordinate: Wgs84Dto | undefined;
+
+      switch (type) {
+        case "ABFRAGE":
+          id = (result as AbfrageSearchResultDto).id;
+          name = (result as AbfrageSearchResultDto).name;
+          coordinate = (result as AbfrageSearchResultDto).coordinate;
+          break;
+        case "BAUVORHABEN":
+          id = (result as BauvorhabenSearchResultDto).id;
+          name = (result as BauvorhabenSearchResultDto).nameVorhaben;
+          coordinate = (result as BauvorhabenSearchResultDto).coordinate;
+          break;
+        case "INFRASTRUKTUREINRICHTUNG":
+          id = (result as InfrastruktureinrichtungSearchResultDto).id;
+          name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
+          coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
+          break;
+      }
+
+      if (type && id && name && coordinate) {
         features.push({
           type: "Feature",
-          geometry: { type: "Point", coordinates: [result.coordinate.longitude, result.coordinate.latitude] },
-          properties: { type: result.type, id: result.id },
+          geometry: { type: "Point", coordinates: [coordinate.longitude, coordinate.latitude] },
+          properties: { type, id, name },
         });
       }
     }
