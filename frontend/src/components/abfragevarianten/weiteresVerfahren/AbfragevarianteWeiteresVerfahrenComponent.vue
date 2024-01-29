@@ -86,7 +86,7 @@ import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/component
 import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent, {
+import BedarfsmeldungComponent, {
   BedarfsmeldungTitle,
 } from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
@@ -104,7 +104,7 @@ import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfr
     GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent,
     GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent,
     SachbearbeitungComponent,
-    BedarfsmeldungFachreferateComponent,
+    BedarfsmeldungComponent,
     BauratenAggregiertComponent,
   },
 })

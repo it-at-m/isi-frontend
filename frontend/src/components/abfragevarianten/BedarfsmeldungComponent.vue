@@ -253,10 +253,10 @@ export default class BedarfsmeldungComponent extends Mixins(
     return this.isFachreferat;
   }
 
-  private bedarfsmeldungen?: BedarfsmeldungDto[];
+  private bedarfsmeldungen?: BedarfsmeldungDto[] = [];
 
-  @Watch("abfragevariante", { immediate: true })
-  private bedarfsmeldungchanged(): void {
+  @Watch("abfragevariante", { immediate: true, deep: true })
+  private bedarfsmeldungSelection(): void {
     this.bedarfsmeldungen = this.isFachreferat
       ? this.abfragevariante.bedarfsmeldungFachreferate
       : this.abfragevariante.bedarfsmeldungAbfrageersteller;

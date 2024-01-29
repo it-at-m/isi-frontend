@@ -86,7 +86,7 @@ import GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent from "@/compon
 import GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent, {
+import BedarfsmeldungComponent, {
   BedarfsmeldungTitle,
 } from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -105,7 +105,7 @@ import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfr
     GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent,
     GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent,
     SachbearbeitungComponent,
-    BedarfsmeldungFachreferateComponent,
+    BedarfsmeldungComponent,
     BauratenAggregiertComponent,
   },
 })
