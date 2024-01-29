@@ -34,7 +34,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
     }
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
         log.debug("Check for authentication errors");
         return GatewayUtils.responseBodyManipulatorForServerWebExchange(
             exchange,

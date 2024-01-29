@@ -4,7 +4,7 @@
  */
 package de.muenchen.isi.filter;
 
-import de.muenchen.isi.configuration.SecurityConfiguration;
+import de.muenchen.isi.configuration.SecurityEnabledConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
@@ -19,14 +19,14 @@ import reactor.core.publisher.Mono;
 /**
  * This class subscribes the {@link ServerWebExchange} for csrf token attachment
  * within the classes {@link CookieServerCsrfTokenRepository} and {@link CsrfWebFilter}.
- * The csrf configuration done only in {@link SecurityConfiguration#springSecurityFilterChain} is
+ * The csrf configuration done only in {@link SecurityEnabledConfiguration#springSecurityFilterChain} is
  * not sufficient for csrf token attachment to a {@link ServerHttpResponse}.
  */
 @Component
 @Slf4j
 public class CsrfTokenAppendingHelperFilter implements WebFilter {
 
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
         log.debug("Trigger to append CSRF token to response");
         Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
         return csrfToken
