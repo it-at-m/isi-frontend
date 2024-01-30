@@ -109,6 +109,12 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
+    artBaulicheNutzungBauvorhaben?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
     statusInfrastruktureinrichtung?: LookupListDto;
     /**
      * 
@@ -180,6 +186,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': !exists(json, 'wesentlicheRechtsgrundlageBaugenehmigungsverfahren') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
         'wesentlicheRechtsgrundlage': !exists(json, 'wesentlicheRechtsgrundlage') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlage']),
         'artBaulicheNutzung': !exists(json, 'artBaulicheNutzung') ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzung']),
+        'artBaulicheNutzungBauvorhaben': !exists(json, 'artBaulicheNutzungBauvorhaben') ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzungBauvorhaben']),
         'statusInfrastruktureinrichtung': !exists(json, 'statusInfrastruktureinrichtung') ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
         'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
         'einrichtungstraegerSchulen': !exists(json, 'einrichtungstraegerSchulen') ? undefined : LookupListDtoFromJSON(json['einrichtungstraegerSchulen']),
@@ -212,6 +219,7 @@ export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
         'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': LookupListDtoToJSON(value.wesentlicheRechtsgrundlageBaugenehmigungsverfahren),
         'wesentlicheRechtsgrundlage': LookupListDtoToJSON(value.wesentlicheRechtsgrundlage),
         'artBaulicheNutzung': LookupListDtoToJSON(value.artBaulicheNutzung),
+        'artBaulicheNutzungBauvorhaben': LookupListDtoToJSON(value.artBaulicheNutzungBauvorhaben),
         'statusInfrastruktureinrichtung': LookupListDtoToJSON(value.statusInfrastruktureinrichtung),
         'einrichtungstraeger': LookupListDtoToJSON(value.einrichtungstraeger),
         'einrichtungstraegerSchulen': LookupListDtoToJSON(value.einrichtungstraegerSchulen),
