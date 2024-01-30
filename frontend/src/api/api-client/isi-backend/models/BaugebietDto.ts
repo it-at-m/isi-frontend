@@ -123,12 +123,14 @@ export interface BaugebietDto {
  * @export
  */
 export const BaugebietDtoArtBaulicheNutzungEnum = {
+    Unspecified: 'UNSPECIFIED',
     Wr: 'WR',
     Wa: 'WA',
     Mu: 'MU',
     Mk: 'MK',
     Mi: 'MI',
-    Ge: 'GE'
+    Ge: 'GE',
+    InfoFehlt: 'INFO_FEHLT'
 } as const;
 export type BaugebietDtoArtBaulicheNutzungEnum = typeof BaugebietDtoArtBaulicheNutzungEnum[keyof typeof BaugebietDtoArtBaulicheNutzungEnum];
 
