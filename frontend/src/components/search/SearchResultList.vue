@@ -326,10 +326,13 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin, Secu
   }
 
   public disableAbfrageCard(item: AbfrageSearchResultDto): boolean {
-    return this.hasOnlyRoleAnwender()
-      ? item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&
-          item.statusAbfrage != StatusAbfrage.ErledigtOhneFachreferat
-      : false;
+    let result: boolean = this.hasOnlyRoleAnwender();
+    if (result) {
+      result =
+        item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&
+        item.statusAbfrage != StatusAbfrage.ErledigtOhneFachreferat;
+    }
+    return result;
   }
 
   private routeToInfrastruktureinrichtungForm(
