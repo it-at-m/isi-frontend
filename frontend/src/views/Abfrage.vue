@@ -866,6 +866,8 @@ export default class Abfrage extends Mixins(
       await this.changeRelevanteAbfragevariante(abfragevariante.id, true).then((result) => {
         if (typeof result !== "string") {
           const relevanteId = result.relevanteAbfragevariante;
+          // eslint-disable-next-line no-console
+          console.log(relevanteId);
           this.relevanteAbfragevarianteId = relevanteId ?? null;
           Toaster.toast(
             `Die Abfragevariante ${abfragevariante.name} in Abfrage ${this.abfrage.displayName} ist nun ${
