@@ -7,7 +7,6 @@ package de.muenchen.isi.filter;
 import brave.Tracer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -25,8 +24,9 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class DistributedTracingFilter implements WebFilter {
 
-    public static final String XB3_TRACE_ID = "x-b3-traceid";
-    public static final String XB3_SPAN_ID = "x-b3-spanid";
+    public static final String TRACE_ID = "TraceId";
+
+    public static final String SPAN_ID = "SpanId";
 
     private final Tracer tracer;
 
@@ -35,18 +35,18 @@ public class DistributedTracingFilter implements WebFilter {
      * to each response in {@link ServerWebExchange}.
      *
      * @param serverWebExchange the current server exchange without zipkin headers
-     * @param webFilterChain provides a way to delegate to the next filter
+     * @param webFilterChain    provides a way to delegate to the next filter
      * @return {@code Mono<Void>} to indicate when request processing for adding zipkin headers is complete
      */
     @Override
-    public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
+    public Mono<Void> filter(final ServerWebExchange serverWebExchange, final WebFilterChain webFilterChain) {
         ServerHttpResponse response = serverWebExchange.getResponse();
         response.beforeCommit(() -> {
-            var span = tracer.currentSpan();
+            final var span = tracer.currentSpan();
             if (span != null) {
                 HttpHeaders headers = response.getHeaders();
-                headers.add(XB3_TRACE_ID, span.context().traceIdString());
-                headers.add(XB3_SPAN_ID, span.context().spanIdString());
+                headers.add(TRACE_ID, span.context().traceIdString());
+                headers.add(SPAN_ID, span.context().spanIdString());
             } else {
                 log.debug("Traceinformation missing - Skip Trace Header insertion");
             }

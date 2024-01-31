@@ -35,28 +35,70 @@
       ref="sachbearbeitungComponent"
       v-model="abfragevariante"
     />
-    <bedarfsmeldung-fachreferate-component
+    <bedarfsmeldung-component
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
-      v-model="abfragevariante"
+      v-model="abfragevariante.bedarfsmeldungFachreferate"
+      :is-editable="isEditableByBedarfsmeldung()"
+      :bedarfsmeldung-title="bedarfsmeldungFachreferate"
+    />
+    <v-row>
+      <v-col
+        cols="12"
+        md="4"
+      />
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <v-btn
+          id="bedarfsmeldungenUebernehmenButton"
+          class="text-wrap"
+          block
+          :disabled="!bedarfsmeldungenUebernehmenEnabled"
+          @click="bedarfsmeldungenUebernehmen()"
+          v-text="'Bedarfsmeldungen der Fachreferate übernehmen'"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      />
+    </v-row>
+    <bedarfsmeldung-component
+      id="bedarfsmeldung_abfrageerstellung_component"
+      ref="bedarfsmeldungAbfrageerstellungComponent"
+      v-model="abfragevariante.bedarfsmeldungAbfrageersteller"
+      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
+      :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
+    />
+    <langfristiger-planungsursaechlicher-bedarf-component
+      :bedarf="abfragevariante?.langfristigerPlanungsursaechlicherBedarf"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import CommonBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/CommonBauleitplanverfahrenComponent.vue";
 import GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent.vue";
 import GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent from "@/components/abfragevarianten/bauleitplanverfahren/GeplanteAnzahlWohneinheitenBauleitplanverfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent from "@/components/abfragevarianten/BedarfsmeldungFachreferateComponent.vue";
+import BedarfsmeldungFachreferateComponent, {
+  BedarfsmeldungTitle,
+} from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import _ from "lodash";
+import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfragevarianten/calculation/LangfristigerPlanungsursaechlicherBedarfComponent.vue";
 
 @Component({
   components: {
+    LangfristigerPlanungsursaechlicherBedarfComponent,
     FieldGroupCard,
     CommonBauleitplanverfahrenComponent,
     GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent,
@@ -66,7 +108,7 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
     BauratenAggregiertComponent,
   },
 })
-export default class AbfragevarianteBauleitplanverfahrenComponent extends Vue {
+export default class AbfragevarianteBauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
@@ -81,6 +123,33 @@ export default class AbfragevarianteBauleitplanverfahrenComponent extends Vue {
       this.abfragevariante,
     ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
     return headline.concat(`${this.abfragevariante.name}`);
+  }
+
+  get bedarfsmeldungFachreferate(): BedarfsmeldungTitle {
+    return BedarfsmeldungTitle.FACHREFERATE;
+  }
+
+  get bedarfsmeldungAbfrageerstellung(): BedarfsmeldungTitle {
+    return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
+  }
+
+  get bedarfsmeldungenUebernehmenEnabled(): boolean {
+    return (
+      this.isBedarfsmeldungEditableByAbfrageerstellung() &&
+      !_.isEmpty(this.abfragevariante.bedarfsmeldungFachreferate) &&
+      _.isEmpty(this.abfragevariante.bedarfsmeldungAbfrageersteller)
+    );
+  }
+
+  private bedarfsmeldungenUebernehmen(): void {
+    this.abfragevariante.bedarfsmeldungAbfrageersteller = _.clone(this.abfragevariante.bedarfsmeldungFachreferate);
+    this.abfragevariante.bedarfsmeldungAbfrageersteller?.forEach((bedarfsmeldung) => {
+      bedarfsmeldung.id = "";
+      bedarfsmeldung.version = undefined;
+      bedarfsmeldung.createdDateTime = undefined;
+      bedarfsmeldung.lastModifiedDateTime = undefined;
+    });
+    this.formChanged();
   }
 }
 </script>

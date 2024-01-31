@@ -33,8 +33,8 @@ import {
   AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum,
   // Bedarfsmeldung
-  BedarfsmeldungFachreferateDto,
-  BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum,
+  BedarfsmeldungDto,
+  BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   // Baurate / Fördermix
   BaurateDto,
   FoerderartDto,
@@ -266,8 +266,10 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     gfWohnenPlanungsursaechlich: undefined,
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
@@ -306,8 +308,10 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
@@ -348,19 +352,21 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     sobonOrientierungswertJahr: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
-    bedarfsmeldungFachreferate: new Array<BedarfsmeldungFachreferateDto>(),
+    bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
   };
 }
 
 /**
- * BedarfsmeldungFachreferateDto
+ * BedarfsmeldungDto
  */
-export function createBedarfsmeldungFachreferateDto(): BedarfsmeldungFachreferateDto {
+export function createBedarfsmeldungDto(): BedarfsmeldungDto {
   return {
     anzahlEinrichtungen: undefined,
-    infrastruktureinrichtungTyp: BedarfsmeldungFachreferateDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    infrastruktureinrichtungTyp: BedarfsmeldungDtoInfrastruktureinrichtungTypEnum.Unspecified,
     anzahlKinderkrippengruppen: undefined,
     anzahlKindergartengruppen: undefined,
     anzahlHortgruppen: undefined,
@@ -475,7 +481,7 @@ export function createBaugebietDto(): BaugebietDto {
     lastModifiedDateTime: undefined,
     bezeichnung: "",
     realisierungVon: Number.NaN,
-    artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum.Ge,
+    artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum.Unspecified,
     bauraten: [],
     technical: false,
   };
