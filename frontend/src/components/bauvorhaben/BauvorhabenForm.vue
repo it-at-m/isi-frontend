@@ -310,7 +310,7 @@ export default class BauvorhabenForm extends Mixins(
   }
 
   get artBaulicheNutzungList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/artBaulicheNutzung"];
+    return this.$store.getters["lookup/artBaulicheNutzungBauvorhaben"];
   }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {

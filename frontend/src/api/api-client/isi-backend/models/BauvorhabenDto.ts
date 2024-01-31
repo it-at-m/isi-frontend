@@ -236,12 +236,14 @@ export type BauvorhabenDtoWesentlicheRechtsgrundlageEnum = typeof BauvorhabenDto
  * @export
  */
 export const BauvorhabenDtoArtFnpEnum = {
+    Unspecified: 'UNSPECIFIED',
     Wr: 'WR',
     Wa: 'WA',
     Mu: 'MU',
     Mk: 'MK',
     Mi: 'MI',
-    Ge: 'GE'
+    Ge: 'GE',
+    InfoFehlt: 'INFO_FEHLT'
 } as const;
 export type BauvorhabenDtoArtFnpEnum = typeof BauvorhabenDtoArtFnpEnum[keyof typeof BauvorhabenDtoArtFnpEnum];
 

@@ -224,12 +224,14 @@ export type EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum = typeof Entity
  * @export
  */
 export const EntityModelBauvorhabenArtFnpEnum = {
+    Unspecified: 'UNSPECIFIED',
     Wr: 'WR',
     Wa: 'WA',
     Mu: 'MU',
     Mk: 'MK',
     Mi: 'MI',
-    Ge: 'GE'
+    Ge: 'GE',
+    InfoFehlt: 'INFO_FEHLT'
 } as const;
 export type EntityModelBauvorhabenArtFnpEnum = typeof EntityModelBauvorhabenArtFnpEnum[keyof typeof EntityModelBauvorhabenArtFnpEnum];
 
