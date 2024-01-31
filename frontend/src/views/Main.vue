@@ -16,10 +16,7 @@
         cols="12"
         md="9"
       >
-        <city-map
-          :geo-json="geoJson"
-          :geo-json-options="geoJsonOptions"
-        />
+        <search-result-city-map />
       </v-col>
     </v-row>
     <v-speed-dial
@@ -124,35 +121,20 @@
 import { Vue, Component } from "vue-property-decorator";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
-import CityMap from "@/components/map/CityMap.vue";
+import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
 import router from "@/router";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import _ from "lodash";
-import MapLayout from "@/components/map/MapLayout.vue";
-import {
-  AbfrageDtoArtAbfrageEnum,
-  AbfrageSearchResultDto,
-  BauvorhabenSearchResultDto,
-  InfrastruktureinrichtungSearchResultDto,
-  SearchResultDto,
-  SearchResultDtoTypeEnum,
-  Wgs84Dto,
-} from "@/api/api-client/isi-backend";
+import { AbfrageDtoArtAbfrageEnum, SearchResultDtoTypeEnum } from "@/api/api-client/isi-backend";
 import { Feature, Point } from "geojson";
-import L, { GeoJSONOptions } from "leaflet";
-import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
-import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
-import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
-import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
 type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
 @Component({
   components: {
-    MapLayout,
     SearchAndFilterOptions,
-    CityMap,
+    SearchResultCityMap,
     SearchResultList,
     DefaultLayout,
   },
@@ -160,112 +142,12 @@ type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string;
 export default class Main extends Vue {
   private speedDialOpen = false;
 
-  private iconOptions = {
-    shadowUrl: iconShadowUrl,
-    iconSize: [25, 41] as [number, number],
-    iconAnchor: [12, 41] as [number, number],
-    popupAnchor: [1, -34] as [number, number],
-    tooltipAnchor: [16, -28] as [number, number],
-    shadowSize: [41, 41] as [number, number],
-  };
-
-  private iconAbfrage = L.icon({ iconUrl: iconAbfrageUrl, ...this.iconOptions });
-
-  private iconBauvorhaben = L.icon({ iconUrl: iconBauvorhabenUrl, ...this.iconOptions });
-
-  private iconInfrastruktureinrichtung = L.icon({ iconUrl: iconInfrastruktureinrichtungUrl, ...this.iconOptions });
-
-  private geoJsonOptions: GeoJSONOptions = {
-    pointToLayer: (feature: EntityFeature, latlng) => {
-      let icon: L.Icon;
-      switch (feature.properties.type) {
-        case "ABFRAGE":
-          icon = this.iconAbfrage;
-          break;
-        case "BAUVORHABEN":
-          icon = this.iconBauvorhaben;
-          break;
-        case "INFRASTRUKTUREINRICHTUNG":
-          icon = this.iconInfrastruktureinrichtung;
-          break;
-        default:
-          return L.marker(latlng);
-      }
-      return L.marker(latlng, { icon });
-    },
-    onEachFeature: (feature: EntityFeature, layer) => {
-      layer.bindTooltip(feature.properties.name).openTooltip();
-      layer.on("click", () => {
-        switch (feature.properties.type) {
-          case "ABFRAGE":
-            router.push({
-              name: "updateabfrage",
-              params: { id: feature.properties.id },
-            });
-            break;
-          case "BAUVORHABEN":
-            router.push({
-              name: "editBauvorhaben",
-              params: { id: feature.properties.id },
-            });
-            break;
-          case "INFRASTRUKTUREINRICHTUNG":
-            router.push({
-              name: "editInfrastruktureinrichtung",
-              params: { id: feature.properties.id },
-            });
-            break;
-        }
-      });
-    },
-  };
-
   get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
     return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
   }
 
   set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
     this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
-  }
-
-  get geoJson(): EntityFeature[] {
-    const results: SearchResultDto[] = this.$store.getters["search/searchResults"].searchResults;
-    const features: EntityFeature[] = [];
-
-    for (const result of results) {
-      const type = result.type;
-      let id: string | undefined;
-      let name: string | undefined;
-      let coordinate: Wgs84Dto | undefined;
-
-      switch (type) {
-        case "ABFRAGE":
-          id = (result as AbfrageSearchResultDto).id;
-          name = (result as AbfrageSearchResultDto).name;
-          coordinate = (result as AbfrageSearchResultDto).coordinate;
-          break;
-        case "BAUVORHABEN":
-          id = (result as BauvorhabenSearchResultDto).id;
-          name = (result as BauvorhabenSearchResultDto).nameVorhaben;
-          coordinate = (result as BauvorhabenSearchResultDto).coordinate;
-          break;
-        case "INFRASTRUKTUREINRICHTUNG":
-          id = (result as InfrastruktureinrichtungSearchResultDto).id;
-          name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
-          coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
-          break;
-      }
-
-      if (type && id && name && coordinate) {
-        features.push({
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [coordinate.longitude, coordinate.latitude] },
-          properties: { type, id, name },
-        });
-      }
-    }
-
-    return features;
   }
 
   private createBauleitplanverfahren(): void {
