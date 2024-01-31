@@ -25,7 +25,7 @@
           :items="artBaulicheNutzungList"
           item-value="key"
           item-text="value"
-          :rules="[fieldValidationRules.pflichtfeld]"
+          :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
           @change="formChanged"
         >
           <template #label> Art der baulichen Nutzung <span class="secondary--text">*</span> </template>
