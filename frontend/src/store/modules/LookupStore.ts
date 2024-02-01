@@ -17,6 +17,7 @@ const state = {
   wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [] as LookupEntryDto[],
   wesentlicheRechtsgrundlage: [] as LookupEntryDto[],
   artBaulicheNutzung: [] as LookupEntryDto[],
+  artBaulicheNutzungBauvorhaben: [] as LookupEntryDto[],
   statusInfrastruktureinrichtung: [] as LookupEntryDto[],
   einrichtungstraeger: [] as LookupEntryDto[],
   einrichtungstraegerSchulen: [] as LookupEntryDto[],
@@ -72,6 +73,9 @@ export default {
     },
     artBaulicheNutzung: (state: LookupState): Array<LookupEntryDto> => {
       return state.artBaulicheNutzung;
+    },
+    artBaulicheNutzungBauvorhaben: (state: LookupState): Array<LookupEntryDto> => {
+      return state.artBaulicheNutzungBauvorhaben;
     },
     statusInfrastruktureinrichtung: (state: LookupState): Array<LookupEntryDto> => {
       return state.statusInfrastruktureinrichtung;
@@ -136,6 +140,9 @@ export default {
     artBaulicheNutzung(state: LookupState, list: LookupEntryDto[]): void {
       state.artBaulicheNutzung = list;
     },
+    artBaulicheNutzungBauvorhaben(state: LookupState, list: LookupEntryDto[]): void {
+      state.artBaulicheNutzungBauvorhaben = list;
+    },
     statusInfrastruktureinrichtung(state: LookupState, list: LookupEntryDto[]): void {
       state.statusInfrastruktureinrichtung = list;
     },
@@ -185,6 +192,7 @@ export default {
         );
         context.commit("wesentlicheRechtsgrundlage", lookupLists.wesentlicheRechtsgrundlage?.list);
         context.commit("artBaulicheNutzung", lookupLists.artBaulicheNutzung?.list);
+        context.commit("artBaulicheNutzungBauvorhaben", lookupLists.artBaulicheNutzungBauvorhaben?.list);
         context.commit("statusInfrastruktureinrichtung", lookupLists.statusInfrastruktureinrichtung?.list);
         context.commit("einrichtungstraeger", lookupLists.einrichtungstraeger?.list);
         context.commit("einrichtungstraegerSchulen", lookupLists.einrichtungstraegerSchulen?.list);
@@ -244,6 +252,9 @@ export default {
     },
     artBaulicheNutzung(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("artBaulicheNutzung", list);
+    },
+    artBaulicheNutzungBauvorhaben(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
+      context.commit("artBaulicheNutzungBauvorhaben", list);
     },
     statusInfrastruktureinrichtung(context: ActionContext<LookupState, RootState>, list: LookupEntryDto[]): void {
       context.commit("statusInfrastruktureinrichtung", list);

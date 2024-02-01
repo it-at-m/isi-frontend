@@ -481,7 +481,7 @@ export function createBaugebietDto(): BaugebietDto {
     lastModifiedDateTime: undefined,
     bezeichnung: "",
     realisierungVon: Number.NaN,
-    artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum.Ge,
+    artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum.Unspecified,
     bauraten: [],
     technical: false,
   };

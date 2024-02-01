@@ -230,12 +230,14 @@ export type BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum = typeof Bauvor
  * @export
  */
 export const BauvorhabenRequestBodyArtFnpEnum = {
+    Unspecified: 'UNSPECIFIED',
     Wr: 'WR',
     Wa: 'WA',
     Mu: 'MU',
     Mk: 'MK',
     Mi: 'MI',
-    Ge: 'GE'
+    Ge: 'GE',
+    InfoFehlt: 'INFO_FEHLT'
 } as const;
 export type BauvorhabenRequestBodyArtFnpEnum = typeof BauvorhabenRequestBodyArtFnpEnum[keyof typeof BauvorhabenRequestBodyArtFnpEnum];
 
