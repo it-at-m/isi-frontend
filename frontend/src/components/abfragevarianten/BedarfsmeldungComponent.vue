@@ -1,6 +1,122 @@
 <template>
   <div>
     <field-group-card :card-title="getBedarfsmeldungTitle">
+      <v-row
+        v-if="getIsFachreferat"
+        justify="center"
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <h3>Ausgelöste Bedarfe Kindertagesbetreuung</h3>
+          <v-checkbox
+            id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
+            ref="ausgeloesterBedarfImBaugebietBeruecksichtigenKitaTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Bedarf im Baugebiet berücksichtigen"
+            color="primary"
+            @change="formChanged"
+          />
+          <v-checkbox
+            id="ausgeloester_bedarf_mitversorgung_im_bplan_kita_triswitch"
+            ref="ausgeloesterBedarfMitversorgungImBplanKitaTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Mitversorgung des Bedarfs in einem Bebauungsplan"
+            color="primary"
+            @change="formChanged"
+          />
+          <v-checkbox
+            id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenKitaTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Mitversorgung in bestehenden Einrichtungen"
+            color="primary"
+            @change="formChanged"
+          />
+          <v-checkbox
+            id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKitaTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
+            color="primary"
+            @change="formChanged"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <h3>Ausgelöste Bedarfe Schule</h3>
+          <v-checkbox
+            id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
+            ref="ausgeloesterBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Bedarf im Baugebiet berücksichtigen"
+            color="primary"
+            @change="formChanged"
+          />
+          <v-checkbox
+            id="ausgeloester_bedarf_mitversorgung_im_bplan_schule_triswitch"
+            ref="ausgeloesterBedarfMitversorgungImBplanSchuleTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanSchule"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Mitversorgung des Bedarfs in einem Bebauungsplan"
+            color="primary"
+            @change="formChanged"
+          />
+          <v-checkbox
+            id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenSchuleTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Mitversorgung in bestehenden Einrichtungen"
+            color="primary"
+            @change="formChanged"
+          />
+          <v-checkbox
+            id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
+            ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchuleTriswitch"
+            v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
+            :disabled="!getIsEditable"
+            class="mx-3"
+            label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
+            color="primary"
+            @change="formChanged"
+          />
+        </v-col>
+      </v-row>
+      <v-row v-if="getIsFachreferat">
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <v-textarea
+            id="hinweis_Versorgung_field"
+            ref="hinweisVersorgungField"
+            v-model="abfragevariante.hinweisVersorgung"
+            :disabled="!getIsEditable"
+            label="Hinweise zur Versorgung der Bedarfe außerhalb des Verfahrens"
+            rows="1"
+            auto-grow
+            maxlength="1000"
+            @input="formChanged"
+          />
+        </v-col>
+      </v-row>
+
       <v-row justify="center">
         <v-col cols="12">
           <v-container class="table">
@@ -89,7 +205,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import { LookupEntryDto, BedarfsmeldungDto } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -101,6 +217,7 @@ import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungMod
 import { createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
 import DisplayMode from "@/types/common/DisplayMode";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 
 export const enum BedarfsmeldungTitle {
   FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
@@ -112,7 +229,8 @@ export default class BedarfsmeldungComponent extends Mixins(
   FieldValidationRulesMixin,
   SaveLeaveMixin,
 ) {
-  @VModel({ type: Array }) bedarfsmeldungen!: BedarfsmeldungModel[];
+  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
+  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   @Prop()
   private bedarfsmeldungTitle!: BedarfsmeldungTitle;
@@ -126,6 +244,22 @@ export default class BedarfsmeldungComponent extends Mixins(
 
   get getIsEditable(): boolean {
     return this.isEditable;
+  }
+
+  @Prop({ type: Boolean, default: false })
+  private isFachreferat!: boolean;
+
+  get getIsFachreferat(): boolean {
+    return this.isFachreferat;
+  }
+
+  private bedarfsmeldungen?: BedarfsmeldungDto[] = [];
+
+  @Watch("abfragevariante", { immediate: true, deep: true })
+  private bedarfsmeldungSelection(): void {
+    this.bedarfsmeldungen = this.isFachreferat
+      ? this.abfragevariante.bedarfsmeldungFachreferate
+      : this.abfragevariante.bedarfsmeldungAbfrageersteller;
   }
 
   private bedarfsmeldungDialogOpen = false;
@@ -199,8 +333,10 @@ export default class BedarfsmeldungComponent extends Mixins(
   }
 
   private deleteBedarfsmeldung(itemIndex: number) {
-    this.bedarfsmeldungen.splice(itemIndex, 1);
-    this.formChanged();
+    if (!_.isNil(this.bedarfsmeldungen)) {
+      this.bedarfsmeldungen.splice(itemIndex, 1);
+      this.formChanged();
+    }
   }
 }
 </script>

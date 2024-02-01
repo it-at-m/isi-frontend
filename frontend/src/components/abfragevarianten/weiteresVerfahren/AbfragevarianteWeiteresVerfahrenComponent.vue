@@ -38,7 +38,8 @@
     <bedarfsmeldung-component
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
-      v-model="abfragevariante.bedarfsmeldungFachreferate"
+      v-model="abfragevariante"
+      :is-fachreferat="true"
       :is-editable="isEditableByBedarfsmeldung()"
       :bedarfsmeldung-title="bedarfsmeldungFachreferate"
     />
@@ -68,7 +69,7 @@
     <bedarfsmeldung-component
       id="bedarfsmeldung_abfrageerstellung_component"
       ref="bedarfsmeldungAbfrageerstellungComponent"
-      v-model="abfragevariante.bedarfsmeldungAbfrageersteller"
+      v-model="abfragevariante"
       :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
       :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
@@ -85,7 +86,7 @@ import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/component
 import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungFachreferateComponent, {
+import BedarfsmeldungComponent, {
   BedarfsmeldungTitle,
 } from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
@@ -103,7 +104,7 @@ import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfr
     GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent,
     GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent,
     SachbearbeitungComponent,
-    BedarfsmeldungFachreferateComponent,
+    BedarfsmeldungComponent,
     BauratenAggregiertComponent,
   },
 })
