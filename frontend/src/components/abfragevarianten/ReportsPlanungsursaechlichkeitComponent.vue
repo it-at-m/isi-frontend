@@ -15,7 +15,7 @@
               target="_blank"
               :href="getUrlWohneinheiten()"
             >
-              Wohneinheiten<span class="mdi mdi-launch" />
+              Report Wohneinheiten<span class="mdi mdi-launch" />
             </a>
           </v-list-item-title>
         </v-list-item>
@@ -25,7 +25,7 @@
               target="_blank"
               :href="getUrlBedarfeKinderkrippe()"
             >
-              Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
+              Report Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
             </a>
           </v-list-item-title>
         </v-list-item>
@@ -35,7 +35,7 @@
               target="_blank"
               :href="getUrlBedarfeKindergarten()"
             >
-              Bedarfe Kindergarten<span class="mdi mdi-launch" />
+              Report Bedarfe Kindergarten<span class="mdi mdi-launch" />
             </a>
           </v-list-item-title>
         </v-list-item>
@@ -45,7 +45,7 @@
               target="_blank"
               :href="getUrlAlleEinwohner()"
             >
-              Alle Einwohner <span class="mdi mdi-launch" />
+              Report Alle Einwohner <span class="mdi mdi-launch" />
             </a>
           </v-list-item-title>
         </v-list-item>
