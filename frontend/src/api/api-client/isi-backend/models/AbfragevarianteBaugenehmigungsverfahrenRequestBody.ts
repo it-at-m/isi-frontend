@@ -219,6 +219,60 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     bauabschnitte?: Array<string>;
     /**
      * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfImBaugebietBeruecksichtigenKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfMitversorgungImBplanKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfImBaugebietBeruecksichtigenSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfMitversorgungImBplanSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    hinweisVersorgung?: string;
+    /**
+     * 
      * @type {string}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
@@ -320,6 +374,15 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : json['bauabschnitte'],
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
+        'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
+        'ausgeloesterBedarfMitversorgungImBplanSchule': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanSchule') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
+        'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
     };
 }
@@ -366,6 +429,15 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSON(value?:
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,
         'bauabschnitte': value.bauabschnitte,
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
+        'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': value.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule,
+        'ausgeloesterBedarfMitversorgungImBplanSchule': value.ausgeloesterBedarfMitversorgungImBplanSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
+        'hinweisVersorgung': value.hinweisVersorgung,
         'artAbfragevariante': value.artAbfragevariante,
     };
 }

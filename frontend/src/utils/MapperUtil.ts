@@ -510,6 +510,21 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferat
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
+        abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
+      ausgeloesterBedarfMitversorgungImBplanKita: abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenKita:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+      ausgeloesterBedarfImBaugebietBeruecksichtigenSchule:
+        abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule,
+      ausgeloesterBedarfMitversorgungImBplanSchule: abfragevariante.ausgeloesterBedarfMitversorgungImBplanSchule,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto;
   });
 }
@@ -523,6 +538,21 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachref
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
+        abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
+      ausgeloesterBedarfMitversorgungImBplanKita: abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenKita:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+      ausgeloesterBedarfImBaugebietBeruecksichtigenSchule:
+        abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule,
+      ausgeloesterBedarfMitversorgungImBplanSchule: abfragevariante.ausgeloesterBedarfMitversorgungImBplanSchule,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto;
   });
 }
@@ -536,6 +566,21 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
+        abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
+      ausgeloesterBedarfMitversorgungImBplanKita: abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenKita:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+      ausgeloesterBedarfImBaugebietBeruecksichtigenSchule:
+        abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule,
+      ausgeloesterBedarfMitversorgungImBplanSchule: abfragevariante.ausgeloesterBedarfMitversorgungImBplanSchule,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
+      ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule:
+        abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
     } as AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto;
   });
 }

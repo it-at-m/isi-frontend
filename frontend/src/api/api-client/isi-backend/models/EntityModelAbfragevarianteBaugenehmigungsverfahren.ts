@@ -202,6 +202,60 @@ export interface EntityModelAbfragevarianteBaugenehmigungsverfahren {
     anmerkung?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfImBaugebietBeruecksichtigenKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfMitversorgungImBplanKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfImBaugebietBeruecksichtigenSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfMitversorgungImBplanSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
+     */
+    hinweisVersorgung?: string;
+    /**
+     * 
      * @type {string}
      * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
      */
@@ -305,6 +359,15 @@ export function EntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSONTyped(
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
+        'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
+        'ausgeloesterBedarfMitversorgungImBplanSchule': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanSchule') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
+        'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -348,6 +411,15 @@ export function EntityModelAbfragevarianteBaugenehmigungsverfahrenToJSON(value?:
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
+        'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': value.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule,
+        'ausgeloesterBedarfMitversorgungImBplanSchule': value.ausgeloesterBedarfMitversorgungImBplanSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
+        'hinweisVersorgung': value.hinweisVersorgung,
         'artAbfragevariante': value.artAbfragevariante,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
