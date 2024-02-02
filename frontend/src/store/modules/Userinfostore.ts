@@ -38,6 +38,11 @@ export default {
         ? state.userinfo?.roles?.includes("bedarfsmeldung")
         : false;
     },
+    hasOnlyRoleAnwender: (state: UserinfoState): boolean => {
+      return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
+        ? state.userinfo?.roles?.every((rolle) => rolle === "anwender")
+        : false;
+    },
   },
 
   mutations: {
