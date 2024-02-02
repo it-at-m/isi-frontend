@@ -74,6 +74,7 @@
           />
         </v-col>
       </v-row>
+      <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
     </field-group-card>
   </div>
 </template>
@@ -91,8 +92,9 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 
-@Component({ components: { FieldGroupCard, NumField } })
+@Component({ components: { ReportsPlanungsursaechlichkeitComponent, FieldGroupCard, NumField } })
 export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
