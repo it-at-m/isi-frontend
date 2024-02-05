@@ -8,7 +8,6 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import {
-  AbfrageDtoArtAbfrageEnum,
   AbfrageSearchResultDto,
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
@@ -18,12 +17,9 @@ import {
 } from "@/api/api-client/isi-backend";
 import { Feature, Point } from "geojson";
 import L, { GeoJSONOptions } from "leaflet";
-import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
-import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
-import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
-import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
 import CityMap from "./CityMap.vue";
 import router from "@/router";
+import { ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 
 type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 @Component({
@@ -32,30 +28,18 @@ type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string;
   },
 })
 export default class SearchResultCityMap extends Vue {
-  private iconOptions = {
-    shadowUrl: iconShadowUrl,
-    iconSize: [25, 41] as [number, number],
-    iconAnchor: [12, 41] as [number, number],
-    popupAnchor: [1, -34] as [number, number],
-    tooltipAnchor: [16, -28] as [number, number],
-    shadowSize: [41, 41] as [number, number],
-  };
-  private iconAbfrage = L.icon({ iconUrl: iconAbfrageUrl, ...this.iconOptions });
-  private iconBauvorhaben = L.icon({ iconUrl: iconBauvorhabenUrl, ...this.iconOptions });
-  private iconInfrastruktureinrichtung = L.icon({ iconUrl: iconInfrastruktureinrichtungUrl, ...this.iconOptions });
-
   private geoJsonOptions: GeoJSONOptions = {
     pointToLayer: (feature: EntityFeature, latlng) => {
       let icon: L.Icon;
       switch (feature.properties.type) {
         case "ABFRAGE":
-          icon = this.iconAbfrage;
+          icon = ICON_ABFRAGE;
           break;
         case "BAUVORHABEN":
-          icon = this.iconBauvorhaben;
+          icon = ICON_BAUVORHABEN;
           break;
         case "INFRASTRUKTUREINRICHTUNG":
-          icon = this.iconInfrastruktureinrichtung;
+          icon = ICON_INFRASTRUKTUREINRICHTUNG;
           break;
         default:
           return L.marker(latlng);
