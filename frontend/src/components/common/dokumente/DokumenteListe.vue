@@ -6,11 +6,11 @@
     >
       <template v-for="(item, index) in dokumente">
         <v-list-item
-          id="dokumente_list_item"
+          :id="'dokumente_list_item_' + index"
           :key="`dokument-${index}`"
         >
           <v-card
-            id="dokumente_card"
+            :id="'dokumente_card_' + index"
             :class="`my-2 pt-3 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
             flat
             width="100%"
