@@ -875,7 +875,14 @@ export default class Abfrage extends Mixins(
           );
         } else {
           this.relevanteAbfragevarianteToBeSet = abfragevariante;
-          this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+          if (
+            result ===
+            "Die Abfrage ist keinem Bauvorhaben zugeordnet. Somit kann keine Abfragevariante als relevant markiert werden."
+          ) {
+            this.relevanteAbfragevarianteDialogText = result;
+          } else {
+            this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+          }
           this.isRelevanteAbfragevarianteDialogOpen = true;
         }
       });
