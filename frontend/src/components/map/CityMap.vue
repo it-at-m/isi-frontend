@@ -195,6 +195,8 @@ export default class CityMap extends Vue {
     this.map = (this.$refs.map as LMap).mapObject;
     // Workaround für anderes Fetch-Verhalten bei Infrastruktureinrichtungen.
     this.onLookAtChanged();
+    // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
+    this.onGeoJsonChanged();
   }
 
   @Watch("lookAt", { deep: true })
