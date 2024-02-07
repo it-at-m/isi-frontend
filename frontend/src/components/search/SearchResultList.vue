@@ -17,6 +17,7 @@
         outlined
         class="my-1 mx-0 transition-swing"
         :elevation="hover ? 4 : 0"
+        :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
         @click="routeToAbfrageForm(item)"
       >
         <v-card-subtitle class="black--text">
@@ -125,18 +126,20 @@ import {
   SearchResultDtoTypeEnum,
   SearchResultsDto,
   StadtbezirkDto,
+  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import router from "@/router";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 import { Mutex, tryAcquire } from "async-mutex";
 
 @Component({
   components: { DefaultLayout },
 })
-export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
+export default class SearchResultList extends Mixins(SearchApiRequestMixin, SecurityMixin) {
   private pageRequestMutex = new Mutex();
 
   /**
@@ -320,6 +323,16 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin) {
     searchResult: SearchResultDto,
   ): InfrastruktureinrichtungSearchResultDto {
     return searchResult as InfrastruktureinrichtungSearchResultDto;
+  }
+
+  public disableAbfrageCard(item: AbfrageSearchResultDto): boolean {
+    let result: boolean = this.hasOnlyRoleAnwender();
+    if (result) {
+      result =
+        item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&
+        item.statusAbfrage != StatusAbfrage.ErledigtOhneFachreferat;
+    }
+    return result;
   }
 
   private routeToInfrastruktureinrichtungForm(
