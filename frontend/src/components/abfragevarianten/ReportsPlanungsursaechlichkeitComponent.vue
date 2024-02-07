@@ -65,7 +65,7 @@
               target="_blank"
               :href="getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten()"
             >
-              Report planungsursaechliche Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
+              Report planungsursächliche Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
             </a>
           </v-list-item-title>
         </v-list-item>
