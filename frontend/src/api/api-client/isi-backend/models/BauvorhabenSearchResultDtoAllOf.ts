@@ -19,12 +19,6 @@ import {
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
-import type { Wgs84Dto } from './Wgs84Dto';
-import {
-    Wgs84DtoFromJSON,
-    Wgs84DtoFromJSONTyped,
-    Wgs84DtoToJSON,
-} from './Wgs84Dto';
 
 /**
  * 
@@ -62,12 +56,6 @@ export interface BauvorhabenSearchResultDtoAllOf {
      * @memberof BauvorhabenSearchResultDtoAllOf
      */
     standVerfahren?: BauvorhabenSearchResultDtoAllOfStandVerfahrenEnum;
-    /**
-     * 
-     * @type {Wgs84Dto}
-     * @memberof BauvorhabenSearchResultDtoAllOf
-     */
-    coordinate?: Wgs84Dto;
 }
 
 
@@ -122,7 +110,6 @@ export function BauvorhabenSearchResultDtoAllOfFromJSONTyped(json: any, ignoreDi
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
-        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
     };
 }
 
@@ -140,7 +127,6 @@ export function BauvorhabenSearchResultDtoAllOfToJSON(value?: BauvorhabenSearchR
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVerfahren': value.standVerfahren,
-        'coordinate': Wgs84DtoToJSON(value.coordinate),
     };
 }
 

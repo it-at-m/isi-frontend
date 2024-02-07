@@ -6,6 +6,7 @@ import {
   SearchResultDto,
   SearchResultsDto,
   SearchResultDtoTypeEnum,
+  InfrastruktureinrichtungDto,
 } from "@/api/api-client/isi-backend";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
