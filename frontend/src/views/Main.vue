@@ -16,7 +16,7 @@
         cols="12"
         md="9"
       >
-        <city-map />
+        <search-result-city-map />
       </v-col>
     </v-row>
     <v-speed-dial
@@ -121,19 +121,20 @@
 import { Vue, Component } from "vue-property-decorator";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
-import CityMap from "@/components/map/CityMap.vue";
+import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
 import router from "@/router";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import _ from "lodash";
-import MapLayout from "@/components/map/MapLayout.vue";
-import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
+import { AbfrageDtoArtAbfrageEnum, SearchResultDtoTypeEnum } from "@/api/api-client/isi-backend";
+import { Feature, Point } from "geojson";
+
+type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
 @Component({
   components: {
-    MapLayout,
     SearchAndFilterOptions,
-    CityMap,
+    SearchResultCityMap,
     SearchResultList,
     DefaultLayout,
   },
