@@ -25,12 +25,6 @@ import {
     BedarfsmeldungDtoFromJSONTyped,
     BedarfsmeldungDtoToJSON,
 } from './BedarfsmeldungDto';
-import type { LangfristigerPlanungsursaechlicherBedarfDto } from './LangfristigerPlanungsursaechlicherBedarfDto';
-import {
-    LangfristigerPlanungsursaechlicherBedarfDtoFromJSON,
-    LangfristigerPlanungsursaechlicherBedarfDtoFromJSONTyped,
-    LangfristigerPlanungsursaechlicherBedarfDtoToJSON,
-} from './LangfristigerPlanungsursaechlicherBedarfDto';
 
 /**
  * 
@@ -308,12 +302,6 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     hinweisVersorgung?: string;
-    /**
-     * 
-     * @type {LangfristigerPlanungsursaechlicherBedarfDto}
-     * @memberof AbfragevarianteWeiteresVerfahrenDto
-     */
-    langfristigerPlanungsursaechlicherBedarf?: LangfristigerPlanungsursaechlicherBedarfDto;
 }
 
 
@@ -423,7 +411,6 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
         'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
-        'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfDtoFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
     };
 }
 
@@ -481,7 +468,6 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSON(value?: Abfragevariant
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
         'hinweisVersorgung': value.hinweisVersorgung,
-        'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfDtoToJSON(value.langfristigerPlanungsursaechlicherBedarf),
     };
 }
 

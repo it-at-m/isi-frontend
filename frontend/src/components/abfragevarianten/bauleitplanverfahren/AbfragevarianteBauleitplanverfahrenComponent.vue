@@ -73,9 +73,6 @@
       :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
       :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
-    <langfristiger-planungsursaechlicher-bedarf-component
-      :bedarf="abfragevariante?.langfristigerPlanungsursaechlicherBedarf"
-    />
   </v-container>
 </template>
 
@@ -95,11 +92,9 @@ import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import _ from "lodash";
-import LangfristigerPlanungsursaechlicherBedarfComponent from "@/components/abfragevarianten/calculation/LangfristigerPlanungsursaechlicherBedarfComponent.vue";
 
 @Component({
   components: {
-    LangfristigerPlanungsursaechlicherBedarfComponent,
     FieldGroupCard,
     CommonBauleitplanverfahrenComponent,
     GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent,

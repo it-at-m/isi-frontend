@@ -13,12 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { LangfristigerPlanungsursaechlicherBedarf } from './LangfristigerPlanungsursaechlicherBedarf';
-import {
-    LangfristigerPlanungsursaechlicherBedarfFromJSON,
-    LangfristigerPlanungsursaechlicherBedarfFromJSONTyped,
-    LangfristigerPlanungsursaechlicherBedarfToJSON,
-} from './LangfristigerPlanungsursaechlicherBedarf';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -274,12 +268,6 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
     hinweisVersorgung?: string;
     /**
      * 
-     * @type {LangfristigerPlanungsursaechlicherBedarf}
-     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
-     */
-    langfristigerPlanungsursaechlicherBedarf?: LangfristigerPlanungsursaechlicherBedarf;
-    /**
-     * 
      * @type {string}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
@@ -394,7 +382,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
         'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
-        'langfristigerPlanungsursaechlicherBedarf': !exists(json, 'langfristigerPlanungsursaechlicherBedarf') ? undefined : LangfristigerPlanungsursaechlicherBedarfFromJSON(json['langfristigerPlanungsursaechlicherBedarf']),
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -449,7 +436,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSON(value?: Entity
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
         'hinweisVersorgung': value.hinweisVersorgung,
-        'langfristigerPlanungsursaechlicherBedarf': LangfristigerPlanungsursaechlicherBedarfToJSON(value.langfristigerPlanungsursaechlicherBedarf),
         'artAbfragevariante': value.artAbfragevariante,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
