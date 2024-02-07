@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Wgs84Dto } from './Wgs84Dto';
+import {
+    Wgs84DtoFromJSON,
+    Wgs84DtoFromJSONTyped,
+    Wgs84DtoToJSON,
+} from './Wgs84Dto';
+
 /**
  * 
  * @export
@@ -37,6 +44,12 @@ export interface InfrastruktureinrichtungSearchResultDtoAllOf {
      * @memberof InfrastruktureinrichtungSearchResultDtoAllOf
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum;
+    /**
+     * 
+     * @type {Wgs84Dto}
+     * @memberof InfrastruktureinrichtungSearchResultDtoAllOf
+     */
+    coordinate?: Wgs84Dto;
 }
 
 
@@ -77,6 +90,7 @@ export function InfrastruktureinrichtungSearchResultDtoAllOfFromJSONTyped(json: 
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
+        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
     };
 }
 
@@ -92,6 +106,7 @@ export function InfrastruktureinrichtungSearchResultDtoAllOfToJSON(value?: Infra
         'id': value.id,
         'nameEinrichtung': value.nameEinrichtung,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
+        'coordinate': Wgs84DtoToJSON(value.coordinate),
     };
 }
 
