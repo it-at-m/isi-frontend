@@ -49,26 +49,6 @@
             </a>
           </v-list-item-title>
         </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe()"
-            >
-              Report planungsursaechliche Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten()"
-            >
-              Report planungsursaechliche Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
       </v-list>
     </v-col>
     <v-col
@@ -88,7 +68,7 @@ import _ from "lodash";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
 @Component({ components: { FieldGroupCard } })
-export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(AbfrageSecurityMixin) {
+export default class ReportsSobonursaechlichkeitComponent extends Mixins(AbfrageSecurityMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
@@ -100,7 +80,7 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
+    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
     url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
     return url.toString();
   }
@@ -113,35 +93,10 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
+    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
     url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
     url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
     return url.toString();
-  }
-
-  private getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf: string, url: URL): string {
-    const abfrageId = this.getParameterValueAbfrageId();
-    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
-    const artAbfrage = this.getParameterValueArtAbfrage();
-    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
-    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
-    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
-    url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
-    return url.toString();
-  }
-
-  private getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe() {
-    const url = new URL(this.getUrlReportSpitzenbedarfe());
-    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
-    return this.getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf, url);
-  }
-
-  private getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten() {
-    const url = new URL(this.getUrlReportSpitzenbedarfe());
-    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
-    return this.getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf, url);
   }
 
   private getUrlBedarfeKinderkrippe(): string {
@@ -165,10 +120,6 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
 
   private getUrlReportBedarfe(): string {
     return import.meta.env.VITE_REPORT_BEDARF_URL as string;
-  }
-
-  private getUrlReportSpitzenbedarfe(): string {
-    return import.meta.env.VITE_REPORT_SPTZENBEDARF_URL as string;
   }
 
   private getParameterAbfrageId(): string {
@@ -213,8 +164,8 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     return !_.isNil(this.abfragevariante.id) ? this.abfragevariante.id : "";
   }
 
-  private getParameterValuePlanungsursaechlich(): string {
-    return import.meta.env.VITE_REPORT_URSAECHLICHKEIT_PLANUNGSURSAECHLICH as string;
+  private getParameterValueSobonursaechlich(): string {
+    return import.meta.env.VITE_REPORT_URSAECHLICHKEIT_SOBONURSAECHLICH as string;
   }
 }
 </script>

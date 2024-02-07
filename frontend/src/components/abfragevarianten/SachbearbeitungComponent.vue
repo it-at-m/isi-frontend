@@ -75,6 +75,10 @@
         </v-col>
       </v-row>
       <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
+      <reports-sobonursaechlichkeit-component
+        v-if="!isBaugenehmigungsverfahren"
+        v-model="abfragevarianteSachbearbeitung"
+      />
     </field-group-card>
   </div>
 </template>
@@ -82,6 +86,7 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import {
+  AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
@@ -93,8 +98,17 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
+import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
-@Component({ components: { ReportsPlanungsursaechlichkeitComponent, FieldGroupCard, NumField } })
+@Component({
+  components: {
+    ReportsPlanungsursaechlichkeitComponent,
+    ReportsSobonursaechlichkeitComponent,
+    FieldGroupCard,
+    NumField,
+  },
+})
 export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
@@ -133,6 +147,11 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       return usedRules;
     }
     return [];
+  }
+
+  get isBaugenehmigungsverfahren(): boolean {
+    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    return abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren;
   }
 }
 </script>
