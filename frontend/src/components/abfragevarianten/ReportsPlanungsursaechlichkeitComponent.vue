@@ -55,7 +55,7 @@
               target="_blank"
               :href="getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe()"
             >
-              Report planungsursaechliche Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
+              Report planungsursächliche Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
             </a>
           </v-list-item-title>
         </v-list-item>
