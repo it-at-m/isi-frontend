@@ -23,7 +23,7 @@
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
           v-model="abfrage.bauvorhaben"
-          :disabled="!isEditable"
+          :disabled="!(isEditableByAbfrageerstellung() || isEditableBySachbearbeitung())"
           :items="bauvorhaben"
           item-text="nameVorhaben"
           item-value="id"
@@ -131,6 +131,7 @@ import {
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
+import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 
 @Component({
   components: { TriSwitch },
@@ -139,6 +140,7 @@ export default class AllgemeineInformationenBauleitplanverfahrenComponent extend
   SaveLeaveMixin,
   SearchApiRequestMixin,
   FieldValidationRulesMixin,
+  AbfrageSecurityMixin,
 ) {
   @VModel({ type: BauleitplanverfahrenModel }) abfrage!: BauleitplanverfahrenModel;
 

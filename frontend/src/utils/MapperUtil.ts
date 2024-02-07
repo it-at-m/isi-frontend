@@ -234,6 +234,7 @@ export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBauleitplanverfahren,
       ),
     verortung: bauleitplanverfahrenDto.verortung,
+    bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
   } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -253,6 +254,7 @@ export function mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
       mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
       ),
+    bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
   } as BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -272,6 +274,7 @@ export function mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
       mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
         weiteresVerfahrenDto.abfragevariantenSachbearbeitungWeiteresVerfahren,
       ),
+    bauvorhaben: weiteresVerfahrenDto.bauvorhaben,
   } as WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
 }
 
