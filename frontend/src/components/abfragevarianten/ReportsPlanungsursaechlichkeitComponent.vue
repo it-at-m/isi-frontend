@@ -119,7 +119,7 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     return url.toString();
   }
 
-  private getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf: string, url: string): string {
+  private getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf: string, url: URL): string {
     const abfrageId = this.getParameterValueAbfrageId();
     url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
     const artAbfrage = this.getParameterValueArtAbfrage();
