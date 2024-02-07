@@ -168,7 +168,7 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   }
 
   private getUrlReportSpitzenbedarfe(): string {
-    return import.meta.env.VITE_REPORT_SPTZENBEDARF_URL as string;
+    return import.meta.env.VITE_REPORT_SPITZENBEDARF_URL as string;
   }
 
   private getParameterAbfrageId(): string {
