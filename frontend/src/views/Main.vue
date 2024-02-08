@@ -28,6 +28,7 @@
     >
       <template #activator>
         <v-btn
+          id="speed_dial_create_button"
           v-model="speedDialOpen"
           color="secondary"
           dark
