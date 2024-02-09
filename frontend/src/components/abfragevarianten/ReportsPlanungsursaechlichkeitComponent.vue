@@ -1,7 +1,7 @@
 <template>
   <v-list class="text-center">
     <v-list-item>
-      <v-list-item-title class="font-weight-bold">Planungsursächlich</v-list-item-title>
+      <v-list-item-title class="font-weight-bold">Planungsursächliche Reports</v-list-item-title>
     </v-list-item>
     <v-list-item>
       <v-list-item-title>
@@ -9,7 +9,7 @@
           target="_blank"
           :href="getUrlWohneinheiten()"
         >
-          Report Wohneinheiten<span class="mdi mdi-launch" />
+          Wohneinheiten<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
@@ -19,7 +19,7 @@
           target="_blank"
           :href="getUrlBedarfeKinderkrippe()"
         >
-          Report Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
+          Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
@@ -29,7 +29,7 @@
           target="_blank"
           :href="getUrlBedarfeKindergarten()"
         >
-          Report Bedarfe Kindergarten<span class="mdi mdi-launch" />
+          Bedarfe Kindergarten<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
@@ -39,7 +39,7 @@
           target="_blank"
           :href="getUrlAlleEinwohner()"
         >
-          Report Alle Einwohner <span class="mdi mdi-launch" />
+          Alle Einwohner <span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
@@ -49,7 +49,7 @@
           target="_blank"
           :href="getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe()"
         >
-          Report planungsursaechliche Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
+          Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
@@ -59,7 +59,7 @@
           target="_blank"
           :href="getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten()"
         >
-          Report planungsursaechliche Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
+          Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>

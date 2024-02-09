@@ -3753,8 +3753,14 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3763,14 +3769,8 @@
             "description": "OK -> FoerdermixStamm wurde erfolgreich aktualisiert.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
           },
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine FoerdermixStamm mit der ID.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3786,20 +3786,14 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "400": {
             "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "409": {
+            "description": "CONFLICT -> Fördermix konnte nicht erstellt werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3807,6 +3801,12 @@
           "201": {
             "description": "CREATED -> FoerdermixStamm wurde erfolgreich erstellt.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
           }
         }
       }
@@ -3821,12 +3821,6 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "200": {
             "description": "OK -> Kommentar wurde erfolgreich aktualisiert.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
@@ -3842,6 +3836,12 @@
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
           }
         }
       },
@@ -3854,18 +3854,18 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "201": {
             "description": "CREATED -> Kommentar wurde erfolgreich erstellt.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
           },
           "400": {
             "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3896,20 +3896,8 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "400": {
             "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3929,6 +3917,18 @@
                   ]
                 }
               }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -3961,12 +3961,6 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "201": {
             "description": "CREATED -> Infrastruktureinrichtung wurde erfolgreich erstellt.",
             "content": {
@@ -3983,6 +3977,12 @@
                 }
               }
             }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
           }
         }
       }
@@ -3997,12 +3997,6 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "404": {
             "description": "NOT_FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": {
@@ -4027,6 +4021,12 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "200": {
             "description": "OK -> Bauvorhaben wurde erfolgreich aktualisiert.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
@@ -4045,20 +4045,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "404": {
             "description": "NOT_FOUND -> Die ausgewählte Abfrage existiert nicht mehr.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4067,8 +4055,20 @@
             "description": "CREATED -> Bauvorhaben wurde erfolgreich erstellt.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
           },
+          "400": {
+            "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "403": {
             "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage mit dem Bauvorhaben zu verknüpfen.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4096,8 +4096,8 @@
           }
         ],
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "409": {
+            "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4108,8 +4108,8 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Es wurde bereits eine andere Abfragevariante als relevant markiert oder die Abfrage referenziert kein Bauvorhaben.",
+          "400": {
+            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4118,14 +4118,14 @@
             "description": "OK -> Relevante Abfragevariante erfolgreich geändert.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4309,15 +4309,15 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zur bearbeitung freigestellt." },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zur bearbeitung freigestellt." },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4374,14 +4374,14 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledigt werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4517,15 +4517,15 @@
           "required": true
         },
         "responses": {
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
+          "422": {
+            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
           "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
-          "422": {
-            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4551,15 +4551,15 @@
           "required": true
         },
         "responses": {
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
+          "422": {
+            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
           "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
-          "422": {
-            "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4638,14 +4638,14 @@
             "description": "OK",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
           },
-          "400": {
-            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
+          "400": {
+            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4668,24 +4668,24 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
-          },
           "409": {
             "description": "CONFLICT -> Die Datei existiert bereits im S3-Storage unter dem Dateipfad.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "400": {
-            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
+          "200": {
+            "description": "OK",
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
+          },
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Presigned-Url konnte nicht erzeugt werden.",
+          "400": {
+            "description": "BAD REQUEST -> Der Request ist fehlerhaft.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4759,8 +4759,14 @@
               }
             }
           },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "404": {
+            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "409": {
+            "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4771,14 +4777,8 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "409": {
-            "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4809,20 +4809,8 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4843,6 +4831,18 @@
           },
           "403": {
             "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4879,20 +4879,8 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4913,6 +4901,18 @@
           },
           "403": {
             "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4949,20 +4949,8 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4979,6 +4967,18 @@
                   ]
                 }
               }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
           "404": {
@@ -5013,12 +5013,6 @@
           "required": true
         },
         "responses": {
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
             "content": {
@@ -5027,12 +5021,6 @@
           },
           "409": {
             "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5051,14 +5039,26 @@
               }
             }
           },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID oder das referenzierte Bauvorhaben existiert nicht.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5185,12 +5185,6 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "404": {
-            "description": "NOT FOUND -> Grundschule mit dieser ID nicht vorhanden.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
@@ -5207,6 +5201,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "NOT FOUND -> Grundschule mit dieser ID nicht vorhanden.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
           }
         }
       },
@@ -5218,6 +5218,7 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
+          "204": { "description": "NO CONTENT" },
           "409": {
             "description": "CONFLICT -> Die Infrastruktureinrichtung referenziert ein Bauvorhaben.",
             "content": {
@@ -5229,8 +5230,7 @@
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
-          },
-          "204": { "description": "NO CONTENT" }
+          }
         }
       }
     },
@@ -5377,18 +5377,18 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "NOT FOUND -> Es konnten keine Bauraten ermittelt werden, da keine idealtypischen Bauraten für die gegebenen Parameter existieren.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "200": {
             "description": "OK",
             "content": {
               "application/hal+json": {
                 "schema": { "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" } }
               }
-            }
-          },
-          "404": {
-            "description": "NOT FOUND -> Es konnten keine Bauraten ermittelt werden, da keine idealtypischen Bauraten für die gegebenen Parameter existieren.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -5439,12 +5439,6 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "403": {
-            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "409": {
             "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben oder die Abfrage nicht im korrekten Status ist.",
             "content": {
@@ -5454,6 +5448,12 @@
           "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "403": {
+            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5542,6 +5542,56 @@
         "type": "object",
         "properties": { "_links": { "$ref": "#/components/schemas/Links" } }
       },
+      "EntityModelVersorgungsquoteGruppenstaerke": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "gueltigAb": { "type": "string", "format": "date" },
+          "infrastruktureinrichtungTyp": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "KINDERKRIPPE",
+              "KINDERGARTEN",
+              "GS_NACHMITTAG_BETREUUNG",
+              "HAUS_FUER_KINDER",
+              "GRUNDSCHULE",
+              "MITTELSCHULE"
+            ]
+          },
+          "versorgungsquotePlanungsursaechlich": { "type": "number" },
+          "versorgungsquoteSobonUrsaechlich": { "type": "number" },
+          "gruppenstaerke": { "type": "integer", "format": "int32" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": { "type": "integer", "format": "int64" },
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int64" },
+          "number": { "type": "integer", "format": "int64" }
+        }
+      },
+      "PagedModelEntityModelVersorgungsquoteGruppenstaerke": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "versorgungsquoteGruppenstaerkes": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelVersorgungsquoteGruppenstaerke" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
       "EntityModelStaedtebaulicheOrientierungswert": {
         "type": "object",
         "properties": {
@@ -5553,15 +5603,6 @@
           "durchschnittlicheGrundflaeche": { "type": "integer", "format": "int64" },
           "belegungsdichte": { "type": "number" },
           "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PageMetadata": {
-        "type": "object",
-        "properties": {
-          "size": { "type": "integer", "format": "int64" },
-          "totalElements": { "type": "integer", "format": "int64" },
-          "totalPages": { "type": "integer", "format": "int64" },
-          "number": { "type": "integer", "format": "int64" }
         }
       },
       "PagedModelEntityModelStaedtebaulicheOrientierungswert": {
@@ -5580,6 +5621,237 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
+      "EntityModelAbfragevarianteBauleitplanverfahren": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "type": "string" },
+          "satzungsbeschluss": { "type": "string", "format": "date" },
+          "wesentlicheRechtsgrundlage": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "QUALIFIZIERTER_BEBAUUNGSPLAN",
+                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30",
+                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9",
+                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
+                "INNENBEREICH",
+                "AUSSENBEREICH",
+                "BEFREIUNG",
+                "INFO_FEHLT",
+                "FREIE_EINGABE"
+              ]
+            }
+          },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string" },
+          "realisierungVon": { "type": "integer", "format": "int32" },
+          "gfWohnenGesamt": { "type": "number" },
+          "gfWohnenSobonUrsaechlich": { "type": "number" },
+          "gfWohnenBestandswohnbaurecht": { "type": "number" },
+          "gfWohnenSonderwohnformen": { "type": "boolean" },
+          "gfWohnenStudentischesWohnen": { "type": "number" },
+          "gfWohnenSeniorinnenWohnen": { "type": "number" },
+          "gfWohnenGenossenschaftlichesWohnen": { "type": "number" },
+          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
+          "gfWohnenPlanungsursaechlich": { "type": "number" },
+          "weGesamt": { "type": "integer", "format": "int32" },
+          "weSonderwohnformen": { "type": "boolean" },
+          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
+          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
+          "weGenossenschaftlichesWohnen": { "type": "integer", "format": "int32" },
+          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
+          "sobonOrientierungswertJahr": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
+          },
+          "stammdatenGueltigAb": { "type": "string", "format": "date" },
+          "anmerkung": { "type": "string" },
+          "ausgeloesterBedarfImBaugebietBeruecksichtigenKita": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungImBplanKita": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenKita": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita": { "type": "boolean" },
+          "ausgeloesterBedarfImBaugebietBeruecksichtigenSchule": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungImBplanSchule": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
+          "hinweisVersorgung": { "type": "string" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "Foerderart": {
+        "type": "object",
+        "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
+      },
+      "Foerdermix": {
+        "type": "object",
+        "properties": {
+          "bezeichnungJahr": { "type": "string" },
+          "bezeichnung": { "type": "string" },
+          "foerderarten": { "type": "array", "items": { "$ref": "#/components/schemas/Foerderart" } }
+        }
+      },
+      "PagedModelEntityModelAbfragevarianteBauleitplanverfahren": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "abfragevarianteBauleitplanverfahrens": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelAbfragevarianteBauleitplanverfahren" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelAbfragevariante": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "type": "string" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelAbfragevariante": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "abfragevariantes": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelAbfragevariante" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelIdealtypischeBaurate": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "von": { "type": "number" },
+          "bisExklusiv": { "type": "number" },
+          "typ": { "type": "string", "enum": ["ANZAHL_WOHNEINHEITEN_GESAMT", "GESCHOSSFLAECHE_WOHNEN_GESAMT"] },
+          "jahresraten": { "type": "array", "items": { "$ref": "#/components/schemas/Jahresrate" } },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "Jahresrate": {
+        "type": "object",
+        "properties": { "jahr": { "type": "integer", "format": "int32" }, "rate": { "type": "number" } }
+      },
+      "PagedModelEntityModelIdealtypischeBaurate": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "idealtypischeBaurates": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelIdealtypischeBaurate" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelDokument": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "filePath": { "$ref": "#/components/schemas/Filepath" },
+          "artDokument": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "EMAIL",
+              "BESCHLUSS",
+              "ANLAGE",
+              "ANTRAG",
+              "KARTE",
+              "STELLUNGNAHME",
+              "DATEN_BAUVORHABEN",
+              "GEBAEUDEPLAN",
+              "BERECHNUNG",
+              "INFOS_BAUGENEHMIGUNG",
+              "PRESSEARTIKEL",
+              "INFOS_ZU_SOZ_INFRASTRUKTUR",
+              "PROTOKOLL",
+              "SONSTIGES"
+            ]
+          },
+          "sizeInBytes": { "type": "integer", "format": "int64" },
+          "typDokument": { "type": "string" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "Filepath": { "type": "object", "properties": { "pathToFile": { "type": "string" } } },
+      "PagedModelEntityModelDokument": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelDokument" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelFoerdermixStamm": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "foerdermix": { "$ref": "#/components/schemas/Foerdermix" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelFoerdermixStamm": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "foerdermixStamms": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelFoerdermixStamm" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
       "Adresse": {
         "type": "object",
         "properties": {
@@ -5589,125 +5861,6 @@
           "ort": { "type": "string" },
           "coordinate": { "$ref": "#/components/schemas/Wgs84" },
           "angabeLageErgaenzendeAdressinformation": { "type": "string" }
-        }
-      },
-      "Filepath": { "type": "object", "properties": { "pathToFile": { "type": "string" } } },
-      "Flurstueck": {
-        "type": "object",
-        "properties": {
-          "nummer": { "type": "string" },
-          "flaecheQm": { "type": "number" },
-          "zaehler": { "type": "integer", "format": "int64" },
-          "nenner": { "type": "integer", "format": "int64" },
-          "eigentumsart": { "type": "integer", "format": "int64" },
-          "eigentumsartBedeutung": { "type": "string" },
-          "gemarkungNummer": { "type": "number" },
-          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
-        }
-      },
-      "Gemarkung": {
-        "type": "object",
-        "properties": {
-          "nummer": { "type": "number" },
-          "name": { "type": "string" },
-          "flurstuecke": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Flurstueck" }
-          },
-          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
-        }
-      },
-      "MultiPolygonGeometry": {
-        "type": "object",
-        "properties": {
-          "type": { "type": "string" },
-          "coordinates": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": { "type": "array", "items": { "type": "array", "items": { "type": "number" } } }
-            }
-          }
-        }
-      },
-      "PointGeometry": {
-        "type": "object",
-        "properties": {
-          "type": { "type": "string" },
-          "coordinates": { "type": "array", "items": { "type": "number" } }
-        }
-      },
-      "Stadtbezirk": {
-        "type": "object",
-        "properties": {
-          "nummer": { "type": "string" },
-          "name": { "type": "string" },
-          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
-        }
-      },
-      "UncertainBoolean": { "type": "string", "enum": ["UNSPECIFIED", "TRUE", "FALSE"] },
-      "VerortungMultiPolygon": {
-        "type": "object",
-        "properties": {
-          "stadtbezirke": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Stadtbezirk" }
-          },
-          "gemarkungen": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Gemarkung" }
-          },
-          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
-        }
-      },
-      "VerortungPoint": {
-        "type": "object",
-        "properties": {
-          "stadtbezirke": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Stadtbezirk" }
-          },
-          "gemarkungen": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Gemarkung" }
-          },
-          "point": { "$ref": "#/components/schemas/PointGeometry" }
-        }
-      },
-      "Wgs84": {
-        "type": "object",
-        "properties": {
-          "latitude": { "type": "number", "format": "double" },
-          "longitude": { "type": "number", "format": "double" }
-        }
-      },
-      "EntityModelKommentar": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "datum": { "type": "string" },
-          "text": { "type": "string" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelKommentar": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "kommentars": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelKommentar" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
       "EntityModelBauvorhaben": {
@@ -5790,6 +5943,102 @@
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
+      "Flurstueck": {
+        "type": "object",
+        "properties": {
+          "nummer": { "type": "string" },
+          "flaecheQm": { "type": "number" },
+          "zaehler": { "type": "integer", "format": "int64" },
+          "nenner": { "type": "integer", "format": "int64" },
+          "eigentumsart": { "type": "integer", "format": "int64" },
+          "eigentumsartBedeutung": { "type": "string" },
+          "gemarkungNummer": { "type": "number" },
+          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
+        }
+      },
+      "Gemarkung": {
+        "type": "object",
+        "properties": {
+          "nummer": { "type": "number" },
+          "name": { "type": "string" },
+          "flurstuecke": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Flurstueck" }
+          },
+          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
+        }
+      },
+      "MultiPolygonGeometry": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": { "type": "array", "items": { "type": "array", "items": { "type": "number" } } }
+            }
+          }
+        }
+      },
+      "PagedModelEntityModelBauvorhaben": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "bauvorhabens": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelBauvorhaben" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "Stadtbezirk": {
+        "type": "object",
+        "properties": {
+          "nummer": { "type": "string" },
+          "name": { "type": "string" },
+          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
+        }
+      },
+      "UncertainBoolean": { "type": "string", "enum": ["UNSPECIFIED", "TRUE", "FALSE"] },
+      "VerortungMultiPolygon": {
+        "type": "object",
+        "properties": {
+          "stadtbezirke": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Stadtbezirk" }
+          },
+          "gemarkungen": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Gemarkung" }
+          },
+          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
+        }
+      },
+      "Wgs84": {
+        "type": "object",
+        "properties": {
+          "latitude": { "type": "number", "format": "double" },
+          "longitude": { "type": "number", "format": "double" }
+        }
+      },
+      "CollectionModelDokument": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
       "CollectionModelObject": {
         "type": "object",
         "properties": {
@@ -5798,6 +6047,105 @@
             "properties": { "objects": { "type": "array", "items": { "type": "object" } } }
           },
           "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "EntityModelUmlegungFoerderarten": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "bezeichnung": { "type": "string" },
+          "gueltigAb": { "type": "string", "format": "date" },
+          "umlegungsschluessel": { "$ref": "#/components/schemas/Umlegungsschluessel" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelUmlegungFoerderarten": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "umlegungFoerderartens": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelUmlegungFoerderarten" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "Umlegungsschluessel": {
+        "type": "object",
+        "properties": {
+          "foerderarten": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Foerderart" }
+          }
+        }
+      },
+      "EntityModelSobonOrientierungswertSozialeInfrastruktur": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "gueltigAb": { "type": "string", "format": "date" },
+          "einrichtungstyp": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "KINDERKRIPPE",
+              "KINDERGARTEN",
+              "GS_NACHMITTAG_BETREUUNG",
+              "HAUS_FUER_KINDER",
+              "GRUNDSCHULE",
+              "MITTELSCHULE"
+            ]
+          },
+          "altersklasse": {
+            "type": "string",
+            "enum": [
+              "NULL_ZWEI",
+              "DREI_SECHSEINHALB",
+              "SECHSEINHALB_NEUNEINHALB",
+              "ZEHNEINHALB_FUENFZEHN",
+              "SECHSZEHN_ACHTZEHN",
+              "ALLE_EWO"
+            ]
+          },
+          "foerderartBezeichnung": { "type": "string" },
+          "einwohnerJahr1NachErsterstellung": { "type": "number" },
+          "einwohnerJahr2NachErsterstellung": { "type": "number" },
+          "einwohnerJahr3NachErsterstellung": { "type": "number" },
+          "einwohnerJahr4NachErsterstellung": { "type": "number" },
+          "einwohnerJahr5NachErsterstellung": { "type": "number" },
+          "einwohnerJahr6NachErsterstellung": { "type": "number" },
+          "einwohnerJahr7NachErsterstellung": { "type": "number" },
+          "einwohnerJahr8NachErsterstellung": { "type": "number" },
+          "einwohnerJahr9NachErsterstellung": { "type": "number" },
+          "einwohnerJahr10NachErsterstellung": { "type": "number" },
+          "stammwertArbeitsgruppe": { "type": "number" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "sobonOrientierungswertSozialeInfrastrukturs": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelSobonOrientierungswertSozialeInfrastruktur" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
       "EntityModelInfrastruktureinrichtung": {
@@ -5842,52 +6190,15 @@
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "CollectionModelDokument": {
+      "PagedModelEntityModelInfrastruktureinrichtung": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "EntityModelVersorgungsquoteGruppenstaerke": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "gueltigAb": { "type": "string", "format": "date" },
-          "infrastruktureinrichtungTyp": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "KINDERKRIPPE",
-              "KINDERGARTEN",
-              "GS_NACHMITTAG_BETREUUNG",
-              "HAUS_FUER_KINDER",
-              "GRUNDSCHULE",
-              "MITTELSCHULE"
-            ]
-          },
-          "versorgungsquotePlanungsursaechlich": { "type": "number" },
-          "versorgungsquoteSobonUrsaechlich": { "type": "number" },
-          "gruppenstaerke": { "type": "integer", "format": "int32" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelVersorgungsquoteGruppenstaerke": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "versorgungsquoteGruppenstaerkes": {
+              "infrastruktureinrichtungs": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelVersorgungsquoteGruppenstaerke" }
+                "items": { "$ref": "#/components/schemas/EntityModelInfrastruktureinrichtung" }
               }
             }
           },
@@ -5895,100 +6206,71 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "Foerderart": {
-        "type": "object",
-        "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
-      },
-      "Foerdermix": {
+      "PointGeometry": {
         "type": "object",
         "properties": {
-          "bezeichnungJahr": { "type": "string" },
-          "bezeichnung": { "type": "string" },
-          "foerderarten": { "type": "array", "items": { "$ref": "#/components/schemas/Foerderart" } }
+          "type": { "type": "string" },
+          "coordinates": { "type": "array", "items": { "type": "number" } }
         }
       },
-      "EntityModelAbfragevarianteBauleitplanverfahren": {
+      "VerortungPoint": {
+        "type": "object",
+        "properties": {
+          "stadtbezirke": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Stadtbezirk" }
+          },
+          "gemarkungen": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Gemarkung" }
+          },
+          "point": { "$ref": "#/components/schemas/PointGeometry" }
+        }
+      },
+      "EntityModelAbfrage": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "abfragevariantenNr": { "type": "integer", "format": "int32" },
           "name": { "type": "string" },
-          "satzungsbeschluss": { "type": "string", "format": "date" },
-          "wesentlicheRechtsgrundlage": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "QUALIFIZIERTER_BEBAUUNGSPLAN",
-                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
-                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30",
-                "EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
-                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9",
-                "SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35",
-                "INNENBEREICH",
-                "AUSSENBEREICH",
-                "BEFREIUNG",
-                "INFO_FEHLT",
-                "FREIE_EINGABE"
-              ]
-            }
-          },
-          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string" },
-          "realisierungVon": { "type": "integer", "format": "int32" },
-          "gfWohnenGesamt": { "type": "number" },
-          "gfWohnenSobonUrsaechlich": { "type": "number" },
-          "gfWohnenBestandswohnbaurecht": { "type": "number" },
-          "gfWohnenSonderwohnformen": { "type": "boolean" },
-          "gfWohnenStudentischesWohnen": { "type": "number" },
-          "gfWohnenSeniorinnenWohnen": { "type": "number" },
-          "gfWohnenGenossenschaftlichesWohnen": { "type": "number" },
-          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfWohnenPlanungsursaechlich": { "type": "number" },
-          "weGesamt": { "type": "integer", "format": "int32" },
-          "weSonderwohnformen": { "type": "boolean" },
-          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
-          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
-          "weGenossenschaftlichesWohnen": { "type": "integer", "format": "int32" },
-          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "sobonOrientierungswertJahr": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
-          },
-          "stammdatenGueltigAb": { "type": "string", "format": "date" },
+          "statusAbfrage": { "$ref": "#/components/schemas/StatusAbfrage" },
           "anmerkung": { "type": "string" },
-          "ausgeloesterBedarfImBaugebietBeruecksichtigenKita": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungImBplanKita": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenKita": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita": { "type": "boolean" },
-          "ausgeloesterBedarfImBaugebietBeruecksichtigenSchule": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungImBplanSchule": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
-          "hinweisVersorgung": { "type": "string" },
-          "artAbfragevariante": {
+          "sub": { "type": "string" },
+          "artAbfrage": {
             "type": "string",
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "PagedModelEntityModelAbfragevarianteBauleitplanverfahren": {
+      "PagedModelEntityModelAbfrage": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "abfragevarianteBauleitplanverfahrens": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelAbfragevarianteBauleitplanverfahren" }
-              }
+              "abfrages": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelAbfrage" } }
             }
           },
           "_links": { "$ref": "#/components/schemas/Links" },
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
+      },
+      "StatusAbfrage": {
+        "type": "string",
+        "enum": [
+          "ANGELEGT",
+          "OFFEN",
+          "IN_BEARBEITUNG_SACHBEARBEITUNG",
+          "IN_BEARBEITUNG_FACHREFERATE",
+          "BEDARFSMELDUNG_ERFOLGT",
+          "ERLEDIGT_MIT_FACHREFERAT",
+          "ERLEDIGT_OHNE_FACHREFERAT",
+          "ABBRUCH"
+        ]
       },
       "EntityModelAbfragevarianteBaugenehmigungsverfahren": {
         "type": "object",
@@ -6068,6 +6350,57 @@
               "abfragevarianteBaugenehmigungsverfahrens": {
                 "type": "array",
                 "items": { "$ref": "#/components/schemas/EntityModelAbfragevarianteBaugenehmigungsverfahren" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelKommentar": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "datum": { "type": "string" },
+          "text": { "type": "string" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelKommentar": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "kommentars": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelKommentar" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelGlobalCounter": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "counterType": { "type": "string", "enum": ["NUMMER_BAUVORHABEN"] },
+          "counter": { "type": "integer", "format": "int64" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelGlobalCounter": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "globalCounters": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelGlobalCounter" }
               }
             }
           },
@@ -6156,339 +6489,6 @@
                 "type": "array",
                 "items": { "$ref": "#/components/schemas/EntityModelAbfragevarianteWeiteresVerfahren" }
               }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "PagedModelEntityModelInfrastruktureinrichtung": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "infrastruktureinrichtungs": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelInfrastruktureinrichtung" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelFoerdermixStamm": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "foerdermix": { "$ref": "#/components/schemas/Foerdermix" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelFoerdermixStamm": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "foerdermixStamms": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelFoerdermixStamm" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelAbfragevariante": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "type": "string" },
-          "artAbfragevariante": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelAbfragevariante": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "abfragevariantes": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelAbfragevariante" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "PagedModelEntityModelBauvorhaben": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "bauvorhabens": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelBauvorhaben" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelSobonOrientierungswertSozialeInfrastruktur": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "gueltigAb": { "type": "string", "format": "date" },
-          "einrichtungstyp": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "KINDERKRIPPE",
-              "KINDERGARTEN",
-              "GS_NACHMITTAG_BETREUUNG",
-              "HAUS_FUER_KINDER",
-              "GRUNDSCHULE",
-              "MITTELSCHULE"
-            ]
-          },
-          "altersklasse": {
-            "type": "string",
-            "enum": [
-              "NULL_ZWEI",
-              "DREI_SECHSEINHALB",
-              "SECHSEINHALB_NEUNEINHALB",
-              "ZEHNEINHALB_FUENFZEHN",
-              "SECHSZEHN_ACHTZEHN",
-              "ALLE_EWO"
-            ]
-          },
-          "foerderartBezeichnung": { "type": "string" },
-          "einwohnerJahr1NachErsterstellung": { "type": "number" },
-          "einwohnerJahr2NachErsterstellung": { "type": "number" },
-          "einwohnerJahr3NachErsterstellung": { "type": "number" },
-          "einwohnerJahr4NachErsterstellung": { "type": "number" },
-          "einwohnerJahr5NachErsterstellung": { "type": "number" },
-          "einwohnerJahr6NachErsterstellung": { "type": "number" },
-          "einwohnerJahr7NachErsterstellung": { "type": "number" },
-          "einwohnerJahr8NachErsterstellung": { "type": "number" },
-          "einwohnerJahr9NachErsterstellung": { "type": "number" },
-          "einwohnerJahr10NachErsterstellung": { "type": "number" },
-          "stammwertArbeitsgruppe": { "type": "number" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "sobonOrientierungswertSozialeInfrastrukturs": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelSobonOrientierungswertSozialeInfrastruktur" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelDokument": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "filePath": { "$ref": "#/components/schemas/Filepath" },
-          "artDokument": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "EMAIL",
-              "BESCHLUSS",
-              "ANLAGE",
-              "ANTRAG",
-              "KARTE",
-              "STELLUNGNAHME",
-              "DATEN_BAUVORHABEN",
-              "GEBAEUDEPLAN",
-              "BERECHNUNG",
-              "INFOS_BAUGENEHMIGUNG",
-              "PRESSEARTIKEL",
-              "INFOS_ZU_SOZ_INFRASTRUKTUR",
-              "PROTOKOLL",
-              "SONSTIGES"
-            ]
-          },
-          "sizeInBytes": { "type": "integer", "format": "int64" },
-          "typDokument": { "type": "string" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelDokument": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelDokument" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "Jahresrate": {
-        "type": "object",
-        "properties": { "jahr": { "type": "integer", "format": "int32" }, "rate": { "type": "number" } }
-      },
-      "EntityModelIdealtypischeBaurate": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "von": { "type": "number" },
-          "bisExklusiv": { "type": "number" },
-          "typ": { "type": "string", "enum": ["ANZAHL_WOHNEINHEITEN_GESAMT", "GESCHOSSFLAECHE_WOHNEN_GESAMT"] },
-          "jahresraten": { "type": "array", "items": { "$ref": "#/components/schemas/Jahresrate" } },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelIdealtypischeBaurate": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "idealtypischeBaurates": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelIdealtypischeBaurate" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelGlobalCounter": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "counterType": { "type": "string", "enum": ["NUMMER_BAUVORHABEN"] },
-          "counter": { "type": "integer", "format": "int64" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelGlobalCounter": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "globalCounters": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelGlobalCounter" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "Umlegungsschluessel": {
-        "type": "object",
-        "properties": {
-          "foerderarten": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Foerderart" }
-          }
-        }
-      },
-      "EntityModelUmlegungFoerderarten": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "bezeichnung": { "type": "string" },
-          "gueltigAb": { "type": "string", "format": "date" },
-          "umlegungsschluessel": { "$ref": "#/components/schemas/Umlegungsschluessel" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelUmlegungFoerderarten": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "umlegungFoerderartens": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelUmlegungFoerderarten" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "StatusAbfrage": {
-        "type": "string",
-        "enum": [
-          "ANGELEGT",
-          "OFFEN",
-          "IN_BEARBEITUNG_SACHBEARBEITUNG",
-          "IN_BEARBEITUNG_FACHREFERATE",
-          "BEDARFSMELDUNG_ERFOLGT",
-          "ERLEDIGT_MIT_FACHREFERAT",
-          "ERLEDIGT_OHNE_FACHREFERAT",
-          "ABBRUCH"
-        ]
-      },
-      "EntityModelAbfrage": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "name": { "type": "string" },
-          "statusAbfrage": { "$ref": "#/components/schemas/StatusAbfrage" },
-          "anmerkung": { "type": "string" },
-          "sub": { "type": "string" },
-          "artAbfrage": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelAbfrage": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "abfrages": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelAbfrage" } }
             }
           },
           "_links": { "$ref": "#/components/schemas/Links" },
@@ -7722,7 +7722,8 @@
                 ]
               },
               "createdDateTime": { "type": "string", "format": "date-time" },
-              "bauvorhaben": { "type": "string", "format": "uuid" }
+              "bauvorhaben": { "type": "string", "format": "uuid" },
+              "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" }
             }
           }
         ]
@@ -7765,7 +7766,8 @@
                   "FREIE_EINGABE",
                   "STANDORTABFRAGE"
                 ]
-              }
+              },
+              "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" }
             }
           }
         ]
@@ -7790,7 +7792,8 @@
                   "GRUNDSCHULE",
                   "MITTELSCHULE"
                 ]
-              }
+              },
+              "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" }
             }
           }
         ]
