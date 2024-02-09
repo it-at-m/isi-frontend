@@ -74,11 +74,23 @@
           />
         </v-col>
       </v-row>
-      <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
-      <reports-sobonursaechlichkeit-component
-        v-if="!isBaugenehmigungsverfahren"
-        v-model="abfragevarianteSachbearbeitung"
-      />
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <reports-sobonursaechlichkeit-component
+            v-if="!isBaugenehmigungsverfahren"
+            v-model="abfragevarianteSachbearbeitung"
+          />
+        </v-col>
+      </v-row>
     </field-group-card>
   </div>
 </template>

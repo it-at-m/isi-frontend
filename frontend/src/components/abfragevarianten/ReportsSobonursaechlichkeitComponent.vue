@@ -1,61 +1,49 @@
 <template>
-  <v-row>
-    <v-col
-      cols="12"
-      md="4"
-    />
-    <v-col
-      cols="12"
-      md="4"
-    >
-      <v-list class="text-center">
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlWohneinheiten()"
-            >
-              Report Wohneinheiten<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlBedarfeKinderkrippe()"
-            >
-              Report Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlBedarfeKindergarten()"
-            >
-              Report Bedarfe Kindergarten<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlAlleEinwohner()"
-            >
-              Report Alle Einwohner <span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-col>
-    <v-col
-      cols="12"
-      md="4"
-    />
-  </v-row>
+  <v-list class="text-center">
+    <v-list-item>
+      <v-list-item-title class="font-weight-bold">SoBoN-ursächlich</v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlWohneinheiten()"
+        >
+          Report Wohneinheiten<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlBedarfeKinderkrippe()"
+        >
+          Report Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlBedarfeKindergarten()"
+        >
+          Report Bedarfe Kindergarten<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlAlleEinwohner()"
+        >
+          Report Alle Einwohner <span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script lang="ts">
