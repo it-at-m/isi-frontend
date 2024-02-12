@@ -5,7 +5,7 @@
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
-            id="name_abfrage_field"
+            id="name_field"
             ref="nameAbfrageField"
             v-model.trim="abfrage.name"
             :disabled="!isEditable"
