@@ -31,7 +31,7 @@
           label="Anmerkungen"
           auto-grow
           rows="3"
-          maxlength="255"
+          maxlength="1000"
           @input="formChanged"
         />
       </v-col>
