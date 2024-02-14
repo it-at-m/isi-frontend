@@ -195,7 +195,7 @@
           dialogtitle="Hinweis"
           :dialogtext="relevanteAbfragevarianteDialogText"
           no-text="Abbrechen"
-          yes-text="Überschreiben"
+          :yes-text="relevanteAbfragevarianteYesButtonText"
           @no="yesNoDialogRelevanteAbfragevarianteNo"
           @yes="yesNoDialogRelevanteAbfragevarianteYes"
         />
@@ -493,6 +493,7 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBaurateOpen = false;
   private isRelevanteAbfragevarianteDialogOpen = false;
   private relevanteAbfragevarianteDialogText = "";
+  private relevanteAbfragevarianteYesButtonText = "Ok";
   private hasAnmerkung = false;
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
@@ -880,8 +881,10 @@ export default class Abfrage extends Mixins(
             "Die Abfrage ist keinem Bauvorhaben zugeordnet. Somit kann keine Abfragevariante als relevant markiert werden."
           ) {
             this.relevanteAbfragevarianteDialogText = result;
+            this.relevanteAbfragevarianteYesButtonText = "Ok";
           } else {
             this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+            this.relevanteAbfragevarianteYesButtonText = "Überschreiben";
           }
           this.isRelevanteAbfragevarianteDialogOpen = true;
         }
