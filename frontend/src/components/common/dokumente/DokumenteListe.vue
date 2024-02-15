@@ -5,8 +5,12 @@
       id="dokumente_liste"
     >
       <template v-for="(item, index) in dokumente">
-        <v-list-item :key="`dokument-${index}`">
+        <v-list-item
+          :id="'dokumente_list_item_' + index"
+          :key="`dokument-${index}`"
+        >
           <v-card
+            :id="'dokumente_card_' + index"
             :class="`my-2 pt-3 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
             flat
             width="100%"
@@ -18,7 +22,7 @@
               >
                 <v-row justify="center">
                   <v-btn
-                    :id="'dokument_listitem_download' + index"
+                    :id="'dokument_listitem_download_' + index"
                     icon
                     @click="downloadDokument(item)"
                   >
@@ -35,7 +39,10 @@
                     cols="12"
                     md="12"
                   >
-                    <v-row class="justify-start">
+                    <v-row
+                      :id="'dokument_display_name_' + index"
+                      class="justify-start"
+                    >
                       <strong>
                         {{ getDokumentDisplayName(item) }}
                       </strong>
@@ -48,7 +55,10 @@
                     cols="12"
                     md="4"
                   >
-                    <v-row class="justify-start">
+                    <v-row
+                      :id="'dokument_typ_' + index"
+                      class="justify-start"
+                    >
                       {{ item.typDokument }}
                     </v-row>
                   </v-col>
@@ -57,7 +67,10 @@
                     cols="12"
                     md="4"
                   >
-                    <v-row class="justify-center">
+                    <v-row
+                      :id="'dokument_size_' + index"
+                      class="justify-center"
+                    >
                       {{ getDokumentSizeInSIUnits(item) }}
                     </v-row>
                   </v-col>

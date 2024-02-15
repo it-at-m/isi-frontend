@@ -13,7 +13,7 @@
           md="6"
         >
           <num-field
-            id="infrastruktureinrichtung_gsNachmittagBetreuung_anzahlHortplaetzePlaetze"
+            id="infrastruktureinrichtung_gsNachmittagBetreuung_anzahlHortPlaetze"
             v-model="gsNachmittagBetreuung.anzahlHortPlaetze"
             class="mx-3"
             label="Anzahl der Hortplätze"
@@ -27,7 +27,7 @@
           md="6"
         >
           <num-field
-            id="infrastruktureinrichtung_gsNachmittagBetreuung_anzahlHortgruppen"
+            id="infrastruktureinrichtung_gsNachmittagBetreuung_anzahlHortGruppen"
             v-model="gsNachmittagBetreuung.anzahlHortGruppen"
             class="mx-3"
             label="Anzahl der Hortgruppen"
