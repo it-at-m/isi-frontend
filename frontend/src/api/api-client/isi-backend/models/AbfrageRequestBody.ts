@@ -85,6 +85,12 @@ export interface AbfrageRequestBody {
      * @type {string}
      * @memberof AbfrageRequestBody
      */
+    eakte?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageRequestBody
+     */
     artAbfrage?: AbfrageRequestBodyArtAbfrageEnum;
 }
 
@@ -129,6 +135,7 @@ export function AbfrageRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: 
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'sub': !exists(json, 'sub') ? undefined : json['sub'],
+        'eakte': !exists(json, 'eakte') ? undefined : json['eakte'],
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
     };
 }
@@ -151,6 +158,7 @@ export function AbfrageRequestBodyToJSON(value?: AbfrageRequestBody | null): any
         'anmerkung': value.anmerkung,
         'bauvorhaben': value.bauvorhaben,
         'sub': value.sub,
+        'eakte': value.eakte,
         'artAbfrage': value.artAbfrage,
     };
 }

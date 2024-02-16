@@ -74,6 +74,12 @@ export interface AbfrageAngelegtDto {
      * @memberof AbfrageAngelegtDto
      */
     bauvorhaben?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageAngelegtDto
+     */
+    eakte?: string;
 }
 
 
@@ -125,6 +131,7 @@ export function AbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'name': json['name'],
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+        'eakte': !exists(json, 'eakte') ? undefined : json['eakte'],
     };
 }
 
@@ -142,6 +149,7 @@ export function AbfrageAngelegtDtoToJSON(value?: AbfrageAngelegtDto | null): any
         'name': value.name,
         'anmerkung': value.anmerkung,
         'bauvorhaben': value.bauvorhaben,
+        'eakte': value.eakte,
     };
 }
 

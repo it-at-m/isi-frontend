@@ -47,6 +47,34 @@
         />
       </v-col>
     </v-row>
+    <v-row
+      v-if="isEakteEditable"
+      justify="center"
+    >
+      <v-col cols="12">
+        <v-textarea
+          id="e_akte_field"
+          ref="eAkteField"
+          v-model="abfrage.eakte"
+          label="eAkte"
+          auto-grow
+          rows="1"
+          maxlength="255"
+          @input="formChanged"
+        />
+      </v-col>
+    </v-row>
+    <v-row
+      v-if="!isEakteEditable"
+      justify="center"
+    >
+      <a
+        target="_blank"
+        :href="abfrage.eakte"
+      >
+        eAkte<span class="mdi mdi-launch" />
+      </a>
+    </v-row>
   </field-group-card>
 </template>
 
@@ -69,7 +97,14 @@ export default class AllgemeineInformationenBauleitplanverfahrenComponent extend
   @Prop({ type: Boolean, default: true })
   private isEditableProp!: boolean;
 
+  @Prop({ type: Boolean, default: false })
+  private isEakteEditableProp!: boolean;
+
   get isEditable(): boolean {
+    return this.isEditableProp;
+  }
+
+  get isEakteEditable(): boolean {
     return this.isEditableProp;
   }
 

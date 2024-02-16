@@ -79,6 +79,12 @@ export interface EntityModelAbfrage {
      * @type {string}
      * @memberof EntityModelAbfrage
      */
+    eakte?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntityModelAbfrage
+     */
     artAbfrage?: EntityModelAbfrageArtAbfrageEnum;
     /**
      * 
@@ -127,6 +133,7 @@ export function EntityModelAbfrageFromJSONTyped(json: any, ignoreDiscriminator: 
         'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'sub': !exists(json, 'sub') ? undefined : json['sub'],
+        'eakte': !exists(json, 'eakte') ? undefined : json['eakte'],
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -148,6 +155,7 @@ export function EntityModelAbfrageToJSON(value?: EntityModelAbfrage | null): any
         'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
         'anmerkung': value.anmerkung,
         'sub': value.sub,
+        'eakte': value.eakte,
         'artAbfrage': value.artAbfrage,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
