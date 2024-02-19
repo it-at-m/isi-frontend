@@ -34,7 +34,6 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import moment from "moment";
 import {
-  countDecimals,
   addiereAnteile,
   getBauratenFromAllTechnicalBaugebiete,
   getNonTechnicalBaugebiete,
@@ -348,7 +347,7 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(baurate.jahr) || _.isNaN(baurate.jahr)) {
       return "Jahr wurde nicht angegeben";
     }
-    if (_.isNil(baurate.foerdermix)) {
+    if (_.isEmpty(baurate.foerdermix?.foerderarten)) {
       return "Fördermix ist nicht gepflegt";
     }
     if (!_.isNil(baurate.weGeplant as number) && _.isNil(baurate.gfWohnenGeplant as number)) {
