@@ -19,53 +19,53 @@ import {
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
 } from './FeatureDtoViertelDtoGeometry';
-import type { FlurstueckDto } from './FlurstueckDto';
+import type { GrundschulsprengelDto } from './GrundschulsprengelDto';
 import {
-    FlurstueckDtoFromJSON,
-    FlurstueckDtoFromJSONTyped,
-    FlurstueckDtoToJSON,
-} from './FlurstueckDto';
+    GrundschulsprengelDtoFromJSON,
+    GrundschulsprengelDtoFromJSONTyped,
+    GrundschulsprengelDtoToJSON,
+} from './GrundschulsprengelDto';
 
 /**
  * 
  * @export
- * @interface FeatureDtoFlurstueckDto
+ * @interface FeatureDtoGrundschulsprengelDto
  */
-export interface FeatureDtoFlurstueckDto {
+export interface FeatureDtoGrundschulsprengelDto {
     /**
      * 
      * @type {string}
-     * @memberof FeatureDtoFlurstueckDto
+     * @memberof FeatureDtoGrundschulsprengelDto
      */
     type?: string;
     /**
      * 
      * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoFlurstueckDto
+     * @memberof FeatureDtoGrundschulsprengelDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {FlurstueckDto}
-     * @memberof FeatureDtoFlurstueckDto
+     * @type {GrundschulsprengelDto}
+     * @memberof FeatureDtoGrundschulsprengelDto
      */
-    properties?: FlurstueckDto;
+    properties?: GrundschulsprengelDto;
 }
 
 /**
- * Check if a given object implements the FeatureDtoFlurstueckDto interface.
+ * Check if a given object implements the FeatureDtoGrundschulsprengelDto interface.
  */
-export function instanceOfFeatureDtoFlurstueckDto(value: object): boolean {
+export function instanceOfFeatureDtoGrundschulsprengelDto(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function FeatureDtoFlurstueckDtoFromJSON(json: any): FeatureDtoFlurstueckDto {
-    return FeatureDtoFlurstueckDtoFromJSONTyped(json, false);
+export function FeatureDtoGrundschulsprengelDtoFromJSON(json: any): FeatureDtoGrundschulsprengelDto {
+    return FeatureDtoGrundschulsprengelDtoFromJSONTyped(json, false);
 }
 
-export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoFlurstueckDto {
+export function FeatureDtoGrundschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoGrundschulsprengelDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -73,11 +73,11 @@ export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'type': !exists(json, 'type') ? undefined : json['type'],
         'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': !exists(json, 'properties') ? undefined : FlurstueckDtoFromJSON(json['properties']),
+        'properties': !exists(json, 'properties') ? undefined : GrundschulsprengelDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | null): any {
+export function FeatureDtoGrundschulsprengelDtoToJSON(value?: FeatureDtoGrundschulsprengelDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -88,7 +88,7 @@ export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | 
         
         'type': value.type,
         'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
-        'properties': FlurstueckDtoToJSON(value.properties),
+        'properties': GrundschulsprengelDtoToJSON(value.properties),
     };
 }
 

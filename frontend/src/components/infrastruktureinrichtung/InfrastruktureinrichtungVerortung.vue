@@ -34,7 +34,7 @@
         v-for="(stadtbezirk, index) in stadtbezirke"
         :key="index"
       >
-        {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
+        {{ stadtbezirk.nummer + `/` + stadtbezirk.name + "infra" }}
       </v-chip>
     </v-chip-group>
   </field-group-card>

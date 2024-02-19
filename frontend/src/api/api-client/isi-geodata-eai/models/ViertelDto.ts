@@ -16,76 +16,69 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface StadtbezirkDto
+ * @interface ViertelDto
  */
-export interface StadtbezirkDto {
+export interface ViertelDto {
     /**
      * 
      * @type {number}
-     * @memberof StadtbezirkDto
+     * @memberof ViertelDto
      */
     objectId?: number;
     /**
      * 
      * @type {string}
-     * @memberof StadtbezirkDto
+     * @memberof ViertelDto
      */
-    stadtbezirkNummer?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof StadtbezirkDto
-     */
-    name?: string;
+    viertelNummer?: string;
     /**
      * 
      * @type {number}
-     * @memberof StadtbezirkDto
+     * @memberof ViertelDto
      */
     flaecheQm?: number;
     /**
      * 
      * @type {number}
-     * @memberof StadtbezirkDto
+     * @memberof ViertelDto
      */
     ycoordinate?: number;
     /**
      * 
      * @type {number}
-     * @memberof StadtbezirkDto
+     * @memberof ViertelDto
      */
     xcoordinate?: number;
 }
 
 /**
- * Check if a given object implements the StadtbezirkDto interface.
+ * Check if a given object implements the ViertelDto interface.
  */
-export function instanceOfStadtbezirkDto(value: object): boolean {
+export function instanceOfViertelDto(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function StadtbezirkDtoFromJSON(json: any): StadtbezirkDto {
-    return StadtbezirkDtoFromJSONTyped(json, false);
+export function ViertelDtoFromJSON(json: any): ViertelDto {
+    return ViertelDtoFromJSONTyped(json, false);
 }
 
-export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): StadtbezirkDto {
+export function ViertelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViertelDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
-        'stadtbezirkNummer': !exists(json, 'stadtbezirkNummer') ? undefined : json['stadtbezirkNummer'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'viertelNummer': !exists(json, 'viertelNummer') ? undefined : json['viertelNummer'],
         'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
         'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
         'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
     };
 }
 
-export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
+export function ViertelDtoToJSON(value?: ViertelDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -95,8 +88,7 @@ export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
     return {
         
         'objectId': value.objectId,
-        'stadtbezirkNummer': value.stadtbezirkNummer,
-        'name': value.name,
+        'viertelNummer': value.viertelNummer,
         'flaecheQm': value.flaecheQm,
         'ycoordinate': value.ycoordinate,
         'xcoordinate': value.xcoordinate,

@@ -12,34 +12,131 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
-    <v-label v-if="stadtbezirke.length !== 0">Stadtbezirke</v-label>
-    <v-chip-group
-      v-if="stadtbezirke.length !== 0"
-      title="Stadtbezirke"
-      active-class="primary--text"
-      column
-    >
-      <v-chip
-        v-for="(stadtbezirk, index) in stadtbezirke"
-        :key="index"
+
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
       >
-        {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
-      </v-chip>
-    </v-chip-group>
-    <v-label v-if="gemarkungen.length !== 0">Gemarkungen</v-label>
-    <v-chip-group
-      v-if="gemarkungen.length !== 0"
-      title="Gemarkungen"
-      active-class="primary--text"
-      column
-    >
-      <v-chip
-        v-for="(gemarkung, index) in gemarkungen"
-        :key="index"
+        <v-label v-if="stadtbezirke.length !== 0">Stadtbezirke</v-label>
+        <v-chip-group
+          v-if="stadtbezirke.length !== 0"
+          title="Stadtbezirke"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(stadtbezirk, index) in stadtbezirke"
+            :key="index"
+          >
+            {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
       >
-        {{ gemarkung.nummer + `/` + gemarkung.name }}
-      </v-chip>
-    </v-chip-group>
+        <v-label v-if="kitaplanungsbereiche.length !== 0">Kitaplanungsbereiche</v-label>
+        <v-chip-group
+          v-if="kitaplanungsbereiche.length !== 0"
+          title="Kitaplanungsbereiche"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(kitaplanungsbereich, index) in kitaplanungsbereiche"
+            :key="index"
+          >
+            {{ kitaplanungsbereich.kitaPlbT }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="bezirksteile.length !== 0">Bezirksteile</v-label>
+        <v-chip-group
+          v-if="bezirksteile.length !== 0"
+          title="Bezirksteile"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(bezirksteil, index) in bezirksteile"
+            :key="index"
+          >
+            {{ bezirksteil.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="grundschulsprengel.length !== 0">Grundschulsprengel</v-label>
+        <v-chip-group
+          v-if="grundschulsprengel.length !== 0"
+          title="Grundschulsprengel"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(grundschulsprengelItem, index) in grundschulsprengel"
+            :key="index"
+          >
+            {{ grundschulsprengelItem.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="gemarkungen.length !== 0">Gemarkungen</v-label>
+        <v-chip-group
+          v-if="gemarkungen.length !== 0"
+          title="Gemarkungen"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(gemarkung, index) in gemarkungen"
+            :key="index"
+          >
+            {{ gemarkung.nummer + `/` + gemarkung.name }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="mittelschulsprengel.length !== 0">Mittelschulsprengel</v-label>
+        <v-chip-group
+          v-if="mittelschulsprengel.length !== 0"
+          title="Mittelschulsprengel"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(mittelschulsprengelItem, index) in mittelschulsprengel"
+            :key="index"
+          >
+            {{ mittelschulsprengelItem.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
     <v-label v-if="flurstuecke.length !== 0">Flurstücke</v-label>
     <v-chip-group
       v-if="flurstuecke.length !== 0"
@@ -69,8 +166,12 @@ import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
+  FeatureDtoBezirksteilDto,
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
+  FeatureDtoGrundschulsprengelDto,
+  FeatureDtoKitaplanungsbereichDto,
+  FeatureDtoMittelschulsprengelDto,
   FeatureDtoStadtbezirkDto,
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoGeoDataEai,
   PointGeometryDto,
@@ -79,8 +180,12 @@ import _ from "lodash";
 import VerortungMultiPolygonModel from "@/types/model/common/VerortungMultiPolygonModel";
 import {
   AdresseDto,
+  BezirksteilDto,
   FlurstueckDto,
   GemarkungDto,
+  GrundschulsprengelDto,
+  KitaplanungsbereichDto,
+  MittelschulsprengelDto,
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoBackend,
   StadtbezirkDto,
   VerortungMultiPolygonDto,
@@ -178,6 +283,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.stadtbezirke), ["nummer"]);
   }
 
+  get bezirksteile(): Array<BezirksteilDto> {
+    return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.bezirksteile), ["nummer"]);
+  }
+
   get gemarkungen(): Array<GemarkungDto> {
     return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.gemarkungen), ["nummer"]);
   }
@@ -186,6 +295,24 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     return this.gemarkungen.flatMap((gemarkung) =>
       _.sortBy(Array.from(gemarkung.flurstuecke), ["gemarkungNummer", "zaehler", "nenner"]),
     );
+  }
+
+  get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
+    return _.isNil(this.verortungModel)
+      ? []
+      : _.sortBy(Array.from(this.verortungModel?.kitaplanungsbereiche), (k) => Number(k.kitaPlbT));
+  }
+
+  get grundschulsprengel(): Array<GrundschulsprengelDto> {
+    return _.isNil(this.verortungModel)
+      ? []
+      : _.sortBy(Array.from(this.verortungModel?.grundschulsprengel), ["nummer"]);
+  }
+
+  get mittelschulsprengel(): Array<MittelschulsprengelDto> {
+    return _.isNil(this.verortungModel)
+      ? []
+      : _.sortBy(Array.from(this.verortungModel?.mittelschulsprengel), ["nummer"]);
   }
 
   @Watch("selectedFlurstuecke", { deep: true })
@@ -296,6 +423,13 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         true,
       );
       const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
+
+      const bezirksteile: Array<FeatureDtoBezirksteilDto> = await this.getBezirksteileForMultipolygon(
+        unifiedMultipolygon,
+        true,
+      );
+      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(bezirksteile);
+
       const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
         unifiedMultipolygon,
         true,
@@ -308,10 +442,30 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         );
         matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
       });
+
+      const kitaplanungsbereiche: Array<FeatureDtoKitaplanungsbereichDto> =
+        await this.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, true);
+      const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
+        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(kitaplanungsbereiche);
+
+      const grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> =
+        await this.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, true);
+      const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
+        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(grundschulsprengel);
+
+      const mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> =
+        await this.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, true);
+      const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
+        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(mittelschulsprengel);
+
       // Erstellung des VerortungMultiPolygonDto
       return {
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
+        bezirksteile: new Set<BezirksteilDto>(bezirksteileBackend),
+        kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
+        grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
+        mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
         multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
       } as VerortungMultiPolygonDto;
     } catch (error) {
@@ -327,6 +481,17 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         nummer: stadtbezirk.properties?.stadtbezirkNummer,
         name: stadtbezirk.properties?.name,
         multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private bezirksteileGeoDataEaiToBezirksteileBackend(
+    bezirksteileGeoDataEai: Array<FeatureDtoBezirksteilDto>,
+  ): Array<BezirksteilDto> {
+    return bezirksteileGeoDataEai.map((bezirksteil) => {
+      return {
+        nummer: bezirksteil.properties?.bezirksteilNummer,
+        multiPolygon: JSON.parse(JSON.stringify(bezirksteil.geometry)) as MultiPolygonGeometryDtoBackend,
       };
     });
   }
@@ -380,6 +545,39 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
           flaecheQm: flurstueck.flaecheQm,
           nummerGemarkung: flurstueck.gemarkungNummer,
         },
+      };
+    });
+  }
+
+  private kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(
+    kitaplanungsbereicheGeoDataEai: Array<FeatureDtoKitaplanungsbereichDto>,
+  ): Array<KitaplanungsbereichDto> {
+    return kitaplanungsbereicheGeoDataEai.map((kitaplanungsbereich) => {
+      return {
+        kitaPlbT: kitaplanungsbereich.properties?.kitaPlbT,
+        multiPolygon: JSON.parse(JSON.stringify(kitaplanungsbereich.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(
+    grundschulsprengelGeoDataEai: Array<FeatureDtoGrundschulsprengelDto>,
+  ): Array<GrundschulsprengelDto> {
+    return grundschulsprengelGeoDataEai.map((grundschulsprengel) => {
+      return {
+        nummer: grundschulsprengel.properties?.schulnummer,
+        multiPolygon: JSON.parse(JSON.stringify(grundschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
+    mittelschulsprengelGeoDataEai: Array<FeatureDtoMittelschulsprengelDto>,
+  ): Array<MittelschulsprengelDto> {
+    return mittelschulsprengelGeoDataEai.map((mittelschulsprengel) => {
+      return {
+        nummer: mittelschulsprengel.properties?.schulnummer,
+        multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
       };
     });
   }

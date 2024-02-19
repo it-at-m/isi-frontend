@@ -13,12 +13,36 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BezirksteilDto } from './BezirksteilDto';
+import {
+    BezirksteilDtoFromJSON,
+    BezirksteilDtoFromJSONTyped,
+    BezirksteilDtoToJSON,
+} from './BezirksteilDto';
 import type { GemarkungDto } from './GemarkungDto';
 import {
     GemarkungDtoFromJSON,
     GemarkungDtoFromJSONTyped,
     GemarkungDtoToJSON,
 } from './GemarkungDto';
+import type { GrundschulsprengelDto } from './GrundschulsprengelDto';
+import {
+    GrundschulsprengelDtoFromJSON,
+    GrundschulsprengelDtoFromJSONTyped,
+    GrundschulsprengelDtoToJSON,
+} from './GrundschulsprengelDto';
+import type { KitaplanungsbereichDto } from './KitaplanungsbereichDto';
+import {
+    KitaplanungsbereichDtoFromJSON,
+    KitaplanungsbereichDtoFromJSONTyped,
+    KitaplanungsbereichDtoToJSON,
+} from './KitaplanungsbereichDto';
+import type { MittelschulsprengelDto } from './MittelschulsprengelDto';
+import {
+    MittelschulsprengelDtoFromJSON,
+    MittelschulsprengelDtoFromJSONTyped,
+    MittelschulsprengelDtoToJSON,
+} from './MittelschulsprengelDto';
 import type { PointGeometryDto } from './PointGeometryDto';
 import {
     PointGeometryDtoFromJSON,
@@ -46,10 +70,34 @@ export interface VerortungPointDto {
     stadtbezirke: Set<StadtbezirkDto>;
     /**
      * 
+     * @type {Set<BezirksteilDto>}
+     * @memberof VerortungPointDto
+     */
+    bezirksteile: Set<BezirksteilDto>;
+    /**
+     * 
      * @type {Set<GemarkungDto>}
      * @memberof VerortungPointDto
      */
     gemarkungen: Set<GemarkungDto>;
+    /**
+     * 
+     * @type {Set<KitaplanungsbereichDto>}
+     * @memberof VerortungPointDto
+     */
+    kitaplanungsbereiche: Set<KitaplanungsbereichDto>;
+    /**
+     * 
+     * @type {Set<GrundschulsprengelDto>}
+     * @memberof VerortungPointDto
+     */
+    grundschulsprengel: Set<GrundschulsprengelDto>;
+    /**
+     * 
+     * @type {Set<MittelschulsprengelDto>}
+     * @memberof VerortungPointDto
+     */
+    mittelschulsprengel: Set<MittelschulsprengelDto>;
     /**
      * 
      * @type {PointGeometryDto}
@@ -64,7 +112,11 @@ export interface VerortungPointDto {
 export function instanceOfVerortungPointDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "stadtbezirke" in value;
+    isInstance = isInstance && "bezirksteile" in value;
     isInstance = isInstance && "gemarkungen" in value;
+    isInstance = isInstance && "kitaplanungsbereiche" in value;
+    isInstance = isInstance && "grundschulsprengel" in value;
+    isInstance = isInstance && "mittelschulsprengel" in value;
     isInstance = isInstance && "point" in value;
 
     return isInstance;
@@ -81,7 +133,11 @@ export function VerortungPointDtoFromJSONTyped(json: any, ignoreDiscriminator: b
     return {
         
         'stadtbezirke': (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
+        'bezirksteile': (new Set((json['bezirksteile'] as Array<any>).map(BezirksteilDtoFromJSON))),
         'gemarkungen': (new Set((json['gemarkungen'] as Array<any>).map(GemarkungDtoFromJSON))),
+        'kitaplanungsbereiche': (new Set((json['kitaplanungsbereiche'] as Array<any>).map(KitaplanungsbereichDtoFromJSON))),
+        'grundschulsprengel': (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelDtoFromJSON))),
+        'mittelschulsprengel': (new Set((json['mittelschulsprengel'] as Array<any>).map(MittelschulsprengelDtoFromJSON))),
         'point': PointGeometryDtoFromJSON(json['point']),
     };
 }
@@ -96,7 +152,11 @@ export function VerortungPointDtoToJSON(value?: VerortungPointDto | null): any {
     return {
         
         'stadtbezirke': (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
+        'bezirksteile': (Array.from(value.bezirksteile as Set<any>).map(BezirksteilDtoToJSON)),
         'gemarkungen': (Array.from(value.gemarkungen as Set<any>).map(GemarkungDtoToJSON)),
+        'kitaplanungsbereiche': (Array.from(value.kitaplanungsbereiche as Set<any>).map(KitaplanungsbereichDtoToJSON)),
+        'grundschulsprengel': (Array.from(value.grundschulsprengel as Set<any>).map(GrundschulsprengelDtoToJSON)),
+        'mittelschulsprengel': (Array.from(value.mittelschulsprengel as Set<any>).map(MittelschulsprengelDtoToJSON)),
         'point': PointGeometryDtoToJSON(value.point),
     };
 }

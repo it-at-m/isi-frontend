@@ -15,6 +15,14 @@ import {
   GetFlurstueckeRequest,
   GetStadtbezirke1Request,
   GetGemarkungen1Request,
+  FeatureDtoBezirksteilDto,
+  FeatureDtoKitaplanungsbereichDto,
+  GetKitaplanungsbereicheRequest,
+  GetBezirksteileRequest,
+  FeatureDtoGrundschulsprengelDto,
+  GetGrundschulsprengelRequest,
+  FeatureDtoMittelschulsprengelDto,
+  GetMittelschulsprengelRequest,
 } from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -165,6 +173,94 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       });
 
     return stadtbezirke;
+  }
+
+  async getBezirksteileForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoBezirksteilDto>> {
+    const request: GetBezirksteileRequest = { multiPolygonGeometryDto: multiPolygon };
+    let bezirksteile: Array<FeatureDtoBezirksteilDto> = [];
+
+    await this.polygonApi
+      .getBezirksteile(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          bezirksteile = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return bezirksteile;
+  }
+
+  async getKitaplanungsbereicheForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoKitaplanungsbereichDto>> {
+    const request: GetKitaplanungsbereicheRequest = { multiPolygonGeometryDto: multiPolygon };
+    let kitaplanungsbereiche: Array<FeatureDtoKitaplanungsbereichDto> = [];
+
+    await this.polygonApi
+      .getKitaplanungsbereiche(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          kitaplanungsbereiche = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return kitaplanungsbereiche;
+  }
+
+  async getGrundschulsprengelForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoGrundschulsprengelDto>> {
+    const request: GetGrundschulsprengelRequest = { multiPolygonGeometryDto: multiPolygon };
+    let grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> = [];
+
+    await this.polygonApi
+      .getGrundschulsprengel(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          grundschulsprengel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return grundschulsprengel;
+  }
+
+  async getMittelschulsprengelForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoMittelschulsprengelDto>> {
+    const request: GetMittelschulsprengelRequest = { multiPolygonGeometryDto: multiPolygon };
+    let mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> = [];
+
+    await this.polygonApi
+      .getMittelschulsprengel(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          mittelschulsprengel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return mittelschulsprengel;
   }
 
   async getUnionOfMultipolygon(
