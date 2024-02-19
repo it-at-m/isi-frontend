@@ -40,7 +40,7 @@ describe("ValidatorMixin Test", () => {
 
     const foerdermixErrorAbove = validationMixin.findFaultInBaurate(baurate);
 
-    expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100");
+    expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100 %");
 
     let anteilPreisgedaempfterMietwohnungsbau = baurate.foerdermix.foerderarten?.find(
       (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau",
@@ -52,6 +52,6 @@ describe("ValidatorMixin Test", () => {
 
     const foerdermixErrorBelow = validationMixin.findFaultInBaurate(baurate);
 
-    expect(foerdermixErrorBelow).toBe("Fördermix Gesamtanteil ist unter 100");
+    expect(foerdermixErrorBelow).toBe("Fördermix Gesamtanteil ist unter 100 %");
   });
 });
