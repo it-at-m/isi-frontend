@@ -31,7 +31,8 @@
               v-model="bauvorhaben.standVerfahrenFreieEingabe"
               :disabled="!isEditable"
               label="freie Eingabe"
-              maxlength=""1000
+              maxlength=""
+              1000
               @input="formChanged"
             />
           </v-slide-y-reverse-transition>
