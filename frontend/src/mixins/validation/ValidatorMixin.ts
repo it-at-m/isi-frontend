@@ -287,17 +287,21 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInBaugebiet(baugebiet: BaugebietDto): string | null {
+    let validationMessage;
     if (!baugebiet.technical) {
-      const validationMessage = this.findFaultInVerteilungWohneinheitenBaugebiet(baugebiet);
+      validationMessage = this.findFaultInVerteilungWohneinheitenBaugebiet(baugebiet);
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
-      const validationMessageGF = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
-      if (!_.isNil(validationMessageGF)) {
-        return validationMessageGF;
+      validationMessage = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
       }
     }
-    return null;
+    if (_.isEmpty(baugebiet.bauraten)) {
+      return "Die Bauraten sind anzugeben.";
+    }
+    return this.findFaultInBauraten(baugebiet.bauraten);
   }
 
   public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungModel[] | undefined): string | null {
@@ -341,12 +345,6 @@ export default class ValidatorMixin extends Vue {
   }
 
   findFaultInBaurate(baurate: BaurateModel): string | null {
-    if (baurate.weGeplant?.toString() === "") {
-      baurate.weGeplant = undefined;
-    }
-    if (baurate.gfWohnenGeplant?.toString() === "") {
-      baurate.gfWohnenGeplant = undefined;
-    }
     if (_.isNil(baurate.jahr) || _.isNaN(baurate.jahr)) {
       return "Jahr wurde nicht angegeben";
     }
@@ -361,9 +359,9 @@ export default class ValidatorMixin extends Vue {
     }
     const summe = addiereAnteile(new FoerdermixModel(baurate.foerdermix));
     if (summe < 100) {
-      return "Fördermix Gesamtanteil ist unter 100";
+      return "Fördermix Gesamtanteil ist unter 100 %";
     } else if (summe > 100) {
-      return "Fördermix Gesamtanteil ist über 100";
+      return "Fördermix Gesamtanteil ist über 100 %";
     }
     return null;
   }
