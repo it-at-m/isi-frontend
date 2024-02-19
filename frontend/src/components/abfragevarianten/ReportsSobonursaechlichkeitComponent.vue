@@ -37,6 +37,26 @@
       <v-list-item-title>
         <a
           target="_blank"
+          :href="getUrlBedarfeGsNachmittagBetreuung()"
+        >
+          Bedarfe Nachmittagsbetreuung<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlBedarfeGrundschule()"
+        >
+          Bedarfe Grundschule<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
           :href="getUrlAlleEinwohner()"
         >
           Alle Einwohner <span class="mdi mdi-launch" />
@@ -94,6 +114,16 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
 
   private getUrlBedarfeKindergarten(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
+    return this.getUrlBedarfe(artBedarf);
+  }
+
+  private getUrlBedarfeGsNachmittagBetreuung(): string {
+    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_GS_NACHMITTAG_BETREUUNG as string;
+    return this.getUrlBedarfe(artBedarf);
+  }
+
+  private getUrlBedarfeGrundschule(): string {
+    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_GRUNDSCHULE as string;
     return this.getUrlBedarfe(artBedarf);
   }
 
