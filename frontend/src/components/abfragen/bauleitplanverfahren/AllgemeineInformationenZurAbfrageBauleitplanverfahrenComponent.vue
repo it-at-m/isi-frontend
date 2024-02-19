@@ -64,16 +64,20 @@
         />
       </v-col>
     </v-row>
-    <v-row
-      v-if="!isEakteEditable"
-      justify="center"
-    >
-      <a
-        target="_blank"
-        :href="abfrage.eakte"
-      >
-        eAkte<span class="mdi mdi-launch" />
-      </a>
+    <v-row v-if="!isEakteEditable">
+      <v-col cols="12">
+        <span>eAkte</span>
+      </v-col>
+    </v-row>
+    <v-row v-if="!isEakteEditable">
+      <v-col cols="12">
+        <a
+          target="_blank"
+          :href="abfrage.eakte"
+        >
+          {{ abfrage.eakte }}<span class="mdi mdi-launch" />
+        </a>
+      </v-col>
     </v-row>
   </field-group-card>
 </template>
@@ -105,7 +109,7 @@ export default class AllgemeineInformationenBauleitplanverfahrenComponent extend
   }
 
   get isEakteEditable(): boolean {
-    return this.isEditableProp;
+    return this.isEakteEditableProp;
   }
 
   private allgemeineInfoZurAbfrageCardTitle = "Allgemeine Informationen zur Abfrage";

@@ -33,6 +33,7 @@
       v-model="baugenehmigungsverfahren"
       :look-at="baugenehmigungsverfahren"
       :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
     />
     <dokumente
       id="dokumente_component"

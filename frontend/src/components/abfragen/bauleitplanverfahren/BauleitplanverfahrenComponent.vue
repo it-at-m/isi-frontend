@@ -34,7 +34,7 @@ npm
       v-model="bauleitplanverfahren"
       :look-at="bauleitplanverfahren"
       :is-editable-prop="isEditableByAbfrageerstellung()"
-      :is-e-akte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
     />
     <dokumente
       id="dokumente_component"
