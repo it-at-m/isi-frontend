@@ -170,10 +170,10 @@ export default class ValidatorMixin extends Vue {
     }
 
     if (_.isNil(abfragevarianten) || abfragevarianten.length < 1 || abfragevarianten.length > 5) {
-      return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
+      return "Die Abfrageerstellung hat mindestens eine und maximal fünf Abfragevarianten zu erstellen.";
     }
     if (_.isNil(abfragevariantenSachbearbeitung) || abfragevariantenSachbearbeitung.length > 5) {
-      return "Es können durch die Sachbearbeitung maximal fünf Abfragevarianten angegeben werden.";
+      return "Die Sachbearbeitung kann maximal fünf Abfragevarianten erstellen.";
     }
     let validationMessage = null;
     const allAbfragevarianten = _.concat(_.toArray(abfragevarianten), _.toArray(abfragevariantenSachbearbeitung));
