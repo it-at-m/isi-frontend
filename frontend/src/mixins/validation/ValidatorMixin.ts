@@ -354,16 +354,16 @@ export default class ValidatorMixin extends Vue {
 
   findFaultInBaurate(baurate: BaurateModel): string | null {
     if (_.isNil(baurate.jahr) || _.isNaN(baurate.jahr)) {
-      return "Das Jahr wurde nicht angegeben";
+      return "In einer Baurate ist kein Jahr angegeben";
     }
     if (_.isEmpty(baurate.foerdermix?.foerderarten)) {
-      return "Der Fördermix ist nicht gepflegt";
+      return `Der Fördermix ist in Baurate ${baurate.jahr} nicht angegeben`;
     }
     const summe = addiereAnteile(new FoerdermixModel(baurate.foerdermix));
     if (summe < 100) {
-      return "Fördermix Gesamtanteil ist unter 100 %";
+      return `Fördermix Gesamtanteil in Baurate ${baurate.jahr} ist unter 100 %`;
     } else if (summe > 100) {
-      return "Fördermix Gesamtanteil ist über 100 %";
+      return `Fördermix Gesamtanteil in Baurate ${baurate.jahr} ist über 100 %`;
     }
     return null;
   }
