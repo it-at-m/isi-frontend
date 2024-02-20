@@ -305,12 +305,12 @@ export default class ValidatorMixin extends Vue {
 
   public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungModel[] | undefined): string | null {
     if (!_.isNil(bedarfsmeldungen)) {
-      bedarfsmeldungen.forEach((bedarfsmeldung) => {
+      for (const bedarfsmeldung of _.toArray(bedarfsmeldungen)) {
         const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
         if (!_.isNil(validationMessage)) {
           return validationMessage;
         }
-      });
+      }
     }
     return null;
   }
@@ -334,12 +334,12 @@ export default class ValidatorMixin extends Vue {
   }
 
   findFaultInBauraten(bauraten: BaurateModel[]): string | null {
-    bauraten.forEach((baurate) => {
+    for (const baurate of _.toArray(bauraten)) {
       const validationMessage: string | null = this.findFaultInBaurate(new BaurateModel(baurate));
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
-    });
+    }
     return null;
   }
 
