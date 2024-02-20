@@ -46,7 +46,6 @@ export default class ValidatorMixin extends Vue {
   /**
    * Prüft die komplette Abfrage vor dem Speichern
    */
-
   public findFaultInAbfrageForSave(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): string | null {
@@ -69,7 +68,6 @@ export default class ValidatorMixin extends Vue {
   /**
    * Bauleitplanverfahren wird vor dem Speichern komplett geprüft
    */
-
   public findFaultInBauleitplanverfahrenForSave(abfrage: BauleitplanverfahrenModel): string | null {
     if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
       return "Bitte angeben ob die Abfrage SoBoN-relevant ist";
@@ -86,7 +84,6 @@ export default class ValidatorMixin extends Vue {
   /**
    * Baugenehmigungsverfahren wird vor dem Speichern komplett geprüft
    */
-
   public findFaultInBaugenehmigungsverfahrenForSave(abfrage: BaugenehmigungsverfahrenModel): string | null {
     return this.findFaultInAbfrage(abfrage);
   }
@@ -94,7 +91,6 @@ export default class ValidatorMixin extends Vue {
   /**
    * Weiteres Verfahren wird vor dem Speichern komplett geprüft
    */
-
   public findFaultInWeiteresVerfahrenForSave(abfrage: WeiteresVerfahrenModel): string | null {
     if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
       return "Bitte angeben ob die Abfrage SoBoN-relevant ist";
