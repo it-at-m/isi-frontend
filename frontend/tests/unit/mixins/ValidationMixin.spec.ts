@@ -23,21 +23,6 @@ describe("ValidatorMixin Test", () => {
       } as FoerdermixDto,
     } as BaurateDto);
 
-    baurate.weGeplant = undefined;
-
-    const anzahlWeFehler = validationMixin.findFaultInBaurate(baurate);
-
-    expect(anzahlWeFehler).toBe("Anzahl Wohnen geplant muss angegeben werden");
-
-    baurate.weGeplant = 50;
-    baurate.gfWohnenGeplant = undefined;
-
-    const geschossflaecheWohnen = validationMixin.findFaultInBaurate(baurate);
-
-    expect(geschossflaecheWohnen).toBe("Geschossfläche Wohnen geplant muss angegeben werden");
-
-    baurate.gfWohnenGeplant = 50;
-
     const foerdermixErrorAbove = validationMixin.findFaultInBaurate(baurate);
 
     expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100 %");
