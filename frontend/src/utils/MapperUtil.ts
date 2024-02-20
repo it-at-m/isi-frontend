@@ -84,7 +84,7 @@ export function mapToBauleitplanverfahrenAngelegt(
     artAbfrage: bauleitplanverfahrenDto.artAbfrage,
     name: bauleitplanverfahrenDto.name,
     anmerkung: bauleitplanverfahrenDto.anmerkung,
-    eakte: bauleitplanverfahrenDto.eakte,
+    linkEakte: bauleitplanverfahrenDto.linkEakte,
     bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
     // BauleitplanverfahrenAngelegtDto
     bebauungsplannummer: bauleitplanverfahrenDto.bebauungsplannummer,
@@ -145,7 +145,7 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
     artAbfrage: baugenehmigungsverfahrenDto.artAbfrage,
     name: baugenehmigungsverfahrenDto.name,
     anmerkung: baugenehmigungsverfahrenDto.anmerkung,
-    eakte: baugenehmigungsverfahrenDto.eakte,
+    linkEakte: baugenehmigungsverfahrenDto.linkEakte,
     bauvorhaben: baugenehmigungsverfahrenDto.bauvorhaben,
     // BaugenehmigungsverfahrenAngelegtDto
     aktenzeichenProLbk: baugenehmigungsverfahrenDto.aktenzeichenProLbk,
@@ -203,7 +203,7 @@ export function mapToWeiteresVerfahrenAngelegt(
     artAbfrage: weiteresVerfahrenDto.artAbfrage,
     name: weiteresVerfahrenDto.name,
     anmerkung: weiteresVerfahrenDto.anmerkung,
-    eakte: weiteresVerfahrenDto.eakte,
+    linkEakte: weiteresVerfahrenDto.linkEakte,
     bauvorhaben: weiteresVerfahrenDto.bauvorhaben,
     // WeiteresVerfahrenAngelegtDto
     aktenzeichenProLbk: weiteresVerfahrenDto.aktenzeichenProLbk,
@@ -238,7 +238,7 @@ export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
       ),
     verortung: bauleitplanverfahrenDto.verortung,
     bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
-    eakte: bauleitplanverfahrenDto.eakte,
+    linkEakte: bauleitplanverfahrenDto.linkEakte,
   } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -259,7 +259,7 @@ export function mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
       ),
     bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
-    eakte: bauleitplanverfahrenDto.eakte,
+    linkEakte: bauleitplanverfahrenDto.linkEakte,
   } as BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -280,7 +280,7 @@ export function mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
         weiteresVerfahrenDto.abfragevariantenSachbearbeitungWeiteresVerfahren,
       ),
     bauvorhaben: weiteresVerfahrenDto.bauvorhaben,
-    eakte: weiteresVerfahrenDto.eakte,
+    linkEakte: weiteresVerfahrenDto.linkEakte,
   } as WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
 }
 

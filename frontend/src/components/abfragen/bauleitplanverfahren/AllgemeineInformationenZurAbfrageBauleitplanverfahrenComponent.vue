@@ -55,7 +55,7 @@
         <v-textarea
           id="e_akte_field"
           ref="eAkteField"
-          v-model="abfrage.eakte"
+          v-model="abfrage.linkEakte"
           label="eAkte"
           auto-grow
           rows="1"
@@ -73,9 +73,9 @@
       <v-col cols="12">
         <a
           target="_blank"
-          :href="abfrage.eakte"
+          :href="abfrage.linkEakte"
         >
-          {{ abfrage.eakte }}<span class="mdi mdi-launch" />
+          {{ abfrage.linkEakte }}<span class="mdi mdi-launch" />
         </a>
       </v-col>
     </v-row>
