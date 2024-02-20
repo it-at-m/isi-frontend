@@ -23,6 +23,7 @@ import {
   KinderkrippeDto,
   MittelschuleDto,
   UncertainBoolean,
+  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -197,7 +198,7 @@ export default class ValidatorMixin extends Vue {
           break;
       }
       if (!_.isNil(abfragevariante)) {
-        validationMessage = this.findFaultInAbfragevariante(abfragevariante);
+        validationMessage = this.findFaultInAbfragevariante(abfrage, abfragevariante);
         if (!_.isNil(validationMessage)) {
           break;
         }
@@ -207,6 +208,7 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInAbfragevariante(
+    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
     abfragevariante:
       | AbfragevarianteBauleitplanverfahrenModel
       | AbfragevarianteBaugenehmigungsverfahrenModel
@@ -229,6 +231,14 @@ export default class ValidatorMixin extends Vue {
       this.findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(abfragevariante);
     if (!_.isNil(messageFaultVerteilungGeschossflaecheWohnen)) {
       return messageFaultVerteilungGeschossflaecheWohnen;
+    }
+    if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
+      if (_.isNil(abfragevariante.sobonOrientierungswertJahr)) {
+        return "Bitte das Jahr für die SoBoN-Orientierungwerte angeben";
+      }
+      if (_.isNil(abfragevariante.stammdatenGueltigAb)) {
+        return "Bitte das Datum zur Auswahl eines gültigen Stammdatums wählen";
+      }
     }
     const messageFaultBauschnitte = this.findFaultInBauabschnitte(abfragevariante);
     if (!_.isNil(messageFaultBauschnitte)) {
