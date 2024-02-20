@@ -234,10 +234,10 @@ export default class ValidatorMixin extends Vue {
     }
     if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
       if (_.isNil(abfragevariante.sobonOrientierungswertJahr)) {
-        return "Bitte das Jahr für die SoBoN-Orientierungwerte angeben";
+        return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
       }
       if (_.isNil(abfragevariante.stammdatenGueltigAb)) {
-        return "Bitte das Datum zur Auswahl eines gültigen Stammdatums wählen";
+        return "Bitte für die für die Bedarfsberechnung die Gültigkeit des Stammdatums angeben";
       }
     }
     const messageFaultBauschnitte = this.findFaultInBauabschnitte(abfragevariante);
