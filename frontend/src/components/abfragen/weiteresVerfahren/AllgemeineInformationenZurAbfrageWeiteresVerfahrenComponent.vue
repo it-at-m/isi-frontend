@@ -56,7 +56,7 @@
           id="e_akte_field"
           ref="eAkteField"
           v-model="abfrage.linkEakte"
-          label="eakte"
+          label="eAkte"
           auto-grow
           rows="1"
           maxlength="255"
