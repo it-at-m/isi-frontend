@@ -72,13 +72,13 @@ export default class ValidatorMixin extends Vue {
 
   public findFaultInBauleitplanverfahrenForSave(abfrage: BauleitplanverfahrenModel): string | null {
     if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
-      return "Bitte geben Sie an ob die Abfrage SoBoN-relevant ist";
+      return "Bitte angeben ob die Abfrage SoBoN-relevant ist";
     }
     if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
-      return "Bitte treffen Sie eine Auswahl bei 'Offizielle Mitzeichnung'";
+      return "Bitte eine Auswahl bei 'Offizielle Mitzeichnung' treffen";
     }
     if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
-      return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
+      return "Die Abfrage ist SoBoN-relevant. Bitte das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN wählen.";
     }
     return this.findFaultInAbfrage(abfrage);
   }
@@ -97,13 +97,13 @@ export default class ValidatorMixin extends Vue {
 
   public findFaultInWeiteresVerfahrenForSave(abfrage: WeiteresVerfahrenModel): string | null {
     if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
-      return "Bitte geben Sie an ob die Abfrage SoBoN-relevant ist";
+      return "Bitte angeben ob die Abfrage SoBoN-relevant ist";
     }
     if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
-      return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
+      return "Die Abfrage ist SoBoN-relevant. Bitte das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN auswählen.";
     }
     if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
-      return "Bitte treffen Sie eine Auswahl bei 'Offizielle Mitzeichnung'";
+      return "Bitte eine Auswahl bei 'Offizielle Mitzeichnung' treffen";
     }
     return this.findFaultInAbfrage(abfrage);
   }
@@ -217,13 +217,13 @@ export default class ValidatorMixin extends Vue {
       | AbfragevarianteWeiteresVerfahrenModel,
   ): string | null {
     if (_.isNil(abfragevariante.name)) {
-      return "Bitte geben Sie einen Namen für die Abfragevariante an.";
+      return "Bitte einen Namen für die Abfragevariante angeben.";
     }
     if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
-      return `Bitte geben Sie das 'Realisierung von' Datum an`;
+      return `Bitte das Datum für 'Realisierung von' angeben`;
     }
     if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
-      return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
+      return `Bitte die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' angeben`;
     }
     const messageFaultVerteilungWohneinheiten = this.findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante);
     if (!_.isNil(messageFaultVerteilungWohneinheiten)) {
@@ -317,10 +317,10 @@ export default class ValidatorMixin extends Vue {
 
   public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): string | null {
     if (_.isNil(bedarfsmeldung.anzahlEinrichtungen)) {
-      return `Bitte geben Sie die Anzahl der Einrichtungen an`;
+      return `Bitte die Anzahl der Einrichtungen angeben`;
     }
     if (bedarfsmeldung.infrastruktureinrichtungTyp === BedarfsmeldungDtoInfrastruktureinrichtungTypEnum.Unspecified) {
-      return `Bitte geben Sie den Typ der Infrastruktureinrichtung an`;
+      return `Bitte den Typ der Infrastruktureinrichtung angeben`;
     }
     if (
       _.isNil(bedarfsmeldung.anzahlKinderkrippengruppen) &&
@@ -328,7 +328,7 @@ export default class ValidatorMixin extends Vue {
       _.isNil(bedarfsmeldung.anzahlHortgruppen) &&
       _.isNil(bedarfsmeldung.anzahlGrundschulzuege)
     ) {
-      return `Bitte geben Sie den Bedarf an`;
+      return `Bitte den Bedarf angeben`;
     }
     return null;
   }
@@ -375,7 +375,7 @@ export default class ValidatorMixin extends Vue {
       return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
     if (bauvorhaben.artFnp.length === 0) {
-      return "Bitte treffen Sie eine Auswahl zur Flächennutzung laut Flächennutzungsplan";
+      return "Bitte eine Auswahl zur Flächennutzung laut Flächennutzungsplan treffen";
     }
 
     if (bauvorhaben.standVerfahren === BauvorhabenDtoStandVerfahrenEnum.Unspecified) {
