@@ -271,6 +271,9 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInBaugebiete(bauabschnitt: BauabschnittDto): string | null {
+    if (_.isEmpty(bauabschnitt.baugebiete)) {
+      return "Die Baugebiete sind anzugeben.";
+    }
     let validationMessage: string | null = null;
     for (const baugebiet of _.toArray(bauabschnitt.baugebiete)) {
       validationMessage = this.findFaultInBaugebiet(baugebiet);
@@ -341,16 +344,10 @@ export default class ValidatorMixin extends Vue {
 
   findFaultInBaurate(baurate: BaurateModel): string | null {
     if (_.isNil(baurate.jahr) || _.isNaN(baurate.jahr)) {
-      return "Jahr wurde nicht angegeben";
+      return "Das Jahr wurde nicht angegeben";
     }
     if (_.isEmpty(baurate.foerdermix?.foerderarten)) {
-      return "Fördermix ist nicht gepflegt";
-    }
-    if (!_.isNil(baurate.weGeplant as number) && _.isNil(baurate.gfWohnenGeplant as number)) {
-      return "Geschossfläche Wohnen geplant muss angegeben werden";
-    }
-    if (_.isNil(baurate.weGeplant as number) && !_.isNil(baurate.gfWohnenGeplant as number)) {
-      return "Anzahl Wohnen geplant muss angegeben werden";
+      return "Der Fördermix ist nicht gepflegt";
     }
     const summe = addiereAnteile(new FoerdermixModel(baurate.foerdermix));
     if (summe < 100) {
