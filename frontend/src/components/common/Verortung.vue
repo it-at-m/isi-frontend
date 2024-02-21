@@ -562,6 +562,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   ): Array<KitaplanungsbereichDto> {
     return kitaplanungsbereicheGeoDataEai.map((kitaplanungsbereich) => {
       return {
+        kitaPlb: kitaplanungsbereich.properties?.kitaPlb,
         kitaPlbT: kitaplanungsbereich.properties?.kitaPlbT,
         multiPolygon: JSON.parse(JSON.stringify(kitaplanungsbereich.geometry)) as MultiPolygonGeometryDtoBackend,
       };
