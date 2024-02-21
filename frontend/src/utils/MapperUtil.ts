@@ -388,7 +388,6 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
