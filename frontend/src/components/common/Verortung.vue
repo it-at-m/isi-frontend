@@ -13,8 +13,9 @@
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
 
-    <v-row justify="center">
+    <v-row class="justify-center">
       <v-col
+        class="pb-0"
         cols="12"
         md="6"
       >
@@ -34,6 +35,7 @@
         </v-chip-group>
       </v-col>
       <v-col
+        class="pb-0"
         cols="12"
         md="6"
       >
@@ -54,8 +56,9 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center">
+    <v-row class="justify-center">
       <v-col
+        class="pb-0"
         cols="12"
         md="6"
       >
@@ -76,6 +79,7 @@
       </v-col>
 
       <v-col
+        class="pb-0"
         cols="12"
         md="6"
       >
@@ -96,8 +100,9 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center">
+    <v-row class="justify-center">
       <v-col
+        class="pb-0"
         cols="12"
         md="6"
       >
@@ -118,6 +123,7 @@
       </v-col>
 
       <v-col
+        class="pb-0"
         cols="12"
         md="6"
       >
@@ -137,25 +143,32 @@
         </v-chip-group>
       </v-col>
     </v-row>
-    <v-label v-if="flurstuecke.length !== 0">Flurstücke</v-label>
-    <v-chip-group
-      v-if="flurstuecke.length !== 0"
-      title="Flurstücke"
-      active-class="primary--text"
-      column
-    >
-      <v-chip
-        v-for="(flurstueck, index) in flurstuecke"
-        :key="index"
+    <v-row class="justify-center">
+      <v-col
+        cols="12"
+        md="12"
       >
-        <div v-if="flurstueck.eigentumsart">
-          {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/städtisch` }}
-        </div>
-        <div v-else>
-          {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/nicht städtisch` }}
-        </div>
-      </v-chip>
-    </v-chip-group>
+        <v-label v-if="flurstuecke.length !== 0">Flurstücke</v-label>
+        <v-chip-group
+          v-if="flurstuecke.length !== 0"
+          title="Flurstücke"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(flurstueck, index) in flurstuecke"
+            :key="index"
+          >
+            <div v-if="flurstueck.eigentumsart">
+              {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/städtisch` }}
+            </div>
+            <div v-else>
+              {{ flurstueck.gemarkungNummer + `/` + flurstueck.zaehler + `/` + flurstueck.nenner + `/nicht städtisch` }}
+            </div>
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
   </field-group-card>
 </template>
 
