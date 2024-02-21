@@ -56,10 +56,18 @@ import {
   Wgs84Dto,
   UtmDto,
   VerortungPointDto,
+  BezirksteilDto,
+  KitaplanungsbereichDto,
+  GrundschulsprengelDto,
+  MittelschulsprengelDto,
 } from "@/api/api-client/isi-backend";
 import {
+  FeatureDtoBezirksteilDto,
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
+  FeatureDtoGrundschulsprengelDto,
+  FeatureDtoKitaplanungsbereichDto,
+  FeatureDtoMittelschulsprengelDto,
   FeatureDtoStadtbezirkDto,
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
@@ -305,6 +313,11 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       // Stadtbezirke ermitteln
       const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForPoint(point, true);
       const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
+
+      // Stadtbezirksteile ermitteln
+      const bezirksteile: Array<FeatureDtoBezirksteilDto> = await this.getBezirksteileForPoint(point, true);
+      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(bezirksteile);
+
       // Gemarkungen ermitteln
       const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForPoint(point, true);
       const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
@@ -320,10 +333,39 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         );
         matchingGemarkung?.flurstuecke.add(flurstueck);
       });
+
+      // KitaPlb ermitteln
+      const kitaplanungsbereiche: Array<FeatureDtoKitaplanungsbereichDto> = await this.getKitaplanungsbereicheForPoint(
+        point,
+        true,
+      );
+      const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
+        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(kitaplanungsbereiche);
+
+      // Grundschulsprengel ermitteln
+      const grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> = await this.getGrundschulsprengelForPoint(
+        point,
+        true,
+      );
+      const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
+        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(grundschulsprengel);
+
+      // Mittelschulsprengel ermitteln
+      const mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> = await this.getMittelschulsprengelForPoint(
+        point,
+        true,
+      );
+      const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
+        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(mittelschulsprengel);
+
       // Erstellung des VerortungPointDto
       return new VerortungPointModel({
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
+        bezirksteile: new Set<BezirksteilDto>(bezirksteileBackend),
+        kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
+        grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
+        mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
         point: point,
       } as VerortungPointDto);
     } catch (error) {
@@ -338,6 +380,17 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         nummer: stadtbezirk.properties?.stadtbezirkNummer,
         name: stadtbezirk.properties?.name,
         multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private bezirksteileGeoDataEaiToBezirksteileBackend(
+    bezirksteileGeoDataEai: Array<FeatureDtoBezirksteilDto>,
+  ): Array<BezirksteilDto> {
+    return bezirksteileGeoDataEai.map((bezirksteil) => {
+      return {
+        nummer: bezirksteil.properties?.bezirksteilNummer,
+        multiPolygon: JSON.parse(JSON.stringify(bezirksteil.geometry)) as MultiPolygonGeometryDtoBackend,
       };
     });
   }
@@ -375,6 +428,40 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
       multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
     };
+  }
+
+  private kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(
+    kitaplanungsbereicheGeoDataEai: Array<FeatureDtoKitaplanungsbereichDto>,
+  ): Array<KitaplanungsbereichDto> {
+    return kitaplanungsbereicheGeoDataEai.map((kitaplanungsbereich) => {
+      return {
+        kitaPlb: kitaplanungsbereich.properties?.kitaPlb,
+        kitaPlbT: kitaplanungsbereich.properties?.kitaPlbT,
+        multiPolygon: JSON.parse(JSON.stringify(kitaplanungsbereich.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(
+    grundschulsprengelGeoDataEai: Array<FeatureDtoGrundschulsprengelDto>,
+  ): Array<GrundschulsprengelDto> {
+    return grundschulsprengelGeoDataEai.map((grundschulsprengel) => {
+      return {
+        nummer: grundschulsprengel.properties?.schulnummer,
+        multiPolygon: JSON.parse(JSON.stringify(grundschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
+    mittelschulsprengelGeoDataEai: Array<FeatureDtoMittelschulsprengelDto>,
+  ): Array<MittelschulsprengelDto> {
+    return mittelschulsprengelGeoDataEai.map((mittelschulsprengel) => {
+      return {
+        nummer: mittelschulsprengel.properties?.schulnummer,
+        multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
   }
 }
 </script>

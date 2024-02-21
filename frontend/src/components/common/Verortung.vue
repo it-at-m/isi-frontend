@@ -418,23 +418,28 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     const multipolygon = this.createMultiPolygonGeometryFromSelectedFlurstuecke();
     try {
       const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
+
+      // Stadtbezirke ermitteln
       const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForMultipolygon(
         unifiedMultipolygon,
         true,
       );
       const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
 
+      // Stadtbezirksteile ermitteln
       const bezirksteile: Array<FeatureDtoBezirksteilDto> = await this.getBezirksteileForMultipolygon(
         unifiedMultipolygon,
         true,
       );
       const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(bezirksteile);
 
+      // Gemarkungen ermitteln
       const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
         unifiedMultipolygon,
         true,
       );
       const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+
       // Anfügen der Flurstücke an Gemarkung
       this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
         const matchingGemarkung = gemarkungenBackend.find(
@@ -443,16 +448,19 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         matchingGemarkung?.flurstuecke.add(selectedFlurstueck);
       });
 
+      // KitaPlb ermitteln
       const kitaplanungsbereiche: Array<FeatureDtoKitaplanungsbereichDto> =
         await this.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, true);
       const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
         this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(kitaplanungsbereiche);
 
+      // Grundschulsprengel ermitteln
       const grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> =
         await this.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, true);
       const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
         this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(grundschulsprengel);
 
+      // Mittelschulsprengel ermitteln
       const mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> =
         await this.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, true);
       const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =

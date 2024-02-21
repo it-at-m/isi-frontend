@@ -3,18 +3,10 @@
   "info": {
     "title": "ISI GEODATA EAI",
     "description": "ISI GEODATA EAI - Service zum Abfragen von Geoinformationen",
-    "contact": {
-      "name": "ISI Management",
-      "email": "unbekannt@muenchen.de"
-    },
+    "contact": { "name": "ISI Management", "email": "unbekannt@muenchen.de" },
     "version": "1.1.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:8085",
-      "description": "Generated server url"
-    }
-  ],
+  "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [
     {
       "name": "Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)",
@@ -36,34 +28,18 @@
         "summary": "Holt die Viertel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getViertel",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Viertel erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" } }
             }
           }
         }
@@ -75,34 +51,18 @@
         "summary": "Holt die Stadtbezirke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getStadtbezirke",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
           }
         }
@@ -114,34 +74,18 @@
         "summary": "Holt die Schulstandorte die sich mit dem Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getSchulstandorte",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Schulstandorte erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoSchulstandortDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoSchulstandortDto" } }
             }
           }
         }
@@ -153,33 +97,19 @@
         "summary": "Holt die Mittelschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getMittelschulsprengel",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Mittelschulsprengel erfolgreich abgefragt.",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto" }
               }
             }
           }
@@ -192,33 +122,19 @@
         "summary": "Holt die Kitaplanungsbereiche die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getKitaplanungsbereiche",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto" }
               }
             }
           }
@@ -231,33 +147,19 @@
         "summary": "Holt die Grundschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getGrundschulsprengel",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Grundschulsprengel erfolgreich abgefragt.",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto" }
               }
             }
           }
@@ -270,34 +172,18 @@
         "summary": "Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getGemarkungen",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
           }
         }
@@ -309,34 +195,18 @@
         "summary": "Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getFlurstuecke",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
           }
         }
@@ -348,34 +218,18 @@
         "summary": "Holt die Bezirksteile die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getBezirksteile",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Bezirksteile erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto" } }
             }
           }
         }
@@ -387,34 +241,18 @@
         "summary": "Holt die Viertel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getViertel_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Viertel erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" } }
             }
           }
         }
@@ -426,34 +264,18 @@
         "summary": "Holt die Stadtbezirke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getStadtbezirke_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
           }
         }
@@ -463,35 +285,21 @@
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
         "summary": "Holt die Mittelschulsprengel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
-        "operationId": "getMittelsprengel",
+        "operationId": "getMittelschulsprengel_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Mittelschulsprengel erfolgreich abgefragt.",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto" }
               }
             }
           }
@@ -504,33 +312,19 @@
         "summary": "Holt die Kitaplanungsbereiche die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getKitaplanungsbereiche_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto" }
               }
             }
           }
@@ -543,33 +337,19 @@
         "summary": "Holt die Grundschulsprengel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getGrundschulsprengel_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Grundschulsprengel erfolgreich abgefragt.",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto" }
               }
             }
           }
@@ -582,34 +362,18 @@
         "summary": "Holt die Gemarkungen die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getGemarkungen_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
           }
         }
@@ -621,34 +385,18 @@
         "summary": "Holt die Flurstücke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getFlurstuecke_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
           }
         }
@@ -660,34 +408,18 @@
         "summary": "Holt die Bezirksteile die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
         "operationId": "getBezirksteile_1",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "200": {
             "description": "Bezirksteile erfolgreich abgefragt.",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto" } }
             }
           }
         }
@@ -699,35 +431,17 @@
         "summary": "Ermittelt die Vereinigung der Polygone für Multipolygon (im Standard EPSG:4326 (WGS84)).",
         "operationId": "unify",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              }
-            }
-          },
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
           "required": true
         },
         "responses": {
           "500": {
             "description": "Bei der Erstellung oder Durchführung der Logik ist ein Fehler aufgetreten.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/InformationResponseDto"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "200": {
             "description": "Multipolygon erfolgreich vereinigt.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } }
           }
         }
       }
@@ -740,9 +454,7 @@
         "type": "object",
         "description": "Die GEOJSON-Repräsentation des Multipolygons.",
         "allOf": [
-          {
-            "$ref": "#/components/schemas/GeometryDto"
-          },
+          { "$ref": "#/components/schemas/GeometryDto" },
           {
             "type": "object",
             "properties": {
@@ -773,68 +485,33 @@
       "InformationResponseDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"]
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "traceId": {
-            "type": "string"
-          },
-          "spanId": {
-            "type": "string"
-          },
-          "httpStatus": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "originalException": {
-            "type": "string"
-          },
-          "messages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
+          "type": { "type": "string", "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "traceId": { "type": "string" },
+          "spanId": { "type": "string" },
+          "httpStatus": { "type": "integer", "format": "int32" },
+          "originalException": { "type": "string" },
+          "messages": { "type": "array", "items": { "type": "string" } }
         }
       },
       "FeatureCollectionDtoFeatureDtoViertelDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoViertelDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoViertelDto" } }
         }
       },
       "FeatureDtoViertelDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/ViertelDto"
-          }
+          "properties": { "$ref": "#/components/schemas/ViertelDto" }
         }
       },
       "GeometryDto": {
@@ -860,9 +537,7 @@
         "type": "object",
         "description": "Die GEOJSON-Repräsentation einer Punktkoordinate.",
         "allOf": [
-          {
-            "$ref": "#/components/schemas/GeometryDto"
-          },
+          { "$ref": "#/components/schemas/GeometryDto" },
           {
             "type": "object",
             "properties": {
@@ -883,578 +558,282 @@
       "ViertelDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "viertelNummer": {
-            "type": "string"
-          },
-          "flaecheQm": {
-            "type": "number"
-          },
-          "ycoordinate": {
-            "type": "number"
-          },
-          "xcoordinate": {
-            "type": "number"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "viertelNummer": { "type": "string" },
+          "flaecheQm": { "type": "number" },
+          "xcoordinate": { "type": "number" },
+          "ycoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoStadtbezirkDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoStadtbezirkDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoStadtbezirkDto" } }
         }
       },
       "FeatureDtoStadtbezirkDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/StadtbezirkDto"
-          }
+          "properties": { "$ref": "#/components/schemas/StadtbezirkDto" }
         }
       },
       "StadtbezirkDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "stadtbezirkNummer": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "flaecheQm": {
-            "type": "number"
-          },
-          "ycoordinate": {
-            "type": "number"
-          },
-          "xcoordinate": {
-            "type": "number"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "stadtbezirkNummer": { "type": "string" },
+          "name": { "type": "string" },
+          "flaecheQm": { "type": "number" },
+          "xcoordinate": { "type": "number" },
+          "ycoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoSchulstandortDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoSchulstandortDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoSchulstandortDto" } }
         }
       },
       "FeatureDtoSchulstandortDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/SchulstandortDto"
-          }
+          "properties": { "$ref": "#/components/schemas/SchulstandortDto" }
         }
       },
       "SchulstandortDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "kreisschl": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "kreis": {
-            "type": "string"
-          },
-          "schulnummer": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "schulname": {
-            "type": "string"
-          },
-          "linkSchule": {
-            "type": "string"
-          },
-          "verbundname": {
-            "type": "string"
-          },
-          "verbundnummer": {
-            "type": "string"
-          },
-          "schulamt": {
-            "type": "string"
-          },
-          "rabl": {
-            "type": "string"
-          },
-          "linkRabl": {
-            "type": "string"
-          },
-          "schulart": {
-            "type": "string"
-          },
-          "postleitzahl": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "strasse": {
-            "type": "string"
-          },
-          "internetadresse": {
-            "type": "string"
-          },
-          "ebene": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "winkel": {
-            "type": "number"
-          },
-          "bedeutungEbene": {
-            "type": "string"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "kreisschl": { "type": "integer", "format": "int64" },
+          "kreis": { "type": "string" },
+          "schulnummer": { "type": "integer", "format": "int64" },
+          "schulname": { "type": "string" },
+          "linkSchule": { "type": "string" },
+          "verbundname": { "type": "string" },
+          "verbundnummer": { "type": "string" },
+          "schulamt": { "type": "string" },
+          "rabl": { "type": "string" },
+          "linkRabl": { "type": "string" },
+          "schulart": { "type": "string" },
+          "postleitzahl": { "type": "integer", "format": "int64" },
+          "strasse": { "type": "string" },
+          "internetadresse": { "type": "string" },
+          "ebene": { "type": "integer", "format": "int64" },
+          "winkel": { "type": "number" },
+          "bedeutungEbene": { "type": "string" }
         }
       },
       "FeatureCollectionDtoFeatureDtoMittelschulsprengelDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoMittelschulsprengelDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoMittelschulsprengelDto" } }
         }
       },
       "FeatureDtoMittelschulsprengelDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/MittelschulsprengelDto"
-          }
+          "properties": { "$ref": "#/components/schemas/MittelschulsprengelDto" }
         }
       },
       "MittelschulsprengelDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "ebene": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "flaecheQm": {
-            "type": "number"
-          },
-          "schulnummer": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "verbundnummer": {
-            "type": "string"
-          },
-          "verbundname": {
-            "type": "string"
-          },
-          "ebeneBedeutung": {
-            "type": "string"
-          },
-          "ycoordinate": {
-            "type": "number"
-          },
-          "xcoordinate": {
-            "type": "number"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "ebene": { "type": "integer", "format": "int64" },
+          "flaecheQm": { "type": "number" },
+          "schulnummer": { "type": "integer", "format": "int64" },
+          "verbundnummer": { "type": "string" },
+          "verbundname": { "type": "string" },
+          "ebeneBedeutung": { "type": "string" },
+          "xcoordinate": { "type": "number" },
+          "ycoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoKitaplanungsbereichDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoKitaplanungsbereichDto" } }
         }
       },
       "FeatureDtoKitaplanungsbereichDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/KitaplanungsbereichDto"
-          }
+          "properties": { "$ref": "#/components/schemas/KitaplanungsbereichDto" }
         }
       },
       "KitaplanungsbereichDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "kitaPlb": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "kitaPlbT": {
-            "type": "string"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "kitaPlb": { "type": "integer", "format": "int64" },
+          "kitaPlbT": { "type": "string" }
         }
       },
       "FeatureCollectionDtoFeatureDtoGrundschulsprengelDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoGrundschulsprengelDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoGrundschulsprengelDto" } }
         }
       },
       "FeatureDtoGrundschulsprengelDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/GrundschulsprengelDto"
-          }
+          "properties": { "$ref": "#/components/schemas/GrundschulsprengelDto" }
         }
       },
       "GrundschulsprengelDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "ebene": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "flaecheQm": {
-            "type": "number"
-          },
-          "schulnummer": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "verbundnummer": {
-            "type": "string"
-          },
-          "verbundname": {
-            "type": "string"
-          },
-          "ebeneBedeutung": {
-            "type": "string"
-          },
-          "ycoordinate": {
-            "type": "number"
-          },
-          "xcoordinate": {
-            "type": "number"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "ebene": { "type": "integer", "format": "int64" },
+          "flaecheQm": { "type": "number" },
+          "schulnummer": { "type": "integer", "format": "int64" },
+          "verbundnummer": { "type": "string" },
+          "verbundname": { "type": "string" },
+          "ebeneBedeutung": { "type": "string" },
+          "xcoordinate": { "type": "number" },
+          "ycoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoGemarkungDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoGemarkungDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoGemarkungDto" } }
         }
       },
       "FeatureDtoGemarkungDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/GemarkungDto"
-          }
+          "properties": { "$ref": "#/components/schemas/GemarkungDto" }
         }
       },
       "GemarkungDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "oid1": {
-            "type": "string"
-          },
-          "gemarkung": {
-            "type": "number"
-          },
-          "gemarkungName": {
-            "type": "string"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "oid1": { "type": "string" },
+          "gemarkung": { "type": "number" },
+          "gemarkungName": { "type": "string" }
         }
       },
       "FeatureCollectionDtoFeatureDtoFlurstueckDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoFlurstueckDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoFlurstueckDto" } }
         }
       },
       "FeatureDtoFlurstueckDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/FlurstueckDto"
-          }
+          "properties": { "$ref": "#/components/schemas/FlurstueckDto" }
         }
       },
       "FlurstueckDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "oid1": {
-            "type": "string"
-          },
-          "gemarkung": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "fluerstueckNummerZ": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "fluerstueckNummerN": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "afl": {
-            "type": "number"
-          },
-          "lage": {
-            "type": "string"
-          },
-          "gemeinde": {
-            "type": "number"
-          },
-          "objektart": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "nutzungsart": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "eigentumsart": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "flaecheQm": {
-            "type": "number"
-          },
-          "gemarkungName": {
-            "type": "string"
-          },
-          "flurstueckId": {
-            "type": "number"
-          },
-          "eigentumsartBedeutung": {
-            "type": "string"
-          },
-          "gemeindeBedeutung": {
-            "type": "string"
-          },
-          "nutzungsartBedeutung": {
-            "type": "string"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "oid1": { "type": "string" },
+          "gemarkung": { "type": "integer", "format": "int64" },
+          "fluerstueckNummerZ": { "type": "integer", "format": "int64" },
+          "fluerstueckNummerN": { "type": "integer", "format": "int64" },
+          "afl": { "type": "number" },
+          "lage": { "type": "string" },
+          "gemeinde": { "type": "number" },
+          "objektart": { "type": "integer", "format": "int64" },
+          "nutzungsart": { "type": "integer", "format": "int64" },
+          "eigentumsart": { "type": "integer", "format": "int64" },
+          "flaecheQm": { "type": "number" },
+          "gemarkungName": { "type": "string" },
+          "flurstueckId": { "type": "number" },
+          "eigentumsartBedeutung": { "type": "string" },
+          "gemeindeBedeutung": { "type": "string" },
+          "nutzungsartBedeutung": { "type": "string" }
         }
       },
       "BezirksteilDto": {
         "type": "object",
         "properties": {
-          "objectId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "bezirksteilNummer": {
-            "type": "string"
-          },
-          "flaecheQm": {
-            "type": "number"
-          },
-          "ycoordinate": {
-            "type": "number"
-          },
-          "xcoordinate": {
-            "type": "number"
-          }
+          "objectId": { "type": "integer", "format": "int64" },
+          "bezirksteilNummer": { "type": "string" },
+          "flaecheQm": { "type": "number" },
+          "xcoordinate": { "type": "number" },
+          "ycoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoBezirksteilDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureDtoBezirksteilDto"
-            }
-          }
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoBezirksteilDto" } }
         }
       },
       "FeatureDtoBezirksteilDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
+          "type": { "type": "string" },
           "geometry": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/MultiPolygonGeometryDto"
-              },
-              {
-                "$ref": "#/components/schemas/PointGeometryDto"
-              }
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
             ]
           },
-          "properties": {
-            "$ref": "#/components/schemas/BezirksteilDto"
-          }
+          "properties": { "$ref": "#/components/schemas/BezirksteilDto" }
         }
       }
     }

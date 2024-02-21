@@ -48,13 +48,13 @@ export interface StadtbezirkDto {
      * @type {number}
      * @memberof StadtbezirkDto
      */
-    ycoordinate?: number;
+    xcoordinate?: number;
     /**
      * 
      * @type {number}
      * @memberof StadtbezirkDto
      */
-    xcoordinate?: number;
+    ycoordinate?: number;
 }
 
 /**
@@ -80,8 +80,8 @@ export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'stadtbezirkNummer': !exists(json, 'stadtbezirkNummer') ? undefined : json['stadtbezirkNummer'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
-        'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
         'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
+        'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
     };
 }
 
@@ -98,8 +98,8 @@ export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
         'stadtbezirkNummer': value.stadtbezirkNummer,
         'name': value.name,
         'flaecheQm': value.flaecheQm,
-        'ycoordinate': value.ycoordinate,
         'xcoordinate': value.xcoordinate,
+        'ycoordinate': value.ycoordinate,
     };
 }
 

@@ -69,7 +69,7 @@ export interface GetKitaplanungsbereiche1Request {
     pointGeometryDto: PointGeometryDto;
 }
 
-export interface GetMittelsprengelRequest {
+export interface GetMittelschulsprengel1Request {
     pointGeometryDto: PointGeometryDto;
 }
 
@@ -254,9 +254,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     /**
      * Holt die Mittelschulsprengel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
-    async getMittelsprengelRaw(requestParameters: GetMittelsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto>> {
+    async getMittelschulsprengel1Raw(requestParameters: GetMittelschulsprengel1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto>> {
         if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getMittelsprengel.');
+            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getMittelschulsprengel1.');
         }
 
         const queryParameters: any = {};
@@ -279,8 +279,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     /**
      * Holt die Mittelschulsprengel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
-    async getMittelsprengel(requestParameters: GetMittelsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto> {
-        const response = await this.getMittelsprengelRaw(requestParameters, initOverrides);
+    async getMittelschulsprengel1(requestParameters: GetMittelschulsprengel1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto> {
+        const response = await this.getMittelschulsprengel1Raw(requestParameters, initOverrides);
         return await response.value();
     }
 
