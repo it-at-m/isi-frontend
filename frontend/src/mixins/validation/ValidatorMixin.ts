@@ -281,7 +281,7 @@ export default class ValidatorMixin extends Vue {
 
   public findFaultInBauabschnitt(bauabschnitt: BauabschnittDto): string | null {
     if (_.isEmpty(bauabschnitt.bezeichnung) && !bauabschnitt.technical) {
-      return "Die Bezeichnung des Bauabschnitts anzugeben.";
+      return "Die Bezeichnung des Bauabschnitts ist anzugeben.";
     }
     return this.findFaultInBaugebiete(bauabschnitt);
   }
@@ -303,6 +303,12 @@ export default class ValidatorMixin extends Vue {
   public findFaultInBaugebiet(baugebiet: BaugebietDto): string | null {
     let validationMessage;
     if (!baugebiet.technical) {
+      if (_.isEmpty(baugebiet.bezeichnung)) {
+        return "Die Bezeichnung des Baugebiets ist anzugeben.";
+      }
+      if (_.isNil(baugebiet.realisierungVon)) {
+        return "Das Jahr für die Realisierung von ist im Baugebiet anzugeben.";
+      }
       validationMessage = this.findFaultInVerteilungWohneinheitenBaugebiet(baugebiet);
       if (!_.isNil(validationMessage)) {
         return validationMessage;
