@@ -215,7 +215,7 @@ export default class ValidatorMixin extends Vue {
       | AbfragevarianteBaugenehmigungsverfahrenModel
       | AbfragevarianteWeiteresVerfahrenModel,
   ): string | null {
-    if (_.isNil(abfragevariante.name)) {
+    if (_.isEmpty(abfragevariante.name)) {
       return "Bitte einen Namen für die Abfragevariante angeben.";
     }
     if (_.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)) {
