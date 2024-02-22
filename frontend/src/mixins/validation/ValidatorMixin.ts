@@ -313,7 +313,7 @@ export default class ValidatorMixin extends Vue {
       ) {
         return "Die Art der baulichen Nutzung ist anzugeben.";
       }
-      if (_.isNil(baugebiet.realisierungVon)) {
+      if (_.isNil(baugebiet.realisierungVon) || _.isNaN(baugebiet.realisierungVon)) {
         return "Das Jahr für die Realisierung von ist im Baugebiet anzugeben.";
       }
       validationMessage = this.findFaultInVerteilungWohneinheitenBaugebiet(baugebiet);
