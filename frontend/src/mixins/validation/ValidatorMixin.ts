@@ -217,6 +217,9 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(abfragevariante.name)) {
       return "Bitte einen Namen für die Abfragevariante angeben.";
     }
+    if (_.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)) {
+      return "Bitte die wesentliche Rechtsgrundlage angeben";
+    }
     if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
       return `Bitte das Datum für 'Realisierung von' angeben`;
     }
