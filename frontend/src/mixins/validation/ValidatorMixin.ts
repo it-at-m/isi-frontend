@@ -109,6 +109,9 @@ export default class ValidatorMixin extends Vue {
   private findFaultInAbfrage(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): string | null {
+    if (_.isEmpty(abfrage.name)) {
+      return "Der Name der Abfrage ist anzugeben.";
+    }
     if (
       !this.isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse?.angabeLageErgaenzendeAdressinformation) &&
       !this.isValidAdresse(abfrage.adresse)
