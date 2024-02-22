@@ -63,6 +63,26 @@
         </a>
       </v-list-item-title>
     </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlSobonSpitzenbedarfeKinderkrippe()"
+        >
+          SoBoN-ursächlicher Spitzenbedarf Kinderkrippe<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlSobonSpitzenbedarfeKindergarten()"
+        >
+          SoBoN-ursächlicher Spitzenbedarf Kinderkrippe<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
   </v-list>
 </template>
 
@@ -107,6 +127,20 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     return url.toString();
   }
 
+  getUrlSoBonSpitzenbedarfe(artBedarf: string): string {
+    const url = new URL(this.getUrlReportSoBonSpitzenbedarfe());
+    const abfrageId = this.getParameterValueAbfrageId();
+    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
+    const artAbfrage = this.getParameterValueArtAbfrage();
+    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
+    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
+    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
+    return url.toString();
+  }
+
   private getUrlBedarfeKinderkrippe(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
     return this.getUrlBedarfe(artBedarf);
@@ -132,12 +166,26 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     return this.getUrlBedarfe(artBedarf);
   }
 
+  private getUrlSobonSpitzenbedarfeKinderkrippe(): string {
+    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
+    return this.getUrlSoBonSpitzenbedarfe(artBedarf);
+  }
+
+  private getUrlSobonSpitzenbedarfeKindergarten(): string {
+    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
+    return this.getUrlSoBonSpitzenbedarfe(artBedarf);
+  }
+
   private getUrlReportWohneinheiten(): string {
     return import.meta.env.VITE_REPORT_WOHNEINHEITEN_URL as string;
   }
 
   private getUrlReportBedarfe(): string {
     return import.meta.env.VITE_REPORT_BEDARF_URL as string;
+  }
+
+  private getUrlReportSoBonSpitzenbedarfe(): string {
+    return import.meta.env.VITE_REPORT_SOBON_SPITZENBEDARFE_URL as string;
   }
 
   private getParameterAbfrageId(): string {
