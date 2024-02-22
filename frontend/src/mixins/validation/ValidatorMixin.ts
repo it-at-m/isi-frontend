@@ -24,6 +24,7 @@ import {
   MittelschuleDto,
   UncertainBoolean,
   StatusAbfrage,
+  BaugebietDtoArtBaulicheNutzungEnum,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -305,6 +306,12 @@ export default class ValidatorMixin extends Vue {
     if (!baugebiet.technical) {
       if (_.isEmpty(baugebiet.bezeichnung)) {
         return "Die Bezeichnung des Baugebiets ist anzugeben.";
+      }
+      if (
+        _.isEmpty(baugebiet.artBaulicheNutzung) ||
+        baugebiet.artBaulicheNutzung === BaugebietDtoArtBaulicheNutzungEnum.Unspecified
+      ) {
+        return "Die Art der baulichen Nutzung ist anzugeben.";
       }
       if (_.isNil(baugebiet.realisierungVon)) {
         return "Das Jahr für die Realisierung von ist im Baugebiet anzugeben.";
