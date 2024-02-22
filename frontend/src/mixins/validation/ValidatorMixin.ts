@@ -280,6 +280,9 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInBauabschnitt(bauabschnitt: BauabschnittDto): string | null {
+    if (_.isEmpty(bauabschnitt.bezeichnung) && !bauabschnitt.technical) {
+      return "Die Bezeichnung des Bauabschnitts anzugeben.";
+    }
     return this.findFaultInBaugebiete(bauabschnitt);
   }
 
