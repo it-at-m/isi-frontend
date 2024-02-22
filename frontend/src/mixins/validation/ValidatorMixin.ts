@@ -308,7 +308,7 @@ export default class ValidatorMixin extends Vue {
         return "Die Bezeichnung des Baugebiets ist anzugeben.";
       }
       if (
-        _.isEmpty(baugebiet.artBaulicheNutzung) ||
+        _.isNil(baugebiet.artBaulicheNutzung) ||
         baugebiet.artBaulicheNutzung === BaugebietDtoArtBaulicheNutzungEnum.Unspecified
       ) {
         return "Die Art der baulichen Nutzung ist anzugeben.";
