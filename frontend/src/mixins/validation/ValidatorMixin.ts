@@ -25,6 +25,7 @@ import {
   UncertainBoolean,
   StatusAbfrage,
   BaugebietDtoArtBaulicheNutzungEnum,
+  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -240,7 +241,11 @@ export default class ValidatorMixin extends Vue {
       return messageFaultVerteilungGeschossflaecheWohnen;
     }
     if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
-      if (_.isNil(abfragevariante.sobonOrientierungswertJahr)) {
+      if (
+        _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
+        abfragevariante.sobonOrientierungswertJahr ===
+          AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
+      ) {
         return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
       }
       if (_.isNil(abfragevariante.stammdatenGueltigAb)) {
