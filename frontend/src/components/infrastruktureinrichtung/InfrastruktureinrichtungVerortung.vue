@@ -23,20 +23,136 @@
         <div>{{ pointToDisplay }}</div>
       </v-chip>
     </v-chip-group>
-    <v-label v-if="stadtbezirke.length !== 0">Stadtbezirk</v-label>
-    <v-chip-group
-      v-if="stadtbezirke.length !== 0"
-      title="Stadtbezirke"
-      active-class="primary--text"
-      column
-    >
-      <v-chip
-        v-for="(stadtbezirk, index) in stadtbezirke"
-        :key="index"
+    <v-row class="justify-center">
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
       >
-        {{ stadtbezirk.nummer + `/` + stadtbezirk.name + "infra" }}
-      </v-chip>
-    </v-chip-group>
+        <v-label v-if="stadtbezirke.length !== 0">Stadtbezirk</v-label>
+        <v-chip-group
+          v-if="stadtbezirke.length !== 0"
+          title="Stadtbezirke"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(stadtbezirk, index) in stadtbezirke"
+            :key="index"
+          >
+            {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="kitaplanungsbereiche.length !== 0">Kitaplanungsbereich</v-label>
+        <v-chip-group
+          v-if="kitaplanungsbereiche.length !== 0"
+          title="Kitaplanungsbereiche"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(kitaplanungsbereich, index) in kitaplanungsbereiche"
+            :key="index"
+          >
+            {{ kitaplanungsbereich.kitaPlbT }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-center">
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="bezirksteile.length !== 0">Bezirksteil</v-label>
+        <v-chip-group
+          v-if="bezirksteile.length !== 0"
+          title="Bezirksteile"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(bezirksteil, index) in bezirksteile"
+            :key="index"
+          >
+            {{ bezirksteil.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="grundschulsprengel.length !== 0">Grundschulsprengel</v-label>
+        <v-chip-group
+          v-if="grundschulsprengel.length !== 0"
+          title="Grundschulsprengel"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(grundschulsprengelItem, index) in grundschulsprengel"
+            :key="index"
+          >
+            {{ grundschulsprengelItem.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-center">
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="gemarkungen.length !== 0">Gemarkung</v-label>
+        <v-chip-group
+          v-if="gemarkungen.length !== 0"
+          title="Gemarkungen"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(gemarkung, index) in gemarkungen"
+            :key="index"
+          >
+            {{ gemarkung.nummer + `/` + gemarkung.name }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="mittelschulsprengel.length !== 0">Mittelschulsprengel</v-label>
+        <v-chip-group
+          v-if="mittelschulsprengel.length !== 0"
+          title="Mittelschulsprengel"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(mittelschulsprengelItem, index) in mittelschulsprengel"
+            :key="index"
+          >
+            {{ mittelschulsprengelItem.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
   </field-group-card>
 </template>
 
@@ -161,6 +277,38 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
 
   get stadtbezirke(): Array<StadtbezirkDto> {
     return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.stadtbezirke), ["nummer"]);
+  }
+
+  get bezirksteile(): Array<BezirksteilDto> {
+    return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.bezirksteile), ["nummer"]);
+  }
+
+  get gemarkungen(): Array<GemarkungDto> {
+    return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.gemarkungen), ["nummer"]);
+  }
+
+  get flurstuecke(): Array<FlurstueckDto> {
+    return this.gemarkungen.flatMap((gemarkung) =>
+      _.sortBy(Array.from(gemarkung.flurstuecke), ["gemarkungNummer", "zaehler", "nenner"]),
+    );
+  }
+
+  get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
+    return _.isNil(this.verortungModel)
+      ? []
+      : _.sortBy(Array.from(this.verortungModel?.kitaplanungsbereiche), (k) => Number(k.kitaPlbT));
+  }
+
+  get grundschulsprengel(): Array<GrundschulsprengelDto> {
+    return _.isNil(this.verortungModel)
+      ? []
+      : _.sortBy(Array.from(this.verortungModel?.grundschulsprengel), ["nummer"]);
+  }
+
+  get mittelschulsprengel(): Array<MittelschulsprengelDto> {
+    return _.isNil(this.verortungModel)
+      ? []
+      : _.sortBy(Array.from(this.verortungModel?.mittelschulsprengel), ["nummer"]);
   }
 
   get lookAt(): LatLngLiteral | undefined {
