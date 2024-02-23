@@ -31,7 +31,7 @@ export interface Viertel {
      * @type {string}
      * @memberof Viertel
      */
-    viertelNummer?: string;
+    nummer?: string;
     /**
      * 
      * @type {number}
@@ -44,18 +44,6 @@ export interface Viertel {
      * @memberof Viertel
      */
     multiPolygon?: MultiPolygonGeometry;
-    /**
-     * 
-     * @type {number}
-     * @memberof Viertel
-     */
-    ycoordinate?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Viertel
-     */
-    xcoordinate?: number;
 }
 
 /**
@@ -77,11 +65,9 @@ export function ViertelFromJSONTyped(json: any, ignoreDiscriminator: boolean): V
     }
     return {
         
-        'viertelNummer': !exists(json, 'viertelNummer') ? undefined : json['viertelNummer'],
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
         'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
         'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
-        'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
-        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
     };
 }
 
@@ -94,11 +80,9 @@ export function ViertelToJSON(value?: Viertel | null): any {
     }
     return {
         
-        'viertelNummer': value.viertelNummer,
+        'nummer': value.nummer,
         'flaecheQm': value.flaecheQm,
         'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
-        'ycoordinate': value.ycoordinate,
-        'xcoordinate': value.xcoordinate,
     };
 }
 
