@@ -275,7 +275,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     const point = this.getPointGeometry();
     if (!_.isNil(point)) {
       this.getUtm32(point).then((utm32) => {
-        this.pointToDisplay = !_.isNil(utm32) ? `${utm32.zone} ${utm32.north} ${utm32.east}` : "";
+        this.pointToDisplay = !_.isNil(utm32) ? `${_.round(utm32.east)} ${_.round(utm32.north)} (UTM)` : "";
       });
     } else {
       this.pointToDisplay = "";
