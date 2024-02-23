@@ -39,12 +39,6 @@ export interface AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSac
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
-     */
-    gfWohnenPlanungsursaechlich?: number;
-    /**
-     * 
      * @type {string}
      * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
@@ -112,7 +106,6 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
-        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -131,7 +124,6 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'id': value.id,
         'version': value.version,
         'artAbfragevariante': value.artAbfragevariante,
-        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,

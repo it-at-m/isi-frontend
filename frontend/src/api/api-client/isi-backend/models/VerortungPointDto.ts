@@ -55,6 +55,12 @@ import {
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
+import type { ViertelDto } from './ViertelDto';
+import {
+    ViertelDtoFromJSON,
+    ViertelDtoFromJSONTyped,
+    ViertelDtoToJSON,
+} from './ViertelDto';
 
 /**
  * 
@@ -74,6 +80,12 @@ export interface VerortungPointDto {
      * @memberof VerortungPointDto
      */
     bezirksteile: Set<BezirksteilDto>;
+    /**
+     * 
+     * @type {Set<ViertelDto>}
+     * @memberof VerortungPointDto
+     */
+    viertel: Set<ViertelDto>;
     /**
      * 
      * @type {Set<GemarkungDto>}
@@ -113,6 +125,7 @@ export function instanceOfVerortungPointDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "stadtbezirke" in value;
     isInstance = isInstance && "bezirksteile" in value;
+    isInstance = isInstance && "viertel" in value;
     isInstance = isInstance && "gemarkungen" in value;
     isInstance = isInstance && "kitaplanungsbereiche" in value;
     isInstance = isInstance && "grundschulsprengel" in value;
@@ -134,6 +147,7 @@ export function VerortungPointDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'stadtbezirke': (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'bezirksteile': (new Set((json['bezirksteile'] as Array<any>).map(BezirksteilDtoFromJSON))),
+        'viertel': (new Set((json['viertel'] as Array<any>).map(ViertelDtoFromJSON))),
         'gemarkungen': (new Set((json['gemarkungen'] as Array<any>).map(GemarkungDtoFromJSON))),
         'kitaplanungsbereiche': (new Set((json['kitaplanungsbereiche'] as Array<any>).map(KitaplanungsbereichDtoFromJSON))),
         'grundschulsprengel': (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelDtoFromJSON))),
@@ -153,6 +167,7 @@ export function VerortungPointDtoToJSON(value?: VerortungPointDto | null): any {
         
         'stadtbezirke': (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'bezirksteile': (Array.from(value.bezirksteile as Set<any>).map(BezirksteilDtoToJSON)),
+        'viertel': (Array.from(value.viertel as Set<any>).map(ViertelDtoToJSON)),
         'gemarkungen': (Array.from(value.gemarkungen as Set<any>).map(GemarkungDtoToJSON)),
         'kitaplanungsbereiche': (Array.from(value.kitaplanungsbereiche as Set<any>).map(KitaplanungsbereichDtoToJSON)),
         'grundschulsprengel': (Array.from(value.grundschulsprengel as Set<any>).map(GrundschulsprengelDtoToJSON)),

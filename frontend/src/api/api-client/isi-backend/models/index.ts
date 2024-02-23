@@ -201,6 +201,8 @@ export * from './VerortungMultiPolygonDto';
 export * from './VerortungPoint';
 export * from './VerortungPointDto';
 export * from './VersorgungsquoteGruppenstaerkeRequestBody';
+export * from './Viertel';
+export * from './ViertelDto';
 export * from './WeiteresVerfahrenAngelegtDto';
 export * from './WeiteresVerfahrenAngelegtDtoAllOf';
 export * from './WeiteresVerfahrenBedarfsmeldungErfolgtDto';
