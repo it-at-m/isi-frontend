@@ -369,7 +369,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
         bezirksteile: new Set<BezirksteilDto>(bezirksteileBackend),
-        viertel: new Set<ViertelDto>(),
+        viertel: new Set<ViertelDto>(viertelBackend),
         kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
         grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
         mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
