@@ -186,6 +186,7 @@ import {
   FeatureDtoKitaplanungsbereichDto,
   FeatureDtoMittelschulsprengelDto,
   FeatureDtoStadtbezirkDto,
+  FeatureDtoViertelDto,
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoGeoDataEai,
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
@@ -202,6 +203,7 @@ import {
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoBackend,
   StadtbezirkDto,
   VerortungMultiPolygonDto,
+  ViertelDto,
 } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
@@ -446,6 +448,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       );
       const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(bezirksteile);
 
+      // Viertel ermitteln
+      const viertel: Array<FeatureDtoViertelDto> = await this.getViertelForMultipolygon(unifiedMultipolygon, true);
+      const viertelBackend: Array<ViertelDto> = this.viertelGeoDataEaiToViertelBackend(viertel);
+
       // Gemarkungen ermitteln
       const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
         unifiedMultipolygon,
@@ -484,6 +490,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
         bezirksteile: new Set<BezirksteilDto>(bezirksteileBackend),
+        viertel: new Set<ViertelDto>(viertelBackend),
         kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
         grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
         mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
@@ -513,6 +520,16 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       return {
         nummer: bezirksteil.properties?.bezirksteilNummer,
         multiPolygon: JSON.parse(JSON.stringify(bezirksteil.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private viertelGeoDataEaiToViertelBackend(bezirksteileGeoDataEai: Array<FeatureDtoViertelDto>): Array<ViertelDto> {
+    return bezirksteileGeoDataEai.map((viertel) => {
+      return {
+        nummer: viertel.properties?.viertelNummer,
+        flaecheQm: viertel.properties?.flaecheQm,
+        multiPolygon: JSON.parse(JSON.stringify(viertel.geometry)) as MultiPolygonGeometryDtoBackend,
       };
     });
   }

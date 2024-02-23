@@ -26,8 +26,10 @@ import {
   GetBezirksteile1Request,
   GetKitaplanungsbereiche1Request,
   GetGrundschulsprengel1Request,
-  GetMittelsprengelRequest,
   GetMittelschulsprengel1Request,
+  FeatureDtoViertelDto,
+  GetViertel1Request,
+  GetViertelRequest,
 } from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -134,6 +136,28 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       });
 
     return bezirksteile;
+  }
+
+  async getViertelForPoint(
+    point: PointGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoViertelDto>> {
+    const request: GetViertel1Request = { pointGeometryDto: point };
+    let viertel: Array<FeatureDtoViertelDto> = [];
+
+    await this.punktApi
+      .getViertel1(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          viertel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return viertel;
   }
 
   async getKitaplanungsbereicheForPoint(
@@ -288,6 +312,28 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       });
 
     return bezirksteile;
+  }
+
+  async getViertelForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoViertelDto>> {
+    const request: GetViertelRequest = { multiPolygonGeometryDto: multiPolygon };
+    let viertel: Array<FeatureDtoViertelDto> = [];
+
+    await this.polygonApi
+      .getViertel(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          viertel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return viertel;
   }
 
   async getKitaplanungsbereicheForMultipolygon(
