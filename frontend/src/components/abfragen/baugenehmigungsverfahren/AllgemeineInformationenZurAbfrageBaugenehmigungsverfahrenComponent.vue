@@ -36,36 +36,14 @@
         />
       </v-col>
     </v-row>
-    <v-row
-      v-if="isEakteEditable"
-      justify="center"
-    >
+    <v-row>
       <v-col cols="12">
-        <v-textarea
-          id="e_akte_field"
-          ref="eAkteField"
+        <eakte
+          id="eakte_component"
+          ref="eakteComponent"
           v-model="abfrage.linkEakte"
-          label="eAkte"
-          auto-grow
-          rows="1"
-          maxlength="255"
-          @input="formChanged"
+          :is-editable="isEakteEditable"
         />
-      </v-col>
-    </v-row>
-    <v-row v-if="!isEakteEditable">
-      <v-col cols="12">
-        <span>eAkte</span>
-      </v-col>
-    </v-row>
-    <v-row v-if="!isEakteEditable">
-      <v-col cols="12">
-        <a
-          target="_blank"
-          :href="abfrage.linkEakte"
-        >
-          {{ abfrage.linkEakte }}<span class="mdi mdi-launch" />
-        </a>
       </v-col>
     </v-row>
   </field-group-card>
@@ -77,9 +55,10 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
+import Eakte from "@/components/common/Eakte.vue";
 
 @Component({
-  components: { TriSwitch },
+  components: { Eakte, TriSwitch },
 })
 export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
   SaveLeaveMixin,
