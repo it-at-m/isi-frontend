@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryFromJSON,
-    MultiPolygonGeometryFromJSONTyped,
-    MultiPolygonGeometryToJSON,
-} from './MultiPolygonGeometry';
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 
 /**
  * 
@@ -40,10 +40,10 @@ export interface ViertelDto {
     flaecheQm?: number;
     /**
      * 
-     * @type {MultiPolygonGeometry}
+     * @type {MultiPolygonGeometryDto}
      * @memberof ViertelDto
      */
-    multiPolygon: MultiPolygonGeometry;
+    multiPolygon: MultiPolygonGeometryDto;
 }
 
 /**
@@ -68,7 +68,7 @@ export function ViertelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
         'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
-        'multiPolygon': MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
@@ -83,7 +83,7 @@ export function ViertelDtoToJSON(value?: ViertelDto | null): any {
         
         'nummer': value.nummer,
         'flaecheQm': value.flaecheQm,
-        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

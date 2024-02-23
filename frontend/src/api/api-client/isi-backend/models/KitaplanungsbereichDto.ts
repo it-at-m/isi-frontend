@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryFromJSON,
-    MultiPolygonGeometryFromJSONTyped,
-    MultiPolygonGeometryToJSON,
-} from './MultiPolygonGeometry';
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 
 /**
  * 
@@ -40,10 +40,10 @@ export interface KitaplanungsbereichDto {
     kitaPlbT?: string;
     /**
      * 
-     * @type {MultiPolygonGeometry}
+     * @type {MultiPolygonGeometryDto}
      * @memberof KitaplanungsbereichDto
      */
-    multiPolygon: MultiPolygonGeometry;
+    multiPolygon: MultiPolygonGeometryDto;
 }
 
 /**
@@ -68,7 +68,7 @@ export function KitaplanungsbereichDtoFromJSONTyped(json: any, ignoreDiscriminat
         
         'kitaPlb': !exists(json, 'kitaPlb') ? undefined : json['kitaPlb'],
         'kitaPlbT': !exists(json, 'kitaPlbT') ? undefined : json['kitaPlbT'],
-        'multiPolygon': MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
@@ -83,7 +83,7 @@ export function KitaplanungsbereichDtoToJSON(value?: KitaplanungsbereichDto | nu
         
         'kitaPlb': value.kitaPlb,
         'kitaPlbT': value.kitaPlbT,
-        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

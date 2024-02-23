@@ -136,6 +136,7 @@ export * from './Mittelschulsprengel';
 export * from './MittelschulsprengelDto';
 export * from './MultiPolygonGeometry';
 export * from './MultiPolygonGeometryDto';
+export * from './MultiPolygonGeometryModel';
 export * from './PageMetadata';
 export * from './PagedModelEntityModelAbfrage';
 export * from './PagedModelEntityModelAbfrageEmbedded';

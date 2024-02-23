@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryFromJSON,
-    MultiPolygonGeometryFromJSONTyped,
-    MultiPolygonGeometryToJSON,
-} from './MultiPolygonGeometry';
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 
 /**
  * 
@@ -34,10 +34,10 @@ export interface BezirksteilDto {
     nummer?: string;
     /**
      * 
-     * @type {MultiPolygonGeometry}
+     * @type {MultiPolygonGeometryDto}
      * @memberof BezirksteilDto
      */
-    multiPolygon: MultiPolygonGeometry;
+    multiPolygon: MultiPolygonGeometryDto;
 }
 
 /**
@@ -61,7 +61,7 @@ export function BezirksteilDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
-        'multiPolygon': MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
@@ -75,7 +75,7 @@ export function BezirksteilDtoToJSON(value?: BezirksteilDto | null): any {
     return {
         
         'nummer': value.nummer,
-        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 
