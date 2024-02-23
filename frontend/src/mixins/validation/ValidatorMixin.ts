@@ -225,7 +225,7 @@ export default class ValidatorMixin extends Vue {
       return "Bitte die wesentliche Rechtsgrundlage angeben";
     }
     if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
-      return `Bitte das Datum für 'Realisierung von' angeben`;
+      return `Bitte das Jahr für 'Realisierung von' angeben`;
     }
     if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
       return `Bitte die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' angeben`;
