@@ -287,12 +287,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.gemarkungen), ["nummer"]);
   }
 
-  get flurstuecke(): Array<FlurstueckDto> {
-    return this.gemarkungen.flatMap((gemarkung) =>
-      _.sortBy(Array.from(gemarkung.flurstuecke), ["gemarkungNummer", "zaehler", "nenner"]),
-    );
-  }
-
   get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
     return _.isNil(this.verortungModel)
       ? []
