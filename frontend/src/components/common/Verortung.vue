@@ -433,30 +433,31 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     try {
       const unifiedMultipolygon = await this.getUnionOfMultipolygon(multipolygon, true);
 
+      const promiseStadtbezirke = this.getStadtbezirkeForMultipolygon(unifiedMultipolygon, true);
+      const promiseBezirksteile = this.getBezirksteileForMultipolygon(unifiedMultipolygon, true);
+      const promiseViertel = this.getViertelForMultipolygon(unifiedMultipolygon, true);
+      const promiseGemarkungen = this.getGemarkungenForMultipolygon(unifiedMultipolygon, true);
+      const promiseKitaplanungsbereiche = this.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, true);
+      const promiseGrundschulsprengel = this.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, true);
+      const promiseMittelschulsprengel = this.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, true);
+
       // Stadtbezirke ermitteln
-      const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForMultipolygon(
-        unifiedMultipolygon,
-        true,
+      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
+        await promiseStadtbezirke,
       );
-      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
 
       // Stadtbezirksteile ermitteln
-      const bezirksteile: Array<FeatureDtoBezirksteilDto> = await this.getBezirksteileForMultipolygon(
-        unifiedMultipolygon,
-        true,
+      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(
+        await promiseBezirksteile,
       );
-      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(bezirksteile);
 
       // Viertel ermitteln
-      const viertel: Array<FeatureDtoViertelDto> = await this.getViertelForMultipolygon(unifiedMultipolygon, true);
-      const viertelBackend: Array<ViertelDto> = this.viertelGeoDataEaiToViertelBackend(viertel);
+      const viertelBackend: Array<ViertelDto> = this.viertelGeoDataEaiToViertelBackend(await promiseViertel);
 
       // Gemarkungen ermitteln
-      const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForMultipolygon(
-        unifiedMultipolygon,
-        true,
+      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(
+        await promiseGemarkungen,
       );
-      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
 
       // Anfügen der Flurstücke an Gemarkung
       this.selectedFlurstuecke.forEach((selectedFlurstueck) => {
@@ -467,22 +468,16 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
       });
 
       // KitaPlb ermitteln
-      const kitaplanungsbereiche: Array<FeatureDtoKitaplanungsbereichDto> =
-        await this.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, true);
       const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
-        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(kitaplanungsbereiche);
+        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(await promiseKitaplanungsbereiche);
 
       // Grundschulsprengel ermitteln
-      const grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> =
-        await this.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, true);
       const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
-        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(grundschulsprengel);
+        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(await promiseGrundschulsprengel);
 
       // Mittelschulsprengel ermitteln
-      const mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> =
-        await this.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, true);
       const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
-        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(mittelschulsprengel);
+        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(await promiseMittelschulsprengel);
 
       // Erstellung des VerortungMultiPolygonDto
       return {

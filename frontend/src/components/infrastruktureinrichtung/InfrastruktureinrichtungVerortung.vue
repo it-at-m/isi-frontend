@@ -452,25 +452,37 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     point: PointGeometryDto,
   ): Promise<VerortungPointDto | undefined> {
     try {
+      const promiseStadtbezirke = this.getStadtbezirkeForPoint(point, true);
+      const promiseBezirksteile = this.getBezirksteileForPoint(point, true);
+      const promiseViertel = this.getViertelForPoint(point, true);
+      const promiseGemarkungen = this.getGemarkungenForPoint(point, true);
+      const promiseFlurstuecke = this.getFlurstueckeForPoint(point, true);
+      const promiseKitaplanungsbereiche = this.getKitaplanungsbereicheForPoint(point, true);
+      const promiseGrundschulsprengel = this.getGrundschulsprengelForPoint(point, true);
+      const promiseMittelschulsprengel = this.getMittelschulsprengelForPoint(point, true);
+
       // Stadtbezirke ermitteln
-      const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForPoint(point, true);
-      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
+      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
+        await promiseStadtbezirke,
+      );
 
       // Stadtbezirksteile ermitteln
-      const bezirksteile: Array<FeatureDtoBezirksteilDto> = await this.getBezirksteileForPoint(point, true);
-      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(bezirksteile);
+      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(
+        await promiseBezirksteile,
+      );
 
       // Viertel ermitteln
-      const viertel: Array<FeatureDtoViertelDto> = await this.getViertelForPoint(point, true);
-      const viertelBackend: Array<ViertelDto> = this.viertelGeoDataEaiToViertelBackend(viertel);
+      const viertelBackend: Array<ViertelDto> = this.viertelGeoDataEaiToViertelBackend(await promiseViertel);
 
       // Gemarkungen ermitteln
-      const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForPoint(point, true);
-      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(
+        await promiseGemarkungen,
+      );
 
       // Flurstücke ermitteln
-      const flurstuecke: Array<FeatureDtoFlurstueckDto> = await this.getFlurstueckeForPoint(point, true);
-      const flurstueckeBackend: Array<FlurstueckDto> = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+      const flurstueckeBackend: Array<FlurstueckDto> = this.flurstueckeGeoDataEaiToFlurstueckeBackend(
+        await promiseFlurstuecke,
+      );
 
       // Anfügen der Flurstücke an Gemarkung
       flurstueckeBackend.forEach((flurstueck) => {
@@ -481,28 +493,16 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       });
 
       // KitaPlb ermitteln
-      const kitaplanungsbereiche: Array<FeatureDtoKitaplanungsbereichDto> = await this.getKitaplanungsbereicheForPoint(
-        point,
-        true,
-      );
       const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
-        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(kitaplanungsbereiche);
+        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(await promiseKitaplanungsbereiche);
 
       // Grundschulsprengel ermitteln
-      const grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> = await this.getGrundschulsprengelForPoint(
-        point,
-        true,
-      );
       const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
-        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(grundschulsprengel);
+        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(await promiseGrundschulsprengel);
 
       // Mittelschulsprengel ermitteln
-      const mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> = await this.getMittelschulsprengelForPoint(
-        point,
-        true,
-      );
       const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
-        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(mittelschulsprengel);
+        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(await promiseMittelschulsprengel);
 
       // Erstellung des VerortungPointDto
       return new VerortungPointModel({
@@ -519,6 +519,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       return undefined;
     }
   }
+
   private stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
     stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>,
   ): Array<StadtbezirkDto> {
