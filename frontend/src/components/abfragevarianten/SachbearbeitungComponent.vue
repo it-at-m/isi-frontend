@@ -6,26 +6,6 @@
           cols="12"
           md="6"
         >
-          <num-field
-            id="planungsursaechliche_gf_wohnen_field"
-            ref="planungsursaechlicheGfWohnenField"
-            v-model="abfragevarianteSachbearbeitung.gfWohnenPlanungsursaechlich"
-            :disabled="!isEditableBySachbearbeitung()"
-            class="mx-3"
-            label="Planungsursächliche GF Wohnen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        />
-      </v-row>
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="6"
-        >
           <v-slide-y-reverse-transition>
             <v-select
               id="sobon_orientierungswert_jahr_dropdown"
