@@ -335,9 +335,10 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
 
   @Watch("verortungModel", { deep: true })
   private onVerortungModelChanged(): void {
-    const flurstueckeFromVerortungModel = Array.from(
-      _.isNil(this.verortungModel) ? [] : this.verortungModel.gemarkungen,
-    ).flatMap((gemarkung) => Array.from(gemarkung.flurstuecke));
+    const gemarkungenFromVerortungModel: Array<GemarkungDto> = _.toArray(this.verortungModel?.gemarkungen);
+    const flurstueckeFromVerortungModel: Array<FlurstueckDto> = gemarkungenFromVerortungModel.flatMap((gemarkung) =>
+      Array.from(gemarkung.flurstuecke),
+    );
     this.selectedFlurstuecke = this.createMapForFlurstuecke(flurstueckeFromVerortungModel);
   }
 
