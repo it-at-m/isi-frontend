@@ -141,7 +141,7 @@
             md="4"
           >
             <num-field
-              id="gf_wohnen_field"
+              id="gf_wohnen_genossenschaftlich_field"
               ref="gfWohnenField"
               v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
               :disabled="!isEditable"

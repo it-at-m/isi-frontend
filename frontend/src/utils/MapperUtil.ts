@@ -234,6 +234,7 @@ export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBauleitplanverfahren,
       ),
     verortung: bauleitplanverfahrenDto.verortung,
+    bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
   } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -253,6 +254,7 @@ export function mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
       mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
       ),
+    bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
   } as BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -272,6 +274,7 @@ export function mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
       mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
         weiteresVerfahrenDto.abfragevariantenSachbearbeitungWeiteresVerfahren,
       ),
+    bauvorhaben: weiteresVerfahrenDto.bauvorhaben,
   } as WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -305,7 +308,6 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
@@ -345,7 +347,6 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
@@ -387,7 +388,6 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
