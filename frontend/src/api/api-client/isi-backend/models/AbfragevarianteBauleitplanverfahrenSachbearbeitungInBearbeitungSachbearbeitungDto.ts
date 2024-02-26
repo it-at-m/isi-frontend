@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FoerdermixDto } from './FoerdermixDto';
+import {
+    FoerdermixDtoFromJSON,
+    FoerdermixDtoFromJSONTyped,
+    FoerdermixDtoToJSON,
+} from './FoerdermixDto';
+
 /**
  * 
  * @export
@@ -39,16 +46,22 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
-     */
-    gfWohnenPlanungsursaechlich?: number;
-    /**
-     * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    isASobonBerechnung?: boolean;
+    /**
+     * 
+     * @type {FoerdermixDto}
+     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    sobonFoerdermix?: FoerdermixDto;
     /**
      * 
      * @type {Date}
@@ -112,8 +125,9 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         'id': !exists(json, 'id') ? undefined : json['id'],
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
-        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
+        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
+        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
@@ -131,8 +145,9 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         'id': value.id,
         'version': value.version,
         'artAbfragevariante': value.artAbfragevariante,
-        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'isASobonBerechnung': value.isASobonBerechnung,
+        'sobonFoerdermix': FoerdermixDtoToJSON(value.sobonFoerdermix),
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
     };

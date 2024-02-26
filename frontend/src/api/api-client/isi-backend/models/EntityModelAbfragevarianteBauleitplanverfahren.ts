@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Foerdermix } from './Foerdermix';
+import {
+    FoerdermixFromJSON,
+    FoerdermixFromJSONTyped,
+    FoerdermixToJSON,
+} from './Foerdermix';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -133,12 +139,6 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
      * @type {number}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
-    gfWohnenPlanungsursaechlich?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
-     */
     weGesamt?: number;
     /**
      * 
@@ -176,6 +176,18 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
     sobonOrientierungswertJahr?: EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
+     */
+    isASobonBerechnung?: boolean;
+    /**
+     * 
+     * @type {Foerdermix}
+     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
+     */
+    sobonFoerdermix?: Foerdermix;
     /**
      * 
      * @type {Date}
@@ -335,7 +347,6 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
         'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
         'weSonderwohnformen': !exists(json, 'weSonderwohnformen') ? undefined : json['weSonderwohnformen'],
         'weStudentischesWohnen': !exists(json, 'weStudentischesWohnen') ? undefined : json['weStudentischesWohnen'],
@@ -343,6 +354,8 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
+        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
@@ -385,7 +398,6 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSON(value?: Ent
         'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
         'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
-        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'weGesamt': value.weGesamt,
         'weSonderwohnformen': value.weSonderwohnformen,
         'weStudentischesWohnen': value.weStudentischesWohnen,
@@ -393,6 +405,8 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSON(value?: Ent
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'isASobonBerechnung': value.isASobonBerechnung,
+        'sobonFoerdermix': FoerdermixToJSON(value.sobonFoerdermix),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,

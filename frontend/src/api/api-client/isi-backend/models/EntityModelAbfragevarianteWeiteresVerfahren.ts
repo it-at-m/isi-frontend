@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Foerdermix } from './Foerdermix';
+import {
+    FoerdermixFromJSON,
+    FoerdermixFromJSONTyped,
+    FoerdermixToJSON,
+} from './Foerdermix';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -145,12 +151,6 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
      * @type {number}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
-    gfWohnenPlanungsursaechlich?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
-     */
     weGesamt?: number;
     /**
      * 
@@ -200,6 +200,18 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
     sobonOrientierungswertJahr?: EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
+     */
+    isASobonBerechnung?: boolean;
+    /**
+     * 
+     * @type {Foerdermix}
+     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
+     */
+    sobonFoerdermix?: Foerdermix;
     /**
      * 
      * @type {Date}
@@ -361,7 +373,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
         'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
         'weBaurechtlichGenehmigt': !exists(json, 'weBaurechtlichGenehmigt') ? undefined : json['weBaurechtlichGenehmigt'],
         'weBaurechtlichFestgesetzt': !exists(json, 'weBaurechtlichFestgesetzt') ? undefined : json['weBaurechtlichFestgesetzt'],
@@ -371,6 +382,8 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
+        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
@@ -415,7 +428,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSON(value?: Entity
         'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
         'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
-        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'weGesamt': value.weGesamt,
         'weBaurechtlichGenehmigt': value.weBaurechtlichGenehmigt,
         'weBaurechtlichFestgesetzt': value.weBaurechtlichFestgesetzt,
@@ -425,6 +437,8 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSON(value?: Entity
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'isASobonBerechnung': value.isASobonBerechnung,
+        'sobonFoerdermix': FoerdermixToJSON(value.sobonFoerdermix),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,

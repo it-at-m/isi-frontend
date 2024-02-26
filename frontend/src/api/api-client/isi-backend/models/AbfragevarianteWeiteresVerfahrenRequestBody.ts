@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Foerdermix } from './Foerdermix';
+import {
+    FoerdermixFromJSON,
+    FoerdermixFromJSONTyped,
+    FoerdermixToJSON,
+} from './Foerdermix';
+
 /**
  * 
  * @export
@@ -144,12 +151,6 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
      * @type {number}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
-    gfWohnenPlanungsursaechlich?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
-     */
     weGesamt?: number;
     /**
      * 
@@ -199,6 +200,18 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
     sobonOrientierungswertJahr?: AbfragevarianteWeiteresVerfahrenRequestBodySobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
+     */
+    isASobonBerechnung?: boolean;
+    /**
+     * 
+     * @type {Foerdermix}
+     * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
+     */
+    sobonFoerdermix?: Foerdermix;
     /**
      * 
      * @type {Date}
@@ -373,7 +386,6 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyFromJSONTyped(json: a
         'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
         'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
         'weBaurechtlichGenehmigt': !exists(json, 'weBaurechtlichGenehmigt') ? undefined : json['weBaurechtlichGenehmigt'],
         'weBaurechtlichFestgesetzt': !exists(json, 'weBaurechtlichFestgesetzt') ? undefined : json['weBaurechtlichFestgesetzt'],
@@ -383,6 +395,8 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyFromJSONTyped(json: a
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
+        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
@@ -430,7 +444,6 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyToJSON(value?: Abfrag
         'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
         'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
-        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'weGesamt': value.weGesamt,
         'weBaurechtlichGenehmigt': value.weBaurechtlichGenehmigt,
         'weBaurechtlichFestgesetzt': value.weBaurechtlichFestgesetzt,
@@ -440,6 +453,8 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyToJSON(value?: Abfrag
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'isASobonBerechnung': value.isASobonBerechnung,
+        'sobonFoerdermix': FoerdermixToJSON(value.sobonFoerdermix),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
