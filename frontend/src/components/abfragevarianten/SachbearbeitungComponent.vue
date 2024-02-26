@@ -38,6 +38,41 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-checkbox
+          id="sobon_berechnung"
+          ref="sobonBerechnungCheckbox"
+          v-model="abfragevarianteSachbearbeitung.isASobonBerechnung"
+          :disabled="!isEditableBySachbearbeitung()"
+          class="mx-3"
+          label="Sobon-Berechnung"
+          color="primary"
+        />
+        <v-expand-transition>
+          <div>
+            <v-row
+              v-if="abfragevarianteSachbearbeitung.isASobonBerechnung"
+              justify="center"
+            >
+              <v-col
+                cols="12"
+                md="8"
+              >
+                <v-select
+                  id="foerdermix_stammdaten_dropdown"
+                  v-model="abfragevarianteSachbearbeitung.sobonFoerdermix"
+                  :disabled="!isEditableBySachbearbeitung()"
+                  :items="groupedStammdaten"
+                  label="Fördermix für Berechnung"
+                  item-text="foerdermix.bezeichnung"
+                  return-object
+                  @change="formChanged"
+                />
+              </v-col>
+            </v-row>
+          </div>
+        </v-expand-transition>
+      </v-row>
+      <v-row>
         <v-col
           cols="12"
           md="12"
@@ -66,7 +101,7 @@
           md="6"
         >
           <reports-sobonursaechlichkeit-component
-            v-if="!isBaugenehmigungsverfahren"
+            v-if="!showSobonReport"
             v-model="abfragevarianteSachbearbeitung"
           />
         </v-col>
@@ -81,6 +116,7 @@ import {
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   LookupEntryDto,
+  UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -92,6 +128,12 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
+import _ from "lodash";
+
+type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
 @Component({
   components: {
@@ -114,6 +156,12 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private readonly isEditable!: boolean;
 
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
+
+  private groupedStammdaten: GroupedStammdaten = [];
+
+  mounted(): void {
+    this.setGroupedStammdatenList();
+  }
 
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     if (
@@ -144,6 +192,66 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   get isBaugenehmigungsverfahren(): boolean {
     const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
     return abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren;
+  }
+
+  private setGroupedStammdatenList(): void {
+    const stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    this.groupedStammdaten = this.groupItemsToHeader(stammdaten);
+  }
+
+  /**
+   * Gruppiert eine Liste von Fördermixstämmen nach dem Attribut'bezeichnungJahr' welche den Wert 'SoBoN 2021' und 'SoBoN 2017' entsprechen.
+   * Außerderm fügt die Methode entsprechende header-Objekte hinzu.
+   * Gedacht zum Einsatz mit v-select.
+   *
+   * @param foerdermixStaemme Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
+   * @return Eine neue Liste, welche neben den Fördermixstämmen auch { header: string }-Objekte enthält.
+   */
+  private groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[]): GroupedStammdaten {
+    // Objekt, welches pro 'bezeichnungJahr' ein Array mit den zugehörigen Fördermixen enthalten soll.
+    const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
+
+    foerdermixStaemme.forEach((foerdermixStammModel: FoerdermixStammModel) => {
+      if (
+        foerdermixStammModel.foerdermix.bezeichnungJahr === "SoBoN 2021" ||
+        foerdermixStammModel.foerdermix.bezeichnungJahr === "SoBoN 2017"
+      ) {
+        // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
+        groups[foerdermixStammModel.foerdermix.bezeichnungJahr].push(foerdermixStammModel);
+      }
+    });
+
+    // Das obere Objekt soll nun zu einer "abgeflachten" Liste mit header-Objekten werden.
+    const flattened: GroupedStammdaten = [];
+
+    Object.keys(groups).forEach((bezeichnungJahr) => {
+      const foerdermixe = groups[bezeichnungJahr];
+
+      // Fügt zuerst ein header-Objekt für das aktuelle 'bezeichnungJahr' hinzu.
+      flattened.push({ header: bezeichnungJahr });
+      // Darauf werden alle Elemente des Arrays vom aktuellen 'bezeichnungJahr' hinzugefügt (siehe "Spread syntax").
+      flattened.push(...foerdermixe);
+    });
+
+    return flattened;
+  }
+
+  private showSobonReport(): boolean {
+    const abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel = this.$store.getters["search/selectedAbfrage"];
+    if (
+      this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
+        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
+      this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
+        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
+    ) {
+      return (
+        abfrage.sobonRelevant === UncertainBoolean.True &&
+        (this.abfragevarianteSachbearbeitung?.isASobonBerechnung as boolean) &&
+        !_.isNil(this.abfragevarianteSachbearbeitung?.sobonFoerdermix) &&
+        !_.isNil(this.abfragevarianteSachbearbeitung?.gfWohnenSobonUrsaechlich)
+      );
+    }
+    return false;
   }
 }
 </script>

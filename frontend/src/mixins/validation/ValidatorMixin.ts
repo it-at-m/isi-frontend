@@ -191,12 +191,14 @@ export default class ValidatorMixin extends Vue {
       switch (abfrage.artAbfrage) {
         case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
           abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
+          validationMessage = this.findFaultInAbfragevarianteMarkedSobonBerechnung(abfrage, abfragevariante);
           break;
         case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
           abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
           break;
         case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
           abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
+          validationMessage = this.findFaultInAbfragevarianteMarkedSobonBerechnung(abfrage, abfragevariante);
           break;
         default:
           abfragevariante = undefined;
@@ -269,6 +271,24 @@ export default class ValidatorMixin extends Vue {
       return messageFaultInBedarfsmeldungAbfrageersteller;
     }
 
+    return null;
+  }
+
+  public findFaultInAbfragevarianteMarkedSobonBerechnung(
+    abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel,
+    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteWeiteresVerfahrenModel,
+  ): string | null {
+    if (abfragevariante.isASobonBerechnung) {
+      if (_.isNil(abfragevariante.sobonFoerdermix)) {
+        return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
+      }
+      if (_.isNil(abfragevariante.gfWohnenSobonUrsaechlich)) {
+        return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
+      }
+      if (abfrage.sobonRelevant !== UncertainBoolean.True) {
+        return "Die Abfrage muss als SoBoN Relevant markiert werden um eine SoBoN-Berechnung durchzuführen.";
+      }
+    }
     return null;
   }
 
