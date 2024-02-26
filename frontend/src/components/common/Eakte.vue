@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row v-if="isLinkEakteEditable">
-      <v-col cols="11">
+      <v-col cols="10">
         <v-textarea
           id="e_akte_field"
           ref="eAkteField"
@@ -13,7 +13,7 @@
           @input="formChanged"
         />
       </v-col>
-      <v-col cols="1">
+      <v-col cols="2">
         <v-btn
           id="link_eakte_uebernehmen_button"
           class="text-wrap"
@@ -27,20 +27,20 @@
     <div>
       <v-row v-if="!isLinkEakteEditable">
         <v-col cols="12">
-          <span>eAkte</span>
+          <span class="v-label theme--light">eAkte</span>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="11">
+        <v-col cols="10">
           <a
             v-show="isLinkEakteVisible"
             target="_blank"
-            :href="linkEakte"
+            :href="linkEakteFormatted"
           >
             {{ linkEakte }}<span class="mdi mdi-launch" />
           </a>
         </v-col>
-        <v-col cols="1">
+        <v-col cols="2">
           <v-btn
             v-show="isEditable && !isLinkEakteEditable"
             id="link_eakte_bearbeiten_button"
@@ -95,6 +95,15 @@ export default class Eakte extends Mixins(FieldValidationRulesMixin, SaveLeaveMi
   private editEakte(): void {
     this.editFieldLinkEakte = _.isNil(this.linkEakte) ? "" : this.linkEakte;
     this.editModeTextFieldLinkEakte = true;
+  }
+
+  get linkEakteFormatted(): string | undefined {
+    if (!_.isNil(this.linkEakte) && !_.isEmpty(this.linkEakte)) {
+      return this.linkEakte.toLowerCase().startsWith("http://") || this.linkEakte.toLowerCase().startsWith("https://")
+        ? this.linkEakte
+        : `https://${this.linkEakte}`;
+    }
+    return this.linkEakte;
   }
 }
 </script>
