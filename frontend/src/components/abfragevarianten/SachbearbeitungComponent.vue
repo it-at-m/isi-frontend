@@ -101,7 +101,7 @@
           md="6"
         >
           <reports-sobonursaechlichkeit-component
-            v-if="!showSobonReport"
+            v-if="showSobonReport"
             v-model="abfragevarianteSachbearbeitung"
           />
         </v-col>
