@@ -313,7 +313,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["kitaPlb"]);
   }
 
   get grundschulsprengel(): Array<GrundschulsprengelDto> {

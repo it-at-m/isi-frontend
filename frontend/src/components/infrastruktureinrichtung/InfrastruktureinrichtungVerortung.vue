@@ -288,7 +288,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["kitaPlb"]);
   }
 
   get grundschulsprengel(): Array<GrundschulsprengelDto> {
