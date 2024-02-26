@@ -276,31 +276,27 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   get stadtbezirke(): Array<StadtbezirkDto> {
-    return _.isNil(this.verortungModel) ? [] : _.sortBy(_.toArray(this.verortungModel?.stadtbezirke), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.stadtbezirke), ["nummer"]);
   }
 
   get bezirksteile(): Array<BezirksteilDto> {
-    return _.isNil(this.verortungModel) ? [] : _.sortBy(_.toArray(this.verortungModel?.bezirksteile), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.bezirksteile), ["nummer"]);
   }
 
   get gemarkungen(): Array<GemarkungDto> {
-    return _.isNil(this.verortungModel) ? [] : _.sortBy(_.toArray(this.verortungModel?.gemarkungen), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.gemarkungen), ["nummer"]);
   }
 
   get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
-    return _.isNil(this.verortungModel)
-      ? []
-      : _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["nummer"]);
   }
 
   get grundschulsprengel(): Array<GrundschulsprengelDto> {
-    return _.isNil(this.verortungModel) ? [] : _.sortBy(_.toArray(this.verortungModel?.grundschulsprengel), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.grundschulsprengel), ["nummer"]);
   }
 
   get mittelschulsprengel(): Array<MittelschulsprengelDto> {
-    return _.isNil(this.verortungModel)
-      ? []
-      : _.sortBy(_.toArray(this.verortungModel?.mittelschulsprengel), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.mittelschulsprengel), ["nummer"]);
   }
 
   get lookAt(): LatLngLiteral | undefined {
