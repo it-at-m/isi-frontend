@@ -58,26 +58,6 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-checkbox
-          id="we_sonderwohnformen_checkbox"
-          ref="weSonderwohnformenCheckbox"
-          v-model="abfragevariante.weSonderwohnformen"
-          :disabled="!isEditable"
-          class="mx-3"
-          label="Sonderwohnformen"
-          color="primary"
-        />
-        <v-expand-transition>
-          <div>
-            <v-row
-              v-if="abfragevariante.weSonderwohnformen"
-              justify="center"
-            >
-            </v-row>
-          </div>
-        </v-expand-transition>
-      </v-row>
-      <v-row>
         <v-col
           cols="12"
           md="12"
