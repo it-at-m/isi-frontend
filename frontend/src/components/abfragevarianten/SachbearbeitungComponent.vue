@@ -189,11 +189,6 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     return [];
   }
 
-  get isBaugenehmigungsverfahren(): boolean {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
-    return abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren;
-  }
-
   private setGroupedStammdatenList(): void {
     const stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
     this.groupedStammdaten = this.groupItemsToHeader(stammdaten);
