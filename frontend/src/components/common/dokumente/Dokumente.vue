@@ -49,6 +49,7 @@
       </v-row>
     </v-container>
     <input
+      id="dokumente_input"
       ref="dokumenteInput"
       type="file"
       multiple
