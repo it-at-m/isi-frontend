@@ -33,6 +33,7 @@
       v-model="baugenehmigungsverfahren"
       :look-at="baugenehmigungsverfahren"
       :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
     />
     <dokumente
       id="dokumente_component"
@@ -56,6 +57,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
 
 @Component({
   computed: {
@@ -64,6 +66,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
     },
   },
   components: {
+    AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent,
     Dokumente,
     AbfrageCommonComponent,
     AllgemeineInformationenBaugenehmigungsverfahrenComponent,

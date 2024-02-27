@@ -188,28 +188,51 @@ export default class ValidatorMixin extends Vue {
       | AbfragevarianteWeiteresVerfahrenModel
       | undefined = undefined;
     for (const abfragevarianteDto of allAbfragevarianten) {
-      switch (abfrage.artAbfrage) {
-        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-          abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
-          break;
-        case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-          abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
-          break;
-        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-          abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
-          break;
-        default:
-          abfragevariante = undefined;
-          break;
-      }
+      abfragevariante = this.convertAbfragevarianteType(abfrage.artAbfrage, abfragevarianteDto);
       if (!_.isNil(abfragevariante)) {
         validationMessage = this.findFaultInAbfragevariante(abfrage, abfragevariante);
         if (!_.isNil(validationMessage)) {
           break;
+        } else if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
+          validationMessage = this.findFaultInAbfragevarianteInBearbeitungSachbearbeitung(abfragevariante);
+          if (!_.isNil(validationMessage)) {
+            break;
+          }
         }
       }
     }
     return validationMessage;
+  }
+
+  private convertAbfragevarianteType(
+    artAbfrage: AbfrageDtoArtAbfrageEnum | undefined,
+    abfragevarianteDto: any,
+  ):
+    | AbfragevarianteBauleitplanverfahrenModel
+    | AbfragevarianteBaugenehmigungsverfahrenModel
+    | AbfragevarianteWeiteresVerfahrenModel
+    | undefined {
+    let abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | undefined = undefined;
+
+    switch (artAbfrage) {
+      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+        abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
+        break;
+      case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+        abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
+        break;
+      case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+        abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
+        break;
+      default:
+        abfragevariante = undefined;
+        break;
+    }
+    return abfragevariante;
   }
 
   public findFaultInAbfragevariante(
@@ -269,6 +292,26 @@ export default class ValidatorMixin extends Vue {
       return messageFaultInBedarfsmeldungAbfrageersteller;
     }
 
+    return null;
+  }
+
+  private findFaultInAbfragevarianteInBearbeitungSachbearbeitung(
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel,
+  ): string | null {
+    if (
+      _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
+      abfragevariante.sobonOrientierungswertJahr ===
+        AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
+    ) {
+      return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
+    }
+    const date = moment(abfragevariante.stammdatenGueltigAb, "DD.MM.YYYY", true);
+    if (!date.isValid() || abfragevariante.stammdatenGueltigAb.toISOString() == new Date(0).toISOString()) {
+      return `Bitte geben Sie das 'Stammdatum gültig ab' bei Abfragevariante '${abfragevariante.name}' im Format TT.MM.JJJJ an.`;
+    }
     return null;
   }
 
