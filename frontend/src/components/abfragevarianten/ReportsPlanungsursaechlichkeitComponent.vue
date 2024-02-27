@@ -1,61 +1,69 @@
 <template>
-  <v-row>
-    <v-col
-      cols="12"
-      md="4"
-    />
-    <v-col
-      cols="12"
-      md="4"
-    >
-      <v-list class="text-center">
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlWohneinheiten()"
-            >
-              Report Wohneinheiten<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlBedarfeKinderkrippe()"
-            >
-              Report Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlBedarfeKindergarten()"
-            >
-              Report Bedarfe Kindergarten<span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <a
-              target="_blank"
-              :href="getUrlAlleEinwohner()"
-            >
-              Report Alle Einwohner <span class="mdi mdi-launch" />
-            </a>
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-col>
-    <v-col
-      cols="12"
-      md="4"
-    />
-  </v-row>
+  <v-list class="text-center">
+    <v-list-item>
+      <v-list-item-title class="font-weight-bold">Planungsursächliche Reports</v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlWohneinheiten()"
+        >
+          Wohneinheiten<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlBedarfeKinderkrippe()"
+        >
+          Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlBedarfeKindergarten()"
+        >
+          Bedarfe Kindergarten<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlAlleEinwohner()"
+        >
+          Alle Einwohner <span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe()"
+        >
+          Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten()"
+        >
+          Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script lang="ts">
@@ -99,6 +107,31 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     return url.toString();
   }
 
+  private getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf: string, url: URL): string {
+    const abfrageId = this.getParameterValueAbfrageId();
+    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
+    const artAbfrage = this.getParameterValueArtAbfrage();
+    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
+    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
+    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
+    return url.toString();
+  }
+
+  private getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe() {
+    const url = new URL(this.getUrlReportSpitzenbedarfe());
+    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
+    return this.getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf, url);
+  }
+
+  private getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten() {
+    const url = new URL(this.getUrlReportSpitzenbedarfe());
+    const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
+    return this.getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf, url);
+  }
+
   private getUrlBedarfeKinderkrippe(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
     return this.getUrlBedarfe(artBedarf);
@@ -120,6 +153,10 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
 
   private getUrlReportBedarfe(): string {
     return import.meta.env.VITE_REPORT_BEDARF_URL as string;
+  }
+
+  private getUrlReportSpitzenbedarfe(): string {
+    return import.meta.env.VITE_REPORT_SPITZENBEDARF_URL as string;
   }
 
   private getParameterAbfrageId(): string {

@@ -28,6 +28,7 @@
     >
       <template #activator>
         <v-btn
+          id="speed_dial_create_button"
           v-model="speedDialOpen"
           color="secondary"
           dark
@@ -41,6 +42,7 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="infrastruktureinrichtung_create_button"
             class="text-h6"
             fab
             dark
@@ -56,6 +58,7 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="bauvorhaben_create_button"
             class="text-h6"
             fab
             dark
@@ -71,6 +74,7 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="bauleitplanverfahren_create_button"
             class="text-h6"
             fab
             dark
@@ -86,6 +90,7 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="baugenehmigungsverfahren_create_button"
             class="text-h6"
             fab
             dark
@@ -101,6 +106,7 @@
       <v-tooltip left>
         <template #activator="{ on }">
           <v-btn
+            id="weiteres_verfahren_create_button"
             class="text-h6"
             fab
             dark
