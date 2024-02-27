@@ -28,17 +28,17 @@ import {
 } from './PointGeometryDto';
 
 /**
- * @type FeatureDtoStadtbezirkDtoGeometry
+ * @type FeatureDtoViertelDtoGeometry
  * 
  * @export
  */
-export type FeatureDtoStadtbezirkDtoGeometry = { type: 'MultiPolygon' } & MultiPolygonGeometryDto | { type: 'MultiPolygonGeometryDto' } & MultiPolygonGeometryDto | { type: 'Point' } & PointGeometryDto | { type: 'PointGeometryDto' } & PointGeometryDto;
+export type FeatureDtoViertelDtoGeometry = { type: 'MultiPolygon' } & MultiPolygonGeometryDto | { type: 'MultiPolygonGeometryDto' } & MultiPolygonGeometryDto | { type: 'Point' } & PointGeometryDto | { type: 'PointGeometryDto' } & PointGeometryDto;
 
-export function FeatureDtoStadtbezirkDtoGeometryFromJSON(json: any): FeatureDtoStadtbezirkDtoGeometry {
-    return FeatureDtoStadtbezirkDtoGeometryFromJSONTyped(json, false);
+export function FeatureDtoViertelDtoGeometryFromJSON(json: any): FeatureDtoViertelDtoGeometry {
+    return FeatureDtoViertelDtoGeometryFromJSONTyped(json, false);
 }
 
-export function FeatureDtoStadtbezirkDtoGeometryFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoStadtbezirkDtoGeometry {
+export function FeatureDtoViertelDtoGeometryFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoViertelDtoGeometry {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -52,11 +52,11 @@ export function FeatureDtoStadtbezirkDtoGeometryFromJSONTyped(json: any, ignoreD
         case 'PointGeometryDto':
             return {...PointGeometryDtoFromJSONTyped(json, true), type: 'PointGeometryDto'};
         default:
-            throw new Error(`No variant of FeatureDtoStadtbezirkDtoGeometry exists with 'type=${json['type']}'`);
+            throw new Error(`No variant of FeatureDtoViertelDtoGeometry exists with 'type=${json['type']}'`);
     }
 }
 
-export function FeatureDtoStadtbezirkDtoGeometryToJSON(value?: FeatureDtoStadtbezirkDtoGeometry | null): any {
+export function FeatureDtoViertelDtoGeometryToJSON(value?: FeatureDtoViertelDtoGeometry | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -73,7 +73,7 @@ export function FeatureDtoStadtbezirkDtoGeometryToJSON(value?: FeatureDtoStadtbe
         case 'PointGeometryDto':
             return PointGeometryDtoToJSON(value);
         default:
-            throw new Error(`No variant of FeatureDtoStadtbezirkDtoGeometry exists with 'type=${value['type']}'`);
+            throw new Error(`No variant of FeatureDtoViertelDtoGeometry exists with 'type=${value['type']}'`);
     }
 
 }

@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FeatureDtoStadtbezirkDtoGeometry } from './FeatureDtoStadtbezirkDtoGeometry';
+import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
-    FeatureDtoStadtbezirkDtoGeometryFromJSON,
-    FeatureDtoStadtbezirkDtoGeometryFromJSONTyped,
-    FeatureDtoStadtbezirkDtoGeometryToJSON,
-} from './FeatureDtoStadtbezirkDtoGeometry';
+    FeatureDtoViertelDtoGeometryFromJSON,
+    FeatureDtoViertelDtoGeometryFromJSONTyped,
+    FeatureDtoViertelDtoGeometryToJSON,
+} from './FeatureDtoViertelDtoGeometry';
 import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
     StadtbezirkDtoFromJSON,
@@ -40,10 +40,10 @@ export interface FeatureDtoStadtbezirkDto {
     type?: string;
     /**
      * 
-     * @type {FeatureDtoStadtbezirkDtoGeometry}
+     * @type {FeatureDtoViertelDtoGeometry}
      * @memberof FeatureDtoStadtbezirkDto
      */
-    geometry?: FeatureDtoStadtbezirkDtoGeometry;
+    geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
      * @type {StadtbezirkDto}
@@ -72,7 +72,7 @@ export function FeatureDtoStadtbezirkDtoFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'type': !exists(json, 'type') ? undefined : json['type'],
-        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoStadtbezirkDtoGeometryFromJSON(json['geometry']),
+        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
         'properties': !exists(json, 'properties') ? undefined : StadtbezirkDtoFromJSON(json['properties']),
     };
 }
@@ -87,7 +87,7 @@ export function FeatureDtoStadtbezirkDtoToJSON(value?: FeatureDtoStadtbezirkDto 
     return {
         
         'type': value.type,
-        'geometry': FeatureDtoStadtbezirkDtoGeometryToJSON(value.geometry),
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
         'properties': StadtbezirkDtoToJSON(value.properties),
     };
 }
