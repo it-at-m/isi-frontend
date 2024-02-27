@@ -249,7 +249,7 @@ export default class ValidatorMixin extends Vue {
         return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
       }
       if (_.isNil(abfragevariante.stammdatenGueltigAb)) {
-        return "Bitte für die für die Bedarfsberechnung die Gültigkeit des Stammdatums angeben";
+        return "Bitte für die Bedarfsberechnung die Gültigkeit des Stammdatums angeben";
       }
     }
     const messageFaultBauschnitte = this.findFaultInBauabschnitte(abfragevariante);

@@ -15,6 +15,21 @@ import {
   GetFlurstueckeRequest,
   GetStadtbezirke1Request,
   GetGemarkungen1Request,
+  FeatureDtoBezirksteilDto,
+  FeatureDtoKitaplanungsbereichDto,
+  GetKitaplanungsbereicheRequest,
+  GetBezirksteileRequest,
+  FeatureDtoGrundschulsprengelDto,
+  GetGrundschulsprengelRequest,
+  FeatureDtoMittelschulsprengelDto,
+  GetMittelschulsprengelRequest,
+  GetBezirksteile1Request,
+  GetKitaplanungsbereiche1Request,
+  GetGrundschulsprengel1Request,
+  GetMittelschulsprengel1Request,
+  FeatureDtoViertelDto,
+  GetViertel1Request,
+  GetViertelRequest,
 } from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import ErrorHandler from "@/mixins/requests/ErrorHandler";
@@ -101,6 +116,116 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
     return gemarkungen;
   }
 
+  async getBezirksteileForPoint(
+    point: PointGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoBezirksteilDto>> {
+    const request: GetBezirksteile1Request = { pointGeometryDto: point };
+    let bezirksteile: Array<FeatureDtoBezirksteilDto> = [];
+
+    await this.punktApi
+      .getBezirksteile1(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          bezirksteile = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return bezirksteile;
+  }
+
+  async getViertelForPoint(
+    point: PointGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoViertelDto>> {
+    const request: GetViertel1Request = { pointGeometryDto: point };
+    let viertel: Array<FeatureDtoViertelDto> = [];
+
+    await this.punktApi
+      .getViertel1(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          viertel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return viertel;
+  }
+
+  async getKitaplanungsbereicheForPoint(
+    point: PointGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoKitaplanungsbereichDto>> {
+    const request: GetKitaplanungsbereiche1Request = { pointGeometryDto: point };
+    let kitaPlb: Array<FeatureDtoKitaplanungsbereichDto> = [];
+
+    await this.punktApi
+      .getKitaplanungsbereiche1(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          kitaPlb = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return kitaPlb;
+  }
+
+  async getGrundschulsprengelForPoint(
+    point: PointGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoGrundschulsprengelDto>> {
+    const request: GetGrundschulsprengel1Request = { pointGeometryDto: point };
+    let grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> = [];
+
+    await this.punktApi
+      .getGrundschulsprengel1(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          grundschulsprengel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return grundschulsprengel;
+  }
+
+  async getMittelschulsprengelForPoint(
+    point: PointGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoMittelschulsprengelDto>> {
+    const request: GetMittelschulsprengel1Request = { pointGeometryDto: point };
+    let mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> = [];
+
+    await this.punktApi
+      .getMittelschulsprengel1(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          mittelschulsprengel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return mittelschulsprengel;
+  }
+
   async getFlurstueckeForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
     showInInformationList: boolean,
@@ -165,6 +290,116 @@ export default class GeodataEaiApiRequestMixin extends Mixins(ErrorHandler) {
       });
 
     return stadtbezirke;
+  }
+
+  async getBezirksteileForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoBezirksteilDto>> {
+    const request: GetBezirksteileRequest = { multiPolygonGeometryDto: multiPolygon };
+    let bezirksteile: Array<FeatureDtoBezirksteilDto> = [];
+
+    await this.polygonApi
+      .getBezirksteile(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          bezirksteile = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return bezirksteile;
+  }
+
+  async getViertelForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoViertelDto>> {
+    const request: GetViertelRequest = { multiPolygonGeometryDto: multiPolygon };
+    let viertel: Array<FeatureDtoViertelDto> = [];
+
+    await this.polygonApi
+      .getViertel(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          viertel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return viertel;
+  }
+
+  async getKitaplanungsbereicheForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoKitaplanungsbereichDto>> {
+    const request: GetKitaplanungsbereicheRequest = { multiPolygonGeometryDto: multiPolygon };
+    let kitaplanungsbereiche: Array<FeatureDtoKitaplanungsbereichDto> = [];
+
+    await this.polygonApi
+      .getKitaplanungsbereiche(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          kitaplanungsbereiche = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return kitaplanungsbereiche;
+  }
+
+  async getGrundschulsprengelForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoGrundschulsprengelDto>> {
+    const request: GetGrundschulsprengelRequest = { multiPolygonGeometryDto: multiPolygon };
+    let grundschulsprengel: Array<FeatureDtoGrundschulsprengelDto> = [];
+
+    await this.polygonApi
+      .getGrundschulsprengel(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          grundschulsprengel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return grundschulsprengel;
+  }
+
+  async getMittelschulsprengelForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+    showInInformationList: boolean,
+  ): Promise<Array<FeatureDtoMittelschulsprengelDto>> {
+    const request: GetMittelschulsprengelRequest = { multiPolygonGeometryDto: multiPolygon };
+    let mittelschulsprengel: Array<FeatureDtoMittelschulsprengelDto> = [];
+
+    await this.polygonApi
+      .getMittelschulsprengel(request, RequestUtils.getPOSTConfig())
+      .then((response) => {
+        if (!_.isNil(response.features)) {
+          mittelschulsprengel = response.features;
+        }
+      })
+      .catch((error) => {
+        this.handleError(showInInformationList, error);
+        throw new Error(error);
+      });
+
+    return mittelschulsprengel;
   }
 
   async getUnionOfMultipolygon(

@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FeatureDtoStadtbezirkDtoGeometry } from './FeatureDtoStadtbezirkDtoGeometry';
+import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
-    FeatureDtoStadtbezirkDtoGeometryFromJSON,
-    FeatureDtoStadtbezirkDtoGeometryFromJSONTyped,
-    FeatureDtoStadtbezirkDtoGeometryToJSON,
-} from './FeatureDtoStadtbezirkDtoGeometry';
+    FeatureDtoViertelDtoGeometryFromJSON,
+    FeatureDtoViertelDtoGeometryFromJSONTyped,
+    FeatureDtoViertelDtoGeometryToJSON,
+} from './FeatureDtoViertelDtoGeometry';
 import type { SchulstandortDto } from './SchulstandortDto';
 import {
     SchulstandortDtoFromJSON,
@@ -40,10 +40,10 @@ export interface FeatureDtoSchulstandortDto {
     type?: string;
     /**
      * 
-     * @type {FeatureDtoStadtbezirkDtoGeometry}
+     * @type {FeatureDtoViertelDtoGeometry}
      * @memberof FeatureDtoSchulstandortDto
      */
-    geometry?: FeatureDtoStadtbezirkDtoGeometry;
+    geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
      * @type {SchulstandortDto}
@@ -72,7 +72,7 @@ export function FeatureDtoSchulstandortDtoFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'type': !exists(json, 'type') ? undefined : json['type'],
-        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoStadtbezirkDtoGeometryFromJSON(json['geometry']),
+        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
         'properties': !exists(json, 'properties') ? undefined : SchulstandortDtoFromJSON(json['properties']),
     };
 }
@@ -87,7 +87,7 @@ export function FeatureDtoSchulstandortDtoToJSON(value?: FeatureDtoSchulstandort
     return {
         
         'type': value.type,
-        'geometry': FeatureDtoStadtbezirkDtoGeometryToJSON(value.geometry),
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
         'properties': SchulstandortDtoToJSON(value.properties),
     };
 }

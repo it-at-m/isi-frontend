@@ -54,7 +54,23 @@
           />
         </v-col>
       </v-row>
-      <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <reports-sobonursaechlichkeit-component
+            v-if="!isBaugenehmigungsverfahren"
+            v-model="abfragevarianteSachbearbeitung"
+          />
+        </v-col>
+      </v-row>
     </field-group-card>
     <field-group-card :card-title="bauratenDateiInputTitle">
       <bauraten-datei-input
@@ -68,6 +84,7 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import {
+  AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
@@ -80,8 +97,18 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import BauratenDateiInput from "@/components/abfragevarianten/BauratenDateiInput.vue";
+import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
-@Component({ components: { ReportsPlanungsursaechlichkeitComponent, FieldGroupCard, NumField, BauratenDateiInput } })
+@Component({
+  components: {
+    ReportsPlanungsursaechlichkeitComponent,
+    ReportsSobonursaechlichkeitComponent,
+    FieldGroupCard,
+    NumField,
+    BauratenDateiInput,
+  },
+})
 export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   FieldPrefixesSuffixes,
   FieldValidationRulesMixin,
@@ -122,6 +149,11 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       return usedRules;
     }
     return [];
+  }
+
+  get isBaugenehmigungsverfahren(): boolean {
+    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    return abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren;
   }
 }
 </script>
