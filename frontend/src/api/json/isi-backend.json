@@ -80,9 +80,7 @@
   "paths": {
     "/abfrages": {
       "get": {
-        "tags": [
-          "abfrage-entity-controller"
-        ],
+        "tags": ["abfrage-entity-controller"],
         "description": "get-abfrage",
         "operationId": "getCollectionResource-abfrage-get_1",
         "parameters": [
@@ -145,9 +143,7 @@
         }
       },
       "post": {
-        "tags": [
-          "abfrage-entity-controller"
-        ],
+        "tags": ["abfrage-entity-controller"],
         "description": "create-abfrage",
         "operationId": "postCollectionResource-abfrage-post",
         "requestBody": {
@@ -176,9 +172,7 @@
     },
     "/abfrages/search/findAllByBauvorhabenId": {
       "get": {
-        "tags": [
-          "abfrage-search-controller"
-        ],
+        "tags": ["abfrage-search-controller"],
         "operationId": "executeSearch-abfrage-get",
         "parameters": [
           {
@@ -209,9 +203,7 @@
     },
     "/abfrages/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc": {
       "get": {
-        "tags": [
-          "abfrage-search-controller"
-        ],
+        "tags": ["abfrage-search-controller"],
         "operationId": "executeSearch-abfrage-get_1",
         "parameters": [
           {
@@ -242,9 +234,7 @@
     },
     "/abfrages/search/findByNameIgnoreCase": {
       "get": {
-        "tags": [
-          "abfrage-search-controller"
-        ],
+        "tags": ["abfrage-search-controller"],
         "operationId": "executeSearch-abfrage-get_2",
         "parameters": [
           {
@@ -274,9 +264,7 @@
     },
     "/abfrages/{id}": {
       "get": {
-        "tags": [
-          "abfrage-entity-controller"
-        ],
+        "tags": ["abfrage-entity-controller"],
         "description": "get-abfrage",
         "operationId": "getItemResource-abfrage-get",
         "parameters": [
@@ -306,9 +294,7 @@
         }
       },
       "put": {
-        "tags": [
-          "abfrage-entity-controller"
-        ],
+        "tags": ["abfrage-entity-controller"],
         "description": "update-abfrage",
         "operationId": "putItemResource-abfrage-put",
         "parameters": [
@@ -358,9 +344,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "abfrage-entity-controller"
-        ],
+        "tags": ["abfrage-entity-controller"],
         "description": "delete-abfrage",
         "operationId": "deleteItemResource-abfrage-delete",
         "parameters": [
@@ -383,9 +367,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "abfrage-entity-controller"
-        ],
+        "tags": ["abfrage-entity-controller"],
         "description": "patch-abfrage",
         "operationId": "patchItemResource-abfrage-patch",
         "parameters": [
@@ -427,9 +409,7 @@
     },
     "/abfrages/{id}/bauvorhaben": {
       "get": {
-        "tags": [
-          "abfrage-property-reference-controller"
-        ],
+        "tags": ["abfrage-property-reference-controller"],
         "description": "get-bauvorhaben-by-abfrage-Id",
         "operationId": "followPropertyReference-abfrage-get_1",
         "parameters": [
@@ -464,9 +444,7 @@
         }
       },
       "put": {
-        "tags": [
-          "abfrage-property-reference-controller"
-        ],
+        "tags": ["abfrage-property-reference-controller"],
         "description": "update-bauvorhaben-by-abfrage-Id",
         "operationId": "createPropertyReference-abfrage-put",
         "parameters": [
@@ -526,9 +504,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "abfrage-property-reference-controller"
-        ],
+        "tags": ["abfrage-property-reference-controller"],
         "description": "delete-bauvorhaben-by-abfrage-Id",
         "operationId": "deletePropertyReference-abfrage-delete",
         "parameters": [
@@ -551,9 +527,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "abfrage-property-reference-controller"
-        ],
+        "tags": ["abfrage-property-reference-controller"],
         "description": "patch-bauvorhaben-by-abfrage-Id",
         "operationId": "createPropertyReference-abfrage-patch",
         "parameters": [
@@ -605,9 +579,7 @@
     },
     "/abfrages/{id}/bauvorhaben/{propertyId}": {
       "get": {
-        "tags": [
-          "abfrage-property-reference-controller"
-        ],
+        "tags": ["abfrage-property-reference-controller"],
         "description": "get-bauvorhaben-by-abfrage-Id",
         "operationId": "followPropertyReference-abfrage-get",
         "parameters": [
@@ -645,9 +617,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "abfrage-property-reference-controller"
-        ],
+        "tags": ["abfrage-property-reference-controller"],
         "description": "delete-bauvorhaben-by-abfrage-Id",
         "operationId": "deletePropertyReferenceId-abfrage-delete",
         "parameters": [
@@ -680,9 +650,7 @@
     },
     "/abfragevarianteBaugenehmigungsverfahrens": {
       "get": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-entity-controller"],
         "description": "get-abfragevariantebaugenehmigungsverfahren",
         "operationId": "getCollectionResource-abfragevariantebaugenehmigungsverfahren-get_1",
         "parameters": [
@@ -745,9 +713,7 @@
         }
       },
       "post": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-entity-controller"],
         "description": "create-abfragevariantebaugenehmigungsverfahren",
         "operationId": "postCollectionResource-abfragevariantebaugenehmigungsverfahren-post",
         "requestBody": {
@@ -776,9 +742,7 @@
     },
     "/abfragevarianteBaugenehmigungsverfahrens/search/findAbfrageIdForAbfragevarianteById": {
       "get": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-search-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-search-controller"],
         "operationId": "executeSearch-abfragevariantebaugenehmigungsverfahren-get",
         "parameters": [
           {
@@ -809,9 +773,7 @@
     },
     "/abfragevarianteBaugenehmigungsverfahrens/search/findAbfrageIdForAbfragevarianteSachbearbeitungById": {
       "get": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-search-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-search-controller"],
         "operationId": "executeSearch-abfragevariantebaugenehmigungsverfahren-get_1",
         "parameters": [
           {
@@ -842,9 +804,7 @@
     },
     "/abfragevarianteBaugenehmigungsverfahrens/{id}": {
       "get": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-entity-controller"],
         "description": "get-abfragevariantebaugenehmigungsverfahren",
         "operationId": "getItemResource-abfragevariantebaugenehmigungsverfahren-get",
         "parameters": [
@@ -874,9 +834,7 @@
         }
       },
       "put": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-entity-controller"],
         "description": "update-abfragevariantebaugenehmigungsverfahren",
         "operationId": "putItemResource-abfragevariantebaugenehmigungsverfahren-put",
         "parameters": [
@@ -926,9 +884,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-entity-controller"],
         "description": "delete-abfragevariantebaugenehmigungsverfahren",
         "operationId": "deleteItemResource-abfragevariantebaugenehmigungsverfahren-delete",
         "parameters": [
@@ -951,9 +907,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "abfragevariante-baugenehmigungsverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-baugenehmigungsverfahren-entity-controller"],
         "description": "patch-abfragevariantebaugenehmigungsverfahren",
         "operationId": "patchItemResource-abfragevariantebaugenehmigungsverfahren-patch",
         "parameters": [
@@ -995,9 +949,7 @@
     },
     "/abfragevarianteBauleitplanverfahrens": {
       "get": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-entity-controller"],
         "description": "get-abfragevariantebauleitplanverfahren",
         "operationId": "getCollectionResource-abfragevariantebauleitplanverfahren-get_1",
         "parameters": [
@@ -1060,9 +1012,7 @@
         }
       },
       "post": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-entity-controller"],
         "description": "create-abfragevariantebauleitplanverfahren",
         "operationId": "postCollectionResource-abfragevariantebauleitplanverfahren-post",
         "requestBody": {
@@ -1091,9 +1041,7 @@
     },
     "/abfragevarianteBauleitplanverfahrens/search/findAbfrageIdForAbfragevarianteById": {
       "get": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-search-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-search-controller"],
         "operationId": "executeSearch-abfragevariantebauleitplanverfahren-get",
         "parameters": [
           {
@@ -1124,9 +1072,7 @@
     },
     "/abfragevarianteBauleitplanverfahrens/search/findAbfrageIdForAbfragevarianteSachbearbeitungById": {
       "get": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-search-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-search-controller"],
         "operationId": "executeSearch-abfragevariantebauleitplanverfahren-get_1",
         "parameters": [
           {
@@ -1157,9 +1103,7 @@
     },
     "/abfragevarianteBauleitplanverfahrens/{id}": {
       "get": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-entity-controller"],
         "description": "get-abfragevariantebauleitplanverfahren",
         "operationId": "getItemResource-abfragevariantebauleitplanverfahren-get",
         "parameters": [
@@ -1189,9 +1133,7 @@
         }
       },
       "put": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-entity-controller"],
         "description": "update-abfragevariantebauleitplanverfahren",
         "operationId": "putItemResource-abfragevariantebauleitplanverfahren-put",
         "parameters": [
@@ -1241,9 +1183,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-entity-controller"],
         "description": "delete-abfragevariantebauleitplanverfahren",
         "operationId": "deleteItemResource-abfragevariantebauleitplanverfahren-delete",
         "parameters": [
@@ -1266,9 +1206,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "abfragevariante-bauleitplanverfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-bauleitplanverfahren-entity-controller"],
         "description": "patch-abfragevariantebauleitplanverfahren",
         "operationId": "patchItemResource-abfragevariantebauleitplanverfahren-patch",
         "parameters": [
@@ -1310,9 +1248,7 @@
     },
     "/abfragevarianteWeiteresVerfahrens": {
       "get": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-entity-controller"],
         "description": "get-abfragevarianteweiteresverfahren",
         "operationId": "getCollectionResource-abfragevarianteweiteresverfahren-get_1",
         "parameters": [
@@ -1375,9 +1311,7 @@
         }
       },
       "post": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-entity-controller"],
         "description": "create-abfragevarianteweiteresverfahren",
         "operationId": "postCollectionResource-abfragevarianteweiteresverfahren-post",
         "requestBody": {
@@ -1406,9 +1340,7 @@
     },
     "/abfragevarianteWeiteresVerfahrens/search/findAbfrageIdForAbfragevarianteById": {
       "get": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-search-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-search-controller"],
         "operationId": "executeSearch-abfragevarianteweiteresverfahren-get",
         "parameters": [
           {
@@ -1439,9 +1371,7 @@
     },
     "/abfragevarianteWeiteresVerfahrens/search/findAbfrageIdForAbfragevarianteSachbearbeitungById": {
       "get": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-search-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-search-controller"],
         "operationId": "executeSearch-abfragevarianteweiteresverfahren-get_1",
         "parameters": [
           {
@@ -1472,9 +1402,7 @@
     },
     "/abfragevarianteWeiteresVerfahrens/{id}": {
       "get": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-entity-controller"],
         "description": "get-abfragevarianteweiteresverfahren",
         "operationId": "getItemResource-abfragevarianteweiteresverfahren-get",
         "parameters": [
@@ -1504,9 +1432,7 @@
         }
       },
       "put": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-entity-controller"],
         "description": "update-abfragevarianteweiteresverfahren",
         "operationId": "putItemResource-abfragevarianteweiteresverfahren-put",
         "parameters": [
@@ -1556,9 +1482,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-entity-controller"],
         "description": "delete-abfragevarianteweiteresverfahren",
         "operationId": "deleteItemResource-abfragevarianteweiteresverfahren-delete",
         "parameters": [
@@ -1581,9 +1505,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "abfragevariante-weiteres-verfahren-entity-controller"
-        ],
+        "tags": ["abfragevariante-weiteres-verfahren-entity-controller"],
         "description": "patch-abfragevarianteweiteresverfahren",
         "operationId": "patchItemResource-abfragevarianteweiteresverfahren-patch",
         "parameters": [
@@ -1625,9 +1547,7 @@
     },
     "/abfragevariantes": {
       "get": {
-        "tags": [
-          "abfragevariante-entity-controller"
-        ],
+        "tags": ["abfragevariante-entity-controller"],
         "description": "get-abfragevariante",
         "operationId": "getCollectionResource-abfragevariante-get_1",
         "parameters": [
@@ -1690,9 +1610,7 @@
         }
       },
       "post": {
-        "tags": [
-          "abfragevariante-entity-controller"
-        ],
+        "tags": ["abfragevariante-entity-controller"],
         "description": "create-abfragevariante",
         "operationId": "postCollectionResource-abfragevariante-post",
         "requestBody": {
@@ -1721,9 +1639,7 @@
     },
     "/abfragevariantes/{id}": {
       "get": {
-        "tags": [
-          "abfragevariante-entity-controller"
-        ],
+        "tags": ["abfragevariante-entity-controller"],
         "description": "get-abfragevariante",
         "operationId": "getItemResource-abfragevariante-get",
         "parameters": [
@@ -1753,9 +1669,7 @@
         }
       },
       "put": {
-        "tags": [
-          "abfragevariante-entity-controller"
-        ],
+        "tags": ["abfragevariante-entity-controller"],
         "description": "update-abfragevariante",
         "operationId": "putItemResource-abfragevariante-put",
         "parameters": [
@@ -1805,9 +1719,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "abfragevariante-entity-controller"
-        ],
+        "tags": ["abfragevariante-entity-controller"],
         "description": "delete-abfragevariante",
         "operationId": "deleteItemResource-abfragevariante-delete",
         "parameters": [
@@ -1830,9 +1742,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "abfragevariante-entity-controller"
-        ],
+        "tags": ["abfragevariante-entity-controller"],
         "description": "patch-abfragevariante",
         "operationId": "patchItemResource-abfragevariante-patch",
         "parameters": [
@@ -1874,9 +1784,7 @@
     },
     "/bauvorhabens": {
       "get": {
-        "tags": [
-          "bauvorhaben-entity-controller"
-        ],
+        "tags": ["bauvorhaben-entity-controller"],
         "description": "get-bauvorhaben",
         "operationId": "getCollectionResource-bauvorhaben-get_1",
         "parameters": [
@@ -1939,9 +1847,7 @@
         }
       },
       "post": {
-        "tags": [
-          "bauvorhaben-entity-controller"
-        ],
+        "tags": ["bauvorhaben-entity-controller"],
         "description": "create-bauvorhaben",
         "operationId": "postCollectionResource-bauvorhaben-post",
         "requestBody": {
@@ -1970,9 +1876,7 @@
     },
     "/bauvorhabens/search/findAllByOrderByGrundstuecksgroesseDesc": {
       "get": {
-        "tags": [
-          "bauvorhaben-search-controller"
-        ],
+        "tags": ["bauvorhaben-search-controller"],
         "operationId": "executeSearch-bauvorhaben-get",
         "responses": {
           "200": {
@@ -1993,9 +1897,7 @@
     },
     "/bauvorhabens/search/findByNameVorhabenIgnoreCase": {
       "get": {
-        "tags": [
-          "bauvorhaben-search-controller"
-        ],
+        "tags": ["bauvorhaben-search-controller"],
         "operationId": "executeSearch-bauvorhaben-get_1",
         "parameters": [
           {
@@ -2025,9 +1927,7 @@
     },
     "/bauvorhabens/{id}": {
       "get": {
-        "tags": [
-          "bauvorhaben-entity-controller"
-        ],
+        "tags": ["bauvorhaben-entity-controller"],
         "description": "get-bauvorhaben",
         "operationId": "getItemResource-bauvorhaben-get",
         "parameters": [
@@ -2057,9 +1957,7 @@
         }
       },
       "put": {
-        "tags": [
-          "bauvorhaben-entity-controller"
-        ],
+        "tags": ["bauvorhaben-entity-controller"],
         "description": "update-bauvorhaben",
         "operationId": "putItemResource-bauvorhaben-put",
         "parameters": [
@@ -2109,9 +2007,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "bauvorhaben-entity-controller"
-        ],
+        "tags": ["bauvorhaben-entity-controller"],
         "description": "delete-bauvorhaben",
         "operationId": "deleteItemResource-bauvorhaben-delete",
         "parameters": [
@@ -2134,9 +2030,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "bauvorhaben-entity-controller"
-        ],
+        "tags": ["bauvorhaben-entity-controller"],
         "description": "patch-bauvorhaben",
         "operationId": "patchItemResource-bauvorhaben-patch",
         "parameters": [
@@ -2178,9 +2072,7 @@
     },
     "/bauvorhabens/{id}/dokumente": {
       "get": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "get-dokument-by-bauvorhaben-Id",
         "operationId": "followPropertyReference-bauvorhaben-get_1",
         "parameters": [
@@ -2215,9 +2107,7 @@
         }
       },
       "put": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "update-dokument-by-bauvorhaben-Id",
         "operationId": "createPropertyReference-bauvorhaben-put",
         "parameters": [
@@ -2277,9 +2167,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "delete-dokument-by-bauvorhaben-Id",
         "operationId": "deletePropertyReference-bauvorhaben-delete",
         "parameters": [
@@ -2302,9 +2190,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "patch-dokument-by-bauvorhaben-Id",
         "operationId": "createPropertyReference-bauvorhaben-patch",
         "parameters": [
@@ -2356,9 +2242,7 @@
     },
     "/bauvorhabens/{id}/dokumente/{propertyId}": {
       "get": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "get-dokument-by-bauvorhaben-Id",
         "operationId": "followPropertyReference-bauvorhaben-get",
         "parameters": [
@@ -2396,9 +2280,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "delete-dokument-by-bauvorhaben-Id",
         "operationId": "deletePropertyReferenceId-bauvorhaben-delete",
         "parameters": [
@@ -2431,9 +2313,7 @@
     },
     "/bauvorhabens/{id}/relevanteAbfragevariante": {
       "get": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "get-abfragevariante-by-bauvorhaben-Id",
         "operationId": "followPropertyReference-bauvorhaben-get_2_1",
         "parameters": [
@@ -2468,9 +2348,7 @@
         }
       },
       "put": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "update-abfragevariante-by-bauvorhaben-Id",
         "operationId": "createPropertyReference-bauvorhaben-put_1",
         "parameters": [
@@ -2530,9 +2408,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "delete-abfragevariante-by-bauvorhaben-Id",
         "operationId": "deletePropertyReference-bauvorhaben-delete_1",
         "parameters": [
@@ -2555,9 +2431,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "patch-abfragevariante-by-bauvorhaben-Id",
         "operationId": "createPropertyReference-bauvorhaben-patch_1",
         "parameters": [
@@ -2609,9 +2483,7 @@
     },
     "/bauvorhabens/{id}/relevanteAbfragevariante/{propertyId}": {
       "get": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "get-abfragevariante-by-bauvorhaben-Id",
         "operationId": "followPropertyReference-bauvorhaben-get_2",
         "parameters": [
@@ -2649,9 +2521,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "bauvorhaben-property-reference-controller"
-        ],
+        "tags": ["bauvorhaben-property-reference-controller"],
         "description": "delete-abfragevariante-by-bauvorhaben-Id",
         "operationId": "deletePropertyReferenceId-bauvorhaben-delete_1",
         "parameters": [
@@ -2684,9 +2554,7 @@
     },
     "/dokuments": {
       "get": {
-        "tags": [
-          "dokument-entity-controller"
-        ],
+        "tags": ["dokument-entity-controller"],
         "description": "get-dokument",
         "operationId": "getCollectionResource-dokument-get_1",
         "parameters": [
@@ -2749,9 +2617,7 @@
         }
       },
       "post": {
-        "tags": [
-          "dokument-entity-controller"
-        ],
+        "tags": ["dokument-entity-controller"],
         "description": "create-dokument",
         "operationId": "postCollectionResource-dokument-post",
         "requestBody": {
@@ -2780,9 +2646,7 @@
     },
     "/dokuments/{id}": {
       "get": {
-        "tags": [
-          "dokument-entity-controller"
-        ],
+        "tags": ["dokument-entity-controller"],
         "description": "get-dokument",
         "operationId": "getItemResource-dokument-get",
         "parameters": [
@@ -2812,9 +2676,7 @@
         }
       },
       "put": {
-        "tags": [
-          "dokument-entity-controller"
-        ],
+        "tags": ["dokument-entity-controller"],
         "description": "update-dokument",
         "operationId": "putItemResource-dokument-put",
         "parameters": [
@@ -2864,9 +2726,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "dokument-entity-controller"
-        ],
+        "tags": ["dokument-entity-controller"],
         "description": "delete-dokument",
         "operationId": "deleteItemResource-dokument-delete",
         "parameters": [
@@ -2889,9 +2749,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "dokument-entity-controller"
-        ],
+        "tags": ["dokument-entity-controller"],
         "description": "patch-dokument",
         "operationId": "patchItemResource-dokument-patch",
         "parameters": [
@@ -2933,9 +2791,7 @@
     },
     "/foerdermixStamms": {
       "get": {
-        "tags": [
-          "foerdermix-stamm-entity-controller"
-        ],
+        "tags": ["foerdermix-stamm-entity-controller"],
         "description": "get-foerdermixstamm",
         "operationId": "getCollectionResource-foerdermixstamm-get_1",
         "parameters": [
@@ -2998,9 +2854,7 @@
         }
       },
       "post": {
-        "tags": [
-          "foerdermix-stamm-entity-controller"
-        ],
+        "tags": ["foerdermix-stamm-entity-controller"],
         "description": "create-foerdermixstamm",
         "operationId": "postCollectionResource-foerdermixstamm-post",
         "requestBody": {
@@ -3029,9 +2883,7 @@
     },
     "/foerdermixStamms/search/findAllByOrderByFoerdermixBezeichnungAsc": {
       "get": {
-        "tags": [
-          "foerdermix-stamm-search-controller"
-        ],
+        "tags": ["foerdermix-stamm-search-controller"],
         "operationId": "executeSearch-foerdermixstamm-get",
         "responses": {
           "200": {
@@ -3052,9 +2904,7 @@
     },
     "/foerdermixStamms/search/findByFoerdermixBezeichnungJahrIgnoreCaseAndFoerdermixBezeichnungIgnoreCase": {
       "get": {
-        "tags": [
-          "foerdermix-stamm-search-controller"
-        ],
+        "tags": ["foerdermix-stamm-search-controller"],
         "operationId": "executeSearch-foerdermixstamm-get_1",
         "parameters": [
           {
@@ -3091,9 +2941,7 @@
     },
     "/foerdermixStamms/{id}": {
       "get": {
-        "tags": [
-          "foerdermix-stamm-entity-controller"
-        ],
+        "tags": ["foerdermix-stamm-entity-controller"],
         "description": "get-foerdermixstamm",
         "operationId": "getItemResource-foerdermixstamm-get",
         "parameters": [
@@ -3123,9 +2971,7 @@
         }
       },
       "put": {
-        "tags": [
-          "foerdermix-stamm-entity-controller"
-        ],
+        "tags": ["foerdermix-stamm-entity-controller"],
         "description": "update-foerdermixstamm",
         "operationId": "putItemResource-foerdermixstamm-put",
         "parameters": [
@@ -3175,9 +3021,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "foerdermix-stamm-entity-controller"
-        ],
+        "tags": ["foerdermix-stamm-entity-controller"],
         "description": "delete-foerdermixstamm",
         "operationId": "deleteItemResource-foerdermixstamm-delete",
         "parameters": [
@@ -3200,9 +3044,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "foerdermix-stamm-entity-controller"
-        ],
+        "tags": ["foerdermix-stamm-entity-controller"],
         "description": "patch-foerdermixstamm",
         "operationId": "patchItemResource-foerdermixstamm-patch",
         "parameters": [
@@ -3244,9 +3086,7 @@
     },
     "/globalCounters": {
       "get": {
-        "tags": [
-          "global-counter-entity-controller"
-        ],
+        "tags": ["global-counter-entity-controller"],
         "description": "get-globalcounter",
         "operationId": "getCollectionResource-globalcounter-get_1",
         "parameters": [
@@ -3309,9 +3149,7 @@
         }
       },
       "post": {
-        "tags": [
-          "global-counter-entity-controller"
-        ],
+        "tags": ["global-counter-entity-controller"],
         "description": "create-globalcounter",
         "operationId": "postCollectionResource-globalcounter-post",
         "requestBody": {
@@ -3340,9 +3178,7 @@
     },
     "/globalCounters/search/findByCounterType": {
       "get": {
-        "tags": [
-          "global-counter-search-controller"
-        ],
+        "tags": ["global-counter-search-controller"],
         "operationId": "executeSearch-globalcounter-get",
         "parameters": [
           {
@@ -3350,9 +3186,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": [
-                "NUMMER_BAUVORHABEN"
-              ]
+              "enum": ["NUMMER_BAUVORHABEN"]
             }
           }
         ],
@@ -3375,9 +3209,7 @@
     },
     "/globalCounters/{id}": {
       "get": {
-        "tags": [
-          "global-counter-entity-controller"
-        ],
+        "tags": ["global-counter-entity-controller"],
         "description": "get-globalcounter",
         "operationId": "getItemResource-globalcounter-get",
         "parameters": [
@@ -3407,9 +3239,7 @@
         }
       },
       "put": {
-        "tags": [
-          "global-counter-entity-controller"
-        ],
+        "tags": ["global-counter-entity-controller"],
         "description": "update-globalcounter",
         "operationId": "putItemResource-globalcounter-put",
         "parameters": [
@@ -3459,9 +3289,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "global-counter-entity-controller"
-        ],
+        "tags": ["global-counter-entity-controller"],
         "description": "delete-globalcounter",
         "operationId": "deleteItemResource-globalcounter-delete",
         "parameters": [
@@ -3484,9 +3312,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "global-counter-entity-controller"
-        ],
+        "tags": ["global-counter-entity-controller"],
         "description": "patch-globalcounter",
         "operationId": "patchItemResource-globalcounter-patch",
         "parameters": [
@@ -3528,9 +3354,7 @@
     },
     "/idealtypischeBaurates": {
       "get": {
-        "tags": [
-          "idealtypische-baurate-entity-controller"
-        ],
+        "tags": ["idealtypische-baurate-entity-controller"],
         "description": "get-idealtypischebaurate",
         "operationId": "getCollectionResource-idealtypischebaurate-get_1",
         "parameters": [
@@ -3593,9 +3417,7 @@
         }
       },
       "post": {
-        "tags": [
-          "idealtypische-baurate-entity-controller"
-        ],
+        "tags": ["idealtypische-baurate-entity-controller"],
         "description": "create-idealtypischebaurate",
         "operationId": "postCollectionResource-idealtypischebaurate-post",
         "requestBody": {
@@ -3624,9 +3446,7 @@
     },
     "/idealtypischeBaurates/search/findByTypAndVonLessThanEqualAndBisExklusivGreaterThan": {
       "get": {
-        "tags": [
-          "idealtypische-baurate-search-controller"
-        ],
+        "tags": ["idealtypische-baurate-search-controller"],
         "operationId": "executeSearch-idealtypischebaurate-get",
         "parameters": [
           {
@@ -3634,10 +3454,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": [
-                "ANZAHL_WOHNEINHEITEN_GESAMT",
-                "GESCHOSSFLAECHE_WOHNEN_GESAMT"
-              ]
+              "enum": ["ANZAHL_WOHNEINHEITEN_GESAMT", "GESCHOSSFLAECHE_WOHNEN_GESAMT"]
             }
           },
           {
@@ -3674,9 +3491,7 @@
     },
     "/idealtypischeBaurates/{id}": {
       "get": {
-        "tags": [
-          "idealtypische-baurate-entity-controller"
-        ],
+        "tags": ["idealtypische-baurate-entity-controller"],
         "description": "get-idealtypischebaurate",
         "operationId": "getItemResource-idealtypischebaurate-get",
         "parameters": [
@@ -3706,9 +3521,7 @@
         }
       },
       "put": {
-        "tags": [
-          "idealtypische-baurate-entity-controller"
-        ],
+        "tags": ["idealtypische-baurate-entity-controller"],
         "description": "update-idealtypischebaurate",
         "operationId": "putItemResource-idealtypischebaurate-put",
         "parameters": [
@@ -3758,9 +3571,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "idealtypische-baurate-entity-controller"
-        ],
+        "tags": ["idealtypische-baurate-entity-controller"],
         "description": "delete-idealtypischebaurate",
         "operationId": "deleteItemResource-idealtypischebaurate-delete",
         "parameters": [
@@ -3783,9 +3594,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "idealtypische-baurate-entity-controller"
-        ],
+        "tags": ["idealtypische-baurate-entity-controller"],
         "description": "patch-idealtypischebaurate",
         "operationId": "patchItemResource-idealtypischebaurate-patch",
         "parameters": [
@@ -3827,9 +3636,7 @@
     },
     "/infrastruktureinrichtungs": {
       "get": {
-        "tags": [
-          "infrastruktureinrichtung-entity-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-entity-controller"],
         "description": "get-infrastruktureinrichtung",
         "operationId": "getCollectionResource-infrastruktureinrichtung-get_1",
         "parameters": [
@@ -3892,9 +3699,7 @@
         }
       },
       "post": {
-        "tags": [
-          "infrastruktureinrichtung-entity-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-entity-controller"],
         "description": "create-infrastruktureinrichtung",
         "operationId": "postCollectionResource-infrastruktureinrichtung-post",
         "requestBody": {
@@ -3923,9 +3728,7 @@
     },
     "/infrastruktureinrichtungs/search/findAllByBauvorhabenId": {
       "get": {
-        "tags": [
-          "infrastruktureinrichtung-search-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-search-controller"],
         "operationId": "executeSearch-infrastruktureinrichtung-get",
         "parameters": [
           {
@@ -3956,9 +3759,7 @@
     },
     "/infrastruktureinrichtungs/{id}": {
       "get": {
-        "tags": [
-          "infrastruktureinrichtung-entity-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-entity-controller"],
         "description": "get-infrastruktureinrichtung",
         "operationId": "getItemResource-infrastruktureinrichtung-get",
         "parameters": [
@@ -3988,9 +3789,7 @@
         }
       },
       "put": {
-        "tags": [
-          "infrastruktureinrichtung-entity-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-entity-controller"],
         "description": "update-infrastruktureinrichtung",
         "operationId": "putItemResource-infrastruktureinrichtung-put",
         "parameters": [
@@ -4040,9 +3839,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "infrastruktureinrichtung-entity-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-entity-controller"],
         "description": "delete-infrastruktureinrichtung",
         "operationId": "deleteItemResource-infrastruktureinrichtung-delete",
         "parameters": [
@@ -4065,9 +3862,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "infrastruktureinrichtung-entity-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-entity-controller"],
         "description": "patch-infrastruktureinrichtung",
         "operationId": "patchItemResource-infrastruktureinrichtung-patch",
         "parameters": [
@@ -4109,9 +3904,7 @@
     },
     "/infrastruktureinrichtungs/{id}/bauvorhaben": {
       "get": {
-        "tags": [
-          "infrastruktureinrichtung-property-reference-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-property-reference-controller"],
         "description": "get-bauvorhaben-by-infrastruktureinrichtung-Id",
         "operationId": "followPropertyReference-infrastruktureinrichtung-get_1",
         "parameters": [
@@ -4146,9 +3939,7 @@
         }
       },
       "put": {
-        "tags": [
-          "infrastruktureinrichtung-property-reference-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-property-reference-controller"],
         "description": "update-bauvorhaben-by-infrastruktureinrichtung-Id",
         "operationId": "createPropertyReference-infrastruktureinrichtung-put",
         "parameters": [
@@ -4208,9 +3999,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "infrastruktureinrichtung-property-reference-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-property-reference-controller"],
         "description": "delete-bauvorhaben-by-infrastruktureinrichtung-Id",
         "operationId": "deletePropertyReference-infrastruktureinrichtung-delete",
         "parameters": [
@@ -4233,9 +4022,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "infrastruktureinrichtung-property-reference-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-property-reference-controller"],
         "description": "patch-bauvorhaben-by-infrastruktureinrichtung-Id",
         "operationId": "createPropertyReference-infrastruktureinrichtung-patch",
         "parameters": [
@@ -4287,9 +4074,7 @@
     },
     "/infrastruktureinrichtungs/{id}/bauvorhaben/{propertyId}": {
       "get": {
-        "tags": [
-          "infrastruktureinrichtung-property-reference-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-property-reference-controller"],
         "description": "get-bauvorhaben-by-infrastruktureinrichtung-Id",
         "operationId": "followPropertyReference-infrastruktureinrichtung-get",
         "parameters": [
@@ -4327,9 +4112,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "infrastruktureinrichtung-property-reference-controller"
-        ],
+        "tags": ["infrastruktureinrichtung-property-reference-controller"],
         "description": "delete-bauvorhaben-by-infrastruktureinrichtung-Id",
         "operationId": "deletePropertyReferenceId-infrastruktureinrichtung-delete",
         "parameters": [
@@ -4362,9 +4145,7 @@
     },
     "/kommentars": {
       "get": {
-        "tags": [
-          "kommentar-entity-controller"
-        ],
+        "tags": ["kommentar-entity-controller"],
         "description": "get-kommentar",
         "operationId": "getCollectionResource-kommentar-get_1",
         "parameters": [
@@ -4427,9 +4208,7 @@
         }
       },
       "post": {
-        "tags": [
-          "kommentar-entity-controller"
-        ],
+        "tags": ["kommentar-entity-controller"],
         "description": "create-kommentar",
         "operationId": "postCollectionResource-kommentar-post",
         "requestBody": {
@@ -4458,9 +4237,7 @@
     },
     "/kommentars/search/deleteAllByBauvorhabenId": {
       "get": {
-        "tags": [
-          "kommentar-search-controller"
-        ],
+        "tags": ["kommentar-search-controller"],
         "operationId": "executeSearch-kommentar-get",
         "parameters": [
           {
@@ -4484,9 +4261,7 @@
     },
     "/kommentars/search/deleteAllByInfrastruktureinrichtungId": {
       "get": {
-        "tags": [
-          "kommentar-search-controller"
-        ],
+        "tags": ["kommentar-search-controller"],
         "operationId": "executeSearch-kommentar-get_1",
         "parameters": [
           {
@@ -4510,9 +4285,7 @@
     },
     "/kommentars/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc": {
       "get": {
-        "tags": [
-          "kommentar-search-controller"
-        ],
+        "tags": ["kommentar-search-controller"],
         "operationId": "executeSearch-kommentar-get_2",
         "parameters": [
           {
@@ -4543,9 +4316,7 @@
     },
     "/kommentars/search/findAllByInfrastruktureinrichtungIdOrderByCreatedDateTimeDesc": {
       "get": {
-        "tags": [
-          "kommentar-search-controller"
-        ],
+        "tags": ["kommentar-search-controller"],
         "operationId": "executeSearch-kommentar-get_3",
         "parameters": [
           {
@@ -4576,9 +4347,7 @@
     },
     "/kommentars/{id}": {
       "get": {
-        "tags": [
-          "kommentar-entity-controller"
-        ],
+        "tags": ["kommentar-entity-controller"],
         "description": "get-kommentar",
         "operationId": "getItemResource-kommentar-get",
         "parameters": [
@@ -4608,9 +4377,7 @@
         }
       },
       "put": {
-        "tags": [
-          "kommentar-entity-controller"
-        ],
+        "tags": ["kommentar-entity-controller"],
         "description": "update-kommentar",
         "operationId": "putItemResource-kommentar-put",
         "parameters": [
@@ -4660,9 +4427,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "kommentar-entity-controller"
-        ],
+        "tags": ["kommentar-entity-controller"],
         "description": "delete-kommentar",
         "operationId": "deleteItemResource-kommentar-delete",
         "parameters": [
@@ -4685,9 +4450,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "kommentar-entity-controller"
-        ],
+        "tags": ["kommentar-entity-controller"],
         "description": "patch-kommentar",
         "operationId": "patchItemResource-kommentar-patch",
         "parameters": [
@@ -4729,9 +4492,7 @@
     },
     "/kommentars/{id}/bauvorhaben": {
       "get": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "get-bauvorhaben-by-kommentar-Id",
         "operationId": "followPropertyReference-kommentar-get_1",
         "parameters": [
@@ -4766,9 +4527,7 @@
         }
       },
       "put": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "update-bauvorhaben-by-kommentar-Id",
         "operationId": "createPropertyReference-kommentar-put",
         "parameters": [
@@ -4828,9 +4587,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "delete-bauvorhaben-by-kommentar-Id",
         "operationId": "deletePropertyReference-kommentar-delete",
         "parameters": [
@@ -4853,9 +4610,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "patch-bauvorhaben-by-kommentar-Id",
         "operationId": "createPropertyReference-kommentar-patch",
         "parameters": [
@@ -4907,9 +4662,7 @@
     },
     "/kommentars/{id}/bauvorhaben/{propertyId}": {
       "get": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "get-bauvorhaben-by-kommentar-Id",
         "operationId": "followPropertyReference-kommentar-get",
         "parameters": [
@@ -4947,9 +4700,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "delete-bauvorhaben-by-kommentar-Id",
         "operationId": "deletePropertyReferenceId-kommentar-delete",
         "parameters": [
@@ -4982,9 +4733,7 @@
     },
     "/kommentars/{id}/dokumente": {
       "get": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "get-dokument-by-kommentar-Id",
         "operationId": "followPropertyReference-kommentar-get_2_1",
         "parameters": [
@@ -5019,9 +4768,7 @@
         }
       },
       "put": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "update-dokument-by-kommentar-Id",
         "operationId": "createPropertyReference-kommentar-put_1",
         "parameters": [
@@ -5081,9 +4828,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "delete-dokument-by-kommentar-Id",
         "operationId": "deletePropertyReference-kommentar-delete_1",
         "parameters": [
@@ -5106,9 +4851,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "patch-dokument-by-kommentar-Id",
         "operationId": "createPropertyReference-kommentar-patch_1",
         "parameters": [
@@ -5160,9 +4903,7 @@
     },
     "/kommentars/{id}/dokumente/{propertyId}": {
       "get": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "get-dokument-by-kommentar-Id",
         "operationId": "followPropertyReference-kommentar-get_2",
         "parameters": [
@@ -5200,9 +4941,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "delete-dokument-by-kommentar-Id",
         "operationId": "deletePropertyReferenceId-kommentar-delete_1",
         "parameters": [
@@ -5235,9 +4974,7 @@
     },
     "/kommentars/{id}/infrastruktureinrichtung": {
       "get": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "get-infrastruktureinrichtung-by-kommentar-Id",
         "operationId": "followPropertyReference-kommentar-get_3_1",
         "parameters": [
@@ -5272,9 +5009,7 @@
         }
       },
       "put": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "update-infrastruktureinrichtung-by-kommentar-Id",
         "operationId": "createPropertyReference-kommentar-put_2",
         "parameters": [
@@ -5334,9 +5069,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "delete-infrastruktureinrichtung-by-kommentar-Id",
         "operationId": "deletePropertyReference-kommentar-delete_2",
         "parameters": [
@@ -5359,9 +5092,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "patch-infrastruktureinrichtung-by-kommentar-Id",
         "operationId": "createPropertyReference-kommentar-patch_2",
         "parameters": [
@@ -5413,9 +5144,7 @@
     },
     "/kommentars/{id}/infrastruktureinrichtung/{propertyId}": {
       "get": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "get-infrastruktureinrichtung-by-kommentar-Id",
         "operationId": "followPropertyReference-kommentar-get_3",
         "parameters": [
@@ -5453,9 +5182,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "kommentar-property-reference-controller"
-        ],
+        "tags": ["kommentar-property-reference-controller"],
         "description": "delete-infrastruktureinrichtung-by-kommentar-Id",
         "operationId": "deletePropertyReferenceId-kommentar-delete_2",
         "parameters": [
@@ -5488,9 +5215,7 @@
     },
     "/profile": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "listAllFormsOfMetadata_1",
         "responses": {
           "200": {
@@ -5508,9 +5233,7 @@
     },
     "/profile/abfrages": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_1",
         "responses": {
           "200": {
@@ -5538,9 +5261,7 @@
     },
     "/profile/abfragevarianteBaugenehmigungsverfahrens": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_2",
         "responses": {
           "200": {
@@ -5568,9 +5289,7 @@
     },
     "/profile/abfragevarianteBauleitplanverfahrens": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_3",
         "responses": {
           "200": {
@@ -5598,9 +5317,7 @@
     },
     "/profile/abfragevarianteWeiteresVerfahrens": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_4",
         "responses": {
           "200": {
@@ -5628,9 +5345,7 @@
     },
     "/profile/abfragevariantes": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_5",
         "responses": {
           "200": {
@@ -5658,9 +5373,7 @@
     },
     "/profile/bauvorhabens": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_6",
         "responses": {
           "200": {
@@ -5688,9 +5401,7 @@
     },
     "/profile/dokuments": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_7",
         "responses": {
           "200": {
@@ -5718,9 +5429,7 @@
     },
     "/profile/foerdermixStamms": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_8",
         "responses": {
           "200": {
@@ -5748,9 +5457,7 @@
     },
     "/profile/globalCounters": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_9",
         "responses": {
           "200": {
@@ -5778,9 +5485,7 @@
     },
     "/profile/idealtypischeBaurates": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_10",
         "responses": {
           "200": {
@@ -5808,9 +5513,7 @@
     },
     "/profile/infrastruktureinrichtungs": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_11",
         "responses": {
           "200": {
@@ -5838,9 +5541,7 @@
     },
     "/profile/kommentars": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_12",
         "responses": {
           "200": {
@@ -5868,9 +5569,7 @@
     },
     "/profile/sobonOrientierungswertSozialeInfrastrukturs": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_13",
         "responses": {
           "200": {
@@ -5898,9 +5597,7 @@
     },
     "/profile/staedtebaulicheOrientierungswerts": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_14",
         "responses": {
           "200": {
@@ -5928,9 +5625,7 @@
     },
     "/profile/umlegungFoerderartens": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_15",
         "responses": {
           "200": {
@@ -5958,9 +5653,7 @@
     },
     "/profile/versorgungsquoteGruppenstaerkes": {
       "get": {
-        "tags": [
-          "profile-controller"
-        ],
+        "tags": ["profile-controller"],
         "operationId": "descriptor_1_1_16",
         "responses": {
           "200": {
@@ -5988,9 +5681,7 @@
     },
     "/sobonOrientierungswertSozialeInfrastrukturs": {
       "get": {
-        "tags": [
-          "sobon-orientierungswert-soziale-infrastruktur-entity-controller"
-        ],
+        "tags": ["sobon-orientierungswert-soziale-infrastruktur-entity-controller"],
         "description": "get-sobonorientierungswertsozialeinfrastruktur",
         "operationId": "getCollectionResource-sobonorientierungswertsozialeinfrastruktur-get_1",
         "parameters": [
@@ -6053,9 +5744,7 @@
         }
       },
       "post": {
-        "tags": [
-          "sobon-orientierungswert-soziale-infrastruktur-entity-controller"
-        ],
+        "tags": ["sobon-orientierungswert-soziale-infrastruktur-entity-controller"],
         "description": "create-sobonorientierungswertsozialeinfrastruktur",
         "operationId": "postCollectionResource-sobonorientierungswertsozialeinfrastruktur-post",
         "requestBody": {
@@ -6084,9 +5773,7 @@
     },
     "/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc": {
       "get": {
-        "tags": [
-          "sobon-orientierungswert-soziale-infrastruktur-search-controller"
-        ],
+        "tags": ["sobon-orientierungswert-soziale-infrastruktur-search-controller"],
         "operationId": "executeSearch-sobonorientierungswertsozialeinfrastruktur-get",
         "parameters": [
           {
@@ -6140,9 +5827,7 @@
     },
     "/sobonOrientierungswertSozialeInfrastrukturs/{id}": {
       "get": {
-        "tags": [
-          "sobon-orientierungswert-soziale-infrastruktur-entity-controller"
-        ],
+        "tags": ["sobon-orientierungswert-soziale-infrastruktur-entity-controller"],
         "description": "get-sobonorientierungswertsozialeinfrastruktur",
         "operationId": "getItemResource-sobonorientierungswertsozialeinfrastruktur-get",
         "parameters": [
@@ -6172,9 +5857,7 @@
         }
       },
       "put": {
-        "tags": [
-          "sobon-orientierungswert-soziale-infrastruktur-entity-controller"
-        ],
+        "tags": ["sobon-orientierungswert-soziale-infrastruktur-entity-controller"],
         "description": "update-sobonorientierungswertsozialeinfrastruktur",
         "operationId": "putItemResource-sobonorientierungswertsozialeinfrastruktur-put",
         "parameters": [
@@ -6224,9 +5907,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "sobon-orientierungswert-soziale-infrastruktur-entity-controller"
-        ],
+        "tags": ["sobon-orientierungswert-soziale-infrastruktur-entity-controller"],
         "description": "delete-sobonorientierungswertsozialeinfrastruktur",
         "operationId": "deleteItemResource-sobonorientierungswertsozialeinfrastruktur-delete",
         "parameters": [
@@ -6249,9 +5930,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "sobon-orientierungswert-soziale-infrastruktur-entity-controller"
-        ],
+        "tags": ["sobon-orientierungswert-soziale-infrastruktur-entity-controller"],
         "description": "patch-sobonorientierungswertsozialeinfrastruktur",
         "operationId": "patchItemResource-sobonorientierungswertsozialeinfrastruktur-patch",
         "parameters": [
@@ -6293,9 +5972,7 @@
     },
     "/staedtebaulicheOrientierungswerts": {
       "get": {
-        "tags": [
-          "staedtebauliche-orientierungswert-entity-controller"
-        ],
+        "tags": ["staedtebauliche-orientierungswert-entity-controller"],
         "description": "get-staedtebaulicheorientierungswert",
         "operationId": "getCollectionResource-staedtebaulicheorientierungswert-get_1",
         "parameters": [
@@ -6358,9 +6035,7 @@
         }
       },
       "post": {
-        "tags": [
-          "staedtebauliche-orientierungswert-entity-controller"
-        ],
+        "tags": ["staedtebauliche-orientierungswert-entity-controller"],
         "description": "create-staedtebaulicheorientierungswert",
         "operationId": "postCollectionResource-staedtebaulicheorientierungswert-post",
         "requestBody": {
@@ -6389,9 +6064,7 @@
     },
     "/staedtebaulicheOrientierungswerts/search/findFirstByFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc": {
       "get": {
-        "tags": [
-          "staedtebauliche-orientierungswert-search-controller"
-        ],
+        "tags": ["staedtebauliche-orientierungswert-search-controller"],
         "operationId": "executeSearch-staedtebaulicheorientierungswert-get",
         "parameters": [
           {
@@ -6429,9 +6102,7 @@
     },
     "/staedtebaulicheOrientierungswerts/{id}": {
       "get": {
-        "tags": [
-          "staedtebauliche-orientierungswert-entity-controller"
-        ],
+        "tags": ["staedtebauliche-orientierungswert-entity-controller"],
         "description": "get-staedtebaulicheorientierungswert",
         "operationId": "getItemResource-staedtebaulicheorientierungswert-get",
         "parameters": [
@@ -6461,9 +6132,7 @@
         }
       },
       "put": {
-        "tags": [
-          "staedtebauliche-orientierungswert-entity-controller"
-        ],
+        "tags": ["staedtebauliche-orientierungswert-entity-controller"],
         "description": "update-staedtebaulicheorientierungswert",
         "operationId": "putItemResource-staedtebaulicheorientierungswert-put",
         "parameters": [
@@ -6513,9 +6182,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "staedtebauliche-orientierungswert-entity-controller"
-        ],
+        "tags": ["staedtebauliche-orientierungswert-entity-controller"],
         "description": "delete-staedtebaulicheorientierungswert",
         "operationId": "deleteItemResource-staedtebaulicheorientierungswert-delete",
         "parameters": [
@@ -6538,9 +6205,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "staedtebauliche-orientierungswert-entity-controller"
-        ],
+        "tags": ["staedtebauliche-orientierungswert-entity-controller"],
         "description": "patch-staedtebaulicheorientierungswert",
         "operationId": "patchItemResource-staedtebaulicheorientierungswert-patch",
         "parameters": [
@@ -6582,9 +6247,7 @@
     },
     "/umlegungFoerderartens": {
       "get": {
-        "tags": [
-          "umlegung-foerderarten-entity-controller"
-        ],
+        "tags": ["umlegung-foerderarten-entity-controller"],
         "description": "get-umlegungfoerderarten",
         "operationId": "getCollectionResource-umlegungfoerderarten-get_1",
         "parameters": [
@@ -6647,9 +6310,7 @@
         }
       },
       "post": {
-        "tags": [
-          "umlegung-foerderarten-entity-controller"
-        ],
+        "tags": ["umlegung-foerderarten-entity-controller"],
         "description": "create-umlegungfoerderarten",
         "operationId": "postCollectionResource-umlegungfoerderarten-post",
         "requestBody": {
@@ -6678,9 +6339,7 @@
     },
     "/umlegungFoerderartens/search/findFirstByBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc": {
       "get": {
-        "tags": [
-          "umlegung-foerderarten-search-controller"
-        ],
+        "tags": ["umlegung-foerderarten-search-controller"],
         "operationId": "executeSearch-umlegungfoerderarten-get",
         "parameters": [
           {
@@ -6718,9 +6377,7 @@
     },
     "/umlegungFoerderartens/{id}": {
       "get": {
-        "tags": [
-          "umlegung-foerderarten-entity-controller"
-        ],
+        "tags": ["umlegung-foerderarten-entity-controller"],
         "description": "get-umlegungfoerderarten",
         "operationId": "getItemResource-umlegungfoerderarten-get",
         "parameters": [
@@ -6750,9 +6407,7 @@
         }
       },
       "put": {
-        "tags": [
-          "umlegung-foerderarten-entity-controller"
-        ],
+        "tags": ["umlegung-foerderarten-entity-controller"],
         "description": "update-umlegungfoerderarten",
         "operationId": "putItemResource-umlegungfoerderarten-put",
         "parameters": [
@@ -6802,9 +6457,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "umlegung-foerderarten-entity-controller"
-        ],
+        "tags": ["umlegung-foerderarten-entity-controller"],
         "description": "delete-umlegungfoerderarten",
         "operationId": "deleteItemResource-umlegungfoerderarten-delete",
         "parameters": [
@@ -6827,9 +6480,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "umlegung-foerderarten-entity-controller"
-        ],
+        "tags": ["umlegung-foerderarten-entity-controller"],
         "description": "patch-umlegungfoerderarten",
         "operationId": "patchItemResource-umlegungfoerderarten-patch",
         "parameters": [
@@ -6871,9 +6522,7 @@
     },
     "/versorgungsquoteGruppenstaerkes": {
       "get": {
-        "tags": [
-          "versorgungsquote-gruppenstaerke-entity-controller"
-        ],
+        "tags": ["versorgungsquote-gruppenstaerke-entity-controller"],
         "description": "get-versorgungsquotegruppenstaerke",
         "operationId": "getCollectionResource-versorgungsquotegruppenstaerke-get_1",
         "parameters": [
@@ -6936,9 +6585,7 @@
         }
       },
       "post": {
-        "tags": [
-          "versorgungsquote-gruppenstaerke-entity-controller"
-        ],
+        "tags": ["versorgungsquote-gruppenstaerke-entity-controller"],
         "description": "create-versorgungsquotegruppenstaerke",
         "operationId": "postCollectionResource-versorgungsquotegruppenstaerke-post",
         "requestBody": {
@@ -6967,9 +6614,7 @@
     },
     "/versorgungsquoteGruppenstaerkes/search/findFirstByInfrastruktureinrichtungTypAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc": {
       "get": {
-        "tags": [
-          "versorgungsquote-gruppenstaerke-search-controller"
-        ],
+        "tags": ["versorgungsquote-gruppenstaerke-search-controller"],
         "operationId": "executeSearch-versorgungsquotegruppenstaerke-get",
         "parameters": [
           {
@@ -7016,9 +6661,7 @@
     },
     "/versorgungsquoteGruppenstaerkes/{id}": {
       "get": {
-        "tags": [
-          "versorgungsquote-gruppenstaerke-entity-controller"
-        ],
+        "tags": ["versorgungsquote-gruppenstaerke-entity-controller"],
         "description": "get-versorgungsquotegruppenstaerke",
         "operationId": "getItemResource-versorgungsquotegruppenstaerke-get",
         "parameters": [
@@ -7048,9 +6691,7 @@
         }
       },
       "put": {
-        "tags": [
-          "versorgungsquote-gruppenstaerke-entity-controller"
-        ],
+        "tags": ["versorgungsquote-gruppenstaerke-entity-controller"],
         "description": "update-versorgungsquotegruppenstaerke",
         "operationId": "putItemResource-versorgungsquotegruppenstaerke-put",
         "parameters": [
@@ -7100,9 +6741,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "versorgungsquote-gruppenstaerke-entity-controller"
-        ],
+        "tags": ["versorgungsquote-gruppenstaerke-entity-controller"],
         "description": "delete-versorgungsquotegruppenstaerke",
         "operationId": "deleteItemResource-versorgungsquotegruppenstaerke-delete",
         "parameters": [
@@ -7125,9 +6764,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "versorgungsquote-gruppenstaerke-entity-controller"
-        ],
+        "tags": ["versorgungsquote-gruppenstaerke-entity-controller"],
         "description": "patch-versorgungsquotegruppenstaerke",
         "operationId": "patchItemResource-versorgungsquotegruppenstaerke-patch",
         "parameters": [
@@ -7169,9 +6806,7 @@
     },
     "/stammdaten/foerdermix": {
       "get": {
-        "tags": [
-          "FoerdermixStamm"
-        ],
+        "tags": ["FoerdermixStamm"],
         "summary": "Lade alle Fördermix Stammdaten",
         "description": "Das Ergebnis wird nach der Bezeichnung aufsteigend sortiert",
         "operationId": "getFoerdermixStaemme",
@@ -7192,9 +6827,7 @@
         }
       },
       "put": {
-        "tags": [
-          "FoerdermixStamm"
-        ],
+        "tags": ["FoerdermixStamm"],
         "summary": "Aktualisierung eines FoerdermixStamm",
         "operationId": "updateFoerdermixStamm",
         "requestBody": {
@@ -7251,9 +6884,7 @@
         }
       },
       "post": {
-        "tags": [
-          "FoerdermixStamm"
-        ],
+        "tags": ["FoerdermixStamm"],
         "summary": "Anlegen eines FoerdermixStamm",
         "operationId": "saveFoerdermixStamm",
         "requestBody": {
@@ -7312,9 +6943,7 @@
     },
     "/kommentar": {
       "put": {
-        "tags": [
-          "Kommentare"
-        ],
+        "tags": ["Kommentare"],
         "summary": "Aktualisierung eines Kommentars",
         "operationId": "updateKommentar",
         "requestBody": {
@@ -7371,9 +7000,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Kommentare"
-        ],
+        "tags": ["Kommentare"],
         "summary": "Anlegen eines neuen Kommentars",
         "operationId": "createKommentar",
         "requestBody": {
@@ -7422,9 +7049,7 @@
     },
     "/infrastruktureinrichtung": {
       "put": {
-        "tags": [
-          "Infrastruktureinrichtung"
-        ],
+        "tags": ["Infrastruktureinrichtung"],
         "summary": "Aktualisierung einer Infrastruktureinrichtung",
         "operationId": "updateInfrastruktureinrichtung",
         "requestBody": {
@@ -7519,9 +7144,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Infrastruktureinrichtung"
-        ],
+        "tags": ["Infrastruktureinrichtung"],
         "summary": "Anlegen einer neuen Infrastruktureinrichtung",
         "operationId": "createInfrastruktureinrichtung",
         "requestBody": {
@@ -7608,9 +7231,7 @@
     },
     "/bauvorhaben": {
       "put": {
-        "tags": [
-          "Bauvorhaben"
-        ],
+        "tags": ["Bauvorhaben"],
         "summary": "Aktualisierung eines Bauvorhabens",
         "operationId": "updateBauvorhaben",
         "requestBody": {
@@ -7687,9 +7308,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Bauvorhaben"
-        ],
+        "tags": ["Bauvorhaben"],
         "summary": "Anlegen eines neuen Bauvorhabens",
         "operationId": "createBauvorhaben",
         "parameters": [
@@ -7779,9 +7398,7 @@
     },
     "/bauvorhaben/change-relevante-abfragevariante": {
       "put": {
-        "tags": [
-          "Bauvorhaben"
-        ],
+        "tags": ["Bauvorhaben"],
         "summary": "Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#IN_BEARBEITUNG_SACHBEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.",
         "operationId": "putChangeRelevanteAbfragevariante",
         "parameters": [
@@ -7861,9 +7478,7 @@
     },
     "/abfrage-status/{id}/zurueck-an-sachbearbeitung": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG",
         "operationId": "zurueckAnSachbearbeitungAbfrage",
         "parameters": [
@@ -7925,9 +7540,7 @@
     },
     "/abfrage-status/{id}/zurueck-an-abfrageerstellung": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status ANGELEGT",
         "operationId": "zurueckAnAbfrageerstellungAbfrage",
         "parameters": [
@@ -7989,9 +7602,7 @@
     },
     "/abfrage-status/{id}/verschicken-der-stellungnahme": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status IN_BEARBEITUNG_FACHREFERATE",
         "operationId": "verschickenDerStellungnahme",
         "parameters": [
@@ -8053,9 +7664,7 @@
     },
     "/abfrage-status/{id}/in-bearbeitung-setzen": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG",
         "operationId": "inBearbeitungSetzenAbfrage",
         "parameters": [
@@ -8117,9 +7726,7 @@
     },
     "/abfrage-status/{id}/freigabe": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status OFFEN",
         "operationId": "freigabeAbfrage",
         "parameters": [
@@ -8181,9 +7788,7 @@
     },
     "/abfrage-status/{id}/erneute-bearbeitung-sachbearbeitung": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG",
         "operationId": "erneuteBearbeitungSachbearbeitung",
         "parameters": [
@@ -8245,9 +7850,7 @@
     },
     "/abfrage-status/{id}/erledigt-ohne-fachreferat": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT",
         "operationId": "erledigtOhneFachreferat",
         "parameters": [
@@ -8309,9 +7912,7 @@
     },
     "/abfrage-status/{id}/erledigt-mit-fachreferat": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT",
         "operationId": "erledigtMitFachreferat",
         "parameters": [
@@ -8373,9 +7974,7 @@
     },
     "/abfrage-status/{id}/bedarfsmeldung-erfolgt": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status BEDARFSMELDUNG_ERFOLGT",
         "operationId": "bedarfsmeldungErfolgt",
         "parameters": [
@@ -8437,9 +8036,7 @@
     },
     "/abfrage-status/{id}/abbrechen": {
       "put": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Setzt eine Abfrage auf den Status ABBRUCH",
         "operationId": "abbrechenAbfrage",
         "parameters": [
@@ -8501,9 +8098,7 @@
     },
     "/wgs-to-utm": {
       "post": {
-        "tags": [
-          "Koordinaten"
-        ],
+        "tags": ["Koordinaten"],
         "summary": "Umrechnung Wgs84 zu UTM",
         "operationId": "wgs84toUtm32",
         "requestBody": {
@@ -8542,9 +8137,7 @@
     },
     "/utm-to-wgs": {
       "post": {
-        "tags": [
-          "Koordinaten"
-        ],
+        "tags": ["Koordinaten"],
         "summary": "Umrechnung UTM32 zu WGS84",
         "operationId": "utm32ToWgs84",
         "requestBody": {
@@ -8583,18 +8176,14 @@
     },
     "/stammdaten/staedtebauliche-orientierungswerte/import": {
       "post": {
-        "tags": [
-          "Stammdaten"
-        ],
+        "tags": ["Stammdaten"],
         "summary": "Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.",
         "operationId": "importStaedtebaulicheOrientierungswerte",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object",
                 "properties": {
                   "file": {
@@ -8636,18 +8225,14 @@
     },
     "/stammdaten/sobon-orientierungswerte-soziale-infrastruktur/import": {
       "post": {
-        "tags": [
-          "Stammdaten"
-        ],
+        "tags": ["Stammdaten"],
         "summary": "Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.",
         "operationId": "importSoBoNOrientierungswerteSozialeInfrastruktur",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object",
                 "properties": {
                   "file": {
@@ -8689,9 +8274,7 @@
     },
     "/search/searchword-suggestion": {
       "post": {
-        "tags": [
-          "Suche"
-        ],
+        "tags": ["Suche"],
         "summary": "Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchanfrage.",
         "operationId": "searchForSearchwordSuggestion",
         "requestBody": {
@@ -8730,9 +8313,7 @@
     },
     "/search/entities": {
       "post": {
-        "tags": [
-          "Suche"
-        ],
+        "tags": ["Suche"],
         "summary": "Suche nach Entitäten für die im Request-Body gegebene Suchanfrage.",
         "operationId": "searchForEntities",
         "requestBody": {
@@ -8771,9 +8352,7 @@
     },
     "/presigned-url": {
       "get": {
-        "tags": [
-          "Dateihandling"
-        ],
+        "tags": ["Dateihandling"],
         "summary": "Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.",
         "description": "Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.",
         "operationId": "getFile",
@@ -8833,9 +8412,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Dateihandling"
-        ],
+        "tags": ["Dateihandling"],
         "summary": "Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.",
         "description": "Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.",
         "operationId": "saveFile",
@@ -8895,9 +8472,7 @@
     },
     "/mime-type": {
       "post": {
-        "tags": [
-          "MimeType"
-        ],
+        "tags": ["MimeType"],
         "summary": "Stellt die Mime-Type-Information für die im Parameter referenzierte und im S3-Storage befindliche Datei zur Verfügung.",
         "description": "Handelt es sich um einen ungültigen Mime-Type wird die referenzierte Datei vom S3-Storage gelöscht.",
         "operationId": "extractMediaTypeInformationForAllowedMediaType",
@@ -8947,9 +8522,7 @@
     },
     "/abfrage": {
       "post": {
-        "tags": [
-          "Abfragen"
-        ],
+        "tags": ["Abfragen"],
         "summary": "Anlegen einer neuen Abfrage",
         "operationId": "save",
         "requestBody": {
@@ -9038,9 +8611,7 @@
     },
     "/abfrage/in-bearbeitung-sachbearbeitung/{id}": {
       "patch": {
-        "tags": [
-          "Abfragen"
-        ],
+        "tags": ["Abfragen"],
         "summary": "Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_SACHBEARBEITUNG.",
         "operationId": "patchInBearbeitungSachbearbeitung",
         "parameters": [
@@ -9150,9 +8721,7 @@
     },
     "/abfrage/in-bearbeitung-fachreferate/{id}": {
       "patch": {
-        "tags": [
-          "Abfragen"
-        ],
+        "tags": ["Abfragen"],
         "summary": "Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_FACHREFERATE.",
         "operationId": "patchInBearbeitungFachreferat",
         "parameters": [
@@ -9262,9 +8831,7 @@
     },
     "/abfrage/bedarfsmeldung-erfolgt/{id}": {
       "patch": {
-        "tags": [
-          "Abfragen"
-        ],
+        "tags": ["Abfragen"],
         "summary": "Aktualisierung einer Abfrage im Status BEDARFSMELDUNG_ERFOLGT.",
         "operationId": "patchBedarfsmeldungErfolgt",
         "parameters": [
@@ -9364,9 +8931,7 @@
     },
     "/abfrage/angelegt/{id}": {
       "patch": {
-        "tags": [
-          "Abfragen"
-        ],
+        "tags": ["Abfragen"],
         "summary": "Aktualisierung einer Abfrage im Status ANGELEGT.",
         "operationId": "patchAngelegt",
         "parameters": [
@@ -9486,9 +9051,7 @@
     },
     "/stammdaten/foerdermix/{id}": {
       "get": {
-        "tags": [
-          "FoerdermixStamm"
-        ],
+        "tags": ["FoerdermixStamm"],
         "summary": "Lesen eines FoerdermixStamm",
         "operationId": "getFoerdermixStammById",
         "parameters": [
@@ -9526,9 +9089,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "FoerdermixStamm"
-        ],
+        "tags": ["FoerdermixStamm"],
         "summary": "Löschen eines FoerdermixStamm",
         "operationId": "deleteFoerdermixStammById",
         "parameters": [
@@ -9561,9 +9122,7 @@
     },
     "/stammdaten/file-information": {
       "get": {
-        "tags": [
-          "FileInfoStamm"
-        ],
+        "tags": ["FileInfoStamm"],
         "description": "Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).",
         "operationId": "getFileInformation",
         "responses": {
@@ -9582,9 +9141,7 @@
     },
     "/lookup-lists": {
       "get": {
-        "tags": [
-          "Lookup"
-        ],
+        "tags": ["Lookup"],
         "summary": "Gibt die Lookuplisten zurück.",
         "operationId": "getLookupLists",
         "responses": {
@@ -9603,9 +9160,7 @@
     },
     "/kommentar/all/infrastruktureinrichtung/{infrastruktureinrichtungId}": {
       "get": {
-        "tags": [
-          "Kommentare"
-        ],
+        "tags": ["Kommentare"],
         "summary": "Holen der Kommentare einer Infrastruktureinrichtung",
         "operationId": "getKommentareForInfrastruktureinrichtung",
         "parameters": [
@@ -9638,9 +9193,7 @@
     },
     "/kommentar/all/bauvorhaben/{bauvorhabenId}": {
       "get": {
-        "tags": [
-          "Kommentare"
-        ],
+        "tags": ["Kommentare"],
         "summary": "Holen der Kommentare eines Bauvorhabens",
         "operationId": "getKommentareForBauvorhaben",
         "parameters": [
@@ -9673,9 +9226,7 @@
     },
     "/infrastruktureinrichtung/{id}": {
       "get": {
-        "tags": [
-          "Infrastruktureinrichtung"
-        ],
+        "tags": ["Infrastruktureinrichtung"],
         "summary": "Lesen einer Infrastruktureinrichtung",
         "operationId": "getInfrastruktureinrichtungById",
         "parameters": [
@@ -9732,9 +9283,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Infrastruktureinrichtung"
-        ],
+        "tags": ["Infrastruktureinrichtung"],
         "summary": "Löschen einer Infrastruktureinrichtung",
         "operationId": "deleteInfrastruktureinrichtungById",
         "parameters": [
@@ -9777,9 +9326,7 @@
     },
     "/dokumente": {
       "get": {
-        "tags": [
-          "Dokumente"
-        ],
+        "tags": ["Dokumente"],
         "summary": "Holen aller in der Anwendung vorhandenen Dokumente",
         "operationId": "getDokumente",
         "parameters": [
@@ -9820,9 +9367,7 @@
     },
     "/bauvorhaben/{id}": {
       "get": {
-        "tags": [
-          "Bauvorhaben"
-        ],
+        "tags": ["Bauvorhaben"],
         "summary": "Lesen eines Bauvorhabens",
         "operationId": "getBauvorhabenById",
         "parameters": [
@@ -9860,9 +9405,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Bauvorhaben"
-        ],
+        "tags": ["Bauvorhaben"],
         "summary": "Löschen eines Bauvorhabens",
         "operationId": "deleteBauvorhaben",
         "parameters": [
@@ -9905,9 +9448,7 @@
     },
     "/bauvorhaben/referenced/infrastruktureinrichtung/{id}": {
       "get": {
-        "tags": [
-          "Bauvorhaben"
-        ],
+        "tags": ["Bauvorhaben"],
         "summary": "Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören",
         "description": "Das Ergebnis wird anhand des InfrastruktureinrichtungTyps und innerhalb des Types alphabetisch sortiert",
         "operationId": "getReferencedInfrastruktureinrichtung",
@@ -9941,9 +9482,7 @@
     },
     "/bauvorhaben/referenced/abfragen/{id}": {
       "get": {
-        "tags": [
-          "Bauvorhaben"
-        ],
+        "tags": ["Bauvorhaben"],
         "summary": "Lade alle Abfragen die einem Bauvorhaben angehören",
         "description": "Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.",
         "operationId": "getReferencedAbfrage",
@@ -9977,9 +9516,7 @@
     },
     "/baurate/determine": {
       "get": {
-        "tags": [
-          "Baurate"
-        ],
+        "tags": ["Baurate"],
         "summary": "Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten",
         "operationId": "determineBauraten",
         "parameters": [
@@ -10042,9 +9579,7 @@
     },
     "/abfrage/{id}": {
       "get": {
-        "tags": [
-          "Abfragen"
-        ],
+        "tags": ["Abfragen"],
         "summary": "Lesen einer Abfrage.",
         "operationId": "getById",
         "parameters": [
@@ -10102,9 +9637,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Abfragen"
-        ],
+        "tags": ["Abfragen"],
         "summary": "Löschen einer Abfrage",
         "operationId": "deleteById",
         "parameters": [
@@ -10157,9 +9690,7 @@
     },
     "/abfrage-status/{id}/transitions": {
       "get": {
-        "tags": [
-          "AbfrageStatus"
-        ],
+        "tags": ["AbfrageStatus"],
         "summary": "Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des aktuellen Status",
         "operationId": "transitionsAbfrage",
         "parameters": [
@@ -10212,9 +9743,7 @@
     },
     "/kommentar/{id}": {
       "delete": {
-        "tags": [
-          "Kommentare"
-        ],
+        "tags": ["Kommentare"],
         "summary": "Löschen eines Kommentars",
         "operationId": "deleteKommentar",
         "parameters": [
@@ -10630,11 +10159,7 @@
       },
       "UncertainBoolean": {
         "type": "string",
-        "enum": [
-          "UNSPECIFIED",
-          "TRUE",
-          "FALSE"
-        ]
+        "enum": ["UNSPECIFIED", "TRUE", "FALSE"]
       },
       "VerortungMultiPolygon": {
         "type": "object",
@@ -10749,12 +10274,7 @@
           },
           "artAbfrage": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -10892,16 +10412,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "UNSPECIFIED",
-                "WR",
-                "WA",
-                "MU",
-                "MK",
-                "MI",
-                "GE",
-                "INFO_FEHLT"
-              ]
+              "enum": ["UNSPECIFIED", "WR", "WA", "MU", "MK", "MI", "GE", "INFO_FEHLT"]
             }
           },
           "_links": {
@@ -11057,13 +10568,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -11101,12 +10606,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -11215,12 +10715,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -11432,13 +10927,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -11476,12 +10965,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -11527,9 +11011,7 @@
           },
           "counterType": {
             "type": "string",
-            "enum": [
-              "NUMMER_BAUVORHABEN"
-            ]
+            "enum": ["NUMMER_BAUVORHABEN"]
           },
           "counter": {
             "type": "integer",
@@ -11597,10 +11079,7 @@
           },
           "typ": {
             "type": "string",
-            "enum": [
-              "ANZAHL_WOHNEINHEITEN_GESAMT",
-              "GESCHOSSFLAECHE_WOHNEN_GESAMT"
-            ]
+            "enum": ["ANZAHL_WOHNEINHEITEN_GESAMT", "GESCHOSSFLAECHE_WOHNEN_GESAMT"]
           },
           "jahresraten": {
             "type": "array",
@@ -11924,13 +11403,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -11968,12 +11441,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -12289,12 +11757,7 @@
           },
           "artAbfrage": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         }
       },
@@ -12326,12 +11789,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         }
       },
@@ -12448,16 +11906,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "UNSPECIFIED",
-                "WR",
-                "WA",
-                "MU",
-                "MK",
-                "MI",
-                "GE",
-                "INFO_FEHLT"
-              ]
+              "enum": ["UNSPECIFIED", "WR", "WA", "MU", "MK", "MI", "GE", "INFO_FEHLT"]
             }
           },
           "dokumente": {
@@ -12634,13 +12083,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -12696,12 +12139,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         }
       },
@@ -12810,13 +12248,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -12872,12 +12304,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         }
       },
@@ -13000,13 +12427,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -13062,12 +12483,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         }
       },
@@ -13163,9 +12579,7 @@
           },
           "counterType": {
             "type": "string",
-            "enum": [
-              "NUMMER_BAUVORHABEN"
-            ]
+            "enum": ["NUMMER_BAUVORHABEN"]
           },
           "counter": {
             "type": "integer",
@@ -13200,10 +12614,7 @@
           },
           "typ": {
             "type": "string",
-            "enum": [
-              "ANZAHL_WOHNEINHEITEN_GESAMT",
-              "GESCHOSSFLAECHE_WOHNEN_GESAMT"
-            ]
+            "enum": ["ANZAHL_WOHNEINHEITEN_GESAMT", "GESCHOSSFLAECHE_WOHNEN_GESAMT"]
           },
           "jahresraten": {
             "type": "array",
@@ -13534,10 +12945,7 @@
         }
       },
       "FoerdermixDto": {
-        "required": [
-          "bezeichnung",
-          "bezeichnungJahr"
-        ],
+        "required": ["bezeichnung", "bezeichnungJahr"],
         "type": "object",
         "properties": {
           "bezeichnungJahr": {
@@ -13559,9 +12967,7 @@
         }
       },
       "FoerdermixStammDto": {
-        "required": [
-          "foerdermix"
-        ],
+        "required": ["foerdermix"],
         "type": "object",
         "properties": {
           "id": {
@@ -13590,12 +12996,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "ERROR",
-              "WARNING",
-              "INFORMATION_SUCCESS",
-              "INFORMATION_NEUTRAL"
-            ]
+            "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"]
           },
           "timestamp": {
             "type": "string",
@@ -13623,12 +13024,7 @@
         }
       },
       "DokumentDto": {
-        "required": [
-          "artDokument",
-          "filePath",
-          "sizeInBytes",
-          "typDokument"
-        ],
+        "required": ["artDokument", "filePath", "sizeInBytes", "typDokument"],
         "type": "object",
         "properties": {
           "id": {
@@ -13683,9 +13079,7 @@
         }
       },
       "FilepathDto": {
-        "required": [
-          "pathToFile"
-        ],
+        "required": ["pathToFile"],
         "type": "object",
         "properties": {
           "pathToFile": {
@@ -13771,9 +13165,7 @@
         }
       },
       "BezirksteilDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": {
@@ -13785,9 +13177,7 @@
         }
       },
       "FlurstueckDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": {
@@ -13820,10 +13210,7 @@
         }
       },
       "GemarkungDto": {
-        "required": [
-          "flurstuecke",
-          "multiPolygon"
-        ],
+        "required": ["flurstuecke", "multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": {
@@ -13845,11 +13232,7 @@
         }
       },
       "GrundschuleDto": {
-        "required": [
-          "nameEinrichtung",
-          "schule",
-          "status"
-        ],
+        "required": ["nameEinrichtung", "schule", "status"],
         "type": "object",
         "allOf": [
           {
@@ -13866,9 +13249,7 @@
         ]
       },
       "GrundschulsprengelDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": {
@@ -13881,12 +13262,7 @@
         }
       },
       "GsNachmittagBetreuungDto": {
-        "required": [
-          "anzahlHortGruppen",
-          "anzahlHortPlaetze",
-          "nameEinrichtung",
-          "status"
-        ],
+        "required": ["anzahlHortGruppen", "anzahlHortPlaetze", "nameEinrichtung", "status"],
         "type": "object",
         "allOf": [
           {
@@ -13939,10 +13315,7 @@
         ]
       },
       "HausFuerKinderDto": {
-        "required": [
-          "nameEinrichtung",
-          "status"
-        ],
+        "required": ["nameEinrichtung", "status"],
         "type": "object",
         "allOf": [
           {
@@ -14006,10 +13379,7 @@
         ]
       },
       "InfrastruktureinrichtungDto": {
-        "required": [
-          "nameEinrichtung",
-          "status"
-        ],
+        "required": ["nameEinrichtung", "status"],
         "type": "object",
         "properties": {
           "id": {
@@ -14100,12 +13470,7 @@
         }
       },
       "KindergartenDto": {
-        "required": [
-          "anzahlKindergartenGruppen",
-          "anzahlKindergartenPlaetze",
-          "nameEinrichtung",
-          "status"
-        ],
+        "required": ["anzahlKindergartenGruppen", "anzahlKindergartenPlaetze", "nameEinrichtung", "status"],
         "type": "object",
         "allOf": [
           {
@@ -14145,12 +13510,7 @@
         ]
       },
       "KinderkrippeDto": {
-        "required": [
-          "anzahlKinderkrippeGruppen",
-          "anzahlKinderkrippePlaetze",
-          "nameEinrichtung",
-          "status"
-        ],
+        "required": ["anzahlKinderkrippeGruppen", "anzahlKinderkrippePlaetze", "nameEinrichtung", "status"],
         "type": "object",
         "allOf": [
           {
@@ -14190,9 +13550,7 @@
         ]
       },
       "KitaplanungsbereichDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "kitaPlb": {
@@ -14208,11 +13566,7 @@
         }
       },
       "MittelschuleDto": {
-        "required": [
-          "nameEinrichtung",
-          "schule",
-          "status"
-        ],
+        "required": ["nameEinrichtung", "schule", "status"],
         "type": "object",
         "allOf": [
           {
@@ -14229,9 +13583,7 @@
         ]
       },
       "MittelschulsprengelDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": {
@@ -14244,10 +13596,7 @@
         }
       },
       "MultiPolygonGeometryDto": {
-        "required": [
-          "coordinates",
-          "type"
-        ],
+        "required": ["coordinates", "type"],
         "type": "object",
         "properties": {
           "type": {
@@ -14294,10 +13643,7 @@
         }
       },
       "PointGeometryDto": {
-        "required": [
-          "coordinates",
-          "type"
-        ],
+        "required": ["coordinates", "type"],
         "type": "object",
         "properties": {
           "type": {
@@ -14316,10 +13662,7 @@
         }
       },
       "SchuleDto": {
-        "required": [
-          "anzahlKlassen",
-          "anzahlPlaetze"
-        ],
+        "required": ["anzahlKlassen", "anzahlPlaetze"],
         "type": "object",
         "properties": {
           "anzahlKlassen": {
@@ -14347,9 +13690,7 @@
         }
       },
       "StadtbezirkDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": {
@@ -14364,9 +13705,7 @@
         }
       },
       "VerortungPointDto": {
-        "required": [
-          "point"
-        ],
+        "required": ["point"],
         "type": "object",
         "properties": {
           "stadtbezirke": {
@@ -14424,9 +13763,7 @@
         }
       },
       "ViertelDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": {
@@ -14441,10 +13778,7 @@
         }
       },
       "Wgs84Dto": {
-        "required": [
-          "latitude",
-          "longitude"
-        ],
+        "required": ["latitude", "longitude"],
         "type": "object",
         "properties": {
           "latitude": {
@@ -14458,13 +13792,7 @@
         }
       },
       "BauvorhabenDto": {
-        "required": [
-          "artFnp",
-          "nameVorhaben",
-          "sobonRelevant",
-          "standVerfahren",
-          "wesentlicheRechtsgrundlage"
-        ],
+        "required": ["artFnp", "nameVorhaben", "sobonRelevant", "standVerfahren", "wesentlicheRechtsgrundlage"],
         "type": "object",
         "properties": {
           "id": {
@@ -14589,16 +13917,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "UNSPECIFIED",
-                "WR",
-                "WA",
-                "MU",
-                "MK",
-                "MI",
-                "GE",
-                "INFO_FEHLT"
-              ]
+              "enum": ["UNSPECIFIED", "WR", "WA", "MU", "MK", "MI", "GE", "INFO_FEHLT"]
             }
           },
           "dokumente": {
@@ -14614,9 +13933,7 @@
         }
       },
       "VerortungMultiPolygonDto": {
-        "required": [
-          "multiPolygon"
-        ],
+        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "stadtbezirke": {
@@ -14674,10 +13991,7 @@
         }
       },
       "UtmDto": {
-        "required": [
-          "east",
-          "north"
-        ],
+        "required": ["east", "north"],
         "type": "object",
         "properties": {
           "zone": {
@@ -14826,18 +14140,11 @@
           },
           "sortBy": {
             "type": "string",
-            "enum": [
-              "NAME",
-              "CREATED_DATE_TIME",
-              "LAST_MODIFIED_DATE_TIME"
-            ]
+            "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME"]
           },
           "sortOrder": {
             "type": "string",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         }
       },
@@ -14856,12 +14163,7 @@
               },
               "artAbfrage": {
                 "type": "string",
-                "enum": [
-                  "UNSPECIFIED",
-                  "BAULEITPLANVERFAHREN",
-                  "BAUGENEHMIGUNGSVERFAHREN",
-                  "WEITERES_VERFAHREN"
-                ]
+                "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
               },
               "name": {
                 "type": "string"
@@ -15018,11 +14320,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "ABFRAGE",
-              "BAUVORHABEN",
-              "INFRASTRUKTUREINRICHTUNG"
-            ]
+            "enum": ["ABFRAGE", "BAUVORHABEN", "INFRASTRUKTUREINRICHTUNG"]
           }
         },
         "description": "SearchResultDto",
@@ -15092,9 +14390,7 @@
         }
       },
       "AbfrageAngelegtDto": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "version": {
@@ -15103,12 +14399,7 @@
           },
           "artAbfrage": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": {
             "maxLength": 70,
@@ -15156,12 +14447,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": {
             "type": "integer",
@@ -15289,12 +14575,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": {
             "type": "integer",
@@ -15415,12 +14696,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": {
             "type": "integer",
@@ -15535,11 +14811,7 @@
         }
       },
       "BauabschnittDto": {
-        "required": [
-          "baugebiete",
-          "bezeichnung",
-          "technical"
-        ],
+        "required": ["baugebiete", "bezeichnung", "technical"],
         "type": "object",
         "properties": {
           "id": {
@@ -15575,13 +14847,7 @@
         }
       },
       "BaugebietDto": {
-        "required": [
-          "artBaulicheNutzung",
-          "bauraten",
-          "bezeichnung",
-          "realisierungVon",
-          "technical"
-        ],
+        "required": ["artBaulicheNutzung", "bauraten", "bezeichnung", "realisierungVon", "technical"],
         "type": "object",
         "properties": {
           "id": {
@@ -15607,16 +14873,7 @@
           },
           "artBaulicheNutzung": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "WR",
-              "WA",
-              "MU",
-              "MK",
-              "MI",
-              "GE",
-              "INFO_FEHLT"
-            ]
+            "enum": ["UNSPECIFIED", "WR", "WA", "MU", "MK", "MI", "GE", "INFO_FEHLT"]
           },
           "realisierungVon": {
             "maximum": 2100,
@@ -15657,12 +14914,7 @@
         }
       },
       "BaugenehmigungsverfahrenAngelegtDto": {
-        "required": [
-          "abfragevariantenBaugenehmigungsverfahren",
-          "fristBearbeitung",
-          "name",
-          "standVerfahren"
-        ],
+        "required": ["abfragevariantenBaugenehmigungsverfahren", "fristBearbeitung", "name", "standVerfahren"],
         "type": "object",
         "allOf": [
           {
@@ -15839,10 +15091,7 @@
         ]
       },
       "BaurateDto": {
-        "required": [
-          "foerdermix",
-          "jahr"
-        ],
+        "required": ["foerdermix", "jahr"],
         "type": "object",
         "properties": {
           "id": {
@@ -16004,12 +15253,7 @@
           },
           "artAbfrage": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": {
             "type": "string"
@@ -16066,12 +15310,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": {
             "type": "string"
@@ -16162,13 +15401,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -16249,12 +15482,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": {
             "type": "string"
@@ -16338,13 +15566,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -16425,12 +15647,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "name": {
             "type": "string"
@@ -16528,13 +15745,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -16912,12 +16123,7 @@
           },
           "artAbfrage": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bauvorhaben": {
             "type": "string",
@@ -16957,12 +16163,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": {
             "type": "integer",
@@ -17069,13 +16270,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -17089,10 +16284,7 @@
         }
       },
       "AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
-        "required": [
-          "sobonOrientierungswertJahr",
-          "stammdatenGueltigAb"
-        ],
+        "required": ["sobonOrientierungswertJahr", "stammdatenGueltigAb"],
         "type": "object",
         "properties": {
           "id": {
@@ -17105,22 +16297,11 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -17156,12 +16337,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": {
             "type": "integer",
@@ -17261,13 +16437,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -17281,10 +16451,7 @@
         }
       },
       "AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
-        "required": [
-          "sobonOrientierungswertJahr",
-          "stammdatenGueltigAb"
-        ],
+        "required": ["sobonOrientierungswertJahr", "stammdatenGueltigAb"],
         "type": "object",
         "properties": {
           "id": {
@@ -17297,22 +16464,11 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -17348,12 +16504,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": {
             "type": "integer",
@@ -17467,13 +16618,7 @@
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -17487,10 +16632,7 @@
         }
       },
       "AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
-        "required": [
-          "sobonOrientierungswertJahr",
-          "stammdatenGueltigAb"
-        ],
+        "required": ["sobonOrientierungswertJahr", "stammdatenGueltigAb"],
         "type": "object",
         "properties": {
           "id": {
@@ -17503,22 +16645,11 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "sobonOrientierungswertJahr": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "STANDORTABFRAGE"
-            ]
+            "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": {
             "type": "string",
@@ -17568,10 +16699,7 @@
         ]
       },
       "BauleitplanverfahrenInBearbeitungSachbearbeitungDto": {
-        "required": [
-          "abfragevariantenBauleitplanverfahren",
-          "abfragevariantenSachbearbeitungBauleitplanverfahren"
-        ],
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
         "type": "object",
         "allOf": [
           {
@@ -17604,10 +16732,7 @@
         ]
       },
       "WeiteresVerfahrenInBearbeitungSachbearbeitungDto": {
-        "required": [
-          "abfragevariantenSachbearbeitungWeiteresVerfahren",
-          "abfragevariantenWeiteresVerfahren"
-        ],
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
         "type": "object",
         "allOf": [
           {
@@ -17648,12 +16773,7 @@
           },
           "artAbfrage": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         },
         "description": "AbfrageInBearbeitungFachreferatDto",
@@ -17679,12 +16799,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungFachreferate": {
             "type": "array",
@@ -17734,12 +16849,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungFachreferate": {
             "type": "array",
@@ -17789,12 +16899,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungFachreferate": {
             "type": "array",
@@ -17865,10 +16970,7 @@
         ]
       },
       "BauleitplanverfahrenInBearbeitungFachreferatDto": {
-        "required": [
-          "abfragevariantenBauleitplanverfahren",
-          "abfragevariantenSachbearbeitungBauleitplanverfahren"
-        ],
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
         "type": "object",
         "allOf": [
           {
@@ -17898,10 +17000,7 @@
         ]
       },
       "WeiteresVerfahrenInBearbeitungFachreferatDto": {
-        "required": [
-          "abfragevariantenSachbearbeitungWeiteresVerfahren",
-          "abfragevariantenWeiteresVerfahren"
-        ],
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
         "type": "object",
         "allOf": [
           {
@@ -17939,12 +17038,7 @@
           },
           "artAbfrage": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         },
         "description": "AbfrageBedarfsmeldungErfolgtDto",
@@ -17970,12 +17064,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungAbfrageersteller": {
             "type": "array",
@@ -17998,12 +17087,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungAbfrageersteller": {
             "type": "array",
@@ -18026,12 +17110,7 @@
           },
           "artAbfragevariante": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "BAULEITPLANVERFAHREN",
-              "BAUGENEHMIGUNGSVERFAHREN",
-              "WEITERES_VERFAHREN"
-            ]
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "bedarfsmeldungAbfrageersteller": {
             "type": "array",
@@ -18075,10 +17154,7 @@
         ]
       },
       "BauleitplanverfahrenBedarfsmeldungErfolgtDto": {
-        "required": [
-          "abfragevariantenBauleitplanverfahren",
-          "abfragevariantenSachbearbeitungBauleitplanverfahren"
-        ],
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
         "type": "object",
         "allOf": [
           {
@@ -18108,10 +17184,7 @@
         ]
       },
       "WeiteresVerfahrenBedarfsmeldungErfolgtDto": {
-        "required": [
-          "abfragevariantenSachbearbeitungWeiteresVerfahren",
-          "abfragevariantenWeiteresVerfahren"
-        ],
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
         "type": "object",
         "allOf": [
           {
