@@ -23,20 +23,136 @@
         <div>{{ pointToDisplay }}</div>
       </v-chip>
     </v-chip-group>
-    <v-label v-if="stadtbezirke.length !== 0">Stadtbezirk</v-label>
-    <v-chip-group
-      v-if="stadtbezirke.length !== 0"
-      title="Stadtbezirke"
-      active-class="primary--text"
-      column
-    >
-      <v-chip
-        v-for="(stadtbezirk, index) in stadtbezirke"
-        :key="index"
+    <v-row class="justify-center">
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
       >
-        {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
-      </v-chip>
-    </v-chip-group>
+        <v-label v-if="stadtbezirke.length !== 0">Stadtbezirk</v-label>
+        <v-chip-group
+          v-if="stadtbezirke.length !== 0"
+          title="Stadtbezirke"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(stadtbezirk, index) in stadtbezirke"
+            :key="index"
+          >
+            {{ stadtbezirk.nummer + `/` + stadtbezirk.name }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="kitaplanungsbereiche.length !== 0">Kitaplanungsbereich</v-label>
+        <v-chip-group
+          v-if="kitaplanungsbereiche.length !== 0"
+          title="Kitaplanungsbereiche"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(kitaplanungsbereich, index) in kitaplanungsbereiche"
+            :key="index"
+          >
+            {{ kitaplanungsbereich.kitaPlbT }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-center">
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="bezirksteile.length !== 0">Bezirksteil</v-label>
+        <v-chip-group
+          v-if="bezirksteile.length !== 0"
+          title="Bezirksteile"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(bezirksteil, index) in bezirksteile"
+            :key="index"
+          >
+            {{ bezirksteil.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="grundschulsprengel.length !== 0">Grundschulsprengel</v-label>
+        <v-chip-group
+          v-if="grundschulsprengel.length !== 0"
+          title="Grundschulsprengel"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(grundschulsprengelItem, index) in grundschulsprengel"
+            :key="index"
+          >
+            {{ grundschulsprengelItem.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-center">
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="gemarkungen.length !== 0">Gemarkung</v-label>
+        <v-chip-group
+          v-if="gemarkungen.length !== 0"
+          title="Gemarkungen"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(gemarkung, index) in gemarkungen"
+            :key="index"
+          >
+            {{ gemarkung.nummer + `/` + gemarkung.name }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+
+      <v-col
+        class="pb-0"
+        cols="12"
+        md="6"
+      >
+        <v-label v-if="mittelschulsprengel.length !== 0">Mittelschulsprengel</v-label>
+        <v-chip-group
+          v-if="mittelschulsprengel.length !== 0"
+          title="Mittelschulsprengel"
+          active-class="primary--text"
+          column
+        >
+          <v-chip
+            v-for="(mittelschulsprengelItem, index) in mittelschulsprengel"
+            :key="index"
+          >
+            {{ mittelschulsprengelItem.nummer }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+    </v-row>
   </field-group-card>
 </template>
 
@@ -56,11 +172,21 @@ import {
   Wgs84Dto,
   UtmDto,
   VerortungPointDto,
+  BezirksteilDto,
+  KitaplanungsbereichDto,
+  GrundschulsprengelDto,
+  MittelschulsprengelDto,
+  ViertelDto,
 } from "@/api/api-client/isi-backend";
 import {
+  FeatureDtoBezirksteilDto,
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
+  FeatureDtoGrundschulsprengelDto,
+  FeatureDtoKitaplanungsbereichDto,
+  FeatureDtoMittelschulsprengelDto,
   FeatureDtoStadtbezirkDto,
+  FeatureDtoViertelDto,
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
@@ -150,7 +276,27 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   get stadtbezirke(): Array<StadtbezirkDto> {
-    return _.isNil(this.verortungModel) ? [] : _.sortBy(Array.from(this.verortungModel?.stadtbezirke), ["nummer"]);
+    return _.sortBy(_.toArray(this.verortungModel?.stadtbezirke), ["nummer"]);
+  }
+
+  get bezirksteile(): Array<BezirksteilDto> {
+    return _.sortBy(_.toArray(this.verortungModel?.bezirksteile), ["nummer"]);
+  }
+
+  get gemarkungen(): Array<GemarkungDto> {
+    return _.sortBy(_.toArray(this.verortungModel?.gemarkungen), ["nummer"]);
+  }
+
+  get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
+    return _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["kitaPlb"]);
+  }
+
+  get grundschulsprengel(): Array<GrundschulsprengelDto> {
+    return _.sortBy(_.toArray(this.verortungModel?.grundschulsprengel), ["nummer"]);
+  }
+
+  get mittelschulsprengel(): Array<MittelschulsprengelDto> {
+    return _.sortBy(_.toArray(this.verortungModel?.mittelschulsprengel), ["nummer"]);
   }
 
   get lookAt(): LatLngLiteral | undefined {
@@ -265,7 +411,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     const point = this.getPointGeometry();
     if (!_.isNil(point)) {
       this.getUtm32(point).then((utm32) => {
-        this.pointToDisplay = !_.isNil(utm32) ? `${utm32.zone} ${utm32.north} ${utm32.east}` : "";
+        this.pointToDisplay = !_.isNil(utm32) ? `${_.round(utm32.east)} ${_.round(utm32.north)} (UTM)` : "";
       });
     } else {
       this.pointToDisplay = "";
@@ -302,16 +448,37 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     point: PointGeometryDto,
   ): Promise<VerortungPointDto | undefined> {
     try {
+      const promiseStadtbezirke = this.getStadtbezirkeForPoint(point, true);
+      const promiseBezirksteile = this.getBezirksteileForPoint(point, true);
+      const promiseViertel = this.getViertelForPoint(point, true);
+      const promiseGemarkungen = this.getGemarkungenForPoint(point, true);
+      const promiseFlurstuecke = this.getFlurstueckeForPoint(point, true);
+      const promiseKitaplanungsbereiche = this.getKitaplanungsbereicheForPoint(point, true);
+      const promiseGrundschulsprengel = this.getGrundschulsprengelForPoint(point, true);
+      const promiseMittelschulsprengel = this.getMittelschulsprengelForPoint(point, true);
+
       // Stadtbezirke ermitteln
-      const stadtbezirke: Array<FeatureDtoStadtbezirkDto> = await this.getStadtbezirkeForPoint(point, true);
-      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(stadtbezirke);
+      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
+        await promiseStadtbezirke,
+      );
+
+      // Stadtbezirksteile ermitteln
+      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(
+        await promiseBezirksteile,
+      );
+
+      // Viertel ermitteln
+      const viertelBackend: Array<ViertelDto> = this.viertelGeoDataEaiToViertelBackend(await promiseViertel);
+
       // Gemarkungen ermitteln
-      const gemarkungen: Array<FeatureDtoGemarkungDto> = await this.getGemarkungenForPoint(point, true);
-      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(gemarkungen);
+      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(
+        await promiseGemarkungen,
+      );
 
       // Flurstücke ermitteln
-      const flurstuecke: Array<FeatureDtoFlurstueckDto> = await this.getFlurstueckeForPoint(point, true);
-      const flurstueckeBackend: Array<FlurstueckDto> = this.flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+      const flurstueckeBackend: Array<FlurstueckDto> = this.flurstueckeGeoDataEaiToFlurstueckeBackend(
+        await promiseFlurstuecke,
+      );
 
       // Anfügen der Flurstücke an Gemarkung
       flurstueckeBackend.forEach((flurstueck) => {
@@ -320,16 +487,35 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         );
         matchingGemarkung?.flurstuecke.add(flurstueck);
       });
+
+      // KitaPlb ermitteln
+      const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
+        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(await promiseKitaplanungsbereiche);
+
+      // Grundschulsprengel ermitteln
+      const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
+        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(await promiseGrundschulsprengel);
+
+      // Mittelschulsprengel ermitteln
+      const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
+        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(await promiseMittelschulsprengel);
+
       // Erstellung des VerortungPointDto
       return new VerortungPointModel({
         gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
         stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
+        bezirksteile: new Set<BezirksteilDto>(bezirksteileBackend),
+        viertel: new Set<ViertelDto>(viertelBackend),
+        kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
+        grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
+        mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
         point: point,
       } as VerortungPointDto);
     } catch (error) {
       return undefined;
     }
   }
+
   private stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
     stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>,
   ): Array<StadtbezirkDto> {
@@ -338,6 +524,27 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         nummer: stadtbezirk.properties?.stadtbezirkNummer,
         name: stadtbezirk.properties?.name,
         multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private bezirksteileGeoDataEaiToBezirksteileBackend(
+    bezirksteileGeoDataEai: Array<FeatureDtoBezirksteilDto>,
+  ): Array<BezirksteilDto> {
+    return bezirksteileGeoDataEai.map((bezirksteil) => {
+      return {
+        nummer: bezirksteil.properties?.bezirksteilNummer,
+        multiPolygon: JSON.parse(JSON.stringify(bezirksteil.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private viertelGeoDataEaiToViertelBackend(bezirksteileGeoDataEai: Array<FeatureDtoViertelDto>): Array<ViertelDto> {
+    return bezirksteileGeoDataEai.map((viertel) => {
+      return {
+        nummer: viertel.properties?.viertelNummer,
+        flaecheQm: viertel.properties?.flaecheQm,
+        multiPolygon: JSON.parse(JSON.stringify(viertel.geometry)) as MultiPolygonGeometryDtoBackend,
       };
     });
   }
@@ -375,6 +582,40 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
       gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
       multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
     };
+  }
+
+  private kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(
+    kitaplanungsbereicheGeoDataEai: Array<FeatureDtoKitaplanungsbereichDto>,
+  ): Array<KitaplanungsbereichDto> {
+    return kitaplanungsbereicheGeoDataEai.map((kitaplanungsbereich) => {
+      return {
+        kitaPlb: kitaplanungsbereich.properties?.kitaPlb,
+        kitaPlbT: kitaplanungsbereich.properties?.kitaPlbT,
+        multiPolygon: JSON.parse(JSON.stringify(kitaplanungsbereich.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(
+    grundschulsprengelGeoDataEai: Array<FeatureDtoGrundschulsprengelDto>,
+  ): Array<GrundschulsprengelDto> {
+    return grundschulsprengelGeoDataEai.map((grundschulsprengel) => {
+      return {
+        nummer: grundschulsprengel.properties?.schulnummer,
+        multiPolygon: JSON.parse(JSON.stringify(grundschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
+  }
+
+  private mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
+    mittelschulsprengelGeoDataEai: Array<FeatureDtoMittelschulsprengelDto>,
+  ): Array<MittelschulsprengelDto> {
+    return mittelschulsprengelGeoDataEai.map((mittelschulsprengel) => {
+      return {
+        nummer: mittelschulsprengel.properties?.schulnummer,
+        multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+      };
+    });
   }
 }
 </script>

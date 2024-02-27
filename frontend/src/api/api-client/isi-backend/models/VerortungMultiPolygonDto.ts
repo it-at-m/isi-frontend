@@ -13,12 +13,36 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BezirksteilDto } from './BezirksteilDto';
+import {
+    BezirksteilDtoFromJSON,
+    BezirksteilDtoFromJSONTyped,
+    BezirksteilDtoToJSON,
+} from './BezirksteilDto';
 import type { GemarkungDto } from './GemarkungDto';
 import {
     GemarkungDtoFromJSON,
     GemarkungDtoFromJSONTyped,
     GemarkungDtoToJSON,
 } from './GemarkungDto';
+import type { GrundschulsprengelDto } from './GrundschulsprengelDto';
+import {
+    GrundschulsprengelDtoFromJSON,
+    GrundschulsprengelDtoFromJSONTyped,
+    GrundschulsprengelDtoToJSON,
+} from './GrundschulsprengelDto';
+import type { KitaplanungsbereichDto } from './KitaplanungsbereichDto';
+import {
+    KitaplanungsbereichDtoFromJSON,
+    KitaplanungsbereichDtoFromJSONTyped,
+    KitaplanungsbereichDtoToJSON,
+} from './KitaplanungsbereichDto';
+import type { MittelschulsprengelDto } from './MittelschulsprengelDto';
+import {
+    MittelschulsprengelDtoFromJSON,
+    MittelschulsprengelDtoFromJSONTyped,
+    MittelschulsprengelDtoToJSON,
+} from './MittelschulsprengelDto';
 import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
     MultiPolygonGeometryDtoFromJSON,
@@ -31,6 +55,12 @@ import {
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
+import type { ViertelDto } from './ViertelDto';
+import {
+    ViertelDtoFromJSON,
+    ViertelDtoFromJSONTyped,
+    ViertelDtoToJSON,
+} from './ViertelDto';
 
 /**
  * 
@@ -43,13 +73,43 @@ export interface VerortungMultiPolygonDto {
      * @type {Set<StadtbezirkDto>}
      * @memberof VerortungMultiPolygonDto
      */
-    stadtbezirke: Set<StadtbezirkDto>;
+    stadtbezirke?: Set<StadtbezirkDto>;
+    /**
+     * 
+     * @type {Set<BezirksteilDto>}
+     * @memberof VerortungMultiPolygonDto
+     */
+    bezirksteile?: Set<BezirksteilDto>;
+    /**
+     * 
+     * @type {Set<ViertelDto>}
+     * @memberof VerortungMultiPolygonDto
+     */
+    viertel?: Set<ViertelDto>;
     /**
      * 
      * @type {Set<GemarkungDto>}
      * @memberof VerortungMultiPolygonDto
      */
-    gemarkungen: Set<GemarkungDto>;
+    gemarkungen?: Set<GemarkungDto>;
+    /**
+     * 
+     * @type {Set<KitaplanungsbereichDto>}
+     * @memberof VerortungMultiPolygonDto
+     */
+    kitaplanungsbereiche?: Set<KitaplanungsbereichDto>;
+    /**
+     * 
+     * @type {Set<GrundschulsprengelDto>}
+     * @memberof VerortungMultiPolygonDto
+     */
+    grundschulsprengel?: Set<GrundschulsprengelDto>;
+    /**
+     * 
+     * @type {Set<MittelschulsprengelDto>}
+     * @memberof VerortungMultiPolygonDto
+     */
+    mittelschulsprengel?: Set<MittelschulsprengelDto>;
     /**
      * 
      * @type {MultiPolygonGeometryDto}
@@ -63,8 +123,6 @@ export interface VerortungMultiPolygonDto {
  */
 export function instanceOfVerortungMultiPolygonDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "stadtbezirke" in value;
-    isInstance = isInstance && "gemarkungen" in value;
     isInstance = isInstance && "multiPolygon" in value;
 
     return isInstance;
@@ -80,8 +138,13 @@ export function VerortungMultiPolygonDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'stadtbezirke': (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
-        'gemarkungen': (new Set((json['gemarkungen'] as Array<any>).map(GemarkungDtoFromJSON))),
+        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
+        'bezirksteile': !exists(json, 'bezirksteile') ? undefined : (new Set((json['bezirksteile'] as Array<any>).map(BezirksteilDtoFromJSON))),
+        'viertel': !exists(json, 'viertel') ? undefined : (new Set((json['viertel'] as Array<any>).map(ViertelDtoFromJSON))),
+        'gemarkungen': !exists(json, 'gemarkungen') ? undefined : (new Set((json['gemarkungen'] as Array<any>).map(GemarkungDtoFromJSON))),
+        'kitaplanungsbereiche': !exists(json, 'kitaplanungsbereiche') ? undefined : (new Set((json['kitaplanungsbereiche'] as Array<any>).map(KitaplanungsbereichDtoFromJSON))),
+        'grundschulsprengel': !exists(json, 'grundschulsprengel') ? undefined : (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelDtoFromJSON))),
+        'mittelschulsprengel': !exists(json, 'mittelschulsprengel') ? undefined : (new Set((json['mittelschulsprengel'] as Array<any>).map(MittelschulsprengelDtoFromJSON))),
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
@@ -95,8 +158,13 @@ export function VerortungMultiPolygonDtoToJSON(value?: VerortungMultiPolygonDto 
     }
     return {
         
-        'stadtbezirke': (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
-        'gemarkungen': (Array.from(value.gemarkungen as Set<any>).map(GemarkungDtoToJSON)),
+        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
+        'bezirksteile': value.bezirksteile === undefined ? undefined : (Array.from(value.bezirksteile as Set<any>).map(BezirksteilDtoToJSON)),
+        'viertel': value.viertel === undefined ? undefined : (Array.from(value.viertel as Set<any>).map(ViertelDtoToJSON)),
+        'gemarkungen': value.gemarkungen === undefined ? undefined : (Array.from(value.gemarkungen as Set<any>).map(GemarkungDtoToJSON)),
+        'kitaplanungsbereiche': value.kitaplanungsbereiche === undefined ? undefined : (Array.from(value.kitaplanungsbereiche as Set<any>).map(KitaplanungsbereichDtoToJSON)),
+        'grundschulsprengel': value.grundschulsprengel === undefined ? undefined : (Array.from(value.grundschulsprengel as Set<any>).map(GrundschulsprengelDtoToJSON)),
+        'mittelschulsprengel': value.mittelschulsprengel === undefined ? undefined : (Array.from(value.mittelschulsprengel as Set<any>).map(MittelschulsprengelDtoToJSON)),
         'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
