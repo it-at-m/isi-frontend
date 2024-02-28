@@ -309,6 +309,8 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      isASobonBerechnung: abfragevariante.isASobonBerechnung,
+      sobonFoerdermix: abfragevariante.sobonFoerdermix,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto;
@@ -389,6 +391,8 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      isASobonBerechnung: abfragevariante.isASobonBerechnung,
+      sobonFoerdermix: abfragevariante.sobonFoerdermix,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;

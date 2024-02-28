@@ -278,11 +278,22 @@ export default class ValidatorMixin extends Vue {
     abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel,
     abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteWeiteresVerfahrenModel,
   ): string | null {
+    // eslint-disable-next-line no-console
+    console.log("Validierung entered");
     if (abfragevariante.isASobonBerechnung) {
+      console.log("IS A Sobon Berechnung entered");
+      // eslint-disable-next-line no-console
+      console.log("Abfrage SoBon Relevant: " + abfrage.sobonRelevant !== UncertainBoolean.True);
+
       if (_.isNil(abfragevariante.sobonFoerdermix)) {
+        // eslint-disable-next-line no-console
+        console.log("Sobon Foerdermix enterted");
+
         return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
       }
       if (_.isNil(abfragevariante.gfWohnenSobonUrsaechlich)) {
+        // eslint-disable-next-line no-console
+        console.log("Sobon GF enterted");
         return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
       }
       if (abfrage.sobonRelevant !== UncertainBoolean.True) {

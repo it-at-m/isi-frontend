@@ -38,15 +38,20 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-checkbox
-          id="sobon_berechnung"
-          ref="sobonBerechnungCheckbox"
-          v-model="abfragevarianteSachbearbeitung.isASobonBerechnung"
-          :disabled="!isEditableBySachbearbeitung()"
-          class="mx-3"
-          label="Sobon-Berechnung"
-          color="primary"
-        />
+        <v-col
+          cols="12"
+          md="3"
+        >
+          <v-checkbox
+            id="sobon_berechnung"
+            ref="sobonBerechnungCheckbox"
+            v-model="abfragevarianteSachbearbeitung.isASobonBerechnung"
+            :disabled="!isEditableBySachbearbeitung()"
+            class="mx-3"
+            label="Sobon-Berechnung"
+            color="primary"
+          />
+        </v-col>
         <v-expand-transition>
           <div>
             <v-row
@@ -55,13 +60,14 @@
             >
               <v-col
                 cols="12"
-                md="8"
+                md="6"
               >
                 <v-select
-                  id="foerdermix_stammdaten_dropdown"
+                  id="sobon_berechnung_foerdermix_stammdaten_dropdown"
                   v-model="abfragevarianteSachbearbeitung.sobonFoerdermix"
                   :disabled="!isEditableBySachbearbeitung()"
                   :items="groupedStammdaten"
+                  class="mx-3"
                   label="Fördermix für Berechnung"
                   item-text="foerdermix.bezeichnung"
                   return-object
@@ -202,29 +208,27 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
    * @param foerdermixStaemme Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
    * @return Eine neue Liste, welche neben den Fördermixstämmen auch { header: string }-Objekte enthält.
    */
-  private groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[]): GroupedStammdaten {
-    // Objekt, welches pro 'bezeichnungJahr' ein Array mit den zugehörigen Fördermixen enthalten soll.
+  groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[]): GroupedStammdaten {
     const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
 
-    foerdermixStaemme.forEach((foerdermixStammModel: FoerdermixStammModel) => {
-      if (
-        foerdermixStammModel.foerdermix.bezeichnungJahr === "SoBoN 2021" ||
-        foerdermixStammModel.foerdermix.bezeichnungJahr === "SoBoN 2017"
-      ) {
-        // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
-        groups[foerdermixStammModel.foerdermix.bezeichnungJahr].push(foerdermixStammModel);
+    foerdermixStaemme.forEach((foerdermixStammModel) => {
+      const bezeichnungJahr = foerdermixStammModel.foerdermix.bezeichnungJahr;
+      if (bezeichnungJahr === "SoBoN 2021" || bezeichnungJahr === "SoBoN 2017") {
+        // Prüft, ob das Array für das bezeichnungJahr bereits existiert, und initialisiert es bei Bedarf
+        if (!groups[bezeichnungJahr]) {
+          groups[bezeichnungJahr] = [];
+        }
+        groups[bezeichnungJahr].push(foerdermixStammModel);
       }
     });
 
-    // Das obere Objekt soll nun zu einer "abgeflachten" Liste mit header-Objekten werden.
     const flattened: GroupedStammdaten = [];
 
     Object.keys(groups).forEach((bezeichnungJahr) => {
       const foerdermixe = groups[bezeichnungJahr];
-
-      // Fügt zuerst ein header-Objekt für das aktuelle 'bezeichnungJahr' hinzu.
+      // Fügt zuerst ein header-Objekt für das aktuelle 'bezeichnungJahr' hinzu
       flattened.push({ header: bezeichnungJahr });
-      // Darauf werden alle Elemente des Arrays vom aktuellen 'bezeichnungJahr' hinzugefügt (siehe "Spread syntax").
+      // Fügt dann alle zugehörigen FördermixStammModel Objekte hinzu
       flattened.push(...foerdermixe);
     });
 
@@ -239,6 +243,9 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
         AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
     ) {
+      // eslint-disable-next-line no-console
+      console.log("Show Report Abfrage Sobon Relevant: " + abfrage.sobonRelevant === UncertainBoolean.True);
+
       return (
         abfrage.sobonRelevant === UncertainBoolean.True &&
         (this.abfragevarianteSachbearbeitung?.isASobonBerechnung as boolean) &&
