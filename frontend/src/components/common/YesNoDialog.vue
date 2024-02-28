@@ -42,7 +42,7 @@
         label="Anmerkung"
         auto-grow
         rows="1"
-        maxlength="255"
+        maxlength="1000"
         @input="anmerkung"
       >
       </v-textarea>
