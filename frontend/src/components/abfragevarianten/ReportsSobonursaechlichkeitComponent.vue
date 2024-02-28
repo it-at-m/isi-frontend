@@ -69,7 +69,7 @@
           target="_blank"
           :href="getUrlSobonSpitzenbedarfeKinderkrippe()"
         >
-          SoBoN-ursächlicher Spitzenbedarf Kinderkrippe<span class="mdi mdi-launch" />
+          Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
@@ -79,7 +79,7 @@
           target="_blank"
           :href="getUrlSobonSpitzenbedarfeKindergarten()"
         >
-          SoBoN-ursächlicher Spitzenbedarf Kindergarten<span class="mdi mdi-launch" />
+          Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
