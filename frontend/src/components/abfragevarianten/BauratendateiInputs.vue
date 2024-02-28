@@ -7,7 +7,7 @@
       >
         <v-checkbox
           id="abfragevarianteSachbearbeitung_bauratendatei_checkbox"
-          v-model="hasBauratenDateiInput"
+          v-model="abfragevarianteSachbearbeitung.hasBauratendateiInputs"
           label="Daten für Bauratendatei angeben"
           :disabled="!isEditable"
           @change="checkboxChanged"
@@ -16,10 +16,11 @@
     </v-row>
     <v-slide-y-reverse-transition>
       <div
-        v-for="(entry, index) in bauratenDateiInput"
+        v-for="(entry, index) in abfragevarianteSachbearbeitung.bauratendateiInputs"
         :key="index"
       >
         <v-divider />
+        <v-btn v-text="'Löschen'" />
         <v-row>
           <v-col
             cols="12"
@@ -63,24 +64,25 @@
             <spreadsheet :id="'abfragevarianteSachbearbeitung_bauratendatei_wohneinheiten_' + index" />
           </v-col>
         </v-row>
-        <v-row>
-          <v-col
-            cols="12"
-            md="12"
-          >
-            <v-textarea
-              :id="'abfragevarianteSachbearbeitung_bauratendatei_anmerkung_' + index"
-              v-model="abfragevarianteSachbearbeitung.anmerkung"
-              :disabled="!isEditable"
-              label="Anmerkungen"
-              auto-grow
-              rows="3"
-              maxlength="1000"
-              @input="formChanged"
-            />
-          </v-col>
-        </v-row>
       </div>
+      <v-btn v-text="'Neuer Eintrag'" />
+      <v-row>
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <v-textarea
+            :id="'abfragevarianteSachbearbeitung_bauratendatei_anmerkung_' + index"
+            v-model="abfragevarianteSachbearbeitung.anmerkungBauratenDateiInputs"
+            :disabled="!isEditable"
+            label="Anmerkungen"
+            auto-grow
+            rows="3"
+            maxlength="1000"
+            @input="formChanged"
+          />
+        </v-col>
+      </v-row>
     </v-slide-y-reverse-transition>
   </div>
 </template>
@@ -93,22 +95,18 @@ import Spreadsheet from "@/components/common/Spreadsheet.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({ components: { FieldGroupCard, Spreadsheet } })
-export default class BauratenDateiInput extends Mixins(SaveLeaveMixin) {
-  // TODO: type: BauratenDateiInputModel
+export default class BauratendateiInputs extends Mixins(SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  // TODO = bauratenDateiInput.length > 0
-  private hasBauratenDateiInput = false;
-
   private checkboxChanged(): void {
-    if (this.hasBauratenDateiInput) {
+    if (this.abfragevarianteSachbearbeitung.hasBauratendateiInputs) {
       // TODO: Felder vorbefüllen
     } else {
-      // TODO: this.bauratenDateiInput = [];
+      // TODO: this.bauratendateiInput = [];
     }
 
     this.formChanged();

@@ -73,7 +73,7 @@
       </v-row>
     </field-group-card>
     <field-group-card :card-title="bauratenDateiInputTitle">
-      <bauraten-datei-input
+      <bauratendatei-inputs
         v-model="abfragevarianteSachbearbeitung"
         :is-editable="isEditableBySachbearbeitung()"
       />
@@ -96,7 +96,7 @@ import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
-import BauratenDateiInput from "@/components/abfragevarianten/BauratenDateiInput.vue";
+import BauratendateiInputs from "@/components/abfragevarianten/BauratendateiInputs.vue";
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
@@ -106,7 +106,7 @@ import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
     ReportsSobonursaechlichkeitComponent,
     FieldGroupCard,
     NumField,
-    BauratenDateiInput,
+    BauratendateiInputs,
   },
 })
 export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
