@@ -832,9 +832,8 @@ export default class Abfrage extends Mixins(
               this.possibleTransitions = response;
             });
           }
-        } else {
-          this.anmerkung = "";
         }
+        this.anmerkung = "";
       } else {
         this.showWarningInInformationList(validationMessage);
       }
