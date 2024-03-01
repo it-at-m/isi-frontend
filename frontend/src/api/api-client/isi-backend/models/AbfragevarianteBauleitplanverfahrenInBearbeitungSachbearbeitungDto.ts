@@ -19,6 +19,12 @@ import {
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
+import type { FoerdermixDto } from './FoerdermixDto';
+import {
+    FoerdermixDtoFromJSON,
+    FoerdermixDtoFromJSONTyped,
+    FoerdermixDtoToJSON,
+} from './FoerdermixDto';
 
 /**
  * 
@@ -172,16 +178,22 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitung
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
-     */
-    gfWohnenPlanungsursaechlich?: number;
-    /**
-     * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
+     */
+    isASobonBerechnung?: boolean;
+    /**
+     * 
+     * @type {FoerdermixDto}
+     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
+     */
+    sobonFoerdermix?: FoerdermixDto;
     /**
      * 
      * @type {Date}
@@ -290,8 +302,9 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
-        'gfWohnenPlanungsursaechlich': !exists(json, 'gfWohnenPlanungsursaechlich') ? undefined : json['gfWohnenPlanungsursaechlich'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
+        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
+        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
@@ -330,8 +343,9 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
-        'gfWohnenPlanungsursaechlich': value.gfWohnenPlanungsursaechlich,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'isASobonBerechnung': value.isASobonBerechnung,
+        'sobonFoerdermix': FoerdermixDtoToJSON(value.sobonFoerdermix),
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
     };

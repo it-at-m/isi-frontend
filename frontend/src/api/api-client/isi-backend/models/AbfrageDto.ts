@@ -116,6 +116,12 @@ export interface AbfrageDto {
      * @memberof AbfrageDto
      */
     displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageDto
+     */
+    linkEakte?: string;
 }
 
 
@@ -172,6 +178,7 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'sub': !exists(json, 'sub') ? undefined : json['sub'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
     };
 }
 
@@ -195,6 +202,7 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'bauvorhaben': value.bauvorhaben,
         'sub': value.sub,
         'displayName': value.displayName,
+        'linkEakte': value.linkEakte,
     };
 }
 
