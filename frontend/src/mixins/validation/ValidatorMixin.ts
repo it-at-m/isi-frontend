@@ -291,7 +291,41 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInBedarfsmeldungAbfrageersteller)) {
       return messageFaultInBedarfsmeldungAbfrageersteller;
     }
+    const messageFaultInAbfragevarianteMarkedSobonBerechnung = this.findFaultInAbfragevarianteMarkedSobonBerechnung(
+      abfrage,
+      abfragevariante,
+    );
+    if (!_.isNil(messageFaultInAbfragevarianteMarkedSobonBerechnung)) {
+      return messageFaultInAbfragevarianteMarkedSobonBerechnung;
+    }
 
+    return null;
+  }
+
+  public findFaultInAbfragevarianteMarkedSobonBerechnung(
+    abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel | BaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel,
+  ): string | null {
+    if (
+      (abfragevariante instanceof AbfragevarianteBauleitplanverfahrenModel &&
+        abfrage instanceof BauleitplanverfahrenModel) ||
+      (abfragevariante instanceof AbfragevarianteWeiteresVerfahrenModel && abfrage instanceof WeiteresVerfahrenModel)
+    ) {
+      if (abfragevariante.isASobonBerechnung) {
+        if (_.isNil(abfragevariante.sobonFoerdermix)) {
+          return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
+        }
+        if (_.isNil(abfragevariante.gfWohnenSobonUrsaechlich)) {
+          return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
+        }
+        if (abfrage.sobonRelevant !== UncertainBoolean.True) {
+          return "Die Abfrage muss als SoBoN Relevant markiert werden um eine SoBoN-Berechnung durchzuführen.";
+        }
+      }
+    }
     return null;
   }
 
@@ -309,7 +343,7 @@ export default class ValidatorMixin extends Vue {
       return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
     }
     const date = moment(abfragevariante.stammdatenGueltigAb, "DD.MM.YYYY", true);
-    if (!date.isValid() || abfragevariante.stammdatenGueltigAb.toISOString() == new Date(0).toISOString()) {
+    if (!date.isValid() || abfragevariante.stammdatenGueltigAb?.toISOString() == new Date(0).toISOString()) {
       return `Bitte geben Sie das 'Stammdatum gültig ab' bei Abfragevariante '${abfragevariante.name}' im Format TT.MM.JJJJ an.`;
     }
     return null;
