@@ -191,14 +191,12 @@ export default class ValidatorMixin extends Vue {
       switch (abfrage.artAbfrage) {
         case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
           abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
-          validationMessage = this.findFaultInAbfragevarianteMarkedSobonBerechnung(abfrage, abfragevariante);
           break;
         case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
           abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
           break;
         case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
           abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
-          validationMessage = this.findFaultInAbfragevarianteMarkedSobonBerechnung(abfrage, abfragevariante);
           break;
         default:
           abfragevariante = undefined;
@@ -270,34 +268,39 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInBedarfsmeldungAbfrageersteller)) {
       return messageFaultInBedarfsmeldungAbfrageersteller;
     }
+    const messageFaultInAbfragevarianteMarkedSobonBerechnung = this.findFaultInAbfragevarianteMarkedSobonBerechnung(
+      abfrage,
+      abfragevariante,
+    );
+    if (!_.isNil(messageFaultInAbfragevarianteMarkedSobonBerechnung)) {
+      return messageFaultInAbfragevarianteMarkedSobonBerechnung;
+    }
 
     return null;
   }
 
   public findFaultInAbfragevarianteMarkedSobonBerechnung(
-    abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel,
-    abfragevariante: AbfragevarianteBauleitplanverfahrenModel | AbfragevarianteWeiteresVerfahrenModel,
+    abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel | BaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel,
   ): string | null {
-    // eslint-disable-next-line no-console
-    console.log("Validierung entered");
-    if (abfragevariante.isASobonBerechnung) {
-      console.log("IS A Sobon Berechnung entered");
-      // eslint-disable-next-line no-console
-      console.log("Abfrage SoBon Relevant: " + abfrage.sobonRelevant !== UncertainBoolean.True);
-
-      if (_.isNil(abfragevariante.sobonFoerdermix)) {
-        // eslint-disable-next-line no-console
-        console.log("Sobon Foerdermix enterted");
-
-        return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
-      }
-      if (_.isNil(abfragevariante.gfWohnenSobonUrsaechlich)) {
-        // eslint-disable-next-line no-console
-        console.log("Sobon GF enterted");
-        return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
-      }
-      if (abfrage.sobonRelevant !== UncertainBoolean.True) {
-        return "Die Abfrage muss als SoBoN Relevant markiert werden um eine SoBoN-Berechnung durchzuführen.";
+    if (
+      (abfragevariante instanceof AbfragevarianteBauleitplanverfahrenModel &&
+        abfrage instanceof BauleitplanverfahrenModel) ||
+      (abfragevariante instanceof AbfragevarianteWeiteresVerfahrenModel && abfrage instanceof WeiteresVerfahrenModel)
+    ) {
+      if (abfragevariante.isASobonBerechnung) {
+        if (_.isNil(abfragevariante.sobonFoerdermix)) {
+          return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
+        }
+        if (_.isNil(abfragevariante.gfWohnenSobonUrsaechlich)) {
+          return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
+        }
+        if (abfrage.sobonRelevant !== UncertainBoolean.True) {
+          return "Die Abfrage muss als SoBoN Relevant markiert werden um eine SoBoN-Berechnung durchzuführen.";
+        }
       }
     }
     return null;

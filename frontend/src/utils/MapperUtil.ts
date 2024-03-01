@@ -32,6 +32,8 @@ import {
   AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto,
+  FoerdermixDto,
+  FoerdermixStammDto,
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
@@ -42,6 +44,11 @@ export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: Foerde
   foerdermix.foerderarten = _.cloneDeep(foerdermixStammModel.foerdermix.foerderarten);
   foerdermix.bezeichnung = _.cloneDeep(foerdermixStammModel.foerdermix.bezeichnung);
   foerdermix.bezeichnungJahr = _.cloneDeep(foerdermixStammModel.foerdermix.bezeichnungJahr);
+  return foerdermix;
+}
+
+export function mapFoerdermixToFoerderMixStammModel(foerdermixModel: FoerdermixModel): FoerdermixStammModel {
+  const foerdermix = new FoerdermixStammModel({ foerdermix: _.cloneDeep(foerdermixModel) });
   return foerdermix;
 }
 

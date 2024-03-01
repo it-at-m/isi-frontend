@@ -40,7 +40,7 @@
       <v-row>
         <v-col
           cols="12"
-          md="3"
+          md="6"
         >
           <v-checkbox
             id="sobon_berechnung"
@@ -48,34 +48,28 @@
             v-model="abfragevarianteSachbearbeitung.isASobonBerechnung"
             :disabled="!isEditableBySachbearbeitung()"
             class="mx-3"
-            label="Sobon-Berechnung"
+            label="SoBoN-Berechnung"
             color="primary"
+            @change="onIsASobonBerechnungChange"
           />
         </v-col>
         <v-expand-transition>
-          <div>
-            <v-row
-              v-if="abfragevarianteSachbearbeitung.isASobonBerechnung"
-              justify="center"
-            >
-              <v-col
-                cols="12"
-                md="6"
-              >
-                <v-select
-                  id="sobon_berechnung_foerdermix_stammdaten_dropdown"
-                  v-model="abfragevarianteSachbearbeitung.sobonFoerdermix"
-                  :disabled="!isEditableBySachbearbeitung()"
-                  :items="groupedStammdaten"
-                  class="mx-3"
-                  label="Fördermix für Berechnung"
-                  item-text="foerdermix.bezeichnung"
-                  return-object
-                  @change="formChanged"
-                />
-              </v-col>
-            </v-row>
-          </div>
+          <v-col
+            v-if="abfragevarianteSachbearbeitung.isASobonBerechnung"
+            cols="12"
+            md="6"
+          >
+            <v-select
+              id="sobon_berechnung_foerdermix_stammdaten_dropdown"
+              v-model="sobonFoerdermix"
+              :disabled="!isEditableBySachbearbeitung()"
+              :items="groupedStammdaten"
+              label="Fördermix für Berechnung"
+              item-text="foerdermix.bezeichnung"
+              return-object
+              @change="formChanged"
+            />
+          </v-col>
         </v-expand-transition>
       </v-row>
       <v-row>
@@ -107,7 +101,7 @@
           md="6"
         >
           <reports-sobonursaechlichkeit-component
-            v-if="showSobonReport"
+            v-if="showSobonReport()"
             v-model="abfragevarianteSachbearbeitung"
           />
         </v-col>
@@ -121,6 +115,8 @@ import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import {
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  FoerdermixDto,
+  FoerdermixStammDto,
   LookupEntryDto,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
@@ -138,6 +134,9 @@ import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import _ from "lodash";
+import { mapFoerdermixStammModelToFoerderMix, mapFoerdermixToFoerderMixStammModel } from "@/utils/MapperUtil";
+import { createFoerdermixDto } from "@/utils/Factories";
+import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
@@ -169,6 +168,16 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     this.setGroupedStammdatenList();
   }
 
+  get sobonFoerdermix(): FoerdermixStammDto {
+    return mapFoerdermixToFoerderMixStammModel(
+      this.abfragevarianteSachbearbeitung.sobonFoerdermix ?? new FoerdermixModel(createFoerdermixDto()),
+    );
+  }
+
+  set sobonFoerdermix(item: FoerdermixStammModel): void {
+    this.abfragevarianteSachbearbeitung.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item);
+  }
+
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     if (
       this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
@@ -198,6 +207,13 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private setGroupedStammdatenList(): void {
     const stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
     this.groupedStammdaten = this.groupItemsToHeader(stammdaten);
+  }
+
+  private onIsASobonBerechnungChange(): void {
+    this.formChanged();
+    if (!this.abfragevarianteSachbearbeitung.isASobonBerechnung) {
+      this.abfragevarianteSachbearbeitung.sobonFoerdermix = undefined;
+    }
   }
 
   /**
@@ -243,9 +259,6 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
         AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
     ) {
-      // eslint-disable-next-line no-console
-      console.log("Show Report Abfrage Sobon Relevant: " + abfrage.sobonRelevant === UncertainBoolean.True);
-
       return (
         abfrage.sobonRelevant === UncertainBoolean.True &&
         (this.abfragevarianteSachbearbeitung?.isASobonBerechnung as boolean) &&
