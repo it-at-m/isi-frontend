@@ -225,6 +225,12 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
    * @return Eine neue Liste, welche neben den Fördermixstämmen auch { header: string }-Objekte enthält.
    */
   groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[]): GroupedStammdaten {
+    foerdermixStaemme = foerdermixStaemme.filter((foerdermixStaemme) => {
+      return (
+        foerdermixStaemme.foerdermix.bezeichnung !== "private Fläche" &&
+        foerdermixStaemme.foerdermix.bezeichnung !== "städtische Fläche"
+      );
+    });
     const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
 
     foerdermixStaemme.forEach((foerdermixStammModel) => {
@@ -247,7 +253,6 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       // Fügt dann alle zugehörigen FördermixStammModel Objekte hinzu
       flattened.push(...foerdermixe);
     });
-
     return flattened;
   }
 
