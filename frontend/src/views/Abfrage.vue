@@ -116,7 +116,7 @@
           :dialogtext="dialogTextStatus"
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
-          :has-anmerkung="hasAnmerkung"
+          :anmerkung-max-length="anmerkungMaxLength"
           @anmerkung="handleAnmerkung"
           @no="yesNoDialogStatusUebergangeNo"
           @yes="yesNoDialogStatusUebergangYes"
@@ -493,7 +493,7 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBaurateOpen = false;
   private isRelevanteAbfragevarianteDialogOpen = false;
   private relevanteAbfragevarianteDialogText = "";
-  private hasAnmerkung = false;
+  private anmerkungMaxLength = 0;
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
   private relevanteAbfragevarianteToBeSet:
@@ -583,9 +583,11 @@ export default class Abfrage extends Mixins(
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
     this.dialogTextStatus = transition.dialogText as string;
+    // Verfügbare Zeichen = (maximale Zeichenanzahl) - (benutzte Zeichen) - (Zeilenumbruch)
+    const availableLength = 1000 - (this.abfrage.anmerkung?.length ?? 0) - 1;
     transition.url == this.TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT
-      ? (this.hasAnmerkung = true)
-      : (this.hasAnmerkung = false);
+      ? (this.anmerkungMaxLength = availableLength)
+      : (this.anmerkungMaxLength = 0);
     this.isStatusUebergangDialogOpen = true;
   }
 

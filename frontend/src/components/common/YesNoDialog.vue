@@ -35,14 +35,14 @@
         {{ dialogtext }}
       </v-card-text>
       <v-textarea
-        v-if="hasAnmerkung"
+        v-if="anmerkungMaxLength > 0"
         id="yes_no_dialog-text-area"
         ref="textarea"
         class="textarea"
         label="Anmerkung"
         auto-grow
         rows="1"
-        maxlength="1000"
+        :maxlength="anmerkungMaxLength"
         @input="anmerkung"
       >
       </v-textarea>
@@ -115,8 +115,8 @@ export default class YesNoDialog extends Vue {
   @Prop({ default: "Nein" })
   noText!: string;
 
-  @Prop({ default: false, type: Boolean })
-  hasAnmerkung!: boolean;
+  @Prop({ default: 0, type: Number })
+  anmerkungMaxLength!: number;
 
   /**
    * Steuerflag für den Dialog
