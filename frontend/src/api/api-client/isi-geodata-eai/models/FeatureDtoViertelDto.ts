@@ -19,53 +19,53 @@ import {
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
 } from './FeatureDtoViertelDtoGeometry';
-import type { FlurstueckDto } from './FlurstueckDto';
+import type { ViertelDto } from './ViertelDto';
 import {
-    FlurstueckDtoFromJSON,
-    FlurstueckDtoFromJSONTyped,
-    FlurstueckDtoToJSON,
-} from './FlurstueckDto';
+    ViertelDtoFromJSON,
+    ViertelDtoFromJSONTyped,
+    ViertelDtoToJSON,
+} from './ViertelDto';
 
 /**
  * 
  * @export
- * @interface FeatureDtoFlurstueckDto
+ * @interface FeatureDtoViertelDto
  */
-export interface FeatureDtoFlurstueckDto {
+export interface FeatureDtoViertelDto {
     /**
      * 
      * @type {string}
-     * @memberof FeatureDtoFlurstueckDto
+     * @memberof FeatureDtoViertelDto
      */
     type?: string;
     /**
      * 
      * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoFlurstueckDto
+     * @memberof FeatureDtoViertelDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {FlurstueckDto}
-     * @memberof FeatureDtoFlurstueckDto
+     * @type {ViertelDto}
+     * @memberof FeatureDtoViertelDto
      */
-    properties?: FlurstueckDto;
+    properties?: ViertelDto;
 }
 
 /**
- * Check if a given object implements the FeatureDtoFlurstueckDto interface.
+ * Check if a given object implements the FeatureDtoViertelDto interface.
  */
-export function instanceOfFeatureDtoFlurstueckDto(value: object): boolean {
+export function instanceOfFeatureDtoViertelDto(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function FeatureDtoFlurstueckDtoFromJSON(json: any): FeatureDtoFlurstueckDto {
-    return FeatureDtoFlurstueckDtoFromJSONTyped(json, false);
+export function FeatureDtoViertelDtoFromJSON(json: any): FeatureDtoViertelDto {
+    return FeatureDtoViertelDtoFromJSONTyped(json, false);
 }
 
-export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoFlurstueckDto {
+export function FeatureDtoViertelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoViertelDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -73,11 +73,11 @@ export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'type': !exists(json, 'type') ? undefined : json['type'],
         'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': !exists(json, 'properties') ? undefined : FlurstueckDtoFromJSON(json['properties']),
+        'properties': !exists(json, 'properties') ? undefined : ViertelDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | null): any {
+export function FeatureDtoViertelDtoToJSON(value?: FeatureDtoViertelDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -88,7 +88,7 @@ export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | 
         
         'type': value.type,
         'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
-        'properties': FlurstueckDtoToJSON(value.properties),
+        'properties': ViertelDtoToJSON(value.properties),
     };
 }
 

@@ -23,24 +23,9 @@ describe("ValidatorMixin Test", () => {
       } as FoerdermixDto,
     } as BaurateDto);
 
-    baurate.weGeplant = undefined;
-
-    const anzahlWeFehler = validationMixin.findFaultInBaurate(baurate);
-
-    expect(anzahlWeFehler).toBe("Anzahl Wohnen geplant muss angegeben werden");
-
-    baurate.weGeplant = 50;
-    baurate.gfWohnenGeplant = undefined;
-
-    const geschossflaecheWohnen = validationMixin.findFaultInBaurate(baurate);
-
-    expect(geschossflaecheWohnen).toBe("Geschossfläche Wohnen geplant muss angegeben werden");
-
-    baurate.gfWohnenGeplant = 50;
-
     const foerdermixErrorAbove = validationMixin.findFaultInBaurate(baurate);
 
-    expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil ist über 100");
+    expect(foerdermixErrorAbove).toBe("Fördermix Gesamtanteil in Baurate 2002 ist über 100 %");
 
     let anteilPreisgedaempfterMietwohnungsbau = baurate.foerdermix.foerderarten?.find(
       (item) => item.bezeichnung === "PreisgedaempfterMietwohnungsbau",
@@ -52,6 +37,6 @@ describe("ValidatorMixin Test", () => {
 
     const foerdermixErrorBelow = validationMixin.findFaultInBaurate(baurate);
 
-    expect(foerdermixErrorBelow).toBe("Fördermix Gesamtanteil ist unter 100");
+    expect(foerdermixErrorBelow).toBe("Fördermix Gesamtanteil in Baurate 2002 ist unter 100 %");
   });
 });

@@ -23,6 +23,9 @@ import {
   KinderkrippeDto,
   MittelschuleDto,
   UncertainBoolean,
+  StatusAbfrage,
+  BaugebietDtoArtBaulicheNutzungEnum,
+  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -34,7 +37,6 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import moment from "moment";
 import {
-  countDecimals,
   addiereAnteile,
   getBauratenFromAllTechnicalBaugebiete,
   getNonTechnicalBaugebiete,
@@ -47,7 +49,6 @@ export default class ValidatorMixin extends Vue {
   /**
    * Prüft die komplette Abfrage vor dem Speichern
    */
-
   public findFaultInAbfrageForSave(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): string | null {
@@ -70,16 +71,15 @@ export default class ValidatorMixin extends Vue {
   /**
    * Bauleitplanverfahren wird vor dem Speichern komplett geprüft
    */
-
   public findFaultInBauleitplanverfahrenForSave(abfrage: BauleitplanverfahrenModel): string | null {
     if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
-      return "Bitte geben Sie an ob die Abfrage SoBoN-relevant ist";
+      return "Bitte angeben ob die Abfrage SoBoN-relevant ist";
     }
     if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
-      return "Bitte treffen Sie eine Auswahl bei 'Offizielle Mitzeichnung'";
+      return "Bitte eine Auswahl bei 'Offizielle Mitzeichnung' treffen";
     }
     if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
-      return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
+      return "Die Abfrage ist SoBoN-relevant. Bitte das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN wählen.";
     }
     return this.findFaultInAbfrage(abfrage);
   }
@@ -87,7 +87,6 @@ export default class ValidatorMixin extends Vue {
   /**
    * Baugenehmigungsverfahren wird vor dem Speichern komplett geprüft
    */
-
   public findFaultInBaugenehmigungsverfahrenForSave(abfrage: BaugenehmigungsverfahrenModel): string | null {
     return this.findFaultInAbfrage(abfrage);
   }
@@ -95,16 +94,15 @@ export default class ValidatorMixin extends Vue {
   /**
    * Weiteres Verfahren wird vor dem Speichern komplett geprüft
    */
-
   public findFaultInWeiteresVerfahrenForSave(abfrage: WeiteresVerfahrenModel): string | null {
     if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
-      return "Bitte geben Sie an ob die Abfrage SoBoN-relevant ist";
+      return "Bitte angeben ob die Abfrage SoBoN-relevant ist";
     }
     if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
-      return "Die Abfrage ist SoBoN-relevant. Bitte wählen Sie daher das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN.";
+      return "Die Abfrage ist SoBoN-relevant. Bitte das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN auswählen.";
     }
     if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
-      return "Bitte treffen Sie eine Auswahl bei 'Offizielle Mitzeichnung'";
+      return "Bitte eine Auswahl bei 'Offizielle Mitzeichnung' treffen";
     }
     return this.findFaultInAbfrage(abfrage);
   }
@@ -112,6 +110,9 @@ export default class ValidatorMixin extends Vue {
   private findFaultInAbfrage(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): string | null {
+    if (_.isEmpty(abfrage.name)) {
+      return "Der Name der Abfrage ist anzugeben.";
+    }
     if (
       !this.isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse?.angabeLageErgaenzendeAdressinformation) &&
       !this.isValidAdresse(abfrage.adresse)
@@ -174,10 +175,10 @@ export default class ValidatorMixin extends Vue {
     }
 
     if (_.isNil(abfragevarianten) || abfragevarianten.length < 1 || abfragevarianten.length > 5) {
-      return "Es müssen durch die Abfrageerstellung zwischen einer und fünf Abfragevarianten angegeben werden.";
+      return "Die Abfrageerstellung kann mindestens eine und maximal fünf Abfragevarianten erstellen.";
     }
     if (_.isNil(abfragevariantenSachbearbeitung) || abfragevariantenSachbearbeitung.length > 5) {
-      return "Es können durch die Sachbearbeitung maximal fünf Abfragevarianten angegeben werden.";
+      return "Die Sachbearbeitung kann maximal fünf Abfragevarianten erstellen.";
     }
     let validationMessage = null;
     const allAbfragevarianten = _.concat(_.toArray(abfragevarianten), _.toArray(abfragevariantenSachbearbeitung));
@@ -187,44 +188,71 @@ export default class ValidatorMixin extends Vue {
       | AbfragevarianteWeiteresVerfahrenModel
       | undefined = undefined;
     for (const abfragevarianteDto of allAbfragevarianten) {
-      switch (abfrage.artAbfrage) {
-        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-          abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
-          break;
-        case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-          abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
-          break;
-        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-          abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
-          break;
-        default:
-          abfragevariante = undefined;
-          break;
-      }
+      abfragevariante = this.convertAbfragevarianteType(abfrage.artAbfrage, abfragevarianteDto);
       if (!_.isNil(abfragevariante)) {
-        validationMessage = this.findFaultInAbfragevariante(abfragevariante);
+        validationMessage = this.findFaultInAbfragevariante(abfrage, abfragevariante);
         if (!_.isNil(validationMessage)) {
           break;
+        } else if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
+          validationMessage = this.findFaultInAbfragevarianteInBearbeitungSachbearbeitung(abfragevariante);
+          if (!_.isNil(validationMessage)) {
+            break;
+          }
         }
       }
     }
     return validationMessage;
   }
 
+  private convertAbfragevarianteType(
+    artAbfrage: AbfrageDtoArtAbfrageEnum | undefined,
+    abfragevarianteDto: any,
+  ):
+    | AbfragevarianteBauleitplanverfahrenModel
+    | AbfragevarianteBaugenehmigungsverfahrenModel
+    | AbfragevarianteWeiteresVerfahrenModel
+    | undefined {
+    let abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | undefined = undefined;
+
+    switch (artAbfrage) {
+      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+        abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
+        break;
+      case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+        abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
+        break;
+      case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+        abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
+        break;
+      default:
+        abfragevariante = undefined;
+        break;
+    }
+    return abfragevariante;
+  }
+
   public findFaultInAbfragevariante(
+    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
     abfragevariante:
       | AbfragevarianteBauleitplanverfahrenModel
       | AbfragevarianteBaugenehmigungsverfahrenModel
       | AbfragevarianteWeiteresVerfahrenModel,
   ): string | null {
-    if (_.isNil(abfragevariante.name)) {
-      return "Bitte geben Sie einen Namen für die Abfragevariante an.";
+    if (_.isEmpty(abfragevariante.name)) {
+      return "Bitte einen Namen für die Abfragevariante angeben.";
+    }
+    if (_.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)) {
+      return "Bitte die wesentliche Rechtsgrundlage angeben";
     }
     if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
-      return `Bitte geben Sie das 'Realisierung von' Datum an`;
+      return `Bitte das Jahr für 'Realisierung von' angeben`;
     }
     if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
-      return `Bitte geben Sie die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' an`;
+      return `Bitte die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' angeben`;
     }
     const messageFaultVerteilungWohneinheiten = this.findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante);
     if (!_.isNil(messageFaultVerteilungWohneinheiten)) {
@@ -234,6 +262,18 @@ export default class ValidatorMixin extends Vue {
       this.findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(abfragevariante);
     if (!_.isNil(messageFaultVerteilungGeschossflaecheWohnen)) {
       return messageFaultVerteilungGeschossflaecheWohnen;
+    }
+    if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
+      if (
+        _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
+        abfragevariante.sobonOrientierungswertJahr ===
+          AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
+      ) {
+        return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
+      }
+      if (_.isNil(abfragevariante.stammdatenGueltigAb)) {
+        return "Bitte für die Bedarfsberechnung die Gültigkeit des Stammdatums angeben";
+      }
     }
     const messageFaultBauschnitte = this.findFaultInBauabschnitte(abfragevariante);
     if (!_.isNil(messageFaultBauschnitte)) {
@@ -255,6 +295,26 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
+  private findFaultInAbfragevarianteInBearbeitungSachbearbeitung(
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel,
+  ): string | null {
+    if (
+      _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
+      abfragevariante.sobonOrientierungswertJahr ===
+        AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
+    ) {
+      return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
+    }
+    const date = moment(abfragevariante.stammdatenGueltigAb, "DD.MM.YYYY", true);
+    if (!date.isValid() || abfragevariante.stammdatenGueltigAb.toISOString() == new Date(0).toISOString()) {
+      return `Bitte geben Sie das 'Stammdatum gültig ab' bei Abfragevariante '${abfragevariante.name}' im Format TT.MM.JJJJ an.`;
+    }
+    return null;
+  }
+
   public findFaultInBauabschnitte(
     abfragevariante:
       | AbfragevarianteBauleitplanverfahrenDto
@@ -272,10 +332,16 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInBauabschnitt(bauabschnitt: BauabschnittDto): string | null {
+    if (_.isEmpty(bauabschnitt.bezeichnung) && !bauabschnitt.technical) {
+      return "Die Bezeichnung des Bauabschnitts ist anzugeben.";
+    }
     return this.findFaultInBaugebiete(bauabschnitt);
   }
 
   public findFaultInBaugebiete(bauabschnitt: BauabschnittDto): string | null {
+    if (_.isEmpty(bauabschnitt.baugebiete)) {
+      return "Die Baugebiete sind anzugeben.";
+    }
     let validationMessage: string | null = null;
     for (const baugebiet of _.toArray(bauabschnitt.baugebiete)) {
       validationMessage = this.findFaultInBaugebiet(baugebiet);
@@ -287,37 +353,53 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInBaugebiet(baugebiet: BaugebietDto): string | null {
+    let validationMessage;
     if (!baugebiet.technical) {
-      const validationMessage = this.findFaultInVerteilungWohneinheitenBaugebiet(baugebiet);
+      if (_.isEmpty(baugebiet.bezeichnung)) {
+        return "Die Bezeichnung des Baugebiets ist anzugeben.";
+      }
+      if (
+        _.isNil(baugebiet.artBaulicheNutzung) ||
+        baugebiet.artBaulicheNutzung === BaugebietDtoArtBaulicheNutzungEnum.Unspecified
+      ) {
+        return "Die Art der baulichen Nutzung ist anzugeben.";
+      }
+      if (_.isNil(baugebiet.realisierungVon) || _.isNaN(baugebiet.realisierungVon)) {
+        return "Das Jahr für die Realisierung von ist im Baugebiet anzugeben.";
+      }
+      validationMessage = this.findFaultInVerteilungWohneinheitenBaugebiet(baugebiet);
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
-      const validationMessageGF = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
-      if (!_.isNil(validationMessageGF)) {
-        return validationMessageGF;
+      validationMessage = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
       }
     }
-    return null;
+    if (_.isEmpty(baugebiet.bauraten)) {
+      return "Die Bauraten sind anzugeben.";
+    }
+    return this.findFaultInBauraten(baugebiet.bauraten);
   }
 
   public findFaultInBedarfsmeldungen(bedarfsmeldungen: BedarfsmeldungModel[] | undefined): string | null {
     if (!_.isNil(bedarfsmeldungen)) {
-      bedarfsmeldungen.forEach((bedarfsmeldung) => {
+      for (const bedarfsmeldung of _.toArray(bedarfsmeldungen)) {
         const validationMessage: string | null = this.findFaultInBedarfsmeldung(bedarfsmeldung);
         if (!_.isNil(validationMessage)) {
           return validationMessage;
         }
-      });
+      }
     }
     return null;
   }
 
   public findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): string | null {
     if (_.isNil(bedarfsmeldung.anzahlEinrichtungen)) {
-      return `Bitte geben Sie die Anzahl der Einrichtungen an`;
+      return `Bitte die Anzahl der Einrichtungen angeben`;
     }
     if (bedarfsmeldung.infrastruktureinrichtungTyp === BedarfsmeldungDtoInfrastruktureinrichtungTypEnum.Unspecified) {
-      return `Bitte geben Sie den Typ der Infrastruktureinrichtung an`;
+      return `Bitte den Typ der Infrastruktureinrichtung angeben`;
     }
     if (
       _.isNil(bedarfsmeldung.anzahlKinderkrippengruppen) &&
@@ -325,45 +407,33 @@ export default class ValidatorMixin extends Vue {
       _.isNil(bedarfsmeldung.anzahlHortgruppen) &&
       _.isNil(bedarfsmeldung.anzahlGrundschulzuege)
     ) {
-      return `Bitte geben Sie den Bedarf an`;
+      return `Bitte den Bedarf angeben`;
     }
     return null;
   }
 
   findFaultInBauraten(bauraten: BaurateModel[]): string | null {
-    bauraten.forEach((baurate) => {
+    for (const baurate of _.toArray(bauraten)) {
       const validationMessage: string | null = this.findFaultInBaurate(new BaurateModel(baurate));
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
-    });
+    }
     return null;
   }
 
   findFaultInBaurate(baurate: BaurateModel): string | null {
-    if (baurate.weGeplant?.toString() === "") {
-      baurate.weGeplant = undefined;
-    }
-    if (baurate.gfWohnenGeplant?.toString() === "") {
-      baurate.gfWohnenGeplant = undefined;
-    }
     if (_.isNil(baurate.jahr) || _.isNaN(baurate.jahr)) {
-      return "Jahr wurde nicht angegeben";
+      return "In einer Baurate ist kein Jahr angegeben";
     }
-    if (_.isNil(baurate.foerdermix)) {
-      return "Fördermix ist nicht gepflegt";
-    }
-    if (!_.isNil(baurate.weGeplant as number) && _.isNil(baurate.gfWohnenGeplant as number)) {
-      return "Geschossfläche Wohnen geplant muss angegeben werden";
-    }
-    if (_.isNil(baurate.weGeplant as number) && !_.isNil(baurate.gfWohnenGeplant as number)) {
-      return "Anzahl Wohnen geplant muss angegeben werden";
+    if (_.isEmpty(baurate.foerdermix?.foerderarten)) {
+      return `Der Fördermix ist in Baurate ${baurate.jahr} nicht angegeben`;
     }
     const summe = addiereAnteile(new FoerdermixModel(baurate.foerdermix));
     if (summe < 100) {
-      return "Fördermix Gesamtanteil ist unter 100";
+      return `Fördermix Gesamtanteil in Baurate ${baurate.jahr} ist unter 100 %`;
     } else if (summe > 100) {
-      return "Fördermix Gesamtanteil ist über 100";
+      return `Fördermix Gesamtanteil in Baurate ${baurate.jahr} ist über 100 %`;
     }
     return null;
   }
@@ -378,7 +448,7 @@ export default class ValidatorMixin extends Vue {
       return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
     }
     if (bauvorhaben.artFnp.length === 0) {
-      return "Bitte treffen Sie eine Auswahl zur Flächennutzung laut Flächennutzungsplan";
+      return "Bitte eine Auswahl zur Flächennutzung laut Flächennutzungsplan treffen";
     }
 
     if (bauvorhaben.standVerfahren === BauvorhabenDtoStandVerfahrenEnum.Unspecified) {

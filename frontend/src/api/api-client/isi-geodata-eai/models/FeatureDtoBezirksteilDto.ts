@@ -13,59 +13,59 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BezirksteilDto } from './BezirksteilDto';
+import {
+    BezirksteilDtoFromJSON,
+    BezirksteilDtoFromJSONTyped,
+    BezirksteilDtoToJSON,
+} from './BezirksteilDto';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
 } from './FeatureDtoViertelDtoGeometry';
-import type { FlurstueckDto } from './FlurstueckDto';
-import {
-    FlurstueckDtoFromJSON,
-    FlurstueckDtoFromJSONTyped,
-    FlurstueckDtoToJSON,
-} from './FlurstueckDto';
 
 /**
  * 
  * @export
- * @interface FeatureDtoFlurstueckDto
+ * @interface FeatureDtoBezirksteilDto
  */
-export interface FeatureDtoFlurstueckDto {
+export interface FeatureDtoBezirksteilDto {
     /**
      * 
      * @type {string}
-     * @memberof FeatureDtoFlurstueckDto
+     * @memberof FeatureDtoBezirksteilDto
      */
     type?: string;
     /**
      * 
      * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoFlurstueckDto
+     * @memberof FeatureDtoBezirksteilDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {FlurstueckDto}
-     * @memberof FeatureDtoFlurstueckDto
+     * @type {BezirksteilDto}
+     * @memberof FeatureDtoBezirksteilDto
      */
-    properties?: FlurstueckDto;
+    properties?: BezirksteilDto;
 }
 
 /**
- * Check if a given object implements the FeatureDtoFlurstueckDto interface.
+ * Check if a given object implements the FeatureDtoBezirksteilDto interface.
  */
-export function instanceOfFeatureDtoFlurstueckDto(value: object): boolean {
+export function instanceOfFeatureDtoBezirksteilDto(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function FeatureDtoFlurstueckDtoFromJSON(json: any): FeatureDtoFlurstueckDto {
-    return FeatureDtoFlurstueckDtoFromJSONTyped(json, false);
+export function FeatureDtoBezirksteilDtoFromJSON(json: any): FeatureDtoBezirksteilDto {
+    return FeatureDtoBezirksteilDtoFromJSONTyped(json, false);
 }
 
-export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoFlurstueckDto {
+export function FeatureDtoBezirksteilDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoBezirksteilDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -73,11 +73,11 @@ export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'type': !exists(json, 'type') ? undefined : json['type'],
         'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': !exists(json, 'properties') ? undefined : FlurstueckDtoFromJSON(json['properties']),
+        'properties': !exists(json, 'properties') ? undefined : BezirksteilDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | null): any {
+export function FeatureDtoBezirksteilDtoToJSON(value?: FeatureDtoBezirksteilDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -88,7 +88,7 @@ export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | 
         
         'type': value.type,
         'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
-        'properties': FlurstueckDtoToJSON(value.properties),
+        'properties': BezirksteilDtoToJSON(value.properties),
     };
 }
 

@@ -75,7 +75,6 @@
     />
   </v-container>
 </template>
-
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
