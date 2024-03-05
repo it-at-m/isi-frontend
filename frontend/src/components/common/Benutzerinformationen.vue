@@ -16,7 +16,34 @@
         <v-icon> mdi-information </v-icon>
       </v-btn>
     </template>
-    TESTT
+    <v-list>
+      <v-list-item two-line>
+        <v-list-item-content>
+          <v-list-item-title>Name:</v-list-item-title>
+          <v-list-item-subtitle>{{ benutzerinformationen.bearbeitendePerson.name }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item two-line>
+        <v-list-item-content>
+          <v-list-item-title>Email:</v-list-item-title>
+          <v-list-item-subtitle>{{ benutzerinformationen.bearbeitendePerson.email }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item two-line>
+        <v-list-item-content>
+          <v-list-item-title>Organisationseinheit:</v-list-item-title>
+          <v-list-item-subtitle>{{
+            benutzerinformationen.bearbeitendePerson.organisationseinheit
+          }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item two-line>
+        <v-list-item-content>
+          <v-list-item-title>Letzte Änderung:</v-list-item-title>
+          <v-list-item-subtitle>{{ benutzerinformationen.lastModifiedDateTime }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </v-menu>
 </template>
 
