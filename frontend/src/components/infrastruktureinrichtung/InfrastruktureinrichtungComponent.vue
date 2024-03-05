@@ -2,7 +2,10 @@
   <div>
     <field-group-card>
       <v-row justify="center">
-        <v-col cols="12">
+        <v-col
+          cols="12"
+          md="11"
+        >
           <v-text-field
             id="infrastruktureinrichtung_nameEinrichtung"
             v-model="infrastruktureinrichtung.nameEinrichtung"
@@ -14,6 +17,17 @@
           >
             <template #label> Name der Einrichtung <span class="secondary--text">*</span> </template>
           </v-text-field>
+        </v-col>
+        <v-col
+          cols="12"
+          sm="1"
+        >
+          <v-btn
+            id="bearbeitungsinfos_button"
+            icon
+          >
+            <v-icon>mdi-information</v-icon>
+          </v-btn>
         </v-col>
       </v-row>
     </field-group-card>
