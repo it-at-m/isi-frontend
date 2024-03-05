@@ -97,12 +97,21 @@
       <template #heading>
         <v-container>
           <v-row>
-            <v-col cols="12">
+            <v-col
+              cols="12"
+              sm="11"
+            >
               <span
                 id="infrastruktureinrichtung_displayName"
                 class="text-h6 font-weight-bold"
                 v-text="infrastruktureinrichtungDisplayName"
               />
+            </v-col>
+            <v-col
+              cols="12"
+              sm="1"
+            >
+              <benutzerinformationen />
             </v-col>
           </v-row>
         </v-container>
@@ -200,6 +209,7 @@ import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
+import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
 
 @Component({
   computed: {
@@ -208,6 +218,7 @@ import Toaster from "../components/common/toaster.type";
     },
   },
   components: {
+    Benutzerinformationen,
     Kommentare,
     InfrastruktureinrichtungComponent,
     InformationList,

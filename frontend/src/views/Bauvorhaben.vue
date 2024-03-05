@@ -24,12 +24,7 @@
               cols="12"
               sm="1"
             >
-              <v-btn
-                id="bearbeitungsinfos_button"
-                icon
-              >
-                <v-icon>mdi-information</v-icon>
-              </v-btn>
+              <benutzerinformationen />
             </v-col>
           </v-row>
         </v-container>
@@ -163,6 +158,7 @@ import { Context } from "@/utils/Context";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
+import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
 
 @Component({
   computed: {
@@ -172,6 +168,7 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
   },
   methods: { containsNotAllowedDokument },
   components: {
+    Benutzerinformationen,
     Kommentare,
     BauvorhabenDataTransferDialog,
     BauvorhabenForm,
