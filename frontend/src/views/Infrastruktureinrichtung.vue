@@ -111,7 +111,7 @@
               cols="12"
               sm="1"
             >
-              <benutzerinformationen />
+              <benutzerinformationen v-model="bearbeitungsinformationen" />
             </v-col>
           </v-row>
         </v-container>
@@ -209,7 +209,7 @@ import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
-import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
+import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
 
 @Component({
   computed: {
@@ -252,6 +252,13 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   get isDisplayModeAenderung(): boolean {
     return this.mode === DisplayMode.AENDERUNG;
+  }
+
+  get bearbeitungsinformationen(): BenutzerinformationenModel {
+    return new BenutzerinformationenModel(
+      this.infrastruktureinrichtung?.bearbeitendePerson,
+      this.infrastruktureinrichtung?.lastModifiedDateTime,
+    );
   }
 
   get isEditable(): boolean {

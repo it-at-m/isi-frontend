@@ -24,7 +24,7 @@
               cols="12"
               sm="1"
             >
-              <benutzerinformationen />
+              <benutzerinformationen v-model="bearbeitungsinformationen" />
             </v-col>
           </v-row>
         </v-container>
@@ -155,10 +155,7 @@ import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
-import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
-import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
+import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
 
 @Component({
   computed: {
@@ -214,6 +211,10 @@ export default class Bauvorhaben extends Mixins(
 
   get isEditable(): boolean {
     return this.isRoleAdminOrSachbearbeitung();
+  }
+
+  get bearbeitungsinformationen(): BenutzerinformationenModel {
+    return new BenutzerinformationenModel(this.bauvorhaben?.bearbeitendePerson, this.bauvorhaben?.lastModifiedDateTime);
   }
 
   /**
