@@ -45,6 +45,11 @@ export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: Foerde
   return foerdermix;
 }
 
+export function mapFoerdermixToFoerderMixStammModel(foerdermix: FoerdermixModel): FoerdermixStammModel {
+  let foerdermixStammModel = new FoerdermixStammModel({ foerdermix });
+  return foerdermixStammModel;
+}
+
 export function mapToBauleitplanverfahrenAngelegt(
   bauleitplanverfahrenDto: BauleitplanverfahrenDto,
 ): BauleitplanverfahrenAngelegtDto {

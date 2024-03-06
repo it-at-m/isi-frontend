@@ -131,7 +131,7 @@ import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import { createFoerdermixDto } from "@/utils/Factories";
-import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
+import { mapFoerdermixStammModelToFoerderMix, mapFoerdermixToFoerderMixStammModel } from "@/utils/MapperUtil";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import _ from "lodash";
@@ -164,11 +164,13 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   mounted(): void {
     this.setGroupedStammdatenList();
   }
+
   get sobonFoerdermix(): FoerdermixStammDto {
     return mapFoerdermixToFoerderMixStammModel(
       this.abfragevarianteSachbearbeitung.sobonFoerdermix ?? new FoerdermixModel(createFoerdermixDto()),
     );
   }
+
   set sobonFoerdermix(item: FoerdermixStammModel) {
     this.abfragevarianteSachbearbeitung.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item);
   }
@@ -198,16 +200,19 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     }
     return [];
   }
+
   private setGroupedStammdatenList(): void {
     const stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
     this.groupedStammdaten = this.groupItemsToHeader(stammdaten);
   }
+
   private onIsASobonBerechnungChange(): void {
     this.formChanged();
     if (!this.abfragevarianteSachbearbeitung.isASobonBerechnung) {
       this.abfragevarianteSachbearbeitung.sobonFoerdermix = undefined;
     }
   }
+
   /**
    * Gruppiert eine Liste von Fördermixstämmen nach dem Attribut'bezeichnungJahr' welche den Wert 'SoBoN 2021' und 'SoBoN 2017' entsprechen.
    * Außerderm fügt die Methode entsprechende header-Objekte hinzu.
@@ -244,6 +249,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     });
     return flattened;
   }
+
   private showSobonReport(): boolean {
     const abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel = this.$store.getters["search/selectedAbfrage"];
     if (
@@ -261,9 +267,5 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     }
     return false;
   }
-}
-
-function mapFoerdermixToFoerderMixStammModel(arg0: any): FoerdermixStammDto {
-  throw new Error("Function not implemented.");
 }
 </script>
