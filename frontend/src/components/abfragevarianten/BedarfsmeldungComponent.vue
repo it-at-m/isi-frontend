@@ -236,7 +236,10 @@ export default class BedarfsmeldungComponent extends Mixins(
   private bedarfsmeldungTitle!: BedarfsmeldungTitle;
 
   get getBedarfsmeldungTitle(): string {
-    return this.bedarfsmeldungTitle.valueOf();
+    if (!_.isNil(this.bedarfsmeldungTitle)) {
+      return this.bedarfsmeldungTitle.valueOf();
+    }
+    return "";
   }
 
   @Prop({ type: Boolean, default: false })
