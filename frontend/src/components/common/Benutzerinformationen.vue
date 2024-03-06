@@ -77,46 +77,30 @@ export default class Benutzerinformationen extends Vue {
   }
 
   get name(): string {
-    if (
-      _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
+    return _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
       _.isNil(this.benutzerinformationen?.bearbeitendePerson?.name)
-    ) {
-      return "";
-    } else {
-      return this.benutzerinformationen.bearbeitendePerson.name;
-    }
+      ? ""
+      : this.benutzerinformationen.bearbeitendePerson.name;
   }
 
   get email(): string {
-    if (
-      _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
+    return _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
       _.isNil(this.benutzerinformationen?.bearbeitendePerson?.email)
-    ) {
-      return "";
-    } else {
-      return this.benutzerinformationen.bearbeitendePerson.email;
-    }
+      ? ""
+      : this.benutzerinformationen.bearbeitendePerson.email;
   }
 
   get organisationseinheit(): string {
-    if (
-      _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
+    return _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
       _.isNil(this.benutzerinformationen?.bearbeitendePerson?.organisationseinheit)
-    ) {
-      return "";
-    } else {
-      return this.benutzerinformationen.bearbeitendePerson.organisationseinheit;
-    }
+      ? ""
+      : this.benutzerinformationen.bearbeitendePerson.organisationseinheit;
   }
 
   get letzteAenderung(): string {
-    if (_.isNil(this.benutzerinformationen?.lastModifiedDateTime)) {
-      return "";
-    } else {
-      return moment
-        .utc(this.benutzerinformationen.lastModifiedDateTime, true)
-        .format(Benutzerinformationen.DISPLAY_FORMAT);
-    }
+    return _.isNil(this.benutzerinformationen?.lastModifiedDateTime)
+      ? ""
+      : moment.utc(this.benutzerinformationen.lastModifiedDateTime, true).format(Benutzerinformationen.DISPLAY_FORMAT);
   }
 }
 </script>
