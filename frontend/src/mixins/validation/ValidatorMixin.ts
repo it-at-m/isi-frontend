@@ -26,6 +26,8 @@ import {
   StatusAbfrage,
   BaugebietDtoArtBaulicheNutzungEnum,
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
+  AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -302,33 +304,6 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInAbfragevarianteMarkedSobonBerechnung(
-    abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel | BaugenehmigungsverfahrenModel,
-    abfragevariante:
-      | AbfragevarianteBauleitplanverfahrenModel
-      | AbfragevarianteWeiteresVerfahrenModel
-      | AbfragevarianteBaugenehmigungsverfahrenModel,
-  ): string | null {
-    if (
-      (abfragevariante instanceof AbfragevarianteBauleitplanverfahrenModel &&
-        abfrage instanceof BauleitplanverfahrenModel) ||
-      (abfragevariante instanceof AbfragevarianteWeiteresVerfahrenModel && abfrage instanceof WeiteresVerfahrenModel)
-    ) {
-      if (abfragevariante.isASobonBerechnung) {
-        if (_.isNil(abfragevariante.sobonFoerdermix)) {
-          return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
-        }
-        if (_.isNil(abfragevariante.gfWohnenSobonUrsaechlich)) {
-          return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
-        }
-        if (abfrage.sobonRelevant !== UncertainBoolean.True) {
-          return "Die Abfrage muss als SoBoN Relevant markiert werden um eine SoBoN-Berechnung durchzuführen.";
-        }
-      }
-    }
-    return null;
-  }
-
   private findFaultInAbfragevarianteInBearbeitungSachbearbeitung(
     abfragevariante:
       | AbfragevarianteBauleitplanverfahrenModel
@@ -345,6 +320,46 @@ export default class ValidatorMixin extends Vue {
     const date = moment(abfragevariante.stammdatenGueltigAb, "DD.MM.YYYY", true);
     if (!date.isValid() || abfragevariante.stammdatenGueltigAb?.toISOString() == new Date(0).toISOString()) {
       return `Bitte geben Sie das 'Stammdatum gültig ab' bei Abfragevariante '${abfragevariante.name}' im Format TT.MM.JJJJ an.`;
+    }
+    return null;
+  }
+
+  public findFaultInAbfragevarianteMarkedSobonBerechnung(
+    abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel | BaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel,
+  ): string | null {
+    let abfrageSobon = undefined;
+    let abfragevarianteSobon = undefined;
+    if (
+      abfragevariante.artAbfragevariante ===
+        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren &&
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+    ) {
+      abfrageSobon = abfrage as BauleitplanverfahrenModel;
+      abfragevarianteSobon = abfragevariante as AbfragevarianteBauleitplanverfahrenModel;
+    } else if (
+      abfragevariante.artAbfragevariante ===
+        AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren &&
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren
+    ) {
+      abfrageSobon = abfrage as WeiteresVerfahrenModel;
+      abfragevarianteSobon = abfragevariante as AbfragevarianteWeiteresVerfahrenModel;
+    }
+    if (!_.isNil(abfrageSobon) && !_.isNil(abfragevarianteSobon)) {
+      if (!_.isNil(abfragevarianteSobon.isASobonBerechnung) && abfragevarianteSobon.isASobonBerechnung) {
+        if (_.isNil(abfragevarianteSobon.sobonFoerdermix)) {
+          return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
+        }
+        if (_.isNil(abfragevarianteSobon.gfWohnenSobonUrsaechlich)) {
+          return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
+        }
+        if (_.isNil(abfrageSobon.sobonRelevant) || abfrageSobon.sobonRelevant !== UncertainBoolean.True) {
+          return "Die Abfrage muss als SoBoN Relevant markiert werden um eine SoBoN-Berechnung durchzuführen.";
+        }
+      }
     }
     return null;
   }
