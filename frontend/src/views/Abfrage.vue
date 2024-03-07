@@ -618,9 +618,9 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogStatusUebergangeNo(): void {
-    this.anmerkung = "";
     this.isStatusUebergangDialogOpen = false;
     if (!_.isNil(this.$refs.yesNoDialogStatusuebergang)) this.$refs.yesNoDialogStatusuebergang.resetTextarea();
+    this.anmerkung = "";
   }
 
   private yesNoDialogAbfragevarianteYes(): void {
