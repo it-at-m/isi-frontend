@@ -350,7 +350,12 @@ export default class ValidatorMixin extends Vue {
     }
     if (!_.isNil(abfrageSobon) && !_.isNil(abfragevarianteSobon)) {
       if (!_.isNil(abfragevarianteSobon.isASobonBerechnung) && abfragevarianteSobon.isASobonBerechnung) {
-        if (_.isNil(abfragevarianteSobon.sobonFoerdermix)) {
+        if (
+          _.isNil(abfragevarianteSobon.sobonFoerdermix) ||
+          (_.isNil(abfragevarianteSobon.sobonFoerdermix.bezeichnung) &&
+            _.isNil(abfragevarianteSobon.sobonFoerdermix.bezeichnungJahr) &&
+            abfragevarianteSobon.sobonFoerdermix.foerderarten?.length == 0)
+        ) {
           return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
         }
         if (_.isNil(abfragevarianteSobon.gfWohnenSobonUrsaechlich)) {
