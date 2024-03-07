@@ -46,7 +46,7 @@ export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: Foerde
 }
 
 export function mapFoerdermixToFoerderMixStammModel(foerdermix: FoerdermixModel): FoerdermixStammModel {
-  let foerdermixStammModel = new FoerdermixStammModel({ foerdermix });
+  const foerdermixStammModel = new FoerdermixStammModel({ foerdermix });
   return foerdermixStammModel;
 }
 
