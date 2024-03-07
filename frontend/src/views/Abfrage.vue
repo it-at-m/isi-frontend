@@ -582,12 +582,20 @@ export default class Abfrage extends Mixins(
 
   private statusUebergang(transition: TransitionDto): void {
     this.transition = transition;
+    this.anmerkungMaxLength = 0;
     this.dialogTextStatus = transition.dialogText as string;
-    // Verfügbare Zeichen = (maximale Zeichenanzahl) - (benutzte Zeichen) - (Zeilenumbruch)
-    const availableLength = 1000 - (this.abfrage.anmerkung?.length ?? 0) - 1;
-    transition.url == this.TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT
-      ? (this.anmerkungMaxLength = availableLength)
-      : (this.anmerkungMaxLength = 0);
+
+    if (transition.url === this.TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT) {
+      // Verfügbare Zeichen = (maximale Zeichenanzahl) - (benutzte Zeichen) - (Zeilenumbruch)
+      const availableLength = 1000 - (this.abfrage.anmerkung?.length ?? 0) - 1;
+      if (availableLength > 0) {
+        this.anmerkungMaxLength = availableLength;
+        this.dialogTextStatus += " Sie können eine Anmerkung hinzufügen.";
+      } else {
+        this.dialogTextStatus += " Für eine Anmerkung gibt es im Anmerkungsfeld nicht mehr genug Platz.";
+      }
+    }
+
     this.isStatusUebergangDialogOpen = true;
   }
 
@@ -610,6 +618,7 @@ export default class Abfrage extends Mixins(
   }
 
   private yesNoDialogStatusUebergangeNo(): void {
+    this.anmerkung = "";
     this.isStatusUebergangDialogOpen = false;
     if (!_.isNil(this.$refs.yesNoDialogStatusuebergang)) this.$refs.yesNoDialogStatusuebergang.resetTextarea();
   }
@@ -835,7 +844,6 @@ export default class Abfrage extends Mixins(
             });
           }
         }
-        this.anmerkung = "";
       } else {
         this.showWarningInInformationList(validationMessage);
       }
