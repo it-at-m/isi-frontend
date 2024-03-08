@@ -285,6 +285,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
               offset: L.point(0, -2),
             },
           );
+
           layer.on("mouseover", function () {
             layer.openTooltip();
           });

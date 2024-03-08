@@ -34,7 +34,7 @@ export default class SearchResultCityMap extends Vue {
       let icon: L.Icon;
       if (feature.properties.type === SearchResultDtoTypeEnum.Abfrage) {
         icon = ICON_ABFRAGE;
-      } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben) {
+      } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben && feature.geometry.type === "Point") {
         icon = ICON_BAUVORHABEN;
       } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
         icon = ICON_INFRASTRUKTUREINRICHTUNG;
@@ -47,10 +47,17 @@ export default class SearchResultCityMap extends Vue {
       return { color: COLOR_POLYGON_UMGRIFF };
     },
     onEachFeature: (feature: EntityFeature, layer) => {
-      layer.bindTooltip(
-        `<b>${feature.properties.name}</b><br>
-                   Typ: ${this.getSearchResultDtoTypeFormattedString(feature.properties.type)}`,
-      );
+      const contentTooltip = `<b>${feature.properties.name}</b><br>
+                   Typ: ${this.getSearchResultDtoTypeFormattedString(feature.properties.type)}`;
+      if (feature.geometry.type === "Point") {
+        layer.bindTooltip(contentTooltip);
+      } else {
+        layer.bindTooltip(contentTooltip, {
+          sticky: true,
+          direction: "top",
+          offset: L.point(0, -2),
+        });
+      }
 
       layer.on("mouseover", function () {
         layer.openTooltip();
@@ -60,25 +67,24 @@ export default class SearchResultCityMap extends Vue {
       });
 
       layer.on("click", () => {
-        switch (feature.properties.type) {
-          case SearchResultDtoTypeEnum.Abfrage:
-            router.push({
-              name: "updateabfrage",
-              params: { id: feature.properties.id },
-            });
-            break;
-          case SearchResultDtoTypeEnum.Bauvorhaben:
-            router.push({
-              name: "editBauvorhaben",
-              params: { id: feature.properties.id },
-            });
-            break;
-          case SearchResultDtoTypeEnum.Infrastruktureinrichtung:
-            router.push({
-              name: "editInfrastruktureinrichtung",
-              params: { id: feature.properties.id },
-            });
-            break;
+        if (feature.properties.type === SearchResultDtoTypeEnum.Abfrage) {
+          router.push({
+            name: "updateabfrage",
+            params: { id: feature.properties.id },
+          });
+        } else if (
+          feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben &&
+          feature.geometry.type === "Point"
+        ) {
+          router.push({
+            name: "editBauvorhaben",
+            params: { id: feature.properties.id },
+          });
+        } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
+          router.push({
+            name: "editInfrastruktureinrichtung",
+            params: { id: feature.properties.id },
+          });
         }
       });
     },
