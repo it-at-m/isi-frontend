@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
+import {
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 import type { SearchResultDto } from './SearchResultDto';
 import {
     SearchResultDtoFromJSON,
@@ -73,10 +79,10 @@ export interface BauvorhabenSearchResultDto extends SearchResultDto {
     standVerfahren?: BauvorhabenSearchResultDtoStandVerfahrenEnum;
     /**
      * 
-     * @type {Wgs84Dto}
+     * @type {MultiPolygonGeometryDto}
      * @memberof BauvorhabenSearchResultDto
      */
-    coordinate?: Wgs84Dto;
+    umgriff?: MultiPolygonGeometryDto;
 }
 
 
@@ -134,7 +140,7 @@ export function BauvorhabenSearchResultDtoFromJSONTyped(json: any, ignoreDiscrim
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
-        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
+        'umgriff': !exists(json, 'umgriff') ? undefined : MultiPolygonGeometryDtoFromJSON(json['umgriff']),
     };
 }
 
@@ -152,7 +158,7 @@ export function BauvorhabenSearchResultDtoToJSON(value?: BauvorhabenSearchResult
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVerfahren': value.standVerfahren,
-        'coordinate': Wgs84DtoToJSON(value.coordinate),
+        'umgriff': MultiPolygonGeometryDtoToJSON(value.umgriff),
     };
 }
 

@@ -53,12 +53,6 @@ export interface InfrastruktureinrichtungSearchResultDto extends SearchResultDto
      * @memberof InfrastruktureinrichtungSearchResultDto
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum;
-    /**
-     * 
-     * @type {Wgs84Dto}
-     * @memberof InfrastruktureinrichtungSearchResultDto
-     */
-    coordinate?: Wgs84Dto;
 }
 
 
@@ -101,7 +95,6 @@ export function InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json: any, 
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
-        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
     };
 }
 
@@ -117,7 +110,6 @@ export function InfrastruktureinrichtungSearchResultDtoToJSON(value?: Infrastruk
         'id': value.id,
         'nameEinrichtung': value.nameEinrichtung,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
-        'coordinate': Wgs84DtoToJSON(value.coordinate),
     };
 }
 

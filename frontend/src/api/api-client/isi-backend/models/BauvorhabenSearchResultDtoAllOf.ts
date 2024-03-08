@@ -13,18 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
+import {
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
-import type { Wgs84Dto } from './Wgs84Dto';
-import {
-    Wgs84DtoFromJSON,
-    Wgs84DtoFromJSONTyped,
-    Wgs84DtoToJSON,
-} from './Wgs84Dto';
 
 /**
  * 
@@ -64,10 +64,10 @@ export interface BauvorhabenSearchResultDtoAllOf {
     standVerfahren?: BauvorhabenSearchResultDtoAllOfStandVerfahrenEnum;
     /**
      * 
-     * @type {Wgs84Dto}
+     * @type {MultiPolygonGeometryDto}
      * @memberof BauvorhabenSearchResultDtoAllOf
      */
-    coordinate?: Wgs84Dto;
+    umgriff?: MultiPolygonGeometryDto;
 }
 
 
@@ -123,7 +123,7 @@ export function BauvorhabenSearchResultDtoAllOfFromJSONTyped(json: any, ignoreDi
         'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
-        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
+        'umgriff': !exists(json, 'umgriff') ? undefined : MultiPolygonGeometryDtoFromJSON(json['umgriff']),
     };
 }
 
@@ -141,7 +141,7 @@ export function BauvorhabenSearchResultDtoAllOfToJSON(value?: BauvorhabenSearchR
         'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVerfahren': value.standVerfahren,
-        'coordinate': Wgs84DtoToJSON(value.coordinate),
+        'umgriff': MultiPolygonGeometryDtoToJSON(value.umgriff),
     };
 }
 
