@@ -4,6 +4,7 @@
       height="300"
       :zoom="14"
       expandable
+      automatic-zoom-to-polygons
       :editable="isEditable"
       :look-at="coordinate"
       :geo-json="geoJsonObjectsToShow"

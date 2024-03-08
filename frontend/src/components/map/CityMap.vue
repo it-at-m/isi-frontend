@@ -164,6 +164,9 @@ export default class CityMap extends Vue {
   @Prop({ default: undefined })
   private readonly geoJsonOptions?: GeoJSONOptions;
 
+  @Prop({ type: Boolean, default: false })
+  private readonly automaticZoomToPolygons!: boolean;
+
   private layerGroup: LayerGroup = new LayerGroup();
   private map!: L.Map;
   private expanded = false;
@@ -207,7 +210,7 @@ export default class CityMap extends Vue {
   @Watch("geoJson", { deep: true })
   private onGeoJsonChanged(): void {
     this.addGeoJsonToMap();
-    if (!_.isEmpty(this.geoJson) && !this.firstGeoJsonFeatureAdded) {
+    if (!_.isEmpty(this.geoJson) && !this.firstGeoJsonFeatureAdded && this.automaticZoomToPolygons) {
       this.firstGeoJsonFeatureAdded = true;
       this.flyToCenterOfPolygonsInMap();
     }
