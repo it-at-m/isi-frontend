@@ -216,6 +216,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   /**
    * Gruppiert eine Liste von Fördermixstämmen nach dem Attribut'bezeichnungJahr' welche den Wert 'SoBoN 2021' und 'SoBoN 2017' entsprechen.
    * Außerderm fügt die Methode entsprechende header-Objekte hinzu.
+   * Die Fördermixe "private Fläche" und "städtische Fläche" werden entfernt.
    * Gedacht zum Einsatz mit v-select.
    *
    * @param foerdermixStaemme Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
@@ -249,7 +250,9 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     });
     return flattened;
   }
-
+  /**
+   * Überprüfung ob alle Kriterien stimmen um die Sobon Report anzuzeigen.
+   */
   private showSobonReport(): boolean {
     const abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel = this.$store.getters["search/selectedAbfrage"];
     if (
