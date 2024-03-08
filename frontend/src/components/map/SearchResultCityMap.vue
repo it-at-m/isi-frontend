@@ -100,23 +100,19 @@ export default class SearchResultCityMap extends Vue {
       let coordinate: Wgs84Dto | undefined;
       let umgriff: MultiPolygonGeometryDto | undefined;
 
-      switch (type) {
-        case SearchResultDtoTypeEnum.Abfrage:
-          id = (result as AbfrageSearchResultDto).id;
-          name = (result as AbfrageSearchResultDto).name;
-          coordinate = (result as AbfrageSearchResultDto).coordinate;
-          break;
-        case SearchResultDtoTypeEnum.Bauvorhaben:
-          id = (result as BauvorhabenSearchResultDto).id;
-          name = (result as BauvorhabenSearchResultDto).nameVorhaben;
-          coordinate = (result as BauvorhabenSearchResultDto).coordinate;
-          umgriff = (result as BauvorhabenSearchResultDto).umgriff;
-          break;
-        case SearchResultDtoTypeEnum.Infrastruktureinrichtung:
-          id = (result as InfrastruktureinrichtungSearchResultDto).id;
-          name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
-          coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
-          break;
+      if (type === SearchResultDtoTypeEnum.Abfrage) {
+        id = (result as AbfrageSearchResultDto).id;
+        name = (result as AbfrageSearchResultDto).name;
+        coordinate = (result as AbfrageSearchResultDto).coordinate;
+      } else if (type === SearchResultDtoTypeEnum.Bauvorhaben) {
+        id = (result as BauvorhabenSearchResultDto).id;
+        name = (result as BauvorhabenSearchResultDto).nameVorhaben;
+        coordinate = (result as BauvorhabenSearchResultDto).coordinate;
+        umgriff = (result as BauvorhabenSearchResultDto).umgriff;
+      } else if (type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
+        id = (result as InfrastruktureinrichtungSearchResultDto).id;
+        name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
+        coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
       }
 
       if (type && id && name && coordinate) {
