@@ -11,17 +11,18 @@ import {
   AbfrageSearchResultDto,
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
+  MultiPolygonGeometryDto,
   SearchResultDto,
   SearchResultDtoTypeEnum,
   Wgs84Dto,
 } from "@/api/api-client/isi-backend";
-import { Feature, Point } from "geojson";
+import { Feature, MultiPolygon, Point } from "geojson";
 import L, { GeoJSONOptions } from "leaflet";
 import CityMap from "./CityMap.vue";
 import router from "@/router";
-import { ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
+import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 
-type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
+type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 @Component({
   components: {
     CityMap,
@@ -31,20 +32,19 @@ export default class SearchResultCityMap extends Vue {
   private geoJsonOptions: GeoJSONOptions = {
     pointToLayer: (feature: EntityFeature, latlng) => {
       let icon: L.Icon;
-      switch (feature.properties.type) {
-        case "ABFRAGE":
-          icon = ICON_ABFRAGE;
-          break;
-        case "BAUVORHABEN":
-          icon = ICON_BAUVORHABEN;
-          break;
-        case "INFRASTRUKTUREINRICHTUNG":
-          icon = ICON_INFRASTRUKTUREINRICHTUNG;
-          break;
-        default:
-          return L.marker(latlng);
+      if (feature.properties.type === SearchResultDtoTypeEnum.Abfrage) {
+        icon = ICON_ABFRAGE;
+      } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben) {
+        icon = ICON_BAUVORHABEN;
+      } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
+        icon = ICON_INFRASTRUKTUREINRICHTUNG;
+      } else {
+        return L.marker(latlng);
       }
       return L.marker(latlng, { icon });
+    },
+    style: function () {
+      return { color: COLOR_POLYGON_UMGRIFF };
     },
     onEachFeature: (feature: EntityFeature, layer) => {
       layer.bindTooltip(
@@ -61,19 +61,19 @@ export default class SearchResultCityMap extends Vue {
 
       layer.on("click", () => {
         switch (feature.properties.type) {
-          case "ABFRAGE":
+          case SearchResultDtoTypeEnum.Abfrage:
             router.push({
               name: "updateabfrage",
               params: { id: feature.properties.id },
             });
             break;
-          case "BAUVORHABEN":
+          case SearchResultDtoTypeEnum.Bauvorhaben:
             router.push({
               name: "editBauvorhaben",
               params: { id: feature.properties.id },
             });
             break;
-          case "INFRASTRUKTUREINRICHTUNG":
+          case SearchResultDtoTypeEnum.Infrastruktureinrichtung:
             router.push({
               name: "editInfrastruktureinrichtung",
               params: { id: feature.properties.id },
@@ -92,19 +92,21 @@ export default class SearchResultCityMap extends Vue {
       let id: string | undefined;
       let name: string | undefined;
       let coordinate: Wgs84Dto | undefined;
+      let umgriff: MultiPolygonGeometryDto | undefined;
 
       switch (type) {
-        case "ABFRAGE":
+        case SearchResultDtoTypeEnum.Abfrage:
           id = (result as AbfrageSearchResultDto).id;
           name = (result as AbfrageSearchResultDto).name;
           coordinate = (result as AbfrageSearchResultDto).coordinate;
           break;
-        case "BAUVORHABEN":
+        case SearchResultDtoTypeEnum.Bauvorhaben:
           id = (result as BauvorhabenSearchResultDto).id;
           name = (result as BauvorhabenSearchResultDto).nameVorhaben;
           coordinate = (result as BauvorhabenSearchResultDto).coordinate;
+          umgriff = (result as BauvorhabenSearchResultDto).umgriff;
           break;
-        case "INFRASTRUKTUREINRICHTUNG":
+        case SearchResultDtoTypeEnum.Infrastruktureinrichtung:
           id = (result as InfrastruktureinrichtungSearchResultDto).id;
           name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
           coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
@@ -117,6 +119,13 @@ export default class SearchResultCityMap extends Vue {
           geometry: { type: "Point", coordinates: [coordinate.longitude, coordinate.latitude] },
           properties: { type, id, name },
         });
+        if (umgriff) {
+          features.push({
+            type: "Feature",
+            geometry: { type: "MultiPolygon", coordinates: umgriff.coordinates } as MultiPolygon,
+            properties: { type, id, name },
+          });
+        }
       }
     }
     return features;

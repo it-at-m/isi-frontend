@@ -19,3 +19,5 @@ export const ICON_INFRASTRUKTUREINRICHTUNG = L.icon({
   iconUrl: iconInfrastruktureinrichtungUrl,
   ...DEFAULT_ICON_OPTIONS,
 });
+
+export const COLOR_POLYGON_UMGRIFF = "#E91E63";
