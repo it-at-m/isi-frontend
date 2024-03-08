@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/require-v-for-key -->
 <template>
   <v-data-table
     :id="id"
@@ -8,12 +7,18 @@
   >
     <template
       v-for="header in headers"
-      #[`item.${header.text}`]="cell"
+      #[`item.${header.value}`]="cell"
     >
-      <input
+      <num-field
         :id="`${id}_${header.text}_${cell.index}`"
-        v-model="cell.item[header.text]"
-        type="text"
+        :key="`${header.text}_${cell.index}`"
+        v-model="cell.item[header.value]"
+        solo
+        flat
+        dense
+        hide-details
+        background-color="#00000000"
+        integer
         :disabled="!isEditable"
         @input="formChanged"
       />
@@ -24,10 +29,11 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { DataTableHeader } from "vuetify";
 
-@Component({ components: { FieldGroupCard } })
+@Component({ components: { FieldGroupCard, NumField } })
 export default class Spreadsheet extends Mixins(SaveLeaveMixin) {
   @VModel({ type: Array })
   private items!: unknown[];
@@ -35,17 +41,10 @@ export default class Spreadsheet extends Mixins(SaveLeaveMixin) {
   @Prop({ type: Array, default: [] })
   private readonly headers!: DataTableHeader[];
 
-  @Prop({ type: String, default: "" })
+  @Prop({ type: String, default: "spreadsheet" })
   private readonly id!: string;
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 }
 </script>
-
-<style scoped>
-input {
-  outline: none;
-  max-width: 100px;
-}
-</style>

@@ -1,125 +1,10 @@
 <template>
-  <v-container
-    fluid
-    class="fill-height pa-0"
-  >
-    <v-row class="fill-height justify-center mx-0">
-      <v-col
-        class="py-0"
-        cols="12"
-        md="3"
-      >
-        <search-result-list />
-      </v-col>
-      <v-col
-        class="pa-0"
-        cols="12"
-        md="9"
-      >
-        <search-result-city-map />
-      </v-col>
-    </v-row>
-    <v-speed-dial
-      v-model="speedDialOpen"
-      class="button-speed-dial-entity-creation"
-      bottom
-      right
-      absolute
-    >
-      <template #activator>
-        <v-btn
-          id="speed_dial_create_button"
-          v-model="speedDialOpen"
-          color="secondary"
-          dark
-          fab
-          large
-        >
-          <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
-          <v-icon v-else> mdi-plus </v-icon>
-        </v-btn>
-      </template>
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="infrastruktureinrichtung_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="red lighten-1"
-            v-on="on"
-            @click="createInfrastruktureinrichtung"
-          >
-            <v-icon>mdi-home</v-icon>
-          </v-btn>
-        </template>
-        <span>Infrastruktureinrichtung erstellen</span>
-      </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="bauvorhaben_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="indigo lighten-1"
-            v-on="on"
-            @click="createBauvorhaben"
-          >
-            <v-icon>mdi-account-hard-hat</v-icon>
-          </v-btn>
-        </template>
-        <span>Bauvorhaben erstellen</span>
-      </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="bauleitplanverfahren_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
-            @click="createBauleitplanverfahren"
-          >
-            <v-icon>mdi-comment-alert</v-icon>
-          </v-btn>
-        </template>
-        <span>Bauleitplanverfahren erstellen</span>
-      </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="baugenehmigungsverfahren_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
-            @click="createBaugenehmigungsverfahren"
-          >
-            <v-icon>mdi-account-multiple-plus</v-icon>
-          </v-btn>
-        </template>
-        <span>Baugenehmigungsverfahren erstellen</span>
-      </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
-          <v-btn
-            id="weiteres_verfahren_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
-            @click="createWeiteresVerfahren"
-          >
-            <v-icon>mdi-account-plus</v-icon>
-          </v-btn>
-        </template>
-        <span>Weiteres Verfahren erstellen</span>
-      </v-tooltip>
-    </v-speed-dial>
+  <v-container fluid>
+    <spreadsheet
+      v-model="items"
+      :headers="headers"
+      :is-editable="true"
+    />
   </v-container>
 </template>
 
@@ -134,6 +19,7 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import _ from "lodash";
 import { AbfrageDtoArtAbfrageEnum, SearchResultDtoTypeEnum } from "@/api/api-client/isi-backend";
 import { Feature, Point } from "geojson";
+import Spreadsheet from "@/components/common/Spreadsheet.vue";
 
 type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
@@ -143,10 +29,23 @@ type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string;
     SearchResultCityMap,
     SearchResultList,
     DefaultLayout,
+    Spreadsheet,
   },
 })
 export default class Main extends Vue {
   private speedDialOpen = false;
+
+  private headers = [
+    { text: "A", value: "a" },
+    { text: "B", value: "b" },
+    { text: "C", value: "c" },
+  ];
+
+  private items = [
+    { a: 10, b: 20, c: 30 },
+    { a: 50, b: 80, c: 20 },
+    { a: 40, b: 40, c: 10 },
+  ];
 
   get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
     return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
