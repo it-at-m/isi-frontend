@@ -2,6 +2,7 @@
   <city-map
     :geo-json="geoJson"
     :geo-json-options="geoJsonOptions"
+    :layers-for-layer-control="layersForLayerControl"
   />
 </template>
 
@@ -17,10 +18,16 @@ import {
   Wgs84Dto,
 } from "@/api/api-client/isi-backend";
 import { Feature, MultiPolygon, Point } from "geojson";
-import L, { GeoJSONOptions } from "leaflet";
+import L, { GeoJSONOptions, TileLayer } from "leaflet";
 import CityMap from "./CityMap.vue";
 import router from "@/router";
-import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
+import {
+  assembleDefaultLayersForLayerControl,
+  COLOR_POLYGON_UMGRIFF,
+  ICON_ABFRAGE,
+  ICON_BAUVORHABEN,
+  ICON_INFRASTRUKTUREINRICHTUNG,
+} from "@/utils/MapUtil";
 
 type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 @Component({
@@ -131,6 +138,15 @@ export default class SearchResultCityMap extends Vue {
       }
     }
     return features;
+  }
+
+  get layersForLayerControl(): Map<string, TileLayer.WMS> {
+    let layers = assembleDefaultLayersForLayerControl(this.getArcgisUrl());
+    return layers;
+  }
+
+  private getArcgisUrl(): string {
+    return import.meta.env.VITE_ARCGIS_URL as string;
   }
 
   private getSearchResultDtoTypeFormattedString(searchResultDtoTypeEnum: SearchResultDtoTypeEnum): string {

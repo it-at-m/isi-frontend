@@ -95,6 +95,7 @@ import L, {
   WMSOptions,
   LeafletMouseEvent,
   MapOptions,
+  TileLayer,
 } from "leaflet";
 import "leaflet.nontiledlayer";
 import "leaflet/dist/leaflet.css";
@@ -169,25 +170,12 @@ export default class CityMap extends Vue {
   @Prop({ type: Boolean, default: false })
   private readonly automaticZoomToPolygons!: boolean;
 
+  @Prop({ default: () => undefined })
+  private readonly layersForLayerControl?: Map<string, TileLayer.WMS>;
+
   private layerGroup: LayerGroup = new LayerGroup();
   private map!: L.Map;
   private expanded = false;
-
-  /**
-   * Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers.
-   */
-  private overlaysArcgis = new Map([
-    ["Gemarkungen", "Gemarkungen"],
-    ["Baublöcke", "Baublöcke"],
-    ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
-    ["Stadtbezirke", "Stadtbezirke"],
-    ["Bezirksteile", "Bezirksteile"],
-    ["Stadtviertel", "Stadtviertel"],
-    ["Grundschulsprengel", "Grundschulsprengel"],
-    ["Umgriffe Bebauungspläne", "BB-Umgriff"],
-  ]);
-
-  private overlaysGrundkarte = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
   created(): void {
     /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
@@ -259,14 +247,9 @@ export default class CityMap extends Vue {
    */
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
-
-    let layers = assembleDefaultLayersForLayerControl(this.getArcgisUrl());
-
-    layers.forEach((value, key) => layerControl.addOverlay(value, key));
-  }
-
-  private getArcgisUrl(): string {
-    return import.meta.env.VITE_ARCGIS_URL as string;
+    if (!_.isNil(this.layersForLayerControl)) {
+      this.layersForLayerControl.forEach((value, key) => layerControl.addOverlay(value, key));
+    }
   }
 
   /**

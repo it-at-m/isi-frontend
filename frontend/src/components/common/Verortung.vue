@@ -9,6 +9,7 @@
       :look-at="coordinate"
       :geo-json="geoJsonObjectsToShow"
       :geo-json-options="geoJsonOptionsToShow"
+      :layers-for-layer-control="layersForLayerControl"
       @click-in-map="handleClickInMap($event)"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
@@ -176,7 +177,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
+import L, { GeoJSONOptions, LatLng, LatLngLiteral, TileLayer } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
@@ -209,7 +210,7 @@ import {
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
-import { COLOR_POLYGON_UMGRIFF } from "@/utils/MapUtil";
+import { assembleDefaultLayersForLayerControl, COLOR_POLYGON_UMGRIFF } from "@/utils/MapUtil";
 
 @Component({
   components: { CityMap },
@@ -295,6 +296,14 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         }
       },
     };
+  }
+
+  get layersForLayerControl(): Map<string, TileLayer.WMS> {
+    return assembleDefaultLayersForLayerControl(this.getArcgisUrl());
+  }
+
+  private getArcgisUrl(): string {
+    return import.meta.env.VITE_ARCGIS_URL as string;
   }
 
   get stadtbezirke(): Array<StadtbezirkDto> {

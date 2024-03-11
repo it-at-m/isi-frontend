@@ -8,6 +8,7 @@
       :look-at="lookAt"
       :geo-json="geoJson"
       :geo-json-options="geoJsonOptions"
+      :layers-for-layer-control="layersForLayerControl"
       @click-in-map="handleClickInMap($event)"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
@@ -160,7 +161,7 @@
 import { Component, Prop, Mixins, VModel, Watch } from "vue-property-decorator";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
+import L, { GeoJSONOptions, LatLng, LatLngLiteral, TileLayer } from "leaflet";
 import { Feature, Point } from "geojson";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -192,7 +193,7 @@ import {
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import KoordinatenApiRequestMixin from "@/mixins/requests/KoordinatenApiRequestMixin";
 import VerortungPointModel from "@/types/model/common/VerortungPointModel";
-import { ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
+import { assembleDefaultLayersForLayerControl, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 
 @Component({
   components: { CityMap },
@@ -616,6 +617,14 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
       };
     });
+  }
+
+  get layersForLayerControl(): Map<string, TileLayer.WMS> {
+    return assembleDefaultLayersForLayerControl(this.getArcgisUrl());
+  }
+
+  private getArcgisUrl(): string {
+    return import.meta.env.VITE_ARCGIS_URL as string;
   }
 }
 </script>
