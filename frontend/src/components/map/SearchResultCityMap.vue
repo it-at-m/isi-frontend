@@ -18,7 +18,7 @@ import {
   Wgs84Dto,
 } from "@/api/api-client/isi-backend";
 import { Feature, MultiPolygon, Point } from "geojson";
-import L, { GeoJSONOptions, TileLayer } from "leaflet";
+import L, { GeoJSONOptions, Layer, TileLayer } from "leaflet";
 import CityMap from "./CityMap.vue";
 import router from "@/router";
 import {
@@ -140,8 +140,8 @@ export default class SearchResultCityMap extends Vue {
     return features;
   }
 
-  get layersForLayerControl(): Map<string, TileLayer.WMS> {
-    let layers = assembleDefaultLayersForLayerControl(this.getArcgisUrl());
+  get layersForLayerControl(): Map<string, Layer> {
+    const layers = assembleDefaultLayersForLayerControl(this.getArcgisUrl());
     return layers;
   }
 

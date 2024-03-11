@@ -95,20 +95,13 @@ import L, {
   WMSOptions,
   LeafletMouseEvent,
   MapOptions,
-  TileLayer,
+  Layer,
 } from "leaflet";
 import "leaflet.nontiledlayer";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
 import { Feature } from "geojson";
-import {
-  assembleDefaultLayersForLayerControl,
-  CITY_CENTER,
-  LAYER_OPTIONS,
-  MAP_OPTIONS,
-  MAX_ZOOM,
-  MIN_ZOOM,
-} from "@/utils/MapUtil";
+import { CITY_CENTER, LAYER_OPTIONS, MAP_OPTIONS, MAX_ZOOM, MIN_ZOOM } from "@/utils/MapUtil";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -171,7 +164,7 @@ export default class CityMap extends Vue {
   private readonly automaticZoomToPolygons!: boolean;
 
   @Prop({ default: () => undefined })
-  private readonly layersForLayerControl?: Map<string, TileLayer.WMS>;
+  private readonly layersForLayerControl?: Map<string, Layer>;
 
   private layerGroup: LayerGroup = new LayerGroup();
   private map!: L.Map;

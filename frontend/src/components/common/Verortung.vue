@@ -177,7 +177,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral, TileLayer } from "leaflet";
+import L, { GeoJSONOptions, LatLng, LatLngLiteral, Layer, TileLayer } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
@@ -298,7 +298,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     };
   }
 
-  get layersForLayerControl(): Map<string, TileLayer.WMS> {
+  get layersForLayerControl(): Map<string, Layer> {
     return assembleDefaultLayersForLayerControl(this.getArcgisUrl());
   }
 

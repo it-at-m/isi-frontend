@@ -161,7 +161,7 @@
 import { Component, Prop, Mixins, VModel, Watch } from "vue-property-decorator";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral, TileLayer } from "leaflet";
+import L, { GeoJSONOptions, LatLng, LatLngLiteral, Layer, TileLayer } from "leaflet";
 import { Feature, Point } from "geojson";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -619,7 +619,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
     });
   }
 
-  get layersForLayerControl(): Map<string, TileLayer.WMS> {
+  get layersForLayerControl(): Map<string, Layer> {
     return assembleDefaultLayersForLayerControl(this.getArcgisUrl());
   }
 
