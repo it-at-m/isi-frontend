@@ -7,9 +7,9 @@
     <l-map
       id="karte"
       ref="map"
-      :options="MAP_OPTIONS"
-      :center="CITY_CENTER"
-      :max-zoom="MAX_ZOOM"
+      :options="mapOptions"
+      :center="cityCenter"
+      :max-zoom="maxZoom"
       :zoom="initialZoom"
       style="z-index: 1"
       @click="onClickInMap($event)"
@@ -27,7 +27,7 @@
         :base-url="getBackgroundMapUrl()"
         layers="gsm:g_stadtkarte_gesamt"
         :visible="true"
-        :options="LAYER_OPTIONS"
+        :options="layerOptions"
       />
       <l-control
         v-if="editable"
@@ -100,6 +100,14 @@ import "leaflet.nontiledlayer";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
 import { Feature } from "geojson";
+import {
+  assembleDefaultLayersForLayerControl,
+  CITY_CENTER,
+  LAYER_OPTIONS,
+  MAP_OPTIONS,
+  MAX_ZOOM,
+  MIN_ZOOM,
+} from "@/utils/MapUtil";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -116,12 +124,6 @@ type Ref = Vue & { $el: HTMLElement };
   },
 })
 export default class CityMap extends Vue {
-  private readonly MAX_ZOOM = 20;
-  private readonly MIN_ZOOM = 10;
-  private readonly CITY_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
-  private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
-  private readonly LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: this.MIN_ZOOM, maxZoom: this.MAX_ZOOM };
-
   @Prop({ default: "100%" })
   private readonly height!: number | string;
 
@@ -216,6 +218,26 @@ export default class CityMap extends Vue {
     }
   }
 
+  get mapOptions(): MapOptions {
+    return MAP_OPTIONS;
+  }
+
+  get cityCenter(): LatLngLiteral {
+    return CITY_CENTER;
+  }
+
+  get layerOptions(): WMSOptions {
+    return LAYER_OPTIONS;
+  }
+
+  get maxZoom(): number {
+    return MAX_ZOOM;
+  }
+
+  get minZoom(): number {
+    return MIN_ZOOM;
+  }
+
   get isGeoJsonNotEmpty(): boolean {
     return !_.isEmpty(this.geoJson);
   }
@@ -238,27 +260,13 @@ export default class CityMap extends Vue {
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
 
-    for (const overlay of this.overlaysGrundkarte) {
-      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("Grundkarten"), {
-        layers: overlay[1],
-        transparent: true,
-        ...this.LAYER_OPTIONS,
-      });
-      layerControl.addOverlay(layer, overlay[0]);
-    }
+    let layers = assembleDefaultLayersForLayerControl(this.getArcgisUrl());
 
-    for (const overlay of this.overlaysArcgis) {
-      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("basis"), {
-        layers: overlay[1],
-        transparent: true,
-        ...this.LAYER_OPTIONS,
-      });
-      layerControl.addOverlay(layer, overlay[0]);
-    }
+    layers.forEach((value, key) => layerControl.addOverlay(value, key));
   }
 
-  private getArcgisUrl(service: string): string {
-    return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
+  private getArcgisUrl(): string {
+    return import.meta.env.VITE_ARCGIS_URL as string;
   }
 
   /**
