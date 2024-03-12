@@ -48,8 +48,8 @@
             :disabled="!isEditableBySachbearbeitung()"
             label="Anmerkungen"
             auto-grow
-            rows="3"
-            maxlength="255"
+            rows="1"
+            maxlength="1000"
             @input="formChanged"
           />
         </v-col>
