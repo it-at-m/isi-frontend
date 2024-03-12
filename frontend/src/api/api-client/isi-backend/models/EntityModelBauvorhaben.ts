@@ -19,6 +19,12 @@ import {
     AdresseFromJSONTyped,
     AdresseToJSON,
 } from './Adresse';
+import type { BearbeitendePerson } from './BearbeitendePerson';
+import {
+    BearbeitendePersonFromJSON,
+    BearbeitendePersonFromJSONTyped,
+    BearbeitendePersonToJSON,
+} from './BearbeitendePerson';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -62,6 +68,12 @@ export interface EntityModelBauvorhaben {
      * @memberof EntityModelBauvorhaben
      */
     lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {BearbeitendePerson}
+     * @memberof EntityModelBauvorhaben
+     */
+    bearbeitendePerson?: BearbeitendePerson;
     /**
      * 
      * @type {string}
@@ -259,6 +271,7 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
         'nameVorhaben': !exists(json, 'nameVorhaben') ? undefined : json['nameVorhaben'],
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
@@ -290,6 +303,7 @@ export function EntityModelBauvorhabenToJSON(value?: EntityModelBauvorhaben | nu
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'bearbeitendePerson': BearbeitendePersonToJSON(value.bearbeitendePerson),
         'nameVorhaben': value.nameVorhaben,
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVerfahren': value.standVerfahren,

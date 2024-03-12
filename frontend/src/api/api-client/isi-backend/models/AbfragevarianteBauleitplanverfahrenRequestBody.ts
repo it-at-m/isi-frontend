@@ -183,6 +183,24 @@ export interface AbfragevarianteBauleitplanverfahrenRequestBody {
     anmerkung?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    hasBauratenDateiInputs?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    anmerkungBauratenDateiInputs?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    bauratendateiInputs?: Array<string>;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
      */
@@ -350,6 +368,9 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyFromJSONTyped(json
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'hasBauratenDateiInputs': !exists(json, 'hasBauratenDateiInputs') ? undefined : json['hasBauratenDateiInputs'],
+        'anmerkungBauratenDateiInputs': !exists(json, 'anmerkungBauratenDateiInputs') ? undefined : json['anmerkungBauratenDateiInputs'],
+        'bauratendateiInputs': !exists(json, 'bauratendateiInputs') ? undefined : json['bauratendateiInputs'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : json['bauabschnitte'],
@@ -402,6 +423,9 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(value?: Abf
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'hasBauratenDateiInputs': value.hasBauratenDateiInputs,
+        'anmerkungBauratenDateiInputs': value.anmerkungBauratenDateiInputs,
+        'bauratendateiInputs': value.bauratendateiInputs,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,
         'bauabschnitte': value.bauabschnitte,

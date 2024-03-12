@@ -211,6 +211,18 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
      * @type {boolean}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
+    hasBauratenDateiInputs?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
+     */
+    anmerkungBauratenDateiInputs?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
+     */
     ausgeloesterBedarfImBaugebietBeruecksichtigenKita?: boolean;
     /**
      * 
@@ -366,6 +378,8 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'hasBauratenDateiInputs': !exists(json, 'hasBauratenDateiInputs') ? undefined : json['hasBauratenDateiInputs'],
+        'anmerkungBauratenDateiInputs': !exists(json, 'anmerkungBauratenDateiInputs') ? undefined : json['anmerkungBauratenDateiInputs'],
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
@@ -419,6 +433,8 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSON(value?: Entity
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'hasBauratenDateiInputs': value.hasBauratenDateiInputs,
+        'anmerkungBauratenDateiInputs': value.anmerkungBauratenDateiInputs,
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
         'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,

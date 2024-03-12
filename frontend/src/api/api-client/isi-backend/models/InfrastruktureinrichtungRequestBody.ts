@@ -19,6 +19,12 @@ import {
     AdresseFromJSONTyped,
     AdresseToJSON,
 } from './Adresse';
+import type { BearbeitendePerson } from './BearbeitendePerson';
+import {
+    BearbeitendePersonFromJSON,
+    BearbeitendePersonFromJSONTyped,
+    BearbeitendePersonToJSON,
+} from './BearbeitendePerson';
 import type { VerortungPoint } from './VerortungPoint';
 import {
     VerortungPointFromJSON,
@@ -56,6 +62,12 @@ export interface InfrastruktureinrichtungRequestBody {
      * @memberof InfrastruktureinrichtungRequestBody
      */
     lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {BearbeitendePerson}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    bearbeitendePerson?: BearbeitendePerson;
     /**
      * 
      * @type {number}
@@ -173,6 +185,7 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
         'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseFromJSON(json['adresse']),
@@ -199,6 +212,7 @@ export function InfrastruktureinrichtungRequestBodyToJSON(value?: Infrastrukture
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'bearbeitendePerson': BearbeitendePersonToJSON(value.bearbeitendePerson),
         'lfdNr': value.lfdNr,
         'bauvorhaben': value.bauvorhaben,
         'adresse': AdresseToJSON(value.adresse),

@@ -62,6 +62,12 @@ export interface AbfrageInBearbeitungSachbearbeitungDto {
      * @memberof AbfrageInBearbeitungSachbearbeitungDto
      */
     bauvorhaben?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfrageInBearbeitungSachbearbeitungDto
+     */
+    linkEakte?: string;
 }
 
 
@@ -110,6 +116,7 @@ export function AbfrageInBearbeitungSachbearbeitungDtoFromJSONTyped(json: any, i
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+        'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
     };
 }
 
@@ -125,6 +132,7 @@ export function AbfrageInBearbeitungSachbearbeitungDtoToJSON(value?: AbfrageInBe
         'version': value.version,
         'artAbfrage': value.artAbfrage,
         'bauvorhaben': value.bauvorhaben,
+        'linkEakte': value.linkEakte,
     };
 }
 
