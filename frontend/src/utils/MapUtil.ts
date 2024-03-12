@@ -46,8 +46,10 @@ export const OVERLAYS_ARCGIS = new Map([
 ]);
 
 /**
+ * Die Methode erstellt die Standardlayer welche als Overlay über eine Karte gelegt werden können.
+ *
  * Damit ein Overlay-Layer nicht die darunterliegenden Layer verdeckt, ist es wichtig,
- * `transparent: true` zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt.
+ * `transparent: true` zu setzen sowie ein Bildformat anzufordern welches Transparenz unterstützt.
  *
  * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
  * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
