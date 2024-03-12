@@ -45,6 +45,13 @@ export const OVERLAYS_ARCGIS = new Map([
   ["Umgriffe Bebauungspläne", "BB-Umgriff"],
 ]);
 
+/**
+ * Damit ein Overlay-Layer nicht die darunterliegenden Layer verdeckt, ist es wichtig,
+ * `transparent: true` zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt.
+ *
+ * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
+ * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
+ */
 export function assembleDefaultLayersForLayerControl(): Map<string, TileLayer.WMS> {
   const layers = new Map<string, TileLayer.WMS>();
 

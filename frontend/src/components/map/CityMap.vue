@@ -237,11 +237,8 @@ export default class CityMap extends Vue {
   }
 
   /**
-   * Fügt die Overlay-Layer hinzu. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen.
-   * Damit ein Overlay-Layer nicht die darunerliegenden Layer verdeckt, ist es wichtig, `transparent: true` zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt.
-   *
-   * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abschnittene" Segment zu vermeiden.
-   * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
+   * Fügt die Overlay-Layer hinzu. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein,
+   * da sie nur spezifische Merkmale darstellen sollen.
    */
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
