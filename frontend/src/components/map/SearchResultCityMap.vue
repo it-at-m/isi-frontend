@@ -18,7 +18,7 @@ import {
   Wgs84Dto,
 } from "@/api/api-client/isi-backend";
 import { Feature, MultiPolygon, Point } from "geojson";
-import L, { GeoJSONOptions, Layer, TileLayer } from "leaflet";
+import L, { GeoJSONOptions, Layer } from "leaflet";
 import CityMap from "./CityMap.vue";
 import router from "@/router";
 import {
@@ -28,6 +28,7 @@ import {
   ICON_BAUVORHABEN,
   ICON_INFRASTRUKTUREINRICHTUNG,
 } from "@/utils/MapUtil";
+import _ from "lodash";
 
 type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 @Component({
@@ -97,7 +98,7 @@ export default class SearchResultCityMap extends Vue {
     },
   };
   get geoJson(): EntityFeature[] {
-    const results: SearchResultDto[] = this.$store.getters["search/searchResults"].searchResults;
+    const results: SearchResultDto[] = this.searchResults;
     const features: EntityFeature[] = [];
 
     for (const result of results) {
@@ -105,7 +106,6 @@ export default class SearchResultCityMap extends Vue {
       let id: string | undefined;
       let name: string | undefined;
       let coordinate: Wgs84Dto | undefined;
-      let umgriff: MultiPolygonGeometryDto | undefined;
 
       if (type === SearchResultDtoTypeEnum.Abfrage) {
         id = (result as AbfrageSearchResultDto).id;
@@ -115,7 +115,6 @@ export default class SearchResultCityMap extends Vue {
         id = (result as BauvorhabenSearchResultDto).id;
         name = (result as BauvorhabenSearchResultDto).nameVorhaben;
         coordinate = (result as BauvorhabenSearchResultDto).coordinate;
-        umgriff = (result as BauvorhabenSearchResultDto).umgriff;
       } else if (type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
         id = (result as InfrastruktureinrichtungSearchResultDto).id;
         name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
@@ -128,22 +127,43 @@ export default class SearchResultCityMap extends Vue {
           geometry: { type: "Point", coordinates: [coordinate.longitude, coordinate.latitude] },
           properties: { type, id, name },
         });
-        if (umgriff) {
-          features.push({
-            type: "Feature",
-            geometry: { type: "MultiPolygon", coordinates: umgriff.coordinates } as MultiPolygon,
-            properties: { type, id, name },
-          });
-        }
       }
     }
     return features;
   }
 
   get layersForLayerControl(): Map<string, Layer> {
-    const layers = assembleDefaultLayersForLayerControl();
-    // Anreichern um Umgriff des Bauvorhabens.
+    // Erstellen der Standardlayer
+    const layers: Map<string, Layer> = assembleDefaultLayersForLayerControl();
+
+    // Ermitteln und Hinzufügen der Umgriffe für Bauvorhaben als Layer
+    const featureUmgriffe: EntityFeature[] = [];
+    const results: SearchResultDto[] = this.searchResults;
+    _.toArray(results)
+      .filter((result) => result.type === SearchResultDtoTypeEnum.Bauvorhaben)
+      .forEach((result) => {
+        const type = result.type;
+        const id = (result as BauvorhabenSearchResultDto).id;
+        const name = (result as BauvorhabenSearchResultDto).nameVorhaben;
+        const umgriff = (result as BauvorhabenSearchResultDto).umgriff;
+        if (umgriff) {
+          const feature = {
+            type: "Feature",
+            geometry: { type: "MultiPolygon", coordinates: umgriff.coordinates } as MultiPolygon,
+            properties: { type, id, name },
+          } as EntityFeature;
+          featureUmgriffe.push(feature);
+        }
+      });
+    const layerGroup = new L.LayerGroup();
+    L.geoJSON(featureUmgriffe, this.geoJsonOptions).addTo(layerGroup);
+    layers.set("Umgriffe Bauvorhaben", layerGroup);
+
     return layers;
+  }
+
+  get searchResults(): Array<SearchResultDto> {
+    return this.$store.getters["search/searchResults"].searchResults;
   }
 
   private getSearchResultDtoTypeFormattedString(searchResultDtoTypeEnum: SearchResultDtoTypeEnum): string {
