@@ -19,6 +19,12 @@ import {
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
 import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
     InfrastruktureinrichtungDtoFromJSON,

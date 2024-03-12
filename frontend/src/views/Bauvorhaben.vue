@@ -4,7 +4,10 @@
       <template #heading>
         <v-container>
           <v-row>
-            <v-col cols="12">
+            <v-col
+              cols="12"
+              md="11"
+            >
               <v-text-field
                 id="bauvorhaben_nameVorhaben"
                 v-model.trim="bauvorhaben.nameVorhaben"
@@ -16,6 +19,12 @@
               >
                 <template #label> Name des Bauvorhabens <span class="secondary--text">*</span> </template>
               </v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="1"
+            >
+              <benutzerinformationen v-model="bearbeitungsinformationen" />
             </v-col>
           </v-row>
         </v-container>
@@ -146,9 +155,7 @@ import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
-import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
+import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
 
 @Component({
   computed: {
@@ -158,6 +165,7 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
   },
   methods: { containsNotAllowedDokument },
   components: {
+    Benutzerinformationen,
     Kommentare,
     BauvorhabenDataTransferDialog,
     BauvorhabenForm,
@@ -203,6 +211,10 @@ export default class Bauvorhaben extends Mixins(
 
   get isEditable(): boolean {
     return this.isRoleAdminOrSachbearbeitung();
+  }
+
+  get bearbeitungsinformationen(): BenutzerinformationenModel {
+    return new BenutzerinformationenModel(this.bauvorhaben?.bearbeitendePerson, this.bauvorhaben?.lastModifiedDateTime);
   }
 
   /**
