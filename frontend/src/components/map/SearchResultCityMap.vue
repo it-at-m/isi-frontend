@@ -141,12 +141,9 @@ export default class SearchResultCityMap extends Vue {
   }
 
   get layersForLayerControl(): Map<string, Layer> {
-    const layers = assembleDefaultLayersForLayerControl(this.getArcgisUrl());
+    const layers = assembleDefaultLayersForLayerControl();
+    // Anreichern um Umgriff des Bauvorhabens.
     return layers;
-  }
-
-  private getArcgisUrl(): string {
-    return import.meta.env.VITE_ARCGIS_URL as string;
   }
 
   private getSearchResultDtoTypeFormattedString(searchResultDtoTypeEnum: SearchResultDtoTypeEnum): string {

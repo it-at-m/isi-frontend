@@ -299,11 +299,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
   }
 
   get layersForLayerControl(): Map<string, Layer> {
-    return assembleDefaultLayersForLayerControl(this.getArcgisUrl());
-  }
-
-  private getArcgisUrl(): string {
-    return import.meta.env.VITE_ARCGIS_URL as string;
+    return assembleDefaultLayersForLayerControl();
   }
 
   get stadtbezirke(): Array<StadtbezirkDto> {

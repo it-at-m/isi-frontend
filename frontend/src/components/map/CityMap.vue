@@ -16,6 +16,7 @@
     >
       <!-- Fügt ein Steuerungselement hinzu, mit welchem sich ein Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt. -->
       <l-control-layers
+        v-if="showLayerControlElement"
         id="city-map-layer-control"
         ref="layerControl"
         @ready="onLayerControlReady"
@@ -24,7 +25,7 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="getBackgroundMapUrl()"
+        :base-url="backgroundMapUrl"
         layers="gsm:g_stadtkarte_gesamt"
         :visible="true"
         :options="layerOptions"
@@ -101,7 +102,7 @@ import "leaflet.nontiledlayer";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
 import { Feature } from "geojson";
-import { CITY_CENTER, LAYER_OPTIONS, MAP_OPTIONS, MAX_ZOOM, MIN_ZOOM } from "@/utils/MapUtil";
+import { CITY_CENTER, getBackgroundMapUrl, LAYER_OPTIONS, MAP_OPTIONS, MAX_ZOOM, MIN_ZOOM } from "@/utils/MapUtil";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -223,12 +224,16 @@ export default class CityMap extends Vue {
     return !_.isEmpty(this.geoJson);
   }
 
-  private onClickInMap(event: LeafletMouseEvent): void {
-    this.clickInMap(event);
+  get backgroundMapUrl(): string {
+    return getBackgroundMapUrl();
   }
 
-  private getBackgroundMapUrl(): string {
-    return import.meta.env.VITE_BACKGROUND_MAP_URL as string;
+  get showLayerControlElement(): boolean {
+    return !_.isEmpty(this.layersForLayerControl);
+  }
+
+  private onClickInMap(event: LeafletMouseEvent): void {
+    this.clickInMap(event);
   }
 
   /**
@@ -240,7 +245,7 @@ export default class CityMap extends Vue {
    */
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
-    if (!_.isNil(this.layersForLayerControl)) {
+    if (!_.isNil(this.layersForLayerControl) && this.showLayerControlElement) {
       this.layersForLayerControl.forEach((value, key) => layerControl.addOverlay(value, key));
     }
   }

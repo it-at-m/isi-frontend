@@ -45,11 +45,11 @@ export const OVERLAYS_ARCGIS = new Map([
   ["Umgriffe Bebauungspläne", "BB-Umgriff"],
 ]);
 
-export function assembleDefaultLayersForLayerControl(layerUriWithPlaceholder: string): Map<string, TileLayer.WMS> {
+export function assembleDefaultLayersForLayerControl(): Map<string, TileLayer.WMS> {
   const layers = new Map<string, TileLayer.WMS>();
 
   for (const overlay of OVERLAYS_GRUNDKARTE) {
-    const layer = (L as any).nonTiledLayer.wms(layerUriWithPlaceholder.replace("{1}", "Grundkarten"), {
+    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
       layers: overlay[1],
       transparent: true,
       ...LAYER_OPTIONS,
@@ -58,7 +58,7 @@ export function assembleDefaultLayersForLayerControl(layerUriWithPlaceholder: st
   }
 
   for (const overlay of OVERLAYS_ARCGIS) {
-    const layer = (L as any).nonTiledLayer.wms(layerUriWithPlaceholder.replace("{1}", "basis"), {
+    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
       layers: overlay[1],
       transparent: true,
       ...LAYER_OPTIONS,
@@ -67,4 +67,12 @@ export function assembleDefaultLayersForLayerControl(layerUriWithPlaceholder: st
   }
 
   return layers;
+}
+
+export function getArcgisUrl(service: string): string {
+  return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
+}
+
+export function getBackgroundMapUrl(): string {
+  return import.meta.env.VITE_BACKGROUND_MAP_URL as string;
 }

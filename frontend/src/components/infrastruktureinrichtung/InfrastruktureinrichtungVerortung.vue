@@ -620,11 +620,7 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
   }
 
   get layersForLayerControl(): Map<string, Layer> {
-    return assembleDefaultLayersForLayerControl(this.getArcgisUrl());
-  }
-
-  private getArcgisUrl(): string {
-    return import.meta.env.VITE_ARCGIS_URL as string;
+    return assembleDefaultLayersForLayerControl();
   }
 }
 </script>
