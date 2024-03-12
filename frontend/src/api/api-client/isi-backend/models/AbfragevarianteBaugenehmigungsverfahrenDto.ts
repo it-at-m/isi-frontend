@@ -223,13 +223,13 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
      * @type {boolean}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
-    hasBauratenDateiInputs?: boolean;
+    hasBauratendateiInputs?: boolean;
     /**
      * 
      * @type {string}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
-    anmerkungBauratenDateiInputs?: string;
+    anmerkungBauratendateiInputs?: string;
     /**
      * 
      * @type {Array<BauratendateiInputDto>}
@@ -402,8 +402,8 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoFromJSONTyped(json: an
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'hasBauratenDateiInputs': !exists(json, 'hasBauratenDateiInputs') ? undefined : json['hasBauratenDateiInputs'],
-        'anmerkungBauratenDateiInputs': !exists(json, 'anmerkungBauratenDateiInputs') ? undefined : json['anmerkungBauratenDateiInputs'],
+        'hasBauratendateiInputs': !exists(json, 'hasBauratendateiInputs') ? undefined : json['hasBauratendateiInputs'],
+        'anmerkungBauratendateiInputs': !exists(json, 'anmerkungBauratendateiInputs') ? undefined : json['anmerkungBauratendateiInputs'],
         'bauratendateiInputs': !exists(json, 'bauratendateiInputs') ? undefined : ((json['bauratendateiInputs'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
@@ -459,8 +459,8 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoToJSON(value?: Abfrage
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
-        'hasBauratenDateiInputs': value.hasBauratenDateiInputs,
-        'anmerkungBauratenDateiInputs': value.anmerkungBauratenDateiInputs,
+        'hasBauratendateiInputs': value.hasBauratendateiInputs,
+        'anmerkungBauratendateiInputs': value.anmerkungBauratendateiInputs,
         'bauratendateiInputs': value.bauratendateiInputs === undefined ? undefined : ((value.bauratendateiInputs as Array<any>).map(BauratendateiInputDtoToJSON)),
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungDtoToJSON)),
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller === undefined ? undefined : ((value.bedarfsmeldungAbfrageersteller as Array<any>).map(BedarfsmeldungDtoToJSON)),

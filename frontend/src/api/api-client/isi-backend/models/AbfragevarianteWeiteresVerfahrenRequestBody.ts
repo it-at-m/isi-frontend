@@ -210,13 +210,13 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
      * @type {boolean}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
-    hasBauratenDateiInputs?: boolean;
+    hasBauratendateiInputs?: boolean;
     /**
      * 
      * @type {string}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
-    anmerkungBauratenDateiInputs?: string;
+    anmerkungBauratendateiInputs?: string;
     /**
      * 
      * @type {Array<string>}
@@ -396,8 +396,8 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyFromJSONTyped(json: a
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'hasBauratenDateiInputs': !exists(json, 'hasBauratenDateiInputs') ? undefined : json['hasBauratenDateiInputs'],
-        'anmerkungBauratenDateiInputs': !exists(json, 'anmerkungBauratenDateiInputs') ? undefined : json['anmerkungBauratenDateiInputs'],
+        'hasBauratendateiInputs': !exists(json, 'hasBauratendateiInputs') ? undefined : json['hasBauratendateiInputs'],
+        'anmerkungBauratendateiInputs': !exists(json, 'anmerkungBauratendateiInputs') ? undefined : json['anmerkungBauratendateiInputs'],
         'bauratendateiInputs': !exists(json, 'bauratendateiInputs') ? undefined : json['bauratendateiInputs'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
@@ -455,8 +455,8 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyToJSON(value?: Abfrag
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
-        'hasBauratenDateiInputs': value.hasBauratenDateiInputs,
-        'anmerkungBauratenDateiInputs': value.anmerkungBauratenDateiInputs,
+        'hasBauratendateiInputs': value.hasBauratendateiInputs,
+        'anmerkungBauratendateiInputs': value.anmerkungBauratendateiInputs,
         'bauratendateiInputs': value.bauratendateiInputs,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,

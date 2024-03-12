@@ -10,7 +10,7 @@
           v-model="abfragevarianteSachbearbeitung.hasBauratendateiInputs"
           label="Daten für Bauratendatei angeben"
           :disabled="!isEditable"
-          @change="checkboxChanged"
+          @change="formChanged"
         />
       </v-col>
     </v-row>
@@ -73,7 +73,7 @@
         >
           <v-textarea
             :id="'abfragevarianteSachbearbeitung_bauratendatei_anmerkung_' + index"
-            v-model="abfragevarianteSachbearbeitung.anmerkungBauratenDateiInputs"
+            v-model="abfragevarianteSachbearbeitung.anmerkungBauratendateiInputs"
             :disabled="!isEditable"
             label="Anmerkungen"
             auto-grow
@@ -101,15 +101,5 @@ export default class BauratendateiInputs extends Mixins(SaveLeaveMixin) {
 
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
-
-  private checkboxChanged(): void {
-    if (this.abfragevarianteSachbearbeitung.hasBauratendateiInputs) {
-      // TODO: Felder vorbefüllen
-    } else {
-      // TODO: this.bauratendateiInput = [];
-    }
-
-    this.formChanged();
-  }
 }
 </script>

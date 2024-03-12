@@ -199,13 +199,13 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitung
      * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
-    hasBauratenDateiInputs: boolean;
+    hasBauratendateiInputs: boolean;
     /**
      * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
-    anmerkungBauratenDateiInputs?: string;
+    anmerkungBauratendateiInputs?: string;
     /**
      * 
      * @type {Array<BauratendateiInputDto>}
@@ -270,7 +270,7 @@ export function instanceOfAbfragevarianteBauleitplanverfahrenInBearbeitungSachbe
     isInstance = isInstance && "weSonderwohnformen" in value;
     isInstance = isInstance && "sobonOrientierungswertJahr" in value;
     isInstance = isInstance && "stammdatenGueltigAb" in value;
-    isInstance = isInstance && "hasBauratenDateiInputs" in value;
+    isInstance = isInstance && "hasBauratendateiInputs" in value;
 
     return isInstance;
 }
@@ -312,8 +312,8 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'hasBauratenDateiInputs': json['hasBauratenDateiInputs'],
-        'anmerkungBauratenDateiInputs': !exists(json, 'anmerkungBauratenDateiInputs') ? undefined : json['anmerkungBauratenDateiInputs'],
+        'hasBauratendateiInputs': json['hasBauratendateiInputs'],
+        'anmerkungBauratendateiInputs': !exists(json, 'anmerkungBauratendateiInputs') ? undefined : json['anmerkungBauratendateiInputs'],
         'bauratendateiInputs': !exists(json, 'bauratendateiInputs') ? undefined : ((json['bauratendateiInputs'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
     };
 }
@@ -354,8 +354,8 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
-        'hasBauratenDateiInputs': value.hasBauratenDateiInputs,
-        'anmerkungBauratenDateiInputs': value.anmerkungBauratenDateiInputs,
+        'hasBauratendateiInputs': value.hasBauratendateiInputs,
+        'anmerkungBauratendateiInputs': value.anmerkungBauratendateiInputs,
         'bauratendateiInputs': value.bauratendateiInputs === undefined ? undefined : ((value.bauratendateiInputs as Array<any>).map(BauratendateiInputDtoToJSON)),
     };
 }
