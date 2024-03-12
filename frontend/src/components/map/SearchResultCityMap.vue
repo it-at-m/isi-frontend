@@ -12,7 +12,6 @@ import {
   AbfrageSearchResultDto,
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
-  MultiPolygonGeometryDto,
   SearchResultDto,
   SearchResultDtoTypeEnum,
   Wgs84Dto,
@@ -133,10 +132,6 @@ export default class SearchResultCityMap extends Vue {
   }
 
   get layersForLayerControl(): Map<string, Layer> {
-    // Erstellen der Standardlayer
-    const layers: Map<string, Layer> = assembleDefaultLayersForLayerControl();
-
-    // Ermitteln und Hinzufügen der Umgriffe für Bauvorhaben als Layer
     const featureUmgriffe: EntityFeature[] = [];
     const results: SearchResultDto[] = this.searchResults;
     _.toArray(results)
@@ -157,8 +152,8 @@ export default class SearchResultCityMap extends Vue {
       });
     const layerGroup = new L.LayerGroup();
     L.geoJSON(featureUmgriffe, this.geoJsonOptions).addTo(layerGroup);
+    const layers = new Map<string, Layer>();
     layers.set("Umgriffe Bauvorhaben", layerGroup);
-
     return layers;
   }
 

@@ -9,7 +9,6 @@
       :look-at="coordinate"
       :geo-json="geoJsonObjectsToShow"
       :geo-json-options="geoJsonOptionsToShow"
-      :layers-for-layer-control="layersForLayerControl"
       @click-in-map="handleClickInMap($event)"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
@@ -296,10 +295,6 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
         }
       },
     };
-  }
-
-  get layersForLayerControl(): Map<string, Layer> {
-    return assembleDefaultLayersForLayerControl();
   }
 
   get stadtbezirke(): Array<StadtbezirkDto> {

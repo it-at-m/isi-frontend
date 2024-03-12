@@ -8,7 +8,6 @@
       :look-at="lookAt"
       :geo-json="geoJson"
       :geo-json-options="geoJsonOptions"
-      :layers-for-layer-control="layersForLayerControl"
       @click-in-map="handleClickInMap($event)"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
@@ -617,10 +616,6 @@ export default class InfrastruktureinrichtungVerortung extends Mixins(
         multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
       };
     });
-  }
-
-  get layersForLayerControl(): Map<string, Layer> {
-    return assembleDefaultLayersForLayerControl();
   }
 }
 </script>

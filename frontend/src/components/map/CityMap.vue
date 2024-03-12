@@ -102,7 +102,15 @@ import "leaflet.nontiledlayer";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
 import { Feature } from "geojson";
-import { CITY_CENTER, getBackgroundMapUrl, LAYER_OPTIONS, MAP_OPTIONS, MAX_ZOOM, MIN_ZOOM } from "@/utils/MapUtil";
+import {
+  assembleDefaultLayersForLayerControl,
+  CITY_CENTER,
+  getBackgroundMapUrl,
+  LAYER_OPTIONS,
+  MAP_OPTIONS,
+  MAX_ZOOM,
+  MIN_ZOOM,
+} from "@/utils/MapUtil";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -166,6 +174,8 @@ export default class CityMap extends Vue {
 
   @Prop({ default: () => undefined })
   private readonly layersForLayerControl?: Map<string, Layer>;
+
+  private addedLayersForLayerControl?: Map<string, Layer>;
 
   private layerGroup: LayerGroup = new LayerGroup();
   private map!: L.Map;
@@ -236,15 +246,29 @@ export default class CityMap extends Vue {
     this.clickInMap(event);
   }
 
+  @Watch("layersForLayerControl", { deep: true })
+  private updateOverlay(): void {
+    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
+
+    // Entfernen der vorher hinzugefügten Layer
+    if (!_.isNil(this.addedLayersForLayerControl)) {
+      this.addedLayersForLayerControl.forEach((layer) => layerControl.removeLayer(layer));
+    }
+
+    // Hinzufügen der neuen Layer
+    if (!_.isNil(this.layersForLayerControl)) {
+      this.layersForLayerControl.forEach((layer, name) => layerControl.addOverlay(layer, name));
+    }
+    this.addedLayersForLayerControl = this.layersForLayerControl;
+  }
+
   /**
    * Fügt die Overlay-Layer hinzu. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein,
    * da sie nur spezifische Merkmale darstellen sollen.
    */
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
-    if (!_.isNil(this.layersForLayerControl) && this.showLayerControlElement) {
-      this.layersForLayerControl.forEach((value, key) => layerControl.addOverlay(value, key));
-    }
+    assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControl.addOverlay(layer, name));
   }
 
   /**
