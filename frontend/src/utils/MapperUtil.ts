@@ -37,6 +37,8 @@ import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
 
+type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
+
 export function mapFoerdermixStammModelToFoerderMix(foerdermixStammModel: FoerdermixStammModel): FoerdermixModel {
   const foerdermix = new FoerdermixModel({ bezeichnung: "", bezeichnungJahr: "" });
   foerdermix.foerderarten = _.cloneDeep(foerdermixStammModel.foerdermix.foerderarten);
@@ -320,8 +322,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
-      isASobonBerechnung: abfragevariante.isASobonBerechnung,
-      sobonFoerdermix: abfragevariante.sobonFoerdermix,
+      sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto;
@@ -402,8 +403,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
-      isASobonBerechnung: abfragevariante.isASobonBerechnung,
-      sobonFoerdermix: abfragevariante.sobonFoerdermix,
+      sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
@@ -637,4 +637,38 @@ export function mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto(
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
     } as AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto;
   });
+}
+/**
+ * Gruppiert eine Liste von Fördermixstämmen nach 'bezeichnungJahr' und fügt entsprechende header-Objekte hinzu.
+ * Gedacht zum Einsatz mit v-select.
+ * Wenn die Variable sobonValues true ist werden nur die Ergebnisse für die Header "SoBoN 2021" und "SoBoN 2017" zurückgegeben.
+ *
+ * @param foerdermixStaemme Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
+ * @return Eine neue Liste, welche neben den Fördermixstämmen auch { header: string }-Objekte enthält.
+ */
+export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], sobonValues: boolean): GroupedStammdaten {
+  const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
+  foerdermixStaemme.forEach((foerdermixStammModel) => {
+    const bezeichnungJahr = foerdermixStammModel.foerdermix.bezeichnungJahr;
+    if (sobonValues && (bezeichnungJahr === "SoBoN 2021" || bezeichnungJahr === "SoBoN 2017")) {
+      // Prüft, ob das Array für das bezeichnungJahr bereits existiert, und initialisiert es bei Bedarf
+      if (!groups[bezeichnungJahr]) {
+        groups[bezeichnungJahr] = [];
+      }
+      groups[bezeichnungJahr].push(foerdermixStammModel);
+    } else {
+      groups[bezeichnungJahr] = groups[bezeichnungJahr] || [];
+      // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
+      groups[bezeichnungJahr].push(foerdermixStammModel);
+    }
+  });
+  const flattened: GroupedStammdaten = [];
+  Object.keys(groups).forEach((bezeichnungJahr) => {
+    const foerdermixe = groups[bezeichnungJahr];
+    // Fügt zuerst ein header-Objekt für das aktuelle 'bezeichnungJahr' hinzu
+    flattened.push({ header: bezeichnungJahr });
+    // Fügt dann alle zugehörigen FördermixStammModel Objekte hinzu
+    flattened.push(...foerdermixe);
+  });
+  return flattened;
 }

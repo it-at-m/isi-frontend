@@ -25,12 +25,12 @@ import {
     BedarfsmeldungDtoFromJSONTyped,
     BedarfsmeldungDtoToJSON,
 } from './BedarfsmeldungDto';
-import type { FoerdermixDto } from './FoerdermixDto';
+import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
-    FoerdermixDtoFromJSON,
-    FoerdermixDtoFromJSONTyped,
-    FoerdermixDtoToJSON,
-} from './FoerdermixDto';
+    SobonBerechnungDtoFromJSON,
+    SobonBerechnungDtoFromJSONTyped,
+    SobonBerechnungDtoToJSON,
+} from './SobonBerechnungDto';
 
 /**
  * 
@@ -196,16 +196,10 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
     sobonOrientierungswertJahr?: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum;
     /**
      * 
-     * @type {boolean}
+     * @type {SobonBerechnungDto}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    isASobonBerechnung?: boolean;
-    /**
-     * 
-     * @type {FoerdermixDto}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
-     */
-    sobonFoerdermix?: FoerdermixDto;
+    sobonBerechnung?: SobonBerechnungDto;
     /**
      * 
      * @type {Date}
@@ -380,8 +374,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
-        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
-        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
+        'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
@@ -434,8 +427,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSON(value?: Abfragevari
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
-        'isASobonBerechnung': value.isASobonBerechnung,
-        'sobonFoerdermix': FoerdermixDtoToJSON(value.sobonFoerdermix),
+        'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungDtoToJSON)),

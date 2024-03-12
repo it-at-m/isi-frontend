@@ -348,13 +348,16 @@ export default class ValidatorMixin extends Vue {
       abfrageSobon = abfrage as WeiteresVerfahrenModel;
       abfragevarianteSobon = abfragevariante as AbfragevarianteWeiteresVerfahrenModel;
     }
-    if (!_.isNil(abfrageSobon) && !_.isNil(abfragevarianteSobon)) {
-      if (!_.isNil(abfragevarianteSobon.isASobonBerechnung) && abfragevarianteSobon.isASobonBerechnung) {
+    if (!_.isNil(abfrageSobon) && !_.isNil(abfragevarianteSobon) && !_.isNil(abfragevarianteSobon.sobonBerechnung)) {
+      if (
+        !_.isNil(abfragevarianteSobon.sobonBerechnung.isASobonBerechnung) &&
+        abfragevarianteSobon.sobonBerechnung.isASobonBerechnung
+      ) {
         if (
-          _.isNil(abfragevarianteSobon.sobonFoerdermix) ||
-          (_.isNil(abfragevarianteSobon.sobonFoerdermix.bezeichnung) &&
-            _.isNil(abfragevarianteSobon.sobonFoerdermix.bezeichnungJahr) &&
-            abfragevarianteSobon.sobonFoerdermix.foerderarten?.length == 0)
+          _.isNil(abfragevarianteSobon.sobonBerechnung.sobonFoerdermix) ||
+          (_.isNil(abfragevarianteSobon.sobonBerechnung.sobonFoerdermix.bezeichnung) &&
+            _.isNil(abfragevarianteSobon.sobonBerechnung.sobonFoerdermix.bezeichnungJahr) &&
+            abfragevarianteSobon.sobonBerechnung.sobonFoerdermix.foerderarten?.length == 0)
         ) {
           return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
         }

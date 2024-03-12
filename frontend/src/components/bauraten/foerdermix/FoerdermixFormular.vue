@@ -68,7 +68,7 @@ import NumField from "@/components/common/NumField.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { createFoerdermixStammDto } from "@/utils/Factories";
-import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
+import { groupItemsToHeader, mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
 import _ from "lodash";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
@@ -136,42 +136,8 @@ export default class FoerdermixFormular extends Mixins(
 
   private setGroupedStammdatenList(): void {
     this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
-    this.groupedStammdaten = this.groupItemsToHeader(this.stammdaten);
+    this.groupedStammdaten = groupItemsToHeader(this.stammdaten, false);
     this.selectedItem.foerdermix.bezeichnung = this.foerdermix.bezeichnung;
-  }
-
-  /**
-   * Gruppiert eine Liste von Fördermixstämmen nach 'bezeichnungJahr' und fügt entsprechende header-Objekte hinzu.
-   * Gedacht zum Einsatz mit v-select.
-   *
-   * @param foerdermixStaemme Eine zu gruppierende Liste von {@link FoerdermixStammModel}.
-   * @return Eine neue Liste, welche neben den Fördermixstämmen auch { header: string }-Objekte enthält.
-   */
-  groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[]): GroupedStammdaten {
-    // Objekt, welches pro 'bezeichnungJahr' ein Array mit den zugehörigen Fördermixen enthalten soll.
-    const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
-
-    foerdermixStaemme.forEach((foerdermixStammModel: FoerdermixStammModel) => {
-      // Falls für das 'bezeichnungJahr' des aktuellen Fördermixes kein Array vorhanden ist, wird eins erschaffen.
-      groups[foerdermixStammModel.foerdermix.bezeichnungJahr] =
-        groups[foerdermixStammModel.foerdermix.bezeichnungJahr] || [];
-      // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
-      groups[foerdermixStammModel.foerdermix.bezeichnungJahr].push(foerdermixStammModel);
-    });
-
-    // Das obere Objekt soll nun zu einer "abgeflachten" Liste mit header-Objekten werden.
-    const flattened: GroupedStammdaten = [];
-
-    Object.keys(groups).forEach((bezeichnungJahr) => {
-      const foerdermixe = groups[bezeichnungJahr];
-
-      // Fügt zuerst ein header-Objekt für das aktuelle 'bezeichnungJahr' hinzu.
-      flattened.push({ header: bezeichnungJahr });
-      // Darauf werden alle Elemente des Arrays vom aktuellen 'bezeichnungJahr' hinzugefügt (siehe "Spread syntax").
-      flattened.push(...foerdermixe);
-    });
-
-    return flattened;
   }
 }
 </script>

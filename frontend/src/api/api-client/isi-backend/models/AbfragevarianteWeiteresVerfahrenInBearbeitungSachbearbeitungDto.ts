@@ -19,12 +19,12 @@ import {
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
-import type { FoerdermixDto } from './FoerdermixDto';
+import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
-    FoerdermixDtoFromJSON,
-    FoerdermixDtoFromJSONTyped,
-    FoerdermixDtoToJSON,
-} from './FoerdermixDto';
+    SobonBerechnungDtoFromJSON,
+    SobonBerechnungDtoFromJSONTyped,
+    SobonBerechnungDtoToJSON,
+} from './SobonBerechnungDto';
 
 /**
  * 
@@ -208,16 +208,10 @@ export interface AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto
     sobonOrientierungswertJahr: AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
     /**
      * 
-     * @type {boolean}
+     * @type {SobonBerechnungDto}
      * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto
      */
-    isASobonBerechnung?: boolean;
-    /**
-     * 
-     * @type {FoerdermixDto}
-     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto
-     */
-    sobonFoerdermix?: FoerdermixDto;
+    sobonBerechnung?: SobonBerechnungDto;
     /**
      * 
      * @type {Date}
@@ -331,8 +325,7 @@ export function AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoF
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
-        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
-        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
+        'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
@@ -376,8 +369,7 @@ export function AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoT
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
-        'isASobonBerechnung': value.isASobonBerechnung,
-        'sobonFoerdermix': FoerdermixDtoToJSON(value.sobonFoerdermix),
+        'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
     };

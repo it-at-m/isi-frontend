@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FoerdermixDto } from './FoerdermixDto';
+import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
-    FoerdermixDtoFromJSON,
-    FoerdermixDtoFromJSONTyped,
-    FoerdermixDtoToJSON,
-} from './FoerdermixDto';
+    SobonBerechnungDtoFromJSON,
+    SobonBerechnungDtoFromJSONTyped,
+    SobonBerechnungDtoToJSON,
+} from './SobonBerechnungDto';
 
 /**
  * 
@@ -52,16 +52,10 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
     /**
      * 
-     * @type {boolean}
+     * @type {SobonBerechnungDto}
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
-    isASobonBerechnung?: boolean;
-    /**
-     * 
-     * @type {FoerdermixDto}
-     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
-     */
-    sobonFoerdermix?: FoerdermixDto;
+    sobonBerechnung?: SobonBerechnungDto;
     /**
      * 
      * @type {Date}
@@ -126,8 +120,7 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
-        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
-        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
+        'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
@@ -146,8 +139,7 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         'version': value.version,
         'artAbfragevariante': value.artAbfragevariante,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
-        'isASobonBerechnung': value.isASobonBerechnung,
-        'sobonFoerdermix': FoerdermixDtoToJSON(value.sobonFoerdermix),
+        'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
     };

@@ -185,6 +185,8 @@ export * from './SearchQueryDto';
 export * from './SearchResultDto';
 export * from './SearchResultsDto';
 export * from './SearchResultsDtoSearchResultsInner';
+export * from './SobonBerechnung';
+export * from './SobonBerechnungDto';
 export * from './SobonOrientierungswertSozialeInfrastrukturRequestBody';
 export * from './Stadtbezirk';
 export * from './StadtbezirkDto';

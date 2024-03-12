@@ -13,18 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Foerdermix } from './Foerdermix';
-import {
-    FoerdermixFromJSON,
-    FoerdermixFromJSONTyped,
-    FoerdermixToJSON,
-} from './Foerdermix';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
 } from './Link';
+import type { SobonBerechnung } from './SobonBerechnung';
+import {
+    SobonBerechnungFromJSON,
+    SobonBerechnungFromJSONTyped,
+    SobonBerechnungToJSON,
+} from './SobonBerechnung';
 
 /**
  * 
@@ -202,16 +202,10 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
     sobonOrientierungswertJahr?: EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJahrEnum;
     /**
      * 
-     * @type {boolean}
+     * @type {SobonBerechnung}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
-    isASobonBerechnung?: boolean;
-    /**
-     * 
-     * @type {Foerdermix}
-     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
-     */
-    sobonFoerdermix?: Foerdermix;
+    sobonBerechnung?: SobonBerechnung;
     /**
      * 
      * @type {Date}
@@ -382,8 +376,7 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
-        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
-        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
+        'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
@@ -437,8 +430,7 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSON(value?: Entity
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
-        'isASobonBerechnung': value.isASobonBerechnung,
-        'sobonFoerdermix': FoerdermixToJSON(value.sobonFoerdermix),
+        'sobonBerechnung': SobonBerechnungToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
