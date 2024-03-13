@@ -222,7 +222,7 @@ export default class CityMap extends Vue {
       this.addedLayersForLayerControl.forEach((layer) => {
         // Entfernen aus LayerControl-Element
         layerControl.removeLayer(layer);
-        // Falls ggf. das Layer im LayerControl sichtbar gemacht wurde, muss dieses Layer auch von der Karte entfernt werden.
+        // Entfernen aus Karte falls Layer in LayerControl mittels Checkbox aktiviert
         this.map.removeLayer(layer);
       });
     }
