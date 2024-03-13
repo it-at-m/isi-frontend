@@ -219,7 +219,12 @@ export default class CityMap extends Vue {
 
     // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
     if (!_.isNil(this.addedLayersForLayerControl)) {
-      this.addedLayersForLayerControl.forEach((layer) => layerControl.removeLayer(layer));
+      this.addedLayersForLayerControl.forEach((layer) => {
+        // Entfernen aus LayerControl-Element
+        layerControl.removeLayer(layer);
+        // Falls ggf. das Layer im LayerControl sichtbar gemacht wurde, muss dieses Layer auch von der Karte entfernt werden.
+        this.map.removeLayer(layer);
+      });
     }
 
     // Ersetzen der obig entfernten Layer durch die neuen Layer.
