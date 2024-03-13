@@ -176,7 +176,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins, Watch, VModel } from "vue-property-decorator";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral, Layer, TileLayer } from "leaflet";
+import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
 import { Feature, MultiPolygon } from "geojson";
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import {
@@ -209,7 +209,7 @@ import {
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
-import { assembleDefaultLayersForLayerControl, COLOR_POLYGON_UMGRIFF } from "@/utils/MapUtil";
+import { COLOR_POLYGON_UMGRIFF } from "@/utils/MapUtil";
 
 @Component({
   components: { CityMap },

@@ -20,13 +20,7 @@ import { Feature, MultiPolygon, Point } from "geojson";
 import L, { GeoJSONOptions, Layer } from "leaflet";
 import CityMap from "./CityMap.vue";
 import router from "@/router";
-import {
-  assembleDefaultLayersForLayerControl,
-  COLOR_POLYGON_UMGRIFF,
-  ICON_ABFRAGE,
-  ICON_BAUVORHABEN,
-  ICON_INFRASTRUKTUREINRICHTUNG,
-} from "@/utils/MapUtil";
+import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 import _ from "lodash";
 
 type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;

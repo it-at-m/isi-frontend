@@ -214,7 +214,7 @@ export default class CityMap extends Vue {
    * Komponentenproperty "layersForLayerControl" hinterlegten Layer.
    */
   @Watch("layersForLayerControl", { deep: true })
-  private updateLayerControlOverlayWithCustomLayers(): void {
+  private updateLayerControlWithCustomLayers(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
 
     // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
@@ -270,7 +270,7 @@ export default class CityMap extends Vue {
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
     assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControl.addOverlay(layer, name));
-    this.updateLayerControlOverlayWithCustomLayers();
+    this.updateLayerControlWithCustomLayers();
   }
 
   /**

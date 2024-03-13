@@ -160,7 +160,7 @@
 import { Component, Prop, Mixins, VModel, Watch } from "vue-property-decorator";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral, Layer, TileLayer } from "leaflet";
+import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
 import { Feature, Point } from "geojson";
 import _ from "lodash";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -192,7 +192,7 @@ import {
 import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
 import KoordinatenApiRequestMixin from "@/mixins/requests/KoordinatenApiRequestMixin";
 import VerortungPointModel from "@/types/model/common/VerortungPointModel";
-import { assembleDefaultLayersForLayerControl, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
+import { ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 
 @Component({
   components: { CityMap },
