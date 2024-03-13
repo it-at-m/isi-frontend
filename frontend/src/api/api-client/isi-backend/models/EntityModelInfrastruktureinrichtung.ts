@@ -19,6 +19,12 @@ import {
     AdresseFromJSONTyped,
     AdresseToJSON,
 } from './Adresse';
+import type { BearbeitendePerson } from './BearbeitendePerson';
+import {
+    BearbeitendePersonFromJSON,
+    BearbeitendePersonFromJSONTyped,
+    BearbeitendePersonToJSON,
+} from './BearbeitendePerson';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -56,6 +62,12 @@ export interface EntityModelInfrastruktureinrichtung {
      * @memberof EntityModelInfrastruktureinrichtung
      */
     lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {BearbeitendePerson}
+     * @memberof EntityModelInfrastruktureinrichtung
+     */
+    bearbeitendePerson?: BearbeitendePerson;
     /**
      * 
      * @type {number}
@@ -172,6 +184,7 @@ export function EntityModelInfrastruktureinrichtungFromJSONTyped(json: any, igno
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
         'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
         'adresse': !exists(json, 'adresse') ? undefined : AdresseFromJSON(json['adresse']),
         'verortung': !exists(json, 'verortung') ? undefined : VerortungPointFromJSON(json['verortung']),
@@ -197,6 +210,7 @@ export function EntityModelInfrastruktureinrichtungToJSON(value?: EntityModelInf
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'bearbeitendePerson': BearbeitendePersonToJSON(value.bearbeitendePerson),
         'lfdNr': value.lfdNr,
         'adresse': AdresseToJSON(value.adresse),
         'verortung': VerortungPointToJSON(value.verortung),

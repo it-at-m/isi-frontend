@@ -19,6 +19,12 @@ import {
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
 import type { GrundschuleDto } from './GrundschuleDto';
 import {
     GrundschuleDtoFromJSON,
@@ -101,6 +107,12 @@ export interface InfrastruktureinrichtungDto {
      * @memberof InfrastruktureinrichtungDto
      */
     lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {BearbeitendePersonDto}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    bearbeitendePerson?: BearbeitendePersonDto;
     /**
      * 
      * @type {string}
@@ -240,6 +252,7 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
         'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
@@ -266,6 +279,7 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value.bearbeitendePerson),
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
         'lfdNr': value.lfdNr,
         'bauvorhaben': value.bauvorhaben,
