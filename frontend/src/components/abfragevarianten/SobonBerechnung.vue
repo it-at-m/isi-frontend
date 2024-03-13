@@ -72,6 +72,7 @@ export default class SobonBerechnung extends Mixins(SaveLeaveMixin, AbfrageSecur
   set sobonFoerdermix(item: FoerdermixStammModel) {
     this.sobonBerechnung.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item);
   }
+
   private setGroupedStammdatenList(): void {
     let stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
     stammdaten = stammdaten.filter((foerdermixStaemme: FoerdermixStammDto) => {

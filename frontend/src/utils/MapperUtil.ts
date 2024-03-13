@@ -638,6 +638,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto(
     } as AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto;
   });
 }
+
 /**
  * Gruppiert eine Liste von Fördermixstämmen nach 'bezeichnungJahr' und fügt entsprechende header-Objekte hinzu.
  * Gedacht zum Einsatz mit v-select.
