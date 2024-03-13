@@ -16,7 +16,6 @@
     >
       <!-- Fügt ein Steuerungselement hinzu, mit welchem sich ein Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt. -->
       <l-control-layers
-        v-if="showLayerControlElement"
         id="city-map-layer-control"
         ref="layerControl"
         @ready="onLayerControlReady"
@@ -210,6 +209,28 @@ export default class CityMap extends Vue {
     }
   }
 
+  /**
+   * Die Methode aktualisiert die Liste der Overlays des LayerControl-Elements um die in der
+   * Komponentenproperty "layersForLayerControl" hinterlegten Layer.
+   */
+  @Watch("layersForLayerControl", { deep: true })
+  private updateLayerControlOverlayWithCustomLayers(): void {
+    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
+
+    // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
+    if (!_.isNil(this.addedLayersForLayerControl)) {
+      this.addedLayersForLayerControl.forEach((layer) => layerControl.removeLayer(layer));
+    }
+
+    // Ersetzen der obig entfernten Layer durch die neuen Layer.
+    this.addedLayersForLayerControl = _.cloneDeep(this.layersForLayerControl);
+
+    // Hinzufügen der neuen Layer
+    if (!_.isNil(this.addedLayersForLayerControl)) {
+      this.addedLayersForLayerControl.forEach((layer, name) => layerControl.addOverlay(layer, name));
+    }
+  }
+
   get mapOptions(): MapOptions {
     return MAP_OPTIONS;
   }
@@ -238,37 +259,18 @@ export default class CityMap extends Vue {
     return getBackgroundMapUrl();
   }
 
-  get showLayerControlElement(): boolean {
-    return !_.isEmpty(this.layersForLayerControl);
-  }
-
   private onClickInMap(event: LeafletMouseEvent): void {
     this.clickInMap(event);
   }
 
-  @Watch("layersForLayerControl", { deep: true })
-  private updateOverlay(): void {
-    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
-
-    // Entfernen der vorher hinzugefügten Layer
-    if (!_.isNil(this.addedLayersForLayerControl)) {
-      this.addedLayersForLayerControl.forEach((layer) => layerControl.removeLayer(layer));
-    }
-
-    // Hinzufügen der neuen Layer
-    if (!_.isNil(this.layersForLayerControl)) {
-      this.layersForLayerControl.forEach((layer, name) => layerControl.addOverlay(layer, name));
-    }
-    this.addedLayersForLayerControl = this.layersForLayerControl;
-  }
-
   /**
-   * Fügt die Overlay-Layer hinzu. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein,
-   * da sie nur spezifische Merkmale darstellen sollen.
+   * Fügt die Layer sowie die in der Property "layersForLayerControl" bereits existierenden Layer dem Overlay der LayerControl hinzu.
+   * Es können beliebig viele Layer zur selben Zeit sichtbar sein, da diese spezifische Merkmale darstellen sollen.
    */
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
     assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControl.addOverlay(layer, name));
+    this.updateLayerControlOverlayWithCustomLayers();
   }
 
   /**

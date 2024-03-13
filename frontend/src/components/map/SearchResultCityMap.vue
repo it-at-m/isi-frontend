@@ -96,6 +96,7 @@ export default class SearchResultCityMap extends Vue {
       });
     },
   };
+
   get geoJson(): EntityFeature[] {
     const results: SearchResultDto[] = this.searchResults;
     const features: EntityFeature[] = [];
