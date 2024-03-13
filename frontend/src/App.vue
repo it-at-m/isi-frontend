@@ -36,21 +36,19 @@
           class="d-flex align-center justify-end"
         >
           <v-menu
+            id="app_help_menu"
+            offset-x
             offset-y
             transition="slide-y-transition"
           >
             <template #activator="{ on }">
               <v-btn
                 small
-                text
+                icon
                 fab
+                v-on="on"
               >
-                <v-icon
-                  class="white--text"
-                  v-on="on"
-                >
-                  mdi-help-circle
-                </v-icon>
+                <v-icon class="white--text"> mdi-help-circle </v-icon>
               </v-btn>
             </template>
             <v-list class="text-center">
@@ -75,16 +73,24 @@
             :close-on-content-click="false"
             :nudge-width="200"
             offset-x
+            offset-y
+            transition="slide-y-transition"
           >
             <template #activator="{ on, attrs }">
-              <v-icon
-                id="app_nutzerinformationen_icon"
-                class="white--text"
+              <v-btn
+                small
+                icon
+                fab
                 v-bind="attrs"
                 v-on="on"
               >
-                mdi-account-circle
-              </v-icon>
+                <v-icon
+                  id="app_nutzerinformationen_icon"
+                  class="white--text"
+                >
+                  mdi-account-circle
+                </v-icon>
+              </v-btn>
             </template>
 
             <v-card class="userinfo-card">

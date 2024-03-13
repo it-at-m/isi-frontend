@@ -62,7 +62,7 @@
               v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
               :disabled="!isEditable"
               label="freie Eingabe"
-              maxlength="255"
+              maxlength="1000"
               @input="formChanged"
             />
           </v-slide-y-reverse-transition>
