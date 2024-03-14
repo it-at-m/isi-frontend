@@ -23,7 +23,11 @@
       dense
       hide-default-footer
       disable-sort
-    />
+    >
+      <template #item.zeitpunkt="{ item }">
+        {{ zeitpunktFormatted(item.zeitpunkt) }}
+      </template>
+    </v-data-table>
   </v-menu>
 </template>
 
@@ -32,9 +36,12 @@ import { Vue, Component, VModel } from "vue-property-decorator";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import _ from "lodash";
 import { BearbeitungshistorieDto } from "@/api/api-client/isi-backend";
+import moment from "moment/moment";
 
 @Component({})
 export default class Bearbeitungshistorie extends Vue {
+  static readonly DISPLAY_FORMAT = "DD.MM.YYYY";
+
   @VModel({ type: AbfrageModel })
   private abfrage!: AbfrageModel;
 
@@ -52,6 +59,10 @@ export default class Bearbeitungshistorie extends Vue {
 
   get bearbeitungshistorie(): Array<BearbeitungshistorieDto> {
     return _.toArray(this.abfrage?.bearbeitungshistorie);
+  }
+
+  private zeitpunktFormatted(zeitpunkt: Date | undefined): string {
+    return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(Bearbeitungshistorie.DISPLAY_FORMAT);
   }
 }
 </script>
