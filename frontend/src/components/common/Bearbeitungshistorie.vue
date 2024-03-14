@@ -4,6 +4,7 @@
     id="benutzerinformation_menu"
     offset-y
     transition="slide-y-transition"
+    :close-on-content-click="false"
   >
     <template #activator="{ on }">
       <v-btn
@@ -19,10 +20,9 @@
     <v-data-table
       :headers="bearbeitungshistorieHeaders"
       :items="bearbeitungshistorie"
-      :items-per-page="-1"
       dense
-      hide-default-footer
       disable-sort
+      disable-filtering
     >
       <template #item.zeitpunkt="{ item }">
         {{ zeitpunktFormatted(item.zeitpunkt) }}
