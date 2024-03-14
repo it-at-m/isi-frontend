@@ -70,7 +70,7 @@ export default class Bearbeitungshistorie extends Vue {
 
   private zielstatusText(status: StatusAbfrage): string | undefined {
     const lookupEntries = this.$store.getters["lookup/statusAbfrage"] as Array<LookupEntryDto>;
-    return !_.isUndefined(lookupEntries)
+    return !_.isEmpty(lookupEntries)
       ? lookupEntries.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
       : "";
   }
