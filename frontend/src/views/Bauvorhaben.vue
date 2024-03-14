@@ -6,7 +6,7 @@
           <v-row>
             <v-col
               cols="12"
-              md="11"
+              sm="11"
             >
               <v-text-field
                 id="bauvorhaben_nameVorhaben"

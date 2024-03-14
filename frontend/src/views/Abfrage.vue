@@ -203,12 +203,20 @@
       <template #heading>
         <v-container>
           <v-row>
-            <v-col cols="12">
+            <v-col
+              cols="12"
+              sm="11"
+            >
               <span
                 id="abfrage_displayName"
                 class="text-h6 font-weight-bold"
                 v-text="abfrage.displayName"
               />
+            </v-col>
+            <v-col
+              cols="12"
+              sm="1"
+            >
             </v-col>
           </v-row>
         </v-container>
