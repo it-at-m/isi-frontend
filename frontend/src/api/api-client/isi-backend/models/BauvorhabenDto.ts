@@ -19,6 +19,12 @@ import {
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
@@ -68,6 +74,12 @@ export interface BauvorhabenDto {
      * @memberof BauvorhabenDto
      */
     lastModifiedDateTime?: Date;
+    /**
+     * 
+     * @type {BearbeitendePersonDto}
+     * @memberof BauvorhabenDto
+     */
+    bearbeitendePerson?: BearbeitendePersonDto;
     /**
      * 
      * @type {string}
@@ -182,6 +194,7 @@ export const BauvorhabenDtoStandVerfahrenEnum = {
     VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
     VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
     VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
     RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
     Aufteilungsplan: 'AUFTEILUNGSPLAN',
@@ -276,6 +289,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'version': !exists(json, 'version') ? undefined : json['version'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
         'nameVorhaben': json['nameVorhaben'],
         'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVerfahren': json['standVerfahren'],
@@ -309,6 +323,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value.bearbeitendePerson),
         'nameVorhaben': value.nameVorhaben,
         'grundstuecksgroesse': value.grundstuecksgroesse,
         'standVerfahren': value.standVerfahren,

@@ -41,9 +41,19 @@
           :disabled="!isEditable"
           label="Anmerkungen"
           auto-grow
-          rows="3"
-          maxlength="255"
+          rows="1"
+          maxlength="1000"
           @input="formChanged"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <eakte
+          id="eakte_component"
+          ref="eakteComponent"
+          v-model="abfrage.linkEakte"
+          :is-editable="isEakteEditable"
         />
       </v-col>
     </v-row>
@@ -56,9 +66,10 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
+import Eakte from "@/components/common/Eakte.vue";
 
 @Component({
-  components: { TriSwitch },
+  components: { TriSwitch, Eakte },
 })
 export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
   SaveLeaveMixin,
@@ -69,8 +80,15 @@ export default class AllgemeineInformationenBauleitplanverfahrenComponent extend
   @Prop({ type: Boolean, default: true })
   private isEditableProp!: boolean;
 
+  @Prop({ type: Boolean, default: false })
+  private isEakteEditableProp!: boolean;
+
   get isEditable(): boolean {
     return this.isEditableProp;
+  }
+
+  get isEakteEditable(): boolean {
+    return this.isEakteEditableProp;
   }
 
   private allgemeineInfoZurAbfrageCardTitle = "Allgemeine Informationen zur Abfrage";

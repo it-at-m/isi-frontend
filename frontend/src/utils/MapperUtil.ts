@@ -84,6 +84,7 @@ export function mapToBauleitplanverfahrenAngelegt(
     artAbfrage: bauleitplanverfahrenDto.artAbfrage,
     name: bauleitplanverfahrenDto.name,
     anmerkung: bauleitplanverfahrenDto.anmerkung,
+    linkEakte: bauleitplanverfahrenDto.linkEakte,
     bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
     // BauleitplanverfahrenAngelegtDto
     bebauungsplannummer: bauleitplanverfahrenDto.bebauungsplannummer,
@@ -144,6 +145,7 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
     artAbfrage: baugenehmigungsverfahrenDto.artAbfrage,
     name: baugenehmigungsverfahrenDto.name,
     anmerkung: baugenehmigungsverfahrenDto.anmerkung,
+    linkEakte: baugenehmigungsverfahrenDto.linkEakte,
     bauvorhaben: baugenehmigungsverfahrenDto.bauvorhaben,
     // BaugenehmigungsverfahrenAngelegtDto
     aktenzeichenProLbk: baugenehmigungsverfahrenDto.aktenzeichenProLbk,
@@ -201,6 +203,7 @@ export function mapToWeiteresVerfahrenAngelegt(
     artAbfrage: weiteresVerfahrenDto.artAbfrage,
     name: weiteresVerfahrenDto.name,
     anmerkung: weiteresVerfahrenDto.anmerkung,
+    linkEakte: weiteresVerfahrenDto.linkEakte,
     bauvorhaben: weiteresVerfahrenDto.bauvorhaben,
     // WeiteresVerfahrenAngelegtDto
     aktenzeichenProLbk: weiteresVerfahrenDto.aktenzeichenProLbk,
@@ -235,6 +238,7 @@ export function mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
       ),
     verortung: bauleitplanverfahrenDto.verortung,
     bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
+    linkEakte: bauleitplanverfahrenDto.linkEakte,
   } as BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -255,6 +259,7 @@ export function mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
       ),
     bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
+    linkEakte: bauleitplanverfahrenDto.linkEakte,
   } as BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -275,6 +280,7 @@ export function mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(
         weiteresVerfahrenDto.abfragevariantenSachbearbeitungWeiteresVerfahren,
       ),
     bauvorhaben: weiteresVerfahrenDto.bauvorhaben,
+    linkEakte: weiteresVerfahrenDto.linkEakte,
   } as WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
 }
 
@@ -308,7 +314,6 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
@@ -348,7 +353,6 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
@@ -390,7 +394,6 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       bauabschnitte: abfragevariante.bauabschnitte,
-      gfWohnenPlanungsursaechlich: abfragevariante.gfWohnenPlanungsursaechlich,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
