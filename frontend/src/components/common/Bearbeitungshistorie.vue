@@ -19,8 +19,10 @@
     <v-data-table
       :headers="bearbeitungshistorieHeaders"
       :items="bearbeitungshistorie"
-      :items-per-page="10"
+      :items-per-page="-1"
       dense
+      hide-default-footer
+      disable-sort
     />
   </v-menu>
 </template>
