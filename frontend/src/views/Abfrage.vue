@@ -217,6 +217,7 @@
               cols="12"
               sm="1"
             >
+              <bearbeitungshistorie v-model="abfrage" />
             </v-col>
           </v-row>
         </v-container>
@@ -402,6 +403,7 @@ import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
+import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 
 export const enum AnzeigeContextAbfragevariante {
   UNDEFINED = 1,
@@ -443,6 +445,7 @@ export const enum AbfrageFormType {
 @Component({
   methods: { containsNotAllowedDokument },
   components: {
+    Bearbeitungshistorie,
     AbfragevarianteBauleitplanverfahrenComponent,
     AbfragevarianteBaugenehmigungsverfahrenComponent,
     AbfragevarianteWeiteresVerfahrenComponent,
