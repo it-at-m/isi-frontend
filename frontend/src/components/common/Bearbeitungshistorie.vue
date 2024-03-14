@@ -52,7 +52,7 @@ export default class Bearbeitungshistorie extends Vue {
     { text: "Name", value: "bearbeitendePerson.name", sortable: false },
     { text: "Email", value: "bearbeitendePerson.email", sortable: false },
     { text: "Organisationseinheit", value: "bearbeitendePerson.organisationseinheit", sortable: false },
-    { text: "Änderung", value: "zeitpunkt", sortable: false },
+    { text: "Datum der Änderung", value: "zeitpunkt", sortable: false },
     { text: "Zielstatus", value: "zielStatus", sortable: false },
   ];
 
