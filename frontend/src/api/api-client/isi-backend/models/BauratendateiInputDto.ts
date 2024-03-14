@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { BauratendateiWohneinheiten } from './BauratendateiWohneinheiten';
+import type { BauratendateiWohneinheitenDto } from './BauratendateiWohneinheitenDto';
 import {
-    BauratendateiWohneinheitenFromJSON,
-    BauratendateiWohneinheitenFromJSONTyped,
-    BauratendateiWohneinheitenToJSON,
-} from './BauratendateiWohneinheiten';
+    BauratendateiWohneinheitenDtoFromJSON,
+    BauratendateiWohneinheitenDtoFromJSONTyped,
+    BauratendateiWohneinheitenDtoToJSON,
+} from './BauratendateiWohneinheitenDto';
 
 /**
  * 
@@ -52,28 +52,28 @@ export interface BauratendateiInputDto {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {Set<string>}
      * @memberof BauratendateiInputDto
      */
-    grundschulsprengel?: string;
+    grundschulsprengel?: Set<string>;
     /**
      * 
-     * @type {string}
+     * @type {Set<string>}
      * @memberof BauratendateiInputDto
      */
-    mittelschulsprengel?: string;
+    mittelschulsprengel?: Set<string>;
     /**
      * 
-     * @type {string}
+     * @type {Set<string>}
      * @memberof BauratendateiInputDto
      */
-    viertel?: string;
+    viertel?: Set<string>;
     /**
      * 
-     * @type {Array<BauratendateiWohneinheiten>}
+     * @type {Array<BauratendateiWohneinheitenDto>}
      * @memberof BauratendateiInputDto
      */
-    wohneinheiten?: Array<BauratendateiWohneinheiten>;
+    wohneinheiten?: Array<BauratendateiWohneinheitenDto>;
 }
 
 /**
@@ -102,7 +102,7 @@ export function BauratendateiInputDtoFromJSONTyped(json: any, ignoreDiscriminato
         'grundschulsprengel': !exists(json, 'grundschulsprengel') ? undefined : json['grundschulsprengel'],
         'mittelschulsprengel': !exists(json, 'mittelschulsprengel') ? undefined : json['mittelschulsprengel'],
         'viertel': !exists(json, 'viertel') ? undefined : json['viertel'],
-        'wohneinheiten': !exists(json, 'wohneinheiten') ? undefined : ((json['wohneinheiten'] as Array<any>).map(BauratendateiWohneinheitenFromJSON)),
+        'wohneinheiten': !exists(json, 'wohneinheiten') ? undefined : ((json['wohneinheiten'] as Array<any>).map(BauratendateiWohneinheitenDtoFromJSON)),
     };
 }
 
@@ -119,10 +119,10 @@ export function BauratendateiInputDtoToJSON(value?: BauratendateiInputDto | null
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'grundschulsprengel': value.grundschulsprengel,
-        'mittelschulsprengel': value.mittelschulsprengel,
-        'viertel': value.viertel,
-        'wohneinheiten': value.wohneinheiten === undefined ? undefined : ((value.wohneinheiten as Array<any>).map(BauratendateiWohneinheitenToJSON)),
+        'grundschulsprengel': value.grundschulsprengel === undefined ? undefined : Array.from(value.grundschulsprengel as Set<any>),
+        'mittelschulsprengel': value.mittelschulsprengel === undefined ? undefined : Array.from(value.mittelschulsprengel as Set<any>),
+        'viertel': value.viertel === undefined ? undefined : Array.from(value.viertel as Set<any>),
+        'wohneinheiten': value.wohneinheiten === undefined ? undefined : ((value.wohneinheiten as Array<any>).map(BauratendateiWohneinheitenDtoToJSON)),
     };
 }
 

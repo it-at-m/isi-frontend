@@ -219,6 +219,12 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
     anmerkungBauratendateiInputs?: string;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
+     */
+    bauratendateiInputBasis?: string;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
@@ -398,6 +404,7 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyFromJSONTyped(json: a
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'hasBauratendateiInputs': !exists(json, 'hasBauratendateiInputs') ? undefined : json['hasBauratendateiInputs'],
         'anmerkungBauratendateiInputs': !exists(json, 'anmerkungBauratendateiInputs') ? undefined : json['anmerkungBauratendateiInputs'],
+        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : json['bauratendateiInputBasis'],
         'bauratendateiInputs': !exists(json, 'bauratendateiInputs') ? undefined : json['bauratendateiInputs'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
@@ -457,6 +464,7 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyToJSON(value?: Abfrag
         'anmerkung': value.anmerkung,
         'hasBauratendateiInputs': value.hasBauratendateiInputs,
         'anmerkungBauratendateiInputs': value.anmerkungBauratendateiInputs,
+        'bauratendateiInputBasis': value.bauratendateiInputBasis,
         'bauratendateiInputs': value.bauratendateiInputs,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,

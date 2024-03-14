@@ -5,9 +5,6 @@ import {
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
   WeiteresVerfahrenDtoStandVerfahrenEnum,
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
   AdresseDto,
   BauabschnittDto,
   BaugebietDto,
@@ -44,14 +41,19 @@ import {
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 
+type GenericAbfrage = BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel;
+
+type GenericAbfragevariante =
+  | AbfragevarianteBauleitplanverfahrenModel
+  | AbfragevarianteBaugenehmigungsverfahrenModel
+  | AbfragevarianteWeiteresVerfahrenModel;
+
 @Component
 export default class ValidatorMixin extends Vue {
   /**
    * Prüft die komplette Abfrage vor dem Speichern
    */
-  public findFaultInAbfrageForSave(
-    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
-  ): string | null {
+  public findFaultInAbfrageForSave(abfrage: GenericAbfrage): string | null {
     if (!_.isNil(abfrage) && !_.isNil(abfrage.artAbfrage)) {
       switch (abfrage.artAbfrage) {
         case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
@@ -107,9 +109,7 @@ export default class ValidatorMixin extends Vue {
     return this.findFaultInAbfrage(abfrage);
   }
 
-  private findFaultInAbfrage(
-    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
-  ): string | null {
+  private findFaultInAbfrage(abfrage: GenericAbfrage): string | null {
     if (_.isEmpty(abfrage.name)) {
       return "Der Name der Abfrage ist anzugeben.";
     }
@@ -150,9 +150,7 @@ export default class ValidatorMixin extends Vue {
     return false;
   }
 
-  public findFaultInAbfragevarianten(
-    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
-  ): string | null {
+  public findFaultInAbfragevarianten(abfrage: GenericAbfrage): string | null {
     let abfragevarianten = undefined;
     if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       abfragevarianten = (abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren;
@@ -182,11 +180,7 @@ export default class ValidatorMixin extends Vue {
     }
     let validationMessage = null;
     const allAbfragevarianten = _.concat(_.toArray(abfragevarianten), _.toArray(abfragevariantenSachbearbeitung));
-    let abfragevariante:
-      | AbfragevarianteBauleitplanverfahrenModel
-      | AbfragevarianteBaugenehmigungsverfahrenModel
-      | AbfragevarianteWeiteresVerfahrenModel
-      | undefined = undefined;
+    let abfragevariante: GenericAbfragevariante | undefined = undefined;
     for (const abfragevarianteDto of allAbfragevarianten) {
       switch (abfrage.artAbfrage) {
         case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
@@ -212,13 +206,7 @@ export default class ValidatorMixin extends Vue {
     return validationMessage;
   }
 
-  public findFaultInAbfragevariante(
-    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
-    abfragevariante:
-      | AbfragevarianteBauleitplanverfahrenModel
-      | AbfragevarianteBaugenehmigungsverfahrenModel
-      | AbfragevarianteWeiteresVerfahrenModel,
-  ): string | null {
+  public findFaultInAbfragevariante(abfrage: GenericAbfrage, abfragevariante: GenericAbfragevariante): string | null {
     if (_.isEmpty(abfragevariante.name)) {
       return "Bitte einen Namen für die Abfragevariante angeben.";
     }
@@ -268,16 +256,15 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInBedarfsmeldungAbfrageersteller)) {
       return messageFaultInBedarfsmeldungAbfrageersteller;
     }
+    const messageFaultInBauratendateiInputs = this.findFaultInBauratendateiInputs(abfragevariante);
+    if (!_.isNil(messageFaultInBauratendateiInputs)) {
+      return messageFaultInBauratendateiInputs;
+    }
 
     return null;
   }
 
-  public findFaultInBauabschnitte(
-    abfragevariante:
-      | AbfragevarianteBauleitplanverfahrenDto
-      | AbfragevarianteBaugenehmigungsverfahrenDto
-      | AbfragevarianteWeiteresVerfahrenDto,
-  ): string | null {
+  public findFaultInBauabschnitte(abfragevariante: GenericAbfragevariante): string | null {
     let validationMessage: string | null = null;
     for (const bauabschnitt of _.toArray(abfragevariante.bauabschnitte)) {
       validationMessage = this.findFaultInBauabschnitt(bauabschnitt);
@@ -528,12 +515,7 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInVerteilungWohneinheitenAbfragevariante(
-    abfragevariante:
-      | AbfragevarianteBauleitplanverfahrenDto
-      | AbfragevarianteBaugenehmigungsverfahrenDto
-      | AbfragevarianteWeiteresVerfahrenDto,
-  ): string | null {
+  public findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante: GenericAbfragevariante): string | null {
     const nonTechnicalBaugebiete = getNonTechnicalBaugebiete(abfragevariante);
     const bauratenFromAllTechnicalBaugebiete = getBauratenFromAllTechnicalBaugebiete(abfragevariante);
 
@@ -576,10 +558,7 @@ export default class ValidatorMixin extends Vue {
   }
 
   public findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(
-    abfragevariante:
-      | AbfragevarianteBauleitplanverfahrenDto
-      | AbfragevarianteBaugenehmigungsverfahrenDto
-      | AbfragevarianteWeiteresVerfahrenDto,
+    abfragevariante: GenericAbfragevariante,
   ): string | null {
     const nonTechnicalBaugebiete = getNonTechnicalBaugebiete(abfragevariante);
     const bauratenFromAllTechnicalBaugebiete = getBauratenFromAllTechnicalBaugebiete(abfragevariante);
@@ -672,5 +651,60 @@ export default class ValidatorMixin extends Vue {
             }.`;
     }
     return validationMessage;
+  }
+
+  public findFaultInBauratendateiInputs(abfragevariante: GenericAbfragevariante): string | null {
+    const hasInputs = abfragevariante.hasBauratendateiInputs;
+    const inputBasis = abfragevariante.bauratendateiInputBasis;
+    const inputs = abfragevariante.bauratendateiInputs;
+
+    // Vergleich nicht möglich
+    if (!hasInputs || !inputBasis || !inputs || _.isEmpty(inputs)) {
+      return null;
+    }
+
+    // Mapping von Förderart zu Jahr zu Summe Wohneinheiten
+    const wohneinheitenSum = new Map<string, Map<string, number>>();
+
+    // Summieren der Wohneinheiten
+    for (const input of inputs) {
+      if (input.wohneinheiten) {
+        for (const wohneinheiten of input.wohneinheiten) {
+          if (
+            _.isNil(wohneinheiten.foerderart) ||
+            _.isNil(wohneinheiten.jahr) ||
+            _.isNil(wohneinheiten.wohneinheiten)
+          ) {
+            continue;
+          }
+          const mapForFoerderart = wohneinheitenSum.get(wohneinheiten.foerderart);
+          if (mapForFoerderart) {
+            const current = mapForFoerderart.get(wohneinheiten.jahr) ?? 0;
+            mapForFoerderart.set(wohneinheiten.jahr, current + wohneinheiten.wohneinheiten);
+          } else {
+            wohneinheitenSum.set(
+              wohneinheiten.foerderart,
+              new Map([[wohneinheiten.jahr, wohneinheiten.wohneinheiten]]),
+            );
+          }
+        }
+      }
+    }
+
+    // Vergleich Wohneinheiten
+    if (inputBasis.wohneinheiten) {
+      for (const wohneinheiten of inputBasis.wohneinheiten) {
+        if (_.isNil(wohneinheiten.foerderart) || _.isNil(wohneinheiten.jahr) || _.isNil(wohneinheiten.wohneinheiten)) {
+          continue;
+        }
+        const expected = wohneinheiten.wohneinheiten;
+        const actual = wohneinheitenSum.get(wohneinheiten.foerderart)?.get(wohneinheiten.jahr);
+        if (actual !== expected) {
+          return `Bei den Daten für die Bauratendatei ist die Summe der Wohneinheiten für das Jahr ${wohneinheiten.jahr} und die Förderart ${wohneinheiten.foerderart} ${actual}, aber sollte ${expected} sein.`;
+        }
+      }
+    }
+
+    return null;
   }
 }

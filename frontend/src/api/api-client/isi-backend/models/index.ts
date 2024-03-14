@@ -57,7 +57,7 @@ export * from './BauleitplanverfahrenInBearbeitungSachbearbeitungDto';
 export * from './BauleitplanverfahrenInBearbeitungSachbearbeitungDtoAllOf';
 export * from './BaurateDto';
 export * from './BauratendateiInputDto';
-export * from './BauratendateiWohneinheiten';
+export * from './BauratendateiWohneinheitenDto';
 export * from './BauvorhabenDto';
 export * from './BauvorhabenRequestBody';
 export * from './BauvorhabenSearchResultDto';

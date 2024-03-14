@@ -76,6 +76,12 @@ export interface AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSac
     anmerkungBauratendateiInputs?: string;
     /**
      * 
+     * @type {BauratendateiInputDto}
+     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    bauratendateiInputBasis?: BauratendateiInputDto;
+    /**
+     * 
      * @type {Array<BauratendateiInputDto>}
      * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
@@ -137,6 +143,7 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'hasBauratendateiInputs': json['hasBauratendateiInputs'],
         'anmerkungBauratendateiInputs': !exists(json, 'anmerkungBauratendateiInputs') ? undefined : json['anmerkungBauratendateiInputs'],
+        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
         'bauratendateiInputs': !exists(json, 'bauratendateiInputs') ? undefined : ((json['bauratendateiInputs'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
     };
 }
@@ -158,6 +165,7 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'anmerkung': value.anmerkung,
         'hasBauratendateiInputs': value.hasBauratendateiInputs,
         'anmerkungBauratendateiInputs': value.anmerkungBauratendateiInputs,
+        'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value.bauratendateiInputBasis),
         'bauratendateiInputs': value.bauratendateiInputs === undefined ? undefined : ((value.bauratendateiInputs as Array<any>).map(BauratendateiInputDtoToJSON)),
     };
 }
