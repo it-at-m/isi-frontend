@@ -68,7 +68,7 @@ export default class Bearbeitungshistorie extends Vue {
     return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(Bearbeitungshistorie.DISPLAY_FORMAT);
   }
 
-  private zielstatusText(status: StatusAbfrage): string | undefined {
+  private zielstatusText(status: StatusAbfrage | undefined): string | undefined {
     const lookupEntries = this.$store.getters["lookup/statusAbfrage"] as Array<LookupEntryDto>;
     return !_.isEmpty(lookupEntries)
       ? lookupEntries.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
