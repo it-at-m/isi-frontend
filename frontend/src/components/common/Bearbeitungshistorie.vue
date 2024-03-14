@@ -27,6 +27,9 @@
       <template #item.zeitpunkt="{ item }">
         {{ zeitpunktFormatted(item.zeitpunkt) }}
       </template>
+      <template #item.zielStatus="{ item }">
+        {{ zielstatusText(item.zielStatus) }}
+      </template>
     </v-data-table>
   </v-menu>
 </template>
@@ -35,7 +38,7 @@
 import { Vue, Component, VModel } from "vue-property-decorator";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import _ from "lodash";
-import { BearbeitungshistorieDto } from "@/api/api-client/isi-backend";
+import { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import moment from "moment/moment";
 
 @Component({})
@@ -63,6 +66,13 @@ export default class Bearbeitungshistorie extends Vue {
 
   private zeitpunktFormatted(zeitpunkt: Date | undefined): string {
     return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(Bearbeitungshistorie.DISPLAY_FORMAT);
+  }
+
+  private zielstatusText(status: StatusAbfrage): string | undefined {
+    const lookupEntries = this.$store.getters["lookup/statusAbfrage"] as Array<LookupEntryDto>;
+    return !_.isUndefined(lookupEntries)
+      ? lookupEntries.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
+      : "";
   }
 }
 </script>
