@@ -149,7 +149,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
    */
   private showSobonReport(): boolean {
     const abfrage = this.$store.getters["search/selectedAbfrage"];
-    const test =
+    return (
       (this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
         AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
         this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
@@ -158,8 +158,11 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       abfrage.sobonRelevant === UncertainBoolean.True &&
       (this.abfragevarianteSachbearbeitung.sobonBerechnung?.isASobonBerechnung as boolean) &&
       !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix) &&
-      !_.isNil(this.abfragevarianteSachbearbeitung?.gfWohnenSobonUrsaechlich);
-    return test;
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.bezeichnungJahr) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.bezeichnung) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.foerderarten) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung?.gfWohnenSobonUrsaechlich)
+    );
   }
 }
 </script>

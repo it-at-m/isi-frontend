@@ -657,7 +657,7 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
         groups[bezeichnungJahr] = [];
       }
       groups[bezeichnungJahr].push(foerdermixStammModel);
-    } else {
+    } else if (!sobonValues) {
       groups[bezeichnungJahr] = groups[bezeichnungJahr] || [];
       // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
       groups[bezeichnungJahr].push(foerdermixStammModel);
