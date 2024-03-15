@@ -23,6 +23,9 @@
       dense
       disable-sort
       disable-filtering
+      :footer-props="{
+        itemsPerPageOptions: [5, 10, 15],
+      }"
     >
       <template #item.zeitpunkt="{ item }">
         {{ zeitpunktFormatted(item.zeitpunkt) }}
