@@ -25,6 +25,12 @@ import {
     BedarfsmeldungDtoFromJSONTyped,
     BedarfsmeldungDtoToJSON,
 } from './BedarfsmeldungDto';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+} from './DokumentDto';
 
 /**
  * 
@@ -284,6 +290,12 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
     hinweisVersorgung?: string;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
+     */
+    dokumente?: Array<DokumentDto>;
 }
 
 
@@ -390,6 +402,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoFromJSONTyped(json: an
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
         'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
@@ -444,6 +457,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoToJSON(value?: Abfrage
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
         'hinweisVersorgung': value.hinweisVersorgung,
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 

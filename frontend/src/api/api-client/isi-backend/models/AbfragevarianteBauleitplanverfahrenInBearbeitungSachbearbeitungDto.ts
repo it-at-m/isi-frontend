@@ -19,6 +19,12 @@ import {
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+} from './DokumentDto';
 import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
     SobonBerechnungDtoFromJSON,
@@ -200,6 +206,12 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitung
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
     anmerkung?: string;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
+     */
+    dokumente?: Array<DokumentDto>;
 }
 
 
@@ -300,6 +312,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
@@ -340,6 +353,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 
