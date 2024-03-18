@@ -195,7 +195,7 @@
           dialogtitle="Hinweis"
           :dialogtext="relevanteAbfragevarianteDialogText"
           no-text="Abbrechen"
-          yes-text="Überschreiben"
+          :yes-text="relevanteAbfragevarianteYesButtonText"
           @no="yesNoDialogRelevanteAbfragevarianteNo"
           @yes="yesNoDialogRelevanteAbfragevarianteYes"
         />
@@ -493,6 +493,8 @@ export default class Abfrage extends Mixins(
   private isDeleteDialogBaurateOpen = false;
   private isRelevanteAbfragevarianteDialogOpen = false;
   private relevanteAbfragevarianteDialogText = "";
+  private relevanteAbfragevarianteYesButtonText = "Ok";
+  private hasAnmerkung = false;
   private anmerkungMaxLength = 0;
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
@@ -524,7 +526,7 @@ export default class Abfrage extends Mixins(
       const bauvorhabenId = this.abfrage.bauvorhaben;
       if (bauvorhabenId) {
         this.getBauvorhabenById(bauvorhabenId, false).then((dto) => {
-          this.relevanteAbfragevarianteId = dto.relevanteAbfragevariante?.id ?? null;
+          this.relevanteAbfragevarianteId = dto.relevanteAbfragevariante ?? null;
         });
       }
     }
@@ -874,7 +876,7 @@ export default class Abfrage extends Mixins(
     if (abfragevariante.id) {
       await this.changeRelevanteAbfragevariante(abfragevariante.id, true).then((result) => {
         if (typeof result !== "string") {
-          const relevanteId = result.relevanteAbfragevariante?.id;
+          const relevanteId = result.relevanteAbfragevariante;
           this.relevanteAbfragevarianteId = relevanteId ?? null;
           Toaster.toast(
             `Die Abfragevariante ${abfragevariante.name} in Abfrage ${this.abfrage.displayName} ist nun ${
@@ -884,7 +886,16 @@ export default class Abfrage extends Mixins(
           );
         } else {
           this.relevanteAbfragevarianteToBeSet = abfragevariante;
-          this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+          if (
+            result ===
+            "Die Abfrage ist keinem Bauvorhaben zugeordnet. Somit kann keine Abfragevariante als relevant markiert werden."
+          ) {
+            this.relevanteAbfragevarianteDialogText = result;
+            this.relevanteAbfragevarianteYesButtonText = "Ok";
+          } else {
+            this.relevanteAbfragevarianteDialogText = result + " " + this.RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE;
+            this.relevanteAbfragevarianteYesButtonText = "Überschreiben";
+          }
           this.isRelevanteAbfragevarianteDialogOpen = true;
         }
       });

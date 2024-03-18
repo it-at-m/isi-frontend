@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SobonBerechnungDto } from './SobonBerechnungDto';
+import {
+    SobonBerechnungDtoFromJSON,
+    SobonBerechnungDtoFromJSONTyped,
+    SobonBerechnungDtoToJSON,
+} from './SobonBerechnungDto';
+
 /**
  * 
  * @export
@@ -43,6 +50,12 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitung
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDtoSobonOrientierungswertJahrEnum;
+    /**
+     * 
+     * @type {SobonBerechnungDto}
+     * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    sobonBerechnung?: SobonBerechnungDto;
     /**
      * 
      * @type {Date}
@@ -107,6 +120,7 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
+        'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
     };
@@ -125,6 +139,7 @@ export function AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungS
         'version': value.version,
         'artAbfragevariante': value.artAbfragevariante,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
     };

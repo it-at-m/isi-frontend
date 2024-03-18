@@ -26,6 +26,8 @@ import {
   StatusAbfrage,
   BaugebietDtoArtBaulicheNutzungEnum,
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
+  AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -291,6 +293,13 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInBedarfsmeldungAbfrageersteller)) {
       return messageFaultInBedarfsmeldungAbfrageersteller;
     }
+    const messageFaultInAbfragevarianteMarkedSobonBerechnung = this.findFaultInAbfragevarianteMarkedSobonBerechnung(
+      abfrage,
+      abfragevariante,
+    );
+    if (!_.isNil(messageFaultInAbfragevarianteMarkedSobonBerechnung)) {
+      return messageFaultInAbfragevarianteMarkedSobonBerechnung;
+    }
 
     return null;
   }
@@ -309,8 +318,56 @@ export default class ValidatorMixin extends Vue {
       return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
     }
     const date = moment(abfragevariante.stammdatenGueltigAb, "DD.MM.YYYY", true);
-    if (!date.isValid() || abfragevariante.stammdatenGueltigAb.toISOString() == new Date(0).toISOString()) {
+    if (!date.isValid() || abfragevariante.stammdatenGueltigAb?.toISOString() == new Date(0).toISOString()) {
       return `Bitte geben Sie das 'Stammdatum gültig ab' bei Abfragevariante '${abfragevariante.name}' im Format TT.MM.JJJJ an.`;
+    }
+    return null;
+  }
+
+  public findFaultInAbfragevarianteMarkedSobonBerechnung(
+    abfrage: BauleitplanverfahrenModel | WeiteresVerfahrenModel | BaugenehmigungsverfahrenModel,
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenModel
+      | AbfragevarianteWeiteresVerfahrenModel
+      | AbfragevarianteBaugenehmigungsverfahrenModel,
+  ): string | null {
+    let abfrageSobon = undefined;
+    let abfragevarianteSobon = undefined;
+    if (
+      abfragevariante.artAbfragevariante ===
+        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren &&
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+    ) {
+      abfrageSobon = abfrage as BauleitplanverfahrenModel;
+      abfragevarianteSobon = abfragevariante as AbfragevarianteBauleitplanverfahrenModel;
+    } else if (
+      abfragevariante.artAbfragevariante ===
+        AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren &&
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren
+    ) {
+      abfrageSobon = abfrage as WeiteresVerfahrenModel;
+      abfragevarianteSobon = abfragevariante as AbfragevarianteWeiteresVerfahrenModel;
+    }
+    if (!_.isNil(abfrageSobon) && !_.isNil(abfragevarianteSobon) && !_.isNil(abfragevarianteSobon.sobonBerechnung)) {
+      if (
+        !_.isNil(abfragevarianteSobon.sobonBerechnung.isASobonBerechnung) &&
+        abfragevarianteSobon.sobonBerechnung.isASobonBerechnung
+      ) {
+        if (
+          _.isNil(abfragevarianteSobon.sobonBerechnung.sobonFoerdermix) ||
+          (_.isNil(abfragevarianteSobon.sobonBerechnung.sobonFoerdermix.bezeichnung) &&
+            _.isNil(abfragevarianteSobon.sobonBerechnung.sobonFoerdermix.bezeichnungJahr) &&
+            abfragevarianteSobon.sobonBerechnung.sobonFoerdermix.foerderarten?.length == 0)
+        ) {
+          return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
+        }
+        if (_.isNil(abfragevarianteSobon.gfWohnenSobonUrsaechlich)) {
+          return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
+        }
+        if (_.isNil(abfrageSobon.sobonRelevant) || abfrageSobon.sobonRelevant !== UncertainBoolean.True) {
+          return "Die Abfrage muss als SoBoN-Relevant markiert werden um eine SoBoN-Berechnung durchzuführen.";
+        }
+      }
     }
     return null;
   }

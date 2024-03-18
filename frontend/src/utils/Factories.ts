@@ -76,6 +76,7 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  SobonBerechnungDto,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
 import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
@@ -269,6 +270,7 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    sobonBerechnung: createSobonBerechnung(),
     stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
@@ -353,11 +355,19 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     sobonOrientierungswertJahr: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    sobonBerechnung: createSobonBerechnung(),
     stammdatenGueltigAb: new Date(0),
     anmerkung: undefined,
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
     bauabschnitte: [],
+  };
+}
+
+export function createSobonBerechnung(): SobonBerechnungDto {
+  return {
+    sobonFoerdermix: createFoerdermixDto(),
+    isASobonBerechnung: false,
   };
 }
 

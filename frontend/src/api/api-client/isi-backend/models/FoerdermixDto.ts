@@ -31,13 +31,13 @@ export interface FoerdermixDto {
      * @type {string}
      * @memberof FoerdermixDto
      */
-    bezeichnungJahr: string;
+    bezeichnungJahr?: string;
     /**
      * 
      * @type {string}
      * @memberof FoerdermixDto
      */
-    bezeichnung: string;
+    bezeichnung?: string;
     /**
      * 
      * @type {Array<FoerderartDto>}
@@ -51,8 +51,6 @@ export interface FoerdermixDto {
  */
 export function instanceOfFoerdermixDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "bezeichnungJahr" in value;
-    isInstance = isInstance && "bezeichnung" in value;
 
     return isInstance;
 }
@@ -67,8 +65,8 @@ export function FoerdermixDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'bezeichnungJahr': json['bezeichnungJahr'],
-        'bezeichnung': json['bezeichnung'],
+        'bezeichnungJahr': !exists(json, 'bezeichnungJahr') ? undefined : json['bezeichnungJahr'],
+        'bezeichnung': !exists(json, 'bezeichnung') ? undefined : json['bezeichnung'],
         'foerderarten': !exists(json, 'foerderarten') ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartDtoFromJSON)),
     };
 }
