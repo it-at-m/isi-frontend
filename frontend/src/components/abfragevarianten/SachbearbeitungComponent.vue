@@ -37,6 +37,7 @@
           />
         </v-col>
       </v-row>
+      <sobon-berechnung v-model="abfragevarianteSachbearbeitung.sobonBerechnung"></sobon-berechnung>
       <v-row>
         <v-col
           cols="12"
@@ -66,7 +67,7 @@
           md="6"
         >
           <reports-sobonursaechlichkeit-component
-            v-if="!isBaugenehmigungsverfahren"
+            v-if="showSobonReport()"
             v-model="abfragevarianteSachbearbeitung"
           />
         </v-col>
@@ -78,9 +79,9 @@
 <script lang="ts">
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import {
-  AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   LookupEntryDto,
+  UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -91,10 +92,12 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
+import _ from "lodash";
 
 @Component({
   components: {
+    SobonBerechnung,
     ReportsPlanungsursaechlichkeitComponent,
     ReportsSobonursaechlichkeitComponent,
     FieldGroupCard,
@@ -141,9 +144,25 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
     return [];
   }
 
-  get isBaugenehmigungsverfahren(): boolean {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
-    return abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren;
+  /**
+   * Überprüfung ob alle Kriterien stimmen um die Sobon Report anzuzeigen.
+   */
+  private showSobonReport(): boolean {
+    const abfrage = this.$store.getters["search/selectedAbfrage"];
+    return (
+      (this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
+        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
+        this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
+          AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung) &&
+      abfrage.sobonRelevant === UncertainBoolean.True &&
+      (this.abfragevarianteSachbearbeitung.sobonBerechnung?.isASobonBerechnung as boolean) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.bezeichnungJahr) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.bezeichnung) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.foerderarten) &&
+      !_.isNil(this.abfragevarianteSachbearbeitung?.gfWohnenSobonUrsaechlich)
+    );
   }
 }
 </script>
