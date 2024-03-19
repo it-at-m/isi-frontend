@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Mixins, VModel } from "vue-property-decorator";
-import { FoerdermixStammDto, SobonBerechnungDto } from "@/api/api-client/isi-backend";
+import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import {
   groupItemsToHeader,
   mapFoerdermixStammModelToFoerderMix,
