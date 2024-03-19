@@ -24,7 +24,7 @@
       disable-sort
       disable-filtering
       :footer-props="{
-        itemsPerPageOptions: [5, 10, 15],
+        itemsPerPageOptions: [5, 10],
       }"
     >
       <template #item.zeitpunkt="{ item }">
