@@ -4,6 +4,7 @@
       height="300"
       :zoom="14"
       expandable
+      automatic-zoom-to-polygons
       :editable="isEditable"
       :look-at="coordinate"
       :geo-json="geoJsonObjectsToShow"
@@ -208,6 +209,7 @@ import {
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
+import { COLOR_POLYGON_UMGRIFF } from "@/utils/MapUtil";
 
 @Component({
   components: { CityMap },
@@ -265,7 +267,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
     return {
       // Farbe des Multipolygons
       style: function () {
-        return { color: "#E91E63" };
+        return { color: COLOR_POLYGON_UMGRIFF };
       },
       onEachFeature: function (feature, layer) {
         // Tooltip je Multipolygon
@@ -283,6 +285,7 @@ export default class Verortung extends Mixins(GeodataEaiApiRequestMixin, SaveLea
               offset: L.point(0, -2),
             },
           );
+
           layer.on("mouseover", function () {
             layer.openTooltip();
           });

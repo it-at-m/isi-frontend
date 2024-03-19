@@ -7,9 +7,9 @@
     <l-map
       id="karte"
       ref="map"
-      :options="MAP_OPTIONS"
-      :center="CITY_CENTER"
-      :max-zoom="MAX_ZOOM"
+      :options="mapOptions"
+      :center="cityCenter"
+      :max-zoom="maxZoom"
       :zoom="initialZoom"
       style="z-index: 1"
       @click="onClickInMap($event)"
@@ -24,10 +24,10 @@
       <l-wms-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
-        :base-url="getBackgroundMapUrl()"
+        :base-url="backgroundMapUrl"
         layers="gsm:g_stadtkarte_gesamt"
         :visible="true"
-        :options="LAYER_OPTIONS"
+        :options="layerOptions"
       />
       <l-control
         v-if="editable"
@@ -95,11 +95,21 @@ import L, {
   WMSOptions,
   LeafletMouseEvent,
   MapOptions,
+  Layer,
 } from "leaflet";
 import "leaflet.nontiledlayer";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
 import { Feature } from "geojson";
+import {
+  assembleDefaultLayersForLayerControl,
+  CITY_CENTER,
+  getBackgroundMapUrl,
+  LAYER_OPTIONS,
+  MAP_OPTIONS,
+  MAX_ZOOM,
+  MIN_ZOOM,
+} from "@/utils/MapUtil";
 
 type Ref = Vue & { $el: HTMLElement };
 
@@ -116,12 +126,6 @@ type Ref = Vue & { $el: HTMLElement };
   },
 })
 export default class CityMap extends Vue {
-  private readonly MAX_ZOOM = 20;
-  private readonly MIN_ZOOM = 10;
-  private readonly CITY_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
-  private readonly MAP_OPTIONS: MapOptions = { attributionControl: false };
-  private readonly LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: this.MIN_ZOOM, maxZoom: this.MAX_ZOOM };
-
   @Prop({ default: "100%" })
   private readonly height!: number | string;
 
@@ -164,25 +168,17 @@ export default class CityMap extends Vue {
   @Prop({ default: undefined })
   private readonly geoJsonOptions?: GeoJSONOptions;
 
+  @Prop({ type: Boolean, default: false })
+  private readonly automaticZoomToPolygons!: boolean;
+
+  @Prop({ default: () => undefined })
+  private readonly layersForLayerControl?: Map<string, Layer>;
+
+  private addedLayersForLayerControl?: Map<string, Layer>;
+
   private layerGroup: LayerGroup = new LayerGroup();
   private map!: L.Map;
   private expanded = false;
-
-  /**
-   * Mappt Overlay-Namen zur kommaseparierten Liste ihrer Layers.
-   */
-  private overlaysArcgis = new Map([
-    ["Gemarkungen", "Gemarkungen"],
-    ["Baublöcke", "Baublöcke"],
-    ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
-    ["Stadtbezirke", "Stadtbezirke"],
-    ["Bezirksteile", "Bezirksteile"],
-    ["Stadtviertel", "Stadtviertel"],
-    ["Grundschulsprengel", "Grundschulsprengel"],
-    ["Umgriffe Bebauungspläne", "BB-Umgriff"],
-  ]);
-
-  private overlaysGrundkarte = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
   created(): void {
     /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
@@ -207,55 +203,79 @@ export default class CityMap extends Vue {
   @Watch("geoJson", { deep: true })
   private onGeoJsonChanged(): void {
     this.addGeoJsonToMap();
-    if (!_.isEmpty(this.geoJson) && !this.firstGeoJsonFeatureAdded) {
+    if (!_.isEmpty(this.geoJson) && !this.firstGeoJsonFeatureAdded && this.automaticZoomToPolygons) {
       this.firstGeoJsonFeatureAdded = true;
       this.flyToCenterOfPolygonsInMap();
     }
+  }
+
+  /**
+   * Die Methode aktualisiert die Liste der Overlays des LayerControl-Elements um die in der
+   * Komponentenproperty "layersForLayerControl" hinterlegten Layer.
+   */
+  @Watch("layersForLayerControl", { deep: true })
+  private updateLayerControlWithCustomLayers(): void {
+    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
+
+    // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
+    if (!_.isNil(this.addedLayersForLayerControl)) {
+      this.addedLayersForLayerControl.forEach((layer) => {
+        // Entfernen aus LayerControl-Element
+        layerControl.removeLayer(layer);
+        // Entfernen aus Karte falls Layer in LayerControl mittels Checkbox aktiviert
+        this.map.removeLayer(layer);
+      });
+    }
+
+    // Ersetzen der obig entfernten Layer durch die neuen Layer.
+    this.addedLayersForLayerControl = _.cloneDeep(this.layersForLayerControl);
+
+    // Hinzufügen der neuen Layer
+    if (!_.isNil(this.addedLayersForLayerControl)) {
+      this.addedLayersForLayerControl.forEach((layer, name) => layerControl.addOverlay(layer, name));
+    }
+  }
+
+  get mapOptions(): MapOptions {
+    return MAP_OPTIONS;
+  }
+
+  get cityCenter(): LatLngLiteral {
+    return CITY_CENTER;
+  }
+
+  get layerOptions(): WMSOptions {
+    return LAYER_OPTIONS;
+  }
+
+  get maxZoom(): number {
+    return MAX_ZOOM;
+  }
+
+  get minZoom(): number {
+    return MIN_ZOOM;
   }
 
   get isGeoJsonNotEmpty(): boolean {
     return !_.isEmpty(this.geoJson);
   }
 
+  get backgroundMapUrl(): string {
+    return getBackgroundMapUrl();
+  }
+
   private onClickInMap(event: LeafletMouseEvent): void {
     this.clickInMap(event);
   }
 
-  private getBackgroundMapUrl(): string {
-    return import.meta.env.VITE_BACKGROUND_MAP_URL as string;
-  }
-
   /**
-   * Fügt die Overlay-Layer hinzu. Es können beliebig viele von ihnen zur selben Zeit sichtbar sein, da sie nur spezifische Merkmale darstellen sollen.
-   * Damit ein Overlay-Layer nicht die darunerliegenden Layer verdeckt, ist es wichtig, `transparent: true` zu setzen sowie ein Bildformat anzufordern, welches Transparenz unterstützt.
-   *
-   * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abschnittene" Segment zu vermeiden.
-   * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
+   * Fügt die Layer sowie die in der Property "layersForLayerControl" bereits existierenden Layer dem Overlay der LayerControl hinzu.
+   * Es können beliebig viele Layer zur selben Zeit sichtbar sein, da diese spezifische Merkmale darstellen sollen.
    */
   private onLayerControlReady(): void {
     const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
-
-    for (const overlay of this.overlaysGrundkarte) {
-      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("Grundkarten"), {
-        layers: overlay[1],
-        transparent: true,
-        ...this.LAYER_OPTIONS,
-      });
-      layerControl.addOverlay(layer, overlay[0]);
-    }
-
-    for (const overlay of this.overlaysArcgis) {
-      const layer = (L as any).nonTiledLayer.wms(this.getArcgisUrl("basis"), {
-        layers: overlay[1],
-        transparent: true,
-        ...this.LAYER_OPTIONS,
-      });
-      layerControl.addOverlay(layer, overlay[0]);
-    }
-  }
-
-  private getArcgisUrl(service: string): string {
-    return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
+    assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControl.addOverlay(layer, name));
+    this.updateLayerControlWithCustomLayers();
   }
 
   /**

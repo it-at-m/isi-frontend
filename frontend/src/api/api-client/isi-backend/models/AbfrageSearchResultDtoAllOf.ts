@@ -25,12 +25,6 @@ import {
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
-import type { Wgs84Dto } from './Wgs84Dto';
-import {
-    Wgs84DtoFromJSON,
-    Wgs84DtoFromJSONTyped,
-    Wgs84DtoToJSON,
-} from './Wgs84Dto';
 
 /**
  * 
@@ -92,12 +86,6 @@ export interface AbfrageSearchResultDtoAllOf {
      * @memberof AbfrageSearchResultDtoAllOf
      */
     bauvorhaben?: string;
-    /**
-     * 
-     * @type {Wgs84Dto}
-     * @memberof AbfrageSearchResultDtoAllOf
-     */
-    coordinate?: Wgs84Dto;
 }
 
 
@@ -168,7 +156,6 @@ export function AbfrageSearchResultDtoAllOfFromJSONTyped(json: any, ignoreDiscri
         'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
-        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
     };
 }
 
@@ -190,7 +177,6 @@ export function AbfrageSearchResultDtoAllOfToJSON(value?: AbfrageSearchResultDto
         'standVerfahren': value.standVerfahren,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'bauvorhaben': value.bauvorhaben,
-        'coordinate': Wgs84DtoToJSON(value.coordinate),
     };
 }
 
