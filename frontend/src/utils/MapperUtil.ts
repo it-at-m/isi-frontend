@@ -325,6 +325,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
+      dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto;
   });
 }
@@ -364,6 +365,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
+      dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });
 }
@@ -406,6 +408,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
+      dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });
 }
