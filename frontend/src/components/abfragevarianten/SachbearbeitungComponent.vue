@@ -129,7 +129,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private readonly isEditable!: boolean;
 
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
-  private schülerpotentialprognoseTitle = "Bauratendatei und Schülerpotentialprognose";
+  private schuelerpotentialprognoseTitle = "Bauratendatei und Schülerpotentialprognose";
 
   private nameRootFolder = "schuelerpotentialprognose";
 
