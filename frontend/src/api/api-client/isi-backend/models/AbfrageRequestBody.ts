@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Bearbeitungshistorie } from './Bearbeitungshistorie';
+import {
+    BearbeitungshistorieFromJSON,
+    BearbeitungshistorieFromJSONTyped,
+    BearbeitungshistorieToJSON,
+} from './Bearbeitungshistorie';
 import type { StatusAbfrage } from './StatusAbfrage';
 import {
     StatusAbfrageFromJSON,
@@ -88,6 +94,12 @@ export interface AbfrageRequestBody {
     linkEakte?: string;
     /**
      * 
+     * @type {Array<Bearbeitungshistorie>}
+     * @memberof AbfrageRequestBody
+     */
+    bearbeitungshistorie?: Array<Bearbeitungshistorie>;
+    /**
+     * 
      * @type {string}
      * @memberof AbfrageRequestBody
      */
@@ -136,6 +148,7 @@ export function AbfrageRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: 
         'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
         'sub': !exists(json, 'sub') ? undefined : json['sub'],
         'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
+        'bearbeitungshistorie': !exists(json, 'bearbeitungshistorie') ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
     };
 }
@@ -159,6 +172,7 @@ export function AbfrageRequestBodyToJSON(value?: AbfrageRequestBody | null): any
         'bauvorhaben': value.bauvorhaben,
         'sub': value.sub,
         'linkEakte': value.linkEakte,
+        'bearbeitungshistorie': value.bearbeitungshistorie === undefined ? undefined : ((value.bearbeitungshistorie as Array<any>).map(BearbeitungshistorieToJSON)),
         'artAbfrage': value.artAbfrage,
     };
 }
