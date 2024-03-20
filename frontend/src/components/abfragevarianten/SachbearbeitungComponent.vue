@@ -73,7 +73,7 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="schülerpotentialprognoseTitle">
+    <field-group-card :card-title="schuelerpotentialprognoseTitle">
       <dokumente
         id="dokumente_component"
         ref="dokumenteComponent"
