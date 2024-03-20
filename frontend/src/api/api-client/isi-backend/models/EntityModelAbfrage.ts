@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Bearbeitungshistorie } from './Bearbeitungshistorie';
+import {
+    BearbeitungshistorieFromJSON,
+    BearbeitungshistorieFromJSONTyped,
+    BearbeitungshistorieToJSON,
+} from './Bearbeitungshistorie';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -82,6 +88,12 @@ export interface EntityModelAbfrage {
     linkEakte?: string;
     /**
      * 
+     * @type {Array<Bearbeitungshistorie>}
+     * @memberof EntityModelAbfrage
+     */
+    bearbeitungshistorie?: Array<Bearbeitungshistorie>;
+    /**
+     * 
      * @type {string}
      * @memberof EntityModelAbfrage
      */
@@ -134,6 +146,7 @@ export function EntityModelAbfrageFromJSONTyped(json: any, ignoreDiscriminator: 
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'sub': !exists(json, 'sub') ? undefined : json['sub'],
         'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
+        'bearbeitungshistorie': !exists(json, 'bearbeitungshistorie') ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
         'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -156,6 +169,7 @@ export function EntityModelAbfrageToJSON(value?: EntityModelAbfrage | null): any
         'anmerkung': value.anmerkung,
         'sub': value.sub,
         'linkEakte': value.linkEakte,
+        'bearbeitungshistorie': value.bearbeitungshistorie === undefined ? undefined : ((value.bearbeitungshistorie as Array<any>).map(BearbeitungshistorieToJSON)),
         'artAbfrage': value.artAbfrage,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };

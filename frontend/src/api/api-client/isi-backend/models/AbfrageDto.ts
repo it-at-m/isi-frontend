@@ -25,6 +25,12 @@ import {
     BauleitplanverfahrenDtoFromJSONTyped,
     BauleitplanverfahrenDtoToJSON,
 } from './BauleitplanverfahrenDto';
+import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
+import {
+    BearbeitungshistorieDtoFromJSON,
+    BearbeitungshistorieDtoFromJSONTyped,
+    BearbeitungshistorieDtoToJSON,
+} from './BearbeitungshistorieDto';
 import type { StatusAbfrage } from './StatusAbfrage';
 import {
     StatusAbfrageFromJSON,
@@ -122,6 +128,12 @@ export interface AbfrageDto {
      * @memberof AbfrageDto
      */
     linkEakte?: string;
+    /**
+     * 
+     * @type {Array<BearbeitungshistorieDto>}
+     * @memberof AbfrageDto
+     */
+    bearbeitungshistorie?: Array<BearbeitungshistorieDto>;
 }
 
 
@@ -179,6 +191,7 @@ export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'sub': !exists(json, 'sub') ? undefined : json['sub'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
+        'bearbeitungshistorie': !exists(json, 'bearbeitungshistorie') ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieDtoFromJSON)),
     };
 }
 
@@ -203,6 +216,7 @@ export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
         'sub': value.sub,
         'displayName': value.displayName,
         'linkEakte': value.linkEakte,
+        'bearbeitungshistorie': value.bearbeitungshistorie === undefined ? undefined : ((value.bearbeitungshistorie as Array<any>).map(BearbeitungshistorieDtoToJSON)),
     };
 }
 

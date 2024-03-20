@@ -62,6 +62,8 @@ export * from './BauvorhabenSearchResultDto';
 export * from './BauvorhabenSearchResultDtoAllOf';
 export * from './BearbeitendePerson';
 export * from './BearbeitendePersonDto';
+export * from './Bearbeitungshistorie';
+export * from './BearbeitungshistorieDto';
 export * from './BedarfsmeldungDto';
 export * from './Bezirksteil';
 export * from './BezirksteilDto';

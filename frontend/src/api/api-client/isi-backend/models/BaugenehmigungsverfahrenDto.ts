@@ -31,6 +31,12 @@ import {
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
 } from './AdresseDto';
+import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
+import {
+    BearbeitungshistorieDtoFromJSON,
+    BearbeitungshistorieDtoFromJSONTyped,
+    BearbeitungshistorieDtoToJSON,
+} from './BearbeitungshistorieDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,

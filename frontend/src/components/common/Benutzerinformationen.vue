@@ -4,6 +4,7 @@
     id="benutzerinformation_menu"
     offset-y
     transition="slide-y-transition"
+    :close-on-content-click="false"
   >
     <template #activator="{ on }">
       <v-btn
