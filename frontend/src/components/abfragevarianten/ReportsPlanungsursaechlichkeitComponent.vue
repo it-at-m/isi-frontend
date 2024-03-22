@@ -63,6 +63,16 @@
         </a>
       </v-list-item-title>
     </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlErgebnissePlanungsursaechlicheBedarfe()"
+        >
+          Ergebnisse Bedarfe<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
   </v-list>
 </template>
 
@@ -120,6 +130,18 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     return url.toString();
   }
 
+  private getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
+    const abfrageId = this.getParameterValueAbfrageId();
+    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
+    const artAbfrage = this.getParameterValueArtAbfrage();
+    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
+    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
+    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    return url.toString();
+  }
+
   private getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe() {
     const url = new URL(this.getUrlReportSpitzenbedarfe());
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
@@ -147,6 +169,12 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     return this.getUrlBedarfe(artBedarf);
   }
 
+  private getUrlErgebnissePlanungsursaechlicheBedarfe(): string {
+    return this.getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(
+      new URL(this.getUrlReportErgebnissePlanungsursaechlicheBedarfe()),
+    );
+  }
+
   private getUrlReportWohneinheiten(): string {
     return import.meta.env.VITE_REPORT_WOHNEINHEITEN_URL as string;
   }
@@ -157,6 +185,10 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
 
   private getUrlReportSpitzenbedarfe(): string {
     return import.meta.env.VITE_REPORT_SPITZENBEDARF_URL as string;
+  }
+
+  private getUrlReportErgebnissePlanungsursaechlicheBedarfe(): string {
+    return import.meta.env.VITE_REPORT_ERGEBNISSE_PLANUNGSURSAECHLICHE_BEDARFSRECHNUNG_URL as string;
   }
 
   private getParameterAbfrageId(): string {
