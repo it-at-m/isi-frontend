@@ -242,7 +242,7 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
   }
 
   private getUrlReportErgebnisseSobonursaechlicheBedarfe(): string {
-    return import.meta.env.VITE_REPORT_ERGEBNISSE_PLANUNGSURSAECHLICHE_BEDARFSRECHNUNG_URL as string;
+    return import.meta.env.VITE_REPORT_ERGEBNISSE_SOBONURSAECHLICHE_BEDARFSRECHNUNG_URL as string;
   }
 
   private getParameterValueArtAbfrage(): string {
