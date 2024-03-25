@@ -69,7 +69,7 @@
           target="_blank"
           :href="getUrlErgebnissePlanungsursaechlicheBedarfe()"
         >
-          Ergebnisse Bedarfe<span class="mdi mdi-launch" />
+          Ergebnisse Bedarfsberechnung<span class="mdi mdi-launch" />
         </a>
       </v-list-item-title>
     </v-list-item>
