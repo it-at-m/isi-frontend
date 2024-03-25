@@ -11,6 +11,7 @@ import { Icon } from "leaflet";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
+import pinia from "./stores";
 
 Vue.config.productionTip = false;
 
@@ -22,6 +23,7 @@ Vue.use(VCalendar, {
 
 new Vue({
   router,
+  pinia,
   store: store,
   vuetify: Vuetify,
   render: (h): VNode => h(App),
