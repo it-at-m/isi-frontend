@@ -1,7 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
-import User, { UserState } from "@/store/modules/User";
 import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
 import CommonStore, { CommonState } from "@/store/modules/CommonStore";
 import LookupStore, { LookupState } from "@/store/modules/LookupStore";
@@ -13,7 +12,6 @@ describe("BaurateStoreTest.spec.ts", () => {
   Vue.use(Vuex);
   interface RootState {
     snackbarState: SnackbarState;
-    userState: UserState;
     stammdaten: StammdatenState;
     common: CommonState;
     lookup: LookupState;
@@ -23,7 +21,6 @@ describe("BaurateStoreTest.spec.ts", () => {
 
   const store = new Vuex.Store<RootState>({
     modules: {
-      user: User,
       snackbar: Snackbar,
       stammdaten: StammdatenStore,
       common: CommonStore,

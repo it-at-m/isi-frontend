@@ -5,7 +5,7 @@ interface State {
   commentDirty: boolean;
 }
 
-export const commonStore = defineStore("common", {
+export const useCommonStore = defineStore("common", {
   state: () =>
     ({
       formDirty: false,
@@ -23,16 +23,16 @@ export const commonStore = defineStore("common", {
 
   actions: {
     setFormDirty() {
-      this.formDirty = true;
+      this.updateFormDirty(true);
     },
     resetFormDirty(): void {
-      this.formDirty = false;
+      this.updateFormDirty(false);
     },
     setCommentDirty(): void {
-      this.commentDirty = true;
+      this.updateCommentDirty(true);
     },
     resetCommentDirty(): void {
-      this.commentDirty = false;
+      this.updateCommentDirty(false);
     },
     updateFormDirty(payload: boolean): void {
       this.formDirty = payload;

@@ -7,7 +7,7 @@ interface State {
   informationList: InformationResponseDto[];
 }
 
-export const informationStore = defineStore("information", {
+export const useInformationStore = defineStore("information", {
   state: () =>
     ({
       informationList: [],

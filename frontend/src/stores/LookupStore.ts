@@ -28,7 +28,7 @@ interface State {
   sobonOrientierungswertJahrWithoutStandortabfrage: LookupEntryDto[];
 }
 
-export const informationStore = defineStore("information", {
+export const useLookupStore = defineStore("lookup", {
   state: () =>
     ({
       uncertainBoolean: [],

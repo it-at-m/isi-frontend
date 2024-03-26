@@ -1,13 +1,5 @@
 import Vuex from "vuex";
 import Vue from "vue";
-import {
-  AbfrageListElementDto,
-  AbfrageListElementDtoStandVorhabenEnum,
-  InfrastruktureinrichtungListElementDto,
-  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
-} from "@/api/api-client";
-import { createBauvorhabenDto } from "@/utils/Factories";
-import User, { UserState } from "@/store/modules/User";
 import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
 import CommonStore, { CommonState } from "@/store/modules/CommonStore";
 import LookupStore, { LookupState } from "@/store/modules/LookupStore";
@@ -22,7 +14,6 @@ describe("UserinfoStoreTest.spec.ts", () => {
 
   interface RootState {
     snackbarState: SnackbarState;
-    userState: UserState;
     foerdermix: StammdatenState;
     common: CommonState;
     lookup: LookupState;
@@ -33,7 +24,6 @@ describe("UserinfoStoreTest.spec.ts", () => {
 
   const store = new Vuex.Store<RootState>({
     modules: {
-      user: User,
       snackbar: Snackbar,
       foerdermix: StammdatenStore,
       common: CommonStore,
