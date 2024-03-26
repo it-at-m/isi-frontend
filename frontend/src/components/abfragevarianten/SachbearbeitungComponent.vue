@@ -73,6 +73,12 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <field-group-card :card-title="bauratenDateiInputTitle">
+      <bauratendatei-inputs
+        v-model="abfragevarianteSachbearbeitung"
+        :is-editable="isEditableBySachbearbeitung()"
+      />
+    </field-group-card>
   </div>
 </template>
 
@@ -117,6 +123,8 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private readonly isEditable!: boolean;
 
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
+
+  private bauratenDateiInputTitle = "Bauratendatei und Schülerpotentialprognose";
 
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     if (
