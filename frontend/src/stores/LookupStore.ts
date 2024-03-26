@@ -54,18 +54,12 @@ export const useLookupStore = defineStore("lookup", {
     }) as State,
   getters: {},
   actions: {
-    inititalize(): void {
+    async inititalize(): Promise<void> {
       const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfigurationForBackend());
-      lookupApi.getLookupLists(RequestUtils.getGETConfig()).then((lookupLists) => {
-        !_.isNil(lookupLists.uncertainBoolean) && !_.isNil(lookupLists.uncertainBoolean?.list)
-          ? this.setUncertainBoolean(lookupLists.uncertainBoolean?.list)
-          : [];
-        !_.isNil(lookupLists.artDokument) && !_.isNil(lookupLists.artDokument?.list)
-          ? this.setArtDokument(lookupLists.artDokument?.list)
-          : [];
-        !_.isNil(lookupLists.artAbfrage) && !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setArtAbfrage(lookupLists.artAbfrage?.list)
-          : [];
+      await lookupApi.getLookupLists(RequestUtils.getGETConfig()).then((lookupLists) => {
+        this.setUncertainBoolean(lookupLists.uncertainBoolean?.list!);
+        this.setArtDokument(lookupLists.artDokument?.list!);
+        this.setArtAbfrage(lookupLists.artAbfrage?.list!);
         !_.isNil(lookupLists.sobonVerfahrensgrundsaetzeJahr) &&
         !_.isNil(lookupLists.sobonVerfahrensgrundsaetzeJahr?.list)
           ? this.setSobonVerfahrensgrundsaetzeJahr(lookupLists.sobonVerfahrensgrundsaetzeJahr?.list)
