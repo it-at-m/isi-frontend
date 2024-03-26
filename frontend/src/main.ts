@@ -1,6 +1,5 @@
 import Vue, { VNode } from "vue";
 import Vuetify from "./plugins/vuetify";
-import store from "./store";
 import App from "./App.vue";
 import router from "./router";
 import moment from "moment";
@@ -24,7 +23,6 @@ Vue.use(VCalendar, {
 new Vue({
   router,
   pinia,
-  store: store,
   vuetify: Vuetify,
   render: (h): VNode => h(App),
 }).$mount("#app");

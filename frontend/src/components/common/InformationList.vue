@@ -121,7 +121,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment";
-
+import { useInformationStore } from "@/stores/InformationStore";
 @Component
 export default class InformationList extends Vue {
   private static readonly NOT_APPLICABLE: string = "n/a";
@@ -130,22 +130,24 @@ export default class InformationList extends Vue {
 
   private informationList: Array<InformationResponseDto> = [];
 
+  private informationStore = useInformationStore();
+
   mounted(): void {
-    this.$store.dispatch("information/overwriteInformationList", []);
+    this.informationStore.overwriteInformationList([]);
   }
 
   get informationFromInformationList(): Array<InformationResponseDto> {
     return this.informationList;
   }
 
-  @Watch("$store.state.information.informationList", { immediate: true, deep: true })
+  @Watch("this.informationStore.informationList", { immediate: true, deep: true })
   public displayInformationsFromInformationList(): void {
-    this.informationList = _.cloneDeep(this.$store.getters["information/informationList"]);
+    this.informationList = _.cloneDeep(this.informationStore.informationList);
   }
 
   public deleteInformationListEntryByIndex(index: number): void {
     this.informationFromInformationList.splice(index, 1);
-    this.$store.dispatch("information/overwriteInformationList", this.informationFromInformationList);
+    this.informationStore.overwriteInformationList(this.informationFromInformationList);
   }
 
   public textTraceId(traceId: string): string {

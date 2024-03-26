@@ -15,17 +15,7 @@ export const useSnackbarStore = defineStore("snackbar", {
       level: Levels.INFO,
       show: false,
     }) as State,
-  getters: {
-    getMessage: (state: State): string | undefined => {
-      return state.message;
-    },
-    getLevel: (state: State): Levels => {
-      return state.level;
-    },
-    getShow: (state: State): boolean => {
-      return state.show;
-    },
-  },
+  getters: {},
   actions: {
     setMessage(payload: string): void {
       this.message = payload;

@@ -36,28 +36,7 @@ export const useSearchStore = defineStore("search", {
       selectedBauvorhaben: undefined,
       selectedInfrastruktureinrichtung: undefined,
     }) as State,
-  getters: {
-    getSearchResults: (state: State): SearchResultsDto => {
-      return state.searchResults;
-    },
-    getRequestSearchQueryAndSorting: (state: State): SearchQueryAndSortingModel => {
-      return state.requestSearchQueryAndSorting;
-    },
-    getSelectedAbfrage: (
-      state: State,
-    ): BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined => {
-      return state.selectedAbfrage;
-    },
-    getDefaultSearchQueryAndSortingFilter: (state: State): SearchQueryAndSortingModel => {
-      return state.defaultSearchQueryAndSortingFilter;
-    },
-    getSelectedBauvorhaben: (state: State): BauvorhabenDto | undefined => {
-      return state.selectedBauvorhaben;
-    },
-    getSelectedInfrastruktureinrichtung: (state: State): InfrastruktureinrichtungDto | undefined => {
-      return state.selectedInfrastruktureinrichtung;
-    },
-  },
+  getters: {},
   actions: {
     setSearchResults(payload: SearchResultsDto): void {
       this.searchResults = payload;
@@ -80,7 +59,7 @@ export const useSearchStore = defineStore("search", {
       this.requestSearchQueryAndSorting = payload;
     },
     setSelectedAbfrage(
-      payload: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
+      payload: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined,
     ): void {
       this.selectedAbfrage = payload;
     },

@@ -5,9 +5,6 @@ import {
   FoerdermixStammApi,
   FoerdermixStammDto,
 } from "@/api/api-client/isi-backend";
-import { StammdatenState } from "@/store/modules/StammdatenStore";
-import { ActionContext } from "vuex";
-import { RootState } from "@/store";
 import RequestUtils from "@/utils/RequestUtils";
 
 interface State {
@@ -21,14 +18,7 @@ export const useStammdatenStore = defineStore("stammdaten", {
       foerdermixStammdaten: [],
       fileInformation: {},
     }) as State,
-  getters: {
-    getFoerdermixStammdaten: (state: StammdatenState): Array<FoerdermixStammDto> => {
-      return state.foerdermixStammdaten;
-    },
-    getFileInformation: (state: State): FileInformationDto => {
-      return state.fileInformation;
-    },
-  },
+  getters: {},
   actions: {
     setFoerdermixStammdaten(payload: FoerdermixStammDto[]) {
       this.foerdermixStammdaten = payload;

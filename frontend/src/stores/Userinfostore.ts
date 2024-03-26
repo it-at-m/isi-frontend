@@ -12,9 +12,6 @@ export const useUserinfoStore = defineStore("userinfo", {
       userinfo: undefined,
     }) as State,
   getters: {
-    getUserinfo: (state: State): Userinfo | undefined => {
-      return state.userinfo;
-    },
     hasRoleAdmin: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("admin")

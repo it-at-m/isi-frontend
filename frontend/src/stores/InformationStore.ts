@@ -1,6 +1,5 @@
 import { InformationResponseDto } from "@/api/api-client/isi-backend";
 import { defineStore } from "pinia";
-import { InformationState } from "@/store/modules/InformationStore";
 import _ from "lodash";
 
 interface State {
@@ -12,11 +11,7 @@ export const useInformationStore = defineStore("information", {
     ({
       informationList: [],
     }) as State,
-  getters: {
-    getInformationList: (state: InformationState): Array<InformationResponseDto> => {
-      return state.informationList;
-    },
-  },
+  getters: {},
   actions: {
     addInformation(payload: InformationResponseDto): void {
       this.informationList.unshift(payload);

@@ -83,7 +83,7 @@ import {
 } from "@/utils/DokumenteUtil";
 import _ from "lodash";
 import MimeTypeApiRequestMixin from "@/mixins/requests/MimeTypeApiRequestMixin";
-
+import { useStammdatenStore } from "@/stores/StammdatenStore";
 @Component({
   components: {
     DokumenteListe,
@@ -106,6 +106,8 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, MimeType
 
   private loading = false;
 
+  private stammdatenStore = useStammdatenStore();
+
   get isLoading(): boolean {
     return this.loading;
   }
@@ -116,7 +118,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, MimeType
   }
 
   mounted(): void {
-    const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
+    const fileInformationDto: FileInformationDto = _.clone(this.stammdatenStore.fileInformation);
     this.allowedMimeTypes = getAllowedMimeTypes(fileInformationDto);
     this.maxNumberOfFiles = this.getMaxNumberOfFiles();
   }
@@ -171,9 +173,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, MimeType
   }
 
   private areFilesValid(fileList: FileList): boolean {
-    const fileInformationDto: FileInformationDto = this.$store.getters[
-      "fileInfoStamm/fileInformation"
-    ] as FileInformationDto;
+    const fileInformationDto: FileInformationDto = this.stammdatenStore.fileInformation as FileInformationDto;
     let maxNumberOfFilesMessagePart = "";
     let fileAlreadyExistsMessagePart = "";
     let maxFileSizeExceededMessagePart = "";
@@ -326,7 +326,7 @@ export default class Dokumente extends Mixins(DokumenteApiRequestMixin, MimeType
   }
 
   private getMaxNumberOfFiles(): number {
-    const fileInformationDto: FileInformationDto = _.clone(this.$store.getters["fileInfoStamm/fileInformation"]);
+    const fileInformationDto: FileInformationDto = _.clone(this.stammdatenStore.fileInformation);
     return _.isNil(fileInformationDto.maxNumberOfFiles) ? 0 : fileInformationDto.maxNumberOfFiles;
   }
 

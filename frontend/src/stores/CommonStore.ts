@@ -12,23 +12,16 @@ export const useCommonStore = defineStore("common", {
       commentDirty: false,
     }) as State,
 
-  getters: {
-    isFormDirty: (state: State): boolean => {
-      return state.formDirty;
-    },
-    isCommentDirty: (state: State): boolean => {
-      return state.commentDirty;
-    },
-  },
+  getters: {},
 
   actions: {
-    setFormDirty() {
+    formChanged() {
       this.updateFormDirty(true);
     },
     resetFormDirty(): void {
       this.updateFormDirty(false);
     },
-    setCommentDirty(): void {
+    commentChanged(): void {
       this.updateCommentDirty(true);
     },
     resetCommentDirty(): void {
