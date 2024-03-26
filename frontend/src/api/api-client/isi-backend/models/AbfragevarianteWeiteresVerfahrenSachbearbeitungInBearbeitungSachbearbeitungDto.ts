@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BauratendateiInputDto } from './BauratendateiInputDto';
+import {
+    BauratendateiInputDtoFromJSON,
+    BauratendateiInputDtoFromJSONTyped,
+    BauratendateiInputDtoToJSON,
+} from './BauratendateiInputDto';
 import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
     SobonBerechnungDtoFromJSON,
@@ -68,6 +74,30 @@ export interface AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSac
      * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
      */
     anmerkung?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    hasBauratendateiInput: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    anmerkungBauratendateiInput?: string;
+    /**
+     * 
+     * @type {BauratendateiInputDto}
+     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    bauratendateiInputBasis?: BauratendateiInputDto;
+    /**
+     * 
+     * @type {Array<BauratendateiInputDto>}
+     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto
+     */
+    bauratendateiInput?: Array<BauratendateiInputDto>;
 }
 
 
@@ -102,6 +132,7 @@ export function instanceOfAbfragevarianteWeiteresVerfahrenSachbearbeitungInBearb
     let isInstance = true;
     isInstance = isInstance && "sobonOrientierungswertJahr" in value;
     isInstance = isInstance && "stammdatenGueltigAb" in value;
+    isInstance = isInstance && "hasBauratendateiInput" in value;
 
     return isInstance;
 }
@@ -123,6 +154,10 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'hasBauratendateiInput': json['hasBauratendateiInput'],
+        'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
+        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
+        'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
     };
 }
 
@@ -142,6 +177,10 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSach
         'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'hasBauratendateiInput': value.hasBauratendateiInput,
+        'anmerkungBauratendateiInput': value.anmerkungBauratendateiInput,
+        'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value.bauratendateiInputBasis),
+        'bauratendateiInput': value.bauratendateiInput === undefined ? undefined : ((value.bauratendateiInput as Array<any>).map(BauratendateiInputDtoToJSON)),
     };
 }
 
