@@ -7,8 +7,7 @@
     <v-card-title>Vuetify Inline Editor Table </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="desserts"
-      :search="search"
+      :items="tableData"
       class="elevation-1"
       fixed-header
       height="350px"
@@ -106,19 +105,13 @@ import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backe
 @Component({ components: { FieldGroupCard, NumField } })
 export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: Array })
-  private input!: Array<WohneinheitenProFoerderartProJahrDto>;
+  private bauratendateiInput!: Array<WohneinheitenProFoerderartProJahrDto>;
+
+  @Prop({ type: Boolean, default: false })
+  private readonly isEditable!: boolean;
 
   get headers(): Array<DataTableHeader> {
-    const headersForFoerderarten = _.uniq(
-      _.toArray(this.input).map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart),
-    );
-    const headers = headersForFoerderarten.map((headerFoerderart) => {
-      return {
-        text: headerFoerderart,
-        value: headerFoerderart,
-        align: "start",
-      } as DataTableHeader;
-    });
+    const headers = this.headersForFoerderarten;
     const headerForJahr = {
       text: "Jahr",
       value: "jahr",
@@ -128,13 +121,47 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     return headers;
   }
 
-  @Prop({ type: Array, default: [] })
-  private readonly headers!: DataTableHeader[];
+  get headersForFoerderarten(): Array<DataTableHeader> {
+    return _.uniq(
+      _.toArray(this.bauratendateiInput).map(
+        (wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart,
+      ),
+    ).map((headerFoerderart) => {
+      return {
+        text: headerFoerderart,
+        value: headerFoerderart,
+        align: "start",
+      } as DataTableHeader;
+    });
+  }
 
-  @Prop({ type: String, default: "spreadsheet" })
-  private readonly id!: string;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+  get tableData(): Array<any> {
+    const foerderartenWithWohneinheitenForJahr: Map<
+      string | undefined,
+      Map<string | undefined, number | undefined>
+    > = new Map();
+    for (const input of _.toArray(this.bauratendateiInput)) {
+      if (foerderartenWithWohneinheitenForJahr.has(input.jahr)) {
+        const foerderartWithWohneinheit = foerderartenWithWohneinheitenForJahr.get(input.jahr);
+        if (!_.isNil(foerderartWithWohneinheit)) {
+          foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
+        }
+      } else {
+        const foerderartWithWohneinheit: Map<string | undefined, number | undefined> = new Map();
+        foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
+        foerderartenWithWohneinheitenForJahr.set(input.jahr, foerderartWithWohneinheit);
+      }
+    }
+    const tableDataObjects: Array<any> = [];
+    foerderartenWithWohneinheitenForJahr.forEach((foerderartenWithWohneinheiten, jahr) => {
+      const tableEntry = new Map<string | undefined, string | number | undefined>();
+      tableEntry.set("jahr", jahr);
+      foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
+        tableEntry.set(forderart, wohneinheiten);
+      });
+      tableDataObjects.push(Object.fromEntries(tableEntry.entries()));
+    });
+    return tableDataObjects;
+  }
 }
 </script>
