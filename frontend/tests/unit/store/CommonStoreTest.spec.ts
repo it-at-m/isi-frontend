@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
-import { useCommonStore } from "../../../src/stores/CommonStore"; // Pfad zum Store anpassen
+import { useCommonStore } from "../../../src/stores/CommonStore";
 
 describe("Common Store", () => {
   beforeEach(() => {

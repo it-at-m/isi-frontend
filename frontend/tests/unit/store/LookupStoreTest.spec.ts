@@ -1,13 +1,32 @@
 import { describe, expect, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
-import { useLookupStore } from "../../../src/stores/LookupStore"; // Pfad zum Store anpassen
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import { useLookupStore } from "../../../src/stores/LookupStore";
+import { LookupEntryDto, LookupListDto } from "@/api/api-client/isi-backend";
 
 function mockedLookupInititalize(): Promise<Response> {
+  const examplePayload = { list: [{ key: "exampleKey", value: "exampleValue" }] } as LookupListDto;
   const lookupListResponse = {
-    uncertainBoolean: { list: [{ key: "low", value: "niedrig" }] },
-    artAbfrage: { list: [{ key: "mid", value: "mittig" }] },
-    artDokument: { list: [{ key: "high", value: "hoch" }] },
+    uncertainBoolean: examplePayload,
+    artAbfrage: examplePayload,
+    artDokument: examplePayload,
+    artBaulicheNutzung: examplePayload,
+    artBaulicheNutzungBauvorhaben: examplePayload,
+    artGsNachmittagBetreuung: examplePayload,
+    einrichtungstraeger: examplePayload,
+    einrichtungstraegerSchulen: examplePayload,
+    infrastruktureinrichtungTyp: examplePayload,
+    sobonOrientierungswertJahr: examplePayload,
+    sobonOrientierungswertJahrWithoutStandortabfrage: examplePayload,
+    sobonVerfahrensgrundsaetzeJahr: examplePayload,
+    standVerfahren: examplePayload,
+    standVerfahrenBaugenehmigungsverfahren: examplePayload,
+    standVerfahrenBauleitplanverfahren: examplePayload,
+    standVerfahrenWeiteresVerfahren: examplePayload,
+    statusAbfrage: examplePayload,
+    statusInfrastruktureinrichtung: examplePayload,
+    wesentlicheRechtsgrundlage: examplePayload,
+    wesentlicheRechtsgrundlageBaugenehmigungsverfahren: examplePayload,
+    wesentlicheRechtsgrundlageBauleitplanverfahren: examplePayload,
   };
 
   const responseInit: ResponseInit = {
@@ -24,7 +43,46 @@ function mockedLookupInititalize(): Promise<Response> {
   return Promise.resolve(response);
 }
 
-describe("Lookup Store", () => {
+function mockedLookupInititalizeNullValue(): Promise<Response> {
+  const lookupListResponse = {
+    uncertainBoolean: null,
+    artAbfrage: null,
+    artDokument: null,
+    artBaulicheNutzung: null,
+    artBaulicheNutzungBauvorhaben: null,
+    artGsNachmittagBetreuung: null,
+    einrichtungstraeger: null,
+    einrichtungstraegerSchulen: null,
+    infrastruktureinrichtungTyp: null,
+    sobonOrientierungswertJahr: null,
+    sobonOrientierungswertJahrWithoutStandortabfrage: null,
+    sobonVerfahrensgrundsaetzeJahr: null,
+    standVerfahren: null,
+    standVerfahrenBaugenehmigungsverfahren: null,
+    standVerfahrenBauleitplanverfahren: null,
+    standVerfahrenWeiteresVerfahren: null,
+    statusAbfrage: null,
+    statusInfrastruktureinrichtung: null,
+    wesentlicheRechtsgrundlage: null,
+    wesentlicheRechtsgrundlageBaugenehmigungsverfahren: null,
+    wesentlicheRechtsgrundlageBauleitplanverfahren: null,
+  };
+
+  const responseInit: ResponseInit = {
+    status: 200, // OK
+    statusText: "OK",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const json = JSON.stringify(lookupListResponse);
+  const response = new Response(json, responseInit);
+
+  return Promise.resolve(response);
+}
+
+describe("Lookup Store Initialize", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
@@ -35,13 +93,138 @@ describe("Lookup Store", () => {
 
     await store.inititalize();
 
-    console.log(store.uncertainBoolean);
-    expect(store.uncertainBoolean[0].key).toEqual("low");
-    expect(store.uncertainBoolean[0].value).toEqual("niedrig");
-    expect(store.artAbfrage[0].key).toEqual("mid");
-    expect(store.artAbfrage[0].value).toEqual("mittig");
-    expect(store.artDokument[0].key).toEqual("high");
-    expect(store.artDokument[0].value).toEqual("hoch");
+    expect(store.uncertainBoolean[0].key).toEqual("exampleKey");
+    expect(store.uncertainBoolean[0].value).toEqual("exampleValue");
+
+    expect(store.artAbfrage[0].key).toEqual("exampleKey");
+    expect(store.artAbfrage[0].value).toEqual("exampleValue");
+
+    expect(store.artDokument[0].key).toEqual("exampleKey");
+    expect(store.artDokument[0].value).toEqual("exampleValue");
+
+    expect(store.artBaulicheNutzung[0].key).toEqual("exampleKey");
+    expect(store.artBaulicheNutzung[0].value).toEqual("exampleValue");
+
+    expect(store.artBaulicheNutzungBauvorhaben[0].key).toEqual("exampleKey");
+    expect(store.artBaulicheNutzungBauvorhaben[0].value).toEqual("exampleValue");
+
+    expect(store.artGsNachmittagBetreuung[0].key).toEqual("exampleKey");
+    expect(store.artGsNachmittagBetreuung[0].value).toEqual("exampleValue");
+
+    expect(store.einrichtungstraeger[0].key).toEqual("exampleKey");
+    expect(store.einrichtungstraeger[0].value).toEqual("exampleValue");
+
+    expect(store.einrichtungstraegerSchulen[0].key).toEqual("exampleKey");
+    expect(store.einrichtungstraegerSchulen[0].value).toEqual("exampleValue");
+
+    expect(store.infrastruktureinrichtungTyp[0].key).toEqual("exampleKey");
+    expect(store.infrastruktureinrichtungTyp[0].value).toEqual("exampleValue");
+
+    expect(store.sobonOrientierungswertJahr[0].key).toEqual("exampleKey");
+    expect(store.sobonOrientierungswertJahr[0].value).toEqual("exampleValue");
+
+    expect(store.sobonOrientierungswertJahrWithoutStandortabfrage[0].key).toEqual("exampleKey");
+    expect(store.sobonOrientierungswertJahrWithoutStandortabfrage[0].value).toEqual("exampleValue");
+
+    expect(store.sobonVerfahrensgrundsaetzeJahr[0].key).toEqual("exampleKey");
+    expect(store.sobonVerfahrensgrundsaetzeJahr[0].value).toEqual("exampleValue");
+
+    expect(store.standVerfahren[0].key).toEqual("exampleKey");
+    expect(store.standVerfahren[0].value).toEqual("exampleValue");
+
+    expect(store.standVerfahrenBaugenehmigungsverfahren[0].key).toEqual("exampleKey");
+    expect(store.standVerfahrenBaugenehmigungsverfahren[0].value).toEqual("exampleValue");
+
+    expect(store.standVerfahrenBauleitplanverfahren[0].key).toEqual("exampleKey");
+    expect(store.standVerfahrenBauleitplanverfahren[0].value).toEqual("exampleValue");
+
+    expect(store.standVerfahrenWeiteresVerfahren[0].key).toEqual("exampleKey");
+    expect(store.standVerfahrenWeiteresVerfahren[0].value).toEqual("exampleValue");
+
+    expect(store.statusAbfrage[0].key).toEqual("exampleKey");
+    expect(store.statusAbfrage[0].value).toEqual("exampleValue");
+
+    expect(store.statusInfrastruktureinrichtung[0].key).toEqual("exampleKey");
+    expect(store.statusInfrastruktureinrichtung[0].value).toEqual("exampleValue");
+
+    expect(store.wesentlicheRechtsgrundlage[0].key).toEqual("exampleKey");
+    expect(store.wesentlicheRechtsgrundlage[0].value).toEqual("exampleValue");
+
+    expect(store.wesentlicheRechtsgrundlageBaugenehmigungsverfahren[0].key).toEqual("exampleKey");
+    expect(store.wesentlicheRechtsgrundlageBaugenehmigungsverfahren[0].value).toEqual("exampleValue");
+
+    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren[0].key).toEqual("exampleKey");
+    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren[0].value).toEqual("exampleValue");
+  });
+
+  it("initialize populates lookup lists with null Value", async () => {
+    const store = useLookupStore();
+    global.fetch = vi.fn(mockedLookupInititalizeNullValue);
+
+    await store.inititalize();
+
+    expect(store.uncertainBoolean).toEqual([]);
+    expect(store.uncertainBoolean).toEqual([]);
+
+    expect(store.artAbfrage).toEqual([]);
+    expect(store.artAbfrage).toEqual([]);
+
+    expect(store.artDokument).toEqual([]);
+    expect(store.artDokument).toEqual([]);
+
+    expect(store.artBaulicheNutzung).toEqual([]);
+    expect(store.artBaulicheNutzung).toEqual([]);
+
+    expect(store.artBaulicheNutzungBauvorhaben).toEqual([]);
+    expect(store.artBaulicheNutzungBauvorhaben).toEqual([]);
+
+    expect(store.artGsNachmittagBetreuung).toEqual([]);
+    expect(store.artGsNachmittagBetreuung).toEqual([]);
+
+    expect(store.einrichtungstraeger).toEqual([]);
+    expect(store.einrichtungstraeger).toEqual([]);
+
+    expect(store.einrichtungstraegerSchulen).toEqual([]);
+    expect(store.einrichtungstraegerSchulen).toEqual([]);
+
+    expect(store.infrastruktureinrichtungTyp).toEqual([]);
+    expect(store.infrastruktureinrichtungTyp).toEqual([]);
+
+    expect(store.sobonOrientierungswertJahr).toEqual([]);
+    expect(store.sobonOrientierungswertJahr).toEqual([]);
+
+    expect(store.sobonOrientierungswertJahrWithoutStandortabfrage).toEqual([]);
+    expect(store.sobonOrientierungswertJahrWithoutStandortabfrage).toEqual([]);
+
+    expect(store.sobonVerfahrensgrundsaetzeJahr).toEqual([]);
+    expect(store.sobonVerfahrensgrundsaetzeJahr).toEqual([]);
+
+    expect(store.standVerfahren).toEqual([]);
+    expect(store.standVerfahren).toEqual([]);
+
+    expect(store.standVerfahrenBaugenehmigungsverfahren).toEqual([]);
+    expect(store.standVerfahrenBaugenehmigungsverfahren).toEqual([]);
+
+    expect(store.standVerfahrenBauleitplanverfahren).toEqual([]);
+    expect(store.standVerfahrenBauleitplanverfahren).toEqual([]);
+
+    expect(store.standVerfahrenWeiteresVerfahren).toEqual([]);
+    expect(store.standVerfahrenWeiteresVerfahren).toEqual([]);
+
+    expect(store.statusAbfrage).toEqual([]);
+    expect(store.statusAbfrage).toEqual([]);
+
+    expect(store.statusInfrastruktureinrichtung).toEqual([]);
+    expect(store.statusInfrastruktureinrichtung).toEqual([]);
+
+    expect(store.wesentlicheRechtsgrundlage).toEqual([]);
+    expect(store.wesentlicheRechtsgrundlage).toEqual([]);
+
+    expect(store.wesentlicheRechtsgrundlageBaugenehmigungsverfahren).toEqual([]);
+    expect(store.wesentlicheRechtsgrundlageBaugenehmigungsverfahren).toEqual([]);
+
+    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren).toEqual([]);
+    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren).toEqual([]);
   });
 });
 

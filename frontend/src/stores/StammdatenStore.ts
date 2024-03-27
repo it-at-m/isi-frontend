@@ -23,15 +23,15 @@ export const useStammdatenStore = defineStore("stammdaten", {
     setFoerdermixStammdaten(payload: FoerdermixStammDto[]) {
       this.foerdermixStammdaten = payload;
     },
-    initializeFoerdermixStamm(): void {
+    async initializeFoerdermixStamm(): Promise<void> {
       const foerdermixStammApi = new FoerdermixStammApi(RequestUtils.getBasicFetchConfigurationForBackend());
-      foerdermixStammApi.getFoerdermixStaemme(RequestUtils.getGETConfig()).then((foerdermixStammdatenDto) => {
+      await foerdermixStammApi.getFoerdermixStaemme(RequestUtils.getGETConfig()).then((foerdermixStammdatenDto) => {
         this.setFoerdermixStammdaten(foerdermixStammdatenDto);
       });
     },
-    initializeFileStamm(): void {
+    async initializeFileStamm(): Promise<void> {
       const fileInfoStammApi = new FileInfoStammApi(RequestUtils.getBasicFetchConfigurationForBackend());
-      fileInfoStammApi.getFileInformation(RequestUtils.getGETConfig()).then((dto) => {
+      await fileInfoStammApi.getFileInformation(RequestUtils.getGETConfig()).then((dto) => {
         this.setFileInformation(dto);
       });
     },

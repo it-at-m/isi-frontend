@@ -8,7 +8,7 @@ import {
   createInfrastruktureinrichtungDto,
   createSearchQueryAndSortingModel,
 } from "@/utils/Factories";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel"; // Pfad zum Store anpassen
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 
 describe("Search Store", () => {
   beforeEach(() => {

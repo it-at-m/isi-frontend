@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import { useSnackbarStore } from "@/stores/SnackbarStore";
-import { Levels } from "@/api/error"; // Pfad zur Levels-Definition anpassen
+import { Levels } from "@/api/error";
 
 describe("Snackbar Store", () => {
   beforeEach(() => {

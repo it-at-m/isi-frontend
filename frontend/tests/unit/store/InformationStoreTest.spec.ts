@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
-import { useInformationStore } from "../../../src/stores/InformationStore"; // Pfad zum Store anpassen
+import { useInformationStore } from "../../../src/stores/InformationStore";
 import { InformationResponseDto } from "@/api/api-client/isi-backend";
 
 // Mock für InformationResponseDto
