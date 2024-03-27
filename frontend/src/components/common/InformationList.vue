@@ -132,6 +132,8 @@ export default class InformationList extends Vue {
 
   private informationStore = useInformationStore();
 
+  private storeInformationList = computed(() => this.informationStore.informationList);
+
   mounted(): void {
     this.informationStore.overwriteInformationList([]);
   }
@@ -140,7 +142,7 @@ export default class InformationList extends Vue {
     return this.informationList;
   }
 
-  @Watch("this.informationStore.informationList", { immediate: true, deep: true })
+  @Watch("storeInformationList", { immediate: true, deep: true })
   public displayInformationsFromInformationList(): void {
     this.informationList = _.cloneDeep(this.informationStore.informationList);
   }

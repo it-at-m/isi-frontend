@@ -32,12 +32,16 @@ export default class TheSnackbar extends Vue {
 
   private snackbarStore = useSnackbarStore();
 
-  @Watch("this.snackbarStore.message")
+  private storeMessage = computed(() => this.snackbarStore.message);
+  private storeLevel = computed(() => this.snackbarStore.level);
+  private storeShow = computed(() => this.snackbarStore.show);
+
+  @Watch("storeMessage")
   setMessage(): void {
     this.message = this.snackbarStore.message as string;
   }
 
-  @Watch("this.snackbarStore.level")
+  @Watch("storeLevel")
   setColor(): void {
     this.color = this.snackbarStore.level;
     if (this.color === "error") {
@@ -47,7 +51,7 @@ export default class TheSnackbar extends Vue {
     }
   }
 
-  @Watch("this.snackbarStore.show")
+  @Watch("storeShow")
   showSnackbar(): void {
     if (this.snackbarStore.show) {
       this.show = false;
