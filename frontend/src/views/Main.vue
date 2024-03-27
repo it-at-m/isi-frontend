@@ -9,6 +9,8 @@
         cols="12"
         md="3"
       >
+        <test-component></test-component>
+
         <search-result-list />
       </v-col>
       <v-col
@@ -134,11 +136,13 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import _ from "lodash";
 import { AbfrageDtoArtAbfrageEnum, SearchResultDtoTypeEnum } from "@/api/api-client/isi-backend";
 import { Feature, Point } from "geojson";
+import TestComponent from "@/components/TestComponent.vue";
 
 type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
 @Component({
   components: {
+    TestComponent,
     SearchAndFilterOptions,
     SearchResultCityMap,
     SearchResultList,
