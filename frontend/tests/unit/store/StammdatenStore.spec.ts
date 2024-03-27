@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from "pinia";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
 import { FileInformationDto, FoerdermixStammDto } from "@/api/api-client/isi-backend";
 
-function mockedInitializeFoerdermixStamm(): Promise<Response> {
+function mockedInitializeFoerdermixStamm(): Response {
   const foerdermixStamm = [
     { id: "1234", foerdermix: { bezeichnungJahr: "Sobon", bezeichnung: "Test" }, version: 1 },
   ] as FoerdermixStammDto[];
@@ -19,10 +19,10 @@ function mockedInitializeFoerdermixStamm(): Promise<Response> {
   const json = JSON.stringify(foerdermixStamm);
   const response = new Response(json, responseInit);
 
-  return Promise.resolve(response);
+  return response;
 }
 
-function mockedInitializeFileStamm(): Promise<Response> {
+function mockedInitializeFileStamm(): Response {
   const fileStamm = {
     maxNumberOfFiles: 100,
     maxFileSizeBytes: 500,
@@ -40,7 +40,7 @@ function mockedInitializeFileStamm(): Promise<Response> {
   const json = JSON.stringify(fileStamm);
   const response = new Response(json, responseInit);
 
-  return Promise.resolve(response);
+  return response;
 }
 
 describe("Stammdaten Store Initizalize", () => {
@@ -51,7 +51,7 @@ describe("Stammdaten Store Initizalize", () => {
 
   it("initialize populates foerdermixstamm correctly", async () => {
     const store = useStammdatenStore();
-    global.fetch = vi.fn().mockResolvedValue(mockedInitializeFoerdermixStamm());
+    vi.spyOn(global, "fetch").mockResolvedValue(mockedInitializeFoerdermixStamm());
 
     await store.initializeFoerdermixStamm();
 
@@ -64,7 +64,7 @@ describe("Stammdaten Store Initizalize", () => {
 
   it("initialize populates filestamm correctly", async () => {
     const store = useStammdatenStore();
-    global.fetch = vi.fn().mockResolvedValue(mockedInitializeFileStamm());
+    vi.spyOn(global, "fetch").mockResolvedValue(mockedInitializeFileStamm());
 
     await store.initializeFileStamm();
 

@@ -2,6 +2,7 @@ import { describe, expect, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import { useLookupStore } from "../../../src/stores/LookupStore";
 import { LookupEntryDto, LookupListDto } from "@/api/api-client/isi-backend";
+import fetch, { Headers, Request, Response } from "node-fetch";
 
 function mockedLookupInititalize(): Promise<Response> {
   const examplePayload = { list: [{ key: "exampleKey", value: "exampleValue" }] } as LookupListDto;
