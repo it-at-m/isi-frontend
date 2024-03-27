@@ -29,16 +29,17 @@
           </div>
         </v-toolbar>
       </template>
-      <template v-slot:item.name="{ item }">
+      <!-- Dynamic Slot Name https://stackoverflow.com/a/67060576 -->
+      <template v-slot:[`item.jahr`]="{ item }">
         <v-text-field
-          v-model="editedItem.name"
+          v-model="editedItem['jahr']"
           :hide-details="true"
           dense
           single-line
           :autofocus="true"
           v-if="item.id === editedItem.id"
         ></v-text-field>
-        <span v-else>{{ item.name }}</span>
+        <span v-else>{{ item["jahr"] }}</span>
       </template>
       <template v-slot:item.calories="{ item }">
         <v-text-field
@@ -86,7 +87,7 @@
         <v-btn
           color="primary"
           @click="initialize"
-          >Reset</v-btn
+          >Keine Baurateninformationen vorhanden</v-btn
         >
       </template>
     </v-data-table>
