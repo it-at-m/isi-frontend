@@ -252,6 +252,8 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private searchStore = useSearchStore();
 
+  private selectedInfrastruktureinrichtung = computed(() => this.searchStore.selectedInfrastruktureinrichtung);
+
   get isDisplayModeAenderung(): boolean {
     return this.mode === DisplayMode.AENDERUNG;
   }
@@ -386,7 +388,7 @@ export default class Infrastruktureinrichtung extends Mixins(
     this.buttonText = this.isNewInfrastruktureinrichtung() ? "Speichern" : "Aktualisieren";
   }
 
-  @Watch("this.searchStore.selectedInfrastruktureinrichtung", { immediate: true, deep: true })
+  @Watch("selectedInfrastruktureinrichtung", { immediate: true, deep: true })
   private handleSelectedInfrastruktureinrichtungChanged(): void {
     const infrastruktureinrichtungFromStore = this.getInfrastruktureinrichtungFromStore();
     if (!_.isNil(infrastruktureinrichtungFromStore)) {

@@ -157,6 +157,7 @@ import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
 import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
 import { useSearchStore } from "@/stores/SearchStore";
+
 @Component({
   computed: {
     context() {
@@ -195,6 +196,8 @@ export default class Bauvorhaben extends Mixins(
 
   private searchStore = useSearchStore();
 
+  private selectedBauvorhaben = computed(() => this.searchStore.selectedBauvorhaben);
+
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
 
@@ -203,7 +206,7 @@ export default class Bauvorhaben extends Mixins(
     }
   }
 
-  @Watch("this.searchStore.selectedBauvorhaben", { deep: true })
+  @Watch("selectedBauvorhaben", { deep: true, immediate: true })
   private selectedBauvorhabenChanged() {
     const bauvorhabenFromStore = this.searchStore.selectedBauvorhaben;
     if (!_.isNil(bauvorhabenFromStore)) {
@@ -247,7 +250,7 @@ export default class Bauvorhaben extends Mixins(
    */
   async fetchBauvorhabenById(): Promise<void> {
     await this.getBauvorhabenById(this.$route.params.id, false).then((dto) => {
-      this.searchStore.setSelectedBauvorhaben(dto);
+      this.searchStore.setSelectedBauvorhaben(_.cloneDeep(dto));
     });
   }
 
@@ -267,7 +270,7 @@ export default class Bauvorhaben extends Mixins(
    */
   private async updateBauvorhaben(): Promise<void> {
     await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
-      this.searchStore.setSelectedBauvorhaben(dto);
+      this.searchStore.setSelectedBauvorhaben(_.cloneDeep(dto));
       Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
     });
   }

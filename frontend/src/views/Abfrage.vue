@@ -480,6 +480,8 @@ export default class Abfrage extends Mixins(
 
   private searchStore = useSearchStore();
 
+  private selectedAbfrage = computed(() => this.searchStore.selectedAbfrage);
+
   private modeAbfrage = DisplayMode.UNDEFINED;
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
@@ -531,7 +533,7 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  @Watch("this.searchStore.selectedAbfrage", { deep: true })
+  @Watch("selectedAbfrage", { deep: true, immediate: true })
   private selectedAbfrageChanged() {
     const abfrageFromStore = this.searchStore.selectedAbfrage;
     if (!_.isNil(abfrageFromStore)) {
@@ -919,7 +921,7 @@ export default class Abfrage extends Mixins(
   }
 
   private saveAbfrageInStore(
-    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
+    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined,
   ) {
     this.searchStore.setSelectedAbfrage(_.cloneDeep(abfrage));
   }
