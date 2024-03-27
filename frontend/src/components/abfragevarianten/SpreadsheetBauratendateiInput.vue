@@ -100,11 +100,17 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { DataTableHeader } from "vuetify";
+import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
+import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: Array })
-  private items!: unknown[];
+  private input!: BauratendateiInput[];
+
+  get headers(): Array<DataTableHeader> {
+    return _.toArray(this.input);
+  }
 
   @Prop({ type: Array, default: [] })
   private readonly headers!: DataTableHeader[];
