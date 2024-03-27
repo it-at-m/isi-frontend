@@ -29,16 +29,8 @@ function mockedLookupInititalize(): Promise<Response> {
     wesentlicheRechtsgrundlageBauleitplanverfahren: examplePayload,
   };
 
-  const responseInit: ResponseInit = {
-    status: 200, // OK
-    statusText: "OK",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
   const json = JSON.stringify(lookupListResponse);
-  const response = new Response(json, responseInit);
+  const response = new Response(json);
 
   return Promise.resolve(response);
 }
@@ -68,16 +60,8 @@ function mockedLookupInititalizeNullValue(): Promise<Response> {
     wesentlicheRechtsgrundlageBauleitplanverfahren: null,
   };
 
-  const responseInit: ResponseInit = {
-    status: 200, // OK
-    statusText: "OK",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
   const json = JSON.stringify(lookupListResponse);
-  const response = new Response(json, responseInit);
+  const response = new Response(json);
 
   return Promise.resolve(response);
 }
