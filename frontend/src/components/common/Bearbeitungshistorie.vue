@@ -43,6 +43,7 @@ import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import _ from "lodash";
 import { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import moment from "moment/moment";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({})
 export default class Bearbeitungshistorie extends Vue {
@@ -50,6 +51,8 @@ export default class Bearbeitungshistorie extends Vue {
 
   @VModel({ type: AbfrageModel })
   private abfrage!: AbfrageModel;
+
+  private lookupStore = useLookupStore();
 
   private bearbeitungshistorieHeaders = [
     { text: "Name", value: "bearbeitendePerson.name", sortable: false },
@@ -72,7 +75,7 @@ export default class Bearbeitungshistorie extends Vue {
   }
 
   private zielstatusText(status: StatusAbfrage | undefined): string | undefined {
-    const lookupEntries = this.$store.getters["lookup/statusAbfrage"] as Array<LookupEntryDto>;
+    const lookupEntries = this.lookupStore.statusAbfrage as Array<LookupEntryDto>;
     return !_.isEmpty(lookupEntries)
       ? lookupEntries.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
       : "";

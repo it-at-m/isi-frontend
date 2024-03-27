@@ -1,15 +1,19 @@
-import store from "@/store/index";
+import { useUserinfoStore } from "@/stores/Userinfostore";
 
 export function isRoleAdminOrAbfrageerstellung(): boolean {
-  return isRoleAdmin() || store.getters["userinfo/hasRoleAbfrageerstellung"];
+  const userinfoStore = useUserinfoStore();
+  return isRoleAdmin() || userinfoStore.hasRoleAbfrageerstellung;
 }
 
 export function isRoleAdminOrSachbearbeitung(): boolean {
-  return isRoleAdmin() || store.getters["userinfo/hasRoleSachbearbeitung"];
+  const userinfoStore = useUserinfoStore();
+  userinfoStore.hasRoleSachbearbeitung;
+  return isRoleAdmin() || userinfoStore.hasRoleSachbearbeitung;
 }
 
 export function isRoleAdmin(): boolean {
-  return store.getters["userinfo/hasRoleAdmin"] || isGuiWithoutSecurityContext();
+  const userinfoStore = useUserinfoStore();
+  return userinfoStore.hasRoleAdmin || isGuiWithoutSecurityContext();
 }
 
 export function isGuiWithoutSecurityContext(): boolean {

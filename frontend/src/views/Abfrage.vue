@@ -404,6 +404,7 @@ import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
+import { useSearchStore } from "@/stores/SearchStore";
 
 export const enum AnzeigeContextAbfragevariante {
   UNDEFINED = 1,
@@ -477,6 +478,10 @@ export default class Abfrage extends Mixins(
   private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
   private readonly TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
 
+  private searchStore = useSearchStore();
+
+  private selectedAbfrage = computed(() => this.searchStore.selectedAbfrage);
+
   private modeAbfrage = DisplayMode.UNDEFINED;
   private anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante = AnzeigeContextAbfragevariante.UNDEFINED;
   private buttonText = "";
@@ -528,9 +533,9 @@ export default class Abfrage extends Mixins(
     }
   }
 
-  @Watch("$store.state.search.selectedAbfrage", { deep: true })
+  @Watch("selectedAbfrage", { deep: true, immediate: true })
   private selectedAbfrageChanged() {
-    const abfrageFromStore = this.$store.getters["search/selectedAbfrage"];
+    const abfrageFromStore = this.searchStore.selectedAbfrage;
     if (!_.isNil(abfrageFromStore)) {
       this.abfrage = _.cloneDeep(abfrageFromStore);
       this.selectAbfrage();
@@ -560,7 +565,7 @@ export default class Abfrage extends Mixins(
           }
         })
         .catch(() => {
-          this.$store.commit("search/selectedAbfrage", undefined);
+          this.searchStore.setSelectedAbfrage(undefined);
         });
     } else {
       if (this.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -647,7 +652,7 @@ export default class Abfrage extends Mixins(
 
   private async deleteBauleitplanverfahren(): Promise<void> {
     await this.deleteById(this.abfrageId, true).then(() => {
-      this.$store.commit("search/removeSearchResultById", this.abfrageId);
+      this.searchStore.removeSearchResultById(this.abfrageId);
       this.returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }
@@ -916,9 +921,9 @@ export default class Abfrage extends Mixins(
   }
 
   private saveAbfrageInStore(
-    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
+    abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined,
   ) {
-    this.$store.commit("search/selectedAbfrage", _.cloneDeep(abfrage));
+    this.searchStore.setSelectedAbfrage(_.cloneDeep(abfrage));
   }
 
   private isBauleitplanverfahrenFormularOpen(): boolean {

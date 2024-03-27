@@ -3,7 +3,7 @@ import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 import { isRoleAdminOrAbfrageerstellung, isRoleAdminOrSachbearbeitung } from "./Security";
 import _ from "lodash";
-import store from "@/store/index";
+import { useSearchStore } from "@/stores/SearchStore";
 
 export function isEditableWithAnzeigeContextAbfragevariante(
   anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
@@ -18,14 +18,16 @@ export function isEditableWithAnzeigeContextAbfragevariante(
 }
 
 export function isEditableByAbfrageerstellung(): boolean {
-  const abfrage: AbfrageModel = store.getters["search/selectedAbfrage"];
+  const searchStore = useSearchStore();
+  const abfrage: AbfrageModel = searchStore.selectedAbfrage!;
   return !_.isNil(abfrage)
     ? isRoleAdminOrAbfrageerstellung() && abfrage.statusAbfrage === StatusAbfrage.Angelegt
     : false;
 }
 
 export function isEditableBySachbearbeitung(): boolean {
-  const abfrage: AbfrageModel = store.getters["search/selectedAbfrage"];
+  const searchStore = useSearchStore();
+  const abfrage: AbfrageModel = searchStore.selectedAbfrage!;
   return !_.isNil(abfrage)
     ? isRoleAdminOrSachbearbeitung() && abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
     : false;

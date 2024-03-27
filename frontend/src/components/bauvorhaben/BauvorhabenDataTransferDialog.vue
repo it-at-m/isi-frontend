@@ -63,6 +63,7 @@ import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
 import { createBauleitplanverfahrenDto } from "@/utils/Factories";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component
 export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiRequestMixin, AbfrageApiRequestMixin) {
@@ -74,16 +75,18 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
 
   private selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
 
+  private lookupStore = useLookupStore();
+
   mounted(): void {
     this.fetchAbfragen();
   }
 
   get standVerfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVerfahren"];
+    return this.lookupStore.standVerfahren;
   }
 
   get statusAbfrageList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/statusAbfrage"];
+    return this.lookupStore.statusAbfrage;
   }
 
   @Watch("selectedAbfrageSearchResult", { immediate: true })

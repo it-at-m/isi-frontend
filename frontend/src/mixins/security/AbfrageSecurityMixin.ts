@@ -4,9 +4,12 @@ import { Component, Mixins } from "vue-property-decorator";
 import _ from "lodash";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import { useSearchStore } from "@/stores/SearchStore";
 
 @Component
 export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
+  private searchStore = useSearchStore();
+
   public isEditableWithAnzeigeContextAbfragevariante(
     anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
   ): boolean {
@@ -20,35 +23,36 @@ export default class AbfrageSecurityMixin extends Mixins(SecurityMixin) {
   }
 
   public isEditableByAbfrageerstellung(): boolean {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    this.searchStore.selectedAbfrage;
+    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage!;
     return !_.isNil(abfrage)
       ? this.isRoleAdminOrAbfrageerstellung() && abfrage.statusAbfrage === StatusAbfrage.Angelegt
       : false;
   }
 
   public isBedarfsmeldungEditableByAbfrageerstellung(): boolean {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage!;
     return !_.isNil(abfrage)
       ? this.isRoleAdminOrAbfrageerstellung() && abfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
       : false;
   }
 
   public isEditableBySachbearbeitung(): boolean {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage!;
     return !_.isNil(abfrage)
       ? this.isRoleAdminOrSachbearbeitung() && abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
       : false;
   }
 
   public isEditableByBedarfsmeldung(): boolean {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage!;
     return !_.isNil(abfrage)
       ? this.isRoleAdminOrBedarfsmeldung() && abfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
       : false;
   }
 
   public isEditableByAdmin(): boolean {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage!;
     return !_.isNil(abfrage) ? this.isRoleAdmin() : false;
   }
 }

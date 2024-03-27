@@ -135,13 +135,18 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import { Mutex, tryAcquire } from "async-mutex";
-
+import { useSearchStore } from "@/stores/SearchStore";
+import { useLookupStore } from "@/stores/LookupStore";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 @Component({
   components: { DefaultLayout },
 })
 export default class SearchResultList extends Mixins(SearchApiRequestMixin, SecurityMixin) {
   private pageRequestMutex = new Mutex();
 
+  private lookupStore = useLookupStore();
+
+  private searchStore = useSearchStore();
   /**
    * Berechnet die Höhe der verfübaren Listenhöhe in "vh" (Höhe Viewport in Hundert).
    * Die Höhe des App-Headers wird mit 50px angesetzt.
@@ -152,27 +157,29 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin, Secu
   }
 
   get searchResultsAsArray(): Array<SearchResultDto> {
-    return _.cloneDeep(this.$store.getters["search/searchResults"].searchResults);
+    return !_.isNil(this.searchStore.searchResults.searchResults)
+      ? _.cloneDeep(this.searchStore.searchResults.searchResults)
+      : [];
   }
 
   get infrastruktureinrichtungTypList(): Array<LookupEntryDto> {
-    return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
+    return this.lookupStore.infrastruktureinrichtungTyp;
   }
 
   get statusAbfrageList(): Array<LookupEntryDto> {
-    return this.$store.getters["lookup/statusAbfrage"];
+    return this.lookupStore.statusAbfrage;
   }
 
   get standVerfahrenList(): Array<LookupEntryDto> {
-    return this.$store.getters["lookup/standVerfahren"];
+    return this.lookupStore.standVerfahren;
   }
 
   get getSearchQueryAndSorting(): SearchQueryAndSortingDto {
-    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
   }
 
   get searchResults(): SearchResultsDto {
-    return _.cloneDeep(this.$store.getters["search/searchResults"]);
+    return _.cloneDeep(this.searchStore.searchResults);
   }
 
   get numberOfPossiblePages(): number {
@@ -210,7 +217,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin, Secu
         let currentPage = searchQueryForEntitiesDto.page;
         if (!_.isNil(currentPage) && ++currentPage <= this.numberOfPossiblePages) {
           searchQueryForEntitiesDto.page = currentPage;
-          this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
+          this.searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
           this.searchForEntities(searchQueryForEntitiesDto)
             .then((searchResultsNextPage) => {
               const currentSearchResults = this.searchResults;
@@ -218,7 +225,7 @@ export default class SearchResultList extends Mixins(SearchApiRequestMixin, Secu
                 _.toArray(currentSearchResults.searchResults),
                 _.toArray(searchResultsNextPage.searchResults),
               );
-              this.$store.commit("search/searchResults", _.cloneDeep(searchResultsNextPage));
+              this.searchStore.setSearchResults(_.cloneDeep(searchResultsNextPage));
             })
             .finally(() => this.pageRequestMutex.release());
         } else {

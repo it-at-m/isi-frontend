@@ -146,6 +146,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({
   components: { TriSwitch },
@@ -173,16 +174,18 @@ export default class AllgemeineInformationenWeiteresVerfahrenComponent extends M
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
+  private lookupStore = useLookupStore();
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
 
   get standVerfahrenWeiteresVerfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVerfahrenWeiteresVerfahren"];
+    return this.lookupStore.standVerfahrenWeiteresVerfahren;
   }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+    return this.lookupStore.sobonVerfahrensgrundsaetzeJahr;
   }
 
   /**

@@ -1,25 +1,28 @@
+import { useUserinfoStore } from "@/stores/Userinfostore";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class SecurityMixin extends Vue {
+  private userInfoStore = useUserinfoStore();
+
   public isRoleAdminOrAbfrageerstellung(): boolean {
-    return this.isRoleAdmin() || this.$store.getters["userinfo/hasRoleAbfrageerstellung"];
+    return this.isRoleAdmin() || this.userInfoStore.hasRoleAbfrageerstellung;
   }
 
   public isRoleAdminOrSachbearbeitung(): boolean {
-    return this.isRoleAdmin() || this.$store.getters["userinfo/hasRoleSachbearbeitung"];
+    return this.isRoleAdmin() || this.userInfoStore.hasRoleSachbearbeitung;
   }
 
   public isRoleAdminOrBedarfsmeldung(): boolean {
-    return this.isRoleAdmin() || this.$store.getters["userinfo/hasRoleBedarfsmeldung"];
+    return this.isRoleAdmin() || this.userInfoStore.hasRoleBedarfsmeldung;
   }
 
   public isRoleAdmin(): boolean {
-    return this.$store.getters["userinfo/hasRoleAdmin"] || this.isGuiWithoutSecurityContext();
+    return this.userInfoStore.hasRoleAdmin || this.isGuiWithoutSecurityContext();
   }
 
   public hasOnlyRoleAnwender(): boolean {
-    return this.$store.getters["userinfo/hasOnlyRoleAnwender"];
+    return this.userInfoStore.hasOnlyRoleAnwender;
   }
 
   private isGuiWithoutSecurityContext(): boolean {

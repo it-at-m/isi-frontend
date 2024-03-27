@@ -126,7 +126,7 @@ import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import Toaster from "@/components/common/toaster.type";
 import { Levels } from "@/api/error";
 import _ from "lodash";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component
 export default class BauvorhabenDataTransferDialog extends Mixins(
@@ -140,8 +140,10 @@ export default class BauvorhabenDataTransferDialog extends Mixins(
   @Prop({ type: Boolean, default: false })
   private showBedarfsmeldungDialog!: boolean;
 
+  private lookupStore = useLookupStore();
+
   get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
+    return this.lookupStore.infrastruktureinrichtungTyp;
   }
 
   /**

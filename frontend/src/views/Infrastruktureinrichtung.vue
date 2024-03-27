@@ -210,7 +210,7 @@ import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
-
+import { useSearchStore } from "@/stores/SearchStore";
 @Component({
   computed: {
     context() {
@@ -249,6 +249,10 @@ export default class Infrastruktureinrichtung extends Mixins(
   private infrastruktureinrichtung: InfrastruktureinrichtungDto = createInfrastruktureinrichtungDto();
 
   private infrastruktureinrichtungId: string | undefined = this.$route.params.id;
+
+  private searchStore = useSearchStore();
+
+  private selectedInfrastruktureinrichtung = computed(() => this.searchStore.selectedInfrastruktureinrichtung);
 
   get isDisplayModeAenderung(): boolean {
     return this.mode === DisplayMode.AENDERUNG;
@@ -384,7 +388,7 @@ export default class Infrastruktureinrichtung extends Mixins(
     this.buttonText = this.isNewInfrastruktureinrichtung() ? "Speichern" : "Aktualisieren";
   }
 
-  @Watch("$store.state.search.selectedInfrastruktureinrichtung", { immediate: true, deep: true })
+  @Watch("selectedInfrastruktureinrichtung", { immediate: true, deep: true })
   private handleSelectedInfrastruktureinrichtungChanged(): void {
     const infrastruktureinrichtungFromStore = this.getInfrastruktureinrichtungFromStore();
     if (!_.isNil(infrastruktureinrichtungFromStore)) {
@@ -546,7 +550,7 @@ export default class Infrastruktureinrichtung extends Mixins(
     const id: string | undefined = this.infrastruktureinrichtung?.id;
     if (!_.isNil(id)) {
       await this.deleteInfrastruktureinrichtungById(id, false).then(() => {
-        this.$store.commit("search/removeSearchResultById", id);
+        this.searchStore.removeSearchResultById(id);
         this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS);
       });
     }
@@ -561,7 +565,7 @@ export default class Infrastruktureinrichtung extends Mixins(
 
   private setInfrastruktureinrichtungToStore(dto: InfrastruktureinrichtungDto | undefined): void {
     if (dto !== undefined) {
-      this.$store.commit("search/selectedInfrastruktureinrichtung", _.cloneDeep(dto));
+      this.searchStore.setSelectedInfrastruktureinrichtung(_.cloneDeep(dto));
     }
   }
 
@@ -573,7 +577,7 @@ export default class Infrastruktureinrichtung extends Mixins(
     | GrundschuleModel
     | MittelschuleModel
     | undefined {
-    const dto: InfrastruktureinrichtungDto | undefined = this.$store.getters["search/selectedInfrastruktureinrichtung"];
+    const dto: InfrastruktureinrichtungDto | undefined = this.searchStore.selectedInfrastruktureinrichtung;
     return this.getModelOfDto(dto);
   }
 

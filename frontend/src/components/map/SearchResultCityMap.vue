@@ -22,7 +22,7 @@ import CityMap from "./CityMap.vue";
 import router from "@/router";
 import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 import _ from "lodash";
-
+import { useSearchStore } from "@/stores/SearchStore";
 type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 @Component({
   components: {
@@ -91,6 +91,8 @@ export default class SearchResultCityMap extends Vue {
     },
   };
 
+  private searchStore = useSearchStore();
+
   get geoJson(): EntityFeature[] {
     const results: SearchResultDto[] = this.searchResults;
     const features: EntityFeature[] = [];
@@ -153,7 +155,7 @@ export default class SearchResultCityMap extends Vue {
   }
 
   get searchResults(): Array<SearchResultDto> {
-    return this.$store.getters["search/searchResults"].searchResults;
+    return !_.isNil(this.searchStore.searchResults.searchResults) ? this.searchStore.searchResults.searchResults : [];
   }
 
   private getSearchResultDtoTypeFormattedString(searchResultDtoTypeEnum: SearchResultDtoTypeEnum): string {

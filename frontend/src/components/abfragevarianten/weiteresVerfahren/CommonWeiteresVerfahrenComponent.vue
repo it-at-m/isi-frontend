@@ -114,6 +114,7 @@ import {
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({ components: { FieldGroupCard } })
 export default class CommonWeiteresVerfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
@@ -121,6 +122,8 @@ export default class CommonWeiteresVerfahrenComponent extends Mixins(FieldValida
   abfragevariante!: AbfragevarianteWeiteresVerfahrenModel;
 
   private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+
+  private lookupStore = useLookupStore();
 
   @Prop()
   private mode!: DisplayMode;
@@ -137,7 +140,7 @@ export default class CommonWeiteresVerfahrenComponent extends Mixins(FieldValida
   private readonly isEditable!: boolean;
 
   get wesentlicheRechtsgrundlageList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/wesentlicheRechtsgrundlage"];
+    return this.lookupStore.wesentlicheRechtsgrundlage;
   }
 
   get calcRealisierungBis(): number | undefined {

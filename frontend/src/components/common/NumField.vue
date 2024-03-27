@@ -6,7 +6,7 @@
     :required="required"
     :rules="getRules()"
     validate-on-blur
-    @input="formChanged"
+    @input="formChanged()"
   >
     <!--
     Dieses Konstrukt dient dazu:
@@ -72,8 +72,8 @@
 import { watch } from "vue";
 import { CurrencyDisplay, CurrencyInputOptions, useCurrencyInput } from "vue-currency-input";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import store from "@/store/index";
 import _ from "lodash";
+import { useCommonStore } from "@/stores/CommonStore";
 
 interface Props {
   value: number;
@@ -160,9 +160,15 @@ export default {
       required: false,
     },
   },
-  setup(props: Props): unknown {
-    // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
 
+  setup(props: Props): unknown {
+    const commonStore = useCommonStore();
+
+    function formChanged(): void {
+      commonStore.formChanged();
+    }
+
+    // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
     function getRules(): unknown[] {
       const usedRules: unknown[] = [];
 
@@ -226,12 +232,6 @@ export default {
         setValue(value);
       },
     );
-
-    // Da die Composition API keine Mixins unterstützt, muss diese Funktion direkt implementiert werden.
-    function formChanged(): void {
-      // Da die aktuelle Version des Stores die Composition API nicht unterstützt, muss der Store importiert werden.
-      store.dispatch("common/formChanged");
-    }
 
     return { getRules, formChanged, inputRef, formattedValue };
   },

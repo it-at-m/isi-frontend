@@ -1,10 +1,12 @@
 import { Component, Vue } from "vue-property-decorator";
 import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
-
+import { useInformationStore } from "@/stores/InformationStore";
 @Component
 export default class InformationListMixin extends Vue {
+  private informationStore = useInformationStore();
+
   public showInformationResponseDtoInInformationList(informationResponseDto: InformationResponseDto): void {
-    this.$store.dispatch("information/addInformation", informationResponseDto);
+    this.informationStore.addInformation(informationResponseDto);
   }
 
   public showSuccessInInformationList(message: string): void {

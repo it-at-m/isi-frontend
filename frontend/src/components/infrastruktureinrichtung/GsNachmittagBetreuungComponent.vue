@@ -80,6 +80,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
+import { useLookupStore } from "@/stores/LookupStore";
 @Component({
   components: {
     FieldGroupCard,
@@ -90,8 +91,10 @@ import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/
 export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: GsNachmittagBetreuungModel }) gsNachmittagBetreuung!: GsNachmittagBetreuungModel;
 
+  private lookupStore = useLookupStore();
+
   get artGsNachmittagBetreuungList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/artGsNachmittagBetreuung"];
+    return this.lookupStore.artGsNachmittagBetreuung;
   }
 
   @Prop({ type: Boolean, default: false })
@@ -101,7 +104,7 @@ export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidati
   private readonly isEinrichtungstraegerRequired!: boolean;
 
   get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraeger"];
+    return this.lookupStore.einrichtungstraeger;
   }
 }
 </script>

@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Watch, Vue } from "vue-property-decorator";
-
+import { useSnackbarStore } from "@/stores/SnackbarStore";
 @Component
 export default class TheSnackbar extends Vue {
   static defaultTimeout = 5000;
@@ -30,14 +30,20 @@ export default class TheSnackbar extends Vue {
   message = "";
   color = "info";
 
-  @Watch("$store.state.snackbar.message")
+  private snackbarStore = useSnackbarStore();
+
+  private storeMessage = computed(() => this.snackbarStore.message);
+  private storeLevel = computed(() => this.snackbarStore.level);
+  private storeShow = computed(() => this.snackbarStore.show);
+
+  @Watch("storeMessage")
   setMessage(): void {
-    this.message = this.$store.state.snackbar.message;
+    this.message = this.snackbarStore.message as string;
   }
 
-  @Watch("$store.state.snackbar.level")
+  @Watch("storeLevel")
   setColor(): void {
-    this.color = this.$store.state.snackbar.level;
+    this.color = this.snackbarStore.level;
     if (this.color === "error") {
       this.timeout = 0;
     } else {
@@ -45,13 +51,13 @@ export default class TheSnackbar extends Vue {
     }
   }
 
-  @Watch("$store.state.snackbar.show")
+  @Watch("storeShow")
   showSnackbar(): void {
-    if (this.$store.state.snackbar.show) {
+    if (this.snackbarStore.show) {
       this.show = false;
       setTimeout(() => {
         this.show = true;
-        this.$store.dispatch("snackbar/updateShow", false);
+        this.snackbarStore.setShow(false);
       }, 100);
     }
   }

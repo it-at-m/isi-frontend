@@ -50,7 +50,7 @@ import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import SobonBerechnungModel from "@/types/model/abfragevariante/SobonBerechnungModel";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-
+import { useStammdatenStore } from "@/stores/StammdatenStore";
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 @Component
 export default class SobonBerechnung extends Mixins(SaveLeaveMixin, AbfrageSecurityMixin) {
@@ -58,6 +58,8 @@ export default class SobonBerechnung extends Mixins(SaveLeaveMixin, AbfrageSecur
   sobonBerechnung!: SobonBerechnungModel;
 
   private groupedStammdaten: GroupedStammdaten = [];
+
+  private stammdatenStore = useStammdatenStore();
 
   mounted(): void {
     this.setGroupedStammdatenList();
@@ -74,7 +76,7 @@ export default class SobonBerechnung extends Mixins(SaveLeaveMixin, AbfrageSecur
   }
 
   private setGroupedStammdatenList(): void {
-    let stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    let stammdaten = this.stammdatenStore.foerdermixStammdaten;
     stammdaten = stammdaten.filter((foerdermixStaemme: FoerdermixStammDto) => {
       return (
         foerdermixStaemme.foerdermix.bezeichnung !== "private Fläche" &&

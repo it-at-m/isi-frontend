@@ -218,6 +218,7 @@ import { createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { useLookupStore } from "@/stores/LookupStore";
 
 export const enum BedarfsmeldungTitle {
   FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
@@ -283,6 +284,8 @@ export default class BedarfsmeldungComponent extends Mixins(
     { text: "Aktionen", value: "actions", sortable: false },
   ];
 
+  private lookupStore = useLookupStore();
+
   /**
    * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
    *
@@ -297,7 +300,7 @@ export default class BedarfsmeldungComponent extends Mixins(
   }
 
   get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
+    return this.lookupStore.infrastruktureinrichtungTyp;
   }
 
   private erfassenBedarfsmeldung(): void {

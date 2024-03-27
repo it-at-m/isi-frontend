@@ -104,7 +104,7 @@ import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesM
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-
+import { useLookupStore } from "@/stores/LookupStore";
 @Component({
   components: { TriSwitch },
 })
@@ -131,12 +131,14 @@ export default class AllgemeineInformationenBaugenehmigungsverfahrenComponent ex
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
+  private lookupStore = useLookupStore();
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
 
   get standVerfahrenBaugenehmigungsverfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVerfahrenBaugenehmigungsverfahren"];
+    return this.lookupStore.standVerfahrenBaugenehmigungsverfahren;
   }
 
   /**
