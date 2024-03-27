@@ -137,7 +137,7 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
 
   get tableData(): Array<any> {
     /**
-     * Ermitteln der Wohneinheiten je Förderart je Jahr.
+     * Ermittlung der Wohneinheiten je Förderart je Jahr.
      */
     const jahrWithWohneinheitenForEachFoerderart = new Map<
       string | undefined,
@@ -156,7 +156,7 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
       }
     }
     /**
-     * Überführen der Ermittelten Wohneinheiten je Förderart je Jahr in Objekte.
+     * Überführen der obig ermittelten Wohneinheiten je Förderart je Jahr in Objekte.
      *
      * {
      *   jahr: 2024,
