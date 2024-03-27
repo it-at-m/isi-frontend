@@ -102,6 +102,77 @@ import { DataTableHeader } from "vuetify";
 import _ from "lodash";
 import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
 
+export function createHeaders(
+  bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
+): Array<DataTableHeader> {
+  const headers = createHeadersForFoerderarten(bauratendateiInput);
+  const headerForJahr = {
+    text: "Jahr",
+    value: "jahr",
+    align: "start",
+  } as DataTableHeader;
+  headers.unshift(headerForJahr);
+  return headers;
+}
+
+export function createHeadersForFoerderarten(
+  bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
+): Array<DataTableHeader> {
+  return _.uniq(
+    _.toArray(bauratendateiInput).map(
+      (wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart,
+    ),
+  ).map((headerFoerderart) => {
+    return {
+      text: headerFoerderart,
+      value: headerFoerderart,
+      align: "start",
+    } as DataTableHeader;
+  });
+}
+
+export function createTableData(bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined) {
+  /**
+   * Ermittlung der Wohneinheiten je Förderart je Jahr.
+   */
+  const jahrWithWohneinheitenForEachFoerderart = new Map<
+    string | undefined,
+    Map<string | undefined, number | undefined>
+  >();
+  for (const input of _.toArray(bauratendateiInput)) {
+    if (jahrWithWohneinheitenForEachFoerderart.has(input.jahr)) {
+      const foerderartWithWohneinheit = jahrWithWohneinheitenForEachFoerderart.get(input.jahr);
+      if (!_.isNil(foerderartWithWohneinheit)) {
+        foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
+      }
+    } else {
+      const foerderartWithWohneinheit = new Map<string | undefined, number | undefined>();
+      foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
+      jahrWithWohneinheitenForEachFoerderart.set(input.jahr, foerderartWithWohneinheit);
+    }
+  }
+  /**
+   * Überführen der obig ermittelten Wohneinheiten je Förderart je Jahr in Objekte.
+   *
+   * {
+   *   jahr: 2024,
+   *   foerderart1: 1000,
+   *   ...
+   *   foerderartX: 2385
+   * }
+   */
+  const tableDataObjects: Array<any> = [];
+  jahrWithWohneinheitenForEachFoerderart.forEach((foerderartenWithWohneinheiten, jahr) => {
+    const tableEntry = new Map<string | undefined, string | number | undefined>();
+    tableEntry.set("jahr", jahr);
+    foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
+      tableEntry.set(forderart, wohneinheiten);
+    });
+    tableDataObjects.push(Object.fromEntries(tableEntry.entries()));
+  });
+  return tableDataObjects;
+}
+
 @Component({ components: { FieldGroupCard, NumField } })
 export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: Array })
@@ -111,70 +182,11 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   private readonly isEditable!: boolean;
 
   get headers(): Array<DataTableHeader> {
-    const headers = this.headersForFoerderarten;
-    const headerForJahr = {
-      text: "Jahr",
-      value: "jahr",
-      align: "start",
-    } as DataTableHeader;
-    headers.unshift(headerForJahr);
-    return headers;
-  }
-
-  get headersForFoerderarten(): Array<DataTableHeader> {
-    return _.uniq(
-      _.toArray(this.bauratendateiInput).map(
-        (wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart,
-      ),
-    ).map((headerFoerderart) => {
-      return {
-        text: headerFoerderart,
-        value: headerFoerderart,
-        align: "start",
-      } as DataTableHeader;
-    });
+    return createHeaders(this.bauratendateiInput);
   }
 
   get tableData(): Array<any> {
-    /**
-     * Ermittlung der Wohneinheiten je Förderart je Jahr.
-     */
-    const jahrWithWohneinheitenForEachFoerderart = new Map<
-      string | undefined,
-      Map<string | undefined, number | undefined>
-    >();
-    for (const input of _.toArray(this.bauratendateiInput)) {
-      if (jahrWithWohneinheitenForEachFoerderart.has(input.jahr)) {
-        const foerderartWithWohneinheit = jahrWithWohneinheitenForEachFoerderart.get(input.jahr);
-        if (!_.isNil(foerderartWithWohneinheit)) {
-          foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
-        }
-      } else {
-        const foerderartWithWohneinheit = new Map<string | undefined, number | undefined>();
-        foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
-        jahrWithWohneinheitenForEachFoerderart.set(input.jahr, foerderartWithWohneinheit);
-      }
-    }
-    /**
-     * Überführen der obig ermittelten Wohneinheiten je Förderart je Jahr in Objekte.
-     *
-     * {
-     *   jahr: 2024,
-     *   foerderart1: 1000,
-     *   ...
-     *   foerderartX: 2385
-     * }
-     */
-    const tableDataObjects: Array<any> = [];
-    jahrWithWohneinheitenForEachFoerderart.forEach((foerderartenWithWohneinheiten, jahr) => {
-      const tableEntry = new Map<string | undefined, string | number | undefined>();
-      tableEntry.set("jahr", jahr);
-      foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
-        tableEntry.set(forderart, wohneinheiten);
-      });
-      tableDataObjects.push(Object.fromEntries(tableEntry.entries()));
-    });
-    return tableDataObjects;
+    return createTableData(this.bauratendateiInput);
   }
 }
 </script>
