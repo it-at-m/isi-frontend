@@ -1,6 +1,5 @@
-import Service from "@/components/common/Service";
-import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import { createHeaders, createTableData } from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 import { DataTableHeader } from "vuetify";
 
 const bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [
@@ -53,7 +52,34 @@ const bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [
 
 describe("SpreadsheetBauratendateiInput.spec.ts", () => {
   test("Transformation bauratendateiInput in Header", () => {
-    const result = spreadsheetBauratendateiInput.headersForFoerderarten;
-    expect(result).toEqual(2);
+    let result = createHeaders(bauratendateiInput);
+    let expected: Array<DataTableHeader> = [
+      {
+        text: "Jahr",
+        value: "jahr",
+        align: "start",
+      },
+      {
+        text: "foerderart1",
+        value: "foerderart1",
+        align: "start",
+      },
+      {
+        text: "forderart2",
+        value: "forderart2",
+        align: "start",
+      },
+      {
+        text: "forderart3",
+        value: "forderart3",
+        align: "start",
+      },
+      {
+        text: "forderart4",
+        value: "forderart4",
+        align: "start",
+      },
+    ];
+    expect(result).toEqual(expected);
   });
 });
