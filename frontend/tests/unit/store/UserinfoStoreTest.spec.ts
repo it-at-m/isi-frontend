@@ -16,6 +16,7 @@ import StammdatenStore, { StammdatenState } from "@/store/modules/StammdatenStor
 import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
 import { Userinfo } from "@/types/common/Userinfo";
 import UserinfoStore, { UserinfoState } from "@/store/modules/Userinfostore";
+import MetabaseReportingStore, { MetabaseReportingInformationState } from "@/store/modules/MetabaseReportingStore";
 
 describe("UserinfoStoreTest.spec.ts", () => {
   Vue.use(Vuex);
@@ -29,6 +30,7 @@ describe("UserinfoStoreTest.spec.ts", () => {
     search: SearchState;
     fileInfoStamm: FileInfoStammState;
     userinfo: UserinfoState;
+    metabaseReporting: MetabaseReportingInformationState;
   }
 
   const store = new Vuex.Store<RootState>({
@@ -41,6 +43,7 @@ describe("UserinfoStoreTest.spec.ts", () => {
       search: SearchStore,
       fileInfoStamm: FileInfoStammStore,
       userinfo: UserinfoStore,
+      metabaseReporting: MetabaseReportingStore,
     },
   });
 

@@ -8,6 +8,7 @@ import LookupStore, { LookupState } from "@/store/modules/LookupStore";
 import SearchStore, { SearchState } from "@/store/modules/SearchStore";
 import StammdatenStore, { StammdatenState } from "@/store/modules/StammdatenStore";
 import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
+import MetabaseReportingStore, { MetabaseReportingInformationState } from "@/store/modules/MetabaseReportingStore";
 
 describe("BaurateStoreTest.spec.ts", () => {
   Vue.use(Vuex);
@@ -19,6 +20,7 @@ describe("BaurateStoreTest.spec.ts", () => {
     lookup: LookupState;
     search: SearchState;
     fileInfoStamm: FileInfoStammState;
+    metabaseReporting: MetabaseReportingInformationState;
   }
 
   const store = new Vuex.Store<RootState>({
@@ -30,6 +32,7 @@ describe("BaurateStoreTest.spec.ts", () => {
       lookup: LookupStore,
       search: SearchStore,
       fileInfoStamm: FileInfoStammStore,
+      metabaseReporting: MetabaseReportingStore,
     },
   });
 
