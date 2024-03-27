@@ -136,24 +136,37 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   }
 
   get tableData(): Array<any> {
-    const foerderartenWithWohneinheitenForJahr: Map<
+    /**
+     * Ermitteln der Wohneinheiten je Förderart je Jahr.
+     */
+    const jahrWithWohneinheitenForEachFoerderart = new Map<
       string | undefined,
       Map<string | undefined, number | undefined>
-    > = new Map();
+    >();
     for (const input of _.toArray(this.bauratendateiInput)) {
-      if (foerderartenWithWohneinheitenForJahr.has(input.jahr)) {
-        const foerderartWithWohneinheit = foerderartenWithWohneinheitenForJahr.get(input.jahr);
+      if (jahrWithWohneinheitenForEachFoerderart.has(input.jahr)) {
+        const foerderartWithWohneinheit = jahrWithWohneinheitenForEachFoerderart.get(input.jahr);
         if (!_.isNil(foerderartWithWohneinheit)) {
           foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
         }
       } else {
-        const foerderartWithWohneinheit: Map<string | undefined, number | undefined> = new Map();
+        const foerderartWithWohneinheit = new Map<string | undefined, number | undefined>();
         foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
-        foerderartenWithWohneinheitenForJahr.set(input.jahr, foerderartWithWohneinheit);
+        jahrWithWohneinheitenForEachFoerderart.set(input.jahr, foerderartWithWohneinheit);
       }
     }
+    /**
+     * Überführen der Ermittelten Wohneinheiten je Förderart je Jahr in Objekte.
+     *
+     * {
+     *   jahr: 2024,
+     *   foerderart1: 1000,
+     *   ...
+     *   foerderartX: 2385
+     * }
+     */
     const tableDataObjects: Array<any> = [];
-    foerderartenWithWohneinheitenForJahr.forEach((foerderartenWithWohneinheiten, jahr) => {
+    jahrWithWohneinheitenForEachFoerderart.forEach((foerderartenWithWohneinheiten, jahr) => {
       const tableEntry = new Map<string | undefined, string | number | undefined>();
       tableEntry.set("jahr", jahr);
       foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
