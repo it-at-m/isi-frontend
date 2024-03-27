@@ -38,6 +38,7 @@ export * from './KommentarSearchControllerApi';
 export * from './KommentareApi';
 export * from './KoordinatenApi';
 export * from './LookupApi';
+export * from './MetabaseReportingInformationApi';
 export * from './MimeTypeApi';
 export * from './ProfileControllerApi';
 export * from './SobonOrientierungswertSozialeInfrastrukturEntityControllerApi';
