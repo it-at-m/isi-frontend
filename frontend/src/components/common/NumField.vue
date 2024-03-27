@@ -6,7 +6,7 @@
     :required="required"
     :rules="getRules()"
     validate-on-blur
-    @input="commonStore.formChanged()"
+    @input="formChanged()"
   >
     <!--
     Dieses Konstrukt dient dazu:
@@ -160,10 +160,15 @@ export default {
       required: false,
     },
   },
+
   setup(props: Props): unknown {
-    // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
     const commonStore = useCommonStore();
 
+    function formChanged(): void {
+      commonStore.formChanged();
+    }
+
+    // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
     function getRules(): unknown[] {
       const usedRules: unknown[] = [];
 
@@ -228,7 +233,7 @@ export default {
       },
     );
 
-    return { getRules, inputRef, formattedValue };
+    return { getRules, formChanged, inputRef, formattedValue };
   },
 };
 </script>

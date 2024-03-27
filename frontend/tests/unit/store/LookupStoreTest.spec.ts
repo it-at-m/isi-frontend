@@ -85,11 +85,12 @@ function mockedLookupInititalizeNullValue(): Promise<Response> {
 describe("Lookup Store Initialize", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    vi.fn().mockReset();
   });
 
   it("initialize populates lookup lists correctly", async () => {
     const store = useLookupStore();
-    global.fetch = vi.fn(mockedLookupInititalize);
+    global.fetch = vi.fn().mockResolvedValue(mockedLookupInititalize());
 
     await store.inititalize();
 
@@ -159,7 +160,7 @@ describe("Lookup Store Initialize", () => {
 
   it("initialize populates lookup lists with null Value", async () => {
     const store = useLookupStore();
-    global.fetch = vi.fn(mockedLookupInititalizeNullValue);
+    global.fetch = vi.fn().mockResolvedValue(mockedLookupInititalizeNullValue());
 
     await store.inititalize();
 

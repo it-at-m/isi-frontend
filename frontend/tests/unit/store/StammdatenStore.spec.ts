@@ -9,7 +9,7 @@ function mockedInitializeFoerdermixStamm(): Promise<Response> {
   ] as FoerdermixStammDto[];
 
   const responseInit: ResponseInit = {
-    status: 200, // OK
+    status: 200,
     statusText: "OK",
     headers: {
       "Content-Type": "application/json",
@@ -46,11 +46,12 @@ function mockedInitializeFileStamm(): Promise<Response> {
 describe("Stammdaten Store Initizalize", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    vi.fn().mockReset();
   });
 
   it("initialize populates foerdermixstamm correctly", async () => {
     const store = useStammdatenStore();
-    global.fetch = vi.fn(mockedInitializeFoerdermixStamm);
+    global.fetch = vi.fn().mockResolvedValue(mockedInitializeFoerdermixStamm());
 
     await store.initializeFoerdermixStamm();
 
@@ -63,7 +64,7 @@ describe("Stammdaten Store Initizalize", () => {
 
   it("initialize populates filestamm correctly", async () => {
     const store = useStammdatenStore();
-    global.fetch = vi.fn(mockedInitializeFileStamm);
+    global.fetch = vi.fn().mockResolvedValue(mockedInitializeFileStamm());
 
     await store.initializeFileStamm();
 
