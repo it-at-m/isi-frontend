@@ -195,6 +195,30 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     anmerkung?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    hasBauratendateiInput?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    anmerkungBauratendateiInput?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    bauratendateiInputBasis?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    bauratendateiInput?: Array<string>;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
@@ -364,6 +388,10 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
+        'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
+        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : json['bauratendateiInputBasis'],
+        'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : json['bauratendateiInput'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : json['bauabschnitte'],
@@ -418,6 +446,10 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSON(value?:
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'hasBauratendateiInput': value.hasBauratendateiInput,
+        'anmerkungBauratendateiInput': value.anmerkungBauratendateiInput,
+        'bauratendateiInputBasis': value.bauratendateiInputBasis,
+        'bauratendateiInput': value.bauratendateiInput,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,
         'bauabschnitte': value.bauabschnitte,

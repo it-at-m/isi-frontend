@@ -73,6 +73,12 @@
         </v-col>
       </v-row>
     </field-group-card>
+    <field-group-card :card-title="bauratenDateiInputTitle">
+      <bauratendatei-input
+        v-model="abfragevarianteSachbearbeitung"
+        :is-editable="isEditableBySachbearbeitung()"
+      />
+    </field-group-card>
   </div>
 </template>
 
@@ -90,6 +96,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
@@ -97,6 +104,7 @@ import _ from "lodash";
 
 @Component({
   components: {
+    BauratendateiInput,
     SobonBerechnung,
     ReportsPlanungsursaechlichkeitComponent,
     ReportsSobonursaechlichkeitComponent,
@@ -117,6 +125,8 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private readonly isEditable!: boolean;
 
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
+
+  private bauratenDateiInputTitle = "Bauratendatei und Schülerpotentialprognose";
 
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     if (
