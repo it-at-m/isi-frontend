@@ -95,21 +95,37 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { DataTableHeader } from "vuetify";
-import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
 import _ from "lodash";
+import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: Array })
-  private input!: BauratendateiInput[];
+  private input!: Array<WohneinheitenProFoerderartProJahrDto>;
 
   get headers(): Array<DataTableHeader> {
-    return _.toArray(this.input);
+    const headersForFoerderarten = _.uniq(
+      _.toArray(this.input).map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart),
+    );
+    const headers = headersForFoerderarten.map((headerFoerderart) => {
+      return {
+        text: headerFoerderart,
+        value: headerFoerderart,
+        align: "start",
+      } as DataTableHeader;
+    });
+    const headerForJahr = {
+      text: "Jahr",
+      value: "jahr",
+      align: "start",
+    } as DataTableHeader;
+    headers.unshift(headerForJahr);
+    return headers;
   }
 
   @Prop({ type: Array, default: [] })
