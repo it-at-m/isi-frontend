@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { pflichtfeld, min5 } from "@/composables/validation/FieldValidationRules";
+import { pflichtfeld, min5 } from "@/utils/FieldValidationRules";
 
 const longText = ref("Test");
 </script>
