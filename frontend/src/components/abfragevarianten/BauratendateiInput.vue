@@ -124,7 +124,7 @@ import { DataTableHeader } from "vuetify";
 import _ from "lodash";
 
 @Component({ components: { FieldGroupCard, Spreadsheet } })
-export default class BauratendateiInputs extends Mixins(SaveLeaveMixin) {
+export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
 

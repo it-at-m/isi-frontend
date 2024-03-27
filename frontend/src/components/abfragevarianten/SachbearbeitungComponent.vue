@@ -74,7 +74,7 @@
       </v-row>
     </field-group-card>
     <field-group-card :card-title="bauratenDateiInputTitle">
-      <bauratendatei-inputs
+      <bauratendatei-input
         v-model="abfragevarianteSachbearbeitung"
         :is-editable="isEditableBySachbearbeitung()"
       />
@@ -96,6 +96,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
@@ -103,6 +104,7 @@ import _ from "lodash";
 
 @Component({
   components: {
+    BauratendateiInput,
     SobonBerechnung,
     ReportsPlanungsursaechlichkeitComponent,
     ReportsSobonursaechlichkeitComponent,
