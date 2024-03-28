@@ -177,15 +177,15 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
   }
 
   private getUrlReportWohneinheiten(): string {
-    return import.meta.env.VITE_REPORT_WOHNEINHEITEN_URL as string;
+    return `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportWohneinheiten}`;
   }
 
   private getUrlReportBedarfe(): string {
-    return import.meta.env.VITE_REPORT_BEDARF_URL as string;
+    return `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportBedarfe}`;
   }
 
   private getUrlReportSoBonSpitzenbedarfe(): string {
-    return import.meta.env.VITE_REPORT_SOBON_SPITZENBEDARFE_URL as string;
+    return `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportSpitzenbedarfeSobonUrsaechlich}`;
   }
 
   private getParameterAbfrageId(): string {

@@ -81,24 +81,14 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   private getUrlWohneinheiten(): string {
-    const url = new URL(this.getUrlReportWohneinheiten());
-    console.log(url);
     const abfrageId = this.getParameterValueAbfrageId();
-    console.log(url);
     url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
-    console.log(url);
     const artAbfrage = this.getParameterValueArtAbfrage();
-    console.log(url);
     url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
-    console.log(url);
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
-    console.log(url);
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    console.log(url);
     const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
-    console.log(url);
     url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
-    console.log(url);
     return url.toString();
   }
 
@@ -157,21 +147,15 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   }
 
   private getUrlReportWohneinheiten(): string {
-    let url = `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportWohneinheiten}`;
-    console.log("getUrlReportWohneinheiten: " + url);
-    return url;
+    return `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportWohneinheiten}`;
   }
 
   private getUrlReportBedarfe(): string {
-    let url = `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportBedarfe}`;
-    console.log("getUrlReportBedarfe: " + url);
-    return url;
+    return `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportBedarfe}`;
   }
 
   private getUrlReportSpitzenbedarfe(): string {
-    let url = `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportSpitzenbedarfePlanungsursaechlich}`;
-    console.log("getUrlReportSpitzenbedarfe: " + url);
-    return url;
+    return `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportSpitzenbedarfePlanungsursaechlich}`;
   }
 
   private getParameterAbfrageId(): string {
