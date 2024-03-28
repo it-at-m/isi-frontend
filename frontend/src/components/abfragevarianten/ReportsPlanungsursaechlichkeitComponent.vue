@@ -81,6 +81,7 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   private getUrlWohneinheiten(): string {
+    const url = new URL(this.getUrlReportWohneinheiten());
     const abfrageId = this.getParameterValueAbfrageId();
     url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
     const artAbfrage = this.getParameterValueArtAbfrage();
