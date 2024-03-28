@@ -81,26 +81,24 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   private getUrlWohneinheiten(): string {
-    console.log("1");
     const url = new URL(this.getUrlReportWohneinheiten());
-    console.log("2");
+    console.log(url);
     const abfrageId = this.getParameterValueAbfrageId();
-    console.log("3");
+    console.log(url);
     url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
-    console.log("4");
+    console.log(url);
     const artAbfrage = this.getParameterValueArtAbfrage();
-    console.log("5");
+    console.log(url);
     url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
-    console.log("6");
+    console.log(url);
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
-    console.log("7");
+    console.log(url);
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    console.log("8");
+    console.log(url);
     const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
-    console.log("9");
+    console.log(url);
     url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
-    console.log("getUrlWohneinheiten: " + url);
-
+    console.log(url);
     return url.toString();
   }
 
