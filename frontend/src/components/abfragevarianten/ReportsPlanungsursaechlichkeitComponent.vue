@@ -81,15 +81,26 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   private getUrlWohneinheiten(): string {
+    console.log("1");
     const url = new URL(this.getUrlReportWohneinheiten());
+    console.log("2");
     const abfrageId = this.getParameterValueAbfrageId();
+    console.log("3");
     url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
+    console.log("4");
     const artAbfrage = this.getParameterValueArtAbfrage();
+    console.log("5");
     url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
+    console.log("6");
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
+    console.log("7");
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
+    console.log("8");
     const ursaechlichkeit = this.getParameterValuePlanungsursaechlich();
+    console.log("9");
     url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    console.log("getUrlWohneinheiten: " + url);
+
     return url.toString();
   }
 
@@ -148,15 +159,21 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   }
 
   private getUrlReportWohneinheiten(): string {
-    return import.meta.env.VITE_REPORT_WOHNEINHEITEN_URL as string;
+    let url = `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportWohneinheiten}`;
+    console.log("getUrlReportWohneinheiten: " + url);
+    return url;
   }
 
   private getUrlReportBedarfe(): string {
-    return import.meta.env.VITE_REPORT_BEDARF_URL as string;
+    let url = `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportBedarfe}`;
+    console.log("getUrlReportBedarfe: " + url);
+    return url;
   }
 
   private getUrlReportSpitzenbedarfe(): string {
-    return import.meta.env.VITE_REPORT_SPITZENBEDARF_URL as string;
+    let url = `${this.$store.getters["metabaseReporting/metabaseReportingInformation"].url}/${this.$store.getters["metabaseReporting/metabaseReportingInformation"].reportSpitzenbedarfePlanungsursaechlich}`;
+    console.log("getUrlReportSpitzenbedarfe: " + url);
+    return url;
   }
 
   private getParameterAbfrageId(): string {

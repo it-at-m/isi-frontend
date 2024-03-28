@@ -35,11 +35,5 @@ export default {
         context.commit("metabaseReportingInformation", dto);
       });
     },
-    allowedFileExtensions(
-      context: ActionContext<MetabaseReportingInformationState, RootState>,
-      dto: MetabaseReportingDto[],
-    ): void {
-      context.commit("metabaseReportingInformation", dto);
-    },
   },
 };

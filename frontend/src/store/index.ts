@@ -10,6 +10,7 @@ import FileInfoStammStore, { FileInfoStammState } from "./modules/FileInfoStammS
 import InformationStore from "./modules/InformationStore";
 import VerortungStore, { VerortungState } from "./modules/VerortungStore";
 import UserinfoStore, { UserinfoState } from "./modules/Userinfostore";
+import MetabaseReportingStore, { MetabaseReportingInformationState } from "./modules/MetabaseReportingStore";
 
 Vue.use(Vuex);
 const debug = import.meta.env.DEV;
@@ -24,6 +25,7 @@ export interface RootState {
   fileInfoStamm: FileInfoStammState;
   verortungState: VerortungState;
   userinfo: UserinfoState;
+  metabaseReporting: MetabaseReportingInformationState;
 }
 
 export default new Vuex.Store<RootState>({
@@ -38,6 +40,7 @@ export default new Vuex.Store<RootState>({
     information: InformationStore,
     verortung: VerortungStore,
     userinfo: UserinfoStore,
+    metabaseReporting: MetabaseReportingStore,
   },
   strict: debug,
 });

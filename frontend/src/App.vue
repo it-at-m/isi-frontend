@@ -158,6 +158,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
     this.$store.dispatch("lookup/initialize");
     this.$store.dispatch("fileInfoStamm/initialize");
     this.$store.dispatch("stammdaten/initialize");
+    this.$store.dispatch("metabaseReporting/initialize");
   }
 
   mounted(): void {
