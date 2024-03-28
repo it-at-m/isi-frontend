@@ -87,7 +87,7 @@
       <v-list-item-title>
         <a
           target="_blank"
-          :href="getUrlReportErgebnisseSobonursaechlicheBedarfe()"
+          :href="getUrlErgebnisseSobonursaechlicheBedarfe()"
         >
           Ergebnisse Bedarfsberechnung<span class="mdi mdi-launch" />
         </a>
