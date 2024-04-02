@@ -50,6 +50,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
+import { useLookupStore } from "@/stores/LookupStore";
 @Component({
   components: {
     FieldGroupCard,
@@ -60,6 +61,8 @@ import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/
 export default class SchuleComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: SchuleModel }) schule!: SchuleModel;
 
+  private lookupStore = useLookupStore();
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
@@ -67,7 +70,7 @@ export default class SchuleComponent extends Mixins(FieldValidationRulesMixin, S
   private readonly isEinrichtungstraegerRequired!: boolean;
 
   get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraegerSchulen"];
+    return this.lookupStore.einrichtungstraeger;
   }
 }
 </script>

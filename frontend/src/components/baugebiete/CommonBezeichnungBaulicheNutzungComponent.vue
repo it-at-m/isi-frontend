@@ -52,6 +52,7 @@ import DisplayMode from "@/types/common/DisplayMode";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import NumField from "@/components/common/NumField.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({ components: { NumField, FieldGroupCard, BauratenAggregiertComponent } })
 export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
@@ -61,6 +62,8 @@ export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
   AbfrageSecurityMixin,
 ) {
   @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
+
+  private lookupStore = useLookupStore();
 
   @Prop()
   private abfragevariante:
@@ -89,7 +92,7 @@ export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
   }
 
   get artBaulicheNutzungList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/artBaulicheNutzung"];
+    return this.lookupStore.artBaulicheNutzung;
   }
 }
 </script>

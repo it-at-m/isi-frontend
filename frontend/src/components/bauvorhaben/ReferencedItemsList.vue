@@ -72,17 +72,19 @@ import {
   InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
-import store from "@/store/index";
 import _ from "lodash";
 import router from "@/router";
 import moment from "moment";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component
 export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMixin) {
   private isAbfrageListOpen = false;
 
   private isInfraListOpen = false;
+
+  private lookupStore = useLookupStore();
 
   abfragen: Array<AbfrageSearchResultDto> = [];
 
@@ -129,7 +131,7 @@ export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMix
   }
 
   get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
-    return store.getters["lookup/infrastruktureinrichtungTyp"];
+    return this.lookupStore.infrastruktureinrichtungTyp;
   }
 
   /**

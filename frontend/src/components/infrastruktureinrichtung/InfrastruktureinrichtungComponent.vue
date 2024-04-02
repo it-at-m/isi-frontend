@@ -140,7 +140,7 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
-
+import { useLookupStore } from "@/stores/LookupStore";
 @Component({
   components: {
     FieldGroupCard,
@@ -167,12 +167,14 @@ export default class InfrastruktureinrichtungComponent extends Mixins(
 
   private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
 
+  private lookupStore = useLookupStore();
+
   mounted(): void {
     this.fetchBauvorhaben();
   }
 
   get statusInfrastruktureinrichtungList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/statusInfrastruktureinrichtung"];
+    return this.lookupStore.statusInfrastruktureinrichtung;
   }
 
   private isFertigstellungsjahrRequired(): boolean {

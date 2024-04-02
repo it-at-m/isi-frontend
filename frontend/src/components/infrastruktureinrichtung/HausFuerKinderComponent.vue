@@ -162,6 +162,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
+import { useLookupStore } from "@/stores/LookupStore";
 @Component({
   components: {
     FieldGroupCard,
@@ -172,6 +173,8 @@ import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/
 export default class HausFuerKinderComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: HausFuerKinderModel }) hausFuerKinder!: HausFuerKinderModel;
 
+  private lookupStore = useLookupStore();
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
@@ -179,7 +182,7 @@ export default class HausFuerKinderComponent extends Mixins(FieldValidationRules
   private readonly isEinrichtungstraegerRequired!: boolean;
 
   get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraeger"];
+    return this.lookupStore.einrichtungstraeger;
   }
 }
 </script>
