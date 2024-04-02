@@ -1,84 +1,130 @@
-import Vuex from "vuex";
-import Vue from "vue";
-import {
-  AbfrageListElementDto,
-  AbfrageListElementDtoStandVorhabenEnum,
-  InfrastruktureinrichtungListElementDto,
-  InfrastruktureinrichtungListElementDtoInfrastruktureinrichtungTypEnum,
-} from "@/api/api-client";
-import { createBauvorhabenDto } from "@/utils/Factories";
-import User, { UserState } from "@/store/modules/User";
-import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
-import CommonStore, { CommonState } from "@/store/modules/CommonStore";
-import LookupStore, { LookupState } from "@/store/modules/LookupStore";
-import SearchStore, { SearchState } from "@/store/modules/SearchStore";
-import StammdatenStore, { StammdatenState } from "@/store/modules/StammdatenStore";
-import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
+import { describe, it, expect, beforeEach } from "vitest";
+import { createPinia, setActivePinia } from "pinia";
+import { useUserinfoStore } from "@/stores/Userinfostore";
 import { Userinfo } from "@/types/common/Userinfo";
-import UserinfoStore, { UserinfoState } from "@/store/modules/Userinfostore";
-import MetabaseReportingStore, { MetabaseReportingInformationState } from "@/store/modules/MetabaseReportingStore";
 
-describe("UserinfoStoreTest.spec.ts", () => {
-  Vue.use(Vuex);
-
-  interface RootState {
-    snackbarState: SnackbarState;
-    userState: UserState;
-    foerdermix: StammdatenState;
-    common: CommonState;
-    lookup: LookupState;
-    search: SearchState;
-    fileInfoStamm: FileInfoStammState;
-    userinfo: UserinfoState;
-    metabaseReporting: MetabaseReportingInformationState;
-  }
-
-  const store = new Vuex.Store<RootState>({
-    modules: {
-      user: User,
-      snackbar: Snackbar,
-      foerdermix: StammdatenStore,
-      common: CommonStore,
-      lookup: LookupStore,
-      search: SearchStore,
-      fileInfoStamm: FileInfoStammStore,
-      userinfo: UserinfoStore,
-      metabaseReporting: MetabaseReportingStore,
-    },
+describe("Userinfo Store", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
   });
 
-  // Test Userinfo
-  test("Save Userinfo in Store", async () => {
-    const userinfo: Userinfo = new Userinfo();
-    userinfo.givenname = "Vorname";
-    userinfo.surname = "Nachname";
-    userinfo.department = "Abteilung";
-    userinfo.email = "Email";
-    userinfo.roles = ["Admin"];
-    store.commit("userinfo/userinfo", userinfo);
-    expect(store.getters["userinfo/userinfo"].givenname).toEqual("Vorname");
-    expect(store.getters["userinfo/userinfo"].surname).toEqual("Nachname");
-    expect(store.getters["userinfo/userinfo"].department).toEqual("Abteilung");
-    expect(store.getters["userinfo/userinfo"].email).toEqual("Email");
-    expect(store.getters["userinfo/userinfo"].roles[0]).toEqual("Admin");
+  it("setUserinfo updates the userinfo correctly", () => {
+    const userinfoStore = useUserinfoStore();
+    const newUserinfo: Userinfo = {
+      givenname: "Testing",
+      roles: ["anwender", "admin"],
+      surname: "Testing",
+      department: "Coole Abteilung",
+      email: "meister@meister.de",
+    };
+    userinfoStore.setUserinfo(newUserinfo);
+    expect(userinfoStore.userinfo).toEqual(newUserinfo);
   });
 
-  // Test Userinfo has role admin
-  test("Test has role admin", async () => {
-    const userinfo: Userinfo = new Userinfo();
-    userinfo.roles = ["admin"];
-    store.commit("userinfo/userinfo", userinfo);
-    expect(store.getters["userinfo/hasRoleAdmin"]).toBeTruthy();
-    expect(store.getters["userinfo/hasRoleAbfrageerstellung"]).not.toBeTruthy();
-  });
+  describe("Role-based getters", () => {
+    it("hasRoleAdmin returns true if the user has admin role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "admin"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleAdmin).toBe(true);
+    });
 
-  // Test Userinfo has role admin and abfrageersteller
-  test("Test has role admin and abfrageersteller", async () => {
-    const userinfo: Userinfo = new Userinfo();
-    userinfo.roles = ["admin", "abfrageerstellung"];
-    store.commit("userinfo/userinfo", userinfo);
-    expect(store.getters["userinfo/hasRoleAdmin"]).toBeTruthy();
-    expect(store.getters["userinfo/hasRoleAbfrageerstellung"]).toBeTruthy();
-    expect(store.getters["userinfo/hasRoleSachbearbeitung"]).not.toBeTruthy();
+    it("hasRoleAbfrageerstellung returns true if the user has abfrageerstellung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "abfrageerstellung"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleAbfrageerstellung).toBe(true);
+    });
+
+    it("hasRoleAbfrageerstellung returns false if the user has not abfrageerstellung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleAbfrageerstellung).toBe(false);
+    });
+
+    it("hasRoleSachbearbeitung returns true if the user has sachbearbeitung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "sachbearbeitung"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleSachbearbeitung).toBe(true);
+    });
+
+    it("hasRoleSachbearbeitung returns false if the user has not sachbearbeitung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleSachbearbeitung).toBe(false);
+    });
+
+    it("hasRoleBedarfsmeldung returns true if the user has bedarfsmeldung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "bedarfsmeldung"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleBedarfsmeldung).toBe(true);
+    });
+
+    it("hasRoleBedarfsmeldung returns false if the user has not bedarfsmeldung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleBedarfsmeldung).toBe(false);
+    });
+
+    it("hasOnlyRoleAnwender returns true if anwender is the only role of the user", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasOnlyRoleAnwender).toBe(true);
+
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "admin"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasOnlyRoleAnwender).toBe(false);
+    });
   });
 });

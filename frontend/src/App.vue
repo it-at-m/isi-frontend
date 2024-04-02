@@ -134,6 +134,11 @@ import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
 import SearchInputField from "@/components/search/SearchInputField.vue";
+import { useLookupStore } from "@/stores/LookupStore";
+import { useStammdatenStore } from "@/stores/StammdatenStore";
+import { useSnackbarStore } from "@/stores/SnackbarStore";
+import { useUserinfoStore } from "@/stores/Userinfostore";
+import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
 
 @Component({
   components: { SearchInputField, TheSnackbar, VersionInfo },
@@ -149,22 +154,32 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   private menu = false;
 
+  private lookupStore = useLookupStore();
+
+  private stammdatenStore = useStammdatenStore();
+
+  private snackbarStore = useSnackbarStore();
+
+  private userInfoStore = useUserinfoStore();
+
+  private metabaseReportingStore = useMetabaseReportingStore();
+
   // Schreibt alle Nutzerollen in einen String für die Darstellung
   get userRoles(): string {
     return _.join(this.userinfo.roles, ", ");
   }
 
   created(): void {
-    this.$store.dispatch("lookup/initialize");
-    this.$store.dispatch("fileInfoStamm/initialize");
-    this.$store.dispatch("stammdaten/initialize");
-    this.$store.dispatch("metabaseReporting/initialize");
+    this.lookupStore.inititalize();
+    this.stammdatenStore.initializeFileStamm();
+    this.stammdatenStore.initializeFoerdermixStamm();
+    this.metabaseReportingStore.initialize();
   }
 
   mounted(): void {
     this.getUserinfo().then((userinfo: Userinfo) => {
       this.userinfo = userinfo;
-      this.$store.commit("userinfo/userinfo", userinfo);
+      this.userInfoStore.setUserinfo(userinfo);
     });
     this.query = this.$route.params.query;
   }
@@ -183,9 +198,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
    */
   public async search(): Promise<void> {
     if (this.query !== "" && this.query !== null) {
-      this.$store.dispatch("snackbar/showMessage", {
-        message: "Sie haben nach " + this.query + " gesucht. ;)",
-      });
+      this.snackbarStore.showMessage("Sie haben nach " + this.query + " gesucht.");
     }
   }
 }
