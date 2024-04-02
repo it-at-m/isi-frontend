@@ -35,7 +35,6 @@ describe("Search Store", () => {
     searchStore.setSearchResults(initialResults);
     searchStore.removeSearchResultById("1234");
     expect(searchStore.searchResults.searchResults).toHaveLength(1);
-    expect(searchStore.searchResults.searchResults).not.toBeUndefined();
     // @ts-ignore
     expect(searchStore.searchResults.searchResults[0].id).toBe("5678");
     // @ts-ignore // @ts-ignore

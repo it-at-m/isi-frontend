@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { Levels } from "@/api/error";
-import _ from "lodash";
 
 interface State {
   message: string | undefined;

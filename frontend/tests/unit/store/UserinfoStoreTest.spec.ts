@@ -22,7 +22,7 @@ describe("Userinfo Store", () => {
   });
 
   describe("Role-based getters", () => {
-    it("hasRoleAdmin returns true if the user has an admin role", () => {
+    it("hasRoleAdmin returns true if the user has admin role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -34,7 +34,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleAdmin).toBe(true);
     });
 
-    it("hasRoleAbfrageerstellung returns true if the user has an abfrageerstellung role", () => {
+    it("hasRoleAbfrageerstellung returns true if the user has abfrageerstellung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -46,7 +46,19 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleAbfrageerstellung).toBe(true);
     });
 
-    it("hasRoleSachbearbeitung returns true if the user has a sachbearbeitung role", () => {
+    it("hasRoleAbfrageerstellung returns false if the user has not abfrageerstellung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleAbfrageerstellung).toBe(false);
+    });
+
+    it("hasRoleSachbearbeitung returns true if the user has sachbearbeitung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -58,7 +70,19 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleSachbearbeitung).toBe(true);
     });
 
-    it("hasRoleBedarfsmeldung returns true if the user has a bedarfsmeldung role", () => {
+    it("hasRoleSachbearbeitung returns false if the user has not sachbearbeitung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleSachbearbeitung).toBe(false);
+    });
+
+    it("hasRoleBedarfsmeldung returns true if the user has bedarfsmeldung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -68,6 +92,18 @@ describe("Userinfo Store", () => {
         email: "meister@meister.de",
       });
       expect(userinfoStore.hasRoleBedarfsmeldung).toBe(true);
+    });
+
+    it("hasRoleBedarfsmeldung returns false if the user has not bedarfsmeldung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleBedarfsmeldung).toBe(false);
     });
 
     it("hasOnlyRoleAnwender returns true if anwender is the only role of the user", () => {

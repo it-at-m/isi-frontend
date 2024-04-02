@@ -41,10 +41,8 @@ describe("Snackbar Store", () => {
   });
 
   it("showMessage defaults to INFO level if no level set", () => {
-    const nullValue: unknown = undefined;
     const snackbarStore = useSnackbarStore();
     const testMessage = "Another test message";
-    snackbarStore.setLevel(nullValue as Levels);
     snackbarStore.showMessage(testMessage);
 
     expect(snackbarStore.message).toBe(testMessage);

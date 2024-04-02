@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { LookupApi, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { LookupApi, LookupEntryDto, LookupListDto } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import _ from "lodash";
 
@@ -57,145 +57,131 @@ export const useLookupStore = defineStore("lookup", {
     async inititalize(): Promise<void> {
       const lookupApi = new LookupApi(RequestUtils.getBasicFetchConfigurationForBackend());
       await lookupApi.getLookupLists(RequestUtils.getGETConfig()).then((lookupLists) => {
-        !_.isNil(lookupLists.uncertainBoolean?.list)
-          ? this.setUncertainBoolean(lookupLists.uncertainBoolean?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artDokument?.list)
-          ? this.setArtDokument(lookupLists.artDokument?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setArtAbfrage(lookupLists.artAbfrage?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setSobonVerfahrensgrundsaetzeJahr(lookupLists.sobonVerfahrensgrundsaetzeJahr?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setStandVerfahrenBauleitplanverfahren(
-              lookupLists.standVerfahrenBauleitplanverfahren?.list as LookupEntryDto[],
-            )
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setStandVerfahrenBaugenehmigungsverfahren(
-              lookupLists.standVerfahrenBaugenehmigungsverfahren?.list as LookupEntryDto[],
-            )
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setStandVerfahrenWeiteresVerfahren(
-              lookupLists.standVerfahrenWeiteresVerfahren?.list as LookupEntryDto[],
-            )
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setStandVerfahren(lookupLists.standVerfahren?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setStatusAbfrage(lookupLists.statusAbfrage?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setWesentlicheRechtsgrundlageBauleitplanverfahren(
-              lookupLists.wesentlicheRechtsgrundlageBauleitplanverfahren?.list as LookupEntryDto[],
-            )
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
-              lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren?.list as LookupEntryDto[],
-            )
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setWesentlicheRechtsgrundlage(lookupLists.wesentlicheRechtsgrundlage?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setArtBaulicheNutzung(lookupLists.artBaulicheNutzung?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setArtBaulicheNutzungBauvorhaben(lookupLists.artBaulicheNutzungBauvorhaben?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setStatusInfrastruktureinrichtung(lookupLists.statusInfrastruktureinrichtung?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setEinrichtungstraeger(lookupLists.einrichtungstraeger?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setEinrichtungstraegerSchulen(lookupLists.einrichtungstraegerSchulen?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setInfrastruktureinrichtungTyp(lookupLists.infrastruktureinrichtungTyp?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setArtGsNachmittagBetreuung(lookupLists.artGsNachmittagBetreuung?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setSobonOrientierungswertJahr(lookupLists.sobonOrientierungswertJahr?.list as LookupEntryDto[])
-          : [];
-        !_.isNil(lookupLists.artAbfrage?.list)
-          ? this.setSobonOrientierungswertJahrWithoutStandortabfrage(
-              lookupLists.sobonOrientierungswertJahrWithoutStandortabfrage?.list as LookupEntryDto[],
-            )
-          : [];
+        this.setUncertainBoolean(lookupLists.uncertainBoolean);
+        this.setArtDokument(lookupLists.artDokument);
+        this.setArtAbfrage(lookupLists.artAbfrage);
+        this.setSobonVerfahrensgrundsaetzeJahr(lookupLists.sobonVerfahrensgrundsaetzeJahr);
+        this.setStandVerfahrenBauleitplanverfahren(lookupLists.standVerfahrenBauleitplanverfahren);
+        this.setStandVerfahrenBaugenehmigungsverfahren(lookupLists.standVerfahrenBaugenehmigungsverfahren);
+        this.setStandVerfahrenWeiteresVerfahren(lookupLists.standVerfahrenWeiteresVerfahren);
+        this.setStandVerfahren(lookupLists.standVerfahren);
+        this.setStatusAbfrage(lookupLists.statusAbfrage);
+        this.setWesentlicheRechtsgrundlageBauleitplanverfahren(
+          lookupLists.wesentlicheRechtsgrundlageBauleitplanverfahren,
+        );
+        this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
+          lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
+        );
+        this.setWesentlicheRechtsgrundlage(lookupLists.wesentlicheRechtsgrundlage);
+        this.setArtBaulicheNutzung(lookupLists.artBaulicheNutzung);
+        this.setArtBaulicheNutzungBauvorhaben(lookupLists.artBaulicheNutzungBauvorhaben);
+        this.setStatusInfrastruktureinrichtung(lookupLists.statusInfrastruktureinrichtung);
+        this.setEinrichtungstraeger(lookupLists.einrichtungstraeger);
+        this.setEinrichtungstraegerSchulen(lookupLists.einrichtungstraegerSchulen);
+        this.setInfrastruktureinrichtungTyp(lookupLists.infrastruktureinrichtungTyp);
+        this.setArtGsNachmittagBetreuung(lookupLists.artGsNachmittagBetreuung);
+        this.setSobonOrientierungswertJahr(lookupLists.sobonOrientierungswertJahr);
+        this.setSobonOrientierungswertJahrWithoutStandortabfrage(
+          lookupLists.sobonOrientierungswertJahrWithoutStandortabfrage,
+        );
       });
     },
-    setUncertainBoolean(payload: LookupEntryDto[]): void {
-      this.uncertainBoolean = payload;
+    setUncertainBoolean(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.uncertainBoolean = payload?.list)
+        : (this.uncertainBoolean = []);
     },
-    setArtDokument(payload: LookupEntryDto[]): void {
-      this.artDokument = payload;
+    setArtDokument(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list) ? (this.artDokument = payload?.list) : (this.artDokument = []);
     },
-    setArtAbfrage(payload: LookupEntryDto[]): void {
-      this.artAbfrage = payload;
+    setArtAbfrage(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list) ? (this.artAbfrage = payload?.list) : (this.artAbfrage = []);
     },
-    setSobonVerfahrensgrundsaetzeJahr(payload: LookupEntryDto[]): void {
-      this.sobonVerfahrensgrundsaetzeJahr = payload;
+    setSobonVerfahrensgrundsaetzeJahr(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.sobonVerfahrensgrundsaetzeJahr = payload?.list)
+        : (this.sobonVerfahrensgrundsaetzeJahr = []);
     },
-    setStandVerfahrenBauleitplanverfahren(payload: LookupEntryDto[]): void {
-      this.standVerfahrenBauleitplanverfahren = payload;
+    setStandVerfahrenBauleitplanverfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.standVerfahrenBauleitplanverfahren = payload?.list)
+        : (this.standVerfahrenBauleitplanverfahren = []);
     },
-    setStandVerfahrenBaugenehmigungsverfahren(payload: LookupEntryDto[]): void {
-      this.standVerfahrenBaugenehmigungsverfahren = payload;
+    setStandVerfahrenBaugenehmigungsverfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.standVerfahrenBaugenehmigungsverfahren = payload?.list)
+        : (this.standVerfahrenBaugenehmigungsverfahren = []);
     },
-    setStandVerfahrenWeiteresVerfahren(payload: LookupEntryDto[]): void {
-      this.standVerfahrenWeiteresVerfahren = payload;
+    setStandVerfahrenWeiteresVerfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.standVerfahrenWeiteresVerfahren = payload?.list)
+        : (this.standVerfahrenWeiteresVerfahren = []);
     },
-    setStandVerfahren(payload: LookupEntryDto[]): void {
-      this.standVerfahren = payload;
+    setStandVerfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list) ? (this.standVerfahren = payload?.list) : (this.standVerfahren = []);
     },
-    setStatusAbfrage(payload: LookupEntryDto[]): void {
-      this.statusAbfrage = payload;
+    setStatusAbfrage(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list) ? (this.statusAbfrage = payload?.list) : (this.statusAbfrage = []);
     },
-    setWesentlicheRechtsgrundlageBauleitplanverfahren(payload: LookupEntryDto[]): void {
-      this.wesentlicheRechtsgrundlageBauleitplanverfahren = payload;
+    setWesentlicheRechtsgrundlageBauleitplanverfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.wesentlicheRechtsgrundlageBauleitplanverfahren = payload?.list)
+        : (this.wesentlicheRechtsgrundlageBauleitplanverfahren = []);
     },
-    setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(payload: LookupEntryDto[]): void {
-      this.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = payload;
+    setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = payload?.list)
+        : (this.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = []);
     },
-    setWesentlicheRechtsgrundlage(payload: LookupEntryDto[]): void {
-      this.wesentlicheRechtsgrundlage = payload;
+    setWesentlicheRechtsgrundlage(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.wesentlicheRechtsgrundlage = payload?.list)
+        : (this.wesentlicheRechtsgrundlage = []);
     },
-    setArtBaulicheNutzung(payload: LookupEntryDto[]): void {
-      this.artBaulicheNutzung = payload;
+    setArtBaulicheNutzung(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.artBaulicheNutzung = payload?.list)
+        : (this.artBaulicheNutzung = []);
     },
-    setArtBaulicheNutzungBauvorhaben(payload: LookupEntryDto[]): void {
-      this.artBaulicheNutzungBauvorhaben = payload;
+    setArtBaulicheNutzungBauvorhaben(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.artBaulicheNutzungBauvorhaben = payload?.list)
+        : (this.artBaulicheNutzungBauvorhaben = []);
     },
-    setStatusInfrastruktureinrichtung(payload: LookupEntryDto[]): void {
-      this.statusInfrastruktureinrichtung = payload;
+    setStatusInfrastruktureinrichtung(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.statusInfrastruktureinrichtung = payload?.list)
+        : (this.statusInfrastruktureinrichtung = []);
     },
-    setEinrichtungstraeger(payload: LookupEntryDto[]): void {
-      this.einrichtungstraeger = payload;
+    setEinrichtungstraeger(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.einrichtungstraeger = payload?.list)
+        : (this.einrichtungstraeger = []);
     },
-    setEinrichtungstraegerSchulen(payload: LookupEntryDto[]): void {
-      this.einrichtungstraegerSchulen = payload;
+    setEinrichtungstraegerSchulen(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.einrichtungstraegerSchulen = payload?.list)
+        : (this.einrichtungstraegerSchulen = []);
     },
-    setInfrastruktureinrichtungTyp(payload: LookupEntryDto[]): void {
-      this.infrastruktureinrichtungTyp = payload;
+    setInfrastruktureinrichtungTyp(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.infrastruktureinrichtungTyp = payload?.list)
+        : (this.infrastruktureinrichtungTyp = []);
     },
-    setArtGsNachmittagBetreuung(payload: LookupEntryDto[]): void {
-      this.artGsNachmittagBetreuung = payload;
+    setArtGsNachmittagBetreuung(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.artGsNachmittagBetreuung = payload?.list)
+        : (this.artGsNachmittagBetreuung = []);
     },
-    setSobonOrientierungswertJahr(payload: LookupEntryDto[]): void {
-      this.sobonOrientierungswertJahr = payload;
+    setSobonOrientierungswertJahr(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.sobonOrientierungswertJahr = payload?.list)
+        : (this.sobonOrientierungswertJahr = []);
     },
-    setSobonOrientierungswertJahrWithoutStandortabfrage(payload: LookupEntryDto[]): void {
-      this.sobonOrientierungswertJahrWithoutStandortabfrage = payload;
+    setSobonOrientierungswertJahrWithoutStandortabfrage(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.sobonOrientierungswertJahrWithoutStandortabfrage = payload?.list)
+        : (this.sobonOrientierungswertJahrWithoutStandortabfrage = []);
     },
   },
 });
