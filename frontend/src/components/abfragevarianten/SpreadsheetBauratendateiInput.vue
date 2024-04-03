@@ -8,6 +8,9 @@
       :items="tableData"
       class="elevation-1"
       fixed-header
+      disable-filtering
+      disable-pagination
+      disable-sort
     >
       <v-divider inset></v-divider>
       <template #top>
@@ -35,7 +38,6 @@
           dense
           maxlength="4"
           single-line
-          :autofocus="true"
         ></v-text-field>
         <span v-else>{{ item["jahr"] }}</span>
       </template>
@@ -69,7 +71,7 @@
           </v-icon>
           <v-icon
             color="green"
-            @click="saveTableItem(item)"
+            @click="saveTableItem"
           >
             mdi-content-save
           </v-icon>
@@ -98,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -209,7 +211,8 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
 
   private editedItem: any | undefined = undefined;
 
-  mounted(): void {
+  @Watch("bauratendateiInput", { immediate: true, deep: true })
+  private watchBauratendateiInput(): void {
     this.tableDataFromBauratendateiInput = createTableData(this.bauratendateiInput);
   }
 
@@ -237,14 +240,16 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
     newTableEntry.set("jahr", undefined);
     this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, undefined));
-    this.tableDataFromBauratendateiInput.push(Object.fromEntries(newTableEntry.entries()));
+    const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
+    this.tableDataFromBauratendateiInput.push(newTableEntryObject);
+    this.editedItem = newTableEntryObject;
   }
 
   private closeTableItem(): void {
     this.editedItem = undefined;
   }
 
-  private saveTableItem(item: any): void {
+  private saveTableItem(): void {
     this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
     this.closeTableItem();
   }
