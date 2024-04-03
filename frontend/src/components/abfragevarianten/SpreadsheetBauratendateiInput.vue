@@ -22,7 +22,7 @@
             <v-btn
               color="primary"
               class="ml-2"
-              @click="addNewWohneinheitenProFoerderartProJahrToEdit"
+              @click="addNewTableItem"
             >
               <v-icon dark>mdi-plus</v-icon>Add
             </v-btn>
@@ -61,13 +61,13 @@
           <v-icon
             color="red"
             class="mr-3"
-            @click="closeEditedWohneinheitenProFoerderartProJahr"
+            @click="closeTableItem"
           >
             mdi-window-close
           </v-icon>
           <v-icon
             color="green"
-            @click="saveEditedWohneinheitenProFoerderartProJahr(item)"
+            @click="saveTableItem(item)"
           >
             mdi-content-save
           </v-icon>
@@ -76,13 +76,13 @@
           <v-icon
             color="green"
             class="mr-3"
-            @click="editWohneinheitenProFoerderartProJahr(item)"
+            @click="editTableItem(item)"
           >
             mdi-pencil
           </v-icon>
           <v-icon
             color="red"
-            @click="deleteWohneinheitenProFoerderartProJahr(item)"
+            @click="deleteTableItem(item)"
           >
             mdi-delete
           </v-icon>
@@ -119,22 +119,6 @@ export function createHeadersForFoerderarten(
   foerderartenBauratendateiInputBasis: Array<string> | undefined,
 ): Array<DataTableHeader> {
   return _.uniq(_.toArray(foerderartenBauratendateiInputBasis)).map((headerFoerderart) => {
-    return {
-      text: headerFoerderart,
-      value: headerFoerderart,
-      align: "start",
-    } as DataTableHeader;
-  });
-}
-
-export function createHeadersForFoerderartenXXX(
-  bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
-): Array<DataTableHeader> {
-  return _.uniq(
-    _.toArray(bauratendateiInput).map(
-      (wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart,
-    ),
-  ).map((headerFoerderart) => {
     return {
       text: headerFoerderart,
       value: headerFoerderart,
@@ -187,6 +171,27 @@ export function createTableData(
   return tableDataObjects;
 }
 
+/**
+ *
+ */
+export function createBauratendateiInput(tableData: Array<any>): Array<WohneinheitenProFoerderartProJahrDto> {
+  const newBauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [];
+  tableData.forEach((tableEntry) => {
+    const tableEntryMap = new Map(Object.entries(tableEntry));
+    const jahr: string | undefined = tableEntryMap.get("jahr") as string | undefined;
+    tableEntryMap.delete("jahr");
+    tableEntryMap.forEach((wohneinheiten, foerderart) => {
+      const wohneinheitenProFoerderartProJahr = {
+        jahr: jahr,
+        foerderart: foerderart,
+        wohneinheiten: wohneinheiten,
+      } as WohneinheitenProFoerderartProJahrDto;
+      newBauratendateiInput.push(wohneinheitenProFoerderartProJahr);
+    });
+  });
+  return newBauratendateiInput;
+}
+
 @Component({ components: { FieldGroupCard, NumField } })
 export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: Array })
@@ -202,6 +207,10 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
 
   private editedItem: any | undefined = undefined;
 
+  mounted(): void {
+    this.tableDataFromBauratendateiInput = createTableData(this.bauratendateiInput);
+  }
+
   get itemToEdit(): any {
     return _.isNil(this.editedItem) ? ({} as any) : this.editedItem;
   }
@@ -215,7 +224,6 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   }
 
   get tableData(): Array<any> {
-    this.tableDataFromBauratendateiInput = createTableData(this.bauratendateiInput);
     return this.tableDataFromBauratendateiInput;
   }
 
@@ -223,30 +231,33 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     return Object.is(item1, item2);
   }
 
-  private addNewWohneinheitenProFoerderartProJahrToEdit(): void {
+  private addNewTableItem(): void {
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
     newTableEntry.set("jahr", undefined);
     this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, undefined));
     this.tableDataFromBauratendateiInput.push(Object.fromEntries(newTableEntry.entries()));
   }
 
-  private closeEditedWohneinheitenProFoerderartProJahr(): void {
+  private closeTableItem(): void {
     this.editedItem = undefined;
   }
 
-  private saveEditedWohneinheitenProFoerderartProJahr(item: any): void {
-    this.closeEditedWohneinheitenProFoerderartProJahr();
+  private saveTableItem(item: any): void {
+    this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
+    this.closeTableItem();
   }
 
-  private editWohneinheitenProFoerderartProJahr(item: any): void {
+  private editTableItem(item: any): void {
     this.editedItem = item;
   }
 
-  private deleteWohneinheitenProFoerderartProJahr(item: any): void {
+  private deleteTableItem(item: any): void {
     const index = _.findIndex(this.tableDataFromBauratendateiInput, (o) => {
       return this.isSameItem(o, item);
     });
     this.tableDataFromBauratendateiInput.splice(index, 1);
+    this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
+    this.closeTableItem();
   }
 }
 </script>
