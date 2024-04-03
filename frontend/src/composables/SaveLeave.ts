@@ -1,3 +1,8 @@
+import type { NavigationGuardNext } from "vue-router";
+
+import { onBeforeRouteLeave } from "vue-router/types/composables";
+import { useCommonStore } from "@/stores/CommonStore";
+
 /**
  * Mit dem SaveLeaveComposable kann ein Datenverlust durch ungewolltest Navigieren verhindert werden.
  *
@@ -9,15 +14,9 @@
  *
  * Mit dem Aufruf von `leave()` oder `cancel()` kann die Entscheidung des Nutzers ausgeführt werden.
  */
-import type { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
-
-import { ref } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
-import { useCommonStore } from "@/stores/CommonStore";
-
-export function useSaveLeave(isDirty: () => boolean) {
+// eslint-disable-next-line
+export function useSaveLeave() {
   const commonStore = useCommonStore();
-
   const saveLeaveDialogTitle = "Hinweis";
   const saveLeaveNoText = "Abbrechen";
   const saveLeaveYesText = "Verlassen";
@@ -34,8 +33,9 @@ export function useSaveLeave(isDirty: () => boolean) {
   const saveLeaveDialog = ref(false);
   const nextRoute = ref<NavigationGuardNext | null>(null);
 
-  onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-    if (isDirty() || isCommentDirty()) {
+  // eslint-disable-next-line
+  onBeforeRouteLeave((to: any, from: any, next: NavigationGuardNext) => {
+    if (isFormDirty() || isCommentDirty()) {
       saveLeaveDialog.value = true;
       nextRoute.value = next;
     } else {

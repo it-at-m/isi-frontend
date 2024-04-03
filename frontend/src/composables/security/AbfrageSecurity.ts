@@ -1,14 +1,13 @@
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
 import { useSecurity } from "./Security";
 import _ from "lodash";
 import { useSearchStore } from "@/stores/SearchStore";
 
+// eslint-disable-next-line
 export function useAbfrageSecurity() {
   const { isRoleAdminOrAbfrageerstellung, isRoleAdminOrSachbearbeitung } = useSecurity();
-  const searchStore = useSearchStore();
-  const abfrage: AbfrageModel | undefined = searchStore.selectedAbfrage;
+  const { selectedAbfrage } = useSearchStore();
 
   function isEditableWithAnzeigeContextAbfragevariante(
     anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
@@ -22,15 +21,17 @@ export function useAbfrageSecurity() {
   }
 
   function isEditableByAbfrageerstellung(): boolean {
-    if (!_.isNil(abfrage)) {
-      return isRoleAdminOrAbfrageerstellung() && abfrage.statusAbfrage === StatusAbfrage.Angelegt;
+    if (!_.isNil(selectedAbfrage)) {
+      return isRoleAdminOrAbfrageerstellung() && selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt;
     }
     return false;
   }
 
   function isEditableBySachbearbeitung(): boolean {
-    if (!_.isNil(abfrage)) {
-      return isRoleAdminOrSachbearbeitung() && abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung;
+    if (!_.isNil(selectedAbfrage)) {
+      return (
+        isRoleAdminOrSachbearbeitung() && selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
+      );
     }
     return false;
   }

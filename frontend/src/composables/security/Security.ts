@@ -1,5 +1,6 @@
 import { useUserinfoStore } from "@/stores/Userinfostore";
 
+// eslint-disable-next-line
 export function useSecurity() {
   const userinfoStore = useUserinfoStore();
   const isGuiWithoutSecurityContext = (import.meta.env.VITE_RUN_GUI_WITHOUT_SECURITY as string) === "true";
