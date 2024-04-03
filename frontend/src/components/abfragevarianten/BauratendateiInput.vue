@@ -32,7 +32,7 @@
           <v-autocomplete
             :id="'bauratendatei_grundschulsprengel_' + index"
             v-model="input.grundschulsprengel"
-            :items="abfragevarianteSachbearbeitung.bauratendateiInputBasis?.grundschulsprengel"
+            :items="abfragevarianteSachbearbeitung?.bauratendateiInputBasis?.grundschulsprengel"
             item-value="key"
             item-text="value"
             multiple
@@ -82,9 +82,11 @@
           cols="12"
           md="12"
         >
-          <spreadsheet
-            :id="'abfragevarianteSachbearbeitung_bauratendatei_wohneinheiten_' + index"
-            :headers="headers(input)"
+          <spreadsheet-bauratendatei-input
+            :id="'spreadsheet_bauratendatei_input_' + index"
+            :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
+            :is-editable="isEditable"
+            v-model="abfragevarianteSachbearbeitung.bauratendateiInput"
           />
         </v-col>
       </v-row>
@@ -119,11 +121,10 @@ import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevaria
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import Spreadsheet from "@/components/common/Spreadsheet.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { BauratendateiInputDto } from "@/api/api-client/isi-backend";
-import { DataTableHeader } from "vuetify";
 import _ from "lodash";
+import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 
-@Component({ components: { FieldGroupCard, Spreadsheet } })
+@Component({ components: { SpreadsheetBauratendateiInput, FieldGroupCard, Spreadsheet } })
 export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
@@ -131,20 +132,12 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  private headers(input: BauratendateiInputDto): DataTableHeader[] {
-    const foerderarten = new Set<string>();
-    if (input.wohneinheiten) {
-      for (const wohneinheiten of input.wohneinheiten) {
-        if (!_.isNil(wohneinheiten.foerderart)) {
-          foerderarten.add(wohneinheiten.foerderart);
-        }
-      }
-    }
-    const headers = Array.from(foerderarten).map((foerdert) => {
-      return { text: foerdert, value: foerdert };
-    });
-    headers.push({ text: "Jahr", value: "jahr" });
-    return headers;
+  private foerderartenBauratendateiInputBasis(): Array<string | undefined> {
+    const wohneinheiten = _.toArray(this.abfragevarianteSachbearbeitung?.bauratendateiInput)
+      .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
+      .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
+      .map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart);
+    return _.uniq(wohneinheiten);
   }
 
   private checkBoxChanged(): void {
