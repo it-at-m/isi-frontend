@@ -8,6 +8,7 @@
         <v-checkbox
           id="has_bauratendatei_checkbox"
           v-model="abfragevarianteSachbearbeitung.hasBauratendateiInput"
+          class="mx-3"
           label="Daten für Bauratendatei angeben"
           color="primary"
           :disabled="!isEditable"

@@ -91,7 +91,7 @@
         </div>
       </template>
       <template #no-data>
-        <v-btn color="primary">Es sind keine Baurateninformationen vorhanden</v-btn>
+        <span>Es sind keine Baurateninformationen vorhanden</span>
       </template>
     </v-data-table>
   </v-card>

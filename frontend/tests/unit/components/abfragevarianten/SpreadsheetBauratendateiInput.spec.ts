@@ -56,6 +56,9 @@ const foerderartenBauratendateiInputBasis: Array<string> = [
   "foerderart3",
   "foerderart4",
   "foerderart1",
+  "foerderart1",
+  "foerderart1",
+  "foerderart2",
 ];
 
 describe("SpreadsheetBauratendateiInput.spec.ts", () => {
