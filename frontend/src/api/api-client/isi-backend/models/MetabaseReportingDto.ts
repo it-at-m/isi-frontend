@@ -36,6 +36,18 @@ export interface MetabaseReportingDto {
      * @type {string}
      * @memberof MetabaseReportingDto
      */
+    reportErgebnissePlanungsursaechlich?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetabaseReportingDto
+     */
+    reportErgebnisseSobonUrsaechlich?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetabaseReportingDto
+     */
     reportSpitzenbedarfePlanungsursaechlich?: string;
     /**
      * 
@@ -72,6 +84,8 @@ export function MetabaseReportingDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'url': !exists(json, 'url') ? undefined : json['url'],
         'reportBedarfe': !exists(json, 'reportBedarfe') ? undefined : json['reportBedarfe'],
+        'reportErgebnissePlanungsursaechlich': !exists(json, 'reportErgebnissePlanungsursaechlich') ? undefined : json['reportErgebnissePlanungsursaechlich'],
+        'reportErgebnisseSobonUrsaechlich': !exists(json, 'reportErgebnisseSobonUrsaechlich') ? undefined : json['reportErgebnisseSobonUrsaechlich'],
         'reportSpitzenbedarfePlanungsursaechlich': !exists(json, 'reportSpitzenbedarfePlanungsursaechlich') ? undefined : json['reportSpitzenbedarfePlanungsursaechlich'],
         'reportSpitzenbedarfeSobonUrsaechlich': !exists(json, 'reportSpitzenbedarfeSobonUrsaechlich') ? undefined : json['reportSpitzenbedarfeSobonUrsaechlich'],
         'reportWohneinheiten': !exists(json, 'reportWohneinheiten') ? undefined : json['reportWohneinheiten'],
@@ -89,6 +103,8 @@ export function MetabaseReportingDtoToJSON(value?: MetabaseReportingDto | null):
         
         'url': value.url,
         'reportBedarfe': value.reportBedarfe,
+        'reportErgebnissePlanungsursaechlich': value.reportErgebnissePlanungsursaechlich,
+        'reportErgebnisseSobonUrsaechlich': value.reportErgebnisseSobonUrsaechlich,
         'reportSpitzenbedarfePlanungsursaechlich': value.reportSpitzenbedarfePlanungsursaechlich,
         'reportSpitzenbedarfeSobonUrsaechlich': value.reportSpitzenbedarfeSobonUrsaechlich,
         'reportWohneinheiten': value.reportWohneinheiten,

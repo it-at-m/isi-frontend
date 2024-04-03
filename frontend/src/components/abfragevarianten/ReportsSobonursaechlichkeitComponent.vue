@@ -83,6 +83,16 @@
         </a>
       </v-list-item-title>
     </v-list-item>
+    <v-list-item>
+      <v-list-item-title>
+        <a
+          target="_blank"
+          :href="getUrlErgebnisseSobonursaechlicheBedarfe()"
+        >
+          Ergebnisse Bedarfsberechnung<span class="mdi mdi-launch" />
+        </a>
+      </v-list-item-title>
+    </v-list-item>
   </v-list>
 </template>
 
@@ -145,6 +155,18 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     return url.toString();
   }
 
+  private getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
+    const abfrageId = this.getParameterValueAbfrageId();
+    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
+    const artAbfrage = this.getParameterValueArtAbfrage();
+    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
+    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
+    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    return url.toString();
+  }
+
   private getUrlBedarfeKinderkrippe(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
     return this.getUrlBedarfe(artBedarf);
@@ -186,6 +208,12 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
       : "";
   }
 
+  private getUrlErgebnisseSobonursaechlicheBedarfe(): string {
+    return this.getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(
+      new URL(this.getUrlReportErgebnisseSobonursaechlicheBedarfe()),
+    );
+  }
+
   private getUrlReportBedarfe(): string {
     return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
       ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportBedarfe}`
@@ -195,6 +223,12 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
   private getUrlReportSoBonSpitzenbedarfe(): string {
     return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
       ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportSpitzenbedarfeSobonUrsaechlich}`
+      : "";
+  }
+
+  private getUrlReportErgebnisseSobonursaechlicheBedarfe(): string {
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportErgebnisseSobonUrsaechlich}`
       : "";
   }
 
