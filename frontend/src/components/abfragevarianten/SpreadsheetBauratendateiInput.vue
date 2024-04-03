@@ -46,7 +46,7 @@
         <num-field
           v-if="isSameItem(item, itemToEdit)"
           :key="`${column}_${item.jahr}_${index}`"
-          v-model="itemToEdit.wohneinheiten"
+          v-model="itemToEdit['wohneinheiten']"
           :hide-details="true"
           dense
           single-line
@@ -55,7 +55,7 @@
           v-else
           :key="`${column}_${item.jahr}_${index}`"
         >
-          {{ item.wohneinheiten }}
+          {{ item["wohneinheiten"] }}
         </span>
       </template>
       <template #item.actions="{ item }">
