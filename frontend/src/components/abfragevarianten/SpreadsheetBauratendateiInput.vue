@@ -10,7 +10,7 @@
       fixed-header
     >
       <v-divider inset></v-divider>
-      <template v-slot:top>
+      <template #top>
         <v-toolbar
           flat
           color="white"
@@ -27,33 +27,38 @@
         </v-toolbar>
       </template>
       <!-- Dynamic Slot Name https://stackoverflow.com/a/67060576 -->
-      <template v-slot:[`item.jahr`]="{ item }">
+      <template #[`item.jahr`]="{ item }">
         <v-text-field
+          v-if="isSameItem(item, itemToEdit)"
           v-model="itemToEdit['jahr']"
           :hide-details="true"
           dense
           maxlength="4"
           single-line
           :autofocus="true"
-          v-if="isSameItem(item, itemToEdit)"
         ></v-text-field>
         <span v-else>{{ item["jahr"] }}</span>
       </template>
       <template
         v-for="(column, index) in forderartenForHeader"
-        :key="index"
-        v-slot:[`item.${column}`]="{ item }"
+        #[`item.${column}`]="item"
       >
         <num-field
+          v-if="isSameItem(item, itemToEdit)"
+          :key="`${column}_${item.jahr}_${index}`"
           v-model="itemToEdit.wohneinheiten"
           :hide-details="true"
           dense
           single-line
-          v-if="isSameItem(item, itemToEdit)"
         ></num-field>
-        <span v-else>{{ itemToEdit.wohneinheiten }}</span>
+        <span
+          v-else
+          :key="`${column}_${item.jahr}_${index}`"
+        >
+          {{ item.wohneinheiten }}
+        </span>
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template #item.actions="{ item }">
         <div v-if="isSameItem(item, itemToEdit)">
           <v-icon
             color="red"
@@ -85,7 +90,7 @@
           </v-icon>
         </div>
       </template>
-      <template v-slot:no-data>
+      <template #no-data>
         <v-btn color="primary">Es sind keine Baurateninformationen vorhanden</v-btn>
       </template>
     </v-data-table>

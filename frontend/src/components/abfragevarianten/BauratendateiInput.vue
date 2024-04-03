@@ -84,9 +84,9 @@
         >
           <spreadsheet-bauratendatei-input
             :id="'spreadsheet_bauratendatei_input_' + index"
+            v-model="abfragevarianteSachbearbeitung.bauratendateiInput"
             :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
             :is-editable="isEditable"
-            v-model="abfragevarianteSachbearbeitung.bauratendateiInput"
           />
         </v-col>
       </v-row>
@@ -119,12 +119,11 @@
 import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import Spreadsheet from "@/components/common/Spreadsheet.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import _ from "lodash";
 import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 
-@Component({ components: { SpreadsheetBauratendateiInput, FieldGroupCard, Spreadsheet } })
+@Component({ components: { SpreadsheetBauratendateiInput, FieldGroupCard } })
 export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
