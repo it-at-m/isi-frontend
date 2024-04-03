@@ -207,25 +207,23 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   @Prop({ required: true })
   private foerderartenBauratendateiInputBasis!: Array<string>;
 
+  private forderartenForHeader!: Array<string>;
+
+  private headers!: Array<DataTableHeader>;
+
   private tableDataFromBauratendateiInput!: Array<any>;
 
   private editedItem: any | undefined = undefined;
 
   @Watch("bauratendateiInput", { immediate: true, deep: true })
   private watchBauratendateiInput(): void {
+    this.headers = createHeaders(this.foerderartenBauratendateiInputBasis);
+    this.forderartenForHeader = _.cloneDeep(_.uniq(_.toArray(this.foerderartenBauratendateiInputBasis)));
     this.tableDataFromBauratendateiInput = createTableData(this.bauratendateiInput);
   }
 
   get itemToEdit(): any {
     return _.isNil(this.editedItem) ? ({} as any) : this.editedItem;
-  }
-
-  get forderartenForHeader(): Array<string> {
-    return _.cloneDeep(_.uniq(_.toArray(this.foerderartenBauratendateiInputBasis)));
-  }
-
-  get headers(): Array<DataTableHeader> {
-    return createHeaders(this.foerderartenBauratendateiInputBasis);
   }
 
   get tableData(): Array<any> {
