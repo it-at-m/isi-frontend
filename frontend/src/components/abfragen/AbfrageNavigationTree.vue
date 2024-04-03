@@ -112,7 +112,7 @@ import {
   isEditableWithAnzeigeContextAbfragevariante,
   isEditableByAbfrageerstellung,
   isEditableBySachbearbeitung,
-} from "@/utils/AbfrageSecurity";
+} from "@/mixins/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
