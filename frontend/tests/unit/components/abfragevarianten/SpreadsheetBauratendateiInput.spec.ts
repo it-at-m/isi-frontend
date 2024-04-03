@@ -50,9 +50,17 @@ const bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [
   },
 ];
 
+const foerderartenBauratendateiInputBasis: Array<string> = [
+  "foerderart1",
+  "foerderart2",
+  "foerderart3",
+  "foerderart4",
+  "foerderart1",
+];
+
 describe("SpreadsheetBauratendateiInput.spec.ts", () => {
   test("Transformation bauratendateiInput in Header", () => {
-    let result = createHeaders(bauratendateiInput);
+    let result = createHeaders(foerderartenBauratendateiInputBasis);
     let expected: Array<DataTableHeader> = [
       {
         text: "Jahr",

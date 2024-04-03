@@ -4,7 +4,7 @@
     max-width="600"
     outlined
   >
-    <v-card-title>Vuetify Inline Editor Table </v-card-title>
+    <v-card-title>Die Tabelle mit inline Editierung</v-card-title>
     <v-data-table
       :headers="headers"
       :items="tableData"
@@ -22,7 +22,7 @@
             <v-btn
               color="primary"
               class="ml-2"
-              @click="addNew"
+              @click="addNewWohneinheitenProFoerderartProJahrToEdit"
             >
               <v-icon dark>mdi-plus</v-icon>Add
             </v-btn>
@@ -32,37 +32,42 @@
       <!-- Dynamic Slot Name https://stackoverflow.com/a/67060576 -->
       <template v-slot:[`item.jahr`]="{ item }">
         <v-text-field
-          v-model="editedItem['jahr']"
+          v-model="itemToEdit['jahr']"
           :hide-details="true"
           dense
+          maxlength="4"
           single-line
           :autofocus="true"
-          v-if="item.id === editedItem.id"
+          v-if="isSameItem(item, itemToEdit)"
         ></v-text-field>
         <span v-else>{{ item["jahr"] }}</span>
       </template>
-      <template v-slot:item.calories="{ item }">
-        <v-text-field
-          v-model="editedItem.calories"
+      <template
+        v-for="(column, index) in forderartenForHeader"
+        :key="index"
+        v-slot:[`item.${column}`]="{ item }"
+      >
+        <num-field
+          v-model="itemToEdit.wohneinheiten"
           :hide-details="true"
           dense
           single-line
-          v-if="item.id === editedItem.id"
-        ></v-text-field>
-        <span v-else>{{ item.calories }}</span>
+          v-if="isSameItem(item, itemToEdit)"
+        ></num-field>
+        <span v-else>{{ itemToEdit.wohneinheiten }}</span>
       </template>
       <template v-slot:item.actions="{ item }">
-        <div v-if="item.id === editedItem.id">
+        <div v-if="isSameItem(item, itemToEdit)">
           <v-icon
             color="red"
             class="mr-3"
-            @click="close"
+            @click="closeEditedWohneinheitenProFoerderartProJahr"
           >
             mdi-window-close
           </v-icon>
           <v-icon
             color="green"
-            @click="save"
+            @click="saveEditedWohneinheitenProFoerderartProJahr(item)"
           >
             mdi-content-save
           </v-icon>
@@ -71,24 +76,20 @@
           <v-icon
             color="green"
             class="mr-3"
-            @click="editItem(item)"
+            @click="editWohneinheitenProFoerderartProJahr(item)"
           >
             mdi-pencil
           </v-icon>
           <v-icon
             color="red"
-            @click="deleteItem(item)"
+            @click="deleteWohneinheitenProFoerderartProJahr(item)"
           >
             mdi-delete
           </v-icon>
         </div>
       </template>
       <template v-slot:no-data>
-        <v-btn
-          color="primary"
-          @click="initialize"
-          >Keine Baurateninformationen vorhanden</v-btn
-        >
+        <v-btn color="primary">Es sind keine Baurateninformationen vorhanden</v-btn>
       </template>
     </v-data-table>
   </v-card>
@@ -103,10 +104,8 @@ import { DataTableHeader } from "vuetify";
 import _ from "lodash";
 import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
 
-export function createHeaders(
-  bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
-): Array<DataTableHeader> {
-  const headers = createHeadersForFoerderarten(bauratendateiInput);
+export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
+  const headers = createHeadersForFoerderarten(foerderartenBauratendateiInputBasis);
   const headerForJahr = {
     text: "Jahr",
     value: "jahr",
@@ -117,6 +116,18 @@ export function createHeaders(
 }
 
 export function createHeadersForFoerderarten(
+  foerderartenBauratendateiInputBasis: Array<string> | undefined,
+): Array<DataTableHeader> {
+  return _.uniq(_.toArray(foerderartenBauratendateiInputBasis)).map((headerFoerderart) => {
+    return {
+      text: headerFoerderart,
+      value: headerFoerderart,
+      align: "start",
+    } as DataTableHeader;
+  });
+}
+
+export function createHeadersForFoerderartenXXX(
   bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
 ): Array<DataTableHeader> {
   return _.uniq(
@@ -132,7 +143,9 @@ export function createHeadersForFoerderarten(
   });
 }
 
-export function createTableData(bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined) {
+export function createTableData(
+  bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
+): Array<any> {
   /**
    * Ermittlung der Wohneinheiten je Förderart je Jahr.
    */
@@ -182,12 +195,58 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  @Prop({ required: true })
+  private foerderartenBauratendateiInputBasis!: Array<string>;
+
+  private tableDataFromBauratendateiInput!: Array<any>;
+
+  private editedItem: any | undefined = undefined;
+
+  get itemToEdit(): any {
+    return _.isNil(this.editedItem) ? ({} as any) : this.editedItem;
+  }
+
+  get forderartenForHeader(): Array<string> {
+    return _.cloneDeep(_.uniq(_.toArray(this.foerderartenBauratendateiInputBasis)));
+  }
+
   get headers(): Array<DataTableHeader> {
-    return createHeaders(this.bauratendateiInput);
+    return createHeaders(this.foerderartenBauratendateiInputBasis);
   }
 
   get tableData(): Array<any> {
-    return createTableData(this.bauratendateiInput);
+    this.tableDataFromBauratendateiInput = createTableData(this.bauratendateiInput);
+    return this.tableDataFromBauratendateiInput;
+  }
+
+  private isSameItem(item1: any | undefined, item2: any | undefined): boolean {
+    return Object.is(item1, item2);
+  }
+
+  private addNewWohneinheitenProFoerderartProJahrToEdit(): void {
+    const newTableEntry = new Map<string | undefined, string | number | undefined>();
+    newTableEntry.set("jahr", undefined);
+    this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, undefined));
+    this.tableDataFromBauratendateiInput.push(Object.fromEntries(newTableEntry.entries()));
+  }
+
+  private closeEditedWohneinheitenProFoerderartProJahr(): void {
+    this.editedItem = undefined;
+  }
+
+  private saveEditedWohneinheitenProFoerderartProJahr(item: any): void {
+    this.closeEditedWohneinheitenProFoerderartProJahr();
+  }
+
+  private editWohneinheitenProFoerderartProJahr(item: any): void {
+    this.editedItem = item;
+  }
+
+  private deleteWohneinheitenProFoerderartProJahr(item: any): void {
+    const index = _.findIndex(this.tableDataFromBauratendateiInput, (o) => {
+      return this.isSameItem(o, item);
+    });
+    this.tableDataFromBauratendateiInput.splice(index, 1);
   }
 }
 </script>
