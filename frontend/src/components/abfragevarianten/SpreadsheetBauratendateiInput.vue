@@ -1,16 +1,13 @@
 <template>
   <v-card
     class="mx-auto mt-10"
-    max-width="600"
     outlined
   >
-    <v-card-title>Die Tabelle mit inline Editierung</v-card-title>
     <v-data-table
       :headers="headers"
       :items="tableData"
       class="elevation-1"
       fixed-header
-      height="350px"
     >
       <v-divider inset></v-divider>
       <template v-slot:top>
