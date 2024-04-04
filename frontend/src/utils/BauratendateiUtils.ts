@@ -40,6 +40,34 @@ export function createHeadersForFoerderarten(
   });
 }
 
+/**
+ * Transformiert die WohneinheitenProFoerderartProJahrDtos in Tabellendaten.
+ *
+ *
+ * Gegebenen WohneinheitenProFoerderartProJahrDtos:
+ * [
+ *   {
+ *     jahr: "2024",
+ *     foerderart: "foerderart1"
+ *     wohneinheiten: 1000
+ *   },
+ *   ...
+ *   {
+ *     jahr: "2024",
+ *     foerderart: "foerderartX"
+ *     wohneinheiten: 2385
+ *   }
+ * ]
+ *
+ * -> wird zu ->
+ *
+ * {
+ *   jahr: 2024,
+ *   foerderart1: 1000,
+ *   ...
+ *   foerderartX: 2385
+ * }
+ */
 export function createTableData(
   bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
 ): Array<any> {
@@ -87,7 +115,32 @@ export function createTableData(
 }
 
 /**
+ * Erstellt aus den in der Tabelle gegebenen Daten die WohneinheitenProFoerderartProJahrDtos.
  *
+ * Ein Element aus Array der Tabellendaten:
+ * {
+ *   jahr: 2024,
+ *   foerderart1: 1000,
+ *   ...
+ *   foerderartX: 2385
+ * }
+ *
+ * -> wird zu ->
+ *
+ * WohneinheitenProFoerderartProJahrDtos:
+ *[
+ *   {
+ *     jahr: "2024",
+ *     foerderart: "foerderart1"
+ *     wohneinheiten: 1000
+ *   },
+ *   ...
+ *   {
+ *     jahr: "2024",
+ *     foerderart: "foerderartX"
+ *     wohneinheiten: 2385
+ *   }
+ *]
  */
 export function createBauratendateiInput(tableData: Array<any>): Array<WohneinheitenProFoerderartProJahrDto> {
   const newBauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [];
