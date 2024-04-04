@@ -2,11 +2,17 @@ import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backe
 import { DataTableHeader } from "vuetify";
 import _ from "lodash";
 
+export const ATTRIBUTE_KEY_JAHR = "jahr";
+
+export const ATTRIBUTE_HEADER_VALUE_JAHR = "Jahr";
+
+export const ATTRIBUTE_KEY_INDEX = "index";
+
 export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
   const headers = createHeadersForFoerderarten(foerderartenBauratendateiInputBasis);
   const headerForJahr = {
-    text: "Jahr",
-    value: "jahr",
+    text: ATTRIBUTE_HEADER_VALUE_JAHR,
+    value: ATTRIBUTE_KEY_JAHR,
     align: "start",
     width: "10%",
   } as DataTableHeader;
@@ -70,8 +76,8 @@ export function createTableData(
   const tableDataObjects: Array<any> = [];
   jahrWithWohneinheitenForEachFoerderart.forEach((foerderartenWithWohneinheiten, jahr) => {
     const tableEntry = new Map<string | undefined, string | number | undefined>();
-    tableEntry.set("jahr", jahr);
-    tableEntry.set("index", index++);
+    tableEntry.set(ATTRIBUTE_KEY_JAHR, jahr);
+    tableEntry.set(ATTRIBUTE_KEY_INDEX, index++);
     foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
       tableEntry.set(forderart, wohneinheiten);
     });
@@ -85,10 +91,11 @@ export function createTableData(
  */
 export function createBauratendateiInput(tableData: Array<any>): Array<WohneinheitenProFoerderartProJahrDto> {
   const newBauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [];
-  tableData.forEach((tableEntry) => {
+  _.cloneDeep(tableData).forEach((tableEntry) => {
     const tableEntryMap = new Map(Object.entries(tableEntry));
-    const jahr: string | undefined = tableEntryMap.get("jahr") as string | undefined;
-    tableEntryMap.delete("jahr");
+    const jahr: string | undefined = tableEntryMap.get(ATTRIBUTE_KEY_JAHR) as string | undefined;
+    tableEntryMap.delete(ATTRIBUTE_KEY_JAHR);
+    tableEntryMap.delete(ATTRIBUTE_KEY_INDEX);
     tableEntryMap.forEach((wohneinheiten, foerderart) => {
       const wohneinheitenProFoerderartProJahr = {
         jahr: jahr,

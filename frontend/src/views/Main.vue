@@ -4,8 +4,7 @@
       v-model="input"
       :is-editable="true"
       :foerderarten-bauratendatei-input-basis="foerderarten"
-    >
-    </spreadsheet-bauratendatei-input>
+    />
   </v-container>
 </template>
 

@@ -102,7 +102,13 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { DataTableHeader } from "vuetify";
 import _ from "lodash";
 import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
-import { createBauratendateiInput, createHeaders, createTableData } from "@/utils/BauratendateiUtils";
+import {
+  ATTRIBUTE_KEY_INDEX,
+  ATTRIBUTE_KEY_JAHR,
+  createBauratendateiInput,
+  createHeaders,
+  createTableData,
+} from "@/utils/BauratendateiUtils";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
@@ -138,8 +144,8 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     let maxIndex = 0;
     this.tableDataFromBauratendateiInput.forEach((tableEntry) => (maxIndex = _.max([tableEntry.index, maxIndex])));
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
-    newTableEntry.set("jahr", undefined);
-    newTableEntry.set("index", ++maxIndex);
+    newTableEntry.set(ATTRIBUTE_KEY_JAHR, undefined);
+    newTableEntry.set(ATTRIBUTE_KEY_INDEX, ++maxIndex);
     this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, undefined));
     const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
     this.tableDataFromBauratendateiInput.push(newTableEntryObject);
