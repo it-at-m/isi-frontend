@@ -6,7 +6,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 
 // eslint-disable-next-line
 export function useAbfrageSecurity() {
-  const { isRoleAdminOrAbfrageerstellung, isRoleAdminOrSachbearbeitung } = useSecurity();
+  const security = useSecurity();
   const { selectedAbfrage } = useSearchStore();
 
   function isEditableWithAnzeigeContextAbfragevariante(
@@ -22,7 +22,17 @@ export function useAbfrageSecurity() {
 
   function isEditableByAbfrageerstellung(): boolean {
     if (!_.isNil(selectedAbfrage)) {
-      return isRoleAdminOrAbfrageerstellung() && selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt;
+      return security.isRoleAdminOrAbfrageerstellung() && selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt;
+    }
+    return false;
+  }
+
+  function isBedarfsmeldungEditableByAbfrageerstellung(): boolean {
+    if (!_.isNil(selectedAbfrage)) {
+      return (
+        security.isRoleAdminOrAbfrageerstellung() &&
+        selectedAbfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
+      );
     }
     return false;
   }
@@ -30,11 +40,33 @@ export function useAbfrageSecurity() {
   function isEditableBySachbearbeitung(): boolean {
     if (!_.isNil(selectedAbfrage)) {
       return (
-        isRoleAdminOrSachbearbeitung() && selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
+        security.isRoleAdminOrSachbearbeitung() &&
+        selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
       );
     }
     return false;
   }
 
-  return { isEditableWithAnzeigeContextAbfragevariante, isEditableByAbfrageerstellung, isEditableBySachbearbeitung };
+  function isEditableByBedarfsmeldung(): boolean {
+    if (!_.isNil(selectedAbfrage)) {
+      return (
+        security.isRoleAdminOrBedarfsmeldung() &&
+        selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
+      );
+    }
+    return false;
+  }
+
+  function isEditableByAdmin(): boolean {
+    return security.isRoleAdmin();
+  }
+
+  return {
+    isEditableWithAnzeigeContextAbfragevariante,
+    isEditableByAbfrageerstellung,
+    isBedarfsmeldungEditableByAbfrageerstellung,
+    isEditableBySachbearbeitung,
+    isEditableByBedarfsmeldung,
+    isEditableByAdmin,
+  };
 }

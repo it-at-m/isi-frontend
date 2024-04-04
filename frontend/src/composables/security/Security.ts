@@ -17,5 +17,19 @@ export function useSecurity() {
     return isRoleAdmin() || userinfoStore.hasRoleSachbearbeitung;
   }
 
-  return { isRoleAdmin, isRoleAdminOrAbfrageerstellung, isRoleAdminOrSachbearbeitung };
+  function isRoleAdminOrBedarfsmeldung(): boolean {
+    return isRoleAdmin() || userinfoStore.hasRoleBedarfsmeldung;
+  }
+
+  function hasOnlyRoleAnwender(): boolean {
+    return userinfoStore.hasOnlyRoleAnwender;
+  }
+
+  return {
+    isRoleAdmin,
+    isRoleAdminOrAbfrageerstellung,
+    isRoleAdminOrSachbearbeitung,
+    isRoleAdminOrBedarfsmeldung,
+    hasOnlyRoleAnwender,
+  };
 }
