@@ -53,7 +53,7 @@
           v-else
           :key="`${column}_${item.item.jahr}_${index}`"
         >
-          {{ item.item[column] }}
+          {{ roundTwoDecimals(item.item[column]) }}
         </span>
       </template>
       <template #item.actions="{ item }">
@@ -172,6 +172,10 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     });
     this.tableDataFromBauratendateiInput.splice(index, 1);
     this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
+  }
+
+  private roundTwoDecimals(wohneinheiten: number | undefined): string | undefined {
+    return _.isNil(wohneinheiten) ? wohneinheiten : _.round(wohneinheiten, 2).toFixed(2);
   }
 }
 </script>
