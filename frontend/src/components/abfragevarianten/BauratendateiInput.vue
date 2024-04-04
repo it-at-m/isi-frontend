@@ -137,7 +137,7 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
       .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
       .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
       .map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart);
-    return _.uniq(wohneinheiten);
+    return _.uniq(wohneinheiten).sort();
   }
 
   private checkBoxChanged(): void {
