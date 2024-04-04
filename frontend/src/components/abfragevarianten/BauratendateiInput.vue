@@ -123,7 +123,6 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import _ from "lodash";
 import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
-import { BauratendateiInputDto } from "@/api/api-client/isi-backend";
 
 @Component({ components: { SpreadsheetBauratendateiInput, FieldGroupCard } })
 export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
