@@ -9,19 +9,16 @@
       hide-default-footer
     >
       <template #top>
-        <v-toolbar
-          flat
-          color="white"
-        >
-          <div class="d-flex">
-            <v-btn
-              color="primary"
-              class="ml-2"
-              @click="addNewTableItem"
-            >
-              <v-icon dark>mdi-plus</v-icon>Add
-            </v-btn>
-          </div>
+        <v-toolbar flat>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            class="mr-2"
+            :disabled="!isEditable"
+            @click="addNewTableItem"
+          >
+            <v-icon dark>mdi-plus</v-icon>Neuer Eintrag
+          </v-btn>
         </v-toolbar>
       </template>
       <template #[`item.jahr`]="{ item }">
