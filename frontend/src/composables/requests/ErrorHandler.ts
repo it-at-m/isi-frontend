@@ -93,5 +93,5 @@ export function useErrorHandler() {
     return level;
   }
 
-  return { handleError };
+  return { handleError, getToastLevel };
 }
