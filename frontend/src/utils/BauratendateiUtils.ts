@@ -66,10 +66,12 @@ export function createTableData(
    *   foerderartX: 2385
    * }
    */
+  let index = 0;
   const tableDataObjects: Array<any> = [];
   jahrWithWohneinheitenForEachFoerderart.forEach((foerderartenWithWohneinheiten, jahr) => {
     const tableEntry = new Map<string | undefined, string | number | undefined>();
     tableEntry.set("jahr", jahr);
+    tableEntry.set("index", index++);
     foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
       tableEntry.set(forderart, wohneinheiten);
     });

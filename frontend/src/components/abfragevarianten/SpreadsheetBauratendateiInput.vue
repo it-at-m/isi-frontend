@@ -42,7 +42,7 @@
         <num-field
           v-if="isSameItem(item.item, itemToEdit)"
           :key="`${column}_${item.item.jahr}_${index}`"
-          v-model="item.item[column]"
+          v-model="itemToEdit[column]"
           :hide-details="true"
           dense
           min="0"
@@ -134,16 +134,19 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   }
 
   private isSameItem(item1: any | undefined, item2: any | undefined): boolean {
-    return Object.is(item1, item2);
+    return item1.index === item2.index;
   }
 
   private addNewTableItem(): void {
+    let maxIndex = 0;
+    this.tableDataFromBauratendateiInput.forEach((tableEntry) => (maxIndex = _.max([tableEntry.index, maxIndex])));
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
     newTableEntry.set("jahr", "2030");
+    newTableEntry.set("index", maxIndex++);
     this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, 100));
     const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
     this.tableDataFromBauratendateiInput.push(newTableEntryObject);
-    this.itemToEdit = newTableEntryObject;
+    this.itemToEdit = _.cloneDeep(newTableEntryObject);
   }
 
   private closeTableItem(): void {
@@ -151,19 +154,24 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   }
 
   private saveTableItem(): void {
+    const index = _.findIndex(this.tableDataFromBauratendateiInput, (tableItem) => {
+      return this.isSameItem(tableItem, this.itemToEdit);
+    });
+    this.tableDataFromBauratendateiInput[index] = this.itemToEdit;
     this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
     this.itemToEdit = {};
   }
 
   private editTableItem(item: any): void {
-    this.itemToEdit = item;
+    this.itemToEdit = _.cloneDeep(item);
   }
 
   private deleteTableItem(item: any): void {
-    const index = _.findIndex(this.tableDataFromBauratendateiInput, (o) => {
-      return this.isSameItem(o, item);
+    const index = _.findIndex(this.tableDataFromBauratendateiInput, (tableItem) => {
+      return this.isSameItem(tableItem, item);
     });
     this.tableDataFromBauratendateiInput.splice(index, 1);
+    this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
   }
 }
 </script>
