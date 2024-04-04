@@ -69,6 +69,7 @@ describe("BauratendateiUtils.spec.ts", () => {
         text: "Jahr",
         value: "jahr",
         align: "start",
+        width: "10%",
       },
       {
         text: "foerderart1",
@@ -90,6 +91,13 @@ describe("BauratendateiUtils.spec.ts", () => {
         value: "foerderart4",
         align: "start",
       },
+      {
+        align: "end",
+        sortable: false,
+        text: "",
+        value: "actions",
+        width: "10%",
+      },
     ];
     expect(result).toEqual(expected);
   });
@@ -98,9 +106,17 @@ describe("BauratendateiUtils.spec.ts", () => {
     let result = createHeaders(undefined);
     let expected: Array<DataTableHeader> = [
       {
-        align: "start",
         text: "Jahr",
         value: "jahr",
+        align: "start",
+        width: "10%",
+      },
+      {
+        align: "end",
+        sortable: false,
+        text: "",
+        value: "actions",
+        width: "10%",
       },
     ];
     expect(result).toEqual(expected);
@@ -110,6 +126,7 @@ describe("BauratendateiUtils.spec.ts", () => {
     let result = createTableData(bauratendateiInput);
     let expected: Array<any> = [
       {
+        index: 0,
         jahr: "2024",
         foerderart1: 10,
         foerderart2: 11,
@@ -117,6 +134,7 @@ describe("BauratendateiUtils.spec.ts", () => {
         foerderart4: 13,
       },
       {
+        index: 1,
         jahr: "2025",
         foerderart1: 20,
         foerderart2: 21,
@@ -124,6 +142,7 @@ describe("BauratendateiUtils.spec.ts", () => {
         foerderart4: 23,
       },
       {
+        index: 2,
         jahr: "2026",
         foerderart1: 30,
       },
