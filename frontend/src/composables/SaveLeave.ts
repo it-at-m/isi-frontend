@@ -1,6 +1,6 @@
 import type { NavigationGuardNext } from "vue-router";
 
-import { onBeforeRouteLeave } from "vue-router/types/composables";
+import { onBeforeRouteLeave } from "vue-router/composables";
 import { useCommonStore } from "@/stores/CommonStore";
 
 /**
