@@ -1,6 +1,6 @@
 import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
-import { createHeaders, createTableData } from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 import { DataTableHeader } from "vuetify";
+import { createHeaders, createTableData } from "@/utils/BauratendateiUtils";
 
 const bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [
   {
@@ -61,7 +61,7 @@ const foerderartenBauratendateiInputBasis: Array<string> = [
   "foerderart2",
 ];
 
-describe("SpreadsheetBauratendateiInput.spec.ts", () => {
+describe("BauratendateiUtils.spec.ts", () => {
   test("Transformation bauratendateiInput in Header", () => {
     let result = createHeaders(foerderartenBauratendateiInputBasis);
     let expected: Array<DataTableHeader> = [

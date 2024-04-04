@@ -5,14 +5,9 @@
   >
     <v-data-table
       :headers="headers"
-      :items="tableData"
-      class="elevation-1"
-      fixed-header
-      disable-filtering
-      disable-pagination
-      disable-sort
+      :items="tableDataFromBauratendateiInput"
+      hide-default-footer
     >
-      <v-divider inset></v-divider>
       <template #top>
         <v-toolbar
           flat
@@ -29,7 +24,6 @@
           </div>
         </v-toolbar>
       </template>
-      <!-- Dynamic Slot Name https://stackoverflow.com/a/67060576 -->
       <template #[`item.jahr`]="{ item }">
         <v-text-field
           v-if="isSameItem(item, itemToEdit)"
@@ -46,50 +40,52 @@
         #[`item.${column}`]="item"
       >
         <num-field
-          v-if="isSameItem(item, itemToEdit)"
-          :key="`${column}_${item.jahr}_${index}`"
-          v-model="itemToEdit['wohneinheiten']"
+          v-if="isSameItem(item.item, itemToEdit)"
+          :key="`${column}_${item.item.jahr}_${index}`"
+          v-model="item.item[column]"
           :hide-details="true"
           dense
           single-line
         ></num-field>
         <span
           v-else
-          :key="`${column}_${item.jahr}_${index}`"
+          :key="`${column}_${item.item.jahr}_${index}`"
         >
-          {{ item["wohneinheiten"] }}
+          {{ item.item[column] }}
         </span>
       </template>
       <template #item.actions="{ item }">
         <div v-if="isSameItem(item, itemToEdit)">
-          <v-icon
-            color="red"
-            class="mr-3"
+          <v-btn
+            icon
+            :disabled="!isEditable"
             @click="closeTableItem"
           >
-            mdi-window-close
-          </v-icon>
-          <v-icon
-            color="green"
+            <v-icon> mdi-window-close </v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            :disabled="!isEditable"
             @click="saveTableItem"
           >
-            mdi-content-save
-          </v-icon>
+            <v-icon> mdi-content-save </v-icon>
+          </v-btn>
         </div>
         <div v-else>
-          <v-icon
-            color="green"
-            class="mr-3"
+          <v-btn
+            icon
+            :disabled="!isEditable"
             @click="editTableItem(item)"
           >
-            mdi-pencil
-          </v-icon>
-          <v-icon
-            color="red"
+            <v-icon> mdi-pencil </v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            :disabled="!isEditable"
             @click="deleteTableItem(item)"
           >
-            mdi-delete
-          </v-icon>
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
         </div>
       </template>
       <template #no-data>
@@ -107,113 +103,26 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import { DataTableHeader } from "vuetify";
 import _ from "lodash";
 import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
-
-export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
-  const headers = createHeadersForFoerderarten(foerderartenBauratendateiInputBasis);
-  const headerForJahr = {
-    text: "Jahr",
-    value: "jahr",
-    align: "start",
-  } as DataTableHeader;
-  headers.unshift(headerForJahr);
-  return headers;
-}
-
-export function createHeadersForFoerderarten(
-  foerderartenBauratendateiInputBasis: Array<string> | undefined,
-): Array<DataTableHeader> {
-  return _.uniq(_.toArray(foerderartenBauratendateiInputBasis)).map((headerFoerderart) => {
-    return {
-      text: headerFoerderart,
-      value: headerFoerderart,
-      align: "start",
-    } as DataTableHeader;
-  });
-}
-
-export function createTableData(
-  bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
-): Array<any> {
-  /**
-   * Ermittlung der Wohneinheiten je Förderart je Jahr.
-   */
-  const jahrWithWohneinheitenForEachFoerderart = new Map<
-    string | undefined,
-    Map<string | undefined, number | undefined>
-  >();
-  for (const input of _.toArray(bauratendateiInput)) {
-    if (jahrWithWohneinheitenForEachFoerderart.has(input.jahr)) {
-      const foerderartWithWohneinheit = jahrWithWohneinheitenForEachFoerderart.get(input.jahr);
-      if (!_.isNil(foerderartWithWohneinheit)) {
-        foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
-      }
-    } else {
-      const foerderartWithWohneinheit = new Map<string | undefined, number | undefined>();
-      foerderartWithWohneinheit.set(input.foerderart, input.wohneinheiten);
-      jahrWithWohneinheitenForEachFoerderart.set(input.jahr, foerderartWithWohneinheit);
-    }
-  }
-  /**
-   * Überführen der obig ermittelten Wohneinheiten je Förderart je Jahr in Objekte.
-   *
-   * {
-   *   jahr: 2024,
-   *   foerderart1: 1000,
-   *   ...
-   *   foerderartX: 2385
-   * }
-   */
-  const tableDataObjects: Array<any> = [];
-  jahrWithWohneinheitenForEachFoerderart.forEach((foerderartenWithWohneinheiten, jahr) => {
-    const tableEntry = new Map<string | undefined, string | number | undefined>();
-    tableEntry.set("jahr", jahr);
-    foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
-      tableEntry.set(forderart, wohneinheiten);
-    });
-    tableDataObjects.push(Object.fromEntries(tableEntry.entries()));
-  });
-  return tableDataObjects;
-}
-
-/**
- *
- */
-export function createBauratendateiInput(tableData: Array<any>): Array<WohneinheitenProFoerderartProJahrDto> {
-  const newBauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [];
-  tableData.forEach((tableEntry) => {
-    const tableEntryMap = new Map(Object.entries(tableEntry));
-    const jahr: string | undefined = tableEntryMap.get("jahr") as string | undefined;
-    tableEntryMap.delete("jahr");
-    tableEntryMap.forEach((wohneinheiten, foerderart) => {
-      const wohneinheitenProFoerderartProJahr = {
-        jahr: jahr,
-        foerderart: foerderart,
-        wohneinheiten: wohneinheiten,
-      } as WohneinheitenProFoerderartProJahrDto;
-      newBauratendateiInput.push(wohneinheitenProFoerderartProJahr);
-    });
-  });
-  return newBauratendateiInput;
-}
+import { createBauratendateiInput, createHeaders, createTableData } from "@/utils/BauratendateiUtils";
 
 @Component({ components: { FieldGroupCard, NumField } })
 export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
   @VModel({ type: Array })
   private bauratendateiInput!: Array<WohneinheitenProFoerderartProJahrDto>;
 
+  @Prop({ required: true, default: [] })
+  private foerderartenBauratendateiInputBasis!: Array<string>;
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  @Prop({ required: true })
-  private foerderartenBauratendateiInputBasis!: Array<string>;
+  private forderartenForHeader: Array<string> = [];
 
-  private forderartenForHeader!: Array<string>;
+  private headers: Array<DataTableHeader> = [];
 
-  private headers!: Array<DataTableHeader>;
+  private tableDataFromBauratendateiInput: Array<any> = [];
 
-  private tableDataFromBauratendateiInput!: Array<any>;
-
-  private editedItem: any | undefined = undefined;
+  private itemToEdit: any = {};
 
   @Watch("bauratendateiInput", { immediate: true, deep: true })
   private watchBauratendateiInput(): void {
@@ -222,38 +131,30 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     this.tableDataFromBauratendateiInput = createTableData(this.bauratendateiInput);
   }
 
-  get itemToEdit(): any {
-    return _.isNil(this.editedItem) ? ({} as any) : this.editedItem;
-  }
-
-  get tableData(): Array<any> {
-    return this.tableDataFromBauratendateiInput;
-  }
-
   private isSameItem(item1: any | undefined, item2: any | undefined): boolean {
     return Object.is(item1, item2);
   }
 
   private addNewTableItem(): void {
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
-    newTableEntry.set("jahr", undefined);
-    this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, undefined));
+    newTableEntry.set("jahr", "2030");
+    this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, 100));
     const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
     this.tableDataFromBauratendateiInput.push(newTableEntryObject);
-    this.editedItem = newTableEntryObject;
+    this.itemToEdit = newTableEntryObject;
   }
 
   private closeTableItem(): void {
-    this.editedItem = undefined;
+    this.itemToEdit = {};
   }
 
   private saveTableItem(): void {
     this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
-    this.closeTableItem();
+    this.itemToEdit = {};
   }
 
   private editTableItem(item: any): void {
-    this.editedItem = item;
+    this.itemToEdit = item;
   }
 
   private deleteTableItem(item: any): void {
@@ -261,8 +162,6 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
       return this.isSameItem(o, item);
     });
     this.tableDataFromBauratendateiInput.splice(index, 1);
-    this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
-    this.closeTableItem();
   }
 }
 </script>
