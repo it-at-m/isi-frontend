@@ -45,6 +45,8 @@
           v-model="item.item[column]"
           :hide-details="true"
           dense
+          min="0"
+          precision="2"
           single-line
         ></num-field>
         <span
