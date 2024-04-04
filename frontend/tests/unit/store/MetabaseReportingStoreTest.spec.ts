@@ -18,6 +18,8 @@ describe("MetabaseReportingStoreTest.spec.ts", () => {
     const metabaseReporting: MetabaseReportingDto = {
       url: "https://isi-metabase-test.muenchen.de",
       reportBedarfe: "dashboard/45-dashboard-bedarfe",
+      reportErgebnissePlanungsursaechlich: "dashboard/36-ergebnisse-der-planungsursachlichen-bedarfsberechnung",
+      reportErgebnisseSobonUrsaechlich: "dashboard/44-ergebnisse-der-sobon-bedarfsberechnung",
       reportSpitzenbedarfePlanungsursaechlich: "dashboard/27-dashboard-spitzenbedarfe-planungsursachlich",
       reportSpitzenbedarfeSobonUrsaechlich: "dashboard/30-dashboard-spitzenbedarfe-sobon-ursachlich",
       reportWohneinheiten: "dashboard/33-dashboard-wohneinheiten",
