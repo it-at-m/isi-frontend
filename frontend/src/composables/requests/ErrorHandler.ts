@@ -33,7 +33,7 @@ export function useErrorHandler() {
    * @param showInInformationList falls true. Andernfalls wird der Fehler als Toast gezeigt.
    * @param error welche angezeigt werden soll.
    */
-  function handleError(showInInformationList: boolean, error: Error): Error {
+  function handleError(showInInformationList: boolean, error: unknown): Error {
     if (error instanceof ResponseError && error.response.type === "opaqueredirect") {
       location.reload();
     } else if (error instanceof ResponseError && error.response.status === 403) {
@@ -66,7 +66,7 @@ export function useErrorHandler() {
       const errorMessage = ERROR_MESSAGE_GATEWAY;
       showErrorInformation(showInInformationList, errorMessage);
     }
-    return error;
+    return error instanceof Error ? error : { name: "Error", message: ERROR_MESSAGE_GATEWAY };
   }
 
   /**
