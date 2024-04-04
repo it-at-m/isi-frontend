@@ -124,7 +124,7 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
 
   private tableDataFromBauratendateiInput: Array<any> = [];
 
-  private itemToEdit: any = {};
+  private itemToEdit: any = { index: -1 };
 
   @Watch("bauratendateiInput", { immediate: true, deep: true })
   private watchBauratendateiInput(): void {
@@ -141,16 +141,16 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     let maxIndex = 0;
     this.tableDataFromBauratendateiInput.forEach((tableEntry) => (maxIndex = _.max([tableEntry.index, maxIndex])));
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
-    newTableEntry.set("jahr", "2030");
-    newTableEntry.set("index", maxIndex++);
-    this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, 100));
+    newTableEntry.set("jahr", undefined);
+    newTableEntry.set("index", ++maxIndex);
+    this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, undefined));
     const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
     this.tableDataFromBauratendateiInput.push(newTableEntryObject);
     this.itemToEdit = _.cloneDeep(newTableEntryObject);
   }
 
   private closeTableItem(): void {
-    this.itemToEdit = {};
+    this.itemToEdit = { index: -1 };
   }
 
   private saveTableItem(): void {
@@ -159,7 +159,7 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     });
     this.tableDataFromBauratendateiInput[index] = this.itemToEdit;
     this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
-    this.itemToEdit = {};
+    this.closeTableItem();
   }
 
   private editTableItem(item: any): void {
