@@ -158,15 +158,11 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   }
 
   private addInput(): void {
-    let firstInput: BauratendateiInputDto;
-    if (
+    let firstInput =
       !_.isNil(this.abfragevarianteSachbearbeitung.bauratendateiInput) &&
       !_.isEmpty(this.abfragevarianteSachbearbeitung.bauratendateiInput)
-    ) {
-      firstInput = this.abfragevarianteSachbearbeitung.bauratendateiInput[0];
-    } else {
-      firstInput = {};
-    }
+        ? this.abfragevarianteSachbearbeitung.bauratendateiInput[0]
+        : {};
     this.abfragevarianteSachbearbeitung.bauratendateiInput?.push(firstInput);
     this.formChanged();
   }
