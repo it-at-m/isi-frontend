@@ -365,17 +365,7 @@ export function findFaultInBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): 
   return null;
 }
 
-function findFaultInBauraten(bauraten: BaurateModel[]): string | null {
-  for (const baurate of _.toArray(bauraten)) {
-    const validationMessage: string | null = findFaultInBaurate(new BaurateModel(baurate));
-    if (!_.isNil(validationMessage)) {
-      return validationMessage;
-    }
-  }
-  return null;
-}
-
-function findFaultInBaurate(baurate: BaurateModel): string | null {
+export function findFaultInBaurate(baurate: BaurateModel): string | null {
   if (_.isNil(baurate.jahr) || _.isNaN(baurate.jahr)) {
     return "In einer Baurate ist kein Jahr angegeben";
   }
@@ -387,6 +377,16 @@ function findFaultInBaurate(baurate: BaurateModel): string | null {
     return `Fördermix Gesamtanteil in Baurate ${baurate.jahr} ist unter 100 %`;
   } else if (summe > 100) {
     return `Fördermix Gesamtanteil in Baurate ${baurate.jahr} ist über 100 %`;
+  }
+  return null;
+}
+
+function findFaultInBauraten(bauraten: BaurateModel[]): string | null {
+  for (const baurate of _.toArray(bauraten)) {
+    const validationMessage: string | null = findFaultInBaurate(new BaurateModel(baurate));
+    if (!_.isNil(validationMessage)) {
+      return validationMessage;
+    }
   }
   return null;
 }
