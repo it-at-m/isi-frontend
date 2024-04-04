@@ -70,7 +70,7 @@ import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { createFoerdermixStammDto } from "@/utils/Factories";
 import { groupItemsToHeader, mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
 import _ from "lodash";
-
+import { useStammdatenStore } from "@/stores/StammdatenStore";
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
 @Component({ components: { NumField, FieldGroupCard } })
@@ -100,13 +100,15 @@ export default class FoerdermixFormular extends Mixins(
 
   private groupedStammdaten: GroupedStammdaten = [];
 
+  private stammdatenStore = useStammdatenStore();
+
   mounted(): void {
     this.setGroupedStammdatenList();
   }
 
   @Watch("foerdermix", { immediate: true, deep: true })
   private watchFoerdermix() {
-    this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    this.stammdaten = this.stammdatenStore.foerdermixStammdaten;
     const stammdatumMatchingWithFoerdermix = this.stammdaten.find(
       (stammdatum) =>
         _.isEqual(stammdatum.foerdermix.bezeichnung, this.foerdermix?.bezeichnung) &&
@@ -135,7 +137,7 @@ export default class FoerdermixFormular extends Mixins(
   }
 
   private setGroupedStammdatenList(): void {
-    this.stammdaten = this.$store.getters["stammdaten/foerdermixStammdaten"];
+    this.stammdaten = this.stammdatenStore.foerdermixStammdaten;
     this.groupedStammdaten = groupItemsToHeader(this.stammdaten, false);
     this.selectedItem.foerdermix.bezeichnung = this.foerdermix.bezeichnung;
   }

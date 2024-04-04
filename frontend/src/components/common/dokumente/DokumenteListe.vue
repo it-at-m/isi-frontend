@@ -140,6 +140,7 @@ import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin
 import { DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({
   components: {
@@ -155,6 +156,8 @@ export default class DokumenteListe extends Mixins(DokumenteApiRequestMixin, Fie
   private selectedDokument: DokumentDto | undefined;
 
   private deleteDialogOpen = false;
+
+  private lookupStore = useLookupStore();
 
   get hasDokumente(): boolean {
     return !_.isNil(this.dokumente) && this.dokumente.length > 0;
@@ -177,7 +180,7 @@ export default class DokumenteListe extends Mixins(DokumenteApiRequestMixin, Fie
   }
 
   get artDokumentList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/artDokument"];
+    return this.lookupStore.artDokument;
   }
 
   async downloadDokument(dokument: DokumentDto): Promise<void> {

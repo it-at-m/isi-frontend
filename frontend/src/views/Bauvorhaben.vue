@@ -156,6 +156,7 @@ import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
 import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
+import { useSearchStore } from "@/stores/SearchStore";
 
 @Component({
   computed: {
@@ -193,6 +194,10 @@ export default class Bauvorhaben extends Mixins(
 
   private datenuebernahmeAbfrageId?: string = undefined;
 
+  private searchStore = useSearchStore();
+
+  private selectedBauvorhaben = computed(() => this.searchStore.selectedBauvorhaben);
+
   mounted(): void {
     this.isNew = this.$route.params.id === undefined;
 
@@ -201,9 +206,9 @@ export default class Bauvorhaben extends Mixins(
     }
   }
 
-  @Watch("$store.state.search.selectedBauvorhaben", { deep: true })
+  @Watch("selectedBauvorhaben", { deep: true, immediate: true })
   private selectedBauvorhabenChanged() {
-    const bauvorhabenFromStore = this.$store.getters["search/selectedBauvorhaben"];
+    const bauvorhabenFromStore = this.searchStore.selectedBauvorhaben;
     if (!_.isNil(bauvorhabenFromStore)) {
       this.bauvorhaben = new BauvorhabenModel(_.cloneDeep(bauvorhabenFromStore));
     }
@@ -245,7 +250,7 @@ export default class Bauvorhaben extends Mixins(
    */
   async fetchBauvorhabenById(): Promise<void> {
     await this.getBauvorhabenById(this.$route.params.id, false).then((dto) => {
-      this.$store.commit("search/selectedBauvorhaben", dto);
+      this.searchStore.setSelectedBauvorhaben(_.cloneDeep(dto));
     });
   }
 
@@ -265,7 +270,7 @@ export default class Bauvorhaben extends Mixins(
    */
   private async updateBauvorhaben(): Promise<void> {
     await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
-      this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
+      this.searchStore.setSelectedBauvorhaben(_.cloneDeep(dto));
       Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
     });
   }
@@ -278,7 +283,7 @@ export default class Bauvorhaben extends Mixins(
     this.deleteDialogOpen = false;
 
     await this.deleteBauvorhaben(this.$route.params.id, true).then(() => {
-      this.$store.commit("search/removeSearchResultById", this.$route.params.id);
+      this.searchStore.removeSearchResultById(this.$route.params.id);
       this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
     });
   }

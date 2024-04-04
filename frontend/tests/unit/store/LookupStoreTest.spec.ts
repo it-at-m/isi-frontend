@@ -1,72 +1,224 @@
-import Vuex from "vuex";
-import Vue from "vue";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import User, { UserState } from "@/store/modules/User";
-import Snackbar, { SnackbarState } from "@/store/modules/Snackbar";
-import CommonStore, { CommonState } from "@/store/modules/CommonStore";
-import LookupStore, { LookupState } from "@/store/modules/LookupStore";
-import SearchStore, { SearchState } from "@/store/modules/SearchStore";
-import StammdatenStore, { StammdatenState } from "@/store/modules/StammdatenStore";
-import FileInfoStammStore, { FileInfoStammState } from "@/store/modules/FileInfoStammStore";
+import { describe, expect, vi } from "vitest";
+import { createPinia, setActivePinia } from "pinia";
+import { useLookupStore } from "../../../src/stores/LookupStore";
+import { LookupListDto } from "@/api/api-client/isi-backend";
 
-describe("LookupStoreTest.spec.ts", () => {
-  Vue.use(Vuex);
-
-  interface RootState {
-    snackbarState: SnackbarState;
-    userState: UserState;
-    foerdermix: StammdatenState;
-    common: CommonState;
-    lookup: LookupState;
-    search: SearchState;
-    fileInfoStamm: FileInfoStammState;
-  }
-
-  const store = new Vuex.Store<RootState>({
-    modules: {
-      user: User,
-      snackbar: Snackbar,
-      foerdermix: StammdatenStore,
-      common: CommonStore,
-      lookup: LookupStore,
-      search: SearchStore,
-      fileInfoStamm: FileInfoStammStore,
-    },
+describe("Lookup Store Setters", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
   });
 
-  afterEach(() => {
-    store.commit("lookup/artAbfrage", {} as LookupEntryDto[]);
+  const examplePayload: LookupListDto | undefined = { list: [{ key: "key", value: "value" }] } as LookupListDto;
+  const examplePayloadListUndefined: LookupListDto | undefined = { list: undefined };
+  const examplePayloadUndefined: LookupListDto | undefined = undefined;
+
+  it("setUncertainBoolean updates uncertainBoolean correctly", () => {
+    const store = useLookupStore();
+    store.setUncertainBoolean(examplePayload);
+    expect(store.uncertainBoolean).toEqual(examplePayload.list);
+    store.setUncertainBoolean(examplePayloadListUndefined);
+    expect(store.uncertainBoolean).toEqual([]);
+    store.setUncertainBoolean(examplePayloadUndefined);
+    expect(store.uncertainBoolean).toEqual([]);
   });
 
-  test("Initialize list artAbfrage", () => {
-    const list: Array<LookupEntryDto> = [];
-    list.push({
-      key: "ERMITTLUNG_SOZINFRA_BEDARF",
-      value: "Ermittlung des durch das Wohnbauvorhaben ausgelösten Infrastrukturbedarfs",
-    } as LookupEntryDto);
-    list.push({
-      key: "STELLUNGNAHME_MITZEICHNUNGSKETTE_BESCHLUSSVORLAGE",
-      value: "Stellungnahme zu Beschlussvorlage",
-    } as LookupEntryDto);
-    store.commit("lookup/artAbfrage", list);
-    expect(store.getters["lookup/artAbfrage"]).toHaveLength(2);
+  it("setArtDokument updates artDokument correctly", () => {
+    const store = useLookupStore();
+    store.setArtDokument(examplePayload);
+    expect(store.artDokument).toEqual(examplePayload.list);
+    store.setArtDokument(examplePayloadListUndefined);
+    expect(store.artDokument).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
   });
 
-  test("Contains items artAbfrage", () => {
-    const list: Array<LookupEntryDto> = [];
-    list.push({
-      key: "ERMITTLUNG_SOZINFRA_BEDARF",
-      value: "Ermittlung des durch das Wohnbauvorhaben ausgelösten Infrastrukturbedarfs",
-    } as LookupEntryDto);
-    list.push({
-      key: "STELLUNGNAHME_MITZEICHNUNGSKETTE_BESCHLUSSVORLAGE",
-      value: "Stellungnahme zu Beschlussvorlage",
-    } as LookupEntryDto);
-    store.commit("lookup/artAbfrage", list);
-    expect(store.getters["lookup/artAbfrage"]).toHaveLength(2);
-    expect(store.getters["lookup/artAbfrage"][0].key).toEqual("ERMITTLUNG_SOZINFRA_BEDARF");
-    expect(store.getters["lookup/artAbfrage"][0].value).not.toBe("");
-    expect(store.getters["lookup/artAbfrage"][1].key).toEqual("STELLUNGNAHME_MITZEICHNUNGSKETTE_BESCHLUSSVORLAGE");
-    expect(store.getters["lookup/artAbfrage"][1].value).not.toBe("");
+  it("setArtAbfrage updates artAbfrage correctly", () => {
+    const store = useLookupStore();
+    store.setArtAbfrage(examplePayload);
+    expect(store.artAbfrage).toEqual(examplePayload.list);
+    store.setArtAbfrage(examplePayloadListUndefined);
+    expect(store.artAbfrage).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setSobonVerfahrensgrundsaetzeJahr updates sobonVerfahrensgrundsaetzeJahr correctly", () => {
+    const store = useLookupStore();
+    store.setSobonVerfahrensgrundsaetzeJahr(examplePayload);
+    expect(store.sobonVerfahrensgrundsaetzeJahr).toEqual(examplePayload.list);
+    store.setSobonVerfahrensgrundsaetzeJahr(examplePayloadListUndefined);
+    expect(store.sobonVerfahrensgrundsaetzeJahr).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setStandVerfahrenBauleitplanverfahren updates standVerfahrenBauleitplanverfahren correctly", () => {
+    const store = useLookupStore();
+    store.setStandVerfahrenBauleitplanverfahren(examplePayload);
+    expect(store.standVerfahrenBauleitplanverfahren).toEqual(examplePayload.list);
+    store.setStandVerfahrenBauleitplanverfahren(examplePayloadListUndefined);
+    expect(store.standVerfahrenBauleitplanverfahren).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setStandVerfahrenBaugenehmigungsverfahren updates standVerfahrenBaugenehmigungsverfahren correctly", () => {
+    const store = useLookupStore();
+    store.setStandVerfahrenBaugenehmigungsverfahren(examplePayload);
+    expect(store.standVerfahrenBaugenehmigungsverfahren).toEqual(examplePayload.list);
+    store.setStandVerfahrenBaugenehmigungsverfahren(examplePayloadListUndefined);
+    expect(store.standVerfahrenBaugenehmigungsverfahren).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setStandVerfahrenWeiteresVerfahren updates standVerfahrenWeiteresVerfahren correctly", () => {
+    const store = useLookupStore();
+    store.setStandVerfahrenWeiteresVerfahren(examplePayload);
+    expect(store.standVerfahrenWeiteresVerfahren).toEqual(examplePayload.list);
+    store.setStandVerfahrenWeiteresVerfahren(examplePayloadListUndefined);
+    expect(store.standVerfahrenWeiteresVerfahren).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setStandVerfahren updates standVerfahren correctly", () => {
+    const store = useLookupStore();
+    store.setStandVerfahren(examplePayload);
+    expect(store.standVerfahren).toEqual(examplePayload.list);
+    store.setStandVerfahren(examplePayloadListUndefined);
+    expect(store.standVerfahren).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setStatusAbfrage updates statusAbfrage correctly", () => {
+    const store = useLookupStore();
+    store.setStatusAbfrage(examplePayload);
+    expect(store.statusAbfrage).toEqual(examplePayload.list);
+    store.setStatusAbfrage(examplePayloadListUndefined);
+    expect(store.statusAbfrage).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setWesentlicheRechtsgrundlageBauleitplanverfahren updates wesentlicheRechtsgrundlageBauleitplanverfahren correctly", () => {
+    const store = useLookupStore();
+    store.setWesentlicheRechtsgrundlageBauleitplanverfahren(examplePayload);
+    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren).toEqual(examplePayload.list);
+    store.setWesentlicheRechtsgrundlageBauleitplanverfahren(examplePayloadListUndefined);
+    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setWesentlicheRechtsgrundlageBaugenehmigungsverfahren updates wesentlicheRechtsgrundlageBaugenehmigungsverfahren correctly", () => {
+    const store = useLookupStore();
+    store.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(examplePayload);
+    expect(store.wesentlicheRechtsgrundlageBaugenehmigungsverfahren).toEqual(examplePayload.list);
+    store.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(examplePayloadListUndefined);
+    expect(store.wesentlicheRechtsgrundlageBaugenehmigungsverfahren).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setWesentlicheRechtsgrundlage updates wesentlicheRechtsgrundlage correctly", () => {
+    const store = useLookupStore();
+    store.setWesentlicheRechtsgrundlage(examplePayload);
+    expect(store.wesentlicheRechtsgrundlage).toEqual(examplePayload.list);
+    store.setWesentlicheRechtsgrundlage(examplePayloadListUndefined);
+    expect(store.wesentlicheRechtsgrundlage).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setArtBaulicheNutzung updates artBaulicheNutzung correctly", () => {
+    const store = useLookupStore();
+    store.setArtBaulicheNutzung(examplePayload);
+    expect(store.artBaulicheNutzung).toEqual(examplePayload.list);
+    store.setArtBaulicheNutzung(examplePayloadListUndefined);
+    expect(store.artBaulicheNutzung).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setArtBaulicheNutzungBauvorhaben updates artBaulicheNutzungBauvorhaben correctly", () => {
+    const store = useLookupStore();
+    store.setArtBaulicheNutzungBauvorhaben(examplePayload);
+    expect(store.artBaulicheNutzungBauvorhaben).toEqual(examplePayload.list);
+    store.setArtBaulicheNutzungBauvorhaben(examplePayloadListUndefined);
+    expect(store.artBaulicheNutzungBauvorhaben).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setStatusInfrastruktureinrichtung updates statusInfrastruktureinrichtung correctly", () => {
+    const store = useLookupStore();
+    store.setStatusInfrastruktureinrichtung(examplePayload);
+    expect(store.statusInfrastruktureinrichtung).toEqual(examplePayload.list);
+    store.setStatusInfrastruktureinrichtung(examplePayloadListUndefined);
+    expect(store.statusInfrastruktureinrichtung).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setEinrichtungstraeger updates einrichtungstraeger correctly", () => {
+    const store = useLookupStore();
+    store.setEinrichtungstraeger(examplePayload);
+    expect(store.einrichtungstraeger).toEqual(examplePayload.list);
+    store.setEinrichtungstraeger(examplePayloadListUndefined);
+    expect(store.einrichtungstraeger).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setEinrichtungstraegerSchulen updates einrichtungstraegerSchulen correctly", () => {
+    const store = useLookupStore();
+    store.setEinrichtungstraegerSchulen(examplePayload);
+    expect(store.einrichtungstraegerSchulen).toEqual(examplePayload.list);
+    store.setEinrichtungstraegerSchulen(examplePayloadListUndefined);
+    expect(store.einrichtungstraegerSchulen).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setInfrastruktureinrichtungTyp updates infrastruktureinrichtungTyp correctly", () => {
+    const store = useLookupStore();
+    store.setInfrastruktureinrichtungTyp(examplePayload);
+    expect(store.infrastruktureinrichtungTyp).toEqual(examplePayload.list);
+    store.setInfrastruktureinrichtungTyp(examplePayloadListUndefined);
+    expect(store.infrastruktureinrichtungTyp).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setArtGsNachmittagBetreuung updates artGsNachmittagBetreuung correctly", () => {
+    const store = useLookupStore();
+    store.setArtGsNachmittagBetreuung(examplePayload);
+    expect(store.artGsNachmittagBetreuung).toEqual(examplePayload.list);
+    store.setArtGsNachmittagBetreuung(examplePayloadListUndefined);
+    expect(store.artGsNachmittagBetreuung).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setSobonOrientierungswertJahr updates sobonOrientierungswertJahr correctly", () => {
+    const store = useLookupStore();
+    store.setSobonOrientierungswertJahr(examplePayload);
+    expect(store.sobonOrientierungswertJahr).toEqual(examplePayload.list);
+    store.setSobonOrientierungswertJahr(examplePayloadListUndefined);
+    expect(store.sobonOrientierungswertJahr).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
+  });
+
+  it("setSobonOrientierungswertJahrWithoutStandortabfrage updates sobonOrientierungswertJahrWithoutStandortabfrage correctly", () => {
+    const store = useLookupStore();
+    store.setSobonOrientierungswertJahrWithoutStandortabfrage(examplePayload);
+    expect(store.sobonOrientierungswertJahrWithoutStandortabfrage).toEqual(examplePayload.list);
+    store.setSobonOrientierungswertJahrWithoutStandortabfrage(examplePayloadListUndefined);
+    expect(store.sobonOrientierungswertJahrWithoutStandortabfrage).toEqual([]);
+    store.setArtDokument(examplePayloadUndefined);
+    expect(store.artDokument).toEqual([]);
   });
 });

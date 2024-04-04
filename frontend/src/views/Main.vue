@@ -134,7 +134,7 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import _ from "lodash";
 import { AbfrageDtoArtAbfrageEnum, SearchResultDtoTypeEnum } from "@/api/api-client/isi-backend";
 import { Feature, Point } from "geojson";
-
+import { useSearchStore } from "@/stores/SearchStore";
 type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
 @Component({
@@ -148,12 +148,14 @@ type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string;
 export default class Main extends Vue {
   private speedDialOpen = false;
 
+  private searchStore = useSearchStore();
+
   get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
-    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
   }
 
   set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
-    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
+    this.searchStore.setRequestSearchQueryAndSorting(_.cloneDeep(searchQueryForEntities));
   }
 
   private createBauleitplanverfahren(): void {

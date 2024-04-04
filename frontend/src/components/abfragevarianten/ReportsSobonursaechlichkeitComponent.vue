@@ -104,11 +104,13 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import _ from "lodash";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-
+import { useSearchStore } from "@/stores/SearchStore";
 @Component({ components: { FieldGroupCard } })
 export default class ReportsSobonursaechlichkeitComponent extends Mixins(AbfrageSecurityMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+
+  private searchStore = useSearchStore();
 
   private getUrlWohneinheiten(): string {
     const url = new URL(this.getUrlReportWohneinheiten());
@@ -237,7 +239,7 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
   }
 
   private getParameterValueAbfrageId(): string {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage;
     return !_.isNil(abfrage.id) ? abfrage.id : "";
   }
 
@@ -246,7 +248,7 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
   }
 
   private getParameterValueArtAbfrage(): string {
-    const abfrage: AbfrageModel = this.$store.getters["search/selectedAbfrage"];
+    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage;
     if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       return import.meta.env.VITE_REPORT_ART_ABFRAGE_BAULEITPLANVERFAHREN as string;
     } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {

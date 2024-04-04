@@ -257,6 +257,7 @@ import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestM
 import { Context } from "@/utils/Context";
 import Verortung from "@/components/common/Verortung.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({
   computed: {
@@ -298,23 +299,25 @@ export default class BauvorhabenForm extends Mixins(
 
   private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
 
+  private lookupStore = useLookupStore();
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
   get standVerfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/standVerfahren"];
+    return this.lookupStore.standVerfahren;
   }
 
   get wesentlicheRechtsgrundlageList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/wesentlicheRechtsgrundlage"];
+    return this.lookupStore.wesentlicheRechtsgrundlage;
   }
 
   get artBaulicheNutzungList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/artBaulicheNutzungBauvorhaben"];
+    return this.lookupStore.artBaulicheNutzungBauvorhaben;
   }
 
   get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/sobonVerfahrensgrundsaetzeJahr"];
+    return this.lookupStore.sobonVerfahrensgrundsaetzeJahr;
   }
 
   set calcGrundstuecksgroesse(grundstuecksgroesse: number) {
