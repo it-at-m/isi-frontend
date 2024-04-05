@@ -70,7 +70,7 @@ export default class SchuleComponent extends Mixins(FieldValidationRulesMixin, S
   private readonly isEinrichtungstraegerRequired!: boolean;
 
   get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.lookupStore.einrichtungstraeger;
+    return this.lookupStore.einrichtungstraegerSchulen;
   }
 }
 </script>
