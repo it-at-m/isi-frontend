@@ -20,9 +20,13 @@
       v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
       :key="index"
     >
-      <v-divider />
+      <v-divider
+        v-if="index != 0"
+        class="my-2"
+      />
       <v-btn
         @click="deleteInput(index)"
+        :disabled="!isEditable"
         v-text="'Löschen'"
       />
       <v-row>
@@ -30,15 +34,13 @@
           cols="12"
           md="4"
         >
-          <v-autocomplete
-            :id="'bauratendatei_grundschulsprengel_' + index"
+          <v-combobox
             v-model="input.grundschulsprengel"
-            :items="abfragevarianteSachbearbeitung?.bauratendateiInputBasis?.grundschulsprengel"
-            item-value="key"
-            item-text="value"
+            label="Grundschulsprengel"
+            hide-no-data
+            :append-icon="''"
             multiple
             chips
-            label="Grundschulesprengel"
             :disabled="!isEditable"
             @input="formChanged"
           />
@@ -47,15 +49,13 @@
           cols="12"
           md="4"
         >
-          <v-autocomplete
-            :id="'abfragevarianteSachbearbeitung_bauratendatei_mittelschulsprengel_' + index"
+          <v-combobox
             v-model="input.mittelschulsprengel"
-            :items="abfragevarianteSachbearbeitung.bauratendateiInputBasis?.mittelschulsprengel"
-            item-value="key"
-            item-text="value"
+            label="Mittelschulsprengel"
+            hide-no-data
+            :append-icon="''"
             multiple
             chips
-            label="Mittelschulsprengel"
             :disabled="!isEditable"
             @input="formChanged"
           />
@@ -64,15 +64,13 @@
           cols="12"
           md="4"
         >
-          <v-autocomplete
-            :id="'abfragevarianteSachbearbeitung_bauratendatei_viertel_' + index"
+          <v-combobox
             v-model="input.viertel"
-            :items="abfragevarianteSachbearbeitung.bauratendateiInputBasis?.viertel"
-            item-value="key"
-            item-text="value"
+            label="Viertel"
+            hide-no-data
+            :append-icon="''"
             multiple
             chips
-            label="Viertel"
             :disabled="!isEditable"
             @input="formChanged"
           />
@@ -85,7 +83,7 @@
         >
           <spreadsheet-bauratendatei-input
             :id="'spreadsheet_bauratendatei_input_' + index"
-            v-model="abfragevarianteSachbearbeitung.bauratendateiInput"
+            v-model="input.wohneinheiten"
             :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
             :is-editable="isEditable"
           />
@@ -95,6 +93,7 @@
     <v-btn
       @click="addInput"
       v-text="'Neuer Eintrag'"
+      :disabled="!isEditable"
     />
     <v-row>
       <v-col
