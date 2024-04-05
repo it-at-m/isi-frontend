@@ -23,14 +23,22 @@
         class="px-3 pt-2 pb-3 mt-10"
         outlined
       >
-        <v-spacer />
-        <v-btn
-          icon
-          :disabled="!isEditable"
-          @click="deleteInput(index)"
-        >
-          <v-icon> mdi-delete </v-icon>
-        </v-btn>
+        <v-row>
+          <v-col
+            cols="12"
+            md="12"
+          >
+            <v-spacer />
+            <v-btn
+              class="mt-0 mr-0"
+              icon
+              :disabled="!isEditable"
+              @click="deleteInput(index)"
+            >
+              <v-icon> mdi-close </v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col
             cols="12"
