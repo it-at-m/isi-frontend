@@ -800,9 +800,7 @@ export default class ValidatorMixin extends Vue {
 
     for (let [jahrAndFoerderart, wohneinheiten] of sumBasis) {
       const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
-      if (_.isNil(numberOfWohneinheitenInputs)) {
-        return validationMessage;
-      } else if (numberOfWohneinheitenInputs !== wohneinheiten) {
+      if (numberOfWohneinheitenInputs !== wohneinheiten) {
         return validationMessage;
       }
     }
