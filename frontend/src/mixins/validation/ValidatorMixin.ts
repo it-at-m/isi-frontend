@@ -782,6 +782,10 @@ export default class ValidatorMixin extends Vue {
       | AbfragevarianteBaugenehmigungsverfahrenDto
       | AbfragevarianteWeiteresVerfahrenDto,
   ): string | null {
+    if (_.isNil(abfragevariante.hasBauratendateiInput) || !abfragevariante.hasBauratendateiInput) {
+      return null;
+    }
+
     const bauratendateiInputBasis = _.isNil(abfragevariante.bauratendateiInputBasis)
       ? []
       : [abfragevariante.bauratendateiInputBasis];
