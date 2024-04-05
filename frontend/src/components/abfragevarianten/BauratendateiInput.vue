@@ -161,7 +161,7 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
       !_.isEmpty(this.abfragevarianteSachbearbeitung.bauratendateiInput)
         ? this.abfragevarianteSachbearbeitung.bauratendateiInput[0]
         : {};
-    this.abfragevarianteSachbearbeitung.bauratendateiInput?.push(firstInput);
+    this.abfragevarianteSachbearbeitung.bauratendateiInput?.push(_.cloneDeep(firstInput));
     this.formChanged();
   }
 }
