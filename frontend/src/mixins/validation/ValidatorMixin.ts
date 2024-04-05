@@ -28,6 +28,7 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
+  BaugenehmigungsverfahrenDto,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -45,6 +46,7 @@ import {
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { sumWohneinheitenOfBauratendateiInput } from "@/utils/BauratendateiUtils";
 
 @Component
 export default class ValidatorMixin extends Vue {
@@ -772,5 +774,33 @@ export default class ValidatorMixin extends Vue {
             }.`;
     }
     return validationMessage;
+  }
+
+  public findFaultInBauratendateiInput(
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenDto
+      | AbfragevarianteBaugenehmigungsverfahrenDto
+      | AbfragevarianteWeiteresVerfahrenDto,
+  ): string | null {
+    const bauratendateiInputBasis = _.isNil(abfragevariante.bauratendateiInputBasis)
+      ? []
+      : [abfragevariante.bauratendateiInputBasis];
+    const sumBasis = sumWohneinheitenOfBauratendateiInput(bauratendateiInputBasis);
+    const sumInputs = sumWohneinheitenOfBauratendateiInput(_.toArray(abfragevariante.bauratendateiInput));
+
+    if (sumBasis.size != sumInputs.size) {
+      return "XXXX";
+    }
+
+    for (let [jahrAndFoerderart, wohneinheiten] of sumBasis) {
+      const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
+      if (_.isNil(numberOfWohneinheitenInputs)) {
+        return "XXXX";
+      } else if (numberOfWohneinheitenInputs !== wohneinheiten) {
+        return "XXXX";
+      }
+    }
+
+    return null;
   }
 }

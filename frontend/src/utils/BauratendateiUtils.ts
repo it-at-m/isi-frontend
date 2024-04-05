@@ -1,4 +1,8 @@
-import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import {
+  BauratendateiInputDto,
+  instanceOfWohneinheitenProFoerderartProJahrDto,
+  WohneinheitenProFoerderartProJahrDto,
+} from "@/api/api-client/isi-backend";
 import { DataTableHeader } from "vuetify";
 import _ from "lodash";
 
@@ -159,4 +163,33 @@ export function createBauratendateiInput(tableData: Array<any>): Array<Wohneinhe
     });
   });
   return newBauratendateiInput;
+}
+
+export function sumWohneinheitenOfBauratendateiInput(
+  bauratendateiInputs: Array<BauratendateiInputDto>,
+): Map<string, number> {
+  const sum = new Map<string, number>();
+  bauratendateiInputs
+    .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
+    .forEach((wohneinheitenProFoerderartProJahr) => {
+      const jahrAndFoerderart = (
+        _.isNil(wohneinheitenProFoerderartProJahr.jahr) ? "" : wohneinheitenProFoerderartProJahr.jahr
+      ).concat(
+        "",
+        _.isNil(wohneinheitenProFoerderartProJahr.foerderart) ? "" : wohneinheitenProFoerderartProJahr.foerderart,
+      );
+      const wohneinheiten = _.isNil(wohneinheitenProFoerderartProJahr.wohneinheiten)
+        ? 0
+        : wohneinheitenProFoerderartProJahr.wohneinheiten;
+      if (sum.has(jahrAndFoerderart)) {
+        const alreadySavedWohneinheiten = sum.get(jahrAndFoerderart);
+        sum.set(
+          jahrAndFoerderart,
+          (_.isNil(alreadySavedWohneinheiten) ? 0 : alreadySavedWohneinheiten) + wohneinheiten,
+        );
+      } else {
+        sum.set(jahrAndFoerderart, wohneinheiten);
+      }
+    });
+  return sum;
 }
