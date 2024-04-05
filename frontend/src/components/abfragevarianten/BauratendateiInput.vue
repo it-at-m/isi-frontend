@@ -20,24 +20,18 @@
       <v-card
         v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
         :key="index"
-        class="px-3 pt-2 pb-3 mt-10"
+        class="px-3 pt-3 pb-3 mt-10"
         outlined
       >
-        <v-row>
-          <v-col
-            cols="12"
-            md="12"
+        <v-row class="justify-end">
+          <v-btn
+            class="mt-0 mr-0 pt-0 pr-0"
+            icon
+            :disabled="!isEditable"
+            @click="deleteInput(index)"
           >
-            <v-spacer />
-            <v-btn
-              class="mt-0 mr-0"
-              icon
-              :disabled="!isEditable"
-              @click="deleteInput(index)"
-            >
-              <v-icon> mdi-close </v-icon>
-            </v-btn>
-          </v-col>
+            <v-icon> mdi-close </v-icon>
+          </v-btn>
         </v-row>
         <v-row>
           <v-col
@@ -96,18 +90,15 @@
           :is-editable="isEditable"
         />
       </v-card>
-      <v-row>
-        <v-col
-          cols="12"
-          md="12"
-        >
-          <v-btn
-            :disabled="!isEditable"
-            @click="addInput"
-            v-text="'Neuer Eintrag'"
-          />
-        </v-col>
-      </v-row>
+      <v-toolbar flat>
+        <v-spacer />
+        <v-btn
+          :disabled="!isEditable"
+          @click="addInput"
+          v-text="'Neuer Eintrag'"
+        />
+        <v-spacer />
+      </v-toolbar>
     </div>
     <v-row>
       <v-col

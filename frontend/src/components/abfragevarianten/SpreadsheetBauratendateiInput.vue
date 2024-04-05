@@ -1,27 +1,16 @@
 <template>
   <v-data-table
+    class="mt-3"
     :headers="headers"
     :items="tableDataFromBauratendateiInput"
     hide-default-footer
   >
-    <template #top>
-      <v-toolbar flat>
-        <v-spacer />
-        <v-btn
-          color="primary"
-          class="mr-2"
-          :disabled="!isEditable"
-          @click="addNewTableItem"
-        >
-          <v-icon dark>mdi-plus</v-icon>Neuer Eintrag
-        </v-btn>
-      </v-toolbar>
-    </template>
     <template #[`item.jahr`]="{ item }">
       <v-text-field
         v-if="isSameItem(item, itemToEdit)"
         v-model="itemToEdit['jahr']"
         :hide-details="true"
+        :rules="[fieldValidationRules.digits, fieldValidationRules.pflichtfeld]"
         dense
         maxlength="4"
         single-line
@@ -37,6 +26,7 @@
         :key="`${column}_${item.item.jahr}_${index}`"
         v-model="itemToEdit[column]"
         :hide-details="true"
+        required
         dense
         :min="0"
         :precision="2"
@@ -86,6 +76,18 @@
     <template #no-data>
       <span>Es sind keine Baurateninformationen vorhanden</span>
     </template>
+    <template #footer>
+      <v-toolbar flat>
+        <v-spacer />
+        <v-btn
+          color="primary"
+          :disabled="!isEditable"
+          @click="addNewTableItem"
+        >
+          <v-icon>mdi-plus</v-icon>Neue Zeile
+        </v-btn>
+      </v-toolbar>
+    </template>
   </v-data-table>
 </template>
 
@@ -104,9 +106,10 @@ import {
   createHeaders,
   createTableData,
 } from "@/utils/BauratendateiUtils";
+import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 
 @Component({ components: { FieldGroupCard, NumField } })
-export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin) {
+export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin, FieldValidationRulesMixin) {
   @VModel({ type: Array })
   private bauratendateiInput!: Array<WohneinheitenProFoerderartProJahrDto>;
 
