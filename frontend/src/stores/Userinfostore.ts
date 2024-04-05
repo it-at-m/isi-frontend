@@ -1,59 +1,46 @@
+import { defineStore } from "pinia";
 import { Userinfo } from "@/types/common/Userinfo";
-import { ActionContext } from "vuex/types/index";
-import { RootState } from "..";
 import _ from "lodash";
 
-const state = {
-  userinfo: undefined as Userinfo | undefined,
-};
+interface State {
+  userinfo: Userinfo | undefined;
+}
 
-export type UserinfoState = typeof state;
-
-export default {
-  namespaced: true,
-
-  state,
-
+export const useUserinfoStore = defineStore("userinfo", {
+  state: () =>
+    ({
+      userinfo: undefined,
+    }) as State,
   getters: {
-    userinfo: (state: UserinfoState): Userinfo | undefined => {
-      return state.userinfo;
-    },
-    hasRoleAdmin: (state: UserinfoState): boolean => {
+    hasRoleAdmin: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("admin")
         : false;
     },
-    hasRoleAbfrageerstellung: (state: UserinfoState): boolean => {
+    hasRoleAbfrageerstellung: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("abfrageerstellung")
         : false;
     },
-    hasRoleSachbearbeitung: (state: UserinfoState): boolean => {
+    hasRoleSachbearbeitung: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("sachbearbeitung")
         : false;
     },
-    hasRoleBedarfsmeldung: (state: UserinfoState): boolean => {
+    hasRoleBedarfsmeldung: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.includes("bedarfsmeldung")
         : false;
     },
-    hasOnlyRoleAnwender: (state: UserinfoState): boolean => {
+    hasOnlyRoleAnwender: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
         ? state.userinfo?.roles?.every((rolle) => rolle === "anwender")
         : false;
     },
   },
-
-  mutations: {
-    userinfo(state: UserinfoState, value: Userinfo): void {
-      state.userinfo = value;
-    },
-  },
-
   actions: {
-    userinfo(context: ActionContext<UserinfoState, RootState>, value: Userinfo): void {
-      context.commit("userinfo", value);
+    setUserinfo(payload: Userinfo): void {
+      this.userinfo = payload;
     },
   },
-};
+});

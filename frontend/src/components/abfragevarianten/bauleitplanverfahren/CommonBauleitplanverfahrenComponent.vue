@@ -129,13 +129,15 @@ import {
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-
+import { useLookupStore } from "@/stores/LookupStore";
 @Component({ components: { FieldGroupCard } })
 export default class CommonBauleitplanverfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+
+  private lookupStore = useLookupStore();
 
   @Prop()
   private mode!: DisplayMode;
@@ -152,7 +154,7 @@ export default class CommonBauleitplanverfahrenComponent extends Mixins(FieldVal
   private readonly isEditable!: boolean;
 
   get wesentlicheRechtsgrundlageBauleitplanverfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/wesentlicheRechtsgrundlageBauleitplanverfahren"];
+    return this.lookupStore.wesentlicheRechtsgrundlageBauleitplanverfahren;
   }
 
   get calcRealisierungBis(): number | undefined {

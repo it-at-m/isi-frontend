@@ -114,6 +114,7 @@ import {
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({ components: { FieldGroupCard } })
 export default class CommonBaugenehmigungsverfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
@@ -136,8 +137,10 @@ export default class CommonBaugenehmigungsverfahrenComponent extends Mixins(Fiel
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  private lookupStore = useLookupStore();
+
   get wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/wesentlicheRechtsgrundlageBaugenehmigungsverfahren"];
+    return this.lookupStore.wesentlicheRechtsgrundlageBaugenehmigungsverfahren;
   }
 
   get calcRealisierungBis(): number | undefined {

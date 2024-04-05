@@ -62,7 +62,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import _ from "lodash";
-
+import { useLookupStore } from "@/stores/LookupStore";
 @Component({
   components: {
     FieldGroupCard,
@@ -70,6 +70,8 @@ import _ from "lodash";
 })
 export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: String }) infrastruktureinrichtungTyp!: string;
+
+  private lookupStore = useLookupStore();
 
   @Prop()
   private lfdNr!: string;
@@ -93,7 +95,7 @@ export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldVa
   }
 
   get infrastruktureinrichtungList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/infrastruktureinrichtungTyp"];
+    return this.lookupStore.infrastruktureinrichtungTyp;
   }
 
   get infrastruktureinrichtungTypDisplay(): string {
