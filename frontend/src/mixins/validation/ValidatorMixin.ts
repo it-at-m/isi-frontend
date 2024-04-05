@@ -776,7 +776,7 @@ export default class ValidatorMixin extends Vue {
     return validationMessage;
   }
 
-  public findFaultInBauratendateiInput(
+  public findFaultForBauratendateiInput(
     abfragevariante:
       | AbfragevarianteBauleitplanverfahrenDto
       | AbfragevarianteBaugenehmigungsverfahrenDto
