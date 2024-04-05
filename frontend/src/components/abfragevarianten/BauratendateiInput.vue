@@ -76,25 +76,25 @@
           />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="12"
-        >
-          <spreadsheet-bauratendatei-input
-            :id="'spreadsheet_bauratendatei_input_' + index"
-            v-model="input.wohneinheiten"
-            :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
-            :is-editable="isEditable"
-          />
-        </v-col>
-      </v-row>
+      <spreadsheet-bauratendatei-input
+        :id="'spreadsheet_bauratendatei_input_' + index"
+        v-model="input.wohneinheiten"
+        :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
+        :is-editable="isEditable"
+      />
     </div>
-    <v-btn
-      :disabled="!isEditable"
-      @click="addInput"
-      v-text="'Neuer Eintrag'"
-    />
+    <v-row>
+      <v-col
+        cols="12"
+        md="12"
+      >
+        <v-btn
+          :disabled="!isEditable"
+          @click="addInput"
+          v-text="'Neuer Eintrag'"
+        />
+      </v-col>
+    </v-row>
     <v-row>
       <v-col
         cols="12"
