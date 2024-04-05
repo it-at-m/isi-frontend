@@ -25,8 +25,8 @@
         class="my-2"
       />
       <v-btn
-        @click="deleteInput(index)"
         :disabled="!isEditable"
+        @click="deleteInput(index)"
         v-text="'Löschen'"
       />
       <v-row>
@@ -91,9 +91,9 @@
       </v-row>
     </div>
     <v-btn
+      :disabled="!isEditable"
       @click="addInput"
       v-text="'Neuer Eintrag'"
-      :disabled="!isEditable"
     />
     <v-row>
       <v-col
