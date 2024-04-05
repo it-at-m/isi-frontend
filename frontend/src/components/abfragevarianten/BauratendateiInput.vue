@@ -145,10 +145,6 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
     const isBaurateninputCheckboxChecked =
       !_.isNil(this.abfragevarianteSachbearbeitung.hasBauratendateiInput) &&
       this.abfragevarianteSachbearbeitung.hasBauratendateiInput;
-    if (!isBaurateninputCheckboxChecked) {
-      this.abfragevarianteSachbearbeitung.anmerkungBauratendateiInput = undefined;
-      this.abfragevarianteSachbearbeitung.bauratendateiInput = [];
-    }
     this.formChanged();
   }
 
