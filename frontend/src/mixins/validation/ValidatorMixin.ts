@@ -302,7 +302,10 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInAbfragevarianteMarkedSobonBerechnung)) {
       return messageFaultInAbfragevarianteMarkedSobonBerechnung;
     }
-
+    const messageFaultInAbfragevarianteBauratendateiInput = this.findFaultForBauratendateiInput(abfragevariante);
+    if (!_.isNil(messageFaultInAbfragevarianteBauratendateiInput)) {
+      return messageFaultInAbfragevarianteBauratendateiInput;
+    }
     return null;
   }
 
@@ -792,13 +795,13 @@ export default class ValidatorMixin extends Vue {
     const sumBasis = sumWohneinheitenOfBauratendateiInput(bauratendateiInputBasis);
     const sumInputs = sumWohneinheitenOfBauratendateiInput(_.toArray(abfragevariante.bauratendateiInput));
 
-    const validationMessage = `Die Daten der Bauratendatei und Schülerpotentialprognose in Abfragevariante \"${abfragevariante.name}\" nicht mit den errechneten Wohneinheiten überein.`;
+    const validationMessage = `Die Daten der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" nicht mit den errechneten Wohneinheiten überein.`;
 
     if (sumBasis.size != sumInputs.size) {
       return validationMessage;
     }
 
-    for (let [jahrAndFoerderart, wohneinheiten] of sumBasis) {
+    for (const [jahrAndFoerderart, wohneinheiten] of sumBasis) {
       const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
       if (numberOfWohneinheitenInputs !== wohneinheiten) {
         return validationMessage;
