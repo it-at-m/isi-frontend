@@ -792,16 +792,18 @@ export default class ValidatorMixin extends Vue {
     const sumBasis = sumWohneinheitenOfBauratendateiInput(bauratendateiInputBasis);
     const sumInputs = sumWohneinheitenOfBauratendateiInput(_.toArray(abfragevariante.bauratendateiInput));
 
+    const validationMessage = `Die Daten der Bauratendatei und Schülerpotentialprognose in Abfragevariante \"${abfragevariante.name}\" nicht mit den errechneten Wohneinheiten überein.`;
+
     if (sumBasis.size != sumInputs.size) {
-      return "XXXX";
+      return validationMessage;
     }
 
     for (let [jahrAndFoerderart, wohneinheiten] of sumBasis) {
       const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
       if (_.isNil(numberOfWohneinheitenInputs)) {
-        return "XXXX";
+        return validationMessage;
       } else if (numberOfWohneinheitenInputs !== wohneinheiten) {
-        return "XXXX";
+        return validationMessage;
       }
     }
 
