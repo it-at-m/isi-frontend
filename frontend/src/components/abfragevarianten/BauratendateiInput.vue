@@ -147,7 +147,7 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   get showTables(): boolean {
     return (
       this.abfragevarianteSachbearbeitung.hasBauratendateiInput === true &&
-      !_.isNil(this.abfragevarianteSachbearbeitung?.hasBauratendateiInput)
+      !_.isNil(this.abfragevarianteSachbearbeitung?.bauratendateiInputBasis)
     );
   }
 
