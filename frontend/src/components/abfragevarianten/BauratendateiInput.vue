@@ -23,11 +23,14 @@
         class="px-3 pt-2 pb-3 mt-10"
         outlined
       >
+        <v-spacer />
         <v-btn
+          icon
           :disabled="!isEditable"
           @click="deleteInput(index)"
-          v-text="'Löschen'"
-        />
+        >
+          <v-icon> mdi-delete </v-icon>
+        </v-btn>
         <v-row>
           <v-col
             cols="12"
@@ -40,6 +43,7 @@
               :append-icon="''"
               multiple
               chips
+              deletable-chips
               :disabled="!isEditable"
               @input="formChanged"
             />
@@ -55,6 +59,7 @@
               :append-icon="''"
               multiple
               chips
+              deletable-chips
               :disabled="!isEditable"
               @input="formChanged"
             />
@@ -70,6 +75,7 @@
               :append-icon="''"
               multiple
               chips
+              deletable-chips
               :disabled="!isEditable"
               @input="formChanged"
             />
