@@ -131,7 +131,7 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
-  private foerderartenBauratendateiInputBasis(): Array<string | undefined> {
+  get foerderartenBauratendateiInputBasis(): Array<string | undefined> {
     const wohneinheiten = _.toArray(this.abfragevarianteSachbearbeitung?.bauratendateiInput)
       .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
       .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
