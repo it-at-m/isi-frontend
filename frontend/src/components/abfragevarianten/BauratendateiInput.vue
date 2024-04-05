@@ -16,7 +16,7 @@
         />
       </v-col>
     </v-row>
-    <div v-if="abfragevarianteSachbearbeitung.hasBauratendateiInput === true">
+    <div v-if="showTables">
       <v-card
         v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
         :key="index"
@@ -25,7 +25,7 @@
       >
         <v-row class="justify-end">
           <v-btn
-            class="mt-0 mr-0 pt-0 pr-0"
+            class="my-0 mr-0 py-0 pr-0"
             icon
             :disabled="!isEditable"
             @click="deleteInput(index)"
@@ -142,6 +142,13 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
       .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
       .map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart);
     return _.uniq(wohneinheiten.sort());
+  }
+
+  get showTables(): boolean {
+    return (
+      this.abfragevarianteSachbearbeitung.hasBauratendateiInput === true &&
+      !_.isNil(this.abfragevarianteSachbearbeitung?.hasBauratendateiInput)
+    );
   }
 
   private checkBoxChanged(): void {
