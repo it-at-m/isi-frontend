@@ -17,14 +17,12 @@
       </v-col>
     </v-row>
     <div v-if="abfragevarianteSachbearbeitung.hasBauratendateiInput === true">
-      <div
+      <v-card
         v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
         :key="index"
+        class="px-3 pt-2 pb-3 mt-10"
+        outlined
       >
-        <v-divider
-          v-if="index != 0"
-          class="my-2"
-        />
         <v-btn
           :disabled="!isEditable"
           @click="deleteInput(index)"
@@ -83,7 +81,7 @@
           :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
           :is-editable="isEditable"
         />
-      </div>
+      </v-card>
       <v-row>
         <v-col
           cols="12"
@@ -158,12 +156,14 @@ export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
   }
 
   private addInput(): void {
-    let firstInput =
-      !_.isNil(this.abfragevarianteSachbearbeitung.bauratendateiInput) &&
-      !_.isEmpty(this.abfragevarianteSachbearbeitung.bauratendateiInput)
-        ? this.abfragevarianteSachbearbeitung.bauratendateiInput[0]
-        : {};
-    this.abfragevarianteSachbearbeitung.bauratendateiInput?.push(_.cloneDeep(firstInput));
+    const newInput = _.cloneDeep(this.abfragevarianteSachbearbeitung.bauratendateiInputBasis);
+    if (!_.isNil(newInput)) {
+      newInput.id = undefined;
+      newInput.createdDateTime = undefined;
+      newInput.lastModifiedDateTime = undefined;
+      newInput.version = undefined;
+      this.abfragevarianteSachbearbeitung.bauratendateiInput?.push(newInput);
+    }
     this.formChanged();
   }
 }

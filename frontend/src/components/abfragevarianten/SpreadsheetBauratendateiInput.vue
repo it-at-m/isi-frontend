@@ -1,97 +1,92 @@
 <template>
-  <v-card
-    class="mx-auto mt-10"
-    outlined
+  <v-data-table
+    :headers="headers"
+    :items="tableDataFromBauratendateiInput"
+    hide-default-footer
   >
-    <v-data-table
-      :headers="headers"
-      :items="tableDataFromBauratendateiInput"
-      hide-default-footer
-    >
-      <template #top>
-        <v-toolbar flat>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            class="mr-2"
-            :disabled="!isEditable"
-            @click="addNewTableItem"
-          >
-            <v-icon dark>mdi-plus</v-icon>Neuer Eintrag
-          </v-btn>
-        </v-toolbar>
-      </template>
-      <template #[`item.jahr`]="{ item }">
-        <v-text-field
-          v-if="isSameItem(item, itemToEdit)"
-          v-model="itemToEdit['jahr']"
-          :hide-details="true"
-          dense
-          maxlength="4"
-          single-line
-        ></v-text-field>
-        <span v-else>{{ item["jahr"] }}</span>
-      </template>
-      <template
-        v-for="(column, index) in forderartenForHeader"
-        #[`item.${column}`]="item"
-      >
-        <num-field
-          v-if="isSameItem(item.item, itemToEdit)"
-          :key="`${column}_${item.item.jahr}_${index}`"
-          v-model="itemToEdit[column]"
-          :hide-details="true"
-          dense
-          :min="0"
-          :precision="2"
-          single-line
-        ></num-field>
-        <span
-          v-else
-          :key="`${column}_${item.item.jahr}_${index}`"
+    <template #top>
+      <v-toolbar flat>
+        <v-spacer />
+        <v-btn
+          color="primary"
+          class="mr-2"
+          :disabled="!isEditable"
+          @click="addNewTableItem"
         >
-          {{ roundTwoDecimals(item.item[column]) }}
-        </span>
-      </template>
-      <template #item.actions="{ item }">
-        <div v-if="isSameItem(item, itemToEdit)">
-          <v-btn
-            icon
-            :disabled="!isEditable"
-            @click="closeTableItem"
-          >
-            <v-icon> mdi-window-close </v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            :disabled="!isEditable"
-            @click="saveTableItem"
-          >
-            <v-icon> mdi-content-save </v-icon>
-          </v-btn>
-        </div>
-        <div v-else>
-          <v-btn
-            icon
-            :disabled="!isEditable"
-            @click="editTableItem(item)"
-          >
-            <v-icon> mdi-pencil-outline </v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            :disabled="!isEditable"
-            @click="deleteTableItem(item)"
-          >
-            <v-icon> mdi-delete </v-icon>
-          </v-btn>
-        </div>
-      </template>
-      <template #no-data>
-        <span>Es sind keine Baurateninformationen vorhanden</span>
-      </template>
-    </v-data-table>
-  </v-card>
+          <v-icon dark>mdi-plus</v-icon>Neuer Eintrag
+        </v-btn>
+      </v-toolbar>
+    </template>
+    <template #[`item.jahr`]="{ item }">
+      <v-text-field
+        v-if="isSameItem(item, itemToEdit)"
+        v-model="itemToEdit['jahr']"
+        :hide-details="true"
+        dense
+        maxlength="4"
+        single-line
+      ></v-text-field>
+      <span v-else>{{ item["jahr"] }}</span>
+    </template>
+    <template
+      v-for="(column, index) in forderartenForHeader"
+      #[`item.${column}`]="item"
+    >
+      <num-field
+        v-if="isSameItem(item.item, itemToEdit)"
+        :key="`${column}_${item.item.jahr}_${index}`"
+        v-model="itemToEdit[column]"
+        :hide-details="true"
+        dense
+        :min="0"
+        :precision="2"
+        single-line
+      ></num-field>
+      <span
+        v-else
+        :key="`${column}_${item.item.jahr}_${index}`"
+      >
+        {{ roundTwoDecimals(item.item[column]) }}
+      </span>
+    </template>
+    <template #item.actions="{ item }">
+      <div v-if="isSameItem(item, itemToEdit)">
+        <v-btn
+          icon
+          :disabled="!isEditable"
+          @click="closeTableItem"
+        >
+          <v-icon> mdi-window-close </v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          :disabled="!isEditable"
+          @click="saveTableItem"
+        >
+          <v-icon> mdi-content-save </v-icon>
+        </v-btn>
+      </div>
+      <div v-else>
+        <v-btn
+          icon
+          :disabled="!isEditable"
+          @click="editTableItem(item)"
+        >
+          <v-icon> mdi-pencil-outline </v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          :disabled="!isEditable"
+          @click="deleteTableItem(item)"
+        >
+          <v-icon> mdi-delete </v-icon>
+        </v-btn>
+      </div>
+    </template>
+    <template #no-data>
+      <span>Es sind keine Baurateninformationen vorhanden</span>
+    </template>
+  </v-data-table>
 </template>
 
 <script lang="ts">
