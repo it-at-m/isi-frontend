@@ -16,85 +16,87 @@
         />
       </v-col>
     </v-row>
-    <div
-      v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
-      :key="index"
-    >
-      <v-divider
-        v-if="index != 0"
-        class="my-2"
-      />
-      <v-btn
-        :disabled="!isEditable"
-        @click="deleteInput(index)"
-        v-text="'Löschen'"
-      />
+    <div v-if="abfragevarianteSachbearbeitung.hasBauratendateiInput === true">
+      <div
+        v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
+        :key="index"
+      >
+        <v-divider
+          v-if="index != 0"
+          class="my-2"
+        />
+        <v-btn
+          :disabled="!isEditable"
+          @click="deleteInput(index)"
+          v-text="'Löschen'"
+        />
+        <v-row>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-combobox
+              v-model="input.grundschulsprengel"
+              label="Grundschulsprengel"
+              hide-no-data
+              :append-icon="''"
+              multiple
+              chips
+              :disabled="!isEditable"
+              @input="formChanged"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-combobox
+              v-model="input.mittelschulsprengel"
+              label="Mittelschulsprengel"
+              hide-no-data
+              :append-icon="''"
+              multiple
+              chips
+              :disabled="!isEditable"
+              @input="formChanged"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-combobox
+              v-model="input.viertel"
+              label="Viertel"
+              hide-no-data
+              :append-icon="''"
+              multiple
+              chips
+              :disabled="!isEditable"
+              @input="formChanged"
+            />
+          </v-col>
+        </v-row>
+        <spreadsheet-bauratendatei-input
+          :id="'spreadsheet_bauratendatei_input_' + index"
+          v-model="input.wohneinheiten"
+          :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
+          :is-editable="isEditable"
+        />
+      </div>
       <v-row>
         <v-col
           cols="12"
-          md="4"
+          md="12"
         >
-          <v-combobox
-            v-model="input.grundschulsprengel"
-            label="Grundschulsprengel"
-            hide-no-data
-            :append-icon="''"
-            multiple
-            chips
+          <v-btn
             :disabled="!isEditable"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-combobox
-            v-model="input.mittelschulsprengel"
-            label="Mittelschulsprengel"
-            hide-no-data
-            :append-icon="''"
-            multiple
-            chips
-            :disabled="!isEditable"
-            @input="formChanged"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-combobox
-            v-model="input.viertel"
-            label="Viertel"
-            hide-no-data
-            :append-icon="''"
-            multiple
-            chips
-            :disabled="!isEditable"
-            @input="formChanged"
+            @click="addInput"
+            v-text="'Neuer Eintrag'"
           />
         </v-col>
       </v-row>
-      <spreadsheet-bauratendatei-input
-        :id="'spreadsheet_bauratendatei_input_' + index"
-        v-model="input.wohneinheiten"
-        :foerderarten-bauratendatei-input-basis="foerderartenBauratendateiInputBasis"
-        :is-editable="isEditable"
-      />
     </div>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <v-btn
-          :disabled="!isEditable"
-          @click="addInput"
-          v-text="'Neuer Eintrag'"
-        />
-      </v-col>
-    </v-row>
     <v-row>
       <v-col
         cols="12"
