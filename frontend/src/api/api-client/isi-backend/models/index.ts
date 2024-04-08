@@ -134,6 +134,7 @@ export * from './Link';
 export * from './LookupEntryDto';
 export * from './LookupListDto';
 export * from './LookupListsDto';
+export * from './MetabaseReportingDto';
 export * from './MimeTypeInformationDto';
 export * from './MittelschuleDto';
 export * from './Mittelschulsprengel';
