@@ -729,6 +729,8 @@ export default class ValidatorMixin extends Vue {
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante.toFixed(2)} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
+    } else {
+      return null;
     }
 
     const wohneinheitenEqual = validationMessageWohneinheiten === null;
@@ -807,6 +809,8 @@ export default class ValidatorMixin extends Vue {
             `der Anzahl von ${geschossflaecheWohnenBaugebiet.toFixed(2)} m² im Baugebiet${
               _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
             }.`;
+    } else {
+      return null;
     }
 
     const wohneinheitenEqual = validationMessageWohneinheiten === null;
