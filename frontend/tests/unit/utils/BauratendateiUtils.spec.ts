@@ -1,6 +1,6 @@
 import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
 import { DataTableHeader } from "vuetify";
-import { createHeaders, createTableData } from "@/utils/BauratendateiUtils";
+import { createBauratendateiInput, createHeaders, createTableData } from "@/utils/BauratendateiUtils";
 
 const bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [
   {
@@ -168,6 +168,12 @@ describe("BauratendateiUtils.spec.ts", () => {
   test("Transformation bauratendateiInput undefined in Table Data", () => {
     let result = createTableData(undefined);
     let expected: Array<any> = [];
+    expect(result).toEqual(expected);
+  });
+
+  test("Transformation empty Table Data to WohneinheitenProFoerderartProJahrDto", () => {
+    let result = createBauratendateiInput([]);
+    let expected: Array<WohneinheitenProFoerderartProJahrDto> = [];
     expect(result).toEqual(expected);
   });
 });
