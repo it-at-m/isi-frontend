@@ -3,7 +3,7 @@ import { Levels } from "@/api/error";
 import { useErrorHandler } from "@/composables/requests/ErrorHandler";
 import { createPinia, setActivePinia } from "pinia";
 
-describe("ErrorResponseInformationMixin Test", () => {
+describe("ErrorHandler Test", () => {
   setActivePinia(createPinia());
   const { getToastLevel } = useErrorHandler();
 
