@@ -10,6 +10,8 @@ export const ATTRIBUTE_KEY_JAHR = "jahr";
 
 export const ATTRIBUTE_HEADER_VALUE_JAHR = "Jahr";
 
+export const ATTRIBUTE_KEY_GESAMT = "gesamt";
+
 export const ATTRIBUTE_KEY_INDEX = "index";
 
 export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
@@ -21,6 +23,13 @@ export function createHeaders(foerderartenBauratendateiInputBasis: Array<string>
     width: "10%",
   } as DataTableHeader;
   headers.unshift(headerForJahr);
+  const headerForGesamt = {
+    text: "Gesamt",
+    value: "gesamt",
+    sortable: false,
+    align: "start",
+  } as DataTableHeader;
+  headers.push(headerForGesamt);
   const headerForActions = {
     text: "",
     value: "actions",
@@ -101,7 +110,8 @@ export function createTableData(
    *   jahr: 2024,
    *   foerderart1: 1000,
    *   ...
-   *   foerderartX: 2385
+   *   foerderartX: 2385,
+   *   gesamt: 10385
    * }
    */
   let index = 0;
@@ -110,9 +120,12 @@ export function createTableData(
     const tableEntry = new Map<string | undefined, string | number | undefined>();
     tableEntry.set(ATTRIBUTE_KEY_JAHR, jahr);
     tableEntry.set(ATTRIBUTE_KEY_INDEX, index++);
+    let gesamtWohneinheiten = 0;
     foerderartenWithWohneinheiten.forEach((wohneinheiten, forderart) => {
       tableEntry.set(forderart, wohneinheiten);
+      gesamtWohneinheiten = gesamtWohneinheiten + (_.isNil(wohneinheiten) ? 0 : wohneinheiten);
     });
+    tableEntry.set(ATTRIBUTE_KEY_GESAMT, gesamtWohneinheiten);
     tableDataObjects.push(Object.fromEntries(tableEntry.entries()));
   });
   return tableDataObjects;
@@ -126,7 +139,8 @@ export function createTableData(
  *   jahr: 2024,
  *   foerderart1: 1000,
  *   ...
- *   foerderartX: 2385
+ *   foerderartX: 2385,
+ *   gesamt: 10385
  * }
  *
  * -> wird zu ->
@@ -153,6 +167,7 @@ export function createBauratendateiInput(tableData: Array<any>): Array<Wohneinhe
     const jahr: string | undefined = tableEntryMap.get(ATTRIBUTE_KEY_JAHR) as string | undefined;
     tableEntryMap.delete(ATTRIBUTE_KEY_JAHR);
     tableEntryMap.delete(ATTRIBUTE_KEY_INDEX);
+    tableEntryMap.delete(ATTRIBUTE_KEY_GESAMT);
     tableEntryMap.forEach((wohneinheiten, foerderart) => {
       const wohneinheitenProFoerderartProJahr = {
         jahr: jahr,

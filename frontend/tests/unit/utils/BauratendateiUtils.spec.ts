@@ -92,6 +92,12 @@ describe("BauratendateiUtils.spec.ts", () => {
         align: "start",
       },
       {
+        text: "Gesamt",
+        sortable: false,
+        value: "gesamt",
+        align: "start",
+      },
+      {
         align: "end",
         sortable: false,
         text: "",
@@ -110,6 +116,12 @@ describe("BauratendateiUtils.spec.ts", () => {
         value: "jahr",
         align: "start",
         width: "10%",
+      },
+      {
+        text: "Gesamt",
+        sortable: false,
+        value: "gesamt",
+        align: "start",
       },
       {
         align: "end",
@@ -132,6 +144,7 @@ describe("BauratendateiUtils.spec.ts", () => {
         foerderart2: 11,
         foerderart3: 12,
         foerderart4: 13,
+        gesamt: 46,
       },
       {
         index: 1,
@@ -140,11 +153,13 @@ describe("BauratendateiUtils.spec.ts", () => {
         foerderart2: 21,
         foerderart3: 22,
         foerderart4: 23,
+        gesamt: 86,
       },
       {
         index: 2,
         jahr: "2026",
         foerderart1: 30,
+        gesamt: 30,
       },
     ];
     expect(result).toEqual(expected);
