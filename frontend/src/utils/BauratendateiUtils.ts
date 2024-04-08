@@ -182,6 +182,11 @@ export function createBauratendateiInput(tableData: Array<any>): Array<Wohneinhe
   return newBauratendateiInput;
 }
 
+/**
+ * Summiert die Wohneinheiten je Jahr und Förderart für die gegebenen BauratendateiInputDto.
+ *
+ * Gibt eine Map mit Key konkateniert aus dem Jahr und der Förderart und dem Value als Summe der Wohneinheiten zurück.
+ */
 export function sumWohneinheitenOfBauratendateiInput(
   bauratendateiInputs: Array<BauratendateiInputDto>,
 ): Map<string, number> {
