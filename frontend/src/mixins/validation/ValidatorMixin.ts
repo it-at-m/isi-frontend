@@ -256,7 +256,7 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
       return `Bitte die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' angeben`;
     }
-    const messageFaultVerteilung = this.findFaultInVerteilungAbfragevariante(abfragevariante);
+    const messageFaultVerteilung = this.findFaultInWeGfVerteilungAbfragevariante(abfragevariante);
     if (!_.isNil(messageFaultVerteilung)) {
       return messageFaultVerteilung;
     }
@@ -419,7 +419,7 @@ export default class ValidatorMixin extends Vue {
       if (_.isNil(baugebiet.realisierungVon) || _.isNaN(baugebiet.realisierungVon)) {
         return "Das Jahr für die Realisierung von ist im Baugebiet anzugeben.";
       }
-      validationMessage = this.findFaultInVerteilungBaugebiet(baugebiet);
+      validationMessage = this.findFaultInWeGfVerteilungBaugebiet(baugebiet);
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
@@ -619,7 +619,17 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInVerteilungAbfragevariante(
+  /**
+   * Überprüft, ob die Verteilung der Wohneinheiten und Geschossfläche Wohnen auf Baugebiete bzw. Bauraten valide ist.
+   * WE bzw. GF gelten als "verteilt", wenn bei mindestens einem Baugebiet bzw. Baurate eine Angabe zu ihnen gemacht wurde.
+   * WE bzw. GF gelten als "korrekt verteilt", wenn zusätzlich ihre Summe in den Baugebieten bzw. Bauraten der Gesamtanzahl entspricht.
+   * Die Verteilung ist valide, wenn WE und GF korrekt verteilt wurden.
+   * Ebenso ist die Verteilung valide, wenn entweder WE oder GF korrekt verteilt wurde, aber der andere Wert nicht verteilt wurde.
+   *
+   * @param abfragevariante zur Validierung.
+   * @return ob die Verteilung entsprechend der Beschreibung valide ist.
+   */
+  public findFaultInWeGfVerteilungAbfragevariante(
     abfragevariante:
       | AbfragevarianteBauleitplanverfahrenDto
       | AbfragevarianteBaugenehmigungsverfahrenDto
@@ -648,9 +658,8 @@ export default class ValidatorMixin extends Vue {
           if (!_.isNil(baugebiet.weGeplant)) {
             allWohneinheitenNil = false;
             return baugebiet.weGeplant;
-          } else {
-            return 0;
           }
+          return 0;
         }),
       );
 
@@ -667,9 +676,8 @@ export default class ValidatorMixin extends Vue {
           if (!_.isNil(baugebiet.gfWohnenGeplant)) {
             allGfWohnenNil = false;
             return baugebiet.gfWohnenGeplant;
-          } else {
-            return 0;
           }
+          return 0;
         }),
       );
 
@@ -689,9 +697,8 @@ export default class ValidatorMixin extends Vue {
           if (!_.isNil(baurate.weGeplant)) {
             allWohneinheitenNil = false;
             return baurate.weGeplant;
-          } else {
-            return 0;
           }
+          return 0;
         }),
       );
 
@@ -708,9 +715,8 @@ export default class ValidatorMixin extends Vue {
           if (!_.isNil(baurate.gfWohnenGeplant)) {
             allGfWohnenNil = false;
             return baurate.gfWohnenGeplant;
-          } else {
-            return 0;
           }
+          return 0;
         }),
       );
 
@@ -725,33 +731,35 @@ export default class ValidatorMixin extends Vue {
             }.`;
     }
 
-    /*
-     * Grundsätzlich soll die angegebene Gesamtzahl von Wohneinheiten bzw. GF Wohnen korrekt verteilt werden.
-     * Jedoch soll es auch möglich sein, eine Angabe zu machen, ohne den Wert zu verteilen.
-     * Das ist aber nur erlaubt, solange die andere Kennzahl (GF Wohnen bzw. Wohneinheiten) vorhanden und korrekt verteilt ist.
-     */
-
-    const wohneinheitenMatches = validationMessageWohneinheiten === null;
-    const wohneinheitenCorrect = wohneinheitenMatches && !allWohneinheitenNil;
-    const wohneinheitenNotDistributed = !wohneinheitenMatches && allWohneinheitenNil;
-    const gfWohnenMatches = validationMessageGfWohnen === null;
-    const gfWohnenCorrect = gfWohnenMatches && !allGfWohnenNil;
-    const gfWohnenNotDistributed = !gfWohnenMatches && allGfWohnenNil;
+    const wohneinheitenEqual = validationMessageWohneinheiten === null;
+    const wohneinheitenCorrect = wohneinheitenEqual && !allWohneinheitenNil;
+    const gfWohnenEqual = validationMessageGfWohnen === null;
+    const gfWohnenCorrect = gfWohnenEqual && !allGfWohnenNil;
 
     if (
       (wohneinheitenCorrect && gfWohnenCorrect) ||
-      (wohneinheitenCorrect && gfWohnenNotDistributed) ||
-      (wohneinheitenNotDistributed && gfWohnenCorrect)
+      (wohneinheitenCorrect && allGfWohnenNil) ||
+      (allWohneinheitenNil && gfWohnenCorrect)
     ) {
       return null;
-    } else if (!wohneinheitenCorrect) {
+    } else if (!wohneinheitenEqual) {
       return validationMessageWohneinheiten;
     } else {
       return validationMessageGfWohnen;
     }
   }
 
-  public findFaultInVerteilungBaugebiet(baugebiet: BaugebietDto): string | null {
+  /**
+   * Überprüft, ob die Verteilung der Wohneinheiten und Geschossfläche Wohnen auf Bauraten valide ist.
+   * WE bzw. GF gelten als "verteilt", wenn bei mindestens einem Baurate eine Angabe zu ihnen gemacht wurde.
+   * WE bzw. GF gelten als "korrekt verteilt", wenn zusätzlich ihre Summe in den Bauraten der Gesamtanzahl entspricht.
+   * Die Verteilung ist valide, wenn WE und GF korrekt verteilt wurden.
+   * Ebenso ist die Verteilung valide, wenn entweder WE oder GF korrekt verteilt wurde, aber der andere Wert nicht verteilt wurde.
+   *
+   * @param baugebiet zur Validierung.
+   * @return ob die Verteilung entsprechend der Beschreibung valide ist.
+   */
+  public findFaultInWeGfVerteilungBaugebiet(baugebiet: BaugebietDto): string | null {
     let validationMessageWohneinheiten: string | null = null;
     let allWohneinheitenNil = true;
     let validationMessageGfWohnen: string | null = null;
@@ -764,8 +772,9 @@ export default class ValidatorMixin extends Vue {
         _.toArray(baugebiet.bauraten).map((baurate) => {
           if (!_.isNil(baurate.weGeplant)) {
             allWohneinheitenNil = false;
+            return baurate.weGeplant;
           }
-          return _.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant;
+          return 0;
         }),
       );
 
@@ -783,8 +792,9 @@ export default class ValidatorMixin extends Vue {
         _.toArray(baugebiet.bauraten).map((baurate) => {
           if (!_.isNil(baurate.gfWohnenGeplant)) {
             allGfWohnenNil = false;
+            return baurate.gfWohnenGeplant;
           }
-          return _.isNil(baurate.gfWohnenGeplant) ? 0 : baurate.gfWohnenGeplant;
+          return 0;
         }),
       );
 
@@ -799,26 +809,18 @@ export default class ValidatorMixin extends Vue {
             }.`;
     }
 
-    /*
-     * Grundsätzlich soll die angegebene Gesamtzahl von Wohneinheiten bzw. GF Wohnen korrekt verteilt werden.
-     * Jedoch soll es auch möglich sein, eine Angabe zu machen, ohne den Wert zu verteilen.
-     * Das ist aber nur erlaubt, solange die andere Kennzahl (GF Wohnen bzw. Wohneinheiten) vorhanden und korrekt verteilt ist.
-     */
-
-    const wohneinheitenMatches = validationMessageWohneinheiten === null;
-    const wohneinheitenCorrect = wohneinheitenMatches && !allWohneinheitenNil;
-    const wohneinheitenNotDistributed = !wohneinheitenMatches && allWohneinheitenNil;
-    const gfWohnenMatches = validationMessageGfWohnen === null;
-    const gfWohnenCorrect = gfWohnenMatches && !allGfWohnenNil;
-    const gfWohnenNotDistributed = !gfWohnenMatches && allGfWohnenNil;
+    const wohneinheitenEqual = validationMessageWohneinheiten === null;
+    const wohneinheitenCorrect = wohneinheitenEqual && !allWohneinheitenNil;
+    const gfWohnenEqual = validationMessageGfWohnen === null;
+    const gfWohnenCorrect = gfWohnenEqual && !allGfWohnenNil;
 
     if (
       (wohneinheitenCorrect && gfWohnenCorrect) ||
-      (wohneinheitenCorrect && gfWohnenNotDistributed) ||
-      (wohneinheitenNotDistributed && gfWohnenCorrect)
+      (wohneinheitenCorrect && allGfWohnenNil) ||
+      (allWohneinheitenNil && gfWohnenCorrect)
     ) {
       return null;
-    } else if (!wohneinheitenCorrect) {
+    } else if (!wohneinheitenEqual) {
       return validationMessageWohneinheiten;
     } else {
       return validationMessageGfWohnen;
