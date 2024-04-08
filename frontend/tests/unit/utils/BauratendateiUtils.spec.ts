@@ -171,6 +171,37 @@ describe("BauratendateiUtils.spec.ts", () => {
     expect(result).toEqual(expected);
   });
 
+  test("Transformation Table Data to WohneinheitenProFoerderartProJahrDto", () => {
+    let tableData: Array<any> = [
+      {
+        index: 0,
+        jahr: "2024",
+        foerderart1: 10,
+        foerderart2: 11,
+        foerderart3: 12,
+        foerderart4: 13,
+        gesamt: 46,
+      },
+      {
+        index: 1,
+        jahr: "2025",
+        foerderart1: 20,
+        foerderart2: 21,
+        foerderart3: 22,
+        foerderart4: 23,
+        gesamt: 86,
+      },
+      {
+        index: 2,
+        jahr: "2026",
+        foerderart1: 30,
+        gesamt: 30,
+      },
+    ];
+    let result = createBauratendateiInput(tableData);
+    expect(result).toEqual(bauratendateiInput);
+  });
+
   test("Transformation empty Table Data to WohneinheitenProFoerderartProJahrDto", () => {
     let result = createBauratendateiInput([]);
     let expected: Array<WohneinheitenProFoerderartProJahrDto> = [];
