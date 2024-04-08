@@ -803,7 +803,11 @@ export default class ValidatorMixin extends Vue {
 
     for (const [jahrAndFoerderart, wohneinheiten] of sumBasis) {
       const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
-      if (numberOfWohneinheitenInputs !== wohneinheiten) {
+      const difference = Math.abs(
+        wohneinheiten - (_.isNil(numberOfWohneinheitenInputs) ? 0 : numberOfWohneinheitenInputs),
+      );
+      // Prüfung wegen möglicher Rundungen bedingt durch IEEE754
+      if (difference >= 0.001) {
         const splittedJahrAndFoerderart = _.split(jahrAndFoerderart, "_");
         return ` In der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen die errechneten Wohneinheiten der Förderart "${splittedJahrAndFoerderart[1]}" im Jahr "${splittedJahrAndFoerderart[0]}" in Höhe von "${wohneinheiten}" nicht mit der Summe der aufgeteilten Wohneinheiten in Höhe von "${numberOfWohneinheitenInputs}" überein.`;
       }
