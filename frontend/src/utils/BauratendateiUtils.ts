@@ -197,7 +197,7 @@ export function sumWohneinheitenOfBauratendateiInput(
       const jahrAndFoerderart = (
         _.isNil(wohneinheitenProFoerderartProJahr.jahr) ? "" : wohneinheitenProFoerderartProJahr.jahr
       ).concat(
-        "",
+        "_",
         _.isNil(wohneinheitenProFoerderartProJahr.foerderart) ? "" : wohneinheitenProFoerderartProJahr.foerderart,
       );
       const wohneinheiten = _.isNil(wohneinheitenProFoerderartProJahr.wohneinheiten)

@@ -255,10 +255,10 @@ describe("BauratendateiUtils.spec.ts", () => {
     ];
     let result = sumWohneinheitenOfBauratendateiInput(bauratendateiInputs);
     let expected = new Map<string, number>();
-    expected.set("2024foerderart3", 8);
-    expected.set("2024foerderart4", 15);
-    expected.set("2025foerderart1", 20);
-    expected.set("2026foerderart2", 9);
+    expected.set("2024_foerderart3", 8);
+    expected.set("2024_foerderart4", 15);
+    expected.set("2025_foerderart1", 20);
+    expected.set("2026_foerderart2", 9);
     expect(result).toEqual(expected);
   });
 
