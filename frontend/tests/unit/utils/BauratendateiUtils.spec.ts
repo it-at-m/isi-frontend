@@ -1,6 +1,11 @@
-import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import { BauratendateiInputDto, WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
 import { DataTableHeader } from "vuetify";
-import { createBauratendateiInput, createHeaders, createTableData } from "@/utils/BauratendateiUtils";
+import {
+  createBauratendateiInput,
+  createHeaders,
+  createTableData,
+  sumWohneinheitenOfBauratendateiInput,
+} from "@/utils/BauratendateiUtils";
 
 const bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [
   {
@@ -205,6 +210,61 @@ describe("BauratendateiUtils.spec.ts", () => {
   test("Transformation empty Table Data to WohneinheitenProFoerderartProJahrDto", () => {
     let result = createBauratendateiInput([]);
     let expected: Array<WohneinheitenProFoerderartProJahrDto> = [];
+    expect(result).toEqual(expected);
+  });
+
+  test("sumWohneinheitenOfBauratendateiInput with BauratendateiInput", () => {
+    const bauratendateiInputs = [
+      {
+        wohneinheiten: [
+          {
+            jahr: "2024",
+            foerderart: "foerderart4",
+            wohneinheiten: 13,
+          },
+          {
+            jahr: "2025",
+            foerderart: "foerderart1",
+            wohneinheiten: 20,
+          },
+        ],
+      } as BauratendateiInputDto,
+      {
+        wohneinheiten: [
+          {
+            jahr: "2024",
+            foerderart: "foerderart4",
+            wohneinheiten: 2,
+          },
+          {
+            jahr: "2024",
+            foerderart: "foerderart3",
+            wohneinheiten: 8,
+          },
+        ],
+      } as BauratendateiInputDto,
+      {
+        wohneinheiten: [
+          {
+            jahr: "2026",
+            foerderart: "foerderart2",
+            wohneinheiten: 9,
+          },
+        ],
+      } as BauratendateiInputDto,
+    ];
+    let result = sumWohneinheitenOfBauratendateiInput(bauratendateiInputs);
+    let expected = new Map<string, number>();
+    expected.set("2024foerderart3", 8);
+    expected.set("2024foerderart4", 15);
+    expected.set("2025foerderart1", 20);
+    expected.set("2026foerderart2", 9);
+    expect(result).toEqual(expected);
+  });
+
+  test("sumWohneinheitenOfBauratendateiInput with empty BauratendateiInput", () => {
+    let result = sumWohneinheitenOfBauratendateiInput([]);
+    let expected = new Map<string, number>();
     expect(result).toEqual(expected);
   });
 });
