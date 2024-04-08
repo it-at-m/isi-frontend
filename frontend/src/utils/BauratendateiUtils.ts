@@ -14,6 +14,8 @@ export const ATTRIBUTE_KEY_GESAMT = "gesamt";
 
 export const ATTRIBUTE_KEY_INDEX = "index";
 
+export const ROUNDING_PRECISION = 2;
+
 export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
   const headers = createHeadersForFoerderarten(foerderartenBauratendateiInputBasis);
   const headerForJahr = {

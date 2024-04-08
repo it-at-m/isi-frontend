@@ -36,8 +36,11 @@
         v-else
         :key="`${column}_${item.item.jahr}_${index}`"
       >
-        {{ roundToLocalizedTwoDecimals(item.item[column]) }}
+        {{ toLocalizedTwoDecimals(item.item[column]) }}
       </span>
+    </template>
+    <template #[`item.gesamt`]="{ item }">
+      <span>{{ roundToLocalizedTwoDecimals(item["gesamt"]) }}</span>
     </template>
     <template #item.actions="{ item }">
       <div v-if="isSameItem(item, itemToEdit)">
@@ -105,6 +108,7 @@ import {
   createBauratendateiInput,
   createHeaders,
   createTableData,
+  ROUNDING_PRECISION,
 } from "@/utils/BauratendateiUtils";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 
@@ -176,9 +180,17 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
   }
 
   private roundToLocalizedTwoDecimals(wohneinheiten: number | undefined): string | undefined {
+    const roundedWohneinheiten = _.round(_.isNil(wohneinheiten) ? 0 : wohneinheiten, ROUNDING_PRECISION);
+    return this.toLocalizedTwoDecimals(roundedWohneinheiten);
+  }
+
+  private toLocalizedTwoDecimals(wohneinheiten: number | undefined): string | undefined {
     return _.isNil(wohneinheiten)
       ? wohneinheiten
-      : new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(wohneinheiten);
+      : new Intl.NumberFormat("de-DE", {
+          minimumFractionDigits: ROUNDING_PRECISION,
+          maximumFractionDigits: ROUNDING_PRECISION,
+        }).format(wohneinheiten);
   }
 }
 </script>
