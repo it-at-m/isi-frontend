@@ -3,8 +3,12 @@ import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } 
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { createBauleitplanverfahrenDto, createAbfragevarianteBauleitplanverfahrenDto } from "@/utils/Factories";
+import { createPinia, setActivePinia } from "pinia";
 
 describe("ModelTest.spec.ts", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
   test("Test BauleitplanverfahrenModel", () => {
     const dto = createBauleitplanverfahrenDto();
     expect(dto.adresse).not.toBeNull();

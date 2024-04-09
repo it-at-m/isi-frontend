@@ -105,6 +105,8 @@ import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/
 import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
 import _ from "lodash";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
+import { useLookupStore } from "@/stores/LookupStore";
+import { useSearchStore } from "@/stores/SearchStore";
 
 @Component({
   components: {
@@ -133,14 +135,18 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
 
   private nameRootFolder = "schuelerpotentialprognose";
 
+  private lookupStore = useLookupStore();
+
+  private searchStore = useSearchStore();
+
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     if (
       this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
       AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
     ) {
-      return this.$store.getters["lookup/sobonOrientierungswertJahr"];
+      return this.lookupStore.sobonOrientierungswertJahr;
     } else {
-      return this.$store.getters["lookup/sobonOrientierungswertJahrWithoutStandortabfrage"];
+      return this.lookupStore.sobonOrientierungswertJahrWithoutStandortabfrage;
     }
   }
 
@@ -163,7 +169,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
    * Überprüfung ob alle Kriterien stimmen um die Sobon Report anzuzeigen.
    */
   private showSobonReport(): boolean {
-    const abfrage = this.$store.getters["search/selectedAbfrage"];
+    const abfrage = this.searchStore.selectedAbfrage;
     return (
       (this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
         AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||

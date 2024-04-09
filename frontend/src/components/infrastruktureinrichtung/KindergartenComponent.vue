@@ -67,6 +67,7 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
+import { useLookupStore } from "@/stores/LookupStore";
 
 @Component({
   components: {
@@ -79,6 +80,8 @@ import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/
 export default class KindergartenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
   @VModel({ type: KindergartenModel }) kindergarten!: KindergartenModel;
 
+  private lookupStore = useLookupStore();
+
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
@@ -86,7 +89,7 @@ export default class KindergartenComponent extends Mixins(FieldValidationRulesMi
   private readonly isEinrichtungstraegerRequired!: boolean;
 
   get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraeger"];
+    return this.lookupStore.einrichtungstraeger;
   }
 }
 </script>

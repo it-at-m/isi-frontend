@@ -1,5 +1,5 @@
 import { Component, Vue } from "vue-property-decorator";
-
+import { useCommonStore } from "@/stores/CommonStore";
 /**
  * Mit dem SaveLeave Mixin kann ein Datenverlust durch ungewolltest Navigieren verhindert werden.
  *
@@ -24,6 +24,8 @@ export default class SaveLeaveMixin extends Vue {
   saveLeaveDialog = false;
   // eslint-disable-next-line
   next: any = null;
+
+  commonStore = useCommonStore();
 
   get saveLeaveDialogText(): string {
     let place = "";
@@ -61,26 +63,26 @@ export default class SaveLeaveMixin extends Vue {
   }
 
   public isFormDirty(): boolean {
-    return this.$store.getters["common/isFormDirty"];
+    return this.commonStore.formDirty;
   }
 
   public formChanged(): void {
-    this.$store.dispatch("common/formChanged");
+    this.commonStore.formChanged();
   }
 
   public resetFormDirty(): void {
-    this.$store.dispatch("common/resetFormDirty");
+    this.commonStore.resetFormDirty();
   }
 
   public isCommentDirty(): boolean {
-    return this.$store.getters["common/isCommentDirty"];
+    return this.commonStore.commentDirty;
   }
 
   public commentChanged(): void {
-    this.$store.dispatch("common/commentChanged");
+    this.commonStore.commentChanged();
   }
 
   public resetCommentDirty(): void {
-    this.$store.dispatch("common/resetCommentDirty");
+    this.commonStore.resetCommentDirty();
   }
 }

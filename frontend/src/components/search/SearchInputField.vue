@@ -53,7 +53,7 @@ import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixi
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
-
+import { useSearchStore } from "@/stores/SearchStore";
 @Component({
   components: { SearchAndFilterOptions },
 })
@@ -68,6 +68,8 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
 
   private selectedSuggestion = "";
 
+  private searchStore = useSearchStore();
+
   mounted(): void {
     this.searchEntitiesForSelectedSuggestion();
     this.checkCurrentFilter();
@@ -76,11 +78,11 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   // Filter Dialog
 
   get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
-    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
   }
 
   set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
-    this.$store.commit("search/requestSearchQueryAndSorting", _.cloneDeep(searchQueryForEntities));
+    this.searchStore.setRequestSearchQueryAndSorting(_.cloneDeep(searchQueryForEntities));
   }
 
   private openSearchAndFilterDialog(): void {
@@ -102,20 +104,20 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
   }
 
   private checkCurrentFilter(): boolean {
-    let requestSearchQueryAndSorting = this.$store.getters["search/requestSearchQueryAndSorting"];
-    let defaultSearchQueryAndSortingFilter = this.$store.getters["search/defaultSearchQueryAndSortingFilter"];
     const excludeProperties = ["page", "pageSize", "searchQuery"];
-    requestSearchQueryAndSorting = _.omit(requestSearchQueryAndSorting, excludeProperties);
-    defaultSearchQueryAndSortingFilter = _.omit(defaultSearchQueryAndSortingFilter, excludeProperties);
+    let requestSearchQueryAndSorting = _.omit(this.searchStore.requestSearchQueryAndSorting, excludeProperties);
+    let defaultSearchQueryAndSortingFilter = _.omit(
+      this.searchStore.defaultSearchQueryAndSortingFilter,
+      excludeProperties,
+    );
 
-    const result = _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter);
-    return result;
+    return _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter);
   }
 
   // Search
 
   get getSearchQueryAndSorting(): SearchQueryAndSortingDto {
-    return _.cloneDeep(this.$store.getters["search/requestSearchQueryAndSorting"]);
+    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
   }
 
   private updateSearchQuery(itemIndex: number) {
@@ -169,9 +171,9 @@ export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
     searchQueryForEntitiesDto.pageSize = 20;
     this.suggestions = [searchQueryForEntitiesDto.searchQuery];
     this.selectedSuggestion = searchQueryForEntitiesDto.searchQuery;
-    this.$store.commit("search/requestSearchQueryAndSorting", searchQueryForEntitiesDto);
+    this.searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
     this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
-      this.$store.commit("search/searchResults", _.cloneDeep(searchResults));
+      this.searchStore.setSearchResults(_.cloneDeep(searchResults));
     });
   }
 
