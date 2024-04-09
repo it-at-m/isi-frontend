@@ -291,6 +291,12 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     hinweisVersorgung?: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    dokumente?: Array<string>;
+    /**
+     * 
      * @type {string}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
@@ -404,6 +410,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
         'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : json['dokumente'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
     };
 }
@@ -462,6 +469,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSON(value?:
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
         'hinweisVersorgung': value.hinweisVersorgung,
+        'dokumente': value.dokumente,
         'artAbfragevariante': value.artAbfragevariante,
     };
 }

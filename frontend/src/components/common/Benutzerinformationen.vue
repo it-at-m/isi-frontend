@@ -17,32 +17,35 @@
         <v-icon> mdi-information </v-icon>
       </v-btn>
     </template>
-    <v-list>
-      <v-list-item two-line>
-        <v-list-item-content>
-          <v-list-item-subtitle>Name:</v-list-item-subtitle>
-          <v-list-item-title>{{ name }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item two-line>
-        <v-list-item-content>
-          <v-list-item-subtitle>Email:</v-list-item-subtitle>
-          <v-list-item-title>{{ email }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item two-line>
-        <v-list-item-content>
-          <v-list-item-subtitle>Organisationseinheit:</v-list-item-subtitle>
-          <v-list-item-title>{{ organisationseinheit }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item two-line>
-        <v-list-item-content>
-          <v-list-item-subtitle>Letzte Änderung:</v-list-item-subtitle>
-          <v-list-item-title>{{ letzteAenderung }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+    <v-card flat>
+      <v-card-title>Bearbeitungsinformationen</v-card-title>
+      <v-list>
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-subtitle>Name:</v-list-item-subtitle>
+            <v-list-item-title>{{ name }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-subtitle>Email:</v-list-item-subtitle>
+            <v-list-item-title>{{ email }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-subtitle>Organisationseinheit:</v-list-item-subtitle>
+            <v-list-item-title>{{ organisationseinheit }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-subtitle>Letzte Änderung:</v-list-item-subtitle>
+            <v-list-item-title>{{ letzteAenderung }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card>
   </v-menu>
 </template>
 

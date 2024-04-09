@@ -25,6 +25,12 @@ import {
     BauratendateiInputDtoFromJSONTyped,
     BauratendateiInputDtoToJSON,
 } from './BauratendateiInputDto';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+} from './DokumentDto';
 import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
     SobonBerechnungDtoFromJSON,
@@ -254,6 +260,12 @@ export interface AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto
      * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto
      */
     bauratendateiInput?: Array<BauratendateiInputDto>;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto
+     */
+    dokumente?: Array<DokumentDto>;
 }
 
 
@@ -362,6 +374,7 @@ export function AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoF
         'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
         'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
         'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
@@ -410,6 +423,7 @@ export function AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDtoT
         'anmerkungBauratendateiInput': value.anmerkungBauratendateiInput,
         'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value.bauratendateiInputBasis),
         'bauratendateiInput': value.bauratendateiInput === undefined ? undefined : ((value.bauratendateiInput as Array<any>).map(BauratendateiInputDtoToJSON)),
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 

@@ -78,6 +78,14 @@
         v-model="abfragevarianteSachbearbeitung"
         :is-editable="isEditableBySachbearbeitung()"
       />
+      <dokumente
+        id="dokumente_component"
+        ref="dokumenteComponent"
+        v-model="abfragevarianteSachbearbeitung.dokumente"
+        :name-root-folder="nameRootFolder"
+        :is-dokumente-editable="isEditableBySachbearbeitung()"
+        @change="formChanged"
+      />
     </field-group-card>
   </div>
 </template>
@@ -101,11 +109,14 @@ import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevariant
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
 import _ from "lodash";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
+
 @Component({
   components: {
     BauratendateiInput,
+    Dokumente,
     SobonBerechnung,
     ReportsPlanungsursaechlichkeitComponent,
     ReportsSobonursaechlichkeitComponent,
@@ -126,6 +137,9 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private readonly isEditable!: boolean;
 
   private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
+  private schuelerpotentialprognoseTitle = "Bauratendatei und Schülerpotentialprognose";
+
+  private nameRootFolder = "schuelerpotentialprognose";
 
   private bauratenDateiInputTitle = "Bauratendatei und Schülerpotentialprognose";
 

@@ -330,6 +330,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       anmerkungBauratendateiInput: abfragevariante.anmerkungBauratendateiInput,
       bauratendateiInputBasis: abfragevariante.bauratendateiInputBasis,
       bauratendateiInput: abfragevariante.bauratendateiInput,
+      dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto;
   });
 }
@@ -373,6 +374,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       anmerkungBauratendateiInput: abfragevariante.anmerkungBauratendateiInput,
       bauratendateiInputBasis: abfragevariante.bauratendateiInputBasis,
       bauratendateiInput: abfragevariante.bauratendateiInput,
+      dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });
 }
@@ -419,6 +421,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       anmerkungBauratendateiInput: abfragevariante.anmerkungBauratendateiInput,
       bauratendateiInputBasis: abfragevariante.bauratendateiInputBasis,
       bauratendateiInput: abfragevariante.bauratendateiInput,
+      dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });
 }
