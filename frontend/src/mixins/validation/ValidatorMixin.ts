@@ -651,6 +651,10 @@ export default class ValidatorMixin extends Vue {
     let validationMessageGfWohnen: string | null = null;
     let allGfWohnenNil = true;
 
+    /*
+    Unterscheidung zwischen technischen und nicht-technischen Baugebieten, da technische Baugebiete keine Daten enthalten sollen.
+    Bei ihnen werden stattdessen die untergeordneten Bauraten als Datenquelle hergenommen.
+    */
     if (containsNonTechnicalBaugebiet) {
       // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteWohneinheitenBaugebiete = _.sum(
