@@ -490,6 +490,117 @@
         }
       }
     },
+    "/abfragevarianteBaugenehmigungsverfahrens/{id}/dokumente": {
+      "get": {
+        "tags": ["abfragevariante-baugenehmigungsverfahren-property-reference-controller"],
+        "description": "get-dokument-by-abfragevariantebaugenehmigungsverfahren-Id",
+        "operationId": "followPropertyReference-abfragevariantebaugenehmigungsverfahren-get_1",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } },
+              "text/uri-list": { "schema": { "type": "string" } }
+            }
+          },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["abfragevariante-baugenehmigungsverfahren-property-reference-controller"],
+        "description": "update-dokument-by-abfragevariantebaugenehmigungsverfahren-Id",
+        "operationId": "createPropertyReference-abfragevariantebaugenehmigungsverfahren-put",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CollectionModelObject" } },
+            "application/x-spring-data-compact+json": {
+              "schema": { "$ref": "#/components/schemas/CollectionModelObject" }
+            },
+            "text/uri-list": { "schema": { "type": "string" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "204": { "description": "No Content" }
+        }
+      },
+      "delete": {
+        "tags": ["abfragevariante-baugenehmigungsverfahren-property-reference-controller"],
+        "description": "delete-dokument-by-abfragevariantebaugenehmigungsverfahren-Id",
+        "operationId": "deletePropertyReference-abfragevariantebaugenehmigungsverfahren-delete",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" }, "404": { "description": "Not Found" } }
+      },
+      "patch": {
+        "tags": ["abfragevariante-baugenehmigungsverfahren-property-reference-controller"],
+        "description": "patch-dokument-by-abfragevariantebaugenehmigungsverfahren-Id",
+        "operationId": "createPropertyReference-abfragevariantebaugenehmigungsverfahren-patch",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CollectionModelObject" } },
+            "application/x-spring-data-compact+json": {
+              "schema": { "$ref": "#/components/schemas/CollectionModelObject" }
+            },
+            "text/uri-list": { "schema": { "type": "string" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "204": { "description": "No Content" }
+        }
+      }
+    },
+    "/abfragevarianteBaugenehmigungsverfahrens/{id}/dokumente/{propertyId}": {
+      "get": {
+        "tags": ["abfragevariante-baugenehmigungsverfahren-property-reference-controller"],
+        "description": "get-dokument-by-abfragevariantebaugenehmigungsverfahren-Id",
+        "operationId": "followPropertyReference-abfragevariantebaugenehmigungsverfahren-get",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["abfragevariante-baugenehmigungsverfahren-property-reference-controller"],
+        "description": "delete-dokument-by-abfragevariantebaugenehmigungsverfahren-Id",
+        "operationId": "deletePropertyReferenceId-abfragevariantebaugenehmigungsverfahren-delete",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "204": { "description": "No Content" }, "404": { "description": "Not Found" } }
+      }
+    },
     "/abfragevarianteBauleitplanverfahrens": {
       "get": {
         "tags": ["abfragevariante-bauleitplanverfahren-entity-controller"],
@@ -677,6 +788,117 @@
         }
       }
     },
+    "/abfragevarianteBauleitplanverfahrens/{id}/dokumente": {
+      "get": {
+        "tags": ["abfragevariante-bauleitplanverfahren-property-reference-controller"],
+        "description": "get-dokument-by-abfragevariantebauleitplanverfahren-Id",
+        "operationId": "followPropertyReference-abfragevariantebauleitplanverfahren-get_1",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } },
+              "text/uri-list": { "schema": { "type": "string" } }
+            }
+          },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["abfragevariante-bauleitplanverfahren-property-reference-controller"],
+        "description": "update-dokument-by-abfragevariantebauleitplanverfahren-Id",
+        "operationId": "createPropertyReference-abfragevariantebauleitplanverfahren-put",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CollectionModelObject" } },
+            "application/x-spring-data-compact+json": {
+              "schema": { "$ref": "#/components/schemas/CollectionModelObject" }
+            },
+            "text/uri-list": { "schema": { "type": "string" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "204": { "description": "No Content" }
+        }
+      },
+      "delete": {
+        "tags": ["abfragevariante-bauleitplanverfahren-property-reference-controller"],
+        "description": "delete-dokument-by-abfragevariantebauleitplanverfahren-Id",
+        "operationId": "deletePropertyReference-abfragevariantebauleitplanverfahren-delete",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" }, "404": { "description": "Not Found" } }
+      },
+      "patch": {
+        "tags": ["abfragevariante-bauleitplanverfahren-property-reference-controller"],
+        "description": "patch-dokument-by-abfragevariantebauleitplanverfahren-Id",
+        "operationId": "createPropertyReference-abfragevariantebauleitplanverfahren-patch",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CollectionModelObject" } },
+            "application/x-spring-data-compact+json": {
+              "schema": { "$ref": "#/components/schemas/CollectionModelObject" }
+            },
+            "text/uri-list": { "schema": { "type": "string" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "204": { "description": "No Content" }
+        }
+      }
+    },
+    "/abfragevarianteBauleitplanverfahrens/{id}/dokumente/{propertyId}": {
+      "get": {
+        "tags": ["abfragevariante-bauleitplanverfahren-property-reference-controller"],
+        "description": "get-dokument-by-abfragevariantebauleitplanverfahren-Id",
+        "operationId": "followPropertyReference-abfragevariantebauleitplanverfahren-get",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["abfragevariante-bauleitplanverfahren-property-reference-controller"],
+        "description": "delete-dokument-by-abfragevariantebauleitplanverfahren-Id",
+        "operationId": "deletePropertyReferenceId-abfragevariantebauleitplanverfahren-delete",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "204": { "description": "No Content" }, "404": { "description": "Not Found" } }
+      }
+    },
     "/abfragevarianteWeiteresVerfahrens": {
       "get": {
         "tags": ["abfragevariante-weiteres-verfahren-entity-controller"],
@@ -862,6 +1084,117 @@
           },
           "204": { "description": "No Content" }
         }
+      }
+    },
+    "/abfragevarianteWeiteresVerfahrens/{id}/dokumente": {
+      "get": {
+        "tags": ["abfragevariante-weiteres-verfahren-property-reference-controller"],
+        "description": "get-dokument-by-abfragevarianteweiteresverfahren-Id",
+        "operationId": "followPropertyReference-abfragevarianteweiteresverfahren-get_1",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } },
+              "text/uri-list": { "schema": { "type": "string" } }
+            }
+          },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["abfragevariante-weiteres-verfahren-property-reference-controller"],
+        "description": "update-dokument-by-abfragevarianteweiteresverfahren-Id",
+        "operationId": "createPropertyReference-abfragevarianteweiteresverfahren-put",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CollectionModelObject" } },
+            "application/x-spring-data-compact+json": {
+              "schema": { "$ref": "#/components/schemas/CollectionModelObject" }
+            },
+            "text/uri-list": { "schema": { "type": "string" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "204": { "description": "No Content" }
+        }
+      },
+      "delete": {
+        "tags": ["abfragevariante-weiteres-verfahren-property-reference-controller"],
+        "description": "delete-dokument-by-abfragevarianteweiteresverfahren-Id",
+        "operationId": "deletePropertyReference-abfragevarianteweiteresverfahren-delete",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" }, "404": { "description": "Not Found" } }
+      },
+      "patch": {
+        "tags": ["abfragevariante-weiteres-verfahren-property-reference-controller"],
+        "description": "patch-dokument-by-abfragevarianteweiteresverfahren-Id",
+        "operationId": "createPropertyReference-abfragevarianteweiteresverfahren-patch",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CollectionModelObject" } },
+            "application/x-spring-data-compact+json": {
+              "schema": { "$ref": "#/components/schemas/CollectionModelObject" }
+            },
+            "text/uri-list": { "schema": { "type": "string" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "204": { "description": "No Content" }
+        }
+      }
+    },
+    "/abfragevarianteWeiteresVerfahrens/{id}/dokumente/{propertyId}": {
+      "get": {
+        "tags": ["abfragevariante-weiteres-verfahren-property-reference-controller"],
+        "description": "get-dokument-by-abfragevarianteweiteresverfahren-Id",
+        "operationId": "followPropertyReference-abfragevarianteweiteresverfahren-get",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/CollectionModelDokument" } }
+            }
+          },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["abfragevariante-weiteres-verfahren-property-reference-controller"],
+        "description": "delete-dokument-by-abfragevarianteweiteresverfahren-Id",
+        "operationId": "deletePropertyReferenceId-abfragevarianteweiteresverfahren-delete",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "propertyId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "204": { "description": "No Content" }, "404": { "description": "Not Found" } }
       }
     },
     "/abfragevariantes": {
@@ -3754,6 +4087,12 @@
           "required": true
         },
         "responses": {
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "409": {
             "description": "CONFLICT -> Fördermix konnte nicht gespeichert werden, da für die Bezeichnung im angegebenen Jahr bereits ein anderer Fördermix existiert.",
             "content": {
@@ -3769,12 +4108,6 @@
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
           }
         }
       },
@@ -3787,8 +4120,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3799,15 +4132,15 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "201": {
-            "description": "CREATED -> FoerdermixStamm wurde erfolgreich erstellt.",
-            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
+          },
+          "201": {
+            "description": "CREATED -> FoerdermixStamm wurde erfolgreich erstellt.",
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/FoerdermixStammDto" } } }
           }
         }
       }
@@ -3822,8 +4155,8 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Kommentar mit dieser ID nicht vorhanden.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3838,8 +4171,8 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "404": {
+            "description": "NOT_FOUND -> Kommentar mit dieser ID nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3855,8 +4188,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3865,8 +4198,8 @@
             "description": "CREATED -> Kommentar wurde erfolgreich erstellt.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/KommentarDto" } } }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3897,8 +4230,20 @@
           "required": true
         },
         "responses": {
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "400": {
             "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -3918,18 +4263,6 @@
                   ]
                 }
               }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -3956,6 +4289,12 @@
           "required": true
         },
         "responses": {
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "400": {
             "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
@@ -3978,12 +4317,6 @@
                 }
               }
             }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
           }
         }
       }
@@ -3998,6 +4331,12 @@
           "required": true
         },
         "responses": {
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
             "content": {
@@ -4010,14 +4349,14 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage mit dem Bauvorhaben zu verknüpfen.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage mit dem Bauvorhaben zu verknüpfen.",
+          "409": {
+            "description": "CONFLICT -> Bauvorhaben konnte nicht aktualisiert werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4025,12 +4364,6 @@
           "200": {
             "description": "OK -> Bauvorhaben wurde erfolgreich aktualisiert.",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
           }
         }
       },
@@ -4046,24 +4379,14 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "CREATED -> Bauvorhaben wurde erfolgreich erstellt.",
-            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
-          },
           "400": {
             "description": "BAD_REQUEST -> Bauvorhaben konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage mit dem Bauvorhaben zu verknüpfen.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "409": {
-            "description": "CONFLICT -> Bauvorhaben konnte nicht erstellt werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4074,8 +4397,18 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "409": {
+            "description": "CONFLICT -> Bauvorhaben konnte nicht erstellt werden, da der Vorhabensname bereits existiert oder bei einer Datenübernahme die Abfrage bereits ein Bauvorhaben referenziert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "201": {
+            "description": "CREATED -> Bauvorhaben wurde erfolgreich erstellt.",
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage mit dem Bauvorhaben zu verknüpfen.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4097,14 +4430,14 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Abfrage oder Abfragevariante nicht gefunden.",
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4115,18 +4448,18 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "200": {
-            "description": "OK -> Relevante Abfragevariante erfolgreich geändert.",
-            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
-          },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+          "400": {
+            "description": "BAD_REQUEST -> Relevante Abfragevariante konnte nicht geändert werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "200": {
+            "description": "OK -> Relevante Abfragevariante erfolgreich geändert.",
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Abfrage oder Abfragevariante nicht gefunden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4208,21 +4541,21 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
+          "200": { "description": "OK -> Abfrage wurde erfolgreich an RBS oder SOZ zur Bearbeitung weitergegeben." },
           "403": {
             "description": "FORBIDDEN -> Sie haben keine Berechtigung, den Statuswechsel durchzuführen.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht weitergegeben werden.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich an RBS oder SOZ zur Bearbeitung weitergegeben." },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht weitergegeben werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4273,14 +4606,14 @@
         ],
         "responses": {
           "200": { "description": "OK -> Abfrage wurde erfolgreich freigegeben." },
-          "403": {
-            "description": "FORBIDDEN -> Sie haben keine Berechtigung, den Statuswechsel durchzuführen.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht freigegeben werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht freigegeben werden.",
+          "403": {
+            "description": "FORBIDDEN -> Sie haben keine Berechtigung, den Statuswechsel durchzuführen.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4310,7 +4643,6 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "200": { "description": "OK -> Abfrage wurde erfolgreich zur bearbeitung freigestellt." },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
@@ -4322,7 +4654,8 @@
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
-          }
+          },
+          "200": { "description": "OK -> Abfrage wurde erfolgreich zur bearbeitung freigestellt." }
         }
       }
     },
@@ -4343,14 +4676,14 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledgit werden.",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erledgit werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4407,14 +4740,14 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Die Bedarfsmeldung konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erfolgen",
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+          "409": {
+            "description": "CONFLICT -> Die Bedarfsmeldung konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht erfolgen",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4432,12 +4765,6 @@
           { "name": "anmerkung", "in": "query", "required": false, "schema": { "type": "string", "default": "" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht abgebrochen werden.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "403": {
             "description": "FORBIDDEN -> Sie haben keine Berechtigung, den Statuswechsel durchzuführen.",
             "content": {
@@ -4446,6 +4773,12 @@
           },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "409": {
+            "description": "CONFLICT -> Die Abfrage konnte aufgrund des aktuellen Status oder des bereits existierenden Abfragenamen nicht abgebrochen werden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4487,15 +4820,15 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "description": "OK -> Transformation der Koordinate von UTM32 zu WGS84 war erfolgreich.",
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/Wgs84Dto" } } }
+          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Transformation der Koordinate ist ein Fehler aufgetreten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
-          },
-          "200": {
-            "description": "OK -> Transformation der Koordinate von UTM32 zu WGS84 war erfolgreich.",
-            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/Wgs84Dto" } } }
           }
         }
       }
@@ -4518,13 +4851,13 @@
           "required": true
         },
         "responses": {
-          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
+          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": {
@@ -4552,13 +4885,13 @@
           "required": true
         },
         "responses": {
-          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Beim importieren der Datei ist ein serverseitiger Fehler aufgetreten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
+          "200": { "description": "OK -> Import konnte erfolgreich durchgeführt werden." },
           "422": {
             "description": "UNPROCESSABLE_ENTITY -> Die CSV-Datei konnte nicht korrekt verarbeitet werden.",
             "content": {
@@ -4578,16 +4911,16 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "NOT_FOUND -> Im Requestbody wurde kein zu durchsuchender Entitätstyp gewählt.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "200": {
             "description": "OK -> Es wurde eine erfolgreiche Suche nach Suchwortvorschlägen durchgeführt.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/SuchwortSuggestionsDto" } }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Im Requestbody wurde kein zu durchsuchender Entitätstyp gewählt.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -4635,18 +4968,18 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
           "200": {
             "description": "OK",
             "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/PresignedUrlDto" } } }
           },
           "404": {
             "description": "NOT FOUND -> Die Datei ist im S3-Storage nicht verfügbar.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST -> Der JSON-Body des Requests ist fehlerhaft oder nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4705,8 +5038,8 @@
           "required": true
         },
         "responses": {
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ermittlung des Mime-Types ist ein Fehler aufgetreten.",
+          "406": {
+            "description": "NOT ACCEPTABLE -> Die referenzierte und im S3-Storage befindliche Datei besitzt keinen zulässigen Mime-Type.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4717,8 +5050,8 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/MimeTypeInformationDto" } }
             }
           },
-          "406": {
-            "description": "NOT ACCEPTABLE -> Die referenzierte und im S3-Storage befindliche Datei besitzt keinen zulässigen Mime-Type.",
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ermittlung des Mime-Types ist ein Fehler aufgetreten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4760,14 +5093,8 @@
               }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4778,8 +5105,14 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+          "409": {
+            "description": "CONFLICT -> Abfrage konnte nicht erstellt werden, da der Name der Abfrage oder Abfragevariante bereits existiert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Das referenzierte Bauvorhaben existiert nicht.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -4810,6 +5143,24 @@
           "required": true
         },
         "responses": {
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
@@ -4834,24 +5185,6 @@
                   ]
                 }
               }
-            }
-          },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -4880,6 +5213,24 @@
           "required": true
         },
         "responses": {
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
@@ -4904,24 +5255,6 @@
                   ]
                 }
               }
-            }
-          },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -4950,6 +5283,18 @@
           "required": true
         },
         "responses": {
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "400": {
             "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
@@ -4974,18 +5319,6 @@
                   ]
                 }
               }
-            }
-          },
-          "404": {
-            "description": "NOT_FOUND -> Es gibt keine Abfrage mit der ID.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -5014,8 +5347,20 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "555": {
+            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5026,14 +5371,14 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "409": {
-            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
+          "400": {
+            "description": "BAD_REQUEST -> Abfrage konnte nicht aktualisiert werden, überprüfen sie die Eingabe oder die Abfrage befindet sich in einem unzulässigen Status",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "555": {
-            "description": "CUSTOM INTERNAL SERVER ERROR -> Die Dateien konnten nicht gelöscht werden.",
+          "409": {
+            "description": "CONFLICT -> Abfrage konnte nicht aktualisiert werden, da der Name der Abfrage oder Abfragevariante bereits existiert oder die Abfrage nicht im korrekten Status ist.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5050,18 +5395,6 @@
                   ]
                 }
               }
-            }
-          },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu bearbeiten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
-          },
-          "412": {
-            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -5109,13 +5442,13 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> FoerdermixStamm mit dieser ID nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
-          }
+          },
+          "204": { "description": "NO CONTENT" }
         }
       }
     },
@@ -5199,6 +5532,12 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
+          "404": {
+            "description": "NOT FOUND -> Grundschule mit dieser ID nicht vorhanden.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          },
           "200": {
             "description": "OK",
             "content": {
@@ -5214,12 +5553,6 @@
                   ]
                 }
               }
-            }
-          },
-          "404": {
-            "description": "NOT FOUND -> Grundschule mit dieser ID nicht vorhanden.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           }
         }
@@ -5238,13 +5571,13 @@
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
-          }
+          },
+          "204": { "description": "NO CONTENT" }
         }
       }
     },
@@ -5284,15 +5617,15 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
-          },
           "404": {
             "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
+          },
+          "200": {
+            "description": "OK",
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/BauvorhabenDto" } } }
           }
         }
       },
@@ -5304,14 +5637,14 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Das Bauvorhaben wird durch Abfragen referenziert.",
+          "404": {
+            "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "404": {
-            "description": "NOT FOUND -> Bauvorhaben mit dieser ID nicht vorhanden.",
+          "409": {
+            "description": "CONFLICT -> Das Bauvorhaben wird durch Abfragen referenziert.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5431,14 +5764,14 @@
               }
             }
           },
-          "403": {
-            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu öffnen.",
+          "404": {
+            "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "404": {
-            "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung um die Abfrage zu öffnen.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5453,21 +5786,21 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
         "responses": {
-          "409": {
-            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben oder die Abfrage nicht im korrekten Status ist.",
+          "403": {
+            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> Abfrage mit dieser ID nicht vorhanden.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
           },
-          "403": {
-            "description": "CONFLICT -> Der Nutzer besitzt nicht die Berechtigung zum Löschen der Abfrage.",
+          "204": { "description": "NO CONTENT" },
+          "409": {
+            "description": "CONFLICT -> Die Abfrage referenziert ein Bauvorhaben oder die Abfrage nicht im korrekten Status ist.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
@@ -5556,6 +5889,19 @@
         "type": "object",
         "properties": { "_links": { "$ref": "#/components/schemas/Links" } }
       },
+      "Filepath": { "type": "object", "properties": { "pathToFile": { "type": "string" } } },
+      "Foerderart": {
+        "type": "object",
+        "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
+      },
+      "Foerdermix": {
+        "type": "object",
+        "properties": {
+          "bezeichnungJahr": { "type": "string" },
+          "bezeichnung": { "type": "string" },
+          "foerderarten": { "type": "array", "items": { "$ref": "#/components/schemas/Foerderart" } }
+        }
+      },
       "EntityModelAbfragevarianteBaugenehmigungsverfahren": {
         "type": "object",
         "properties": {
@@ -5624,18 +5970,6 @@
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "Foerderart": {
-        "type": "object",
-        "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
-      },
-      "Foerdermix": {
-        "type": "object",
-        "properties": {
-          "bezeichnungJahr": { "type": "string" },
-          "bezeichnung": { "type": "string" },
-          "foerderarten": { "type": "array", "items": { "$ref": "#/components/schemas/Foerderart" } }
-        }
-      },
       "PageMetadata": {
         "type": "object",
         "properties": {
@@ -5659,6 +5993,28 @@
           },
           "_links": { "$ref": "#/components/schemas/Links" },
           "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": { "objects": { "type": "array", "items": { "type": "object" } } }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "CollectionModelDokument": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
       "Adresse": {
@@ -5687,18 +6043,6 @@
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometry" }
         }
       },
-      "EntityModelKommentar": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "datum": { "type": "string" },
-          "text": { "type": "string" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "Filepath": { "type": "object", "properties": { "pathToFile": { "type": "string" } } },
       "Flurstueck": {
         "type": "object",
         "properties": {
@@ -5758,19 +6102,6 @@
               "items": { "type": "array", "items": { "type": "array", "items": { "type": "number" } } }
             }
           }
-        }
-      },
-      "PagedModelEntityModelKommentar": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "kommentars": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelKommentar" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
       "PointGeometry": {
@@ -5878,69 +6209,28 @@
           "longitude": { "type": "number", "format": "double" }
         }
       },
-      "CollectionModelDokument": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": { "objects": { "type": "array", "items": { "type": "object" } } }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "EntityModelInfrastruktureinrichtung": {
+      "EntityModelKommentar": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePerson" },
-          "lfdNr": { "type": "integer", "format": "int64" },
-          "adresse": { "$ref": "#/components/schemas/Adresse" },
-          "verortung": { "$ref": "#/components/schemas/VerortungPoint" },
-          "nameEinrichtung": { "type": "string" },
-          "fertigstellungsjahr": { "type": "integer", "format": "int32" },
-          "status": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "UNGESICHERTE_PLANUNG",
-              "GESICHERTE_PLANUNG_NEUE_EINR",
-              "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-              "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-              "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-              "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "BESTAND"
-            ]
-          },
-          "flaecheGesamtgrundstueck": { "type": "number" },
-          "flaecheTeilgrundstueck": { "type": "number" },
-          "infrastruktureinrichtungTyp": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "KINDERKRIPPE",
-              "KINDERGARTEN",
-              "GS_NACHMITTAG_BETREUUNG",
-              "HAUS_FUER_KINDER",
-              "GRUNDSCHULE",
-              "MITTELSCHULE"
-            ]
-          },
+          "datum": { "type": "string" },
+          "text": { "type": "string" },
           "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelKommentar": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "kommentars": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelKommentar" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
       "EntityModelBauvorhaben": {
@@ -6029,6 +6319,49 @@
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
+      "EntityModelInfrastruktureinrichtung": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePerson" },
+          "lfdNr": { "type": "integer", "format": "int64" },
+          "adresse": { "$ref": "#/components/schemas/Adresse" },
+          "verortung": { "$ref": "#/components/schemas/VerortungPoint" },
+          "nameEinrichtung": { "type": "string" },
+          "fertigstellungsjahr": { "type": "integer", "format": "int32" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "UNGESICHERTE_PLANUNG",
+              "GESICHERTE_PLANUNG_NEUE_EINR",
+              "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
+              "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
+              "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
+              "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
+              "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+              "BESTAND"
+            ]
+          },
+          "flaecheGesamtgrundstueck": { "type": "number" },
+          "flaecheTeilgrundstueck": { "type": "number" },
+          "infrastruktureinrichtungTyp": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "KINDERKRIPPE",
+              "KINDERGARTEN",
+              "GS_NACHMITTAG_BETREUUNG",
+              "HAUS_FUER_KINDER",
+              "GRUNDSCHULE",
+              "MITTELSCHULE"
+            ]
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
       "EntityModelAbfragevariante": {
         "type": "object",
         "properties": {
@@ -6103,6 +6436,13 @@
           },
           "_links": { "$ref": "#/components/schemas/Links" },
           "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "SobonBerechnung": {
+        "type": "object",
+        "properties": {
+          "isASobonBerechnung": { "type": "boolean" },
+          "sobonFoerdermix": { "$ref": "#/components/schemas/Foerdermix" }
         }
       },
       "EntityModelAbfragevarianteBauleitplanverfahren": {
@@ -6188,13 +6528,6 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "SobonBerechnung": {
-        "type": "object",
-        "properties": {
-          "isASobonBerechnung": { "type": "boolean" },
-          "sobonFoerdermix": { "$ref": "#/components/schemas/Foerdermix" }
-        }
-      },
       "EntityModelGlobalCounter": {
         "type": "object",
         "properties": {
@@ -6248,6 +6581,16 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
+      "Umlegungsschluessel": {
+        "type": "object",
+        "properties": {
+          "foerderarten": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Foerderart" }
+          }
+        }
+      },
       "EntityModelUmlegungFoerderarten": {
         "type": "object",
         "properties": {
@@ -6274,16 +6617,6 @@
           },
           "_links": { "$ref": "#/components/schemas/Links" },
           "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "Umlegungsschluessel": {
-        "type": "object",
-        "properties": {
-          "foerderarten": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Foerderart" }
-          }
         }
       },
       "PagedModelEntityModelInfrastruktureinrichtung": {
@@ -6339,6 +6672,19 @@
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePerson" }
         }
       },
+      "StatusAbfrage": {
+        "type": "string",
+        "enum": [
+          "ANGELEGT",
+          "OFFEN",
+          "IN_BEARBEITUNG_SACHBEARBEITUNG",
+          "IN_BEARBEITUNG_FACHREFERATE",
+          "BEDARFSMELDUNG_ERFOLGT",
+          "ERLEDIGT_MIT_FACHREFERAT",
+          "ERLEDIGT_OHNE_FACHREFERAT",
+          "ABBRUCH"
+        ]
+      },
       "EntityModelAbfrage": {
         "type": "object",
         "properties": {
@@ -6371,18 +6717,9 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "StatusAbfrage": {
-        "type": "string",
-        "enum": [
-          "ANGELEGT",
-          "OFFEN",
-          "IN_BEARBEITUNG_SACHBEARBEITUNG",
-          "IN_BEARBEITUNG_FACHREFERATE",
-          "BEDARFSMELDUNG_ERFOLGT",
-          "ERLEDIGT_MIT_FACHREFERAT",
-          "ERLEDIGT_OHNE_FACHREFERAT",
-          "ABBRUCH"
-        ]
+      "Jahresrate": {
+        "type": "object",
+        "properties": { "jahr": { "type": "integer", "format": "int32" }, "rate": { "type": "number" } }
       },
       "EntityModelIdealtypischeBaurate": {
         "type": "object",
@@ -6396,10 +6733,6 @@
           "jahresraten": { "type": "array", "items": { "$ref": "#/components/schemas/Jahresrate" } },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
-      },
-      "Jahresrate": {
-        "type": "object",
-        "properties": { "jahr": { "type": "integer", "format": "int32" }, "rate": { "type": "number" } }
       },
       "PagedModelEntityModelIdealtypischeBaurate": {
         "type": "object",
@@ -6839,10 +7172,42 @@
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
           "hinweisVersorgung": { "type": "string" },
+          "dokumente": { "type": "array", "items": { "type": "string" } },
           "artAbfragevariante": {
             "type": "string",
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
+        }
+      },
+      "DokumentResponse": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "filePath": { "$ref": "#/components/schemas/Filepath" },
+          "artDokument": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "EMAIL",
+              "BESCHLUSS",
+              "ANLAGE",
+              "ANTRAG",
+              "KARTE",
+              "STELLUNGNAHME",
+              "DATEN_BAUVORHABEN",
+              "GEBAEUDEPLAN",
+              "BERECHNUNG",
+              "INFOS_BAUGENEHMIGUNG",
+              "PRESSEARTIKEL",
+              "INFOS_ZU_SOZ_INFRASTRUKTUR",
+              "PROTOKOLL",
+              "SONSTIGES"
+            ]
+          },
+          "sizeInBytes": { "type": "integer", "format": "int64" },
+          "typDokument": { "type": "string" }
         }
       },
       "AbfragevarianteBauleitplanverfahrenRequestBody": {
@@ -6909,6 +7274,7 @@
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
           "hinweisVersorgung": { "type": "string" },
+          "dokumente": { "type": "array", "items": { "type": "string" } },
           "artAbfragevariante": {
             "type": "string",
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
@@ -6983,41 +7349,11 @@
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
           "hinweisVersorgung": { "type": "string" },
+          "dokumente": { "type": "array", "items": { "type": "string" } },
           "artAbfragevariante": {
             "type": "string",
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
-        }
-      },
-      "DokumentResponse": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "filePath": { "$ref": "#/components/schemas/Filepath" },
-          "artDokument": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "EMAIL",
-              "BESCHLUSS",
-              "ANLAGE",
-              "ANTRAG",
-              "KARTE",
-              "STELLUNGNAHME",
-              "DATEN_BAUVORHABEN",
-              "GEBAEUDEPLAN",
-              "BERECHNUNG",
-              "INFOS_BAUGENEHMIGUNG",
-              "PRESSEARTIKEL",
-              "INFOS_ZU_SOZ_INFRASTRUKTUR",
-              "PROTOKOLL",
-              "SONSTIGES"
-            ]
-          },
-          "sizeInBytes": { "type": "integer", "format": "int64" },
-          "typDokument": { "type": "string" }
         }
       },
       "FoerdermixStammRequestBody": {
@@ -8645,7 +8981,8 @@
           "ausgeloesterBedarfMitversorgungImBplanSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
-          "hinweisVersorgung": { "type": "string" }
+          "hinweisVersorgung": { "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "AbfragevarianteBauleitplanverfahrenDto": {
@@ -8721,7 +9058,8 @@
           "ausgeloesterBedarfMitversorgungImBplanSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
-          "hinweisVersorgung": { "type": "string" }
+          "hinweisVersorgung": { "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "AbfragevarianteWeiteresVerfahrenDto": {
@@ -8801,7 +9139,8 @@
           "ausgeloesterBedarfMitversorgungImBplanSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
           "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
-          "hinweisVersorgung": { "type": "string" }
+          "hinweisVersorgung": { "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "BaugenehmigungsverfahrenDto": {
@@ -9113,7 +9452,8 @@
             "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" }
+          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
@@ -9131,7 +9471,8 @@
             "enum": ["UNSPECIFIED", "JAHR_2014", "JAHR_2017", "JAHR_2022", "STANDORTABFRAGE"]
           },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" }
+          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto": {
@@ -9198,7 +9539,8 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" }
+          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "AbfragevarianteBauleitplanverfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
@@ -9217,7 +9559,8 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" }
+          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto": {
@@ -9288,7 +9631,8 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" }
+          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "AbfragevarianteWeiteresVerfahrenSachbearbeitungInBearbeitungSachbearbeitungDto": {
@@ -9307,7 +9651,8 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" }
+          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
         }
       },
       "BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto": {

@@ -17,23 +17,26 @@
         <v-icon> mdi-information </v-icon>
       </v-btn>
     </template>
-    <v-data-table
-      :headers="bearbeitungshistorieHeaders"
-      :items="bearbeitungshistorie"
-      dense
-      disable-sort
-      disable-filtering
-      :footer-props="{
-        itemsPerPageOptions: [5, 10],
-      }"
-    >
-      <template #item.zeitpunkt="{ item }">
-        {{ zeitpunktFormatted(item.zeitpunkt) }}
-      </template>
-      <template #item.zielStatus="{ item }">
-        {{ zielstatusText(item.zielStatus) }}
-      </template>
-    </v-data-table>
+    <v-card flat>
+      <v-card-title>Bearbeitungsinformationen</v-card-title>
+      <v-data-table
+        :headers="bearbeitungshistorieHeaders"
+        :items="bearbeitungshistorie"
+        dense
+        disable-sort
+        disable-filtering
+        :footer-props="{
+          itemsPerPageOptions: [5, 10],
+        }"
+      >
+        <template #item.zeitpunkt="{ item }">
+          {{ zeitpunktFormatted(item.zeitpunkt) }}
+        </template>
+        <template #item.zielStatus="{ item }">
+          {{ zielstatusText(item.zielStatus) }}
+        </template>
+      </v-data-table>
+    </v-card>
   </v-menu>
 </template>
 
