@@ -211,7 +211,7 @@ export interface AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitung
      * @type {boolean}
      * @memberof AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto
      */
-    hasBauratendateiInput: boolean;
+    hasBauratendateiInput?: boolean;
     /**
      * 
      * @type {string}
@@ -288,7 +288,6 @@ export function instanceOfAbfragevarianteBauleitplanverfahrenInBearbeitungSachbe
     isInstance = isInstance && "weSonderwohnformen" in value;
     isInstance = isInstance && "sobonOrientierungswertJahr" in value;
     isInstance = isInstance && "stammdatenGueltigAb" in value;
-    isInstance = isInstance && "hasBauratendateiInput" in value;
 
     return isInstance;
 }
@@ -331,7 +330,7 @@ export function AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungD
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'hasBauratendateiInput': json['hasBauratendateiInput'],
+        'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
         'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
         'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
         'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),

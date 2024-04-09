@@ -85,6 +85,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import _ from "lodash";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import { useSearchStore } from "@/stores/SearchStore";
+import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
 
 @Component({ components: { FieldGroupCard } })
 export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(AbfrageSecurityMixin) {
@@ -92,6 +93,7 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   private searchStore = useSearchStore();
+  private metabaseReportingStore = useMetabaseReportingStore();
 
   private getUrlWohneinheiten(): string {
     const url = new URL(this.getUrlReportWohneinheiten());
@@ -167,31 +169,38 @@ export default class ReportsPlanungsursaechlichkeitComponent extends Mixins(Abfr
     return this.getUrlBedarfe(artBedarf);
   }
 
+  private getUrlErgebnissePlanungsursaechlicheBedarfe(): string {
+    const url = new URL(this.getUrlReportErgebnissePlanungsursaechlicheBedarfe());
+    return this.getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url);
+  }
+
   private getUrlAlleEinwohner(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_ALLE_EINWOHNER as string;
     return this.getUrlBedarfe(artBedarf);
   }
 
-  private getUrlErgebnissePlanungsursaechlicheBedarfe(): string {
-    return this.getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(
-      new URL(this.getUrlReportErgebnissePlanungsursaechlicheBedarfe()),
-    );
-  }
-
   private getUrlReportWohneinheiten(): string {
-    return import.meta.env.VITE_REPORT_WOHNEINHEITEN_URL as string;
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportWohneinheiten}`
+      : "";
   }
 
   private getUrlReportBedarfe(): string {
-    return import.meta.env.VITE_REPORT_BEDARF_URL as string;
-  }
-
-  private getUrlReportSpitzenbedarfe(): string {
-    return import.meta.env.VITE_REPORT_SPITZENBEDARF_URL as string;
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportBedarfe}`
+      : "";
   }
 
   private getUrlReportErgebnissePlanungsursaechlicheBedarfe(): string {
-    return import.meta.env.VITE_REPORT_ERGEBNISSE_PLANUNGSURSAECHLICHE_BEDARFSRECHNUNG_URL as string;
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportErgebnissePlanungsursaechlich}`
+      : "";
+  }
+
+  private getUrlReportSpitzenbedarfe(): string {
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportSpitzenbedarfePlanungsursaechlich}`
+      : "";
   }
 
   private getParameterAbfrageId(): string {

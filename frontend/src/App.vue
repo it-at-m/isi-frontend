@@ -138,6 +138,7 @@ import { useLookupStore } from "@/stores/LookupStore";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
 import { useSnackbarStore } from "@/stores/SnackbarStore";
 import { useUserinfoStore } from "@/stores/Userinfostore";
+import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
 
 @Component({
   components: { SearchInputField, TheSnackbar, VersionInfo },
@@ -161,6 +162,8 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
 
   private userInfoStore = useUserinfoStore();
 
+  private metabaseReportingStore = useMetabaseReportingStore();
+
   // Schreibt alle Nutzerollen in einen String für die Darstellung
   get userRoles(): string {
     return _.join(this.userinfo.roles, ", ");
@@ -170,6 +173,7 @@ export default class App extends Mixins(UserInfoApiRequestMixin) {
     this.lookupStore.inititalize();
     this.stammdatenStore.initializeFileStamm();
     this.stammdatenStore.initializeFoerdermixStamm();
+    this.metabaseReportingStore.initialize();
   }
 
   mounted(): void {

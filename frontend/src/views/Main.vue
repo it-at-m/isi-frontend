@@ -132,10 +132,8 @@ import router from "@/router";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import _ from "lodash";
-import { AbfrageDtoArtAbfrageEnum, SearchResultDtoTypeEnum } from "@/api/api-client/isi-backend";
-import { Feature, Point } from "geojson";
+import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 import { useSearchStore } from "@/stores/SearchStore";
-type EntityFeature = Feature<Point, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
 @Component({
   components: {

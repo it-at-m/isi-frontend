@@ -105,12 +105,14 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import _ from "lodash";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import { useSearchStore } from "@/stores/SearchStore";
+import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
 @Component({ components: { FieldGroupCard } })
 export default class ReportsSobonursaechlichkeitComponent extends Mixins(AbfrageSecurityMixin) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
   private searchStore = useSearchStore();
+  private metabaseReportingStore = useMetabaseReportingStore();
 
   private getUrlWohneinheiten(): string {
     const url = new URL(this.getUrlReportWohneinheiten());
@@ -200,22 +202,34 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     return this.getUrlSoBonSpitzenbedarfe(artBedarf);
   }
 
+  private getUrlReportWohneinheiten(): string {
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportWohneinheiten}`
+      : "";
+  }
+
   private getUrlErgebnisseSobonursaechlicheBedarfe(): string {
     return this.getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(
       new URL(this.getUrlReportErgebnisseSobonursaechlicheBedarfe()),
     );
   }
 
-  private getUrlReportWohneinheiten(): string {
-    return import.meta.env.VITE_REPORT_WOHNEINHEITEN_URL as string;
-  }
-
   private getUrlReportBedarfe(): string {
-    return import.meta.env.VITE_REPORT_BEDARF_URL as string;
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportBedarfe}`
+      : "";
   }
 
   private getUrlReportSoBonSpitzenbedarfe(): string {
-    return import.meta.env.VITE_REPORT_SOBON_SPITZENBEDARFE_URL as string;
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportSpitzenbedarfeSobonUrsaechlich}`
+      : "";
+  }
+
+  private getUrlReportErgebnisseSobonursaechlicheBedarfe(): string {
+    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
+      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportErgebnisseSobonUrsaechlich}`
+      : "";
   }
 
   private getParameterAbfrageId(): string {
@@ -241,10 +255,6 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
   private getParameterValueAbfrageId(): string {
     const abfrage: AbfrageModel = this.searchStore.selectedAbfrage;
     return !_.isNil(abfrage.id) ? abfrage.id : "";
-  }
-
-  private getUrlReportErgebnisseSobonursaechlicheBedarfe(): string {
-    return import.meta.env.VITE_REPORT_ERGEBNISSE_SOBONURSAECHLICHE_BEDARFSRECHNUNG_URL as string;
   }
 
   private getParameterValueArtAbfrage(): string {
