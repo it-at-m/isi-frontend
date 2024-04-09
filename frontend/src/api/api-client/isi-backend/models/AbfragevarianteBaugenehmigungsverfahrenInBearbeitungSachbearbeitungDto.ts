@@ -19,6 +19,12 @@ import {
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+} from './DokumentDto';
 
 /**
  * 
@@ -200,6 +206,12 @@ export interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbei
      * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
     anmerkung?: string;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    dokumente?: Array<DokumentDto>;
 }
 
 
@@ -301,6 +313,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
@@ -342,6 +355,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 
