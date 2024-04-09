@@ -166,6 +166,12 @@ export interface BauvorhabenRequestBody {
     artFnp?: Array<BauvorhabenRequestBodyArtFnpEnum>;
     /**
      * 
+     * @type {string}
+     * @memberof BauvorhabenRequestBody
+     */
+    artFnpFreieEingabe?: string;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof BauvorhabenRequestBody
      */
@@ -250,7 +256,8 @@ export const BauvorhabenRequestBodyArtFnpEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT'
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauvorhabenRequestBodyArtFnpEnum = typeof BauvorhabenRequestBodyArtFnpEnum[keyof typeof BauvorhabenRequestBodyArtFnpEnum];
 
@@ -294,6 +301,7 @@ export function BauvorhabenRequestBodyFromJSONTyped(json: any, ignoreDiscriminat
         'wesentlicheRechtsgrundlage': !exists(json, 'wesentlicheRechtsgrundlage') ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': !exists(json, 'artFnp') ? undefined : json['artFnp'],
+        'artFnpFreieEingabe': !exists(json, 'artFnpFreieEingabe') ? undefined : json['artFnpFreieEingabe'],
         'dokumente': !exists(json, 'dokumente') ? undefined : json['dokumente'],
         'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : json['relevanteAbfragevariante'],
     };
@@ -328,6 +336,7 @@ export function BauvorhabenRequestBodyToJSON(value?: BauvorhabenRequestBody | nu
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
         'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
         'artFnp': value.artFnp,
+        'artFnpFreieEingabe': value.artFnpFreieEingabe,
         'dokumente': value.dokumente,
         'relevanteAbfragevariante': value.relevanteAbfragevariante,
     };
