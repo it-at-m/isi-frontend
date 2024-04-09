@@ -75,7 +75,7 @@
               ref="wesentlicheRechtsgrundlageFreieEingabeField"
               v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
               :disabled="!isEditable"
-              label="freie Eingabe"
+              label="Freie Eingabe"
               maxlength="1000"
               @input="formChanged"
             />
