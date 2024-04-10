@@ -152,6 +152,7 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
     this.tableDataFromBauratendateiInput.push(newTableEntryObject);
     this.itemToEdit = _.cloneDeep(newTableEntryObject);
+    this.formChanged();
   }
 
   private closeTableItem(): void {
@@ -169,6 +170,7 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
 
   private editTableItem(item: any): void {
     this.itemToEdit = _.cloneDeep(item);
+    this.formChanged();
   }
 
   private deleteTableItem(item: any): void {
@@ -177,6 +179,7 @@ export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin
     });
     this.tableDataFromBauratendateiInput.splice(index, 1);
     this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
+    this.formChanged();
   }
 
   private roundToLocalizedTwoDecimals(wohneinheiten: number | undefined): string | undefined {
