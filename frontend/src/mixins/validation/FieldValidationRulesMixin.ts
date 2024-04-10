@@ -42,6 +42,8 @@ export default class FieldValidationRulesMixin extends Vue {
 
     min5: (v: string): boolean | string => !v || /.{5,}$/.test(v) || "Mindestens fünf Zeichen benötigt",
 
+    min4: (v: string): boolean | string => !v || /.{4,}$/.test(v) || "Mindestens vier Zeichen benötigt",
+
     hausnummer: (v: string): boolean | string =>
       !v || /^[a-zA-Z 0-9 \s]*$/.test(v) || "Nur Buchstaben und Zahlen erlaubt",
 

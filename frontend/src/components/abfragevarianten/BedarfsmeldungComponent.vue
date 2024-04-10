@@ -281,7 +281,7 @@ export default class BedarfsmeldungComponent extends Mixins(
     { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
     { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
     { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
-    { text: "Aktionen", value: "actions", sortable: false },
+    { text: "", value: "actions", sortable: false },
   ];
 
   private lookupStore = useLookupStore();

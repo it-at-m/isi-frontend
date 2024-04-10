@@ -19,6 +19,12 @@ import {
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
 } from './BauabschnittDto';
+import type { BauratendateiInputDto } from './BauratendateiInputDto';
+import {
+    BauratendateiInputDtoFromJSON,
+    BauratendateiInputDtoFromJSONTyped,
+    BauratendateiInputDtoToJSON,
+} from './BauratendateiInputDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
@@ -208,6 +214,30 @@ export interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbei
     anmerkung?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    hasBauratendateiInput?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    anmerkungBauratendateiInput?: string;
+    /**
+     * 
+     * @type {BauratendateiInputDto}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    bauratendateiInputBasis?: BauratendateiInputDto;
+    /**
+     * 
+     * @type {Array<BauratendateiInputDto>}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
+     */
+    bauratendateiInput?: Array<BauratendateiInputDto>;
+    /**
+     * 
      * @type {Array<DokumentDto>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
@@ -313,6 +343,10 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
+        'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
+        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
+        'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
@@ -355,6 +389,10 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'hasBauratendateiInput': value.hasBauratendateiInput,
+        'anmerkungBauratendateiInput': value.anmerkungBauratendateiInput,
+        'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value.bauratendateiInputBasis),
+        'bauratendateiInput': value.bauratendateiInput === undefined ? undefined : ((value.bauratendateiInput as Array<any>).map(BauratendateiInputDtoToJSON)),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };
 }
