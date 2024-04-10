@@ -10,7 +10,7 @@
         v-if="isSameItem(item, itemToEdit)"
         v-model="itemToEdit['jahr']"
         :hide-details="true"
-        :rules="[fieldValidationRules.digits, fieldValidationRules.pflichtfeld]"
+        :rules="[fieldValidationRules.digits, fieldValidationRules.min4, fieldValidationRules.pflichtfeld]"
         dense
         maxlength="4"
         single-line
