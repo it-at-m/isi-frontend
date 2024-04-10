@@ -174,7 +174,7 @@ export function createBauratendateiInput(tableData: Array<any>): Array<Wohneinhe
       const wohneinheitenProFoerderartProJahr = {
         jahr: jahr,
         foerderart: foerderart,
-        wohneinheiten: wohneinheiten,
+        wohneinheiten: _.isNil(wohneinheiten) ? 0 : wohneinheiten,
       } as WohneinheitenProFoerderartProJahrDto;
       newBauratendateiInput.push(wohneinheitenProFoerderartProJahr);
     });
