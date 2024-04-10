@@ -46,7 +46,7 @@ import {
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
-import { sumWohneinheitenOfBauratendateiInput } from "@/utils/BauratendateiUtils";
+import { JAHR_FOERDERART_SEPERATOR, sumWohneinheitenOfBauratendateiInput } from "@/utils/BauratendateiUtils";
 
 @Component
 export default class ValidatorMixin extends Vue {
@@ -792,8 +792,17 @@ export default class ValidatorMixin extends Vue {
     const bauratendateiInputBasis = _.isNil(abfragevariante.bauratendateiInputBasis)
       ? []
       : [abfragevariante.bauratendateiInputBasis];
+    const bauratendateiInput = _.toArray(abfragevariante.bauratendateiInput);
+
+    const wohneinheiten = bauratendateiInput.flatMap((input) => _.toArray(input.wohneinheiten));
+    for (const wohneinheit of wohneinheiten) {
+      if (_.isEmpty(wohneinheit.jahr)) {
+        return "Jahresangabe bei Eintrag zur Bauratendatei und Schülerpotentialprognose fehlt.";
+      }
+    }
+
     const sumBasis = sumWohneinheitenOfBauratendateiInput(bauratendateiInputBasis);
-    const sumInputs = sumWohneinheitenOfBauratendateiInput(_.toArray(abfragevariante.bauratendateiInput));
+    const sumInputs = sumWohneinheitenOfBauratendateiInput(bauratendateiInput);
 
     const validationMessage = `Die Daten der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen nicht mit den errechneten Wohneinheiten überein.`;
 
@@ -803,13 +812,12 @@ export default class ValidatorMixin extends Vue {
 
     for (const [jahrAndFoerderart, wohneinheiten] of sumBasis) {
       const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
-      const difference = Math.abs(
-        wohneinheiten - (_.isNil(numberOfWohneinheitenInputs) ? 0 : numberOfWohneinheitenInputs),
-      );
+      const nonNullNumberOfWohneinheitenInputs = _.isNil(numberOfWohneinheitenInputs) ? 0 : numberOfWohneinheitenInputs;
+      const difference = Math.abs(wohneinheiten - nonNullNumberOfWohneinheitenInputs);
       // Prüfung wegen möglicher Rundungen bedingt durch IEEE754
       if (difference >= 0.001) {
-        const splittedJahrAndFoerderart = _.split(jahrAndFoerderart, "_");
-        return ` In der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen die errechneten Wohneinheiten der Förderart "${splittedJahrAndFoerderart[1]}" im Jahr "${splittedJahrAndFoerderart[0]}" in Höhe von "${wohneinheiten}" nicht mit der Summe der aufgeteilten Wohneinheiten in Höhe von "${numberOfWohneinheitenInputs}" überein.`;
+        const splittedJahrAndFoerderart = _.split(jahrAndFoerderart, JAHR_FOERDERART_SEPERATOR);
+        return ` In der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen die errechneten Wohneinheiten der Förderart "${splittedJahrAndFoerderart[1]}" im Jahr "${splittedJahrAndFoerderart[0]}" in Höhe von "${wohneinheiten}" nicht mit der Summe der aufgeteilten Wohneinheiten in Höhe von "${nonNullNumberOfWohneinheitenInputs}" überein.`;
       }
     }
 

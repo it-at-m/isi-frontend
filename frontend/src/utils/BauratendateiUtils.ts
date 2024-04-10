@@ -16,6 +16,8 @@ export const ATTRIBUTE_KEY_INDEX = "index";
 
 export const ROUNDING_PRECISION = 2;
 
+export const JAHR_FOERDERART_SEPERATOR = "_";
+
 export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
   const headers = createHeadersForFoerderarten(foerderartenBauratendateiInputBasis);
   const headerForJahr = {
@@ -197,7 +199,7 @@ export function sumWohneinheitenOfBauratendateiInput(
       const jahrAndFoerderart = (
         _.isNil(wohneinheitenProFoerderartProJahr.jahr) ? "" : wohneinheitenProFoerderartProJahr.jahr
       ).concat(
-        "_",
+        JAHR_FOERDERART_SEPERATOR,
         _.isNil(wohneinheitenProFoerderartProJahr.foerderart) ? "" : wohneinheitenProFoerderartProJahr.foerderart,
       );
       const wohneinheiten = _.isNil(wohneinheitenProFoerderartProJahr.wohneinheiten)
