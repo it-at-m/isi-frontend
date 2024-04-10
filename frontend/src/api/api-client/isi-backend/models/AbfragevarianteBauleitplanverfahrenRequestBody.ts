@@ -196,6 +196,30 @@ export interface AbfragevarianteBauleitplanverfahrenRequestBody {
     anmerkung?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    hasBauratendateiInput?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    anmerkungBauratendateiInput?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    bauratendateiInputBasis?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
+     */
+    bauratendateiInput?: Array<string>;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AbfragevarianteBauleitplanverfahrenRequestBody
      */
@@ -370,6 +394,10 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyFromJSONTyped(json
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
+        'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
+        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : json['bauratendateiInputBasis'],
+        'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : json['bauratendateiInput'],
         'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : json['bedarfsmeldungFachreferate'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : json['bedarfsmeldungAbfrageersteller'],
         'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : json['bauabschnitte'],
@@ -424,6 +452,10 @@ export function AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(value?: Abf
         'sobonBerechnung': SobonBerechnungToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
+        'hasBauratendateiInput': value.hasBauratendateiInput,
+        'anmerkungBauratendateiInput': value.anmerkungBauratendateiInput,
+        'bauratendateiInputBasis': value.bauratendateiInputBasis,
+        'bauratendateiInput': value.bauratendateiInput,
         'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller,
         'bauabschnitte': value.bauabschnitte,

@@ -73,7 +73,11 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="schuelerpotentialprognoseTitle">
+    <field-group-card :card-title="bauratenDateiInputTitle">
+      <bauratendatei-input
+        v-model="abfragevarianteSachbearbeitung"
+        :is-editable="isEditableBySachbearbeitung()"
+      />
       <dokumente
         id="dokumente_component"
         ref="dokumenteComponent"
@@ -100,6 +104,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
@@ -110,6 +115,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 
 @Component({
   components: {
+    BauratendateiInput,
     Dokumente,
     SobonBerechnung,
     ReportsPlanungsursaechlichkeitComponent,
@@ -134,6 +140,8 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private schuelerpotentialprognoseTitle = "Bauratendatei und Schülerpotentialprognose";
 
   private nameRootFolder = "schuelerpotentialprognose";
+
+  private bauratenDateiInputTitle = "Bauratendatei und Schülerpotentialprognose";
 
   private lookupStore = useLookupStore();
 

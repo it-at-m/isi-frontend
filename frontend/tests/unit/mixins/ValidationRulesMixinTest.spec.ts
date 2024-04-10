@@ -46,6 +46,19 @@ describe("FieldValidationRulesMixin", () => {
     expect(theRule("123")).toBe(thisMessage);
     expect(theRule("1234")).toBe(thisMessage);
     expect(theRule("12345")).toBe(true);
+    expect(theRule("123456")).toBe(true);
+  });
+
+  it("should be min4 characters", () => {
+    const theRule = (rules as any).min4;
+    const thisMessage = "Mindestens vier Zeichen benötigt";
+
+    expect(theRule(null)).toBe(true);
+    expect(theRule("1")).toBe(thisMessage);
+    expect(theRule("12")).toBe(thisMessage);
+    expect(theRule("123")).toBe(thisMessage);
+    expect(theRule("1234")).toBe(true);
+    expect(theRule("12345")).toBe(true);
   });
 
   it("should be a Hausnummer", () => {
