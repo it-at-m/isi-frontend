@@ -64,6 +64,12 @@ export interface BaugebietDto {
     artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum;
     /**
      * 
+     * @type {string}
+     * @memberof BaugebietDto
+     */
+    artBaulicheNutzungFreieEingabe?: string;
+    /**
+     * 
      * @type {number}
      * @memberof BaugebietDto
      */
@@ -130,7 +136,8 @@ export const BaugebietDtoArtBaulicheNutzungEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT'
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BaugebietDtoArtBaulicheNutzungEnum = typeof BaugebietDtoArtBaulicheNutzungEnum[keyof typeof BaugebietDtoArtBaulicheNutzungEnum];
 
@@ -165,6 +172,7 @@ export function BaugebietDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
         'artBaulicheNutzung': json['artBaulicheNutzung'],
+        'artBaulicheNutzungFreieEingabe': !exists(json, 'artBaulicheNutzungFreieEingabe') ? undefined : json['artBaulicheNutzungFreieEingabe'],
         'realisierungVon': json['realisierungVon'],
         'gfWohnenGeplant': !exists(json, 'gfWohnenGeplant') ? undefined : json['gfWohnenGeplant'],
         'gfWohnenBaurechtlichGenehmigt': !exists(json, 'gfWohnenBaurechtlichGenehmigt') ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
@@ -192,6 +200,7 @@ export function BaugebietDtoToJSON(value?: BaugebietDto | null): any {
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'bezeichnung': value.bezeichnung,
         'artBaulicheNutzung': value.artBaulicheNutzung,
+        'artBaulicheNutzungFreieEingabe': value.artBaulicheNutzungFreieEingabe,
         'realisierungVon': value.realisierungVon,
         'gfWohnenGeplant': value.gfWohnenGeplant,
         'gfWohnenBaurechtlichGenehmigt': value.gfWohnenBaurechtlichGenehmigt,

@@ -101,11 +101,11 @@
         <v-slide-y-reverse-transition>
           <v-text-field
             v-if="standVerfahrenFreieEingabeVisible"
-            id="stand_verfahren_freie_freie_eingabe_field"
+            id="stand_verfahren_freie_eingabe_field"
             ref="standVerfahrenFreieEingabeField"
             v-model="abfrage.standVerfahrenFreieEingabe"
             :disabled="!isEditable"
-            label="freie Eingabe"
+            label="Freie Eingabe"
             maxlength="1000"
             @input="formChanged"
           />

@@ -32,16 +32,34 @@
         </v-select>
       </v-col>
     </v-row>
+    <v-row justify="center">
+      <v-col cols="12">
+        <v-slide-y-reverse-transition>
+          <v-text-field
+            v-if="artBaulicheNutzungFreieEingabeVisible"
+            id="art_bauliche_nutzung_freie_eingabe_field"
+            ref="artBaulicheNutzungFreieEingabeField"
+            v-model="baugebiet.artBaulicheNutzungFreieEingabe"
+            :disabled="!isEditable"
+            label="Freie Eingabe"
+            maxlength="1000"
+            @input="formChanged"
+          />
+        </v-slide-y-reverse-transition>
+      </v-col>
+    </v-row>
   </field-group-card>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import {
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
   AbfragevarianteWeiteresVerfahrenDto,
   LookupEntryDto,
+  BauvorhabenDtoArtFnpEnum,
+  BaugebietDtoArtBaulicheNutzungEnum,
 } from "@/api/api-client/isi-backend";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
@@ -53,6 +71,7 @@ import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import NumField from "@/components/common/NumField.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
+import _ from "lodash";
 
 @Component({ components: { NumField, FieldGroupCard, BauratenAggregiertComponent } })
 export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
@@ -78,6 +97,8 @@ export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
   @Prop({ type: Boolean, default: false })
   private readonly isEditable!: boolean;
 
+  private artBaulicheNutzungFreieEingabeVisible = false;
+
   get displayMode(): DisplayMode {
     return this.mode;
   }
@@ -93,6 +114,16 @@ export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
 
   get artBaulicheNutzungList(): LookupEntryDto[] {
     return this.lookupStore.artBaulicheNutzung;
+  }
+
+  @Watch("baugebiet.artBaulicheNutzung", { immediate: true })
+  private artFnpChanged(): void {
+    if (_.isEqual(this.baugebiet.artBaulicheNutzung, BaugebietDtoArtBaulicheNutzungEnum.FreieEingabe)) {
+      this.artBaulicheNutzungFreieEingabeVisible = true;
+    } else {
+      this.baugebiet.artBaulicheNutzungFreieEingabe = undefined;
+      this.artBaulicheNutzungFreieEingabeVisible = false;
+    }
   }
 }
 </script>
