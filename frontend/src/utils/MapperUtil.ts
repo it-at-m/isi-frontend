@@ -258,11 +258,12 @@ export function mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
     artAbfrage: bauleitplanverfahrenDto.artAbfrage,
     // BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
     verortung: bauleitplanverfahrenDto.verortung,
-    abfragevariantenBaugenehmigungsverfahren: mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
-      bauleitplanverfahrenDto.abfragevariantenBaugenehmigungsverfahren,
-    ),
+    abfragevariantenBaugenehmigungsverfahren:
+      mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
+        bauleitplanverfahrenDto.abfragevariantenBaugenehmigungsverfahren,
+      ),
     abfragevariantenSachbearbeitungBaugenehmigungsverfahren:
-      mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto(
+      mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(
         bauleitplanverfahrenDto.abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
       ),
     bauvorhaben: bauleitplanverfahrenDto.bauvorhaben,
@@ -325,6 +326,10 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
+      hasBauratendateiInput: abfragevariante.hasBauratendateiInput,
+      anmerkungBauratendateiInput: abfragevariante.anmerkungBauratendateiInput,
+      bauratendateiInputBasis: abfragevariante.bauratendateiInputBasis,
+      bauratendateiInput: abfragevariante.bauratendateiInput,
       dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto;
   });
@@ -365,6 +370,10 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
+      hasBauratendateiInput: abfragevariante.hasBauratendateiInput,
+      anmerkungBauratendateiInput: abfragevariante.anmerkungBauratendateiInput,
+      bauratendateiInputBasis: abfragevariante.bauratendateiInputBasis,
+      bauratendateiInput: abfragevariante.bauratendateiInput,
       dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });
@@ -408,6 +417,10 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
+      hasBauratendateiInput: abfragevariante.hasBauratendateiInput,
+      anmerkungBauratendateiInput: abfragevariante.anmerkungBauratendateiInput,
+      bauratendateiInputBasis: abfragevariante.bauratendateiInputBasis,
+      bauratendateiInput: abfragevariante.bauratendateiInput,
       dokumente: abfragevariante.dokumente,
     } as AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
   });

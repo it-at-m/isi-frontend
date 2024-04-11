@@ -28,6 +28,7 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
+  BaugenehmigungsverfahrenDto,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -45,6 +46,7 @@ import {
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { JAHR_FOERDERART_SEPERATOR, sumWohneinheitenOfBauratendateiInput } from "@/utils/BauratendateiUtils";
 
 @Component
 export default class ValidatorMixin extends Vue {
@@ -300,7 +302,10 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInAbfragevarianteMarkedSobonBerechnung)) {
       return messageFaultInAbfragevarianteMarkedSobonBerechnung;
     }
-
+    const messageFaultInAbfragevarianteBauratendateiInput = this.findFaultForBauratendateiInput(abfragevariante);
+    if (!_.isNil(messageFaultInAbfragevarianteBauratendateiInput)) {
+      return messageFaultInAbfragevarianteBauratendateiInput;
+    }
     return null;
   }
 
@@ -772,5 +777,50 @@ export default class ValidatorMixin extends Vue {
             }.`;
     }
     return validationMessage;
+  }
+
+  public findFaultForBauratendateiInput(
+    abfragevariante:
+      | AbfragevarianteBauleitplanverfahrenDto
+      | AbfragevarianteBaugenehmigungsverfahrenDto
+      | AbfragevarianteWeiteresVerfahrenDto,
+  ): string | null {
+    if (_.isNil(abfragevariante.hasBauratendateiInput) || !abfragevariante.hasBauratendateiInput) {
+      return null;
+    }
+
+    const bauratendateiInputBasis = _.isNil(abfragevariante.bauratendateiInputBasis)
+      ? []
+      : [abfragevariante.bauratendateiInputBasis];
+    const bauratendateiInput = _.toArray(abfragevariante.bauratendateiInput);
+
+    const wohneinheiten = bauratendateiInput.flatMap((input) => _.toArray(input.wohneinheiten));
+    for (const wohneinheit of wohneinheiten) {
+      if (_.isEmpty(wohneinheit.jahr)) {
+        return "Jahresangabe bei Eintrag zur Bauratendatei und Schülerpotentialprognose fehlt.";
+      }
+    }
+
+    const sumBasis = sumWohneinheitenOfBauratendateiInput(bauratendateiInputBasis);
+    const sumInputs = sumWohneinheitenOfBauratendateiInput(bauratendateiInput);
+
+    const validationMessage = `Die Daten der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen nicht mit den errechneten Wohneinheiten überein.`;
+
+    if (sumBasis.size != sumInputs.size) {
+      return validationMessage;
+    }
+
+    for (const [jahrAndFoerderart, wohneinheiten] of sumBasis) {
+      const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
+      const nonNullNumberOfWohneinheitenInputs = _.isNil(numberOfWohneinheitenInputs) ? 0 : numberOfWohneinheitenInputs;
+      const difference = Math.abs(wohneinheiten - nonNullNumberOfWohneinheitenInputs);
+      // Prüfung wegen möglicher Rundungen bedingt durch IEEE754
+      if (difference >= 0.001) {
+        const splittedJahrAndFoerderart = _.split(jahrAndFoerderart, JAHR_FOERDERART_SEPERATOR);
+        return ` In der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen die errechneten Wohneinheiten der Förderart "${splittedJahrAndFoerderart[1]}" im Jahr "${splittedJahrAndFoerderart[0]}" in Höhe von "${wohneinheiten}" nicht mit der Summe der aufgeteilten Wohneinheiten in Höhe von "${nonNullNumberOfWohneinheitenInputs}" überein.`;
+      }
+    }
+
+    return null;
   }
 }
