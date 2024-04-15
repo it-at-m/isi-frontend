@@ -91,7 +91,6 @@ import L, {
   LatLngBounds,
   LatLngBoundsLiteral,
   LatLngLiteral,
-  LayerGroup,
   WMSOptions,
   LeafletMouseEvent,
   MapOptions,
