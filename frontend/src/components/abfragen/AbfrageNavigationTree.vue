@@ -108,11 +108,7 @@ import {
   BaurateDto,
 } from "@/api/api-client/isi-backend";
 import { AnzeigeContextAbfragevariante, AbfrageDtoWithForm, AbfrageFormType } from "@/views/Abfrage.vue";
-import {
-  isEditableWithAnzeigeContextAbfragevariante,
-  isEditableByAbfrageerstellung,
-  isEditableBySachbearbeitung,
-} from "@/mixins/security/AbfrageSecurity";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -188,6 +184,9 @@ const emit = defineEmits<Emits>();
 const items = ref<AbfrageTreeItem[]>([]);
 const selectedItemIds = computed(() => [props.selectedItemId]);
 const openItemIds = ref<string[]>([]);
+
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung, isEditableWithAnzeigeContextAbfragevariante } =
+  useAbfrageSecurity();
 
 watch(
   () => props.abfrage,

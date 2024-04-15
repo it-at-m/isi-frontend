@@ -71,7 +71,7 @@
 
 import { watch } from "vue";
 import { CurrencyDisplay, CurrencyInputOptions, useCurrencyInput } from "vue-currency-input";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import { min, max, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
 import { useCommonStore } from "@/stores/CommonStore";
 
@@ -162,11 +162,7 @@ export default {
   },
 
   setup(props: Props): unknown {
-    const commonStore = useCommonStore();
-
-    function formChanged(): void {
-      commonStore.formChanged();
-    }
+    const { formChanged } = useCommonStore();
 
     // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
     function getRules(): unknown[] {
@@ -176,31 +172,24 @@ export default {
         usedRules.push(...props.rules);
       }
 
-      // Da die Composition API keine Mixins unterstützt, müssen die Rules importiert werden.
-      const allRules = new FieldValidationRulesMixin().fieldValidationRules as {
-        min: (limit: number) => (v: string) => boolean | string;
-        max: (limit: number) => (v: string) => boolean | string;
-        pflichtfeld: (v: string) => boolean | string;
-      };
-
       if (props.year) {
-        usedRules.push(allRules.min(1900));
-        usedRules.push(allRules.max(2100));
+        usedRules.push(min(1900));
+        usedRules.push(max(2100));
       } else {
         if (props.min !== undefined && !props.allowNegatives) {
-          usedRules.push(allRules.min(props.min));
+          usedRules.push(min(props.min));
         }
         if (props.max !== undefined) {
-          usedRules.push(allRules.max(props.max));
+          usedRules.push(max(props.max));
         } else if (props.integer && !props.ignoreMaxValueSignedInteger) {
-          usedRules.push(allRules.max(MAX_VALUE_SIGNED_INTEGER));
+          usedRules.push(max(MAX_VALUE_SIGNED_INTEGER));
         } else if (!props.integer && !props.ignoreMaxValueDecimalNumeralPrecision10Scale2) {
-          usedRules.push(allRules.max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
+          usedRules.push(max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
         }
       }
 
       if (props.required) {
-        usedRules.push(allRules.pflichtfeld);
+        usedRules.push(pflichtfeld);
       }
       return usedRules;
     }
