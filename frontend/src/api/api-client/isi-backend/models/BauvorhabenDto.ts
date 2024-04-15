@@ -172,6 +172,12 @@ export interface BauvorhabenDto {
     artFnp: Array<BauvorhabenDtoArtFnpEnum>;
     /**
      * 
+     * @type {string}
+     * @memberof BauvorhabenDto
+     */
+    artFnpFreieEingabe?: string;
+    /**
+     * 
      * @type {Array<DokumentDto>}
      * @memberof BauvorhabenDto
      */
@@ -256,7 +262,8 @@ export const BauvorhabenDtoArtFnpEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT'
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauvorhabenDtoArtFnpEnum = typeof BauvorhabenDtoArtFnpEnum[keyof typeof BauvorhabenDtoArtFnpEnum];
 
@@ -305,6 +312,7 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': json['artFnp'],
+        'artFnpFreieEingabe': !exists(json, 'artFnpFreieEingabe') ? undefined : json['artFnpFreieEingabe'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : json['relevanteAbfragevariante'],
     };
@@ -339,6 +347,7 @@ export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
         'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
         'artFnp': value.artFnp,
+        'artFnpFreieEingabe': value.artFnpFreieEingabe,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'relevanteAbfragevariante': value.relevanteAbfragevariante,
     };

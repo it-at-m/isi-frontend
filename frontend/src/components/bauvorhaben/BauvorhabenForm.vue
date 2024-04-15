@@ -26,11 +26,11 @@
           <v-slide-y-reverse-transition>
             <v-text-field
               v-if="standVerfahrenFreieEingabeVisible"
-              id="stand_verfahren_freie_freie_eingabe_field"
+              id="stand_verfahren_freie_eingabe_field"
               ref="standVerfahrenFreieEingabeField"
               v-model="bauvorhaben.standVerfahrenFreieEingabe"
               :disabled="!isEditable"
-              label="freie Eingabe"
+              label="Freie Eingabe für Stand des Verfahrens"
               maxlength="1000"
               @input="formChanged"
             />
@@ -107,7 +107,7 @@
               ref="wesentlicheRechtsgrundlageFreieEingabeField"
               v-model="bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe"
               :disabled="!isEditable"
-              label="freie Eingabe"
+              label="Freie Eingabe für Wesentliche Rechtsgrundlage"
               maxlength="1000"
               @input="formChanged"
             />
@@ -133,6 +133,22 @@
               <span class="secondary--text">*</span>
             </template>
           </v-autocomplete>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="artFnpFreieEingabeVisible"
+              id="art_fnp_freie_eingabe_field"
+              ref="artFnpFreieEingabeField"
+              v-model="bauvorhaben.artFnpFreieEingabe"
+              :disabled="!isEditable"
+              label="Freie Eingabe für Art der baulichen Nutzung"
+              maxlength="1000"
+              @input="formChanged"
+            />
+          </v-slide-y-reverse-transition>
         </v-col>
       </v-row>
       <v-row>
@@ -242,6 +258,7 @@ import {
   FlurstueckDto,
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
   BauvorhabenDtoStandVerfahrenEnum,
+  BauvorhabenDtoArtFnpEnum,
 } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
@@ -290,6 +307,8 @@ export default class BauvorhabenForm extends Mixins(
   private sobonJahrVisible = false;
 
   private standVerfahrenFreieEingabeVisible = false;
+
+  private artFnpFreieEingabeVisible = false;
 
   private nameRootFolder = "bauvorhaben";
 
@@ -373,6 +392,16 @@ export default class BauvorhabenForm extends Mixins(
     } else {
       this.bauvorhaben.standVerfahrenFreieEingabe = undefined;
       this.standVerfahrenFreieEingabeVisible = false;
+    }
+  }
+
+  @Watch("bauvorhaben.artFnp", { immediate: true })
+  private artFnpChanged(): void {
+    if (this.bauvorhaben.artFnp?.includes(BauvorhabenDtoArtFnpEnum.FreieEingabe)) {
+      this.artFnpFreieEingabeVisible = true;
+    } else {
+      this.bauvorhaben.artFnpFreieEingabe = undefined;
+      this.artFnpFreieEingabeVisible = false;
     }
   }
 }

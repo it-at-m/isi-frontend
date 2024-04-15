@@ -166,6 +166,12 @@ export interface EntityModelBauvorhaben {
     artFnp?: Array<EntityModelBauvorhabenArtFnpEnum>;
     /**
      * 
+     * @type {string}
+     * @memberof EntityModelBauvorhaben
+     */
+    artFnpFreieEingabe?: string;
+    /**
+     * 
      * @type {{ [key: string]: Link; }}
      * @memberof EntityModelBauvorhaben
      */
@@ -244,7 +250,8 @@ export const EntityModelBauvorhabenArtFnpEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT'
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type EntityModelBauvorhabenArtFnpEnum = typeof EntityModelBauvorhabenArtFnpEnum[keyof typeof EntityModelBauvorhabenArtFnpEnum];
 
@@ -287,6 +294,7 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'wesentlicheRechtsgrundlage': !exists(json, 'wesentlicheRechtsgrundlage') ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': !exists(json, 'artFnp') ? undefined : json['artFnp'],
+        'artFnpFreieEingabe': !exists(json, 'artFnpFreieEingabe') ? undefined : json['artFnpFreieEingabe'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -319,6 +327,7 @@ export function EntityModelBauvorhabenToJSON(value?: EntityModelBauvorhaben | nu
         'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
         'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
         'artFnp': value.artFnp,
+        'artFnpFreieEingabe': value.artFnpFreieEingabe,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
 }
