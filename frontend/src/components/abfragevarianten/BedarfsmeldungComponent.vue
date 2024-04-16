@@ -98,25 +98,6 @@
           />
         </v-col>
       </v-row>
-      <v-row v-if="getIsFachreferat">
-        <v-col
-          cols="12"
-          md="12"
-        >
-          <v-textarea
-            id="hinweis_Versorgung_field"
-            ref="hinweisVersorgungField"
-            v-model="abfragevariante.hinweisVersorgung"
-            :disabled="!getIsEditable"
-            label="Hinweise zur Versorgung der Bedarfe außerhalb des Verfahrens"
-            rows="1"
-            auto-grow
-            maxlength="1000"
-            @input="formChanged"
-          />
-        </v-col>
-      </v-row>
-
       <v-row justify="center">
         <v-col cols="12">
           <v-container class="table">
@@ -182,7 +163,7 @@
                   class="text-wrap"
                   block
                   @click="erfassenBedarfsmeldung()"
-                  v-text="'Bedarfsmeldung erfassen'"
+                  v-text="'Einrichtung hinzufügen'"
                 />
               </v-col>
               <v-col
@@ -191,6 +172,25 @@
               />
             </v-row>
           </v-container>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <v-textarea
+            id="hinweis_Versorgung_field"
+            ref="hinweisVersorgungField"
+            v-model="abfragevariante.hinweisVersorgung"
+            :disabled="!getIsEditable"
+            label="Hinweise zur Versorgung der Bedarfe außerhalb des Verfahrens"
+            rows="1"
+            auto-grow
+            maxlength="1000"
+            @input="formChanged"
+          />
         </v-col>
       </v-row>
     </field-group-card>
@@ -222,7 +222,7 @@ import { useLookupStore } from "@/stores/LookupStore";
 
 export const enum BedarfsmeldungTitle {
   FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
-  ABFRAGEERSTELLUNG = "Geplante Einrichtungen",
+  ABFRAGEERSTELLUNG = "Rückmeldung zu Bedarfsmeldungen durch Abfrageerstellung",
 }
 @Component({ components: { FieldGroupCard, NumField, BedarfsmeldungDialog } })
 export default class BedarfsmeldungComponent extends Mixins(
