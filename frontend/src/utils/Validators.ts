@@ -4,9 +4,6 @@ import {
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
   WeiteresVerfahrenDtoStandVerfahrenEnum,
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
   AdresseDto,
   BauabschnittDto,
   BaugebietDto,
@@ -44,18 +41,7 @@ import {
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
-
-type AnyAbfrageModel = BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel;
-
-type AnyAbfragevarianteModel =
-  | AbfragevarianteBauleitplanverfahrenModel
-  | AbfragevarianteBaugenehmigungsverfahrenModel
-  | AbfragevarianteWeiteresVerfahrenModel;
-
-type AnyAbfragevarianteDto =
-  | AbfragevarianteBauleitplanverfahrenDto
-  | AbfragevarianteBaugenehmigungsverfahrenDto
-  | AbfragevarianteWeiteresVerfahrenDto;
+import { AnyAbfrageModel, AnyAbfragevarianteDto, AnyAbfragevarianteModel } from "@/types/common/Abfrage";
 
 /**
  * Prüft die komplette Abfrage vor dem Speichern

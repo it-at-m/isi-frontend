@@ -309,8 +309,6 @@ import {
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
   AbfragevarianteWeiteresVerfahrenDto,
-  BauabschnittDto,
-  BaugebietDto,
   BaurateDto,
   BauleitplanverfahrenDto,
   BauleitplanverfahrenAngelegtDto,
@@ -322,7 +320,6 @@ import {
   BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
   BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
   BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
-  WeiteresVerfahrenDto,
   WeiteresVerfahrenAngelegtDto,
   WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
   WeiteresVerfahrenInBearbeitungFachreferatDto,
@@ -334,10 +331,7 @@ import {
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
-import AbfrageNavigationTree, {
-  AbfrageTreeItem,
-  generateTreeItemId,
-} from "@/components/abfragen/AbfrageNavigationTree.vue";
+import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
 import BaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/BaugenehmigungsverfahrenComponent.vue";
 import WeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/WeiteresVerfahrenComponent.vue";
@@ -405,43 +399,12 @@ import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { useSearchStore } from "@/stores/SearchStore";
-
-export const enum AnzeigeContextAbfragevariante {
-  UNDEFINED = 1,
-  ABFRAGEVARIANTE = 2,
-  ABFRAGEVARIANTE_SACHBEARBEITUNG = 3,
-}
-
-/**
- * Ein Union aller im Rahmen der Abfrage relevanten DTOs, welche ein eigenes Formular haben.
- */
-export type AbfrageDtoWithForm =
-  | BauleitplanverfahrenDto
-  | BaugenehmigungsverfahrenDto
-  | WeiteresVerfahrenDto
-  | AbfragevarianteBauleitplanverfahrenDto
-  | AbfragevarianteBaugenehmigungsverfahrenDto
-  | AbfragevarianteWeiteresVerfahrenDto
-  | BauabschnittDto
-  | BaugebietDto
-  | BaurateDto;
-
-/**
- * Ein Enum für alle im Rahmen der Abfrage relevanten Entitäten, welche ein eigenes Formular haben.
- */
-export const enum AbfrageFormType {
-  BAULEITPLANVERFAHREN,
-  BAUGENEHMIGUNGSVERFAHREN,
-  WEITERES_VERFAHREN,
-  ABFRAGEVARIANTE_BAULEITPLANVERFAHREN,
-  ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN,
-  ABFRAGEVARIANTE_WEITERES_VERFAHREN,
-  BAUABSCHNITT,
-  BAUGEBIET_BAULEITPLANVERFAHREN,
-  BAUGEBIET_BAUGENEHMIGUNGSVERFAHREN,
-  BAUGEBIET_WEITERES_VERFAHREN,
-  BAURATE,
-}
+import {
+  AnzeigeContextAbfragevariante,
+  AbfrageDtoWithForm,
+  AbfrageFormType,
+  AbfrageTreeItem,
+} from "@/types/common/Abfrage";
 
 @Component({
   methods: { containsNotAllowedDokument },

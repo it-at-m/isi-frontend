@@ -1,5 +1,5 @@
 import { AbfragevarianteWeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import _ from "lodash";
 import SobonBerechnungModel from "@/types/model/abfragevariante/SobonBerechnungModel";

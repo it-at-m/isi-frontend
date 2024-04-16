@@ -1,5 +1,5 @@
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import { useSecurity } from "./Security";
 import _ from "lodash";
 import { useSearchStore } from "@/stores/SearchStore";

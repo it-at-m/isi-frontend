@@ -1,9 +1,8 @@
 <template>
   <v-dialog
-    :value="steuerflag"
+    v-model="dialogOpen"
     persistent
     width="50%"
-    @input="changed"
   >
     <template #activator="{ on }">
       <template v-if="buttontext">
@@ -67,9 +66,8 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import _ from "lodash";
-import { Component, Prop, VModel, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { defineModel } from "@/utils/Vue";
 
 /**
  * Der YesNo-Dialog ist ein generischer Dialog zur binären Abfrage beim Nutzer.
@@ -86,6 +84,9 @@ import { Component, Prop, VModel, Vue } from "vue-property-decorator";
  * Die Bestätigung des Dialogs wird über ein `yes` Event signalisiert. Analog erfolgt die
  * Signalisierung der Abweisung durch ein `no` Event.
  *
+ * `anmerkung-max-length` sagt aus, wie viele Zeichen maximal in dem Anmerkungsfeld sein können.
+ * Beim Default-Wert 0 wird kein Anmerkungsfeld angeboten.
+ *
  * Beispiel:
  * <yes-no-dialog
  *    v-model="deleteDialog"
@@ -93,59 +94,50 @@ import { Component, Prop, VModel, Vue } from "vue-property-decorator";
  *    dialogtitle="Löschen?"
  *    dialogtext="Wollen Sie die Entität wirklich löschen?"
  *    @no="deleteDialog = false"
- *    @yes="deleteSome"></yes-no-dialog>
+ *    @yes="deleteSome">
+ * </yes-no-dialog>
  */
-@Component
-export default class YesNoDialog extends Vue {
-  @Prop()
-  buttontext: string | undefined;
 
-  @Prop()
-  icontext: string | undefined;
-
-  @Prop()
-  dialogtitle!: string;
-
-  @Prop()
-  dialogtext!: string;
-
-  @Prop({ default: "Ja" })
-  yesText!: string;
-
-  @Prop({ default: "Nein" })
-  noText!: string;
-
-  @Prop({ default: 0, type: Number })
-  anmerkungMaxLength!: number;
-
-  /**
-   * Steuerflag für den Dialog
-   */
-  @VModel({ type: Boolean })
-  steuerflag!: boolean;
-
-  no(): void {
-    this.$emit("no");
-  }
-
-  yes(): void {
-    this.$emit("yes");
-  }
-
-  anmerkung(val: string): void {
-    this.$emit("anmerkung", val);
-  }
-
-  changed(val: boolean): void {
-    this.$emit("input", val);
-  }
-
-  resetTextarea(): void {
-    if (!_.isNil(this.$refs.textarea)) {
-      this.$refs.textarea.reset();
-    }
-  }
+interface Props {
+  value: boolean;
+  dialogtitle: string;
+  dialogtext: string;
+  yesText?: string;
+  noText?: string;
+  anmerkungMaxLength?: number;
+  buttontext?: string;
+  icontext?: string;
 }
+
+interface Emits {
+  (event: "no", value: void): void;
+  (event: "yes", value: void): void;
+  (event: "anmerkung", value: string): void;
+  (event: "input", value: boolean): void;
+}
+
+const props = withDefaults(defineProps<Props>(), { yesText: "Ja", noText: "Nein", anmerkungMaxLength: 0 });
+const emit = defineEmits<Emits>();
+const dialogOpen = defineModel(props, emit);
+const textarea = ref<HTMLFormElement | null>(null);
+
+function no(): void {
+  emit("no");
+}
+
+function yes(): void {
+  emit("yes");
+}
+
+function anmerkung(value: string): void {
+  emit("anmerkung", value);
+}
+
+function resetTextarea(): void {
+  textarea.value?.reset();
+}
+
+defineExpose({ resetTextarea });
 </script>
 
 <style scoped>
