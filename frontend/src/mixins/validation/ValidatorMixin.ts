@@ -29,6 +29,8 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
   BaugenehmigungsverfahrenDto,
+  DokumentDto,
+  DokumentDtoArtDokumentEnum,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -56,20 +58,30 @@ export default class ValidatorMixin extends Vue {
   public findFaultInAbfrageForSave(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): string | null {
-    if (!_.isNil(abfrage) && !_.isNil(abfrage.artAbfrage)) {
-      switch (abfrage.artAbfrage) {
-        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-          return this.findFaultInBauleitplanverfahrenForSave(abfrage);
-        case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-          return this.findFaultInBaugenehmigungsverfahrenForSave(abfrage);
-        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-          return this.findFaultInWeiteresVerfahrenForSave(abfrage);
-        default:
-          return `Anwendungssystemfehler in ValidatorMixin.findFaultInAbfrageForSave(): AbfrageArt ${abfrage.artAbfrage} ist nicht implementiert`;
+    let validationMessage: string | null = null;
+    if (!_.isNil(abfrage)) {
+      validationMessage = this.findFaultInDokumente(abfrage.dokumente);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
       }
-    } else {
-      return null;
+      if (!_.isNil(abfrage.artAbfrage)) {
+        switch (abfrage.artAbfrage) {
+          case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+            validationMessage = this.findFaultInBauleitplanverfahrenForSave(abfrage);
+            break;
+          case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+            validationMessage = this.findFaultInBaugenehmigungsverfahrenForSave(abfrage);
+            break;
+          case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+            validationMessage = this.findFaultInWeiteresVerfahrenForSave(abfrage);
+            break;
+          default:
+            validationMessage = `Anwendungssystemfehler in ValidatorMixin.findFaultInAbfrageForSave(): AbfrageArt ${abfrage.artAbfrage} ist nicht implementiert`;
+            break;
+        }
+      }
     }
+    return validationMessage;
   }
 
   /**
@@ -822,5 +834,16 @@ export default class ValidatorMixin extends Vue {
     }
 
     return null;
+  }
+
+  public findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
+    let validationMessage: string | null = null;
+    if (
+      !_.isNil(dokumente) &&
+      dokumente.some((dokument) => dokument.artDokument === DokumentDtoArtDokumentEnum.Unspecified)
+    ) {
+      validationMessage = `Bitte geben Sie die Dokumentart zu dem/den Dokument(en) an`;
+    }
+    return validationMessage;
   }
 }
