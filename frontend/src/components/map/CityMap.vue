@@ -91,7 +91,6 @@ import L, {
   LatLngBounds,
   LatLngBoundsLiteral,
   LatLngLiteral,
-  LayerGroup,
   WMSOptions,
   LeafletMouseEvent,
   MapOptions,
@@ -176,7 +175,8 @@ export default class CityMap extends Vue {
 
   private addedLayersForLayerControl?: Map<string, Layer>;
 
-  private layerGroup: LayerGroup = new LayerGroup();
+  private mapMarkerClusterGroup = L.markerClusterGroup();
+
   private map!: L.Map;
   private expanded = false;
 
@@ -311,10 +311,9 @@ export default class CityMap extends Vue {
   }
 
   private addGeoJsonToMap(): void {
-    this.map.removeLayer(this.layerGroup);
-    this.layerGroup = new L.LayerGroup();
-    this.layerGroup.addTo(this.map);
-    L.geoJSON(this.geoJson, this.geoJsonOptions).addTo(this.layerGroup);
+    this.map.removeLayer(this.mapMarkerClusterGroup);
+    this.mapMarkerClusterGroup = L.markerClusterGroup().addTo(this.map);
+    L.geoJSON(this.geoJson, this.geoJsonOptions).addTo(this.mapMarkerClusterGroup);
   }
 
   private flyToPositionOnMap(position: LatLngLiteral | undefined) {
