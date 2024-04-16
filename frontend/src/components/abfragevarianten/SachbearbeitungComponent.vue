@@ -27,7 +27,7 @@
           md="6"
         >
         </v-col>
-        <!-- Das Datum wird in ISI 2.0 wieder relevant (siehe ISI-1238)
+        <!-- Das Datum wird in ISI 2.0 relevant werden
           <date-picker
             id="stammdaten_gueltig_ab"
             ref="stammdatenGueltigAb"
@@ -42,7 +42,7 @@
       <sobon-berechnung
         v-if="isBauleitplanverfahrenOrWeiteresVerfahren"
         v-model="abfragevarianteSachbearbeitung.sobonBerechnung"
-      ></sobon-berechnung>
+      />
       <v-row>
         <v-col
           cols="12"
