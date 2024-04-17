@@ -28,9 +28,9 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
-  BaugenehmigungsverfahrenDto,
   DokumentDto,
   DokumentDtoArtDokumentEnum,
+  KommentarDto,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -533,6 +533,11 @@ export default class ValidatorMixin extends Vue {
       return "Bitte die wesentliche Rechtsgrundlage angeben";
     }
 
+    const validationMessage = this.findFaultInDokumente(bauvorhaben.dokumente);
+    if (!_.isNil(validationMessage)) {
+      return validationMessage;
+    }
+
     return null;
   }
 
@@ -834,6 +839,12 @@ export default class ValidatorMixin extends Vue {
     }
 
     return null;
+  }
+
+  public findFaultInKommentar(kommentar: KommentarDto): string | null {
+    let validationMessage: string | null = null;
+    validationMessage = this.findFaultInDokumente(kommentar.dokumente);
+    return validationMessage;
   }
 
   public findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
