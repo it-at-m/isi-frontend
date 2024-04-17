@@ -17,17 +17,11 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-@Component
-export default class FieldGroupCard extends Vue {
-  @Prop()
-  cardTitle!: string;
-
-  @Prop({ type: Boolean, default: false })
-  private markCardTitleAsMandatory!: boolean;
+<script setup lang="ts">
+interface Props {
+  cardTitle: string;
+  markCardTitleAsMandatory?: boolean;
 }
-</script>
 
-<style></style>
+withDefaults(defineProps<Props>(), { markCardTitleAsMandatory: false });
+</script>
