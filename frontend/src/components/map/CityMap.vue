@@ -82,8 +82,8 @@
   </v-sheet>
 </template>
 
-<script lang="ts">
-import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+<script setup lang="ts">
+import {  Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import { LMap, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
 import L, {
   GeoJSONOptions,
@@ -112,73 +112,47 @@ import {
 } from "@/utils/MapUtil";
 
 type Ref = Vue & { $el: HTMLElement };
-
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
  * Die Leaflet-Karte wurde für Stylebarkeit in eine Vuetify Sheet-Komponente eingebettet.
  */
-@Component({
-  components: {
-    LMap,
-    LControlLayers,
-    "l-wms-tile-layer": LWMSTileLayer,
-    LControl,
-  },
-})
-export default class CityMap extends Vue {
-  @Prop({ default: "100%" })
-  private readonly height!: number | string;
 
-  @Prop({ default: "100%" })
-  private readonly width!: number | string;
-
-  @Prop({ default: 12 })
-  private readonly zoom!: number;
-
-  private initialZoom!: number;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly expandable!: boolean;
-
+interface Props {
+  height: number | string;
+  width: number |string;
+  zomm: number;
+  initalZoom: number;
+  expendable: boolean;
   /**
    * True falls Buttons zum Feuern der Events "acceptSelectedGeoJson" und
    * "deselectGeoJson" auf der Karte angezeigt werden sollen.
    * Andernfalls false.
    */
-  @Prop({ type: Boolean, default: false })
-  private readonly editable!: boolean;
-
+  editable: boolean;
   /**
    * Property zur Definition der initialen Kartenposition.
    */
-  @Prop()
-  private readonly lookAt?: LatLngLiteral;
-
-  private firstGeoJsonFeatureAdded = false;
-
+  lookAt: LatLngLiteral;
   /**
    * Die Feature welche in der Karte dargestellt werden sollen.
    */
-  @Prop({ default: () => [] })
-  private readonly geoJson?: Feature[];
-
+  geoJson: Feature[];
   /**
    * Die Konfiguration der Darstellung und des Verhaltens der Feature in der Property "geoJson".
    */
-  @Prop({ default: undefined })
-  private readonly geoJsonOptions?: GeoJSONOptions;
+  geoJsonOptions: GeoJSONOptions;
+  automaticZoomToPolygons: boolean;
+  layersForLayerControl: Map<string, Layer>;
 
-  @Prop({ type: Boolean, default: false })
-  private readonly automaticZoomToPolygons!: boolean;
+}
+const props = withDefaults(defineProps<Props>(), { height: "100%", width: "100%", zoom: 12, expendable: false, geoJson: () => [], geoJsonOptions: undefined, automaticZoomToPolygons: false, layersForLayerControl: undefined });
 
-  @Prop({ default: () => undefined })
-  private readonly layersForLayerControl?: Map<string, Layer>;
+let firstGeoJsonFeatureAdded: boolean = false;
+let addedLayersForLayerControl: Map<string, Layer>;
+let layerGroup: LayerGroup = new LayerGroup();
+let map!: L.Map;
+let expanded: boolean = false;
 
-  private addedLayersForLayerControl?: Map<string, Layer>;
-
-  private layerGroup: LayerGroup = new LayerGroup();
-  private map!: L.Map;
-  private expanded = false;
 
   created(): void {
     /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
@@ -186,14 +160,14 @@ export default class CityMap extends Vue {
     this.initialZoom = this.zoom;
   }
 
-  mounted(): void {
+  onMounted(() => {
     // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
     this.map = (this.$refs.map as LMap).mapObject;
     // Workaround für anderes Fetch-Verhalten bei Infrastruktureinrichtungen.
     this.onLookAtChanged();
     // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
     this.onGeoJsonChanged();
-  }
+  });
 
   @Watch("lookAt", { deep: true })
   private onLookAtChanged(): void {
@@ -353,7 +327,6 @@ export default class CityMap extends Vue {
   private acceptSelectedGeoJson(): void {
     // Accept geoJson
   }
-}
 </script>
 
 <style>
