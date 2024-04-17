@@ -1,5 +1,3 @@
-/* eslint-disable semi */
-
 /**
  * Wird von VersionInfo benutzt, um Informationen zu einem ISI-Service zu gruppieren.
  */

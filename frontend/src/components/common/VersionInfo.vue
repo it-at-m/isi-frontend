@@ -61,7 +61,7 @@
           </tbody>
         </template>
       </v-simple-table>
-      <loading
+      <loading-spinner
         v-else
         :success="fetchSuccess"
         name="Services"
@@ -70,14 +70,8 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, VModel, Vue, Watch } from "vue-property-decorator";
-import RequestUtils from "@/utils/RequestUtils";
-import Loading from "@/components/common/Loading.vue";
-import Service from "@/components/common/Service";
-import _ from "lodash";
-
-/**
+<script setup lang="ts">
+/*
  * VersionInfo zeigt den Namen, aktuellen Commit-Hash und Status (aktiv/inaktiv) aller bekannten Services an.
  *
  * Es wird angenommen, dass beim API-Gateway der Pfad "/actuator/info" existiert.
@@ -101,97 +95,105 @@ import _ from "lodash";
  * Props:
  * - value (boolean): Ob der Dialog sichtbar ist.
  */
-@Component({
-  components: { Loading },
-})
-export default class VersionInfo extends Vue {
-  @VModel({ type: Boolean })
-  visible!: boolean;
 
-  private services: Service[] = [];
+import RequestUtils from "@/utils/RequestUtils";
+import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
+import Service from "@/types/common/Service";
+import _ from "lodash";
+import { defineModel } from "@/utils/Vue";
 
-  private fetchSuccess: boolean | null = null;
+interface Props {
+  value: boolean;
+}
 
-  @Watch("visible")
-  private async updateServices(): Promise<void> {
-    if (this.visible) {
-      this.fetchSuccess = null;
-      const services = await this.fetchServices();
+interface Emits {
+  (event: "input", value: boolean): void;
+}
 
-      for (const service of services) {
-        try {
-          const commitHash = await this.fetchCommitHash(service);
-          service.commitHash = commitHash;
-          service.active = true;
-        } catch (error) {
-          service.commitHash = "";
-          service.active = false;
-        }
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const visible = defineModel(props, emit);
+const services = ref<Service[]>([]);
+const fetchSuccess = ref<boolean | undefined>(undefined);
+
+watch(visible, async () => {
+  if (visible) {
+    fetchSuccess.value = undefined;
+    const fetchedServices = await fetchServices();
+
+    for (const service of fetchedServices) {
+      try {
+        const commitHash = await fetchCommitHash(service);
+        service.commitHash = commitHash;
+        service.active = true;
+      } catch (error) {
+        service.commitHash = "";
+        service.active = false;
       }
+    }
 
-      this.services = services;
+    services.value = fetchedServices;
 
-      /*
-      Ohne diese Abfrage könnte fetchSuccess=true gesetzt werden, obwohl die Request vorher fehlgeschlagen ist.
-      Es wird ein strikter Vergleich mit false verwendet, da der Wert auch null sein könnte.
-      */
-      if (this.fetchSuccess !== false) {
-        this.fetchSuccess = true;
-      }
+    /*
+    Ohne diese Abfrage könnte fetchSuccess=true gesetzt werden, obwohl die Request vorher fehlgeschlagen ist.
+    Es wird ein strikter Vergleich mit false verwendet, da der Wert auch null sein könnte.
+    */
+    if (fetchSuccess.value !== false) {
+      fetchSuccess.value = true;
     }
   }
+});
 
-  private async fetchServices(): Promise<Service[]> {
-    const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
-    let services: Service[] = [];
+async function fetchServices(): Promise<Service[]> {
+  const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
+  let services: Service[] = [];
 
-    try {
-      const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-
-      const json = await response.json();
-      const object = json?.application?.services;
-      if (!_.isNil(object)) {
-        // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
-        services = Object.values(object);
-      }
-    } catch (error) {
-      this.fetchSuccess = false;
+  try {
+    const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
+    if (!response.ok) {
+      throw Error(response.statusText);
     }
 
-    return services;
+    const json = await response.json();
+    const object = json?.application?.services;
+    if (!_.isNil(object)) {
+      // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
+      services = Object.values(object);
+    }
+  } catch (error) {
+    fetchSuccess.value = false;
   }
 
-  private async fetchCommitHash(service: Service): Promise<string> {
-    let commitHash = "";
-    const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
+  return services;
+}
 
-    try {
-      const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
+async function fetchCommitHash(service: Service): Promise<string> {
+  let commitHash = "";
+  const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
 
-      const json = await response.json();
-      const string = json?.application?.commitHash;
-      if (!_.isNil(string)) {
-        commitHash = string;
-      }
-    } catch (error) {
-      return Promise.reject(error);
+  try {
+    const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
+    if (!response.ok) {
+      throw Error(response.statusText);
     }
 
-    return commitHash;
+    const json = await response.json();
+    const string = json?.application?.commitHash;
+    if (!_.isNil(string)) {
+      commitHash = string;
+    }
+  } catch (error) {
+    return Promise.reject(error);
   }
 
-  private getCommitUrl(service: Service): string {
-    if (service.appendCommitHash) {
-      return service.scmUrl + service.commitHash;
-    } else {
-      return service.scmUrl;
-    }
+  return commitHash;
+}
+
+function getCommitUrl(service: Service): string {
+  if (service.appendCommitHash) {
+    return service.scmUrl + service.commitHash;
+  } else {
+    return service.scmUrl;
   }
 }
 </script>

@@ -23,10 +23,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-/**
+<script setup lang="ts">
+/*
  * Loading ist ein Platzhalter für Daten, welche im Moment per Request geholt werden.
  *
  * Abhängig vom Wert des Props success zeigt es eine von drei Sachen an:
@@ -41,12 +39,11 @@ import { Component, Prop, Vue } from "vue-property-decorator";
  * - success (boolean | null, default=null): Der Wert, welche die oben beschriebene Logik steuert.
  * - name? (string, default="Ergebnisse"): Was bei "Keine {{ name }} gefunden" eingesetzt werden soll.
  */
-@Component
-export default class Loading extends Vue {
-  @Prop({ type: Boolean, default: null })
-  success!: boolean | null;
 
-  @Prop({ type: String, default: "Ergebnisse" })
-  name!: string;
+interface Props {
+  success?: boolean;
+  name?: string;
 }
+
+withDefaults(defineProps<Props>(), { name: "Ergebnisse" });
 </script>

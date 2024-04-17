@@ -1,5 +1,5 @@
 import VersionInfo from "@/components/common/VersionInfo.vue";
-import Service from "@/components/common/Service";
+import Service from "@/types/common/Service";
 
 const versionInfo = new VersionInfo() as {
   value: boolean;
