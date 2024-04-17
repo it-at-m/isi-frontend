@@ -419,7 +419,11 @@ export default class ValidatorMixin extends Vue {
       if (_.isNil(baugebiet.realisierungVon) || _.isNaN(baugebiet.realisierungVon)) {
         return "Das Jahr für die Realisierung von ist im Baugebiet anzugeben.";
       }
-      validationMessage = this.findFaultInWeGfVerteilungBaugebiet(baugebiet);
+      validationMessage = this.findFaultInVerteilungWohneinheitenBaugebiet(baugebiet);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
+      }
+      validationMessage = this.findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet);
       if (!_.isNil(validationMessage)) {
         return validationMessage;
       }
@@ -755,56 +759,18 @@ export default class ValidatorMixin extends Vue {
     }
   }
 
-  /**
-   * Überprüft, ob die Verteilung der Wohneinheiten und Geschossfläche Wohnen auf Bauraten valide ist.
-   * WE bzw. GF gelten als "verteilt", wenn bei mindestens einem Baurate eine Angabe zu ihnen gemacht wurde.
-   * WE bzw. GF gelten als "korrekt verteilt", wenn zusätzlich ihre Summe in den Bauraten der Gesamtanzahl entspricht.
-   * Die Verteilung ist valide, wenn WE und GF korrekt verteilt wurden.
-   * Ebenso ist die Verteilung valide, wenn entweder WE oder GF korrekt verteilt wurde, aber der andere Wert nicht verteilt wurde.
-   *
-   * @param baugebiet zur Validierung.
-   * @return ob die Verteilung entsprechend der Beschreibung valide ist.
-   */
-  public findFaultInWeGfVerteilungBaugebiet(baugebiet: BaugebietDto): string | null {
-    let validationMessageWohneinheiten: string | null = null;
-    let allWohneinheitenNil = true;
-    let validationMessageGfWohnen: string | null = null;
-    let allGfWohnenNil = true;
-
+  public findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {
+    let validationMessage: string | null = null;
     if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
-      const wohneinheitenBaugebiet = _.isNil(baugebiet.weGeplant) ? 0 : baugebiet.weGeplant;
-
-      const sumVerteilteWohneinheitenBauraten = _.sum(
-        _.toArray(baugebiet.bauraten).map((baurate) => {
-          if (!_.isNil(baurate.weGeplant)) {
-            allWohneinheitenNil = false;
-            return baurate.weGeplant;
-          }
-          return 0;
-        }),
-      );
-
-      validationMessageWohneinheiten =
-        wohneinheitenBaugebiet == sumVerteilteWohneinheitenBauraten
-          ? null
-          : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
-            `der Anzahl von ${wohneinheitenBaugebiet} im Baugebiet${
-              _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
-            }.`;
-
       const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.gfWohnenGeplant) ? 0 : baugebiet.gfWohnenGeplant;
 
       const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
-        _.toArray(baugebiet.bauraten).map((baurate) => {
-          if (!_.isNil(baurate.gfWohnenGeplant)) {
-            allGfWohnenNil = false;
-            return baurate.gfWohnenGeplant;
-          }
-          return 0;
-        }),
+        _.toArray(baugebiet.bauraten).map((baurate) =>
+          _.isNil(baurate.gfWohnenGeplant) ? 0 : baurate.gfWohnenGeplant,
+        ),
       );
 
-      validationMessageGfWohnen =
+      validationMessage =
         sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2) == geschossflaecheWohnenBaugebiet.toFixed(2)
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(
@@ -813,25 +779,27 @@ export default class ValidatorMixin extends Vue {
             `der Anzahl von ${geschossflaecheWohnenBaugebiet.toFixed(2)} m² im Baugebiet${
               _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
             }.`;
-    } else {
-      return null;
     }
+    return validationMessage;
+  }
 
-    const wohneinheitenEqual = validationMessageWohneinheiten === null;
-    const wohneinheitenCorrect = wohneinheitenEqual && !allWohneinheitenNil;
-    const gfWohnenEqual = validationMessageGfWohnen === null;
-    const gfWohnenCorrect = gfWohnenEqual && !allGfWohnenNil;
+  public findFaultInVerteilungWohneinheitenBaugebiet(baugebiet: BaugebietDto): string | null {
+    let validationMessage: string | null = null;
+    if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
+      const wohneinheitenBaugebiet = _.isNil(baugebiet.weGeplant) ? 0 : baugebiet.weGeplant;
 
-    if (
-      (wohneinheitenCorrect && gfWohnenCorrect) ||
-      (wohneinheitenCorrect && allGfWohnenNil) ||
-      (allWohneinheitenNil && gfWohnenCorrect)
-    ) {
-      return null;
-    } else if (!wohneinheitenEqual) {
-      return validationMessageWohneinheiten;
-    } else {
-      return validationMessageGfWohnen;
+      const sumVerteilteWohneinheitenBauraten = _.sum(
+        _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant)),
+      );
+
+      validationMessage =
+        wohneinheitenBaugebiet == sumVerteilteWohneinheitenBauraten
+          ? null
+          : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
+            `der Anzahl von ${wohneinheitenBaugebiet} im Baugebiet${
+              _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
+            }.`;
     }
+    return validationMessage;
   }
 }
