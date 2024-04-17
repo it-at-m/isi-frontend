@@ -1,6 +1,6 @@
 <template>
   <field-group-card
-    :card-title="adressCardTitle"
+    card-title="Adressinformationen"
     :mark-card-title-as-mandatory="true"
   >
     <div>
@@ -9,11 +9,11 @@
           <v-autocomplete
             id="adresse_suchen_dropdown"
             ref="adresseSuchenDropdown"
-            v-model="selectedAdresse"
+            v-model="selected"
             :disabled="!isEditable"
-            :items="searchResult"
-            :loading="isLoading"
-            :search-input.sync="searchForAdresse"
+            :items="searchResults"
+            :loading="loading"
+            :search-input.sync="searchForAdressen"
             dense
             clearable
             color="black"
@@ -26,7 +26,7 @@
             return-object
             placeholder="Suchtext mit Adressteilen"
             prepend-inner-icon="mdi-magnify"
-            :rules="[adressSucheValidationRule()]"
+            :rules="[adressSucheValidationRule]"
             validate-on-blur
           />
         </v-col>
@@ -70,7 +70,7 @@
           id="hausnummer_field"
           ref="hausnummerField"
           v-model="adresse.hausnummer"
-          :rules="[fieldValidationRules.hausnummer]"
+          :rules="[hausnummer]"
           label="Hausnummer"
           disabled
         />
@@ -84,7 +84,7 @@
           ref="postleitzahlField"
           v-model="adresse.plz"
           label="Postleitzahl"
-          :rules="[fieldValidationRules.digits, fieldValidationRules.min5]"
+          :rules="[digits, min5]"
           disabled
         />
       </v-col>
@@ -119,177 +119,116 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Mixins, Component, Prop } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
+import { hausnummer, digits, min5 } from "@/utils/FieldValidationRules";
 import AdresseModel from "@/types/model/common/AdresseModel";
-import { AdressSucheDto } from "@/api/api-client/isi-master-eai";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
-import MasterEaiApiRequestMixin from "@/mixins/requests/eai/MasterEaiApiRequestMixin";
 import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from "@/utils/Factories";
 import _ from "lodash";
-import { LatLngLiteral } from "leaflet";
+import { defineModel } from "@/utils/Vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useMasterEaiApi } from "@/composables/requests/eai/MasterEaiApi";
 
-@Component
-export default class AdresseComponent extends Mixins(
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-  FieldGroupCard,
-  MasterEaiApiRequestMixin,
-) {
-  private adressCardTitle = "Adressinformationen";
+interface Props {
+  value: AdresseModel;
+  showInInformationList?: boolean;
+  isEditable?: boolean;
+}
 
-  private loading = false;
+interface Emits {
+  (event: "input", value: AdresseModel): void;
+}
 
-  private adressSuche = "";
+const { formChanged } = useSaveLeave();
+const { getAdressen } = useMasterEaiApi();
+const props = withDefaults(defineProps<Props>(), { showInInformationList: true, isEditable: true });
+const emit = defineEmits<Emits>();
+const adresse = defineModel(props, emit);
+const loading = ref(false);
+const searchQuery = ref("");
+const searchResults = ref<MuenchenAdresseDto[]>([]);
+const selectedSearchResult = ref(createMuenchenAdresseDto());
+const selected = computed({
+  get() {
+    return selectedSearchResult.value;
+  },
+  set(value) {
+    selectedSearchResult.value = value;
+    assumeAdresse(selectedSearchResult.value);
+  },
+});
 
-  private adressSucheItemSelected = false;
+function assumeAdresse(dto: MuenchenAdresseDto): void {
+  assignAdresse(dto);
+  resetAdressSuche();
+}
 
-  private selectedAdresseOfAdressSuche: MuenchenAdresseDto = createMuenchenAdresseDto();
+function assignAdresse(dto: MuenchenAdresseDto): void {
+  const newAdresse = new AdresseModel(createAdresseDto());
 
-  private adressen: Array<MuenchenAdresseDto> = [];
-
-  @Prop()
-  private adresseProp!: AdresseModel;
-
-  get adresse(): AdresseModel {
-    return this.adresseProp;
+  newAdresse.plz = _.isNil(dto.geozuordnungen) ? "" : dto.geozuordnungen.postleitzahl;
+  newAdresse.ort = dto.ortsname;
+  newAdresse.strasse = dto.strassenname;
+  newAdresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString("de-DE");
+  if (!_.isNil(dto.buchstabe)) {
+    newAdresse.hausnummer += dto.buchstabe;
   }
 
-  set adresse(adresse: AdresseModel) {
-    this.$emit("update:adresseProp", adresse);
+  const latitude = dto.position?.wgs?.lat;
+  const longitude = dto.position?.wgs?.lon;
+  if (latitude && longitude) {
+    newAdresse.coordinate = { latitude, longitude };
   }
 
-  @Prop({ type: Boolean, default: true })
-  private showInInformationListProp!: boolean;
+  adresse.value = newAdresse;
+}
 
-  get showInInformationList(): boolean {
-    return this.showInInformationListProp;
-  }
+function resetAdresse(): void {
+  adresse.value = new AdresseModel(createAdresseDto());
+  formChanged();
+}
 
-  get selectedAdresse(): MuenchenAdresseDto {
-    return this.selectedAdresseOfAdressSuche;
-  }
+function resetAdressSuche(): void {
+  searchQuery.value = "";
+  selectedSearchResult.value = createMuenchenAdresseDto();
+  searchResults.value = [];
+  formChanged();
+}
 
-  set selectedAdresse(dto: MuenchenAdresseDto) {
-    this.selectedAdresseOfAdressSuche = dto;
-    this.assumeAdresse(this.selectedAdresseOfAdressSuche);
-  }
+function adressSucheValidationRule(): boolean | string {
+  return (
+    !!adresse.value.strasse ||
+    !!adresse.value.angabeLageErgaenzendeAdressinformation ||
+    "Pflichtfeld, wenn Angabe zur Lage leer ist"
+  );
+}
 
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
+function angabeLageErgaenzendeAdressinformationValidationRule(): boolean | string {
+  return (
+    !!adresse.value.strasse ||
+    !!adresse.value.angabeLageErgaenzendeAdressinformation ||
+    "Pflichtfeld, wenn Adresse leer ist"
+  );
+}
 
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
+//
+// Aufruf der EAI zum Lesen der Münchner Adressen mit dem eingegebenen Suchtext mit Adressteilen
+//
+async function searchForAdressen(): Promise<void> {
+  if (!_.isEmpty(searchQuery.value)) {
+    const adressSuche = createAdressSucheDto();
+    adressSuche.query = searchQuery.value;
+    loading.value = true; // Anzeige des Cursorladekreis starten
 
-  get isLoading(): boolean {
-    return this.loading;
-  }
-
-  get searchResult(): MuenchenAdresseDto[] {
-    return this.adressen;
-  }
-
-  set searchResult(adressen: MuenchenAdresseDto[]) {
-    this.adressen = adressen;
-  }
-
-  get searchForAdresse(): string {
-    return this.adressSuche;
-  }
-
-  set searchForAdresse(adressSuche: string) {
-    this.adressSuche = adressSuche;
-    if (!_.isNil(adressSuche)) {
-      this.searchForAdressenWith(this.adressSuche);
-    }
-  }
-
-  get coordinate(): LatLngLiteral | undefined {
-    const lat = this.adresse.coordinate?.latitude;
-    const lng = this.adresse.coordinate?.longitude;
-
-    if (lat && lng) {
-      return { lat, lng };
-    }
-    return undefined;
-  }
-
-  private assumeAdresse(dto: MuenchenAdresseDto): void {
-    this.adressSucheItemSelected = true;
-    this.assignAdresse(dto);
-    this.resetAdressSuche();
-  }
-
-  private assignAdresse(dto: MuenchenAdresseDto): void {
-    this.adresse.plz = _.isNil(dto.geozuordnungen) ? "" : dto.geozuordnungen.postleitzahl;
-    this.adresse.ort = dto.ortsname;
-    this.adresse.strasse = dto.strassenname;
-    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString("de-DE");
-    this.adresse.hausnummer = _.isNil(dto.hausnummer) ? "" : dto.hausnummer.toLocaleString("de-DE");
-    if (!_.isNil(dto.buchstabe)) {
-      this.adresse.hausnummer += dto.buchstabe;
-    }
-
-    const latitude = dto.position?.wgs?.lat;
-    const longitude = dto.position?.wgs?.lon;
-    if (latitude && longitude) {
-      this.adresse.coordinate = { latitude, longitude };
-    }
-  }
-
-  private resetAdresse(): void {
-    this.adresse = new AdresseModel(createAdresseDto());
-    this.formChanged();
-  }
-
-  private resetAdressSuche(): void {
-    this.adressSuche = "";
-    this.selectedAdresseOfAdressSuche = createMuenchenAdresseDto();
-    this.searchResult = [];
-    this.adressSucheItemSelected = false;
-    this.formChanged();
-  }
-
-  private adressSucheValidationRule(): boolean | string {
-    return (
-      !!this.adresse.strasse ||
-      !!this.adresse.angabeLageErgaenzendeAdressinformation ||
-      "Pflichtfeld, wenn Angabe zur Lage leer ist"
-    );
-  }
-
-  private angabeLageErgaenzendeAdressinformationValidationRule(): boolean | string {
-    return (
-      !!this.adresse.strasse ||
-      !!this.adresse.angabeLageErgaenzendeAdressinformation ||
-      "Pflichtfeld, wenn Adresse leer ist"
-    );
-  }
-
-  //
-  // Aufruf der EAI zum Lesen der Münchner Adressen mit dem eingegebenen Suchtext mit Adressteilen
-  //
-  async searchForAdressenWith(searchFor: string): Promise<void> {
-    if (!_.isEmpty(searchFor)) {
-      const adressSuche: AdressSucheDto = createAdressSucheDto();
-      adressSuche.query = searchFor;
-      this.loading = true; // Anzeige des Cursorladekreis starten
-      await this.getAdressen(adressSuche, this.showInInformationList)
-        .then((dto) => {
-          if (!_.isNil(dto)) {
-            this.searchResult = dto;
-          }
-        })
-        .finally(() => {
-          // Anzeige des Cursorladekreises beenden
-          this.loading = false;
-        });
+    try {
+      const dto = await getAdressen(adressSuche, props.showInInformationList);
+      if (!_.isNil(dto)) {
+        searchResults.value = dto;
+      }
+    } finally {
+      loading.value = false; // Anzeige des Cursorladekreises beenden
     }
   }
 }
 </script>
-;

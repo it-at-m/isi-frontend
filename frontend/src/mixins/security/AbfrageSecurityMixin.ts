@@ -3,7 +3,7 @@ import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import { Component, Mixins } from "vue-property-decorator";
 import _ from "lodash";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import { useSearchStore } from "@/stores/SearchStore";
 
 @Component

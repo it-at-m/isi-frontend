@@ -78,20 +78,6 @@ Emits:
   </v-treeview>
 </template>
 
-<script lang="ts">
-/**
- * Erzeugt eine einzigartige Id für ein TreeItem, die auf der Id des Parents und seinem Index (unter seinen Silblings) basiert.
- * Die Id vom Root ist immer ein leerer String und braucht deshalb diese Funktion nicht.
- */
-export function generateTreeItemId(parentId: string, index: number): string {
-  if (parentId === "") {
-    return index.toString();
-  }
-
-  return `${parentId}.${index}`;
-}
-</script>
-
 <script setup lang="ts">
 import {
   AbfrageDtoArtAbfrageEnum,
@@ -100,43 +86,24 @@ import {
   WeiteresVerfahrenDto,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
   BauabschnittDto,
   BaugebietDto,
   BaurateDto,
 } from "@/api/api-client/isi-backend";
-import { AnzeigeContextAbfragevariante, AbfrageDtoWithForm, AbfrageFormType } from "@/views/Abfrage.vue";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { ref, computed, watch } from "vue";
 import _ from "lodash";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
-
-export interface AbfrageTreeItem {
-  id: string;
-  type: AbfrageFormType;
-  name: string;
-  parent: AbfrageTreeItem | null;
-  children: AbfrageTreeItem[];
-  actions: Action[];
-  onSelection: () => void;
-  context: AnzeigeContextAbfragevariante;
-  value: AbfrageDtoWithForm;
-}
-
-/*
- * Hinweis zu disabled: Wenn true, ist die Aktion sichtbar, aber ausgegraut und nicht aktivierbar.
- * Es ist für Aktionen gedacht, welche abhängig von den Daten der Abfrage-Hierarchie verfügbar sind.
- * Aktionen, welche in der aktuellen Rolle nicht oder nur ein Mal relevant sind, sollten ausgelassen werden.
- */
-interface Action {
-  name: string;
-  disabled: boolean;
-  effect: () => void;
-}
+import {
+  AbfrageTreeItem,
+  AnzeigeContextAbfragevariante,
+  AbfrageFormType,
+  AnyAbfrageDto,
+  AnyAbfragevarianteDto,
+  AnyAbfragevarianteModel,
+} from "@/types/common/Abfrage";
 
 interface Props {
   abfrage: BauleitplanverfahrenDto;
@@ -209,9 +176,7 @@ function getAbfrageFormTypeAbfrage(abfrage: BauleitplanverfahrenDto | Baugenehmi
   }
 }
 
-function buildTree(
-  abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto,
-): AbfrageTreeItem {
+function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: "",
     type: getAbfrageFormTypeAbfrage(abfrage),
@@ -224,7 +189,7 @@ function buildTree(
     value: abfrage,
   };
 
-  let abfragevarianten = undefined;
+  let abfragevarianten: AnyAbfrageDto[] | undefined = undefined;
   if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
     abfragevarianten = (abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren;
   } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
@@ -233,7 +198,7 @@ function buildTree(
     abfragevarianten = (abfrage as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren;
   }
 
-  let abfragevariantenSachbearbeitung = undefined;
+  let abfragevariantenSachbearbeitung: AnyAbfrageDto[] | undefined = undefined;
   if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
     abfragevariantenSachbearbeitung = (abfrage as BauleitplanverfahrenDto)
       .abfragevariantenSachbearbeitungBauleitplanverfahren;
@@ -291,12 +256,7 @@ function buildTree(
   return item;
 }
 
-function getAbfrageFormTypeAbfragevariante(
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto,
-) {
+function getAbfrageFormTypeAbfragevariante(abfragevariante: AnyAbfragevarianteDto) {
   if (
     abfragevariante.artAbfragevariante ===
     AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
@@ -313,10 +273,7 @@ function getAbfrageFormTypeAbfragevariante(
 }
 
 function buildSubTreeAbfragevariante(
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto,
+  abfragevariante: AnyAbfragevarianteDto,
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
@@ -445,10 +402,7 @@ function buildSubTreeBauabschnitt(
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto,
+  abfragevariante: AnyAbfragevarianteDto,
 ): AbfrageTreeItem {
   const item: AbfrageTreeItem = {
     id: generateTreeItemId(parent.id, index),
@@ -486,10 +440,7 @@ function buildSubTreeBaugebiet(
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto,
+  abfragevariante: AnyAbfragevarianteDto,
 ): AbfrageTreeItem {
   let abfrageFormTypeBaugebiet = undefined;
   if (abfragevariante.artAbfragevariante === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -564,10 +515,7 @@ function buildSubTreeBaurate(
 }
 
 function getAbfragevarianteName(
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto,
+  abfragevariante: AnyAbfragevarianteDto,
   conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
 ): string {
   const abfragevarianteModel = createAbfragevarianteModel(abfragevariante);
@@ -576,15 +524,7 @@ function getAbfragevarianteName(
   )}\xa0-\xa0${_.isNil(abfragevariante.name) ? DEFAULT_NAME : abfragevariante.name}`;
 }
 
-function createAbfragevarianteModel(
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto,
-):
-  | AbfragevarianteBauleitplanverfahrenModel
-  | AbfragevarianteBaugenehmigungsverfahrenModel
-  | AbfragevarianteWeiteresVerfahrenModel {
+function createAbfragevarianteModel(abfragevariante: AnyAbfragevarianteDto): AnyAbfragevarianteModel {
   if (
     abfragevariante.artAbfragevariante ===
     AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
@@ -600,12 +540,7 @@ function createAbfragevarianteModel(
   }
 }
 
-function bauratenDeterminableForAbfragevariante(
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto,
-): boolean {
+function bauratenDeterminableForAbfragevariante(abfragevariante: AnyAbfragevarianteDto): boolean {
   return (
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(abfragevariante.weGesamt) || !_.isNil(abfragevariante.gfWohnenGesamt)) &&
@@ -630,4 +565,18 @@ function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
 function openItem(item: AbfrageTreeItem): void {
   openItemIds.value = [...openItemIds.value, item.id];
 }
+
+/**
+ * Erzeugt eine einzigartige Id für ein TreeItem, die auf der Id des Parents und seinem Index (unter seinen Silblings) basiert.
+ * Die Id vom Root ist immer ein leerer String und braucht deshalb diese Funktion nicht.
+ */
+function generateTreeItemId(parentId: string, index: number): string {
+  if (parentId === "") {
+    return index.toString();
+  }
+
+  return `${parentId}.${index}`;
+}
+
+defineExpose({ generateTreeItemId });
 </script>

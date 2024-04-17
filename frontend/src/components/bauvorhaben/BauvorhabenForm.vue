@@ -262,7 +262,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import Dokumente from "@/components/common/dokumente/Dokumente.vue";
+import Dokumente from "@/components/common/dokumente/DokumenteComponent.vue";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
