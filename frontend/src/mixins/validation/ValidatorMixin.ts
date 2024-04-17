@@ -838,6 +838,11 @@ export default class ValidatorMixin extends Vue {
       }
     }
 
+    const validationMessageDokumente = this.findFaultInDokumente(abfragevariante.dokumente);
+    if (!_.isNil(validationMessageDokumente)) {
+      return validationMessageDokumente;
+    }
+
     return null;
   }
 
