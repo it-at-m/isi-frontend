@@ -31,7 +31,7 @@
             :disabled="!isEditable"
             label="Datum Satzungsbeschluss"
             month-picker
-            @datePickerBlurred="datumSatzungsbeschlussChanged"
+            @blur="datumSatzungsbeschlussChanged"
           />
         </v-col>
         <v-col
