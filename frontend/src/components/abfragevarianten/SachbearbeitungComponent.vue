@@ -157,7 +157,8 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private abfragevarianteSachbearbeitungStammdatenGueltigAbChanged() {
     if (
       !_.isNil(this.abfragevarianteSachbearbeitung) &&
-      _.isNil(this.abfragevarianteSachbearbeitung.stammdatenGueltigAb)
+      (_.isNil(this.abfragevarianteSachbearbeitung.stammdatenGueltigAb) ||
+        this.abfragevarianteSachbearbeitung.stammdatenGueltigAb?.toISOString() == new Date(0).toISOString())
     ) {
       this.abfragevarianteSachbearbeitung.stammdatenGueltigAb = moment(new Date()).toDate();
     }
