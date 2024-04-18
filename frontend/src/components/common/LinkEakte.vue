@@ -22,7 +22,7 @@
         <v-textarea
           id="e_akte_field"
           ref="eAkteField"
-          v-model="editFieldLinkEakte"
+          v-model="textFieldLinkEakte"
           auto-grow
           rows="1"
           maxlength="8000"
@@ -40,7 +40,7 @@
             class="mt-3 mb-14"
             icon
             :disabled="!isEditable"
-            @click="uebernehmenEakte"
+            @click="uebernehmenLinkEakte"
           >
             <v-icon>mdi-checkbox-marked</v-icon>
           </v-btn>
@@ -53,7 +53,7 @@
         md="11"
       >
         <a
-          v-show="isLinkEakteEmpty"
+          v-show="linkEakteNotEmpty"
           target="_blank"
           :href="linkEakteFormatted"
         >
@@ -70,7 +70,7 @@
             class="mt-3 mb-14"
             icon
             :disabled="!isEditable"
-            @click="editEakte"
+            @click="editLinkEakte"
           >
             <v-icon>mdi-pencil-box</v-icon>
           </v-btn>
@@ -80,54 +80,47 @@
   </div>
 </template>
 
-<script lang="ts">
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import { Component, VModel, Prop, Mixins } from "vue-property-decorator";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
 import _ from "lodash";
+import { defineModel } from "@/utils/Vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component
-export default class Eakte extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  private readonly title = "Link eAkte";
+interface Props {
+  value: string | undefined;
+  isEditable?: boolean;
+}
 
-  @VModel({ type: String }) linkEakte!: string | undefined;
+interface Emits {
+  (event: "input", value: string | undefined): void;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private isEditable!: boolean;
+const { formChanged } = useSaveLeave();
+const title = "Link eAkte";
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const linkEakte = defineModel(props, emit);
+const textFieldLinkEakte = ref("");
+const editModeTextFieldLinkEakte = ref(false);
+const linkEakteNotEmpty = computed(() => !_.isEmpty(linkEakte.value));
 
-  private textFieldLinkEakte = "";
-
-  private editModeTextFieldLinkEakte = false;
-
-  get editFieldLinkEakte(): string {
-    return this.textFieldLinkEakte;
+const linkEakteFormatted = computed(() => {
+  if (linkEakteNotEmpty.value) {
+    const link = linkEakte.value as string;
+    return link.toLowerCase().startsWith("http://") || link.toLowerCase().startsWith("https://")
+      ? link
+      : `https://${link}`;
   }
+  return "";
+});
 
-  set editFieldLinkEakte(linkEakte: string) {
-    this.textFieldLinkEakte = linkEakte;
-  }
+function uebernehmenLinkEakte(): void {
+  linkEakte.value = textFieldLinkEakte.value;
+  textFieldLinkEakte.value = "";
+  editModeTextFieldLinkEakte.value = false;
+}
 
-  get isLinkEakteEmpty(): boolean {
-    return !_.isEmpty(this.linkEakte);
-  }
-
-  private uebernehmenEakte(): void {
-    this.linkEakte = this.editFieldLinkEakte;
-    this.editFieldLinkEakte = "";
-    this.editModeTextFieldLinkEakte = false;
-  }
-  private editEakte(): void {
-    this.editFieldLinkEakte = _.isNil(this.linkEakte) ? "" : this.linkEakte;
-    this.editModeTextFieldLinkEakte = true;
-  }
-
-  get linkEakteFormatted(): string | undefined {
-    if (!_.isNil(this.linkEakte) && !_.isEmpty(this.linkEakte)) {
-      return this.linkEakte.toLowerCase().startsWith("http://") || this.linkEakte.toLowerCase().startsWith("https://")
-        ? this.linkEakte
-        : `https://${this.linkEakte}`;
-    }
-    return this.linkEakte;
-  }
+function editLinkEakte(): void {
+  textFieldLinkEakte.value = _.isNil(linkEakte.value) ? "" : linkEakte.value;
+  editModeTextFieldLinkEakte.value = true;
 }
 </script>

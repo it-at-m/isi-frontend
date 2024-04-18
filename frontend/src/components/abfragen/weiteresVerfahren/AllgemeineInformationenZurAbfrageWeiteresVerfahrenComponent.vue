@@ -49,7 +49,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <eakte
+        <link-eakte
           id="eakte_component"
           ref="eakteComponent"
           v-model="abfrage.linkEakte"
@@ -66,10 +66,10 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import Eakte from "@/components/common/Eakte.vue";
+import LinkEakte from "@/components/common/LinkEakte.vue";
 
 @Component({
-  components: { Eakte, TriSwitch },
+  components: { LinkEakte, TriSwitch },
 })
 export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
   SaveLeaveMixin,
