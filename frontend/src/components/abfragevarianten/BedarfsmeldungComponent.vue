@@ -2,7 +2,7 @@
   <div>
     <field-group-card :card-title="getBedarfsmeldungTitle">
       <v-row
-        v-if="getIsFachreferat"
+        v-if="false"
         justify="center"
       >
         <v-col

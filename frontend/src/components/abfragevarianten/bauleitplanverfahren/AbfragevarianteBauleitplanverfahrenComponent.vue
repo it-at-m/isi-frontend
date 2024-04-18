@@ -39,6 +39,7 @@
       id="bedarfsmeldung_fachreferate_component"
       ref="bedarfsmeldungFachreferateComponent"
       v-model="abfragevariante"
+      :is-fachreferat="true"
       :is-editable="isEditableByBedarfsmeldung()"
       :bedarfsmeldung-title="bedarfsmeldungFachreferate"
     />
