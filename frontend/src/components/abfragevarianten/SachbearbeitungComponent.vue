@@ -109,7 +109,7 @@ import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevariant
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
 import _ from "lodash";
-import Dokumente from "@/components/common/dokumente/DokumenteComponent.vue";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
 

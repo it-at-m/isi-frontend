@@ -56,7 +56,7 @@ import BauleitplanverfahrenModel from "@/types/model/abfrage/Bauleitplanverfahre
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
-import Dokumente from "@/components/common/dokumente/DokumenteComponent.vue";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 
 @Component({
