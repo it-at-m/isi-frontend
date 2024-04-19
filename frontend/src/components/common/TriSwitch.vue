@@ -19,12 +19,12 @@
       <input
         v-bind="$attrs"
         v-model="valueAsPosition"
-        :class="`slider mx-2 ${getBackgroundColor()}`"
+        :class="`slider mx-2 ${backgroundColor}`"
         :disabled="disabled"
         type="range"
         min="0"
         max="2"
-        :step="isCollapsed() ? 2 : 1"
+        :step="collapsed ? 2 : 1"
         @change="formChanged"
         @focus="focused"
         @blur="blurred"
@@ -36,18 +36,8 @@
   </v-input>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Vue } from "vue-property-decorator";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { UncertainBoolean } from "@/api/api-client/isi-backend";
-
-type Position = "0" | "1" | "2";
-
-interface VInput extends Vue {
-  isFocused: boolean;
-}
-
-/**
+<script setup lang="ts">
+/*
  * Eine Input-Komponente, welche sehr einem Switch ähnelt, jedoch einen mittleren Ausgangszustand hat.
  * Dieser Ausgangszustand ist nach einer Interaktion mit dem Switch nicht mehr erreichbar.
  *
@@ -58,33 +48,43 @@ interface VInput extends Vue {
  * Die Props 'label', 'disabled' und 'rules' verhalten sich wie bei anderen Input-Komponenten in Vuetfiy.
  * Darüber hinaus können 'label', 'offText' und 'onText' auch über gleichnamige Slots befüllt werden.
  */
-@Component({ inheritAttrs: false })
-export default class TriSwitch extends Mixins(SaveLeaveMixin) {
-  @VModel({ type: String })
-  private valueInternal!: UncertainBoolean;
 
-  @Prop()
-  private readonly label: string | undefined;
+import { UncertainBoolean } from "@/api/api-client/isi-backend";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
 
-  @Prop()
-  private readonly offText: string | undefined;
+type Position = "0" | "1" | "2";
 
-  @Prop()
-  private readonly onText: string | undefined;
+interface VInput {
+  isFocused: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly disabled!: boolean;
+interface Props {
+  value: UncertainBoolean;
+  label?: string;
+  offText?: string;
+  onText?: string;
+  disabled?: boolean;
+  rules?: unknown[];
+}
 
-  @Prop()
-  private readonly rules: Array<(v: string) => boolean | string> | undefined;
+interface Emits {
+  (event: "input", value: UncertainBoolean): void;
+}
 
-  /**
-   * Gibt in Abhängigkeit vom Zustand der Komponente eine Position für den Regler des Range Sliders zurück.
-   *
-   * @return Entweder "0", "1" oder "2".
-   */
-  get valueAsPosition(): Position {
-    switch (this.valueInternal) {
+const { formChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), { disabled: false });
+const emit = defineEmits<Emits>();
+const valueInternal = defineModel(props, emit);
+const input = ref<VInput | null>(null);
+const collapsed = computed(() => valueInternal.value !== UncertainBoolean.Unspecified);
+
+/**
+ * Liest oder setzt den Zustand des TriSwitches in Form von einer Position.
+ */
+const valueAsPosition = computed({
+  get() {
+    switch (valueInternal.value) {
       case UncertainBoolean.True:
         return "2";
       case UncertainBoolean.False:
@@ -92,83 +92,69 @@ export default class TriSwitch extends Mixins(SaveLeaveMixin) {
       default:
         return "1";
     }
-  }
-
-  /**
-   * Setzt den Zustand der Komponente in Abhängigkeit davon, wo der Regler des Range Sliders ist.
-   *
-   * @param position Entweder "0", "1" oder "2".
-   */
-  set valueAsPosition(position: Position) {
+  },
+  set(position: Position) {
     switch (position) {
       case "2":
-        this.valueInternal = UncertainBoolean.True;
+        valueInternal.value = UncertainBoolean.True;
         break;
       case "0":
-        this.valueInternal = UncertainBoolean.False;
+        valueInternal.value = UncertainBoolean.False;
         break;
       default:
-        this.valueInternal = UncertainBoolean.Unspecified;
+        valueInternal.value = UncertainBoolean.Unspecified;
+    }
+  },
+});
+
+/**
+ * Bestimmt die Hintergrundfarbe für den Range Slider.
+ */
+const backgroundColor = computed(() => {
+  switch (valueInternal.value) {
+    case UncertainBoolean.True:
+      return "primary";
+    case UncertainBoolean.False:
+      return "grey";
+    default:
+      return "grey lighten-1";
+  }
+});
+
+/**
+ * Bestimmt die Textfarbe für die Texte links und rechts vom Range Slider.
+ *
+ * @param type Entweder "on" oder "off", was für den rechten "onText" oder den linken "offText" steht.
+ * @return Die entsprechende CSS-Klasse.
+ */
+function getAnnotationColor(type: "on" | "off"): string {
+  if (collapsed.value) {
+    if (
+      (type === "on" && valueInternal.value === UncertainBoolean.True) ||
+      (type === "off" && valueInternal.value === UncertainBoolean.False)
+    ) {
+      return "";
     }
   }
 
-  /**
-   * Bestimmt die Hintergrundfarbe für den Range Slider.
-   *
-   * @return Die entsprechende(n) CSS-Klasse(n).
-   */
-  private getBackgroundColor(): string {
-    switch (this.valueInternal) {
-      case UncertainBoolean.True:
-        return "primary";
-      case UncertainBoolean.False:
-        return "grey";
-      default:
-        return "grey lighten-1";
-    }
+  return "grey--text";
+}
+
+/**
+ * Meldet an v-input, dass das Element Fokus erhalten hat.
+ */
+function focused(): void {
+  if (input.value !== null) {
+    input.value.isFocused = true;
   }
+}
 
-  /**
-   * Bestimmt die Textfarbe für die Texte links und rechts vom Range Slider.
-   *
-   * @param type Entweder "on" oder "off", was für den rechten "onText" oder den linken "offText" steht.
-   * @return Die entsprechende CSS-Klasse.
-   */
-  private getAnnotationColor(type: "on" | "off"): string {
-    if (this.valueInternal !== UncertainBoolean.Unspecified) {
-      if (
-        (type === "on" && this.valueInternal === UncertainBoolean.True) ||
-        (type === "off" && this.valueInternal === UncertainBoolean.False)
-      ) {
-        return "";
-      }
-    }
-
-    return "grey--text";
-  }
-
-  /**
-   * Prüft, ob der interne Wert der Komponente nicht 'UNSPECIFIED' ist.
-   * Dies entspricht einem "kollabierten" Switch.
-   *
-   * @return Ob der Switch kollabiert ist.
-   */
-  private isCollapsed(): boolean {
-    return this.valueInternal !== UncertainBoolean.Unspecified;
-  }
-
-  /**
-   * Meldet an v-input, dass das Element Fokus erhalten hat.
-   */
-  private focused(): void {
-    (this.$refs.input as VInput).isFocused = true;
-  }
-
-  /**
-   * Meldet an v-input, dass das Element Fokus verloren hat.
-   */
-  private blurred(): void {
-    (this.$refs.input as VInput).isFocused = false;
+/**
+ * Meldet an v-input, dass das Element Fokus verloren hat.
+ */
+function blurred(): void {
+  if (input.value !== null) {
+    input.value.isFocused = false;
   }
 }
 </script>

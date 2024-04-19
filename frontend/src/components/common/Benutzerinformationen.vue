@@ -49,62 +49,56 @@
   </v-menu>
 </template>
 
-<script lang="ts">
-import { Component, VModel, Vue } from "vue-property-decorator";
-import { BearbeitendePersonDto } from "@/api/api-client/isi-backend";
+<script setup lang="ts">
 import _ from "lodash";
 import moment from "moment";
+import { defineModel } from "@/utils/Vue";
+import { BenutzerinformationenModel } from "@/types/model/common/Benutzerinformationen";
 
-export class BenutzerinformationenModel {
-  constructor(bearbeitendePerson?: BearbeitendePersonDto, lastModifiedDateTime?: Date) {
-    this.bearbeitendePerson = bearbeitendePerson;
-    this.lastModifiedDateTime = lastModifiedDateTime;
-  }
-
-  public bearbeitendePerson?: BearbeitendePersonDto;
-
-  public lastModifiedDateTime?: Date;
+interface Props {
+  value: BenutzerinformationenModel;
 }
 
-@Component
-export default class Benutzerinformationen extends Vue {
-  static readonly DISPLAY_FORMAT = "DD.MM.YYYY";
-
-  @VModel({ type: BenutzerinformationenModel })
-  benutzerinformationen!: BenutzerinformationenModel;
-
-  get benutzerinformationenAvailable(): boolean {
-    return (
-      !_.isNil(this.benutzerinformationen?.lastModifiedDateTime) ||
-      !_.isNil(this.benutzerinformationen?.bearbeitendePerson)
-    );
-  }
-
-  get name(): string {
-    return _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
-      _.isNil(this.benutzerinformationen?.bearbeitendePerson?.name)
-      ? ""
-      : this.benutzerinformationen.bearbeitendePerson.name;
-  }
-
-  get email(): string {
-    return _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
-      _.isNil(this.benutzerinformationen?.bearbeitendePerson?.email)
-      ? ""
-      : this.benutzerinformationen.bearbeitendePerson.email;
-  }
-
-  get organisationseinheit(): string {
-    return _.isNil(this.benutzerinformationen?.bearbeitendePerson) ||
-      _.isNil(this.benutzerinformationen?.bearbeitendePerson?.organisationseinheit)
-      ? ""
-      : this.benutzerinformationen.bearbeitendePerson.organisationseinheit;
-  }
-
-  get letzteAenderung(): string {
-    return _.isNil(this.benutzerinformationen?.lastModifiedDateTime)
-      ? ""
-      : moment.utc(this.benutzerinformationen.lastModifiedDateTime, true).format(Benutzerinformationen.DISPLAY_FORMAT);
-  }
+interface Emits {
+  (event: "input", value: BenutzerinformationenModel): void;
 }
+
+const DISPLAY_FORMAT = "DD.MM.YYYY";
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const benutzerinformationen = defineModel(props, emit);
+
+const benutzerinformationenAvailable = computed(() => {
+  return (
+    !_.isNil(benutzerinformationen.value?.lastModifiedDateTime) ||
+    !_.isNil(benutzerinformationen.value?.bearbeitendePerson)
+  );
+});
+
+const name = computed(() => {
+  return _.isNil(benutzerinformationen.value?.bearbeitendePerson) ||
+    _.isNil(benutzerinformationen.value?.bearbeitendePerson?.name)
+    ? ""
+    : benutzerinformationen.value.bearbeitendePerson.name;
+});
+
+const email = computed(() => {
+  return _.isNil(benutzerinformationen.value?.bearbeitendePerson) ||
+    _.isNil(benutzerinformationen.value?.bearbeitendePerson?.email)
+    ? ""
+    : benutzerinformationen.value.bearbeitendePerson.email;
+});
+
+const organisationseinheit = computed(() => {
+  return _.isNil(benutzerinformationen.value?.bearbeitendePerson) ||
+    _.isNil(benutzerinformationen.value?.bearbeitendePerson?.organisationseinheit)
+    ? ""
+    : benutzerinformationen.value.bearbeitendePerson.organisationseinheit;
+});
+
+const letzteAenderung = computed(() => {
+  return _.isNil(benutzerinformationen.value?.lastModifiedDateTime)
+    ? ""
+    : moment.utc(benutzerinformationen.value.lastModifiedDateTime, true).format(DISPLAY_FORMAT);
+});
 </script>

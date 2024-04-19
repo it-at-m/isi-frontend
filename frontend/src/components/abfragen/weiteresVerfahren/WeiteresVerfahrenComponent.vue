@@ -55,7 +55,7 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
-import Dokumente from "@/components/common/dokumente/DokumenteComponent.vue";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
 

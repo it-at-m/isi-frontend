@@ -40,48 +40,44 @@
   </v-menu>
 </template>
 
-<script lang="ts">
-import { Vue, Component, VModel } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import _ from "lodash";
-import { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
+import { LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import moment from "moment/moment";
 import { useLookupStore } from "@/stores/LookupStore";
+import { defineModel } from "@/utils/Vue";
 
-@Component({})
-export default class Bearbeitungshistorie extends Vue {
-  static readonly DISPLAY_FORMAT = "DD.MM.YYYY";
+interface Props {
+  value: AbfrageModel;
+}
 
-  @VModel({ type: AbfrageModel })
-  private abfrage!: AbfrageModel;
+interface Emits {
+  (event: "input", value: AbfrageModel): void;
+}
 
-  private lookupStore = useLookupStore();
+const DISPLAY_FORMAT = "DD.MM.YYYY";
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const abfrage = defineModel(props, emit);
+const { statusAbfrage } = useLookupStore();
+const bearbeitungshistorieHeaders = [
+  { text: "Name", value: "bearbeitendePerson.name", sortable: false },
+  { text: "Email", value: "bearbeitendePerson.email", sortable: false },
+  { text: "Organisationseinheit", value: "bearbeitendePerson.organisationseinheit", sortable: false },
+  { text: "Datum der Änderung", value: "zeitpunkt", sortable: false },
+  { text: "Zielstatus", value: "zielStatus", sortable: false },
+];
+const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(abfrage.value?.bearbeitungshistorie));
+const bearbeitungshistorie = computed(() => _.toArray(abfrage.value?.bearbeitungshistorie));
 
-  private bearbeitungshistorieHeaders = [
-    { text: "Name", value: "bearbeitendePerson.name", sortable: false },
-    { text: "Email", value: "bearbeitendePerson.email", sortable: false },
-    { text: "Organisationseinheit", value: "bearbeitendePerson.organisationseinheit", sortable: false },
-    { text: "Datum der Änderung", value: "zeitpunkt", sortable: false },
-    { text: "Zielstatus", value: "zielStatus", sortable: false },
-  ];
+function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
+  return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(DISPLAY_FORMAT);
+}
 
-  get bearbeitungshistorieAvailable(): boolean {
-    return !_.isEmpty(this.abfrage?.bearbeitungshistorie);
-  }
-
-  get bearbeitungshistorie(): Array<BearbeitungshistorieDto> {
-    return _.toArray(this.abfrage?.bearbeitungshistorie);
-  }
-
-  private zeitpunktFormatted(zeitpunkt: Date | undefined): string {
-    return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(Bearbeitungshistorie.DISPLAY_FORMAT);
-  }
-
-  private zielstatusText(status: StatusAbfrage | undefined): string | undefined {
-    const lookupEntries = this.lookupStore.statusAbfrage as Array<LookupEntryDto>;
-    return !_.isEmpty(lookupEntries)
-      ? lookupEntries.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
-      : "";
-  }
+function zielstatusText(status: StatusAbfrage | undefined): string | undefined {
+  return !_.isEmpty(statusAbfrage)
+    ? statusAbfrage.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
+    : "";
 }
 </script>

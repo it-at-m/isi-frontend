@@ -61,7 +61,7 @@
           </tbody>
         </template>
       </v-simple-table>
-      <loading-spinner
+      <loading
         v-else
         :success="fetchSuccess"
         name="Services"
@@ -97,7 +97,7 @@
  */
 
 import RequestUtils from "@/utils/RequestUtils";
-import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
+import Loading from "@/components/common/Loading.vue";
 import Service from "@/types/common/Service";
 import _ from "lodash";
 import { defineModel } from "@/utils/Vue";

@@ -134,7 +134,7 @@ import _ from "lodash";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import Dokumente from "@/components/common/dokumente/DokumenteComponent.vue";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { Levels } from "@/api/error";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import InformationList from "@/components/common/InformationList.vue";
