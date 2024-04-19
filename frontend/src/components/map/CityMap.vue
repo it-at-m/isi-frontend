@@ -52,7 +52,7 @@
         </button>
       </l-control>
       <l-control
-        v-if="expandable"
+        v-if="props.expandable"
         position="bottomright"
       >
         <button
@@ -83,250 +83,209 @@
 </template>
 
 <script setup lang="ts">
-import {  Emit, Prop, Vue, Watch } from "vue-property-decorator";
-import { LMap, LControlLayers, LWMSTileLayer, LControl } from "vue2-leaflet";
-import L, {
-  GeoJSONOptions,
-  LatLng,
-  LatLngBounds,
-  LatLngBoundsLiteral,
-  LatLngLiteral,
-  LayerGroup,
-  WMSOptions,
-  LeafletMouseEvent,
-  MapOptions,
-  Layer,
-} from "leaflet";
-import "leaflet.nontiledlayer";
-import "leaflet/dist/leaflet.css";
-import _ from "lodash";
-import { Feature } from "geojson";
 import {
-  assembleDefaultLayersForLayerControl,
   CITY_CENTER,
-  getBackgroundMapUrl,
   LAYER_OPTIONS,
   MAP_OPTIONS,
   MAX_ZOOM,
   MIN_ZOOM,
+  assembleDefaultLayersForLayerControl,
+  getBackgroundMapUrl,
 } from "@/utils/MapUtil";
+import { Feature } from "geojson";
+import L, { GeoJSONOptions, LatLngBounds, LatLngBoundsLiteral, LatLngLiteral, Layer, LeafletMouseEvent } from "leaflet";
+import "leaflet.nontiledlayer";
+import "leaflet/dist/leaflet.css";
+import _ from "lodash";
+import { LControl, LControlLayers, LMap } from "vue2-leaflet";
 
-type Ref = Vue & { $el: HTMLElement };
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
  * Die Leaflet-Karte wurde für Stylebarkeit in eine Vuetify Sheet-Komponente eingebettet.
  */
 
 interface Props {
-  height: number | string;
-  width: number |string;
-  zomm: number;
-  initalZoom: number;
-  expendable: boolean;
+  height?: number | string;
+  width?: number | string;
+  zoom?: number;
+  initalZoom?: number;
+  expandable?: boolean;
   /**
    * True falls Buttons zum Feuern der Events "acceptSelectedGeoJson" und
    * "deselectGeoJson" auf der Karte angezeigt werden sollen.
    * Andernfalls false.
    */
-  editable: boolean;
+  editable?: boolean;
   /**
    * Property zur Definition der initialen Kartenposition.
    */
-  lookAt: LatLngLiteral;
+  lookAt?: LatLngLiteral;
   /**
    * Die Feature welche in der Karte dargestellt werden sollen.
    */
-  geoJson: Feature[];
+  geoJson?: Feature[];
   /**
    * Die Konfiguration der Darstellung und des Verhaltens der Feature in der Property "geoJson".
    */
-  geoJsonOptions: GeoJSONOptions;
-  automaticZoomToPolygons: boolean;
-  layersForLayerControl: Map<string, Layer>;
-
+  geoJsonOptions?: GeoJSONOptions;
+  automaticZoomToPolygons?: boolean;
+  layersForLayerControl?: Map<string, Layer>;
 }
-const props = withDefaults(defineProps<Props>(), { height: "100%", width: "100%", zoom: 12, expendable: false, geoJson: () => [], geoJsonOptions: undefined, automaticZoomToPolygons: false, layersForLayerControl: undefined });
 
-let firstGeoJsonFeatureAdded: boolean = false;
+interface Emits {
+  (event: "acceptSelectedGeoJson", value: void): void;
+  (event: "deselectGeoJson", value: void): void;
+  (event: "clickInMap", value: LeafletMouseEvent): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  height: "100%",
+  width: "100%",
+  zoom: 12,
+  expandable: false,
+  geoJson: () => [],
+  geoJsonOptions: undefined,
+  automaticZoomToPolygons: false,
+  layersForLayerControl: undefined,
+});
+const emit = defineEmits<Emits>();
+const sheet = ref<HTMLFormElement | null>(null);
+const map = ref<HTMLFormElement | null>(null);
+const layerControl = ref<HTMLFormElement | null>(null);
+const dialogCard = ref<HTMLFormElement | null>(null);
+
+const initialZoom = props.zoom;
+let firstGeoJsonFeatureAdded = false;
+let expanded = false;
 let addedLayersForLayerControl: Map<string, Layer>;
-let layerGroup: LayerGroup = new LayerGroup();
-let map!: L.Map;
-let expanded: boolean = false;
+let mapMarkerClusterGroup = L.markerClusterGroup();
+let mapRefCopy!: L.Map;
 
+const mapOptions = computed(() => MAP_OPTIONS);
+const cityCenter = computed(() => CITY_CENTER);
+const layerOptions = computed(() => LAYER_OPTIONS);
+const maxZoom = computed(() => MAX_ZOOM);
+const minZoom = computed(() => MIN_ZOOM);
+const isGeoJsonNotEmpty = computed(() => !_.isEmpty(props.geoJson));
+const backgroundMapUrl = computed(() => getBackgroundMapUrl());
 
-  created(): void {
-    /* Da die Karte ihren Zoom selber ändern kann, soll dieser Wert nur einmalig gesetzt werden.
-       Ändert das Elternelement im Nachhinein den Wert vom "zoom"-Prop, soll dies die Karte nicht beeinflussen. */
-    this.initialZoom = this.zoom;
-  }
+function addGeoJsonToMap(): void {
+  mapRefCopy.removeLayer(mapMarkerClusterGroup);
+  mapMarkerClusterGroup.addTo(map);
+  L.geoJSON(props.geoJson, props.geoJsonOptions).addTo(mapMarkerClusterGroup);
+}
 
-  onMounted(() => {
-    // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `this.map.mapObject` aufgerufen werden müsste.
-    this.map = (this.$refs.map as LMap).mapObject;
-    // Workaround für anderes Fetch-Verhalten bei Infrastruktureinrichtungen.
-    this.onLookAtChanged();
-    // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
-    this.onGeoJsonChanged();
+function flyToPositionOnMap(position: LatLngLiteral | undefined): void {
+  if (position) mapRefCopy.flyTo(position, 16);
+}
+
+function flyToCenterOfPolygonsInMap(): void {
+  const polygonCenter: Array<L.LatLng> = [];
+  mapRefCopy.eachLayer(function (layer) {
+    if (layer instanceof L.Polygon) {
+      const polygon = layer as L.Polygon;
+      polygonCenter.push(polygon.getBounds().getCenter());
+    }
   });
+  if (polygonCenter.length === 1 || polygonCenter.length === 2) {
+    const center: L.LatLng = polygonCenter[0];
+    flyToPositionOnMap({ lat: center.lat, lng: center.lng });
+  } else if (polygonCenter.length >= 2) {
+    const bounds = polygonCenter.map((latLng) => [latLng.lat, latLng.lng]) as LatLngBoundsLiteral;
+    const center: L.LatLng = new LatLngBounds(bounds).getCenter();
+    flyToPositionOnMap({ lat: center.lat, lng: center.lng });
+  }
+}
 
-  @Watch("lookAt", { deep: true })
-  private onLookAtChanged(): void {
-    this.flyToPositionOnMap(this.lookAt);
+function onClickInMap(event: LeafletMouseEvent): void {
+  emit("clickInMap", event);
+}
+
+function onDeselectGeoJson(event: MouseEvent): void {
+  event.preventDefault();
+  event.stopPropagation();
+  emit("deselectGeoJson");
+}
+
+function onAcceptSelectedGeoJson(event: MouseEvent): void {
+  event.preventDefault();
+  event.stopPropagation();
+  emit("acceptSelectedGeoJson");
+}
+
+function toggleExpansion(event: MouseEvent): void {
+  event.preventDefault();
+  event.stopPropagation();
+
+  expanded = !expanded;
+
+  if (expanded) {
+    dialogCard.value?.$el.appendChild(map.value?.$el);
+  } else {
+    sheet.value?.$el.appendChild(map.value?.$el);
   }
 
-  @Watch("geoJson", { deep: true })
-  private onGeoJsonChanged(): void {
-    this.addGeoJsonToMap();
-    if (!_.isEmpty(this.geoJson) && !this.firstGeoJsonFeatureAdded && this.automaticZoomToPolygons) {
-      this.firstGeoJsonFeatureAdded = true;
-      this.flyToCenterOfPolygonsInMap();
-    }
-  }
-
-  /**
-   * Die Methode aktualisiert die Liste der Overlays des LayerControl-Elements um die in der
-   * Komponentenproperty "layersForLayerControl" hinterlegten Layer.
-   */
-  @Watch("layersForLayerControl", { deep: true })
-  private updateLayerControlWithCustomLayers(): void {
-    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
-
-    // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
-    if (!_.isNil(this.addedLayersForLayerControl)) {
-      this.addedLayersForLayerControl.forEach((layer) => {
-        // Entfernen aus LayerControl-Element
-        layerControl.removeLayer(layer);
-        // Entfernen aus Karte falls Layer in LayerControl mittels Checkbox aktiviert
-        this.map.removeLayer(layer);
-      });
-    }
-
-    // Ersetzen der obig entfernten Layer durch die neuen Layer.
-    this.addedLayersForLayerControl = _.cloneDeep(this.layersForLayerControl);
-
-    // Hinzufügen der neuen Layer
-    if (!_.isNil(this.addedLayersForLayerControl)) {
-      this.addedLayersForLayerControl.forEach((layer, name) => layerControl.addOverlay(layer, name));
-    }
-  }
-
-  get mapOptions(): MapOptions {
-    return MAP_OPTIONS;
-  }
-
-  get cityCenter(): LatLngLiteral {
-    return CITY_CENTER;
-  }
-
-  get layerOptions(): WMSOptions {
-    return LAYER_OPTIONS;
-  }
-
-  get maxZoom(): number {
-    return MAX_ZOOM;
-  }
-
-  get minZoom(): number {
-    return MIN_ZOOM;
-  }
-
-  get isGeoJsonNotEmpty(): boolean {
-    return !_.isEmpty(this.geoJson);
-  }
-
-  get backgroundMapUrl(): string {
-    return getBackgroundMapUrl();
-  }
-
-  private onClickInMap(event: LeafletMouseEvent): void {
-    this.clickInMap(event);
-  }
-
-  /**
-   * Fügt die Layer sowie die in der Property "layersForLayerControl" bereits existierenden Layer dem Overlay der LayerControl hinzu.
-   * Es können beliebig viele Layer zur selben Zeit sichtbar sein, da diese spezifische Merkmale darstellen sollen.
-   */
-  private onLayerControlReady(): void {
-    const layerControl = (this.$refs.layerControl as LControlLayers).mapObject;
-    assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControl.addOverlay(layer, name));
-    this.updateLayerControlWithCustomLayers();
-  }
-
-  /**
-   * Erweitert bzw. klappt die Karte ein. Dafür muss sie entweder in den Dialog oder zurück zum Ausgangspunkt verschoben werden.
-   */
-  private toggleExpansion(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.expanded = !this.expanded;
-
-    if (this.expanded) {
-      (this.$refs.dialogCard as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-    } else {
-      (this.$refs.sheet as Ref).$el.appendChild((this.$refs.map as Ref).$el);
-    }
-
-    /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
+  /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
        Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
-    setTimeout(() => this.map.invalidateSize());
-  }
+  setTimeout(() => mapRefCopy.invalidateSize());
+}
 
-  private onDeselectGeoJson(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.deselectGeoJson();
-  }
+function onLookAtChanged(): void {
+  flyToPositionOnMap(props.lookAt);
+}
 
-  private onAcceptSelectedGeoJson(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.acceptSelectedGeoJson();
+function onGeoJsonChanged() {
+  addGeoJsonToMap();
+  if (!_.isEmpty(props.geoJson) && !firstGeoJsonFeatureAdded && props.automaticZoomToPolygons) {
+    firstGeoJsonFeatureAdded = true;
+    flyToCenterOfPolygonsInMap();
   }
+}
 
-  private addGeoJsonToMap(): void {
-    this.map.removeLayer(this.layerGroup);
-    this.layerGroup = new L.LayerGroup();
-    this.layerGroup.addTo(this.map);
-    L.geoJSON(this.geoJson, this.geoJsonOptions).addTo(this.layerGroup);
-  }
+function updateLayerControlWithCustomLayers(): void {
+  const layerControlCopy = layerControl.value?.mapObject;
 
-  private flyToPositionOnMap(position: LatLngLiteral | undefined) {
-    if (position) this.map.flyTo(position, 16);
-  }
-
-  private flyToCenterOfPolygonsInMap(): void {
-    const polygonCenter: Array<L.LatLng> = [];
-    this.map.eachLayer(function (layer) {
-      if (layer instanceof L.Polygon) {
-        const polygon = layer as L.Polygon;
-        polygonCenter.push(polygon.getBounds().getCenter());
-      }
+  // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
+  if (!_.isNil(addedLayersForLayerControl)) {
+    addedLayersForLayerControl.forEach((layer: Layer) => {
+      // Entfernen aus LayerControl-Element
+      layerControlCopy.removeLayer(layer);
+      // Entfernen aus Karte falls Layer in LayerControl mittels Checkbox aktiviert
+      mapRefCopy.removeLayer(layer);
     });
-    if (polygonCenter.length === 1 || polygonCenter.length === 2) {
-      const center: L.LatLng = polygonCenter[0];
-      this.flyToPositionOnMap({ lat: center.lat, lng: center.lng });
-    } else if (polygonCenter.length >= 2) {
-      const bounds = polygonCenter.map((latLng) => [latLng.lat, latLng.lng]) as LatLngBoundsLiteral;
-      const center: L.LatLng = new LatLngBounds(bounds).getCenter();
-      this.flyToPositionOnMap({ lat: center.lat, lng: center.lng });
-    }
   }
 
-  @Emit()
-  private clickInMap(event: LeafletMouseEvent): LatLng {
-    return event.latlng;
-  }
+  // Ersetzen der obig entfernten Layer durch die neuen Layer.
+  addedLayersForLayerControl = _.cloneDeep(props.layersForLayerControl!);
 
-  @Emit()
-  private deselectGeoJson(): void {
-    // Clears geoJson
+  // Hinzufügen der neuen Layer
+  if (!_.isNil(addedLayersForLayerControl)) {
+    addedLayersForLayerControl.forEach((layer: Layer, name: string) => layerControlCopy.addOverlay(layer, name));
   }
+}
 
-  @Emit()
-  private acceptSelectedGeoJson(): void {
-    // Accept geoJson
-  }
+/**
+ * Fügt die Layer sowie die in der Property "layersForLayerControl" bereits existierenden Layer dem Overlay der LayerControl hinzu.
+ * Es können beliebig viele Layer zur selben Zeit sichtbar sein, da diese spezifische Merkmale darstellen sollen.
+ */
+function onLayerControlReady(): void {
+  const layerControlCopy = layerControl.value?.mapObject;
+  assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControlCopy.addOverlay(layer, name));
+  updateLayerControlWithCustomLayers();
+}
+
+onMounted(() => {
+  // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `map.mapObject` aufgerufen werden müsste.
+  mapRefCopy = map.value?.mapObject;
+  // Workaround für anderes Fetch-Verhalten bei Infrastruktureinrichtungen.
+  onLookAtChanged();
+  // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
+  onGeoJsonChanged();
+});
+
+watch(() => props.lookAt, onLookAtChanged, { deep: true });
+watch(() => props.geoJson, onGeoJsonChanged, { deep: true });
+watch(() => props.layersForLayerControl, updateLayerControlWithCustomLayers, { deep: true });
 </script>
 
 <style>
