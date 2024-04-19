@@ -4,7 +4,7 @@
     max-height="100%"
     width="100%"
   >
-    <template v-for="(item, index) in informationFromInformationList">
+    <template v-for="(item, index) in informationList">
       <v-list-item
         id="information_list"
         :key="index"
@@ -116,79 +116,58 @@
   </v-list>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+<script setup lang="ts">
 import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment";
 import { useInformationStore } from "@/stores/InformationStore";
-@Component
-export default class InformationList extends Vue {
-  private static readonly NOT_APPLICABLE: string = "n/a";
 
-  private static readonly FORMAT_TIMESTAMP: string = "DD.MM.YYYY HH:mm:ss";
+const NOT_APPLICABLE = "n/a";
+const FORMAT_TIMESTAMP = "DD.MM.YYYY HH:mm:ss";
+const { informationList, overwriteInformationList } = useInformationStore();
 
-  private informationList: Array<InformationResponseDto> = [];
+onMounted(() => overwriteInformationList([]));
 
-  private informationStore = useInformationStore();
+function deleteInformationListEntryByIndex(index: number): void {
+  overwriteInformationList(informationList.toSpliced(index, 1));
+}
 
-  private storeInformationList = computed(() => this.informationStore.informationList);
+function textTraceId(traceId: string | undefined): string {
+  return "TraceId: " + traceId;
+}
 
-  mounted(): void {
-    this.informationStore.overwriteInformationList([]);
+function textSpanId(spanId: string | undefined): string {
+  return "SpanId: " + spanId;
+}
+
+function textDatumUhrzeit(datum: Date | undefined): string {
+  let textTimestamp: string;
+  if (!_.isNil(datum)) {
+    textTimestamp = moment(datum).format(FORMAT_TIMESTAMP);
+  } else {
+    textTimestamp = NOT_APPLICABLE;
   }
+  return textTimestamp;
+}
 
-  get informationFromInformationList(): Array<InformationResponseDto> {
-    return this.informationList;
+function getColorAccordingInformationType(type: InformationResponseDtoTypeEnum | undefined): string {
+  // Default für InformationResponseDtoTypeEnum.InformationNeutral
+  let color = "grey lighten-4";
+  if (type === InformationResponseDtoTypeEnum.Error) {
+    color = "red accent-4";
+  } else if (type === InformationResponseDtoTypeEnum.Warning) {
+    color = "yellow accent-4";
+  } else if (type === InformationResponseDtoTypeEnum.InformationSuccess) {
+    color = "green accent-4";
   }
+  return color;
+}
 
-  @Watch("storeInformationList", { immediate: true, deep: true })
-  public displayInformationsFromInformationList(): void {
-    this.informationList = _.cloneDeep(this.informationStore.informationList);
-  }
+function isTraceIdAndSpanIdAvailable(informationResponseDto: InformationResponseDto): boolean {
+  return !_.isNil(informationResponseDto.traceId) && !_.isNil(informationResponseDto.spanId);
+}
 
-  public deleteInformationListEntryByIndex(index: number): void {
-    this.informationFromInformationList.splice(index, 1);
-    this.informationStore.overwriteInformationList(this.informationFromInformationList);
-  }
-
-  public textTraceId(traceId: string): string {
-    return "TraceId: " + traceId;
-  }
-
-  public textSpanId(spanId: string): string {
-    return "SpanId: " + spanId;
-  }
-
-  public textDatumUhrzeit(datum: Date): string {
-    let textTimestamp: string;
-    if (!_.isNil(datum)) {
-      textTimestamp = moment(datum).format(InformationList.FORMAT_TIMESTAMP);
-    } else {
-      textTimestamp = InformationList.NOT_APPLICABLE;
-    }
-    return textTimestamp;
-  }
-
-  public getColorAccordingInformationType(type: InformationResponseDtoTypeEnum): string {
-    // Default für InformationResponseDtoTypeEnum.InformationNeutral
-    let color = "grey lighten-4";
-    if (type === InformationResponseDtoTypeEnum.Error) {
-      color = "red accent-4";
-    } else if (type === InformationResponseDtoTypeEnum.Warning) {
-      color = "yellow accent-4";
-    } else if (type === InformationResponseDtoTypeEnum.InformationSuccess) {
-      color = "green accent-4";
-    }
-    return color;
-  }
-
-  public isTraceIdAndSpanIdAvailable(informationResponseDto: InformationResponseDto): boolean {
-    return !_.isNil(informationResponseDto.traceId) && !_.isNil(informationResponseDto.spanId);
-  }
-
-  public isTimestampOrOriginalExceptionAvailable(informationResponseDto: InformationResponseDto): boolean {
-    return !_.isNil(informationResponseDto.timestamp) || !_.isNil(informationResponseDto.originalException);
-  }
+function isTimestampOrOriginalExceptionAvailable(informationResponseDto: InformationResponseDto): boolean {
+  return !_.isNil(informationResponseDto.timestamp) || !_.isNil(informationResponseDto.originalException);
 }
 </script>
