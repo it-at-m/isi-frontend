@@ -214,10 +214,6 @@ export default class ValidatorMixin extends Vue {
             break;
           }
         }
-        validationMessage = this.findFaultInDokumente(abfragevariante.dokumente);
-        if (!_.isNil(validationMessage)) {
-          break;
-        }
       }
     }
     return validationMessage;
@@ -316,6 +312,11 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInAbfragevarianteBauratendateiInput)) {
       return messageFaultInAbfragevarianteBauratendateiInput;
     }
+    const messageFaultinDokumente = this.findFaultInDokumente(abfragevariante.dokumente);
+    if (!_.isNil(messageFaultinDokumente)) {
+      return messageFaultinDokumente;
+    }
+
     return null;
   }
 
