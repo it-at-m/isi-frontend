@@ -123,7 +123,7 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
     const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(decodeURIComponent(this.getParameterUrsaechlichkeit()), ursaechlichkeit);
     return url.toString();
   }
 
@@ -136,7 +136,7 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
     const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(decodeURIComponent(this.getParameterUrsaechlichkeit()), ursaechlichkeit);
     url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
     return url.toString();
   }
@@ -150,7 +150,7 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
     const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(decodeURIComponent(this.getParameterUrsaechlichkeit()), ursaechlichkeit);
     url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
     return url.toString();
   }
@@ -163,7 +163,7 @@ export default class ReportsSobonursaechlichkeitComponent extends Mixins(Abfrage
     const abfragevarianteId = this.getParameterValueAbfragevarianteId();
     url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
     const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(decodeURIComponent(this.getParameterUrsaechlichkeit()), ursaechlichkeit);
     return url.toString();
   }
 
