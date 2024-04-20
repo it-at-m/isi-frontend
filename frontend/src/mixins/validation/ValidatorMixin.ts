@@ -58,30 +58,20 @@ export default class ValidatorMixin extends Vue {
   public findFaultInAbfrageForSave(
     abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel,
   ): string | null {
-    let validationMessage: string | null = null;
-    if (!_.isNil(abfrage)) {
-      validationMessage = this.findFaultInDokumente(abfrage.dokumente);
-      if (!_.isNil(validationMessage)) {
-        return validationMessage;
+    if (!_.isNil(abfrage) && !_.isNil(abfrage.artAbfrage)) {
+      switch (abfrage.artAbfrage) {
+        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+          return this.findFaultInBauleitplanverfahrenForSave(abfrage);
+        case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+          return this.findFaultInBaugenehmigungsverfahrenForSave(abfrage);
+        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+          return this.findFaultInWeiteresVerfahrenForSave(abfrage);
+        default:
+          return `Anwendungssystemfehler in ValidatorMixin.findFaultInAbfrageForSave(): AbfrageArt ${abfrage.artAbfrage} ist nicht implementiert`;
       }
-      if (!_.isNil(abfrage.artAbfrage)) {
-        switch (abfrage.artAbfrage) {
-          case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-            validationMessage = this.findFaultInBauleitplanverfahrenForSave(abfrage);
-            break;
-          case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-            validationMessage = this.findFaultInBaugenehmigungsverfahrenForSave(abfrage);
-            break;
-          case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-            validationMessage = this.findFaultInWeiteresVerfahrenForSave(abfrage);
-            break;
-          default:
-            validationMessage = `Anwendungssystemfehler in ValidatorMixin.findFaultInAbfrageForSave(): AbfrageArt ${abfrage.artAbfrage} ist nicht implementiert`;
-            break;
-        }
-      }
+    } else {
+      return null;
     }
-    return validationMessage;
   }
 
   /**
@@ -149,6 +139,15 @@ export default class ValidatorMixin extends Vue {
     if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {
       return "Bearbeitungsfrist nicht angegeben oder nicht im Format TT.MM.JJJJ";
     }
+
+    let validationMessage: string | null = null;
+    if (!_.isNil(abfrage)) {
+      validationMessage = this.findFaultInDokumente(abfrage.dokumente);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
+      }
+    }
+
     return this.findFaultInAbfragevarianten(abfrage);
   }
 
@@ -214,6 +213,10 @@ export default class ValidatorMixin extends Vue {
           if (!_.isNil(validationMessage)) {
             break;
           }
+        }
+        validationMessage = this.findFaultInDokumente(abfragevariante.dokumente);
+        if (!_.isNil(validationMessage)) {
+          break;
         }
       }
     }
