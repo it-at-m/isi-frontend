@@ -42,6 +42,8 @@ export const OVERLAYS_ARCGIS = new Map([
   ["Bezirksteile", "Bezirksteile"],
   ["Stadtviertel", "Stadtviertel"],
   ["Grundschulsprengel", "Grundschulsprengel"],
+  ["Mittelschulsprengel", "Mittelschulsprengel"],
+  ["Flächennutzungsplan", "Flächennutzungsplan"],
   ["Umgriffe Bebauungspläne", "BB-Umgriff"],
 ]);
 
