@@ -181,8 +181,8 @@
           md="12"
         >
           <v-textarea
-            id="hinweis_Versorgung_field"
-            ref="hinweisVersorgungField"
+            id="anmerkungen_field"
+            ref="anmerkungenField"
             v-model="anmerkung"
             :disabled="!getIsEditable"
             label="Anmerkungen"
