@@ -155,7 +155,8 @@ import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
-import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
+import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
+import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
 import { useSearchStore } from "@/stores/SearchStore";
 
 @Component({

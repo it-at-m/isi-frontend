@@ -1,6 +1,5 @@
 import { BearbeitendePersonDto } from "@/api/api-client/isi-backend";
-
-export class BenutzerinformationenModel {
+class BenutzerinformationenModel {
   constructor(bearbeitendePerson?: BearbeitendePersonDto, lastModifiedDateTime?: Date) {
     this.bearbeitendePerson = bearbeitendePerson;
     this.lastModifiedDateTime = lastModifiedDateTime;
@@ -10,3 +9,5 @@ export class BenutzerinformationenModel {
 
   public lastModifiedDateTime?: Date;
 }
+
+export { BenutzerinformationenModel as default };
