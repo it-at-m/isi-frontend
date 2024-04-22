@@ -35,6 +35,7 @@ export const LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: MIN_ZOO
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
 export const OVERLAYS_ARCGIS = new Map([
+  ["Flächennutzungsplan", "Flächennutzungsplan"],
   ["Gemarkungen", "Gemarkungen"],
   ["Baublöcke", "Baublöcke"],
   ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
@@ -43,7 +44,6 @@ export const OVERLAYS_ARCGIS = new Map([
   ["Stadtviertel", "Stadtviertel"],
   ["Grundschulsprengel", "Grundschulsprengel"],
   ["Mittelschulsprengel", "Mittelschulsprengel"],
-  ["Flächennutzungsplan", "Flächennutzungsplan"],
   ["Umgriffe Bebauungspläne", "BB-Umgriff"],
 ]);
 
