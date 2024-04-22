@@ -53,7 +53,7 @@
 import _ from "lodash";
 import moment from "moment";
 import { defineModel } from "@/utils/Vue";
-import { BenutzerinformationenModel } from "@/types/model/common/Benutzerinformationen";
+import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
 
 interface Props {
   value: BenutzerinformationenModel;

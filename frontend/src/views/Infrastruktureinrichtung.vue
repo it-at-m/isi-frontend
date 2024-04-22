@@ -209,7 +209,8 @@ import _ from "lodash";
 import Vue from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
-import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
+import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
+import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
 import { useSearchStore } from "@/stores/SearchStore";
 @Component({
   computed: {

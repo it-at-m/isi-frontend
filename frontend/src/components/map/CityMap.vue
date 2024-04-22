@@ -21,7 +21,7 @@
         @ready="onLayerControlReady"
       />
       <!-- Die Base-Layer der Karte. Es kann nur einer zur selben Zeit sichtbar sein, da der Base-Layer der Hintergrund der Karte ist. -->
-      <l-wms-tile-layer
+      <l-w-m-s-tile-layer
         id="karte_hintergrund"
         name="Hintergrund"
         :base-url="backgroundMapUrl"
@@ -83,6 +83,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import {
   CITY_CENTER,
   LAYER_OPTIONS,
@@ -95,9 +96,10 @@ import {
 import { Feature } from "geojson";
 import L, { GeoJSONOptions, LatLngBounds, LatLngBoundsLiteral, LatLngLiteral, Layer, LeafletMouseEvent } from "leaflet";
 import "leaflet.nontiledlayer";
+import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
-import { LControl, LControlLayers, LMap } from "vue2-leaflet";
+import { LControl, LControlLayers, LMap, LWMSTileLayer } from "vue2-leaflet";
 
 /**
  * Nutzt Leaflet.js um Daten von einem oder mehreren WMS-Servern zu holen und eine Karte von München und der Umgebung zu rendern.
@@ -158,7 +160,7 @@ const initialZoom = props.zoom;
 let firstGeoJsonFeatureAdded = false;
 let expanded = false;
 let addedLayersForLayerControl: Map<string, Layer>;
-let mapMarkerClusterGroup = (L as any).markerClusterGroup();
+let mapMarkerClusterGroup = L.markerClusterGroup();
 let mapRefCopy!: L.Map;
 
 const mapOptions = computed(() => MAP_OPTIONS);
@@ -184,7 +186,7 @@ watch(() => props.layersForLayerControl, updateLayerControlWithCustomLayers, { d
 
 function addGeoJsonToMap(): void {
   mapRefCopy.removeLayer(mapMarkerClusterGroup);
-  mapMarkerClusterGroup = (L as any).markerClusterGroup().addTo(mapRefCopy);
+  mapMarkerClusterGroup = L.markerClusterGroup().addTo(mapRefCopy);
   L.geoJSON(props.geoJson, props.geoJsonOptions).addTo(mapMarkerClusterGroup);
 }
 
@@ -237,7 +239,7 @@ function toggleExpansion(event: MouseEvent): void {
   }
 
   /* Der Map muss signalisiert werden, dass sich die Größe des umgebenden Containers geändert hat.
-       Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
+     Jedoch darf dies erst nach einem minimalen Delay gemacht werden, da der Dialog sich erst öffnen muss. */
   setTimeout(() => mapRefCopy.invalidateSize());
 }
 
