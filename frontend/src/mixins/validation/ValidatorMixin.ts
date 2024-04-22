@@ -28,7 +28,9 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
-  BaugenehmigungsverfahrenDto,
+  DokumentDto,
+  DokumentDtoArtDokumentEnum,
+  KommentarDto,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -137,6 +139,15 @@ export default class ValidatorMixin extends Vue {
     if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {
       return "Bearbeitungsfrist nicht angegeben oder nicht im Format TT.MM.JJJJ";
     }
+
+    let validationMessage: string | null = null;
+    if (!_.isNil(abfrage)) {
+      validationMessage = this.findFaultInDokumente(abfrage.dokumente);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
+      }
+    }
+
     return this.findFaultInAbfragevarianten(abfrage);
   }
 
@@ -258,14 +269,9 @@ export default class ValidatorMixin extends Vue {
     if (_.isNil(abfragevariante.gfWohnenGesamt) && _.isNil(abfragevariante.weGesamt)) {
       return `Bitte die 'Geschossfläche Wohnen' und/oder 'Anzahl geplante Wohneinheiten' angeben`;
     }
-    const messageFaultVerteilungWohneinheiten = this.findFaultInVerteilungWohneinheitenAbfragevariante(abfragevariante);
-    if (!_.isNil(messageFaultVerteilungWohneinheiten)) {
-      return messageFaultVerteilungWohneinheiten;
-    }
-    const messageFaultVerteilungGeschossflaecheWohnen =
-      this.findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(abfragevariante);
-    if (!_.isNil(messageFaultVerteilungGeschossflaecheWohnen)) {
-      return messageFaultVerteilungGeschossflaecheWohnen;
+    const messageFaultVerteilung = this.findFaultInWeGfVerteilungAbfragevariante(abfragevariante);
+    if (!_.isNil(messageFaultVerteilung)) {
+      return messageFaultVerteilung;
     }
     if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
       if (
@@ -306,6 +312,11 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInAbfragevarianteBauratendateiInput)) {
       return messageFaultInAbfragevarianteBauratendateiInput;
     }
+    const messageFaultinDokumente = this.findFaultInDokumente(abfragevariante.dokumente);
+    if (!_.isNil(messageFaultinDokumente)) {
+      return messageFaultinDokumente;
+    }
+
     return null;
   }
 
@@ -521,6 +532,11 @@ export default class ValidatorMixin extends Vue {
       return "Bitte die wesentliche Rechtsgrundlage angeben";
     }
 
+    const validationMessage = this.findFaultInDokumente(bauvorhaben.dokumente);
+    if (!_.isNil(validationMessage)) {
+      return validationMessage;
+    }
+
     return null;
   }
 
@@ -633,7 +649,17 @@ export default class ValidatorMixin extends Vue {
     return null;
   }
 
-  public findFaultInVerteilungWohneinheitenAbfragevariante(
+  /**
+   * Überprüft, ob die Verteilung der Wohneinheiten und Geschossfläche Wohnen auf Baugebiete bzw. Bauraten valide ist.
+   * WE bzw. GF gelten als "verteilt", wenn bei mindestens einem Baugebiet bzw. Baurate eine Angabe zu ihnen gemacht wurde.
+   * WE bzw. GF gelten als "korrekt verteilt", wenn zusätzlich ihre Summe in den Baugebieten bzw. Bauraten der Gesamtanzahl entspricht.
+   * Die Verteilung ist valide, wenn WE und GF korrekt verteilt wurden.
+   * Ebenso ist die Verteilung valide, wenn entweder WE oder GF korrekt verteilt wurde, aber der andere Wert nicht verteilt wurde.
+   *
+   * @param abfragevariante zur Validierung.
+   * @return ob die Verteilung entsprechend der Beschreibung valide ist.
+   */
+  public findFaultInWeGfVerteilungAbfragevariante(
     abfragevariante:
       | AbfragevarianteBauleitplanverfahrenDto
       | AbfragevarianteBaugenehmigungsverfahrenDto
@@ -646,65 +672,50 @@ export default class ValidatorMixin extends Vue {
     const containsBauratenInTechnicalBaugebiet = !_.isEmpty(bauratenFromAllTechnicalBaugebiete);
 
     const wohneinheitenAbfragevariante = _.isNil(abfragevariante.weGesamt) ? 0 : abfragevariante.weGesamt;
+    const geschossflaecheWohnenAbfragevariante = _.isNil(abfragevariante.gfWohnenGesamt)
+      ? 0
+      : abfragevariante.gfWohnenGesamt;
 
-    let message: string | null = null;
+    let validationMessageWohneinheiten: string | null = null;
+    let allWohneinheitenNil = true;
+    let validationMessageGfWohnen: string | null = null;
+    let allGfWohnenNil = true;
 
+    /*
+    Unterscheidung zwischen technischen und nicht-technischen Baugebieten, da technische Baugebiete keine Daten enthalten sollen.
+    Bei ihnen werden stattdessen die untergeordneten Bauraten als Datenquelle hergenommen.
+    */
     if (containsNonTechnicalBaugebiet) {
       // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteWohneinheitenBaugebiete = _.sum(
-        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.weGeplant) ? 0 : baugebiet.weGeplant)),
+        nonTechnicalBaugebiete.map((baugebiet) => {
+          if (!_.isNil(baugebiet.weGeplant)) {
+            allWohneinheitenNil = false;
+            return baugebiet.weGeplant;
+          }
+          return 0;
+        }),
       );
 
-      message =
+      validationMessageWohneinheiten =
         sumVerteilteWohneinheitenBaugebiete == wohneinheitenAbfragevariante
           ? null
           : `Die Anzahl von ${sumVerteilteWohneinheitenBaugebiete} über Baugebiete verteilter Wohneinheiten entspricht nicht ` +
             `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
-    } else if (containsBauratenInTechnicalBaugebiet) {
-      // Die Bauraten sind direkt für eine Abfragevariante erstellt worden. Die Abfragevariante ist somit mit einem technischen Baugebiet versehen.
-      const sumVerteilteWohneinheitenBauraten = _.sum(
-        bauratenFromAllTechnicalBaugebiete.map((baurate) => (_.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant)),
-      );
 
-      message =
-        sumVerteilteWohneinheitenBauraten == wohneinheitenAbfragevariante
-          ? null
-          : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
-            `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante${
-              _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
-            }.`;
-    }
-
-    return message;
-  }
-
-  public findFaultInVerteilungGeschossflaecheWohnenAbfragevariante(
-    abfragevariante:
-      | AbfragevarianteBauleitplanverfahrenDto
-      | AbfragevarianteBaugenehmigungsverfahrenDto
-      | AbfragevarianteWeiteresVerfahrenDto,
-  ): string | null {
-    const nonTechnicalBaugebiete = getNonTechnicalBaugebiete(abfragevariante);
-    const bauratenFromAllTechnicalBaugebiete = getBauratenFromAllTechnicalBaugebiete(abfragevariante);
-
-    const containsNonTechnicalBaugebiet = !_.isEmpty(nonTechnicalBaugebiete);
-    const containsBauratenInTechnicalBaugebiet = !_.isEmpty(bauratenFromAllTechnicalBaugebiete);
-
-    let message: string | null = null;
-
-    const geschossflaecheWohnenAbfragevariante = _.isNil(abfragevariante.gfWohnenGesamt)
-      ? 0
-      : abfragevariante.gfWohnenGesamt;
-
-    if (containsNonTechnicalBaugebiet) {
-      // Die Abfragevariante ist mit einem nicht-technischen Baugebiet versehen.
       const sumVerteilteGeschossflaecheWohnenBaugebiete = _.sum(
-        nonTechnicalBaugebiete.map((baugebiet) => (_.isNil(baugebiet.gfWohnenGeplant) ? 0 : baugebiet.gfWohnenGeplant)),
+        nonTechnicalBaugebiete.map((baugebiet) => {
+          if (!_.isNil(baugebiet.gfWohnenGeplant)) {
+            allGfWohnenNil = false;
+            return baugebiet.gfWohnenGeplant;
+          }
+          return 0;
+        }),
       );
 
-      message =
+      validationMessageGfWohnen =
         sumVerteilteGeschossflaecheWohnenBaugebiete.toFixed(2) == geschossflaecheWohnenAbfragevariante.toFixed(2)
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBaugebiete.toFixed(
@@ -714,14 +725,36 @@ export default class ValidatorMixin extends Vue {
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
     } else if (containsBauratenInTechnicalBaugebiet) {
-      // Die Bauraten sind direkt für einen Abfragevariante erstellt worden. Die Abfragevariante ist mit einem technischen Baugebiet versehen.
-      const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
-        bauratenFromAllTechnicalBaugebiete.map((baurate) =>
-          _.isNil(baurate.gfWohnenGeplant) ? 0 : baurate.gfWohnenGeplant,
-        ),
+      // Die Bauraten sind direkt für eine Abfragevariante erstellt worden. Die Abfragevariante ist somit mit einem technischen Baugebiet versehen.
+      const sumVerteilteWohneinheitenBauraten = _.sum(
+        bauratenFromAllTechnicalBaugebiete.map((baurate) => {
+          if (!_.isNil(baurate.weGeplant)) {
+            allWohneinheitenNil = false;
+            return baurate.weGeplant;
+          }
+          return 0;
+        }),
       );
 
-      message =
+      validationMessageWohneinheiten =
+        sumVerteilteWohneinheitenBauraten == wohneinheitenAbfragevariante
+          ? null
+          : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
+            `der Anzahl von ${wohneinheitenAbfragevariante} in der Abfragevariante${
+              _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
+            }.`;
+
+      const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
+        bauratenFromAllTechnicalBaugebiete.map((baurate) => {
+          if (!_.isNil(baurate.gfWohnenGeplant)) {
+            allGfWohnenNil = false;
+            return baurate.gfWohnenGeplant;
+          }
+          return 0;
+        }),
+      );
+
+      validationMessageGfWohnen =
         sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2) == geschossflaecheWohnenAbfragevariante.toFixed(2)
           ? null
           : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(
@@ -730,9 +763,26 @@ export default class ValidatorMixin extends Vue {
             `der Anzahl von ${geschossflaecheWohnenAbfragevariante.toFixed(2)} m² in der Abfragevariante${
               _.isNil(abfragevariante.name) ? "" : " " + abfragevariante.name
             }.`;
+    } else {
+      return null;
     }
 
-    return message;
+    const wohneinheitenEqual = validationMessageWohneinheiten === null;
+    const wohneinheitenCorrect = wohneinheitenEqual && !allWohneinheitenNil;
+    const gfWohnenEqual = validationMessageGfWohnen === null;
+    const gfWohnenCorrect = gfWohnenEqual && !allGfWohnenNil;
+
+    if (
+      (wohneinheitenCorrect && gfWohnenCorrect) ||
+      (wohneinheitenCorrect && allGfWohnenNil) ||
+      (allWohneinheitenNil && gfWohnenCorrect)
+    ) {
+      return null;
+    } else if (!wohneinheitenEqual) {
+      return validationMessageWohneinheiten;
+    } else {
+      return validationMessageGfWohnen;
+    }
   }
 
   public findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {
@@ -821,6 +871,28 @@ export default class ValidatorMixin extends Vue {
       }
     }
 
+    const validationMessageDokumente = this.findFaultInDokumente(abfragevariante.dokumente);
+    if (!_.isNil(validationMessageDokumente)) {
+      return validationMessageDokumente;
+    }
+
     return null;
+  }
+
+  public findFaultInKommentar(kommentar: KommentarDto): string | null {
+    let validationMessage: string | null = null;
+    validationMessage = this.findFaultInDokumente(kommentar.dokumente);
+    return validationMessage;
+  }
+
+  public findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
+    let validationMessage: string | null = null;
+    if (
+      !_.isNil(dokumente) &&
+      dokumente.some((dokument) => dokument.artDokument === DokumentDtoArtDokumentEnum.Unspecified)
+    ) {
+      validationMessage = `Bitte geben Sie die Dokumentart zu dem/den Dokument(en) an`;
+    }
+    return validationMessage;
   }
 }
