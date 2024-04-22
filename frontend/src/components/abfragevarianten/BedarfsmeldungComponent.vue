@@ -267,9 +267,6 @@ export default class BedarfsmeldungComponent extends Mixins(
       ? this.abfragevariante.bedarfsmeldungFachreferate
       : this.abfragevariante.bedarfsmeldungAbfrageersteller;
 
-    console.log(this.abfragevariante.anmerkungFachreferate);
-    console.log(this.abfragevariante.anmerkungAbfrageersteller);
-
     this.anmerkung = this.isFachreferat
       ? this.abfragevariante.anmerkungFachreferate
       : this.abfragevariante.anmerkungAbfrageersteller;
