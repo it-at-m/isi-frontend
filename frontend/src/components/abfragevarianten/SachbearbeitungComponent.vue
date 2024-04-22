@@ -26,6 +26,8 @@
           cols="12"
           md="6"
         >
+        </v-col>
+        <!-- Das Datum wird in ISI 2.0 relevant werden
           <date-picker
             id="stammdaten_gueltig_ab"
             ref="stammdatenGueltigAb"
@@ -35,9 +37,12 @@
             :rules="[fieldValidationRules.pflichtfeld]"
             required
           />
-        </v-col>
+        -->
       </v-row>
-      <sobon-berechnung v-model="abfragevarianteSachbearbeitung.sobonBerechnung"></sobon-berechnung>
+      <sobon-berechnung
+        v-if="isBauleitplanverfahrenOrWeiteresVerfahren"
+        v-model="abfragevarianteSachbearbeitung.sobonBerechnung"
+      />
       <v-row>
         <v-col
           cols="12"
@@ -91,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
 import {
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   LookupEntryDto,
@@ -112,6 +117,7 @@ import _ from "lodash";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
+import moment from "moment";
 
 @Component({
   components: {
@@ -147,6 +153,17 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
 
   private searchStore = useSearchStore();
 
+  @Watch("abfragevarianteSachbearbeitung.stammdatenGueltigAb", { immediate: true })
+  private abfragevarianteSachbearbeitungStammdatenGueltigAbChanged() {
+    if (
+      !_.isNil(this.abfragevarianteSachbearbeitung) &&
+      (_.isNil(this.abfragevarianteSachbearbeitung.stammdatenGueltigAb) ||
+        this.abfragevarianteSachbearbeitung.stammdatenGueltigAb?.toISOString() == new Date(0).toISOString())
+    ) {
+      this.abfragevarianteSachbearbeitung.stammdatenGueltigAb = moment(new Date()).toDate();
+    }
+  }
+
   get sobonOrientierungswertJahrList(): LookupEntryDto[] {
     if (
       this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
@@ -179,10 +196,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private showSobonReport(): boolean {
     const abfrage = this.searchStore.selectedAbfrage;
     return (
-      (this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
-        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
-        this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
-          AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren) &&
+      this.isBauleitplanverfahrenOrWeiteresVerfahren &&
       !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung) &&
       abfrage.sobonRelevant === UncertainBoolean.True &&
       (this.abfragevarianteSachbearbeitung.sobonBerechnung?.isASobonBerechnung as boolean) &&
@@ -191,6 +205,16 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
       !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.bezeichnung) &&
       !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung?.sobonFoerdermix?.foerderarten) &&
       !_.isNil(this.abfragevarianteSachbearbeitung?.gfWohnenSobonUrsaechlich)
+    );
+  }
+
+  private get isBauleitplanverfahrenOrWeiteresVerfahren(): boolean {
+    return (
+      !_.isNil(this.abfragevarianteSachbearbeitung) &&
+      (this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
+        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
+        this.abfragevarianteSachbearbeitung?.artAbfragevariante ===
+          AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren)
     );
   }
 }
