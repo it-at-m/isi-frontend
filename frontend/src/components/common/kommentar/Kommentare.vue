@@ -30,11 +30,12 @@ import Kommentar from "@/components/common/kommentar/Kommentar.vue";
 import { Context } from "@/utils/Context";
 import { createKommentarDto } from "@/utils/Factories";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 
 @Component({
   components: { Kommentar },
 })
-export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLeaveMixin) {
+export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLeaveMixin, ValidatorMixin) {
   @Prop({ type: String, default: Context.UNDEFINED })
   private readonly context!: Context;
 
@@ -109,19 +110,24 @@ export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLea
   }
 
   private saveKommentar(kommentar: KommentarModel): void {
-    if (_.isNil(kommentar.id)) {
-      this.createKommentar(kommentar, true).then((createdKommentar) => {
-        const model = new KommentarModel(createdKommentar);
-        model.isDirty = false;
-        this.replaceSavedKommentarInKommentare(model);
-        this.kommentare.unshift(this.createNewUnsavedKommentar());
-      });
+    const validationMessage = this.findFaultInKommentar(kommentar);
+    if (_.isNil(validationMessage)) {
+      if (_.isNil(kommentar.id)) {
+        this.createKommentar(kommentar, true).then((createdKommentar) => {
+          const model = new KommentarModel(createdKommentar);
+          model.isDirty = false;
+          this.replaceSavedKommentarInKommentare(model);
+          this.kommentare.unshift(this.createNewUnsavedKommentar());
+        });
+      } else {
+        this.updateKommentar(kommentar, true).then((updatedKommentar) => {
+          const model = new KommentarModel(updatedKommentar);
+          model.isDirty = false;
+          this.replaceSavedKommentarInKommentare(model);
+        });
+      }
     } else {
-      this.updateKommentar(kommentar, true).then((updatedKommentar) => {
-        const model = new KommentarModel(updatedKommentar);
-        model.isDirty = false;
-        this.replaceSavedKommentarInKommentare(model);
-      });
+      this.showWarningInInformationList(validationMessage);
     }
   }
 

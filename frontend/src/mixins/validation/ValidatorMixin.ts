@@ -28,7 +28,9 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
-  BaugenehmigungsverfahrenDto,
+  DokumentDto,
+  DokumentDtoArtDokumentEnum,
+  KommentarDto,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -137,6 +139,15 @@ export default class ValidatorMixin extends Vue {
     if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {
       return "Bearbeitungsfrist nicht angegeben oder nicht im Format TT.MM.JJJJ";
     }
+
+    let validationMessage: string | null = null;
+    if (!_.isNil(abfrage)) {
+      validationMessage = this.findFaultInDokumente(abfrage.dokumente);
+      if (!_.isNil(validationMessage)) {
+        return validationMessage;
+      }
+    }
+
     return this.findFaultInAbfragevarianten(abfrage);
   }
 
@@ -301,6 +312,11 @@ export default class ValidatorMixin extends Vue {
     if (!_.isNil(messageFaultInAbfragevarianteBauratendateiInput)) {
       return messageFaultInAbfragevarianteBauratendateiInput;
     }
+    const messageFaultinDokumente = this.findFaultInDokumente(abfragevariante.dokumente);
+    if (!_.isNil(messageFaultinDokumente)) {
+      return messageFaultinDokumente;
+    }
+
     return null;
   }
 
@@ -514,6 +530,11 @@ export default class ValidatorMixin extends Vue {
 
     if (_.isEmpty(bauvorhaben.wesentlicheRechtsgrundlage)) {
       return "Bitte die wesentliche Rechtsgrundlage angeben";
+    }
+
+    const validationMessage = this.findFaultInDokumente(bauvorhaben.dokumente);
+    if (!_.isNil(validationMessage)) {
+      return validationMessage;
     }
 
     return null;
@@ -850,6 +871,28 @@ export default class ValidatorMixin extends Vue {
       }
     }
 
+    const validationMessageDokumente = this.findFaultInDokumente(abfragevariante.dokumente);
+    if (!_.isNil(validationMessageDokumente)) {
+      return validationMessageDokumente;
+    }
+
     return null;
+  }
+
+  public findFaultInKommentar(kommentar: KommentarDto): string | null {
+    let validationMessage: string | null = null;
+    validationMessage = this.findFaultInDokumente(kommentar.dokumente);
+    return validationMessage;
+  }
+
+  public findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
+    let validationMessage: string | null = null;
+    if (
+      !_.isNil(dokumente) &&
+      dokumente.some((dokument) => dokument.artDokument === DokumentDtoArtDokumentEnum.Unspecified)
+    ) {
+      validationMessage = `Bitte geben Sie die Dokumentart zu dem/den Dokument(en) an`;
+    }
+    return validationMessage;
   }
 }
