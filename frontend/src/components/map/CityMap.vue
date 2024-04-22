@@ -108,7 +108,6 @@ interface Props {
   height?: number | string;
   width?: number | string;
   zoom?: number;
-  initalZoom?: number;
   expandable?: boolean;
   /**
    * True falls Buttons zum Feuern der Events "acceptSelectedGeoJson" und
@@ -135,7 +134,7 @@ interface Props {
 interface Emits {
   (event: "acceptSelectedGeoJson", value: void): void;
   (event: "deselectGeoJson", value: void): void;
-  (event: "clickInMap", value: LeafletMouseEvent): void;
+  (event: "clickInMap", value: L.LatLng): L.LatLng;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -148,6 +147,7 @@ const props = withDefaults(defineProps<Props>(), {
   automaticZoomToPolygons: false,
   layersForLayerControl: undefined,
 });
+
 const emit = defineEmits<Emits>();
 const sheet = ref<HTMLFormElement | null>(null);
 const map = ref<HTMLFormElement | null>(null);
@@ -158,7 +158,7 @@ const initialZoom = props.zoom;
 let firstGeoJsonFeatureAdded = false;
 let expanded = false;
 let addedLayersForLayerControl: Map<string, Layer>;
-let mapMarkerClusterGroup = L.markerClusterGroup();
+let mapMarkerClusterGroup = (L as any).markerClusterGroup();
 let mapRefCopy!: L.Map;
 
 const mapOptions = computed(() => MAP_OPTIONS);
@@ -169,14 +169,41 @@ const minZoom = computed(() => MIN_ZOOM);
 const isGeoJsonNotEmpty = computed(() => !_.isEmpty(props.geoJson));
 const backgroundMapUrl = computed(() => getBackgroundMapUrl());
 
+onMounted(() => {
+  // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `map.mapObject` aufgerufen werden müsste.
+  mapRefCopy = map.value?.mapObject;
+  // Workaround für anderes Fetch-Verhalten bei Infrastruktureinrichtungen.
+  onLookAtChanged();
+  // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
+  onGeoJsonChanged();
+});
+
+watch(() => props.lookAt, onLookAtChanged, { deep: true });
+watch(() => props.geoJson, onGeoJsonChanged, { deep: true });
+watch(() => props.layersForLayerControl, updateLayerControlWithCustomLayers, { deep: true });
+
 function addGeoJsonToMap(): void {
   mapRefCopy.removeLayer(mapMarkerClusterGroup);
-  mapMarkerClusterGroup.addTo(map);
+  mapMarkerClusterGroup = (L as any).markerClusterGroup().addTo(mapRefCopy);
   L.geoJSON(props.geoJson, props.geoJsonOptions).addTo(mapMarkerClusterGroup);
 }
 
 function flyToPositionOnMap(position: LatLngLiteral | undefined): void {
   if (position) mapRefCopy.flyTo(position, 16);
+}
+
+/**
+ * Fügt die Layer sowie die in der Property "layersForLayerControl" bereits existierenden Layer dem Overlay der LayerControl hinzu.
+ * Es können beliebig viele Layer zur selben Zeit sichtbar sein, da diese spezifische Merkmale darstellen sollen.
+ */
+function onLayerControlReady(): void {
+  const layerControlCopy = layerControl.value?.mapObject;
+  assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControlCopy.addOverlay(layer, name));
+  updateLayerControlWithCustomLayers();
+}
+
+function onClickInMap(event: LeafletMouseEvent): void {
+  clickInMap(event);
 }
 
 function flyToCenterOfPolygonsInMap(): void {
@@ -195,22 +222,6 @@ function flyToCenterOfPolygonsInMap(): void {
     const center: L.LatLng = new LatLngBounds(bounds).getCenter();
     flyToPositionOnMap({ lat: center.lat, lng: center.lng });
   }
-}
-
-function onClickInMap(event: LeafletMouseEvent): void {
-  emit("clickInMap", event);
-}
-
-function onDeselectGeoJson(event: MouseEvent): void {
-  event.preventDefault();
-  event.stopPropagation();
-  emit("deselectGeoJson");
-}
-
-function onAcceptSelectedGeoJson(event: MouseEvent): void {
-  event.preventDefault();
-  event.stopPropagation();
-  emit("acceptSelectedGeoJson");
 }
 
 function toggleExpansion(event: MouseEvent): void {
@@ -264,28 +275,21 @@ function updateLayerControlWithCustomLayers(): void {
   }
 }
 
-/**
- * Fügt die Layer sowie die in der Property "layersForLayerControl" bereits existierenden Layer dem Overlay der LayerControl hinzu.
- * Es können beliebig viele Layer zur selben Zeit sichtbar sein, da diese spezifische Merkmale darstellen sollen.
- */
-function onLayerControlReady(): void {
-  const layerControlCopy = layerControl.value?.mapObject;
-  assembleDefaultLayersForLayerControl().forEach((layer, name) => layerControlCopy.addOverlay(layer, name));
-  updateLayerControlWithCustomLayers();
+function clickInMap(event: LeafletMouseEvent): void {
+  emit("clickInMap", event.latlng);
 }
 
-onMounted(() => {
-  // Erzeugt einen "Shortcut" zum mapObject, da in den unteren Funktionen ansonsten immer `map.mapObject` aufgerufen werden müsste.
-  mapRefCopy = map.value?.mapObject;
-  // Workaround für anderes Fetch-Verhalten bei Infrastruktureinrichtungen.
-  onLookAtChanged();
-  // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
-  onGeoJsonChanged();
-});
+function onDeselectGeoJson(event: MouseEvent): void {
+  event.preventDefault();
+  event.stopPropagation();
+  emit("deselectGeoJson");
+}
 
-watch(() => props.lookAt, onLookAtChanged, { deep: true });
-watch(() => props.geoJson, onGeoJsonChanged, { deep: true });
-watch(() => props.layersForLayerControl, updateLayerControlWithCustomLayers, { deep: true });
+function onAcceptSelectedGeoJson(event: MouseEvent): void {
+  event.preventDefault();
+  event.stopPropagation();
+  emit("acceptSelectedGeoJson");
+}
 </script>
 
 <style>
