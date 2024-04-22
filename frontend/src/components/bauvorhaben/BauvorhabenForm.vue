@@ -9,10 +9,10 @@
           <v-select
             id="bauvorhaben_standVerfahren_dropdown"
             v-model="bauvorhaben.standVerfahren"
-            :items="standVerfahrenList"
+            :items="standVerfahren"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
             @change="formChanged"
           >
@@ -46,7 +46,7 @@
             id="bauvorhaben_grundstuecksgroesse"
             v-model="calcGrundstuecksgroesse"
             label="Grundstücksgröße"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+            :suffix="SQUARE_METER"
             :disabled="true"
           />
         </v-col>
@@ -72,10 +72,10 @@
     <verortung
       id="verortung_component"
       v-model="bauvorhaben.verortung"
-      :context="context"
+      :context="Context.BAUVORHABEN"
       :look-at="bauvorhaben.adresse"
     />
-    <field-group-card :card-title="allgemeineInfoCardTitle">
+    <field-group-card card-title="Allgemeine Informationen zum Bauvorhaben">
       <v-row>
         <v-col
           cols="12"
@@ -84,12 +84,12 @@
           <v-autocomplete
             id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
-            :items="wesentlicheRechtsgrundlageList"
+            :items="wesentlicheRechtsgrundlage"
             item-value="key"
             item-text="value"
             multiple
             chips
-            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
             @change="formChanged"
           >
@@ -119,12 +119,12 @@
           <v-autocomplete
             id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
-            :items="artBaulicheNutzungList"
+            :items="artBaulicheNutzungBauvorhaben"
             item-value="key"
             item-text="value"
             multiple
             chips
-            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
             @input="formChanged"
           >
@@ -201,7 +201,7 @@
       :is-dokumente-editable="isEditable"
       @change="formChanged"
     />
-    <field-group-card :card-title="sobonCardTitle">
+    <field-group-card card-title="SoBoN">
       <v-row justify="center">
         <v-col
           cols="12"
@@ -212,7 +212,7 @@
             v-model="bauvorhaben.sobonRelevant"
             off-text="Nein"
             on-text="Ja"
-            :rules="[fieldValidationRules.notUnspecified]"
+            :rules="[notUnspecified]"
             :disabled="!isEditable"
           >
             <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
@@ -227,10 +227,10 @@
               v-if="sobonJahrVisible"
               id="bauvorhaben_sobonJahr_dropdown"
               v-model="bauvorhaben.sobonJahr"
-              :items="sobonVerfahrensgrundsaetzeJahrList"
+              :items="sobonVerfahrensgrundsaetzeJahr"
               item-value="key"
               item-text="value"
-              :rules="[fieldValidationRules.pflichtfeld]"
+              :rules="[pflichtfeld]"
               :disabled="!isEditable"
               @change="formChanged"
             >
@@ -242,17 +242,15 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <field-group-card :card-title="referencedObjectsCardTitle">
+    <field-group-card card-title="Zugehörige Infrastruktureinrichtungen und Abfragen">
       <referenced-items-list />
     </field-group-card>
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import _ from "lodash";
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
 import {
-  LookupEntryDto,
   UncertainBoolean,
   GemarkungDto,
   FlurstueckDto,
@@ -260,149 +258,116 @@ import {
   BauvorhabenDtoStandVerfahrenEnum,
   BauvorhabenDtoArtFnpEnum,
 } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
+import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import SecurityMixin from "@/mixins/security/SecurityMixin";
 import ReferencedItemsList from "@/components/bauvorhaben/ReferencedItemsList.vue";
-import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import { Context } from "@/utils/Context";
 import Verortung from "@/components/common/Verortung.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
+import { defineModel } from "@/utils/Vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({
-  computed: {
-    context() {
-      return Context.BAUVORHABEN;
-    },
-  },
-  components: {
-    AdresseComponent,
-    Verortung,
-    FieldGroupCard,
-    Dokumente,
-    NumField,
-    TriSwitch,
-    ReferencedItemsList,
-  },
-})
-export default class BauvorhabenForm extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  SecurityMixin,
-  BauvorhabenApiRequestMixin,
-) {
-  @VModel({ type: BauvorhabenModel })
-  bauvorhaben!: BauvorhabenModel;
+interface Props {
+  value: BauvorhabenModel;
+  isEditable?: boolean;
+}
 
-  private sobonCardTitle = "SoBoN";
+interface Emits {
+  (event: "input", value: BauvorhabenModel): void;
+}
 
-  private sobonJahrVisible = false;
+const { standVerfahren, wesentlicheRechtsgrundlage, artBaulicheNutzungBauvorhaben, sobonVerfahrensgrundsaetzeJahr } =
+  useLookupStore();
+const { formChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const bauvorhaben = defineModel(props, emit);
+const sobonJahrVisible = ref(false);
+const standVerfahrenFreieEingabeVisible = ref(false);
+const artFnpFreieEingabeVisible = ref(false);
+const wesentlicheRechtsgrundlageFreieEingabeVisible = ref(false);
+const nameRootFolder = "bauvorhaben";
 
-  private standVerfahrenFreieEingabeVisible = false;
+const calcGrundstuecksgroesse = computed({
+  get() {
+    let grundstuecksgroesse = Number.NaN;
 
-  private artFnpFreieEingabeVisible = false;
-
-  private nameRootFolder = "bauvorhaben";
-
-  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Bauvorhaben";
-
-  private referencedObjectsCardTitle = "Zugehörige Infrastruktureinrichtungen und Abfragen";
-
-  private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
-
-  private lookupStore = useLookupStore();
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get standVerfahrenList(): LookupEntryDto[] {
-    return this.lookupStore.standVerfahren;
-  }
-
-  get wesentlicheRechtsgrundlageList(): LookupEntryDto[] {
-    return this.lookupStore.wesentlicheRechtsgrundlage;
-  }
-
-  get artBaulicheNutzungList(): LookupEntryDto[] {
-    return this.lookupStore.artBaulicheNutzungBauvorhaben;
-  }
-
-  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
-    return this.lookupStore.sobonVerfahrensgrundsaetzeJahr;
-  }
-
-  set calcGrundstuecksgroesse(grundstuecksgroesse: number) {
-    // do nothing
-  }
-
-  get calcGrundstuecksgroesse(): number | undefined {
-    this.bauvorhaben.grundstuecksgroesse = Number.NaN;
-
-    if (this.bauvorhaben.verortung) {
-      this.bauvorhaben.grundstuecksgroesse = 0;
-      this.bauvorhaben.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
+    if (bauvorhaben.value.verortung?.gemarkungen) {
+      grundstuecksgroesse = 0;
+      bauvorhaben.value.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
         gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
           if (!_.isNil(flurstueck.flaecheQm)) {
-            if (_.isNil(this.bauvorhaben.grundstuecksgroesse)) {
-              this.bauvorhaben.grundstuecksgroesse = 0;
-            }
-            this.bauvorhaben.grundstuecksgroesse += flurstueck.flaecheQm;
+            grundstuecksgroesse += flurstueck.flaecheQm;
           }
         });
       });
     }
 
-    return this.bauvorhaben.grundstuecksgroesse;
-  }
+    bauvorhaben.value.grundstuecksgroesse = grundstuecksgroesse;
+    return grundstuecksgroesse;
+  },
+  set() {
+    // do nothing
+  },
+});
 
-  @Watch("bauvorhaben.sobonRelevant", { immediate: true })
-  private sobonRelevantChanged(value: UncertainBoolean): void {
+watch(
+  () => bauvorhaben.value.sobonRelevant,
+  (value) => {
     if (value === UncertainBoolean.True) {
-      this.sobonJahrVisible = true;
+      sobonJahrVisible.value = true;
     } else {
-      this.sobonJahrVisible = false;
-      this.bauvorhaben.sobonJahr = undefined;
+      sobonJahrVisible.value = false;
+      bauvorhaben.value.sobonJahr = undefined;
     }
-  }
+  },
+  { immediate: true },
+);
 
-  @Watch("bauvorhaben.wesentlicheRechtsgrundlage", { immediate: true })
-  private wesentlicheRechtsgrundlageChanged(): void {
+watch(
+  () => bauvorhaben.value.wesentlicheRechtsgrundlage,
+  () => {
     if (
-      this.bauvorhaben.wesentlicheRechtsgrundlage?.includes(BauvorhabenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe)
+      bauvorhaben.value.wesentlicheRechtsgrundlage?.includes(BauvorhabenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe)
     ) {
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;
+      wesentlicheRechtsgrundlageFreieEingabeVisible.value = true;
     } else {
-      this.bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe = undefined;
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+      bauvorhaben.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
+      wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
     }
-  }
+  },
+  { immediate: true, deep: true },
+);
 
-  @Watch("bauvorhaben.standVerfahren", { immediate: true })
-  private standVerfahrenChanged(): void {
-    if (this.bauvorhaben.standVerfahren?.includes(BauvorhabenDtoStandVerfahrenEnum.FreieEingabe)) {
-      this.standVerfahrenFreieEingabeVisible = true;
+watch(
+  () => bauvorhaben.value.standVerfahren,
+  () => {
+    if (bauvorhaben.value.standVerfahren?.includes(BauvorhabenDtoStandVerfahrenEnum.FreieEingabe)) {
+      standVerfahrenFreieEingabeVisible.value = true;
     } else {
-      this.bauvorhaben.standVerfahrenFreieEingabe = undefined;
-      this.standVerfahrenFreieEingabeVisible = false;
+      bauvorhaben.value.standVerfahrenFreieEingabe = undefined;
+      standVerfahrenFreieEingabeVisible.value = false;
     }
-  }
+  },
+  { immediate: true },
+);
 
-  @Watch("bauvorhaben.artFnp", { immediate: true })
-  private artFnpChanged(): void {
-    if (this.bauvorhaben.artFnp?.includes(BauvorhabenDtoArtFnpEnum.FreieEingabe)) {
-      this.artFnpFreieEingabeVisible = true;
+watch(
+  () => bauvorhaben.value.artFnp,
+  () => {
+    if (bauvorhaben.value.artFnp?.includes(BauvorhabenDtoArtFnpEnum.FreieEingabe)) {
+      artFnpFreieEingabeVisible.value = true;
     } else {
-      this.bauvorhaben.artFnpFreieEingabe = undefined;
-      this.artFnpFreieEingabeVisible = false;
+      bauvorhaben.value.artFnpFreieEingabe = undefined;
+      artFnpFreieEingabeVisible.value = false;
     }
-  }
-}
+  },
+  { immediate: true, deep: true },
+);
 </script>

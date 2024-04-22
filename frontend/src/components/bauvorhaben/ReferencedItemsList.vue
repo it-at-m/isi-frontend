@@ -54,7 +54,7 @@
               >
                 <v-list-item-title> {{ infra.nameEinrichtung }} </v-list-item-title>
                 <v-list-item-subtitle>
-                  Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
+                  Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungTyp) }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -65,116 +65,95 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
+<script setup lang="ts">
 import {
   AbfrageSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import router from "@/router";
 import moment from "moment";
-import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import { useLookupStore } from "@/stores/LookupStore";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 
-@Component
-export default class ReferencedItemsList extends Mixins(BauvorhabenApiRequestMixin) {
-  private isAbfrageListOpen = false;
+const { infrastruktureinrichtungTyp } = useLookupStore();
+const { getReferencedAbfrageList, getReferencedInfrastruktureinrichtungenList } = useBauvorhabenApi();
+const route = useRoute();
+const router = useRouter();
+const abfragen = ref<AbfrageSearchResultDto[]>([]);
+const infrastruktureinrichtungen = ref<InfrastruktureinrichtungSearchResultDto[]>([]);
+const abfragenEmpty = computed(() => _.isEmpty(abfragen));
+const infrastruktureinrichtungenEmpty = computed(() => _.isEmpty(infrastruktureinrichtungen));
+let isAbfrageListOpen = false;
+let isInfraListOpen = false;
 
-  private isInfraListOpen = false;
-
-  private lookupStore = useLookupStore();
-
-  abfragen: Array<AbfrageSearchResultDto> = [];
-
-  infrastruktureinrichtungen: Array<InfrastruktureinrichtungSearchResultDto> = [];
-
-  get abfragenEmpty(): boolean {
-    return _.isEmpty(this.abfragen);
-  }
-
-  get infrastruktureinrichtungenEmpty(): boolean {
-    return _.isEmpty(this.infrastruktureinrichtungen);
-  }
-
-  private getReferencedAbfragen(): void {
-    if (!this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
-      this.isAbfrageListOpen = true;
-      this.getReferencedAbfrageList(this.$route.params.id, true).then((searchResults: AbfrageSearchResultDto[]) => {
-        if (!_.isNil(searchResults)) {
-          this.abfragen = searchResults;
-        }
-      });
-    } else if (this.isAbfrageListOpen && !_.isNil(this.$route.params.id)) {
-      this.isAbfrageListOpen = false;
-    } else {
-      this.isAbfrageListOpen = false;
+async function getReferencedAbfragen(): Promise<void> {
+  if (!isAbfrageListOpen && !_.isNil(route.params.id)) {
+    isAbfrageListOpen = true;
+    const searchResults = await getReferencedAbfrageList(route.params.id, true);
+    if (!_.isNil(searchResults)) {
+      abfragen.value = searchResults;
     }
-  }
-
-  private getReferencedInfrastruktureinrichtungen(): void {
-    if (!this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
-      this.isInfraListOpen = true;
-      this.getReferencedInfrastruktureinrichtungenList(this.$route.params.id, true).then(
-        (searchResults: InfrastruktureinrichtungSearchResultDto[]) => {
-          if (!_.isNil(searchResults)) {
-            this.infrastruktureinrichtungen = searchResults;
-          }
-        },
-      );
-    } else if (this.isInfraListOpen && !_.isNil(this.$route.params.id)) {
-      this.isInfraListOpen = false;
-    } else {
-      this.isInfraListOpen = false;
-    }
-  }
-
-  get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
-    return this.lookupStore.infrastruktureinrichtungTyp;
-  }
-
-  /**
-   * Methode um Datum für die Anzeige zu formatieren
-   */
-  formatDate(dateTime: Date): string {
-    return moment(dateTime).format("DD.MM.YYYY");
-  }
-
-  /**
-   * Routing zur Detailansicht der Abfrage
-   *
-   * @param abfrageSearchResultDto zum ermitteln der Route.
-   */
-  routeToAbfrageInfo(abfrageSearchResultDto: AbfrageSearchResultDto): void {
-    if (!_.isNil(abfrageSearchResultDto.id)) {
-      router.push({
-        name: "updateabfrage",
-        params: { id: abfrageSearchResultDto.id },
-      });
-    }
-  }
-
-  /**
-   * Routing zur Detailansicht der Infrastruktureinrichtung
-   *
-   * @param infrastruktureinrichtungSearchResultDto zum ermitteln der Route.
-   */
-  routeToInfrastruktureinrichtungInfo(
-    infrastruktureinrichtungSearchResultDto: InfrastruktureinrichtungSearchResultDto,
-  ): void {
-    if (!_.isNil(infrastruktureinrichtungSearchResultDto.id)) {
-      router.push({
-        name: "editInfrastruktureinrichtung",
-        params: { id: infrastruktureinrichtungSearchResultDto.id },
-      });
-    }
-  }
-
-  private getLookupValue(key: string, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isNil(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+  } else if (isAbfrageListOpen && !_.isNil(route.params.id)) {
+    isAbfrageListOpen = false;
+  } else {
+    isAbfrageListOpen = false;
   }
 }
-</script>
 
-<style></style>
+async function getReferencedInfrastruktureinrichtungen(): Promise<void> {
+  if (!isInfraListOpen && !_.isNil(route.params.id)) {
+    isInfraListOpen = true;
+    const searchResults = await getReferencedInfrastruktureinrichtungenList(route.params.id, true);
+    if (!_.isNil(searchResults)) {
+      infrastruktureinrichtungen.value = searchResults;
+    }
+  } else if (isInfraListOpen && !_.isNil(route.params.id)) {
+    isInfraListOpen = false;
+  } else {
+    isInfraListOpen = false;
+  }
+}
+
+/**
+ * Methode um Datum für die Anzeige zu formatieren
+ */
+function formatDate(dateTime: Date | undefined): string {
+  return moment(dateTime).format("DD.MM.YYYY");
+}
+
+/**
+ * Routing zur Detailansicht der Abfrage
+ *
+ * @param abfrageSearchResultDto zum ermitteln der Route.
+ */
+function routeToAbfrageInfo(abfrageSearchResultDto: AbfrageSearchResultDto): void {
+  if (!_.isNil(abfrageSearchResultDto.id)) {
+    router.push({
+      name: "updateabfrage",
+      params: { id: abfrageSearchResultDto.id },
+    });
+  }
+}
+
+/**
+ * Routing zur Detailansicht der Infrastruktureinrichtung
+ *
+ * @param infrastruktureinrichtungSearchResultDto zum ermitteln der Route.
+ */
+function routeToInfrastruktureinrichtungInfo(
+  infrastruktureinrichtungSearchResultDto: InfrastruktureinrichtungSearchResultDto,
+): void {
+  if (!_.isNil(infrastruktureinrichtungSearchResultDto.id)) {
+    router.push({
+      name: "editInfrastruktureinrichtung",
+      params: { id: infrastruktureinrichtungSearchResultDto.id },
+    });
+  }
+}
+
+function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+  return !_.isNil(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+}
+</script>

@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :value="steuerflag"
+    :value="dialogOpen"
     persistent
     width="60%"
   >
@@ -18,7 +18,7 @@
             id="bauvorhaben_abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
             :items="abfragen"
-            :item-text="(item) => getItemText(item)"
+            :item-text="(item: AbfrageSearchResultDto) => getItemText(item)"
             item-value="id"
             label="Abfragen"
             return-object
@@ -49,120 +49,109 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
+<script setup lang="ts">
 import {
   AbfrageDto,
   AbfrageSearchResultDto,
   LookupEntryDto,
-  SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
 import { createBauleitplanverfahrenDto } from "@/utils/Factories";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import { useLookupStore } from "@/stores/LookupStore";
+import { defineModel } from "@/utils/Vue";
+import { useSearchApi } from "@/composables/requests/search/SearchApi";
+import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 
-@Component
-export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiRequestMixin, AbfrageApiRequestMixin) {
-  @VModel({ type: Boolean }) steuerflag!: boolean;
+interface Props {
+  value: boolean;
+}
 
-  private abfragen: Array<AbfrageSearchResultDto> = [];
+interface Emits {
+  (event: "abfrageUebernehmen", value: AbfrageDto): void;
+  (event: "uebernahmeAbbrechen", value: void): void;
+  (event: "input", value: boolean): void;
+}
 
-  private selectedAbfrageSearchResult: AbfrageSearchResultDto = {};
+const { getById } = useAbfragenApi();
+const { searchForEntities } = useSearchApi();
+const { standVerfahren, statusAbfrage } = useLookupStore();
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const dialogOpen = defineModel(props, emit);
+const abfragen = ref<AbfrageSearchResultDto[]>([]);
+const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>({});
+let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
 
-  private selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
+onMounted(() => fetchAbfragen());
 
-  private lookupStore = useLookupStore();
-
-  mounted(): void {
-    this.fetchAbfragen();
-  }
-
-  get standVerfahrenList(): LookupEntryDto[] {
-    return this.lookupStore.standVerfahren;
-  }
-
-  get statusAbfrageList(): LookupEntryDto[] {
-    return this.lookupStore.statusAbfrage;
-  }
-
-  @Watch("selectedAbfrageSearchResult", { immediate: true })
-  private transferToBauvorhaben(): void {
-    if (!_.isNil(this.selectedAbfrageSearchResult) && !_.isNil(this.selectedAbfrageSearchResult.id)) {
-      const idAbfrage: string = this.selectedAbfrageSearchResult.id;
-      this.getById(idAbfrage, false).then((abfrageDto: AbfrageDto) => {
-        this.selectedAbfrage = abfrageDto;
-      });
+watch(
+  selectedAbfrageSearchResult,
+  async () => {
+    if (!_.isNil(selectedAbfrageSearchResult.value) && !_.isNil(selectedAbfrageSearchResult.value.id)) {
+      const idAbfrage = selectedAbfrageSearchResult.value.id;
+      selectedAbfrage = await getById(idAbfrage, false);
     }
-  }
+  },
+  { immediate: true },
+);
 
-  private getItemText(searchResult: AbfrageSearchResultDto): string {
-    return (
-      "Name: " +
-      _.defaultTo(searchResult.name, "Kein Name vorhanden") +
-      " - Status: " +
-      _.defaultTo(
-        this.getLookupValue(searchResult.statusAbfrage, this.statusAbfrageList),
-        "Kein Abfragestatus vorhanden",
-      ) +
-      " - Stand: " +
-      _.defaultTo(
-        this.getLookupValue(searchResult.standVerfahren, this.standVerfahrenList),
-        "Kein Verfahrensstand vorhanden",
-      )
-    );
-  }
+function getItemText(searchResult: AbfrageSearchResultDto): string {
+  return (
+    "Name: " +
+    _.defaultTo(searchResult.name, "Kein Name vorhanden") +
+    " - Status: " +
+    _.defaultTo(getLookupValue(searchResult.statusAbfrage, statusAbfrage), "Kein Abfragestatus vorhanden") +
+    " - Stand: " +
+    _.defaultTo(getLookupValue(searchResult.standVerfahren, standVerfahren), "Kein Verfahrensstand vorhanden")
+  );
+}
 
-  private async fetchAbfragen(): Promise<void> {
-    const searchQueryAndSortingDto = {
-      searchQuery: "",
-      selectBauleitplanverfahren: true,
-      selectBaugenehmigungsverfahren: true,
-      selectWeiteresVerfahren: true,
-      selectBauvorhaben: false,
-      selectGrundschule: false,
-      selectGsNachmittagBetreuung: false,
-      selectHausFuerKinder: false,
-      selectKindergarten: false,
-      selectKinderkrippe: false,
-      selectMittelschule: false,
-      page: undefined,
-      pageSize: undefined,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-    } as SearchQueryAndSortingDto;
-    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
-      this.abfragen = searchResults.searchResults
-        ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
-        .filter((abfrageSearchResult) => _.isNil(abfrageSearchResult.bauvorhaben)) as Array<AbfrageSearchResultDto>;
-    });
-  }
+async function fetchAbfragen(): Promise<void> {
+  const searchQueryAndSortingDto = {
+    searchQuery: "",
+    selectBauleitplanverfahren: true,
+    selectBaugenehmigungsverfahren: true,
+    selectWeiteresVerfahren: true,
+    selectBauvorhaben: false,
+    selectGrundschule: false,
+    selectGsNachmittagBetreuung: false,
+    selectHausFuerKinder: false,
+    selectKindergarten: false,
+    selectKinderkrippe: false,
+    selectMittelschule: false,
+    page: undefined,
+    pageSize: undefined,
+    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+  };
+  const searchResults = await searchForEntities(searchQueryAndSortingDto);
+  abfragen.value = searchResults.searchResults
+    ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
+    .filter((abfrageSearchResult) => _.isNil(abfrageSearchResult.bauvorhaben)) as Array<AbfrageSearchResultDto>;
+}
 
-  /**
-   * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
-   *
-   * @param key für welchen der Wert aus der Liste geholt werden soll.
-   * @param list mit den Schlüssel-Wert-Paaren.
-   * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
-   */
-  private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list) && !_.isNil(key)
-      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-      : key;
-  }
+/**
+ * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
+ *
+ * @param key für welchen der Wert aus der Liste geholt werden soll.
+ * @param list mit den Schlüssel-Wert-Paaren.
+ * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
+ */
+function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+  return !_.isUndefined(list) && !_.isNil(key)
+    ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+    : key;
+}
 
-  @Emit()
-  private abfrageUebernehmen(): AbfrageDto {
-    this.selectedAbfrageSearchResult = {};
-    return this.selectedAbfrage;
-  }
+function abfrageUebernehmen(): void {
+  selectedAbfrageSearchResult.value = {};
+  emit("abfrageUebernehmen", selectedAbfrage);
+}
 
-  @Emit()
-  private uebernahmeAbbrechen(): void {
-    this.selectedAbfrageSearchResult = {};
-  }
+function uebernahmeAbbrechen(): void {
+  selectedAbfrageSearchResult.value = {};
+  emit("uebernahmeAbbrechen");
 }
 </script>
