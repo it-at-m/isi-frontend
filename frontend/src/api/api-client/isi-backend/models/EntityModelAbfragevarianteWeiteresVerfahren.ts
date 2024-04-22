@@ -283,7 +283,13 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
      * @type {string}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
-    hinweisVersorgung?: string;
+    anmerkungFachreferate?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
+     */
+    anmerkungAbfrageersteller?: string;
     /**
      * 
      * @type {string}
@@ -401,7 +407,8 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'ausgeloesterBedarfMitversorgungImBplanSchule': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanSchule') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
-        'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
+        'anmerkungFachreferate': !exists(json, 'anmerkungFachreferate') ? undefined : json['anmerkungFachreferate'],
+        'anmerkungAbfrageersteller': !exists(json, 'anmerkungAbfrageersteller') ? undefined : json['anmerkungAbfrageersteller'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -457,7 +464,8 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSON(value?: Entity
         'ausgeloesterBedarfMitversorgungImBplanSchule': value.ausgeloesterBedarfMitversorgungImBplanSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
-        'hinweisVersorgung': value.hinweisVersorgung,
+        'anmerkungFachreferate': value.anmerkungFachreferate,
+        'anmerkungAbfrageersteller': value.anmerkungAbfrageersteller,
         'artAbfragevariante': value.artAbfragevariante,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };

@@ -183,9 +183,9 @@
           <v-textarea
             id="hinweis_Versorgung_field"
             ref="hinweisVersorgungField"
-            v-model="abfragevariante.hinweisVersorgung"
+            v-model="anmerkung"
             :disabled="!getIsEditable"
-            label="Hinweise zur Versorgung der Bedarfe außerhalb des Verfahrens"
+            label="Anmerkungen"
             rows="1"
             auto-grow
             maxlength="1000"
@@ -259,11 +259,29 @@ export default class BedarfsmeldungComponent extends Mixins(
 
   private bedarfsmeldungen?: BedarfsmeldungDto[] = [];
 
+  private anmerkung?: string = "";
+
   @Watch("abfragevariante", { immediate: true, deep: true })
   private bedarfsmeldungSelection(): void {
     this.bedarfsmeldungen = this.isFachreferat
       ? this.abfragevariante.bedarfsmeldungFachreferate
       : this.abfragevariante.bedarfsmeldungAbfrageersteller;
+
+    console.log(this.abfragevariante.anmerkungFachreferate);
+    console.log(this.abfragevariante.anmerkungAbfrageersteller);
+
+    this.anmerkung = this.isFachreferat
+      ? this.abfragevariante.anmerkungFachreferate
+      : this.abfragevariante.anmerkungAbfrageersteller;
+  }
+
+  @Watch("anmerkung", { immediate: true, deep: true })
+  private setAnmerkung(): void {
+    if (this.isFachreferat) {
+      this.abfragevariante.anmerkungFachreferate = this.anmerkung;
+    } else {
+      this.abfragevariante.anmerkungAbfrageersteller = this.anmerkung;
+    }
   }
 
   private bedarfsmeldungDialogOpen = false;

@@ -313,7 +313,13 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
      * @type {string}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
-    hinweisVersorgung?: string;
+    anmerkungFachreferate?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
+     */
+    anmerkungAbfrageersteller?: string;
     /**
      * 
      * @type {Array<string>}
@@ -437,7 +443,8 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyFromJSONTyped(json: a
         'ausgeloesterBedarfMitversorgungImBplanSchule': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanSchule') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
-        'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
+        'anmerkungFachreferate': !exists(json, 'anmerkungFachreferate') ? undefined : json['anmerkungFachreferate'],
+        'anmerkungAbfrageersteller': !exists(json, 'anmerkungAbfrageersteller') ? undefined : json['anmerkungAbfrageersteller'],
         'dokumente': !exists(json, 'dokumente') ? undefined : json['dokumente'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
     };
@@ -499,7 +506,8 @@ export function AbfragevarianteWeiteresVerfahrenRequestBodyToJSON(value?: Abfrag
         'ausgeloesterBedarfMitversorgungImBplanSchule': value.ausgeloesterBedarfMitversorgungImBplanSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
-        'hinweisVersorgung': value.hinweisVersorgung,
+        'anmerkungFachreferate': value.anmerkungFachreferate,
+        'anmerkungAbfrageersteller': value.anmerkungAbfrageersteller,
         'dokumente': value.dokumente,
         'artAbfragevariante': value.artAbfragevariante,
     };

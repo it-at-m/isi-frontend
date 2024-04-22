@@ -103,7 +103,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferat
      * @type {string}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto
      */
-    hinweisVersorgung?: string;
+    anmerkungFachreferate?: string;
 }
 
 
@@ -150,7 +150,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatD
         'ausgeloesterBedarfMitversorgungImBplanSchule': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanSchule') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
-        'hinweisVersorgung': !exists(json, 'hinweisVersorgung') ? undefined : json['hinweisVersorgung'],
+        'anmerkungFachreferate': !exists(json, 'anmerkungFachreferate') ? undefined : json['anmerkungFachreferate'],
     };
 }
 
@@ -175,7 +175,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatD
         'ausgeloesterBedarfMitversorgungImBplanSchule': value.ausgeloesterBedarfMitversorgungImBplanSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
-        'hinweisVersorgung': value.hinweisVersorgung,
+        'anmerkungFachreferate': value.anmerkungFachreferate,
     };
 }
 
