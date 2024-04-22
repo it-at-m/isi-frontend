@@ -95,59 +95,54 @@
     />
   </v-card>
 </template>
-<script lang="ts">
-import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin";
-import { Component, Mixins, Emit, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import KommentarModel from "@/types/model/common/KommentarModel";
 import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
 
-@Component({
-  components: { YesNoDialog },
-})
-export default class Kommentar extends Mixins(KommentarApiRequestMixin, SaveLeaveMixin) {
-  @Prop()
-  private kommentar!: KommentarModel;
+interface Props {
+  value: KommentarModel;
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+interface Emits {
+  (event: "input", value: KommentarModel): void;
+  (event: "saveKommentar", value: KommentarModel): void;
+  (event: "deleteKommentar", value: KommentarModel): void;
+}
 
-  private deleteDialog = false;
-  private deleteDialogTitle = "Kommentar löschen";
-  private deleteDialogText = "Hiermit wird der Kommentar unwiderruflich gelöscht.";
-  private deleteDialogYesText = "Löschen";
-  private deleteDialogNoText = "Abbrechen";
-  private nameRootFolder = "kommentare";
+const deleteDialogTitle = "Kommentar löschen";
+const deleteDialogText = "Hiermit wird der Kommentar unwiderruflich gelöscht.";
+const deleteDialogYesText = "Löschen";
+const deleteDialogNoText = "Abbrechen";
+const nameRootFolder = "kommentare";
+const { commentChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const kommentar = defineModel(props, emit);
+const deleteDialog = ref(false);
+const isSaveable = computed(() => !_.isEmpty(kommentar.value.datum) || !_.isEmpty(kommentar.value.text));
+const isDeletable = computed(() => !_.isNil(kommentar.value.id) || (_.isNil(kommentar.value.id) && isSaveable));
 
-  get isSaveable(): boolean {
-    return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);
-  }
+function cancelDeletion(): void {
+  deleteDialog.value = false;
+}
 
-  get isDeletable(): boolean {
-    return !_.isNil(this.kommentar.id) || (_.isNil(this.kommentar.id) && this.isSaveable);
-  }
+function changed(): void {
+  const clone = _.cloneDeep(kommentar.value);
+  clone.isDirty = true;
+  kommentar.value = clone;
+  commentChanged();
+}
 
-  private cancelDeletion(): void {
-    this.deleteDialog = false;
-  }
+function saveKommentar(): void {
+  emit("saveKommentar", kommentar.value);
+}
 
-  private changed(): void {
-    this.kommentar.isDirty = true;
-    this.commentChanged();
-  }
-
-  @Emit()
-  private saveKommentar(): KommentarModel {
-    return this.kommentar;
-  }
-
-  @Emit()
-  private deleteKommentar(): KommentarModel {
-    this.cancelDeletion();
-    return this.kommentar;
-  }
+function deleteKommentar(): void {
+  cancelDeletion();
+  emit("deleteKommentar", kommentar.value);
 }
 </script>
-
-<style scoped></style>
