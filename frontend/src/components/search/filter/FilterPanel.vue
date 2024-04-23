@@ -37,14 +37,8 @@
   </v-expansion-panel>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
 import PanelHeader from "@/components/search/filter/PanelHeader.vue";
-
-@Component({
-  components: { PanelHeader },
-})
-export default class FilterPanel extends Vue {}
 </script>
 
 <style scoped></style>

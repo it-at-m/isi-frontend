@@ -1,4 +1,4 @@
-import { WritableComputedRef } from "vue";
+import { WritableComputedRef, getCurrentInstance } from "vue";
 
 interface Props<T> {
   value: T;
@@ -25,4 +25,14 @@ export function defineModel<T>(props: Props<T>, emit: Emits<T>): WritableCompute
       emit("input", value);
     },
   });
+}
+
+/**
+ * Ein Workaround um auf this.$vuetify Instanz zuzugreifen.
+ *
+ * @returns aktuelle vuetify instnz
+ */
+export function useVuetify(): any {
+  const vm = getCurrentInstance();
+  return vm.proxy?.$vuetify || undefined;
 }
