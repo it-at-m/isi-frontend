@@ -19,7 +19,7 @@
     </field-group-card>
     <adresse-component
       id="infrastruktureinrichtung_adresse_component"
-      :adresse-prop.sync="infrastruktureinrichtung.adresse"
+      v-model="infrastruktureinrichtung.adresse"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditable"
     />

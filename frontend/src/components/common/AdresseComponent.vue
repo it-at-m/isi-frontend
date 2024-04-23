@@ -13,7 +13,7 @@
             :disabled="!isEditable"
             :items="searchResults"
             :loading="loading"
-            :search-input.sync="searchForAdressen"
+            :search-input.sync="searchQuery"
             dense
             clearable
             color="black"
@@ -149,6 +149,7 @@ const loading = ref(false);
 const searchQuery = ref("");
 const searchResults = ref<MuenchenAdresseDto[]>([]);
 const selectedSearchResult = ref(createMuenchenAdresseDto());
+
 const selected = computed({
   get() {
     return selectedSearchResult.value;
@@ -158,6 +159,8 @@ const selected = computed({
     assumeAdresse(selectedSearchResult.value);
   },
 });
+
+watch(searchQuery, (value) => searchForAdressenWith(value));
 
 function assumeAdresse(dto: MuenchenAdresseDto): void {
   assignAdresse(dto);
@@ -215,10 +218,10 @@ function angabeLageErgaenzendeAdressinformationValidationRule(): boolean | strin
 //
 // Aufruf der EAI zum Lesen der Münchner Adressen mit dem eingegebenen Suchtext mit Adressteilen
 //
-async function searchForAdressen(): Promise<void> {
-  if (!_.isEmpty(searchQuery.value)) {
+async function searchForAdressenWith(searchFor: string): Promise<void> {
+  if (!_.isEmpty(searchFor)) {
     const adressSuche = createAdressSucheDto();
-    adressSuche.query = searchQuery.value;
+    adressSuche.query = searchFor;
     loading.value = true; // Anzeige des Cursorladekreis starten
 
     try {

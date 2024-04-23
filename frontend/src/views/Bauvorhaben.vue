@@ -14,8 +14,8 @@
                 :rules="[pflichtfeld]"
                 maxlength="255"
                 validate-on-blur
-                :disabled="!isRoleAdminOrSachbearbeitung"
-                @input="saveLeave.formChanged"
+                :disabled="!isEditable"
+                @input="formChanged"
               >
                 <template #label> Name des Bauvorhabens <span class="secondary--text">*</span> </template>
               </v-text-field>
@@ -33,13 +33,13 @@
         <bauvorhaben-form
           id="bauvorhaben_bauvorhabenForm_component"
           v-model="bauvorhaben"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isEditable"
         />
         <kommentare
-          v-if="isRoleAdminOrSachbearbeitung && !isNew"
+          v-if="isEditable && !isNew"
           id="bauvorhaben_kommentare"
           :context="Context.BAUVORHABEN"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isEditable"
         />
       </template>
       <template #information>
@@ -50,7 +50,7 @@
           color="primary"
           elevation="1"
           width="200px"
-          :disabled="!isRoleAdminOrSachbearbeitung"
+          :disabled="!isEditable"
           @click="deleteDialogOpen = true"
           v-text="'Löschen'"
         />
@@ -61,7 +61,7 @@
           color="primary"
           elevation="1"
           width="200px"
-          :disabled="!isRoleAdminOrSachbearbeitung"
+          :disabled="!isEditable"
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
@@ -78,11 +78,7 @@
           elevation="1"
           class="text-wrap mt-2 px-1"
           style="width: 200px"
-          :disabled="
-            (!isNew && !saveLeave.isFormDirty()) ||
-            containsNotAllowedDokument(bauvorhaben.dokumente) ||
-            !isRoleAdminOrSachbearbeitung
-          "
+          :disabled="(!isNew && !isFormDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
           @click="validateAndProceed()"
           v-text="isNew ? 'Speichern' : 'Aktualisieren'"
         />
@@ -110,14 +106,13 @@
     />
     <yes-no-dialog
       id="bauvorhaben_yes_no_dialog_save_leave"
-      ref="saveLeaveDialog"
-      v-model="saveLeave.saveLeaveDialog"
-      :dialogtitle="saveLeave.saveLeaveDialogTitle"
-      :dialogtext="saveLeave.saveLeaveDialogText"
-      :no-text="saveLeave.saveLeaveNoText"
-      :yes-text="saveLeave.saveLeaveYesText"
-      @yes="saveLeave.leave"
-      @no="saveLeave.cancel"
+      v-model="saveLeaveDialog"
+      :dialogtitle="saveLeaveDialogTitle"
+      :dialogtext="saveLeaveDialogText"
+      :no-text="saveLeaveNoText"
+      :yes-text="saveLeaveYesText"
+      @yes="leave"
+      @no="cancel"
     />
     <bauvorhaben-data-transfer-dialog
       id="bauvorhaben_datenuebernahme"
@@ -164,12 +159,23 @@ import { AnyAbfrageDto } from "@/types/common/Abfrage";
 
 const route = useRoute();
 const router = useRouter();
-const saveLeave = useSaveLeave();
+const {
+  formChanged,
+  isFormDirty,
+  saveLeaveDialog,
+  saveLeaveDialogTitle,
+  saveLeaveDialogText,
+  saveLeaveNoText,
+  saveLeaveYesText,
+  cancel,
+  leave,
+} = useSaveLeave();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { showWarningInInformationList } = useInformationList();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const { selectedBauvorhaben, setSelectedBauvorhaben, removeSearchResultById } = useSearchStore();
 const form = ref<{ validate: () => boolean } | null>(null);
+const isEditable = computed(() => isRoleAdminOrSachbearbeitung());
 const deleteDialogOpen = ref(false);
 const dataTransferDialogOpen = ref(false);
 let datenuebernahmeAbfrageId: string | undefined = undefined;

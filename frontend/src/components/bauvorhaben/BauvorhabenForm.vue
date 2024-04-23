@@ -65,7 +65,7 @@
     </field-group-card>
     <adresse-component
       id="bauvorhaben_adresse_component"
-      :adresse-prop.sync="bauvorhaben.adresse"
+      v-model="bauvorhaben.adresse"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditable"
     />

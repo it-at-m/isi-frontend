@@ -19,9 +19,9 @@
 
 <script setup lang="ts">
 interface Props {
-  cardTitle: string;
+  cardTitle?: string;
   markCardTitleAsMandatory?: boolean;
 }
 
-withDefaults(defineProps<Props>(), { markCardTitleAsMandatory: false });
+withDefaults(defineProps<Props>(), { cardTitle: "", markCardTitleAsMandatory: false });
 </script>

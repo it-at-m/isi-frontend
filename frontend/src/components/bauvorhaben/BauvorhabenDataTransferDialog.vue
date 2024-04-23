@@ -18,7 +18,7 @@
             id="bauvorhaben_abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
             :items="abfragen"
-            :item-text="(item: AbfrageSearchResultDto) => getItemText(item)"
+            :item-text="(item) => getItemText(item)"
             item-value="id"
             label="Abfragen"
             return-object

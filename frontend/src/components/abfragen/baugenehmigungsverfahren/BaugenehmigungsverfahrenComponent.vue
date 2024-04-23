@@ -16,7 +16,7 @@
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
-      :adresse-prop.sync="baugenehmigungsverfahren.adresse"
+      v-model="baugenehmigungsverfahren.adresse"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditableByAbfrageerstellung()"
     />

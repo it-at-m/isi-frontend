@@ -17,7 +17,7 @@ npm
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
-      :adresse-prop.sync="bauleitplanverfahren.adresse"
+      v-model="bauleitplanverfahren.adresse"
       :show-in-information-list-prop="true"
       :is-editable-prop="isEditableByAbfrageerstellung()"
     />
