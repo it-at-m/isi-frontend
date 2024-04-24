@@ -196,6 +196,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   private showSobonReport(): boolean {
     const abfrage = this.searchStore.selectedAbfrage;
     return (
+      !this.hasOnlyRoleAnwender() &&
       this.isBauleitplanverfahrenOrWeiteresVerfahren &&
       !_.isNil(this.abfragevarianteSachbearbeitung.sobonBerechnung) &&
       abfrage.sobonRelevant === UncertainBoolean.True &&
