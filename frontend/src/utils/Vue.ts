@@ -17,7 +17,7 @@ interface Emits<T> {
  * @returns Ein WritableComputedRef, welches `value` referenziert, aber nicht überschreibt.
  */
 export function defineModel<T>(props: Props<T>, emit: Emits<T>): WritableComputedRef<T> {
-  return computed({
+  const model = computed({
     get() {
       return props.value;
     },
@@ -25,6 +25,17 @@ export function defineModel<T>(props: Props<T>, emit: Emits<T>): WritableCompute
       emit("input", value);
     },
   });
+
+  if (isObject(props.value) && !Array.isArray(props.value)) {
+    watch(reactive(props.value), () => emit("input", props.value));
+  }
+
+  return model;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function isObject(value: unknown): value is Object {
+  return typeof value === "object";
 }
 
 /**
