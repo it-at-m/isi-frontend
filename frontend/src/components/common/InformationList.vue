@@ -4,7 +4,7 @@
     max-height="100%"
     width="100%"
   >
-    <template v-for="(item, index) in informationList">
+    <template v-for="(item, index) in informationStore.informationList">
       <v-list-item
         id="information_list"
         :key="index"
@@ -124,12 +124,12 @@ import { useInformationStore } from "@/stores/InformationStore";
 
 const NOT_APPLICABLE = "n/a";
 const FORMAT_TIMESTAMP = "DD.MM.YYYY HH:mm:ss";
-const { informationList, overwriteInformationList } = useInformationStore();
+const informationStore = useInformationStore();
 
-onMounted(() => overwriteInformationList([]));
+onMounted(() => informationStore.overwriteInformationList([]));
 
 function deleteInformationListEntryByIndex(index: number): void {
-  overwriteInformationList(informationList.toSpliced(index, 1));
+  informationStore.overwriteInformationList(informationStore.informationList.toSpliced(index, 1));
 }
 
 function textTraceId(traceId: string | undefined): string {

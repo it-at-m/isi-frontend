@@ -10,7 +10,7 @@ interface Emits<T> {
 
 /**
  * Ein Workaround für das fehlende defineModel() von Vue 3.4+.
- * Um das Ergebnis zu verändern, muss es immer komplett überschrieben werden.
+ * Falls `value` ein Array ist, muss es immer komplett überschrieben werden, um korrekt geändert zu werden.
  *
  * @param props Die Props der Komponente. Diese müssen ein Feld namens `value` haben.
  * @param emit Die Emits der Komponente. Diese müssen einen Emit für `input` haben, welcher einen Wert vom Typ von `value` emittet.
@@ -43,7 +43,8 @@ function isObject(value: unknown): value is Object {
  *
  * @returns aktuelle vuetify instnz
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useVuetify(): any {
   const vm = getCurrentInstance();
-  return vm.proxy?.$vuetify || undefined;
+  return vm?.proxy?.$vuetify || undefined;
 }

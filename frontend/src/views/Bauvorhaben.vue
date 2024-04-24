@@ -173,7 +173,7 @@ const {
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { showWarningInInformationList } = useInformationList();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
-const { selectedBauvorhaben, setSelectedBauvorhaben, removeSearchResultById } = useSearchStore();
+const searchStore = useSearchStore();
 const form = ref<{ validate: () => boolean } | null>(null);
 const isEditable = computed(() => isRoleAdminOrSachbearbeitung());
 const deleteDialogOpen = ref(false);
@@ -183,10 +183,10 @@ let isNew = true;
 
 const bauvorhaben = computed({
   get() {
-    return selectedBauvorhaben ?? new BauvorhabenModel(createBauvorhabenDto());
+    return searchStore.selectedBauvorhaben ?? new BauvorhabenModel(createBauvorhabenDto());
   },
   set(model: BauvorhabenModel) {
-    setSelectedBauvorhaben(model);
+    searchStore.setSelectedBauvorhaben(model);
   },
 });
 
@@ -194,10 +194,12 @@ const bearbeitungsinformationen = computed(
   () => new BenutzerinformationenModel(bauvorhaben.value.bearbeitendePerson, bauvorhaben.value.lastModifiedDateTime),
 );
 
-onMounted(() => {
+onBeforeMount(() => {
   isNew = route.params.id === undefined;
 
-  if (!isNew) {
+  if (isNew) {
+    bauvorhaben.value = new BauvorhabenModel(createBauvorhabenDto());
+  } else {
     fetchBauvorhabenById();
   }
 });
@@ -260,7 +262,7 @@ async function removeBauvorhaben(): Promise<void> {
   deleteDialogOpen.value = false;
 
   await deleteBauvorhaben(route.params.id, true);
-  removeSearchResultById(route.params.id);
+  searchStore.removeSearchResultById(route.params.id);
   returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
 }
 

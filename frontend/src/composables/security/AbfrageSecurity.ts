@@ -7,7 +7,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 // eslint-disable-next-line
 export function useAbfrageSecurity() {
   const security = useSecurity();
-  const { selectedAbfrage } = useSearchStore();
+  const searchStore = useSearchStore();
 
   function isEditableWithAnzeigeContextAbfragevariante(
     anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
@@ -21,37 +21,40 @@ export function useAbfrageSecurity() {
   }
 
   function isEditableByAbfrageerstellung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
-      return security.isRoleAdminOrAbfrageerstellung() && selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt;
+    if (!_.isNil(searchStore.selectedAbfrage)) {
+      return (
+        security.isRoleAdminOrAbfrageerstellung() &&
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt
+      );
     }
     return false;
   }
 
   function isBedarfsmeldungEditableByAbfrageerstellung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
+    if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
         security.isRoleAdminOrAbfrageerstellung() &&
-        selectedAbfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
       );
     }
     return false;
   }
 
   function isEditableBySachbearbeitung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
+    if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
         security.isRoleAdminOrSachbearbeitung() &&
-        selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
       );
     }
     return false;
   }
 
   function isEditableByBedarfsmeldung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
+    if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
         security.isRoleAdminOrBedarfsmeldung() &&
-        selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
       );
     }
     return false;
