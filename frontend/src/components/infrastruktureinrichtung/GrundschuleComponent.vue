@@ -10,30 +10,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
 import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
-import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import SchuleComponent from "@/components/infrastruktureinrichtung/SchuleComponent.vue";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { defineModel } from "@/utils/Vue";
 
-@Component({
-  components: {
-    FieldGroupCard,
-    InfrastruktureinrichtungComponent,
-    SchuleComponent,
-  },
-})
-export default class GrundschuleComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: GrundschuleModel }) grundschule!: GrundschuleModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEinrichtungstraegerRequired!: boolean;
+interface Props {
+  value: GrundschuleModel;
+  isEditable?: boolean;
+  isEinrichtungstraegerRequired?: boolean;
 }
+
+interface Emits {
+  (event: "input", value: GrundschuleModel): void;
+}
+
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const emit = defineEmits<Emits>();
+const grundschule = defineModel(props, emit);
 </script>
 <style></style>
