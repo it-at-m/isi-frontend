@@ -65,14 +65,17 @@
           cols="12"
           md="6"
         >
-          <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
+          <reports-planungsursaechlichkeit-component
+            v-if="showPlanungsursaechlichenReport()"
+            v-model="abfragevarianteSachbearbeitung"
+          />
         </v-col>
         <v-col
           cols="12"
           md="6"
         >
           <reports-sobonursaechlichkeit-component
-            v-if="showSobonReport()"
+            v-if="showSobonReports()"
             v-model="abfragevarianteSachbearbeitung"
           />
         </v-col>
@@ -191,9 +194,16 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   }
 
   /**
-   * Überprüfung ob alle Kriterien stimmen um die Sobon Report anzuzeigen.
+   * Überprüfung ob alle Kriterien stimmen um die planungsursächlichen Reports anzuzeigen.
    */
-  private showSobonReport(): boolean {
+  private showPlanungsursaechlichenReport(): boolean {
+    return this.isRoleAdminOrSachbearbeitung() || this.isRoleAdminOrBedarfsmeldung();
+  }
+
+  /**
+   * Überprüfung ob alle Kriterien stimmen um die Sobon Reports anzuzeigen.
+   */
+  private showSobonReports(): boolean {
     const abfrage = this.searchStore.selectedAbfrage;
     return (
       !this.hasOnlyRoleAnwender() &&
