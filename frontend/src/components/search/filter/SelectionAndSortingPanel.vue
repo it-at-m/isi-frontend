@@ -207,143 +207,151 @@
   </v-expansion-panel>
 </template>
 
-<script lang="ts">
-import { Component, VModel, Vue } from "vue-property-decorator";
-import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import PanelHeader from "@/components/search/filter/PanelHeader.vue";
+<script setup lang="ts">
 import {
-  LookupEntryDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
+import PanelHeader from "@/components/search/filter/PanelHeader.vue";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import { defineModel } from "@/utils/Vue";
+import { computed } from "vue";
 
-@Component({
-  components: { PanelHeader },
-})
-export default class EntitySelectionAndSortingPanel extends Vue {
-  @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
-
-  private hoverSelectAll = false;
-  private hoverDeselectAll = false;
-  private hoverSelectBauleitplanverfahren = false;
-  private hoverSelectBaugenehmigungsverfahren = false;
-  private hoverSelectWeiteresVerfahren = false;
-  private hoverSelectBauvorhaben = false;
-  private hoverSelectGrundschule = false;
-  private hoverSelectGsNachmittagBetreuung = false;
-  private hoverSelectMittelschule = false;
-  private hoverSelectKinderkrippe = false;
-  private hoverSelectKindergarten = false;
-  private hoverSelectHausFuerKinder = false;
-
-  private hoverArtDerSortierung = false;
-  private hoverReihenfolgeDerSortierung = false;
-
-  get helpTextObjektauswahl(): string {
-    if (this.hoverSelectAll) {
-      return "Es werden all Objekttypen ausgewählt.";
-    }
-    if (this.hoverDeselectAll) {
-      return "Es werden all Objekttypen abgewählt.";
-    }
-    if (this.hoverSelectBauleitplanverfahren) {
-      return "Die Bauleitplanverfahren werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectBaugenehmigungsverfahren) {
-      return "Die Baugenehmigungsverfahren werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectWeiteresVerfahren) {
-      return "Die Weiteren Verfahren werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectBauvorhaben) {
-      return "Die Bauvorhaben werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectGrundschule) {
-      return "Die Grundschulen werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectMittelschule) {
-      return "Die Mittelschulen werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectGsNachmittagBetreuung) {
-      return "Die Einrichtungen zur Nachmittagsbetreuung für Grundschulkinder werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectKinderkrippe) {
-      return "Die Kinderkrippen werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectKindergarten) {
-      return "Die Kindergärten werden in die Suche miteinbezogen.";
-    }
-    if (this.hoverSelectHausFuerKinder) {
-      return "Die Häuser für Kinder werden in die Suche miteinbezogen.";
-    }
-    return "";
-  }
-
-  get helpTextSortierung(): string {
-    if (this.hoverArtDerSortierung) {
-      return "Auswahl nach welchem Attribut sortiert werden soll.";
-    }
-    if (this.hoverReihenfolgeDerSortierung) {
-      return "Auswahl ob das sortierbare Attribut aufsteigend oder absteigend sortiert werden soll.";
-    }
-    return "";
-  }
-
-  private selectAll() {
-    this.searchQueryAndSorting.selectBauleitplanverfahren = true;
-    this.searchQueryAndSorting.selectBaugenehmigungsverfahren = true;
-    this.searchQueryAndSorting.selectWeiteresVerfahren = true;
-    this.searchQueryAndSorting.selectBauvorhaben = true;
-    this.searchQueryAndSorting.selectGrundschule = true;
-    this.searchQueryAndSorting.selectGsNachmittagBetreuung = true;
-    this.searchQueryAndSorting.selectHausFuerKinder = true;
-    this.searchQueryAndSorting.selectKinderkrippe = true;
-    this.searchQueryAndSorting.selectKindergarten = true;
-    this.searchQueryAndSorting.selectMittelschule = true;
-  }
-
-  private deselectAll() {
-    this.searchQueryAndSorting.selectBauleitplanverfahren = false;
-    this.searchQueryAndSorting.selectBaugenehmigungsverfahren = false;
-    this.searchQueryAndSorting.selectWeiteresVerfahren = false;
-    this.searchQueryAndSorting.selectBauvorhaben = false;
-    this.searchQueryAndSorting.selectGrundschule = false;
-    this.searchQueryAndSorting.selectGsNachmittagBetreuung = false;
-    this.searchQueryAndSorting.selectHausFuerKinder = false;
-    this.searchQueryAndSorting.selectKinderkrippe = false;
-    this.searchQueryAndSorting.selectKindergarten = false;
-    this.searchQueryAndSorting.selectMittelschule = false;
-  }
-
-  get entriesArtderSortierung(): Array<LookupEntryDto> {
-    return [
-      {
-        key: SearchQueryAndSortingDtoSortByEnum.Name,
-        value: "Name",
-      },
-      {
-        key: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-        value: "Änderungsdatum",
-      },
-      {
-        key: SearchQueryAndSortingDtoSortByEnum.CreatedDateTime,
-        value: "Erstellungsdatum",
-      },
-    ];
-  }
-  get entriesReihenfolgeDerSortierung(): Array<LookupEntryDto> {
-    return [
-      {
-        key: SearchQueryAndSortingDtoSortOrderEnum.Asc,
-        value: "aufsteigend",
-      },
-      {
-        key: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-        value: "absteigend",
-      },
-    ];
-  }
+interface Props {
+  value: SearchQueryAndSortingModel;
 }
+
+interface Emits {
+  (event: "input", value: SearchQueryAndSortingModel): void;
+}
+
+const props = defineProps<Props>();
+
+const emits = defineEmits<Emits>();
+
+const searchQueryAndSorting = defineModel(props, emits);
+
+const hoverSelectAll = false;
+const hoverDeselectAll = false;
+const hoverSelectBauleitplanverfahren = false;
+const hoverSelectBaugenehmigungsverfahren = false;
+const hoverSelectWeiteresVerfahren = false;
+const hoverSelectBauvorhaben = false;
+const hoverSelectGrundschule = false;
+const hoverSelectGsNachmittagBetreuung = false;
+const hoverSelectMittelschule = false;
+const hoverSelectKinderkrippe = false;
+const hoverSelectKindergarten = false;
+const hoverSelectHausFuerKinder = false;
+
+const hoverArtDerSortierung = false;
+const hoverReihenfolgeDerSortierung = false;
+
+const helpTextObjektauswahl = computed(() => {
+  if (hoverSelectAll) {
+    return "Es werden all Objekttypen ausgewählt.";
+  }
+  if (hoverDeselectAll) {
+    return "Es werden all Objekttypen abgewählt.";
+  }
+  if (hoverSelectBauleitplanverfahren) {
+    return "Die Bauleitplanverfahren werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectBaugenehmigungsverfahren) {
+    return "Die Baugenehmigungsverfahren werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectWeiteresVerfahren) {
+    return "Die Weiteren Verfahren werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectBauvorhaben) {
+    return "Die Bauvorhaben werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectGrundschule) {
+    return "Die Grundschulen werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectMittelschule) {
+    return "Die Mittelschulen werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectGsNachmittagBetreuung) {
+    return "Die Einrichtungen zur Nachmittagsbetreuung für Grundschulkinder werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectKinderkrippe) {
+    return "Die Kinderkrippen werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectKindergarten) {
+    return "Die Kindergärten werden in die Suche miteinbezogen.";
+  }
+  if (hoverSelectHausFuerKinder) {
+    return "Die Häuser für Kinder werden in die Suche miteinbezogen.";
+  }
+  return "";
+});
+
+const helpTextSortierung = computed(() => {
+  if (hoverArtDerSortierung) {
+    return "Auswahl nach welchem Attribut sortiert werden soll.";
+  }
+  if (hoverReihenfolgeDerSortierung) {
+    return "Auswahl ob das sortierbare Attribut aufsteigend oder absteigend sortiert werden soll.";
+  }
+  return "";
+});
+
+function selectAll(): void {
+  searchQueryAndSorting.value.selectBauleitplanverfahren = true;
+  searchQueryAndSorting.value.selectBaugenehmigungsverfahren = true;
+  searchQueryAndSorting.value.selectWeiteresVerfahren = true;
+  searchQueryAndSorting.value.selectBauvorhaben = true;
+  searchQueryAndSorting.value.selectGrundschule = true;
+  searchQueryAndSorting.value.selectGsNachmittagBetreuung = true;
+  searchQueryAndSorting.value.selectHausFuerKinder = true;
+  searchQueryAndSorting.value.selectKinderkrippe = true;
+  searchQueryAndSorting.value.selectKindergarten = true;
+  searchQueryAndSorting.value.selectMittelschule = true;
+}
+
+function deselectAll() {
+  searchQueryAndSorting.value.selectBauleitplanverfahren = false;
+  searchQueryAndSorting.value.selectBaugenehmigungsverfahren = false;
+  searchQueryAndSorting.value.selectWeiteresVerfahren = false;
+  searchQueryAndSorting.value.selectBauvorhaben = false;
+  searchQueryAndSorting.value.selectGrundschule = false;
+  searchQueryAndSorting.value.selectGsNachmittagBetreuung = false;
+  searchQueryAndSorting.value.selectHausFuerKinder = false;
+  searchQueryAndSorting.value.selectKinderkrippe = false;
+  searchQueryAndSorting.value.selectKindergarten = false;
+  searchQueryAndSorting.value.selectMittelschule = false;
+}
+
+const entriesArtderSortierung = computed(() => {
+  return [
+    {
+      key: SearchQueryAndSortingDtoSortByEnum.Name,
+      value: "Name",
+    },
+    {
+      key: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+      value: "Änderungsdatum",
+    },
+    {
+      key: SearchQueryAndSortingDtoSortByEnum.CreatedDateTime,
+      value: "Erstellungsdatum",
+    },
+  ];
+});
+
+const entriesReihenfolgeDerSortierung = computed(() => {
+  return [
+    {
+      key: SearchQueryAndSortingDtoSortOrderEnum.Asc,
+      value: "aufsteigend",
+    },
+    {
+      key: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+      value: "absteigend",
+    },
+  ];
+});
 </script>
 
 <style scoped></style>

@@ -2,29 +2,21 @@
   <div :style="headerStyle">{{ headerText }}</div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+interface Props {
+  fontSize?: string;
+  fontWeight?: string;
+  padding?: string;
+  headerText?: string;
+}
 
-@Component
-export default class PanelHeader extends Vue {
-  @Prop({ default: "medium" })
-  private fontSize!: string;
+const props = withDefaults(defineProps<Props>(), { fontSize: "medium", fontWeight: "normal" });
 
-  @Prop({ default: "normal" })
-  private fontWeight!: string;
-
-  @Prop()
-  private padding?: string;
-
-  @Prop()
-  private headerText!: string;
-
-  get headerStyle(): string {
-    let headerStyle = `font-size: ${this.fontSize}; font-weight: ${this.fontWeight};`;
-    if (this.padding) {
-      headerStyle = headerStyle + `padding: ${this.padding}`;
-    }
-    return headerStyle;
+function headerStyle(): string {
+  let headerStyle = `font-size: ${props.fontSize}; font-weight: ${props.fontWeight};`;
+  if (props.padding) {
+    headerStyle = headerStyle + `padding: ${props.padding}`;
   }
+  return headerStyle;
 }
 </script>

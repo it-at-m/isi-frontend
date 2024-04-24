@@ -38,32 +38,45 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Emit, VModel, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { computed } from "vue";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
+import { defineModel } from "@/utils/Vue";
+import { useVuetify } from "@/utils/Vue";
 
-@Component({
-  components: { FilterPanel, SelectionAndSortingPanel },
-})
-export default class SearchAndFilterOptions extends Vue {
-  @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
+const vuetify = useVuetify();
 
-  get getContentSheetHeight(): string {
-    if (this.$vuetify.breakpoint.xl) {
-      return "650px";
-    }
-    return "400px";
+interface Props {
+  value: SearchQueryAndSortingModel;
+}
+
+interface Emits {
+  (event: "adoptSearchAndFilterOptions", value: void): void;
+  (event: "resetSearchAndFilterOptions", value: void): void;
+  (event: "input", value: SearchQueryAndSortingModel): void;
+}
+
+const props = defineProps<Props>();
+
+const emit = defineEmits<Emits>();
+
+const searchQueryAndSorting = defineModel(props, emit);
+
+const getContentSheetHeight = computed(() => {
+  if (vuetify.breakpoint.xl) {
+    return "650px";
   }
+  return "400px";
+});
 
-  @Emit()
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private adoptSearchAndFilterOptions(): void {}
+function adoptSearchAndFilterOptions(): void {
+  emit("adoptSearchAndFilterOptions");
+}
 
-  @Emit()
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private resetSearchAndFilterOptions(): void {}
+function resetSearchAndFilterOptions(): void {
+  emit("resetSearchAndFilterOptions");
 }
 </script>
 

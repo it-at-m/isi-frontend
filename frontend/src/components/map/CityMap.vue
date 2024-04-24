@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import {
   CITY_CENTER,
   LAYER_OPTIONS,
