@@ -66,7 +66,7 @@
           md="6"
         >
           <reports-planungsursaechlichkeit-component
-            v-if="showPlanungsursaechlichenReports()"
+            v-if="showPlanungsursaechlicheReports()"
             v-model="abfragevarianteSachbearbeitung"
           />
         </v-col>
@@ -196,7 +196,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   /**
    * Überprüfung ob alle Kriterien stimmen um die planungsursächlichen Reports anzuzeigen.
    */
-  public showPlanungsursaechlichenReports(): boolean {
+  public showPlanungsursaechlicheReports(): boolean {
     return this.isRoleAdminOrSachbearbeitung() || this.isRoleAdminOrBedarfsmeldung();
   }
 
