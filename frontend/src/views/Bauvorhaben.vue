@@ -249,7 +249,6 @@ async function saveBauvorhaben(): Promise<void> {
  * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
  */
 async function updateBauvorhaben(): Promise<void> {
-  console.log(bauvorhaben.value);
   const dto = await putBauvorhaben(bauvorhaben.value, true);
   bauvorhaben.value = _.cloneDeep(dto);
   Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
