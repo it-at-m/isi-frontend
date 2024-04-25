@@ -89,7 +89,6 @@ import {
   LAYER_OPTIONS,
   MAP_OPTIONS,
   MAX_ZOOM,
-  MIN_ZOOM,
   assembleDefaultLayersForLayerControl,
   getBackgroundMapUrl,
 } from "@/utils/MapUtil";
