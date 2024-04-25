@@ -26,7 +26,7 @@ export function defineModel<T>(props: Props<T>, emit: Emits<T>): WritableCompute
     },
   });
 
-  if (isObject(props.value) && !Array.isArray(props.value)) {
+  if (isObject(props.value) && !Array.isArray(props.value) && !(props.value instanceof Date)) {
     watch(reactive(props.value), () => emit("input", props.value));
   }
 
