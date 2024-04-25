@@ -32,60 +32,28 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+<script setup lang="ts">
 import { AbfragevarianteWeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
-import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
-import NumField from "@/components/common/NumField.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
+import { defineModel } from "@/utils/Vue";
 import CommonBezeichnungBaulicheNutzungComponent from "../CommonBezeichnungBaulicheNutzungComponent.vue";
 import CommonRealisierungszeitraumComponent from "../CommonRealisierungszeitraumComponent.vue";
-import GeschossflaecheWohnenWeiteresVerfahrenComponent from "./GeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
 import AnzahlWohneinheitenWeiteresVerfahrenComponent from "./AnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
+import GeschossflaecheWohnenWeiteresVerfahrenComponent from "./GeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
 
-@Component({
-  components: {
-    NumField,
-    FieldGroupCard,
-    BauratenAggregiertComponent,
-    GeschossflaecheWohnenWeiteresVerfahrenComponent,
-    AnzahlWohneinheitenWeiteresVerfahrenComponent,
-    CommonBezeichnungBaulicheNutzungComponent,
-    CommonRealisierungszeitraumComponent,
-  },
-})
-export default class BaugebietBaugenehmigungsverfahrenComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
-
-  @Prop()
-  private abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined;
-
-  @Prop()
-  private mode!: DisplayMode;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
-
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
-
-  get headline(): string {
-    const headline = `Baugebiet ${this.baugebiet.bezeichnung} `;
-    return headline;
-  }
+interface Props {
+  value: BaugebietModel;
+  abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined;
+  isEditable: boolean;
 }
+
+interface Emits {
+  (event: "input", value: BaugebietModel): void;
+}
+
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const baugebiet = defineModel(props, emit);
+const headline = computed(() => `Baugebiet ${baugebiet.value.bezeichnung}`);
 </script>

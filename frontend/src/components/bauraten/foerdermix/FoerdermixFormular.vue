@@ -56,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
@@ -66,7 +67,6 @@ import { createFoerdermixStammDto } from "@/utils/Factories";
 import { groupItemsToHeader, mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
 import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { computed, onMounted, watch } from "vue";
 import { nichtGleich100Prozent } from "@/utils/FieldValidationRules";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { useSaveLeave } from "@/composables/SaveLeave";
