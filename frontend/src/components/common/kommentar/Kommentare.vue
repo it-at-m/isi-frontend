@@ -10,8 +10,9 @@
           <kommentar
             v-for="(kommentar, index) in kommentare"
             :key="index"
-            :kommentar="kommentar"
+            :value="kommentar"
             :is-editable="isEditable"
+            @input="updateEntry(index, $event)"
             @save-kommentar="saveKommentar"
             @delete-kommentar="deleteKommentar"
           />
@@ -40,7 +41,7 @@ const { commentChanged, isCommentDirty, resetCommentDirty } = useSaveLeave();
 const kommentarApi = useKommentarApi();
 const route = useRoute();
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
-const kommentare = ref<KommentarModel[]>([]);
+const kommentare = shallowRef<KommentarModel[]>([]);
 let isKommentarListOpen = false;
 
 watch(kommentare, () => {
@@ -73,6 +74,7 @@ async function getKommentare(): Promise<void> {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());
         }
       }
+      triggerRef(kommentare);
     } else {
       isKommentarListOpen = false;
       kommentare.value = [];
@@ -116,6 +118,7 @@ async function saveKommentar(kommentar: KommentarModel): Promise<void> {
     model.isDirty = false;
     replaceSavedKommentarInKommentare(model);
   }
+  triggerRef(kommentare);
 }
 
 function replaceSavedKommentarInKommentare(kommentar: KommentarModel): void {
@@ -152,5 +155,11 @@ async function deleteKommentar(kommentar: KommentarModel): Promise<void> {
       }
     }
   }
+  triggerRef(kommentare);
+}
+
+function updateEntry(index: number, kommentar: KommentarModel): void {
+  kommentare.value[index] = kommentar;
+  triggerRef(kommentare);
 }
 </script>
