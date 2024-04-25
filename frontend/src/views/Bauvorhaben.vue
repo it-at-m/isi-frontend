@@ -178,8 +178,8 @@ const form = ref<{ validate: () => boolean } | null>(null);
 const isEditable = computed(() => isRoleAdminOrSachbearbeitung());
 const deleteDialogOpen = ref(false);
 const dataTransferDialogOpen = ref(false);
+const isNew = ref(true);
 let datenuebernahmeAbfrageId: string | undefined = undefined;
-let isNew = true;
 
 const bauvorhaben = computed({
   get() {
@@ -195,9 +195,9 @@ const bearbeitungsinformationen = computed(
 );
 
 onBeforeMount(() => {
-  isNew = route.params.id === undefined;
+  isNew.value = route.params.id === undefined;
 
-  if (isNew) {
+  if (isNew.value) {
     bauvorhaben.value = new BauvorhabenModel(createBauvorhabenDto());
   } else {
     fetchBauvorhabenById();
@@ -214,7 +214,7 @@ function validateAndProceed(): void {
     const fault = findFaultInBauvorhaben(bauvorhaben.value);
 
     if (fault === null) {
-      if (isNew) {
+      if (isNew.value) {
         saveBauvorhaben();
       } else {
         updateBauvorhaben();
@@ -249,6 +249,7 @@ async function saveBauvorhaben(): Promise<void> {
  * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
  */
 async function updateBauvorhaben(): Promise<void> {
+  console.log(bauvorhaben.value);
   const dto = await putBauvorhaben(bauvorhaben.value, true);
   bauvorhaben.value = _.cloneDeep(dto);
   Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);

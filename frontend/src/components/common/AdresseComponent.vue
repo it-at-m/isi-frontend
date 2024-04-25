@@ -110,7 +110,7 @@
           :disabled="!isEditable"
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
-          :rules="[angabeLageErgaenzendeAdressinformationValidationRule()]"
+          :rules="[angabeLageErgaenzendeAdressinformationValidationRule]"
           validate-on-blur
           @input="formChanged"
         />
