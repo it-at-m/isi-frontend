@@ -24,7 +24,7 @@
               cols="12"
               sm="1"
             >
-              <benutzerinformationen v-model="bearbeitungsinformationen" />
+              <benutzerinformationen :benutzerinformationen="bearbeitungsinformationen" />
             </v-col>
           </v-row>
         </v-container>

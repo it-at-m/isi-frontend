@@ -41,25 +41,17 @@
 </template>
 
 <script setup lang="ts">
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 import _ from "lodash";
-import { LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
+import { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import moment from "moment/moment";
 import { useLookupStore } from "@/stores/LookupStore";
-import { defineModel } from "@/utils/Vue";
 
 interface Props {
-  value: AbfrageModel;
-}
-
-interface Emits {
-  (event: "input", value: AbfrageModel): void;
+  bearbeitungshistorie?: BearbeitungshistorieDto[];
 }
 
 const DISPLAY_FORMAT = "DD.MM.YYYY";
 const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const abfrage = defineModel(props, emit);
 const { statusAbfrage } = useLookupStore();
 const bearbeitungshistorieHeaders = [
   { text: "Name", value: "bearbeitendePerson.name", sortable: false },
@@ -68,8 +60,7 @@ const bearbeitungshistorieHeaders = [
   { text: "Datum der Änderung", value: "zeitpunkt", sortable: false },
   { text: "Zielstatus", value: "zielStatus", sortable: false },
 ];
-const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(abfrage.value?.bearbeitungshistorie));
-const bearbeitungshistorie = computed(() => _.toArray(abfrage.value?.bearbeitungshistorie));
+const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(props.bearbeitungshistorie));
 
 function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
   return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(DISPLAY_FORMAT);

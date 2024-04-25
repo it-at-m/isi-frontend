@@ -93,7 +93,7 @@ const datePickerDate = computed({
 
 const textFieldDate = computed({
   get() {
-    if (!_.isNil(date)) {
+    if (!_.isNil(date.value)) {
       const parsedValue = moment.utc(date.value);
       if (!parsedValue.isSame(0)) {
         return parsedValue.format(displayFormat.value);
