@@ -28,8 +28,8 @@
             label="Summe"
             filled
             readonly="readonly"
-            :rules="[fieldValidationRules.nichtGleich100Prozent(foerdermix)]"
-            :suffix="fieldPrefixesSuffixes.percent"
+            :rules="[nichtGleich100Prozent(foerdermix)]"
+            :suffix="PERCENT"
           />
         </v-col>
       </v-row>
@@ -46,7 +46,7 @@
               v-model="foerderart.anteilProzent"
               :disabled="!isFreieEingabe"
               :label="foerderart.bezeichnung"
-              :suffix="fieldPrefixesSuffixes.percent"
+              :suffix="PERCENT"
             />
           </v-col>
         </template>
@@ -55,92 +55,85 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
+<script setup lang="ts">
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import { addiereAnteile } from "@/utils/CalculationUtil";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import FormattingMixin from "@/mixins/FormattingMixin";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { useStammdatenStore } from "@/stores/StammdatenStore";
+import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
+import { addiereAnteile } from "@/utils/CalculationUtil";
 import { createFoerdermixStammDto } from "@/utils/Factories";
 import { groupItemsToHeader, mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
+import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { useStammdatenStore } from "@/stores/StammdatenStore";
+import { computed, onMounted, watch } from "vue";
+import { nichtGleich100Prozent } from "@/utils/FieldValidationRules";
+import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
+import { useSaveLeave } from "@/composables/SaveLeave";
+
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
-@Component({ components: { NumField, FieldGroupCard } })
-export default class FoerdermixFormular extends Mixins(
-  FieldValidationRulesMixin,
-  FieldPrefixesSuffixes,
-  FormattingMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: FoerdermixModel }) foerdermix!: FoerdermixModel;
+interface Props {
+  value: FoerdermixModel;
+  isEditable: boolean;
+}
 
-  private anteileFMCardTitle = "Anteile Fördermix";
+interface Emits {
+  (event: "input", value: FoerdermixModel): void;
+}
 
-  private sumOver100 = false;
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const foerdermix = defineModel(props, emit);
+const anteileFMCardTitle = "Anteile Fördermix";
+const freieEingabe = "Freie Eingabe";
 
-  private isFreie = false;
+let isFreie = false;
+let stammdaten: FoerdermixStammModel[] = [];
+let selectedItem = ref<FoerdermixStammModel>(createFoerdermixStammDto());
+const groupedStammdaten = ref<GroupedStammdaten>([]);
 
-  private freieEingabe = "Freie Eingabe";
+const stammdatenStore = useStammdatenStore();
+const { formChanged } = useSaveLeave();
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+onMounted(() => {
+  setGroupedStammdatenList();
+});
 
-  private selectedItem: FoerdermixStammModel = createFoerdermixStammDto();
+watch(() => foerdermix, watchFoerdermix, { immediate: true, deep: true });
 
-  private stammdaten: FoerdermixStammModel[] = [];
-
-  private groupedStammdaten: GroupedStammdaten = [];
-
-  private stammdatenStore = useStammdatenStore();
-
-  mounted(): void {
-    this.setGroupedStammdatenList();
+function watchFoerdermix(): void {
+  stammdaten = stammdatenStore.foerdermixStammdaten;
+  const stammdatumMatchingWithFoerdermix = stammdaten.find(
+    (stammdatum) =>
+      _.isEqual(stammdatum.foerdermix.bezeichnung, foerdermix.value.bezeichnung) &&
+      _.isEqual(stammdatum.foerdermix.bezeichnungJahr, foerdermix.value.bezeichnungJahr),
+  );
+  if (_.isNil(stammdatumMatchingWithFoerdermix)) {
+    selectedItem.value = createFoerdermixStammDto();
+  } else {
+    selectedItem.value = stammdatumMatchingWithFoerdermix;
   }
+}
 
-  @Watch("foerdermix", { immediate: true, deep: true })
-  private watchFoerdermix() {
-    this.stammdaten = this.stammdatenStore.foerdermixStammdaten;
-    const stammdatumMatchingWithFoerdermix = this.stammdaten.find(
-      (stammdatum) =>
-        _.isEqual(stammdatum.foerdermix.bezeichnung, this.foerdermix?.bezeichnung) &&
-        _.isEqual(stammdatum.foerdermix.bezeichnungJahr, this.foerdermix?.bezeichnungJahr),
-    );
-    if (_.isNil(stammdatumMatchingWithFoerdermix)) {
-      this.selectedItem = createFoerdermixStammDto();
-    } else {
-      this.selectedItem = stammdatumMatchingWithFoerdermix;
-    }
-  }
+const gesamtsumme = computed(() => {
+  const sum: number = addiereAnteile(foerdermix.value);
+  return sum;
+});
 
-  get gesamtsumme(): number {
-    const sum: number = addiereAnteile(this.foerdermix);
-    this.sumOver100 = sum > 100;
-    return sum;
-  }
+const isFreieEingabe = computed(() => {
+  isFreie = selectedItem.value.foerdermix.bezeichnung === freieEingabe && props.isEditable;
+  return isFreie;
+});
 
-  get isFreieEingabe(): boolean {
-    this.isFreie = this.selectedItem.foerdermix.bezeichnung === this.freieEingabe && this.isEditable;
-    return this.isFreie;
-  }
+function foerdermixSelected(item: FoerdermixStammModel): void {
+  foerdermix.value = mapFoerdermixStammModelToFoerderMix(item);
+}
 
-  foerdermixSelected(item: FoerdermixStammModel): void {
-    this.foerdermix = mapFoerdermixStammModelToFoerderMix(item);
-  }
-
-  private setGroupedStammdatenList(): void {
-    this.stammdaten = this.stammdatenStore.foerdermixStammdaten;
-    this.groupedStammdaten = groupItemsToHeader(this.stammdaten, false);
-    this.selectedItem.foerdermix.bezeichnung = this.foerdermix.bezeichnung;
-  }
+function setGroupedStammdatenList(): void {
+  stammdaten = stammdatenStore.foerdermixStammdaten;
+  groupedStammdaten.value = groupItemsToHeader(stammdaten, false);
+  selectedItem.value.foerdermix.bezeichnung = foerdermix.value.bezeichnung;
 }
 </script>
 

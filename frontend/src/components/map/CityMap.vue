@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, computed, watch } from "vue";
 import {
   CITY_CENTER,
   LAYER_OPTIONS,
@@ -155,10 +155,10 @@ const sheet = ref<HTMLFormElement | null>(null);
 const map = ref<HTMLFormElement | null>(null);
 const layerControl = ref<HTMLFormElement | null>(null);
 const dialogCard = ref<HTMLFormElement | null>(null);
+let expanded = ref<boolean>(false);
 
 const initialZoom = props.zoom;
 let firstGeoJsonFeatureAdded = false;
-let expanded = false;
 let addedLayersForLayerControl: Map<string, Layer>;
 let mapMarkerClusterGroup = L.markerClusterGroup();
 let mapRefCopy!: L.Map;
@@ -167,7 +167,6 @@ const mapOptions = computed(() => MAP_OPTIONS);
 const cityCenter = computed(() => CITY_CENTER);
 const layerOptions = computed(() => LAYER_OPTIONS);
 const maxZoom = computed(() => MAX_ZOOM);
-const minZoom = computed(() => MIN_ZOOM);
 const isGeoJsonNotEmpty = computed(() => !_.isEmpty(props.geoJson));
 const backgroundMapUrl = computed(() => getBackgroundMapUrl());
 
@@ -230,9 +229,9 @@ function toggleExpansion(event: MouseEvent): void {
   event.preventDefault();
   event.stopPropagation();
 
-  expanded = !expanded;
+  expanded.value = !expanded.value;
 
-  if (expanded) {
+  if (expanded.value) {
     dialogCard.value?.$el.appendChild(map.value?.$el);
   } else {
     sheet.value?.$el.appendChild(map.value?.$el);
@@ -269,7 +268,7 @@ function updateLayerControlWithCustomLayers(): void {
   }
 
   // Ersetzen der obig entfernten Layer durch die neuen Layer.
-  addedLayersForLayerControl = _.cloneDeep(props.layersForLayerControl!);
+  addedLayersForLayerControl = _.cloneDeep(props.layersForLayerControl) as Map<string, Layer>;
 
   // Hinzufügen der neuen Layer
   if (!_.isNil(addedLayersForLayerControl)) {
