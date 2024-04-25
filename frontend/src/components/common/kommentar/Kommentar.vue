@@ -109,8 +109,8 @@ interface Props {
 
 interface Emits {
   (event: "input", value: KommentarModel): void;
-  (event: "saveKommentar", value: KommentarModel): void;
-  (event: "deleteKommentar", value: KommentarModel): void;
+  (event: "save-kommentar", value: KommentarModel): void;
+  (event: "delete-kommentar", value: KommentarModel): void;
 }
 
 const deleteDialogTitle = "Kommentar löschen";
@@ -124,25 +124,24 @@ const emit = defineEmits<Emits>();
 const kommentar = defineModel(props, emit);
 const deleteDialog = ref(false);
 const isSaveable = computed(() => !_.isEmpty(kommentar.value.datum) || !_.isEmpty(kommentar.value.text));
-const isDeletable = computed(() => !_.isNil(kommentar.value.id) || (_.isNil(kommentar.value.id) && isSaveable));
+const isDeletable = computed(() => !_.isNil(kommentar.value.id) || (_.isNil(kommentar.value.id) && isSaveable.value));
 
 function cancelDeletion(): void {
   deleteDialog.value = false;
 }
 
 function changed(): void {
-  const clone = _.cloneDeep(kommentar.value);
-  clone.isDirty = true;
-  kommentar.value = clone;
+  kommentar.value.isDirty = true;
+  kommentar.value = _.cloneDeep(kommentar.value);
   commentChanged();
 }
 
 function saveKommentar(): void {
-  emit("saveKommentar", kommentar.value);
+  emit("save-kommentar", kommentar.value);
 }
 
 function deleteKommentar(): void {
   cancelDeletion();
-  emit("deleteKommentar", kommentar.value);
+  emit("delete-kommentar", kommentar.value);
 }
 </script>

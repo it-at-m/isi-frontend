@@ -134,9 +134,9 @@ interface Props {
 }
 
 interface Emits {
-  (event: "acceptSelectedGeoJson", value: void): void;
-  (event: "deselectGeoJson", value: void): void;
-  (event: "clickInMap", value: L.LatLng): L.LatLng;
+  (event: "accept-selected-geo-json", value: void): void;
+  (event: "deselect-geo-json", value: void): void;
+  (event: "click-in-map", value: L.LatLng): L.LatLng;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -277,19 +277,19 @@ function updateLayerControlWithCustomLayers(): void {
 }
 
 function clickInMap(event: LeafletMouseEvent): void {
-  emit("clickInMap", event.latlng);
+  emit("click-in-map", event.latlng);
 }
 
 function onDeselectGeoJson(event: MouseEvent): void {
   event.preventDefault();
   event.stopPropagation();
-  emit("deselectGeoJson");
+  emit("deselect-geo-json");
 }
 
 function onAcceptSelectedGeoJson(event: MouseEvent): void {
   event.preventDefault();
   event.stopPropagation();
-  emit("acceptSelectedGeoJson");
+  emit("accept-selected-geo-json");
 }
 </script>
 
