@@ -15,7 +15,7 @@
             id="bauabschnitt_bezeichnung"
             v-model.trim="bauabschnitt.bezeichnung"
             :disabled="!isEditable"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="255"
             validate-on-blur
             @input="formChanged"
@@ -29,43 +29,25 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+<script setup lang="ts">
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
+import { defineModel } from "@/utils/Vue";
+import { pflichtfeld } from "@/utils/FieldValidationRules";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({ components: { FieldGroupCard, BauratenAggregiertComponent } })
-export default class BauabschnittComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: BauabschnittModel }) bauabschnitt!: BauabschnittModel;
-
-  @Prop()
-  private mode!: DisplayMode;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
-
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
-
-  get headline(): string {
-    const headline = `Bauabschnitt ${this.bauabschnitt.bezeichnung} `;
-    return headline;
-  }
+interface Props {
+  value: BauabschnittModel;
+  isEditable: boolean;
 }
+
+interface Emits {
+  (event: "input", value: BauabschnittModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const bauabschnitt = defineModel(props, emit);
+const headline = computed(() => `Bauabschnitt ${bauabschnitt.value.bezeichnung}`);
+const { formChanged } = useSaveLeave();
 </script>
