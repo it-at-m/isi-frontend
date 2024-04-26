@@ -50,7 +50,7 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { datum, pflichtfeld } from "@/utils/FieldValidationRules";
 
 interface Props {
-  value: Date | undefined; // Der Datumswert der ausgewählt bzw. eingegeben wurde
+  value?: Date; // Der Datumswert der ausgewählt bzw. eingegeben wurde
   label?: string; // Bezeichnung des Datumsfelds
   required?: boolean; // Ist das Datumsfeld ein Pflichtfeld
   disabled?: boolean; // Ob das Datumsfeld deaktiviert sein soll
@@ -59,8 +59,8 @@ interface Props {
 }
 
 interface Emits {
-  (event: "input", value: Date | undefined): void;
-  (event: "blur", value: Date | undefined): void;
+  (event: "input", value?: Date): void;
+  (event: "blur", value: Date): void;
 }
 
 const ISO_FORMAT = "YYYY-MM-DD";
@@ -69,7 +69,7 @@ const MONTH_DISPLAY_FORMAT = "MM.YYYY";
 const { formChanged } = useSaveLeave();
 const props = withDefaults(defineProps<Props>(), { label: "", required: false, disabled: false, monthPicker: false });
 const emit = defineEmits<Emits>();
-const date = defineModel(props, emit);
+const date = defineModel(props as any, emit);
 const datePickerActive = ref(false);
 const displayFormat = computed(() => (props.monthPicker ? MONTH_DISPLAY_FORMAT : DISPLAY_FORMAT));
 
@@ -108,7 +108,7 @@ const textFieldDate = computed({
     /* Hier wird das Datum im "strict mode" geparsed, um den Nutzer-Input
     möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
     const parsedValue = moment.utc(date.value, displayFormat.value, true);
-    date.value = parsedValue.isValid() ? parsedValue.toDate() : undefined;
+    date.value = parsedValue.toDate();
   },
 });
 
