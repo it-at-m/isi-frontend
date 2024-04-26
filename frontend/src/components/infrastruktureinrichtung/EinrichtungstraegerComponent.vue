@@ -10,9 +10,7 @@
         :items="einrichtungstraegerList"
         item-value="key"
         item-text="value"
-        :rules="
-          isEinrichtungstraegerRequired ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified] : []
-        "
+        :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
         :disabled="!isEditable"
         @change="formChanged"
       >
@@ -28,35 +26,27 @@
     </v-col>
   </field-group-card>
 </template>
-<script lang="ts">
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
-import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
-import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
-import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
-import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+<script setup lang="ts">
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
+import { defineModel } from "@/utils/Vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component
-export default class EinrichtungstraegerComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({
-    type: [SchuleModel, KindergartenModel, GrundschuleModel, GsNachmittagBetreuungModel, HausFuerKinderModel],
-  })
-  einrichtung!: SchuleModel | KindergartenModel | GrundschuleModel | GsNachmittagBetreuungModel | HausFuerKinderModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: true })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  @Prop({ type: Array, default: [] })
-  private readonly einrichtungstraegerList!: LookupEntryDto[];
-
-  private readonly einrichutngstraegerCardTitle = "Einrichtungsträger";
+interface Props {
+  value: InfrastruktureinrichtungModel;
+  isEditable?: boolean;
+  isEinrichtungstraegerRequired?: boolean;
+  einrichtungstraegerList?: LookupEntryDto[];
 }
-</script>
 
-<style></style>
+interface Emits {
+  (event: "input", value: InfrastruktureinrichtungModel): void;
+}
+
+const { formChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
+const emit = defineEmits<Emits>();
+const einrichtung = defineModel(props, emit);
+const einrichutngstraegerCardTitle = "Einrichtungsträger";
+</script>

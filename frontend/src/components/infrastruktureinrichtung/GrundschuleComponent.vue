@@ -29,4 +29,3 @@ const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinricht
 const emit = defineEmits<Emits>();
 const grundschule = defineModel(props, emit);
 </script>
-<style></style>
