@@ -96,185 +96,193 @@
   </v-list>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+<script setup lang="ts">
 import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import _ from "lodash";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import { useSearchStore } from "@/stores/SearchStore";
 import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
-@Component({ components: { FieldGroupCard } })
-export default class ReportsSobonursaechlichkeitComponent extends Mixins(AbfrageSecurityMixin) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+import { useSearchStore } from "@/stores/SearchStore";
+import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { defineModel } from "@/utils/Vue";
+import _ from "lodash";
 
-  private searchStore = useSearchStore();
-  private metabaseReportingStore = useMetabaseReportingStore();
+  interface Props {
+  value: AbfragevarianteBauleitplanverfahrenModel;
+}
 
-  private getUrlWohneinheiten(): string {
-    const url = new URL(this.getUrlReportWohneinheiten());
-    const abfrageId = this.getParameterValueAbfrageId();
-    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
-    const artAbfrage = this.getParameterValueArtAbfrage();
-    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
-    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
-    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+interface Emits {
+  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
+}
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const abfragevariante = defineModel(props, emit);
+
+  const searchStore = useSearchStore();
+  const metabaseReportingStore = useMetabaseReportingStore();
+
+  function getUrlWohneinheiten(): string {
+    const url = new URL(getUrlReportWohneinheiten());
+    const abfrageId = getParameterValueAbfrageId();
+    url.searchParams.set(getParameterAbfrageId(), abfrageId);
+    const artAbfrage = getParameterValueArtAbfrage();
+    url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = getParameterValueAbfragevarianteId();
+    url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = getParameterValueSobonursaechlich();
+    url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
     return url.toString();
   }
 
-  private getUrlBedarfe(artBedarf: string): string {
-    const url = new URL(this.getUrlReportBedarfe());
-    const abfrageId = this.getParameterValueAbfrageId();
-    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
-    const artAbfrage = this.getParameterValueArtAbfrage();
-    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
-    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
-    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
-    url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
+  function getUrlBedarfe(artBedarf: string): string {
+    const url = new URL(getUrlReportBedarfe());
+    const abfrageId = getParameterValueAbfrageId();
+    url.searchParams.set(getParameterAbfrageId(), abfrageId);
+    const artAbfrage = getParameterValueArtAbfrage();
+    url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = getParameterValueAbfragevarianteId();
+    url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = getParameterValueSobonursaechlich();
+    url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(getParameterArtBedarf(), artBedarf);
     return url.toString();
   }
 
-  getUrlSoBonSpitzenbedarfe(artBedarf: string): string {
-    const url = new URL(this.getUrlReportSoBonSpitzenbedarfe());
-    const abfrageId = this.getParameterValueAbfrageId();
-    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
-    const artAbfrage = this.getParameterValueArtAbfrage();
-    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
-    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
-    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
-    url.searchParams.set(this.getParameterArtBedarf(), artBedarf);
+  function getUrlSoBonSpitzenbedarfe(artBedarf: string): string {
+    const url = new URL(getUrlReportSoBonSpitzenbedarfe());
+    const abfrageId = getParameterValueAbfrageId();
+    url.searchParams.set(getParameterAbfrageId(), abfrageId);
+    const artAbfrage = getParameterValueArtAbfrage();
+    url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = getParameterValueAbfragevarianteId();
+    url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = getParameterValueSobonursaechlich();
+    url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+    url.searchParams.set(getParameterArtBedarf(), artBedarf);
     return url.toString();
   }
 
-  private getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
-    const abfrageId = this.getParameterValueAbfrageId();
-    url.searchParams.set(this.getParameterAbfrageId(), abfrageId);
-    const artAbfrage = this.getParameterValueArtAbfrage();
-    url.searchParams.set(this.getParameterArtAbfrage(), artAbfrage);
-    const abfragevarianteId = this.getParameterValueAbfragevarianteId();
-    url.searchParams.set(this.getParameterAbfragevarianteId(), abfragevarianteId);
-    const ursaechlichkeit = this.getParameterValueSobonursaechlich();
-    url.searchParams.set(this.getParameterUrsaechlichkeit(), ursaechlichkeit);
+  function getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
+    const abfrageId = getParameterValueAbfrageId();
+    url.searchParams.set(getParameterAbfrageId(), abfrageId);
+    const artAbfrage = getParameterValueArtAbfrage();
+    url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
+    const abfragevarianteId = getParameterValueAbfragevarianteId();
+    url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
+    const ursaechlichkeit = getParameterValueSobonursaechlich();
+    url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
     return url.toString();
   }
 
-  private getUrlBedarfeKinderkrippe(): string {
+  function getUrlBedarfeKinderkrippe(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
-    return this.getUrlBedarfe(artBedarf);
+    return getUrlBedarfe(artBedarf);
   }
 
-  private getUrlBedarfeKindergarten(): string {
+  function getUrlBedarfeKindergarten(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
-    return this.getUrlBedarfe(artBedarf);
+    return getUrlBedarfe(artBedarf);
   }
 
-  private getUrlBedarfeGsNachmittagBetreuung(): string {
+  function getUrlBedarfeGsNachmittagBetreuung(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_GS_NACHMITTAG_BETREUUNG as string;
-    return this.getUrlBedarfe(artBedarf);
+    return getUrlBedarfe(artBedarf);
   }
 
-  private getUrlBedarfeGrundschule(): string {
+  function getUrlBedarfeGrundschule(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_GRUNDSCHULE as string;
-    return this.getUrlBedarfe(artBedarf);
+    return getUrlBedarfe(artBedarf);
   }
 
-  private getUrlAlleEinwohner(): string {
+  function getUrlAlleEinwohner(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_ALLE_EINWOHNER as string;
-    return this.getUrlBedarfe(artBedarf);
+    return getUrlBedarfe(artBedarf);
   }
 
-  private getUrlSobonSpitzenbedarfeKinderkrippe(): string {
+  function getUrlSobonSpitzenbedarfeKinderkrippe(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
-    return this.getUrlSoBonSpitzenbedarfe(artBedarf);
+    return getUrlSoBonSpitzenbedarfe(artBedarf);
   }
 
-  private getUrlSobonSpitzenbedarfeKindergarten(): string {
+  function getUrlSobonSpitzenbedarfeKindergarten(): string {
     const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
-    return this.getUrlSoBonSpitzenbedarfe(artBedarf);
+    return getUrlSoBonSpitzenbedarfe(artBedarf);
   }
 
-  private getUrlReportWohneinheiten(): string {
-    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
-      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportWohneinheiten}`
+  function getUrlReportWohneinheiten(): string {
+    return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+      ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportWohneinheiten}`
       : "";
   }
 
-  private getUrlErgebnisseSobonursaechlicheBedarfe(): string {
-    return this.getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(
-      new URL(this.getUrlReportErgebnisseSobonursaechlicheBedarfe()),
+  function getUrlErgebnisseSobonursaechlicheBedarfe(): string {
+    return getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(
+      new URL(getUrlReportErgebnisseSobonursaechlicheBedarfe()),
     );
   }
 
-  private getUrlReportBedarfe(): string {
-    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
-      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportBedarfe}`
+  function getUrlReportBedarfe(): string {
+    return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+      ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportBedarfe}`
       : "";
   }
 
-  private getUrlReportSoBonSpitzenbedarfe(): string {
-    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
-      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportSpitzenbedarfeSobonUrsaechlich}`
+  function getUrlReportSoBonSpitzenbedarfe(): string {
+    return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+      ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportSpitzenbedarfeSobonUrsaechlich}`
       : "";
   }
 
-  private getUrlReportErgebnisseSobonursaechlicheBedarfe(): string {
-    return !_.isNil(this.metabaseReportingStore.metabaseReportingInformation)
-      ? `${this.metabaseReportingStore.metabaseReportingInformation.url}/${this.metabaseReportingStore.metabaseReportingInformation.reportErgebnisseSobonUrsaechlich}`
+  function getUrlReportErgebnisseSobonursaechlicheBedarfe(): string {
+    return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+      ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportErgebnisseSobonUrsaechlich}`
       : "";
   }
 
-  private getParameterAbfrageId(): string {
+  function getParameterAbfrageId(): string {
     return import.meta.env.VITE_REPORT_PARAMETER_ABFRAGE_ID_URL as string;
   }
 
-  private getParameterArtAbfrage(): string {
+  function getParameterArtAbfrage(): string {
     return import.meta.env.VITE_REPORT_PARAMETER_ART_ABFRAGE_URL as string;
   }
 
-  private getParameterAbfragevarianteId(): string {
+  function getParameterAbfragevarianteId(): string {
     return import.meta.env.VITE_REPORT_PARAMETER_ABFRAGEVARIANTE_ID_URL as string;
   }
 
-  private getParameterUrsaechlichkeit(): string {
+  function getParameterUrsaechlichkeit(): string {
     return import.meta.env.VITE_REPORT_PARAMETER_URSAECHLICHKEIT_URL as string;
   }
 
-  private getParameterArtBedarf(): string {
+  function getParameterArtBedarf(): string {
     return import.meta.env.VITE_REPORT_PARAMETER_ART_BEDARF_URL as string;
   }
 
-  private getParameterValueAbfrageId(): string {
-    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage;
-    return !_.isNil(abfrage.id) ? abfrage.id : "";
+  function getParameterValueAbfrageId(): string {
+    const abfrage: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined = searchStore.selectedAbfrage;
+    return !_.isNil(abfrage) && !_.isNil(abfrage.id) ? abfrage.id : "";
   }
 
-  private getParameterValueArtAbfrage(): string {
-    const abfrage: AbfrageModel = this.searchStore.selectedAbfrage;
-    if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+  function getParameterValueArtAbfrage(): string {
+    const abfrage:  BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined = searchStore.selectedAbfrage;
+    if (!_.isNil(abfrage) && abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       return import.meta.env.VITE_REPORT_ART_ABFRAGE_BAULEITPLANVERFAHREN as string;
-    } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    } else if (!_.isNil(abfrage) && abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       return import.meta.env.VITE_REPORT_ART_ABFRAGE_BAUGENEHMIGUNGSVERFAHREN as string;
-    } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+    } else if (!_.isNil(abfrage) && abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
       return import.meta.env.VITE_REPORT_ART_ABFRAGE_WEITERES_VERFAHREN as string;
     } else {
       return "";
     }
   }
 
-  private getParameterValueAbfragevarianteId(): string {
-    return !_.isNil(this.abfragevariante.id) ? this.abfragevariante.id : "";
+
+  function getParameterValueAbfragevarianteId(): string {
+    return !_.isNil(abfragevariante.value.id) ? abfragevariante.value.id : "";
   }
 
-  private getParameterValueSobonursaechlich(): string {
+  function getParameterValueSobonursaechlich(): string {
     return import.meta.env.VITE_REPORT_URSAECHLICHKEIT_SOBONURSAECHLICH as string;
   }
 }

@@ -8,7 +8,7 @@
             ref="nameField"
             v-model.trim="abfragevariante.name"
             :disabled="!isEditable"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="30"
             validate-on-blur
             @input="formChanged"
@@ -40,7 +40,7 @@
             item-text="value"
             multiple
             chips
-            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
             @input="formChanged"
           >
@@ -102,67 +102,58 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, VModel, Mixins, Watch, Prop } from "vue-property-decorator";
-import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import { AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import DisplayMode from "@/types/common/DisplayMode";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import {
-  AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum,
-  LookupEntryDto,
-} from "@/api/api-client/isi-backend";
-import _ from "lodash";
 import { useLookupStore } from "@/stores/LookupStore";
+import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
+import { defineModel } from "@/utils/Vue";
+import _ from "lodash";
+import { computed, watch } from "vue";
+import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
+import { useSaveLeave } from "@/composables/SaveLeave";
+interface Props {
+  value: AbfragevarianteBaugenehmigungsverfahrenModel;
+  isEditable: false;
+}
 
-@Component({ components: { FieldGroupCard } })
-export default class CommonBaugenehmigungsverfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: AbfragevarianteBaugenehmigungsverfahrenModel })
-  abfragevariante!: AbfragevarianteBaugenehmigungsverfahrenModel;
+interface Emits {
+  (event: "input", value: AbfragevarianteBaugenehmigungsverfahrenModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const abfragevariante = defineModel(props, emit);
 
-  private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+let wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
-  @Prop()
-  private mode!: DisplayMode;
+const lookupStore = useLookupStore();
 
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
+const { formChanged } = useSaveLeave();
 
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
+const wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList = computed(
+  () => lookupStore.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
+);
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const calcRealisierungBis = computed(() => {
+  let jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
+    ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
+    .flatMap((baugebiet) => baugebiet.bauraten)
+    .map((baurate) => baurate.jahr);
+  return _.max(jahre);
+});
 
-  private lookupStore = useLookupStore();
+watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
 
-  get wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList(): LookupEntryDto[] {
-    return this.lookupStore.wesentlicheRechtsgrundlageBaugenehmigungsverfahren;
-  }
-
-  get calcRealisierungBis(): number | undefined {
-    let jahre: Array<number> | undefined = this.abfragevariante.bauabschnitte
-      ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
-      .flatMap((baugebiet) => baugebiet.bauraten)
-      .map((baurate) => baurate.jahr);
-    return _.max(jahre);
-  }
-
-  @Watch("abfragevariante.wesentlicheRechtsgrundlage", { immediate: true })
-  private wesentlicheRechtsgrundlageChanged(): void {
-    if (
-      this.abfragevariante.wesentlicheRechtsgrundlage?.includes(
-        AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
-      )
-    ) {
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;
-    } else {
-      this.abfragevariante.wesentlicheRechtsgrundlageFreieEingabe = undefined;
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
-    }
+function wesentlicheRechtsgrundlageChanged(): void {
+  if (
+    abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
+      AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
+    )
+  ) {
+    wesentlicheRechtsgrundlageFreieEingabeVisible.value = true;
+  } else {
+    abfragevariante.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
+    wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
   }
 }
 </script>

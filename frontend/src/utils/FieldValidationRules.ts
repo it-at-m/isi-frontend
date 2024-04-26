@@ -23,6 +23,10 @@ export function min5(v: string | Nil): Result {
   return !v || /.{5,}$/.test(v) || "Mindestens fünf Zeichen benötigt";
 }
 
+export function min4(v: string | Nil): Result {
+  return !v || /.{4,}$/.test(v) || "Mindestens vier Zeichen benötigt";
+}
+
 export function hausnummer(v: string | Nil): Result {
   return !v || /^[a-zA-Z 0-9 \s]*$/.test(v) || "Nur Buchstaben und Zahlen erlaubt";
 }
