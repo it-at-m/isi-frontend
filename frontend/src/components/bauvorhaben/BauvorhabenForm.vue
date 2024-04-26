@@ -319,8 +319,8 @@ const calcGrundstuecksgroesse = computed({
 
 watch(
   () => bauvorhaben.value.sobonRelevant,
-  (value) => {
-    if (value === UncertainBoolean.True) {
+  () => {
+    if (bauvorhaben.value.sobonRelevant === UncertainBoolean.True) {
       sobonJahrVisible.value = true;
     } else {
       sobonJahrVisible.value = false;

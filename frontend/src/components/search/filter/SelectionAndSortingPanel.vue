@@ -231,67 +231,67 @@ const emits = defineEmits<Emits>();
 
 const searchQueryAndSorting = defineModel(props, emits);
 
-const hoverSelectAll = false;
-const hoverDeselectAll = false;
-const hoverSelectBauleitplanverfahren = false;
-const hoverSelectBaugenehmigungsverfahren = false;
-const hoverSelectWeiteresVerfahren = false;
-const hoverSelectBauvorhaben = false;
-const hoverSelectGrundschule = false;
-const hoverSelectGsNachmittagBetreuung = false;
-const hoverSelectMittelschule = false;
-const hoverSelectKinderkrippe = false;
-const hoverSelectKindergarten = false;
-const hoverSelectHausFuerKinder = false;
+const hoverSelectAll = ref<boolean>(false);
+const hoverDeselectAll = ref<boolean>(false);
+const hoverSelectBauleitplanverfahren = ref<boolean>(false);
+const hoverSelectBaugenehmigungsverfahren = ref<boolean>(false);
+const hoverSelectWeiteresVerfahren = ref<boolean>(false);
+const hoverSelectBauvorhaben = ref<boolean>(false);
+const hoverSelectGrundschule = ref<boolean>(false);
+const hoverSelectGsNachmittagBetreuung = ref<boolean>(false);
+const hoverSelectMittelschule = ref<boolean>(false);
+const hoverSelectKinderkrippe = ref<boolean>(false);
+const hoverSelectKindergarten = ref<boolean>(false);
+const hoverSelectHausFuerKinder = ref<boolean>(false);
 
-const hoverArtDerSortierung = false;
-const hoverReihenfolgeDerSortierung = false;
+const hoverArtDerSortierung = ref<boolean>(false);
+const hoverReihenfolgeDerSortierung = ref<boolean>(false);
 
 const helpTextObjektauswahl = computed(() => {
-  if (hoverSelectAll) {
+  if (hoverSelectAll.value) {
     return "Es werden all Objekttypen ausgewählt.";
   }
-  if (hoverDeselectAll) {
+  if (hoverDeselectAll.value) {
     return "Es werden all Objekttypen abgewählt.";
   }
-  if (hoverSelectBauleitplanverfahren) {
+  if (hoverSelectBauleitplanverfahren.value) {
     return "Die Bauleitplanverfahren werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectBaugenehmigungsverfahren) {
+  if (hoverSelectBaugenehmigungsverfahren.value) {
     return "Die Baugenehmigungsverfahren werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectWeiteresVerfahren) {
+  if (hoverSelectWeiteresVerfahren.value) {
     return "Die Weiteren Verfahren werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectBauvorhaben) {
+  if (hoverSelectBauvorhaben.value) {
     return "Die Bauvorhaben werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectGrundschule) {
+  if (hoverSelectGrundschule.value) {
     return "Die Grundschulen werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectMittelschule) {
+  if (hoverSelectMittelschule.value) {
     return "Die Mittelschulen werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectGsNachmittagBetreuung) {
+  if (hoverSelectGsNachmittagBetreuung.value) {
     return "Die Einrichtungen zur Nachmittagsbetreuung für Grundschulkinder werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectKinderkrippe) {
+  if (hoverSelectKinderkrippe.value) {
     return "Die Kinderkrippen werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectKindergarten) {
+  if (hoverSelectKindergarten.value) {
     return "Die Kindergärten werden in die Suche miteinbezogen.";
   }
-  if (hoverSelectHausFuerKinder) {
+  if (hoverSelectHausFuerKinder.value) {
     return "Die Häuser für Kinder werden in die Suche miteinbezogen.";
   }
   return "";
 });
 
 const helpTextSortierung = computed(() => {
-  if (hoverArtDerSortierung) {
+  if (hoverArtDerSortierung.value) {
     return "Auswahl nach welchem Attribut sortiert werden soll.";
   }
-  if (hoverReihenfolgeDerSortierung) {
+  if (hoverReihenfolgeDerSortierung.value) {
     return "Auswahl ob das sortierbare Attribut aufsteigend oder absteigend sortiert werden soll.";
   }
   return "";

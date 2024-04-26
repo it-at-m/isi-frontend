@@ -9,7 +9,7 @@
       :look-at="coordinate"
       :geo-json="geoJson"
       :geo-json-options="geoJsonOptions"
-      @click-in-map="handleClickInMap($event)"
+      @click-in-map="handleClickInMap"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />

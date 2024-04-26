@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { onMounted, computed } from "vue";
-import { SearchQueryDto, SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
+import { SearchQueryDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
@@ -56,11 +56,11 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRouter } from "vue-router/composables";
 
-let searchAndFilterDialogOpen = false;
-let searchQueryAndSorting: SearchQueryAndSortingModel = createSearchQueryAndSortingModel();
-let searchQuery = "";
-let suggestions: Array<string> = [];
-let selectedSuggestion = "";
+let searchAndFilterDialogOpen = ref<boolean>(false);
+let searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
+let searchQuery = ref<string>("");
+let suggestions = ref<Array<string>>([]);
+let selectedSuggestion = ref<string>("");
 const { searchForSearchwordSuggestion, searchForEntities } = useSearchApi();
 const router = useRouter();
 
@@ -83,19 +83,19 @@ const searchQueryAndSortingStore = computed({
 });
 
 function openSearchAndFilterDialog(): void {
-  searchQueryAndSorting = searchQueryAndSortingStore.value;
-  searchAndFilterDialogOpen = true;
+  searchQueryAndSorting.value = searchQueryAndSortingStore.value;
+  searchAndFilterDialogOpen.value = true;
 }
 
 function handleAdoptSearchAndFilterOptions(): void {
-  searchQueryAndSortingStore.value = searchQueryAndSorting;
-  searchAndFilterDialogOpen = false;
+  searchQueryAndSortingStore.value = searchQueryAndSorting.value;
+  searchAndFilterDialogOpen.value = false;
   searchEntitiesForSelectedSuggestion();
   checkCurrentFilter();
 }
 
 function handleResetSearchAndFilterOptions(): void {
-  searchQueryAndSorting = createSearchQueryAndSortingModel();
+  searchQueryAndSorting.value = createSearchQueryAndSortingModel();
   handleAdoptSearchAndFilterOptions();
   searchEntitiesForSelectedSuggestion();
 }
@@ -114,7 +114,7 @@ const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestS
 
 function updateSearchQuery(itemIndex: number) {
   if (itemIndex > -1) {
-    searchQuery = suggestions[itemIndex];
+    searchQuery.value = suggestions.value[itemIndex];
   }
 }
 
@@ -150,7 +150,7 @@ function suggest(query: string): void {
         }
         return _.join(splittedSearchwords, " ");
       });
-      suggestions = [query].concat(foundSuggestions);
+      suggestions.value = [query].concat(foundSuggestions);
     });
   }
 }
@@ -158,11 +158,11 @@ function suggest(query: string): void {
 function searchEntitiesForSelectedSuggestion(): void {
   routeToMainViewWhenNotInMain();
   const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
-  searchQueryForEntitiesDto.searchQuery = _.isNil(searchQuery) ? "" : searchQuery;
+  searchQueryForEntitiesDto.searchQuery = _.isNil(searchQuery.value) ? "" : searchQuery.value;
   searchQueryForEntitiesDto.page = 1;
   searchQueryForEntitiesDto.pageSize = 20;
-  suggestions = [searchQueryForEntitiesDto.searchQuery];
-  selectedSuggestion = searchQueryForEntitiesDto.searchQuery;
+  suggestions.value = [searchQueryForEntitiesDto.searchQuery];
+  selectedSuggestion.value = searchQueryForEntitiesDto.searchQuery;
   searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
   searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
     searchStore.setSearchResults(_.cloneDeep(searchResults));
@@ -170,9 +170,9 @@ function searchEntitiesForSelectedSuggestion(): void {
 }
 
 function clearSearch(): void {
-  suggestions = [];
-  searchQuery = "";
-  selectedSuggestion = "";
+  suggestions.value = [];
+  searchQuery.value = "";
+  selectedSuggestion.value = "";
 }
 
 function routeToMainViewWhenNotInMain(): void {

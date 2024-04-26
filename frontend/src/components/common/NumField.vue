@@ -73,7 +73,7 @@ import { watch } from "vue";
 import { CurrencyDisplay, CurrencyInputOptions, useCurrencyInput } from "vue-currency-input";
 import { min, max, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
-import { useCommonStore } from "@/stores/CommonStore";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
   value: number;
@@ -162,7 +162,7 @@ export default {
   },
 
   setup(props: Props): unknown {
-    const { formChanged } = useCommonStore();
+    const { formChanged } = useSaveLeave();
 
     // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
     function getRules(): unknown[] {

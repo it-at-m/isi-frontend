@@ -6,7 +6,7 @@
           id="baugebiet_bezeichnung"
           v-model.trim="baugebiet.bezeichnung"
           :disabled="!isEditable"
-          :rules="[fieldValidationRules.pflichtfeld]"
+          :rules="[pflichtfeld]"
           maxlength="255"
           validate-on-blur
           @input="formChanged"
@@ -25,7 +25,7 @@
           :items="artBaulicheNutzungList"
           item-value="key"
           item-text="value"
-          :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+          :rules="[pflichtfeld, notUnspecified]"
           @change="formChanged"
         >
           <template #label> Art der baulichen Nutzung <span class="secondary--text">*</span> </template>
@@ -51,79 +51,52 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
+<script setup lang="ts">
 import {
-  AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteWeiteresVerfahrenDto,
-  LookupEntryDto,
-  BauvorhabenDtoArtFnpEnum,
   BaugebietDtoArtBaulicheNutzungEnum,
 } from "@/api/api-client/isi-backend";
-import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import NumField from "@/components/common/NumField.vue";
-import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
+import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
+import { computed, watch } from "vue";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
-@Component({ components: { NumField, FieldGroupCard, BauratenAggregiertComponent } })
-export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
-
-  private lookupStore = useLookupStore();
-
-  @Prop()
-  private abfragevariante:
+interface Props {
+  value: BaugebietModel;
+  abfragevariante:
     | AbfragevarianteBauleitplanverfahrenDto
     | AbfragevarianteBaugenehmigungsverfahrenDto
     | AbfragevarianteWeiteresVerfahrenDto
     | undefined;
+  isEditable: boolean;
+}
 
-  @Prop()
-  private mode!: DisplayMode;
+interface Emits {
+  (event: "input", value: BaugebietModel): void;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const baugebiet = defineModel(props, emit);
+let artBaulicheNutzungFreieEingabeVisible = ref<boolean>(false);
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const artBaulicheNutzungList = computed(() => lookupStore.artBaulicheNutzung);
 
-  private artBaulicheNutzungFreieEingabeVisible = false;
+watch(() => baugebiet.value.artBaulicheNutzung, artFnpChanged, { immediate: true });
 
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
-
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
-
-  get headline(): string {
-    const headline = `Baugebiet ${this.baugebiet.bezeichnung} `;
-    return headline;
-  }
-
-  get artBaulicheNutzungList(): LookupEntryDto[] {
-    return this.lookupStore.artBaulicheNutzung;
-  }
-
-  @Watch("baugebiet.artBaulicheNutzung", { immediate: true })
-  private artFnpChanged(): void {
-    if (_.isEqual(this.baugebiet.artBaulicheNutzung, BaugebietDtoArtBaulicheNutzungEnum.FreieEingabe)) {
-      this.artBaulicheNutzungFreieEingabeVisible = true;
-    } else {
-      this.baugebiet.artBaulicheNutzungFreieEingabe = undefined;
-      this.artBaulicheNutzungFreieEingabeVisible = false;
-    }
+function artFnpChanged(): void {
+  if (_.isEqual(baugebiet.value.artBaulicheNutzung, BaugebietDtoArtBaulicheNutzungEnum.FreieEingabe)) {
+    artBaulicheNutzungFreieEingabeVisible.value = true;
+  } else {
+    baugebiet.value.artBaulicheNutzungFreieEingabe = undefined;
+    artBaulicheNutzungFreieEingabeVisible.value = false;
   }
 }
 </script>

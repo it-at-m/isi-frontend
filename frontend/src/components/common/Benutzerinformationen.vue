@@ -52,53 +52,46 @@
 <script setup lang="ts">
 import _ from "lodash";
 import moment from "moment";
-import { defineModel } from "@/utils/Vue";
 import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
 
 interface Props {
-  value: BenutzerinformationenModel;
-}
-
-interface Emits {
-  (event: "input", value: BenutzerinformationenModel): void;
+  benutzerinformationen: BenutzerinformationenModel;
 }
 
 const DISPLAY_FORMAT = "DD.MM.YYYY";
 const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const benutzerinformationen = defineModel(props, emit);
 
 const benutzerinformationenAvailable = computed(() => {
   return (
-    !_.isNil(benutzerinformationen.value?.lastModifiedDateTime) ||
-    !_.isNil(benutzerinformationen.value?.bearbeitendePerson)
+    !_.isNil(props.benutzerinformationen.lastModifiedDateTime) ||
+    !_.isNil(props.benutzerinformationen.bearbeitendePerson)
   );
 });
 
 const name = computed(() => {
-  return _.isNil(benutzerinformationen.value?.bearbeitendePerson) ||
-    _.isNil(benutzerinformationen.value?.bearbeitendePerson?.name)
+  return _.isNil(props.benutzerinformationen.bearbeitendePerson) ||
+    _.isNil(props.benutzerinformationen.bearbeitendePerson?.name)
     ? ""
-    : benutzerinformationen.value.bearbeitendePerson.name;
+    : props.benutzerinformationen.bearbeitendePerson.name;
 });
 
 const email = computed(() => {
-  return _.isNil(benutzerinformationen.value?.bearbeitendePerson) ||
-    _.isNil(benutzerinformationen.value?.bearbeitendePerson?.email)
+  return _.isNil(props.benutzerinformationen.bearbeitendePerson) ||
+    _.isNil(props.benutzerinformationen.bearbeitendePerson?.email)
     ? ""
-    : benutzerinformationen.value.bearbeitendePerson.email;
+    : props.benutzerinformationen.bearbeitendePerson.email;
 });
 
 const organisationseinheit = computed(() => {
-  return _.isNil(benutzerinformationen.value?.bearbeitendePerson) ||
-    _.isNil(benutzerinformationen.value?.bearbeitendePerson?.organisationseinheit)
+  return _.isNil(props.benutzerinformationen.bearbeitendePerson) ||
+    _.isNil(props.benutzerinformationen.bearbeitendePerson?.organisationseinheit)
     ? ""
-    : benutzerinformationen.value.bearbeitendePerson.organisationseinheit;
+    : props.benutzerinformationen.bearbeitendePerson.organisationseinheit;
 });
 
 const letzteAenderung = computed(() => {
-  return _.isNil(benutzerinformationen.value?.lastModifiedDateTime)
+  return _.isNil(props.benutzerinformationen.lastModifiedDateTime)
     ? ""
-    : moment.utc(benutzerinformationen.value.lastModifiedDateTime, true).format(DISPLAY_FORMAT);
+    : moment.utc(props.benutzerinformationen.lastModifiedDateTime, true).format(DISPLAY_FORMAT);
 });
 </script>

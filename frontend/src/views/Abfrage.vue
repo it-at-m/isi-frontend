@@ -217,7 +217,7 @@
               cols="12"
               sm="1"
             >
-              <bearbeitungshistorie v-model="abfrage" />
+              <bearbeitungshistorie v-model="abfrage.bearbeitungshistorie" />
             </v-col>
           </v-row>
         </v-container>

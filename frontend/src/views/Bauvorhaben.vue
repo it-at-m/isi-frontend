@@ -24,7 +24,7 @@
               cols="12"
               sm="1"
             >
-              <benutzerinformationen v-model="bearbeitungsinformationen" />
+              <benutzerinformationen :benutzerinformationen="bearbeitungsinformationen" />
             </v-col>
           </v-row>
         </v-container>
@@ -173,20 +173,20 @@ const {
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { showWarningInInformationList } = useInformationList();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
-const { selectedBauvorhaben, setSelectedBauvorhaben, removeSearchResultById } = useSearchStore();
+const searchStore = useSearchStore();
 const form = ref<{ validate: () => boolean } | null>(null);
 const isEditable = computed(() => isRoleAdminOrSachbearbeitung());
 const deleteDialogOpen = ref(false);
 const dataTransferDialogOpen = ref(false);
+const isNew = ref(true);
 let datenuebernahmeAbfrageId: string | undefined = undefined;
-let isNew = true;
 
 const bauvorhaben = computed({
   get() {
-    return selectedBauvorhaben ?? new BauvorhabenModel(createBauvorhabenDto());
+    return searchStore.selectedBauvorhaben ?? new BauvorhabenModel(createBauvorhabenDto());
   },
   set(model: BauvorhabenModel) {
-    setSelectedBauvorhaben(model);
+    searchStore.setSelectedBauvorhaben(model);
   },
 });
 
@@ -194,10 +194,12 @@ const bearbeitungsinformationen = computed(
   () => new BenutzerinformationenModel(bauvorhaben.value.bearbeitendePerson, bauvorhaben.value.lastModifiedDateTime),
 );
 
-onMounted(() => {
-  isNew = route.params.id === undefined;
+onBeforeMount(() => {
+  isNew.value = route.params.id === undefined;
 
-  if (!isNew) {
+  if (isNew.value) {
+    bauvorhaben.value = new BauvorhabenModel(createBauvorhabenDto());
+  } else {
     fetchBauvorhabenById();
   }
 });
@@ -212,7 +214,7 @@ function validateAndProceed(): void {
     const fault = findFaultInBauvorhaben(bauvorhaben.value);
 
     if (fault === null) {
-      if (isNew) {
+      if (isNew.value) {
         saveBauvorhaben();
       } else {
         updateBauvorhaben();
@@ -260,7 +262,7 @@ async function removeBauvorhaben(): Promise<void> {
   deleteDialogOpen.value = false;
 
   await deleteBauvorhaben(route.params.id, true);
-  removeSearchResultById(route.params.id);
+  searchStore.removeSearchResultById(route.params.id);
   returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
 }
 

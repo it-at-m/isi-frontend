@@ -86,17 +86,17 @@ import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
-  value: string | undefined;
+  value?: string;
   isEditable?: boolean;
 }
 
 interface Emits {
-  (event: "input", value: string | undefined): void;
+  (event: "input", value?: string): void;
 }
 
 const { formChanged } = useSaveLeave();
 const title = "Link eAkte";
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const props = withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
 const emit = defineEmits<Emits>();
 const linkEakte = defineModel(props, emit);
 const textFieldLinkEakte = ref("");

@@ -53,8 +53,8 @@ interface Props {
 }
 
 interface Emits {
-  (event: "adoptSearchAndFilterOptions", value: void): void;
-  (event: "resetSearchAndFilterOptions", value: void): void;
+  (event: "adopt-search-and-filter-options", value: void): void;
+  (event: "reset-search-and-filter-options", value: void): void;
   (event: "input", value: SearchQueryAndSortingModel): void;
 }
 
@@ -72,11 +72,11 @@ const getContentSheetHeight = computed(() => {
 });
 
 function adoptSearchAndFilterOptions(): void {
-  emit("adoptSearchAndFilterOptions");
+  emit("adopt-search-and-filter-options");
 }
 
 function resetSearchAndFilterOptions(): void {
-  emit("resetSearchAndFilterOptions");
+  emit("reset-search-and-filter-options");
 }
 </script>
 
