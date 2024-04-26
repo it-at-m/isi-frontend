@@ -34,7 +34,9 @@ export const LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: MIN_ZOO
 
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
-export const OVERLAYS_ARCGIS = new Map([
+export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
+
+export const OVERLAYS_ARCGIS_TRANSPARENT = new Map([
   ["Gemarkungen", "Gemarkungen"],
   ["Baublöcke", "Baublöcke"],
   ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
@@ -42,6 +44,7 @@ export const OVERLAYS_ARCGIS = new Map([
   ["Bezirksteile", "Bezirksteile"],
   ["Stadtviertel", "Stadtviertel"],
   ["Grundschulsprengel", "Grundschulsprengel"],
+  ["Mittelschulsprengel", "Mittelschulsprengel"],
   ["Umgriffe Bebauungspläne", "BB-Umgriff"],
 ]);
 
@@ -57,6 +60,15 @@ export const OVERLAYS_ARCGIS = new Map([
 export function assembleDefaultLayersForLayerControl(): Map<string, TileLayer.WMS> {
   const layers = new Map<string, TileLayer.WMS>();
 
+  for (const overlay of OVERLAYS_ARCGIS_INTRANSPARENT) {
+    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
+      layers: overlay[1],
+      transparent: false,
+      ...LAYER_OPTIONS,
+    });
+    layers.set(overlay[0], layer);
+  }
+
   for (const overlay of OVERLAYS_GRUNDKARTE) {
     const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
       layers: overlay[1],
@@ -66,7 +78,7 @@ export function assembleDefaultLayersForLayerControl(): Map<string, TileLayer.WM
     layers.set(overlay[0], layer);
   }
 
-  for (const overlay of OVERLAYS_ARCGIS) {
+  for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
     const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
       layers: overlay[1],
       transparent: true,
