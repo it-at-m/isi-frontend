@@ -142,7 +142,7 @@ interface Emits {
 
 const { formChanged } = useSaveLeave();
 const { getAdressen } = useMasterEaiApi();
-const props = withDefaults(defineProps<Props>(), { showInInformationList: true, isEditable: true });
+const props = withDefaults(defineProps<Props>(), { showInInformationList: true, isEditable: false });
 const emit = defineEmits<Emits>();
 const adresse = defineModel(props, emit);
 const loading = ref(false);
