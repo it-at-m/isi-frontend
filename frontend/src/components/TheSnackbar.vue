@@ -2,12 +2,12 @@
   <v-snackbar
     id="snackbar"
     v-model="show"
-    :color="color"
+    :color="level"
     :timeout="timeout"
   >
     {{ message }}
     <v-btn
-      v-if="color === 'error'"
+      v-if="level === 'error'"
       id="snackbar_schließen_button"
       class="text-wrap"
       color="primary"
@@ -18,48 +18,20 @@
   </v-snackbar>
 </template>
 
-<script lang="ts">
-import { Component, Watch, Vue } from "vue-property-decorator";
+<script setup lang="ts">
 import { useSnackbarStore } from "@/stores/SnackbarStore";
-@Component
-export default class TheSnackbar extends Vue {
-  static defaultTimeout = 5000;
 
-  show = false;
-  timeout: number = TheSnackbar.defaultTimeout;
-  message = "";
-  color = "info";
-
-  private snackbarStore = useSnackbarStore();
-
-  private storeMessage = computed(() => this.snackbarStore.message);
-  private storeLevel = computed(() => this.snackbarStore.level);
-  private storeShow = computed(() => this.snackbarStore.show);
-
-  @Watch("storeMessage")
-  setMessage(): void {
-    this.message = this.snackbarStore.message as string;
-  }
-
-  @Watch("storeLevel")
-  setColor(): void {
-    this.color = this.snackbarStore.level;
-    if (this.color === "error") {
-      this.timeout = 0;
-    } else {
-      this.timeout = TheSnackbar.defaultTimeout;
-    }
-  }
-
-  @Watch("storeShow")
-  showSnackbar(): void {
-    if (this.snackbarStore.show) {
-      this.show = false;
-      setTimeout(() => {
-        this.show = true;
-        this.snackbarStore.setShow(false);
-      }, 100);
-    }
-  }
-}
+const defaultTimeout = 5000;
+const snackbarStore = useSnackbarStore();
+const message = computed(() => snackbarStore.message);
+const level = computed(() => snackbarStore.level);
+const timeout = computed(() => (snackbarStore.level === "error" ? 0 : defaultTimeout));
+const show = computed({
+  get() {
+    return snackbarStore.show;
+  },
+  set(value) {
+    snackbarStore.setShow(value);
+  },
+});
 </script>
