@@ -155,6 +155,32 @@ const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 
 onMounted(() => fetchBauvorhaben());
 
+watch(
+  () => abfrage.value.standVerfahren,
+  (value) => {
+    if (value?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
+      standVerfahrenFreieEingabeVisible.value = true;
+    } else {
+      standVerfahrenFreieEingabeVisible.value = false;
+      abfrage.value.standVerfahrenFreieEingabe = undefined;
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  () => abfrage.value.sobonRelevant,
+  (value) => {
+    if (value === UncertainBoolean.True) {
+      sobonJahrVisible.value = true;
+    } else {
+      sobonJahrVisible.value = false;
+      abfrage.value.sobonJahr = undefined;
+    }
+  },
+  { immediate: true },
+);
+
 /**
  * Holt alle Bauvorhaben vom Backend.
  */
@@ -181,30 +207,4 @@ async function fetchBauvorhaben(): Promise<void> {
     (searchResults) => searchResults as BauvorhabenSearchResultDto,
   ) as Array<BauvorhabenSearchResultDto>;
 }
-
-watch(
-  () => abfrage.value.standVerfahren,
-  (value) => {
-    if (value?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      standVerfahrenFreieEingabeVisible.value = true;
-    } else {
-      standVerfahrenFreieEingabeVisible.value = false;
-      abfrage.value.standVerfahrenFreieEingabe = undefined;
-    }
-  },
-  { immediate: true },
-);
-
-watch(
-  () => abfrage.value.sobonRelevant,
-  (value) => {
-    if (value === UncertainBoolean.True) {
-      sobonJahrVisible.value = true;
-    } else {
-      sobonJahrVisible.value = false;
-      abfrage.value.sobonJahr = undefined;
-    }
-  },
-  { immediate: true },
-);
 </script>

@@ -1,4 +1,3 @@
-npm
 <template>
   <v-container>
     <abfrage-common-component
