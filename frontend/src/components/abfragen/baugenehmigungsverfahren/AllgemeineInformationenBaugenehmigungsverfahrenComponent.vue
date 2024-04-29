@@ -152,13 +152,13 @@ async function fetchBauvorhaben(): Promise<void> {
 }
 
 watch(
-  abfrage,
-  () => {
-    if (abfrage.value.standVerfahren?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
+  () => abfrage.value.standVerfahren,
+  (value) => {
+    if (value?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
       standVerfahrenFreieEingabeVisible.value = true;
     } else {
-      abfrage.value.standVerfahrenFreieEingabe = undefined;
       standVerfahrenFreieEingabeVisible.value = false;
+      abfrage.value.standVerfahrenFreieEingabe = undefined;
     }
   },
   { immediate: true },

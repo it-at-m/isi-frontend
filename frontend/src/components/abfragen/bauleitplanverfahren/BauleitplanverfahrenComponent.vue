@@ -6,26 +6,26 @@ npm
       ref="abfrageCommonComponent"
       v-model="bauleitplanverfahren"
       :is-new="isNew"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung()"
     />
     <allgemeine-informationen-bauleitplanverfahren-component
       id="allgemeine_informationen_bauleitplanverfahren-component"
       ref="allgemeineInformationenBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung()"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
       v-model="bauleitplanverfahren.adresse"
-      :show-in-information-list-prop="true"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :show-in-information-list="true"
+      :is-editable="isEditableByAbfrageerstellung()"
     />
     <verortung
       id="verortung_component"
       ref="verortungComponent"
       v-model="bauleitplanverfahren.verortung"
-      :context="context"
+      :context="Context.ABFRAGE"
       :look-at="bauleitplanverfahren.adresse"
     />
     <allgemeine-informationen-zur-abfrage-bauleitplanverfahren-component
@@ -33,8 +33,8 @@ npm
       ref="allgemeineInformationenZurAbfrageBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
       :look-at="bauleitplanverfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
-      :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-editable="isEditableByAbfrageerstellung()"
+      :is-eakte-editable="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
     />
     <dokumente
       id="dokumente_component"
@@ -47,40 +47,30 @@ npm
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenBauleitplanverfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
-@Component({
-  computed: {
-    context() {
-      return Context.ABFRAGE;
-    },
-  },
-  components: {
-    Dokumente,
-    AbfrageCommonComponent,
-    AllgemeineInformationenBauleitplanverfahrenComponent,
-    AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent,
-    FieldGroupCard,
-  },
-})
-export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
-  @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isNew!: boolean;
-
-  private nameRootFolder = "bauleitplanverfahren";
+interface Props {
+  value: BauleitplanverfahrenModel;
+  isNew?: boolean;
 }
-</script>
 
-<style></style>
+interface Emits {
+  (event: "input", value: BauleitplanverfahrenModel): void;
+}
+
+const nameRootFolder = "bauleitplanverfahren";
+const { formChanged } = useSaveLeave();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const props = withDefaults(defineProps<Props>(), { isNew: false });
+const emit = defineEmits<Emits>();
+const bauleitplanverfahren = defineModel(props, emit);
+</script>
