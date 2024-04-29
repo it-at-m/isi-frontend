@@ -50,6 +50,12 @@ export interface AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto {
      * @memberof AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto
      */
     bedarfsmeldungAbfrageersteller?: Array<BedarfsmeldungDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto
+     */
+    anmerkungAbfrageersteller?: string;
 }
 
 
@@ -88,6 +94,7 @@ export function AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDtoFromJSON
         'version': !exists(json, 'version') ? undefined : json['version'],
         'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
         'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'anmerkungAbfrageersteller': !exists(json, 'anmerkungAbfrageersteller') ? undefined : json['anmerkungAbfrageersteller'],
     };
 }
 
@@ -104,6 +111,7 @@ export function AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDtoToJSON(v
         'version': value.version,
         'artAbfragevariante': value.artAbfragevariante,
         'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller === undefined ? undefined : ((value.bedarfsmeldungAbfrageersteller as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'anmerkungAbfrageersteller': value.anmerkungAbfrageersteller,
     };
 }
 

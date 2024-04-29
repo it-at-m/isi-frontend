@@ -541,7 +541,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungFachreferat
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
-      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
       ausgeloesterBedarfMitversorgungImBplanKita: abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita,
@@ -569,7 +569,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachref
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
-      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
       ausgeloesterBedarfMitversorgungImBplanKita: abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita,
@@ -597,7 +597,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
-      hinweisVersorgung: abfragevariante.hinweisVersorgung,
+      anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
       ausgeloesterBedarfMitversorgungImBplanKita: abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita,
@@ -625,6 +625,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto;
   });
 }
@@ -638,6 +639,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolg
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto;
   });
 }
@@ -651,6 +653,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto;
   });
 }
