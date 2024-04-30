@@ -54,64 +54,48 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
+<script setup lang="ts">
 import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import _ from "lodash";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: {
-    FieldGroupCard,
-  },
-})
-export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: String }) infrastruktureinrichtungTyp!: string;
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
 
-  private lookupStore = useLookupStore();
+interface Props {
+  value: string;
+  lfdNr?: string;
+  isEditable?: boolean;
+  mode?: DisplayMode;
+}
 
-  @Prop()
-  private lfdNr!: string;
+interface Emits {
+  (event: "input", value: string): void;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const infrastruktureinrichtungTyp = defineModel(props, emit);
+const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
+const displaymode = computed(() => (props.mode === undefined ? DisplayMode.UNDEFINED : props.mode));
+const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
+const infrastruktureinrichtungList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 
-  get lfdNrInfrastruktureinrichtung(): string {
-    return this.lfdNr;
-  }
+function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+  return !_.isUndefined(list) && !_.isNil(key)
+    ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+    : key;
+}
 
-  @Prop()
-  private mode!: DisplayMode;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
-
-  get isNewInfrastruktureinrichtung(): boolean {
-    return this.displayMode === DisplayMode.NEU;
-  }
-
-  get infrastruktureinrichtungList(): LookupEntryDto[] {
-    return this.lookupStore.infrastruktureinrichtungTyp;
-  }
-
-  get infrastruktureinrichtungTypDisplay(): string {
-    if (!_.isNil(this.infrastruktureinrichtungTyp)) {
-      const lookupValue = this.getLookupValue(this.infrastruktureinrichtungTyp, this.infrastruktureinrichtungList);
-      return !_.isNil(lookupValue) ? lookupValue : "";
-    } else {
-      return "";
-    }
-  }
-
-  private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list) && !_.isNil(key)
-      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-      : key;
+function infrastruktureinrichtungTypDisplay(): string {
+  if (!_.isNil(infrastruktureinrichtungTyp)) {
+    const lookupValue = getLookupValue(props.value, infrastruktureinrichtungList.value);
+    return !_.isNil(lookupValue) ? lookupValue : "";
+  } else {
+    return "";
   }
 }
 </script>
-<style></style>
