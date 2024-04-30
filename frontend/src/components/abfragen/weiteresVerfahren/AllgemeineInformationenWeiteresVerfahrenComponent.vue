@@ -1,5 +1,5 @@
 <template>
-  <field-group-card :card-title="allgemeineInfoCardTitle">
+  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Bauvorhaben">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -60,7 +60,7 @@
           :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"
-          :rules="[fieldValidationRules.notUnspecified]"
+          :rules="[notUnspecified]"
         >
           <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
         </tri-switch>
@@ -76,10 +76,10 @@
             ref="sobonJahrDropdown"
             v-model="abfrage.sobonJahr"
             :disabled="!isEditable"
-            :items="sobonVerfahrensgrundsaetzeJahrList"
+            :items="sobonVerfahrensgrundsaetzeJahr"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             @change="formChanged"
           >
             <template #label>
@@ -99,10 +99,10 @@
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           :disabled="!isEditable"
-          :items="standVerfahrenWeiteresVerfahrenList"
+          :items="standVerfahrenWeiteresVerfahren"
           item-value="key"
           item-text="value"
-          :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+          :rules="[pflichtfeld, notUnspecified]"
           @change="formChanged"
         >
           <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
@@ -129,111 +129,96 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import {
   WeiteresVerfahrenDtoStandVerfahrenEnum,
   BauvorhabenSearchResultDto,
-  LookupEntryDto,
   UncertainBoolean,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { useLookupStore } from "@/stores/LookupStore";
+import { defineModel } from "@/utils/Vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useSearchApi } from "@/composables/requests/search/SearchApi";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
-@Component({
-  components: { TriSwitch },
-})
-export default class AllgemeineInformationenWeiteresVerfahrenComponent extends Mixins(
-  SaveLeaveMixin,
-  SearchApiRequestMixin,
-  FieldValidationRulesMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: WeiteresVerfahrenModel }) abfrage!: WeiteresVerfahrenModel;
+interface Props {
+  value: WeiteresVerfahrenModel;
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
+interface Emits {
+  (event: "input", value: WeiteresVerfahrenModel): void;
+}
 
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
+const { formChanged } = useSaveLeave();
+const { sobonVerfahrensgrundsaetzeJahr, standVerfahrenWeiteresVerfahren } = useLookupStore();
+const { searchForEntities } = useSearchApi();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const abfrage = defineModel(props, emit);
+const standVerfahrenFreieEingabeVisible = ref(false);
+const sobonJahrVisible = ref(false);
+const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 
-  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Bauvorhaben";
+onMounted(() => fetchBauvorhaben());
 
-  private sobonJahrVisible = false;
+watch(
+  () => abfrage.value.standVerfahren,
+  (value) => {
+    if (value?.includes(WeiteresVerfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
+      standVerfahrenFreieEingabeVisible.value = true;
+    } else {
+      standVerfahrenFreieEingabeVisible.value = false;
+      abfrage.value.standVerfahrenFreieEingabe = undefined;
+    }
+  },
+  { immediate: true },
+);
 
-  private standVerfahrenFreieEingabeVisible = false;
-
-  private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
-
-  private lookupStore = useLookupStore();
-
-  mounted(): void {
-    this.fetchBauvorhaben();
-  }
-
-  get standVerfahrenWeiteresVerfahrenList(): LookupEntryDto[] {
-    return this.lookupStore.standVerfahrenWeiteresVerfahren;
-  }
-
-  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
-    return this.lookupStore.sobonVerfahrensgrundsaetzeJahr;
-  }
-
-  /**
-   * Holt alle Bauvorhaben vom Backend.
-   */
-  private async fetchBauvorhaben(): Promise<void> {
-    const searchQueryAndSortingDto = {
-      searchQuery: "",
-      selectBauleitplanverfahren: false,
-      selectBaugenehmigungsverfahren: false,
-      selectWeiteresVerfahren: false,
-      selectBauvorhaben: true,
-      selectGrundschule: false,
-      selectGsNachmittagBetreuung: false,
-      selectHausFuerKinder: false,
-      selectKindergarten: false,
-      selectKinderkrippe: false,
-      selectMittelschule: false,
-      page: undefined,
-      pageSize: undefined,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-    } as SearchQueryAndSortingDto;
-    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
-      this.bauvorhaben = searchResults.searchResults?.map(
-        (searchResults) => searchResults as BauvorhabenSearchResultDto,
-      ) as Array<BauvorhabenSearchResultDto>;
-    });
-  }
-
-  @Watch("abfrage.sobonRelevant", { immediate: true })
-  private sobonRelevantChanged(value: UncertainBoolean): void {
+watch(
+  () => abfrage.value.sobonRelevant,
+  (value) => {
     if (value === UncertainBoolean.True) {
-      this.sobonJahrVisible = true;
+      sobonJahrVisible.value = true;
     } else {
-      this.sobonJahrVisible = false;
-      this.abfrage.sobonJahr = undefined;
+      sobonJahrVisible.value = false;
+      abfrage.value.sobonJahr = undefined;
     }
-  }
+  },
+  { immediate: true },
+);
 
-  @Watch("abfrage.standVerfahren", { immediate: true })
-  private standVerfahrenChanged(): void {
-    if (this.abfrage.standVerfahren?.includes(WeiteresVerfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      this.standVerfahrenFreieEingabeVisible = true;
-    } else {
-      this.abfrage.standVerfahrenFreieEingabe = undefined;
-      this.standVerfahrenFreieEingabeVisible = false;
-    }
-  }
+/**
+ * Holt alle Bauvorhaben vom Backend.
+ */
+async function fetchBauvorhaben(): Promise<void> {
+  const searchQueryAndSortingDto = {
+    searchQuery: "",
+    selectBauleitplanverfahren: false,
+    selectBaugenehmigungsverfahren: false,
+    selectWeiteresVerfahren: false,
+    selectBauvorhaben: true,
+    selectGrundschule: false,
+    selectGsNachmittagBetreuung: false,
+    selectHausFuerKinder: false,
+    selectKindergarten: false,
+    selectKinderkrippe: false,
+    selectMittelschule: false,
+    page: undefined,
+    pageSize: undefined,
+    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+  } as SearchQueryAndSortingDto;
+  const searchResults = await searchForEntities(searchQueryAndSortingDto);
+  bauvorhaben.value = searchResults.searchResults?.map(
+    (searchResults) => searchResults as BauvorhabenSearchResultDto,
+  ) as Array<BauvorhabenSearchResultDto>;
 }
 </script>

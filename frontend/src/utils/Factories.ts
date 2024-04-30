@@ -789,3 +789,8 @@ export function createKommentarDto(): KommentarDto {
     dokumente: [],
   };
 }
+
+export const enum BedarfsmeldungTitle {
+  FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
+  ABFRAGEERSTELLUNG = "Geplante Einrichtungen",
+}

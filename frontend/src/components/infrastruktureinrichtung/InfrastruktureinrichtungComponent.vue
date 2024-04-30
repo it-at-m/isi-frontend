@@ -20,8 +20,8 @@
     <adresse-component
       id="infrastruktureinrichtung_adresse_component"
       v-model="infrastruktureinrichtung.adresse"
-      :show-in-information-list-prop="true"
-      :is-editable-prop="isEditable"
+      :show-in-information-list="true"
+      :is-editable="isEditable"
     />
     <infrastruktureinrichtung-verortung
       v-model="infrastruktureinrichtung.verortung"

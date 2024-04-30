@@ -198,151 +198,135 @@
       id="bedarfsmeldung_dialog"
       v-model="currentBedarfsmeldung"
       :show-bedarfsmeldung-dialog="bedarfsmeldungDialogOpen"
+      @update-show-bedarfsmeldung-dialog="bedarfsmeldungDialogOpen = $event"
       @uebernehmen-bedarfsmeldung="uebernehmenBedarfsmeldung($event)"
       @abbrechen-bedarfsmeldung="abbrechenBedarfsmeldung()"
     />
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, BedarfsmeldungDto } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import { BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
-import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
-import { createBedarfsmeldungDto } from "@/utils/Factories";
-import _ from "lodash";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useLookupStore } from "@/stores/LookupStore";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import { useLookupStore } from "@/stores/LookupStore";
+import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { BedarfsmeldungTitle, createBedarfsmeldungDto } from "@/utils/Factories";
+import { defineModel } from "@/utils/Vue";
+import _ from "lodash";
+import { computed, watch } from "vue";
 
-export const enum BedarfsmeldungTitle {
-  FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
-  ABFRAGEERSTELLUNG = "Geplante Einrichtungen",
+interface Props {
+  value: AbfragevarianteBauleitplanverfahrenModel;
+  bedarfsmeldungTitle: BedarfsmeldungTitle;
+  isEditable: false;
+  isFachreferat?: false;
 }
-@Component({ components: { FieldGroupCard, NumField, BedarfsmeldungDialog } })
-export default class BedarfsmeldungComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
-  @Prop()
-  private bedarfsmeldungTitle!: BedarfsmeldungTitle;
+interface Emits {
+  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isFachreferat: false });
+const emit = defineEmits<Emits>();
+const abfragevariante = defineModel(props, emit);
 
-  get getBedarfsmeldungTitle(): string {
-    if (!_.isNil(this.bedarfsmeldungTitle)) {
-      return this.bedarfsmeldungTitle.valueOf();
+const getBedarfsmeldungTitle = computed(() => {
+  if (!_.isNil(props.bedarfsmeldungTitle)) {
+    return props.bedarfsmeldungTitle.valueOf();
+  }
+  return "";
+});
+
+const getIsEditable = computed(() => props.isEditable);
+const getIsFachreferat = computed(() => props.isFachreferat);
+
+let bedarfsmeldungen = ref<BedarfsmeldungDto[] | null>([]);
+let bedarfsmeldungDialogOpen = ref<boolean | null>(false);
+let currentBedarfsmeldung = ref<BedarfsmeldungDto | null>(createBedarfsmeldungDto());
+let displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
+let selectedItemIndex = -1;
+const lookupStore = useLookupStore();
+const { formChanged } = useSaveLeave();
+
+watch(() => abfragevariante, bedarfsmeldungSelection, { immediate: true, deep: true });
+function bedarfsmeldungSelection(): void {
+  if (
+    !_.isNil(abfragevariante.value.bedarfsmeldungFachreferate) &&
+    !_.isNil(abfragevariante.value.bedarfsmeldungAbfrageersteller)
+  ) {
+    bedarfsmeldungen.value = props.isFachreferat
+      ? abfragevariante.value.bedarfsmeldungFachreferate
+      : abfragevariante.value.bedarfsmeldungAbfrageersteller;
+  }
+}
+
+let bedarfsmeldungenHeaders = [
+  { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
+  { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
+  { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen", sortable: false },
+  { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
+  { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
+  { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
+  { text: "", value: "actions", sortable: false },
+];
+
+/**
+ * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
+ *
+ * @param key für welchen der Wert aus der Liste geholt werden soll.
+ * @param list mit den Schlüssel-Wert-Paaren.
+ * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
+ */
+function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+  return !_.isUndefined(list) && !_.isNil(key)
+    ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+    : key;
+}
+
+const infrastruktureinrichtungenTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+
+function erfassenBedarfsmeldung(): void {
+  currentBedarfsmeldung.value = createBedarfsmeldungDto();
+  displayModeBedarfsmeldung = DisplayMode.NEU;
+  bedarfsmeldungDialogOpen.value = true;
+}
+
+function editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel, itemIndex: number): void {
+  selectedItemIndex = itemIndex;
+  currentBedarfsmeldung.value = _.cloneDeep(bedarfsmeldung);
+  displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
+  bedarfsmeldungDialogOpen.value = true;
+}
+
+function uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): void {
+  if (displayModeBedarfsmeldung === DisplayMode.NEU) {
+    if (_.isNil(bedarfsmeldungen.value)) {
+      bedarfsmeldungen.value = new Array<BedarfsmeldungDto>();
     }
-    return "";
+    bedarfsmeldungen.value.push(bedarfsmeldung);
+  } else {
+    bedarfsmeldungen.value?.splice(selectedItemIndex, 1, currentBedarfsmeldung.value as BedarfsmeldungDto);
   }
+  clearBedarfsmeldungDialog();
+}
 
-  @Prop({ type: Boolean, default: false })
-  private isEditable!: boolean;
+function abbrechenBedarfsmeldung(): void {
+  clearBedarfsmeldungDialog();
+}
 
-  get getIsEditable(): boolean {
-    return this.isEditable;
-  }
+function clearBedarfsmeldungDialog(): void {
+  bedarfsmeldungDialogOpen.value = false;
+  displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
+  selectedItemIndex = -1;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private isFachreferat!: boolean;
-
-  get getIsFachreferat(): boolean {
-    return this.isFachreferat;
-  }
-
-  private bedarfsmeldungen?: BedarfsmeldungDto[] = [];
-
-  @Watch("abfragevariante", { immediate: true, deep: true })
-  private bedarfsmeldungSelection(): void {
-    this.bedarfsmeldungen = this.isFachreferat
-      ? this.abfragevariante.bedarfsmeldungFachreferate
-      : this.abfragevariante.bedarfsmeldungAbfrageersteller;
-  }
-
-  private bedarfsmeldungDialogOpen = false;
-
-  private currentBedarfsmeldung = createBedarfsmeldungDto();
-
-  private displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
-
-  private selectedItemIndex = -1;
-
-  private bedarfsmeldungenHeaders = [
-    { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
-    { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
-    { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen", sortable: false },
-    { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
-    { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
-    { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
-    { text: "", value: "actions", sortable: false },
-  ];
-
-  private lookupStore = useLookupStore();
-
-  /**
-   * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
-   *
-   * @param key für welchen der Wert aus der Liste geholt werden soll.
-   * @param list mit den Schlüssel-Wert-Paaren.
-   * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
-   */
-  private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list) && !_.isNil(key)
-      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-      : key;
-  }
-
-  get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
-    return this.lookupStore.infrastruktureinrichtungTyp;
-  }
-
-  private erfassenBedarfsmeldung(): void {
-    this.currentBedarfsmeldung = createBedarfsmeldungDto();
-    this.displayModeBedarfsmeldung = DisplayMode.NEU;
-    this.bedarfsmeldungDialogOpen = true;
-  }
-
-  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel, itemIndex: number): void {
-    this.selectedItemIndex = itemIndex;
-    this.currentBedarfsmeldung = _.cloneDeep(bedarfsmeldung);
-    this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
-    this.bedarfsmeldungDialogOpen = true;
-  }
-
-  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): void {
-    if (this.displayModeBedarfsmeldung === DisplayMode.NEU) {
-      if (_.isNil(this.bedarfsmeldungen)) {
-        this.bedarfsmeldungen = new Array<BedarfsmeldungDto>();
-      }
-      this.bedarfsmeldungen.push(bedarfsmeldung);
-    } else {
-      this.bedarfsmeldungen?.splice(this.selectedItemIndex, 1, this.currentBedarfsmeldung);
-    }
-    this.clearBedarfsmeldungDialog();
-  }
-
-  private abbrechenBedarfsmeldung(): void {
-    this.clearBedarfsmeldungDialog();
-  }
-
-  private clearBedarfsmeldungDialog(): void {
-    this.bedarfsmeldungDialogOpen = false;
-    this.displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
-    this.selectedItemIndex = -1;
-  }
-
-  private deleteBedarfsmeldung(itemIndex: number) {
-    if (!_.isNil(this.bedarfsmeldungen)) {
-      this.bedarfsmeldungen.splice(itemIndex, 1);
-      this.formChanged();
-    }
+function deleteBedarfsmeldung(itemIndex: number) {
+  if (!_.isNil(bedarfsmeldungen.value)) {
+    bedarfsmeldungen.value?.splice(itemIndex, 1);
+    formChanged();
   }
 }
 </script>

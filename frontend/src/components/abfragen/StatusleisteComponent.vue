@@ -1,8 +1,8 @@
 <template>
-  <div v-if="!erledigtOhneFachreferatStepper()">
+  <div v-if="!erledigtOhneFachreferatStepper">
     <v-stepper
-      v-if="!isCancelled()"
-      :value="getStatusIndex()"
+      v-if="!isCancelled"
+      :value="statusIndex"
       alt-labels
       flat
     >
@@ -17,7 +17,7 @@
           <v-divider :key="index"></v-divider>
           <v-stepper-step
             :key="`${index}-${statusLabel}`"
-            :complete="getStatusIndex() > index"
+            :complete="statusIndex > index"
             step=""
           >
             {{ statusLabel }}
@@ -33,7 +33,7 @@
   </div>
   <div v-else>
     <v-stepper
-      :value="getShortenedStatusIndex()"
+      :value="shortenedStatusIndex"
       alt-labels
       flat
     >
@@ -48,7 +48,7 @@
           <v-divider :key="index"></v-divider>
           <v-stepper-step
             :key="`${index}-${shortenedStatusLabel}`"
-            :complete="getShortenedStatusIndex() > index"
+            :complete="shortenedStatusIndex > index"
             step=""
           >
             {{ shortenedStatusLabel }}
@@ -59,69 +59,60 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import { Vue, Component, Prop } from "vue-property-decorator";
 
-@Component
-export default class StatusleisteComponent extends Vue {
-  @Prop({ type: AbfrageModel })
-  abfrage!: AbfrageModel;
-
-  private statusLabels = [
-    "angelegt",
-    "Übermittelt zur Bearbeitung",
-    "Start Bearbeitung",
-    "Einpflegen Bedarfsmeldung",
-    "Einplanung Bedarfe",
-    "erledigt",
-  ];
-
-  private shortenedStatusLabels = ["angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "erledigt"];
-
-  private isCancelled(): boolean {
-    return this.abfrage.statusAbfrage === StatusAbfrage.Abbruch;
-  }
-
-  private getStatusIndex(): number {
-    switch (this.abfrage.statusAbfrage) {
-      case StatusAbfrage.Angelegt:
-        return 0;
-      case StatusAbfrage.Offen:
-        return 1;
-      case StatusAbfrage.InBearbeitungSachbearbeitung:
-        return 2;
-      case StatusAbfrage.InBearbeitungFachreferate:
-        return 3;
-      case StatusAbfrage.BedarfsmeldungErfolgt:
-        return 4;
-      case StatusAbfrage.ErledigtMitFachreferat:
-        return 5;
-      default:
-        return 0;
-    }
-  }
-
-  private getShortenedStatusIndex(): number {
-    switch (this.abfrage.statusAbfrage) {
-      case StatusAbfrage.Angelegt:
-        return 0;
-      case StatusAbfrage.Offen:
-        return 1;
-      case StatusAbfrage.InBearbeitungSachbearbeitung:
-        return 2;
-      case StatusAbfrage.ErledigtOhneFachreferat:
-        return 3;
-      default:
-        return 0;
-    }
-  }
-
-  private erledigtOhneFachreferatStepper(): boolean {
-    return this.abfrage.statusAbfrage === StatusAbfrage.ErledigtOhneFachreferat;
-  }
+interface Props {
+  abfrage: AbfrageModel;
 }
-</script>
 
-<style></style>
+const props = defineProps<Props>();
+const statusLabels = [
+  "angelegt",
+  "Übermittelt zur Bearbeitung",
+  "Start Bearbeitung",
+  "Einpflegen Bedarfsmeldung",
+  "Einplanung Bedarfe",
+  "erledigt",
+];
+const shortenedStatusLabels = ["angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "erledigt"];
+const isCancelled = computed(() => props.abfrage.statusAbfrage === StatusAbfrage.Abbruch);
+const erledigtOhneFachreferatStepper = computed(
+  () => props.abfrage.statusAbfrage === StatusAbfrage.ErledigtOhneFachreferat,
+);
+
+const statusIndex = computed(() => {
+  switch (props.abfrage.statusAbfrage) {
+    case StatusAbfrage.Angelegt:
+      return 0;
+    case StatusAbfrage.Offen:
+      return 1;
+    case StatusAbfrage.InBearbeitungSachbearbeitung:
+      return 2;
+    case StatusAbfrage.InBearbeitungFachreferate:
+      return 3;
+    case StatusAbfrage.BedarfsmeldungErfolgt:
+      return 4;
+    case StatusAbfrage.ErledigtMitFachreferat:
+      return 5;
+    default:
+      return 0;
+  }
+});
+
+const shortenedStatusIndex = computed(() => {
+  switch (props.abfrage.statusAbfrage) {
+    case StatusAbfrage.Angelegt:
+      return 0;
+    case StatusAbfrage.Offen:
+      return 1;
+    case StatusAbfrage.InBearbeitungSachbearbeitung:
+      return 2;
+    case StatusAbfrage.ErledigtOhneFachreferat:
+      return 3;
+    default:
+      return 0;
+  }
+});
+</script>
