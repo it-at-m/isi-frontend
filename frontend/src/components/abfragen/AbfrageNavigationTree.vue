@@ -158,7 +158,7 @@ const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung, isEditableWi
 watch(
   () => props.abfrage,
   () => (items.value = [buildTree(props.abfrage)]),
-  { deep: true },
+  { immediate: true, deep: true },
 );
 
 watch(
