@@ -78,7 +78,7 @@
           elevation="1"
           class="text-wrap mt-2 px-1"
           style="width: 200px"
-          :disabled="(!isNew && !isFormDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
+          :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
           @click="validateAndProceed()"
           v-text="isNew ? 'Speichern' : 'Aktualisieren'"
         />
@@ -160,13 +160,13 @@ import { AnyAbfrageDto } from "@/types/common/Abfrage";
 const route = useRoute();
 const router = useRouter();
 const {
-  formChanged,
-  isFormDirty,
   saveLeaveDialog,
   saveLeaveDialogTitle,
   saveLeaveDialogText,
   saveLeaveNoText,
   saveLeaveYesText,
+  isFormDirty,
+  formChanged,
   cancel,
   leave,
 } = useSaveLeave();
@@ -175,7 +175,7 @@ const { showWarningInInformationList } = useInformationList();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const searchStore = useSearchStore();
 const form = ref<{ validate: () => boolean } | null>(null);
-const isEditable = computed(() => isRoleAdminOrSachbearbeitung());
+const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value);
 const deleteDialogOpen = ref(false);
 const dataTransferDialogOpen = ref(false);
 const isNew = ref(true);

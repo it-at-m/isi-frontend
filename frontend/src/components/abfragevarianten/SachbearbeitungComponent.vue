@@ -11,7 +11,7 @@
               id="sobon_orientierungswert_jahr_dropdown"
               ref="sobonOrientierungswertJahrDropdown"
               v-model="abfragevarianteSachbearbeitung.sobonOrientierungswertJahr"
-              :disabled="!isEditableBySachbearbeitung()"
+              :disabled="!isEditableBySachbearbeitung"
               :items="sobonOrientierungswertJahrList"
               item-value="key"
               item-text="value"
@@ -30,7 +30,7 @@
             id="stammdaten_gueltig_ab"
             ref="stammdatenGueltigAb"
             v-model="abfragevarianteSachbearbeitung.stammdatenGueltigAb"
-            :disabled="!isEditableBySachbearbeitung()"
+            :disabled="!isEditableBySachbearbeitung"
             label="Stammdatum gültig ab"
             :rules="[pflichtfeld]"
             required
@@ -46,7 +46,7 @@
           <v-textarea
             id="abfragevarianteSachbearbeitung_anmerkung"
             v-model="abfragevarianteSachbearbeitung.anmerkung"
-            :disabled="!isEditableBySachbearbeitung()"
+            :disabled="!isEditableBySachbearbeitung"
             label="Anmerkungen"
             auto-grow
             rows="1"
@@ -76,14 +76,14 @@
     <field-group-card :card-title="bauratenDateiInputTitle">
       <bauratendatei-input
         v-model="abfragevarianteSachbearbeitung"
-        :is-editable="isEditableBySachbearbeitung()"
+        :is-editable="isEditableBySachbearbeitung"
       />
       <dokumente
         id="dokumente_component"
         ref="dokumenteComponent"
         v-model="abfragevarianteSachbearbeitung.dokumente"
         :name-root-folder="nameRootFolder"
-        :is-dokumente-editable="isEditableBySachbearbeitung()"
+        :is-dokumente-editable="isEditableBySachbearbeitung"
         @change="formChanged"
       />
     </field-group-card>
@@ -153,7 +153,7 @@ const sobonOrientierungswertJahrList = computed(() => {
 });
 
 const sobonOrientierungswertJahrValidator = computed(() => {
-  if (isEditableBySachbearbeitung()) {
+  if (isEditableBySachbearbeitung.value) {
     const usedRules: unknown[] = [];
     // Objekte der benötigten Rules anlegen, um daraus eine Liste von Rules anlegen zu können
     const rules = new FieldValidationRulesMixin().fieldValidationRules as {

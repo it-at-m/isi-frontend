@@ -5,20 +5,20 @@
       ref="abfrageCommonComponent"
       v-model="bauleitplanverfahren"
       :is-new="isNew"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <allgemeine-informationen-bauleitplanverfahren-component
       id="allgemeine_informationen_bauleitplanverfahren-component"
       ref="allgemeineInformationenBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
       v-model="bauleitplanverfahren.adresse"
       :show-in-information-list="true"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
       id="verortung_component"
@@ -32,15 +32,15 @@
       ref="allgemeineInformationenZurAbfrageBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
       :look-at="bauleitplanverfahren"
-      :is-editable="isEditableByAbfrageerstellung()"
-      :is-eakte-editable="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-editable="isEditableByAbfrageerstellung"
+      :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="bauleitplanverfahren.dokumente"
       :name-root-folder="nameRootFolder"
-      :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      :is-dokumente-editable="isEditableByAbfrageerstellung"
       @change="formChanged"
     />
   </v-container>

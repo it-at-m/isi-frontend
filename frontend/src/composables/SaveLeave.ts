@@ -20,12 +20,14 @@ export function useSaveLeave() {
   const saveLeaveDialogTitle = "Hinweis";
   const saveLeaveNoText = "Abbrechen";
   const saveLeaveYesText = "Verlassen";
+  const isFormDirty = computed(() => commonStore.formDirty);
+  const isCommentDirty = computed(() => commonStore.commentDirty);
   const saveLeaveDialogText = computed(() => {
     let place = "";
-    if (isCommentDirty()) {
+    if (isCommentDirty.value) {
       place = " in den Kommentaren";
     }
-    if (isFormDirty()) {
+    if (isFormDirty.value) {
       place = " im Formular";
     }
     return `Es wurden Änderungen${place} vorgenommen, die beim Verlassen der Seite verloren gehen.`;
@@ -35,7 +37,7 @@ export function useSaveLeave() {
 
   // eslint-disable-next-line
   onBeforeRouteLeave((to: any, from: any, next: NavigationGuardNext) => {
-    if (isFormDirty() || isCommentDirty()) {
+    if (isFormDirty.value || isCommentDirty.value) {
       saveLeaveDialog.value = true;
       nextRoute.value = next;
     } else {
@@ -59,20 +61,12 @@ export function useSaveLeave() {
     }
   }
 
-  function isFormDirty(): boolean {
-    return commonStore.formDirty;
-  }
-
   function formChanged(): void {
     commonStore.formChanged();
   }
 
   function resetFormDirty(): void {
     commonStore.resetFormDirty();
-  }
-
-  function isCommentDirty(): boolean {
-    return commonStore.commentDirty;
   }
 
   function commentChanged(): void {
@@ -90,12 +84,12 @@ export function useSaveLeave() {
     saveLeaveDialogText,
     saveLeaveDialog,
     nextRoute,
+    isFormDirty,
+    isCommentDirty,
     cancel,
     leave,
-    isFormDirty,
     formChanged,
     resetFormDirty,
-    isCommentDirty,
     commentChanged,
     resetCommentDirty,
   };

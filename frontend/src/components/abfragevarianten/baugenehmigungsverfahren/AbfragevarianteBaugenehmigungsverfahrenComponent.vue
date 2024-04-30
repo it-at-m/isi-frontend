@@ -40,7 +40,7 @@
       ref="bedarfsmeldungFachreferateComponent"
       v-model="abfragevariante"
       :is-fachreferat="true"
-      :is-editable="isEditableByBedarfsmeldung()"
+      :is-editable="isEditableByBedarfsmeldung"
       :bedarfsmeldung-title="bedarfsmeldungFachreferate"
     />
     <v-row>
@@ -70,7 +70,7 @@
       id="bedarfsmeldung_abfrageerstellung_component"
       ref="bedarfsmeldungAbfrageerstellungComponent"
       v-model="abfragevariante"
-      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
+      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung"
       :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
   </v-container>
@@ -119,7 +119,7 @@ const bedarfsmeldungAbfrageerstellung = computed(() => BedarfsmeldungTitle.ABFRA
 
 const bedarfsmeldungenUebernehmenEnabled = computed(() => {
   return (
-    isBedarfsmeldungEditableByAbfrageerstellung() &&
+    isBedarfsmeldungEditableByAbfrageerstellung.value &&
     !_.isEmpty(abfragevariante.value.bedarfsmeldungFachreferate) &&
     _.isEmpty(abfragevariante.value.bedarfsmeldungAbfrageersteller)
   );

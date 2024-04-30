@@ -8,7 +8,7 @@
         id="sobon_berechnung"
         ref="sobonBerechnungCheckbox"
         v-model="sobonBerechnung.isASobonBerechnung"
-        :disabled="!isEditableBySachbearbeitung()"
+        :disabled="!isEditableBySachbearbeitung"
         class="mx-3"
         label="SoBoN-Berechnung"
         color="primary"
@@ -24,7 +24,7 @@
         <v-select
           id="sobon_berechnung_foerdermix_stammdaten_dropdown"
           v-model="sobonFoerdermix"
-          :disabled="!isEditableBySachbearbeitung()"
+          :disabled="!isEditableBySachbearbeitung"
           :items="groupedStammdaten"
           label="Fördermix für Berechnung"
           item-text="foerdermix.bezeichnung"

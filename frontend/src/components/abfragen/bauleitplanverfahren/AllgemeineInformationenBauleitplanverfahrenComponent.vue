@@ -23,7 +23,7 @@
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
           v-model="abfrage.bauvorhaben"
-          :disabled="!(isEditableByAbfrageerstellung() || isEditableBySachbearbeitung())"
+          :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
           :items="bauvorhaben"
           item-text="nameVorhaben"
           item-value="id"

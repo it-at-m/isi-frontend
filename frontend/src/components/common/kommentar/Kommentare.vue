@@ -37,7 +37,7 @@ interface Props {
   isEditable?: boolean;
 }
 
-const { commentChanged, isCommentDirty, resetCommentDirty } = useSaveLeave();
+const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
 const kommentarApi = useKommentarApi();
 const route = useRoute();
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
@@ -57,7 +57,7 @@ function hasDirtyComment(): boolean {
 }
 
 async function getKommentare(): Promise<void> {
-  if (!isCommentDirty()) {
+  if (!isCommentDirty.value) {
     const id = route.params.id;
     if (!isKommentarListOpen && !_.isNil(id)) {
       isKommentarListOpen = true;

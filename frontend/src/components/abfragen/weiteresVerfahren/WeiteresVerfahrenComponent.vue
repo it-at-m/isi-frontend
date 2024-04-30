@@ -5,20 +5,20 @@
       ref="abfrageCommonComponent"
       v-model="weiteresVerfahren"
       :is-new="isNew"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <allgemeine-informationen-weiteres-verfahren-component
       id="allgemeine_informationen_weiteres_verfahren_component"
       ref="allgemeineInformationenWeiteresVerfahrenComponent"
       v-model="weiteresVerfahren"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
       v-model="weiteresVerfahren.adresse"
       :show-in-information-list="true"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
       id="verortung_component"
@@ -32,15 +32,15 @@
       ref="allgemeineInformationenZurAbfrageWeiteresVerfahrenComponent"
       v-model="weiteresVerfahren"
       :look-at="weiteresVerfahren"
-      :is-editable="isEditableByAbfrageerstellung()"
-      :is-eakte-editable="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-editable="isEditableByAbfrageerstellung"
+      :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="weiteresVerfahren.dokumente"
       :name-root-folder="nameRootFolder"
-      :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      :is-dokumente-editable="isEditableByAbfrageerstellung"
       @change="formChanged"
     />
   </v-container>

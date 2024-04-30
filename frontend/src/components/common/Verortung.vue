@@ -286,9 +286,9 @@ const mittelschulsprengel = computed(() =>
 const isEditable = computed(() => {
   let editable = false;
   if (props.context === Context.ABFRAGE) {
-    editable = isEditableByAbfrageerstellung() || isEditableBySachbearbeitung();
+    editable = isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
   } else if (props.context === Context.BAUVORHABEN) {
-    editable = isRoleAdminOrSachbearbeitung();
+    editable = isRoleAdminOrSachbearbeitung.value;
   }
   return editable;
 });

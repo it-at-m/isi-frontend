@@ -5,20 +5,20 @@
       ref="abfrageCommonComponent"
       v-model="baugenehmigungsverfahren"
       :is-new="isNew"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <allgemeine-informationen-baugenehmigungsverfahren-component
       id="allgemeine_informationen_baugenehmigungsverfahren-component"
       ref="allgemeineInformationenBaugenehmigungsverfahrenComponent"
       v-model="baugenehmigungsverfahren"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
       v-model="baugenehmigungsverfahren.adresse"
       :show-in-information-list="true"
-      :is-editable="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
       id="verortung_component"
@@ -32,15 +32,15 @@
       ref="allgemeineInformationenZurAbfrageBaugenehmigungsverfahrenComponent"
       v-model="baugenehmigungsverfahren"
       :look-at="baugenehmigungsverfahren"
-      :is-editable="isEditableByAbfrageerstellung()"
-      :is-eakte-editable="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-editable="isEditableByAbfrageerstellung"
+      :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="baugenehmigungsverfahren.dokumente"
       :name-root-folder="nameRootFolder"
-      :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      :is-dokumente-editable="isEditableByAbfrageerstellung"
       @change="formChanged"
     />
   </v-container>
