@@ -71,41 +71,29 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
 import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
-import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: {
-    FieldGroupCard,
-    InfrastruktureinrichtungComponent,
-    EinrichtungstraegerComponent,
-  },
-})
-export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: GsNachmittagBetreuungModel }) gsNachmittagBetreuung!: GsNachmittagBetreuungModel;
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
 
-  private lookupStore = useLookupStore();
-
-  get artGsNachmittagBetreuungList(): LookupEntryDto[] {
-    return this.lookupStore.artGsNachmittagBetreuung;
-  }
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.lookupStore.einrichtungstraeger;
-  }
+interface Props {
+  value: GsNachmittagBetreuungModel;
+  isEditable?: boolean;
+  isEinrichtungstraegerRequired?: boolean;
 }
+
+interface Emits {
+  (event: "input", value: GsNachmittagBetreuungModel): void;
+}
+
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const emit = defineEmits<Emits>();
+const gsNachmittagBetreuung = defineModel(props, emit);
+const artGsNachmittagBetreuungList = computed(() => lookupStore.artGsNachmittagBetreuung);
+const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
-<style></style>

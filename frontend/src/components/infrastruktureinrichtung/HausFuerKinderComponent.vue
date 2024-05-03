@@ -153,37 +153,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
 import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
-import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: {
-    FieldGroupCard,
-    InfrastruktureinrichtungComponent,
-    EinrichtungstraegerComponent,
-  },
-})
-export default class HausFuerKinderComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: HausFuerKinderModel }) hausFuerKinder!: HausFuerKinderModel;
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
 
-  private lookupStore = useLookupStore();
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.lookupStore.einrichtungstraeger;
-  }
+interface Props {
+  value: HausFuerKinderModel;
+  isEditable?: boolean;
+  isEinrichtungstraegerRequired?: boolean;
 }
+interface Emits {
+  (event: "input", value: HausFuerKinderModel): void;
+}
+
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const emit = defineEmits<Emits>();
+const hausFuerKinder = defineModel(props, emit);
+const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
-<style></style>
