@@ -3,7 +3,7 @@ import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 
 // eslint-disable-next-line
-function useTransitionApi() {
+export function useTransitionApi() {
   const abfrageStatusApi = new AbfrageStatusApi(RequestUtils.getBasicFetchConfigurationForBackend());
   const { handleError } = useErrorHandler();
 

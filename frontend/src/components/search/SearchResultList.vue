@@ -310,7 +310,7 @@ function castToInfrastruktureinrichtungSearchResultDto(
 }
 
 function disableAbfrageCard(item: AbfrageSearchResultDto): boolean {
-  let result: boolean = hasOnlyRoleAnwender();
+  let result: boolean = hasOnlyRoleAnwender.value;
   if (result) {
     result =
       item.statusAbfrage != StatusAbfrage.ErledigtMitFachreferat &&

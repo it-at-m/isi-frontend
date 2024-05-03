@@ -120,63 +120,66 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import _ from "lodash";
+<script setup lang="ts">
 import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { defineModel } from "@/utils/Vue";
+import _ from "lodash";
 
-@Component({ components: { SpreadsheetBauratendateiInput, FieldGroupCard } })
-export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
+interface Props {
+  value: AbfragevarianteBauleitplanverfahrenModel;
+  isEditable: false;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+interface Emits {
+  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const abfragevarianteSachbearbeitung = defineModel(props, emit);
+const { formChanged } = useSaveLeave();
 
-  get foerderartenBauratendateiInputBasis(): Array<string | undefined> {
-    const wohneinheiten = _.toArray(this.abfragevarianteSachbearbeitung?.bauratendateiInput)
-      .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
-      .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
-      .map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart);
-    return _.uniq(wohneinheiten.sort());
+const foerderartenBauratendateiInputBasis = computed(() => {
+  const wohneinheiten = _.toArray(abfragevarianteSachbearbeitung.value.bauratendateiInput)
+    .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
+    .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
+    .map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart);
+  return _.uniq(wohneinheiten.sort());
+});
+
+const showTables = computed(() => {
+  return (
+    abfragevarianteSachbearbeitung.value.hasBauratendateiInput === true &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.bauratendateiInputBasis)
+  );
+});
+
+function checkBoxChanged(): void {
+  const isBaurateninputCheckboxChecked =
+    !_.isNil(abfragevarianteSachbearbeitung.value.hasBauratendateiInput) &&
+    abfragevarianteSachbearbeitung.value.hasBauratendateiInput;
+  if (!isBaurateninputCheckboxChecked) {
+    abfragevarianteSachbearbeitung.value.bauratendateiInputBasis = undefined;
+    abfragevarianteSachbearbeitung.value.bauratendateiInput = [];
   }
+  formChanged();
+}
 
-  get showTables(): boolean {
-    return (
-      this.abfragevarianteSachbearbeitung.hasBauratendateiInput === true &&
-      !_.isNil(this.abfragevarianteSachbearbeitung?.bauratendateiInputBasis)
-    );
-  }
+function deleteInput(index: number): void {
+  abfragevarianteSachbearbeitung.value.bauratendateiInput?.splice(index, 1);
+  formChanged();
+}
 
-  private checkBoxChanged(): void {
-    const isBaurateninputCheckboxChecked =
-      !_.isNil(this.abfragevarianteSachbearbeitung.hasBauratendateiInput) &&
-      this.abfragevarianteSachbearbeitung.hasBauratendateiInput;
-    if (!isBaurateninputCheckboxChecked) {
-      this.abfragevarianteSachbearbeitung.bauratendateiInputBasis = undefined;
-      this.abfragevarianteSachbearbeitung.bauratendateiInput = [];
-    }
-    this.formChanged();
+function addInput(): void {
+  const newInput = _.cloneDeep(abfragevarianteSachbearbeitung.value.bauratendateiInputBasis);
+  if (!_.isNil(newInput)) {
+    newInput.id = undefined;
+    newInput.createdDateTime = undefined;
+    newInput.lastModifiedDateTime = undefined;
+    newInput.version = undefined;
+    abfragevarianteSachbearbeitung.value.bauratendateiInput?.push(newInput);
   }
-
-  private deleteInput(index: number): void {
-    this.abfragevarianteSachbearbeitung.bauratendateiInput?.splice(index, 1);
-    this.formChanged();
-  }
-
-  private addInput(): void {
-    const newInput = _.cloneDeep(this.abfragevarianteSachbearbeitung.bauratendateiInputBasis);
-    if (!_.isNil(newInput)) {
-      newInput.id = undefined;
-      newInput.createdDateTime = undefined;
-      newInput.lastModifiedDateTime = undefined;
-      newInput.version = undefined;
-      this.abfragevarianteSachbearbeitung.bauratendateiInput?.push(newInput);
-    }
-    this.formChanged();
-  }
+  formChanged();
 }
 </script>

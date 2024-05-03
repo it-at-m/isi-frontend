@@ -9,7 +9,7 @@
             ref="nameAbfrageField"
             v-model.trim="abfrage.name"
             :disabled="!isEditable"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="70"
             validate-on-blur
             @input="formChanged"
@@ -22,36 +22,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import { pflichtfeld } from "@/utils/FieldValidationRules";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import StatusleisteComponent from "./StatusleisteComponent.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
 
-@Component({
-  components: {
-    FieldGroupCard,
-    StatusleisteComponent,
-  },
-})
-export default class AbfrageCommonComponent extends Mixins(
-  AbfrageSecurityMixin,
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-) {
-  @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
-
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
-
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isNew!: boolean;
+interface Props {
+  value: AbfrageModel;
+  isEditable?: boolean;
+  isNew?: boolean;
 }
+
+interface Emits {
+  (event: "input", value: AbfrageModel): void;
+}
+
+const { formChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isNew: false });
+const emit = defineEmits<Emits>();
+const abfrage = defineModel(props, emit);
 </script>

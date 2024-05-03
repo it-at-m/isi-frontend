@@ -158,7 +158,7 @@ const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung, isEditableWi
 watch(
   () => props.abfrage,
   () => (items.value = [buildTree(props.abfrage)]),
-  { deep: true },
+  { immediate: true, deep: true },
 );
 
 watch(
@@ -229,7 +229,7 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
     item.children.push(...abfragevariantenTree);
   }
 
-  if (isEditableByAbfrageerstellung()) {
+  if (isEditableByAbfrageerstellung.value) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
       disabled: _.defaultTo(abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
@@ -240,7 +240,7 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
     });
   }
 
-  if (isEditableBySachbearbeitung()) {
+  if (isEditableBySachbearbeitung.value) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
       disabled: _.defaultTo(abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
@@ -292,7 +292,7 @@ function buildSubTreeAbfragevariante(
     value: abfragevariante,
   };
 
-  if (isEditableBySachbearbeitung()) {
+  if (isEditableBySachbearbeitung.value) {
     item.actions.push({
       name: abfragevariante.id === props.relevanteAbfragevarianteId ? MARK_AS_NOT_RELEVANT : MARK_AS_RELEVANT,
       disabled: false,

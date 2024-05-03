@@ -1,8 +1,9 @@
 <template>
   <v-dialog
-    v-model="showBedarfsmeldungDialog"
+    :value="showBedarfsmeldungDialog"
     persistent
     width="60%"
+    @input="updateShowBedarfsmeldungDialog"
   >
     <v-form ref="bedarfsmeldungDialogForm">
       <v-card class="overflow-x-hidden">
@@ -35,7 +36,7 @@
               :items="infrastruktureinrichtungenTypList"
               item-value="key"
               item-text="value"
-              :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+              :rules="[pflichtfeld, notUnspecified]"
               @change="formChanged"
             >
               <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
@@ -116,68 +117,75 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Emit, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
-import Toaster from "@/components/common/toaster.type";
+<script setup lang="ts">
 import { Levels } from "@/api/error";
-import _ from "lodash";
+import Toaster from "@/components/common/toaster.type";
 import { useLookupStore } from "@/stores/LookupStore";
+import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { findFaultInBedarfsmeldung } from "@/utils/Validators";
+import { defineModel } from "@/utils/Vue";
+import _ from "lodash";
+import { computed, watch } from "vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
-@Component
-export default class BauvorhabenDataTransferDialog extends Mixins(
-  ValidatorMixin,
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-) {
-  @VModel({ type: BedarfsmeldungModel })
-  bedarfsmeldung!: BedarfsmeldungModel;
+interface Props {
+  value: BedarfsmeldungModel;
+  showBedarfsmeldungDialog: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private showBedarfsmeldungDialog!: boolean;
+interface Emits {
+  (event: "input", value: BedarfsmeldungModel): void;
+  (event: "update-show-bedarfsmeldung-dialog", value: boolean): boolean;
+  (event: "uebernehmen-bedarfsmeldung", value: BedarfsmeldungModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { showBedarfsmeldungDialog: false });
+const emit = defineEmits<Emits>();
+const bedarfsmeldung = defineModel(props, emit);
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
 
-  private lookupStore = useLookupStore();
+const infrastruktureinrichtungenTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+const bedarfsmeldungDialogForm = ref<HTMLFormElement | null>(null);
 
-  get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
-    return this.lookupStore.infrastruktureinrichtungTyp;
+watch(() => props.showBedarfsmeldungDialog, resetValidation);
+
+/**
+ * Die Methode setzt die Validierung der Dialog-Form zurück, wenn sich der Wert von showBedarfsmeldungDialog ändert.
+ * Dies verhindert, dass Validator-Fehlermeldungen schon beim Öffnen des Dialogs angezeigt werden.
+ * Siehe: https://v2.vuetifyjs.com/en/components/forms/#validation-with-submit-26-clear
+ */
+
+function resetValidation(): void {
+  if (!_.isNil(bedarfsmeldungDialogForm.value)) {
+    bedarfsmeldungDialogForm.value.resetValidation();
   }
+}
 
-  /**
-   * Die Methode setzt die Validierung der Dialog-Form zurück, wenn sich der Wert von showBedarfsmeldungDialog ändert.
-   * Dies verhindert, dass Validator-Fehlermeldungen schon beim Öffnen des Dialogs angezeigt werden.
-   * Siehe: https://v2.vuetifyjs.com/en/components/forms/#validation-with-submit-26-clear
-   */
-  @Watch("showBedarfsmeldungDialog")
-  private resetValidation(): void {
-    if (!_.isNil(this.$refs.bedarfsmeldungDialogForm)) {
-      this.$refs.bedarfsmeldungDialogForm.resetValidation();
-    }
-  }
-
-  private uebernehmenBedarfsmeldung(): void {
-    const validationMessage: string | null = this.findFaultInBedarfsmeldung(this.bedarfsmeldung);
-    if (_.isNil(validationMessage)) {
-      if (this.validateDialogForm()) {
-        this.$emit("uebernehmen-bedarfsmeldung", this.bedarfsmeldung);
-      } else {
-        Toaster.toast("Es gibt noch Validierungsfehler", Levels.ERROR);
-      }
+function uebernehmenBedarfsmeldung(): void {
+  const validationMessage: string | null = findFaultInBedarfsmeldung(bedarfsmeldung.value);
+  if (_.isNil(validationMessage)) {
+    if (validateDialogForm()) {
+      emit("uebernehmen-bedarfsmeldung", bedarfsmeldung.value);
     } else {
-      Toaster.toast(validationMessage, Levels.ERROR);
+      Toaster.toast("Es gibt noch Validierungsfehler", Levels.ERROR);
     }
+  } else {
+    Toaster.toast(validationMessage, Levels.ERROR);
   }
+}
 
-  private validateDialogForm(): boolean {
-    return (this.$refs.bedarfsmeldungDialogForm as Vue & { validate: () => boolean }).validate();
-  }
+function validateDialogForm(): boolean {
+  return !_.isNil(bedarfsmeldungDialogForm.value)
+    ? (bedarfsmeldungDialogForm.value as any & { validate: () => boolean }).validate()
+    : false;
+}
 
-  @Emit()
-  private abbrechenBedarfsmeldung(): void {
-    return;
-  }
+function abbrechenBedarfsmeldung(): void {
+  emit("uebernehmen-bedarfsmeldung", bedarfsmeldung.value);
+}
+
+function updateShowBedarfsmeldungDialog(value: boolean): void {
+  emit("update-show-bedarfsmeldung-dialog", value);
 }
 </script>

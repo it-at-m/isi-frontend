@@ -8,7 +8,7 @@
             ref="nameField"
             v-model.trim="abfragevariante.name"
             :disabled="!isEditable"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="30"
             validate-on-blur
             @input="formChanged"
@@ -54,7 +54,7 @@
             item-text="value"
             multiple
             chips
-            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
             @input="formChanged"
           >
@@ -117,75 +117,67 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, VModel, Mixins, Watch, Prop } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import DisplayMode from "@/types/common/DisplayMode";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import {
-  AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
-  LookupEntryDto,
-} from "@/api/api-client/isi-backend";
-import _ from "lodash";
+import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({ components: { FieldGroupCard } })
-export default class CommonBauleitplanverfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { notUnspecified, pflichtfeld, pflichtfeldMehrfachauswahl } from "@/utils/FieldValidationRules";
+import { defineModel } from "@/utils/Vue";
+import _ from "lodash";
 
-  private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+interface Props {
+  value: AbfragevarianteBauleitplanverfahrenModel;
+  isEditable: false;
+}
 
-  private lookupStore = useLookupStore();
+interface Emits {
+  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const abfragevariante = defineModel(props, emit);
 
-  @Prop()
-  private mode!: DisplayMode;
+let wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
-  get displayMode(): DisplayMode {
-    return this.mode;
+const lookupStore = useLookupStore();
+
+const { formChanged } = useSaveLeave();
+
+const wesentlicheRechtsgrundlageBauleitplanverfahrenList = computed(
+  () => lookupStore.wesentlicheRechtsgrundlageBauleitplanverfahren,
+);
+
+const calcRealisierungBis = computed(() => {
+  let jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
+    ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
+    .flatMap((baugebiet) => baugebiet.bauraten)
+    .map((baurate) => baurate.jahr);
+  return _.max(jahre);
+});
+
+function datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
+  if (!_.isNil(datumSatzungsbeschluss)) {
+    abfragevariante.value.realisierungVon =
+      datumSatzungsbeschluss.getMonth() + 1 < 7
+        ? datumSatzungsbeschluss.getFullYear() + 3
+        : datumSatzungsbeschluss.getFullYear() + 4;
   }
+}
 
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
+watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get wesentlicheRechtsgrundlageBauleitplanverfahrenList(): LookupEntryDto[] {
-    return this.lookupStore.wesentlicheRechtsgrundlageBauleitplanverfahren;
-  }
-
-  get calcRealisierungBis(): number | undefined {
-    let jahre: Array<number> | undefined = this.abfragevariante.bauabschnitte
-      ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
-      .flatMap((baugebiet) => baugebiet.bauraten)
-      .map((baurate) => baurate.jahr);
-    return _.max(jahre);
-  }
-
-  private datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
-    if (!_.isNil(datumSatzungsbeschluss)) {
-      this.abfragevariante.realisierungVon =
-        datumSatzungsbeschluss.getMonth() + 1 < 7
-          ? datumSatzungsbeschluss.getFullYear() + 3
-          : datumSatzungsbeschluss.getFullYear() + 4;
-    }
-  }
-
-  @Watch("abfragevariante.wesentlicheRechtsgrundlage", { immediate: true })
-  private wesentlicheRechtsgrundlageChanged(): void {
-    if (
-      this.abfragevariante.wesentlicheRechtsgrundlage?.includes(
-        AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
-      )
-    ) {
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;
-    } else {
-      this.abfragevariante.wesentlicheRechtsgrundlageFreieEingabe = undefined;
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
-    }
+function wesentlicheRechtsgrundlageChanged(): void {
+  if (
+    abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
+      AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
+    )
+  ) {
+    wesentlicheRechtsgrundlageFreieEingabeVisible.value = true;
+  } else {
+    abfragevariante.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
+    wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
   }
 }
 </script>

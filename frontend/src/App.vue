@@ -59,7 +59,7 @@
                 <v-list-item-title>
                   <a
                     target="_blank"
-                    :href="getDatenschutzhinweisUrl()"
+                    :href="datenschutzhinweisUrl"
                   >
                     Datenschutzhinweis<span class="mdi mdi-launch" />
                   </a>
@@ -125,83 +125,50 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import Component from "vue-class-component";
-import { Mixins, Watch } from "vue-property-decorator";
+<script setup lang="ts">
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import VersionInfo from "@/components/common/VersionInfo.vue";
-import UserInfoApiRequestMixin from "@/mixins/requests/UserInfoApiRequestMixin";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
 import SearchInputField from "@/components/search/SearchInputField.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
-import { useSnackbarStore } from "@/stores/SnackbarStore";
 import { useUserinfoStore } from "@/stores/Userinfostore";
 import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
+import { useUserInfoApi } from "./composables/requests/UserInfoApi";
 
-@Component({
-  components: { SearchInputField, TheSnackbar, VersionInfo },
-})
-export default class App extends Mixins(UserInfoApiRequestMixin) {
-  public query = "";
+const lookupStore = useLookupStore();
+const stammdatenStore = useStammdatenStore();
+const userInfoStore = useUserinfoStore();
+const { getUserinfo } = useUserInfoApi();
+const metabaseReportingStore = useMetabaseReportingStore();
+const datenschutzhinweisUrl: string = import.meta.env.VITE_DATENSCHUTZHINWEIS_URL;
+const logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
+const showVersionInfo = ref(false);
+const menu = ref(false);
 
-  private logo: string = new URL("./assets/isi-logo.svg", import.meta.url).href;
+// Schreibt alle Nutzerollen in einen String für die Darstellung
+const userRoles = computed(() => _.join(userinfo.value.roles, ", "));
 
-  public showVersionInfo = false;
+const userinfo = computed({
+  get() {
+    return userInfoStore.userinfo ?? new Userinfo();
+  },
+  set(value) {
+    userInfoStore.setUserinfo(value);
+  },
+});
 
-  private userinfo = new Userinfo();
+onBeforeMount(() => {
+  lookupStore.inititalize();
+  stammdatenStore.initializeFileStamm();
+  stammdatenStore.initializeFoerdermixStamm();
+  metabaseReportingStore.initialize();
+});
 
-  private menu = false;
-
-  private lookupStore = useLookupStore();
-
-  private stammdatenStore = useStammdatenStore();
-
-  private snackbarStore = useSnackbarStore();
-
-  private userInfoStore = useUserinfoStore();
-
-  private metabaseReportingStore = useMetabaseReportingStore();
-
-  // Schreibt alle Nutzerollen in einen String für die Darstellung
-  get userRoles(): string {
-    return _.join(this.userinfo.roles, ", ");
-  }
-
-  created(): void {
-    this.lookupStore.inititalize();
-    this.stammdatenStore.initializeFileStamm();
-    this.stammdatenStore.initializeFoerdermixStamm();
-    this.metabaseReportingStore.initialize();
-  }
-
-  mounted(): void {
-    this.getUserinfo().then((userinfo: Userinfo) => {
-      this.userinfo = userinfo;
-      this.userInfoStore.setUserinfo(userinfo);
-    });
-    this.query = this.$route.params.query;
-  }
-
-  @Watch("$route.params.query")
-  public function(query: string): void {
-    if (this.query !== query) this.query = query;
-  }
-
-  private getDatenschutzhinweisUrl(): string {
-    return import.meta.env.VITE_DATENSCHUTZHINWEIS_URL as string;
-  }
-
-  /**
-   * Navigiert zur Seite mit den Suchergebnissen und sendet ein Event zum Auslösen weiterer Suchen.
-   */
-  public async search(): Promise<void> {
-    if (this.query !== "" && this.query !== null) {
-      this.snackbarStore.showMessage("Sie haben nach " + this.query + " gesucht.");
-    }
-  }
-}
+onMounted(async () => {
+  userinfo.value = await getUserinfo();
+});
 </script>
 
 <style>

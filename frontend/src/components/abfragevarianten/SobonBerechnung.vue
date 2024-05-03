@@ -8,7 +8,7 @@
         id="sobon_berechnung"
         ref="sobonBerechnungCheckbox"
         v-model="sobonBerechnung.isASobonBerechnung"
-        :disabled="!isEditableBySachbearbeitung()"
+        :disabled="!isEditableBySachbearbeitung"
         class="mx-3"
         label="SoBoN-Berechnung"
         color="primary"
@@ -24,7 +24,7 @@
         <v-select
           id="sobon_berechnung_foerdermix_stammdaten_dropdown"
           v-model="sobonFoerdermix"
-          :disabled="!isEditableBySachbearbeitung()"
+          :disabled="!isEditableBySachbearbeitung"
           :items="groupedStammdaten"
           label="Fördermix für Berechnung"
           item-text="foerdermix.bezeichnung"
@@ -36,61 +36,70 @@
   </v-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel } from "vue-property-decorator";
+<script setup lang="ts">
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { useStammdatenStore } from "@/stores/StammdatenStore";
+import SobonBerechnungModel from "@/types/model/abfragevariante/SobonBerechnungModel";
+import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
+import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
+import { createFoerdermixDto } from "@/utils/Factories";
 import {
   groupItemsToHeader,
   mapFoerdermixStammModelToFoerderMix,
   mapFoerdermixToFoerderMixStammModel,
 } from "@/utils/MapperUtil";
-import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import { createFoerdermixDto } from "@/utils/Factories";
-import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
-import SobonBerechnungModel from "@/types/model/abfragevariante/SobonBerechnungModel";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { useStammdatenStore } from "@/stores/StammdatenStore";
+import { defineModel } from "@/utils/Vue";
+import { computed, onMounted } from "vue";
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
-@Component
-export default class SobonBerechnung extends Mixins(SaveLeaveMixin, AbfrageSecurityMixin) {
-  @VModel({ type: SobonBerechnungModel })
-  sobonBerechnung!: SobonBerechnungModel;
 
-  private groupedStammdaten: GroupedStammdaten = [];
+interface Props {
+  value: SobonBerechnungModel;
+}
 
-  private stammdatenStore = useStammdatenStore();
+interface Emits {
+  (event: "input", value: SobonBerechnungModel): void;
+}
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const sobonBerechnung = defineModel(props, emit);
+const { formChanged } = useSaveLeave();
+const { isEditableBySachbearbeitung } = useAbfrageSecurity();
+let groupedStammdaten = ref<GroupedStammdaten | null>([]);
 
-  mounted(): void {
-    this.setGroupedStammdatenList();
-  }
+const stammdatenStore = useStammdatenStore();
 
-  get sobonFoerdermix(): FoerdermixStammDto {
+onMounted(() => {
+  setGroupedStammdatenList();
+});
+
+const sobonFoerdermix = computed({
+  get() {
     return mapFoerdermixToFoerderMixStammModel(
-      this.sobonBerechnung.sobonFoerdermix ?? new FoerdermixModel(createFoerdermixDto()),
+      sobonBerechnung.value.sobonFoerdermix ?? new FoerdermixModel(createFoerdermixDto()),
     );
-  }
+  },
+  set(item: FoerdermixStammModel) {
+    sobonBerechnung.value.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item);
+  },
+});
 
-  set sobonFoerdermix(item: FoerdermixStammModel) {
-    this.sobonBerechnung.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item);
-  }
+function setGroupedStammdatenList(): void {
+  let stammdaten = stammdatenStore.foerdermixStammdaten;
+  stammdaten = stammdaten.filter((foerdermixStaemme: FoerdermixStammDto) => {
+    return (
+      foerdermixStaemme.foerdermix.bezeichnung !== "private Fläche" &&
+      foerdermixStaemme.foerdermix.bezeichnung !== "städtische Fläche"
+    );
+  });
+  groupedStammdaten.value = groupItemsToHeader(stammdaten, true);
+}
 
-  private setGroupedStammdatenList(): void {
-    let stammdaten = this.stammdatenStore.foerdermixStammdaten;
-    stammdaten = stammdaten.filter((foerdermixStaemme: FoerdermixStammDto) => {
-      return (
-        foerdermixStaemme.foerdermix.bezeichnung !== "private Fläche" &&
-        foerdermixStaemme.foerdermix.bezeichnung !== "städtische Fläche"
-      );
-    });
-    this.groupedStammdaten = groupItemsToHeader(stammdaten, true);
-  }
-
-  private sobonBerechnungChanged(): void {
-    this.formChanged();
-    if (!this.sobonBerechnung.isASobonBerechnung) {
-      this.sobonBerechnung.sobonFoerdermix = undefined;
-    }
+function sobonBerechnungChanged(): void {
+  formChanged();
+  if (!sobonBerechnung.value.isASobonBerechnung) {
+    sobonBerechnung.value.sobonFoerdermix = undefined;
   }
 }
 </script>

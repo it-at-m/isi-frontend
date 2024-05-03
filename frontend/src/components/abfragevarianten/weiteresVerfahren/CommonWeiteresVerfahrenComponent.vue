@@ -8,7 +8,7 @@
             ref="nameField"
             v-model.trim="abfragevariante.name"
             :disabled="!isEditable"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="30"
             validate-on-blur
             @input="formChanged"
@@ -40,7 +40,7 @@
             item-text="value"
             multiple
             chips
-            :rules="[fieldValidationRules.pflichtfeldMehrfachauswahl, fieldValidationRules.notUnspecified]"
+            :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
             @input="formChanged"
           >
@@ -102,67 +102,56 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, VModel, Mixins, Watch, Prop } from "vue-property-decorator";
-import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import { AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import DisplayMode from "@/types/common/DisplayMode";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import {
-  AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum,
-  LookupEntryDto,
-} from "@/api/api-client/isi-backend";
-import _ from "lodash";
+import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
+import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
+import { notUnspecified, pflichtfeld, pflichtfeldMehrfachauswahl } from "@/utils/FieldValidationRules";
+import { defineModel } from "@/utils/Vue";
+import _ from "lodash";
 
-@Component({ components: { FieldGroupCard } })
-export default class CommonWeiteresVerfahrenComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: AbfragevarianteWeiteresVerfahrenModel })
-  abfragevariante!: AbfragevarianteWeiteresVerfahrenModel;
+interface Props {
+  value: AbfragevarianteWeiteresVerfahrenModel;
+  isEditable: false;
+}
 
-  private wesentlicheRechtsgrundlageFreieEingabeVisible = false;
+interface Emits {
+  (event: "input", value: AbfragevarianteWeiteresVerfahrenModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const abfragevariante = defineModel(props, emit);
 
-  private lookupStore = useLookupStore();
+let wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
-  @Prop()
-  private mode!: DisplayMode;
+const lookupStore = useLookupStore();
 
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
+const { formChanged } = useSaveLeave();
 
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
+const wesentlicheRechtsgrundlageList = computed(() => lookupStore.wesentlicheRechtsgrundlage);
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const calcRealisierungBis = computed(() => {
+  let jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
+    ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
+    .flatMap((baugebiet) => baugebiet.bauraten)
+    .map((baurate) => baurate.jahr);
+  return _.max(jahre);
+});
 
-  get wesentlicheRechtsgrundlageList(): LookupEntryDto[] {
-    return this.lookupStore.wesentlicheRechtsgrundlage;
-  }
+watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
 
-  get calcRealisierungBis(): number | undefined {
-    let jahre: Array<number> | undefined = this.abfragevariante.bauabschnitte
-      ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
-      .flatMap((baugebiet) => baugebiet.bauraten)
-      .map((baurate) => baurate.jahr);
-    return _.max(jahre);
-  }
-
-  @Watch("abfragevariante.wesentlicheRechtsgrundlage", { immediate: true })
-  private wesentlicheRechtsgrundlageChanged(): void {
-    if (
-      this.abfragevariante.wesentlicheRechtsgrundlage?.includes(
-        AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
-      )
-    ) {
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = true;
-    } else {
-      this.abfragevariante.wesentlicheRechtsgrundlageFreieEingabe = undefined;
-      this.wesentlicheRechtsgrundlageFreieEingabeVisible = false;
-    }
+function wesentlicheRechtsgrundlageChanged(): void {
+  if (
+    abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
+      AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
+    )
+  ) {
+    wesentlicheRechtsgrundlageFreieEingabeVisible.value = true;
+  } else {
+    abfragevariante.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
+    wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
   }
 }
 </script>

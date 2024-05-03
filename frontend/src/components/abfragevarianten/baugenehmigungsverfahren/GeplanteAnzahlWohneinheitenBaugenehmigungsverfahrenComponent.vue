@@ -154,37 +154,35 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
+import { defineModel } from "@/utils/Vue";
+import { watch } from "vue";
 
-@Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: AbfragevarianteBaugenehmigungsverfahrenModel })
-  abfragevariante!: AbfragevarianteBaugenehmigungsverfahrenModel;
+interface Props {
+  value: AbfragevarianteBaugenehmigungsverfahrenModel;
+  isEditable: false;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+interface Emits {
+  (event: "input", value: AbfragevarianteBaugenehmigungsverfahrenModel): void;
+}
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const abfragevariante = defineModel(props, emit);
 
-  private geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
+const geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
 
-  @Watch("abfragevariante", { immediate: true, deep: true })
-  public clearSonderwohnformData(): void {
-    if (!this.abfragevariante.weSonderwohnformen) {
-      this.abfragevariante.weStudentischesWohnen = undefined;
-      this.abfragevariante.weSeniorinnenWohnen = undefined;
-      this.abfragevariante.weGenossenschaftlichesWohnen = undefined;
-      this.abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
-    }
+watch(() => abfragevariante, clearSonderwohnformData, { immediate: true, deep: true });
+
+function clearSonderwohnformData(): void {
+  if (!abfragevariante.value.weSonderwohnformen) {
+    abfragevariante.value.weStudentischesWohnen = undefined;
+    abfragevariante.value.weSeniorinnenWohnen = undefined;
+    abfragevariante.value.weGenossenschaftlichesWohnen = undefined;
+    abfragevariante.value.weWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
   }
 }
 </script>

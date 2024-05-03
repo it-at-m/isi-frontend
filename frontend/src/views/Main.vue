@@ -123,71 +123,46 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import DefaultLayout from "@/components/DefaultLayout.vue";
+<script setup lang="ts">
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
-import router from "@/router";
-import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
-import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import _ from "lodash";
 import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
-import { useSearchStore } from "@/stores/SearchStore";
+import { useRouter } from "vue-router/composables";
 
-@Component({
-  components: {
-    SearchAndFilterOptions,
-    SearchResultCityMap,
-    SearchResultList,
-    DefaultLayout,
-  },
-})
-export default class Main extends Vue {
-  private speedDialOpen = false;
+const router = useRouter();
+const speedDialOpen = ref(false);
 
-  private searchStore = useSearchStore();
+function createBauleitplanverfahren(): void {
+  router.push({
+    name: "newabfrage",
+    params: { art: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren },
+  });
+}
 
-  get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
-    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
-  }
+function createBaugenehmigungsverfahren(): void {
+  router.push({
+    name: "newabfrage",
+    params: { art: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren },
+  });
+}
 
-  set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
-    this.searchStore.setRequestSearchQueryAndSorting(_.cloneDeep(searchQueryForEntities));
-  }
+function createWeiteresVerfahren(): void {
+  router.push({
+    name: "newabfrage",
+    params: { art: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren },
+  });
+}
 
-  private createBauleitplanverfahren(): void {
-    router.push({
-      name: "newabfrage",
-      params: { art: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren },
-    });
-  }
+function createBauvorhaben(): void {
+  router.push({
+    name: "createBauvorhaben",
+  });
+}
 
-  private createBaugenehmigungsverfahren(): void {
-    router.push({
-      name: "newabfrage",
-      params: { art: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren },
-    });
-  }
-
-  private createWeiteresVerfahren(): void {
-    router.push({
-      name: "newabfrage",
-      params: { art: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren },
-    });
-  }
-
-  private createBauvorhaben(): void {
-    router.push({
-      name: "createBauvorhaben",
-    });
-  }
-
-  private createInfrastruktureinrichtung(): void {
-    router.push({
-      name: "createInfrastruktureinrichtung",
-    });
-  }
+function createInfrastruktureinrichtung(): void {
+  router.push({
+    name: "createInfrastruktureinrichtung",
+  });
 }
 </script>
 

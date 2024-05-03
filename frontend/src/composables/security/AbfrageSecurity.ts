@@ -13,56 +13,54 @@ export function useAbfrageSecurity() {
     anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
   ): boolean {
     if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
-      return isEditableByAbfrageerstellung();
+      return isEditableByAbfrageerstellung.value;
     } else if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      return isEditableBySachbearbeitung();
+      return isEditableBySachbearbeitung.value;
     }
     return false;
   }
 
-  function isEditableByAbfrageerstellung(): boolean {
+  const isEditableByAbfrageerstellung = computed(() => {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrAbfrageerstellung() &&
+        security.isRoleAdminOrAbfrageerstellung.value &&
         searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt
       );
     }
     return false;
-  }
+  });
 
-  function isBedarfsmeldungEditableByAbfrageerstellung(): boolean {
+  const isBedarfsmeldungEditableByAbfrageerstellung = computed(() => {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrAbfrageerstellung() &&
+        security.isRoleAdminOrAbfrageerstellung.value &&
         searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
       );
     }
     return false;
-  }
+  });
 
-  function isEditableBySachbearbeitung(): boolean {
+  const isEditableBySachbearbeitung = computed(() => {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrSachbearbeitung() &&
+        security.isRoleAdminOrSachbearbeitung.value &&
         searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
       );
     }
     return false;
-  }
+  });
 
-  function isEditableByBedarfsmeldung(): boolean {
+  const isEditableByBedarfsmeldung = computed(() => {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrBedarfsmeldung() &&
+        security.isRoleAdminOrBedarfsmeldung.value &&
         searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
       );
     }
     return false;
-  }
+  });
 
-  function isEditableByAdmin(): boolean {
-    return security.isRoleAdmin();
-  }
+  const isEditableByAdmin = computed(() => security.isRoleAdmin.value);
 
   return {
     isEditableWithAnzeigeContextAbfragevariante,

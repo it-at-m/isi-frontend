@@ -5,26 +5,26 @@
       ref="abfrageCommonComponent"
       v-model="weiteresVerfahren"
       :is-new="isNew"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <allgemeine-informationen-weiteres-verfahren-component
       id="allgemeine_informationen_weiteres_verfahren_component"
       ref="allgemeineInformationenWeiteresVerfahrenComponent"
       v-model="weiteresVerfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
       v-model="weiteresVerfahren.adresse"
-      :show-in-information-list-prop="true"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :show-in-information-list="true"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
       id="verortung_component"
       ref="verortungComponent"
       v-model="weiteresVerfahren.verortung"
-      :context="context"
+      :context="Context.ABFRAGE"
       :look-at="weiteresVerfahren.adresse"
     />
     <allgemeine-informationen-zur-abfrage-weiteres-verfahren-component
@@ -32,56 +32,44 @@
       ref="allgemeineInformationenZurAbfrageWeiteresVerfahrenComponent"
       v-model="weiteresVerfahren"
       :look-at="weiteresVerfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
-      :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-editable="isEditableByAbfrageerstellung"
+      :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="weiteresVerfahren.dokumente"
       :name-root-folder="nameRootFolder"
-      :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      :is-dokumente-editable="isEditableByAbfrageerstellung"
       @change="formChanged"
     />
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenWeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/AllgemeineInformationenWeiteresVerfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent.vue";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
-@Component({
-  computed: {
-    context() {
-      return Context.ABFRAGE;
-    },
-  },
-  components: {
-    AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent,
-    Dokumente,
-    AbfrageCommonComponent,
-    AllgemeineInformationenWeiteresVerfahrenComponent,
-    AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent,
-    FieldGroupCard,
-  },
-})
-export default class WeiteresVerfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
-  @VModel({ type: WeiteresVerfahrenModel }) weiteresVerfahren!: WeiteresVerfahrenModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isNew!: boolean;
-
-  private nameRootFolder = "weiteresVerfahren";
+interface Props {
+  value: WeiteresVerfahrenModel;
+  isNew?: boolean;
 }
-</script>
 
-<style></style>
+interface Emits {
+  (event: "input", value: WeiteresVerfahrenModel): void;
+}
+
+const nameRootFolder = "weiteresVerfahren";
+const { formChanged } = useSaveLeave();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const props = withDefaults(defineProps<Props>(), { isNew: false });
+const emit = defineEmits<Emits>();
+const weiteresVerfahren = defineModel(props, emit);
+</script>
