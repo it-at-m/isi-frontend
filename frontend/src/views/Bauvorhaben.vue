@@ -150,14 +150,14 @@ import { Context } from "@/utils/Context";
 import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
 import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
 import { useSearchStore } from "@/stores/SearchStore";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useInformationList } from "@/composables/requests/InformationList";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { AnyAbfrageDto } from "@/types/common/Abfrage";
 
-const route = useRoute();
+const routeId = useRoute().params.id as string;
 const router = useRouter();
 const {
   saveLeaveDialog,
@@ -195,7 +195,7 @@ const bearbeitungsinformationen = computed(
 );
 
 onBeforeMount(() => {
-  isNew.value = route.params.id === undefined;
+  isNew.value = routeId === undefined;
 
   if (isNew.value) {
     bauvorhaben.value = new BauvorhabenModel(createBauvorhabenDto());
@@ -231,7 +231,7 @@ function validateAndProceed(): void {
  * Schickt eine GET-Anfrage für das ausgewählte Bauvorhaben ans Backend.
  */
 async function fetchBauvorhabenById(): Promise<void> {
-  const dto = await getBauvorhabenById(route.params.id, false);
+  const dto = await getBauvorhabenById(routeId, false);
   bauvorhaben.value = _.cloneDeep(dto);
 }
 
@@ -261,8 +261,8 @@ async function updateBauvorhaben(): Promise<void> {
 async function removeBauvorhaben(): Promise<void> {
   deleteDialogOpen.value = false;
 
-  await deleteBauvorhaben(route.params.id, true);
-  searchStore.removeSearchResultById(route.params.id);
+  await deleteBauvorhaben(routeId, true);
+  searchStore.removeSearchResultById(routeId);
   returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
 }
 
@@ -278,7 +278,7 @@ function returnToUebersicht(message?: string, level?: Levels): void {
     Toaster.toast(message, level);
   }
 
-  router.push({ name: "home" });
+  router.push("/");
 }
 
 function abfrageUebernehmen(abfrage: AbfrageDto): void {

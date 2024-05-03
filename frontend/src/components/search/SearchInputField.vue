@@ -54,7 +54,7 @@ import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
-import { useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 
 let searchAndFilterDialogOpen = ref<boolean>(false);
 let searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
@@ -62,6 +62,7 @@ let searchQuery = ref<string>("");
 let suggestions = ref<Array<string>>([]);
 let selectedSuggestion = ref<string>("");
 const { searchForSearchwordSuggestion, searchForEntities } = useSearchApi();
+const route = useRoute();
 const router = useRouter();
 
 const searchStore = useSearchStore();
@@ -176,9 +177,8 @@ function clearSearch(): void {
 }
 
 function routeToMainViewWhenNotInMain(): void {
-  const currentRoute = router.currentRoute;
-  if (currentRoute.path !== "/") {
-    router.push({ path: "/" });
+  if (route.path !== "/") {
+    router.push("/");
   }
 }
 </script>

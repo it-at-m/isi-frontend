@@ -30,7 +30,7 @@ import { Context } from "@/utils/Context";
 import { createKommentarDto } from "@/utils/Factories";
 import { useKommentarApi } from "@/composables/requests/KommentarApi";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 interface Props {
   context?: Context;
@@ -39,7 +39,7 @@ interface Props {
 
 const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
 const kommentarApi = useKommentarApi();
-const route = useRoute();
+const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
 const kommentare = shallowRef<KommentarModel[]>([]);
 let isKommentarListOpen = false;
@@ -58,8 +58,7 @@ function hasDirtyComment(): boolean {
 
 async function getKommentare(): Promise<void> {
   if (!isCommentDirty.value) {
-    const id = route.params.id;
-    if (!isKommentarListOpen && !_.isNil(id)) {
+    if (!isKommentarListOpen && !_.isNil(routeId)) {
       isKommentarListOpen = true;
       if (props.context === Context.BAUVORHABEN) {
         const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(id, true);
@@ -94,14 +93,14 @@ function createNewUnsavedKommentar(): KommentarModel {
 
 function createNewUnsavedKommentarForBauvorhaben(): KommentarModel {
   const kommentar = new KommentarModel(createKommentarDto());
-  kommentar.bauvorhaben = route.params.id;
+  kommentar.bauvorhaben = routeId;
   kommentar.isDirty = false;
   return kommentar;
 }
 
 function createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel {
   const kommentar = new KommentarModel(createKommentarDto());
-  kommentar.infrastruktureinrichtung = route.params.id;
+  kommentar.infrastruktureinrichtung = routeId;
   return kommentar;
 }
 

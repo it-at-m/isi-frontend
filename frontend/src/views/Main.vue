@@ -127,42 +127,29 @@
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
 import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const speedDialOpen = ref(false);
 
 function createBauleitplanverfahren(): void {
-  router.push({
-    name: "newabfrage",
-    params: { art: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren },
-  });
+  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
 }
 
 function createBaugenehmigungsverfahren(): void {
-  router.push({
-    name: "newabfrage",
-    params: { art: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren },
-  });
+  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren);
 }
 
 function createWeiteresVerfahren(): void {
-  router.push({
-    name: "newabfrage",
-    params: { art: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren },
-  });
+  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.WeiteresVerfahren);
 }
 
 function createBauvorhaben(): void {
-  router.push({
-    name: "createBauvorhaben",
-  });
+  router.push("/bauvorhaben");
 }
 
 function createInfrastruktureinrichtung(): void {
-  router.push({
-    name: "createInfrastruktureinrichtung",
-  });
+  router.push("/infrastruktureinrichtung");
 }
 </script>
 

@@ -1,6 +1,6 @@
-import type { NavigationGuardNext } from "vue-router";
+import type { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 
-import { onBeforeRouteLeave } from "vue-router/composables";
+import { onBeforeRouteLeave } from "vue-router";
 import { useCommonStore } from "@/stores/CommonStore";
 
 /**
@@ -35,8 +35,7 @@ export function useSaveLeave() {
   const saveLeaveDialog = ref(false);
   const nextRoute = ref<NavigationGuardNext | null>(null);
 
-  // eslint-disable-next-line
-  onBeforeRouteLeave((to: any, from: any, next: NavigationGuardNext) => {
+  onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     if (isFormDirty.value || isCommentDirty.value) {
       saveLeaveDialog.value = true;
       nextRoute.value = next;

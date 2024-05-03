@@ -74,13 +74,13 @@ import {
 import _ from "lodash";
 import moment from "moment";
 import { useLookupStore } from "@/stores/LookupStore";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 
 const { infrastruktureinrichtungTyp } = useLookupStore();
 const { getReferencedAbfrageList, getReferencedInfrastruktureinrichtungenList } = useBauvorhabenApi();
-const route = useRoute();
 const router = useRouter();
+const routeId = useRoute().params.id as string;
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
 const infrastruktureinrichtungen = ref<InfrastruktureinrichtungSearchResultDto[]>([]);
 const abfragenEmpty = computed(() => _.isEmpty(abfragen));
@@ -89,13 +89,13 @@ let isAbfrageListOpen = false;
 let isInfraListOpen = false;
 
 async function getReferencedAbfragen(): Promise<void> {
-  if (!isAbfrageListOpen && !_.isNil(route.params.id)) {
+  if (!isAbfrageListOpen && !_.isNil(routeId)) {
     isAbfrageListOpen = true;
-    const searchResults = await getReferencedAbfrageList(route.params.id, true);
+    const searchResults = await getReferencedAbfrageList(routeId, true);
     if (!_.isNil(searchResults)) {
       abfragen.value = searchResults;
     }
-  } else if (isAbfrageListOpen && !_.isNil(route.params.id)) {
+  } else if (isAbfrageListOpen && !_.isNil(routeId)) {
     isAbfrageListOpen = false;
   } else {
     isAbfrageListOpen = false;
@@ -103,13 +103,13 @@ async function getReferencedAbfragen(): Promise<void> {
 }
 
 async function getReferencedInfrastruktureinrichtungen(): Promise<void> {
-  if (!isInfraListOpen && !_.isNil(route.params.id)) {
+  if (!isInfraListOpen && !_.isNil(routeId)) {
     isInfraListOpen = true;
-    const searchResults = await getReferencedInfrastruktureinrichtungenList(route.params.id, true);
+    const searchResults = await getReferencedInfrastruktureinrichtungenList(routeId, true);
     if (!_.isNil(searchResults)) {
       infrastruktureinrichtungen.value = searchResults;
     }
-  } else if (isInfraListOpen && !_.isNil(route.params.id)) {
+  } else if (isInfraListOpen && !_.isNil(routeId)) {
     isInfraListOpen = false;
   } else {
     isInfraListOpen = false;
@@ -130,10 +130,7 @@ function formatDate(dateTime: Date | undefined): string {
  */
 function routeToAbfrageInfo(abfrageSearchResultDto: AbfrageSearchResultDto): void {
   if (!_.isNil(abfrageSearchResultDto.id)) {
-    router.push({
-      name: "updateabfrage",
-      params: { id: abfrageSearchResultDto.id },
-    });
+    router.push("/abfrage/" + abfrageSearchResultDto.id);
   }
 }
 
@@ -146,10 +143,7 @@ function routeToInfrastruktureinrichtungInfo(
   infrastruktureinrichtungSearchResultDto: InfrastruktureinrichtungSearchResultDto,
 ): void {
   if (!_.isNil(infrastruktureinrichtungSearchResultDto.id)) {
-    router.push({
-      name: "editInfrastruktureinrichtung",
-      params: { id: infrastruktureinrichtungSearchResultDto.id },
-    });
+    router.push("/infrastruktureinrichtung/" + infrastruktureinrichtungSearchResultDto.id);
   }
 }
 

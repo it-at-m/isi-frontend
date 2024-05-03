@@ -378,8 +378,7 @@ import {
   AnyAbfragevarianteModel,
   AnyAbfrageDto,
 } from "@/types/common/Abfrage";
-import { useRoute } from "vue-router/composables";
-import { useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useTransitionApi } from "@/composables/requests/TransitionApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
@@ -428,8 +427,8 @@ const router = useRouter();
 
 const RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
 const TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
-const abfrageId: string = route.params.id;
-const artAbfrage: string = route.params.art;
+const abfrageId = route.params.id as string;
+const artAbfrage = route.query.art as string;
 let relevanteAbfragevarianteToBeSet: AnyAbfragevarianteModel | undefined;
 let treeItemToDelete: AbfrageTreeItem | undefined;
 let currentTransition: TransitionDto | undefined;
@@ -753,7 +752,7 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
     abfrage.value = new WeiteresVerfahrenModel(dto);
   }
   if (isNew.value) {
-    router.push({ path: "/" });
+    router.push("/");
     Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
   } else if (showToast) {
     Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
@@ -835,7 +834,7 @@ function returnToUebersicht(message?: string, level?: Levels): void {
   if (message && level) {
     Toaster.toast(message, level);
   }
-  router.push({ path: "/" });
+  router.push("/");
 }
 
 function handleSelectAbfrage(): void {

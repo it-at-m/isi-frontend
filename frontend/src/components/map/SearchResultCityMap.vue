@@ -19,11 +19,14 @@ import {
 import { Feature, MultiPolygon, Point } from "geojson";
 import L, { GeoJSONOptions, Layer } from "leaflet";
 import CityMap from "./CityMap.vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 import _ from "lodash";
 import { useSearchStore } from "@/stores/SearchStore";
+
 type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
+
+const router = useRouter();
 
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: EntityFeature, latlng) => {
@@ -64,20 +67,11 @@ const geoJsonOptions: GeoJSONOptions = {
 
     layer.on("click", () => {
       if (feature.properties.type === SearchResultDtoTypeEnum.Abfrage) {
-        router.push({
-          name: "updateabfrage",
-          params: { id: feature.properties.id },
-        });
+        router.push("/abfrage/" + feature.properties.id);
       } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben && feature.geometry.type === "Point") {
-        router.push({
-          name: "editBauvorhaben",
-          params: { id: feature.properties.id },
-        });
+        router.push("/bauvorhaben/" + feature.properties.id);
       } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
-        router.push({
-          name: "editInfrastruktureinrichtung",
-          params: { id: feature.properties.id },
-        });
+        router.push("/infrastruktureinrichtung/" + feature.properties.id);
       }
     });
   },

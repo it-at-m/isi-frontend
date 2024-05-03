@@ -12,11 +12,11 @@ const router = createRouter({
       component: Main,
     },
     {
-      path: "/abfrageninformationen/abfrage/:id",
+      path: "/abfrage",
       component: Abfrage,
     },
     {
-      path: "/abfrageninformationen/abfrage",
+      path: "/abfrage/:id",
       component: Abfrage,
     },
     {

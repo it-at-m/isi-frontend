@@ -135,7 +135,7 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 import { useVuetify } from "@/utils/Vue";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 
 const pageRequestMutex = new Mutex();
 const lookupStore = useLookupStore();
@@ -227,10 +227,7 @@ function castToAbfrageSearchResultDto(searchResult: SearchResultDto): AbfrageSea
 
 function routeToAbfrageForm(abfrageSearchResult: AbfrageSearchResultDto): void {
   if (!_.isUndefined(abfrageSearchResult.id)) {
-    router.push({
-      name: "updateabfrage",
-      params: { id: abfrageSearchResult.id },
-    });
+    router.push("/abfrage/" + abfrageSearchResult.id);
   }
 }
 
@@ -287,10 +284,7 @@ function castToBauvorhabenSearchResultDto(searchResult: SearchResultDto): Bauvor
 
 function routeToBauvorhabenForm(bauvorhabenSearchResult: BauvorhabenSearchResultDto): void {
   if (!_.isNil(bauvorhabenSearchResult.id)) {
-    router.push({
-      name: "editBauvorhaben",
-      params: { id: bauvorhabenSearchResult.id },
-    });
+    router.push("/bauvorhaben/" + bauvorhabenSearchResult.id);
   }
 }
 function getFormattedGrundstuecksgroesse(grundstuecksgroesse: number | undefined): string {
@@ -323,10 +317,7 @@ function routeToInfrastruktureinrichtungForm(
   infrastruktureinrichtungSearchResult: InfrastruktureinrichtungSearchResultDto,
 ): void {
   if (!_.isNil(infrastruktureinrichtungSearchResult.id)) {
-    router.push({
-      name: "editInfrastruktureinrichtung",
-      params: { id: infrastruktureinrichtungSearchResult.id },
-    });
+    router.push("/infrastruktureinrichtung/" + infrastruktureinrichtungSearchResult.id);
   }
 }
 
