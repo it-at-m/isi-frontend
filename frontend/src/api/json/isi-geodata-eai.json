@@ -4,7 +4,7 @@
     "title": "ISI GEODATA EAI",
     "description": "ISI GEODATA EAI - Service zum Abfragen von Geoinformationen",
     "contact": { "name": "ISI Management", "email": "unbekannt@muenchen.de" },
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [
@@ -32,15 +32,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Viertel erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -78,15 +78,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Schulstandorte erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoSchulstandortDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -245,15 +245,15 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
-          },
           "200": {
             "description": "Viertel erfolgreich abgefragt.",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" } }
             }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
