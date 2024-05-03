@@ -1,26 +1,22 @@
-import { defineConfig } from "vitest/config";
-import vue from "@vitejs/plugin-vue2";
-import { fileURLToPath, URL } from "url";
-import { VuetifyResolver } from "unplugin-vue-components/resolvers";
-import Components from "unplugin-vue-components/vite";
-import AutoImport from "unplugin-auto-import/vite";
+import { fileURLToPath } from "node:url";
 
-export default defineConfig({
-  plugins: [
-    vue(),
-    Components({
-      resolvers: [VuetifyResolver()],
-    }),
-    AutoImport({
-      imports: ["vue", "vitest"],
-    }),
-  ],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+import { configDefaults, defineConfig, mergeConfig } from "vitest/config";
+
+import viteConfig from "./vite.config";
+
+export default mergeConfig(
+  viteConfig,
+  defineConfig({
+    test: {
+      globals: true,
+      environment: "jsdom",
+      exclude: [...configDefaults.exclude, "e2e/*"],
+      root: fileURLToPath(new URL("./", import.meta.url)),
+      server: {
+        deps: {
+          inline: ["vuetify"],
+        },
+      },
     },
-  },
-  test: {
-    environment: "jsdom",
-  },
-});
+  }),
+);
