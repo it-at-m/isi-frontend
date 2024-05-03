@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.muenchen.isi.apigateway</groupId>
     <artifactId>isi-frontend-apigateway</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
     <name>isi_frontend_apigateway</name>
     <description>Apigateway used by ISI Frontend</description>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>de.muenchen.isi</groupId>
         <artifactId>isi-frontend</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
     </parent>
 
     <properties>
@@ -26,7 +26,8 @@
         <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
         <spring.boot.version>3.2.1</spring.boot.version>
         <spring.cloud.version>2023.0.0</spring.cloud.version>
-        <!-- Version muss mit der in den spring-boot-dependencies bereitgestellten Lombok-Version übereinstimmen -->
+        <!-- Version muss mit der in den spring-boot-dependencies bereitgestellten Lombok-Version
+        übereinstimmen -->
         <org.projectlombok.lombok.version>1.18.30</org.projectlombok.lombok.version>
         <logstash.encoder.version>7.0.1</logstash.encoder.version>
         <apache.commons.lang.version>3.14.0</apache.commons.lang.version>
@@ -193,7 +194,8 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <!-- https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.2-Release-Notes#parameter-name-discovery -->
+                    <!--
+                    https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.2-Release-Notes#parameter-name-discovery -->
                     <parameters>true</parameters>
                     <annotationProcessorPaths>
                         <path>
@@ -204,7 +206,7 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <plugin> 
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
@@ -222,8 +224,8 @@
                         </goals>
                     </execution>
                 </executions>
-			</plugin>
-			<plugin>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
                 <version>1.4</version>
