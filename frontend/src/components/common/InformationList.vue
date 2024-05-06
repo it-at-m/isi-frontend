@@ -1,33 +1,38 @@
+<!-- eslint-disable vue/max-attributes-per-line -->
 <template>
   <v-list
     class="overflow-y-auto ma-0 pa-0"
     max-height="100%"
     width="100%"
   >
-    <template v-for="(item, index) in informationStore.informationList">
+    <template
+      v-for="(item, index) in informationStore.informationList"
+      :key="index"
+    >
       <v-list-item
         id="information_list"
-        :key="index"
         class="ma-0 pa-0"
       >
         <v-card
           width="100%"
           class="pa-1 my-1 mx-0"
           :color="getColorAccordingInformationType(item.type)"
-          outlined
+          variant="outlined"
         >
-          <v-row class="pa-0 ma-0 justify-end align-start">
+          <v-row
+            :key="index"
+            class="pa-0 ma-0 justify-end align-start"
+          >
             <v-btn
               :id="'information_listitem_' + index + '_loeschen_button'"
               icon
-              x-small
+              size="x-small"
               @click="deleteInformationListEntryByIndex(index)"
             >
-              <v-icon dense> mdi-window-close </v-icon>
+              <v-icon density="default"> mdi-window-close </v-icon>
             </v-btn>
           </v-row>
-
-          <v-list-item-content class="ma-0 py-1 px-0">
+          <div class="ma-0 py-1 px-0">
             <v-row
               v-if="isTraceIdAndSpanIdAvailable(item)"
               class="pa-0 ma-0"
@@ -85,12 +90,11 @@
                 />
               </v-col>
             </v-row>
-
-            <template v-for="(message, messageIndex) in item.messages">
-              <v-list-item
-                :key="messageIndex"
-                class="pa-0 ma-0"
-              >
+            <template
+              v-for="(message, messageIndex) in item.messages"
+              :key="messageIndex"
+            >
+              <v-list-item class="pa-0 ma-0">
                 <v-row
                   class="pa-0 ma-0"
                   justify="center"
@@ -109,7 +113,7 @@
                 </v-row>
               </v-list-item>
             </template>
-          </v-list-item-content>
+          </div>
         </v-card>
       </v-list-item>
     </template>

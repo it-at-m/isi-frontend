@@ -5,8 +5,8 @@
     v-bind="$attrs"
     :required="required"
     :rules="getRules()"
-    validate-on-blur
-    @input="formChanged()"
+    validate-on="blur"
+    @update:model-value="formChanged()"
   >
     <!--
     Dieses Konstrukt dient dazu:
@@ -26,7 +26,7 @@
       </slot>
       <span
         v-if="required"
-        class="secondary--text"
+        class="text-secondary"
       >
         *</span
       >
@@ -37,10 +37,10 @@
     >
       <v-tooltip
         max-width="15%"
-        right
+        location="right"
       >
-        <template #activator="{ on }">
-          <v-icon v-on="on"> mdi-help-circle-outline </v-icon>
+        <template #activator="{ props: activatorProps }">
+          <v-icon v-bind="activatorProps"> mdi-help-circle-outline </v-icon>
         </template>
         <span>{{ help }} </span>
       </v-tooltip>

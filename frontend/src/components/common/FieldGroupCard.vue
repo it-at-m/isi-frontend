@@ -1,14 +1,14 @@
 <template>
   <v-card
     ref="vcard"
-    outlined
+    variant="outlined"
     class="mx-0 my-6 px-3 pt-2 pb-3"
   >
-    <v-card-title class="pt-0 pb-6 ma-0 grey--text">
+    <v-card-title class="pt-0 pb-6 ma-0 text-grey">
       {{ cardTitle
       }}<span
         v-if="markCardTitleAsMandatory"
-        class="secondary--text"
+        class="text-secondary"
       >
         &nbsp;*</span
       >

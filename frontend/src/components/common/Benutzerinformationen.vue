@@ -2,47 +2,37 @@
   <v-menu
     v-if="benutzerinformationenAvailable"
     id="benutzerinformation_menu"
-    offset-y
+    location="bottom"
     transition="slide-y-transition"
     :close-on-content-click="false"
   >
-    <template #activator="{ on }">
+    <template #activator="{ props: activatorProps }">
       <v-btn
         id="benutzerinformation_button"
-        small
-        icon
-        fab
-        v-on="on"
+        size="small"
+        icon="mdi-information"
+        v-bind="activatorProps"
       >
-        <v-icon> mdi-information </v-icon>
       </v-btn>
     </template>
     <v-card flat>
       <v-card-title>Bearbeitungsinformationen</v-card-title>
       <v-list>
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-subtitle>Name:</v-list-item-subtitle>
-            <v-list-item-title>{{ name }}</v-list-item-title>
-          </v-list-item-content>
+        <v-list-item lines="two">
+          <v-list-item-subtitle>Name:</v-list-item-subtitle>
+          <v-list-item-title>{{ name }}</v-list-item-title>
         </v-list-item>
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-subtitle>Email:</v-list-item-subtitle>
-            <v-list-item-title>{{ email }}</v-list-item-title>
-          </v-list-item-content>
+        <v-list-item lines="two">
+          <v-list-item-subtitle>Email:</v-list-item-subtitle>
+          <v-list-item-title>{{ email }}</v-list-item-title>
         </v-list-item>
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-subtitle>Organisationseinheit:</v-list-item-subtitle>
-            <v-list-item-title>{{ organisationseinheit }}</v-list-item-title>
-          </v-list-item-content>
+        <v-list-item lines="two">
+          <v-list-item-subtitle>Organisationseinheit:</v-list-item-subtitle>
+          <v-list-item-title>{{ organisationseinheit }}</v-list-item-title>
         </v-list-item>
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-subtitle>Letzte Änderung:</v-list-item-subtitle>
-            <v-list-item-title>{{ letzteAenderung }}</v-list-item-title>
-          </v-list-item-content>
+        <v-list-item lines="two">
+          <v-list-item-subtitle>Letzte Änderung:</v-list-item-subtitle>
+          <v-list-item-title>{{ letzteAenderung }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-card>
@@ -60,6 +50,8 @@ interface Props {
 
 const DISPLAY_FORMAT = "DD.MM.YYYY";
 const props = defineProps<Props>();
+
+const menuLocation = [0, 40];
 
 const benutzerinformationenAvailable = computed(() => {
   return (

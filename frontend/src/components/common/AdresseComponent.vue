@@ -13,32 +13,32 @@
             :disabled="!isEditable"
             :items="searchResults"
             :loading="loading"
-            :search-input.sync="searchQuery"
-            dense
+            :search.sync="searchQuery"
+            density="compact"
             clearable
             color="black"
             no-filter
             hide-no-data
             append-icon=""
-            item-text="adresse"
+            item-title="adresse"
             item-value="adressId"
             label="Adress-Suche"
             return-object
             placeholder="Suchtext mit Adressteilen"
             prepend-inner-icon="mdi-magnify"
             :rules="[adressSucheValidationRule]"
-            validate-on-blur
+            validate-on="blur"
           />
         </v-col>
         <v-col cols="1">
-          <v-tooltip bottom>
-            <template #activator="{ on }">
+          <v-tooltip location="bottom">
+            <template #activator="{ props: activatorProps }">
               <v-btn
                 id="adresse_loeschen_button"
                 ref="adresseLoeschenButton"
                 :disabled="!isEditable"
                 icon
-                v-on="on"
+                v-bind="props"
                 @click="resetAdresse"
               >
                 <v-icon> mdi-delete</v-icon>
@@ -111,8 +111,8 @@
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
           :rules="[angabeLageErgaenzendeAdressinformationValidationRule]"
-          validate-on-blur
-          @input="formChanged"
+          validate-on="blur"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>

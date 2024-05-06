@@ -2,7 +2,7 @@
   <v-input
     ref="input"
     class="pt-6"
-    :value="valueInternal"
+    :model-value="valueInternal"
     :rules="rules"
     :disabled="disabled"
   >

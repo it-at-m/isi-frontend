@@ -9,9 +9,9 @@
           id="kommentar_datum"
           v-model.trim="kommentar.datum"
           maxlength="32"
-          filled
+          variant="filled"
           :disabled="!isEditable"
-          @input="changed"
+          @update:model-value="changed"
         >
           <template #label> Datum </template>
         </v-text-field>
@@ -22,13 +22,13 @@
       >
         <v-card-actions>
           <v-spacer />
-          <v-tooltip bottom>
-            <template #activator="{ on }">
+          <v-tooltip location="bottom">
+            <template #activator="{ props: activatorProps }">
               <v-btn
                 id="save_kommentar"
                 icon
                 :disabled="!isSaveable || !isEditable || !kommentar.isDirty"
-                v-on="on"
+                v-bind="activatorProps"
                 @click="saveKommentar"
               >
                 <v-icon :color="kommentar.isDirty ? 'secondary' : undefined">mdi-content-save</v-icon>
@@ -36,13 +36,13 @@
             </template>
             <span>Kommentar speichern</span>
           </v-tooltip>
-          <v-tooltip bottom>
-            <template #activator="{ on }">
+          <v-tooltip location="bottom">
+            <template #activator="{ props: activatorProps }">
               <v-btn
                 id="delete_kommentar"
                 icon
                 :disabled="!isDeletable || !isEditable"
-                v-on="on"
+                v-bind="activatorProps"
                 @click="deleteDialog = true"
               >
                 <v-icon> mdi-delete</v-icon>
@@ -63,16 +63,16 @@
           v-model.trim="kommentar.text"
           label="Anmerkungen"
           auto-grow
-          filled
+          variant="filled"
           rows="5"
           :disabled="!isEditable"
-          @input="changed"
+          @update:model-value="changed"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <p class="text-h6 grey--text">Anhänge</p>
+        <p class="text-h6 text-grey">Anhänge</p>
         <dokumente
           id="kommentar_dokumente"
           v-model="kommentar.dokumente"

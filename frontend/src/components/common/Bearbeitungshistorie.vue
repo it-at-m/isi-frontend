@@ -2,19 +2,17 @@
   <v-menu
     v-if="bearbeitungshistorieAvailable"
     id="benutzerinformation_menu"
-    offset-y
+    location="bottom"
     transition="slide-y-transition"
     :close-on-content-click="false"
   >
-    <template #activator="{ on }">
+    <template #activator="{ props: activatorProps }">
       <v-btn
         id="benutzerinformation_button"
-        small
-        icon
-        fab
-        v-on="on"
+        size="small"
+        icon="mdi-information"
+        v-bind="activatorProps"
       >
-        <v-icon> mdi-information </v-icon>
       </v-btn>
     </template>
     <v-card flat>

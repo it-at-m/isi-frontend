@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :value="visible"
+    :model-value="visible"
     width="40%"
     @click:outside="visible = false"
   >
@@ -10,17 +10,17 @@
         color="primary"
         class="mb-4"
       >
-        <span class="text-h6 white--text"> Versionen der ISI-Services </span>
+        <span class="text-h6 text-white"> Versionen der ISI-Services </span>
         <v-spacer />
         <v-btn
-          text
-          fab
+          class="text-white"
+          variant="text"
+          icon="mdi-close"
           @click="visible = false"
         >
-          <v-icon class="white--text"> mdi-close </v-icon>
         </v-btn>
       </v-app-bar>
-      <v-simple-table
+      <v-table
         v-if="services.length !== 0"
         class="mx-8"
       >
@@ -48,9 +48,9 @@
                 <span v-else> Version unbekannt </span>
               </td>
               <td>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <span v-on="on">
+                <v-tooltip location="bottom">
+                  <template #activator="{ props: activatorProps }">
+                    <span v-bind="activatorProps">
                       {{ service.active ? "🟢" : "🔴" }}
                     </span>
                   </template>
@@ -60,7 +60,7 @@
             </tr>
           </tbody>
         </template>
-      </v-simple-table>
+      </v-table>
       <loading
         v-else
         :success="fetchSuccess"

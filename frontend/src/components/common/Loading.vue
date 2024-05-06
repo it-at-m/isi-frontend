@@ -16,7 +16,7 @@
     <v-progress-circular
       v-else
       indeterminate
-      color="grey lighten-1"
+      color="grey-lighten-1"
       size="50"
       width="5"
     />

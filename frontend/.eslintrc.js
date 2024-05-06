@@ -25,6 +25,7 @@ module.exports = {
     "vue/no-v-text-v-html-on-component": "off",
     "vue/multi-word-component-names": "off",
     "vue/singleline-html-element-content-newline": "off",
+    "vue/no-v-for-template-key": "off",
     "vue/html-self-closing": "off",
   },
   overrides: [
