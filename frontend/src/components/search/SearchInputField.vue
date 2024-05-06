@@ -46,8 +46,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
-import { SearchQueryDto } from "@/api/api-client/isi-backend";
+import { onMounted, computed, ref } from "vue";
+import type { SearchQueryDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
@@ -56,11 +56,11 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRoute, useRouter } from "vue-router";
 
-let searchAndFilterDialogOpen = ref<boolean>(false);
-let searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
-let searchQuery = ref<string>("");
-let suggestions = ref<Array<string>>([]);
-let selectedSuggestion = ref<string>("");
+const searchAndFilterDialogOpen = ref<boolean>(false);
+const searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
+const searchQuery = ref<string>("");
+const suggestions = ref<Array<string>>([]);
+const selectedSuggestion = ref<string>("");
 const { searchForSearchwordSuggestion, searchForEntities } = useSearchApi();
 const route = useRoute();
 const router = useRouter();
@@ -103,8 +103,8 @@ function handleResetSearchAndFilterOptions(): void {
 
 function checkCurrentFilter(): boolean {
   const excludeProperties = ["page", "pageSize", "searchQuery"];
-  let requestSearchQueryAndSorting = _.omit(searchStore.requestSearchQueryAndSorting, excludeProperties);
-  let defaultSearchQueryAndSortingFilter = _.omit(searchStore.defaultSearchQueryAndSortingFilter, excludeProperties);
+  const requestSearchQueryAndSorting = _.omit(searchStore.requestSearchQueryAndSorting, excludeProperties);
+  const defaultSearchQueryAndSortingFilter = _.omit(searchStore.defaultSearchQueryAndSortingFilter, excludeProperties);
 
   return _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter);
 }
@@ -182,5 +182,3 @@ function routeToMainViewWhenNotInMain(): void {
   }
 }
 </script>
-
-<style scoped></style>

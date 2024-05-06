@@ -7,7 +7,7 @@
     <v-card-title class="pt-0 pb-6 ma-0 grey--text">
       {{ cardTitle
       }}<span
-        v-if="markCardTitleAsMandatory"
+        v-if="markCardTitleAsRequired"
         class="secondary--text"
       >
         &nbsp;*</span
@@ -20,8 +20,8 @@
 <script setup lang="ts">
 interface Props {
   cardTitle?: string;
-  markCardTitleAsMandatory?: boolean;
+  markCardTitleAsRequired?: boolean;
 }
 
-withDefaults(defineProps<Props>(), { cardTitle: "", markCardTitleAsMandatory: false });
+withDefaults(defineProps<Props>(), { cardTitle: "", markCardTitleAsRequired: false });
 </script>

@@ -141,5 +141,3 @@ const suffixGeschossflaecheWohnen = computed(() => {
   return `von ${geschossflaecheWohnenFormatted(props.baugebiet, props.abfragevariante)} ${SQUARE_METER}`;
 });
 </script>
-
-<style></style>

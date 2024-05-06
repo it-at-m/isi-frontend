@@ -49,9 +49,9 @@
  * Darüber hinaus können 'label', 'offText' und 'onText' auch über gleichnamige Slots befüllt werden.
  */
 
+import { computed, ref } from "vue";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 
 type Position = "0" | "1" | "2";
 
@@ -60,7 +60,6 @@ interface VInput {
 }
 
 interface Props {
-  value: UncertainBoolean;
   label?: string;
   offText?: string;
   onText?: string;
@@ -68,14 +67,8 @@ interface Props {
   rules?: unknown[];
 }
 
-interface Emits {
-  (event: "input", value: UncertainBoolean): void;
-}
-
 const { formChanged } = useSaveLeave();
-const props = withDefaults(defineProps<Props>(), { disabled: false });
-const emit = defineEmits<Emits>();
-const valueInternal = defineModel(props, emit);
+const valueInternal = defineModel<UncertainBoolean>({ required: true });
 const input = ref<VInput | null>(null);
 const collapsed = computed(() => valueInternal.value !== UncertainBoolean.Unspecified);
 
@@ -120,6 +113,8 @@ const backgroundColor = computed(() => {
       return "grey lighten-1";
   }
 });
+
+withDefaults(defineProps<Props>(), { disabled: false });
 
 /**
  * Bestimmt die Textfarbe für die Texte links und rechts vom Range Slider.

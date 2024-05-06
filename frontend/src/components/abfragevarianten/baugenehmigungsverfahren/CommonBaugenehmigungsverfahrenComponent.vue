@@ -153,5 +153,3 @@ function wesentlicheRechtsgrundlageChanged(): void {
   }
 }
 </script>
-
-<style></style>

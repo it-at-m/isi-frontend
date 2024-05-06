@@ -94,5 +94,3 @@ function sobonBerechnungChanged(): void {
   }
 }
 </script>
-
-<style></style>

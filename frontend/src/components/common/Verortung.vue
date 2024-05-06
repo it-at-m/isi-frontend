@@ -174,10 +174,9 @@
 </template>
 
 <script setup lang="ts">
-import CityMap from "@/components/map/CityMap.vue";
-import L, { LatLng, Layer } from "leaflet";
-import { Feature, MultiPolygon } from "geojson";
-import {
+import { computed, onMounted, ref, watch } from "vue";
+import type { Feature, MultiPolygon } from "geojson";
+import type {
   FeatureDtoBezirksteilDto,
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
@@ -189,9 +188,7 @@ import {
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoGeoDataEai,
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
-import _ from "lodash";
-import VerortungMultiPolygonModel from "@/types/model/common/VerortungMultiPolygonModel";
-import {
+import type {
   AdresseDto,
   BezirksteilDto,
   FlurstueckDto,
@@ -204,22 +201,20 @@ import {
   VerortungMultiPolygonDto,
   ViertelDto,
 } from "@/api/api-client/isi-backend";
+import CityMap from "@/components/map/CityMap.vue";
+import L, { LatLng, Layer } from "leaflet";
+import _ from "lodash";
+import VerortungMultiPolygonModel from "@/types/model/common/VerortungMultiPolygonModel";
 import { Context } from "@/utils/Context";
 import { COLOR_POLYGON_UMGRIFF } from "@/utils/MapUtil";
-import { defineModel } from "@/utils/Vue";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 
 interface Props {
-  value: VerortungMultiPolygonModel | undefined;
   context?: Context;
   lookAt?: AdresseDto;
-}
-
-interface Emits {
-  (event: "input", value: VerortungMultiPolygonModel | undefined): void;
 }
 
 const geoJsonOptions = {
@@ -259,8 +254,7 @@ const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const geoApi = useGeodataEaiApi();
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED });
-const emit = defineEmits<Emits>();
-const verortungModel = defineModel(props, emit);
+const verortungModel = defineModel<VerortungMultiPolygonModel>();
 // Repräsentiert das Multipolygon je Flurstück.
 const geoJson = computed(() => flurstueckeToGeoJsonFeature(Array.from(selectedFlurstuecke.value.values())));
 // Repräsentiert die gewählten Flurstücke identifiziert über die Flurstücksnummer.
@@ -316,7 +310,7 @@ function onVerortungModelChanged(): void {
 }
 
 async function handleClickInMap(latlng: LatLng): Promise<void> {
-  if (isEditable) {
+  if (isEditable.value) {
     const point = createPointGeometry(latlng);
     const flurstuecke = await geoApi.getFlurstueckeForPoint(point, true);
     const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);

@@ -9,15 +9,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import {
-  AbfrageSearchResultDto,
-  BauvorhabenSearchResultDto,
-  InfrastruktureinrichtungSearchResultDto,
-  SearchResultDto,
+  type AbfrageSearchResultDto,
+  type BauvorhabenSearchResultDto,
+  type InfrastruktureinrichtungSearchResultDto,
+  type SearchResultDto,
+  type Wgs84Dto,
   SearchResultDtoTypeEnum,
-  Wgs84Dto,
 } from "@/api/api-client/isi-backend";
-import { Feature, MultiPolygon, Point } from "geojson";
-import L, { GeoJSONOptions, Layer } from "leaflet";
+import type { Feature, MultiPolygon, Point } from "geojson";
+import L, { type GeoJSONOptions, Layer } from "leaflet";
 import CityMap from "./CityMap.vue";
 import { useRouter } from "vue-router";
 import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
@@ -155,5 +155,3 @@ function getSearchResultDtoTypeFormattedString(searchResultDtoTypeEnum: SearchRe
   return "";
 }
 </script>
-
-<style scoped></style>

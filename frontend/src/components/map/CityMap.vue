@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, watch } from "vue";
+import { onMounted, computed, watch, ref } from "vue";
 import {
   CITY_CENTER,
   LAYER_OPTIONS,
@@ -92,8 +92,15 @@ import {
   assembleDefaultLayersForLayerControl,
   getBackgroundMapUrl,
 } from "@/utils/MapUtil";
-import { Feature } from "geojson";
-import L, { GeoJSONOptions, LatLngBounds, LatLngBoundsLiteral, LatLngLiteral, Layer, LeafletMouseEvent } from "leaflet";
+import type { Feature } from "geojson";
+import L, {
+  type GeoJSONOptions,
+  type LatLngBoundsLiteral,
+  type LatLngLiteral,
+  type LeafletMouseEvent,
+  Layer,
+  LatLngBounds,
+} from "leaflet";
 import "leaflet.nontiledlayer";
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
@@ -154,7 +161,7 @@ const sheet = ref<HTMLFormElement | null>(null);
 const map = ref<HTMLFormElement | null>(null);
 const layerControl = ref<HTMLFormElement | null>(null);
 const dialogCard = ref<HTMLFormElement | null>(null);
-let expanded = ref<boolean>(false);
+const expanded = ref<boolean>(false);
 
 const initialZoom = props.zoom;
 let firstGeoJsonFeatureAdded = false;

@@ -130,5 +130,3 @@ function bedarfsmeldungenUebernehmen(): void {
   formChanged();
 }
 </script>
-
-<style></style>

@@ -1,7 +1,7 @@
 <template>
   <field-group-card
     card-title="Adressinformationen"
-    :mark-card-title-as-mandatory="true"
+    :mark-card-title-as-required="true"
   >
     <div>
       <v-row justify="center">
@@ -120,31 +120,25 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
+import type { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 import { hausnummer, digits, min5 } from "@/utils/FieldValidationRules";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 import { createAdresseDto, createAdressSucheDto, createMuenchenAdresseDto } from "@/utils/Factories";
 import _ from "lodash";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useMasterEaiApi } from "@/composables/requests/eai/MasterEaiApi";
 
 interface Props {
-  value: AdresseModel;
   showInInformationList?: boolean;
   isEditable?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: AdresseModel): void;
 }
 
 const { formChanged } = useSaveLeave();
 const { getAdressen } = useMasterEaiApi();
 const props = withDefaults(defineProps<Props>(), { showInInformationList: true, isEditable: false });
-const emit = defineEmits<Emits>();
-const adresse = defineModel(props, emit);
+const adresse = defineModel<AdresseModel>({ required: true });
 const loading = ref(false);
 const searchQuery = ref("");
 const searchResults = ref<MuenchenAdresseDto[]>([]);

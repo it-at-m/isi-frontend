@@ -96,28 +96,18 @@
  * - value (boolean): Ob der Dialog sichtbar ist.
  */
 
+import { ref, watch } from "vue";
+import type Service from "@/types/common/Service";
 import RequestUtils from "@/utils/RequestUtils";
 import Loading from "@/components/common/Loading.vue";
-import Service from "@/types/common/Service";
 import _ from "lodash";
-import { defineModel } from "@/utils/Vue";
 
-interface Props {
-  value: boolean;
-}
-
-interface Emits {
-  (event: "input", value: boolean): void;
-}
-
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const visible = defineModel(props, emit);
+const visible = defineModel<boolean>({ required: true });
 const services = ref<Service[]>([]);
 const fetchSuccess = ref<boolean | undefined>(undefined);
 
 watch(visible, async () => {
-  if (visible) {
+  if (visible.value) {
     fetchSuccess.value = undefined;
     const fetchedServices = await fetchServices();
 
