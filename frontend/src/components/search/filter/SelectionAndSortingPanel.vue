@@ -214,22 +214,9 @@ import {
 } from "@/api/api-client/isi-backend";
 import PanelHeader from "@/components/search/filter/PanelHeader.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import { defineModel } from "@/utils/Vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
-interface Props {
-  value: SearchQueryAndSortingModel;
-}
-
-interface Emits {
-  (event: "input", value: SearchQueryAndSortingModel): void;
-}
-
-const props = defineProps<Props>();
-
-const emits = defineEmits<Emits>();
-
-const searchQueryAndSorting = defineModel(props, emits);
+const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
 const hoverSelectAll = ref<boolean>(false);
 const hoverDeselectAll = ref<boolean>(false);
@@ -353,5 +340,3 @@ const entriesReihenfolgeDerSortierung = computed(() => {
   ];
 });
 </script>
-
-<style scoped></style>

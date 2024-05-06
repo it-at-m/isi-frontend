@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import _ from "lodash";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import Kommentar from "@/components/common/kommentar/Kommentar.vue";
@@ -41,7 +42,7 @@ const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
 const kommentarApi = useKommentarApi();
 const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
-const kommentare = shallowRef<KommentarModel[]>([]);
+const kommentare = ref<KommentarModel[]>([]);
 let isKommentarListOpen = false;
 
 watch(kommentare, () => {
@@ -73,7 +74,6 @@ async function getKommentare(): Promise<void> {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());
         }
       }
-      triggerRef(kommentare);
     } else {
       isKommentarListOpen = false;
       kommentare.value = [];
@@ -117,7 +117,6 @@ async function saveKommentar(kommentar: KommentarModel): Promise<void> {
     model.isDirty = false;
     replaceSavedKommentarInKommentare(model);
   }
-  triggerRef(kommentare);
 }
 
 function replaceSavedKommentarInKommentare(kommentar: KommentarModel): void {
@@ -154,11 +153,9 @@ async function deleteKommentar(kommentar: KommentarModel): Promise<void> {
       }
     }
   }
-  triggerRef(kommentare);
 }
 
 function updateEntry(index: number, kommentar: KommentarModel): void {
   kommentare.value[index] = kommentar;
-  triggerRef(kommentare);
 }
 </script>

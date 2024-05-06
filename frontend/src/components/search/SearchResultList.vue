@@ -116,14 +116,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import {
-  AbfrageSearchResultDto,
+  type AbfrageSearchResultDto,
+  type BauvorhabenSearchResultDto,
+  type InfrastruktureinrichtungSearchResultDto,
+  type LookupEntryDto,
+  type SearchResultDto,
+  type StadtbezirkDto,
   AbfrageSearchResultDtoArtAbfrageEnum,
-  BauvorhabenSearchResultDto,
-  InfrastruktureinrichtungSearchResultDto,
-  LookupEntryDto,
-  SearchResultDto,
   SearchResultDtoTypeEnum,
-  StadtbezirkDto,
   StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
@@ -328,5 +328,3 @@ function getLookupValueInfrastruktureinrichtung(
   return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
 }
 </script>
-
-<style scoped></style>

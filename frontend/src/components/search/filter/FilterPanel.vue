@@ -40,5 +40,3 @@
 <script setup lang="ts">
 import PanelHeader from "@/components/search/filter/PanelHeader.vue";
 </script>
-
-<style scoped></style>

@@ -67,5 +67,3 @@ const baugenehmigungsverfahren = defineModel<BaugenehmigungsverfahrenModel>({ re
 
 withDefaults(defineProps<Props>(), { isNew: false });
 </script>
-
-<style></style>

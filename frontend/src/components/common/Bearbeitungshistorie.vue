@@ -39,8 +39,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import type { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import moment from "moment/moment";
 import { useLookupStore } from "@/stores/LookupStore";
 

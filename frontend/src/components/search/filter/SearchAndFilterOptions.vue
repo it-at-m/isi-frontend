@@ -25,13 +25,15 @@
       <v-btn
         color="secondary"
         @click="adoptSearchAndFilterOptions"
-        >Übernehmen
+      >
+        Übernehmen
       </v-btn>
       <v-spacer></v-spacer>
       <v-btn
         color="primary"
         @click="resetSearchAndFilterOptions"
-        >Zurücksetzen
+      >
+        Zurücksetzen
       </v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
@@ -43,26 +45,18 @@ import { computed } from "vue";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
-import { defineModel } from "@/utils/Vue";
 import { useVuetify } from "@/utils/Vue";
 
 const vuetify = useVuetify();
 
-interface Props {
-  value: SearchQueryAndSortingModel;
-}
-
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
   (event: "reset-search-and-filter-options", value: void): void;
-  (event: "input", value: SearchQueryAndSortingModel): void;
 }
-
-const props = defineProps<Props>();
 
 const emit = defineEmits<Emits>();
 
-const searchQueryAndSorting = defineModel(props, emit);
+const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
 const getContentSheetHeight = computed(() => {
   if (vuetify.breakpoint.xl) {
@@ -79,5 +73,3 @@ function resetSearchAndFilterOptions(): void {
   emit("reset-search-and-filter-options");
 }
 </script>
-
-<style scoped></style>

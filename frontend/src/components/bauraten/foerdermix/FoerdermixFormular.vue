@@ -129,5 +129,3 @@ function setGroupedStammdatenList(): void {
   selectedItem.value.foerdermix.bezeichnung = foerdermix.value.bezeichnung;
 }
 </script>
-
-<style></style>

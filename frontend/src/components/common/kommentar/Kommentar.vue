@@ -96,19 +96,17 @@
   </v-card>
 </template>
 <script setup lang="ts">
+import { computed, ref } from "vue";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 
 interface Props {
-  value: KommentarModel;
   isEditable?: boolean;
 }
 
 interface Emits {
-  (event: "input", value: KommentarModel): void;
   (event: "save-kommentar", value: KommentarModel): void;
   (event: "delete-kommentar", value: KommentarModel): void;
 }
@@ -119,12 +117,13 @@ const deleteDialogYesText = "Löschen";
 const deleteDialogNoText = "Abbrechen";
 const nameRootFolder = "kommentare";
 const { commentChanged } = useSaveLeave();
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const emit = defineEmits<Emits>();
-const kommentar = defineModel(props, emit);
+const kommentar = defineModel<KommentarModel>({ required: true });
 const deleteDialog = ref(false);
 const isSaveable = computed(() => !_.isEmpty(kommentar.value.datum) || !_.isEmpty(kommentar.value.text));
 const isDeletable = computed(() => !_.isNil(kommentar.value.id) || (_.isNil(kommentar.value.id) && isSaveable.value));
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 function cancelDeletion(): void {
   deleteDialog.value = false;

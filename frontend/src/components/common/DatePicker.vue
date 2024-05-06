@@ -41,15 +41,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue";
 import moment from "moment";
 import _ from "lodash";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { datum, pflichtfeld } from "@/utils/FieldValidationRules";
 import { useDate } from "vuetify";
 
 interface Props {
-  value?: Date; // Der Datumswert der ausgewählt bzw. eingegeben wurde
   label?: string; // Bezeichnung des Datumsfelds
   required?: boolean; // Ist das Datumsfeld ein Pflichtfeld
   disabled?: boolean; // Ob das Datumsfeld deaktiviert sein soll
@@ -58,8 +57,7 @@ interface Props {
 }
 
 interface Emits {
-  (event: "input", value?: Date): void;
-  (event: "blur", value: Date): void;
+  (event: "blur", value: Date | undefined): void;
 }
 
 const ISO_FORMAT = "YYYY-MM-DD";
@@ -68,7 +66,7 @@ const MONTH_DISPLAY_FORMAT = "MM.YYYY";
 const { formChanged } = useSaveLeave();
 const props = withDefaults(defineProps<Props>(), { label: "", required: false, disabled: false, monthPicker: false });
 const emit = defineEmits<Emits>();
-const date = defineModel(props as any, emit);
+const date = defineModel<Date>();
 const datePickerActive = ref(false);
 const displayFormat = computed(() => (props.monthPicker ? MONTH_DISPLAY_FORMAT : DISPLAY_FORMAT));
 

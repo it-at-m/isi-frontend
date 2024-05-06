@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineModel } from "@/utils/Vue";
+import { ref } from "vue";
 
 /**
  * Der YesNo-Dialog ist ein generischer Dialog zur binären Abfrage beim Nutzer.
@@ -99,7 +99,6 @@ import { defineModel } from "@/utils/Vue";
  */
 
 interface Props {
-  value: boolean;
   dialogtitle: string;
   dialogtext: string;
   yesText?: string;
@@ -113,13 +112,13 @@ interface Emits {
   (event: "no", value: void): void;
   (event: "yes", value: void): void;
   (event: "anmerkung", value: string): void;
-  (event: "input", value: boolean): void;
 }
 
-const props = withDefaults(defineProps<Props>(), { yesText: "Ja", noText: "Nein", anmerkungMaxLength: 0 });
 const emit = defineEmits<Emits>();
-const dialogOpen = defineModel(props, emit);
+const dialogOpen = defineModel<boolean>({ required: true });
 const textarea = ref<HTMLFormElement | null>(null);
+
+withDefaults(defineProps<Props>(), { yesText: "Ja", noText: "Nein", anmerkungMaxLength: 0 });
 
 function no(): void {
   emit("no");

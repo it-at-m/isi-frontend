@@ -81,24 +81,17 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue";
 import _ from "lodash";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
-  value?: string;
   isEditable?: boolean;
-}
-
-interface Emits {
-  (event: "input", value?: string): void;
 }
 
 const { formChanged } = useSaveLeave();
 const title = "Link eAkte";
-const props = withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
-const emit = defineEmits<Emits>();
-const linkEakte = defineModel(props, emit);
+const linkEakte = defineModel<string>();
 const textFieldLinkEakte = ref("");
 const editModeTextFieldLinkEakte = ref(false);
 const linkEakteNotEmpty = computed(() => !_.isEmpty(linkEakte.value));
@@ -112,6 +105,8 @@ const linkEakteFormatted = computed(() => {
   }
   return "";
 });
+
+withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
 
 function uebernehmenLinkEakte(): void {
   linkEakte.value = textFieldLinkEakte.value;

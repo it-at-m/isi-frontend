@@ -121,7 +121,8 @@
 </template>
 
 <script setup lang="ts">
-import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
+import { onMounted } from "vue";
+import { type InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment";
 import { useInformationStore } from "@/stores/InformationStore";

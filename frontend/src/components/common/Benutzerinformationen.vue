@@ -40,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import _ from "lodash";
 import moment from "moment";
 import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
@@ -50,8 +51,6 @@ interface Props {
 
 const DISPLAY_FORMAT = "DD.MM.YYYY";
 const props = defineProps<Props>();
-
-const menuLocation = [0, 40];
 
 const benutzerinformationenAvailable = computed(() => {
   return (

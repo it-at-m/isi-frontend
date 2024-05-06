@@ -48,7 +48,7 @@
   </v-text-field>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 /**
  * NumField ist ein v-text-field, welches nur Zahlen akzeptiert und diese formatiert.
  * Dafür nutzt es https://dm4t2.github.io/vue-currency-input.
@@ -70,7 +70,7 @@
  */
 
 import { watch } from "vue";
-import { CurrencyDisplay, CurrencyInputOptions, useCurrencyInput } from "vue-currency-input";
+import { type CurrencyInputOptions, CurrencyDisplay, useCurrencyInput } from "vue-currency-input";
 import { min, max, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -92,137 +92,71 @@ interface Props {
   help?: string;
 }
 
-export const MAX_VALUE_SIGNED_INTEGER = _.toNumber(2147483647);
+const MAX_VALUE_SIGNED_INTEGER = _.toNumber(2147483647);
+const MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2 = _.toNumber("99999999.99");
 
-export const MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2 = _.toNumber("99999999.99");
+const props = withDefaults(defineProps<Props>(), {
+  precision: 2,
+  min: 0,
+  ignoreMaxValueSignedInteger: false,
+  ignoreMaxValueDecimalNumeralPrecision10Scale2: false,
+  noGrouping: false,
+  required: false,
+});
+const { formChanged } = useSaveLeave();
+// inputRef muss zum Funktionieren von vue-currency-input vorhanden sein.
+// formattedValue ist notwendig, sobald man nicht direkt mit einem <input>-Element arbeitet.
+const { inputRef, formattedValue, setValue } = useCurrencyInput(options);
 
-// <script setup> wird hier wegen technischen Einschränkungen bis zur Einführung von Vue 3 nicht genutzt.
-export default {
-  name: "NumField",
-  props: {
-    value: Number,
-    precision: {
-      type: Number,
-      required: false,
-      default: 2,
-    },
-    min: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    max: {
-      type: Number,
-      required: false,
-    },
-    ignoreMaxValueSignedInteger: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    ignoreMaxValueDecimalNumeralPrecision10Scale2: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    integer: {
-      type: Boolean,
-      required: false,
-    },
-    allowNegatives: {
-      type: Boolean,
-      required: false,
-    },
-    noGrouping: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    year: {
-      type: Boolean,
-      required: false,
-    },
-    required: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    label: {
-      type: String,
-      required: false,
-    },
-    rules: {
-      type: Array,
-      required: false,
-    },
-    help: {
-      type: String,
-      required: false,
-    },
-  },
+// Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
+function getRules(): unknown[] {
+  const usedRules: unknown[] = [];
 
-  setup(props: Props): unknown {
-    const { formChanged } = useSaveLeave();
+  if (props.rules) {
+    usedRules.push(...props.rules);
+  }
 
-    // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
-    function getRules(): unknown[] {
-      const usedRules: unknown[] = [];
-
-      if (props.rules) {
-        usedRules.push(...props.rules);
-      }
-
-      if (props.year) {
-        usedRules.push(min(1900));
-        usedRules.push(max(2100));
-      } else {
-        if (props.min !== undefined && !props.allowNegatives) {
-          usedRules.push(min(props.min));
-        }
-        if (props.max !== undefined) {
-          usedRules.push(max(props.max));
-        } else if (props.integer && !props.ignoreMaxValueSignedInteger) {
-          usedRules.push(max(MAX_VALUE_SIGNED_INTEGER));
-        } else if (!props.integer && !props.ignoreMaxValueDecimalNumeralPrecision10Scale2) {
-          usedRules.push(max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
-        }
-      }
-
-      if (props.required) {
-        usedRules.push(pflichtfeld);
-      }
-      return usedRules;
+  if (props.year) {
+    usedRules.push(min(1900));
+    usedRules.push(max(2100));
+  } else {
+    if (props.min !== undefined && !props.allowNegatives) {
+      usedRules.push(min(props.min));
     }
-
-    // Legt die options für vue-currency-input fest.
-
-    const options: CurrencyInputOptions = {
-      currency: "EUR", // Die Währung muss angegeben werden, auch wenn sie nicht angezeigt wird.
-      currencyDisplay: CurrencyDisplay.hidden,
-      precision: props.integer ? 0 : props.precision,
-      useGrouping: !props.noGrouping,
-    };
-
-    if (props.year) {
-      options.precision = 0;
-      options.useGrouping = false;
+    if (props.max !== undefined) {
+      usedRules.push(max(props.max));
+    } else if (props.integer && !props.ignoreMaxValueSignedInteger) {
+      usedRules.push(max(MAX_VALUE_SIGNED_INTEGER));
+    } else if (!props.integer && !props.ignoreMaxValueDecimalNumeralPrecision10Scale2) {
+      usedRules.push(max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
     }
+  }
 
-    // Initiert alles Notwendige für den Einsatz des Inputfelds.
+  if (props.required) {
+    usedRules.push(pflichtfeld);
+  }
+  return usedRules;
+}
 
-    // inputRef muss zum Funktionieren von vue-currency-input vorhanden sein.
-    // formattedValue ist notwendig, sobald man nicht direkt mit einem <input>-Element arbeitet.
-    const { inputRef, formattedValue, setValue } = useCurrencyInput(options);
+// Legt die options für vue-currency-input fest.
 
-    // Siehe https://dm4t2.github.io/vue-currency-input/guide.html#external-props-changes.
-    watch(
-      () => props.value,
-      (value) => {
-        setValue(value);
-      },
-    );
-
-    return { getRules, formChanged, inputRef, formattedValue };
-  },
+const options: CurrencyInputOptions = {
+  currency: "EUR", // Die Währung muss angegeben werden, auch wenn sie nicht angezeigt wird.
+  currencyDisplay: CurrencyDisplay.hidden,
+  precision: props.integer ? 0 : props.precision,
+  useGrouping: !props.noGrouping,
 };
+
+if (props.year) {
+  options.precision = 0;
+  options.useGrouping = false;
+}
+
+// Siehe https://dm4t2.github.io/vue-currency-input/guide.html#external-props-changes.
+watch(
+  () => props.value,
+  (value) => {
+    setValue(value);
+  },
+);
 </script>
