@@ -60,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 

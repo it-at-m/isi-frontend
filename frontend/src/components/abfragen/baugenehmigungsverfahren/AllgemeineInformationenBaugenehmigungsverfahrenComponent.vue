@@ -89,38 +89,33 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import {
+  type BauvorhabenSearchResultDto,
   BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
-  BauvorhabenSearchResultDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { useLookupStore } from "@/stores/LookupStore";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
 interface Props {
-  value: BaugenehmigungsverfahrenModel;
   isEditable?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: BaugenehmigungsverfahrenModel): void;
 }
 
 const { formChanged } = useSaveLeave();
 const { standVerfahrenBaugenehmigungsverfahren } = useLookupStore();
 const { searchForEntities } = useSearchApi();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfrage = defineModel(props, emit);
+const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 onMounted(() => fetchBauvorhaben());
 

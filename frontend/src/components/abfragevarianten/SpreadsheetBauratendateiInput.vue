@@ -95,7 +95,8 @@
 </template>
 
 <script setup lang="ts">
-import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import { ref, watch } from "vue";
+import type { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import {
@@ -107,32 +108,29 @@ import {
   ROUNDING_PRECISION,
 } from "@/utils/BauratendateiUtils";
 import { digits, min4, pflichtfeld } from "@/utils/FieldValidationRules";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { watch } from "vue";
-import { DataTableHeader } from "vuetify";
+import { DataTableHeader } from "@/types/common/DataTableHeader";
 
 interface Props {
-  value: Array<WohneinheitenProFoerderartProJahrDto>;
-  foerderartenBauratendateiInputBasis: Array<string>;
-  isEditable: boolean;
+  foerderartenBauratendateiInputBasis?: Array<string>;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: Array<WohneinheitenProFoerderartProJahrDto>): void;
+interface Item {
+  index: number;
 }
+
 const props = withDefaults(defineProps<Props>(), { foerderartenBauratendateiInputBasis: () => [], isEditable: false });
-const emit = defineEmits<Emits>();
-const bauratendateiInput = defineModel(props, emit);
+const bauratendateiInput = defineModel<Array<WohneinheitenProFoerderartProJahrDto>>({ required: true });
 const { formChanged } = useSaveLeave();
 
-let forderartenForHeader = ref<Array<string> | null>([]);
+const forderartenForHeader = ref<Array<string>>([]);
 
-let headers = ref<Array<DataTableHeader> | null>([]);
+const headers = ref<Array<DataTableHeader>>([]);
 
-let tableDataFromBauratendateiInput = ref<Array<any> | null>([]);
+const tableDataFromBauratendateiInput = ref<Array<Item>>([]);
 
-let itemToEdit = ref<any | null>({ index: -1 });
+const itemToEdit = ref<Item>({ index: -1 });
 
 watch(() => bauratendateiInput, watchBauratendateiInput, { immediate: true, deep: true });
 
@@ -142,46 +140,48 @@ function watchBauratendateiInput(): void {
   tableDataFromBauratendateiInput.value = createTableData(bauratendateiInput.value);
 }
 
-function isSameItem(item1: any | undefined, item2: any | undefined): boolean {
+function isSameItem(item1: Item, item2: Item): boolean {
   return item1.index === item2.index;
 }
 
 function addNewTableItem(): void {
   let maxIndex = 0;
   if (!_.isNil(tableDataFromBauratendateiInput.value) && !_.isNil(forderartenForHeader.value)) {
-    tableDataFromBauratendateiInput.value.forEach((tableEntry) => (maxIndex = _.max([tableEntry.index, maxIndex])));
+    tableDataFromBauratendateiInput.value.forEach(
+      (tableEntry) => (maxIndex = _.max([tableEntry.index, maxIndex]) ?? 0),
+    );
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
     newTableEntry.set(ATTRIBUTE_KEY_JAHR, undefined);
     newTableEntry.set(ATTRIBUTE_KEY_INDEX, ++maxIndex);
     forderartenForHeader.value.forEach((forderart) => newTableEntry.set(forderart, undefined));
     const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
     tableDataFromBauratendateiInput.value.push(newTableEntryObject);
-    itemToEdit = _.cloneDeep(newTableEntryObject);
+    itemToEdit.value = _.cloneDeep(newTableEntryObject);
     formChanged();
   }
 }
 
 function closeTableItem(): void {
-  itemToEdit = { index: -1 };
+  itemToEdit.value = { index: -1 };
 }
 
 function saveTableItem(): void {
   if (!_.isNil(tableDataFromBauratendateiInput.value)) {
     const index = _.findIndex(tableDataFromBauratendateiInput.value, (tableItem) => {
-      return isSameItem(tableItem, itemToEdit);
+      return isSameItem(tableItem, itemToEdit.value);
     });
-    tableDataFromBauratendateiInput.value[index] = itemToEdit;
+    tableDataFromBauratendateiInput.value[index] = itemToEdit.value;
     bauratendateiInput.value = createBauratendateiInput(tableDataFromBauratendateiInput.value);
     closeTableItem();
   }
 }
 
-function editTableItem(item: any): void {
-  itemToEdit = _.cloneDeep(item);
+function editTableItem(item: Item): void {
+  itemToEdit.value = _.cloneDeep(item);
   formChanged();
 }
 
-function deleteTableItem(item: any): void {
+function deleteTableItem(item: Item): void {
   if (!_.isNil(tableDataFromBauratendateiInput.value)) {
     const index = _.findIndex(tableDataFromBauratendateiInput.value, (tableItem) => {
       return isSameItem(tableItem, item);

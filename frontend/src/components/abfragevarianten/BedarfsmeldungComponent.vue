@@ -206,7 +206,8 @@
 </template>
 
 <script setup lang="ts">
-import { BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import { computed, ref, watch } from "vue";
+import type { BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -215,23 +216,16 @@ import DisplayMode from "@/types/common/DisplayMode";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import { BedarfsmeldungTitle, createBedarfsmeldungDto } from "@/utils/Factories";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { computed, watch } from "vue";
 
 interface Props {
-  value: AbfragevarianteBauleitplanverfahrenModel;
   bedarfsmeldungTitle: BedarfsmeldungTitle;
-  isEditable: false;
-  isFachreferat?: false;
+  isEditable?: boolean;
+  isFachreferat?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
-}
 const props = withDefaults(defineProps<Props>(), { isEditable: false, isFachreferat: false });
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
 const getBedarfsmeldungTitle = computed(() => {
   if (!_.isNil(props.bedarfsmeldungTitle)) {
@@ -243,9 +237,9 @@ const getBedarfsmeldungTitle = computed(() => {
 const getIsEditable = computed(() => props.isEditable);
 const getIsFachreferat = computed(() => props.isFachreferat);
 
-let bedarfsmeldungen = ref<BedarfsmeldungDto[] | null>([]);
-let bedarfsmeldungDialogOpen = ref<boolean | null>(false);
-let currentBedarfsmeldung = ref<BedarfsmeldungDto | null>(createBedarfsmeldungDto());
+const bedarfsmeldungen = ref<BedarfsmeldungDto[] | null>([]);
+const bedarfsmeldungDialogOpen = ref<boolean | null>(false);
+const currentBedarfsmeldung = ref<BedarfsmeldungDto | null>(createBedarfsmeldungDto());
 let displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 let selectedItemIndex = -1;
 const lookupStore = useLookupStore();
@@ -263,7 +257,7 @@ function bedarfsmeldungSelection(): void {
   }
 }
 
-let bedarfsmeldungenHeaders = [
+const bedarfsmeldungenHeaders = [
   { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
   { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
   { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen", sortable: false },

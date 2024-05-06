@@ -132,11 +132,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue";
+import type { DokumentDto, FilepathDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import { createFilepathDto } from "@/utils/Factories";
 import { isDokumentAllowed } from "@/utils/DokumenteUtil";
 import { useDokumenteApi } from "@/composables/requests/DokumenteApi";
-import { DokumentDto, FilepathDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { useLookupStore } from "@/stores/LookupStore";

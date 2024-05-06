@@ -130,42 +130,37 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import {
+  type BauvorhabenSearchResultDto,
+  type SearchQueryAndSortingDto,
   WeiteresVerfahrenDtoStandVerfahrenEnum,
-  BauvorhabenSearchResultDto,
   UncertainBoolean,
-  SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
 interface Props {
-  value: WeiteresVerfahrenModel;
   isEditable?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: WeiteresVerfahrenModel): void;
 }
 
 const { formChanged } = useSaveLeave();
 const { sobonVerfahrensgrundsaetzeJahr, standVerfahrenWeiteresVerfahren } = useLookupStore();
 const { searchForEntities } = useSearchApi();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfrage = defineModel(props, emit);
+const abfrage = defineModel<WeiteresVerfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 onMounted(() => fetchBauvorhaben());
 

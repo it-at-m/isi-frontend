@@ -30,24 +30,20 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
-import { defineModel } from "@/utils/Vue";
 import { pflichtfeld } from "@/utils/FieldValidationRules";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
-  value: BauabschnittModel;
-  isEditable: boolean;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: BauabschnittModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const bauabschnitt = defineModel(props, emit);
+const bauabschnitt = defineModel<BauabschnittModel>({ required: true });
 const headline = computed(() => `Bauabschnitt ${bauabschnitt.value.bezeichnung}`);
 const { formChanged } = useSaveLeave();
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 </script>

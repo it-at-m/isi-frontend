@@ -44,7 +44,7 @@
         >
           <num-field
             id="bauvorhaben_grundstuecksgroesse"
-            v-model="calcGrundstuecksgroesse"
+            v-model="grundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="SQUARE_METER"
             :disabled="true"
@@ -251,9 +251,9 @@
 <script setup lang="ts">
 import _ from "lodash";
 import {
+  type GemarkungDto,
+  type FlurstueckDto,
   UncertainBoolean,
-  GemarkungDto,
-  FlurstueckDto,
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
   BauvorhabenDtoStandVerfahrenEnum,
   BauvorhabenDtoArtFnpEnum,
@@ -270,52 +270,47 @@ import { Context } from "@/utils/Context";
 import Verortung from "@/components/common/Verortung.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { ref, watch } from "vue";
 
 interface Props {
-  value: BauvorhabenModel;
   isEditable?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: BauvorhabenModel): void;
 }
 
 const { standVerfahren, wesentlicheRechtsgrundlage, artBaulicheNutzungBauvorhaben, sobonVerfahrensgrundsaetzeJahr } =
   useLookupStore();
 const { formChanged } = useSaveLeave();
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const bauvorhaben = defineModel(props, emit);
+const bauvorhaben = defineModel<BauvorhabenModel>({ required: true });
 const sobonJahrVisible = ref(false);
 const standVerfahrenFreieEingabeVisible = ref(false);
 const artFnpFreieEingabeVisible = ref(false);
 const wesentlicheRechtsgrundlageFreieEingabeVisible = ref(false);
+const grundstuecksgroesse = ref(Number.NaN);
 const nameRootFolder = "bauvorhaben";
 
-const calcGrundstuecksgroesse = computed({
-  get() {
-    let grundstuecksgroesse = Number.NaN;
+withDefaults(defineProps<Props>(), { isEditable: false });
+
+watch(
+  () => bauvorhaben.value.verortung?.gemarkungen,
+  () => {
+    let newGrundstuecksgroesse = Number.NaN;
 
     if (bauvorhaben.value.verortung?.gemarkungen) {
-      grundstuecksgroesse = 0;
+      newGrundstuecksgroesse = 0;
       bauvorhaben.value.verortung.gemarkungen.forEach((gemarkung: GemarkungDto) => {
         gemarkung.flurstuecke.forEach((flurstueck: FlurstueckDto) => {
           if (!_.isNil(flurstueck.flaecheQm)) {
-            grundstuecksgroesse += flurstueck.flaecheQm;
+            newGrundstuecksgroesse += flurstueck.flaecheQm;
           }
         });
       });
     }
 
-    bauvorhaben.value.grundstuecksgroesse = grundstuecksgroesse;
-    return grundstuecksgroesse;
+    bauvorhaben.value.grundstuecksgroesse = newGrundstuecksgroesse;
+    grundstuecksgroesse.value = newGrundstuecksgroesse;
   },
-  set() {
-    // do nothing
-  },
-});
+  { deep: true, immediate: true },
+);
 
 watch(
   () => bauvorhaben.value.sobonRelevant,

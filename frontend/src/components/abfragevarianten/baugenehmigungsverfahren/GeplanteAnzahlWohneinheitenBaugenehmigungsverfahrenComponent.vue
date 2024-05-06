@@ -155,25 +155,20 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
-import { defineModel } from "@/utils/Vue";
-import { watch } from "vue";
 
 interface Props {
-  value: AbfragevarianteBaugenehmigungsverfahrenModel;
   isEditable: false;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBaugenehmigungsverfahrenModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteBaugenehmigungsverfahrenModel>({ required: true });
 
 const geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(() => abfragevariante, clearSonderwohnformData, { immediate: true, deep: true });
 

@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :value="dialogOpen"
+    v-model="dialogOpen"
     persistent
     width="60%"
   >
@@ -50,36 +50,30 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
 import {
-  AbfrageDto,
-  AbfrageSearchResultDto,
-  LookupEntryDto,
+  type AbfrageDto,
+  type AbfrageSearchResultDto,
+  type LookupEntryDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import { createBauleitplanverfahrenDto } from "@/utils/Factories";
 import { useLookupStore } from "@/stores/LookupStore";
-import { defineModel } from "@/utils/Vue";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
-
-interface Props {
-  value: boolean;
-}
 
 interface Emits {
   (event: "abfrageUebernehmen", value: AbfrageDto): void;
   (event: "uebernahmeAbbrechen", value: void): void;
-  (event: "input", value: boolean): void;
 }
 
 const { getById } = useAbfragenApi();
 const { searchForEntities } = useSearchApi();
 const { standVerfahren, statusAbfrage } = useLookupStore();
-const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
-const dialogOpen = defineModel(props, emit);
+const dialogOpen = defineModel<boolean>({ required: true });
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
 const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>({});
 let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();

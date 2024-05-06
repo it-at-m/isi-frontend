@@ -118,35 +118,33 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import { Levels } from "@/api/error";
 import Toaster from "@/components/common/toaster.type";
 import { useLookupStore } from "@/stores/LookupStore";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import { findFaultInBedarfsmeldung } from "@/utils/Validators";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { computed, watch } from "vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
 interface Props {
-  value: BedarfsmeldungModel;
-  showBedarfsmeldungDialog: boolean;
+  showBedarfsmeldungDialog?: boolean;
 }
 
 interface Emits {
-  (event: "input", value: BedarfsmeldungModel): void;
   (event: "update-show-bedarfsmeldung-dialog", value: boolean): boolean;
   (event: "uebernehmen-bedarfsmeldung", value: BedarfsmeldungModel): void;
 }
+
 const props = withDefaults(defineProps<Props>(), { showBedarfsmeldungDialog: false });
 const emit = defineEmits<Emits>();
-const bedarfsmeldung = defineModel(props, emit);
+const bedarfsmeldung = defineModel<BedarfsmeldungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 
 const infrastruktureinrichtungenTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
-const bedarfsmeldungDialogForm = ref<HTMLFormElement | null>(null);
+const bedarfsmeldungDialogForm = ref<(HTMLFormElement & { validate: () => boolean }) | null>(null);
 
 watch(() => props.showBedarfsmeldungDialog, resetValidation);
 
@@ -176,9 +174,7 @@ function uebernehmenBedarfsmeldung(): void {
 }
 
 function validateDialogForm(): boolean {
-  return !_.isNil(bedarfsmeldungDialogForm.value)
-    ? (bedarfsmeldungDialogForm.value as any & { validate: () => boolean }).validate()
-    : false;
+  return !_.isNil(bedarfsmeldungDialogForm.value) ? bedarfsmeldungDialogForm.value.validate() : false;
 }
 
 function abbrechenBedarfsmeldung(): void {

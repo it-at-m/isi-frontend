@@ -54,24 +54,18 @@ import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/Baugenehmigungs
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
 interface Props {
-  value: BaugenehmigungsverfahrenModel;
   isNew?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: BaugenehmigungsverfahrenModel): void;
 }
 
 const nameRootFolder = "baugenehmigungsverfahren";
 const { formChanged } = useSaveLeave();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
-const props = withDefaults(defineProps<Props>(), { isNew: false });
-const emit = defineEmits<Emits>();
-const baugenehmigungsverfahren = defineModel(props, emit);
+const baugenehmigungsverfahren = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isNew: false });
 </script>
 
 <style></style>

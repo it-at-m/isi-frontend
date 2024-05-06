@@ -121,23 +121,17 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 
 interface Props {
-  value: AbfragevarianteBauleitplanverfahrenModel;
-  isEditable: false;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevarianteSachbearbeitung = defineModel(props, emit);
+const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 const { formChanged } = useSaveLeave();
 
 const foerderartenBauratendateiInputBasis = computed(() => {
@@ -154,6 +148,8 @@ const showTables = computed(() => {
     !_.isNil(abfragevarianteSachbearbeitung.value.bauratendateiInputBasis)
   );
 });
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 function checkBoxChanged(): void {
   const isBaurateninputCheckboxChecked =

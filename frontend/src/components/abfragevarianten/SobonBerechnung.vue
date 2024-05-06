@@ -37,7 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
+import { computed, onMounted, ref } from "vue";
+import type { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
@@ -50,23 +51,13 @@ import {
   mapFoerdermixStammModelToFoerderMix,
   mapFoerdermixToFoerderMixStammModel,
 } from "@/utils/MapperUtil";
-import { defineModel } from "@/utils/Vue";
-import { computed, onMounted } from "vue";
+
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
-interface Props {
-  value: SobonBerechnungModel;
-}
-
-interface Emits {
-  (event: "input", value: SobonBerechnungModel): void;
-}
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const sobonBerechnung = defineModel(props, emit);
+const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
-let groupedStammdaten = ref<GroupedStammdaten | null>([]);
+const groupedStammdaten = ref<GroupedStammdaten | null>([]);
 
 const stammdatenStore = useStammdatenStore();
 

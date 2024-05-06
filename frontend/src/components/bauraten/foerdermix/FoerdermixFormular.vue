@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
@@ -65,7 +65,6 @@ import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { addiereAnteile } from "@/utils/CalculationUtil";
 import { createFoerdermixStammDto } from "@/utils/Factories";
 import { groupItemsToHeader, mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 import { nichtGleich100Prozent } from "@/utils/FieldValidationRules";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
@@ -74,23 +73,17 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
 interface Props {
-  value: FoerdermixModel;
-  isEditable: boolean;
-}
-
-interface Emits {
-  (event: "input", value: FoerdermixModel): void;
+  isEditable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const foerdermix = defineModel(props, emit);
+const foerdermix = defineModel<FoerdermixModel>({ required: true });
 const anteileFMCardTitle = "Anteile Fördermix";
 const freieEingabe = "Freie Eingabe";
 
 let isFreie = false;
 let stammdaten: FoerdermixStammModel[] = [];
-let selectedItem = ref<FoerdermixStammModel>(createFoerdermixStammDto());
+const selectedItem = ref<FoerdermixStammModel>(createFoerdermixStammDto());
 const groupedStammdaten = ref<GroupedStammdaten>([]);
 
 const stammdatenStore = useStammdatenStore();

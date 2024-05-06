@@ -54,22 +54,16 @@ import BauleitplanverfahrenModel from "@/types/model/abfrage/Bauleitplanverfahre
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
 interface Props {
-  value: BauleitplanverfahrenModel;
   isNew?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: BauleitplanverfahrenModel): void;
 }
 
 const nameRootFolder = "bauleitplanverfahren";
 const { formChanged } = useSaveLeave();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
-const props = withDefaults(defineProps<Props>(), { isNew: false });
-const emit = defineEmits<Emits>();
-const bauleitplanverfahren = defineModel(props, emit);
+const bauleitplanverfahren = defineModel<BauleitplanverfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isNew: false });
 </script>

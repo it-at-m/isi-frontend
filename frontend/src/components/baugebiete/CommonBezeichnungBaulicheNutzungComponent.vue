@@ -52,42 +52,28 @@
 </template>
 
 <script setup lang="ts">
-import {
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
-  BaugebietDtoArtBaulicheNutzungEnum,
-} from "@/api/api-client/isi-backend";
+import { computed, ref, watch } from "vue";
+import type { AnyAbfragevarianteDto } from "@/types/common/Abfrage";
+import { BaugebietDtoArtBaulicheNutzungEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { computed, watch } from "vue";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
 interface Props {
-  value: BaugebietModel;
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto
-    | undefined;
-  isEditable: boolean;
+  abfragevariante?: AnyAbfragevarianteDto;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: BaugebietModel): void;
-}
-
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const baugebiet = defineModel(props, emit);
-let artBaulicheNutzungFreieEingabeVisible = ref<boolean>(false);
+const baugebiet = defineModel<BaugebietModel>({ required: true });
+const artBaulicheNutzungFreieEingabeVisible = ref<boolean>(false);
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const artBaulicheNutzungList = computed(() => lookupStore.artBaulicheNutzung);
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(() => baugebiet.value.artBaulicheNutzung, artFnpChanged, { immediate: true });
 

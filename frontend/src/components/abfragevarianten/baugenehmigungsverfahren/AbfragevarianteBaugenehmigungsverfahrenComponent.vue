@@ -76,6 +76,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
+import { computed } from "vue";
 import BedarfsmeldungComponent from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
@@ -87,22 +88,15 @@ import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import { BedarfsmeldungTitle } from "@/utils/Factories";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { computed } from "vue";
 
 interface Props {
-  value: AbfragevarianteBaugenehmigungsverfahrenModel;
   isEditable: false;
   anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBaugenehmigungsverfahrenModel): void;
-}
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteBaugenehmigungsverfahrenModel>({ required: true });
 const { isBedarfsmeldungEditableByAbfrageerstellung, isEditableByBedarfsmeldung } = useAbfrageSecurity();
 const { formChanged } = useSaveLeave();
 

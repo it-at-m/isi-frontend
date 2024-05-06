@@ -65,21 +65,15 @@ import BauleitplanverfahrenModel from "@/types/model/abfrage/Bauleitplanverfahre
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import Eakte from "@/components/common/Eakte.vue";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
-  value: BauleitplanverfahrenModel;
   isEditable?: boolean;
   isEakteEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: BauleitplanverfahrenModel): void;
-}
-
 const { formChanged } = useSaveLeave();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isEakteEditable: false });
-const emit = defineEmits<Emits>();
-const abfrage = defineModel(props, emit);
+const abfrage = defineModel<BauleitplanverfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isEditable: false, isEakteEditable: false });
 </script>

@@ -28,20 +28,14 @@ import { pflichtfeld } from "@/utils/FieldValidationRules";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import StatusleisteComponent from "./StatusleisteComponent.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 
 interface Props {
-  value: AbfrageModel;
   isEditable?: boolean;
   isNew?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfrageModel): void;
-}
-
 const { formChanged } = useSaveLeave();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isNew: false });
-const emit = defineEmits<Emits>();
-const abfrage = defineModel(props, emit);
+const abfrage = defineModel<AbfrageModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isEditable: false, isNew: false });
 </script>

@@ -91,6 +91,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import {
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   UncertainBoolean,
@@ -112,20 +113,13 @@ import { pflichtfeld } from "@/utils/FieldValidationRules";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 
 interface Props {
-  value: AbfragevarianteBauleitplanverfahrenModel;
   isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevarianteSachbearbeitung = defineModel(props, emit);
+const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
 const weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
 
@@ -166,6 +160,8 @@ const sobonOrientierungswertJahrValidator = computed(() => {
   }
   return [];
 });
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 /**
  * Überprüfung ob alle Kriterien stimmen um die Sobon Report anzuzeigen.

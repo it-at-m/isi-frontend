@@ -79,30 +79,30 @@ Emits:
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import {
+  type BauleitplanverfahrenDto,
+  type BaugenehmigungsverfahrenDto,
+  type WeiteresVerfahrenDto,
+  type BauabschnittDto,
+  type BaugebietDto,
+  type BaurateDto,
   AbfrageDtoArtAbfrageEnum,
-  BauleitplanverfahrenDto,
-  BaugenehmigungsverfahrenDto,
-  WeiteresVerfahrenDto,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
-  BauabschnittDto,
-  BaugebietDto,
-  BaurateDto,
 } from "@/api/api-client/isi-backend";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
-import { ref, computed, watch } from "vue";
 import _ from "lodash";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import {
-  AbfrageTreeItem,
+  type AbfrageTreeItem,
+  type AnyAbfrageDto,
+  type AnyAbfragevarianteDto,
+  type AnyAbfragevarianteModel,
   AnzeigeContextAbfragevariante,
   AbfrageFormType,
-  AnyAbfrageDto,
-  AnyAbfragevarianteDto,
-  AnyAbfragevarianteModel,
 } from "@/types/common/Abfrage";
 
 interface Props {

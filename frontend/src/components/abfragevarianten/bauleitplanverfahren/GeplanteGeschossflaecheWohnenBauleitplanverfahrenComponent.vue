@@ -171,25 +171,21 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import { defineModel } from "@/utils/Vue";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 
 interface Props {
-  value: AbfragevarianteBauleitplanverfahrenModel;
-  isEditable: false;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
 const geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(() => abfragevariante, clearSonderwohnformData, { immediate: true, deep: true });
 

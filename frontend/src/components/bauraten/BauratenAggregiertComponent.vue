@@ -43,25 +43,21 @@
 
 <script setup lang="ts">
 import { watch, computed } from "vue";
+import type { BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
+import type { AnyAbfragevarianteModel } from "@/types/common/Abfrage";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { DataTableHeader } from "@/types/common/DataTableHeader";
-import { BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import { numberToFormattedStringTwoDecimals, numberToFormattedStringZeroDecimals } from "@/utils/CalculationUtil";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 
 interface Props {
-  aggregateBauraten:
-    | AbfragevarianteBauleitplanverfahrenModel
-    | AbfragevarianteBaugenehmigungsverfahrenModel
-    | AbfragevarianteWeiteresVerfahrenModel
-    | BauabschnittModel
-    | BaugebietModel;
+  aggregateBauraten: AnyAbfragevarianteModel | BauabschnittModel | BaugebietModel;
 }
 
 const props = defineProps<Props>();
@@ -90,23 +86,13 @@ const bauratenJahreHeaders = computed(() => {
   return headers;
 });
 
-function extraktBauraten(
-  layer:
-    | AbfragevarianteBauleitplanverfahrenModel
-    | AbfragevarianteBaugenehmigungsverfahrenModel
-    | AbfragevarianteWeiteresVerfahrenModel
-    | BauabschnittModel
-    | BaugebietModel,
-): Array<BaurateModel> {
+function extraktBauraten(layer: AnyAbfragevarianteModel | BauabschnittModel | BaugebietModel): Array<BaurateModel> {
   if (
     layer instanceof AbfragevarianteBauleitplanverfahrenModel ||
     layer instanceof AbfragevarianteBaugenehmigungsverfahrenModel ||
     layer instanceof AbfragevarianteWeiteresVerfahrenModel
   ) {
-    const abfragevariante = layer as
-      | AbfragevarianteBauleitplanverfahrenModel
-      | AbfragevarianteBaugenehmigungsverfahrenModel
-      | AbfragevarianteWeiteresVerfahrenModel;
+    const abfragevariante = layer as AnyAbfragevarianteModel;
     return _.toArray(abfragevariante.bauabschnitte).flatMap((bauabschnitt: BauabschnittDto) => {
       return extraktBauraten(new BauabschnittModel(bauabschnitt));
     });

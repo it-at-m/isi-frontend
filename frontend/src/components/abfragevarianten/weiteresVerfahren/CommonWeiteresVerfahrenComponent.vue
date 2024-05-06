@@ -103,28 +103,22 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import { AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import { notUnspecified, pflichtfeld, pflichtfeldMehrfachauswahl } from "@/utils/FieldValidationRules";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 
 interface Props {
-  value: AbfragevarianteWeiteresVerfahrenModel;
-  isEditable: false;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteWeiteresVerfahrenModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteWeiteresVerfahrenModel>({ required: true });
 
-let wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
+const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
 const lookupStore = useLookupStore();
 
@@ -133,12 +127,14 @@ const { formChanged } = useSaveLeave();
 const wesentlicheRechtsgrundlageList = computed(() => lookupStore.wesentlicheRechtsgrundlage);
 
 const calcRealisierungBis = computed(() => {
-  let jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
+  const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
     ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
     .flatMap((baugebiet) => baugebiet.bauraten)
     .map((baurate) => baurate.jahr);
   return _.max(jahre);
 });
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
 

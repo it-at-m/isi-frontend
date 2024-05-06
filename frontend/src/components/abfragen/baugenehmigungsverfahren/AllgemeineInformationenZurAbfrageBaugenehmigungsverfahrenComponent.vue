@@ -53,21 +53,15 @@
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import { pflichtfeld } from "@/utils/FieldValidationRules";
 import Eakte from "@/components/common/Eakte.vue";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
-  value: BaugenehmigungsverfahrenModel;
   isEditable?: boolean;
   isEakteEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: BaugenehmigungsverfahrenModel): void;
-}
-
 const { formChanged } = useSaveLeave();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isEakteEditable: false });
-const emit = defineEmits<Emits>();
-const abfrage = defineModel(props, emit);
+const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isEditable: false, isEakteEditable: false });
 </script>

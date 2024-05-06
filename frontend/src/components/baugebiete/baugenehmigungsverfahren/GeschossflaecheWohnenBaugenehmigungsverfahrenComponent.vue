@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { AbfragevarianteBaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
+import type { AbfragevarianteBaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
@@ -61,24 +61,18 @@ import {
   verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 
 interface Props {
-  value: BaugebietModel;
-  abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined;
-  isEditable: boolean;
+  abfragevariante?: AbfragevarianteBaugenehmigungsverfahrenDto;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: BaugebietModel): void;
-}
-
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const baugebiet = defineModel(props, emit);
+const baugebiet = defineModel<BaugebietModel>({ required: true });
 
 const geschossflaecheWohnenTitle = "Geschossfläche Wohnen";
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 function validateGeschossflaecheWohnen(
   abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,

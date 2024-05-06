@@ -85,7 +85,8 @@
 </template>
 
 <script setup lang="ts">
-import { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
+import { computed } from "vue";
+import type { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
@@ -102,23 +103,16 @@ import {
   wohneinheitenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 import CommonBezeichnungBaulicheNutzungComponent from "../CommonBezeichnungBaulicheNutzungComponent.vue";
 
 interface Props {
-  value: BaugebietModel;
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined;
-  isEditable: boolean;
-}
-
-interface Emits {
-  (event: "input", value: BaugebietModel): void;
+  abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;
+  isEditable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const baugebiet = defineModel(props, emit);
+const baugebiet = defineModel<BaugebietModel>({ required: true });
 
 function validateWohneinheiten(abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): boolean | string {
   return (

@@ -67,11 +67,11 @@ import { useDokumenteApi } from "@/composables/requests/DokumenteApi";
 import { useMimeTypeApi } from "@/composables/requests/MimeTypeApi";
 import DokumenteListe from "./DokumenteListe.vue";
 import {
-  DokumentDto,
-  FileInformationDto,
-  FilepathDto,
-  MimeTypeInformationDto,
-  PresignedUrlDto,
+  type DokumentDto,
+  type FileInformationDto,
+  type FilepathDto,
+  type MimeTypeInformationDto,
+  type PresignedUrlDto,
   ResponseError,
 } from "@/api/api-client/isi-backend";
 import { createDokumentDto, createFilepathFor, createFilepathDto, createPresignedUrlDto } from "@/utils/Factories";
@@ -84,22 +84,20 @@ import {
 } from "@/utils/DokumenteUtil";
 import _ from "lodash";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
-import { defineModel } from "@/utils/Vue";
+import { computed, ref } from "vue";
 
 interface Props {
-  value: DokumentDto[];
   nameRootFolder: string;
   isDokumenteEditable?: boolean;
 }
 
 interface Emits {
   (event: "change", value: void): void;
-  (event: "input", value: DokumentDto[]): void;
 }
 
 const props = withDefaults(defineProps<Props>(), { isDokumenteEditable: true });
 const emit = defineEmits<Emits>();
-const dokumente = defineModel(props, emit);
+const dokumente = defineModel<DokumentDto[]>({ required: true });
 const loading = ref(false);
 const dokumenteInput = ref<HTMLInputElement | null>(null);
 const { showWarningInInformationList } = useInformationList();
@@ -158,7 +156,7 @@ function areFilesValid(fileList: FileList): boolean {
   let maxFileSizeExceededMessagePart = "";
   let warningMessage = "";
   maxNumberOfFilesMessagePart += validateAndCreateMaxNumberOfFilesMessagePart(fileInformationDto, fileList);
-  for (let newFile of fileList) {
+  for (const newFile of fileList) {
     maxFileSizeExceededMessagePart += validateAndCreateMaxFileSizeExceededMessagePart(
       fileInformationDto,
       newFile,
@@ -252,7 +250,7 @@ function formatFileAlreadyExistsMessagePartMessagePart(fileAlreadyExistsMessageP
 }
 
 async function saveFiles(fileList: FileList, pathToFiles: string): Promise<void> {
-  for (let file of fileList) {
+  for (const file of fileList) {
     await saveFile(pathToFiles, file);
   }
 }

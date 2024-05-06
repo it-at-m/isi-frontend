@@ -54,22 +54,16 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
 interface Props {
-  value: WeiteresVerfahrenModel;
   isNew?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: WeiteresVerfahrenModel): void;
 }
 
 const nameRootFolder = "weiteresVerfahren";
 const { formChanged } = useSaveLeave();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
-const props = withDefaults(defineProps<Props>(), { isNew: false });
-const emit = defineEmits<Emits>();
-const weiteresVerfahren = defineModel(props, emit);
+const weiteresVerfahren = defineModel<WeiteresVerfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isNew: false });
 </script>

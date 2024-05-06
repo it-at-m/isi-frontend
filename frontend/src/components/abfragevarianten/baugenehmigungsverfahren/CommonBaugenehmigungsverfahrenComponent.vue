@@ -103,28 +103,22 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import { AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
-import { computed, watch } from "vue";
 import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
 import { useSaveLeave } from "@/composables/SaveLeave";
+
 interface Props {
-  value: AbfragevarianteBaugenehmigungsverfahrenModel;
-  isEditable: false;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBaugenehmigungsverfahrenModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteBaugenehmigungsverfahrenModel>({ required: true });
 
-let wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
+const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
 const lookupStore = useLookupStore();
 
@@ -135,12 +129,14 @@ const wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList = computed(
 );
 
 const calcRealisierungBis = computed(() => {
-  let jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
+  const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
     ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
     .flatMap((baugebiet) => baugebiet.bauraten)
     .map((baurate) => baurate.jahr);
   return _.max(jahre);
 });
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
 

@@ -84,19 +84,9 @@ import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/Baugenehmigungs
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 
-interface Props {
-  value: AbfragevarianteBauleitplanverfahrenModel;
-}
-
-interface Emits {
-  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
-}
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
 const searchStore = useSearchStore();
 const metabaseReportingStore = useMetabaseReportingStore();

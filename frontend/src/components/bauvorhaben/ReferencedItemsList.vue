@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import {
+import type {
   AbfrageSearchResultDto,
   InfrastruktureinrichtungSearchResultDto,
   LookupEntryDto,
@@ -76,6 +76,7 @@ import moment from "moment";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useRoute, useRouter } from "vue-router";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
+import { computed, ref } from "vue";
 
 const { infrastruktureinrichtungTyp } = useLookupStore();
 const { getReferencedAbfrageList, getReferencedInfrastruktureinrichtungenList } = useBauvorhabenApi();

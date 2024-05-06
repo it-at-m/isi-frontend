@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { AbfragevarianteBaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
+import type { AbfragevarianteBaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
@@ -59,22 +59,16 @@ import {
   wohneinheitenAbfragevariante,
   wohneinheitenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
-import { defineModel } from "@/utils/Vue";
 
 interface Props {
-  value: BaugebietModel;
-  abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined;
-  isEditable: boolean;
+  abfragevariante?: AbfragevarianteBaugenehmigungsverfahrenDto;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: BaugebietModel): void;
-}
-
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const baugebiet = defineModel(props, emit);
+const baugebiet = defineModel<BaugebietModel>({ required: true });
 const anzahlWohneinheitenTitle = "Anzahl Wohneinheiten";
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 function validateWohneinheiten(
   abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,

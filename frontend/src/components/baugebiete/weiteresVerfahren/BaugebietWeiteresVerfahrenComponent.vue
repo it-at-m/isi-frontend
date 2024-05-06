@@ -33,27 +33,22 @@
 </template>
 
 <script setup lang="ts">
-import { AbfragevarianteWeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
+import { computed } from "vue";
+import type { AbfragevarianteWeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import { defineModel } from "@/utils/Vue";
 import CommonBezeichnungBaulicheNutzungComponent from "../CommonBezeichnungBaulicheNutzungComponent.vue";
 import CommonRealisierungszeitraumComponent from "../CommonRealisierungszeitraumComponent.vue";
 import AnzahlWohneinheitenWeiteresVerfahrenComponent from "./AnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import GeschossflaecheWohnenWeiteresVerfahrenComponent from "./GeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
 
 interface Props {
-  value: BaugebietModel;
-  abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined;
-  isEditable: boolean;
+  abfragevariante?: AbfragevarianteWeiteresVerfahrenDto;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: BaugebietModel): void;
-}
-
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const baugebiet = defineModel(props, emit);
+const baugebiet = defineModel<BaugebietModel>({ required: true });
 const headline = computed(() => `Baugebiet ${baugebiet.value.bezeichnung}`);
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 </script>

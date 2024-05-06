@@ -118,28 +118,22 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { notUnspecified, pflichtfeld, pflichtfeldMehrfachauswahl } from "@/utils/FieldValidationRules";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 
 interface Props {
-  value: AbfragevarianteBauleitplanverfahrenModel;
-  isEditable: false;
+  isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: AbfragevarianteBauleitplanverfahrenModel): void;
-}
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const abfragevariante = defineModel(props, emit);
+const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
-let wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
+const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
 const lookupStore = useLookupStore();
 
@@ -150,7 +144,7 @@ const wesentlicheRechtsgrundlageBauleitplanverfahrenList = computed(
 );
 
 const calcRealisierungBis = computed(() => {
-  let jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
+  const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
     ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
     .flatMap((baugebiet) => baugebiet.bauraten)
     .map((baurate) => baurate.jahr);
@@ -165,6 +159,8 @@ function datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
         : datumSatzungsbeschluss.getFullYear() + 4;
   }
 }
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
 

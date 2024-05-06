@@ -38,35 +38,20 @@
 </template>
 
 <script setup lang="ts">
-import {
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
-} from "@/api/api-client/isi-backend";
+import type { AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import { defineModel } from "@/utils/Vue";
 import _ from "lodash";
 import { computed } from "vue";
 
 interface Props {
-  value: BaugebietModel;
-  abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto
-    | undefined;
-  isEditable: boolean;
-}
-
-interface Emits {
-  (event: "input", value: BaugebietModel): void;
+  abfragevariante?: AnyAbfragevarianteDto;
+  isEditable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const baugebiet = defineModel(props, emit);
+const baugebiet = defineModel<BaugebietModel>({ required: true });
 
 const calcRealisierungBis = computed(() => _.max(baugebiet.value.bauraten.map((baurate) => baurate.jahr)));
 
