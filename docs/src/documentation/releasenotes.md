@@ -17,25 +17,21 @@ Mit Angabe der Anzahl der geplanten Wohneinheiten oder der Geschossfläche des B
 
 Die Infrastrukturabfragen aller drei Abfragearten durchlaufen einen sogenannten Abfrageprozess in welchem die verschiedenen Rollen ihre entsprechenden Einträge vornehmen. Der Abfrageprozess wird durch Statusübergänge - Auslösen über Buttons - durchlaufen.
 
-Für alle Abfragearten, ist die Datengrundlage für die Bauratendatei und Schülerpotenzialprognose geschaffen. Dabei werden Informationen zum Grund- und Mittelschulsprengel und den Vierteln aus der Verortung herausgelesen und automatisch in ISI befüllt. Eine manuelle Änderung ist möglich. Entsprechende Validierungsregeln sind umgesetzt.
+Für alle Abfragearten, ist die Datengrundlage für die Bauratendatei und Schülerpotenzialprognose geschaffen. Dabei werden Informationen zum Grund- und Mittelschulsprengel sowie zu den Vierteln aus der Verortung herausgelesen und automatisch in ISI befüllt. Eine manuelle Änderung ist möglich. Entsprechende Validierungsregeln sind umgesetzt.
 
 Für alle Abfragearten, die eine Verbindung zu Vorgängen innerhalb der e-Akte haben, ist es möglich den entsprechenden Link zum Vorgang der e-Akte anzugeben.
 
 ### Berechnungen
 
-In allen Abfragearten können in den Varianten Berechnungen zu planungsursächlichen Bedarfen an Kinderbetreuungsplätzen und in den Abfragearten Bauleitplanverfahren und weitere Verfahren zu SoBoN-Bedarfen (Sozialgerechte Bodennutzung) durchgeführt werden. Dabei gilt es zu unterscheiden, dass eine planungsursächliche Berechnung für jede Abfragevariante erfolgen muss, eine SoBoN-Berechnung nur für bestimmte Varianten ausgelöst werden darf.
+In allen Abfragearten können in den einzelnen Varianten Berechnungen für planungsursächliche Bedarfen an Kinderbetreuungsplätzen vorgenommen werden. Die Abfragearten Bauleitplanverfahren und weitere Verfahren bieten zusätzlich die Möglichkeit eine Berechnung für die SoBoN-Bedarfe (Sozialgerechte Bodennutzung) durchzuführen. Dabei gilt es zu unterscheiden, dass eine planungsursächliche Berechnung für jede Abfragevariante erfolgen muss, eine SoBoN-Berechnung nur für bestimmte Varianten ausgelöst werden darf.
 
-Bei der Berechnung greift ISI auf die in ISI hinterlegten Stammdaten zurück als auch auf Information, die vorab durch die Rolle Abfrageerstellung eingegeben bzw. durch ISI ermittelt worden sind, z.B. idealtypischen Bauraten, Förderarten mit unterschiedlichen Fördermixen.
+Bei der Berechnung greift ISI auf die in der Anwendung hinterlegten Stammdaten zurück als auch auf Information, die vorab durch die Rolle Abfrageerstellung eingegeben bzw. durch ISI ermittelt worden sind, z.B. idealtypischen Bauraten, Förderarten mit unterschiedlichen Fördermixen.
 
 Da es nicht für alle Förderarten Orientierungswerte aus der SoBoN-Grundlagenuntersuchung gibt, wurde auch eine so genannte Umlegung der Förderarten innerhalb von ISI berücksichtigt. Dadurch ist gewährleistet, dass die in ISI hinterlegten Fördermixe für die planungsursächliche und SoBoN-ursächliche Bedarfsberechnung genutzt werden können.
 
 Für den Fall, dass alleinig die Geschossfläche Wohnen und nicht die Wohneinheiten bekannt sind, erfolgt für die planungsursächliche Bedarfsberechnung automatisch eine Umrechnung der Geschossfläche Wohnen in die Wohneinheiten je Förderart.
 
-Es können Bedarfe für die Altersgruppe der Kinderkrippen- und Kindergartenkinder errechnet werden, wobei zwischen langfristigem Bedarf und Spitzenbedarf für einzelne Plätze und Gruppen unterschieden wird. Die Anzahl der Gesamteinwohner\*innen (10-Jahres-Mittel) steht als Information auch zur Verfügung.
-
-Als Datengrundlage für die Bedarfsbestimmung werden Summen der Wohneinheiten einer Förderart über die ersten 10, 15 und 20 Jahre angezeigt.
-
-Die Ergebnisse der Berechnungen werden als Report in Metabase zur Verfügung gestellt.
+Die Ermittlung der Bedarfe erfordert verschiedene Berechnungen, die zu einem Teil in ISI erfolgen, zu einem anderen Teil in Metabase durchgeführt werden. Die Anzeige der Ergebnisse für die Berechnungen werden als Report in Metabase zur Verfügung gestellt, wobei der Zugriff auf die Reporte in ISI über einen Link gewährleistet ist.
 
 ### Schülerpotenzialprognose
 
@@ -44,7 +40,7 @@ Die Inhalte für die Attribute Grundschul-, Mittelschulsprengel und Viertel werd
 
 ### Benachrichtigungen
 
-Die Rollen Abfrageerstellung, Sachbearbeitung und Bedarfsmeldung erhalten jeweils eine Nachricht, wenn ein Arbeitsauftrag vorliegt. Für die Rollen Sachbearbeitung und Bedarfsmeldung wurde ein E-Mail-Verteiler eingerichtet, damit eine Gruppe von bestimmten Adressaten die Nachricht erhält. Die Nachricht wird in das persönliche Postfach übertragen. Die Rolle Abfrageersteller erhält die Nachricht über den Arbeitsauftrag direkt (ohne E-Mail-Verteiler) an das persönliche Postfach.
+Die Rollen Abfrageerstellung, Sachbearbeitung und Bedarfsmeldung erhalten jeweils eine Nachricht, wenn ein Arbeitsauftrag vorliegt. Für die Rollen Sachbearbeitung und Bedarfsmeldung wurde ein E-Mail-Verteiler eingerichtet, damit eine Gruppe von bestimmten Adressaten die Nachricht erhält. Die Nachricht wird über den E-Mail-Verteiler in das persönliche Postfach übertragen. Die Rolle Abfrageersteller erhält die Nachricht über den Arbeitsauftrag direkt (ohne E-Mail-Verteiler) an das persönliche Postfach.
 
 ### Bauvorhaben
 
@@ -69,12 +65,12 @@ Für die Rolle Sachbearbeitung PLAN ist ein neuer Rahmen für interne Kommentare
 
 ### Dokumente
 
-Dokumente in einer Vielzahl von Dateiformaten können an Abfragen, Bauvorhaben und Infrastruktureinrichtungen hinzugefügt werden. Zur leichteren Kategorisierung kann für jedes Dokument noch die Dokumentenart (E-Mail, Beschluss usw.) bestimmt werden. Pro Abfrage oder Bauvorhaben können bis zu 20 Dokumente hochgeladen werden. Über ein internen Kommentarrahmen innerhalb der Bauvorhaben und Infrastruktureinrichtungen können pro Anmerkung weitere 20 Dokumente hinzugefügt werden. Außerdem wird ein Hochladen von Dokumente von bis zu 50 MB ermöglicht.
+Dokumente in einer Vielzahl von Dateiformaten können an Abfragen, Bauvorhaben und Infrastruktureinrichtungen hinzugefügt werden. Zur leichteren Kategorisierung kann für jedes Dokument noch die Dokumentenart (E-Mail, Beschluss usw.) bestimmt werden. Pro Abfrage oder Bauvorhaben können bis zu 20 Dokumente
+hochgeladen werden. Über ein internen Kommentarrahmen innerhalb der Bauvorhaben und Infrastruktureinrichtungen können pro Anmerkung weitere 20 Dokumente hinzugefügt werden. Außerdem wird ein Hochladen von Dokumente von bis zu 50 MB ermöglicht.
 
 ### Rechte, Rollen
 
 Das Registrieren erfolgt über Single Sign-On. Ein Rollen und Rechtekonzept ermöglicht es Nutzer\*innen über Rollen zu definieren, die es gestatten, gewisse Inhalte zu erstellen, zu lesen und/oder zu ändern.
-Bearbeitungsinformationen, wer hat was wann gemacht.
 
 In den Objekten Infrastrukturabfrage, Bauvorhaben und Infrastruktureinrichtungen ist es möglich, Informationen zu den Bearbeiter\*innen zu erhalten, um einen Ansprechpartner\*in für (inhaltliche) Fragen zu haben.
 
@@ -94,8 +90,7 @@ Zur Eingabe von Adressinformationen wird ein Suchfeld angeboten, mit welchem sic
 
 Die Karte verfügt über grundlegende Funktionen wie das "Verschieben" und "Zoomen" und der Möglichkeit, zusätzliche Ebenen von Informationen (z.B. Stadtbezirksgrenzen) ein- und ausblenden zu können.
 
-Ergänzung der Einstiegskarte um weitere administrative Layer zur Übersicht.
-Die Einstiegskarte ist um die administrativen Layer Bezirksteile, Viertel, Kitaplanungsbereiche, Grund- und Mittelschulsprengel sowie der Flächennutzungsplan ergänzt worden. Diese können über ein Klick sichtbar und unsichtbar geschalten werden.
+Die Einstiegskarte ist um die administrativen Layer Bezirksteile, Viertel, Kitaplanungsbereiche, Grund- und Mittelschulsprengel sowie der Flächennutzungsplan ergänzt worden. Diese können über ein Klick ein- und ausgeblendet werden.
 
 ### Suche und Filterung sowie Anzeige in der Karte
 
