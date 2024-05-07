@@ -45,21 +45,21 @@ import { computed } from "vue";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
-import { useVuetify } from "@/utils/Vue";
-
-const vuetify = useVuetify();
+import { useDisplay } from "vuetify";
 
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
   (event: "reset-search-and-filter-options", value: void): void;
 }
 
+const { xl } = useDisplay();
+
 const emit = defineEmits<Emits>();
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
 const getContentSheetHeight = computed(() => {
-  if (vuetify.breakpoint.xl) {
+  if (xl.value) {
     return "650px";
   }
   return "400px";
