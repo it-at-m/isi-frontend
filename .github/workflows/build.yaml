@@ -18,7 +18,7 @@ jobs:
       - name: Execute npm install, test, build
         working-directory: frontend
         run: |
-          npm install
+          npm ci
           npm run build --if-present
           npm run test:unit
       - name: Check with eslint
