@@ -1,12 +1,12 @@
 <template>
-  <v-container class="transition-swing pa-0 mb-2">
+  <v-container class="pa-0 mb-2">
     <v-expansion-panels class="ma-0 pa-0">
       <v-expansion-panel
         class="pa-0"
         @click="getKommentare()"
       >
-        <v-expansion-panel-header class="grey--text text-h6"> Kommentare </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-title class="text-grey text-h6"> Kommentare </v-expansion-panel-title>
+        <v-expansion-panel-text>
           <kommentar
             v-for="(kommentar, index) in kommentare"
             :key="index"
@@ -16,7 +16,7 @@
             @save-kommentar="saveKommentar"
             @delete-kommentar="deleteKommentar"
           />
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
   </v-container>

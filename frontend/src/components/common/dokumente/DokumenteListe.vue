@@ -4,11 +4,11 @@
       v-if="hasDokumente"
       id="dokumente_liste"
     >
-      <template v-for="(item, index) in dokumente">
-        <v-list-item
-          :id="'dokumente_list_item_' + index"
-          :key="`dokument-${index}`"
-        >
+      <template
+        v-for="(item, index) in dokumente"
+        :key="`dokument-${index}`"
+      >
+        <v-list-item :id="'dokumente_list_item_' + index">
           <v-card
             :id="'dokumente_card_' + index"
             :class="`my-2 pt-3 pb-2 ${!isDokumentAllowed(item) ? 'red accent-4' : ''}`"
@@ -85,13 +85,13 @@
                         v-model="item.artDokument"
                         :items="artDokument"
                         item-value="key"
-                        item-text="value"
+                        item-title="value"
                         :rules="[pflichtfeld, notUnspecified]"
                         :readonly="!isDokumentAllowed(item)"
                         :disabled="!isDokumenteEditable"
-                        @change="change"
+                        @update:model-value="change"
                       >
-                        <template #label> Dokumentart <span class="secondary--text">*</span> </template>
+                        <template #label> Dokumentart <span class="text-secondary">*</span> </template>
                       </v-select>
                     </v-row>
                   </v-col>

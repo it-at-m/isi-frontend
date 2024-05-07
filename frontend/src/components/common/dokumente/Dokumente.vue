@@ -5,7 +5,7 @@
         v-if="loading"
         id="dokumente_ladekreis"
         indeterminate
-        color="grey lighten-1"
+        color="grey-lighten-1"
         size="50"
         width="5"
       />
@@ -22,7 +22,7 @@
           md="2"
         >
           <v-row class="justify-start">
-            <v-chip small> {{ dokumente.length }} / {{ maxNumberOfFiles }} </v-chip>
+            <v-chip size="small"> {{ dokumente.length }} / {{ maxNumberOfFiles }} </v-chip>
           </v-row>
         </v-col>
         <v-col

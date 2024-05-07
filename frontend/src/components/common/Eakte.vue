@@ -9,7 +9,7 @@
         >
         <span
           v-else
-          class="v-label grey--text text--lighten-1"
+          class="v-label text-grey-lighten-1"
           >{{ title }}</span
         >
       </v-col>
@@ -27,7 +27,7 @@
           rows="1"
           maxlength="8000"
           :disabled="!isEditable"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
       <v-col

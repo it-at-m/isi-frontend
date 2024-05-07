@@ -3,29 +3,29 @@
     v-model="datePickerActive"
     width="290px"
   >
-    <template #activator="{ on }">
+    <template #activator="{ props: activatorProps }">
       <v-text-field
         id="datum"
         v-model="textFieldDate"
         :rules="usedRules"
-        validate-on-blur
+        validate-on="blur"
         :hint="displayFormat"
         :disabled="disabled"
         :required="required"
-        @input="formChanged"
+        @update:model-value="formChanged"
         @blur="blur"
       >
         <template #label>
           {{ label
           }}<span
             v-if="required"
-            class="secondary--text"
+            class="text-secondary"
           >
             *</span
           >
         </template>
         <template #append>
-          <v-icon v-on="on">mdi-calendar</v-icon>
+          <v-icon v-bind="activatorProps">mdi-calendar</v-icon>
         </template>
       </v-text-field>
     </template>
@@ -33,8 +33,6 @@
       id="datum_datePicker"
       v-model="datePickerDate"
       :disabled="disabled"
-      :first-day-of-week="1"
-      locale="de"
       :type="monthPicker ? 'month' : 'date'"
       @change="datePickerActive = false"
       @input="formChanged"
@@ -48,6 +46,7 @@ import moment from "moment";
 import _ from "lodash";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { datum, pflichtfeld } from "@/utils/FieldValidationRules";
+import { useDate } from "vuetify";
 
 interface Props {
   label?: string; // Bezeichnung des Datumsfelds
@@ -76,7 +75,7 @@ const datePickerDate = computed({
     if (!_.isNil(date.value)) {
       const parsedValue = moment.utc(date.value);
       if (!parsedValue.isSame(0)) {
-        return parsedValue.format(ISO_FORMAT);
+        return moment(parsedValue.format(ISO_FORMAT)).toDate();
       }
     }
 

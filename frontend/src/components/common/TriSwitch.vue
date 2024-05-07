@@ -1,39 +1,41 @@
 <template>
-  <v-input
-    ref="input"
-    class="pt-6"
-    :value="valueInternal"
-    :rules="rules"
-    :disabled="disabled"
-  >
-    <template #label>
+  <div>
+    <v-label>
       <span>
         <slot name="label">{{ label }}</slot>
       </span>
-    </template>
-    <template #default>
-      <div class="mx-3" />
-      <span :class="`annotation ${getAnnotationColor('off')}`">
-        <slot name="offText">{{ offText }}</slot>
-      </span>
-      <input
-        v-bind="$attrs"
-        v-model="valueAsPosition"
-        :class="`slider mx-2 ${backgroundColor}`"
-        :disabled="disabled"
-        type="range"
-        min="0"
-        max="2"
-        :step="collapsed ? 2 : 1"
-        @change="formChanged"
-        @focus="focused"
-        @blur="blurred"
-      />
-      <span :class="`annotation ${getAnnotationColor('on')}`">
-        <slot name="onText">{{ onText }}</slot>
-      </span>
-    </template>
-  </v-input>
+    </v-label>
+    <v-input
+      ref="input"
+      class="pt-6"
+      :model-value="valueInternal"
+      :rules="rules"
+      :disabled="disabled"
+    >
+      <template #default>
+        <div class="mx-3" />
+        <span :class="`annotation ${getAnnotationColor('off')}`">
+          <slot name="offText">{{ offText }}</slot>
+        </span>
+        <input
+          v-bind="$attrs"
+          v-model="valueAsPosition"
+          :class="`slider mx-2 ${backgroundColor}`"
+          :disabled="disabled"
+          type="range"
+          min="0"
+          max="2"
+          :step="collapsed ? 2 : 1"
+          @change="formChanged"
+          @focus="focused"
+          @blur="blurred"
+        />
+        <span :class="`annotation ${getAnnotationColor('on')}`">
+          <slot name="onText">{{ onText }}</slot>
+        </span>
+      </template>
+    </v-input>
+  </div>
 </template>
 
 <script setup lang="ts">

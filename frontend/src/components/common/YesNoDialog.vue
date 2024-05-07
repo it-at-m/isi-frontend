@@ -4,23 +4,23 @@
     persistent
     width="50%"
   >
-    <template #activator="{ on }">
+    <template #activator="{ props: activatorProps }">
       <template v-if="buttontext">
         <v-btn
           id="yes_no_dialog_buttontext"
           class="text-wrap"
           color="primary"
-          v-on="on"
+          v-bind="activatorProps"
           v-text="buttontext"
         />
       </template>
       <template v-else-if="icontext">
         <v-btn
-          text
+          variant="text"
           color="primary"
-          v-on="on"
+          v-bind="activatorProps"
         >
-          <v-icon large>
+          <v-icon size="large">
             {{ icontext }}
           </v-icon>
         </v-btn>
@@ -42,7 +42,7 @@
         auto-grow
         rows="1"
         :maxlength="anmerkungMaxLength"
-        @input="anmerkung"
+        @update:model-value="anmerkung"
       >
       </v-textarea>
       <v-card-actions>
@@ -50,7 +50,7 @@
         <v-btn
           id="yes_no_dialog-btn-no"
           class="text-wrap"
-          text
+          variant="text"
           @click="no"
           v-text="noText"
         />
@@ -88,7 +88,7 @@ import { ref } from "vue";
  * Beim Default-Wert 0 wird kein Anmerkungsfeld angeboten.
  *
  * Beispiel:
- * <yes-no-dialog
+ * <yes-no-dialogJ
  *    v-model="deleteDialog"
  *    buttontext="Löschen"
  *    dialogtitle="Löschen?"
