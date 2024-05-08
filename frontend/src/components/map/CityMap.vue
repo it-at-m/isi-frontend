@@ -131,7 +131,7 @@ const isGeoJsonNotEmpty = computed(() => !_.isEmpty(props.geoJson));
 let map: L.Map;
 let layerControl: L.Control.Layers;
 let firstGeoJsonFeatureAdded = false;
-let mapMarkerClusterGroup = (L as any).markerClusterGroup();
+let mapMarkerClusterGroup = L.markerClusterGroup();
 
 onMounted(() => {
   map = L.map("karte", { zoom: props.zoom, ...MAP_OPTIONS }).on("click", (event) => emit("click-in-map", event.latlng));
@@ -161,7 +161,7 @@ watch(() => props.layersForLayerControl, updateLayerControlWithCustomLayers, { d
 
 function addGeoJsonToMap(): void {
   map.removeLayer(mapMarkerClusterGroup);
-  mapMarkerClusterGroup = (L as any).markerClusterGroup().addTo(map);
+  mapMarkerClusterGroup = L.markerClusterGroup().addTo(map);
   L.geoJSON(props.geoJson, props.geoJsonOptions).addTo(mapMarkerClusterGroup);
 }
 

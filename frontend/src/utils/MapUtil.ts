@@ -3,6 +3,7 @@ import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
 import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
+// import "@/types/common/Leaflet";
 
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
 export const DEFAULT_ICON_OPTIONS = {
@@ -58,7 +59,7 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
   const layers: Record<string, TileLayer.WMS> = {};
 
   for (const overlay of OVERLAYS_GRUNDKARTE) {
-    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
+    const layer = L.nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
       layers: overlay[1],
       transparent: true,
       ...LAYER_OPTIONS,
@@ -67,7 +68,7 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
   }
 
   for (const overlay of OVERLAYS_ARCGIS) {
-    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
+    const layer = L.nonTiledLayer.wms(getArcgisUrl("basis"), {
       layers: overlay[1],
       transparent: true,
       ...LAYER_OPTIONS,
