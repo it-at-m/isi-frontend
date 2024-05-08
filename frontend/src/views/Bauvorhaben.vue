@@ -124,6 +124,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeMount, ref } from "vue";
 import Toaster from "../components/common/toaster.type";
 import { createAdresseDto, createBauvorhabenDto } from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -137,13 +138,14 @@ import { findFaultInBauvorhaben } from "@/utils/Validators";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
 import {
-  AbfrageDto,
-  BauleitplanverfahrenDto,
+  type AbfrageDto,
+  type BauleitplanverfahrenDto,
+  type WeiteresVerfahrenDto,
   AbfrageDtoArtAbfrageEnum,
   BauvorhabenDtoStandVerfahrenEnum,
   UncertainBoolean,
-  WeiteresVerfahrenDto,
 } from "@/api/api-client/isi-backend";
+import type { AnyAbfrageDto } from "@/types/common/Abfrage";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
@@ -155,7 +157,6 @@ import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useInformationList } from "@/composables/requests/InformationList";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
-import { AnyAbfrageDto } from "@/types/common/Abfrage";
 
 const routeId = useRoute().params.id as string;
 const router = useRouter();

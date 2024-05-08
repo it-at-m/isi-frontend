@@ -62,13 +62,13 @@ async function getKommentare(): Promise<void> {
     if (!isKommentarListOpen && !_.isNil(routeId)) {
       isKommentarListOpen = true;
       if (props.context === Context.BAUVORHABEN) {
-        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(id, true);
+        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(routeId, true);
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForBauvorhaben());
         }
       } else if (props.context === Context.INFRASTRUKTUREINRICHTUNG) {
-        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(id, true);
+        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId, true);
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());

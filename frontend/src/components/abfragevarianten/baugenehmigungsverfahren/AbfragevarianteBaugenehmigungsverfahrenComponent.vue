@@ -91,7 +91,7 @@ import { BedarfsmeldungTitle } from "@/utils/Factories";
 import _ from "lodash";
 
 interface Props {
-  isEditable: false;
+  isEditable?: boolean;
   anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante;
 }
 

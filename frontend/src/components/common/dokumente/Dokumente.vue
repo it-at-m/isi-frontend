@@ -116,7 +116,7 @@ function addDokument(): void {
 
 function deleteDokument(dokument: DokumentDto): void {
   const index = dokumente.value.findIndex((value) => value.filePath.pathToFile === dokument.filePath.pathToFile);
-  dokumente.value = dokumente.value.toSpliced(index, 1);
+  dokumente.value.splice(index, 1);
   change();
 }
 
@@ -271,13 +271,13 @@ async function saveFile(pathToFile: string, file: File): Promise<void> {
       extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
         .then((mimeTypeInformation) => {
           newDokument.typDokument = acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
-          dokumente.value = [...dokumente.value, newDokument];
+          dokumente.value.push(newDokument);
           change();
         })
         .catch((error) => {
           if (error instanceof ResponseError && error.response.status === 406) {
             newDokument.typDokument = mimeTypeNichtErlaubt();
-            dokumente.value = [...dokumente.value, newDokument];
+            dokumente.value.push(newDokument);
             change();
           }
         });

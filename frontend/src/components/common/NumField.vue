@@ -2,11 +2,10 @@
   <v-text-field
     ref="inputRef"
     v-model="formattedValue"
-    v-bind="$attrs"
     :required="required"
-    :rules="getRules()"
+    :rules="usedRules"
     validate-on="blur"
-    @update:model-value="formChanged()"
+    @update:modelValue="formChanged()"
   >
     <!--
     Dieses Konstrukt dient dazu:
@@ -16,9 +15,12 @@
     -->
     <template
       v-for="(index, name) in $slots"
-      #[name]
+      #[asString(name)]
     >
-      <slot :name="name" />
+      <slot
+        v-if="name !== 'label'"
+        :name="name"
+      />
     </template>
     <template #label>
       <slot name="label">
@@ -28,8 +30,8 @@
         v-if="required"
         class="text-secondary"
       >
-        *</span
-      >
+        *
+      </span>
     </template>
     <template
       v-if="help != undefined"
@@ -40,7 +42,7 @@
         location="right"
       >
         <template #activator="{ props: activatorProps }">
-          <v-icon v-bind="activatorProps"> mdi-help-circle-outline </v-icon>
+          <v-icon v-bind="activatorProps">mdi-help-circle-outline</v-icon>
         </template>
         <span>{{ help }} </span>
       </v-tooltip>
@@ -69,14 +71,16 @@
  * - Alle Slots von v-text-field.
  */
 
-import { watch } from "vue";
+import { computed, watch } from "vue";
 import { type CurrencyInputOptions, CurrencyDisplay, useCurrencyInput } from "vue-currency-input";
-import { min, max, pflichtfeld } from "@/utils/FieldValidationRules";
+import { min as minRule, max as maxRule, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
+type Rule = (v: string | undefined | null) => true | string;
+
 interface Props {
-  value: number;
+  modelValue?: number;
   precision?: number;
   min?: number;
   max?: number;
@@ -88,13 +92,13 @@ interface Props {
   year?: boolean;
   required?: boolean;
   label?: string;
-  rules?: unknown[];
+  rules?: Rule[];
   help?: string;
 }
 
 const MAX_VALUE_SIGNED_INTEGER = _.toNumber(2147483647);
 const MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2 = _.toNumber("99999999.99");
-
+const { formChanged } = useSaveLeave();
 const props = withDefaults(defineProps<Props>(), {
   precision: 2,
   min: 0,
@@ -103,60 +107,68 @@ const props = withDefaults(defineProps<Props>(), {
   noGrouping: false,
   required: false,
 });
-const { formChanged } = useSaveLeave();
-// inputRef muss zum Funktionieren von vue-currency-input vorhanden sein.
-// formattedValue ist notwendig, sobald man nicht direkt mit einem <input>-Element arbeitet.
-const { inputRef, formattedValue, setValue } = useCurrencyInput(options);
 
-// Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
-function getRules(): unknown[] {
-  const usedRules: unknown[] = [];
+// Vereinigt evtl. übergebene Rules und intern gesetzte Rules in einem Array.
+const usedRules = computed(() => {
+  const rules: Rule[] = [];
 
   if (props.rules) {
-    usedRules.push(...props.rules);
-  }
-
-  if (props.year) {
-    usedRules.push(min(1900));
-    usedRules.push(max(2100));
-  } else {
-    if (props.min !== undefined && !props.allowNegatives) {
-      usedRules.push(min(props.min));
-    }
-    if (props.max !== undefined) {
-      usedRules.push(max(props.max));
-    } else if (props.integer && !props.ignoreMaxValueSignedInteger) {
-      usedRules.push(max(MAX_VALUE_SIGNED_INTEGER));
-    } else if (!props.integer && !props.ignoreMaxValueDecimalNumeralPrecision10Scale2) {
-      usedRules.push(max(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
-    }
+    rules.push(...props.rules);
   }
 
   if (props.required) {
-    usedRules.push(pflichtfeld);
+    rules.push(pflichtfeld);
   }
-  return usedRules;
-}
+
+  if (props.year) {
+    rules.push(minRule(1900));
+    rules.push(maxRule(2100));
+  } else {
+    if (props.min !== undefined && !props.allowNegatives) {
+      rules.push(minRule(props.min));
+    }
+    if (props.max !== undefined) {
+      rules.push(maxRule(props.max));
+    } else if (props.integer && !props.ignoreMaxValueSignedInteger) {
+      rules.push(maxRule(MAX_VALUE_SIGNED_INTEGER));
+    } else if (!props.integer && !props.ignoreMaxValueDecimalNumeralPrecision10Scale2) {
+      rules.push(maxRule(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
+    }
+  }
+
+  return rules;
+});
 
 // Legt die options für vue-currency-input fest.
+const currencyInputOptions = computed(() => {
+  const options: CurrencyInputOptions = {
+    currency: "EUR", // Die Währung muss angegeben werden, auch wenn sie nicht angezeigt wird.
+    currencyDisplay: CurrencyDisplay.hidden,
+    precision: props.integer ? 0 : props.precision,
+    useGrouping: !props.noGrouping,
+  };
 
-const options: CurrencyInputOptions = {
-  currency: "EUR", // Die Währung muss angegeben werden, auch wenn sie nicht angezeigt wird.
-  currencyDisplay: CurrencyDisplay.hidden,
-  precision: props.integer ? 0 : props.precision,
-  useGrouping: !props.noGrouping,
-};
+  if (props.year) {
+    options.precision = 0;
+    options.useGrouping = false;
+  }
 
-if (props.year) {
-  options.precision = 0;
-  options.useGrouping = false;
-}
+  return options;
+});
+// inputRef muss zum Funktionieren von vue-currency-input vorhanden sein.
+// formattedValue ist notwendig, sobald man nicht direkt mit einem <input>-Element arbeitet.
+const { inputRef, formattedValue, setValue } = useCurrencyInput(currencyInputOptions.value);
 
 // Siehe https://dm4t2.github.io/vue-currency-input/guide.html#external-props-changes.
 watch(
-  () => props.value,
+  () => props.modelValue,
   (value) => {
-    setValue(value);
+    setValue(value === undefined ? null : value);
   },
 );
+
+// Wird bloß zur korrekten Typisierung der Named Slots hergenommen.
+function asString(value: string | number): string {
+  return value.toString();
+}
 </script>

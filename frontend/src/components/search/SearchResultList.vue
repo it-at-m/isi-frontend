@@ -139,10 +139,10 @@ import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { convertDateForFrontend } from "@/utils/Formatter";
-import { useVuetify } from "@/utils/Vue";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
+import { useDisplay } from "vuetify";
 
 const pageRequestMutex = new Mutex();
 const lookupStore = useLookupStore();
@@ -150,7 +150,7 @@ const searchStore = useSearchStore();
 const router = useRouter();
 const { searchForEntities } = useSearchApi();
 const { hasOnlyRoleAnwender } = useSecurity();
-const vuetify = useVuetify();
+const { height } = useDisplay();
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
 const standVerfahrenList = computed(() => lookupStore.standVerfahren);
@@ -162,8 +162,7 @@ const searchResults = computed(() => _.cloneDeep(searchStore.searchResults));
  * Die Höhe des App-Headers wird mit 50px angesetzt.
  */
 const viewportHeight = computed(() => {
-  const heightOfWindow = vuetify.breakpoint.height;
-  return (heightOfWindow - 50) / (heightOfWindow / 100) + "vh";
+  return (height.value - 50) / (height.value / 100) + "vh";
 });
 
 const searchResultsAsArray = computed(() => {
