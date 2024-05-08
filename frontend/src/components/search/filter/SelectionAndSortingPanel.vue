@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header> Objekttyp und Sortierung </v-expansion-panel-header>
-    <v-expansion-panel-content class="mt-1">
+    <v-expansion-panel-title> Objekttyp und Sortierung </v-expansion-panel-title>
+    <v-expansion-panel-text class="mt-1">
       <panel-header
         font-size="0.875rem"
         font-weight="bold"
@@ -24,7 +24,7 @@
           <v-hover v-model="hoverSelectAll">
             <v-chip
               class="ma-2"
-              :input-value="searchQueryAndSorting.allObjectTypesSelected()"
+              :model-value="searchQueryAndSorting.allObjectTypesSelected()"
               filter
               @click="selectAll"
             >
@@ -35,36 +35,36 @@
             <v-checkbox
               v-model="searchQueryAndSorting.selectBauleitplanverfahren"
               :label="'Bauleitplanverfahren'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectBaugenehmigungsverfahren">
             <v-checkbox
               v-model="searchQueryAndSorting.selectBaugenehmigungsverfahren"
               :label="'Baugenehmigungsverfahren'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectWeiteresVerfahren">
             <v-checkbox
               v-model="searchQueryAndSorting.selectWeiteresVerfahren"
               :label="'Weiteres Verfahren'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectBauvorhaben">
             <v-checkbox
               v-model="searchQueryAndSorting.selectBauvorhaben"
               :label="'Bauvorhaben'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
         </v-col>
@@ -75,7 +75,7 @@
           <v-hover v-model="hoverDeselectAll">
             <v-chip
               class="ma-2"
-              :input-value="searchQueryAndSorting.allObjectTypesDeselected()"
+              :model-value="searchQueryAndSorting.allObjectTypesDeselected()"
               filter
               @click="deselectAll"
             >
@@ -86,54 +86,54 @@
             <v-checkbox
               v-model="searchQueryAndSorting.selectGrundschule"
               :label="'Grundschule'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectGsNachmittagBetreuung">
             <v-checkbox
               v-model="searchQueryAndSorting.selectGsNachmittagBetreuung"
               :label="'Nachmittagsbetreuung für Grundschulkinder'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectMittelschule">
             <v-checkbox
               v-model="searchQueryAndSorting.selectMittelschule"
               :label="'Mittelschule'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectKinderkrippe">
             <v-checkbox
               v-model="searchQueryAndSorting.selectKinderkrippe"
               :label="'Kinderkrippe'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectKindergarten">
             <v-checkbox
               v-model="searchQueryAndSorting.selectKindergarten"
               :label="'Kindergarten'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
           <v-hover v-model="hoverSelectHausFuerKinder">
             <v-checkbox
               v-model="searchQueryAndSorting.selectHausFuerKinder"
               :label="'Haus für Kinder'"
-              color="grey darken-1"
+              color="grey-darken-1"
               hide-details
-              dense
+              density="default"
             />
           </v-hover>
         </v-col>
@@ -172,9 +172,9 @@
               :items="entriesArtderSortierung"
               label="Art der Sortierung"
               item-value="key"
-              item-text="value"
-              filled
-              dense
+              item-title="value"
+              variant="filled"
+              density="default"
             ></v-select>
           </v-hover>
         </v-col>
@@ -188,9 +188,9 @@
               :items="entriesReihenfolgeDerSortierung"
               label="Sortierreihenfolge"
               item-value="key"
-              item-text="value"
-              filled
-              dense
+              item-title="value"
+              variant="filled"
+              density="default"
             ></v-select>
           </v-hover>
         </v-col>
@@ -203,7 +203,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-expansion-panel-content>
+    </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 

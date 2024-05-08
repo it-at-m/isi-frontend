@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
     <v-card-title>
-      <v-icon left>mdi-filter-outline</v-icon>
+      <v-icon start>mdi-filter-outline</v-icon>
       Such- und Filtereinstellungen
     </v-card-title>
 
@@ -11,10 +11,8 @@
         class="overflow-y-auto"
         :max-height="getContentSheetHeight"
       >
-        <v-expansion-panels
-          hover
-          focusable
-        >
+        <!-- eslint-disable-next-line vuetify/no-deprecated-props -->
+        <v-expansion-panels focusable>
           <selection-and-sorting-panel v-model="searchQueryAndSorting" />
           <filter-panel />
         </v-expansion-panels>
@@ -53,6 +51,8 @@ interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
   (event: "reset-search-and-filter-options", value: void): void;
 }
+
+const focusable = true;
 
 const emit = defineEmits<Emits>();
 

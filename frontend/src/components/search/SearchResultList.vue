@@ -1,116 +1,123 @@
 <template>
-  <v-list
-    v-if="searchResultsAsArray.length > 0"
-    v-scroll.self="onScroll"
+  <v-infinite-scroll
     :height="viewportHeight"
-    class="pa-0 ma-0 overflow-y-auto"
+    class="overflow-y-auto"
+    :target="'#suchfeld'"
+    :on-infinite="getAndAppendSearchResultsNextPage"
+    infinite-scroll-disabled="pageRequestMutex.isLocked()"
+    infinite-scroll-distance="10"
   >
-    <!-- eslint-disable vue/no-unused-vars -->
-    <v-hover
-      v-for="(item, index) in searchResultsAsArray"
-      :key="index"
-      v-slot="{ hover }"
+    <v-list
+      v-if="searchResultsAsArray.length > 0"
+      class="pa-0 ma-0"
     >
-      <v-card
-        v-if="isTypeOfAbfrage(item)"
-        :id="'search_result_item_' + index"
-        outlined
-        class="my-1 mx-0 transition-swing"
-        :elevation="hover ? 4 : 0"
-        :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
-        @click="routeToAbfrageForm(item)"
+      <!-- eslint-disable vue/no-unused-vars -->
+      <v-hover
+        v-for="(item, index) in searchResultsAsArray"
+        :key="index"
+        v-slot="{ isHovering }"
       >
-        <v-card-subtitle class="black--text">
-          <v-icon
-            left
-            color="green lighten-1"
-          >
-            {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
-          </v-icon>
-          {{ castToAbfrageSearchResultDto(item).name }}
-        </v-card-subtitle>
-        <v-card-text>
-          <span> Abfrageart: {{ getArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }} </span>
-          <v-spacer />
-          <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
-          <v-spacer />
-          <span>
-            Status:
-            {{ getLookupValueAbfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList) }}
-          </span>
-          <v-spacer />
-          <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristBearbeitung) }} </span>
-        </v-card-text>
-      </v-card>
-      <v-card
-        v-else-if="isTypeOfBauvorhaben(item)"
-        :id="'search_result_item_' + index"
-        outlined
-        class="my-1 mx-0 transition-swing"
-        :elevation="hover ? 4 : 0"
-        @click="routeToBauvorhabenForm(item)"
-      >
-        <v-card-subtitle class="black--text">
-          <v-icon
-            left
-            color="indigo lighten-1"
-          >
-            mdi-account-hard-hat
-          </v-icon>
-          {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
-        </v-card-subtitle>
-        <v-card-text>
-          <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenSearchResultDto(item).stadtbezirke) }} </span>
-          <v-spacer />
-          <span>
-            Grundstücksgröße:
-            {{ getFormattedGrundstuecksgroesse(castToBauvorhabenSearchResultDto(item).grundstuecksgroesse) }} m²
-          </span>
-          <v-spacer />
-          <span>
-            Stand:
-            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVerfahren, standVerfahrenList) }}
-          </span>
-        </v-card-text>
-      </v-card>
-      <v-card
-        v-else
-        :id="'search_result_item_' + index"
-        outlined
-        class="my-1 mx-0 transition-swing"
-        :elevation="hover ? 4 : 0"
-        @click="routeToInfrastruktureinrichtungForm(item)"
-      >
-        <v-card-subtitle class="black--text">
-          <v-icon
-            left
-            color="red lighten-1"
-          >
-            mdi-home
-          </v-icon>
-          {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
-        </v-card-subtitle>
-        <v-card-text>
-          <span>
-            Einrichtungstyp:
-            {{
-              getLookupValueInfrastruktureinrichtung(
-                castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
-                infrastruktureinrichtungTypList,
-              )
-            }}</span
-          >
-        </v-card-text>
-      </v-card>
-    </v-hover>
-  </v-list>
-  <v-container
-    v-else
-    class="pa-0 ma-0 w-100 d-flex justify-center align-center"
-    style="height: 100%; min-height: 100px"
-  >
-    <span>Keine Suchergebnisse vorhanden</span>
-  </v-container>
+        <v-card
+          v-if="isTypeOfAbfrage(item)"
+          :id="'search_result_item_' + index"
+          variant="outlined"
+          class="my-1 mx-0"
+          :elevation="isHovering ? 4 : 0"
+          :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
+          @click="routeToAbfrageForm(item)"
+        >
+          <v-card-subtitle class="text-black">
+            <v-icon
+              start
+              color="green-lighten-1"
+            >
+              {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
+            </v-icon>
+            {{ castToAbfrageSearchResultDto(item).name }}
+          </v-card-subtitle>
+          <v-card-text>
+            <span> Abfrageart: {{ getArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }} </span>
+            <v-spacer />
+            <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
+            <v-spacer />
+            <span>
+              Status:
+              {{ getLookupValueAbfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList) }}
+            </span>
+            <v-spacer />
+            <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristBearbeitung) }} </span>
+          </v-card-text>
+        </v-card>
+        <v-card
+          v-else-if="isTypeOfBauvorhaben(item)"
+          :id="'search_result_item_' + index"
+          variant="outlined"
+          class="my-1 mx-0"
+          :elevation="isHovering ? 4 : 0"
+          @click="routeToBauvorhabenForm(item)"
+        >
+          <v-card-subtitle class="text-black">
+            <v-icon
+              start
+              color="indigo-lighten-1"
+            >
+              mdi-account-hard-hat
+            </v-icon>
+            {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
+          </v-card-subtitle>
+          <v-card-text>
+            <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenSearchResultDto(item).stadtbezirke) }} </span>
+            <v-spacer />
+            <span>
+              Grundstücksgröße:
+              {{ getFormattedGrundstuecksgroesse(castToBauvorhabenSearchResultDto(item).grundstuecksgroesse) }} m²
+            </span>
+            <v-spacer />
+            <span>
+              Stand:
+              {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVerfahren, standVerfahrenList) }}
+            </span>
+          </v-card-text>
+        </v-card>
+        <v-card
+          v-else
+          :id="'search_result_item_' + index"
+          variant="outlined"
+          class="my-1 mx-0"
+          :elevation="isHovering ? 4 : 0"
+          @click="routeToInfrastruktureinrichtungForm(item)"
+        >
+          <v-card-subtitle class="text-black">
+            <v-icon
+              start
+              color="red-lighten-1"
+            >
+              mdi-home
+            </v-icon>
+            {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
+          </v-card-subtitle>
+          <v-card-text>
+            <span>
+              Einrichtungstyp:
+              {{
+                getLookupValueInfrastruktureinrichtung(
+                  castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
+                  infrastruktureinrichtungTypList,
+                )
+              }}
+            </span>
+          </v-card-text>
+        </v-card>
+      </v-hover>
+    </v-list>
+    <v-container
+      v-else
+      class="pa-0 ma-0 w-100 d-flex justify-center align-center"
+      style="height: 100%; min-height: 100px"
+    >
+      <span>Keine Suchergebnisse vorhanden</span>
+    </v-container>
+  </v-infinite-scroll>
 </template>
 
 <script setup lang="ts">

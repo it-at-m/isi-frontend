@@ -3,8 +3,8 @@
     id="suchfeld"
     v-model="selectedSuggestion"
     :items="suggestions"
-    :search-input.sync="searchQuery"
-    dense
+    :search.sync="searchQuery"
+    density="compact"
     clearable
     flat
     hide-details
@@ -12,10 +12,9 @@
     no-filter
     prepend-inner-icon="mdi-magnify"
     return-object
-    solo
+    variant="solo"
     @keyup.enter="searchEntitiesForSelectedSuggestion"
-    @update:list-index="updateSearchQuery"
-    @update:search-input="suggest"
+    @update:search="suggest"
     @click:clear="clearSearch"
   >
     <template #no-data>
@@ -23,9 +22,9 @@
         <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
       </v-list>
     </template>
-    <template #append-outer>
+    <template #append-item>
       <v-icon
-        class="white--text"
+        class="text-white"
         :color="checkCurrentFilter() ? '' : 'secondary'"
         @click="openSearchAndFilterDialog"
       >

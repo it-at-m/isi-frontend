@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header> Filter </v-expansion-panel-header>
-    <v-expansion-panel-content class="mt-1">
+    <v-expansion-panel-title> Filter </v-expansion-panel-title>
+    <v-expansion-panel-text class="mt-1">
       <panel-header
         font-size="0.875rem"
         font-weight="bold"
@@ -33,7 +33,7 @@
         >
         </v-col>
       </v-row>
-    </v-expansion-panel-content>
+    </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 
