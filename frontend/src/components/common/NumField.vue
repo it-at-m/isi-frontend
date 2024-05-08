@@ -2,7 +2,6 @@
   <v-text-field
     ref="inputRef"
     v-model="formattedValue"
-    v-bind="$attrs"
     :required="required"
     :rules="usedRules"
     validate-on="blur"
