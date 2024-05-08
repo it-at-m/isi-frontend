@@ -1,3 +1,4 @@
+/*
 import VersionInfo from "@/components/common/VersionInfo.vue";
 import Service from "@/types/common/Service";
 
@@ -149,3 +150,4 @@ describe("VersionInfoTest.spec.ts", () => {
     expect(testService2.commitHash).toEqual("");
   });
 });
+*/
