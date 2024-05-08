@@ -15,9 +15,9 @@ Abfragevarianten können über eine Hierarchie von Bauabschnitten, Baugebieten u
 
 Mit Angabe der Anzahl der geplanten Wohneinheiten oder der Geschossfläche des Bauvorhabens kann aktiv durch den Abfrageerstellenden eine automatische Berechnung der idealtypischen Bauraten angestoßen werden. Die Werte werden angezeigt. Eine manuelle Änderung der Verteilung der Bauraten ist weiterhin gewährleistet, wobei dabei eine Validierung hinterlegt ist, die die manuellen Eingaben auf Stimmigkeit mit der Angabe der Gesamtwohneinheiten des Bauvorhabens prüft. Bei Vorhandensein von Bauabschnitten und Baugebieten werden die idealtypischen Bauraten entsprechend der Hierarchie aggregiert.
 
-Die Infrastrukturabfragen aller drei Abfragearten durchlaufen einen sogenannten Abfrageprozess in welchem die verschiedenen Rollen ihre entsprechenden Einträge vornehmen. Der Abfrageprozess wird durch Statusübergänge - Auslösen über Buttons - durchlaufen.
+Die Infrastrukturabfragen aller drei Abfragearten durchlaufen einen sogenannten Abfrageprozess, in welchem die verschiedenen Rollen ihre entsprechenden Einträge vornehmen. Der Abfrageprozess wird durch Statusübergänge - Auslösen über Buttons - durchlaufen.
 
-Für alle Abfragearten, ist die Datengrundlage für die Bauratendatei und Schülerpotenzialprognose geschaffen. Dabei werden Informationen zum Grund- und Mittelschulsprengel sowie zu den Vierteln aus der Verortung herausgelesen und automatisch in ISI befüllt. Eine manuelle Änderung ist möglich. Entsprechende Validierungsregeln sind umgesetzt.
+Für alle Abfragearten ist die Datengrundlage für die Bauratendatei und Schülerpotenzialprognose geschaffen. Dabei werden Informationen zum Grund- und Mittelschulsprengel sowie zu den Vierteln aus der Verortung herausgelesen und automatisch in ISI befüllt. Eine manuelle Änderung ist möglich. Entsprechende Validierungsregeln sind umgesetzt.
 
 Für alle Abfragearten, die eine Verbindung zu Vorgängen innerhalb der e-Akte haben, ist es möglich den entsprechenden Link zum Vorgang der e-Akte anzugeben.
 
@@ -25,13 +25,13 @@ Für alle Abfragearten, die eine Verbindung zu Vorgängen innerhalb der e-Akte h
 
 In allen Abfragearten können in den einzelnen Varianten Berechnungen für planungsursächliche Bedarfen an Kinderbetreuungsplätzen vorgenommen werden. Die Abfragearten Bauleitplanverfahren und weitere Verfahren bieten zusätzlich die Möglichkeit eine Berechnung für die SoBoN-Bedarfe (Sozialgerechte Bodennutzung) durchzuführen. Dabei gilt es zu unterscheiden, dass eine planungsursächliche Berechnung für jede Abfragevariante erfolgen muss, eine SoBoN-Berechnung nur für bestimmte Varianten ausgelöst werden darf.
 
-Bei der Berechnung greift ISI auf die in der Anwendung hinterlegten Stammdaten zurück als auch auf Information, die vorab durch die Rolle Abfrageerstellung eingegeben bzw. durch ISI ermittelt worden sind, z.B. idealtypischen Bauraten, Förderarten mit unterschiedlichen Fördermixen.
+Bei der Berechnung greift ISI auf die in der Anwendung hinterlegten Stammdaten zurück als auch auf Information, die vorab durch die Rollen Abfrageerstellung und Sachbearbeitung eingegeben bzw. durch ISI ermittelt worden sind, z.B. idealtypischen Bauraten, Förderarten mit unterschiedlichen Fördermixen.
 
 Da es nicht für alle Förderarten Orientierungswerte aus der SoBoN-Grundlagenuntersuchung gibt, wurde auch eine so genannte Umlegung der Förderarten innerhalb von ISI berücksichtigt. Dadurch ist gewährleistet, dass die in ISI hinterlegten Fördermixe für die planungsursächliche und SoBoN-ursächliche Bedarfsberechnung genutzt werden können.
 
 Für den Fall, dass alleinig die Geschossfläche Wohnen und nicht die Wohneinheiten bekannt sind, erfolgt für die planungsursächliche Bedarfsberechnung automatisch eine Umrechnung der Geschossfläche Wohnen in die Wohneinheiten je Förderart.
 
-Die Ermittlung der Bedarfe erfordert verschiedene Berechnungen, die zu einem Teil in ISI erfolgen, zu einem anderen Teil in Metabase durchgeführt werden. Die Anzeige der Ergebnisse für die Berechnungen werden als Report in Metabase zur Verfügung gestellt, wobei der Zugriff auf die Reporte in ISI über einen Link gewährleistet ist.
+Die Ermittlung der Bedarfe erfordert verschiedene Berechnungen, wobei die Berechnung der Zeitreihen in ISI durchgeführt wird. Die Konsolidierung und Anzeige der Zeitreihen wie Summe, Mittelwert und Spitzenbedarf erfolgt als Reporte in Metabase, wobei der Zugriff auf die Reporte in ISI über einen Link gewährleistet ist.
 
 ### Schülerpotenzialprognose
 
@@ -40,7 +40,7 @@ Die Inhalte für die Attribute Grundschul-, Mittelschulsprengel und Viertel werd
 
 ### Benachrichtigungen
 
-Die Rollen Abfrageerstellung, Sachbearbeitung und Bedarfsmeldung erhalten jeweils eine Nachricht, wenn ein Arbeitsauftrag vorliegt. Für die Rollen Sachbearbeitung und Bedarfsmeldung wurde ein E-Mail-Verteiler eingerichtet, damit eine Gruppe von bestimmten Adressaten die Nachricht erhält. Die Nachricht wird über den E-Mail-Verteiler in das persönliche Postfach übertragen. Die Rolle Abfrageersteller erhält die Nachricht über den Arbeitsauftrag direkt (ohne E-Mail-Verteiler) an das persönliche Postfach.
+Die Rollen Abfrageerstellung, Sachbearbeitung und Bedarfsmeldung erhalten jeweils eine Nachricht, wenn ein Arbeitsauftrag vorliegt. Für die Rollen Sachbearbeitung und Bedarfsmeldung wurde ein E-Mail-Verteiler eingerichtet, damit eine Gruppe von bestimmten Adressaten die Nachricht erhält. Die Nachricht wird über den E-Mail-Verteiler in das persönliche Postfach übertragen. Die Rolle Abfrageersteller erhält die Nachricht über den Arbeitsauftrag direkt (ohne E-Mail-Verteiler) an das persönliche Postfach. Die Nachrichten werden nur bei bestimmten Statusübergängen versandt. Die Empfänger für bestimmte Statusübergänge sind konfigurierbar. Nur bei Wiedereröffnung einer Abfrage erhält der Abfrageersteller eine Mail an das persönliche Postfach.
 
 ### Bauvorhaben
 
@@ -58,15 +58,13 @@ Die Verwaltung der Infrastruktureinrichtungen ist gewährleistet. Änderungen, d
 
 Die Verortung der Infrastruktureinrichtungen ist umgesetzt. Die Rolle Sachbearbeitung PLAN kann - wenn keine Adresse bekannt - manuell eine Koordinate setzen. Sobald die Eingabe einer korrekten Adresse erfolgt, wird die manuell eingegebene Koordinate durch die korrekte Adresskoordinate ersetzt.
 
-Setzen der roten Stecknadel in der Verortungskarte
 Nach Bestätigung einer korrekten Adresse wird in der Verortungskarte eine rote Stecknadel als Markierung der Infrastruktureinrichtung gesetzt. Die Koordinate und administrative Informationen zu den Einrichtungen werden ergänzt.
 
 Für die Rolle Sachbearbeitung PLAN ist ein neuer Rahmen für interne Kommentare hinterlegt. Mit Datum können nun beliebig viele interne Anmerkungen und pro Anmerkung bis zu 20 Dokumente hinzugefügt werden.
 
 ### Dokumente
 
-Dokumente in einer Vielzahl von Dateiformaten können an Abfragen, Bauvorhaben und Infrastruktureinrichtungen hinzugefügt werden. Zur leichteren Kategorisierung kann für jedes Dokument noch die Dokumentenart (E-Mail, Beschluss usw.) bestimmt werden. Pro Abfrage oder Bauvorhaben können bis zu 20 Dokumente
-hochgeladen werden. Über ein internen Kommentarrahmen innerhalb der Bauvorhaben und Infrastruktureinrichtungen können pro Anmerkung weitere 20 Dokumente hinzugefügt werden. Außerdem wird ein Hochladen von Dokumente von bis zu 50 MB ermöglicht.
+Dokumente in einer Vielzahl von Dateiformaten können an Abfragen, Bauvorhaben und Infrastruktureinrichtungen hinzugefügt werden. Zur leichteren Kategorisierung kann für jedes Dokument noch die Dokumentenart (E-Mail, Beschluss usw.) bestimmt werden. Pro Abfrage oder Bauvorhaben können bis zu 20 Dokumente hochgeladen werden. Über ein internen Kommentarrahmen innerhalb der Bauvorhaben und Infrastruktureinrichtungen können pro Anmerkung weitere 20 Dokumente hinzugefügt werden. Außerdem wird ein Hochladen von Dokumente von bis zu 50 MB ermöglicht.
 
 ### Rechte, Rollen
 
@@ -78,19 +76,17 @@ Die Sichtrechte für die Reporte wurden ebenfalls nach den entsprechenden Rollen
 
 Für die Rolle Nutzer, wurden die Sichtrechte eingeschränkt. Die Rolle hat nur noch auf Abfragen im Status "Erledigt" ein Sichtrecht.
 
-### Status
-
 Eine Abfrage befindet sich während ihrer Erstellung und Bearbeitung jeweils in einem Status. Über das Rollen- und Rechtekonzept wird geregelt, dass ein Statusübergang nur von der jeweils berechtigten Rolle ausgeführt werden darf. Mit dem Statusübergang geht die Abfrage in die nächste Bearbeitungsphase über. Aus der Kombination Status der Abfrage und Rolle der Nutzer\*innen ergeben sich auch die Sicht- und Bearbeitbarkeit bestimmter Eingabefelder.
 
 ### Verortung
 
-Unter dem Register Karte wird eine Gesamtkarte dargestellt, die die Landeshauptstadt München (LHM) und ihre Randgebiete wiedergibt. Eine Karte zur Verortung ist in den Abfrage-, Bauvorhaben und Infrastruktureinrichtungsformularen bereits integriert. Die Lage der Infrastruktureinrichtungen, der Bauvorhaben bzw. der Abfragen ist über eine Verortung gewährleistet.
+Unter dem Register Karte wird eine Gesamtkarte dargestellt, die die Landeshauptstadt München (LHM) und ihre Randgebiete wiedergibt. Eine Karte zur Verortung ist in den Abfrage-Bauvorhaben und Infrastruktureinrichtungsformularen bereits integriert. Die Lage der Infrastruktureinrichtungen, der Bauvorhaben bzw. der Abfragen ist über eine Verortung gewährleistet.
 
 Zur Eingabe von Adressinformationen wird ein Suchfeld angeboten, mit welchem sich jede existierende Adresse der Stadt finden lässt. Ein zusätzliches Freitextfeld ermöglicht Angaben von noch nicht real bestehenden Adressen. Die Verortung ermöglicht es, innerhalb der Karte, Flurstücke auszuwählen und die Auswahl zu einem Multipolygon zusammenzuführen. Mit Bestätigung der Verortung werden Informationen zu den entsprechenden Stadtbezirken, die Gemarkungen und die betroffenen Eigentümer (städtisch bzw. nicht-städtisch) der Flurstücke angezeigt.
 
 Die Karte verfügt über grundlegende Funktionen wie das "Verschieben" und "Zoomen" und der Möglichkeit, zusätzliche Ebenen von Informationen (z.B. Stadtbezirksgrenzen) ein- und ausblenden zu können.
 
-Die Einstiegskarte ist um die administrativen Layer Bezirksteile, Viertel, Kitaplanungsbereiche, Grund- und Mittelschulsprengel sowie der Flächennutzungsplan ergänzt worden. Diese können über ein Klick ein- und ausgeblendet werden.
+Die Einstiegskarte ist um die administrativen Layer Bezirksteile, Viertel, Kitaplanungsbereiche, Grund- und Mittelschulsprengel sowie um den Flächennutzungsplan ergänzt worden. Diese können über ein Klick ein- und ausgeblendet werden.
 
 ### Suche und Filterung sowie Anzeige in der Karte
 
