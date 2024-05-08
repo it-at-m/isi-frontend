@@ -207,7 +207,7 @@ import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragev
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 
 interface Props {
-  isEditable: false;
+  isEditable?: boolean;
 }
 
 const abfragevariante = defineModel<AbfragevarianteBaugenehmigungsverfahrenModel>({ required: true });

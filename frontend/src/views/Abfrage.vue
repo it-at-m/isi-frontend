@@ -288,25 +288,25 @@
 </template>
 
 <script setup lang="ts">
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { computed, onBeforeMount, ref } from "vue";
 import {
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
-  BaurateDto,
-  BauleitplanverfahrenAngelegtDto,
-  BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
-  BauleitplanverfahrenInBearbeitungFachreferatDto,
-  BauleitplanverfahrenBedarfsmeldungErfolgtDto,
-  BaugenehmigungsverfahrenAngelegtDto,
-  BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
-  BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
-  BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
-  WeiteresVerfahrenAngelegtDto,
-  WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
-  WeiteresVerfahrenInBearbeitungFachreferatDto,
-  WeiteresVerfahrenBedarfsmeldungErfolgtDto,
-  TransitionDto,
+  type AbfragevarianteBauleitplanverfahrenDto,
+  type AbfragevarianteBaugenehmigungsverfahrenDto,
+  type AbfragevarianteWeiteresVerfahrenDto,
+  type BaurateDto,
+  type BauleitplanverfahrenAngelegtDto,
+  type BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
+  type BauleitplanverfahrenInBearbeitungFachreferatDto,
+  type BauleitplanverfahrenBedarfsmeldungErfolgtDto,
+  type BaugenehmigungsverfahrenAngelegtDto,
+  type BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
+  type BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
+  type BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
+  type WeiteresVerfahrenAngelegtDto,
+  type WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
+  type WeiteresVerfahrenInBearbeitungFachreferatDto,
+  type WeiteresVerfahrenBedarfsmeldungErfolgtDto,
+  type TransitionDto,
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
@@ -370,13 +370,13 @@ import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { findFaultInAbfrageForSave } from "@/utils/Validators";
 import { useSearchStore } from "@/stores/SearchStore";
 import {
+  type AbfrageDtoWithForm,
+  type AbfrageTreeItem,
+  type AnyAbfrageModel,
+  type AnyAbfragevarianteModel,
+  type AnyAbfrageDto,
   AnzeigeContextAbfragevariante,
-  AbfrageDtoWithForm,
   AbfrageFormType,
-  AbfrageTreeItem,
-  AnyAbfrageModel,
-  AnyAbfragevarianteModel,
-  AnyAbfrageDto,
 } from "@/types/common/Abfrage";
 import { useRoute, useRouter } from "vue-router";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -1085,7 +1085,7 @@ function removeAbfragevarianteFromAbfrage(): void {
         .abfragevariantenSachbearbeitungWeiteresVerfahren;
     }
 
-    let abfragevariantenContext =
+    const abfragevariantenContext =
       context === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE ? abfragevarianten! : abfragevariantenSachbearbeitung!;
     _.remove(abfragevariantenContext, (abfragevariante) => abfragevariante === treeItemToDelete!.value);
     // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.

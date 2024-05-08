@@ -124,6 +124,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
 import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";

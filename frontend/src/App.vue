@@ -126,6 +126,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeMount, onMounted, ref } from "vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import VersionInfo from "@/components/common/VersionInfo.vue";
 import { Userinfo } from "./types/common/Userinfo";

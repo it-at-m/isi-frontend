@@ -161,7 +161,7 @@ import NumField from "@/components/common/NumField.vue";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 
 interface Props {
-  isEditable: false;
+  isEditable?: boolean;
 }
 
 const abfragevariante = defineModel<AbfragevarianteBaugenehmigungsverfahrenModel>({ required: true });

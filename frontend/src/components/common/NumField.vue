@@ -80,7 +80,7 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 type Rule = (v: string | undefined | null) => true | string;
 
 interface Props {
-  value: number;
+  modelValue?: number;
   precision?: number;
   min?: number;
   max?: number;
@@ -161,9 +161,9 @@ const { inputRef, formattedValue, setValue } = useCurrencyInput(currencyInputOpt
 
 // Siehe https://dm4t2.github.io/vue-currency-input/guide.html#external-props-changes.
 watch(
-  () => props.value,
+  () => props.modelValue,
   (value) => {
-    setValue(value);
+    setValue(value === undefined ? null : value);
   },
 );
 
