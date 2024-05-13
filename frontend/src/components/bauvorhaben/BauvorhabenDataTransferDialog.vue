@@ -18,7 +18,7 @@
             id="bauvorhaben_abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
             :items="abfragen"
-            :item-text="(item) => getItemText(item)"
+            :item-title="(item) => getItemText(item)"
             item-value="id"
             label="Abfragen"
             return-object
@@ -33,7 +33,7 @@
         <v-btn
           id="bauvorhaben_abfrage_datenuebernahme_abbrechen_button"
           class="text-wrap"
-          text
+          variant="text"
           @click="uebernahmeAbbrechen"
           v-text="'Abbrechen'"
         />

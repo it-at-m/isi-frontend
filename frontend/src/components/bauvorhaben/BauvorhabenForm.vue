@@ -11,12 +11,12 @@
             v-model="bauvorhaben.standVerfahren"
             :items="standVerfahren"
             item-value="key"
-            item-text="value"
+            item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
-            @change="formChanged"
+            @update:model-value="formChanged"
           >
-            <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
+            <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -32,7 +32,7 @@
               :disabled="!isEditable"
               label="Freie Eingabe für Stand des Verfahrens"
               maxlength="1000"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -86,14 +86,14 @@
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
             :items="wesentlicheRechtsgrundlage"
             item-value="key"
-            item-text="value"
+            item-title="value"
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
-            @change="formChanged"
+            @update:model-value="formChanged"
           >
-            <template #label> Wesentliche Rechtsgrundlage <span class="secondary--text">*</span> </template>
+            <template #label> Wesentliche Rechtsgrundlage <span class="text-secondary">*</span> </template>
           </v-autocomplete>
         </v-col>
         <v-col
@@ -109,7 +109,7 @@
               :disabled="!isEditable"
               label="Freie Eingabe für Wesentliche Rechtsgrundlage"
               maxlength="1000"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -121,16 +121,16 @@
             v-model="bauvorhaben.artFnp"
             :items="artBaulicheNutzungBauvorhaben"
             item-value="key"
-            item-text="value"
+            item-title="value"
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
-            @input="formChanged"
+            @update:model-value="formChanged"
           >
             <template #label>
               Art der baulichen Nutzung
-              <span class="secondary--text">*</span>
+              <span class="text-secondary">*</span>
             </template>
           </v-autocomplete>
         </v-col>
@@ -146,7 +146,7 @@
               :disabled="!isEditable"
               label="Freie Eingabe für Art der baulichen Nutzung"
               maxlength="1000"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -162,7 +162,7 @@
             label="Bebauungsplannummer"
             maxlength="255"
             :disabled="!isEditable"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
         <v-col
@@ -175,7 +175,7 @@
             label="FIS-Nummer"
             maxlength="255"
             :disabled="!isEditable"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -189,7 +189,7 @@
             auto-grow
             maxlength="1000"
             :disabled="!isEditable"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -215,7 +215,7 @@
             :rules="[notUnspecified]"
             :disabled="!isEditable"
           >
-            <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
+            <template #label> SoBoN-relevant <span class="text-secondary">*</span> </template>
           </tri-switch>
         </v-col>
         <v-col
@@ -229,13 +229,13 @@
               v-model="bauvorhaben.sobonJahr"
               :items="sobonVerfahrensgrundsaetzeJahr"
               item-value="key"
-              item-text="value"
+              item-title="value"
               :rules="[pflichtfeld]"
               :disabled="!isEditable"
-              @change="formChanged"
+              @update:model-value="formChanged"
             >
               <template #label>
-                Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN <span class="secondary--text">*</span>
+                Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN <span class="text-secondary">*</span>
               </template>
             </v-select>
           </v-slide-y-reverse-transition>

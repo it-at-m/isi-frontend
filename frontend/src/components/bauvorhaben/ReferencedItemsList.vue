@@ -1,14 +1,12 @@
 <template>
-  <v-container class="transition-swing">
+  <v-container class="scale-transition">
     <v-expansion-panels>
       <v-expansion-panel @click="getReferencedAbfragen()">
-        <v-expansion-panel-header> Abfragen </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-title> Abfragen </v-expansion-panel-title>
+        <v-expansion-panel-text>
           <v-list v-if="abfragenEmpty">
             <v-list-item>
-              <v-list-item-content>
-                <v-list-item-subtitle>Dieses Bauvorhaben wird nicht durch Abfragen referenziert</v-list-item-subtitle>
-              </v-list-item-content>
+              <v-list-item-subtitle>Dieses Bauvorhaben wird nicht durch Abfragen referenziert</v-list-item-subtitle>
             </v-list-item>
           </v-list>
           <v-list v-else>
@@ -17,29 +15,30 @@
               :key="index"
               link
             >
-              <v-list-item-content
-                :id="'abfragen_bauvorhaben_reference_' + index"
+              <v-list-item-title
+                :id="'abfragen_bauvorhaben_reference_title' + index"
                 @click="routeToAbfrageInfo(abfrage)"
               >
-                <v-list-item-title>{{ abfrage.name }}</v-list-item-title>
-                <v-list-item-subtitle
-                  >Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
+                {{ abfrage.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle
+                :id="'abfragen_bauvorhaben_reference_subtitle' + index"
+                @click="routeToAbfrageInfo(abfrage)"
+              >
+                Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
+              </v-list-item-subtitle>
             </v-list-item>
           </v-list>
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
       <v-expansion-panel @click="getReferencedInfrastruktureinrichtungen()">
-        <v-expansion-panel-header> Infrastruktureinrichtungen </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-title> Infrastruktureinrichtungen </v-expansion-panel-title>
+        <v-expansion-panel-text>
           <v-list v-if="infrastruktureinrichtungenEmpty">
             <v-list-item>
-              <v-list-item-content>
-                <v-list-item-subtitle
-                  >Dieses Bauvorhaben wird nicht durch Infrastruktureinrichtungen referenziert</v-list-item-subtitle
-                >
-              </v-list-item-content>
+              <v-list-item-subtitle>
+                Dieses Bauvorhaben wird nicht durch Infrastruktureinrichtungen referenziert
+              </v-list-item-subtitle>
             </v-list-item>
           </v-list>
           <v-list v-else>
@@ -48,18 +47,24 @@
               :key="index"
               link
             >
-              <v-list-item-content
-                :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
+              :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
+              @click="routeToInfrastruktureinrichtungInfo(infra)"
+
+              <v-list-item-title
+                :id="'infrastruktureinrichtungen_bauvorhaben_reference_title' + index"
                 @click="routeToInfrastruktureinrichtungInfo(infra)"
               >
-                <v-list-item-title> {{ infra.nameEinrichtung }} </v-list-item-title>
-                <v-list-item-subtitle>
-                  Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungTyp) }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
+                {{ infra.nameEinrichtung }}
+              </v-list-item-title>
+              <v-list-item-subtitle
+                :id="'infrastruktureinrichtungen_bauvorhaben_reference_subtitle' + index"
+                @click="routeToInfrastruktureinrichtungInfo(infra)"
+              >
+                Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungTyp) }}
+              </v-list-item-subtitle>
             </v-list-item>
           </v-list>
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
   </v-container>

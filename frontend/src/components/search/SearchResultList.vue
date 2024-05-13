@@ -21,7 +21,7 @@
           v-if="isTypeOfAbfrage(item)"
           :id="'search_result_item_' + index"
           variant="outlined"
-          class="my-1 mx-0"
+          class="my-1 mx-0 scale-transition"
           :elevation="isHovering ? 4 : 0"
           :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
           @click="routeToAbfrageForm(item)"
@@ -52,7 +52,7 @@
           v-else-if="isTypeOfBauvorhaben(item)"
           :id="'search_result_item_' + index"
           variant="outlined"
-          class="my-1 mx-0"
+          class="my-1 mx-0 scale-transition"
           :elevation="isHovering ? 4 : 0"
           @click="routeToBauvorhabenForm(item)"
         >
@@ -83,7 +83,7 @@
           v-else
           :id="'search_result_item_' + index"
           variant="outlined"
-          class="my-1 mx-0"
+          class="my-1 mx-0 scale-transition"
           :elevation="isHovering ? 4 : 0"
           @click="routeToInfrastruktureinrichtungForm(item)"
         >

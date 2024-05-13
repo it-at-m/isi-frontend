@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 mb-2">
+  <v-container class="scale-transition pa-0 mb-2">
     <v-expansion-panels class="ma-0 pa-0">
       <v-expansion-panel
         class="pa-0"
