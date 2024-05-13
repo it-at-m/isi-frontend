@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, expect, beforeEach, test } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import { useUserinfoStore } from "@/stores/Userinfostore";
 import { Userinfo } from "@/types/common/Userinfo";
@@ -8,7 +8,7 @@ describe("Userinfo Store", () => {
     setActivePinia(createPinia());
   });
 
-  it("setUserinfo updates the userinfo correctly", () => {
+  test("setUserinfo updates the userinfo correctly", () => {
     const userinfoStore = useUserinfoStore();
     const newUserinfo: Userinfo = {
       givenname: "Testing",
@@ -22,7 +22,7 @@ describe("Userinfo Store", () => {
   });
 
   describe("Role-based getters", () => {
-    it("hasRoleAdmin returns true if the user has admin role", () => {
+    test("hasRoleAdmin returns true if the user has admin role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -34,7 +34,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleAdmin).toBe(true);
     });
 
-    it("hasRoleAbfrageerstellung returns true if the user has abfrageerstellung role", () => {
+    test("hasRoleAbfrageerstellung returns true if the user has abfrageerstellung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -46,7 +46,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleAbfrageerstellung).toBe(true);
     });
 
-    it("hasRoleAbfrageerstellung returns false if the user has not abfrageerstellung role", () => {
+    test("hasRoleAbfrageerstellung returns false if the user has not abfrageerstellung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -58,7 +58,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleAbfrageerstellung).toBe(false);
     });
 
-    it("hasRoleSachbearbeitung returns true if the user has sachbearbeitung role", () => {
+    test("hasRoleSachbearbeitung returns true if the user has sachbearbeitung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -70,7 +70,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleSachbearbeitung).toBe(true);
     });
 
-    it("hasRoleSachbearbeitung returns false if the user has not sachbearbeitung role", () => {
+    test("hasRoleSachbearbeitung returns false if the user has not sachbearbeitung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -82,7 +82,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleSachbearbeitung).toBe(false);
     });
 
-    it("hasRoleBedarfsmeldung returns true if the user has bedarfsmeldung role", () => {
+    test("hasRoleBedarfsmeldung returns true if the user has bedarfsmeldung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -94,7 +94,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleBedarfsmeldung).toBe(true);
     });
 
-    it("hasRoleBedarfsmeldung returns false if the user has not bedarfsmeldung role", () => {
+    test("hasRoleBedarfsmeldung returns false if the user has not bedarfsmeldung role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -106,7 +106,7 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleBedarfsmeldung).toBe(false);
     });
 
-    it("hasOnlyRoleAnwender returns true if anwender is the only role of the user", () => {
+    test("hasOnlyRoleAnwender returns true if anwender is the only role of the user", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",

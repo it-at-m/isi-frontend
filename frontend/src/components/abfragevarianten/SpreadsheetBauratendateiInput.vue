@@ -97,6 +97,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import type { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import type { DataTableHeader } from "@/types/common/DataTableHeader";
 import NumField from "@/components/common/NumField.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import {
@@ -109,7 +110,6 @@ import {
 } from "@/utils/BauratendateiUtils";
 import { digits, min4, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
-import { DataTableHeader } from "@/types/common/DataTableHeader";
 
 interface Props {
   foerderartenBauratendateiInputBasis?: Array<string>;

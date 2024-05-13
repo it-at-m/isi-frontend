@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, expect, beforeEach, test } from "vitest";
+import type { InformationResponseDto } from "@/api/api-client/isi-backend";
 import { createPinia, setActivePinia } from "pinia";
-import { useInformationStore } from "../../../src/stores/InformationStore";
-import { InformationResponseDto } from "@/api/api-client/isi-backend";
+import { useInformationStore } from "@/stores/InformationStore";
 
 // Mock für InformationResponseDto
 
@@ -10,7 +10,7 @@ describe("Information Store", () => {
     setActivePinia(createPinia());
   });
 
-  it("addInformation adds information to the start of the list", () => {
+  test("addInformation adds information to the start of the list", () => {
     const informationStore = useInformationStore();
     const mockInfo: InformationResponseDto = { type: "INFORMATION_SUCCESS", httpStatus: 200, traceId: "1234" };
 
@@ -20,7 +20,7 @@ describe("Information Store", () => {
     expect(informationStore.informationList[0]).toEqual(mockInfo);
   });
 
-  it("overwriteInformationList correctly overwrites the entire list", () => {
+  test("overwriteInformationList correctly overwrites the entire list", () => {
     const informationStore = useInformationStore();
     const initialList: InformationResponseDto[] = [
       { type: "INFORMATION_SUCCESS", httpStatus: 200, traceId: "1234" },
@@ -37,7 +37,7 @@ describe("Information Store", () => {
     expect(informationStore.informationList).toEqual(newList);
   });
 
-  it("overwriteInformationList sets the list to empty if payload is null", () => {
+  test("overwriteInformationList sets the list to empty if payload is null", () => {
     const informationStore = useInformationStore();
     const initialList: InformationResponseDto[] = [{ type: "INFORMATION_SUCCESS", httpStatus: 200, traceId: "1234" }];
 

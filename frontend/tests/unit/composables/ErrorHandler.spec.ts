@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import { useErrorHandler } from "@/composables/requests/ErrorHandler";
@@ -7,7 +8,7 @@ describe("ErrorHandler Test", () => {
   setActivePinia(createPinia());
   const { getToastLevel } = useErrorHandler();
 
-  it("getToastLevel Test", () => {
+  test("getToastLevel Test", () => {
     let level: Levels = getToastLevel(InformationResponseDtoTypeEnum.Error);
     expect(level).toBe(Levels.ERROR);
 
