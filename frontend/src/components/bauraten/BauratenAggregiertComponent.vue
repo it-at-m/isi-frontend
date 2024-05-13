@@ -45,12 +45,12 @@
 import { watch, computed } from "vue";
 import type { BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 import type { AnyAbfragevarianteModel } from "@/types/common/Abfrage";
+import type { DataTableHeader } from "@/types/common/DataTableHeader";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import { DataTableHeader } from "@/types/common/DataTableHeader";
 import _ from "lodash";
 import { numberToFormattedStringTwoDecimals, numberToFormattedStringZeroDecimals } from "@/utils/CalculationUtil";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
@@ -79,9 +79,9 @@ const aggregatedBauraten = computed(() => {
 
 const bauratenJahreHeaders = computed(() => {
   const headers = new Array<DataTableHeader>();
-  headers.push(new DataTableHeader("Jahr", undefined, false));
+  headers.push({ title: "Jahr", key: undefined, sortable: false });
   aggregatedBauraten.value.forEach((baurate: BaurateModel) => {
-    headers.push(new DataTableHeader(baurate.jahr.toString(), undefined, false));
+    headers.push({ title: baurate.jahr.toString(), key: undefined, sortable: false });
   });
   return headers;
 });
@@ -151,11 +151,11 @@ const header = computed(() => {
   return "";
 });
 
-function formatWohneinheiten(wohneinheiten: number): string {
+function formatWohneinheiten(wohneinheiten: number | undefined): string {
   return _.isNil(wohneinheiten) ? "" : numberToFormattedStringZeroDecimals(wohneinheiten);
 }
 
-function formatGeschossflaecheWohnen(geschossflaecheWohnen: number): string {
+function formatGeschossflaecheWohnen(geschossflaecheWohnen: number | undefined): string {
   return _.isNil(geschossflaecheWohnen) ? "" : numberToFormattedStringTwoDecimals(geschossflaecheWohnen);
 }
 </script>

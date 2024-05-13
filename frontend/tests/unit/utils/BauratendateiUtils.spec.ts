@@ -1,5 +1,6 @@
-import { BauratendateiInputDto, WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
-import { DataTableHeader } from "vuetify";
+import { describe, expect, test } from "vitest";
+import type { BauratendateiInputDto, WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import type { DataTableHeader } from "@/types/common/DataTableHeader";
 import {
   createBauratendateiInput,
   createHeaders,
@@ -68,45 +69,45 @@ const foerderartenBauratendateiInputBasis: Array<string> = [
 
 describe("BauratendateiUtils.spec.ts", () => {
   test("Transformation bauratendateiInput in Header", () => {
-    let result = createHeaders(foerderartenBauratendateiInputBasis);
-    let expected: Array<DataTableHeader> = [
+    const result = createHeaders(foerderartenBauratendateiInputBasis);
+    const expected: Array<DataTableHeader> = [
       {
-        text: "Jahr",
-        value: "jahr",
+        title: "Jahr",
+        key: "jahr",
         align: "start",
         width: "10%",
       },
       {
-        text: "foerderart1",
-        value: "foerderart1",
+        title: "foerderart1",
+        key: "foerderart1",
         align: "start",
       },
       {
-        text: "foerderart2",
-        value: "foerderart2",
+        title: "foerderart2",
+        key: "foerderart2",
         align: "start",
       },
       {
-        text: "foerderart3",
-        value: "foerderart3",
+        title: "foerderart3",
+        key: "foerderart3",
         align: "start",
       },
       {
-        text: "foerderart4",
-        value: "foerderart4",
+        title: "foerderart4",
+        key: "foerderart4",
         align: "start",
       },
       {
-        text: "Gesamt",
+        title: "Gesamt",
         sortable: false,
-        value: "gesamt",
+        key: "gesamt",
         align: "start",
       },
       {
         align: "end",
         sortable: false,
-        text: "",
-        value: "actions",
+        title: "",
+        key: "actions",
         width: "10%",
       },
     ];
@@ -114,25 +115,25 @@ describe("BauratendateiUtils.spec.ts", () => {
   });
 
   test("Transformation bauratendateiInput undefined in Header", () => {
-    let result = createHeaders(undefined);
-    let expected: Array<DataTableHeader> = [
+    const result = createHeaders(undefined);
+    const expected: Array<DataTableHeader> = [
       {
-        text: "Jahr",
-        value: "jahr",
+        title: "Jahr",
+        key: "jahr",
         align: "start",
         width: "10%",
       },
       {
-        text: "Gesamt",
+        title: "Gesamt",
         sortable: false,
-        value: "gesamt",
+        key: "gesamt",
         align: "start",
       },
       {
         align: "end",
         sortable: false,
-        text: "",
-        value: "actions",
+        title: "",
+        key: "actions",
         width: "10%",
       },
     ];
@@ -140,8 +141,8 @@ describe("BauratendateiUtils.spec.ts", () => {
   });
 
   test("Transformation bauratendateiInput in Table Data", () => {
-    let result = createTableData(bauratendateiInput);
-    let expected: Array<any> = [
+    const result = createTableData(bauratendateiInput);
+    const expected: Array<any> = [
       {
         index: 0,
         jahr: "2024",
@@ -171,13 +172,13 @@ describe("BauratendateiUtils.spec.ts", () => {
   });
 
   test("Transformation bauratendateiInput undefined in Table Data", () => {
-    let result = createTableData(undefined);
-    let expected: Array<any> = [];
+    const result = createTableData(undefined);
+    const expected: Array<any> = [];
     expect(result).toEqual(expected);
   });
 
   test("Transformation Table Data to WohneinheitenProFoerderartProJahrDto", () => {
-    let tableData: Array<any> = [
+    const tableData: Array<any> = [
       {
         index: 0,
         jahr: "2024",
@@ -203,13 +204,13 @@ describe("BauratendateiUtils.spec.ts", () => {
         gesamt: 30,
       },
     ];
-    let result = createBauratendateiInput(tableData);
+    const result = createBauratendateiInput(tableData);
     expect(result).toEqual(bauratendateiInput);
   });
 
   test("Transformation empty Table Data to WohneinheitenProFoerderartProJahrDto", () => {
-    let result = createBauratendateiInput([]);
-    let expected: Array<WohneinheitenProFoerderartProJahrDto> = [];
+    const result = createBauratendateiInput([]);
+    const expected: Array<WohneinheitenProFoerderartProJahrDto> = [];
     expect(result).toEqual(expected);
   });
 
@@ -253,8 +254,8 @@ describe("BauratendateiUtils.spec.ts", () => {
         ],
       } as BauratendateiInputDto,
     ];
-    let result = sumWohneinheitenOfBauratendateiInput(bauratendateiInputs);
-    let expected = new Map<string, number>();
+    const result = sumWohneinheitenOfBauratendateiInput(bauratendateiInputs);
+    const expected = new Map<string, number>();
     expected.set("2024_foerderart3", 8);
     expected.set("2024_foerderart4", 15);
     expected.set("2025_foerderart1", 20);
@@ -263,8 +264,8 @@ describe("BauratendateiUtils.spec.ts", () => {
   });
 
   test("sumWohneinheitenOfBauratendateiInput with empty BauratendateiInput", () => {
-    let result = sumWohneinheitenOfBauratendateiInput([]);
-    let expected = new Map<string, number>();
+    const result = sumWohneinheitenOfBauratendateiInput([]);
+    const expected = new Map<string, number>();
     expect(result).toEqual(expected);
   });
 });

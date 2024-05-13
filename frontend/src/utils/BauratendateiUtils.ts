@@ -1,9 +1,5 @@
-import {
-  BauratendateiInputDto,
-  instanceOfWohneinheitenProFoerderartProJahrDto,
-  WohneinheitenProFoerderartProJahrDto,
-} from "@/api/api-client/isi-backend";
-import { DataTableHeader } from "vuetify";
+import type { BauratendateiInputDto, WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import type { DataTableHeader } from "@/types/common/DataTableHeader";
 import _ from "lodash";
 
 export const ATTRIBUTE_KEY_JAHR = "jahr";
@@ -20,27 +16,27 @@ export const JAHR_FOERDERART_SEPERATOR = "_";
 
 export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
   const headers = createHeadersForFoerderarten(foerderartenBauratendateiInputBasis);
-  const headerForJahr = {
-    text: ATTRIBUTE_HEADER_VALUE_JAHR,
-    value: ATTRIBUTE_KEY_JAHR,
+  const headerForJahr: DataTableHeader = {
+    title: ATTRIBUTE_HEADER_VALUE_JAHR,
+    key: ATTRIBUTE_KEY_JAHR,
     align: "start",
     width: "10%",
-  } as DataTableHeader;
+  };
   headers.unshift(headerForJahr);
-  const headerForGesamt = {
-    text: "Gesamt",
-    value: "gesamt",
+  const headerForGesamt: DataTableHeader = {
+    title: "Gesamt",
+    key: "gesamt",
     sortable: false,
     align: "start",
-  } as DataTableHeader;
+  };
   headers.push(headerForGesamt);
-  const headerForActions = {
-    text: "",
-    value: "actions",
+  const headerForActions: DataTableHeader = {
+    title: "",
+    key: "actions",
     sortable: false,
     align: "end",
     width: "10%",
-  } as DataTableHeader;
+  };
   headers.push(headerForActions);
   return headers;
 }
@@ -50,10 +46,10 @@ export function createHeadersForFoerderarten(
 ): Array<DataTableHeader> {
   return _.uniq(_.toArray(foerderartenBauratendateiInputBasis)).map((headerFoerderart) => {
     return {
-      text: headerFoerderart,
-      value: headerFoerderart,
+      title: headerFoerderart,
+      key: headerFoerderart,
       align: "start",
-    } as DataTableHeader;
+    };
   });
 }
 
@@ -87,7 +83,7 @@ export function createHeadersForFoerderarten(
  */
 export function createTableData(
   bauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> | undefined,
-): Array<any> {
+): Array<unknown> {
   /**
    * Ermittlung der Wohneinheiten je Förderart je Jahr.
    */
@@ -119,7 +115,7 @@ export function createTableData(
    * }
    */
   let index = 0;
-  const tableDataObjects: Array<any> = [];
+  const tableDataObjects: Array<unknown> = [];
   jahrWithWohneinheitenForEachFoerderart.forEach((foerderartenWithWohneinheiten, jahr) => {
     const tableEntry = new Map<string | undefined, string | number | undefined>();
     tableEntry.set(ATTRIBUTE_KEY_JAHR, jahr);
@@ -164,7 +160,9 @@ export function createTableData(
  *   }
  *]
  */
-export function createBauratendateiInput(tableData: Array<any>): Array<WohneinheitenProFoerderartProJahrDto> {
+export function createBauratendateiInput(
+  tableData: Array<Record<string, unknown>>,
+): Array<WohneinheitenProFoerderartProJahrDto> {
   const newBauratendateiInput: Array<WohneinheitenProFoerderartProJahrDto> = [];
   _.cloneDeep(tableData).forEach((tableEntry) => {
     const tableEntryMap = new Map(Object.entries(tableEntry));
