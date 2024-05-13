@@ -39,6 +39,6 @@ io:
 # duplicate in application.yml
 file:
   number.max: 20
-  size.max: 31457280 # bytes
+  size.max: 52428800 # Bytes = 50 Mebibyte (MiB)
   extensions.allowed: .msg # Dateiendungen welche nicht über den MIME-Type ermittelt werden können. Werden benötigt für die backendseitige Validierung der Dateiendung.
   mimetypes.allowed: application/pdf,image/png
