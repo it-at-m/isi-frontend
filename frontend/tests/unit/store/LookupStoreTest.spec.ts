@@ -1,7 +1,7 @@
-import { describe, expect, vi } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
+import type { LookupListDto } from "@/api/api-client/isi-backend";
 import { createPinia, setActivePinia } from "pinia";
-import { useLookupStore } from "../../../src/stores/LookupStore";
-import { LookupListDto } from "@/api/api-client/isi-backend";
+import { useLookupStore } from "@/stores/LookupStore";
 
 describe("Lookup Store Setters", () => {
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe("Lookup Store Setters", () => {
   const examplePayloadListUndefined: LookupListDto | undefined = { list: undefined };
   const examplePayloadUndefined: LookupListDto | undefined = undefined;
 
-  it("setUncertainBoolean updates uncertainBoolean correctly", () => {
+  test("setUncertainBoolean updates uncertainBoolean correctly", () => {
     const store = useLookupStore();
     store.setUncertainBoolean(examplePayload);
     expect(store.uncertainBoolean).toEqual(examplePayload.list);
@@ -22,7 +22,7 @@ describe("Lookup Store Setters", () => {
     expect(store.uncertainBoolean).toEqual([]);
   });
 
-  it("setArtDokument updates artDokument correctly", () => {
+  test("setArtDokument updates artDokument correctly", () => {
     const store = useLookupStore();
     store.setArtDokument(examplePayload);
     expect(store.artDokument).toEqual(examplePayload.list);
@@ -32,7 +32,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setArtAbfrage updates artAbfrage correctly", () => {
+  test("setArtAbfrage updates artAbfrage correctly", () => {
     const store = useLookupStore();
     store.setArtAbfrage(examplePayload);
     expect(store.artAbfrage).toEqual(examplePayload.list);
@@ -42,7 +42,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setSobonVerfahrensgrundsaetzeJahr updates sobonVerfahrensgrundsaetzeJahr correctly", () => {
+  test("setSobonVerfahrensgrundsaetzeJahr updates sobonVerfahrensgrundsaetzeJahr correctly", () => {
     const store = useLookupStore();
     store.setSobonVerfahrensgrundsaetzeJahr(examplePayload);
     expect(store.sobonVerfahrensgrundsaetzeJahr).toEqual(examplePayload.list);
@@ -52,7 +52,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setStandVerfahrenBauleitplanverfahren updates standVerfahrenBauleitplanverfahren correctly", () => {
+  test("setStandVerfahrenBauleitplanverfahren updates standVerfahrenBauleitplanverfahren correctly", () => {
     const store = useLookupStore();
     store.setStandVerfahrenBauleitplanverfahren(examplePayload);
     expect(store.standVerfahrenBauleitplanverfahren).toEqual(examplePayload.list);
@@ -62,7 +62,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setStandVerfahrenBaugenehmigungsverfahren updates standVerfahrenBaugenehmigungsverfahren correctly", () => {
+  test("setStandVerfahrenBaugenehmigungsverfahren updates standVerfahrenBaugenehmigungsverfahren correctly", () => {
     const store = useLookupStore();
     store.setStandVerfahrenBaugenehmigungsverfahren(examplePayload);
     expect(store.standVerfahrenBaugenehmigungsverfahren).toEqual(examplePayload.list);
@@ -72,7 +72,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setStandVerfahrenWeiteresVerfahren updates standVerfahrenWeiteresVerfahren correctly", () => {
+  test("setStandVerfahrenWeiteresVerfahren updates standVerfahrenWeiteresVerfahren correctly", () => {
     const store = useLookupStore();
     store.setStandVerfahrenWeiteresVerfahren(examplePayload);
     expect(store.standVerfahrenWeiteresVerfahren).toEqual(examplePayload.list);
@@ -82,7 +82,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setStandVerfahren updates standVerfahren correctly", () => {
+  test("setStandVerfahren updates standVerfahren correctly", () => {
     const store = useLookupStore();
     store.setStandVerfahren(examplePayload);
     expect(store.standVerfahren).toEqual(examplePayload.list);
@@ -92,7 +92,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setStatusAbfrage updates statusAbfrage correctly", () => {
+  test("setStatusAbfrage updates statusAbfrage correctly", () => {
     const store = useLookupStore();
     store.setStatusAbfrage(examplePayload);
     expect(store.statusAbfrage).toEqual(examplePayload.list);
@@ -102,7 +102,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setWesentlicheRechtsgrundlageBauleitplanverfahren updates wesentlicheRechtsgrundlageBauleitplanverfahren correctly", () => {
+  test("setWesentlicheRechtsgrundlageBauleitplanverfahren updates wesentlicheRechtsgrundlageBauleitplanverfahren correctly", () => {
     const store = useLookupStore();
     store.setWesentlicheRechtsgrundlageBauleitplanverfahren(examplePayload);
     expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren).toEqual(examplePayload.list);
@@ -112,7 +112,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setWesentlicheRechtsgrundlageBaugenehmigungsverfahren updates wesentlicheRechtsgrundlageBaugenehmigungsverfahren correctly", () => {
+  test("setWesentlicheRechtsgrundlageBaugenehmigungsverfahren updates wesentlicheRechtsgrundlageBaugenehmigungsverfahren correctly", () => {
     const store = useLookupStore();
     store.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(examplePayload);
     expect(store.wesentlicheRechtsgrundlageBaugenehmigungsverfahren).toEqual(examplePayload.list);
@@ -122,7 +122,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setWesentlicheRechtsgrundlage updates wesentlicheRechtsgrundlage correctly", () => {
+  test("setWesentlicheRechtsgrundlage updates wesentlicheRechtsgrundlage correctly", () => {
     const store = useLookupStore();
     store.setWesentlicheRechtsgrundlage(examplePayload);
     expect(store.wesentlicheRechtsgrundlage).toEqual(examplePayload.list);
@@ -132,7 +132,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setArtBaulicheNutzung updates artBaulicheNutzung correctly", () => {
+  test("setArtBaulicheNutzung updates artBaulicheNutzung correctly", () => {
     const store = useLookupStore();
     store.setArtBaulicheNutzung(examplePayload);
     expect(store.artBaulicheNutzung).toEqual(examplePayload.list);
@@ -142,7 +142,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setArtBaulicheNutzungBauvorhaben updates artBaulicheNutzungBauvorhaben correctly", () => {
+  test("setArtBaulicheNutzungBauvorhaben updates artBaulicheNutzungBauvorhaben correctly", () => {
     const store = useLookupStore();
     store.setArtBaulicheNutzungBauvorhaben(examplePayload);
     expect(store.artBaulicheNutzungBauvorhaben).toEqual(examplePayload.list);
@@ -152,7 +152,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setStatusInfrastruktureinrichtung updates statusInfrastruktureinrichtung correctly", () => {
+  test("setStatusInfrastruktureinrichtung updates statusInfrastruktureinrichtung correctly", () => {
     const store = useLookupStore();
     store.setStatusInfrastruktureinrichtung(examplePayload);
     expect(store.statusInfrastruktureinrichtung).toEqual(examplePayload.list);
@@ -162,7 +162,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setEinrichtungstraeger updates einrichtungstraeger correctly", () => {
+  test("setEinrichtungstraeger updates einrichtungstraeger correctly", () => {
     const store = useLookupStore();
     store.setEinrichtungstraeger(examplePayload);
     expect(store.einrichtungstraeger).toEqual(examplePayload.list);
@@ -172,7 +172,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setEinrichtungstraegerSchulen updates einrichtungstraegerSchulen correctly", () => {
+  test("setEinrichtungstraegerSchulen updates einrichtungstraegerSchulen correctly", () => {
     const store = useLookupStore();
     store.setEinrichtungstraegerSchulen(examplePayload);
     expect(store.einrichtungstraegerSchulen).toEqual(examplePayload.list);
@@ -182,7 +182,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setInfrastruktureinrichtungTyp updates infrastruktureinrichtungTyp correctly", () => {
+  test("setInfrastruktureinrichtungTyp updates infrastruktureinrichtungTyp correctly", () => {
     const store = useLookupStore();
     store.setInfrastruktureinrichtungTyp(examplePayload);
     expect(store.infrastruktureinrichtungTyp).toEqual(examplePayload.list);
@@ -192,7 +192,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setArtGsNachmittagBetreuung updates artGsNachmittagBetreuung correctly", () => {
+  test("setArtGsNachmittagBetreuung updates artGsNachmittagBetreuung correctly", () => {
     const store = useLookupStore();
     store.setArtGsNachmittagBetreuung(examplePayload);
     expect(store.artGsNachmittagBetreuung).toEqual(examplePayload.list);
@@ -202,7 +202,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setSobonOrientierungswertJahr updates sobonOrientierungswertJahr correctly", () => {
+  test("setSobonOrientierungswertJahr updates sobonOrientierungswertJahr correctly", () => {
     const store = useLookupStore();
     store.setSobonOrientierungswertJahr(examplePayload);
     expect(store.sobonOrientierungswertJahr).toEqual(examplePayload.list);
@@ -212,7 +212,7 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  it("setSobonOrientierungswertJahrWithoutStandortabfrage updates sobonOrientierungswertJahrWithoutStandortabfrage correctly", () => {
+  test("setSobonOrientierungswertJahrWithoutStandortabfrage updates sobonOrientierungswertJahrWithoutStandortabfrage correctly", () => {
     const store = useLookupStore();
     store.setSobonOrientierungswertJahrWithoutStandortabfrage(examplePayload);
     expect(store.sobonOrientierungswertJahrWithoutStandortabfrage).toEqual(examplePayload.list);

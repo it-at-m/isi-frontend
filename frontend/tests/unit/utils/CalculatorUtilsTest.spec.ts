@@ -1,5 +1,5 @@
+import { beforeEach, describe, expect, test } from "vitest";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import { FoerdermixDto } from "@/api/api-client/isi-backend";
 import { addiereAnteile } from "@/utils/CalculationUtil";
 
 describe("CalculatorUtilsTest", () => {
@@ -16,10 +16,10 @@ describe("CalculatorUtilsTest", () => {
         { bezeichnung: "MuenchenModell", anteilProzent: 10 },
         { bezeichnung: "PreisgedaempfterMietwohnungsbau", anteilProzent: 40 },
       ],
-    } as FoerdermixDto);
+    });
   });
 
-  it("should add 100", async function () {
+  test("should add 100", async function () {
     const ergebnis = addiereAnteile(foerdermix);
 
     expect(ergebnis).toBe(100);
@@ -33,7 +33,7 @@ describe("CalculatorUtilsTest", () => {
     expect(ergebnis2).toBe(130);
   });
 
-  it("should return 0 when undefined", async function () {
+  test("should return 0 when undefined", async function () {
     const foerdermix = new FoerdermixModel({});
     const ergebnis = addiereAnteile(foerdermix);
     expect(ergebnis).toBe(0);

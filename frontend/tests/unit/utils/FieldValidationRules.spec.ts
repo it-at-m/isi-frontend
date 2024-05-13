@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import {
@@ -15,7 +16,7 @@ import {
 } from "@/utils/FieldValidationRules";
 
 describe("FieldValidationRules", () => {
-  it("should be required", () => {
+  test("should be required", () => {
     const theRule = pflichtfeld;
     const thisMessage = "Pflichtfeld";
 
@@ -25,7 +26,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("foo")).toBe(true);
   });
 
-  it("should be required and not empty", () => {
+  test("should be required and not empty", () => {
     const theRule = pflichtfeldMehrfachauswahl;
     const thisMessage = "Pflichtfeld";
 
@@ -35,7 +36,7 @@ describe("FieldValidationRules", () => {
     expect(theRule(["foo"])).toBe(true);
   });
 
-  it("should be Letters", () => {
+  test("should be Letters", () => {
     const theRule = buchstaben;
     const thisMessage = "Nur Buchstaben erlaubt";
 
@@ -46,7 +47,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("foo!")).toBe(thisMessage);
   });
 
-  it("should be min5 characters", () => {
+  test("should be min5 characters", () => {
     const theRule = min5;
     const thisMessage = "Mindestens fünf Zeichen benötigt";
 
@@ -59,7 +60,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("12345")).toBe(true);
   });
 
-  it("should be a Hausnummer", () => {
+  test("should be a Hausnummer", () => {
     const theRule = hausnummer;
     const thisMessage = "Nur Buchstaben und Zahlen erlaubt";
 
@@ -71,7 +72,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("1!")).toBe(thisMessage);
   });
 
-  it("should be a correct date format", () => {
+  test("should be a correct date format", () => {
     const theRule = datum("DD.MM.YYYY");
     const thisMessage = "Muss korrekt formatiert sein";
 
@@ -82,7 +83,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("01-01-2000")).toBe(thisMessage);
   });
 
-  it("should not allow numbers smaller than min", () => {
+  test("should not allow numbers smaller than min", () => {
     const theRule = min(0);
     const thisMessage = "Darf nicht kleiner als 0 sein";
 
@@ -94,7 +95,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("")).toBe(true);
   });
 
-  it("should not allow numbers larger than max", () => {
+  test("should not allow numbers larger than max", () => {
     const theRule = max(0);
     const thisMessage = "Darf nicht größer als 0 sein";
 
@@ -106,7 +107,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("")).toBe(true);
   });
 
-  it("should only allow digits", () => {
+  test("should only allow digits", () => {
     const theRule = digits;
     const thisMessage = "Nur Ziffern erlaubt";
 
@@ -117,7 +118,7 @@ describe("FieldValidationRules", () => {
     expect(theRule("0")).toBe(true);
   });
 
-  it("should be exactly 100", () => {
+  test("should be exactly 100", () => {
     const foerdermix = new FoerdermixModel({
       foerderarten: [
         { bezeichnung: "Baugemeinschaften", anteilProzent: 10 },
@@ -151,7 +152,7 @@ describe("FieldValidationRules", () => {
     }
   });
 
-  it("should not be 'UNSPECIFIED'", () => {
+  test("should not be 'UNSPECIFIED'", () => {
     const theRule = notUnspecified;
     const thisMessage = "Pflichtfeld";
 

@@ -1,4 +1,5 @@
-import { DokumentDto, FileInformationDto, FilepathDto } from "@/api/api-client/isi-backend";
+import { describe, expect, test } from "vitest";
+import type { DokumentDto, FileInformationDto } from "@/api/api-client/isi-backend";
 import { createFilepathFor, createDokumentDto } from "@/utils/Factories";
 import {
   fileAlreadyExists,
@@ -24,35 +25,35 @@ describe("DokumenteTest.spec.ts", () => {
     mockFileList[1] = file2;
     Object.defineProperty(mockFileList, "length", { value: 2 });
     expect(
-      maxNumberOfFilesReached([] as DokumentDto[], mockFileList, {
+      maxNumberOfFilesReached([], mockFileList, {
         maxNumberOfFiles: undefined,
-      } as FileInformationDto),
+      }),
     ).toBe(false);
     expect(
-      maxNumberOfFilesReached([] as DokumentDto[], mockFileList, {
+      maxNumberOfFilesReached([], mockFileList, {
         maxNumberOfFiles: 3,
-      } as FileInformationDto),
+      }),
     ).toBe(false);
     expect(
-      maxNumberOfFilesReached([createDokumentDto()] as DokumentDto[], mockFileList, {
+      maxNumberOfFilesReached([createDokumentDto()], mockFileList, {
         maxNumberOfFiles: 3,
-      } as FileInformationDto),
+      }),
     ).toBe(false);
     expect(
-      maxNumberOfFilesReached([createDokumentDto(), createDokumentDto()] as DokumentDto[], mockFileList, {
+      maxNumberOfFilesReached([createDokumentDto(), createDokumentDto()], mockFileList, {
         maxNumberOfFiles: 3,
-      } as FileInformationDto),
+      }),
     ).toBe(true);
   });
 
   test("Datei exisiert bereits in den Dokumenten", () => {
     const pathToFile = "test/123456/";
     const dokument1 = {
-      filePath: { pathToFile: `${pathToFile}Test1.pdf` } as FilepathDto,
-    } as DokumentDto;
+      filePath: { pathToFile: `${pathToFile}Test1.pdf` },
+    };
     const dokument2 = {
-      filePath: { pathToFile: `${pathToFile}Test2.pdf` } as FilepathDto,
-    } as DokumentDto;
+      filePath: { pathToFile: `${pathToFile}Test2.pdf` },
+    };
     const file1 = { name: "Test2.pdf" } as File;
     const file2 = { name: "Test3.pdf" } as File;
     expect(fileAlreadyExists([dokument1, dokument2] as DokumentDto[], file1)).toBe(true);
@@ -60,16 +61,10 @@ describe("DokumenteTest.spec.ts", () => {
   });
 
   test("Maximale Größe einer Datei überschritten", () => {
-    expect(
-      maxFileSizeExceeded({ size: 100000000 } as File, { maxFileSizeBytes: undefined } as FileInformationDto),
-    ).toBe(false);
-    expect(maxFileSizeExceeded({ size: 31457281 } as File, { maxFileSizeBytes: 31457280 } as FileInformationDto)).toBe(
-      true,
-    );
-    expect(maxFileSizeExceeded({ size: 31457280 } as File, { maxFileSizeBytes: 31457280 } as FileInformationDto)).toBe(
-      false,
-    );
-    expect(maxFileSizeExceeded({ size: 0 } as File, { maxFileSizeBytes: 31457280 } as FileInformationDto)).toBe(false);
+    expect(maxFileSizeExceeded({ size: 100000000 } as File, { maxFileSizeBytes: undefined })).toBe(false);
+    expect(maxFileSizeExceeded({ size: 31457281 } as File, { maxFileSizeBytes: 31457280 })).toBe(true);
+    expect(maxFileSizeExceeded({ size: 31457280 } as File, { maxFileSizeBytes: 31457280 })).toBe(false);
+    expect(maxFileSizeExceeded({ size: 0 } as File, { maxFileSizeBytes: 31457280 })).toBe(false);
   });
 
   test("Test filepath ohne Dokumente", () => {

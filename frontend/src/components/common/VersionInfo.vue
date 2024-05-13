@@ -106,7 +106,9 @@ const visible = defineModel<boolean>({ required: true });
 const services = ref<Service[]>([]);
 const fetchSuccess = ref<boolean | undefined>(undefined);
 
-watch(visible, async () => {
+watch(visible, updateServices);
+
+async function updateServices(): Promise<void> {
   if (visible.value) {
     fetchSuccess.value = undefined;
     const fetchedServices = await fetchServices();
@@ -132,7 +134,7 @@ watch(visible, async () => {
       fetchSuccess.value = true;
     }
   }
-});
+}
 
 async function fetchServices(): Promise<Service[]> {
   const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";

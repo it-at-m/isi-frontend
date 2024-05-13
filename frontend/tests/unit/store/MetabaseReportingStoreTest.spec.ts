@@ -1,19 +1,19 @@
-import { describe, expect, vi } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
+import type { MetabaseReportingDto } from "@/api/api-client/isi-backend";
 import { createPinia, setActivePinia } from "pinia";
 import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
-import { MetabaseReportingDto } from "@/api/api-client/isi-backend";
 
 describe("MetabaseReportingStoreTest.spec.ts", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
 
-  it("Initialize Metabase Reporting Information", () => {
+  test("Initialize Metabase Reporting Information", () => {
     const store = useMetabaseReportingStore();
     expect(store.metabaseReportingInformation).is.undefined;
   });
 
-  it("Initialize Metabase Reporting Information", () => {
+  test("Initialize Metabase Reporting Information", () => {
     const store = useMetabaseReportingStore();
     const metabaseReporting: MetabaseReportingDto = {
       url: "https://isi-metabase-test.muenchen.de",

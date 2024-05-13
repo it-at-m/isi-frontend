@@ -1,9 +1,9 @@
-import { BaurateDto, FoerdermixDto } from "@/api/api-client/isi-backend";
+import { describe, expect, test } from "vitest";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { findFaultInBaurate } from "@/utils/Validators";
 
 describe("Validators Test", () => {
-  it("should findFaultInBaurate", () => {
+  test("should findFaultInBaurate", () => {
     const baurate = new BaurateModel({
       jahr: 2002,
       weGeplant: 50,
@@ -18,8 +18,8 @@ describe("Validators Test", () => {
           { bezeichnung: "MuenchenModell", anteilProzent: 10 },
           { bezeichnung: "PreisgedaempfterMietwohnungsbau", anteilProzent: 50 },
         ],
-      } as FoerdermixDto,
-    } as BaurateDto);
+      },
+    });
 
     const foerdermixErrorAbove = findFaultInBaurate(baurate);
 
