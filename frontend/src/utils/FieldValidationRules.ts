@@ -7,6 +7,8 @@ import { UncertainBoolean } from "@/api/api-client/isi-backend";
 type Nil = undefined | null;
 type Result = true | string;
 
+export type Rule = (v: string | undefined | null) => true | string;
+
 export function pflichtfeld(v: string | Nil): Result {
   return !!v || "Pflichtfeld";
 }
