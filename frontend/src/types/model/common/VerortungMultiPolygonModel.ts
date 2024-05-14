@@ -1,4 +1,4 @@
-import { VerortungMultiPolygonDto } from "@/api/api-client/isi-backend";
+import type { VerortungMultiPolygonDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface VerortungMultiPolygonModel extends VerortungMultiPolygonDto {}

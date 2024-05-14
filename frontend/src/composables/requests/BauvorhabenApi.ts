@@ -1,18 +1,16 @@
-import {
+import type {
   AbfrageSearchResultDto,
-  BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,
   DeleteBauvorhabenRequest,
   GetBauvorhabenByIdRequest,
   GetReferencedAbfrageRequest,
   GetReferencedInfrastruktureinrichtungRequest,
-  InformationResponseDtoFromJSON,
   InfrastruktureinrichtungSearchResultDto,
   PutChangeRelevanteAbfragevarianteRequest,
-  ResponseError,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
+import { BauvorhabenApi, InformationResponseDtoFromJSON, ResponseError } from "@/api/api-client/isi-backend";
 import { useErrorHandler } from "./ErrorHandler";
 import { useSaveLeave } from "../SaveLeave";
 import RequestUtils from "@/utils/RequestUtils";

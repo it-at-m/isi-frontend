@@ -1,4 +1,4 @@
-import { MittelschuleDto } from "@/api/api-client/isi-backend";
+import type { MittelschuleDto } from "@/api/api-client/isi-backend";
 import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
 import _ from "lodash";
 import AdresseModel from "@/types/model/common/AdresseModel";

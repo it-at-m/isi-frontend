@@ -1,4 +1,4 @@
-import { InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
+import { type InformationResponseDto, InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
 import { useInformationStore } from "@/stores/InformationStore";
 
 // eslint-disable-next-line

@@ -1,4 +1,4 @@
-export interface DataTableHeader {
+export default interface DataTableHeader {
   title?: string | undefined;
   key?: string | undefined;
   sortable?: boolean | undefined;

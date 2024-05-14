@@ -1,4 +1,4 @@
-import { BaurateApi, BaurateDto, DetermineBauratenRequest } from "@/api/api-client/isi-backend";
+import { type BaurateDto, type DetermineBauratenRequest, BaurateApi } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 import _ from "lodash";

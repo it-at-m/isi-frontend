@@ -1,4 +1,4 @@
-import { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
+import type { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
 import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import _ from "lodash";

@@ -1,4 +1,9 @@
-import { MasterEaiApi, GetAdressenRequest, AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
+import {
+  type GetAdressenRequest,
+  type AdressSucheDto,
+  type MuenchenAdresseDto,
+  MasterEaiApi,
+} from "@/api/api-client/isi-master-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "../ErrorHandler";
 import _ from "lodash";

@@ -1,11 +1,11 @@
 import {
-  CreateInfrastruktureinrichtungRequest,
-  DeleteInfrastruktureinrichtungByIdRequest,
-  GetInfrastruktureinrichtungByIdRequest,
+  type CreateInfrastruktureinrichtungRequest,
+  type DeleteInfrastruktureinrichtungByIdRequest,
+  type GetInfrastruktureinrichtungByIdRequest,
+  type InfrastruktureinrichtungDto,
+  type UpdateInfrastruktureinrichtungOperationRequest,
+  type UpdateInfrastruktureinrichtungRequest,
   InfrastruktureinrichtungApi,
-  InfrastruktureinrichtungDto,
-  UpdateInfrastruktureinrichtungOperationRequest,
-  UpdateInfrastruktureinrichtungRequest,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";

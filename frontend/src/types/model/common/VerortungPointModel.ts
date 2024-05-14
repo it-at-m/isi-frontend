@@ -1,4 +1,4 @@
-import { VerortungPointDto } from "@/api/api-client/isi-backend";
+import type { VerortungPointDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface VerortungPointModel extends VerortungPointDto {}

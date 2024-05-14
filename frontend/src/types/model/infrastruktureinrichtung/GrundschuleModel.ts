@@ -1,4 +1,4 @@
-import { GrundschuleDto } from "@/api/api-client/isi-backend";
+import type { GrundschuleDto } from "@/api/api-client/isi-backend";
 import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import { createAdresseDto, createSchuleDto } from "@/utils/Factories";

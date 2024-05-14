@@ -1,11 +1,11 @@
 import {
-  CreateKommentarRequest,
-  DeleteKommentarRequest,
-  GetKommentareForBauvorhabenRequest,
-  GetKommentareForInfrastruktureinrichtungRequest,
-  KommentarDto,
+  type CreateKommentarRequest,
+  type DeleteKommentarRequest,
+  type GetKommentareForBauvorhabenRequest,
+  type GetKommentareForInfrastruktureinrichtungRequest,
+  type KommentarDto,
+  type UpdateKommentarRequest,
   KommentareApi,
-  UpdateKommentarRequest,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";

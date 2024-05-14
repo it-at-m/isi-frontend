@@ -1,4 +1,4 @@
-import { BearbeitendePersonDto } from "@/api/api-client/isi-backend";
+import type { BearbeitendePersonDto } from "@/api/api-client/isi-backend";
 class BenutzerinformationenModel {
   constructor(bearbeitendePerson?: BearbeitendePersonDto, lastModifiedDateTime?: Date) {
     this.bearbeitendePerson = bearbeitendePerson;

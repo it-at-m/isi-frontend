@@ -1,4 +1,4 @@
-import { AbfrageStatusApi, TransitionDto, TransitionsAbfrageRequest } from "@/api/api-client/isi-backend";
+import { type TransitionDto, type TransitionsAbfrageRequest, AbfrageStatusApi } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 

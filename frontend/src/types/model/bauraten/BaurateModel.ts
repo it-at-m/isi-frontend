@@ -1,4 +1,4 @@
-import { BaurateDto } from "@/api/api-client/isi-backend";
+import type { BaurateDto } from "@/api/api-client/isi-backend";
 import { createFoerdermixDto } from "@/utils/Factories";
 import FoerdermixModel from "./FoerdermixModel";
 import _ from "lodash";

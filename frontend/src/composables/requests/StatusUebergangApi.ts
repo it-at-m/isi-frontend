@@ -1,4 +1,4 @@
-import { ResponseError, TransitionDto } from "@/api/api-client/isi-backend";
+import { type TransitionDto, ResponseError } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 
