@@ -1,8 +1,8 @@
 import {
-  ExtractMediaTypeInformationForAllowedMediaTypeRequest,
-  FilepathDto,
+  type ExtractMediaTypeInformationForAllowedMediaTypeRequest,
+  type FilepathDto,
+  type MimeTypeInformationDto,
   MimeTypeApi,
-  MimeTypeInformationDto,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";

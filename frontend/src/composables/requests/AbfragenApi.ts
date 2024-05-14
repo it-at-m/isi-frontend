@@ -1,5 +1,4 @@
-import {
-  AbfragenApi,
+import type {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -22,8 +21,8 @@ import {
   PatchBedarfsmeldungErfolgtOperationRequest,
   GetByIdRequest,
   DeleteByIdRequest,
-  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
+import { AbfragenApi, AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 import { useSaveLeave } from "../SaveLeave";

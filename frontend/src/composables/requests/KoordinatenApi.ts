@@ -1,4 +1,4 @@
-import { KoordinatenApi, Wgs84Dto, UtmDto, Wgs84toUtm32Request } from "@/api/api-client/isi-backend";
+import { type Wgs84Dto, type UtmDto, type Wgs84toUtm32Request, KoordinatenApi } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 

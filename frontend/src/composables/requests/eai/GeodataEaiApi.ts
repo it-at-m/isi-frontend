@@ -1,7 +1,4 @@
-import {
-  ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api as PunktApi,
-  ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api as PolygonApi,
-  ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84Api as PolygonOperationenApi,
+import type {
   MultiPolygonGeometryDto,
   FeatureDtoFlurstueckDto,
   GetFlurstuecke1Request,
@@ -29,6 +26,11 @@ import {
   FeatureDtoViertelDto,
   GetViertel1Request,
   GetViertelRequest,
+} from "@/api/api-client/isi-geodata-eai";
+import {
+  ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api as PunktApi,
+  ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api as PolygonApi,
+  ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84Api as PolygonOperationenApi,
 } from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "../ErrorHandler";

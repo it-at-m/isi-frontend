@@ -1,3 +1,4 @@
+import { computed } from "vue";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import { useSecurity } from "./Security";

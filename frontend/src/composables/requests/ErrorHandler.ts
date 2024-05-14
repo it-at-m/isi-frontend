@@ -1,5 +1,5 @@
 import {
-  InformationResponseDto,
+  type InformationResponseDto,
   InformationResponseDtoFromJSON,
   InformationResponseDtoTypeEnum,
   ResponseError,

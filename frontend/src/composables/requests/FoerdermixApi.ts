@@ -1,11 +1,11 @@
 import RequestUtils from "@/utils/RequestUtils";
 import {
-  DeleteFoerdermixStammByIdRequest,
+  type DeleteFoerdermixStammByIdRequest,
+  type FoerdermixStammDto,
+  type GetFoerdermixStammByIdRequest,
+  type SaveFoerdermixStammRequest,
+  type UpdateFoerdermixStammRequest,
   FoerdermixStammApi,
-  FoerdermixStammDto,
-  GetFoerdermixStammByIdRequest,
-  SaveFoerdermixStammRequest,
-  UpdateFoerdermixStammRequest,
 } from "@/api/api-client/isi-backend";
 import { useErrorHandler } from "./ErrorHandler";
 

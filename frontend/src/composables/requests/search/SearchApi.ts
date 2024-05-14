@@ -1,9 +1,9 @@
 import {
-  SearchQueryAndSortingDto,
-  SearchQueryDto,
-  SearchResultsDto,
+  type SearchQueryAndSortingDto,
+  type SearchQueryDto,
+  type SearchResultsDto,
+  type SuchwortSuggestionsDto,
   SucheApi,
-  SuchwortSuggestionsDto,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "../ErrorHandler";

@@ -1,9 +1,9 @@
 import {
+  type FilepathDto,
+  type GetFileRequest,
+  type PresignedUrlDto,
+  type SaveFileRequest,
   DateihandlingApi,
-  FilepathDto,
-  GetFileRequest,
-  PresignedUrlDto,
-  SaveFileRequest,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
