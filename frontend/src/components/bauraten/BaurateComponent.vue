@@ -80,6 +80,8 @@ import {
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 
+type Rule = (v: string | undefined | null) => true | string;
+
 interface Props {
   baugebiet?: BaugebietDto;
   abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;
@@ -92,30 +94,36 @@ const baurate = defineModel<BaurateModel>({ required: true });
 function validateWohneinheiten(
   baugebiet: BaugebietDto | undefined,
   abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
-): boolean | string {
-  return (
-    verteilteWohneinheiten(baugebiet, abfragevariante) <= wohneinheiten(baugebiet, abfragevariante) ||
-    `Insgesamt sind ${verteilteWohneinheitenFormatted(baugebiet, abfragevariante)} von ${wohneinheitenFormatted(
-      baugebiet,
-      abfragevariante,
-    )} verteilt.`
-  );
+): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      verteilteWohneinheiten(baugebiet, abfragevariante) <= wohneinheiten(baugebiet, abfragevariante) ||
+      `Insgesamt sind ${verteilteWohneinheitenFormatted(baugebiet, abfragevariante)} von ${wohneinheitenFormatted(
+        baugebiet,
+        abfragevariante,
+      )} verteilt.`
+    );
+  };
 }
 
 function validateGeschossflaecheWohnen(
   baugebiet: BaugebietDto | undefined,
   abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
-): boolean | string {
-  return (
-    _.round(
-      verteilteGeschossflaecheWohnen(baugebiet, abfragevariante),
-      countDecimals(geschossflaecheWohnen(baugebiet, abfragevariante)),
-    ) <= geschossflaecheWohnen(baugebiet, abfragevariante) ||
-    `Insgesamt sind ${verteilteGeschossflaecheWohnenFormatted(
-      baugebiet,
-      abfragevariante,
-    )} m² von ${geschossflaecheWohnenFormatted(baugebiet, abfragevariante)} m² verteilt.`
-  );
+): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      _.round(
+        verteilteGeschossflaecheWohnen(baugebiet, abfragevariante),
+        countDecimals(geschossflaecheWohnen(baugebiet, abfragevariante)),
+      ) <= geschossflaecheWohnen(baugebiet, abfragevariante) ||
+      `Insgesamt sind ${verteilteGeschossflaecheWohnenFormatted(
+        baugebiet,
+        abfragevariante,
+      )} m² von ${geschossflaecheWohnenFormatted(baugebiet, abfragevariante)} m² verteilt.`
+    );
+  };
 }
 
 const baugebietRealisierungVonOr1900 = computed(() => {

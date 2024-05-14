@@ -12,10 +12,10 @@
             :disabled="!isEditable"
             :items="groupedStammdaten"
             label="Fördermix"
-            item-text="foerdermix.bezeichnung"
+            item-title="foerdermix.bezeichnung"
             return-object
-            @input="foerdermixSelected"
-            @change="formChanged"
+            @update:model-value="foerdermixSelected"
+            @update:menu="formChanged"
           />
         </v-col>
         <v-col
@@ -26,17 +26,19 @@
             id="foerdermix_gesamtsumme"
             v-model="gesamtsumme"
             label="Summe"
-            filled
-            readonly="readonly"
+            variant="filled"
+            readonly
             :rules="[nichtGleich100Prozent(foerdermix)]"
             :suffix="PERCENT"
           />
         </v-col>
       </v-row>
       <v-row>
-        <template v-for="(foerderart, foerderartIndex) in foerdermix.foerderarten">
+        <template
+          v-for="(foerderart, foerderartIndex) in foerdermix.foerderarten"
+          :key="foerderartIndex"
+        >
           <v-col
-            :key="foerderartIndex"
             cols="12"
             md="4"
           >
