@@ -1,4 +1,4 @@
-import { BedarfsmeldungDto } from "@/api/api-client/isi-backend";
+import type { BedarfsmeldungDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface BedarfsmeldungModel extends BedarfsmeldungDto {}

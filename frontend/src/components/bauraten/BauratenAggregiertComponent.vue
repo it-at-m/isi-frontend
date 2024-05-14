@@ -45,7 +45,7 @@
 import { watch, computed } from "vue";
 import type { BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 import type { AnyAbfragevarianteModel } from "@/types/common/Abfrage";
-import type { DataTableHeader } from "@/types/common/DataTableHeader";
+import type DataTableHeader from "@/types/common/DataTableHeader";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";

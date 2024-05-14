@@ -1,4 +1,4 @@
-import { AdresseDto } from "@/api/api-client/isi-backend";
+import type { AdresseDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

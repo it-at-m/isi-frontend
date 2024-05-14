@@ -1,5 +1,5 @@
 import type { BauratendateiInputDto, WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
-import type { DataTableHeader } from "@/types/common/DataTableHeader";
+import type DataTableHeader from "@/types/common/DataTableHeader";
 import _ from "lodash";
 
 export const ATTRIBUTE_KEY_JAHR = "jahr";
