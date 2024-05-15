@@ -4,14 +4,14 @@ import {
   InformationResponseDtoTypeEnum,
   ResponseError,
 } from "@/api/api-client/isi-backend";
-import Toaster from "@/components/common/toaster.type";
-import { Levels } from "@/api/error";
+import { useToast, TYPE } from "vue-toastification";
 import { useInformationList } from "./InformationList";
 import _ from "lodash";
 
 // eslint-disable-next-line
 export function useErrorHandler() {
   const { showInformationResponseDtoInInformationList, showErrorInInformationList } = useInformationList();
+  const toast = useToast();
   const ERROR_MESSAGE_GATEWAY =
     "Anwendungssystem (API-Gateway) nicht verfügbar. Bitte kontaktieren Sie den Servicedesk.";
   const ERROR_MESSAGE_BACKEND =
@@ -53,8 +53,8 @@ export function useErrorHandler() {
         } else {
           // Show as Toast
           const messages: string = _.join(informationResponseDto.messages, "; ");
-          const toastLevel: Levels = getToastLevel(informationResponseDto.type);
-          Toaster.toast(messages, toastLevel);
+          const type = getToastType(informationResponseDto.type);
+          toast(messages, { type });
         }
       });
     } else if (error instanceof ResponseError && error.response.status === 500) {
@@ -77,21 +77,21 @@ export function useErrorHandler() {
     if (showInInformationList) {
       showErrorInInformationList(errorMessage);
     } else {
-      Toaster.toast(errorMessage, Levels.ERROR);
+      toast.error(errorMessage);
     }
   }
 
-  function getToastLevel(type: InformationResponseDtoTypeEnum | undefined): Levels {
-    let level: Levels = Levels.INFO;
+  function getToastType(type: InformationResponseDtoTypeEnum | undefined): TYPE {
+    let toastType = TYPE.INFO;
     if (type === InformationResponseDtoTypeEnum.Error) {
-      level = Levels.ERROR;
+      toastType = TYPE.ERROR;
     } else if (type === InformationResponseDtoTypeEnum.Warning) {
-      level = Levels.WARNING;
+      toastType = TYPE.WARNING;
     } else if (type === InformationResponseDtoTypeEnum.InformationSuccess) {
-      level = Levels.SUCCESS;
+      toastType = TYPE.SUCCESS;
     }
-    return level;
+    return toastType;
   }
 
-  return { handleError, getToastLevel };
+  return { handleError, getToastType };
 }

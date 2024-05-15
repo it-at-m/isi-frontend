@@ -119,8 +119,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { Levels } from "@/api/error";
-import Toaster from "@/components/common/toaster.type";
+import { useToast } from "vue-toastification";
 import { useLookupStore } from "@/stores/LookupStore";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import { findFaultInBedarfsmeldung } from "@/utils/Validators";
@@ -142,6 +141,7 @@ const emit = defineEmits<Emits>();
 const bedarfsmeldung = defineModel<BedarfsmeldungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
+const toast = useToast();
 
 const infrastruktureinrichtungenTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 const bedarfsmeldungDialogForm = ref<(HTMLFormElement & { validate: () => boolean }) | null>(null);
@@ -166,10 +166,10 @@ function uebernehmenBedarfsmeldung(): void {
     if (validateDialogForm()) {
       emit("uebernehmen-bedarfsmeldung", bedarfsmeldung.value);
     } else {
-      Toaster.toast("Es gibt noch Validierungsfehler", Levels.ERROR);
+      toast.error("Es gibt noch Validierungsfehler");
     }
   } else {
-    Toaster.toast(validationMessage, Levels.ERROR);
+    toast.error(validationMessage);
   }
 }
 

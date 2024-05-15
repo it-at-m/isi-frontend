@@ -125,13 +125,11 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
-import Toaster from "../components/common/toaster.type";
 import { createAdresseDto, createBauvorhabenDto } from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 import { pflichtfeld } from "@/utils/FieldValidationRules";
-import { Levels } from "@/api/error";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import InformationList from "@/components/common/InformationList.vue";
 import { findFaultInBauvorhaben } from "@/utils/Validators";
@@ -157,6 +155,7 @@ import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useInformationList } from "@/composables/requests/InformationList";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
+import { useToast, TYPE } from "vue-toastification";
 
 const routeId = useRoute().params.id as string;
 const router = useRouter();
@@ -175,6 +174,7 @@ const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { showWarningInInformationList } = useInformationList();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const searchStore = useSearchStore();
+const toast = useToast();
 const form = ref<{ validate: () => boolean } | null>(null);
 const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value);
 const deleteDialogOpen = ref(false);
@@ -242,7 +242,7 @@ async function fetchBauvorhabenById(): Promise<void> {
  */
 async function saveBauvorhaben(): Promise<void> {
   await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId, true);
-  returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS);
+  returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", TYPE.SUCCESS);
 }
 
 /**
@@ -252,7 +252,7 @@ async function saveBauvorhaben(): Promise<void> {
 async function updateBauvorhaben(): Promise<void> {
   const dto = await putBauvorhaben(bauvorhaben.value, true);
   bauvorhaben.value = _.cloneDeep(dto);
-  Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
+  toast.success("Das Bauvorhaben wurde erfolgreich aktualisiert");
 }
 
 /**
@@ -264,7 +264,7 @@ async function removeBauvorhaben(): Promise<void> {
 
   await deleteBauvorhaben(routeId, true);
   searchStore.removeSearchResultById(routeId);
-  returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
+  returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", TYPE.SUCCESS);
 }
 
 /**
@@ -274,9 +274,9 @@ async function removeBauvorhaben(): Promise<void> {
  * @param message Die anzuzeigende Nachricht. Optional.
  * @param level Das Level der anzuzeigenden Nachricht. Optional, doch obligatorisch in Kombination mit message.
  */
-function returnToUebersicht(message?: string, level?: Levels): void {
-  if (message && level) {
-    Toaster.toast(message, level);
+function returnToUebersicht(message?: string, type?: TYPE): void {
+  if (message && type) {
+    toast(message, { type });
   }
 
   router.push("/");

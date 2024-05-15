@@ -1,13 +1,13 @@
 import RequestUtils from "@/utils/RequestUtils";
 import { Userinfo } from "@/types/common/Userinfo";
-import Toaster from "@/components/common/toaster.type";
-import { Levels } from "@/api/error";
+import { useToast } from "vue-toastification";
 import _ from "lodash";
 
 // eslint-disable-next-line
 export function useUserInfoApi() {
   async function getUserinfo(): Promise<Userinfo> {
     const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/api/sso/userinfo";
+    const toast = useToast();
     let userinfo = new Userinfo();
 
     try {
@@ -16,7 +16,7 @@ export function useUserInfoApi() {
       userinfo = mapJson(json);
     } catch {
       // Wenn die Nutzerinformationen nicht geladen werden können wird ein leeres Nutzerobjekt zurückgegeben.
-      Toaster.toast(`Die Nutzerinformationen konnten nicht geladen werden.`, Levels.ERROR);
+      toast.error(`Die Nutzerinformationen konnten nicht geladen werden.`);
       userinfo.givenname = "";
       userinfo.surname = "";
       userinfo.department = "";
