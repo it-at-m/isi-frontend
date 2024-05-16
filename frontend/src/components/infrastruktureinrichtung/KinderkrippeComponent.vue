@@ -60,39 +60,27 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
-import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: {
-    FieldGroupCard,
-    InfrastruktureinrichtungComponent,
-    NumField,
-    EinrichtungstraegerComponent,
-  },
-})
-export default class KinderkrippeComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: KinderkrippeModel }) kinderkrippe!: KinderkrippeModel;
+import { defineModel } from "@/utils/Vue";
 
-  private lookupStore = useLookupStore();
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.lookupStore.einrichtungstraeger;
-  }
+interface Props {
+  value: KinderkrippeModel;
+  isEditable: boolean;
+  isEinrichtungstraegerRequired?: boolean;
 }
+
+interface Emits {
+  (event: "input", value: KinderkrippeModel): void;
+}
+
+const lookupStore = useLookupStore();
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const emit = defineEmits<Emits>();
+const kinderkrippe = defineModel(props, emit);
+const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
-<style></style>
