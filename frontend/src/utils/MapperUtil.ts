@@ -1,4 +1,4 @@
-import {
+import type {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -20,9 +20,6 @@ import {
   AbfragevarianteBauleitplanverfahrenAngelegtDto,
   AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
   AbfragevarianteWeiteresVerfahrenAngelegtDto,
-  AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
-  AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum,
-  AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum,
   AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
   AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto,
@@ -32,6 +29,11 @@ import {
   AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto,
+} from "@/api/api-client/isi-backend";
+import {
+  AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
+  AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum,
+  AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
@@ -667,16 +669,18 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
   const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
   foerdermixStaemme.forEach((foerdermixStammModel) => {
     const bezeichnungJahr = foerdermixStammModel.foerdermix.bezeichnungJahr;
-    if (sobonValues && (bezeichnungJahr === "SoBoN 2021" || bezeichnungJahr === "SoBoN 2017")) {
-      // Prüft, ob das Array für das bezeichnungJahr bereits existiert, und initialisiert es bei Bedarf
-      if (!groups[bezeichnungJahr]) {
-        groups[bezeichnungJahr] = [];
+    if (bezeichnungJahr) {
+      if (sobonValues && (bezeichnungJahr === "SoBoN 2021" || bezeichnungJahr === "SoBoN 2017")) {
+        // Prüft, ob das Array für das bezeichnungJahr bereits existiert, und initialisiert es bei Bedarf
+        if (!groups[bezeichnungJahr]) {
+          groups[bezeichnungJahr] = [];
+        }
+        groups[bezeichnungJahr].push(foerdermixStammModel);
+      } else if (!sobonValues) {
+        groups[bezeichnungJahr] = groups[bezeichnungJahr] || [];
+        // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
+        groups[bezeichnungJahr].push(foerdermixStammModel);
       }
-      groups[bezeichnungJahr].push(foerdermixStammModel);
-    } else if (!sobonValues) {
-      groups[bezeichnungJahr] = groups[bezeichnungJahr] || [];
-      // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
-      groups[bezeichnungJahr].push(foerdermixStammModel);
     }
   });
   const flattened: GroupedStammdaten = [];

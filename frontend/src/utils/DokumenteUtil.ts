@@ -1,4 +1,4 @@
-import { DokumentDto, FileInformationDto } from "@/api/api-client/isi-backend";
+import type { DokumentDto, FileInformationDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 
 /**

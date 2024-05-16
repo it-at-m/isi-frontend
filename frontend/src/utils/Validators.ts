@@ -1,29 +1,31 @@
 import _ from "lodash";
+import type {
+  AdresseDto,
+  BauabschnittDto,
+  BaugebietDto,
+  BauvorhabenDto,
+  GrundschuleDto,
+  GsNachmittagBetreuungDto,
+  HausFuerKinderDto,
+  InfrastruktureinrichtungDto,
+  KindergartenDto,
+  KinderkrippeDto,
+  MittelschuleDto,
+} from "@/api/api-client/isi-backend";
 import {
   AbfrageDtoArtAbfrageEnum,
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
   WeiteresVerfahrenDtoStandVerfahrenEnum,
-  AdresseDto,
-  BauabschnittDto,
-  BaugebietDto,
-  BauvorhabenDto,
   BauvorhabenDtoStandVerfahrenEnum,
   BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
-  GrundschuleDto,
-  GsNachmittagBetreuungDto,
-  HausFuerKinderDto,
-  InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoStatusEnum,
-  KindergartenDto,
-  KinderkrippeDto,
-  MittelschuleDto,
-  UncertainBoolean,
-  StatusAbfrage,
   BaugebietDtoArtBaulicheNutzungEnum,
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
+  StatusAbfrage,
+  UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -41,7 +43,7 @@ import {
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
-import { AnyAbfrageModel, AnyAbfragevarianteDto, AnyAbfragevarianteModel } from "@/types/common/Abfrage";
+import type { AnyAbfrageModel, AnyAbfragevarianteDto, AnyAbfragevarianteModel } from "@/types/common/Abfrage";
 
 /**
  * Prüft die komplette Abfrage vor dem Speichern
