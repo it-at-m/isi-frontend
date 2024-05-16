@@ -14,11 +14,11 @@
               :disabled="!isEditableBySachbearbeitung"
               :items="sobonOrientierungswertJahrList"
               item-value="key"
-              item-text="value"
+              item-title="value"
               :rules="sobonOrientierungswertJahrValidator"
-              @change="formChanged"
+              @update:model-value="formChanged"
             >
-              <template #label> Jahr für SoBoN-Orientierungwerte <span class="secondary--text">*</span> </template>
+              <template #label> Jahr für SoBoN-Orientierungwerte <span class="text-secondary">*</span> </template>
             </v-select>
           </v-slide-y-reverse-transition>
         </v-col>
@@ -51,7 +51,7 @@
             auto-grow
             rows="1"
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -105,15 +105,20 @@ import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { pflichtfeld } from "@/utils/FieldValidationRules";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import _ from "lodash";
+import type { VSelect } from "vuetify/components";
+
+// Workaround um den Validation Rule Type zu bekommen
+// https://stackoverflow.com/questions/77201639/how-to-import-typescript-types-in-vuetify-3
+type UnwrapReadonlyArray<A> = A extends Readonly<Array<infer I>> ? I : A;
+type ValidationRule = UnwrapReadonlyArray<VSelect["rules"]>;
 
 interface Props {
   isEditable?: boolean;
@@ -148,14 +153,10 @@ const sobonOrientierungswertJahrList = computed(() => {
 
 const sobonOrientierungswertJahrValidator = computed(() => {
   if (isEditableBySachbearbeitung.value) {
-    const usedRules: unknown[] = [];
+    const usedRules: ValidationRule[] = [];
     // Objekte der benötigten Rules anlegen, um daraus eine Liste von Rules anlegen zu können
-    const rules = new FieldValidationRulesMixin().fieldValidationRules as {
-      notUnspecified: (v: string) => boolean | string;
-      pflichtfeld: (v: string) => boolean | string;
-    };
-    usedRules.push(rules.notUnspecified);
-    usedRules.push(rules.pflichtfeld);
+    usedRules.push(notUnspecified);
+    usedRules.push(pflichtfeld);
     return usedRules;
   }
   return [];
