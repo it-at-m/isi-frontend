@@ -29,23 +29,23 @@ Emits:
 
 <template>
   <v-treeview
+    v-model:open="openItemIds"
     :items="items"
     :active="selectedItemIds"
-    :open.sync="openItemIds"
     dense
     hoverable
   >
-    <template #label="{ item }">
+    <template #prepend="{ item }">
       <v-menu
         open-on-hover
         :open-delay="500"
-        offset-y
+        location="bottom"
         :disabled="item.actions.length === 0"
       >
-        <template #activator="{ on }">
+        <template #activator="{ props: activatorProps }">
           <a
             :id="`abfrage_navigation_tree_${item.id}`"
-            v-on="on"
+            v-bind="activatorProps"
             @click="item.onSelection"
           >
             {{ item.name }}
@@ -67,10 +67,10 @@ Emits:
     <template #append="{ item }">
       <v-tooltip
         v-if="item.value.id === props.relevanteAbfragevarianteId"
-        bottom
+        location="bottom"
       >
-        <template #activator="{ on }">
-          <v-icon v-on="on">mdi-star</v-icon>
+        <template #activator="{ props: activatorProps }">
+          <v-icon v-bind="activatorProps">mdi-star</v-icon>
         </template>
         <span>Diese Abfragevariante ist relevant.</span>
       </v-tooltip>

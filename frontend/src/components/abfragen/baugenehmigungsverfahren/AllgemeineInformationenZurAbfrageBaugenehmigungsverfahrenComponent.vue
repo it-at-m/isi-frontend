@@ -32,7 +32,7 @@
           auto-grow
           rows="1"
           maxlength="1000"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>

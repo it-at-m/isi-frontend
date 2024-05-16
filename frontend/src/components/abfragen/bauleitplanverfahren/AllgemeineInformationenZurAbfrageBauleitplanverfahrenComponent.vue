@@ -28,7 +28,7 @@
           on-text="Ja"
           :rules="[notUnspecified]"
         >
-          <template #label> Offizielle Mitzeichnung <span class="secondary--text">*</span> </template>
+          <template #label> Offizielle Mitzeichnung <span class="text-secondary">*</span> </template>
         </tri-switch>
       </v-col>
     </v-row>
@@ -43,7 +43,7 @@
           auto-grow
           rows="1"
           maxlength="1000"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>

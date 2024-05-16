@@ -12,7 +12,7 @@
           :disabled="!isEditable"
           label="Aktenzeichen ProLBK"
           maxlength="255"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
       <v-col
@@ -26,7 +26,7 @@
           :disabled="!isEditable"
           label="Bebauungsplannummer"
           maxlength="255"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
       <v-col
@@ -39,12 +39,12 @@
           v-model="abfrage.bauvorhaben"
           :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
           :items="bauvorhaben"
-          item-text="nameVorhaben"
+          item-title="nameVorhaben"
           item-value="id"
           label="Bauvorhaben"
           clearable
           @focus="fetchBauvorhaben"
-          @change="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>
@@ -62,7 +62,7 @@
           on-text="Ja"
           :rules="[notUnspecified]"
         >
-          <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
+          <template #label> SoBoN-relevant <span class="text-secondary">*</span> </template>
         </tri-switch>
       </v-col>
       <v-col
@@ -78,12 +78,12 @@
             :disabled="!isEditable"
             :items="sobonVerfahrensgrundsaetzeJahr"
             item-value="key"
-            item-text="value"
+            item-title="value"
             :rules="[pflichtfeld]"
-            @change="formChanged"
+            @update:model-value="formChanged"
           >
             <template #label>
-              Jahr der anzuwendenden Verfahrensgrundsätze <span class="secondary--text">*</span>
+              Jahr der anzuwendenden Verfahrensgrundsätze <span class="text-secondary">*</span>
             </template>
           </v-select>
         </v-slide-y-reverse-transition>
@@ -101,11 +101,11 @@
           :disabled="!isEditable"
           :items="standVerfahrenWeiteresVerfahren"
           item-value="key"
-          item-text="value"
+          item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
-          @change="formChanged"
+          @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
+          <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
         </v-select>
       </v-col>
       <v-col
@@ -121,7 +121,7 @@
             :disabled="!isEditable"
             label="Freie Eingabe"
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-slide-y-reverse-transition>
       </v-col>

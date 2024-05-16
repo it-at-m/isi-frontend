@@ -13,10 +13,12 @@
         >
           {{ statusLabels[0] }}
         </v-stepper-step>
-        <template v-for="(statusLabel, index) in statusLabels.slice(1)">
-          <v-divider :key="index"></v-divider>
+        <template
+          v-for="(statusLabel, index) in statusLabels.slice(1)"
+          :key="index"
+        >
+          <v-divider></v-divider>
           <v-stepper-step
-            :key="`${index}-${statusLabel}`"
             :complete="statusIndex > index"
             step=""
           >
@@ -44,10 +46,12 @@
         >
           {{ shortenedStatusLabels[0] }}
         </v-stepper-step>
-        <template v-for="(shortenedStatusLabel, index) in shortenedStatusLabels.slice(1)">
-          <v-divider :key="index"></v-divider>
+        <template
+          v-for="(shortenedStatusLabel, index) in shortenedStatusLabels.slice(1)"
+          :key="index"
+        >
+          <v-divider></v-divider>
           <v-stepper-step
-            :key="`${index}-${shortenedStatusLabel}`"
             :complete="shortenedStatusIndex > index"
             step=""
           >
