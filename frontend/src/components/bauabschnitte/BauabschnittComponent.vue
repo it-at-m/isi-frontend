@@ -17,10 +17,10 @@
             :disabled="!isEditable"
             :rules="[pflichtfeld]"
             maxlength="255"
-            validate-on-blur
-            @input="formChanged"
+            validate-on="blur"
+            @update:model-value="formChanged"
           >
-            <template #label> Bezeichnung des Bauabschnitts <span class="secondary--text">*</span> </template>
+            <template #label> Bezeichnung des Bauabschnitts <span class="text-secondary">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
