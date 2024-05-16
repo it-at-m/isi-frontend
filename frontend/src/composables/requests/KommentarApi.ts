@@ -17,10 +17,7 @@ export function useKommentarApi() {
   const { handleError } = useErrorHandler();
   const { resetCommentDirty } = useSaveLeave();
 
-  async function getKommentareForBauvorhaben(
-    bauvorhabenId: string,
-    showInInformationList: boolean,
-  ): Promise<Array<KommentarDto>> {
+  async function getKommentareForBauvorhaben(bauvorhabenId: string): Promise<Array<KommentarDto>> {
     const requestObject: GetKommentareForBauvorhabenRequest = {
       bauvorhabenId: bauvorhabenId,
     };
@@ -28,13 +25,12 @@ export function useKommentarApi() {
       const response = await kommentareApi.getKommentareForBauvorhaben(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
   async function getKommentareForInfrastruktureinrichtung(
     infrastruktureinrichtungId: string,
-    showInInformationList: boolean,
   ): Promise<Array<KommentarDto>> {
     const requestObject: GetKommentareForInfrastruktureinrichtungRequest = {
       infrastruktureinrichtungId: infrastruktureinrichtungId,
@@ -46,11 +42,11 @@ export function useKommentarApi() {
       );
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function createKommentar(kommentarDto: KommentarDto, showInInformationList: boolean): Promise<KommentarDto> {
+  async function createKommentar(kommentarDto: KommentarDto): Promise<KommentarDto> {
     const requestObject: CreateKommentarRequest = {
       kommentarDto: kommentarDto,
     };
@@ -59,11 +55,11 @@ export function useKommentarApi() {
       resetCommentDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function updateKommentar(kommentarDto: KommentarDto, showInInformationList: boolean): Promise<KommentarDto> {
+  async function updateKommentar(kommentarDto: KommentarDto): Promise<KommentarDto> {
     const requestObject: UpdateKommentarRequest = {
       kommentarDto: kommentarDto,
     };
@@ -72,11 +68,11 @@ export function useKommentarApi() {
       resetCommentDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function deleteKommentar(id: string, showInInformationList: boolean): Promise<void> {
+  async function deleteKommentar(id: string): Promise<void> {
     const requestObject: DeleteKommentarRequest = {
       id: id,
     };
@@ -85,7 +81,7 @@ export function useKommentarApi() {
       resetCommentDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

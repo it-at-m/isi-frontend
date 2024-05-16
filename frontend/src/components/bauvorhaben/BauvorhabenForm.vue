@@ -66,7 +66,6 @@
     <adresse-component
       id="bauvorhaben_adresse_component"
       v-model="bauvorhaben.adresse"
-      :show-in-information-list="true"
       :is-editable="isEditable"
     />
     <verortung

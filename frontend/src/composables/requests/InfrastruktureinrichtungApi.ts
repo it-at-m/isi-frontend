@@ -19,10 +19,7 @@ export function useInfrastruktureinrichtungApi() {
   const { handleError } = useErrorHandler();
   const { resetFormDirty } = useSaveLeave();
 
-  async function getInfrastruktureinrichtungById(
-    id: string,
-    showInInformationList: boolean,
-  ): Promise<UpdateInfrastruktureinrichtungRequest> {
+  async function getInfrastruktureinrichtungById(id: string): Promise<UpdateInfrastruktureinrichtungRequest> {
     const requestObject: GetInfrastruktureinrichtungByIdRequest = {
       id: id,
     };
@@ -33,13 +30,12 @@ export function useInfrastruktureinrichtungApi() {
       );
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
   async function createInfrastruktureinrichtung(
     dto: InfrastruktureinrichtungDto,
-    showInInformationList: boolean,
   ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: CreateInfrastruktureinrichtungRequest = {
       updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,
@@ -52,13 +48,12 @@ export function useInfrastruktureinrichtungApi() {
       resetFormDirty();
       return response as InfrastruktureinrichtungDto;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
   async function updateInfrastruktureinrichtung(
     dto: InfrastruktureinrichtungDto,
-    showInInformationList: boolean,
   ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: UpdateInfrastruktureinrichtungOperationRequest = {
       updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,
@@ -71,11 +66,11 @@ export function useInfrastruktureinrichtungApi() {
       resetFormDirty();
       return response as InfrastruktureinrichtungDto;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function deleteInfrastruktureinrichtungById(id: string, showInInformationList: boolean): Promise<void> {
+  async function deleteInfrastruktureinrichtungById(id: string): Promise<void> {
     const requestObject: DeleteInfrastruktureinrichtungByIdRequest = {
       id: id,
     };
@@ -87,7 +82,7 @@ export function useInfrastruktureinrichtungApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { MetabaseReportingInformationApi, MetabaseReportingDto } from "@/api/api-client/isi-backend";
+import { MetabaseReportingInformationApi, type MetabaseReportingDto } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 
 interface State {

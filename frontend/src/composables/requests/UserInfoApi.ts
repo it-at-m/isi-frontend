@@ -16,7 +16,7 @@ export function useUserInfoApi() {
       userinfo = mapJson(json);
     } catch {
       // Wenn die Nutzerinformationen nicht geladen werden können wird ein leeres Nutzerobjekt zurückgegeben.
-      toast.error(`Die Nutzerinformationen konnten nicht geladen werden.`);
+      toast.error("Die Nutzerinformationen konnten nicht geladen werden.", { timeout: false });
       userinfo.givenname = "";
       userinfo.surname = "";
       userinfo.department = "";

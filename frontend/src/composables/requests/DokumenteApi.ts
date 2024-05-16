@@ -7,20 +7,17 @@ import {
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
-import { useInformationList } from "./InformationList";
 import _ from "lodash";
+import { useToast } from "vue-toastification";
 
 // eslint-disable-next-line
 export function useDokumenteApi() {
   const dateihandlingApi = new DateihandlingApi(RequestUtils.getBasicFetchConfigurationForBackend());
   const { handleError } = useErrorHandler();
-  const { showErrorInInformationList } = useInformationList();
+  const toast = useToast();
   const errorMessage = "Beim Speichern eines Dokuments ist ein Fehler aufgetreten.";
 
-  async function getPresignedUrlForSaveDokument(
-    dto: FilepathDto,
-    showInInformationList: boolean,
-  ): Promise<PresignedUrlDto> {
+  async function getPresignedUrlForSaveDokument(dto: FilepathDto): Promise<PresignedUrlDto> {
     const requestObject: SaveFileRequest = {
       filepathDto: dto,
     };
@@ -28,14 +25,11 @@ export function useDokumenteApi() {
       const response = await dateihandlingApi.saveFile(requestObject, RequestUtils.getPOSTConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function getPresignedUrlForGetDokument(
-    dto: FilepathDto,
-    showInInformationList: boolean,
-  ): Promise<PresignedUrlDto> {
+  async function getPresignedUrlForGetDokument(dto: FilepathDto): Promise<PresignedUrlDto> {
     const requestObject: GetFileRequest = {
       pathToFile: dto.pathToFile,
     };
@@ -43,7 +37,7 @@ export function useDokumenteApi() {
       const response = await dateihandlingApi.getFile(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
@@ -56,10 +50,10 @@ export function useDokumenteApi() {
           headers: { "Content-Type": "application/octet-stream" },
         });
         if (!response.ok) {
-          showErrorInInformationList(errorMessage);
+          toast.error(errorMessage, { timeout: false });
         }
       } catch {
-        showErrorInInformationList(errorMessage);
+        toast.error(errorMessage, { timeout: false });
       }
     }
   }
@@ -71,10 +65,10 @@ export function useDokumenteApi() {
           method: dto.httpMethodToUse as string,
         });
         if (!response.ok) {
-          showErrorInInformationList(errorMessage);
+          toast.error(errorMessage, { timeout: false });
         }
       } catch {
-        showErrorInInformationList(errorMessage);
+        toast.error(errorMessage, { timeout: false });
       }
     }
   }

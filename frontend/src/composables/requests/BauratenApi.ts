@@ -12,7 +12,6 @@ export function useBauratenApi() {
     realisierungsbeginn: number,
     wohneinheiten: number | undefined,
     geschossflaecheWohnen: number | undefined,
-    showInInformationList: boolean,
   ): Promise<Array<BaurateDto>> {
     const requestParameters = {
       realisierungsbeginn: realisierungsbeginn,
@@ -23,7 +22,7 @@ export function useBauratenApi() {
       const response = await bauratenApi.determineBauraten(requestParameters, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

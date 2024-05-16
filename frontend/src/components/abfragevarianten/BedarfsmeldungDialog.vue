@@ -169,7 +169,7 @@ function uebernehmenBedarfsmeldung(): void {
       toast.error("Es gibt noch Validierungsfehler");
     }
   } else {
-    toast.error(validationMessage);
+    toast.error(validationMessage, { timeout: false });
   }
 }
 

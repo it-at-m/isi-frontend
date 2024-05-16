@@ -7,7 +7,7 @@ export function useTransitionApi() {
   const abfrageStatusApi = new AbfrageStatusApi(RequestUtils.getBasicFetchConfigurationForBackend());
   const { handleError } = useErrorHandler();
 
-  async function getTransitions(uuid: string, showInInformationList: boolean): Promise<TransitionDto[]> {
+  async function getTransitions(uuid: string): Promise<TransitionDto[]> {
     const requestObject: TransitionsAbfrageRequest = {
       id: uuid,
     };
@@ -15,7 +15,7 @@ export function useTransitionApi() {
       const response = await abfrageStatusApi.transitionsAbfrage(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

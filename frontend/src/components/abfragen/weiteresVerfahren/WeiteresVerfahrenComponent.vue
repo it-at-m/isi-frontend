@@ -17,7 +17,6 @@
       id="adresse_component"
       ref="adresseComponent"
       v-model="weiteresVerfahren.adresse"
-      :show-in-information-list="true"
       :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
