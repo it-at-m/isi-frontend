@@ -311,7 +311,6 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
 } from "@/api/api-client/isi-backend";
-import { Levels } from "@/api/error";
 import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
 import BaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/BaugenehmigungsverfahrenComponent.vue";
@@ -365,7 +364,7 @@ import {
   mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
-import Toaster from "../components/common/toaster.type";
+import { useToast, TYPE } from "vue-toastification";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { findFaultInAbfrageForSave } from "@/utils/Validators";
 import { useSearchStore } from "@/stores/SearchStore";
@@ -424,6 +423,7 @@ const { showWarningInInformationList } = useInformationList();
 const searchStore = useSearchStore();
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 
 const RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
 const TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
@@ -593,7 +593,7 @@ function yesNoDialogAbfragevarianteNo(): void {
 async function deleteBauleitplanverfahren(): Promise<void> {
   await deleteById(abfrageId, true);
   searchStore.removeSearchResultById(abfrageId);
-  returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", Levels.SUCCESS);
+  returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", TYPE.SUCCESS);
 }
 
 function yesNoDialogBauabschnittYes(): void {
@@ -753,9 +753,9 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
   }
   if (isNew.value) {
     router.push("/");
-    Toaster.toast(`Die Abfrage wurde erfolgreich gespeichert`, Levels.SUCCESS);
+    toast.success(`Die Abfrage wurde erfolgreich gespeichert`);
   } else if (showToast) {
-    Toaster.toast(`Die Abfrage wurde erfolgreich aktualisiert`, Levels.SUCCESS);
+    toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }
 }
 
@@ -771,7 +771,7 @@ async function startStatusUebergang(transition: TransitionDto) {
         const response = await statusUebergangRequest(transition, abfrageId, anmerkung);
         if (response.ok) {
           if (transition.url !== "in-bearbeitung-setzen") {
-            returnToUebersicht(toastMessage, Levels.SUCCESS);
+            returnToUebersicht(toastMessage, TYPE.SUCCESS);
           } else {
             resetAbfrage();
           }
@@ -805,11 +805,10 @@ async function setRelevanteAbfragevariante(abfragevariante: AnyAbfragevarianteMo
     if (typeof result !== "string") {
       const relevanteId = result.relevanteAbfragevariante;
       relevanteAbfragevarianteId.value = relevanteId ?? null;
-      Toaster.toast(
+      toast.success(
         `Die Abfragevariante ${abfragevariante.name} in Abfrage ${abfrage.value.displayName} ist nun ${
           relevanteId ? "relevant" : "nicht mehr relevant"
         }.`,
-        Levels.SUCCESS,
       );
     } else {
       relevanteAbfragevarianteToBeSet = abfragevariante;
@@ -830,9 +829,9 @@ async function setRelevanteAbfragevariante(abfragevariante: AnyAbfragevarianteMo
   }
 }
 
-function returnToUebersicht(message?: string, level?: Levels): void {
-  if (message && level) {
-    Toaster.toast(message, level);
+function returnToUebersicht(message?: string, type?: TYPE): void {
+  if (message && type) {
+    toast(message, { type });
   }
   router.push("/");
 }

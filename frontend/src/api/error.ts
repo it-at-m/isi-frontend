@@ -1,17 +1,12 @@
-export const enum Levels {
-  INFO = "info",
-  WARNING = "warning",
-  ERROR = "error",
-  SUCCESS = "success",
-}
+import { TYPE } from "vue-toastification";
 
 export class ApiError extends Error {
-  level: string;
+  toasterType: TYPE;
   constructor({
-    level = Levels.ERROR,
+    toasterType = TYPE.ERROR,
     message = "Ein unbekannter Fehler ist aufgetreten, bitte den Administrator informieren.",
   }: {
-    level?: string;
+    toasterType?: TYPE;
     message?: string;
   }) {
     // Übergibt die verbleibenden Parameter (einschließlich Vendor spezifischer Parameter) dem Error Konstruktor
@@ -21,7 +16,7 @@ export class ApiError extends Error {
     this.stack = new Error().stack;
 
     // Benutzerdefinierte Informationen
-    this.level = level;
+    this.toasterType = toasterType;
     this.message = message;
   }
 }

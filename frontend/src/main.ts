@@ -2,12 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./plugins/router";
 import pinia from "./plugins/pinia";
-import { createVuetify } from "vuetify";
+import vuetify from "./plugins/vuetify";
+import toast from "./plugins/toast";
 
-const vuetify = createVuetify({
-  locale: {
-    locale: "de",
-  },
-});
-
-createApp(App).use(vuetify).use(router).use(pinia).mount("#app");
+createApp(App).use(vuetify).use(router).use(pinia).use(toast).mount("#app");

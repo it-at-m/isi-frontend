@@ -1,27 +1,27 @@
 import { describe, expect, test } from "vitest";
 import { InformationResponseDtoTypeEnum } from "@/api/api-client/isi-backend";
-import { Levels } from "@/api/error";
+import { TYPE } from "vue-toastification";
 import { useErrorHandler } from "@/composables/requests/ErrorHandler";
 import { createPinia, setActivePinia } from "pinia";
 
 describe("ErrorHandler Test", () => {
   setActivePinia(createPinia());
-  const { getToastLevel } = useErrorHandler();
+  const { getToastType } = useErrorHandler();
 
-  test("getToastLevel Test", () => {
-    let level: Levels = getToastLevel(InformationResponseDtoTypeEnum.Error);
-    expect(level).toBe(Levels.ERROR);
+  test("getToastType Test", () => {
+    let level = getToastType(InformationResponseDtoTypeEnum.Error);
+    expect(level).toBe(TYPE.ERROR);
 
-    level = getToastLevel(InformationResponseDtoTypeEnum.Warning);
-    expect(level).toBe(Levels.WARNING);
+    level = getToastType(InformationResponseDtoTypeEnum.Warning);
+    expect(level).toBe(TYPE.WARNING);
 
-    level = getToastLevel(InformationResponseDtoTypeEnum.InformationSuccess);
-    expect(level).toBe(Levels.SUCCESS);
+    level = getToastType(InformationResponseDtoTypeEnum.InformationSuccess);
+    expect(level).toBe(TYPE.SUCCESS);
 
-    level = getToastLevel(InformationResponseDtoTypeEnum.InformationNeutral);
-    expect(level).toBe(Levels.INFO);
+    level = getToastType(InformationResponseDtoTypeEnum.InformationNeutral);
+    expect(level).toBe(TYPE.INFO);
 
-    level = getToastLevel(undefined);
-    expect(level).toBe(Levels.INFO);
+    level = getToastType(undefined);
+    expect(level).toBe(TYPE.INFO);
   });
 });

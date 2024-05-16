@@ -73,11 +73,9 @@
 
 import { computed, watch } from "vue";
 import { type CurrencyInputOptions, CurrencyDisplay, useCurrencyInput } from "vue-currency-input";
-import { min as minRule, max as maxRule, pflichtfeld } from "@/utils/FieldValidationRules";
+import { type Rule, min as minRule, max as maxRule, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
 import { useSaveLeave } from "@/composables/SaveLeave";
-
-type Rule = (v: string | undefined | null) => true | string;
 
 interface Props {
   modelValue?: number;
