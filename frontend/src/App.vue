@@ -66,25 +66,16 @@
             id="app_nutzerinformationen_menu"
             v-model="menu"
             :close-on-content-click="false"
-            :nudge-width="200"
-            offset-x
-            offset-y
+            location="bottom"
             transition="slide-y-transition"
           >
             <template #activator="{ props }">
               <v-btn
                 size="small"
-                icon
-                fab
+                class="text-white"
+                icon="mdi-account-circle"
                 v-bind="props"
-              >
-                <v-icon
-                  id="app_nutzerinformationen_icon"
-                  class="text-white"
-                >
-                  mdi-account-circle
-                </v-icon>
-              </v-btn>
+              />
             </template>
 
             <v-card class="userinfo-card">
