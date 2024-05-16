@@ -14,7 +14,7 @@ export const ROUNDING_PRECISION = 2;
 
 export const JAHR_FOERDERART_SEPERATOR = "_";
 
-export function createHeaders(foerderartenBauratendateiInputBasis: Array<string> | undefined): Array<DataTableHeader> {
+export function createHeaders(foerderartenBauratendateiInputBasis: Array<string | undefined>): Array<DataTableHeader> {
   const headers = createHeadersForFoerderarten(foerderartenBauratendateiInputBasis);
   const headerForJahr: DataTableHeader = {
     title: ATTRIBUTE_HEADER_VALUE_JAHR,
@@ -42,7 +42,7 @@ export function createHeaders(foerderartenBauratendateiInputBasis: Array<string>
 }
 
 export function createHeadersForFoerderarten(
-  foerderartenBauratendateiInputBasis: Array<string> | undefined,
+  foerderartenBauratendateiInputBasis: Array<string | undefined>,
 ): Array<DataTableHeader> {
   return _.uniq(_.toArray(foerderartenBauratendateiInputBasis)).map((headerFoerderart) => {
     return {

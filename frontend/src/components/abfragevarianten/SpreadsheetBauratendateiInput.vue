@@ -5,7 +5,7 @@
     :items="tableDataFromBauratendateiInput"
     hide-default-footer
   >
-    <template #[`item.jahr`]="{ item }">
+    <template #item.jahr="{ item }">
       <v-text-field
         v-if="isSameItem(item, itemToEdit)"
         v-model="itemToEdit['jahr']"
@@ -19,8 +19,8 @@
     </template>
     <template
       v-for="(column, index) in forderartenForHeader"
-      :key="`${column}_${item.item.jahr}_${index}`"
-      #[`item.${column}`]="item"
+      :key="`${column}_${index}`"
+      #[`item.${column}`]="{ item }"
     >
       <num-field
         v-if="isSameItem(item.item, itemToEdit)"
@@ -36,25 +36,21 @@
         {{ toLocalizedTwoDecimals(item.item[column]) }}
       </span>
     </template>
-    <template #[`item.gesamt`]="{ item }">
+    <template #item.gesamt="{ item }">
       <span>{{ roundToLocalizedTwoDecimals(item["gesamt"]) }}</span>
     </template>
     <template #item.actions="{ item }">
       <div v-if="isSameItem(item, itemToEdit)">
         <v-btn
-          icon
+          icon="mdi-window-close"
           :disabled="!isEditable"
           @click="closeTableItem"
-        >
-          <v-icon> mdi-window-close </v-icon>
-        </v-btn>
+        />
         <v-btn
-          icon
+          icon="mdi-content-save"
           :disabled="!isEditable"
           @click="saveTableItem"
-        >
-          <v-icon> mdi-content-save </v-icon>
-        </v-btn>
+        />
       </div>
       <div v-else>
         <v-btn
@@ -107,10 +103,9 @@ import {
 } from "@/utils/BauratendateiUtils";
 import { digits, min4, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
-import type { Any } from "@vitest/expect";
 
 interface Props {
-  foerderartenBauratendateiInputBasis?: Array<string>;
+  foerderartenBauratendateiInputBasis: Array<string | undefined>;
   isEditable?: boolean;
 }
 
@@ -130,7 +125,9 @@ watch(() => bauratendateiInput, watchBauratendateiInput, { immediate: true, deep
 
 function watchBauratendateiInput(): void {
   headers.value = createHeaders(props.foerderartenBauratendateiInputBasis);
-  forderartenForHeader.value = _.cloneDeep(_.uniq(_.toArray(props.foerderartenBauratendateiInputBasis)));
+  forderartenForHeader.value = _.cloneDeep(
+    _.uniq(_.toArray(props.foerderartenBauratendateiInputBasis)).filter((v) => v !== undefined),
+  ) as string[];
   tableDataFromBauratendateiInput.value = createTableData(bauratendateiInput.value);
 }
 
@@ -175,7 +172,7 @@ function editTableItem(item: any): void {
   formChanged();
 }
 
-function deleteTableItem(item: Any): void {
+function deleteTableItem(item: any): void {
   if (!_.isNil(tableDataFromBauratendateiInput.value)) {
     const index = _.findIndex(tableDataFromBauratendateiInput.value, (tableItem) => {
       return isSameItem(tableItem, item);
