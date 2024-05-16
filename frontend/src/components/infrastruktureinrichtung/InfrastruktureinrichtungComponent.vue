@@ -6,7 +6,7 @@
           <v-text-field
             id="infrastruktureinrichtung_nameEinrichtung"
             v-model="infrastruktureinrichtung.nameEinrichtung"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="255"
             validate-on-blur
             :disabled="!isEditable"
@@ -40,7 +40,7 @@
             :items="statusInfrastruktureinrichtungList"
             item-value="key"
             item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
             @change="formChanged"
           >
@@ -97,7 +97,7 @@
             v-model="infrastruktureinrichtung.flaecheGesamtgrundstueck"
             class="mx-3"
             label="Fläche Gesamtgrundstück"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+            :suffix="SQUARE_METER"
             :disabled="!isEditable"
           />
         </v-col>
@@ -110,7 +110,7 @@
             v-model="infrastruktureinrichtung.flaecheTeilgrundstueck"
             class="mx-3"
             label="Fläche Teilgrundstück"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
+            :suffix="SQUARE_METER"
             :disabled="!isEditable"
           />
         </v-col>
@@ -119,95 +119,75 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import {
   BauvorhabenSearchResultDto,
   InfrastruktureinrichtungDtoStatusEnum,
-  LookupEntryDto,
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
-import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
 import NumField from "@/components/common/NumField.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
-import SecurityMixin from "@/mixins/security/SecurityMixin";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: {
-    FieldGroupCard,
-    NumField,
-    AdresseComponent,
-    InfrastruktureinrichtungVerortung,
-  },
-})
-export default class InfrastruktureinrichtungComponent extends Mixins(
-  FieldValidationRulesMixin,
-  BauvorhabenApiRequestMixin,
-  SaveLeaveMixin,
-  FieldPrefixesSuffixes,
-  SearchApiRequestMixin,
-  SecurityMixin,
-) {
-  @VModel({ type: InfrastruktureinrichtungModel })
-  infrastruktureinrichtung!: InfrastruktureinrichtungModel;
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { defineModel } from "@/utils/Vue";
+import { useSearchApi } from "@/composables/requests/search/SearchApi";
+import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+interface Props {
+  value: InfrastruktureinrichtungModel;
+  isEditable?: boolean;
+}
 
-  private flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
+interface Emits {
+  (event: "input", value: InfrastruktureinrichtungModel): void;
+}
 
-  private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const { searchForEntities } = useSearchApi();
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const emit = defineEmits<Emits>();
+const infrastruktureinrichtung = defineModel(props, emit);
+const flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
+const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
+const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
 
-  private lookupStore = useLookupStore();
+onMounted(() => fetchBauvorhaben());
 
-  mounted(): void {
-    this.fetchBauvorhaben();
-  }
+function isFertigstellungsjahrRequired(): boolean {
+  return infrastruktureinrichtung.value.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand;
+}
 
-  get statusInfrastruktureinrichtungList(): LookupEntryDto[] {
-    return this.lookupStore.statusInfrastruktureinrichtung;
-  }
-
-  private isFertigstellungsjahrRequired(): boolean {
-    return this.infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand;
-  }
-
-  /**
-   * Holt alle Bauvorhaben vom Backend.
-   */
-  private async fetchBauvorhaben(): Promise<void> {
-    const searchQueryAndSortingDto = {
-      searchQuery: "",
-      selectBauleitplanverfahren: false,
-      selectBaugenehmigungsverfahren: false,
-      selectWeiteresVerfahren: false,
-      selectBauvorhaben: true,
-      selectGrundschule: false,
-      selectGsNachmittagBetreuung: false,
-      selectHausFuerKinder: false,
-      selectKindergarten: false,
-      selectKinderkrippe: false,
-      selectMittelschule: false,
-      page: undefined,
-      pageSize: undefined,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-    } as SearchQueryAndSortingDto;
-    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
-      this.bauvorhaben = searchResults.searchResults?.map(
-        (searchResults) => searchResults as BauvorhabenSearchResultDto,
-      ) as Array<BauvorhabenSearchResultDto>;
-    });
-  }
+/**
+ * Holt alle Bauvorhaben vom Backend.
+ */
+async function fetchBauvorhaben(): Promise<void> {
+  const searchQueryAndSortingDto = {
+    searchQuery: "",
+    selectBauleitplanverfahren: false,
+    selectBaugenehmigungsverfahren: false,
+    selectWeiteresVerfahren: false,
+    selectBauvorhaben: true,
+    selectGrundschule: false,
+    selectGsNachmittagBetreuung: false,
+    selectHausFuerKinder: false,
+    selectKindergarten: false,
+    selectKinderkrippe: false,
+    selectMittelschule: false,
+    page: undefined,
+    pageSize: undefined,
+    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+  } as SearchQueryAndSortingDto;
+  const searchResults = await searchForEntities(searchQueryAndSortingDto);
+  bauvorhaben.value = searchResults.searchResults?.map(
+    (searchResults) => searchResults as BauvorhabenSearchResultDto,
+  ) as Array<BauvorhabenSearchResultDto>;
 }
 </script>
-<style></style>
