@@ -10,10 +10,10 @@
             :disabled="!isEditable"
             :rules="[pflichtfeld]"
             maxlength="30"
-            validate-on-blur
-            @input="formChanged"
+            validate-on="blur"
+            @update:model-value="formChanged"
           >
-            <template #label> Name der Abfragevariante <span class="secondary--text">*</span> </template>
+            <template #label> Name der Abfragevariante <span class="text-secondary">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -51,16 +51,16 @@
             v-model="abfragevariante.wesentlicheRechtsgrundlage"
             :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
             item-value="key"
-            item-text="value"
+            item-title="value"
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :disabled="!isEditable"
-            @input="formChanged"
+            @update:model-value="formChanged"
           >
             <template #label>
               Wesentliche Rechtsgrundlage
-              <span class="secondary--text">*</span>
+              <span class="text-secondary">*</span>
             </template>
           </v-autocomplete>
         </v-col>
@@ -77,7 +77,7 @@
               :disabled="!isEditable"
               label="Freie Eingabe"
               maxlength="1000"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-slide-y-reverse-transition>
         </v-col>

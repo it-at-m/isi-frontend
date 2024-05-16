@@ -18,7 +18,7 @@
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_im_bplan_kita_triswitch"
@@ -28,7 +28,7 @@
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
@@ -38,7 +38,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
@@ -48,7 +48,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
         <v-col
@@ -64,7 +64,7 @@
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_im_bplan_schule_triswitch"
@@ -74,7 +74,7 @@
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
@@ -84,7 +84,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
@@ -94,7 +94,7 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -112,7 +112,7 @@
             rows="1"
             auto-grow
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -127,8 +127,11 @@
               hide-default-footer
               @change="formChanged"
             >
-              <template #header="{ text }">
-                <span>{{ text }}</span>
+              <template
+                #[`header.
+                `]="{ column }"
+              >
+                <span>{{ column.text }}</span>
               </template>
               <template #body="{ items }">
                 <tbody>

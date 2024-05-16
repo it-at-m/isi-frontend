@@ -12,7 +12,7 @@
           label="Daten für Bauratendatei angeben"
           color="primary"
           :disabled="!isEditable"
-          @change="checkBoxChanged"
+          @update:model-value="checkBoxChanged"
         />
       </v-col>
     </v-row>
@@ -21,7 +21,7 @@
         v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
         :key="index"
         class="px-3 pt-3 pb-3 mt-10"
-        outlined
+        variant="outlined"
       >
         <v-row class="justify-end">
           <v-btn
@@ -45,9 +45,9 @@
               :append-icon="''"
               multiple
               chips
-              deletable-chips
+              closable-chips
               :disabled="!isEditable"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-col>
           <v-col
@@ -61,9 +61,9 @@
               :append-icon="''"
               multiple
               chips
-              deletable-chips
+              closable-chips
               :disabled="!isEditable"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-col>
           <v-col
@@ -77,9 +77,9 @@
               :append-icon="''"
               multiple
               chips
-              deletable-chips
+              closable-chips
               :disabled="!isEditable"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-col>
         </v-row>
@@ -113,7 +113,7 @@
           auto-grow
           rows="3"
           maxlength="1000"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>
