@@ -31,91 +31,73 @@
           id="speed_dial_create_button"
           v-model="speedDialOpen"
           color="secondary"
-          dark
-          fab
-          large
-        >
-          <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
-          <v-icon v-else> mdi-plus </v-icon>
-        </v-btn>
+          class="text-white"
+          :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
+          size="large"
+        />
       </template>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="infrastruktureinrichtung_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="red lighten-1"
-            v-on="on"
+            class="text-h6 text-white"
+            icon="mdi-home"
+            color="red-lighten-1"
+            v-bind="props"
             @click="createInfrastruktureinrichtung"
-          >
-            <v-icon>mdi-home</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Infrastruktureinrichtung erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="bauvorhaben_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="indigo lighten-1"
-            v-on="on"
+            class="text-h6 text-white"
+            icon="mdi-account-hard-hat"
+            color="indigo-lighten-1"
+            v-bind="props"
             @click="createBauvorhaben"
-          >
-            <v-icon>mdi-account-hard-hat</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Bauvorhaben erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="bauleitplanverfahren_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
+            class="text-h6 text-white"
+            icon="mdi-comment-alert"
+            color="green-lighten-1"
+            v-bind="props"
             @click="createBauleitplanverfahren"
-          >
-            <v-icon>mdi-comment-alert</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Bauleitplanverfahren erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="baugenehmigungsverfahren_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
+            class="text-h6 text-white"
+            icon="mdi-account-multiple-plus"
+            color="green-lighten-1"
+            v-bind="props"
             @click="createBaugenehmigungsverfahren"
-          >
-            <v-icon>mdi-account-multiple-plus</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Baugenehmigungsverfahren erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="weiteres_verfahren_create_button"
-            class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
+            class="text-h6 text-white"
+            icon="mdi-account-plus"
+            color="green-lighten-1"
+            v-bind="props"
             @click="createWeiteresVerfahren"
-          >
-            <v-icon>mdi-account-plus</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Weiteres Verfahren erstellen</span>
       </v-tooltip>
