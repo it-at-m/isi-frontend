@@ -10,10 +10,10 @@
             id="adresse_suchen_dropdown"
             ref="adresseSuchenDropdown"
             v-model="selected"
+            v-model:search="searchQuery"
             :disabled="!isEditable"
             :items="searchResults"
             :loading="loading"
-            :search.sync="searchQuery"
             density="compact"
             clearable
             color="black"

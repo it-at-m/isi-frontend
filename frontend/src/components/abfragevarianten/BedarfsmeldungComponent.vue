@@ -127,12 +127,6 @@
               hide-default-footer
               @change="formChanged"
             >
-              <template
-                #[`header.
-                `]="{ column }"
-              >
-                <span>{{ column.text }}</span>
-              </template>
               <template #body="{ items }">
                 <tbody>
                   <tr
@@ -240,9 +234,9 @@ const getBedarfsmeldungTitle = computed(() => {
 const getIsEditable = computed(() => props.isEditable);
 const getIsFachreferat = computed(() => props.isFachreferat);
 
-const bedarfsmeldungen = ref<BedarfsmeldungDto[] | null>([]);
-const bedarfsmeldungDialogOpen = ref<boolean | null>(false);
-const currentBedarfsmeldung = ref<BedarfsmeldungDto | null>(createBedarfsmeldungDto());
+const bedarfsmeldungen = ref<BedarfsmeldungDto[]>([]);
+const bedarfsmeldungDialogOpen = ref<boolean>(false);
+const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
 let displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 let selectedItemIndex = -1;
 const lookupStore = useLookupStore();

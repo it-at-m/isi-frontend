@@ -10,9 +10,6 @@
           disable-filtering
           disable-sort
         >
-          <template #headers="{ headers }">
-            <span>{{ headers }}</span>
-          </template>
           <template #body="{ items }">
             <tbody>
               <tr>

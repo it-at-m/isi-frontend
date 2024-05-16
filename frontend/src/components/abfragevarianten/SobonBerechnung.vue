@@ -12,7 +12,7 @@
         class="mx-3"
         label="SoBoN-Berechnung"
         color="primary"
-        @change="sobonBerechnungChanged"
+        @update:model-value="sobonBerechnungChanged"
       />
     </v-col>
     <v-expand-transition>
@@ -27,9 +27,9 @@
           :disabled="!isEditableBySachbearbeitung"
           :items="groupedStammdaten"
           label="Fördermix für Berechnung"
-          item-text="foerdermix.bezeichnung"
+          item-title="foerdermix.bezeichnung"
           return-object
-          @change="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-expand-transition>
@@ -57,7 +57,7 @@ type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
-const groupedStammdaten = ref<GroupedStammdaten | null>([]);
+const groupedStammdaten = ref<GroupedStammdaten>([]);
 
 const stammdatenStore = useStammdatenStore();
 

@@ -11,7 +11,7 @@
         v-model="itemToEdit['jahr']"
         :hide-details="true"
         :rules="[digits, min4, pflichtfeld]"
-        dense
+        density="compact"
         maxlength="4"
         single-line
       ></v-text-field>
@@ -19,11 +19,11 @@
     </template>
     <template
       v-for="(column, index) in forderartenForHeader"
+      :key="`${column}_${item.item.jahr}_${index}`"
       #[`item.${column}`]="item"
     >
       <num-field
         v-if="isSameItem(item.item, itemToEdit)"
-        :key="`${column}_${item.item.jahr}_${index}`"
         v-model="itemToEdit[column]"
         :hide-details="true"
         required
@@ -32,10 +32,7 @@
         :precision="2"
         single-line
       ></num-field>
-      <span
-        v-else
-        :key="`${column}_${item.item.jahr}_${index}`"
-      >
+      <span v-else>
         {{ toLocalizedTwoDecimals(item.item[column]) }}
       </span>
     </template>
@@ -79,7 +76,7 @@
     <template #no-data>
       <span>Es sind keine Baurateninformationen vorhanden</span>
     </template>
-    <template #footer>
+    <template #bottom>
       <v-toolbar flat>
         <v-spacer />
         <v-btn
@@ -110,14 +107,11 @@ import {
 } from "@/utils/BauratendateiUtils";
 import { digits, min4, pflichtfeld } from "@/utils/FieldValidationRules";
 import _ from "lodash";
+import type { Any } from "@vitest/expect";
 
 interface Props {
   foerderartenBauratendateiInputBasis?: Array<string>;
   isEditable?: boolean;
-}
-
-interface Item {
-  index: number;
 }
 
 const props = withDefaults(defineProps<Props>(), { foerderartenBauratendateiInputBasis: () => [], isEditable: false });
@@ -128,9 +122,9 @@ const forderartenForHeader = ref<Array<string>>([]);
 
 const headers = ref<Array<DataTableHeader>>([]);
 
-const tableDataFromBauratendateiInput = ref<Array<Item>>([]);
+const tableDataFromBauratendateiInput = ref<Array<any>>([]);
 
-const itemToEdit = ref<Item>({ index: -1 });
+const itemToEdit = ref<any>({ index: -1 });
 
 watch(() => bauratendateiInput, watchBauratendateiInput, { immediate: true, deep: true });
 
@@ -140,7 +134,7 @@ function watchBauratendateiInput(): void {
   tableDataFromBauratendateiInput.value = createTableData(bauratendateiInput.value);
 }
 
-function isSameItem(item1: Item, item2: Item): boolean {
+function isSameItem(item1: any | undefined, item2: any | undefined): boolean {
   return item1.index === item2.index;
 }
 
@@ -176,12 +170,12 @@ function saveTableItem(): void {
   }
 }
 
-function editTableItem(item: Item): void {
+function editTableItem(item: any): void {
   itemToEdit.value = _.cloneDeep(item);
   formChanged();
 }
 
-function deleteTableItem(item: Item): void {
+function deleteTableItem(item: Any): void {
   if (!_.isNil(tableDataFromBauratendateiInput.value)) {
     const index = _.findIndex(tableDataFromBauratendateiInput.value, (tableItem) => {
       return isSameItem(tableItem, item);

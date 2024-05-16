@@ -1,9 +1,9 @@
 <template>
   <v-dialog
-    :value="showBedarfsmeldungDialog"
+    :model-value="showBedarfsmeldungDialog"
     persistent
     width="60%"
-    @input="updateShowBedarfsmeldungDialog"
+    @update:model-value="updateShowBedarfsmeldungDialog"
   >
     <v-form ref="bedarfsmeldungDialogForm">
       <v-card class="overflow-x-hidden">
@@ -35,11 +35,11 @@
               class="mx-3"
               :items="infrastruktureinrichtungenTypList"
               item-value="key"
-              item-text="value"
+              item-title="value"
               :rules="[pflichtfeld, notUnspecified]"
-              @change="formChanged"
+              @update:model-value="formChanged"
             >
-              <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
+              <template #label> Infrastruktureinrichtung Typ <span class="text-secondary">*</span> </template>
             </v-select>
           </v-col>
         </v-row>
@@ -100,7 +100,7 @@
           <v-btn
             id="bedarfsmeldung_abbrechen_button"
             class="text-wrap"
-            text
+            variant="text"
             @click="abbrechenBedarfsmeldung"
             v-text="'Abbrechen'"
           />
