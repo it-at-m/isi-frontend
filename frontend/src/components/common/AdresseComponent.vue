@@ -131,13 +131,12 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { useMasterEaiApi } from "@/composables/requests/eai/MasterEaiApi";
 
 interface Props {
-  showInInformationList?: boolean;
   isEditable?: boolean;
 }
 
 const { formChanged } = useSaveLeave();
 const { getAdressen } = useMasterEaiApi();
-const props = withDefaults(defineProps<Props>(), { showInInformationList: true, isEditable: false });
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const adresse = defineModel<AdresseModel>({ required: true });
 const loading = ref(false);
 const searchQuery = ref("");
@@ -219,7 +218,7 @@ async function searchForAdressenWith(searchFor: string): Promise<void> {
     loading.value = true; // Anzeige des Cursorladekreis starten
 
     try {
-      const dto = await getAdressen(adressSuche, props.showInInformationList);
+      const dto = await getAdressen(adressSuche);
       if (!_.isNil(dto)) {
         searchResults.value = dto;
       }

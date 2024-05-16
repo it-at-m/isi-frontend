@@ -62,7 +62,6 @@
 </template>
 
 <script setup lang="ts">
-import { useInformationList } from "@/composables/requests/InformationList";
 import { useDokumenteApi } from "@/composables/requests/DokumenteApi";
 import { useMimeTypeApi } from "@/composables/requests/MimeTypeApi";
 import DokumenteListe from "./DokumenteListe.vue";
@@ -85,6 +84,7 @@ import {
 import _ from "lodash";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
 import { computed, ref } from "vue";
+import { useToast } from "vue-toastification";
 
 interface Props {
   nameRootFolder: string;
@@ -100,7 +100,7 @@ const emit = defineEmits<Emits>();
 const dokumente = defineModel<DokumentDto[]>({ required: true });
 const loading = ref(false);
 const dokumenteInput = ref<HTMLInputElement | null>(null);
-const { showWarningInInformationList } = useInformationList();
+const toast = useToast();
 const { getPresignedUrlForSaveDokument, saveDokumentWithUrl } = useDokumenteApi();
 const { extractMediaTypeInformationForAllowedMediaType } = useMimeTypeApi();
 const { fileInformation } = useStammdatenStore();
@@ -178,7 +178,7 @@ function areFilesValid(fileList: FileList): boolean {
     warningMessage,
   );
   if (!_.isEmpty(warningMessage)) {
-    showWarningInInformationList(warningMessage);
+    toast.error(warningMessage, { timeout: false });
     return false;
   }
   return true;
@@ -259,7 +259,7 @@ async function saveFile(pathToFile: string, file: File): Promise<void> {
   const filepathDto: FilepathDto = createFilepathDto();
   filepathDto.pathToFile = pathToFile + file.name;
   let presignedUrlDto: PresignedUrlDto = createPresignedUrlDto();
-  await getPresignedUrlForSaveDokument(filepathDto, true).then((presignedUrlDtoInternal) => {
+  await getPresignedUrlForSaveDokument(filepathDto).then((presignedUrlDtoInternal) => {
     presignedUrlDto = presignedUrlDtoInternal;
   });
 
@@ -268,7 +268,7 @@ async function saveFile(pathToFile: string, file: File): Promise<void> {
       const newDokument = createDokumentDto();
       newDokument.sizeInBytes = file.size;
       newDokument.filePath.pathToFile = filepathDto.pathToFile;
-      extractMediaTypeInformationForAllowedMediaType(filepathDto, true)
+      extractMediaTypeInformationForAllowedMediaType(filepathDto)
         .then((mimeTypeInformation) => {
           newDokument.typDokument = acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
           dokumente.value.push(newDokument);

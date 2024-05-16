@@ -17,7 +17,6 @@
       id="adresse_component"
       ref="adresseComponent"
       v-model="baugenehmigungsverfahren.adresse"
-      :show-in-information-list="true"
       :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung

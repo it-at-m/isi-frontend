@@ -14,10 +14,7 @@ export function useFoerdermixApi() {
   const foerdermixStammApi = new FoerdermixStammApi(RequestUtils.getBasicFetchConfigurationForBackend());
   const { handleError } = useErrorHandler();
 
-  async function createFoerdermixStamm(
-    dto: FoerdermixStammDto,
-    showInInformationList: boolean,
-  ): Promise<FoerdermixStammDto> {
+  async function createFoerdermixStamm(dto: FoerdermixStammDto): Promise<FoerdermixStammDto> {
     const requestObject: SaveFoerdermixStammRequest = {
       foerdermixStammDto: dto,
     };
@@ -25,14 +22,11 @@ export function useFoerdermixApi() {
       const response = await foerdermixStammApi.saveFoerdermixStamm(requestObject, RequestUtils.getPOSTConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function updateFoerdermixStamm(
-    dto: FoerdermixStammDto,
-    showInInformationList: boolean,
-  ): Promise<FoerdermixStammDto> {
+  async function updateFoerdermixStamm(dto: FoerdermixStammDto): Promise<FoerdermixStammDto> {
     const requestObject: UpdateFoerdermixStammRequest = {
       foerdermixStammDto: dto,
     };
@@ -40,20 +34,20 @@ export function useFoerdermixApi() {
       const response = await foerdermixStammApi.updateFoerdermixStamm(requestObject, RequestUtils.getPUTConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function getFoerdermixStaemme(showInInformationList: boolean): Promise<FoerdermixStammDto[]> {
+  async function getFoerdermixStaemme(): Promise<FoerdermixStammDto[]> {
     try {
       const response = await foerdermixStammApi.getFoerdermixStaemme();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function getFoerdermix(id: string, showInInformationList: boolean): Promise<FoerdermixStammDto> {
+  async function getFoerdermix(id: string): Promise<FoerdermixStammDto> {
     const requestObject: GetFoerdermixStammByIdRequest = {
       id: id,
     };
@@ -61,11 +55,11 @@ export function useFoerdermixApi() {
       const response = await foerdermixStammApi.getFoerdermixStammById(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function deleteFoerdermixStamm(id: string, showInInformationList: boolean): Promise<void> {
+  async function deleteFoerdermixStamm(id: string): Promise<void> {
     const requestObject: DeleteFoerdermixStammByIdRequest = {
       id: id,
     };
@@ -76,7 +70,7 @@ export function useFoerdermixApi() {
       );
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

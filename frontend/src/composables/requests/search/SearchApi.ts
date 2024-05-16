@@ -21,7 +21,7 @@ export function useSearchApi() {
       const response = await sucheApi.searchForSearchwordSuggestion(requestParameters, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(false, error);
+      throw handleError(error);
     }
   }
 
@@ -33,7 +33,7 @@ export function useSearchApi() {
       const response = await sucheApi.searchForEntities(requestParameters, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(false, error);
+      throw handleError(error);
     }
   }
 

@@ -243,10 +243,6 @@
           @click="deleteAbfrage()"
           v-text="'Löschen'"
         />
-        <information-list
-          id="abfrage_information_list"
-          information-message-deletion-intervall-seconds="10"
-        />
       </template>
       <template #action>
         <v-spacer />
@@ -323,7 +319,6 @@ import BaugebietBauleitplanverfahrenComponent from "@/components/baugebiete/baul
 import BaugebietBaugenehmigungsverfahrenComponent from "@/components/baugebiete/baugenehmigungsverfahren/BaugebietBaugenehmigungsverfahrenComponent.vue";
 import BaugebietWeiteresVerfahrenComponent from "@/components/baugebiete/weiteresVerfahren/BaugebietWeiteresVerfahrenComponent.vue";
 import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
-import InformationList from "@/components/common/InformationList.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
@@ -383,7 +378,6 @@ import { useTransitionApi } from "@/composables/requests/TransitionApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
-import { useInformationList } from "@/composables/requests/InformationList";
 import { useStatusUebergangApi } from "@/composables/requests/StatusUebergangApi";
 import { useBauratenApi } from "@/composables/requests/BauratenApi";
 
@@ -419,11 +413,10 @@ const { getBauvorhabenById, changeRelevanteAbfragevariante } = useBauvorhabenApi
 const { determineBauraten } = useBauratenApi();
 const { getTransitions } = useTransitionApi();
 const { statusUebergangRequest } = useStatusUebergangApi();
-const { showWarningInInformationList } = useInformationList();
+const toast = useToast();
 const searchStore = useSearchStore();
 const route = useRoute();
 const router = useRouter();
-const toast = useToast();
 
 const RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
 const TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
@@ -443,7 +436,7 @@ const abfrage = computed<AnyAbfrageModel>({
     selectAbfrage();
     const bauvorhabenId = value.bauvorhaben;
     if (bauvorhabenId) {
-      const dto = await getBauvorhabenById(bauvorhabenId, false);
+      const dto = await getBauvorhabenById(bauvorhabenId);
       relevanteAbfragevarianteId.value = dto.relevanteAbfragevariante ?? null;
     }
   },
@@ -521,7 +514,7 @@ async function resetAbfrage(): Promise<void> {
     }
   } else {
     try {
-      const dto = await getById(abfrageId, true);
+      const dto = await getById(abfrageId);
       if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
         abfrage.value = new BauleitplanverfahrenModel(dto);
       } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
@@ -532,7 +525,7 @@ async function resetAbfrage(): Promise<void> {
     } catch {
       searchStore.setSelectedAbfrage(undefined);
     }
-    possibleTransitions.value = await getTransitions(abfrageId, true);
+    possibleTransitions.value = await getTransitions(abfrageId);
   }
 }
 
@@ -591,7 +584,7 @@ function yesNoDialogAbfragevarianteNo(): void {
 }
 
 async function deleteBauleitplanverfahren(): Promise<void> {
-  await deleteById(abfrageId, true);
+  await deleteById(abfrageId);
   searchStore.removeSearchResultById(abfrageId);
   returnToUebersicht("Die Abfrage wurde erfolgreich gelöscht", TYPE.SUCCESS);
 }
@@ -651,10 +644,10 @@ async function saveAbfrage(): Promise<void> {
         handlePatchBedarfsmeldungErfolgt(abfrage.value);
       }
     } else {
-      showWarningInInformationList(validationMessage);
+      toast.error(validationMessage, { timeout: false });
     }
   } else {
-    showWarningInInformationList("Es gibt noch Validierungsfehler");
+    toast.error("Es gibt noch Validierungsfehler");
   }
 }
 
@@ -671,7 +664,7 @@ async function handleSave(model: AnyAbfrageModel): Promise<void> {
   } else {
     abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
   }
-  const dto = await save(abfrageAngelegtDto, true);
+  const dto = await save(abfrageAngelegtDto);
   handleSuccess(dto, true);
 }
 
@@ -688,7 +681,7 @@ async function handlePatchAngelegt(model: AnyAbfrageModel): Promise<void> {
   } else {
     abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
   }
-  const dto = await patchAngelegt(abfrageAngelegtDto, abfrageId, true);
+  const dto = await patchAngelegt(abfrageAngelegtDto, abfrageId);
   handleSuccess(dto, true);
 }
 
@@ -705,7 +698,7 @@ async function handlePatchInBearbeitungSachbearbeitung(model: AnyAbfrageModel): 
   } else {
     abfrageInBearbeitungSachbearbeitungDto = mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(model);
   }
-  const dto = await patchInBearbeitungSachbearbeitung(abfrageInBearbeitungSachbearbeitungDto, abfrageId, true);
+  const dto = await patchInBearbeitungSachbearbeitung(abfrageInBearbeitungSachbearbeitungDto, abfrageId);
   handleSuccess(dto, true);
 }
 
@@ -722,7 +715,7 @@ async function handlePatchInBearbeitungFachreferat(model: AnyAbfrageModel): Prom
   } else {
     abfrageInBearbeitungFachreferatDto = mapToWeiteresVerfahrenInBearbeitungFachreferatDto(model);
   }
-  const dto = await patchInBearbeitungFachreferat(abfrageInBearbeitungFachreferatDto, abfrageId, true);
+  const dto = await patchInBearbeitungFachreferat(abfrageInBearbeitungFachreferatDto, abfrageId);
   handleSuccess(dto, true);
 }
 
@@ -739,7 +732,7 @@ async function handlePatchBedarfsmeldungErfolgt(model: AnyAbfrageModel): Promise
   } else {
     abfrageBedarfsmeldungErfolgtDto = mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto(model);
   }
-  const dto = await patchBedarfsmeldungErfolgt(abfrageBedarfsmeldungErfolgtDto, abfrageId, true);
+  const dto = await patchBedarfsmeldungErfolgt(abfrageBedarfsmeldungErfolgtDto, abfrageId);
   handleSuccess(dto, true);
 }
 
@@ -777,13 +770,13 @@ async function startStatusUebergang(transition: TransitionDto) {
           }
         }
       } else {
-        showWarningInInformationList(validationMessage);
+        toast.error(validationMessage, { timeout: false });
       }
     } else {
-      showWarningInInformationList("Es gibt noch Validierungsfehler");
+      toast.error("Es gibt noch Validierungsfehler");
     }
   } else {
-    showWarningInInformationList("Bitte speichern vor einem Statusübergang");
+    toast.error("Bitte speichern vor einem Statusübergang");
   }
 }
 
@@ -791,17 +784,17 @@ async function setRelevanteAbfragevariante(abfragevariante: AnyAbfragevarianteMo
   if (_.isNil(abfragevariante)) {
     const bauvorhabenId = abfrage.value.bauvorhaben;
     if (bauvorhabenId) {
-      const bauvorhaben = await getBauvorhabenById(bauvorhabenId, false);
+      const bauvorhaben = await getBauvorhabenById(bauvorhabenId);
       const relevanteAbfragevariante = bauvorhaben.relevanteAbfragevariante;
       if (relevanteAbfragevariante) {
-        await changeRelevanteAbfragevariante(relevanteAbfragevariante, true);
+        await changeRelevanteAbfragevariante(relevanteAbfragevariante);
       }
     }
     return;
   }
 
   if (abfragevariante.id) {
-    const result = await changeRelevanteAbfragevariante(abfragevariante.id, true);
+    const result = await changeRelevanteAbfragevariante(abfragevariante.id);
     if (typeof result !== "string") {
       const relevanteId = result.relevanteAbfragevariante;
       relevanteAbfragevarianteId.value = relevanteId ?? null;
@@ -825,7 +818,7 @@ async function setRelevanteAbfragevariante(abfragevariante: AnyAbfragevarianteMo
       isRelevanteAbfragevarianteDialogOpen.value = true;
     }
   } else {
-    showWarningInInformationList("Vor Relevantsetzung einer Abfragevariante ist die Abfrage zu speichern.");
+    toast.error("Bitte speichern vor Relevantsetzung einer Abfragevariante");
   }
 }
 
@@ -1189,7 +1182,6 @@ async function handleDetermineBauratenForAbfragevariante(item: AbfrageTreeItem):
       abfragevariante.realisierungVon!,
       abfragevariante.weGesamt,
       abfragevariante.gfWohnenGesamt,
-      true,
     );
     const technicalBaugebiet = getTechnicalBaugebiet(abfragevariante);
     if (abfragevariante.bauabschnitte && !_.isNil(technicalBaugebiet)) {
@@ -1204,12 +1196,7 @@ async function handleDetermineBauratenForBaugebiet(item: AbfrageTreeItem): Promi
   const baugebiet = item.value;
 
   if (isBaugebiet(item, baugebiet)) {
-    const bauraten = await determineBauraten(
-      baugebiet.realisierungVon,
-      baugebiet.weGeplant,
-      baugebiet.gfWohnenGeplant,
-      true,
-    );
+    const bauraten = await determineBauraten(baugebiet.realisierungVon, baugebiet.weGeplant, baugebiet.gfWohnenGeplant);
     baugebiet.bauraten = bauraten.map((baurate: BaurateDto) => new BaurateModel(baurate));
     formChanged();
   }

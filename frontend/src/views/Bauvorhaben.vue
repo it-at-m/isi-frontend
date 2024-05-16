@@ -65,10 +65,6 @@
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
-        <information-list
-          id="bauvorhaben_information_list"
-          information-message-deletion-intervall-seconds="10"
-        />
       </template>
       <template #action>
         <v-spacer />
@@ -131,7 +127,6 @@ import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
 import { pflichtfeld } from "@/utils/FieldValidationRules";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
-import InformationList from "@/components/common/InformationList.vue";
 import { findFaultInBauvorhaben } from "@/utils/Validators";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
@@ -153,7 +148,6 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useRoute, useRouter } from "vue-router";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { useInformationList } from "@/composables/requests/InformationList";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useToast, TYPE } from "vue-toastification";
 
@@ -171,7 +165,6 @@ const {
   leave,
 } = useSaveLeave();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
-const { showWarningInInformationList } = useInformationList();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const searchStore = useSearchStore();
 const toast = useToast();
@@ -221,10 +214,10 @@ function validateAndProceed(): void {
         updateBauvorhaben();
       }
     } else {
-      showWarningInInformationList(fault);
+      toast.error(fault, { timeout: false });
     }
   } else {
-    showWarningInInformationList("Es gibt noch Validierungsfehler");
+    toast.error("Es gibt noch Validierungsfehler");
   }
 }
 
@@ -232,7 +225,7 @@ function validateAndProceed(): void {
  * Schickt eine GET-Anfrage für das ausgewählte Bauvorhaben ans Backend.
  */
 async function fetchBauvorhabenById(): Promise<void> {
-  const dto = await getBauvorhabenById(routeId, false);
+  const dto = await getBauvorhabenById(routeId);
   bauvorhaben.value = _.cloneDeep(dto);
 }
 
@@ -241,7 +234,7 @@ async function fetchBauvorhabenById(): Promise<void> {
  * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
  */
 async function saveBauvorhaben(): Promise<void> {
-  await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId, true);
+  await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId);
   returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", TYPE.SUCCESS);
 }
 
@@ -250,7 +243,7 @@ async function saveBauvorhaben(): Promise<void> {
  * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
  */
 async function updateBauvorhaben(): Promise<void> {
-  const dto = await putBauvorhaben(bauvorhaben.value, true);
+  const dto = await putBauvorhaben(bauvorhaben.value);
   bauvorhaben.value = _.cloneDeep(dto);
   toast.success("Das Bauvorhaben wurde erfolgreich aktualisiert");
 }
@@ -262,7 +255,7 @@ async function updateBauvorhaben(): Promise<void> {
 async function removeBauvorhaben(): Promise<void> {
   deleteDialogOpen.value = false;
 
-  await deleteBauvorhaben(routeId, true);
+  await deleteBauvorhaben(routeId);
   searchStore.removeSearchResultById(routeId);
   returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", TYPE.SUCCESS);
 }
