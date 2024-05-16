@@ -10,9 +10,9 @@ module.exports = {
     "@vue/eslint-config-typescript",
     "@vue/eslint-config-typescript/recommended",
     // Vue-Regeln: https://eslint.vuejs.org/rules/
-    "plugin:vue/essential",
-    "plugin:vue/recommended",
-    "plugin:vue/strongly-recommended",
+    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-recommended",
+    "plugin:vue/vue3-strongly-recommended",
     // Vuetify-Regeln: https://github.com/vuetifyjs/eslint-plugin-vuetify
     "plugin:vuetify/base",
     "plugin:vuetify/recommended",
