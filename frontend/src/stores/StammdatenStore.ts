@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import {
+  type FileInformationDto,
+  type FoerdermixStammDto,
   FileInfoStammApi,
-  FileInformationDto,
   FoerdermixStammApi,
-  FoerdermixStammDto,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 

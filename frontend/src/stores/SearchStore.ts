@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 import {
-  AbfrageSearchResultDto,
-  BauvorhabenDto,
-  BauvorhabenSearchResultDto,
-  InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungSearchResultDto,
-  SearchResultDto,
+  type AbfrageSearchResultDto,
+  type BauvorhabenDto,
+  type BauvorhabenSearchResultDto,
+  type InfrastruktureinrichtungDto,
+  type InfrastruktureinrichtungSearchResultDto,
+  type SearchResultDto,
+  type SearchResultsDto,
   SearchResultDtoTypeEnum,
-  SearchResultsDto,
 } from "@/api/api-client/isi-backend";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";

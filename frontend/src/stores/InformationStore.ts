@@ -1,4 +1,4 @@
-import { InformationResponseDto } from "@/api/api-client/isi-backend";
+import type { InformationResponseDto } from "@/api/api-client/isi-backend";
 import { defineStore } from "pinia";
 import _ from "lodash";
 
