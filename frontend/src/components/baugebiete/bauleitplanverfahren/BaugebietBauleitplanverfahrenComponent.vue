@@ -105,6 +105,7 @@ import {
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 import CommonBezeichnungBaulicheNutzungComponent from "../CommonBezeichnungBaulicheNutzungComponent.vue";
+import type { Rule } from "@/utils/FieldValidationRules";
 
 interface Props {
   abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;
@@ -114,27 +115,31 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const baugebiet = defineModel<BaugebietModel>({ required: true });
 
-function validateWohneinheiten(abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): boolean | string {
-  return (
-    verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
-    `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
-      abfragevariante,
-    )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
-  );
+function validateWohneinheiten(abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+        abfragevariante,
+      )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+    );
+  };
 }
 
-function validateGeschossflaecheWohnen(
-  abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
-): boolean | string {
-  return (
-    _.round(
-      verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
-      countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
-    ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
-    `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
-      abfragevariante,
-    )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
-  );
+function validateGeschossflaecheWohnen(abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      _.round(
+        verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
+        countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
+      ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+        abfragevariante,
+      )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
+    );
+  };
 }
 
 const calcRealisierungBis = computed(() => _.max(baugebiet.value.bauraten.map((baurate) => baurate.jahr)));

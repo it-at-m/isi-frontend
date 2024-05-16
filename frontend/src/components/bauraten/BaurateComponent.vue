@@ -79,8 +79,7 @@ import {
 } from "@/utils/CalculationUtil";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
-
-type Rule = (v: string | undefined | null) => true | string;
+import type { Rule } from "@/utils/FieldValidationRules";
 
 interface Props {
   baugebiet?: BaugebietDto;

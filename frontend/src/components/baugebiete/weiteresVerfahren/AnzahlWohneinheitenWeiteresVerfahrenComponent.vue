@@ -59,8 +59,7 @@ import {
   wohneinheitenAbfragevariante,
   wohneinheitenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
-
-type Rule = (v: string | undefined | null) => true | string;
+import type { Rule } from "@/utils/FieldValidationRules";
 
 interface Props {
   abfragevariante?: AbfragevarianteWeiteresVerfahrenDto;
@@ -74,6 +73,7 @@ const geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
 withDefaults(defineProps<Props>(), { isEditable: false });
 
 function validateWohneinheiten(abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (v: string | undefined | null) => {
     return (
       verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||

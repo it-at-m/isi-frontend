@@ -62,8 +62,7 @@ import {
 } from "@/utils/CalculationUtil";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
-
-type Rule = (v: string | undefined | null) => true | string;
+import type { Rule } from "@/utils/FieldValidationRules";
 
 interface Props {
   abfragevariante?: AbfragevarianteWeiteresVerfahrenDto;
@@ -76,17 +75,18 @@ const geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-function validateGeschossflaecheWohnen(
-  abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined,
-): boolean | string {
-  return (
-    _.round(
-      verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
-      countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
-    ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
-    `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
-      abfragevariante,
-    )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
-  );
+function validateGeschossflaecheWohnen(abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      _.round(
+        verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
+        countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
+      ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+        abfragevariante,
+      )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
+    );
+  };
 }
 </script>

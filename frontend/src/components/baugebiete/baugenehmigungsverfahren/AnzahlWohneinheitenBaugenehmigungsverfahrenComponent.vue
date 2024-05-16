@@ -59,6 +59,7 @@ import {
   wohneinheitenAbfragevariante,
   wohneinheitenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
+import type { Rule } from "@/utils/FieldValidationRules";
 
 interface Props {
   abfragevariante?: AbfragevarianteBaugenehmigungsverfahrenDto;
@@ -70,14 +71,15 @@ const anzahlWohneinheitenTitle = "Anzahl Wohneinheiten";
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-function validateWohneinheiten(
-  abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined,
-): boolean | string {
-  return (
-    verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
-    `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
-      abfragevariante,
-    )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
-  );
+function validateWohneinheiten(abfragevariante: AbfragevarianteBaugenehmigungsverfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+        abfragevariante,
+      )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+    );
+  };
 }
 </script>
