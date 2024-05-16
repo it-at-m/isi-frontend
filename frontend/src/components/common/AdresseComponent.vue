@@ -136,7 +136,7 @@ interface Props {
 
 const { formChanged } = useSaveLeave();
 const { getAdressen } = useMasterEaiApi();
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
+withDefaults(defineProps<Props>(), { isEditable: false });
 const adresse = defineModel<AdresseModel>({ required: true });
 const loading = ref(false);
 const searchQuery = ref("");

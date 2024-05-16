@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-app-bar
-      app
       color="primary"
       elevation="8"
       height="50"
@@ -21,7 +20,7 @@
             />
           </router-link>
           <router-link to="/">
-            <v-toolbar-title class="text-h4 white--text font-weight-bold">ISI</v-toolbar-title>
+            <v-toolbar-title class="text-h4 text-white font-weight-bold">ISI</v-toolbar-title>
           </router-link>
         </v-col>
         <v-col
@@ -36,19 +35,16 @@
         >
           <v-menu
             id="app_help_menu"
-            offset-x
-            offset-y
+            location="bottom"
             transition="slide-y-transition"
           >
-            <template #activator="{ on }">
+            <template #activator="{ props }">
               <v-btn
-                small
-                icon
-                fab
-                v-on="on"
-              >
-                <v-icon class="white--text"> mdi-help-circle </v-icon>
-              </v-btn>
+                size="small"
+                class="text-white"
+                icon="mdi-help-circle"
+                v-bind="props"
+              />
             </template>
             <v-list class="text-center">
               <v-list-item @click="showVersionInfo = true">
@@ -75,17 +71,16 @@
             offset-y
             transition="slide-y-transition"
           >
-            <template #activator="{ on, attrs }">
+            <template #activator="{ props }">
               <v-btn
-                small
+                size="small"
                 icon
                 fab
-                v-bind="attrs"
-                v-on="on"
+                v-bind="props"
               >
                 <v-icon
                   id="app_nutzerinformationen_icon"
-                  class="white--text"
+                  class="text-white"
                 >
                   mdi-account-circle
                 </v-icon>

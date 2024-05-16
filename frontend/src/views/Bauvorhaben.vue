@@ -13,11 +13,11 @@
                 v-model.trim="bauvorhaben.nameVorhaben"
                 :rules="[pflichtfeld]"
                 maxlength="255"
-                validate-on-blur
+                validate-on="blur"
                 :disabled="!isEditable"
-                @input="formChanged"
+                @update:model-value="formChanged"
               >
-                <template #label> Name des Bauvorhabens <span class="secondary--text">*</span> </template>
+                <template #label> Name des Bauvorhabens <span class="text-secondary">*</span> </template>
               </v-text-field>
             </v-col>
             <v-col
