@@ -63,6 +63,8 @@ import {
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 
+type Rule = (v: string | undefined | null) => true | string;
+
 interface Props {
   abfragevariante?: AbfragevarianteWeiteresVerfahrenDto;
   isEditable?: boolean;

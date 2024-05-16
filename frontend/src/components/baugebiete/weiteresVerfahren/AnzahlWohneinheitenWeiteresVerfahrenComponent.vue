@@ -60,6 +60,8 @@ import {
   wohneinheitenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
 
+type Rule = (v: string | undefined | null) => true | string;
+
 interface Props {
   abfragevariante?: AbfragevarianteWeiteresVerfahrenDto;
   isEditable?: boolean;
@@ -71,12 +73,14 @@ const geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-function validateWohneinheiten(abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined): boolean | string {
-  return (
-    verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
-    `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
-      abfragevariante,
-    )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
-  );
+function validateWohneinheiten(abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined): Rule {
+  return (v: string | undefined | null) => {
+    return (
+      verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+        abfragevariante,
+      )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+    );
+  };
 }
 </script>

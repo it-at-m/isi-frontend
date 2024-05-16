@@ -8,10 +8,10 @@
           :disabled="!isEditable"
           :rules="[pflichtfeld]"
           maxlength="255"
-          validate-on-blur
-          @input="formChanged"
+          validate-on="blur"
+          @update:model-value="formChanged"
         >
-          <template #label> Bezeichnung des Baugebiets <span class="secondary--text">*</span> </template>
+          <template #label> Bezeichnung des Baugebiets <span class="text-secondary">*</span> </template>
         </v-text-field>
       </v-col>
     </v-row>
@@ -24,11 +24,11 @@
           class="mx-3"
           :items="artBaulicheNutzungList"
           item-value="key"
-          item-text="value"
+          item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
-          @change="formChanged"
+          @update:model-value="formChanged"
         >
-          <template #label> Art der baulichen Nutzung <span class="secondary--text">*</span> </template>
+          <template #label> Art der baulichen Nutzung <span class="text-secondary">*</span> </template>
         </v-select>
       </v-col>
     </v-row>
@@ -43,7 +43,7 @@
             :disabled="!isEditable"
             label="Freie Eingabe"
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-slide-y-reverse-transition>
       </v-col>
