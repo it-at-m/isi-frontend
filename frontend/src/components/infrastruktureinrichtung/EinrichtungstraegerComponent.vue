@@ -30,8 +30,11 @@
 <script setup lang="ts">
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import type { LookupEntryDto } from "@/api/api-client/isi-backend";
-import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import type GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
+import type HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
+import type KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
+import type SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
 
 interface Props {
   isEditable?: boolean;
@@ -41,6 +44,8 @@ interface Props {
 
 const { formChanged } = useSaveLeave();
 withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
-const einrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
+const einrichtung = defineModel<SchuleModel | KindergartenModel | GsNachmittagBetreuungModel | HausFuerKinderModel>({
+  required: true,
+});
 const einrichutngstraegerCardTitle = "Einrichtungsträger";
 </script>
