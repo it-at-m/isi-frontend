@@ -4,7 +4,10 @@
     :height="height"
     :width="width"
   >
-    <div id="karte"></div>
+    <div
+      id="karte"
+      style="z-index: 10"
+    ></div>
     <l-control
       v-if="editable"
       ref="geoJsonControl"
