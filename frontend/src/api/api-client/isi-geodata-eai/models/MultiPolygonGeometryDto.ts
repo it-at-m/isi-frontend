@@ -20,9 +20,6 @@ import {
     GeometryDtoToJSON,
 } from './GeometryDto';
 
-import {
-} from './';
-
 /**
  * Die GEOJSON-Repräsentation des Multipolygons.
  * @export
@@ -53,8 +50,6 @@ export function MultiPolygonGeometryDtoFromJSON(json: any): MultiPolygonGeometry
 export function MultiPolygonGeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MultiPolygonGeometryDto {
     if ((json === undefined) || (json === null)) {
         return json;
-    }
-    if (!ignoreDiscriminator) {
     }
     return {
         ...GeometryDtoFromJSONTyped(json, ignoreDiscriminator),
