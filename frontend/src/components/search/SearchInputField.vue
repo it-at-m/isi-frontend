@@ -2,8 +2,8 @@
   <v-autocomplete
     id="suchfeld"
     v-model="selectedSuggestion"
+    v-model:search="searchQuery"
     :items="suggestions"
-    :search.sync="searchQuery"
     density="compact"
     clearable
     flat
@@ -22,7 +22,7 @@
         <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
       </v-list>
     </template>
-    <template #append-item>
+    <template #append>
       <v-icon
         :color="checkCurrentFilter() ? '' : 'secondary'"
         @click="openSearchAndFilterDialog"
@@ -58,7 +58,7 @@ const searchAndFilterDialogOpen = ref<boolean>(false);
 const searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
 const searchQuery = ref<string>("");
 const suggestions = ref<Array<string>>([]);
-const selectedSuggestion = ref<string>("");
+const selectedSuggestion = ref<string | null>(null);
 const { searchForSearchwordSuggestion, searchForEntities } = useSearchApi();
 const route = useRoute();
 const router = useRouter();
@@ -66,7 +66,6 @@ const router = useRouter();
 const searchStore = useSearchStore();
 
 onMounted(() => {
-  searchEntitiesForSelectedSuggestion();
   checkCurrentFilter();
 });
 
@@ -111,7 +110,7 @@ function checkCurrentFilter(): boolean {
 
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 
-function updateSearchQuery(itemIndex: number) {
+function updateSearchQuery(itemIndex: number): void {
   if (itemIndex > -1) {
     searchQuery.value = suggestions.value[itemIndex];
   }
