@@ -19,28 +19,22 @@
         <search-result-city-map />
       </v-col>
     </v-row>
-    <v-speed-dial
-      v-model="speedDialOpen"
-      class="button-speed-dial-entity-creation"
-      bottom
-      right
-      absolute
-    >
-      <template #activator>
+    <v-speed-dial location="bottom center">
+      <template #activator="{ props: activatorProps }">
         <v-btn
           id="speed_dial_create_button"
-          v-model="speedDialOpen"
+          v-bind="activatorProps"
           color="secondary"
-          class="text-white"
           :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
-          size="large"
+          size="x-large"
+          @click="speedDialOpen = !speedDialOpen"
         />
       </template>
       <v-tooltip location="left">
         <template #activator="{ props }">
           <v-btn
             id="infrastruktureinrichtung_create_button"
-            class="text-h6 text-white"
+            class="text-h6"
             icon="mdi-home"
             color="red-lighten-1"
             v-bind="props"
@@ -53,7 +47,7 @@
         <template #activator="{ props }">
           <v-btn
             id="bauvorhaben_create_button"
-            class="text-h6 text-white"
+            class="text-h6"
             icon="mdi-account-hard-hat"
             color="indigo-lighten-1"
             v-bind="props"
@@ -66,7 +60,7 @@
         <template #activator="{ props }">
           <v-btn
             id="bauleitplanverfahren_create_button"
-            class="text-h6 text-white"
+            class="text-h6"
             icon="mdi-comment-alert"
             color="green-lighten-1"
             v-bind="props"
@@ -79,7 +73,7 @@
         <template #activator="{ props }">
           <v-btn
             id="baugenehmigungsverfahren_create_button"
-            class="text-h6 text-white"
+            class="text-h6"
             icon="mdi-account-multiple-plus"
             color="green-lighten-1"
             v-bind="props"
@@ -92,7 +86,7 @@
         <template #activator="{ props }">
           <v-btn
             id="weiteres_verfahren_create_button"
-            class="text-h6 text-white"
+            class="text-h6"
             icon="mdi-account-plus"
             color="green-lighten-1"
             v-bind="props"
@@ -135,9 +129,3 @@ function createInfrastruktureinrichtung(): void {
   router.push("/infrastruktureinrichtung");
 }
 </script>
-
-<style>
-.button-speed-dial-entity-creation {
-  margin-bottom: 16px;
-}
-</style>

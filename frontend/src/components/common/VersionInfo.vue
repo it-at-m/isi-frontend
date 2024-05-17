@@ -10,10 +10,9 @@
         color="primary"
         class="mb-4"
       >
-        <span class="text-h6 text-white"> Versionen der ISI-Services </span>
+        <span class="text-h6"> Versionen der ISI-Services </span>
         <v-spacer />
         <v-btn
-          class="text-white"
           variant="text"
           icon="mdi-close"
           @click="visible = false"
