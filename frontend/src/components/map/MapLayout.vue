@@ -73,9 +73,6 @@ Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutz
         class="side-bar"
         :style="{ 'flex-basis': actionWidth + 'px' }"
       >
-        <div class="side-bar-information">
-          <slot name="information" />
-        </div>
         <div class="side-bar-action">
           <slot name="action" />
         </div>
@@ -205,17 +202,9 @@ function stopResizing(): void {
   flex-direction: column;
 }
 
-.side-bar-information {
-  width: 100%;
-  height: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .side-bar-action {
   width: 100%;
-  height: 40%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

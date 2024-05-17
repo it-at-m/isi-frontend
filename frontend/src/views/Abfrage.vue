@@ -231,7 +231,7 @@
         />
         <v-spacer />
       </template>
-      <template #information>
+      <template #action>
         <v-btn
           v-if="!isNew"
           id="abfrage_loeschen_button"
@@ -243,8 +243,6 @@
           @click="deleteAbfrage()"
           v-text="'Löschen'"
         />
-      </template>
-      <template #action>
         <v-spacer />
         <v-btn
           v-for="(transition, index) in possibleTransitions"

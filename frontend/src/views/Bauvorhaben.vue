@@ -42,7 +42,7 @@
           :is-editable="isEditable"
         />
       </template>
-      <template #information>
+      <template #action>
         <v-btn
           v-if="!isNew"
           id="bauvorhaben_loeschen_button"
@@ -65,8 +65,6 @@
           @click="dataTransferDialogOpen = true"
           v-text="'Datenübernahme'"
         />
-      </template>
-      <template #action>
         <v-spacer />
         <v-btn
           id="bauvorhaben_speichern_button"

@@ -116,7 +116,7 @@
           </v-row>
         </v-container>
       </template>
-      <template #information>
+      <template #action>
         <v-btn
           v-if="!isNew"
           id="infrastruktureinrichtung_löschen_button"
@@ -128,8 +128,6 @@
           @click="openDeleteDialog"
           v-text="'Löschen'"
         />
-      </template>
-      <template #action>
         <v-spacer />
         <v-btn
           id="infrastruktureinrichtung_speichern_button"
