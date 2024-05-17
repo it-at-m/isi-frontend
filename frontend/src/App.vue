@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-defaults-provider :defaults="vuetifyDefaults">
+  <v-defaults-provider :defaults="vuetifyDefaults">
+    <v-layout>
       <v-app-bar
         color="primary"
         elevation="8"
@@ -21,7 +21,7 @@
               />
             </router-link>
             <router-link to="/">
-              <v-toolbar-title class="text-h4 font-weight-bold">ISI</v-toolbar-title>
+              <v-toolbar-title class="text-h4 text-white font-weight-bold">ISI</v-toolbar-title>
             </router-link>
           </v-col>
           <v-col
@@ -41,7 +41,6 @@
             >
               <template #activator="{ props }">
                 <v-btn
-                  size="small"
                   icon="mdi-help-circle"
                   v-bind="props"
                 />
@@ -71,7 +70,6 @@
             >
               <template #activator="{ props }">
                 <v-btn
-                  size="small"
                   icon="mdi-account-circle"
                   v-bind="props"
                 />
@@ -101,13 +99,11 @@
         </v-row>
       </v-app-bar>
       <version-info v-model="showVersionInfo" />
-      <v-main>
-        <v-fade-transition mode="out-in">
-          <router-view />
-        </v-fade-transition>
-      </v-main>
-    </v-defaults-provider>
-  </v-app>
+      <v-fade-transition mode="out-in">
+        <router-view />
+      </v-fade-transition>
+    </v-layout>
+  </v-defaults-provider>
 </template>
 
 <script setup lang="ts">
@@ -158,15 +154,6 @@ onMounted(async () => {
 </script>
 
 <style>
-.tab {
-  text-transform: none;
-  flex-grow: 1;
-}
-
-.tab.active {
-  backdrop-filter: brightness(115%);
-}
-
 .main {
   background-color: white;
 }
@@ -183,5 +170,10 @@ onMounted(async () => {
 .userinfo-card {
   padding: 10px;
   overflow: hidden;
+}
+
+.router-link-active {
+  background-color: none;
+  cursor: pointer;
 }
 </style>
