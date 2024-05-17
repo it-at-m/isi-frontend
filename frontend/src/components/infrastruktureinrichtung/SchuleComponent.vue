@@ -56,6 +56,6 @@ interface Props {
 
 const lookupStore = useLookupStore();
 withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
-const schule = defineModel<SchuleModel>();
+const schule = defineModel<SchuleModel>({ required: true });
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
