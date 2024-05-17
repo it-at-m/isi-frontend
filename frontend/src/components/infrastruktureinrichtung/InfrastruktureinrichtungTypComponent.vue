@@ -12,12 +12,12 @@
             class="mx-3"
             :items="infrastruktureinrichtungList"
             item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            item-title="value"
+            :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
-            @change="formChanged"
+            @update:model-value="formChanged"
           >
-            <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
+            <template #label> Infrastruktureinrichtung Typ <span class="text-secondary">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -55,30 +55,25 @@
 </template>
 
 <script setup lang="ts">
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import { computed } from "vue";
+import type { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
 import _ from "lodash";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
 interface Props {
-  value: string;
   lfdNr?: string;
   isEditable?: boolean;
   mode?: DisplayMode;
 }
 
-interface Emits {
-  (event: "input", value: string): void;
-}
-
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const infrastruktureinrichtungTyp = defineModel(props, emit);
+const infrastruktureinrichtungTyp = defineModel<string>({ required: true });
 const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
 const displaymode = computed(() => (props.mode === undefined ? DisplayMode.UNDEFINED : props.mode));
 const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
@@ -92,7 +87,7 @@ function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): s
 
 function infrastruktureinrichtungTypDisplay(): string {
   if (!_.isNil(infrastruktureinrichtungTyp)) {
-    const lookupValue = getLookupValue(props.value, infrastruktureinrichtungList.value);
+    const lookupValue = getLookupValue(infrastruktureinrichtungTyp.value, infrastruktureinrichtungList.value);
     return !_.isNil(lookupValue) ? lookupValue : "";
   } else {
     return "";

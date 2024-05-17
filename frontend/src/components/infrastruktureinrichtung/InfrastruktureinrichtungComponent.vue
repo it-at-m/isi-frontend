@@ -8,11 +8,11 @@
             v-model="infrastruktureinrichtung.nameEinrichtung"
             :rules="[pflichtfeld]"
             maxlength="255"
-            validate-on-blur
+            validate-on="blur"
             :disabled="!isEditable"
-            @input="formChanged"
+            @update:model-value="formChanged"
           >
-            <template #label> Name der Einrichtung <span class="secondary--text">*</span> </template>
+            <template #label> Name der Einrichtung <span class="text-secondary">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -24,7 +24,7 @@
     />
     <infrastruktureinrichtung-verortung
       v-model="infrastruktureinrichtung.verortung"
-      :adresse="infrastruktureinrichtung.adresse"
+      :adresse="infrastruktureinrichtung.adresse as AdresseModel"
       :is-editable="isEditable"
     />
     <field-group-card>
@@ -38,12 +38,12 @@
             v-model="infrastruktureinrichtung.status"
             :items="statusInfrastruktureinrichtungList"
             item-value="key"
-            item-text="value"
+            item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
-            @change="formChanged"
+            @update:model-value="formChanged"
           >
-            <template #label>Status der Infrastruktureinrichtung <span class="secondary--text">*</span></template>
+            <template #label>Status der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
           </v-select>
         </v-col>
         <v-col
@@ -69,13 +69,13 @@
             id="infrastruktureinrichtung_bauvorhaben_dropdown"
             v-model="infrastruktureinrichtung.bauvorhaben"
             :items="bauvorhaben"
-            item-text="nameVorhaben"
+            item-title="nameVorhaben"
             item-value="id"
             label="Bauvorhaben"
             clearable
             :disabled="!isEditable"
             @focus="fetchBauvorhaben"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
         <v-col
@@ -119,10 +119,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
 import {
-  BauvorhabenSearchResultDto,
+  type BauvorhabenSearchResultDto,
   InfrastruktureinrichtungDtoStatusEnum,
-  SearchQueryAndSortingDto,
+  type SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
@@ -133,26 +134,20 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
+import type AdresseModel from "@/types/model/common/AdresseModel";
 
 interface Props {
-  value: InfrastruktureinrichtungModel;
   isEditable?: boolean;
-}
-
-interface Emits {
-  (event: "input", value: InfrastruktureinrichtungModel): void;
 }
 
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const { searchForEntities } = useSearchApi();
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const infrastruktureinrichtung = defineModel(props, emit);
+withDefaults(defineProps<Props>(), { isEditable: false });
+const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
 const flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);

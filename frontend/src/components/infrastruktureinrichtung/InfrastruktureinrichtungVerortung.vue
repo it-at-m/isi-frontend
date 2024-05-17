@@ -195,7 +195,6 @@ import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useKoordinatenApi } from "@/composables/requests/KoordinatenApi";
 
 interface Props {
-  value: VerortungPointModel | undefined;
   adresse?: AdresseModel;
   isEditable?: boolean;
 }

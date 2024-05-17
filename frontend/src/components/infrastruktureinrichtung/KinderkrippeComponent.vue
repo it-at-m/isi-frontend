@@ -61,26 +61,20 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-import { defineModel } from "@/utils/Vue";
 
 interface Props {
-  value: KinderkrippeModel;
   isEditable: boolean;
   isEinrichtungstraegerRequired?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: KinderkrippeModel): void;
-}
-
 const lookupStore = useLookupStore();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
-const emit = defineEmits<Emits>();
-const kinderkrippe = defineModel(props, emit);
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const kinderkrippe = defineModel<KinderkrippeModel>({ required: true });
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
