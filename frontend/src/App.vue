@@ -1,112 +1,112 @@
 <template>
   <v-app>
-    <v-app-bar
-      color="primary"
-      elevation="8"
-      height="50"
-    >
-      <v-row align="center">
-        <v-col
-          cols="3"
-          class="d-flex align-center justify-start"
-        >
-          <router-link to="/">
-            <v-img
-              id="app_logo"
-              :src="logo"
-              max-width="32"
-              max-height="32"
-              class="mr-1"
-            />
-          </router-link>
-          <router-link to="/">
-            <v-toolbar-title class="text-h4 text-white font-weight-bold">ISI</v-toolbar-title>
-          </router-link>
-        </v-col>
-        <v-col
-          cols="6"
-          class="d-flex align-center justify-center"
-        >
-          <search-input-field />
-        </v-col>
-        <v-col
-          cols="3"
-          class="d-flex align-center justify-end"
-        >
-          <v-menu
-            id="app_help_menu"
-            location="bottom"
-            transition="slide-y-transition"
+    <v-defaults-provider :defaults="vuetifyDefaults">
+      <v-app-bar
+        color="primary"
+        elevation="8"
+        height="50"
+      >
+        <v-row align="center">
+          <v-col
+            cols="3"
+            class="d-flex align-center justify-start"
           >
-            <template #activator="{ props }">
-              <v-btn
-                size="small"
-                class="text-white"
-                icon="mdi-help-circle"
-                v-bind="props"
+            <router-link to="/">
+              <v-img
+                id="app_logo"
+                :src="logo"
+                max-width="32"
+                max-height="32"
+                class="mr-1"
               />
-            </template>
-            <v-list class="text-center">
-              <v-list-item @click="showVersionInfo = true">
-                <v-list-item-title>Versionsinformationen</v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-title>
-                  <a
-                    target="_blank"
-                    :href="datenschutzhinweisUrl"
-                  >
-                    Datenschutzhinweis<span class="mdi mdi-launch" />
-                  </a>
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <v-menu
-            id="app_nutzerinformationen_menu"
-            v-model="menu"
-            :close-on-content-click="false"
-            location="bottom"
-            transition="slide-y-transition"
+            </router-link>
+            <router-link to="/">
+              <v-toolbar-title class="text-h4 font-weight-bold">ISI</v-toolbar-title>
+            </router-link>
+          </v-col>
+          <v-col
+            cols="6"
+            class="d-flex align-center justify-center"
           >
-            <template #activator="{ props }">
-              <v-btn
-                size="small"
-                class="text-white"
-                icon="mdi-account-circle"
-                v-bind="props"
-              />
-            </template>
+            <search-input-field />
+          </v-col>
+          <v-col
+            cols="3"
+            class="d-flex align-center justify-end"
+          >
+            <v-menu
+              id="app_help_menu"
+              location="bottom"
+              transition="slide-y-transition"
+            >
+              <template #activator="{ props }">
+                <v-btn
+                  size="small"
+                  icon="mdi-help-circle"
+                  v-bind="props"
+                />
+              </template>
+              <v-list class="text-center">
+                <v-list-item @click="showVersionInfo = true">
+                  <v-list-item-title>Versionsinformationen</v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-title>
+                    <a
+                      target="_blank"
+                      :href="datenschutzhinweisUrl"
+                    >
+                      Datenschutzhinweis<span class="mdi mdi-launch" />
+                    </a>
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-menu
+              id="app_nutzerinformationen_menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              location="bottom"
+              transition="slide-y-transition"
+            >
+              <template #activator="{ props }">
+                <v-btn
+                  size="small"
+                  icon="mdi-account-circle"
+                  v-bind="props"
+                />
+              </template>
 
-            <v-card class="userinfo-card">
-              <span id="app_nutzerinformationen_vorname_nachname">
-                {{ userinfo.givenname + " " + userinfo.surname }}
-              </span>
-              <v-divider />
-              <span
-                id="app_nutzerinformationen_abteilung"
-                class="userinfo-subtitles"
-              >
-                <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
-              </span>
-              <br />
-              <span
-                id="app_nutzerinformationen_user_rollen"
-                class="userinfo-subtitles"
-              >
-                <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
-              </span>
-            </v-card>
-          </v-menu>
-        </v-col>
-      </v-row>
-    </v-app-bar>
-    <version-info v-model="showVersionInfo" />
-    <v-main>
-      <v-fade-transition mode="out-in">
-        <router-view />
-      </v-fade-transition>
-    </v-main>
+              <v-card class="userinfo-card">
+                <span id="app_nutzerinformationen_vorname_nachname">
+                  {{ userinfo.givenname + " " + userinfo.surname }}
+                </span>
+                <v-divider />
+                <span
+                  id="app_nutzerinformationen_abteilung"
+                  class="userinfo-subtitles"
+                >
+                  <v-icon>mdi-office-building</v-icon>{{ userinfo.department }}
+                </span>
+                <br />
+                <span
+                  id="app_nutzerinformationen_user_rollen"
+                  class="userinfo-subtitles"
+                >
+                  <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
+                </span>
+              </v-card>
+            </v-menu>
+          </v-col>
+        </v-row>
+      </v-app-bar>
+      <version-info v-model="showVersionInfo" />
+      <v-main>
+        <v-fade-transition mode="out-in">
+          <router-view />
+        </v-fade-transition>
+      </v-main>
+    </v-defaults-provider>
   </v-app>
 </template>
 
@@ -122,6 +122,7 @@ import { useUserinfoStore } from "@/stores/Userinfostore";
 import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
 import { useUserInfoApi } from "./composables/requests/UserInfoApi";
 
+const vuetifyDefaults = { VIcon: { color: "white" } };
 const lookupStore = useLookupStore();
 const stammdatenStore = useStammdatenStore();
 const userInfoStore = useUserinfoStore();

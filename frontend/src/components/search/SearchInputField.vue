@@ -24,7 +24,6 @@
     </template>
     <template #append>
       <v-icon
-        class="text-white"
         :color="checkCurrentFilter() ? '' : 'secondary'"
         @click="openSearchAndFilterDialog"
       >
