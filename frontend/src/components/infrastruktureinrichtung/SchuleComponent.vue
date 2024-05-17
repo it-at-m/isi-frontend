@@ -47,21 +47,15 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-import { defineModel } from "@/utils/Vue";
+import { computed } from "vue";
 
 interface Props {
-  value: SchuleModel;
   isEditable: boolean;
   isEinrichtungstraegerRequired?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: SchuleModel): void;
-}
-
 const lookupStore = useLookupStore();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
-const emit = defineEmits<Emits>();
-const schule = defineModel(props, emit);
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
+const schule = defineModel<SchuleModel>({ required: true });
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>

@@ -59,11 +59,11 @@
             id="infrastruktureinrichtung_gsNachmittagBetreuung_artGsNachmittagBetreuung"
             v-model="gsNachmittagBetreuung.artGsNachmittagBetreuung"
             :items="artGsNachmittagBetreuungList"
-            item-text="value"
+            item-title="value"
             item-value="key"
             label="Art der Nachmittagsbetreuung für Grundschulkinder"
             :disabled="!isEditable"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -77,23 +77,17 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
+import { computed } from "vue";
 
 interface Props {
-  value: GsNachmittagBetreuungModel;
   isEditable?: boolean;
   isEinrichtungstraegerRequired?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: GsNachmittagBetreuungModel): void;
-}
-
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
-const emit = defineEmits<Emits>();
-const gsNachmittagBetreuung = defineModel(props, emit);
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const gsNachmittagBetreuung = defineModel<GsNachmittagBetreuungModel>({ required: true });
 const artGsNachmittagBetreuungList = computed(() => lookupStore.artGsNachmittagBetreuung);
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>

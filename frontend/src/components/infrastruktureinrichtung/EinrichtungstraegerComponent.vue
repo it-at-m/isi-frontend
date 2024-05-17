@@ -9,44 +9,38 @@
         v-model="einrichtung.einrichtungstraeger"
         :items="einrichtungstraegerList"
         item-value="key"
-        item-text="value"
+        item-title="value"
         :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
         :disabled="!isEditable"
-        @change="formChanged"
+        @update:model-value="formChanged"
       >
-        <template #label
-          >Einrichtungsträger
+        <template #label>
+          Einrichtungsträger
           <span
             v-if="isEinrichtungstraegerRequired"
-            class="secondary--text"
-            >*</span
-          ></template
-        >
+            class="text--secondary"
+          >
+            *
+          </span>
+        </template>
       </v-select>
     </v-col>
   </field-group-card>
 </template>
 <script setup lang="ts">
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+import type { LookupEntryDto } from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
-import { defineModel } from "@/utils/Vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
-  value: InfrastruktureinrichtungModel;
   isEditable?: boolean;
   isEinrichtungstraegerRequired?: boolean;
   einrichtungstraegerList?: LookupEntryDto[];
 }
 
-interface Emits {
-  (event: "input", value: InfrastruktureinrichtungModel): void;
-}
-
 const { formChanged } = useSaveLeave();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
-const emit = defineEmits<Emits>();
-const einrichtung = defineModel(props, emit);
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
+const einrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
 const einrichutngstraegerCardTitle = "Einrichtungsträger";
 </script>

@@ -159,22 +159,15 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
+import { computed } from "vue";
 
 interface Props {
-  value: HausFuerKinderModel;
   isEditable?: boolean;
   isEinrichtungstraegerRequired?: boolean;
 }
-interface Emits {
-  (event: "input", value: HausFuerKinderModel): void;
-}
 
-const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
-const props = withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
-const emit = defineEmits<Emits>();
-const hausFuerKinder = defineModel(props, emit);
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const hausFuerKinder = defineModel<HausFuerKinderModel>({ required: true });
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
