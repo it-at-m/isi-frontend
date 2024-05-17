@@ -16,7 +16,7 @@
     <v-chip-group
       v-if="pointToDisplayNotEmpty"
       title="Koordinate"
-      active-class="primary--text"
+      selected-class="primary--text"
       column
     >
       <v-chip>
@@ -33,7 +33,7 @@
         <v-chip-group
           v-if="stadtbezirke.length !== 0"
           title="Stadtbezirke"
-          active-class="primary--text"
+          selected-class="primary--text"
           column
         >
           <v-chip
@@ -53,7 +53,7 @@
         <v-chip-group
           v-if="kitaplanungsbereiche.length !== 0"
           title="Kitaplanungsbereiche"
-          active-class="primary--text"
+          selected-class="primary--text"
           column
         >
           <v-chip
@@ -76,7 +76,7 @@
         <v-chip-group
           v-if="bezirksteile.length !== 0"
           title="Bezirksteile"
-          active-class="primary--text"
+          selected-class="primary--text"
           column
         >
           <v-chip
@@ -97,7 +97,7 @@
         <v-chip-group
           v-if="grundschulsprengel.length !== 0"
           title="Grundschulsprengel"
-          active-class="primary--text"
+          selected-class="primary--text"
           column
         >
           <v-chip
@@ -120,7 +120,7 @@
         <v-chip-group
           v-if="gemarkungen.length !== 0"
           title="Gemarkungen"
-          active-class="primary--text"
+          selected-class="primary--text"
           column
         >
           <v-chip
@@ -141,7 +141,7 @@
         <v-chip-group
           v-if="mittelschulsprengel.length !== 0"
           title="Mittelschulsprengel"
-          active-class="primary--text"
+          selected-class="primary--text"
           column
         >
           <v-chip
@@ -157,12 +157,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch, ref } from "vue";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
-import { Feature, Point } from "geojson";
+import L, { type GeoJSONOptions, LatLng, type LatLngLiteral } from "leaflet";
+import type { Feature, Point } from "geojson";
 import _ from "lodash";
-import {
+import type {
   FlurstueckDto,
   GemarkungDto,
   StadtbezirkDto,
@@ -176,7 +177,7 @@ import {
   MittelschulsprengelDto,
   ViertelDto,
 } from "@/api/api-client/isi-backend";
-import {
+import type {
   FeatureDtoBezirksteilDto,
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
@@ -190,7 +191,6 @@ import {
 import VerortungPointModel from "@/types/model/common/VerortungPointModel";
 import { ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { defineModel } from "@/utils/Vue";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useKoordinatenApi } from "@/composables/requests/KoordinatenApi";
 
@@ -200,16 +200,11 @@ interface Props {
   isEditable?: boolean;
 }
 
-interface Emits {
-  (event: "input", value: VerortungPointModel | undefined): void;
-}
-
 const { formChanged } = useSaveLeave();
 const geoApi = useGeodataEaiApi();
 const koordinatenApi = useKoordinatenApi();
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
-const emit = defineEmits<Emits>();
-const verortungModel = defineModel(props, emit);
+const verortungModel = defineModel<VerortungPointModel | undefined>({ required: true });
 const isVerortungEditable = computed(() => props.isEditable && !adresseValid());
 const verortungCardTitle = "Verortung";
 let oldAdresse: AdresseModel | undefined = undefined;
@@ -262,14 +257,24 @@ function adresseValid(): boolean {
 }
 
 const pointToDisplayNotEmpty = computed(() => !_.isEmpty(pointCoordinatesAsUtm32));
-const stadtbezirke = computed(() => _.sortBy(_.toArray(verortungModel.value?.stadtbezirke), ["nummer"]));
-const bezirksteile = computed(() => _.sortBy(_.toArray(verortungModel.value?.bezirksteile), ["nummer"]));
-const gemarkungen = computed(() => _.sortBy(_.toArray(verortungModel.value?.gemarkungen), ["nummer"]));
-const kitaplanungsbereiche = computed(() =>
-  _.sortBy(_.toArray(verortungModel.value?.kitaplanungsbereiche), ["kitaPlb"]),
+const stadtbezirke = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.stadtbezirke) as Array<StadtbezirkDto>, ["nummer"]),
 );
-const grundschulsprengel = computed(() => _.sortBy(_.toArray(verortungModel.value?.grundschulsprengel), ["nummer"]));
-const mittelschulsprengel = computed(() => _.sortBy(_.toArray(verortungModel.value?.mittelschulsprengel), ["nummer"]));
+const bezirksteile = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.bezirksteile) as Array<BezirksteilDto>, ["nummer"]),
+);
+const gemarkungen = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.gemarkungen) as Array<GemarkungDto>, ["nummer"]),
+);
+const kitaplanungsbereiche = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.kitaplanungsbereiche) as Array<KitaplanungsbereichDto>, ["kitaPlb"]),
+);
+const grundschulsprengel = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.grundschulsprengel) as Array<GrundschulsprengelDto>, ["nummer"]),
+);
+const mittelschulsprengel = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.mittelschulsprengel) as Array<MittelschulsprengelDto>, ["nummer"]),
+);
 
 const lookAt = computed(() => {
   if (!_.isEmpty(geoJson)) {
@@ -303,7 +308,7 @@ function createVerortung(point: PointGeometryDto | undefined): void {
 }
 
 function handleClickInMap(latlng: LatLng): void {
-  if (isVerortungEditable) {
+  if (isVerortungEditable.value) {
     setGeoJsonFromLatLng(latlng);
   }
 }
@@ -373,8 +378,8 @@ function adresseChanged(): boolean {
 watch(verortungModel, () => handleVerortungModelChanged, { deep: true });
 
 function handleVerortungModelChanged(): void {
-  if (!_.isNil(verortungPointCoordinate)) {
-    setGeoJsonFromLatLng(verortungPointCoordinate);
+  if (!_.isNil(verortungPointCoordinate.value)) {
+    setGeoJsonFromLatLng({ lat: verortungPointCoordinate.value?.lat, lng: verortungPointCoordinate.value?.lng });
   } else {
     geoJson = [];
   }
@@ -399,7 +404,7 @@ async function getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | u
       longitude: point.coordinates[0],
       latitude: point.coordinates[1],
     } as Wgs84Dto;
-    utm32 = await koordinatenApi.wgs84toUtm32(wgs84, true);
+    utm32 = await koordinatenApi.wgs84toUtm32(wgs84);
   }
   return utm32;
 }
@@ -422,14 +427,14 @@ async function createVerortungPointDtoFromSelectedPoint(
   point: PointGeometryDto,
 ): Promise<VerortungPointDto | undefined> {
   try {
-    const promiseStadtbezirke = geoApi.getStadtbezirkeForPoint(point, true);
-    const promiseBezirksteile = geoApi.getBezirksteileForPoint(point, true);
-    const promiseViertel = geoApi.getViertelForPoint(point, true);
-    const promiseGemarkungen = geoApi.getGemarkungenForPoint(point, true);
-    const promiseFlurstuecke = geoApi.getFlurstueckeForPoint(point, true);
-    const promiseKitaplanungsbereiche = geoApi.getKitaplanungsbereicheForPoint(point, true);
-    const promiseGrundschulsprengel = geoApi.getGrundschulsprengelForPoint(point, true);
-    const promiseMittelschulsprengel = geoApi.getMittelschulsprengelForPoint(point, true);
+    const promiseStadtbezirke = geoApi.getStadtbezirkeForPoint(point);
+    const promiseBezirksteile = geoApi.getBezirksteileForPoint(point);
+    const promiseViertel = geoApi.getViertelForPoint(point);
+    const promiseGemarkungen = geoApi.getGemarkungenForPoint(point);
+    const promiseFlurstuecke = geoApi.getFlurstueckeForPoint(point);
+    const promiseKitaplanungsbereiche = geoApi.getKitaplanungsbereicheForPoint(point);
+    const promiseGrundschulsprengel = geoApi.getGrundschulsprengelForPoint(point);
+    const promiseMittelschulsprengel = geoApi.getMittelschulsprengelForPoint(point);
 
     // Stadtbezirke ermitteln
     const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
