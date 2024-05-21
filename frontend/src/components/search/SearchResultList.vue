@@ -3,9 +3,9 @@
     :height="viewportHeight"
     class="overflow-y-auto"
     :target="'#suchfeld'"
-    :on-infinite="getAndAppendSearchResultsNextPage"
     infinite-scroll-disabled="pageRequestMutex.isLocked()"
     infinite-scroll-distance="10"
+    @load="getAndAppendSearchResultsNextPage($event.done)"
   >
     <v-list
       v-if="searchResultsAsArray.length > 0"
@@ -115,8 +115,13 @@
       class="pa-0 ma-0 w-100 d-flex justify-center align-center"
       style="height: 100%; min-height: 100px"
     >
-      <span>Keine Suchergebnisse vorhanden</span>
     </v-container>
+    <template #empty>
+      <span>Keine neuen Suchergebnisse gefunden</span>
+    </template>
+    <template #error>
+      <span>Es gab einen Fehler neue Suchergebnisse zu laden</span>
+    </template>
   </v-infinite-scroll>
 </template>
 
@@ -143,6 +148,7 @@ import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
+type InfiniteScrollStatus = "ok" | "empty" | "loading" | "error";
 
 const pageRequestMutex = new Mutex();
 const lookupStore = useLookupStore();
@@ -175,31 +181,17 @@ const numberOfPossiblePages = computed(() => {
 });
 
 /**
- * Diese Methode prüft, ob der Scrollbalken der Suchergebnisliste am Ende der Liste angekommen ist und triggert dann
- * den Suchrequest zum Holen der nächsten Seite und Anfügen der Suchergebnisse an die bestehenden Suchergebnisse.
- *
- * Des Weiteren wird der Request zum Holen der nächsten Seite nur dann getriggert, wenn kein anderer Request
- * zum Holen der nächsten Seite ausgeführt wird.
- */
-function onScroll(scrollEvent: any): void {
-  const { scrollHeight, scrollTop, clientHeight } = scrollEvent.target;
-  // Prüfung ob das Ende des Scrollbereichs erreicht wurde.
-  if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
-    getAndAppendSearchResultsNextPage();
-  }
-}
-
-/**
  * Holt die Suchergebnisse auf Basis des im Store hinterlegten SearchQueryAndSortingDto für die nächste Seite
  * und fügt die bestehenden Suchergebnisse an die bereits vorhandenen Suchergebnisse an.
  *
  * Die Ausführung der Suchen und das Speichern der Suchergebnisse im Store wird mittels eines Mutex abgesichert,
  * um eine Race-Condition bei mehreren schnell hintereinander ausgeführten Seitenaufrufen zu vermeiden.
  */
-function getAndAppendSearchResultsNextPage(): void {
+function getAndAppendSearchResultsNextPage(done: (status: InfiniteScrollStatus) => void): void {
   tryAcquire(pageRequestMutex)
     .acquire()
     .then(() => {
+      done("loading");
       const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
       let currentPage = searchQueryForEntitiesDto.page;
       if (!_.isNil(currentPage) && ++currentPage <= numberOfPossiblePages.value) {
@@ -214,10 +206,14 @@ function getAndAppendSearchResultsNextPage(): void {
             );
             searchStore.setSearchResults(_.cloneDeep(searchResultsNextPage));
           })
+          .catch(() => {
+            done("error");
+          })
           .finally(() => pageRequestMutex.release());
       } else {
         pageRequestMutex.release();
       }
+      !_.isEmpty(searchStore.searchResults.searchResults) ? done("ok") : done("empty");
     });
 }
 
