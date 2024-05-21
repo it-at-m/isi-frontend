@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-app>
     <v-app-bar
       color="primary"
       elevation="8"
@@ -104,7 +104,7 @@
     <v-fade-transition mode="out-in">
       <router-view />
     </v-fade-transition>
-  </v-layout>
+  </v-app>
 </template>
 
 <script setup lang="ts">

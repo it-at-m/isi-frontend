@@ -1,32 +1,21 @@
 <template>
-  <v-container
-    fluid
-    class="fill-height pa-0"
-  >
-    <v-row class="fill-height justify-center mx-0">
-      <v-col
-        class="py-0"
-        cols="12"
-        md="3"
-      >
-        <search-result-list />
-      </v-col>
-      <v-col
-        class="pa-0"
-        cols="12"
-        md="9"
-      >
-        <search-result-city-map />
-      </v-col>
-    </v-row>
-    <v-speed-dial location="bottom center">
+  <v-navigation-drawer permanent>
+    <search-result-list />
+  </v-navigation-drawer>
+  <v-main>
+    <search-result-city-map />
+    <v-speed-dial location="top">
       <template #activator="{ props: activatorProps }">
-        <v-btn
+        <v-fab
           id="speed_dial_create_button"
           v-bind="activatorProps"
           color="secondary"
           :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
           size="x-large"
+          absolute
+          location="bottom"
+          class="mr-4 mb-4"
+          style="z-index: 400"
           @click="speedDialOpen = !speedDialOpen"
         />
       </template>
@@ -37,6 +26,7 @@
             class="text-h6"
             icon="mdi-home"
             color="red-lighten-1"
+            size="large"
             v-bind="props"
             @click="createInfrastruktureinrichtung"
           />
@@ -50,6 +40,7 @@
             class="text-h6"
             icon="mdi-account-hard-hat"
             color="indigo-lighten-1"
+            size="large"
             v-bind="props"
             @click="createBauvorhaben"
           />
@@ -63,6 +54,7 @@
             class="text-h6"
             icon="mdi-comment-alert"
             color="green-lighten-1"
+            size="large"
             v-bind="props"
             @click="createBauleitplanverfahren"
           />
@@ -76,6 +68,7 @@
             class="text-h6"
             icon="mdi-account-multiple-plus"
             color="green-lighten-1"
+            size="large"
             v-bind="props"
             @click="createBaugenehmigungsverfahren"
           />
@@ -89,6 +82,7 @@
             class="text-h6"
             icon="mdi-account-plus"
             color="green-lighten-1"
+            size="large"
             v-bind="props"
             @click="createWeiteresVerfahren"
           />
@@ -96,7 +90,7 @@
         <span>Weiteres Verfahren erstellen</span>
       </v-tooltip>
     </v-speed-dial>
-  </v-container>
+  </v-main>
 </template>
 
 <script setup lang="ts">
