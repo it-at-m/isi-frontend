@@ -6,7 +6,7 @@
   >
     <div
       id="karte"
-      style="z-index: 10"
+      style="width: 100%; height: 100%"
     ></div>
     <l-control
       v-if="editable"
