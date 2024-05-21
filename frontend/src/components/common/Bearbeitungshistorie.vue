@@ -51,7 +51,7 @@ interface Props {
 
 const DISPLAY_FORMAT = "DD.MM.YYYY";
 const props = defineProps<Props>();
-const { statusAbfrage } = useLookupStore();
+const lookupStore = useLookupStore();
 const bearbeitungshistorieHeaders = [
   { text: "Name", value: "bearbeitendePerson.name", sortable: false },
   { text: "Email", value: "bearbeitendePerson.email", sortable: false },
@@ -66,8 +66,8 @@ function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
 }
 
 function zielstatusText(status: StatusAbfrage | undefined): string | undefined {
-  return !_.isEmpty(statusAbfrage)
-    ? statusAbfrage.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
+  return !_.isEmpty(lookupStore.statusAbfrage)
+    ? lookupStore.statusAbfrage.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
     : "";
 }
 </script>

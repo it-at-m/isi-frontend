@@ -9,7 +9,7 @@
           <v-select
             id="bauvorhaben_standVerfahren_dropdown"
             v-model="bauvorhaben.standVerfahren"
-            :items="standVerfahren"
+            :items="lookupStore.standVerfahren"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
@@ -83,7 +83,7 @@
           <v-autocomplete
             id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
-            :items="wesentlicheRechtsgrundlage"
+            :items="lookupStore.wesentlicheRechtsgrundlage"
             item-value="key"
             item-title="value"
             multiple
@@ -118,7 +118,7 @@
           <v-autocomplete
             id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
-            :items="artBaulicheNutzungBauvorhaben"
+            :items="lookupStore.artBaulicheNutzungBauvorhaben"
             item-value="key"
             item-title="value"
             multiple
@@ -226,7 +226,7 @@
               v-if="sobonJahrVisible"
               id="bauvorhaben_sobonJahr_dropdown"
               v-model="bauvorhaben.sobonJahr"
-              :items="sobonVerfahrensgrundsaetzeJahr"
+              :items="lookupStore.sobonVerfahrensgrundsaetzeJahr"
               item-value="key"
               item-title="value"
               :rules="[pflichtfeld]"
@@ -276,8 +276,7 @@ interface Props {
   isEditable?: boolean;
 }
 
-const { standVerfahren, wesentlicheRechtsgrundlage, artBaulicheNutzungBauvorhaben, sobonVerfahrensgrundsaetzeJahr } =
-  useLookupStore();
+const lookupStore = useLookupStore();
 const { formChanged } = useSaveLeave();
 const bauvorhaben = defineModel<BauvorhabenModel>({ required: true });
 const sobonJahrVisible = ref(false);

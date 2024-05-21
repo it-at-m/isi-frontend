@@ -60,7 +60,7 @@
                 :id="'infrastruktureinrichtungen_bauvorhaben_reference_subtitle' + index"
                 @click="routeToInfrastruktureinrichtungInfo(infra)"
               >
-                Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, infrastruktureinrichtungTyp) }}
+                Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, lookupStore.infrastruktureinrichtungTyp) }}
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>
@@ -83,7 +83,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { computed, ref } from "vue";
 
-const { infrastruktureinrichtungTyp } = useLookupStore();
+const lookupStore = useLookupStore();
 const { getReferencedAbfrageList, getReferencedInfrastruktureinrichtungenList } = useBauvorhabenApi();
 const router = useRouter();
 const routeId = useRoute().params.id as string;
@@ -97,7 +97,7 @@ let isInfraListOpen = false;
 async function getReferencedAbfragen(): Promise<void> {
   if (!isAbfrageListOpen && !_.isNil(routeId)) {
     isAbfrageListOpen = true;
-    const searchResults = await getReferencedAbfrageList(routeId, true);
+    const searchResults = await getReferencedAbfrageList(routeId);
     if (!_.isNil(searchResults)) {
       abfragen.value = searchResults;
     }
@@ -111,7 +111,7 @@ async function getReferencedAbfragen(): Promise<void> {
 async function getReferencedInfrastruktureinrichtungen(): Promise<void> {
   if (!isInfraListOpen && !_.isNil(routeId)) {
     isInfraListOpen = true;
-    const searchResults = await getReferencedInfrastruktureinrichtungenList(routeId, true);
+    const searchResults = await getReferencedInfrastruktureinrichtungenList(routeId);
     if (!_.isNil(searchResults)) {
       infrastruktureinrichtungen.value = searchResults;
     }

@@ -58,7 +58,7 @@
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           :disabled="!isEditable"
-          :items="standVerfahrenBaugenehmigungsverfahren"
+          :items="lookupStore.standVerfahrenBaugenehmigungsverfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
@@ -108,7 +108,7 @@ interface Props {
 }
 
 const { formChanged } = useSaveLeave();
-const { standVerfahrenBaugenehmigungsverfahren } = useLookupStore();
+const lookupStore = useLookupStore();
 const { searchForEntities } = useSearchApi();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });

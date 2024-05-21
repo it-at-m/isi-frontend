@@ -62,7 +62,7 @@
             ref="sobonJahrDropdown"
             v-model="abfrage.sobonJahr"
             :disabled="!isEditable"
-            :items="sobonVerfahrensgrundsaetzeJahr"
+            :items="lookupStore.sobonVerfahrensgrundsaetzeJahr"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld]"
@@ -85,7 +85,7 @@
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           :disabled="!isEditable"
-          :items="standVerfahrenBauleitplanverfahren"
+          :items="lookupStore.standVerfahrenBauleitplanverfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
@@ -138,7 +138,7 @@ interface Props {
 }
 
 const { formChanged } = useSaveLeave();
-const { sobonVerfahrensgrundsaetzeJahr, standVerfahrenBauleitplanverfahren } = useLookupStore();
+const lookupStore = useLookupStore();
 const { searchForEntities } = useSearchApi();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<BauleitplanverfahrenModel>({ required: true });

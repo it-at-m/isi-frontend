@@ -149,7 +149,6 @@ onBeforeMount(() => {
 });
 
 onMounted(async () => {
-  console.log(logo);
   userinfo.value = await getUserinfo();
 });
 </script>

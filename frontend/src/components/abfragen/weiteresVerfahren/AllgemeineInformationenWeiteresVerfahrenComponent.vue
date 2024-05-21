@@ -76,7 +76,7 @@
             ref="sobonJahrDropdown"
             v-model="abfrage.sobonJahr"
             :disabled="!isEditable"
-            :items="sobonVerfahrensgrundsaetzeJahr"
+            :items="lookupStore.sobonVerfahrensgrundsaetzeJahr"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld]"
@@ -99,7 +99,7 @@
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           :disabled="!isEditable"
-          :items="standVerfahrenWeiteresVerfahren"
+          :items="lookupStore.standVerfahrenWeiteresVerfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
@@ -152,7 +152,7 @@ interface Props {
 }
 
 const { formChanged } = useSaveLeave();
-const { sobonVerfahrensgrundsaetzeJahr, standVerfahrenWeiteresVerfahren } = useLookupStore();
+const lookupStore = useLookupStore();
 const { searchForEntities } = useSearchApi();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<WeiteresVerfahrenModel>({ required: true });

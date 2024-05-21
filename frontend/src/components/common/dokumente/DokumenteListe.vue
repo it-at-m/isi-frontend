@@ -83,7 +83,7 @@
                       <v-select
                         :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
                         v-model="item.artDokument"
-                        :items="artDokument"
+                        :items="lookupStore.artDokument"
                         item-value="key"
                         item-title="value"
                         :rules="[pflichtfeld, notUnspecified]"
@@ -156,7 +156,7 @@ const props = withDefaults(defineProps<Props>(), { isDokumenteEditable: true });
 const emit = defineEmits<Emits>();
 const selectedDokument = ref<DokumentDto | null>(null);
 const deleteDialogOpen = ref(false);
-const { artDokument } = useLookupStore();
+const lookupStore = useLookupStore();
 const { getPresignedUrlForGetDokument } = useDokumenteApi();
 const hasDokumente = computed(() => !_.isNil(props.dokumente) && props.dokumente.length > 0);
 
@@ -179,7 +179,7 @@ function getDokumentSizeInSIUnits(dokument: DokumentDto): string {
 async function downloadDokument(dokument: DokumentDto): Promise<void> {
   const filepathDto: FilepathDto = createFilepathDto();
   filepathDto.pathToFile = dokument.filePath.pathToFile;
-  const presignedUrlDto = await getPresignedUrlForGetDokument(filepathDto, true);
+  const presignedUrlDto = await getPresignedUrlForGetDokument(filepathDto);
   prepareDownloadLink(presignedUrlDto, dokument);
 }
 

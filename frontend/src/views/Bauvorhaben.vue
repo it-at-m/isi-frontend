@@ -14,6 +14,7 @@
                 :rules="[pflichtfeld]"
                 maxlength="255"
                 validate-on="blur"
+                variant="underlined"
                 :disabled="!isEditable"
                 @update:model-value="formChanged"
               >

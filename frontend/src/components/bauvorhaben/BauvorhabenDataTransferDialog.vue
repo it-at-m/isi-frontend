@@ -71,7 +71,7 @@ interface Emits {
 
 const { getById } = useAbfragenApi();
 const { searchForEntities } = useSearchApi();
-const { standVerfahren, statusAbfrage } = useLookupStore();
+const lookupStore = useLookupStore();
 const emit = defineEmits<Emits>();
 const dialogOpen = defineModel<boolean>({ required: true });
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
@@ -85,7 +85,7 @@ watch(
   async () => {
     if (!_.isNil(selectedAbfrageSearchResult.value) && !_.isNil(selectedAbfrageSearchResult.value.id)) {
       const idAbfrage = selectedAbfrageSearchResult.value.id;
-      selectedAbfrage = await getById(idAbfrage, false);
+      selectedAbfrage = await getById(idAbfrage);
     }
   },
   { immediate: true },
@@ -96,9 +96,12 @@ function getItemText(searchResult: AbfrageSearchResultDto): string {
     "Name: " +
     _.defaultTo(searchResult.name, "Kein Name vorhanden") +
     " - Status: " +
-    _.defaultTo(getLookupValue(searchResult.statusAbfrage, statusAbfrage), "Kein Abfragestatus vorhanden") +
+    _.defaultTo(getLookupValue(searchResult.statusAbfrage, lookupStore.statusAbfrage), "Kein Abfragestatus vorhanden") +
     " - Stand: " +
-    _.defaultTo(getLookupValue(searchResult.standVerfahren, standVerfahren), "Kein Verfahrensstand vorhanden")
+    _.defaultTo(
+      getLookupValue(searchResult.standVerfahren, lookupStore.standVerfahren),
+      "Kein Verfahrensstand vorhanden",
+    )
   );
 }
 

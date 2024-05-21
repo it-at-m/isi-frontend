@@ -10,11 +10,10 @@
             id="adresse_suchen_dropdown"
             ref="adresseSuchenDropdown"
             v-model="selected"
-            v-model:search="searchQuery"
             :disabled="!isEditable"
             :items="searchResults"
             :loading="loading"
-            density="compact"
+            variant="underlined"
             clearable
             color="black"
             no-filter
@@ -28,6 +27,7 @@
             prepend-inner-icon="mdi-magnify"
             :rules="[adressSucheValidationRule]"
             validate-on="blur"
+            @update:search="searchForAdressenWith"
           />
         </v-col>
         <v-col cols="1">
@@ -120,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import type { MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 import { hausnummer, digits, min5 } from "@/utils/FieldValidationRules";
 import AdresseModel from "@/types/model/common/AdresseModel";
@@ -153,8 +153,6 @@ const selected = computed({
   },
 });
 
-watch(searchQuery, (value) => searchForAdressenWith(value));
-
 function assumeAdresse(dto: MuenchenAdresseDto): void {
   assignAdresse(dto);
   resetAdressSuche();
@@ -186,7 +184,6 @@ function resetAdresse(): void {
 }
 
 function resetAdressSuche(): void {
-  searchQuery.value = "";
   selectedSearchResult.value = createMuenchenAdresseDto();
   searchResults.value = [];
   formChanged();
