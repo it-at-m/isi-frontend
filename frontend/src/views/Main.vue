@@ -1,5 +1,8 @@
 <template>
-  <v-navigation-drawer permanent>
+  <v-navigation-drawer
+    width="20vw"
+    permanent
+  >
     <search-result-list />
   </v-navigation-drawer>
   <v-main>

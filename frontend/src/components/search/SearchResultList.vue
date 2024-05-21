@@ -1,16 +1,13 @@
 <template>
   <v-infinite-scroll
-    :height="viewportHeight"
+    width="20vw"
     class="overflow-y-auto"
     :target="'#suchfeld'"
     infinite-scroll-disabled="pageRequestMutex.isLocked()"
     infinite-scroll-distance="10"
     @load="getAndAppendSearchResultsNextPage($event.done)"
   >
-    <v-list
-      v-if="searchResultsAsArray.length > 0"
-      class="pa-0 ma-0"
-    >
+    <v-list>
       <!-- eslint-disable vue/no-unused-vars -->
       <v-hover
         v-for="(item, index) in searchResultsAsArray"
@@ -110,12 +107,6 @@
         </v-card>
       </v-hover>
     </v-list>
-    <v-container
-      v-else
-      class="pa-0 ma-0 w-100 d-flex justify-center align-center"
-      style="height: 100%; min-height: 100px"
-    >
-    </v-container>
     <template #empty>
       <span>Keine neuen Suchergebnisse gefunden</span>
     </template>
@@ -147,7 +138,7 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
-import { useDisplay } from "vuetify";
+
 type InfiniteScrollStatus = "ok" | "empty" | "loading" | "error";
 
 const pageRequestMutex = new Mutex();
@@ -156,20 +147,11 @@ const searchStore = useSearchStore();
 const router = useRouter();
 const { searchForEntities } = useSearchApi();
 const { hasOnlyRoleAnwender } = useSecurity();
-const { height } = useDisplay();
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
 const standVerfahrenList = computed(() => lookupStore.standVerfahren);
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 const searchResults = computed(() => _.cloneDeep(searchStore.searchResults));
-
-/**
- * Berechnet die Höhe der verfübaren Listenhöhe in "vh" (Höhe Viewport in Hundert).
- * Die Höhe des App-Headers wird mit 50px angesetzt.
- */
-const viewportHeight = computed(() => {
-  return (height.value - 50) / (height.value / 100) + "vh";
-});
 
 const searchResultsAsArray = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? _.cloneDeep(searchStore.searchResults.searchResults) : [];
