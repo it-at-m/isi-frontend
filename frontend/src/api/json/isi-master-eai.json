@@ -21,11 +21,13 @@
         "responses": {
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ausführung des MAstER-Requests ist ein serverseitiger Fehler aufgetreten.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
           },
           "200": {
             "description": "Adressen erfolgreich abgefragt.",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MuenchenAdressenDto" } } }
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/MuenchenAdressenDto" } } }
           }
         }
       }
