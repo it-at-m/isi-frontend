@@ -4,7 +4,7 @@
       color="primary"
       elevation="8"
       height="50"
-      class="px-5"
+      class="px-4"
     >
       <v-row align="center">
         <v-col
