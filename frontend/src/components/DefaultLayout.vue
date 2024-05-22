@@ -6,7 +6,6 @@ content nimmt standardmäßig die mittleren 60% des Bildschirms ein.
 navigation sowie action sind Sidebars, welche nicht mitscrollen und sich über content befinden. Sie ordnen ihre Unterelemente von unten nach oben und zentriert auf der x-Achse an.
 Zum Verschieben der Unterelemente auf der x-Achse können v-spacer benutzt werden, zum Verschieben auf der y-Achse die "align-self-*"-Klassen von Vuetify, siehe https://vuetifyjs.com/en/styles/flex/#flex-align-self.
 heading ist Header-artig, scrollt nicht mit und befindet sich über content. Es zentriert sowohl auf der x- als auch auf der y-Achse und ist dafür gedacht, ein einziges Element unterzubringen.
-Mittels der BooleanProperty "solidHeading" wird das heading weiß gefärbt und bekommt einen schmalen Transparenzverlauf, um es vom drunterliegenden content trennen zu können.
 Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutzt werden.
 -->
 
@@ -19,11 +18,8 @@ Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutz
     @mouseup="stopResizing"
     @mouseleave="stopResizing"
   >
-    <!--
-    Bei Angabe des `solid-heading`-Props wird dem Content oben Padding hinzugefügt, sodass es sich nicht mit dem Heading überlappt.
-    -->
     <div
-      :class="{ 'content-wrapper': true, 'v-padded': solidHeading }"
+      class="content-wrapper"
       :style="{
         'padding-left': navigationWidth + 'px',
         'padding-right': actionWidth + 'px',
@@ -54,15 +50,11 @@ Soll navigation eine verstellbare Breite haben, kann der `resizable`-Prop benutz
         class="middle-wrapper"
         :style="{ 'flex-basis': middleWrapperWidth + 'px' }"
       >
-        <!-- Bei Angabe des `solid-heading`-Props wird dem Heading eine transparente, untere Kante angehängt. -->
         <div>
-          <div :class="{ 'middle-bar': true, white: solidHeading }">
+          <div class="middle-bar bg-white">
             <slot name="heading" />
           </div>
-          <div
-            v-if="solidHeading"
-            class="transparent-edge"
-          />
+          <div class="transparent-edge" />
         </div>
       </div>
       <div
@@ -82,7 +74,6 @@ import { ref, computed } from "vue";
 import _ from "lodash";
 
 interface Props {
-  solidHeading?: boolean;
   resizable?: boolean;
 }
 
@@ -145,9 +136,6 @@ function stopResizing(): void {
 .content-wrapper {
   width: 100%;
   height: 100%;
-}
-
-.v-padded {
   padding-top: var(--middle-bar-height);
 }
 
@@ -157,8 +145,8 @@ function stopResizing(): void {
   /* Um auf der Y-Achse direkt unter der App Bar zu liegen */
   padding-top: 50px;
   position: fixed;
-  /* Um auf der Z-Achse direkt unter der App Bar zu liegen */
-  z-index: 4;
+  /* Um auf der Z-Achse über der Karte zu liegen */
+  z-index: 1000;
   top: 0px;
   display: flex;
   /* Soll Maus-Events zu den darunterliegenden Elementen durchlassen */
