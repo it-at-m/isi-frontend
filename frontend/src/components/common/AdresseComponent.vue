@@ -28,7 +28,12 @@
             :rules="[adressSucheValidationRule]"
             validate-on="blur"
             @update:search="searchForAdressenWith"
-          />
+          >
+            <template #selection="{ item }">
+              <span v-if="item.title !== '[object Object]'">{{ item.title }}</span>
+              <span v-else>{{ "" }}</span>
+            </template>
+          </v-autocomplete>
         </v-col>
         <v-col cols="1">
           <v-tooltip location="bottom">
