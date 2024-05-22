@@ -7,20 +7,26 @@
   </v-navigation-drawer>
   <v-main>
     <search-result-city-map />
-    <v-speed-dial location="top">
+    <v-speed-dial
+      v-model="speedDialOpen"
+      location="top"
+    >
       <template #activator="{ props: activatorProps }">
-        <v-fab
-          id="speed_dial_create_button"
-          v-bind="activatorProps"
-          color="secondary"
-          :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
-          size="x-large"
-          absolute
-          location="bottom"
-          class="mr-4 mb-4"
-          style="z-index: 400"
-          @click="speedDialOpen = !speedDialOpen"
-        />
+        <v-defaults-provider :defaults="{ VIcon: { color: 'white' } }">
+          <v-btn
+            id="speed_dial_create_button"
+            v-bind="activatorProps"
+            color="secondary"
+            :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
+            size="x-large"
+            elevation="8"
+            location="bottom end"
+            position="absolute"
+            class="mr-8 mb-8"
+            style="z-index: 400"
+            :data-x="activatorProps"
+          />
+        </v-defaults-provider>
       </template>
       <v-tooltip location="left">
         <template #activator="{ props }">
