@@ -131,19 +131,20 @@ function stopResizing(): void {
   height: 100%;
   /* Variablen für Unterelemente des Wrappers */
   --middle-bar-height: 100px;
+  --app-bar-height: 50px;
 }
 
 .content-wrapper {
   width: 100%;
   height: 100%;
-  padding-top: var(--middle-bar-height);
+  padding-top: calc(var(--middle-bar-height) + var(--app-bar-height));
 }
 
 .control-wrapper {
   width: 100%;
   height: 100%;
   /* Um auf der Y-Achse direkt unter der App Bar zu liegen */
-  padding-top: 50px;
+  padding-top: var(--app-bar-height);
   position: fixed;
   /* Um auf der Z-Achse über der Karte zu liegen */
   z-index: 1000;
