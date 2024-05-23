@@ -28,12 +28,7 @@
             :rules="[adressSucheValidationRule]"
             validate-on="blur"
             @update:search="searchForAdressenWith"
-          >
-            <template #selection="{ item }">
-              <span v-if="item.title !== '[object Object]'">{{ item.title }}</span>
-              <span v-else>{{ "" }}</span>
-            </template>
-          </v-autocomplete>
+          />
         </v-col>
         <v-col cols="1">
           <v-tooltip location="bottom">
@@ -42,12 +37,10 @@
                 id="adresse_loeschen_button"
                 ref="adresseLoeschenButton"
                 :disabled="!isEditable"
-                icon
+                icon="mdi-delete"
                 v-bind="activatorProps"
                 @click="resetAdresse"
-              >
-                <v-icon> mdi-delete</v-icon>
-              </v-btn>
+              />
             </template>
             <span>ausgewählte Adresse und ergänzende Information löschen</span>
           </v-tooltip>
@@ -144,24 +137,24 @@ const { getAdressen } = useMasterEaiApi();
 withDefaults(defineProps<Props>(), { isEditable: false });
 const adresse = defineModel<AdresseModel>({ required: true });
 const loading = ref(false);
-const searchQuery = ref("");
 const searchResults = ref<MuenchenAdresseDto[]>([]);
 const selectedSearchResult = ref(createMuenchenAdresseDto());
 
-const selected = computed({
+const selected = computed<MuenchenAdresseDto | undefined>({
   get() {
-    return selectedSearchResult.value;
+    return selectedSearchResult.value.adresse ? selectedSearchResult.value : undefined;
   },
   set(value) {
-    selectedSearchResult.value = value;
-    assumeAdresse(selectedSearchResult.value);
+    if (value) {
+      selectedSearchResult.value = value;
+      assignAdresse(value);
+    } else {
+      resetAdresse();
+    }
+
+    resetAdressSuche();
   },
 });
-
-function assumeAdresse(dto: MuenchenAdresseDto): void {
-  assignAdresse(dto);
-  resetAdressSuche();
-}
 
 function assignAdresse(dto: MuenchenAdresseDto): void {
   const newAdresse = new AdresseModel(createAdresseDto());
