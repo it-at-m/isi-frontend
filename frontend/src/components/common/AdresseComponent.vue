@@ -57,6 +57,7 @@
           ref="strasseField"
           v-model="adresse.strasse"
           label="Straße"
+          variant="underlined"
           disabled
         />
       </v-col>
@@ -70,6 +71,7 @@
           v-model="adresse.hausnummer"
           :rules="[hausnummer]"
           label="Hausnummer"
+          variant="underlined"
           disabled
         />
       </v-col>
@@ -83,6 +85,7 @@
           v-model="adresse.plz"
           label="Postleitzahl"
           :rules="[digits, min5]"
+          variant="underlined"
           disabled
         />
       </v-col>
@@ -110,6 +113,7 @@
           maxlength="255"
           :rules="[angabeLageErgaenzendeAdressinformationValidationRule]"
           validate-on="blur"
+          variant="underlined"
           @update:model-value="formChanged"
         />
       </v-col>

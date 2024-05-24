@@ -2,6 +2,7 @@
   <v-text-field
     ref="inputRef"
     v-model="formattedValue"
+    variant="underlined"
     :required="required"
     :rules="usedRules"
     validate-on="blur"

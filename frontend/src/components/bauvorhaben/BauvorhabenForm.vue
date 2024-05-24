@@ -9,6 +9,7 @@
           <v-select
             id="bauvorhaben_standVerfahren_dropdown"
             v-model="bauvorhaben.standVerfahren"
+            variant="underlined"
             :items="lookupStore.standVerfahren"
             item-value="key"
             item-title="value"
@@ -29,6 +30,7 @@
               id="stand_verfahren_freie_eingabe_field"
               ref="standVerfahrenFreieEingabeField"
               v-model="bauvorhaben.standVerfahrenFreieEingabe"
+              variant="underlined"
               :disabled="!isEditable"
               label="Freie Eingabe für Stand des Verfahrens"
               maxlength="1000"
@@ -57,6 +59,7 @@
           <v-text-field
             id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
+            variant="underlined"
             disabled
             label="Bauvorhabennummer"
           />
@@ -84,6 +87,7 @@
             id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
             :items="lookupStore.wesentlicheRechtsgrundlage"
+            variant="underlined"
             item-value="key"
             item-title="value"
             multiple
@@ -105,6 +109,7 @@
               id="wesentliche_rechtsgrundlage_freie_eingabe_field"
               ref="wesentlicheRechtsgrundlageFreieEingabeField"
               v-model="bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe"
+              variant="underlined"
               :disabled="!isEditable"
               label="Freie Eingabe für Wesentliche Rechtsgrundlage"
               maxlength="1000"
@@ -119,6 +124,7 @@
             id="bauvorhaben_artFnp_dropdown"
             v-model="bauvorhaben.artFnp"
             :items="lookupStore.artBaulicheNutzungBauvorhaben"
+            variant="underlined"
             item-value="key"
             item-title="value"
             multiple
@@ -142,6 +148,7 @@
               id="art_fnp_freie_eingabe_field"
               ref="artFnpFreieEingabeField"
               v-model="bauvorhaben.artFnpFreieEingabe"
+              variant="underlined"
               :disabled="!isEditable"
               label="Freie Eingabe für Art der baulichen Nutzung"
               maxlength="1000"
@@ -159,6 +166,7 @@
             id="bauvorhaben_bebauungsplannummer"
             v-model="bauvorhaben.bebauungsplannummer"
             label="Bebauungsplannummer"
+            variant="underlined"
             maxlength="255"
             :disabled="!isEditable"
             @update:model-value="formChanged"
@@ -172,6 +180,7 @@
             id="bauvorhaben_fisnummer"
             v-model="bauvorhaben.fisNummer"
             label="FIS-Nummer"
+            variant="underlined"
             maxlength="255"
             :disabled="!isEditable"
             @update:model-value="formChanged"
@@ -184,6 +193,7 @@
             id="bauvorhaben_anmerkung"
             v-model="bauvorhaben.anmerkung"
             label="Anmerkung"
+            variant="underlined"
             rows="1"
             auto-grow
             maxlength="1000"
@@ -226,6 +236,7 @@
               v-if="sobonJahrVisible"
               id="bauvorhaben_sobonJahr_dropdown"
               v-model="bauvorhaben.sobonJahr"
+              variant="underlined"
               :items="lookupStore.sobonVerfahrensgrundsaetzeJahr"
               item-value="key"
               item-title="value"
