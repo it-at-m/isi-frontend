@@ -54,7 +54,7 @@
 import { computed, ref } from "vue";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 import { useSaveLeave } from "@/composables/SaveLeave";
-
+import { Rule } from "@/utils/FieldValidationRules";
 type Position = "0" | "1" | "2";
 
 interface VInput {
@@ -66,7 +66,7 @@ interface Props {
   offText?: string;
   onText?: string;
   disabled?: boolean;
-  rules?: unknown[];
+  rules?: Rule[];
 }
 
 const { formChanged } = useSaveLeave();
@@ -108,11 +108,11 @@ const valueAsPosition = computed({
 const backgroundColor = computed(() => {
   switch (valueInternal.value) {
     case UncertainBoolean.True:
-      return "primary";
+      return "bg-primary";
     case UncertainBoolean.False:
-      return "grey";
+      return "bg-grey";
     default:
-      return "grey lighten-1";
+      return "bg-grey-lighten-1";
   }
 });
 
