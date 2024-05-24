@@ -8,7 +8,7 @@
     <v-form ref="bedarfsmeldungDialogForm">
       <v-card class="overflow-x-hidden">
         <v-card-title
-          class="text-wrap align-stretch"
+          class="align-stretch"
           v-text="'Bedarfsmeldung'"
         />
         <v-row justify="center">
@@ -99,14 +99,12 @@
           <v-spacer />
           <v-btn
             id="bedarfsmeldung_abbrechen_button"
-            class="text-wrap"
             variant="text"
             @click="abbrechenBedarfsmeldung"
             v-text="'Abbrechen'"
           />
           <v-btn
             id="bedarfsmeldung_uebernehmen_button"
-            class="text-wrap"
             color="primary"
             @click="uebernehmenBedarfsmeldung"
             v-text="'Übernehmen'"

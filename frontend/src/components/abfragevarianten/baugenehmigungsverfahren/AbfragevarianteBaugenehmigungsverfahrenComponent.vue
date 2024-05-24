@@ -54,7 +54,6 @@
       >
         <v-btn
           id="bedarfsmeldungenUebernehmenButton"
-          class="text-wrap"
           block
           :disabled="!bedarfsmeldungenUebernehmenEnabled"
           @click="bedarfsmeldungenUebernehmen()"

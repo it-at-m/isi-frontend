@@ -12,21 +12,19 @@
       location="top"
     >
       <template #activator="{ props: activatorProps }">
-        <v-defaults-provider :defaults="{ VIcon: { color: 'white' } }">
-          <v-btn
-            id="speed_dial_create_button"
-            v-bind="activatorProps"
-            color="secondary"
-            :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
-            size="x-large"
-            elevation="8"
-            location="bottom end"
-            position="absolute"
-            class="mr-8 mb-8"
-            style="z-index: 400"
-            :data-x="activatorProps"
-          />
-        </v-defaults-provider>
+        <v-btn
+          id="speed_dial_create_button"
+          v-bind="activatorProps"
+          color="secondary"
+          :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
+          size="x-large"
+          elevation="8"
+          location="bottom end"
+          position="absolute"
+          class="mr-8 mb-8"
+          style="z-index: 400"
+          :data-x="activatorProps"
+        />
       </template>
       <v-tooltip location="left">
         <template #activator="{ props }">

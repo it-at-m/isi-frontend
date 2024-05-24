@@ -176,7 +176,6 @@
                 <v-btn
                   :id="'bedarfsmeldung_erfassen'"
                   :disabled="!getIsEditable"
-                  class="text-wrap"
                   block
                   @click="erfassenBedarfsmeldung()"
                   v-text="'Bedarfsmeldung erfassen'"

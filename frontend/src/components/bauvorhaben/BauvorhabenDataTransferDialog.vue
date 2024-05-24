@@ -6,7 +6,7 @@
   >
     <v-card class="overflow-x-hidden">
       <v-card-title
-        class="text-wrap align-stretch"
+        class="align-stretch"
         v-text="'Datenübernahme aus Abfrage'"
       />
       <v-row justify="center">
@@ -32,14 +32,12 @@
         <v-spacer />
         <v-btn
           id="bauvorhaben_abfrage_datenuebernahme_abbrechen_button"
-          class="text-wrap"
           variant="text"
           @click="uebernahmeAbbrechen"
           v-text="'Abbrechen'"
         />
         <v-btn
           id="bauvorhaben_abfrage_datenuebernahme_uebernehmen_button"
-          class="text-wrap"
           color="primary"
           @click="abfrageUebernehmen"
           v-text="'Übernehmen'"

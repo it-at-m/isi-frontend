@@ -235,7 +235,7 @@
         <v-btn
           v-if="!isNew"
           id="abfrage_loeschen_button"
-          class="text-wrap my-4 px-1"
+          class="my-4 px-1"
           color="primary"
           elevation="1"
           style="width: 200px"
@@ -251,7 +251,7 @@
           :key="index"
           :disabled="isFormDirty"
           color="secondary"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           elevation="1"
           style="width: 200px"
           @click="statusUebergang(transition)"
@@ -259,7 +259,7 @@
         />
         <v-btn
           id="abfrage_speichern_button"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           color="secondary"
           elevation="1"
           :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(abfrage.dokumente)"
@@ -271,7 +271,7 @@
           id="abfrage_abbrechen_button"
           color="primary"
           elevation="1"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           style="width: 200px"
           @click="returnToUebersicht()"
           v-text="'Abbrechen'"

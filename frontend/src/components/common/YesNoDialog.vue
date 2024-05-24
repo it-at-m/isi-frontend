@@ -8,7 +8,6 @@
       <template v-if="buttontext">
         <v-btn
           id="yes_no_dialog_buttontext"
-          class="text-wrap"
           color="primary"
           v-bind="activatorProps"
           v-text="buttontext"
@@ -49,14 +48,12 @@
         <v-spacer />
         <v-btn
           id="yes_no_dialog-btn-no"
-          class="text-wrap"
           variant="text"
           @click="no"
           v-text="noText"
         />
         <v-btn
           id="yes_no_dialog-btn-yes"
-          class="text-wrap"
           color="primary"
           @click="yes"
           v-text="yesText"

@@ -13,7 +13,7 @@ const vuetify = createVuetify({
         colors: {
           primary: colors.blueGrey.darken2,
           accent: colors.blueGrey.darken1,
-          secondary: colors.orange.lighten1,
+          secondary: colors.orange.darken1,
           success: colors.green.accent4,
           warning: colors.yellow.accent4,
           error: colors.red.accent4,

@@ -36,7 +36,6 @@
           <v-row class="justify-end">
             <v-btn
               id="dokumente_hinzufuegen_button"
-              class="text-wrap"
               block
               color="secondary"
               elevation="1"

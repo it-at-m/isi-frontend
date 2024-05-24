@@ -47,7 +47,7 @@
         <v-btn
           v-if="!isNew"
           id="bauvorhaben_loeschen_button"
-          class="text-wrap my-4"
+          class="my-4"
           color="primary"
           elevation="1"
           width="200px"
@@ -58,7 +58,7 @@
         <v-btn
           v-else
           id="bauvorhaben_datenuebernahme_button"
-          class="text-wrap my-4"
+          class="my-4"
           color="primary"
           elevation="1"
           width="200px"
@@ -71,7 +71,7 @@
           id="bauvorhaben_speichern_button"
           color="secondary"
           elevation="1"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           style="width: 200px"
           :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
           @click="validateAndProceed()"
@@ -81,7 +81,7 @@
           id="bauvorhaben_abbrechen_button"
           color="primary"
           elevation="1"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           style="width: 200px"
           @click="returnToUebersicht()"
           v-text="'Abbrechen'"
