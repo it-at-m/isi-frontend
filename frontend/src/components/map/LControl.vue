@@ -14,7 +14,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { position: "bottomleft" });
 const div = ref<HTMLDivElement | null>(null);
-let control: L.Control | undefined;
+const control = ref<L.Control | null>(null);
 
 onMounted(() => {
   if (div.value) {
@@ -22,21 +22,11 @@ onMounted(() => {
       onAdd() {
         return div.value;
       },
+      onRemove() {},
     });
-    control = new Control({ position: props.position });
+    control.value = new Control({ position: props.position });
   }
 });
 
 defineExpose({ control });
 </script>
-
-<style scoped>
-.map-control {
-  width: 44px;
-  height: 44px;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  background-color: white;
-  cursor: pointer;
-}
-</style>

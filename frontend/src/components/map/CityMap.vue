@@ -7,59 +7,60 @@
     <div
       id="karte"
       style="width: 100%; height: 100%"
-    ></div>
-    <l-control
-      v-if="editable"
-      ref="geoJsonControl"
-      position="bottomleft"
     >
-      <button
-        id="save_geojson_button"
-        class="map-control"
-        title="Auswahl übernehmen"
-        @click="onAcceptSelectedGeoJson"
+      <l-control
+        v-if="editable"
+        ref="geoJsonControl"
+        position="bottomleft"
       >
-        <v-icon size="large"> mdi-checkbox-marked-outline </v-icon>
-      </button>
-      <button
-        v-if="isGeoJsonNotEmpty"
-        id="clear_geojson_button"
-        class="map-control"
-        title="Auswahl aufheben"
-        @click="onDeselectGeoJson"
+        <button
+          id="save_geojson_button"
+          class="map-control"
+          title="Auswahl übernehmen"
+          @click="onAcceptSelectedGeoJson"
+        >
+          <v-icon size="x-large"> mdi-checkbox-marked-outline </v-icon>
+        </button>
+        <button
+          v-if="isGeoJsonNotEmpty"
+          id="clear_geojson_button"
+          class="map-control"
+          title="Auswahl aufheben"
+          @click="onDeselectGeoJson"
+        >
+          <v-icon size="x-large"> mdi-delete-outline </v-icon>
+        </button>
+      </l-control>
+      <l-control
+        v-if="props.expandable"
+        ref="expansionControl"
+        position="bottomright"
       >
-        <v-icon size="large"> mdi-delete-outline </v-icon>
-      </button>
-    </l-control>
-    <l-control
-      v-if="props.expandable"
-      ref="expansionControl"
-      position="bottomright"
-    >
-      <button
-        id="karte_erweitern_button"
-        class="map-control"
-        :title="expanded ? 'Einklappen' : 'Erweitern'"
-        @click="toggleExpansion"
-      >
-        <v-icon size="large">{{ expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand" }}</v-icon>
-      </button>
-    </l-control>
-    <v-dialog
-      id="karte_dialog"
-      v-model="expanded"
-      persistent
-      eager
-      height="80vh"
-      width="80%"
-    >
-      <v-card
-        ref="dialogCard"
-        height="80vh"
-        width="100%"
-      />
-    </v-dialog>
+        <button
+          id="karte_erweitern_button"
+          class="map-control"
+          :title="expanded ? 'Einklappen' : 'Erweitern'"
+          @click="toggleExpansion"
+        >
+          <v-icon size="x-large">{{ expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand" }}</v-icon>
+        </button>
+      </l-control>
+    </div>
   </v-sheet>
+  <v-dialog
+    id="karte_dialog"
+    v-model="expanded"
+    persistent
+    eager
+    height="80vh"
+    width="80%"
+  >
+    <v-card
+      ref="dialogCard"
+      height="80vh"
+      width="100%"
+    />
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
@@ -248,3 +249,14 @@ function onAcceptSelectedGeoJson(event: MouseEvent): void {
   emit("accept-selected-geo-json");
 }
 </script>
+
+<style scoped>
+.map-control {
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+</style>

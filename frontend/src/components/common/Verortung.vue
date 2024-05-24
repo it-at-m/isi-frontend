@@ -312,7 +312,7 @@ function onVerortungModelChanged(): void {
 async function handleClickInMap(latlng: LatLng): Promise<void> {
   if (isEditable.value) {
     const point = createPointGeometry(latlng);
-    const flurstuecke = await geoApi.getFlurstueckeForPoint(point, true);
+    const flurstuecke = await geoApi.getFlurstueckeForPoint(point);
     const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
     selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
   }
@@ -397,31 +397,26 @@ function createMultiPolygonGeometryFromSelectedFlurstuecke(): MultiPolygonGeomet
 async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<VerortungMultiPolygonDto | undefined> {
   const multipolygon = createMultiPolygonGeometryFromSelectedFlurstuecke();
   try {
-    const unifiedMultipolygon = await geoApi.getUnionOfMultipolygon(multipolygon, true);
-
-    const promiseStadtbezirke = geoApi.getStadtbezirkeForMultipolygon(unifiedMultipolygon, true);
-    const promiseBezirksteile = geoApi.getBezirksteileForMultipolygon(unifiedMultipolygon, true);
-    const promiseViertel = geoApi.getViertelForMultipolygon(unifiedMultipolygon, true);
-    const promiseGemarkungen = geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon, true);
-    const promiseKitaplanungsbereiche = geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, true);
-    const promiseGrundschulsprengel = geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, true);
-    const promiseMittelschulsprengel = geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, true);
+    const unifiedMultipolygon = await geoApi.getUnionOfMultipolygon(multipolygon);
+    const promiseStadtbezirke = await geoApi.getStadtbezirkeForMultipolygon(unifiedMultipolygon);
+    const promiseBezirksteile = await geoApi.getBezirksteileForMultipolygon(unifiedMultipolygon);
+    const promiseViertel = await geoApi.getViertelForMultipolygon(unifiedMultipolygon);
+    const promiseGemarkungen = await geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon);
+    const promiseKitaplanungsbereiche = await geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon);
+    const promiseGrundschulsprengel = await geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon);
+    const promiseMittelschulsprengel = await geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon);
 
     // Stadtbezirke ermitteln
-    const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
-      await promiseStadtbezirke,
-    );
+    const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(promiseStadtbezirke);
 
     // Stadtbezirksteile ermitteln
-    const bezirksteileBackend: Array<BezirksteilDto> = bezirksteileGeoDataEaiToBezirksteileBackend(
-      await promiseBezirksteile,
-    );
+    const bezirksteileBackend: Array<BezirksteilDto> = bezirksteileGeoDataEaiToBezirksteileBackend(promiseBezirksteile);
 
     // Viertel ermitteln
-    const viertelBackend: Array<ViertelDto> = viertelGeoDataEaiToViertelBackend(await promiseViertel);
+    const viertelBackend: Array<ViertelDto> = viertelGeoDataEaiToViertelBackend(promiseViertel);
 
     // Gemarkungen ermitteln
-    const gemarkungenBackend: Array<GemarkungDto> = gemarkungenGeoDataEaiToGemarkungenBackend(await promiseGemarkungen);
+    const gemarkungenBackend: Array<GemarkungDto> = gemarkungenGeoDataEaiToGemarkungenBackend(promiseGemarkungen);
 
     // Anfügen der Flurstücke an Gemarkung
     selectedFlurstuecke.value.forEach((selectedFlurstueck) => {
@@ -433,15 +428,15 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
 
     // KitaPlb ermitteln
     const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
-      kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(await promiseKitaplanungsbereiche);
+      kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(promiseKitaplanungsbereiche);
 
     // Grundschulsprengel ermitteln
     const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
-      grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(await promiseGrundschulsprengel);
+      grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(promiseGrundschulsprengel);
 
     // Mittelschulsprengel ermitteln
     const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
-      mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(await promiseMittelschulsprengel);
+      mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(promiseMittelschulsprengel);
 
     // Erstellung des VerortungMultiPolygonDto
     return {
