@@ -201,6 +201,7 @@ import type {
   VerortungMultiPolygonDto,
   ViertelDto,
 } from "@/api/api-client/isi-backend";
+import FieldGroupCard from "./FieldGroupCard.vue";
 import CityMap from "@/components/map/CityMap.vue";
 import L, { LatLng, Layer } from "leaflet";
 import _ from "lodash";

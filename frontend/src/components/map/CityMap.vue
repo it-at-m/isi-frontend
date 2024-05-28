@@ -6,6 +6,7 @@
   >
     <div
       id="karte"
+      ref="mapRef"
       style="width: 100%; height: 100%"
     >
       <l-control
@@ -124,9 +125,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<Emits>();
-const sheet = ref<HTMLElement | null>(null);
-const mapRef = ref<HTMLElement | null>(null);
-const dialogCard = ref<HTMLElement | null>(null);
+const mapRef = ref<HTMLDivElement | null>(null);
+const sheet = ref<{ $el: HTMLElement } | null>(null);
+const dialogCard = ref<{ $el: HTMLElement } | null>(null);
 const geoJsonControl = ref<typeof LControl | null>(null);
 const expansionControl = ref<typeof LControl | null>(null);
 const expanded = ref(false);
@@ -199,9 +200,9 @@ function toggleExpansion(event: MouseEvent): void {
 
   if (mapRef.value) {
     if (expanded.value) {
-      dialogCard.value?.appendChild(mapRef.value);
+      dialogCard.value?.$el.appendChild(mapRef.value);
     } else {
-      sheet.value?.appendChild(mapRef.value);
+      sheet.value?.$el.appendChild(mapRef.value);
     }
   }
 
