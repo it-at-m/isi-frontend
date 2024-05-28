@@ -13,7 +13,7 @@
         id="dokumente_liste_component"
         :dokumente="dokumente"
         :is-dokumente-editable="isDokumenteEditable"
-        @onDeleteDokument="deleteDokument"
+        @on-delete-dokument="deleteDokument"
         @change="change"
       />
       <v-row class="align-end">
@@ -63,6 +63,7 @@
 <script setup lang="ts">
 import { useDokumenteApi } from "@/composables/requests/DokumenteApi";
 import { useMimeTypeApi } from "@/composables/requests/MimeTypeApi";
+import FieldGroupCard from "../FieldGroupCard.vue";
 import DokumenteListe from "./DokumenteListe.vue";
 import {
   type DokumentDto,

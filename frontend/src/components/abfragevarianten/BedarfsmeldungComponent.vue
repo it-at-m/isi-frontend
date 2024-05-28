@@ -153,11 +153,10 @@
                       <v-btn
                         :id="'bedarfsmeldung_listitem_loeschen' + index"
                         :disabled="!getIsEditable"
-                        icon
+                        variant="plain"
+                        icon="mdi-delete"
                         @click="deleteBedarfsmeldung(index)"
-                      >
-                        <v-icon> mdi-delete</v-icon>
-                      </v-btn>
+                      />
                     </td>
                   </tr>
                 </tbody>

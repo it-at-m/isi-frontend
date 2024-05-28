@@ -40,13 +40,12 @@
             <template #activator="{ props: activatorProps }">
               <v-btn
                 id="delete_kommentar"
-                icon
+                variant="plain"
+                icon="mdi-delete"
                 :disabled="!isDeletable || !isEditable"
                 v-bind="activatorProps"
                 @click="deleteDialog = true"
-              >
-                <v-icon> mdi-delete</v-icon>
-              </v-btn>
+              />
             </template>
             <span>Kommentar löschen</span>
           </v-tooltip>

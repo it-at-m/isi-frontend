@@ -61,12 +61,11 @@
           <v-icon> mdi-pencil-outline </v-icon>
         </v-btn>
         <v-btn
-          icon
+          variant="plain"
+          icon="mdi-delete"
           :disabled="!isEditable"
           @click="deleteTableItem(item)"
-        >
-          <v-icon> mdi-delete </v-icon>
-        </v-btn>
+        />
       </div>
     </template>
     <template #no-data>

@@ -105,11 +105,10 @@
                   <v-btn
                     :id="'dokument_listitem_loeschen' + index"
                     :disabled="!isDokumenteEditable"
-                    icon
+                    variant="plain"
+                    icon="mdi-delete"
                     @click="deleteDokument(item)"
-                  >
-                    <v-icon> mdi-delete</v-icon>
-                  </v-btn>
+                  />
                 </v-row>
               </v-col>
             </v-row>
@@ -149,7 +148,7 @@ interface Props {
 
 interface Emits {
   (event: "change", value: void): void;
-  (event: "onDeleteDokument", value: DokumentDto): void;
+  (event: "on-delete-dokument", value: DokumentDto): void;
 }
 
 const props = withDefaults(defineProps<Props>(), { isDokumenteEditable: true });
@@ -199,7 +198,7 @@ function deleteDokument(dokument: DokumentDto): void {
 
 function yesNoDialogYes(): void {
   if (selectedDokument.value !== null) {
-    emit("onDeleteDokument", selectedDokument.value);
+    emit("on-delete-dokument", selectedDokument.value);
   }
   yesNoDialogNo();
 }

@@ -37,6 +37,7 @@
                 id="adresse_loeschen_button"
                 ref="adresseLoeschenButton"
                 :disabled="!isEditable"
+                variant="plain"
                 icon="mdi-delete"
                 v-bind="activatorProps"
                 @click="resetAdresse"

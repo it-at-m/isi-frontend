@@ -29,7 +29,7 @@
           title="Auswahl aufheben"
           @click="onDeselectGeoJson"
         >
-          <v-icon size="x-large"> mdi-delete-outline </v-icon>
+          <v-icon size="x-large">mdi-delete-outline</v-icon>
         </button>
       </l-control>
       <l-control
