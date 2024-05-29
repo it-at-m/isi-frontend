@@ -5,20 +5,19 @@
     @click:outside="visible = false"
   >
     <v-card class="pb-4">
-      <v-app-bar
+      <v-toolbar
+        title="Versionen der ISI-Services"
         flat
         color="primary"
         class="mb-4"
       >
-        <span class="text-h6"> Versionen der ISI-Services </span>
-        <v-spacer />
         <v-btn
           variant="text"
           icon="mdi-close"
           @click="visible = false"
         >
         </v-btn>
-      </v-app-bar>
+      </v-toolbar>
       <v-table
         v-if="services.length !== 0"
         class="mx-8"
