@@ -9,7 +9,7 @@
     <template #activator="{ props: activatorProps }">
       <v-btn
         id="benutzerinformation_button"
-        size="small"
+        variant="plain"
         icon="mdi-information"
         v-bind="activatorProps"
       >
