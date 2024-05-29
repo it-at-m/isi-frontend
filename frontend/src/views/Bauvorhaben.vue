@@ -75,8 +75,9 @@
           style="width: 200px"
           :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
           @click="validateAndProceed()"
-          v-text="isNew ? 'Speichern' : 'Aktualisieren'"
-        />
+        >
+          {{ isNew ? "Speichern" : "Aktualisieren" }}
+        </v-btn>
         <v-btn
           id="bauvorhaben_abbrechen_button"
           color="primary"

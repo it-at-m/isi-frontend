@@ -1,5 +1,9 @@
 <template>
-  <v-card class="mx-3 mt-0 mb-6 px-3 pt-2 pb-3">
+  <v-card
+    variant="outlined"
+    class="mx-3 mt-0 mb-6 px-3 pt-2 pb-3"
+    style="border: 1px solid #d3d3d3"
+  >
     <v-row class="justify-start">
       <v-col
         cols="12"
@@ -71,7 +75,6 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <p class="text-h6 text-grey">Anhänge</p>
         <dokumente
           id="kommentar_dokumente"
           v-model="kommentar.dokumente"
@@ -99,6 +102,7 @@ import { computed, ref } from "vue";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import Dokumente from "../dokumente/Dokumente.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
@@ -130,7 +134,7 @@ function cancelDeletion(): void {
 
 function changed(): void {
   kommentar.value.isDirty = true;
-  kommentar.value = _.cloneDeep(kommentar.value);
+  // kommentar.value = _.cloneDeep(kommentar.value);
   commentChanged();
 }
 

@@ -1,6 +1,6 @@
 <template>
   <v-container class="scale-transition">
-    <v-expansion-panels>
+    <v-expansion-panels variant="accordion">
       <v-expansion-panel @click="getReferencedAbfragen()">
         <v-expansion-panel-title> Abfragen </v-expansion-panel-title>
         <v-expansion-panel-text>

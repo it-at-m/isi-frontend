@@ -1,18 +1,17 @@
 <template>
-  <v-container class="scale-transition pa-0 mb-2">
-    <v-expansion-panels class="ma-0 pa-0">
-      <v-expansion-panel
-        class="pa-0"
-        @click="getKommentare()"
-      >
+  <v-container class="scale-transition pa-0 mb-2 px-4">
+    <v-expansion-panels
+      variant="accordion"
+      @update:model-value="getKommentare()"
+    >
+      <v-expansion-panel class="pa-0">
         <v-expansion-panel-title class="text-grey text-h6"> Kommentare </v-expansion-panel-title>
         <v-expansion-panel-text>
           <kommentar
             v-for="(kommentar, index) in kommentare"
             :key="index"
-            :value="kommentar"
+            v-model="kommentare[index]"
             :is-editable="isEditable"
-            @input="updateEntry(index, $event)"
             @save-kommentar="saveKommentar"
             @delete-kommentar="deleteKommentar"
           />
@@ -46,6 +45,7 @@ const kommentare = ref<KommentarModel[]>([]);
 let isKommentarListOpen = false;
 
 watch(kommentare, () => {
+  console.log(kommentare.value);
   if (!hasDirtyComment()) {
     resetCommentDirty();
   } else {
@@ -62,13 +62,13 @@ async function getKommentare(): Promise<void> {
     if (!isKommentarListOpen && !_.isNil(routeId)) {
       isKommentarListOpen = true;
       if (props.context === Context.BAUVORHABEN) {
-        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(routeId, true);
+        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(routeId);
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForBauvorhaben());
         }
       } else if (props.context === Context.INFRASTRUKTUREINRICHTUNG) {
-        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId, true);
+        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId);
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());
@@ -106,13 +106,13 @@ function createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel 
 
 async function saveKommentar(kommentar: KommentarModel): Promise<void> {
   if (_.isNil(kommentar.id)) {
-    const createdKommentar = await kommentarApi.createKommentar(kommentar, true);
+    const createdKommentar = await kommentarApi.createKommentar(kommentar);
     const model = new KommentarModel(createdKommentar);
     model.isDirty = false;
     replaceSavedKommentarInKommentare(model);
     kommentare.value.unshift(createNewUnsavedKommentar());
   } else {
-    const updatedKommentar = await kommentarApi.updateKommentar(kommentar, true);
+    const updatedKommentar = await kommentarApi.updateKommentar(kommentar);
     const model = new KommentarModel(updatedKommentar);
     model.isDirty = false;
     replaceSavedKommentarInKommentare(model);
@@ -142,7 +142,7 @@ async function deleteKommentar(kommentar: KommentarModel): Promise<void> {
       kommentare.value.splice(index, 1);
     }
   } else {
-    await kommentarApi.deleteKommentar(kommentar.id, true);
+    await kommentarApi.deleteKommentar(kommentar.id);
     const removeIndex = kommentare.value.findIndex((k) => k.id === kommentar.id);
     if (removeIndex > -1) {
       kommentare.value.splice(removeIndex, 1);
@@ -153,9 +153,5 @@ async function deleteKommentar(kommentar: KommentarModel): Promise<void> {
       }
     }
   }
-}
-
-function updateEntry(index: number, kommentar: KommentarModel): void {
-  kommentare.value[index] = kommentar;
 }
 </script>
