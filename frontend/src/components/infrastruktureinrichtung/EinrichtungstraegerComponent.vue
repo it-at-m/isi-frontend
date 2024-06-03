@@ -8,6 +8,7 @@
         id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
         v-model="einrichtung.einrichtungstraeger"
         :items="einrichtungstraegerList"
+        variant="underlined"
         item-value="key"
         item-title="value"
         :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"

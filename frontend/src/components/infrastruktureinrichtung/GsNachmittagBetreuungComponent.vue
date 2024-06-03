@@ -59,6 +59,7 @@
             id="infrastruktureinrichtung_gsNachmittagBetreuung_artGsNachmittagBetreuung"
             v-model="gsNachmittagBetreuung.artGsNachmittagBetreuung"
             :items="artGsNachmittagBetreuungList"
+            variant="underlined"
             item-title="value"
             item-value="key"
             label="Art der Nachmittagsbetreuung für Grundschulkinder"
@@ -78,6 +79,7 @@ import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { computed } from "vue";
+import NumField from "@/components/common/NumField.vue";
 
 interface Props {
   isEditable?: boolean;

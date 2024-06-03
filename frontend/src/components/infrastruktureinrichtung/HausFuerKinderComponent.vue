@@ -160,6 +160,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { computed } from "vue";
+import NumField from "@/components/common/NumField.vue";
 
 interface Props {
   isEditable?: boolean;
