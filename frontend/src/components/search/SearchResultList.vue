@@ -143,7 +143,6 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
-import { onMounted } from "vue";
 
 type InfiniteScrollStatus = "ok" | "empty" | "loading" | "error";
 

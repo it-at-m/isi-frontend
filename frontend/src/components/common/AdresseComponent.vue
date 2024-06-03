@@ -99,6 +99,7 @@
           ref="ortField"
           v-model="adresse.ort"
           label="Ort"
+          variant="underlined"
           disabled
         />
       </v-col>

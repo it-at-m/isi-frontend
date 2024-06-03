@@ -84,7 +84,6 @@
         />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_save_leave"
-          ref="saveLeaveDialog"
           v-model="saveLeaveDialog"
           :dialogtitle="saveLeaveDialogTitle"
           :dialogtext="saveLeaveDialogText"

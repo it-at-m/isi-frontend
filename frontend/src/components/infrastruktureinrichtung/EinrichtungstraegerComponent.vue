@@ -35,6 +35,7 @@ import type GsNachmittagBetreuungModel from "@/types/model/infrastruktureinricht
 import type HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
 import type KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
 import type SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 
 interface Props {
   isEditable?: boolean;

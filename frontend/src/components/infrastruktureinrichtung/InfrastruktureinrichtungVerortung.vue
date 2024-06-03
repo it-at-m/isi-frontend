@@ -4,11 +4,12 @@
       height="300"
       :zoom="14"
       expandable
+      automatic-zoom-to-polygons
       :editable="isVerortungEditable"
       :look-at="lookAt"
       :geo-json="geoJson"
       :geo-json-options="geoJsonOptions"
-      @click-in-map="handleClickInMap($event)"
+      @click-in-map="handleClickInMap"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
@@ -193,6 +194,7 @@ import { ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useKoordinatenApi } from "@/composables/requests/KoordinatenApi";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 
 interface Props {
   adresse?: AdresseModel;
@@ -208,7 +210,7 @@ const isVerortungEditable = computed(() => props.isEditable && !adresseValid());
 const verortungCardTitle = "Verortung";
 let oldAdresse: AdresseModel | undefined = undefined;
 const pointCoordinatesAsUtm32 = ref("");
-let geoJson: Array<Feature<Point>> = []; /* Repräsentiert eine einzige Punktkoordinate. */
+const geoJson = ref<Array<Feature<Point>>>([]); /* Repräsentiert eine einzige Punktkoordinate. */
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: Feature, latlng) => {
     return L.marker(latlng, { icon: ICON_INFRASTRUKTUREINRICHTUNG });
@@ -255,7 +257,7 @@ function adresseValid(): boolean {
   return !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate);
 }
 
-const pointToDisplayNotEmpty = computed(() => !_.isEmpty(pointCoordinatesAsUtm32));
+const pointToDisplayNotEmpty = computed(() => !_.isEmpty(pointCoordinatesAsUtm32.value));
 const stadtbezirke = computed(() =>
   _.sortBy(_.toArray(verortungModel.value?.stadtbezirke) as Array<StadtbezirkDto>, ["nummer"]),
 );
@@ -276,16 +278,16 @@ const mittelschulsprengel = computed(() =>
 );
 
 const lookAt = computed(() => {
-  if (!_.isEmpty(geoJson)) {
-    const coordinates = geoJson[0].geometry.coordinates;
+  if (!_.isEmpty(geoJson.value)) {
+    const coordinates = geoJson.value[0].geometry.coordinates;
     return { lng: coordinates[0], lat: coordinates[1] };
   }
   return undefined;
 });
 
 function getPointGeometry(): PointGeometryDto | undefined {
-  if (!_.isEmpty(geoJson)) {
-    const coordinates = geoJson[0].geometry.coordinates;
+  if (!_.isEmpty(geoJson.value)) {
+    const coordinates = geoJson.value[0].geometry.coordinates;
     if (coordinates.length == 2) {
       return {
         type: "Point",
@@ -313,7 +315,7 @@ function handleClickInMap(latlng: LatLng): void {
 }
 
 function handleDeselectGeoJson(): void {
-  geoJson = [];
+  geoJson.value = [];
   verortungModel.value = undefined;
   refresh();
   formChanged();
@@ -338,7 +340,7 @@ function handleAdresseChanged(): void {
     if (adresseValid()) {
       setGeoJsonFromLatLng(adresseCoordinate.value as LatLng);
     } else {
-      geoJson = [];
+      geoJson.value = [];
     }
     handleAcceptSelectedGeoJson();
   }
@@ -374,13 +376,19 @@ function adresseChanged(): boolean {
   return changed;
 }
 
-watch(verortungModel, () => handleVerortungModelChanged, { deep: true });
+watch(
+  verortungModel,
+  () => {
+    handleVerortungModelChanged();
+  },
+  { deep: true },
+);
 
 function handleVerortungModelChanged(): void {
   if (!_.isNil(verortungPointCoordinate.value)) {
     setGeoJsonFromLatLng({ lat: verortungPointCoordinate.value?.lat, lng: verortungPointCoordinate.value?.lng });
   } else {
-    geoJson = [];
+    geoJson.value = [];
   }
   refresh();
 }
@@ -409,7 +417,7 @@ async function getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | u
 }
 
 function setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
-  geoJson = [
+  geoJson.value = [
     {
       type: "Feature",
       geometry: { type: "Point", coordinates: [latlng.lng, latlng.lat] },
