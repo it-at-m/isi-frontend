@@ -106,6 +106,7 @@
 import { computed, ref, watch } from "vue";
 import { AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import NumField from "@/components/common/NumField.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import _ from "lodash";

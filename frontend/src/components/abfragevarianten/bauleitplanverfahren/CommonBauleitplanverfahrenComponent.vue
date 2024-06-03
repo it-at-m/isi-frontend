@@ -121,6 +121,8 @@
 import { computed, ref, watch } from "vue";
 import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import DatePicker from "@/components/common/DatePicker.vue";
+import NumField from "@/components/common/NumField.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -151,7 +153,7 @@ const calcRealisierungBis = computed(() => {
   return _.max(jahre);
 });
 
-function datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date): void {
+function datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date | undefined): void {
   if (!_.isNil(datumSatzungsbeschluss)) {
     abfragevariante.value.realisierungVon =
       datumSatzungsbeschluss.getMonth() + 1 < 7

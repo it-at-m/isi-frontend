@@ -1,9 +1,6 @@
 <template>
   <v-form ref="form">
-    <default-layout
-      solid-heading
-      resizable
-    >
+    <default-layout resizable>
       <template #content>
         <bauleitplanverfahren-component
           v-if="isBauleitplanverfahrenFormularOpen"

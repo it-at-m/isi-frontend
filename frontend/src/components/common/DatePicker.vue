@@ -8,6 +8,7 @@
         id="datum"
         v-model="textFieldDate"
         :rules="usedRules"
+        variant="underlined"
         validate-on="blur"
         :hint="displayFormat"
         :disabled="disabled"
@@ -21,8 +22,8 @@
             v-if="required"
             class="text-secondary"
           >
-            *</span
-          >
+            *
+          </span>
         </template>
         <template #append>
           <v-icon v-bind="activatorProps">mdi-calendar</v-icon>
