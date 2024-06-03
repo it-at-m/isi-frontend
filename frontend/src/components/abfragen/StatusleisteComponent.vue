@@ -7,29 +7,34 @@
       flat
     >
       <v-stepper-header>
-        <v-stepper-step
+        <v-stepper-item
           complete
-          step=""
+          color="primary"
         >
           {{ statusLabels[0] }}
-        </v-stepper-step>
+        </v-stepper-item>
         <template
           v-for="(statusLabel, index) in statusLabels.slice(1)"
           :key="index"
         >
           <v-divider></v-divider>
-          <v-stepper-step
+          <v-stepper-item
             :complete="statusIndex > index"
-            step=""
+            color="primary"
           >
             {{ statusLabel }}
-          </v-stepper-step>
+          </v-stepper-item>
         </template>
       </v-stepper-header>
     </v-stepper>
     <v-stepper v-else>
       <v-stepper-header>
-        <v-stepper-step :rules="[() => false]">Abfrage wurde storniert</v-stepper-step>
+        <v-stepper-item
+          :rules="[() => false]"
+          color="primary"
+        >
+          Abfrage wurde storniert
+        </v-stepper-item>
       </v-stepper-header>
     </v-stepper>
   </div>
@@ -40,23 +45,23 @@
       flat
     >
       <v-stepper-header>
-        <v-stepper-step
+        <v-stepper-item
           complete
-          step=""
+          color="primary"
         >
           {{ shortenedStatusLabels[0] }}
-        </v-stepper-step>
+        </v-stepper-item>
         <template
           v-for="(shortenedStatusLabel, index) in shortenedStatusLabels.slice(1)"
           :key="index"
         >
           <v-divider></v-divider>
-          <v-stepper-step
+          <v-stepper-item
             :complete="shortenedStatusIndex > index"
-            step=""
+            color="primary"
           >
             {{ shortenedStatusLabel }}
-          </v-stepper-step>
+          </v-stepper-item>
         </template>
       </v-stepper-header>
     </v-stepper>

@@ -1,84 +1,62 @@
 <template>
-  <div>
-    <v-row>
-      <v-col cols="12">
-        <span
-          v-if="isEditable"
-          class="v-label theme--light"
-        >
-          {{ title }}
-        </span>
-        <span
-          v-else
-          class="v-label text-grey-lighten-1"
-        >
-          {{ title }}
-        </span>
-      </v-col>
-    </v-row>
-    <v-row v-if="editModeTextFieldLinkEakte">
-      <v-col
-        cols="12"
-        md="11"
+  <v-row>
+    <v-col cols="12">
+      <span
+        v-if="isEditable"
+        class="v-label theme--light"
       >
-        <v-textarea
-          id="e_akte_field"
-          ref="eAkteField"
-          v-model="textFieldLinkEakte"
-          variant="underlined"
-          auto-grow
-          rows="1"
-          maxlength="8000"
+        {{ title }}
+      </span>
+      <span
+        v-else
+        class="v-label text-grey-lighten-1"
+      >
+        {{ title }}
+      </span>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col
+      cols="12"
+      md="11"
+    >
+      <v-textarea
+        v-if="editMode"
+        id="e_akte_field"
+        ref="eAkteField"
+        v-model="linkEakte"
+        variant="underlined"
+        auto-grow
+        rows="1"
+        maxlength="8000"
+        :disabled="!isEditable"
+        @update:model-value="formChanged"
+      />
+      <a
+        v-else
+        v-show="linkEakteNotEmpty"
+        target="_blank"
+        :href="linkEakteFormatted"
+      >
+        {{ linkEakte }}<span class="mdi mdi-launch" />
+      </a>
+    </v-col>
+    <v-col
+      cols="12"
+      md="1"
+    >
+      <v-row class="justify-center">
+        <v-btn
+          id="link_eakte_toggle_button"
+          class="mt-3 mb-14"
+          variant="plain"
+          :icon="editMode ? 'mdi-eye-outline' : 'mdi-pencil-outline'"
           :disabled="!isEditable"
-          @update:model-value="formChanged"
+          @click="editMode = !editMode"
         />
-      </v-col>
-      <v-col
-        cols="12"
-        md="1"
-      >
-        <v-row class="justify-center">
-          <v-btn
-            id="link_eakte_uebernehmen_button"
-            class="mt-3 mb-14"
-            variant="plain"
-            icon="mdi-checkbox-marked-outline"
-            :disabled="!isEditable"
-            @click="uebernehmenLinkEakte"
-          />
-        </v-row>
-      </v-col>
-    </v-row>
-    <v-row v-if="!editModeTextFieldLinkEakte">
-      <v-col
-        cols="12"
-        md="11"
-      >
-        <a
-          v-show="linkEakteNotEmpty"
-          target="_blank"
-          :href="linkEakteFormatted"
-        >
-          {{ linkEakte }}<span class="mdi mdi-launch" />
-        </a>
-      </v-col>
-      <v-col
-        cols="12"
-        md="1"
-      >
-        <v-row class="justify-center">
-          <v-btn
-            id="link_eakte_bearbeiten_button"
-            class="mt-3 mb-14"
-            variant="plain"
-            icon="mdi-pencil-outline"
-            :disabled="!isEditable"
-            @click="editLinkEakte"
-          />
-        </v-row>
-      </v-col>
-    </v-row>
-  </div>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script setup lang="ts">
@@ -90,12 +68,12 @@ interface Props {
   isEditable?: boolean;
 }
 
+const props = withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
 const { formChanged } = useSaveLeave();
 const title = "Link eAkte";
 const linkEakte = defineModel<string>();
-const textFieldLinkEakte = ref("");
-const editModeTextFieldLinkEakte = ref(false);
 const linkEakteNotEmpty = computed(() => !_.isEmpty(linkEakte.value));
+const editMode = ref(props.isEditable && !linkEakteNotEmpty.value);
 
 const linkEakteFormatted = computed(() => {
   if (linkEakteNotEmpty.value) {
@@ -106,17 +84,4 @@ const linkEakteFormatted = computed(() => {
   }
   return "";
 });
-
-withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
-
-function uebernehmenLinkEakte(): void {
-  linkEakte.value = textFieldLinkEakte.value;
-  textFieldLinkEakte.value = "";
-  editModeTextFieldLinkEakte.value = false;
-}
-
-function editLinkEakte(): void {
-  textFieldLinkEakte.value = _.isNil(linkEakte.value) ? "" : linkEakte.value;
-  editModeTextFieldLinkEakte.value = true;
-}
 </script>
