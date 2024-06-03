@@ -5,13 +5,15 @@
         <span
           v-if="isEditable"
           class="v-label theme--light"
-          >{{ title }}</span
         >
+          {{ title }}
+        </span>
         <span
           v-else
           class="v-label text-grey-lighten-1"
-          >{{ title }}</span
         >
+          {{ title }}
+        </span>
       </v-col>
     </v-row>
     <v-row v-if="editModeTextFieldLinkEakte">
@@ -23,6 +25,7 @@
           id="e_akte_field"
           ref="eAkteField"
           v-model="textFieldLinkEakte"
+          variant="underlined"
           auto-grow
           rows="1"
           maxlength="8000"
@@ -38,12 +41,10 @@
           <v-btn
             id="link_eakte_uebernehmen_button"
             class="mt-3 mb-14"
-            icon
+            icon="mdi-checkbox-marked"
             :disabled="!isEditable"
             @click="uebernehmenLinkEakte"
-          >
-            <v-icon>mdi-checkbox-marked</v-icon>
-          </v-btn>
+          />
         </v-row>
       </v-col>
     </v-row>

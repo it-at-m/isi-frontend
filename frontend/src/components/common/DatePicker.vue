@@ -8,6 +8,7 @@
         id="datum"
         v-model="textFieldDate"
         :rules="usedRules"
+        variant="underlined"
         validate-on="blur"
         :hint="displayFormat"
         :disabled="disabled"

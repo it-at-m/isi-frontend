@@ -39,6 +39,7 @@
           ref="anmerkungField"
           v-model="abfrage.anmerkung"
           :disabled="!isEditable"
+          variant="underlined"
           label="Anmerkungen"
           auto-grow
           rows="1"
@@ -61,10 +62,12 @@
 </template>
 
 <script setup lang="ts">
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
+import DatePicker from "@/components/common/DatePicker.vue";
 import Eakte from "@/components/common/Eakte.vue";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {

@@ -50,8 +50,10 @@ import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent
 import AllgemeineInformationenBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenBauleitplanverfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import { Context } from "@/utils/Context";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import Verortung from "@/components/common/Verortung.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
+import { Context } from "@/utils/Context";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
