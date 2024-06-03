@@ -1,11 +1,10 @@
 <template>
   <v-infinite-scroll
     width="20vw"
-    class="overflow-y-auto"
     :target="'#suchfeld'"
     infinite-scroll-disabled="pageRequestMutex.isLocked()"
     infinite-scroll-distance="10"
-    @load="getAndAppendSearchResultsNextPage($event.done)"
+    @load="getAndAppendSearchResultsNextPage"
   >
     <v-list>
       <!-- eslint-disable vue/no-unused-vars -->
@@ -17,13 +16,15 @@
         <v-card
           v-if="isTypeOfAbfrage(item)"
           :id="'search_result_item_' + index"
-          variant="outlined"
-          class="my-1 mx-0 scale-transition"
-          :elevation="isHovering ? 4 : 0"
+          :elevation="isHovering ? 6 : 1"
+          class="my-2 mx-3 pt-3 scale-transition"
           :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
           @click="routeToAbfrageForm(item)"
         >
-          <v-card-subtitle class="text-black">
+          <v-card-subtitle
+            class="text-black"
+            opacity="1"
+          >
             <v-icon
               start
               color="green-lighten-1"
@@ -48,12 +49,14 @@
         <v-card
           v-else-if="isTypeOfBauvorhaben(item)"
           :id="'search_result_item_' + index"
-          variant="outlined"
-          class="my-1 mx-0 scale-transition"
-          :elevation="isHovering ? 4 : 0"
+          :elevation="isHovering ? 6 : 1"
+          class="my-2 mx-3 pt-3 scale-transition"
           @click="routeToBauvorhabenForm(item)"
         >
-          <v-card-subtitle class="text-black">
+          <v-card-subtitle
+            class="text-black"
+            opacity="1"
+          >
             <v-icon
               start
               color="indigo-lighten-1"
@@ -79,12 +82,14 @@
         <v-card
           v-else
           :id="'search_result_item_' + index"
-          variant="outlined"
-          class="my-1 mx-0 scale-transition"
-          :elevation="isHovering ? 4 : 0"
+          class="my-2 mx-3 pt-3 scale-transition"
+          :elevation="isHovering ? 6 : 1"
           @click="routeToInfrastruktureinrichtungForm(item)"
         >
-          <v-card-subtitle class="text-black">
+          <v-card-subtitle
+            class="text-black"
+            opacity="1"
+          >
             <v-icon
               start
               color="red-lighten-1"
@@ -108,7 +113,7 @@
       </v-hover>
     </v-list>
     <template #empty>
-      <span>Keine neuen Suchergebnisse gefunden</span>
+      <span>Keine weiteren Suchergebnisse</span>
     </template>
     <template #error>
       <span>Es gab einen Fehler neue Suchergebnisse zu laden</span>
@@ -138,6 +143,7 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
+import { onMounted } from "vue";
 
 type InfiniteScrollStatus = "ok" | "empty" | "loading" | "error";
 
@@ -169,11 +175,11 @@ const numberOfPossiblePages = computed(() => {
  * Die Ausführung der Suchen und das Speichern der Suchergebnisse im Store wird mittels eines Mutex abgesichert,
  * um eine Race-Condition bei mehreren schnell hintereinander ausgeführten Seitenaufrufen zu vermeiden.
  */
-function getAndAppendSearchResultsNextPage(done: (status: InfiniteScrollStatus) => void): void {
+function getAndAppendSearchResultsNextPage(event: { done: (status: InfiniteScrollStatus) => void }): void {
   tryAcquire(pageRequestMutex)
     .acquire()
     .then(() => {
-      done("loading");
+      event.done("loading");
       const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
       let currentPage = searchQueryForEntitiesDto.page;
       if (!_.isNil(currentPage) && ++currentPage <= numberOfPossiblePages.value) {
@@ -182,20 +188,26 @@ function getAndAppendSearchResultsNextPage(done: (status: InfiniteScrollStatus) 
         searchForEntities(searchQueryForEntitiesDto)
           .then((searchResultsNextPage) => {
             const currentSearchResults = searchResults.value;
-            searchResultsNextPage.searchResults = _.concat(
-              _.toArray(currentSearchResults.searchResults),
-              _.toArray(searchResultsNextPage.searchResults),
-            );
-            searchStore.setSearchResults(_.cloneDeep(searchResultsNextPage));
+            const nextPageResult = searchResultsNextPage.searchResults || [];
+            if (_.isEqual(currentSearchResults, nextPageResult)) {
+              event.done("empty");
+            } else {
+              searchResultsNextPage.searchResults = _.concat(
+                _.toArray(currentSearchResults.searchResults),
+                _.toArray(searchResultsNextPage.searchResults),
+              );
+              searchStore.setSearchResults(_.cloneDeep(searchResultsNextPage));
+              event.done("ok");
+            }
           })
           .catch(() => {
-            done("error");
+            event.done("error");
           })
           .finally(() => pageRequestMutex.release());
       } else {
         pageRequestMutex.release();
+        event.done("empty");
       }
-      !_.isEmpty(searchStore.searchResults.searchResults) ? done("ok") : done("empty");
     });
 }
 
