@@ -11,6 +11,7 @@
             v-model="infrastruktureinrichtungTyp"
             class="mx-3"
             :items="infrastruktureinrichtungList"
+            variant="underlined"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"

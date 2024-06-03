@@ -14,6 +14,7 @@
       <template #activator="{ props: activatorProps }">
         <v-btn
           id="speed_dial_create_button"
+          key="speed-dial-create-btn"
           v-bind="activatorProps"
           color="secondary"
           :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
@@ -30,6 +31,7 @@
         <template #activator="{ props }">
           <v-btn
             id="infrastruktureinrichtung_create_button"
+            key="infra-create-btn"
             class="text-h6"
             icon="mdi-home"
             color="red-lighten-1"
@@ -44,6 +46,7 @@
         <template #activator="{ props }">
           <v-btn
             id="bauvorhaben_create_button"
+            key="bauvorhaben-create-btn"
             class="text-h6"
             icon="mdi-account-hard-hat"
             color="indigo-lighten-1"
@@ -58,6 +61,7 @@
         <template #activator="{ props }">
           <v-btn
             id="bauleitplanverfahren_create_button"
+            key="bauleitplan-create-btn"
             class="text-h6"
             icon="mdi-comment-alert"
             color="green-lighten-1"
@@ -72,6 +76,7 @@
         <template #activator="{ props }">
           <v-btn
             id="baugenehmigungsverfahren_create_button"
+            key="baugenehmigungsverfahren-create-btn"
             class="text-h6"
             icon="mdi-account-multiple-plus"
             color="green-lighten-1"
@@ -86,6 +91,7 @@
         <template #activator="{ props }">
           <v-btn
             id="weiteres_verfahren_create_button"
+            key="weiteres-verfahren-create-btn"
             class="text-h6"
             icon="mdi-account-plus"
             color="green-lighten-1"

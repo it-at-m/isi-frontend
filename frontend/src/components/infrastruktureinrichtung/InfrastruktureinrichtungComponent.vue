@@ -7,6 +7,7 @@
             id="infrastruktureinrichtung_nameEinrichtung"
             v-model="infrastruktureinrichtung.nameEinrichtung"
             :rules="[pflichtfeld]"
+            variant="underlined"
             maxlength="255"
             validate-on="blur"
             :disabled="!isEditable"
