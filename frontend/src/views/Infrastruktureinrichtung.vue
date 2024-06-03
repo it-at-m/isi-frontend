@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <default-layout solid-heading>
+    <default-layout>
       <template #content>
         <infrastruktureinrichtung-typ-component
           id="infrastruktureinrichtung_infrastruktureinrichtungtyp_component"

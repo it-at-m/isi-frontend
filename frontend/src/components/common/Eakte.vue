@@ -41,7 +41,8 @@
           <v-btn
             id="link_eakte_uebernehmen_button"
             class="mt-3 mb-14"
-            icon="mdi-checkbox-marked"
+            variant="plain"
+            icon="mdi-checkbox-marked-outline"
             :disabled="!isEditable"
             @click="uebernehmenLinkEakte"
           />
@@ -69,12 +70,11 @@
           <v-btn
             id="link_eakte_bearbeiten_button"
             class="mt-3 mb-14"
-            icon
+            variant="plain"
+            icon="mdi-pencil-outline"
             :disabled="!isEditable"
             @click="editLinkEakte"
-          >
-            <v-icon>mdi-pencil-box</v-icon>
-          </v-btn>
+          />
         </v-row>
       </v-col>
     </v-row>

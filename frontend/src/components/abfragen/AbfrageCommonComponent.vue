@@ -8,6 +8,7 @@
             id="name_field"
             ref="nameAbfrageField"
             v-model.trim="abfrage.name"
+            variant="underlined"
             :disabled="!isEditable"
             :rules="[pflichtfeld]"
             maxlength="70"

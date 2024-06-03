@@ -122,6 +122,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import {
   type BauvorhabenSearchResultDto,

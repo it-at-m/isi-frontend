@@ -81,6 +81,7 @@ import BedarfsmeldungComponent from "@/components/abfragevarianten/Bedarfsmeldun
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
 import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
 import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
+import CommonWeiteresVerfahrenComponent from "./CommonWeiteresVerfahrenComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";

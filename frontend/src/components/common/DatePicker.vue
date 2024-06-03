@@ -22,8 +22,8 @@
             v-if="required"
             class="text-secondary"
           >
-            *</span
-          >
+            *
+          </span>
         </template>
         <template #append>
           <v-icon v-bind="activatorProps">mdi-calendar</v-icon>
