@@ -137,6 +137,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import {
   type BauvorhabenSearchResultDto,

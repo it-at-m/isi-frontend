@@ -38,7 +38,7 @@
         target="_blank"
         :href="linkEakteFormatted"
       >
-        {{ linkEakte }}<span class="mdi mdi-launch" />
+        {{ linkEakteFormatted }}<span class="mdi mdi-launch" />
       </a>
     </v-col>
     <v-col
@@ -47,6 +47,7 @@
     >
       <v-row class="justify-center">
         <v-btn
+          v-if="!editableAndEmpty"
           id="link_eakte_toggle_button"
           class="mt-3 mb-14"
           variant="plain"
@@ -73,7 +74,8 @@ const { formChanged } = useSaveLeave();
 const title = "Link eAkte";
 const linkEakte = defineModel<string>();
 const linkEakteNotEmpty = computed(() => !_.isEmpty(linkEakte.value));
-const editMode = ref(props.isEditable && !linkEakteNotEmpty.value);
+const editableAndEmpty = computed(() => props.isEditable && _.isEmpty(linkEakte.value));
+const editMode = ref(editableAndEmpty.value);
 
 const linkEakteFormatted = computed(() => {
   if (linkEakteNotEmpty.value) {

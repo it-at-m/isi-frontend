@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex">
     <v-label>
       <span>
         <slot name="label">{{ label }}</slot>

@@ -17,8 +17,8 @@
         @blur="blur"
       >
         <template #label>
-          {{ label
-          }}<span
+          {{ label }}
+          <span
             v-if="required"
             class="text-secondary"
           >
@@ -31,30 +31,38 @@
       </v-text-field>
     </template>
     <v-date-picker
+      v-if="!monthPicker"
       id="datum_datePicker"
       v-model="datePickerDate"
       :disabled="disabled"
-      :type="monthPicker ? 'month' : 'date'"
-      @change="datePickerActive = false"
-      @input="formChanged"
+      color="primary"
+      @update:model-value="datePickerActive = false"
+    />
+    <v-date-picker-month
+      v-else
+      id="datum_datePicker"
+      v-model="datePickerDate"
+      :disabled="disabled"
+      color="primary"
+      @update:model-value="datePickerActive = false"
     />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import type { Rule } from "@/utils/FieldValidationRules";
 import moment from "moment";
 import _ from "lodash";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { datum, pflichtfeld } from "@/utils/FieldValidationRules";
-import { useDate } from "vuetify";
 
 interface Props {
   label?: string; // Bezeichnung des Datumsfelds
   required?: boolean; // Ist das Datumsfeld ein Pflichtfeld
   disabled?: boolean; // Ob das Datumsfeld deaktiviert sein soll
   monthPicker?: boolean; // Ob nur Monat und Jahr auswählbar sein sollen
-  rules?: unknown[]; // Welche Validierungsregeln gelten
+  rules?: Rule[]; // Welche Validierungsregeln gelten
 }
 
 interface Emits {
@@ -67,7 +75,7 @@ const MONTH_DISPLAY_FORMAT = "MM.YYYY";
 const { formChanged } = useSaveLeave();
 const props = withDefaults(defineProps<Props>(), { label: "", required: false, disabled: false, monthPicker: false });
 const emit = defineEmits<Emits>();
-const date = defineModel<Date>();
+const date = defineModel<Date | undefined>();
 const datePickerActive = ref(false);
 const displayFormat = computed(() => (props.monthPicker ? MONTH_DISPLAY_FORMAT : DISPLAY_FORMAT));
 
@@ -82,10 +90,12 @@ const datePickerDate = computed({
 
     /* undefined, null und der Unix Timestamp 0 gelten als "leere" Werte
     und werden deshalb als heutiges Datum dargestellt. */
-    return moment.utc().format(ISO_FORMAT);
+    return new Date();
   },
-  set(value: string) {
-    date.value = moment.utc(value, ISO_FORMAT).toDate();
+  set(value: Date) {
+    date.value = value;
+    console.log("datePickerDate changed: " + date.value.toString());
+    formChanged();
   },
 });
 
@@ -107,6 +117,8 @@ const textFieldDate = computed({
     möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
     const parsedValue = moment.utc(date.value, displayFormat.value, true);
     date.value = parsedValue.toDate();
+    console.log("textFieldDate changed: " + date.value.toString());
+    formChanged();
   },
 });
 
@@ -115,7 +127,7 @@ const usedRules = computed(() => {
     return [];
   }
 
-  const usedRules: unknown[] = [datum(displayFormat.value)];
+  const usedRules: Rule[] = [datum(displayFormat.value)];
 
   if (props.required) {
     usedRules.push(pflichtfeld);

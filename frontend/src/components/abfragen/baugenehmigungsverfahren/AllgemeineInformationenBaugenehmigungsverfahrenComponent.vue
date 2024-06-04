@@ -95,6 +95,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import {
   type BauvorhabenSearchResultDto,
