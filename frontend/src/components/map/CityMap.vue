@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, watch, ref } from "vue";
+import { onMounted, onUnmounted, computed, watch, ref } from "vue";
 import { LAYER_OPTIONS, MAP_OPTIONS, assembleBaseLayersForLayerControl, getBackgroundMapUrl } from "@/utils/MapUtil";
 import type { Feature } from "geojson";
 import L, { type GeoJSONOptions, type LatLngBoundsLiteral, type LatLngLiteral, Layer, LatLngBounds } from "leaflet";
@@ -148,6 +148,7 @@ onMounted(() => {
 
   // Fügt ein Steuerungselement hinzu, mit welchem sich der Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt.
   layerControl = L.control.layers({ ["Hintergrund"]: wmsTileLayer }, assembleBaseLayersForLayerControl()).addTo(map);
+
   updateLayerControlWithCustomLayers();
 
   // Fügt zusätzliche Steuerelement hinzu
@@ -158,6 +159,12 @@ onMounted(() => {
   onLookAtChanged();
   // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
   onGeoJsonChanged();
+});
+
+onUnmounted(() => {
+  if (map) {
+    map.remove();
+  }
 });
 
 watch(() => props.lookAt, onLookAtChanged, { deep: true });
