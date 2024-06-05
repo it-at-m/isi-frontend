@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, computed, watch, ref } from "vue";
+import { onMounted, computed, watch, ref } from "vue";
 import { LAYER_OPTIONS, MAP_OPTIONS, assembleBaseLayersForLayerControl, getBackgroundMapUrl } from "@/utils/MapUtil";
 import type { Feature } from "geojson";
 import L, { type GeoJSONOptions, type LatLngBoundsLiteral, type LatLngLiteral, Layer, LatLngBounds } from "leaflet";
@@ -159,12 +159,6 @@ onMounted(() => {
   onLookAtChanged();
   // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
   onGeoJsonChanged();
-});
-
-onUnmounted(() => {
-  if (map) {
-    map.remove();
-  }
 });
 
 watch(() => props.lookAt, onLookAtChanged, { deep: true });
