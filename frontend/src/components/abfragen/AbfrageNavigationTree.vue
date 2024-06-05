@@ -5,7 +5,7 @@ Props:
 - `abfrage: BauleitplanverfahrenDto`: Die darzustellende Abfrage.
 - `selectedItemId: string`: Id des aktuell ausgewählten Items.
   Kann von einem vorhanden Item stammen oder mit `generateTreeItemId` für ein neues Item ermittelt worden sein.
-- `relevanteAbfragevarianteId: string | null`: Id der relevanten Abfragevariante.
+- `relevanteAbfragevarianteId?: string`: Id der relevanten Abfragevariante.
 
 Emits:
 - `select-abfrage: AbfrageTreeItem`
@@ -28,58 +28,18 @@ Emits:
 -->
 
 <template>
-  <v-treeview
-    v-model:open="openItemIds"
-    :items="items"
-    :active="selectedItemIds"
-    dense
-    hoverable
-  >
-    <template #prepend="{ item }">
-      <v-menu
-        open-on-hover
-        :open-delay="500"
-        location="bottom"
-        :disabled="item.actions.length === 0"
-      >
-        <template #activator="{ props: activatorProps }">
-          <a
-            :id="`abfrage_navigation_tree_${item.id}`"
-            v-bind="activatorProps"
-            @click="item.onSelection"
-          >
-            {{ item.name }}
-          </a>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="action in item.actions"
-            :id="`abfrage_navigation_tree_${item.id}_${action.name}`"
-            :key="action.name"
-            :disabled="action.disabled"
-            @click="action.effect"
-          >
-            <v-list-item-title>{{ action.name }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </template>
-    <template #append="{ item }">
-      <v-tooltip
-        v-if="item.value.id === props.relevanteAbfragevarianteId"
-        location="bottom"
-      >
-        <template #activator="{ props: activatorProps }">
-          <v-icon v-bind="activatorProps">mdi-star</v-icon>
-        </template>
-        <span>Diese Abfragevariante ist relevant.</span>
-      </v-tooltip>
-    </template>
-  </v-treeview>
+  <v-list density="compact">
+    <abfrage-list-item
+      :item="root"
+      :depth="0"
+      :selected-item-id="selectedItemId"
+      :relevante-abfragevariante-id="relevanteAbfragevarianteId"
+    />
+  </v-list>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import {
   type BauleitplanverfahrenDto,
   type BaugenehmigungsverfahrenDto,
@@ -104,11 +64,12 @@ import {
   AnzeigeContextAbfragevariante,
   AbfrageFormType,
 } from "@/types/common/Abfrage";
+import AbfrageListItem from "./AbfrageListItem.vue";
 
 interface Props {
   abfrage: BauleitplanverfahrenDto;
   selectedItemId: string;
-  relevanteAbfragevarianteId?: null | string;
+  relevanteAbfragevarianteId?: string;
 }
 
 interface Emits {
@@ -148,46 +109,24 @@ const ABFRAGEVARIANTEN_LIMIT = 5;
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
-const items = ref<AbfrageTreeItem[]>([]);
-const selectedItemIds = computed(() => [props.selectedItemId]);
-const openItemIds = ref<string[]>([]);
+const root = ref<AbfrageTreeItem>(buildAbfrageRoot(props.abfrage));
 
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung, isEditableWithAnzeigeContextAbfragevariante } =
   useAbfrageSecurity();
 
 watch(
   () => props.abfrage,
-  () => (items.value = [buildTree(props.abfrage)]),
+  () => (root.value = buildTree(props.abfrage)),
   { immediate: true, deep: true },
 );
 
 watch(
   () => props.relevanteAbfragevarianteId,
-  () => (items.value = [buildTree(props.abfrage)]),
+  () => (root.value = buildTree(props.abfrage)),
 );
 
-function getAbfrageFormTypeAbfrage(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto): AbfrageFormType {
-  if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    return AbfrageFormType.BAULEITPLANVERFAHREN;
-  } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    return AbfrageFormType.BAUGENEHMIGUNGSVERFAHREN;
-  } else {
-    return AbfrageFormType.WEITERES_VERFAHREN;
-  }
-}
-
 function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
-  const item: AbfrageTreeItem = {
-    id: "",
-    type: getAbfrageFormTypeAbfrage(abfrage),
-    name: ABFRAGE_NAME,
-    parent: null,
-    children: [],
-    actions: [],
-    onSelection: () => emit("select-abfrage", item),
-    context: AnzeigeContextAbfragevariante.UNDEFINED,
-    value: abfrage,
-  };
+  const item = buildAbfrageRoot(abfrage);
 
   let abfragevarianten: AnyAbfrageDto[] | undefined = undefined;
   if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -256,20 +195,19 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
   return item;
 }
 
-function getAbfrageFormTypeAbfragevariante(abfragevariante: AnyAbfragevarianteDto) {
-  if (
-    abfragevariante.artAbfragevariante ===
-    AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
-  ) {
-    return AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN;
-  } else if (
-    abfragevariante.artAbfragevariante ===
-    AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren
-  ) {
-    return AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN;
-  } else {
-    return AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN;
-  }
+function buildAbfrageRoot(abfrage: AnyAbfrageDto): AbfrageTreeItem {
+  const item = {
+    id: "",
+    type: getAbfrageFormTypeAbfrage(abfrage),
+    name: ABFRAGE_NAME,
+    parent: null,
+    children: [],
+    actions: [],
+    onSelection: () => emit("select-abfrage", item),
+    context: AnzeigeContextAbfragevariante.UNDEFINED,
+    value: abfrage,
+  };
+  return item;
 }
 
 function buildSubTreeAbfragevariante(
@@ -514,6 +452,32 @@ function buildSubTreeBaurate(
   return item;
 }
 
+function getAbfrageFormTypeAbfrage(abfrage: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto): AbfrageFormType {
+  if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    return AbfrageFormType.BAULEITPLANVERFAHREN;
+  } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    return AbfrageFormType.BAUGENEHMIGUNGSVERFAHREN;
+  } else {
+    return AbfrageFormType.WEITERES_VERFAHREN;
+  }
+}
+
+function getAbfrageFormTypeAbfragevariante(abfragevariante: AnyAbfragevarianteDto) {
+  if (
+    abfragevariante.artAbfragevariante ===
+    AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
+  ) {
+    return AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN;
+  } else if (
+    abfragevariante.artAbfragevariante ===
+    AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum.Baugenehmigungsverfahren
+  ) {
+    return AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN;
+  } else {
+    return AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN;
+  }
+}
+
 function getAbfragevarianteName(
   abfragevariante: AnyAbfragevarianteDto,
   conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
@@ -563,7 +527,7 @@ function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
 }
 
 function openItem(item: AbfrageTreeItem): void {
-  openItemIds.value = [...openItemIds.value, item.id];
+  // openItemIds.value = [...openItemIds.value, item.id];
 }
 
 /**

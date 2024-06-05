@@ -27,6 +27,7 @@ module.exports = {
     "vue/singleline-html-element-content-newline": "off",
     "vue/no-v-for-template-key": "off",
     "vue/html-self-closing": "off",
+    "vue/no-use-v-if-with-v-for": "off",
   },
   overrides: [
     {
