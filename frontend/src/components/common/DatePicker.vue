@@ -93,6 +93,7 @@ const datePickerDate = computed({
     und werden deshalb als heutiges Datum dargestellt. */
     return new Date();
   },
+
   set(value: Date) {
     date.value = value;
     formChanged();
@@ -112,11 +113,16 @@ const textFieldDate = computed({
     und werden deshalb als leerer String dargestellt. */
     return "";
   },
-  set() {
+
+  set(value: string) {
     /* Hier wird das Datum im "strict mode" geparsed, um den Nutzer-Input
     möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
-    const parsedValue = moment.utc(date.value, displayFormat.value, true);
-    date.value = parsedValue.toDate();
+    const parsedValue = moment.utc(value, displayFormat.value, true);
+    if (parsedValue.isValid()) {
+      date.value = parsedValue.toDate();
+    } else {
+      date.value = undefined;
+    }
     formChanged();
   },
 });
