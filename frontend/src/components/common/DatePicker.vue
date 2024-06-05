@@ -36,6 +36,7 @@
       v-model="datePickerDate"
       :disabled="disabled"
       show-week
+      show-adjacent-months
       :weekdays="[1, 2, 3, 4, 5, 6, 0]"
       color="primary"
       @update:model-value="datePickerActive = false"
