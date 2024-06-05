@@ -26,7 +26,6 @@
             return-object
             placeholder="Suchtext mit Adressteilen"
             prepend-inner-icon="mdi-magnify"
-            e
             :rules="[adressSucheValidationRule()]"
             validate-on-blur
           />
