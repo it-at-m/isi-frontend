@@ -44,7 +44,7 @@
                 <v-icon> mdi-delete</v-icon>
               </v-btn>
             </template>
-            <span>ausgewählte Adresse und ergänzende Information löschen</span>
+            <span>ausgewählte Adresse löschen</span>
           </v-tooltip>
         </v-col>
       </v-row>
@@ -242,7 +242,10 @@ export default class AdresseComponent extends Mixins(
   }
 
   private resetAdresse(): void {
-    this.adresse = new AdresseModel(createAdresseDto());
+    // ergänzende Adressinformationen sollen beim Löschen einer Adresse erhalten bleiben
+    const newAdresse = new AdresseModel(createAdresseDto());
+    newAdresse.angabeLageErgaenzendeAdressinformation = this.adresse.angabeLageErgaenzendeAdressinformation;
+    this.adresse = newAdresse;
     this.formChanged();
   }
 
