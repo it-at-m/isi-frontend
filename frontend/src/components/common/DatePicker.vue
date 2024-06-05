@@ -104,7 +104,7 @@ const textFieldDate = computed({
     if (!_.isNil(date.value)) {
       const parsedValue = moment.utc(date.value);
       if (!parsedValue.isSame(0)) {
-        return parsedValue.format(displayFormat.value);
+        return parsedValue.local().format(displayFormat.value);
       }
     }
 
