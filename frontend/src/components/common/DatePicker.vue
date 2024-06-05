@@ -35,6 +35,7 @@
       id="datum_datePicker"
       v-model="datePickerDate"
       :disabled="disabled"
+      :weekdays="[1, 2, 3, 4, 5, 6, 0]"
       color="primary"
       @update:model-value="datePickerActive = false"
     />
@@ -94,7 +95,6 @@ const datePickerDate = computed({
   },
   set(value: Date) {
     date.value = value;
-    console.log("datePickerDate changed: " + date.value.toString());
     formChanged();
   },
 });
@@ -117,7 +117,6 @@ const textFieldDate = computed({
     möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
     const parsedValue = moment.utc(date.value, displayFormat.value, true);
     date.value = parsedValue.toDate();
-    console.log("textFieldDate changed: " + date.value.toString());
     formChanged();
   },
 });
