@@ -30,6 +30,7 @@
         </template>
       </v-text-field>
     </template>
+    <!-- Picker für die tagesgenaue Auswahl -->
     <v-date-picker
       v-if="!monthPicker"
       id="datum_datePicker"
@@ -41,6 +42,7 @@
       color="primary"
       @update:model-value="deactivateDatePicker"
     />
+    <!-- Picker für die monatsgenaue Auswahl -->
     <v-date-picker
       v-else
       id="datum_datePicker"
