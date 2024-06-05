@@ -52,7 +52,7 @@
       color="primary"
       @update:year="updateYearForMonthPicker"
       @update:view-mode="updateViewModeForMonthPicker"
-      @update:month="updateMonthForMonthPicker"
+      @update:month="setTextFieldDateForMonthPicker"
       @update:model-value="deactivateDatePicker"
     />
   </v-dialog>
@@ -164,7 +164,7 @@ function updateYearForMonthPicker(year: number): void {
   selectedYear.value = year;
 }
 
-function updateMonthForMonthPicker(monthIndex: number): void {
+function setTextFieldDateForMonthPicker(monthIndex: number): void {
   let selectedDate: Date;
   if (_.isNil(selectedYear.value)) {
     const year = _.isNil(date.value) ? new Date().getFullYear() : date.value.getFullYear();
