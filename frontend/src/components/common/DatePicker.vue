@@ -92,27 +92,6 @@ const displayFormat = computed(() => (props.monthPicker ? MONTH_DISPLAY_FORMAT :
 const viewMode = ref("months");
 const selectedYear = ref();
 
-function updateViewModeForMonthPicker(mode: string): void {
-  viewMode.value = mode === "year" ? "year" : "months";
-}
-
-function updateYearForMonthPicker(year: number): void {
-  selectedYear.value = year;
-}
-
-function updateMonthForMonthPicker(monthIndex: number): void {
-  let selectedDate: Date;
-  if (_.isNil(selectedYear.value)) {
-    const year = _.isNil(date.value) ? new Date().getFullYear() : date.value.getFullYear();
-    selectedDate = new Date(year, monthIndex, 2);
-  } else {
-    selectedDate = new Date(selectedYear.value, monthIndex, 2);
-  }
-  textFieldDate.value = moment.utc(selectedDate).local().format(displayFormat.value);
-  selectedYear.value = undefined;
-  deactivateDatePicker();
-}
-
 const datePickerDate = computed({
   get() {
     if (!_.isNil(date.value)) {
@@ -176,6 +155,27 @@ const usedRules = computed(() => {
 
   return usedRules;
 });
+
+function updateViewModeForMonthPicker(mode: string): void {
+  viewMode.value = mode === "year" ? "year" : "months";
+}
+
+function updateYearForMonthPicker(year: number): void {
+  selectedYear.value = year;
+}
+
+function updateMonthForMonthPicker(monthIndex: number): void {
+  let selectedDate: Date;
+  if (_.isNil(selectedYear.value)) {
+    const year = _.isNil(date.value) ? new Date().getFullYear() : date.value.getFullYear();
+    selectedDate = new Date(year, monthIndex, 2);
+  } else {
+    selectedDate = new Date(selectedYear.value, monthIndex, 2);
+  }
+  textFieldDate.value = moment.utc(selectedDate).local().format(displayFormat.value);
+  selectedYear.value = undefined;
+  deactivateDatePicker();
+}
 
 function deactivateDatePicker(): void {
   datePickerActive.value = false;
