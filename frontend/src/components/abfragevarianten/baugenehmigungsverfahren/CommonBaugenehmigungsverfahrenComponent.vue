@@ -5,10 +5,10 @@
         <v-col cols="12">
           <v-text-field
             id="name_field"
-            ref="nameField"
             v-model.trim="abfragevariante.name"
             :disabled="!isEditable"
             :rules="[pflichtfeld]"
+            variant="underlined"
             maxlength="30"
             validate-on="blur"
             @update:model-value="formChanged"
@@ -22,20 +22,13 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="12"
-        >
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col
-          cols="12"
           md="6"
         >
           <v-autocomplete
             id="wesentliche_rechtsgrundlage_dropdown"
-            ref="wesentlicheRechtsgrundlageDropdown"
             v-model="abfragevariante.wesentlicheRechtsgrundlage"
             :items="wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList"
+            variant="underlined"
             item-value="key"
             item-title="value"
             multiple
@@ -58,9 +51,9 @@
             <v-text-field
               v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
               id="wesentliche_rechtsgrundlage_freie_eingabe_field"
-              ref="wesentlicheRechtsgrundlageFreieEingabeField"
               v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
               :disabled="!isEditable"
+              variant="underlined"
               label="Freie Eingabe"
               maxlength="1000"
               @update:model-value="formChanged"
