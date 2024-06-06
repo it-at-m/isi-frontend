@@ -66,7 +66,7 @@
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
         />
         <kommentare
-          v-if="isDisplayModeAenderung"
+          v-if="isKommentareVisible(context) && isDisplayModeAenderung"
           id="infrastruktureinrichtung_kommentare"
           :context="context"
           :is-editable="isEditable"
@@ -186,6 +186,7 @@ import MittelschuleComponent from "@/components/infrastruktureinrichtung/Mittels
 import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import SecurityMixin from "@/mixins/security/SecurityMixin";
+import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
@@ -211,6 +212,7 @@ import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
 import { useSearchStore } from "@/stores/SearchStore";
+
 @Component({
   computed: {
     context() {
@@ -239,6 +241,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   SaveLeaveMixin,
   InfrastruktureinrichtungApiRequestMixin,
   SecurityMixin,
+  DokumenteKommentareSecurityMixin,
 ) {
   private mode = DisplayMode.UNDEFINED;
 

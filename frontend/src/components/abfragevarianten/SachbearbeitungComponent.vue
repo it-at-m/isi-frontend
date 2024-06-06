@@ -87,6 +87,7 @@
         :is-editable="isEditableBySachbearbeitung()"
       />
       <dokumente
+        v-if="isDokumenteVisible(context)"
         id="dokumente_component"
         ref="dokumenteComponent"
         v-model="abfragevarianteSachbearbeitung.dokumente"
@@ -112,6 +113,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
 import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
 import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
 import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
@@ -121,8 +123,14 @@ import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
 import moment from "moment";
+import { Context } from "@/utils/Context";
 
 @Component({
+  computed: {
+    context() {
+      return Context.ABFRAGEVARIANTE_SACHBEARBEITUNG;
+    },
+  },
   components: {
     BauratendateiInput,
     Dokumente,
@@ -138,6 +146,7 @@ export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
   FieldValidationRulesMixin,
   SaveLeaveMixin,
   AbfrageSecurityMixin,
+  DokumenteKommentareSecurityMixin,
 ) {
   @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
   abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;

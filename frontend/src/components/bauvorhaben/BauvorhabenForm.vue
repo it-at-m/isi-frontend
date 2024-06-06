@@ -195,6 +195,7 @@
       </v-row>
     </field-group-card>
     <dokumente
+      v-if="isDokumenteVisible(context)"
       id="bauvorhaben_dokumente_component"
       v-model="bauvorhaben.dokumente"
       :name-root-folder="nameRootFolder"
@@ -275,6 +276,7 @@ import { Context } from "@/utils/Context";
 import Verortung from "@/components/common/Verortung.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
+import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
 
 @Component({
   computed: {
@@ -297,6 +299,7 @@ export default class BauvorhabenForm extends Mixins(
   FieldValidationRulesMixin,
   SaveLeaveMixin,
   SecurityMixin,
+  DokumenteKommentareSecurityMixin,
   BauvorhabenApiRequestMixin,
 ) {
   @VModel({ type: BauvorhabenModel })
