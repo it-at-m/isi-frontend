@@ -131,11 +131,9 @@
           v-model="isDeleteDialogBauabschnittOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="
-            'Hiermit wird der Bauabschnitt \'' +
-            selected.bezeichnung +
-            '\' und alle dazugehörigen Baugebiete unwiderruflich gelöscht.'
-          "
+          :dialogtext="`Hiermit wird der Bauabschnitt ${
+            selected.bezeichnung ? '\'' + selected.bezeichnung + '\'' : ''
+          } und alle dazugehörigen Baugebiete unwiderruflich gelöscht.`"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBauabschnittNo"
@@ -146,11 +144,9 @@
           v-model="isDeleteDialogBaugebietOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="
-            'Hiermit wird das Baugebiet \'' +
-            selected.bezeichnung +
-            '\' und alle dazugehörigen Bauraten unwiderruflich gelöscht.'
-          "
+          :dialogtext="`Hiermit wird das Baugebiet ${
+            selected.bezeichnung ? '\'' + selected.bezeichnung + '\'' : ''
+          } und alle dazugehörigen Bauraten unwiderruflich gelöscht.`"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBaugebietNo"
@@ -432,7 +428,7 @@ const abfrage = computed<AnyAbfrageModel>({
     const bauvorhabenId = value.bauvorhaben;
     if (bauvorhabenId) {
       const dto = await getBauvorhabenById(bauvorhabenId);
-      relevanteAbfragevarianteId.value = dto.relevanteAbfragevariante ?? null;
+      relevanteAbfragevarianteId.value = dto.relevanteAbfragevariante;
     }
   },
 });
@@ -449,7 +445,7 @@ const isDeleteDialogBauabschnittOpen = ref(false);
 const isDeleteDialogBaugebietOpen = ref(false);
 const isDeleteDialogBaurateOpen = ref(false);
 const isRelevanteAbfragevarianteDialogOpen = ref(false);
-const relevanteAbfragevarianteId = ref<string | null>(null);
+const relevanteAbfragevarianteId = ref<string | undefined>(undefined);
 const relevanteAbfragevarianteDialogText = ref("");
 const relevanteAbfragevarianteYesButtonText = ref("Ok");
 const anzeigeContextAbfragevariante = ref(AnzeigeContextAbfragevariante.UNDEFINED);
@@ -792,7 +788,7 @@ async function setRelevanteAbfragevariante(abfragevariante: AnyAbfragevarianteMo
     const result = await changeRelevanteAbfragevariante(abfragevariante.id);
     if (typeof result !== "string") {
       const relevanteId = result.relevanteAbfragevariante;
-      relevanteAbfragevarianteId.value = relevanteId ?? null;
+      relevanteAbfragevarianteId.value = relevanteId;
       toast.success(
         `Die Abfragevariante ${abfragevariante.name} in Abfrage ${abfrage.value.displayName} ist nun ${
           relevanteId ? "relevant" : "nicht mehr relevant"
