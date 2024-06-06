@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, watch, ref } from "vue";
+import { onMounted, computed, watch, ref, onBeforeUnmount } from "vue";
 import { LAYER_OPTIONS, MAP_OPTIONS, assembleBaseLayersForLayerControl, getBackgroundMapUrl } from "@/utils/MapUtil";
 import type { Feature } from "geojson";
 import L, { type GeoJSONOptions, type LatLngBoundsLiteral, type LatLngLiteral, Layer, LatLngBounds } from "leaflet";
@@ -105,6 +105,7 @@ interface Props {
   geoJsonOptions?: GeoJSONOptions;
   automaticZoomToPolygons?: boolean;
   layersForLayerControl?: Map<string, Layer>;
+  lookAtZoom?: number;
 }
 
 interface Emits {
@@ -122,6 +123,7 @@ const props = withDefaults(defineProps<Props>(), {
   geoJsonOptions: undefined,
   automaticZoomToPolygons: false,
   layersForLayerControl: undefined,
+  lookAtZoom: 16,
 });
 
 const emit = defineEmits<Emits>();
@@ -139,7 +141,13 @@ let firstGeoJsonFeatureAdded = false;
 let mapMarkerClusterGroup = L.markerClusterGroup();
 
 onMounted(() => {
-  map = L.map("karte", { zoom: props.zoom, ...MAP_OPTIONS }).on("click", (event) => emit("click-in-map", event.latlng));
+  initMap();
+});
+
+function initMap(): void {
+  map = L.map(mapRef.value as HTMLElement, { zoom: props.zoom, ...MAP_OPTIONS }).on("click", (event) =>
+    emit("click-in-map", event.latlng),
+  );
 
   // Der Base-Layer der Karte.
   const wmsTileLayer = L.tileLayer
@@ -159,6 +167,11 @@ onMounted(() => {
   onLookAtChanged();
   // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
   onGeoJsonChanged();
+  map.invalidateSize();
+}
+
+onBeforeUnmount(() => {
+  map.remove();
 });
 
 watch(() => props.lookAt, onLookAtChanged, { deep: true });
@@ -166,13 +179,13 @@ watch(() => props.geoJson, onGeoJsonChanged, { deep: true });
 watch(() => props.layersForLayerControl, updateLayerControlWithCustomLayers, { deep: true });
 
 function addGeoJsonToMap(): void {
-  map.removeLayer(mapMarkerClusterGroup);
+  (map as L.Map).removeLayer(mapMarkerClusterGroup);
   mapMarkerClusterGroup = L.markerClusterGroup().addTo(map);
   L.geoJSON(props.geoJson, props.geoJsonOptions).addTo(mapMarkerClusterGroup);
 }
 
 function flyToPositionOnMap(position: LatLngLiteral | undefined): void {
-  if (position) map.flyTo(position, 16);
+  if (position) map.flyTo(position, props.lookAtZoom);
 }
 
 function flyToCenterOfPolygonsInMap(): void {

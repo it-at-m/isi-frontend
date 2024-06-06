@@ -1,5 +1,7 @@
 <template>
   <city-map
+    :look-at="CITY_CENTER"
+    :look-at-zoom="12"
     :geo-json="geoJson"
     :geo-json-options="geoJsonOptions"
     :layers-for-layer-control="layersForLayerControl"
@@ -23,7 +25,7 @@ import { useRouter } from "vue-router";
 import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
 import _ from "lodash";
 import { useSearchStore } from "@/stores/SearchStore";
-
+import { CITY_CENTER } from "@/utils/MapUtil";
 type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
 
 const router = useRouter();

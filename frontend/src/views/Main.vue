@@ -5,7 +5,10 @@
   >
     <search-result-list />
   </v-navigation-drawer>
-  <v-main>
+  <v-main
+    height="100%"
+    width="100%"
+  >
     <search-result-city-map />
     <v-speed-dial
       v-model="speedDialOpen"
