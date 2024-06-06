@@ -131,11 +131,9 @@
           v-model="isDeleteDialogBauabschnittOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="
-            'Hiermit wird der Bauabschnitt \'' +
-            selected.bezeichnung +
-            '\' und alle dazugehörigen Baugebiete unwiderruflich gelöscht.'
-          "
+          :dialogtext="`Hiermit wird der Bauabschnitt ${
+            selected.bezeichnung ? '\'' + selected.bezeichnung + '\'' : ''
+          } und alle dazugehörigen Baugebiete unwiderruflich gelöscht.`"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBauabschnittNo"
@@ -146,11 +144,9 @@
           v-model="isDeleteDialogBaugebietOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="
-            'Hiermit wird das Baugebiet \'' +
-            selected.bezeichnung +
-            '\' und alle dazugehörigen Bauraten unwiderruflich gelöscht.'
-          "
+          :dialogtext="`Hiermit wird das Baugebiet ${
+            selected.bezeichnung ? '\'' + selected.bezeichnung + '\'' : ''
+          } und alle dazugehörigen Bauraten unwiderruflich gelöscht.`"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBaugebietNo"

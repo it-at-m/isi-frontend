@@ -28,7 +28,10 @@ Emits:
 -->
 
 <template>
-  <v-list density="compact">
+  <v-list
+    activatable
+    density="compact"
+  >
     <abfrage-list-item
       :item="root"
       :depth="0"
@@ -172,10 +175,7 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
       disabled: _.defaultTo(abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
-      effect: () => {
-        emit("create-abfragevariante", item);
-        openItem(item);
-      },
+      effect: () => emit("create-abfragevariante", item),
     });
   }
 
@@ -183,14 +183,9 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
       disabled: _.defaultTo(abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
-      effect: () => {
-        emit("create-abfragevariante-sachbearbeitung", item);
-        openItem(item);
-      },
+      effect: () => emit("create-abfragevariante-sachbearbeitung", item),
     });
   }
-
-  openItem(item);
 
   return item;
 }
@@ -242,10 +237,7 @@ function buildSubTreeAbfragevariante(
     item.actions.push({
       name: DETERMINE_BAURATEN,
       disabled: !bauratenDeterminableForAbfragevariante(abfragevariante),
-      effect: () => {
-        emit("determine-bauraten-for-abfragevariante", item);
-        openItem(item);
-      },
+      effect: () => emit("determine-bauraten-for-abfragevariante", item),
     });
   }
 
@@ -260,10 +252,7 @@ function buildSubTreeAbfragevariante(
           item.actions.push({
             name: CREATE_BAURATE,
             disabled: false,
-            effect: () => {
-              emit("create-baurate", item);
-              openItem(item);
-            },
+            effect: () => emit("create-baurate", item),
           });
         }
       } else {
@@ -275,10 +264,7 @@ function buildSubTreeAbfragevariante(
           item.actions.push({
             name: CREATE_BAUGEBIET,
             disabled: false,
-            effect: () => {
-              emit("create-baugebiet", item);
-              openItem(item);
-            },
+            effect: () => emit("create-baugebiet", item),
           });
         }
       }
@@ -291,10 +277,7 @@ function buildSubTreeAbfragevariante(
         item.actions.push({
           name: CREATE_BAUABSCHNITT,
           disabled: false,
-          effect: () => {
-            emit("create-bauabschnitt", item);
-            openItem(item);
-          },
+          effect: () => emit("create-bauabschnitt", item),
         });
       }
     }
@@ -304,26 +287,17 @@ function buildSubTreeAbfragevariante(
       item.actions.push({
         name: CREATE_BAUABSCHNITT,
         disabled: false,
-        effect: () => {
-          emit("create-bauabschnitt", item);
-          openItem(item);
-        },
+        effect: () => emit("create-bauabschnitt", item),
       });
       item.actions.push({
         name: CREATE_BAUGEBIET,
         disabled: false,
-        effect: () => {
-          emit("create-baugebiet", item);
-          openItem(item);
-        },
+        effect: () => emit("create-baugebiet", item),
       });
       item.actions.push({
         name: CREATE_BAURATE,
         disabled: false,
-        effect: () => {
-          emit("create-baurate", item);
-          openItem(item);
-        },
+        effect: () => emit("create-baurate", item),
       });
     }
   }
@@ -362,10 +336,7 @@ function buildSubTreeBauabschnitt(
     item.actions.push({
       name: CREATE_BAUGEBIET,
       disabled: false,
-      effect: () => {
-        emit("create-baugebiet", item);
-        openItem(item);
-      },
+      effect: () => emit("create-baugebiet", item),
     });
     item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-bauabschnitt", item) });
   }
@@ -407,19 +378,13 @@ function buildSubTreeBaugebiet(
     item.actions.push({
       name: DETERMINE_BAURATEN,
       disabled: !bauratenDeterminableForBaugebiet(baugebiet),
-      effect: () => {
-        emit("determine-bauraten-for-baugebiet", item);
-        openItem(item);
-      },
+      effect: () => emit("determine-bauraten-for-baugebiet", item),
     });
 
     item.actions.push({
       name: CREATE_BAURATE,
       disabled: false,
-      effect: () => {
-        emit("create-baurate", item);
-        openItem(item);
-      },
+      effect: () => emit("create-baurate", item),
     });
     item.actions.push({ name: DELETE, disabled: false, effect: () => emit("delete-baugebiet", item) });
   }
@@ -524,10 +489,6 @@ function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
     // Das Datum für Realisierung von muss gesetzt sein.
     !_.isNil(baugebiet.realisierungVon)
   );
-}
-
-function openItem(item: AbfrageTreeItem): void {
-  // openItemIds.value = [...openItemIds.value, item.id];
 }
 
 /**
