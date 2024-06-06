@@ -167,7 +167,6 @@ function initMap(): void {
   onLookAtChanged();
   // Workaround für das Verschwinden von Markern nach einem Wechsel der Seite.
   onGeoJsonChanged();
-  map.invalidateSize();
 }
 
 onBeforeUnmount(() => {
