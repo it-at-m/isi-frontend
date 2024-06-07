@@ -266,7 +266,7 @@ export default class Infrastruktureinrichtung extends Mixins(
   }
 
   get isEditable(): boolean {
-    return this.isRoleAdminOrSachbearbeitung();
+    return this.isRoleAdminOrSachbearbeitung() || this.isRoleAdminOrBedarfsmeldung();
   }
 
   get lfdNr(): string {
