@@ -11,11 +11,7 @@
         class="overflow-y-auto"
         :max-height="getContentSheetHeight"
       >
-        <!-- eslint-disable-next-line vuetify/no-deprecated-props -->
-        <v-expansion-panels
-          variant="accordion"
-          focusable
-        >
+        <v-expansion-panels :variant="'accordion'">
           <selection-and-sorting-panel v-model="searchQueryAndSorting" />
           <filter-panel />
         </v-expansion-panels>
