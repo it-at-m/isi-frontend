@@ -2,7 +2,7 @@
   <v-expansion-panel>
     <v-expansion-panel-title> Objekttyp und Sortierung </v-expansion-panel-title>
     <v-expansion-panel-text class="mt-1">
-      <v-card-title> Objektauswahl </v-card-title>
+      <v-card-title class="mt-0 pt-0"> Objektauswahl </v-card-title>
       <v-card-text> Es ist mindestens ein Objekttyp auszuwählen. </v-card-text>
       <v-row
         class="align-start justify-center"
