@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-title> Filter </v-expansion-panel-title>
-    <v-expansion-panel-text class="mt-1">
+    <v-expansion-panel-title class="text-h6"> Filter </v-expansion-panel-title>
+    <v-expansion-panel-text class="mt-0">
       <v-card-title class="mt-0 pt-0"> Filter </v-card-title>
       <v-card-text> Hier befinden sich weitere Filtereinstellung. </v-card-text>
       <v-row
