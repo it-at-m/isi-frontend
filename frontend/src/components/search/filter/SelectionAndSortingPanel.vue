@@ -2,17 +2,8 @@
   <v-expansion-panel>
     <v-expansion-panel-title> Objekttyp und Sortierung </v-expansion-panel-title>
     <v-expansion-panel-text class="mt-1">
-      <panel-header
-        font-size="0.875rem"
-        font-weight="bold"
-        padding="10px 0 0 0"
-        header-text="Objektauswahl"
-      />
-      <panel-header
-        font-size="small"
-        font-weight="normal"
-        header-text="Es ist mindestens ein Objekttyp auszuwählen."
-      />
+      <v-card-title> Objektauswahl </v-card-title>
+      <v-card-text> Es ist mindestens ein Objekttyp auszuwählen. </v-card-text>
       <v-row
         class="align-start justify-center"
         dense
@@ -147,17 +138,8 @@
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <panel-header
-        font-size="0.875rem"
-        font-weight="bold"
-        padding="10px 0 0 0"
-        header-text="Sortierung"
-      />
-      <panel-header
-        font-size="small"
-        font-weight="normal"
-        header-text="Auswahl der Art der Sortierung und der Sortierreihenfolge."
-      />
+      <v-card-title> Sortierung </v-card-title>
+      <v-card-text> Auswahl der Art der Sortierung und der Sortierreihenfolge. </v-card-text>
       <v-row
         class="align-start justify-center"
         dense
@@ -212,7 +194,6 @@ import {
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
-import PanelHeader from "@/components/search/filter/PanelHeader.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { computed, ref } from "vue";
 

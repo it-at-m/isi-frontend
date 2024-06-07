@@ -2,17 +2,8 @@
   <v-expansion-panel>
     <v-expansion-panel-title> Filter </v-expansion-panel-title>
     <v-expansion-panel-text class="mt-1">
-      <panel-header
-        font-size="0.875rem"
-        font-weight="bold"
-        padding="10px 0 0 0"
-        header-text="Filter"
-      />
-      <panel-header
-        font-size="small"
-        font-weight="normal"
-        header-text="Hier befinden sich weitere Filtereinstellung."
-      />
+      <v-card-title> Filter </v-card-title>
+      <v-card-text> Hier befinden sich weitere Filtereinstellung. </v-card-text>
       <v-row
         class="align-start justify-center"
         dense
@@ -37,6 +28,4 @@
   </v-expansion-panel>
 </template>
 
-<script setup lang="ts">
-import PanelHeader from "@/components/search/filter/PanelHeader.vue";
-</script>
+<script setup lang="ts"></script>
