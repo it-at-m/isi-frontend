@@ -21,6 +21,7 @@
             :item-title="(item) => getItemText(item)"
             item-value="id"
             label="Abfragen"
+            variant="underlined"
             return-object
             hint="Abfrage für Datenübernahme auswählen"
             persistent-hint
@@ -32,12 +33,12 @@
         <v-spacer />
         <v-btn
           id="bauvorhaben_abfrage_datenuebernahme_abbrechen_button"
-          variant="text"
           @click="uebernahmeAbbrechen"
           v-text="'Abbrechen'"
         />
         <v-btn
           id="bauvorhaben_abfrage_datenuebernahme_uebernehmen_button"
+          variant="elevated"
           color="primary"
           @click="abfrageUebernehmen"
           v-text="'Übernehmen'"
@@ -73,7 +74,7 @@ const lookupStore = useLookupStore();
 const emit = defineEmits<Emits>();
 const dialogOpen = defineModel<boolean>({ required: true });
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
-const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>({});
+const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>();
 let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
 
 onMounted(() => fetchAbfragen());
@@ -141,12 +142,12 @@ function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): s
 }
 
 function abfrageUebernehmen(): void {
-  selectedAbfrageSearchResult.value = {};
+  selectedAbfrageSearchResult.value = undefined;
   emit("abfrageUebernehmen", selectedAbfrage);
 }
 
 function uebernahmeAbbrechen(): void {
-  selectedAbfrageSearchResult.value = {};
+  selectedAbfrageSearchResult.value = undefined;
   emit("uebernahmeAbbrechen");
 }
 </script>

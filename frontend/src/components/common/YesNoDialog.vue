@@ -48,13 +48,13 @@
         <v-spacer />
         <v-btn
           id="yes_no_dialog-btn-no"
-          elevation="1"
           @click="no"
           v-text="noText"
         />
         <v-btn
           id="yes_no_dialog-btn-yes"
-          elevation="1"
+          variant="elevated"
+          color="primary"
           @click="yes"
           v-text="yesText"
         />
@@ -140,15 +140,5 @@ defineExpose({ resetTextarea });
 .textarea {
   max-width: 700px;
   margin-left: 25px;
-}
-
-#yes_no_dialog-btn-no {
-  background-color: #fb8c00;
-  color: #ffff;
-}
-
-#yes_no_dialog-btn-yes {
-  background-color: #455a64;
-  color: #ffff;
 }
 </style>
