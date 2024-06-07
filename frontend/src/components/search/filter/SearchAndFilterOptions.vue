@@ -11,7 +11,7 @@
         class="overflow-y-auto"
         :max-height="getContentSheetHeight"
       >
-        <v-expansion-panels :variant="'accordion'">
+        <v-expansion-panels variant="accordion">
           <selection-and-sorting-panel v-model="searchQueryAndSorting" />
           <filter-panel />
         </v-expansion-panels>
