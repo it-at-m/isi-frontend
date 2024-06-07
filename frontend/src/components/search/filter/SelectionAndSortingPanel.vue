@@ -15,7 +15,7 @@
           <v-hover v-model="hoverSelectAll">
             <v-chip
               class="ma-2"
-              :model-value="searchQueryAndSorting.allObjectTypesSelected()"
+              :prepend-icon="iconForAllObjectTypesSelected"
               filter
               @click="selectAll"
             >
@@ -66,7 +66,7 @@
           <v-hover v-model="hoverDeselectAll">
             <v-chip
               class="ma-2"
-              :model-value="searchQueryAndSorting.allObjectTypesDeselected()"
+              :prepend-icon="iconForAllObjectTypesDeselected"
               filter
               @click="deselectAll"
             >
@@ -290,6 +290,14 @@ function deselectAll() {
   searchQueryAndSorting.value.selectKindergarten = false;
   searchQueryAndSorting.value.selectMittelschule = false;
 }
+
+const iconForAllObjectTypesSelected = computed(() => {
+  return searchQueryAndSorting.value.allObjectTypesSelected() ? "mdi-check" : undefined;
+});
+
+const iconForAllObjectTypesDeselected = computed(() => {
+  return searchQueryAndSorting.value.allObjectTypesDeselected() ? "mdi-check" : undefined;
+});
 
 const entriesArtderSortierung = computed(() => {
   return [
