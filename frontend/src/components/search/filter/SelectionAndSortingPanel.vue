@@ -12,121 +12,121 @@
           cols="12"
           md="4"
         >
-          <v-hover v-model="hoverSelectAll">
-            <v-chip
-              class="ma-2"
-              :prepend-icon="iconForAllObjectTypesSelected"
-              filter
-              @click="selectAll"
-            >
-              Alle auswählen
-            </v-chip>
-          </v-hover>
-          <v-hover v-model="hoverSelectBauleitplanverfahren">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectBauleitplanverfahren"
-              :label="'Bauleitplanverfahren'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectBaugenehmigungsverfahren">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectBaugenehmigungsverfahren"
-              :label="'Baugenehmigungsverfahren'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectWeiteresVerfahren">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectWeiteresVerfahren"
-              :label="'Weiteres Verfahren'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectBauvorhaben">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectBauvorhaben"
-              :label="'Bauvorhaben'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
+          <v-chip
+            class="ma-2"
+            :prepend-icon="iconForAllObjectTypesSelected"
+            filter
+            @click="selectAll"
+            @mouseover="hoverSelectAll = true"
+            @mouseleave="hoverSelectAll = false"
+          >
+            Alle auswählen
+          </v-chip>
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectBauleitplanverfahren"
+            :label="'Bauleitplanverfahren'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectBauleitplanverfahren = true"
+            @mouseleave="hoverSelectBauleitplanverfahren = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectBaugenehmigungsverfahren"
+            :label="'Baugenehmigungsverfahren'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectBaugenehmigungsverfahren = true"
+            @mouseleave="hoverSelectBaugenehmigungsverfahren = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectWeiteresVerfahren"
+            :label="'Weiteres Verfahren'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectWeiteresVerfahren = true"
+            @mouseleave="hoverSelectWeiteresVerfahren = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectBauvorhaben"
+            :label="'Bauvorhaben'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectBauvorhaben = true"
+            @mouseleave="hoverSelectBauvorhaben = false"
+          />
         </v-col>
         <v-col
           cols="12"
           md="4"
         >
-          <v-hover v-model="hoverDeselectAll">
-            <v-chip
-              class="ma-2"
-              :prepend-icon="iconForAllObjectTypesDeselected"
-              filter
-              @click="deselectAll"
-            >
-              Alle abwählen
-            </v-chip>
-          </v-hover>
-          <v-hover v-model="hoverSelectGrundschule">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectGrundschule"
-              :label="'Grundschule'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectGsNachmittagBetreuung">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectGsNachmittagBetreuung"
-              :label="'Nachmittagsbetreuung für Grundschulkinder'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectMittelschule">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectMittelschule"
-              :label="'Mittelschule'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectKinderkrippe">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectKinderkrippe"
-              :label="'Kinderkrippe'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectKindergarten">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectKindergarten"
-              :label="'Kindergarten'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
-          <v-hover v-model="hoverSelectHausFuerKinder">
-            <v-checkbox
-              v-model="searchQueryAndSorting.selectHausFuerKinder"
-              :label="'Haus für Kinder'"
-              color="grey-darken-1"
-              hide-details
-              density="default"
-            />
-          </v-hover>
+          <v-chip
+            class="ma-2"
+            :prepend-icon="iconForAllObjectTypesDeselected"
+            filter
+            @click="deselectAll"
+            @mouseover="hoverDeselectAll = true"
+            @mouseleave="hoverDeselectAll = false"
+          >
+            Alle abwählen
+          </v-chip>
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectGrundschule"
+            :label="'Grundschule'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectGrundschule = true"
+            @mouseleave="hoverSelectGrundschule = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectGsNachmittagBetreuung"
+            :label="'Nachmittagsbetreuung für Grundschulkinder'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectGsNachmittagBetreuung = true"
+            @mouseleave="hoverSelectGsNachmittagBetreuung = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectMittelschule"
+            :label="'Mittelschule'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectMittelschule = true"
+            @mouseleave="hoverSelectMittelschule = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectKinderkrippe"
+            :label="'Kinderkrippe'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectKinderkrippe = true"
+            @mouseleave="hoverSelectKinderkrippe = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectKindergarten"
+            :label="'Kindergarten'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectKindergarten = true"
+            @mouseleave="hoverSelectKindergarten = false"
+          />
+          <v-checkbox
+            v-model="searchQueryAndSorting.selectHausFuerKinder"
+            :label="'Haus für Kinder'"
+            color="grey-darken-1"
+            hide-details
+            density="default"
+            @mouseover="hoverSelectHausFuerKinder = true"
+            @mouseleave="hoverSelectHausFuerKinder = false"
+          />
         </v-col>
         <v-col
           cols="12"
@@ -137,7 +137,7 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-divider></v-divider>
+      <v-divider />
       <v-card-title> Sortierung </v-card-title>
       <v-card-text> Auswahl der Art der Sortierung und der Sortierreihenfolge. </v-card-text>
       <v-row
@@ -148,33 +148,33 @@
           cols="12"
           md="4"
         >
-          <v-hover v-model="hoverArtDerSortierung">
-            <v-select
-              v-model="searchQueryAndSorting.sortBy"
-              :items="entriesArtderSortierung"
-              label="Art der Sortierung"
-              item-value="key"
-              item-title="value"
-              variant="filled"
-              density="default"
-            ></v-select>
-          </v-hover>
+          <v-select
+            v-model="searchQueryAndSorting.sortBy"
+            :items="entriesArtderSortierung"
+            label="Art der Sortierung"
+            item-value="key"
+            item-title="value"
+            variant="filled"
+            density="default"
+            @mouseover="hoverArtDerSortierung = true"
+            @mouseleave="hoverArtDerSortierung = false"
+          />
         </v-col>
         <v-col
           cols="12"
           md="4"
         >
-          <v-hover v-model="hoverReihenfolgeDerSortierung">
-            <v-select
-              v-model="searchQueryAndSorting.sortOrder"
-              :items="entriesReihenfolgeDerSortierung"
-              label="Sortierreihenfolge"
-              item-value="key"
-              item-title="value"
-              variant="filled"
-              density="default"
-            ></v-select>
-          </v-hover>
+          <v-select
+            v-model="searchQueryAndSorting.sortOrder"
+            :items="entriesReihenfolgeDerSortierung"
+            label="Sortierreihenfolge"
+            item-value="key"
+            item-title="value"
+            variant="filled"
+            density="default"
+            @mouseover="hoverReihenfolgeDerSortierung = true"
+            @mouseleave="hoverReihenfolgeDerSortierung = false"
+          />
         </v-col>
         <v-col
           cols="12"
