@@ -21,18 +21,18 @@
       <v-spacer />
       <v-btn
         color="secondary"
-        @click="adoptSearchAndFilterOptions"
-        v-text="'Übernehmen'"
         style="width: 200px"
         variant="flat"
+        @click="adoptSearchAndFilterOptions"
+        v-text="'Übernehmen'"
       />
       <v-spacer />
       <v-btn
         color="primary"
-        @click="resetSearchAndFilterOptions"
-        v-text="'Zurücksetzen'"
         style="width: 200px"
         variant="flat"
+        @click="resetSearchAndFilterOptions"
+        v-text="'Zurücksetzen'"
       />
       <v-spacer />
     </v-card-actions>
