@@ -18,21 +18,21 @@
       </v-sheet>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         color="secondary"
         @click="adoptSearchAndFilterOptions"
       >
         Übernehmen
       </v-btn>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         color="primary"
         @click="resetSearchAndFilterOptions"
       >
         Zurücksetzen
       </v-btn>
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-card-actions>
   </v-card>
 </template>

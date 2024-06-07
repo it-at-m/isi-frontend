@@ -27,7 +27,7 @@
             :label="'Bauleitplanverfahren'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectBauleitplanverfahren = true"
             @mouseleave="hoverSelectBauleitplanverfahren = false"
           />
@@ -36,7 +36,7 @@
             :label="'Baugenehmigungsverfahren'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectBaugenehmigungsverfahren = true"
             @mouseleave="hoverSelectBaugenehmigungsverfahren = false"
           />
@@ -45,7 +45,7 @@
             :label="'Weiteres Verfahren'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectWeiteresVerfahren = true"
             @mouseleave="hoverSelectWeiteresVerfahren = false"
           />
@@ -54,7 +54,7 @@
             :label="'Bauvorhaben'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectBauvorhaben = true"
             @mouseleave="hoverSelectBauvorhaben = false"
           />
@@ -78,7 +78,7 @@
             :label="'Grundschule'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectGrundschule = true"
             @mouseleave="hoverSelectGrundschule = false"
           />
@@ -87,7 +87,7 @@
             :label="'Nachmittagsbetreuung für Grundschulkinder'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectGsNachmittagBetreuung = true"
             @mouseleave="hoverSelectGsNachmittagBetreuung = false"
           />
@@ -96,7 +96,7 @@
             :label="'Mittelschule'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectMittelschule = true"
             @mouseleave="hoverSelectMittelschule = false"
           />
@@ -105,7 +105,7 @@
             :label="'Kinderkrippe'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectKinderkrippe = true"
             @mouseleave="hoverSelectKinderkrippe = false"
           />
@@ -114,7 +114,7 @@
             :label="'Kindergarten'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectKindergarten = true"
             @mouseleave="hoverSelectKindergarten = false"
           />
@@ -123,7 +123,7 @@
             :label="'Haus für Kinder'"
             color="grey-darken-1"
             hide-details
-            density="default"
+            density="compact"
             @mouseover="hoverSelectHausFuerKinder = true"
             @mouseleave="hoverSelectHausFuerKinder = false"
           />
@@ -155,7 +155,7 @@
             item-value="key"
             item-title="value"
             variant="filled"
-            density="default"
+            density="comfortable"
             @mouseover="hoverArtDerSortierung = true"
             @mouseleave="hoverArtDerSortierung = false"
           />
@@ -171,7 +171,7 @@
             item-value="key"
             item-title="value"
             variant="filled"
-            density="default"
+            density="comfortable"
             @mouseover="hoverReihenfolgeDerSortierung = true"
             @mouseleave="hoverReihenfolgeDerSortierung = false"
           />
