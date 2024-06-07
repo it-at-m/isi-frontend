@@ -11,7 +11,10 @@
         class="overflow-y-auto"
         :max-height="getContentSheetHeight"
       >
-        <v-expansion-panels variant="accordion">
+        <v-expansion-panels
+          v-model="panels"
+          variant="accordion"
+        >
           <selection-and-sorting-panel v-model="searchQueryAndSorting" />
           <filter-panel />
         </v-expansion-panels>
@@ -40,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
@@ -52,7 +55,10 @@ interface Emits {
 }
 
 const { xl } = useDisplay();
-
+/**
+ * Der default Panel welcher beim Öffnen der Such- und Filtereinstellungen aufgeklappt ist.
+ */
+const panels = ref<Array<number>>([0]);
 const emit = defineEmits<Emits>();
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
