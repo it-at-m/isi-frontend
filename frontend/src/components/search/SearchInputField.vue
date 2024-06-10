@@ -112,12 +112,6 @@ function checkCurrentFilter(): boolean {
 
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 
-function updateSearchQuery(itemIndex: number): void {
-  if (itemIndex > -1) {
-    searchQuery.value = suggestions.value[itemIndex];
-  }
-}
-
 /**
  * Methode zur Ermittlung der Suchwortvorschläge auf Basis des letzen Wortes in der Suchquery.
  * @param query zur Ermittlung der Suchwortvorschläge.
