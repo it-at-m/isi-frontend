@@ -706,23 +706,9 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  */
 export function copyAbfrage(abfrage: AbfrageDto): AbfrageDto {
   const copy = _.cloneDeep(abfrage);
-
   sanitizeCopy(copy);
-
-  if (copy.name) {
-    if (copy.name.match(/- Kopie \d+$/)) {
-      const parts = copy.name.split(" ");
-      const index = parseInt(parts[parts.length - 1]) + 1;
-      parts[parts.length - 1] = _.defaultTo(index, 1).toString();
-      copy.name = parts.join(" ");
-    } else if (copy.name.endsWith("- Kopie")) {
-      copy.name += " 1";
-    } else {
-      copy.name += " - Kopie";
-    }
-    copy.displayName = undefined;
-  }
-
+  copy.name = (copy.name ?? "") + " - Kopie";
+  copy.displayName = undefined;
   return copy;
 }
 
