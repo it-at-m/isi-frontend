@@ -101,7 +101,6 @@ function getUrlWohneinheiten(): string {
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValuePlanungsursaechlich();
   url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
-  console.log(url);
   return url.toString();
 }
 
