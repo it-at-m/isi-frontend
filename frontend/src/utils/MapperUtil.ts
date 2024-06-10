@@ -32,10 +32,13 @@ import {
   AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto,
+  AbfrageDto,
+  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
+import { createSobonBerechnung } from "./Factories";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
@@ -691,4 +694,82 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
     flattened.push(...foerdermixe);
   });
   return flattened;
+}
+
+/**
+ * Erstellt von einer Abfrage eine Kopie.
+ * Dabei werden einige Felder bereinigt, da es fachlich oder technisch keinen Sinn macht, ihre Werte zu kopieren.
+ * Außerdem wird an den Namen der Abfrage "- Kopie" oder "- Kopie <Nummer der Kopie>" angehängt.
+ *
+ * @param abfrage Die zu kopierende Abfrage.
+ * @returns Die bereinigte Kopie der Abfrage.
+ */
+export function copyAbfrage(abfrage: AbfrageDto): AbfrageDto {
+  const copy = _.cloneDeep(abfrage);
+
+  sanitizeCopy(copy);
+
+  if (copy.name) {
+    if (copy.name.match(/- Kopie \d+$/)) {
+      const parts = copy.name.split(" ");
+      const index = parseInt(parts[parts.length - 1]) + 1;
+      parts[parts.length - 1] = _.defaultTo(index, 1).toString();
+      copy.name = parts.join(" ");
+    } else if (copy.name.endsWith("- Kopie")) {
+      copy.name += " 1";
+    } else {
+      copy.name += " - Kopie";
+    }
+    copy.displayName = undefined;
+  }
+
+  return copy;
+}
+
+const sanitizationMap = new Map<string, unknown>([
+  // Allgemein
+  ["id", undefined],
+  ["version", undefined],
+  ["createdDateTime", undefined],
+  ["lastModifiedDateTime", undefined],
+  ["dokumente", []],
+  // Abfrage
+  ["statusAbfrage", StatusAbfrage.Offen],
+  ["sub", undefined],
+  ["bearbeitungshistorie", undefined],
+  // Abfragevariante
+  ["sobonBerechnung", createSobonBerechnung()],
+  ["stammdatenGueltigAb", new Date()],
+  ["hasBauratendateiInput", false],
+  ["anmerkungBauratendateiInput", undefined],
+  ["bauratendateiInputBasis", undefined],
+  ["bauratendateiInput", []],
+  ["bedarfsmeldungFachreferate", []],
+  ["bedarfsmeldungAbfrageersteller", []],
+  ["anmerkungFachreferate", undefined],
+  ["anmerkungAbfrageersteller", undefined],
+  ["ausgeloesterBedarfImBaugebietBeruecksichtigenKita", false],
+  ["ausgeloesterBedarfMitversorgungImBplanKita", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenKita", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita", false],
+  ["ausgeloesterBedarfImBaugebietBeruecksichtigenSchule", false],
+  ["ausgeloesterBedarfMitversorgungImBplanSchule", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule", false],
+]);
+
+function sanitizeCopy(value: any): void {
+  if (_.isPlainObject(value)) {
+    for (const key in value) {
+      if (sanitizationMap.has(key)) {
+        value[key] = sanitizationMap.get(key);
+      } else {
+        sanitizeCopy(value[key]);
+      }
+    }
+  } else if (Array.isArray(value)) {
+    for (const entry of value) {
+      sanitizeCopy(entry);
+    }
+  }
 }

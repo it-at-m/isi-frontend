@@ -199,6 +199,13 @@
           @no="yesNoDialogRelevanteAbfragevarianteNo"
           @yes="yesNoDialogRelevanteAbfragevarianteYes"
         />
+        <data-transfer-dialog
+          id="abfrage_datenuebernahme"
+          v-model="isDataTransferDialogOpen"
+          :context="context"
+          @abfrage-uebernehmen="abfrageUebernehmen($event)"
+          @uebernahme-abbrechen="isDataTransferDialogOpen = false"
+        />
       </template>
       <template #heading>
         <v-container>
@@ -259,6 +266,17 @@
           :disabled="!isDeleteable()"
           @click="deleteAbfrage()"
           v-text="'Löschen'"
+        />
+        <v-btn
+          v-else
+          id="abfrage_datenuebernahme_button"
+          class="text-wrap my-4 px-1"
+          color="primary"
+          elevation="1"
+          style="width: 200px"
+          :disabled="!isRoleAdminOrAbfrageerstellung()"
+          @click="isDataTransferDialogOpen = true"
+          v-text="'Datenübernahme'"
         />
         <information-list
           id="abfrage_information_list"
@@ -332,6 +350,7 @@ import {
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
+  AbfrageDto,
 } from "@/api/api-client/isi-backend";
 import { Levels } from "@/api/error";
 import AbfrageNavigationTree, {
@@ -351,6 +370,7 @@ import BaugebietWeiteresVerfahrenComponent from "@/components/baugebiete/weitere
 import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
 import InformationList from "@/components/common/InformationList.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
 import BauratenApiRequestMixin from "@/mixins/requests/BauratenApiRequestMixin";
@@ -358,6 +378,7 @@ import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestM
 import StatusUebergangApiRequestMixin from "@/mixins/requests/StatusUebergangApiRequestMixin";
 import TransitionApiRequestMixin from "@/mixins/requests/TransistionApiRequestMixin";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import SecurityMixin from "@/mixins/security/SecurityMixin";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
@@ -398,13 +419,15 @@ import {
   mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto,
   mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto,
+  copyAbfrage,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
-import Vue from "vue";
+import Vue, { computed } from "vue";
 import { Component, Mixins, Watch } from "vue-property-decorator";
 import Toaster from "../components/common/toaster.type";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { useSearchStore } from "@/stores/SearchStore";
+import { Context } from "@/utils/Context";
 
 export const enum AnzeigeContextAbfragevariante {
   UNDEFINED = 1,
@@ -456,6 +479,7 @@ export const enum AbfrageFormType {
     BaugenehmigungsverfahrenComponent,
     WeiteresVerfahrenComponent,
     YesNoDialog,
+    DataTransferDialog,
     DefaultLayout,
     BaurateComponent,
     BauabschnittComponent,
@@ -473,6 +497,7 @@ export default class Abfrage extends Mixins(
   StatusUebergangApiRequestMixin,
   ValidatorMixin,
   SaveLeaveMixin,
+  SecurityMixin,
   AbfrageSecurityMixin,
 ) {
   private readonly RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
@@ -512,6 +537,8 @@ export default class Abfrage extends Mixins(
   private relevanteAbfragevarianteYesButtonText = "Ok";
   private hasAnmerkung = false;
   private anmerkungMaxLength = 0;
+  private isDataTransferDialogOpen = false;
+  private context = Context.ABFRAGE;
   private selectedTreeItemId = "";
   private relevanteAbfragevarianteId: string | null = null;
   private relevanteAbfragevarianteToBeSet:
@@ -1638,6 +1665,14 @@ export default class Abfrage extends Mixins(
         }
       }
     }
+  }
+
+  private abfrageUebernehmen(abfrage: AbfrageDto): void {
+    this.abfrage = copyAbfrage(abfrage);
+    this.artAbfrage = abfrage.artAbfrage ?? AbfrageDtoArtAbfrageEnum.Unspecified;
+    this.selectAbfrage();
+    this.formChanged();
+    this.isDataTransferDialogOpen = false;
   }
 }
 </script>

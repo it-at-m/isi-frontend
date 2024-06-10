@@ -15,7 +15,7 @@
           md="10"
         >
           <v-select
-            id="bauvorhaben_abfrage_datenuebernahme_dropdown"
+            id="abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
             :items="abfragen"
             :item-text="(item) => getItemText(item)"
@@ -31,14 +31,14 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          id="bauvorhaben_abfrage_datenuebernahme_abbrechen_button"
+          id="abfrage_datenuebernahme_abbrechen_button"
           class="text-wrap"
           text
           @click="uebernahmeAbbrechen"
           v-text="'Abbrechen'"
         />
         <v-btn
-          id="bauvorhaben_abfrage_datenuebernahme_uebernehmen_button"
+          id="abfrage_datenuebernahme_uebernehmen_button"
           class="text-wrap"
           color="primary"
           @click="abfrageUebernehmen"
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Mixins, VModel, Watch } from "vue-property-decorator";
+import { Component, Emit, Mixins, VModel, Watch, Prop } from "vue-property-decorator";
 import {
   AbfrageDto,
   AbfrageSearchResultDto,
@@ -58,16 +58,21 @@ import {
   SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AbfrageApiRequestMixin from "@/mixins/requests/AbfragenApiRequestMixin";
 import { createBauleitplanverfahrenDto } from "@/utils/Factories";
 import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import { useLookupStore } from "@/stores/LookupStore";
+import { Context } from "@/utils/Context";
 
 @Component
-export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiRequestMixin, AbfrageApiRequestMixin) {
+export default class DataTransferDialog extends Mixins(SearchApiRequestMixin, AbfrageApiRequestMixin) {
   @VModel({ type: Boolean }) steuerflag!: boolean;
+
+  @Prop()
+  context!: Context;
 
   private abfragen: Array<AbfrageSearchResultDto> = [];
 
@@ -90,7 +95,7 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
   }
 
   @Watch("selectedAbfrageSearchResult", { immediate: true })
-  private transferToBauvorhaben(): void {
+  private transfer(): void {
     if (!_.isNil(this.selectedAbfrageSearchResult) && !_.isNil(this.selectedAbfrageSearchResult.id)) {
       const idAbfrage: string = this.selectedAbfrageSearchResult.id;
       this.getById(idAbfrage, false).then((abfrageDto: AbfrageDto) => {
@@ -137,8 +142,22 @@ export default class BauvorhabenDataTransferDialog extends Mixins(SearchApiReque
     this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
       this.abfragen = searchResults.searchResults
         ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
-        .filter((abfrageSearchResult) => _.isNil(abfrageSearchResult.bauvorhaben)) as Array<AbfrageSearchResultDto>;
+        .filter(this.searchResultFilter) as Array<AbfrageSearchResultDto>;
     });
+  }
+
+  private searchResultFilter(result: AbfrageSearchResultDto): boolean {
+    if (this.context === Context.ABFRAGE) {
+      return (
+        result.statusAbfrage !== undefined &&
+        result.statusAbfrage !== StatusAbfrage.Angelegt &&
+        result.statusAbfrage !== StatusAbfrage.Abbruch
+      );
+    } else if (this.context === Context.BAUVORHABEN) {
+      return _.isNil(result.bauvorhaben);
+    }
+
+    return true;
   }
 
   /**

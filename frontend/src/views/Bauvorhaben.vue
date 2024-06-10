@@ -115,9 +115,10 @@
       @yes="leave"
       @no="cancel"
     />
-    <bauvorhaben-data-transfer-dialog
+    <data-transfer-dialog
       id="bauvorhaben_datenuebernahme"
       v-model="dataTransferDialogOpen"
+      :context="context"
       @abfrage-uebernehmen="abfrageUebernehmen($event)"
       @uebernahme-abbrechen="dataTransferDialogOpen = false"
     />
@@ -141,7 +142,7 @@ import InformationList from "@/components/common/InformationList.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
-import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
+import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 import {
   AbfrageDto,
   BauleitplanverfahrenDto,
@@ -168,7 +169,7 @@ import { useSearchStore } from "@/stores/SearchStore";
   components: {
     Benutzerinformationen,
     Kommentare,
-    BauvorhabenDataTransferDialog,
+    DataTransferDialog,
     BauvorhabenForm,
     YesNoDialog,
     DefaultLayout,
