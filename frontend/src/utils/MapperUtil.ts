@@ -708,7 +708,6 @@ export function copyAbfrage(abfrage: AbfrageDto): AbfrageDto {
   const copy = _.cloneDeep(abfrage);
   sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
-  copy.displayName = undefined;
   return copy;
 }
 
@@ -720,6 +719,7 @@ const sanitizationMap = new Map<string, unknown>([
   ["lastModifiedDateTime", undefined],
   ["dokumente", []],
   // Abfrage
+  ["displayName", undefined],
   ["statusAbfrage", StatusAbfrage.Offen],
   ["sub", undefined],
   ["bearbeitungshistorie", undefined],
