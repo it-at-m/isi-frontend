@@ -66,6 +66,8 @@ const router = useRouter();
 const searchStore = useSearchStore();
 
 onMounted(() => {
+  searchEntitiesForSelectedSuggestion();
+  clearSearch();
   checkCurrentFilter();
 });
 

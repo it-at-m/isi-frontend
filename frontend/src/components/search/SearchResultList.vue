@@ -1,5 +1,6 @@
 <template>
   <v-infinite-scroll
+    class="mt-n4"
     width="20vw"
     :target="'#suchfeld'"
     infinite-scroll-disabled="pageRequestMutex.isLocked()"

@@ -11,6 +11,7 @@
               id="sobon_orientierungswert_jahr_dropdown"
               ref="sobonOrientierungswertJahrDropdown"
               v-model="abfragevarianteSachbearbeitung.sobonOrientierungswertJahr"
+              variant="underlined"
               :disabled="!isEditableBySachbearbeitung"
               :items="sobonOrientierungswertJahrList"
               item-value="key"
