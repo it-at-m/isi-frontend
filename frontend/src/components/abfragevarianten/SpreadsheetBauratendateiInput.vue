@@ -85,9 +85,8 @@
           prepend-icon="mdi-plus"
           :disabled="!isEditable"
           @click="addNewTableItem"
-        >
-          Neue Zeile
-        </v-btn>
+          v-text="'Neue Zeile'"
+        />
       </v-toolbar>
     </template>
   </v-data-table>
