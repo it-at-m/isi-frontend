@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onUnmounted } from "vue";
 import type { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
@@ -76,7 +76,6 @@ const lookupStore = useLookupStore();
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const infrastruktureinrichtungTyp = defineModel<string>({ required: true });
 const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
-const displaymode = computed(() => (props.mode === undefined ? DisplayMode.UNDEFINED : props.mode));
 const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
 const infrastruktureinrichtungList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 
@@ -86,10 +85,13 @@ function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): s
     : key;
 }
 
+onUnmounted(() => {
+  infrastruktureinrichtungTyp.value = "";
+});
+
 const infrastruktureinrichtungTypDisplay = computed(() => {
   if (!_.isNil(infrastruktureinrichtungTyp)) {
     const lookupValue = getLookupValue(infrastruktureinrichtungTyp.value, infrastruktureinrichtungList.value);
-    console.log(lookupValue);
     return !_.isNil(lookupValue) ? lookupValue : "";
   } else {
     return "";
