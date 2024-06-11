@@ -18,6 +18,7 @@
             :rules="[pflichtfeld]"
             maxlength="255"
             validate-on="blur"
+            variant="underlined"
             @update:model-value="formChanged"
           >
             <template #label> Bezeichnung des Bauabschnitts <span class="text-secondary">*</span> </template>

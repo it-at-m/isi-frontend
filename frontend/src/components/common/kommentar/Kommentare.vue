@@ -1,5 +1,5 @@
 <template>
-  <v-container class="scale-transition pa-0 mb-2 px-4">
+  <v-container class="scale-transition pa-0 mb-2">
     <v-expansion-panels
       variant="accordion"
       @update:model-value="getKommentare()"
