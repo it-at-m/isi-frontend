@@ -40,6 +40,7 @@
           >
             <v-combobox
               v-model="input.grundschulsprengel"
+              variant="underlined"
               label="Grundschulsprengel"
               hide-no-data
               :append-icon="''"
@@ -56,6 +57,7 @@
           >
             <v-combobox
               v-model="input.mittelschulsprengel"
+              variant="underlined"
               label="Mittelschulsprengel"
               hide-no-data
               :append-icon="''"
@@ -72,6 +74,7 @@
           >
             <v-combobox
               v-model="input.viertel"
+              variant="underlined"
               label="Viertel"
               hide-no-data
               :append-icon="''"
