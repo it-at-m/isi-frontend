@@ -93,9 +93,15 @@
           :is-editable="isEditable"
         />
       </v-card>
-      <v-toolbar flat>
+      <v-toolbar
+        color="transparent"
+        flat
+      >
         <v-spacer />
         <v-btn
+          color="primary"
+          style="width: 200px"
+          variant="flat"
           :disabled="!isEditable"
           @click="addInput"
           v-text="'Neuer Eintrag'"

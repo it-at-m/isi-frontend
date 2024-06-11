@@ -73,10 +73,15 @@
       <span>Es sind keine Baurateninformationen vorhanden</span>
     </template>
     <template #bottom>
-      <v-toolbar flat>
+      <v-toolbar
+        color="transparent"
+        flat
+      >
         <v-spacer />
         <v-btn
           color="primary"
+          style="width: 200px"
+          variant="flat"
           prepend-icon="mdi-plus"
           :disabled="!isEditable"
           @click="addNewTableItem"
