@@ -154,6 +154,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watch } from "vue";
+import type { VForm } from "vuetify/components";
 import {
   type KindergartenDto,
   type KinderkrippeDto,
@@ -233,7 +234,7 @@ const {
 const toast = useToast();
 const router = useRouter();
 const infrastruktureinrichtungId = useRoute().params.id as string;
-const form = ref<HTMLFormElement | null>(null);
+const form = ref<VForm | null>(null);
 const deleteDialogOpen = ref(false);
 const isNew = ref(true);
 const mode = ref(DisplayMode.UNDEFINED);
@@ -414,7 +415,7 @@ function getModelOfNewDtoForInfrastruktureinrichtungTyp(
 }
 
 async function saveInfrastruktureinrichtung(): Promise<void> {
-  if (form.value?.validate()) {
+  if ((await form.value?.validate())?.valid) {
     const validationMessage: string | null = validateInfrastruktureinrichtung(infrastruktureinrichtung.value);
     if (_.isNil(validationMessage)) {
       if (!_.isNil(infrastruktureinrichtung)) {

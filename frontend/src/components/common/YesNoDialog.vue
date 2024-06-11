@@ -65,6 +65,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import type { VTextarea } from "vuetify/components";
 
 /**
  * Der YesNo-Dialog ist ein generischer Dialog zur binären Abfrage beim Nutzer.
@@ -113,7 +114,7 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 const dialogOpen = defineModel<boolean>({ required: true });
-const textarea = ref<HTMLFormElement | null>(null);
+const textarea = ref<VTextarea | null>(null);
 
 withDefaults(defineProps<Props>(), { yesText: "Ja", noText: "Nein", anmerkungMaxLength: 0 });
 

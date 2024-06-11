@@ -276,6 +276,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
+import type { VForm } from "vuetify/components";
 import {
   type AbfragevarianteBauleitplanverfahrenDto,
   type AbfragevarianteBaugenehmigungsverfahrenDto,
@@ -455,7 +456,7 @@ const abfragevarianteAncestor = ref<AnyAbfragevarianteModel>(
   new AbfragevarianteBauleitplanverfahrenModel(createAbfragevarianteBauleitplanverfahrenDto()),
 );
 const baugebietAncestor = ref<BaugebietModel>(new BaugebietModel(createBaugebietDto()));
-const form = ref<{ validate: () => boolean } | null>(null);
+const form = ref<VForm | null>(null);
 const abfrageNavigationTree = ref<typeof AbfrageNavigationTree | null>(null);
 const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
@@ -620,7 +621,7 @@ function yesNoDialogRelevanteAbfragevarianteNo(): void {
 }
 
 async function saveAbfrage(): Promise<void> {
-  if (form.value?.validate()) {
+  if ((await form.value?.validate())?.valid) {
     const validationMessage: string | null = findFaultInAbfrageForSave(abfrage.value);
     if (_.isNil(validationMessage)) {
       if (isNew.value) {
@@ -745,7 +746,7 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
 
 async function startStatusUebergang(transition: TransitionDto) {
   if (!isFormDirty.value) {
-    if (form.value?.validate()) {
+    if ((await form.value?.validate())?.valid) {
       let toastMessage = "Die Abfrage hatte einen erfolgreichen Statuswechsel";
       if (transition.url === TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT) {
         toastMessage = "Die Abfrage wird ohne Einbindung der Fachreferate abgeschlossen";

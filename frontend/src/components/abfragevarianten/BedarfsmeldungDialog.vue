@@ -117,6 +117,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import type { VForm } from "vuetify/components";
 import { useToast } from "vue-toastification";
 import { useLookupStore } from "@/stores/LookupStore";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
@@ -142,7 +143,7 @@ const lookupStore = useLookupStore();
 const toast = useToast();
 
 const infrastruktureinrichtungenTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
-const bedarfsmeldungDialogForm = ref<(HTMLFormElement & { validate: () => boolean }) | null>(null);
+const bedarfsmeldungDialogForm = ref<VForm | null>(null);
 
 watch(() => props.showBedarfsmeldungDialog, resetValidation);
 
@@ -158,10 +159,10 @@ function resetValidation(): void {
   }
 }
 
-function uebernehmenBedarfsmeldung(): void {
+async function uebernehmenBedarfsmeldung(): Promise<void> {
   const validationMessage: string | null = findFaultInBedarfsmeldung(bedarfsmeldung.value);
   if (_.isNil(validationMessage)) {
-    if (validateDialogForm()) {
+    if (await validateDialogForm()) {
       emit("uebernehmen-bedarfsmeldung", bedarfsmeldung.value);
     } else {
       toast.error("Es gibt noch Validierungsfehler");
@@ -171,8 +172,8 @@ function uebernehmenBedarfsmeldung(): void {
   }
 }
 
-function validateDialogForm(): boolean {
-  return !_.isNil(bedarfsmeldungDialogForm.value) ? bedarfsmeldungDialogForm.value.validate() : false;
+async function validateDialogForm(): Promise<boolean> {
+  return !_.isNil(bedarfsmeldungDialogForm.value) ? (await bedarfsmeldungDialogForm.value.validate()).valid : false;
 }
 
 function abbrechenBedarfsmeldung(): void {
