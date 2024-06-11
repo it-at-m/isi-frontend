@@ -43,26 +43,27 @@
       <div v-if="isSameItem(item, itemToEdit)">
         <v-btn
           icon="mdi-window-close"
+          variant="plain"
           :disabled="!isEditable"
           @click="closeTableItem"
         />
         <v-btn
           icon="mdi-content-save"
+          variant="plain"
           :disabled="!isEditable"
           @click="saveTableItem"
         />
       </div>
       <div v-else>
         <v-btn
-          icon
+          icon="mdi-pencil-outline"
+          variant="plain"
           :disabled="!isEditable"
           @click="editTableItem(item)"
-        >
-          <v-icon> mdi-pencil-outline </v-icon>
-        </v-btn>
+        />
         <v-btn
-          variant="plain"
           icon="mdi-delete"
+          variant="plain"
           :disabled="!isEditable"
           @click="deleteTableItem(item)"
         />
@@ -76,10 +77,11 @@
         <v-spacer />
         <v-btn
           color="primary"
+          prepend-icon="mdi-plus"
           :disabled="!isEditable"
           @click="addNewTableItem"
         >
-          <v-icon>mdi-plus</v-icon>Neue Zeile
+          Neue Zeile
         </v-btn>
       </v-toolbar>
     </template>

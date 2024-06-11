@@ -27,7 +27,7 @@
           <v-btn
             class="my-0 mr-0 py-0 pr-0"
             icon="mdi-close"
-            variant="text"
+            variant="plain"
             :disabled="!isEditable"
             @click="deleteInput(index)"
           >
