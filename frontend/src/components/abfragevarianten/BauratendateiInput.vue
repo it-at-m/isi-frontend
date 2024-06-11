@@ -118,6 +118,7 @@
           id="abfragevarianteSachbearbeitung_bauratendatei_anmerkung"
           v-model="abfragevarianteSachbearbeitung.anmerkungBauratendateiInput"
           :disabled="!isEditable"
+          variant="underlined"
           label="Anmerkungen"
           auto-grow
           rows="3"
