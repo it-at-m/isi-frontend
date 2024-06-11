@@ -14,6 +14,7 @@
             label="Fördermix"
             item-title="foerdermix.bezeichnung"
             return-object
+            variant="underlined"
             @update:model-value="foerdermixSelected"
             @update:menu="formChanged"
           />
@@ -26,7 +27,7 @@
             id="foerdermix_gesamtsumme"
             v-model="gesamtsumme"
             label="Summe"
-            variant="filled"
+            variant="underlined"
             readonly
             :rules="[nichtGleich100Prozent(foerdermix)]"
             :suffix="PERCENT"
@@ -66,13 +67,12 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { addiereAnteile } from "@/utils/CalculationUtil";
 import { createFoerdermixStammDto } from "@/utils/Factories";
-import { groupItemsToHeader, mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
+import { mapFoerdermixStammModelToFoerderMix } from "@/utils/MapperUtil";
 import _ from "lodash";
 import { nichtGleich100Prozent } from "@/utils/FieldValidationRules";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { useSaveLeave } from "@/composables/SaveLeave";
-
-type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
+import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 
 interface Props {
   isEditable?: boolean;
@@ -86,7 +86,7 @@ const freieEingabe = "Freie Eingabe";
 let isFreie = false;
 let stammdaten: FoerdermixStammModel[] = [];
 const selectedItem = ref<FoerdermixStammModel>(createFoerdermixStammDto());
-const groupedStammdaten = ref<GroupedStammdaten>([]);
+const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
 
 const stammdatenStore = useStammdatenStore();
 const { formChanged } = useSaveLeave();
@@ -127,7 +127,7 @@ function foerdermixSelected(item: FoerdermixStammModel): void {
 
 function setGroupedStammdatenList(): void {
   stammdaten = stammdatenStore.foerdermixStammdaten;
-  groupedStammdaten.value = groupItemsToHeader(stammdaten, false);
+  groupedStammdaten.value = _.sortBy(stammdaten, ["foerdermix.bezeichnungJahr"]);
   selectedItem.value.foerdermix.bezeichnung = foerdermix.value.bezeichnung;
 }
 </script>

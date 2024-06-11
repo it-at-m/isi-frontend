@@ -86,12 +86,13 @@ function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): s
     : key;
 }
 
-function infrastruktureinrichtungTypDisplay(): string {
+const infrastruktureinrichtungTypDisplay = computed(() => {
   if (!_.isNil(infrastruktureinrichtungTyp)) {
     const lookupValue = getLookupValue(infrastruktureinrichtungTyp.value, infrastruktureinrichtungList.value);
+    console.log(lookupValue);
     return !_.isNil(lookupValue) ? lookupValue : "";
   } else {
     return "";
   }
-}
+});
 </script>

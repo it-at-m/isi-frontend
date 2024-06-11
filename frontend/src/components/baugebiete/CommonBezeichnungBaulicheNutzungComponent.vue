@@ -7,6 +7,7 @@
           v-model.trim="baugebiet.bezeichnung"
           :disabled="!isEditable"
           :rules="[pflichtfeld]"
+          variant="underlined"
           maxlength="255"
           validate-on="blur"
           @update:model-value="formChanged"
@@ -26,6 +27,7 @@
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
+          variant="underlined"
           @update:model-value="formChanged"
         >
           <template #label> Art der baulichen Nutzung <span class="text-secondary">*</span> </template>

@@ -46,18 +46,13 @@ import SobonBerechnungModel from "@/types/model/abfragevariante/SobonBerechnungM
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { createFoerdermixDto } from "@/utils/Factories";
-import {
-  groupItemsToHeader,
-  mapFoerdermixStammModelToFoerderMix,
-  mapFoerdermixToFoerderMixStammModel,
-} from "@/utils/MapperUtil";
-
-type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
+import { mapFoerdermixStammModelToFoerderMix, mapFoerdermixToFoerderMixStammModel } from "@/utils/MapperUtil";
+import _ from "lodash";
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
-const groupedStammdaten = ref<GroupedStammdaten>([]);
+const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
 
 const stammdatenStore = useStammdatenStore();
 
@@ -67,12 +62,15 @@ onMounted(() => {
 
 const sobonFoerdermix = computed({
   get() {
-    return mapFoerdermixToFoerderMixStammModel(
-      sobonBerechnung.value.sobonFoerdermix ?? new FoerdermixModel(createFoerdermixDto()),
-    );
+    if (!_.isNil(sobonBerechnung.value.sobonFoerdermix?.bezeichnung)) {
+      return mapFoerdermixToFoerderMixStammModel(
+        sobonBerechnung.value.sobonFoerdermix ?? new FoerdermixModel(createFoerdermixDto()),
+      );
+    }
+    return undefined;
   },
-  set(item: FoerdermixStammModel) {
-    sobonBerechnung.value.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item);
+  set(item: FoerdermixStammModel | undefined) {
+    sobonBerechnung.value.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item as FoerdermixStammModel);
   },
 });
 
@@ -84,7 +82,7 @@ function setGroupedStammdatenList(): void {
       foerdermixStaemme.foerdermix.bezeichnung !== "städtische Fläche"
     );
   });
-  groupedStammdaten.value = groupItemsToHeader(stammdaten, true);
+  groupedStammdaten.value = _.sortBy(stammdaten, ["foerdermix.bezeichnungJahr"]);
 }
 
 function sobonBerechnungChanged(): void {
