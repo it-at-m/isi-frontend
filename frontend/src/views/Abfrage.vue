@@ -81,7 +81,7 @@
           v-model="isDeleteDialogAbfrageOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          dialogtext="Die Abfrage und ihre dazugehörigen Abfragevarianten werden gelöscht."
+          dialogtext="Hiermit wird die Abfrage und alle dazugehörigen Abfragevarianten unwiderruflich gelöscht."
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogDeleteAbfrageNo"
@@ -116,11 +116,7 @@
           v-model="isDeleteDialogAbfragevarianteOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="
-            'Hiermit wird die Abfragevariante Nr.' +
-            selected.abfragevariantenNr +
-            ' und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.'
-          "
+          :dialogtext="deleteAbfragevarianteDialogText"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogAbfragevarianteNo"
@@ -131,9 +127,7 @@
           v-model="isDeleteDialogBauabschnittOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="`Hiermit wird der Bauabschnitt ${
-            selected.bezeichnung ? '\'' + selected.bezeichnung + '\'' : ''
-          } und alle dazugehörigen Baugebiete unwiderruflich gelöscht.`"
+          :dialogtext="deleteBauabschnittDialogText"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBauabschnittNo"
@@ -144,9 +138,7 @@
           v-model="isDeleteDialogBaugebietOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="`Hiermit wird das Baugebiet ${
-            selected.bezeichnung ? '\'' + selected.bezeichnung + '\'' : ''
-          } und alle dazugehörigen Bauraten unwiderruflich gelöscht.`"
+          :dialogtext="deleteBaugebietDialogText"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBaugebietNo"
@@ -157,7 +149,7 @@
           v-model="isDeleteDialogBaurateOpen"
           icon="mdi-delete-forever"
           dialogtitle="Hinweis"
-          :dialogtext="'Hiermit wird die Baurate für das Jahr ' + selected.jahr + ' unwiderruflich gelöscht.'"
+          :dialogtext="deleteBaurateDialogText"
           no-text="Abbrechen"
           yes-text="Löschen"
           @no="yesNoDialogBaurateNo"
@@ -415,7 +407,6 @@ const TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
 const abfrageId = route.params.id as string;
 const artAbfrage = route.query.art as string;
 let relevanteAbfragevarianteToBeSet: AnyAbfragevarianteModel | undefined;
-let treeItemToDelete: AbfrageTreeItem | undefined;
 let currentTransition: TransitionDto | undefined;
 let anmerkung = "";
 
@@ -451,6 +442,7 @@ const relevanteAbfragevarianteDialogText = ref("");
 const relevanteAbfragevarianteYesButtonText = ref("Ok");
 const anzeigeContextAbfragevariante = ref(AnzeigeContextAbfragevariante.UNDEFINED);
 const selectedTreeItemId = ref("");
+const treeItemToDelete = ref<AbfrageTreeItem | undefined>(undefined);
 const anmerkungMaxLength = ref(0);
 const abfragevarianteAncestor = ref<AnyAbfragevarianteModel>(
   new AbfragevarianteBauleitplanverfahrenModel(createAbfragevarianteBauleitplanverfahrenDto()),
@@ -489,6 +481,48 @@ const isBaugebietWeiteresVerfahrenFormularOpen = computed(
   () => openForm.value === AbfrageFormType.BAUGEBIET_WEITERES_VERFAHREN,
 );
 const isBaurateFormularOpen = computed(() => openForm.value === AbfrageFormType.BAURATE);
+
+const deleteAbfragevarianteDialogText = computed(() => {
+  const item = treeItemToDelete.value;
+  if (item) {
+    let name: string | undefined;
+    if (isAbfragevarianteBaugenehmigungsverfahren(item, item.value)) {
+      name = item.value.getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.context);
+    } else if (isAbfragevarianteBauleitplanverfahren(item, item.value)) {
+      name = item.value.getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.context);
+    } else if (isAbfragevarianteWeiteresVerfahren(item, item.value)) {
+      name = item.value.getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.context);
+    }
+    if (name) {
+      return `Hiermit wird die Abfragevariante Nr. ${name} und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.`;
+    }
+  }
+  return "Hiermit wird die Abfragevariante und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.";
+});
+
+const deleteBauabschnittDialogText = computed(() => {
+  const item = treeItemToDelete.value;
+  if (item && isBauabschnitt(item, item.value) && item.value.bezeichnung) {
+    return `Hiermit wird der Bauabschnitt "${item.value.bezeichnung}" und alle dazugehörigen Baugebiete unwiderruflich gelöscht.`;
+  }
+  return "Hiermit wird der Bauabschnitt und alle dazugehörigen Baugebiete unwiderruflich gelöscht.";
+});
+
+const deleteBaugebietDialogText = computed(() => {
+  const item = treeItemToDelete.value;
+  if (item && isBaugebiet(item, item.value) && item.value.bezeichnung) {
+    return `Hiermit wird das Baugebiet "${item.value.bezeichnung}" und alle dazugehörigen Bauraten unwiderruflich gelöscht.`;
+  }
+  return "Hiermit wird das Baugebiet und alle dazugehörigen Bauraten unwiderruflich gelöscht.";
+});
+
+const deleteBaurateDialogText = computed(() => {
+  const item = treeItemToDelete.value;
+  if (item && isBaurate(item, item.value) && item.value.jahr) {
+    return `Hiermit wird die Baurate für das Jahr ${item.value.jahr} unwiderruflich gelöscht.`;
+  }
+  return "Hiermit wird die Baurate unwiderruflich gelöscht.";
+});
 
 onBeforeMount(async () => {
   isNew.value = abfrageId === undefined;
@@ -1020,33 +1054,33 @@ function handleCreateBaurate(parent: AbfrageTreeItem): void {
 }
 
 function handleDeleteAbfragevariante(item: AbfrageTreeItem): void {
-  treeItemToDelete = item;
+  treeItemToDelete.value = item;
   isDeleteDialogAbfragevarianteOpen.value = true;
 }
 
 function handleDeleteBauabschnitt(item: AbfrageTreeItem): void {
-  treeItemToDelete = item;
+  treeItemToDelete.value = item;
   isDeleteDialogBauabschnittOpen.value = true;
 }
 
 function handleDeleteBaugebiet(item: AbfrageTreeItem): void {
-  treeItemToDelete = item;
+  treeItemToDelete.value = item;
   isDeleteDialogBaugebietOpen.value = true;
 }
 
 function handleDeleteBaurate(item: AbfrageTreeItem): void {
-  treeItemToDelete = item;
+  treeItemToDelete.value = item;
   isDeleteDialogBaurateOpen.value = true;
 }
 
 function removeAbfragevarianteFromAbfrage(): void {
   if (
-    treeItemToDelete &&
-    (isAbfragevarianteBauleitplanverfahren(treeItemToDelete, treeItemToDelete.value) ||
-      isAbfragevarianteBaugenehmigungsverfahren(treeItemToDelete, treeItemToDelete.value) ||
-      isAbfragevarianteWeiteresVerfahren(treeItemToDelete, treeItemToDelete.value))
+    treeItemToDelete.value &&
+    (isAbfragevarianteBauleitplanverfahren(treeItemToDelete.value, treeItemToDelete.value.value) ||
+      isAbfragevarianteBaugenehmigungsverfahren(treeItemToDelete.value, treeItemToDelete.value.value) ||
+      isAbfragevarianteWeiteresVerfahren(treeItemToDelete.value, treeItemToDelete.value.value))
   ) {
-    const context = treeItemToDelete.context;
+    const context = treeItemToDelete.value.context;
 
     let abfragevarianten = undefined;
     if (isBauleitplanverfahren.value) {
@@ -1071,7 +1105,7 @@ function removeAbfragevarianteFromAbfrage(): void {
 
     const abfragevariantenContext =
       context === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE ? abfragevarianten! : abfragevariantenSachbearbeitung!;
-    _.remove(abfragevariantenContext, (abfragevariante) => abfragevariante === treeItemToDelete!.value);
+    _.remove(abfragevariantenContext, (abfragevariante) => abfragevariante === treeItemToDelete.value!.value);
     // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
     if (anzeigeContextAbfragevariante.value === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
       if (isBauleitplanverfahren.value) {
@@ -1102,51 +1136,51 @@ function removeAbfragevarianteFromAbfrage(): void {
     }
     renumberingAbfragevarianten(abfragevariantenContext);
     formChanged();
-    selectItem(treeItemToDelete.parent!);
-    treeItemToDelete = undefined;
+    selectItem(treeItemToDelete.value.parent!);
+    treeItemToDelete.value = undefined;
   }
 }
 
 function removeBauabschnittFromAbfragevariante(): void {
-  if (treeItemToDelete && isBauabschnitt(treeItemToDelete, treeItemToDelete.value)) {
-    const abfragevariante = getFirstAncestorOfTypeAbfragevariante(treeItemToDelete);
+  if (treeItemToDelete.value && isBauabschnitt(treeItemToDelete.value, treeItemToDelete.value.value)) {
+    const abfragevariante = getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value);
     if (abfragevariante && abfragevariante.bauabschnitte) {
-      _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === treeItemToDelete!.value);
+      _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === treeItemToDelete.value!.value);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       abfragevariante.bauabschnitte = [...abfragevariante.bauabschnitte];
       formChanged();
-      selectItem(treeItemToDelete.parent!);
-      treeItemToDelete = undefined;
+      selectItem(treeItemToDelete.value.parent!);
+      treeItemToDelete.value = undefined;
     }
   }
 }
 
 function removeBaugebietFromBauabschnitt(): void {
-  if (treeItemToDelete && isBaugebiet(treeItemToDelete, treeItemToDelete.value)) {
-    const bauabschnitt = getFirstAncestorOfTypeBauabschnitt(treeItemToDelete);
+  if (treeItemToDelete.value && isBaugebiet(treeItemToDelete.value, treeItemToDelete.value.value)) {
+    const bauabschnitt = getFirstAncestorOfTypeBauabschnitt(treeItemToDelete.value);
     if (bauabschnitt) {
-      _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === treeItemToDelete!.value);
-      clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete)!);
+      _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === treeItemToDelete.value!.value);
+      clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
       formChanged();
-      selectItem(treeItemToDelete.parent!);
-      treeItemToDelete = undefined;
+      selectItem(treeItemToDelete.value.parent!);
+      treeItemToDelete.value = undefined;
     }
   }
 }
 
 function removeBaurateFromBaugebiet(): void {
-  if (treeItemToDelete && isBaurate(treeItemToDelete, treeItemToDelete.value)) {
-    const baugebiet = getFirstAncestorOfTypeBaugebiet(treeItemToDelete);
+  if (treeItemToDelete.value && isBaurate(treeItemToDelete.value, treeItemToDelete.value.value)) {
+    const baugebiet = getFirstAncestorOfTypeBaugebiet(treeItemToDelete.value);
     if (baugebiet) {
-      _.remove(baugebiet.bauraten, (baurate) => baurate === treeItemToDelete!.value);
-      clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete)!);
+      _.remove(baugebiet.bauraten, (baurate) => baurate === treeItemToDelete.value!.value);
+      clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       baugebiet.bauraten = [...baugebiet.bauraten];
       formChanged();
-      selectItem(treeItemToDelete.parent!);
-      treeItemToDelete = undefined;
+      selectItem(treeItemToDelete.value.parent!);
+      treeItemToDelete.value = undefined;
     }
   }
 }
