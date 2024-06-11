@@ -20,8 +20,10 @@
       <v-card
         v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
         :key="index"
-        class="px-3 pt-3 pb-3 mt-10"
         variant="outlined"
+        border="xs"
+        class="px-3 pt-3 pb-3 mt-10"
+        style="border: 1px solid #d3d3d3"
       >
         <v-row class="justify-end">
           <v-btn
