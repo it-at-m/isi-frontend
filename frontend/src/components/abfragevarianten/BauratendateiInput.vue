@@ -26,11 +26,11 @@
         <v-row class="justify-end">
           <v-btn
             class="my-0 mr-0 py-0 pr-0"
-            icon
+            icon="mdi-close"
+            variant="text"
             :disabled="!isEditable"
             @click="deleteInput(index)"
           >
-            <v-icon> mdi-close </v-icon>
           </v-btn>
         </v-row>
         <v-row>
