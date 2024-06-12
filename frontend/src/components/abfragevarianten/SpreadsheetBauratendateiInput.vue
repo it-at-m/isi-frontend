@@ -40,34 +40,44 @@
       <span>{{ roundToLocalizedTwoDecimals(item["gesamt"]) }}</span>
     </template>
     <template #item.actions="{ item }">
-      <div v-if="isSameItem(item, itemToEdit)">
+      <v-item-group
+        v-if="isSameItem(item, itemToEdit)"
+        class="d-flex"
+      >
         <v-btn
           icon="mdi-window-close"
           variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="closeTableItem"
         />
         <v-btn
           icon="mdi-content-save"
           variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="saveTableItem"
         />
-      </div>
-      <div v-else>
+      </v-item-group>
+      <v-item-group
+        v-else
+        class="d-flex"
+      >
         <v-btn
           icon="mdi-pencil-outline"
           variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="editTableItem(item)"
         />
         <v-btn
           icon="mdi-delete"
           variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="deleteTableItem(item)"
         />
-      </div>
+      </v-item-group>
     </template>
     <template #no-data>
       <span>Es sind keine Baurateninformationen vorhanden</span>
