@@ -115,7 +115,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), { foerderartenBauratendateiInputBasis: () => [], isEditable: false });
-const bauratendateiInput = defineModel<Array<WohneinheitenProFoerderartProJahrDto>>({ required: true });
+const bauratendateiInput = defineModel<Array<WohneinheitenProFoerderartProJahrDto> | undefined>({ required: true });
 const { formChanged } = useSaveLeave();
 
 const forderartenForHeader = ref<Array<string>>([]);
