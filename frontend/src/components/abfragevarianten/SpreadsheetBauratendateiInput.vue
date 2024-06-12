@@ -14,7 +14,7 @@
         density="compact"
         maxlength="4"
         single-line
-      ></v-text-field>
+      />
       <span v-else>{{ item["jahr"] }}</span>
     </template>
     <template
@@ -31,7 +31,7 @@
         :min="0"
         :precision="2"
         single-line
-      ></num-field>
+      />
       <span v-else>
         {{ toLocalizedTwoDecimals(item.item[column]) }}
       </span>
