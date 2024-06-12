@@ -66,6 +66,7 @@
 
 <script setup lang="ts">
 import { onMounted, computed, watch, ref, onBeforeUnmount } from "vue";
+import type { VCard, VSheet } from "vuetify/components";
 import { LAYER_OPTIONS, MAP_OPTIONS, assembleBaseLayersForLayerControl, getBackgroundMapUrl } from "@/utils/MapUtil";
 import type { Feature } from "geojson";
 import L, { type GeoJSONOptions, type LatLngBoundsLiteral, type LatLngLiteral, Layer, LatLngBounds } from "leaflet";
@@ -128,8 +129,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 const mapRef = ref<HTMLDivElement | null>(null);
-const sheet = ref<{ $el: HTMLElement } | null>(null);
-const dialogCard = ref<{ $el: HTMLElement } | null>(null);
+const sheet = ref<VSheet | null>(null);
+const dialogCard = ref<VCard | null>(null);
 const geoJsonControl = ref<typeof LControl | null>(null);
 const expansionControl = ref<typeof LControl | null>(null);
 const expanded = ref(false);
