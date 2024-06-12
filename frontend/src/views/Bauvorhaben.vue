@@ -121,6 +121,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
+import type { VForm } from "vuetify/components";
 import { createAdresseDto, createBauvorhabenDto } from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
@@ -168,7 +169,7 @@ const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const searchStore = useSearchStore();
 const toast = useToast();
-const form = ref<{ validate: () => boolean } | null>(null);
+const form = ref<VForm | null>(null);
 const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value);
 const deleteDialogOpen = ref(false);
 const dataTransferDialogOpen = ref(false);
@@ -203,8 +204,8 @@ onBeforeMount(() => {
  * Ist das Formular valide, wird auf sonstige Mängel überprüft.
  * Gibt es keine sonstigen Mängel, wird entweder das neue Bauvorhaben gespeichert oder das vorhandene Bauvorhaben aktualisiert.
  */
-function validateAndProceed(): void {
-  if (form.value?.validate()) {
+async function validateAndProceed(): Promise<void> {
+  if ((await form.value?.validate())?.valid) {
     const fault = findFaultInBauvorhaben(bauvorhaben.value);
 
     if (fault === null) {

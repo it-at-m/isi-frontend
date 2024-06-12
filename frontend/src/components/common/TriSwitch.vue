@@ -52,14 +52,12 @@
  */
 
 import { computed, ref } from "vue";
+import type { VInput } from "vuetify/components";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { Rule } from "@/utils/FieldValidationRules";
-type Position = "0" | "1" | "2";
 
-interface VInput {
-  isFocused: boolean;
-}
+type Position = "0" | "1" | "2";
 
 interface Props {
   label?: string;
@@ -142,7 +140,7 @@ function getAnnotationColor(type: "on" | "off"): string {
  */
 function focused(): void {
   if (input.value !== null) {
-    input.value.isFocused = true;
+    input.value.focused = true;
   }
 }
 
@@ -151,7 +149,7 @@ function focused(): void {
  */
 function blurred(): void {
   if (input.value !== null) {
-    input.value.isFocused = false;
+    input.value.focused = false;
   }
 }
 </script>
