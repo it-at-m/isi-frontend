@@ -60,7 +60,7 @@
             :rules="[validateWohneinheiten(abfragevariante)]"
             class="mx-3"
             label="Geplante Anzahl Wohneinheiten"
-            :suffix="suffixWohneinheiten"
+            :suffix="suffixWohneinheiten()"
             integer
           />
         </v-col>
@@ -75,7 +75,7 @@
             :rules="[validateGeschossflaecheWohnen(abfragevariante)]"
             class="mx-3"
             label="Geplante Geschossfläche Wohnen"
-            :suffix="suffixGeschossflaecheWohnen"
+            :suffix="suffixGeschossflaecheWohnen()"
           />
         </v-col>
       </v-row>
