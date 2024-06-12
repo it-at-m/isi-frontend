@@ -9,9 +9,9 @@
       <v-text-field
         v-if="isSameItem(item, itemToEdit)"
         v-model="itemToEdit['jahr']"
-        :hide-details="true"
+        hide-details
+        variant="underlined"
         :rules="[digits, min4, pflichtfeld]"
-        density="compact"
         maxlength="4"
         single-line
       />
@@ -23,7 +23,7 @@
       #[`item.${column}`]="{ item }"
     >
       <num-field
-        v-if="isSameItem(item.item, itemToEdit)"
+        v-if="isSameItem(item, itemToEdit)"
         v-model="itemToEdit[column]"
         :hide-details="true"
         required
@@ -33,7 +33,7 @@
         single-line
       />
       <span v-else>
-        {{ toLocalizedTwoDecimals(item.item[column]) }}
+        {{ toLocalizedTwoDecimals(item[column]) }}
       </span>
     </template>
     <template #item.gesamt="{ item }">
