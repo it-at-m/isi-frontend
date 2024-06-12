@@ -1106,34 +1106,6 @@ function removeAbfragevarianteFromAbfrage(): void {
     const abfragevariantenContext =
       context === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE ? abfragevarianten! : abfragevariantenSachbearbeitung!;
     _.remove(abfragevariantenContext, (abfragevariante) => abfragevariante === treeItemToDelete.value!.value);
-    // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
-    if (anzeigeContextAbfragevariante.value === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
-      if (isBauleitplanverfahren.value) {
-        (abfrage.value as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren = [
-          ...abfragevariantenContext,
-        ];
-      } else if (isBaugenehmigungsverfahren.value) {
-        (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren = [
-          ...abfragevariantenContext,
-        ];
-      } else {
-        (abfrage.value as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren = [...abfragevariantenContext];
-      }
-    } else {
-      if (isBauleitplanverfahren.value) {
-        (abfrage.value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren = [
-          ...abfragevariantenContext,
-        ];
-      } else if (isBaugenehmigungsverfahren.value) {
-        (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [
-          ...abfragevariantenContext,
-        ];
-      } else {
-        (abfrage.value as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren = [
-          ...abfragevariantenContext,
-        ];
-      }
-    }
     renumberingAbfragevarianten(abfragevariantenContext);
     formChanged();
     selectItem(treeItemToDelete.value.parent!);
