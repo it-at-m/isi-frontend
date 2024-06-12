@@ -3,6 +3,7 @@
     class="mt-3"
     :headers="headers"
     :items="tableDataFromBauratendateiInput"
+    density="compact"
     hide-default-footer
   >
     <template #item.jahr="{ item }">
