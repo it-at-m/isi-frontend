@@ -45,7 +45,6 @@ const kommentare = ref<KommentarModel[]>([]);
 let isKommentarListOpen = false;
 
 watch(kommentare, () => {
-  console.log(kommentare.value);
   if (!hasDirtyComment()) {
     resetCommentDirty();
   } else {

@@ -1,6 +1,9 @@
-import Toast from "vue-toastification";
+import Toast, { PluginOptions } from "vue-toastification";
+
 import "vue-toastification/dist/index.css";
 
-const toast = Toast;
+export const toast = Toast;
 
-export default toast;
+export const options: PluginOptions = {
+  draggable: false,
+};
