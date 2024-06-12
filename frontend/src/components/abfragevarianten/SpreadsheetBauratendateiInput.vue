@@ -3,6 +3,7 @@
     class="mt-3"
     :headers="headers"
     :items="tableDataFromBauratendateiInput"
+    density="compact"
     hide-default-footer
   >
     <template #item.jahr="{ item }">
@@ -95,8 +96,9 @@
           prepend-icon="mdi-plus"
           :disabled="!isEditable"
           @click="addNewTableItem"
-          v-text="'Neue Zeile'"
-        />
+        >
+          Neue Zeile
+        </v-btn>
       </v-toolbar>
     </template>
   </v-data-table>
