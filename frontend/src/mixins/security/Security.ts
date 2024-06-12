@@ -7,8 +7,12 @@ export function isRoleAdminOrAbfrageerstellung(): boolean {
 
 export function isRoleAdminOrSachbearbeitung(): boolean {
   const userinfoStore = useUserinfoStore();
-  userinfoStore.hasRoleSachbearbeitung;
   return isRoleAdmin() || userinfoStore.hasRoleSachbearbeitung;
+}
+
+export function isRoleAdminOrBedarfsmeldung(): boolean {
+  const userinfoStore = useUserinfoStore();
+  return isRoleAdmin() || userinfoStore.hasRoleBedarfsmeldung;
 }
 
 export function isRoleAdmin(): boolean {

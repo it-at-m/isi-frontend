@@ -37,6 +37,7 @@ npm
       :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
     />
     <dokumente
+      v-if="isDokumenteVisible(context)"
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="bauleitplanverfahren.dokumente"
@@ -55,6 +56,7 @@ import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/co
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -73,7 +75,11 @@ import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
     FieldGroupCard,
   },
 })
-export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
+export default class BauleitplanverfahrenComponent extends Mixins(
+  AbfrageSecurityMixin,
+  DokumenteKommentareSecurityMixin,
+  SaveLeaveMixin,
+) {
   @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
 
   @Prop({ type: Boolean, default: false })

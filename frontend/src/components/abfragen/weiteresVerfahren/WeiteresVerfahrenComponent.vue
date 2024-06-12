@@ -36,6 +36,7 @@
       :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
     />
     <dokumente
+      v-if="isDokumenteVisible(context)"
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="weiteresVerfahren.dokumente"
@@ -54,6 +55,7 @@ import AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent from "@/compo
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
 import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
@@ -74,7 +76,11 @@ import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/co
     FieldGroupCard,
   },
 })
-export default class WeiteresVerfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
+export default class WeiteresVerfahrenComponent extends Mixins(
+  AbfrageSecurityMixin,
+  DokumenteKommentareSecurityMixin,
+  SaveLeaveMixin,
+) {
   @VModel({ type: WeiteresVerfahrenModel }) weiteresVerfahren!: WeiteresVerfahrenModel;
 
   @Prop({ type: Boolean, default: false })

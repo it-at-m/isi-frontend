@@ -36,7 +36,7 @@
           :is-editable="isEditable"
         />
         <kommentare
-          v-if="isEditable && !isNew"
+          v-if="isKommentareVisible(context) && isEditable && !isNew"
           id="bauvorhaben_kommentare"
           :context="context"
           :is-editable="isEditable"
@@ -134,12 +134,12 @@ import _ from "lodash";
 import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { Levels } from "@/api/error";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import InformationList from "@/components/common/InformationList.vue";
 import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import InformationListMixin from "@/mixins/requests/InformationListMixin";
+import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
 import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
 import {
@@ -172,7 +172,6 @@ import { useSearchStore } from "@/stores/SearchStore";
     BauvorhabenForm,
     YesNoDialog,
     DefaultLayout,
-    Dokumente,
     InformationList,
   },
 })
@@ -183,6 +182,7 @@ export default class Bauvorhaben extends Mixins(
   SaveLeaveMixin,
   InformationListMixin,
   SecurityMixin,
+  DokumenteKommentareSecurityMixin,
 ) {
   private bauvorhaben = new BauvorhabenModel(createBauvorhabenDto());
 
