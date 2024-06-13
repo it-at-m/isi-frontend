@@ -83,6 +83,7 @@
                       <v-select
                         :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
                         v-model="item.artDokument"
+                        variant="underlined"
                         :items="lookupStore.artDokument"
                         item-value="key"
                         item-title="value"

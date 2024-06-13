@@ -237,10 +237,11 @@
           :id="'abfrage_status_aenderung' + index + '_button'"
           :key="index"
           :disabled="isFormDirty"
+          stacked
           color="secondary"
           class="mt-2 px-1"
           elevation="1"
-          style="width: 200px"
+          style="width: 200px; height: 36px"
           @click="statusUebergang(transition)"
         >
           {{ transition.buttonName }}
