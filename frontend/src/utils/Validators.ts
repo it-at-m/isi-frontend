@@ -1,15 +1,21 @@
 import _ from "lodash";
-import type {
+import {
+  AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDto,
+  AbfragevarianteWeiteresVerfahrenDto,
   AdresseDto,
   BauabschnittDto,
   BaugebietDto,
   BauvorhabenDto,
+  DokumentDto,
+  DokumentDtoArtDokumentEnum,
   GrundschuleDto,
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
   InfrastruktureinrichtungDto,
   KindergartenDto,
   KinderkrippeDto,
+  KommentarDto,
   MittelschuleDto,
 } from "@/api/api-client/isi-backend";
 import {
@@ -44,6 +50,7 @@ import {
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import type { AnyAbfrageModel, AnyAbfragevarianteDto, AnyAbfragevarianteModel } from "@/types/common/Abfrage";
+import { JAHR_FOERDERART_SEPERATOR, sumWohneinheitenOfBauratendateiInput } from "@/utils/BauratendateiUtils";
 
 /**
  * Prüft die komplette Abfrage vor dem Speichern
@@ -211,6 +218,14 @@ export function findFaultInAbfragevariante(
   );
   if (!_.isNil(messageFaultInAbfragevarianteMarkedSobonBerechnung)) {
     return messageFaultInAbfragevarianteMarkedSobonBerechnung;
+  }
+  const messageFaultInAbfragevarianteBauratendateiInput = findFaultForBauratendateiInput(abfragevariante);
+  if (!_.isNil(messageFaultInAbfragevarianteBauratendateiInput)) {
+    return messageFaultInAbfragevarianteBauratendateiInput;
+  }
+  const messageFaultinDokumente = findFaultInDokumente(abfragevariante.dokumente);
+  if (!_.isNil(messageFaultinDokumente)) {
+    return messageFaultinDokumente;
   }
 
   return null;
@@ -396,6 +411,11 @@ export function findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | nu
 
   if (_.isEmpty(bauvorhaben.wesentlicheRechtsgrundlage)) {
     return "Bitte die wesentliche Rechtsgrundlage angeben";
+  }
+
+  const validationMessage = findFaultInDokumente(bauvorhaben.dokumente);
+  if (!_.isNil(validationMessage)) {
+    return validationMessage;
   }
 
   return null;
@@ -639,6 +659,15 @@ function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
   if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {
     return "Bearbeitungsfrist nicht angegeben oder nicht im Format TT.MM.JJJJ";
   }
+
+  let validationMessage: string | null = null;
+  if (!_.isNil(abfrage)) {
+    validationMessage = findFaultInDokumente(abfrage.dokumente);
+    if (!_.isNil(validationMessage)) {
+      return validationMessage;
+    }
+  }
+
   return findFaultInAbfragevarianten(abfrage);
 }
 
@@ -727,4 +756,65 @@ function findFaultForWohnungsnahePlaetze(
     return `Die Anzahl der wohnungsnahen ${artPlaetze} darf nicht die Gesamtanzahl der verfügbaren ${artPlaetze} übersteigen.`;
   }
   return null;
+}
+
+function findFaultForBauratendateiInput(
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
+): string | null {
+  if (_.isNil(abfragevariante.hasBauratendateiInput) || !abfragevariante.hasBauratendateiInput) {
+    return null;
+  }
+
+  const bauratendateiInputBasis = _.isNil(abfragevariante.bauratendateiInputBasis)
+    ? []
+    : [abfragevariante.bauratendateiInputBasis];
+  const bauratendateiInput = _.toArray(abfragevariante.bauratendateiInput);
+
+  const wohneinheiten = bauratendateiInput.flatMap((input) => _.toArray(input.wohneinheiten));
+  for (const wohneinheit of wohneinheiten) {
+    if (_.isEmpty(wohneinheit.jahr)) {
+      return "Jahresangabe bei Eintrag zur Bauratendatei und Schülerpotentialprognose fehlt.";
+    }
+  }
+
+  const sumBasis = sumWohneinheitenOfBauratendateiInput(bauratendateiInputBasis);
+  const sumInputs = sumWohneinheitenOfBauratendateiInput(bauratendateiInput);
+
+  const validationMessage = `Die Daten der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen nicht mit den errechneten Wohneinheiten überein.`;
+
+  if (sumBasis.size != sumInputs.size) {
+    return validationMessage;
+  }
+
+  for (const [jahrAndFoerderart, wohneinheiten] of sumBasis) {
+    const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
+    const nonNullNumberOfWohneinheitenInputs = _.isNil(numberOfWohneinheitenInputs) ? 0 : numberOfWohneinheitenInputs;
+    const difference = Math.abs(wohneinheiten - nonNullNumberOfWohneinheitenInputs);
+    // Prüfung wegen möglicher Rundungen bedingt durch IEEE754
+    if (difference >= 0.001) {
+      const splittedJahrAndFoerderart = _.split(jahrAndFoerderart, JAHR_FOERDERART_SEPERATOR);
+      return ` In der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen die errechneten Wohneinheiten der Förderart "${splittedJahrAndFoerderart[1]}" im Jahr "${splittedJahrAndFoerderart[0]}" in Höhe von "${wohneinheiten}" nicht mit der Summe der aufgeteilten Wohneinheiten in Höhe von "${nonNullNumberOfWohneinheitenInputs}" überein.`;
+    }
+  }
+
+  const validationMessageDokumente = findFaultInDokumente(abfragevariante.dokumente);
+  if (!_.isNil(validationMessageDokumente)) {
+    return validationMessageDokumente;
+  }
+
+  return null;
+}
+
+function findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
+  let validationMessage: string | null = null;
+  if (
+    !_.isNil(dokumente) &&
+    dokumente.some((dokument) => dokument.artDokument === DokumentDtoArtDokumentEnum.Unspecified)
+  ) {
+    validationMessage = `Bitte geben Sie die Dokumentart zu dem/den Dokument(en) an`;
+  }
+  return validationMessage;
 }
