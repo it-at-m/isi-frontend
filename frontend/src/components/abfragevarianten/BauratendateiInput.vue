@@ -106,8 +106,9 @@
           variant="flat"
           :disabled="!isEditable"
           @click="addInput"
-          v-text="'Neuer Eintrag'"
-        />
+        >
+          Neuer Eintrag
+        </v-btn>
         <v-spacer />
       </v-toolbar>
     </div>

@@ -5,10 +5,7 @@
     width="60%"
   >
     <v-card class="overflow-x-hidden">
-      <v-card-title
-        class="align-stretch"
-        v-text="'Datenübernahme aus Abfrage'"
-      />
+      <v-card-title class="align-stretch">Datenübernahme aus Abfrage</v-card-title>
       <v-row justify="center">
         <v-col
           cols="12"
@@ -34,15 +31,17 @@
         <v-btn
           id="bauvorhaben_abfrage_datenuebernahme_abbrechen_button"
           @click="uebernahmeAbbrechen"
-          v-text="'Abbrechen'"
-        />
+        >
+          Abbrechen
+        </v-btn>
         <v-btn
           id="bauvorhaben_abfrage_datenuebernahme_uebernehmen_button"
           variant="elevated"
           color="primary"
           @click="abfrageUebernehmen"
-          v-text="'Übernehmen'"
-        />
+        >
+          Übernehmen
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

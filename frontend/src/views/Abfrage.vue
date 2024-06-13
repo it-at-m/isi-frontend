@@ -177,8 +177,9 @@
               <span
                 id="abfrage_displayName"
                 class="text-h6 font-weight-bold"
-                v-text="abfrage.displayName"
-              />
+              >
+                {{ abfrage.displayName }}
+              </span>
             </v-col>
             <v-col
               cols="12"
@@ -226,8 +227,9 @@
           style="width: 200px"
           :disabled="!(isEditableByAbfrageerstellung || isEditableByAdmin)"
           @click="deleteAbfrage()"
-          v-text="'Löschen'"
-        />
+        >
+          Löschen
+        </v-btn>
         <v-spacer />
         <v-btn
           v-for="(transition, index) in possibleTransitions"
@@ -240,8 +242,9 @@
           elevation="1"
           style="width: 200px"
           @click="statusUebergang(transition)"
-          v-text="transition.buttonName"
-        />
+        >
+          {{ transition.buttonName }}
+        </v-btn>
         <v-btn
           id="abfrage_speichern_button"
           class="mt-2 px-1"
@@ -250,8 +253,9 @@
           :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(abfrage.dokumente)"
           style="width: 200px"
           @click="saveAbfrage()"
-          v-text="isNew ? 'Entwurf Speichern' : 'Aktualisieren'"
-        />
+        >
+          {{ isNew ? "Entwurf Speichern" : "Aktualisieren" }}
+        </v-btn>
         <v-btn
           id="abfrage_abbrechen_button"
           color="primary"
@@ -259,8 +263,9 @@
           class="mt-2 px-1"
           style="width: 200px"
           @click="returnToUebersicht()"
-          v-text="'Abbrechen'"
-        />
+        >
+          Abbrechen
+        </v-btn>
       </template>
     </default-layout>
   </v-form>

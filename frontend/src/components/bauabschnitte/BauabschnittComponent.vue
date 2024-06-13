@@ -2,10 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <span
-          class="text-h6 font-weight-bold"
-          v-text="headline"
-        />
+        <span class="text-h6 font-weight-bold">{{ headline }}</span>
       </v-col>
     </v-row>
     <field-group-card>

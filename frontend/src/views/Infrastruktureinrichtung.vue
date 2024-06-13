@@ -103,8 +103,9 @@
               <span
                 id="infrastruktureinrichtung_displayName"
                 class="text-h6 font-weight-bold"
-                v-text="infrastruktureinrichtungDisplayName"
-              />
+              >
+                {{ infrastruktureinrichtungDisplayName }}
+              </span>
             </v-col>
             <v-col
               cols="12"
@@ -125,8 +126,9 @@
           style="width: 200px"
           :disabled="!isRoleAdminOrSachbearbeitung"
           @click="openDeleteDialog"
-          v-text="'Löschen'"
-        />
+        >
+          Löschen
+        </v-btn>
         <v-spacer />
         <v-btn
           id="infrastruktureinrichtung_speichern_button"
@@ -136,8 +138,9 @@
           :disabled="!isFormDirty || !isRoleAdminOrSachbearbeitung"
           style="width: 200px"
           @click="saveInfrastruktureinrichtung()"
-          v-text="isNew ? 'Speichern' : 'Aktualisieren'"
-        />
+        >
+          {{ isNew ? "Speichern" : "Aktualisieren" }}
+        </v-btn>
         <v-btn
           id="infrastruktureinrichtung_abbrechen_button"
           color="primary"
@@ -145,8 +148,9 @@
           class="mt-2 px-1"
           style="width: 200px"
           @click="returnToUebersicht"
-          v-text="'Abbrechen'"
-        />
+        >
+          Abbrechen
+        </v-btn>
       </template>
     </default-layout>
   </v-form>

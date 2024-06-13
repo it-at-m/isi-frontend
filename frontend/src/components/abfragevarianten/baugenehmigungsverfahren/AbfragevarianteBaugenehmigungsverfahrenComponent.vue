@@ -5,10 +5,7 @@
         cols="12"
         md="12"
       >
-        <span
-          class="text-h6 font-weight-bold"
-          v-text="headline"
-        />
+        <span class="text-h6 font-weight-bold">{{ headline }}</span>
       </v-col>
     </v-row>
     <common-baugenehmigungsverfahren-component
@@ -57,8 +54,9 @@
           block
           :disabled="!bedarfsmeldungenUebernehmenEnabled"
           @click="bedarfsmeldungenUebernehmen()"
-          v-text="'Bedarfsmeldungen der Fachreferate übernehmen'"
-        />
+        >
+          Bedarfsmeldungen der Fachreferate übernehmen
+        </v-btn>
       </v-col>
       <v-col
         cols="12"

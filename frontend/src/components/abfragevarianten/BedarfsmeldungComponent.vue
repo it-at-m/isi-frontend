@@ -177,8 +177,9 @@
                   :disabled="!getIsEditable"
                   block
                   @click="erfassenBedarfsmeldung()"
-                  v-text="'Bedarfsmeldung erfassen'"
-                />
+                >
+                  Bedarfsmeldung erfassen
+                </v-btn>
               </v-col>
               <v-col
                 cols="12"

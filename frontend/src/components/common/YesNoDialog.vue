@@ -10,8 +10,9 @@
           id="yes_no_dialog_buttontext"
           color="primary"
           v-bind="activatorProps"
-          v-text="buttontext"
-        />
+        >
+          {{ buttontext }}
+        </v-btn>
       </template>
       <template v-else-if="icontext">
         <v-btn
@@ -49,15 +50,17 @@
         <v-btn
           id="yes_no_dialog-btn-no"
           @click="no"
-          v-text="noText"
-        />
+        >
+          {{ noText }}
+        </v-btn>
         <v-btn
           id="yes_no_dialog-btn-yes"
           variant="elevated"
           color="primary"
           @click="yes"
-          v-text="yesText"
-        />
+        >
+          {{ yesText }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

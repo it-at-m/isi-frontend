@@ -41,8 +41,9 @@
               elevation="1"
               :disabled="!addDokumentButtonEnabled"
               @click="addDokument()"
-              v-text="'Hinzufügen'"
-            />
+            >
+              Hinzufügen
+            </v-btn>
           </v-row>
         </v-col>
       </v-row>

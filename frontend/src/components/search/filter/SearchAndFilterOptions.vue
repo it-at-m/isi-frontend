@@ -27,16 +27,18 @@
         style="width: 200px"
         variant="flat"
         @click="adoptSearchAndFilterOptions"
-        v-text="'Übernehmen'"
-      />
+      >
+        Übernehmen
+      </v-btn>
       <v-spacer />
       <v-btn
         color="primary"
         style="width: 200px"
         variant="flat"
         @click="resetSearchAndFilterOptions"
-        v-text="'Zurücksetzen'"
-      />
+      >
+        Zurücksetzen
+      </v-btn>
       <v-spacer />
     </v-card-actions>
   </v-card>

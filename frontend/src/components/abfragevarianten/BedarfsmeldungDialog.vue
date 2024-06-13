@@ -7,10 +7,7 @@
   >
     <v-form ref="bedarfsmeldungDialogForm">
       <v-card class="overflow-x-hidden">
-        <v-card-title
-          class="align-stretch"
-          v-text="'Bedarfsmeldung'"
-        />
+        <v-card-title class="align-stretch">Bedarfsmeldung</v-card-title>
         <v-row justify="center">
           <v-col
             cols="12"
@@ -101,14 +98,16 @@
             id="bedarfsmeldung_abbrechen_button"
             variant="text"
             @click="abbrechenBedarfsmeldung"
-            v-text="'Abbrechen'"
-          />
+          >
+            Abbrechen
+          </v-btn>
           <v-btn
             id="bedarfsmeldung_uebernehmen_button"
             color="primary"
             @click="uebernehmenBedarfsmeldung"
-            v-text="'Übernehmen'"
-          />
+          >
+            Übernehmen
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-form>

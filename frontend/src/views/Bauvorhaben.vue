@@ -53,8 +53,9 @@
           width="200px"
           :disabled="!isEditable"
           @click="deleteDialogOpen = true"
-          v-text="'Löschen'"
-        />
+        >
+          Löschen
+        </v-btn>
         <v-btn
           v-else
           id="bauvorhaben_datenuebernahme_button"
@@ -64,8 +65,9 @@
           width="200px"
           :disabled="!isEditable"
           @click="dataTransferDialogOpen = true"
-          v-text="'Datenübernahme'"
-        />
+        >
+          Datenübernahme
+        </v-btn>
         <v-spacer />
         <v-btn
           id="bauvorhaben_speichern_button"
@@ -85,8 +87,9 @@
           class="mt-2 px-1"
           style="width: 200px"
           @click="returnToUebersicht()"
-          v-text="'Abbrechen'"
-        />
+        >
+          Abbrechen
+        </v-btn>
       </template>
     </default-layout>
     <yes-no-dialog
