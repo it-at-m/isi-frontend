@@ -72,7 +72,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
 const { formChanged } = useSaveLeave();
 const title = "Link eAkte";
-const linkEakte = defineModel<string>();
+const linkEakte = defineModel<string | undefined>();
 const linkEakteNotEmpty = computed(() => !_.isEmpty(linkEakte.value));
 const editableAndEmpty = computed(() => props.isEditable && _.isEmpty(linkEakte.value));
 const editMode = ref(editableAndEmpty.value);

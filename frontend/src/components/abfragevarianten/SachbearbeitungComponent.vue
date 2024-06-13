@@ -49,6 +49,7 @@
             v-model="abfragevarianteSachbearbeitung.anmerkung"
             :disabled="!isEditableBySachbearbeitung"
             label="Anmerkungen"
+            variant="underlined"
             auto-grow
             rows="1"
             maxlength="1000"

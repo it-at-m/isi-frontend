@@ -255,7 +255,7 @@ const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const geoApi = useGeodataEaiApi();
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED });
-const verortungModel = defineModel<VerortungMultiPolygonModel>();
+const verortungModel = defineModel<VerortungMultiPolygonModel | undefined>();
 // Repräsentiert das Multipolygon je Flurstück.
 const geoJson = computed(() => flurstueckeToGeoJsonFeature(Array.from(selectedFlurstuecke.value.values())));
 // Repräsentiert die gewählten Flurstücke identifiziert über die Flurstücksnummer.
