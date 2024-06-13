@@ -73,6 +73,8 @@ import L, { type GeoJSONOptions, type LatLngBoundsLiteral, type LatLngLiteral, L
 import LControl from "./LControl.vue";
 import "leaflet.nontiledlayer";
 import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet/dist/leaflet.css";
 import _ from "lodash";
 
