@@ -6,7 +6,6 @@
       </span>
     </v-label>
     <v-input
-      ref="input"
       class="pt-6"
       :model-value="valueInternal"
       :rules="rules"
@@ -22,13 +21,14 @@
           v-model="valueAsPosition"
           :class="`slider mx-2 ${backgroundColor}`"
           :disabled="disabled"
+          :focused="focused"
           type="range"
           min="0"
           max="2"
           :step="collapsed ? 2 : 1"
           @change="formChanged"
-          @focus="focused"
-          @blur="blurred"
+          @focus="focused = true"
+          @blur="focused = false"
         />
         <span :class="`annotation ${getAnnotationColor('on')}`">
           <slot name="onText">{{ onText }}</slot>
@@ -69,7 +69,7 @@ interface Props {
 
 const { formChanged } = useSaveLeave();
 const valueInternal = defineModel<UncertainBoolean>({ required: true });
-const input = ref<VInput | null>(null);
+const focused = ref(false);
 const collapsed = computed(() => valueInternal.value !== UncertainBoolean.Unspecified);
 
 /**
@@ -132,25 +132,7 @@ function getAnnotationColor(type: "on" | "off"): string {
     }
   }
 
-  return "grey--text";
-}
-
-/**
- * Meldet an v-input, dass das Element Fokus erhalten hat.
- */
-function focused(): void {
-  if (input.value !== null) {
-    input.value.focused = true;
-  }
-}
-
-/**
- * Meldet an v-input, dass das Element Fokus verloren hat.
- */
-function blurred(): void {
-  if (input.value !== null) {
-    input.value.focused = false;
-  }
+  return "text-grey";
 }
 </script>
 

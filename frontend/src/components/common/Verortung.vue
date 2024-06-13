@@ -24,7 +24,7 @@
         <v-chip-group
           v-if="stadtbezirke.length !== 0"
           title="Stadtbezirke"
-          selected-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -44,7 +44,7 @@
         <v-chip-group
           v-if="kitaplanungsbereiche.length !== 0"
           title="Kitaplanungsbereiche"
-          selected-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -67,7 +67,7 @@
         <v-chip-group
           v-if="bezirksteile.length !== 0"
           title="Bezirksteile"
-          selected-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -88,7 +88,7 @@
         <v-chip-group
           v-if="grundschulsprengel.length !== 0"
           title="Grundschulsprengel"
-          selected-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -111,7 +111,7 @@
         <v-chip-group
           v-if="gemarkungen.length !== 0"
           title="Gemarkungen"
-          selected-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -132,7 +132,7 @@
         <v-chip-group
           v-if="mittelschulsprengel.length !== 0"
           title="Mittelschulsprengel"
-          selected-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -153,7 +153,7 @@
         <v-chip-group
           v-if="flurstuecke.length !== 0"
           title="Flurstücke"
-          selected-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
