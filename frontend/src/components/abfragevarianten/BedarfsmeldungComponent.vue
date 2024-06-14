@@ -224,7 +224,7 @@ const bedarfsmeldungenHeaders = ref<any[]>([
   { title: "Anz. Grundschulzüge", key: "anzahlGrundschulzuege", sortable: false },
   { title: "", key: "actions", sortable: false, align: "end", width: "10%" },
 ]);
-const bedarfsmeldungen = ref<BedarfsmeldungDto[]>([]);
+const bedarfsmeldungen = ref<BedarfsmeldungDto[] | undefined>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
 const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
 const anmerkung = ref<string | undefined>(undefined);
@@ -236,8 +236,8 @@ const { formChanged } = useSaveLeave();
 watch(() => abfragevariante, watchBedarfsmeldungSelection, { immediate: true, deep: true });
 function watchBedarfsmeldungSelection(): void {
   bedarfsmeldungen.value = props.isFachreferat
-    ? _.toArray(abfragevariante.value.bedarfsmeldungFachreferate)
-    : _.toArray(abfragevariante.value.bedarfsmeldungAbfrageersteller);
+    ? abfragevariante.value.bedarfsmeldungFachreferate
+    : abfragevariante.value.bedarfsmeldungAbfrageersteller;
 
   anmerkung.value = props.isFachreferat
     ? abfragevariante.value.anmerkungFachreferate
