@@ -109,42 +109,28 @@
               hide-default-footer
               @change="formChanged"
             >
-              <template #body="{ items }">
-                <tbody>
-                  <tr
-                    v-for="(item, index) in items"
-                    :key="index"
-                  >
-                    <td>{{ item.anzahlEinrichtungen }}</td>
-                    <td>
-                      {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
-                    </td>
-                    <td>{{ item.anzahlKinderkrippengruppen }}</td>
-                    <td>{{ item.anzahlKindergartengruppen }}</td>
-                    <td>{{ item.anzahlHortgruppen }}</td>
-                    <td>{{ item.anzahlGrundschulzuege }}</td>
-                    <td>
-                      <v-item-group class="d-flex">
-                        <v-btn
-                          :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                          :disabled="!isEditable"
-                          variant="plain"
-                          density="compact"
-                          icon="mdi-pencil-outline"
-                          @click="editBedarfsmeldung(item, index)"
-                        />
-                        <v-btn
-                          :id="'bedarfsmeldung_listitem_loeschen' + index"
-                          :disabled="!isEditable"
-                          variant="plain"
-                          density="compact"
-                          icon="mdi-delete"
-                          @click="deleteBedarfsmeldung(index)"
-                        />
-                      </v-item-group>
-                    </td>
-                  </tr>
-                </tbody>
+              <template #item.infrastruktureinrichtungTyp="{ item }">
+                <td>{{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}</td>
+              </template>
+              <template #item.actions="{ item, index }">
+                <v-item-group class="d-flex">
+                  <v-btn
+                    :id="'bedarfsmeldung_listitem_bearbeiten' + index"
+                    :disabled="!isEditable"
+                    variant="plain"
+                    density="compact"
+                    icon="mdi-pencil-outline"
+                    @click="editBedarfsmeldung(item, index)"
+                  />
+                  <v-btn
+                    :id="'bedarfsmeldung_listitem_loeschen' + index"
+                    :disabled="!isEditable"
+                    variant="plain"
+                    density="compact"
+                    icon="mdi-delete"
+                    @click="deleteBedarfsmeldung(index)"
+                  />
+                </v-item-group>
               </template>
             </v-data-table>
             <v-toolbar
@@ -156,7 +142,8 @@
                 :id="'bedarfsmeldung_erfassen'"
                 :disabled="!isEditable"
                 color="primary"
-                block
+                variant="flat"
+                style="width: 300px"
                 @click="erfassenBedarfsmeldung()"
               >
                 Bedarfsmeldung erfassen
@@ -228,11 +215,19 @@ const bedarfsmeldungTitle = computed(() => {
 
 const isEditable = computed(() => props.isEditable);
 
-const anmerkung = ref<string | undefined>(undefined);
-const bedarfsmeldungenHeaders = ref<any[]>([]);
+const bedarfsmeldungenHeaders = ref<any[]>([
+  { title: "Anz. Einrichtungen", key: "anzahlEinrichtungen", sortable: false },
+  { title: "Infrastruktureinrichtung Typ", key: "infrastruktureinrichtungTyp", sortable: false },
+  { title: "Anz. Kinderkrippengruppen", key: "anzahlKinderkrippengruppen", sortable: false },
+  { title: "Anz. Kindergartengruppen", key: "anzahlKindergartengruppen", sortable: false },
+  { text: "Anz. Hortgruppen", key: "anzahlHortgruppen", sortable: false },
+  { title: "Anz. Grundschulzüge", key: "anzahlGrundschulzuege", sortable: false },
+  { title: "", key: "actions", sortable: false, align: "end", width: "10%" },
+]);
 const bedarfsmeldungen = ref<BedarfsmeldungDto[]>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
 const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
+const anmerkung = ref<string | undefined>(undefined);
 let displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 let selectedItemIndex = -1;
 const lookupStore = useLookupStore();
@@ -240,7 +235,6 @@ const { formChanged } = useSaveLeave();
 
 watch(() => abfragevariante, watchBedarfsmeldungSelection, { immediate: true, deep: true });
 function watchBedarfsmeldungSelection(): void {
-  bedarfsmeldungenHeaders.value = getBedarfsmeldungHeaders();
   bedarfsmeldungen.value = props.isFachreferat
     ? _.toArray(abfragevariante.value.bedarfsmeldungFachreferate)
     : _.toArray(abfragevariante.value.bedarfsmeldungAbfrageersteller);
@@ -314,17 +308,5 @@ function deleteBedarfsmeldung(itemIndex: number) {
     bedarfsmeldungen.value?.splice(itemIndex, 1);
     formChanged();
   }
-}
-
-function getBedarfsmeldungHeaders(): any[] {
-  return [
-    { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
-    { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
-    { text: "Anz. Kinderkrippengruppen", value: "anzahlKinderkrippengruppen", sortable: false },
-    { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
-    { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
-    { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
-    { text: "", value: "actions", sortable: false, align: "end", width: "10%" },
-  ];
 }
 </script>

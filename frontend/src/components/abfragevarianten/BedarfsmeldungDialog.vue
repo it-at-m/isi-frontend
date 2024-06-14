@@ -97,7 +97,7 @@
           <v-btn
             id="bedarfsmeldung_abbrechen_button"
             color="secondary"
-            block
+            variant="flat"
             style="width: 200px"
             @click="abbrechenBedarfsmeldung"
           >
@@ -106,7 +106,7 @@
           <v-btn
             id="bedarfsmeldung_uebernehmen_button"
             color="primary"
-            block
+            variant="flat"
             style="width: 200px"
             @click="uebernehmenBedarfsmeldung"
           >
