@@ -229,6 +229,7 @@ const bedarfsmeldungTitle = computed(() => {
 const isEditable = computed(() => props.isEditable);
 
 const anmerkung = ref<string | undefined>(undefined);
+const bedarfsmeldungenHeaders = ref<any[]>([]);
 const bedarfsmeldungen = ref<BedarfsmeldungDto[]>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
 const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
@@ -239,6 +240,7 @@ const { formChanged } = useSaveLeave();
 
 watch(() => abfragevariante, watchBedarfsmeldungSelection, { immediate: true, deep: true });
 function watchBedarfsmeldungSelection(): void {
+  bedarfsmeldungenHeaders.value = getBedarfsmeldungHeaders();
   bedarfsmeldungen.value = props.isFachreferat
     ? _.toArray(abfragevariante.value.bedarfsmeldungFachreferate)
     : _.toArray(abfragevariante.value.bedarfsmeldungAbfrageersteller);
@@ -256,16 +258,6 @@ function watchAnmerkung(): void {
     abfragevariante.value.anmerkungAbfrageersteller = anmerkung.value;
   }
 }
-
-const bedarfsmeldungenHeaders = [
-  { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
-  { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
-  { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen", sortable: false },
-  { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
-  { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
-  { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
-  { text: "", value: "actions", sortable: false },
-];
 
 /**
  * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
@@ -322,5 +314,17 @@ function deleteBedarfsmeldung(itemIndex: number) {
     bedarfsmeldungen.value?.splice(itemIndex, 1);
     formChanged();
   }
+}
+
+function getBedarfsmeldungHeaders(): any[] {
+  return [
+    { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
+    { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
+    { text: "Anz. Kinderkrippengruppen", value: "anzahlKinderkrippengruppen", sortable: false },
+    { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
+    { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
+    { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
+    { text: "", value: "actions", sortable: false, align: "end", width: "10%" },
+  ];
 }
 </script>
