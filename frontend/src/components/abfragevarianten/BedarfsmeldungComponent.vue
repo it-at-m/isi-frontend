@@ -220,7 +220,7 @@ const bedarfsmeldungenHeaders = ref<any[]>([
   { title: "Anz. Einrichtungen", key: "anzahlEinrichtungen", sortable: false },
   { title: "Anz. Kinderkrippengruppen", key: "anzahlKinderkrippengruppen", sortable: false },
   { title: "Anz. Kindergartengruppen", key: "anzahlKindergartengruppen", sortable: false },
-  { text: "Anz. Hortgruppen", key: "anzahlHortgruppen", sortable: false },
+  { title: "Anz. Hortgruppen", key: "anzahlHortgruppen", sortable: false },
   { title: "Anz. Grundschulzüge", key: "anzahlGrundschulzuege", sortable: false },
   { title: "", key: "actions", sortable: false, align: "end", width: "10%" },
 ]);
