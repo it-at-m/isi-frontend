@@ -1,6 +1,6 @@
 <template>
   <div>
-    <field-group-card :card-title="getBedarfsmeldungTitle">
+    <field-group-card :card-title="bedarfsmeldungTitle">
       <v-row
         v-if="false"
         justify="center"
@@ -167,6 +167,26 @@
           </v-container>
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <v-textarea
+            id="anmerkungen_field"
+            ref="anmerkungenField"
+            v-model="anmerkung"
+            :disabled="!isEditable"
+            variant="underlined"
+            label="Anmerkungen"
+            auto-grow
+            rows="3"
+            maxlength="1000"
+            @update:model-value="formChanged"
+          />
+        </v-col>
+      </v-row>
     </field-group-card>
     <bedarfsmeldung-dialog
       id="bedarfsmeldung_dialog"
@@ -201,7 +221,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { isEditable: false, isFachreferat: false });
 const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
-const getBedarfsmeldungTitle = computed(() => {
+const bedarfsmeldungTitle = computed(() => {
   if (!_.isNil(props.bedarfsmeldungTitle)) {
     return props.bedarfsmeldungTitle.valueOf();
   }
@@ -210,6 +230,7 @@ const getBedarfsmeldungTitle = computed(() => {
 
 const isEditable = computed(() => props.isEditable);
 
+const anmerkung = ref<string | undefined>(undefined);
 const bedarfsmeldungen = ref<BedarfsmeldungDto[]>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
 const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
@@ -218,15 +239,23 @@ let selectedItemIndex = -1;
 const lookupStore = useLookupStore();
 const { formChanged } = useSaveLeave();
 
-watch(() => abfragevariante, bedarfsmeldungSelection, { immediate: true, deep: true });
-function bedarfsmeldungSelection(): void {
-  if (
-    !_.isNil(abfragevariante.value.bedarfsmeldungFachreferate) &&
-    !_.isNil(abfragevariante.value.bedarfsmeldungAbfrageersteller)
-  ) {
-    bedarfsmeldungen.value = props.isFachreferat
-      ? abfragevariante.value.bedarfsmeldungFachreferate
-      : abfragevariante.value.bedarfsmeldungAbfrageersteller;
+watch(() => abfragevariante, watchBedarfsmeldungSelection, { immediate: true, deep: true });
+function watchBedarfsmeldungSelection(): void {
+  bedarfsmeldungen.value = props.isFachreferat
+    ? _.toArray(abfragevariante.value.bedarfsmeldungFachreferate)
+    : _.toArray(abfragevariante.value.bedarfsmeldungAbfrageersteller);
+
+  anmerkung.value = props.isFachreferat
+    ? abfragevariante.value.anmerkungFachreferate
+    : abfragevariante.value.anmerkungAbfrageersteller;
+}
+
+watch(() => anmerkung, watchAnmerkung, { immediate: true, deep: true });
+function watchAnmerkung(): void {
+  if (props.isFachreferat) {
+    abfragevariante.value.anmerkungFachreferate = anmerkung.value;
+  } else {
+    abfragevariante.value.anmerkungAbfrageersteller = anmerkung.value;
   }
 }
 
