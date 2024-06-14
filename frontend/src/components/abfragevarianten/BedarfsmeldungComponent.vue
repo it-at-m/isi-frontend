@@ -216,8 +216,8 @@ const bedarfsmeldungTitle = computed(() => {
 const isEditable = computed(() => props.isEditable);
 
 const bedarfsmeldungenHeaders = ref<any[]>([
+  { title: "Typ Infrastruktureinrichtung", key: "infrastruktureinrichtungTyp", sortable: false },
   { title: "Anz. Einrichtungen", key: "anzahlEinrichtungen", sortable: false },
-  { title: "Infrastruktureinrichtung Typ", key: "infrastruktureinrichtungTyp", sortable: false },
   { title: "Anz. Kinderkrippengruppen", key: "anzahlKinderkrippengruppen", sortable: false },
   { title: "Anz. Kindergartengruppen", key: "anzahlKindergartengruppen", sortable: false },
   { text: "Anz. Hortgruppen", key: "anzahlHortgruppen", sortable: false },
