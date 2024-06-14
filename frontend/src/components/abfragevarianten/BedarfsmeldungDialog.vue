@@ -96,7 +96,9 @@
           <v-spacer />
           <v-btn
             id="bedarfsmeldung_abbrechen_button"
-            variant="flat"
+            color="secondary"
+            block
+            style="width: 200px"
             @click="abbrechenBedarfsmeldung"
           >
             Abbrechen
@@ -104,7 +106,8 @@
           <v-btn
             id="bedarfsmeldung_uebernehmen_button"
             color="primary"
-            variant="flat"
+            block
+            style="width: 200px"
             @click="uebernehmenBedarfsmeldung"
           >
             Übernehmen

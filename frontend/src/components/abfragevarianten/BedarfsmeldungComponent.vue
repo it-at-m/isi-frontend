@@ -156,8 +156,7 @@
                 :id="'bedarfsmeldung_erfassen'"
                 :disabled="!isEditable"
                 color="primary"
-                style="width: 200px"
-                variant="flat"
+                block
                 @click="erfassenBedarfsmeldung()"
               >
                 Bedarfsmeldung erfassen
