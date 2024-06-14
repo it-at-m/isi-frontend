@@ -2,7 +2,7 @@
   <div>
     <field-group-card :card-title="getBedarfsmeldungTitle">
       <v-row
-        v-if="getIsFachreferat"
+        v-if="false"
         justify="center"
       >
         <v-col
@@ -94,24 +94,6 @@
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
-            @update:model-value="formChanged"
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="getIsFachreferat">
-        <v-col
-          cols="12"
-          md="12"
-        >
-          <v-textarea
-            id="hinweis_Versorgung_field"
-            ref="hinweisVersorgungField"
-            v-model="abfragevariante.hinweisVersorgung"
-            :disabled="!getIsEditable"
-            label="Hinweise zur Versorgung der Bedarfe außerhalb des Verfahrens"
-            rows="1"
-            auto-grow
-            maxlength="1000"
             @update:model-value="formChanged"
           />
         </v-col>
