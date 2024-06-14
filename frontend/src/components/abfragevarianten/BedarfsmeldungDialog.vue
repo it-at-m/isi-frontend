@@ -33,6 +33,7 @@
               :items="infrastruktureinrichtungenTypList"
               item-value="key"
               item-title="value"
+              variant="underlined"
               :rules="[pflichtfeld, notUnspecified]"
               @update:model-value="formChanged"
             >
@@ -96,7 +97,7 @@
           <v-spacer />
           <v-btn
             id="bedarfsmeldung_abbrechen_button"
-            variant="text"
+            variant="flat"
             @click="abbrechenBedarfsmeldung"
           >
             Abbrechen
@@ -104,6 +105,7 @@
           <v-btn
             id="bedarfsmeldung_uebernehmen_button"
             color="primary"
+            variant="flat"
             @click="uebernehmenBedarfsmeldung"
           >
             Übernehmen
@@ -124,6 +126,7 @@ import { findFaultInBedarfsmeldung } from "@/utils/Validators";
 import _ from "lodash";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
+import NumField from "@/components/common/NumField.vue";
 
 interface Props {
   showBedarfsmeldungDialog?: boolean;
@@ -132,6 +135,7 @@ interface Props {
 interface Emits {
   (event: "update-show-bedarfsmeldung-dialog", value: boolean): boolean;
   (event: "uebernehmen-bedarfsmeldung", value: BedarfsmeldungModel): void;
+  (event: "abbrechen-bedarfsmeldung"): void;
 }
 
 const props = withDefaults(defineProps<Props>(), { showBedarfsmeldungDialog: false });
@@ -176,7 +180,7 @@ async function validateDialogForm(): Promise<boolean> {
 }
 
 function abbrechenBedarfsmeldung(): void {
-  emit("uebernehmen-bedarfsmeldung", bedarfsmeldung.value);
+  emit("abbrechen-bedarfsmeldung");
 }
 
 function updateShowBedarfsmeldungDialog(value: boolean): void {
