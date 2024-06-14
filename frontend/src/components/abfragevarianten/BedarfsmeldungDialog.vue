@@ -3,7 +3,6 @@
     :model-value="showBedarfsmeldungDialog"
     persistent
     width="60%"
-    @update:model-value="updateShowBedarfsmeldungDialog"
   >
     <v-form ref="bedarfsmeldungDialogForm">
       <v-card class="overflow-x-hidden">
@@ -133,7 +132,6 @@ interface Props {
 }
 
 interface Emits {
-  (event: "update-show-bedarfsmeldung-dialog", value: boolean): boolean;
   (event: "uebernehmen-bedarfsmeldung", value: BedarfsmeldungModel): void;
   (event: "abbrechen-bedarfsmeldung"): void;
 }
@@ -181,9 +179,5 @@ async function validateDialogForm(): Promise<boolean> {
 
 function abbrechenBedarfsmeldung(): void {
   emit("abbrechen-bedarfsmeldung");
-}
-
-function updateShowBedarfsmeldungDialog(value: boolean): void {
-  emit("update-show-bedarfsmeldung-dialog", value);
 }
 </script>

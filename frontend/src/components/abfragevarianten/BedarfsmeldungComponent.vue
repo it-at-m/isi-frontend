@@ -192,7 +192,6 @@
       id="bedarfsmeldung_dialog"
       v-model="currentBedarfsmeldung"
       :show-bedarfsmeldung-dialog="bedarfsmeldungDialogOpen"
-      @update-show-bedarfsmeldung-dialog="bedarfsmeldungDialogOpen = $event"
       @uebernehmen-bedarfsmeldung="uebernehmenBedarfsmeldung($event)"
       @abbrechen-bedarfsmeldung="abbrechenBedarfsmeldung()"
     />
