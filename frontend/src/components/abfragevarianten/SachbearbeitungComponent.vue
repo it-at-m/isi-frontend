@@ -116,6 +116,7 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import _ from "lodash";
 import type { VSelect } from "vuetify/components";
+import { watch } from "vue";
 
 // Workaround um den Validation Rule Type zu bekommen
 // https://stackoverflow.com/questions/77201639/how-to-import-typescript-types-in-vuetify-3
@@ -124,6 +125,15 @@ type ValidationRule = UnwrapReadonlyArray<VSelect["rules"]>;
 
 interface Props {
   isEditable?: boolean;
+}
+
+watch(
+  () => abfragevarianteSachbearbeitung.value.dokumente,
+  () => logInformation(),
+);
+
+function logInformation(): void {
+  console.log(abfragevarianteSachbearbeitung.value.name);
 }
 
 const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
