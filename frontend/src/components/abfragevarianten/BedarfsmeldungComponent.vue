@@ -14,7 +14,7 @@
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
@@ -24,7 +24,7 @@
             id="ausgeloester_bedarf_mitversorgung_im_bplan_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungImBplanKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
@@ -34,7 +34,7 @@
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
@@ -44,7 +44,7 @@
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
@@ -60,7 +60,7 @@
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
@@ -70,7 +70,7 @@
             id="ausgeloester_bedarf_mitversorgung_im_bplan_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungImBplanSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
@@ -80,7 +80,7 @@
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
@@ -90,7 +90,7 @@
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
@@ -124,50 +124,46 @@
                     <td>{{ item.anzahlHortgruppen }}</td>
                     <td>{{ item.anzahlGrundschulzuege }}</td>
                     <td>
-                      <v-btn
-                        :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                        :disabled="!getIsEditable"
-                        icon
-                        @click="editBedarfsmeldung(item, index)"
-                      >
-                        <v-icon> mdi-pencil-outline </v-icon>
-                      </v-btn>
-                      <v-btn
-                        :id="'bedarfsmeldung_listitem_loeschen' + index"
-                        :disabled="!getIsEditable"
-                        variant="plain"
-                        icon="mdi-delete"
-                        @click="deleteBedarfsmeldung(index)"
-                      />
+                      <v-item-group class="d-flex">
+                        <v-btn
+                          :id="'bedarfsmeldung_listitem_bearbeiten' + index"
+                          :disabled="!isEditable"
+                          variant="plain"
+                          density="compact"
+                          icon="mdi-pencil-outline"
+                          @click="editBedarfsmeldung(item, index)"
+                        />
+                        <v-btn
+                          :id="'bedarfsmeldung_listitem_loeschen' + index"
+                          :disabled="!isEditable"
+                          variant="plain"
+                          density="compact"
+                          icon="mdi-delete"
+                          @click="deleteBedarfsmeldung(index)"
+                        />
+                      </v-item-group>
                     </td>
                   </tr>
                 </tbody>
               </template>
             </v-data-table>
-            <v-row class="mt-4">
-              <v-col
-                cols="12"
-                md="4"
-              />
-              <v-col
-                cols="12"
-                md="4"
-                class="text-center"
+            <v-toolbar
+              color="transparent"
+              flat
+            >
+              <v-spacer />
+              <v-btn
+                :id="'bedarfsmeldung_erfassen'"
+                :disabled="!isEditable"
+                color="primary"
+                style="width: 200px"
+                variant="flat"
+                @click="erfassenBedarfsmeldung()"
               >
-                <v-btn
-                  :id="'bedarfsmeldung_erfassen'"
-                  :disabled="!getIsEditable"
-                  block
-                  @click="erfassenBedarfsmeldung()"
-                >
-                  Bedarfsmeldung erfassen
-                </v-btn>
-              </v-col>
-              <v-col
-                cols="12"
-                md="4"
-              />
-            </v-row>
+                Bedarfsmeldung erfassen
+              </v-btn>
+              <v-spacer />
+            </v-toolbar>
           </v-container>
         </v-col>
       </v-row>
@@ -212,8 +208,7 @@ const getBedarfsmeldungTitle = computed(() => {
   return "";
 });
 
-const getIsEditable = computed(() => props.isEditable);
-const getIsFachreferat = computed(() => props.isFachreferat);
+const isEditable = computed(() => props.isEditable);
 
 const bedarfsmeldungen = ref<BedarfsmeldungDto[]>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
