@@ -12,19 +12,6 @@
             cols="12"
             md="6"
           >
-            <num-field
-              id="bedarfsmeldung_anzahl_einrichtungen"
-              v-model="bedarfsmeldung.anzahlEinrichtungen"
-              class="mx-3"
-              label="Anzahl der Einrichtungen einer Größe"
-              integer
-              required
-            />
-          </v-col>
-          <v-col
-            cols="12"
-            md="6"
-          >
             <v-select
               id="bedarfsmeldung_infrastruktureinrichtung_typ"
               v-model="bedarfsmeldung.infrastruktureinrichtungTyp"
@@ -38,6 +25,19 @@
             >
               <template #label> Infrastruktureinrichtung Typ <span class="text-secondary">*</span> </template>
             </v-select>
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <num-field
+              id="bedarfsmeldung_anzahl_einrichtungen"
+              v-model="bedarfsmeldung.anzahlEinrichtungen"
+              class="mx-3"
+              label="Anzahl der Einrichtungen einer Größe"
+              integer
+              required
+            />
           </v-col>
         </v-row>
         <v-row>
