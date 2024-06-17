@@ -1329,7 +1329,6 @@ function selectEntity(
   selected.value = entity;
   openForm.value = type;
   selectedTreeItemId.value = itemId;
-  console.log(selected.value);
 }
 
 function isAbfragevarianteBauleitplanverfahren(
