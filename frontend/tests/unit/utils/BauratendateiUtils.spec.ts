@@ -79,21 +79,25 @@ describe("BauratendateiUtils.spec.ts", () => {
       },
       {
         title: "foerderart1",
+        sortable: false,
         key: "foerderart1",
         align: "start",
       },
       {
         title: "foerderart2",
+        sortable: false,
         key: "foerderart2",
         align: "start",
       },
       {
         title: "foerderart3",
+        sortable: false,
         key: "foerderart3",
         align: "start",
       },
       {
         title: "foerderart4",
+        sortable: false,
         key: "foerderart4",
         align: "start",
       },

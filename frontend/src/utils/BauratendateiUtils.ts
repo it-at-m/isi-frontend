@@ -49,6 +49,7 @@ export function createHeadersForFoerderarten(
       title: headerFoerderart,
       key: headerFoerderart,
       align: "start",
+      sortable: false,
     };
   });
 }
