@@ -242,18 +242,7 @@ const form = ref<VForm | null>(null);
 const deleteDialogOpen = ref(false);
 const isNew = ref(true);
 const mode = ref(DisplayMode.UNDEFINED);
-
-const infrastruktureinrichtung = computed({
-  get() {
-    return (
-      searchStore.selectedInfrastruktureinrichtung ??
-      new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto())
-    );
-  },
-  set(model: InfrastruktureinrichtungModel) {
-    searchStore.setSelectedInfrastruktureinrichtung(model);
-  },
-});
+const infrastruktureinrichtung = ref(new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto()));
 
 const lfdNr = computed(() => {
   if (!_.isNil(infrastruktureinrichtung.value) && !_.isNil(infrastruktureinrichtung.value.lfdNr)) {
@@ -336,12 +325,18 @@ onBeforeMount(async () => {
   isNew.value = infrastruktureinrichtungId === undefined;
   mode.value = isNew.value ? DisplayMode.NEU : DisplayMode.AENDERUNG;
 
-  if (isNew.value) {
-    setNewInfrastruktureinrichtung();
-  } else {
+  if (!isNew.value) {
     infrastruktureinrichtung.value = await getInfrastruktureinrichtungById(infrastruktureinrichtungId);
   }
 });
+
+watch(
+  infrastruktureinrichtung,
+  () => {
+    searchStore.setSelectedInfrastruktureinrichtung(infrastruktureinrichtung.value);
+  },
+  { deep: true },
+);
 
 watch(
   () => infrastruktureinrichtung.value.infrastruktureinrichtungTyp,
