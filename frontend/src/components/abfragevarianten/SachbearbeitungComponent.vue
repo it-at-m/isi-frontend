@@ -23,6 +23,7 @@
             </v-select>
           </v-slide-y-reverse-transition>
         </v-col>
+        <!-- Das Datum wird in ISI 2.0 relevant werden
         <v-col
           cols="12"
           md="6"
@@ -37,8 +38,12 @@
             required
           />
         </v-col>
+        -->
       </v-row>
-      <sobon-berechnung v-model="abfragevarianteSachbearbeitung.sobonBerechnung"></sobon-berechnung>
+      <sobon-berechnung
+        v-if="isBauleitplanverfahrenOrWeiteresVerfahren"
+        v-model="abfragevarianteSachbearbeitung.sobonBerechnung"
+      ></sobon-berechnung>
       <v-row>
         <v-col
           cols="12"
@@ -93,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import {
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   UncertainBoolean,
@@ -164,7 +169,29 @@ const sobonOrientierungswertJahrValidator = computed(() => {
   return [];
 });
 
+const isBauleitplanverfahrenOrWeiteresVerfahren = computed(() => {
+  return (
+    abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
+      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
+    abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
+      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
+  );
+});
+
 withDefaults(defineProps<Props>(), { isEditable: false });
+
+watch(
+  () => abfragevarianteSachbearbeitung.value.stammdatenGueltigAb,
+  () => {
+    if (
+      _.isNil(abfragevarianteSachbearbeitung.value.stammdatenGueltigAb) ||
+      abfragevarianteSachbearbeitung.value.stammdatenGueltigAb.getTime() === 0
+    ) {
+      abfragevarianteSachbearbeitung.value.stammdatenGueltigAb = new Date();
+    }
+  },
+  { immediate: true },
+);
 
 /**
  * Überprüfung ob alle Kriterien stimmen um die Sobon Report anzuzeigen.
@@ -172,10 +199,7 @@ withDefaults(defineProps<Props>(), { isEditable: false });
 function showSobonReport(): boolean {
   const abfrage = searchStore.selectedAbfrage as BauleitplanverfahrenModel | WeiteresVerfahrenModel;
   return (
-    (abfragevarianteSachbearbeitung.value.artAbfragevariante ===
-      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
-      abfragevarianteSachbearbeitung.value.artAbfragevariante ===
-        AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren) &&
+    isBauleitplanverfahrenOrWeiteresVerfahren.value &&
     !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung) &&
     abfrage.sobonRelevant === UncertainBoolean.True &&
     (abfragevarianteSachbearbeitung.value.sobonBerechnung.isASobonBerechnung as boolean) &&
