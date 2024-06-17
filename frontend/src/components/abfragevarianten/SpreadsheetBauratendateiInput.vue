@@ -196,6 +196,7 @@ function deleteTableItem(item: any): void {
     });
     tableDataFromBauratendateiInput.value.splice(index, 1);
     bauratendateiInput.value = createBauratendateiInput(tableDataFromBauratendateiInput.value);
+    closeTableItem();
     formChanged();
   }
 }
