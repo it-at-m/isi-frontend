@@ -53,7 +53,7 @@
           id="bedarfsmeldungenUebernehmenButton"
           color="primary"
           variant="flat"
-          style="width: 450px"
+          style="width: 500px"
           :disabled="!bedarfsmeldungenUebernehmenEnabled"
           @click="bedarfsmeldungenUebernehmen()"
         >
