@@ -134,12 +134,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import _ from "lodash";
-import { createHeaders, createTableData } from "@/utils/BauratendateiUtils";
 
 interface Props {
   isEditable?: boolean;
