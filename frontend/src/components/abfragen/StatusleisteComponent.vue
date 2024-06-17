@@ -2,7 +2,7 @@
   <div v-if="!erledigtOhneFachreferatStepper">
     <v-stepper
       v-if="!isCancelled"
-      :value="statusIndex"
+      :model-value="statusIndex"
       alt-labels
       flat
     >
@@ -71,10 +71,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
 interface Props {
-  abfrage: AbfrageModel;
+  status?: StatusAbfrage;
 }
 
 const props = defineProps<Props>();
@@ -87,13 +86,11 @@ const statusLabels = [
   "erledigt",
 ];
 const shortenedStatusLabels = ["angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "erledigt"];
-const isCancelled = computed(() => props.abfrage.statusAbfrage === StatusAbfrage.Abbruch);
-const erledigtOhneFachreferatStepper = computed(
-  () => props.abfrage.statusAbfrage === StatusAbfrage.ErledigtOhneFachreferat,
-);
+const isCancelled = computed(() => props.status === StatusAbfrage.Abbruch);
+const erledigtOhneFachreferatStepper = computed(() => props.status === StatusAbfrage.ErledigtOhneFachreferat);
 
 const statusIndex = computed(() => {
-  switch (props.abfrage.statusAbfrage) {
+  switch (props.status) {
     case StatusAbfrage.Angelegt:
       return 0;
     case StatusAbfrage.Offen:
@@ -112,7 +109,7 @@ const statusIndex = computed(() => {
 });
 
 const shortenedStatusIndex = computed(() => {
-  switch (props.abfrage.statusAbfrage) {
+  switch (props.status) {
     case StatusAbfrage.Angelegt:
       return 0;
     case StatusAbfrage.Offen:
