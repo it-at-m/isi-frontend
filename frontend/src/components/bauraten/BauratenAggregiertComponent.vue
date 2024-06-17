@@ -5,7 +5,7 @@
         <v-data-table
           :headers="bauratenHeader"
           :items="aggregatedBauraten"
-          density="comfortable"
+          density="compact"
           hide-default-footer
           disable-pagination
           disable-filtering
