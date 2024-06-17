@@ -56,6 +56,9 @@ import {
     VerortungMultiPolygonDtoToJSON,
 } from './VerortungMultiPolygonDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -169,6 +172,8 @@ export function BaugenehmigungsverfahrenDtoFromJSON(json: any): Baugenehmigungsv
 export function BaugenehmigungsverfahrenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageDtoFromJSONTyped(json, ignoreDiscriminator),

@@ -38,6 +38,9 @@ import {
     Wgs84DtoToJSON,
 } from './Wgs84Dto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -127,6 +130,8 @@ export function BauvorhabenSearchResultDtoFromJSON(json: any): BauvorhabenSearch
 export function BauvorhabenSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauvorhabenSearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),

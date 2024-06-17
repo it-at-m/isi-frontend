@@ -26,6 +26,9 @@ import {
     Wgs84DtoToJSON,
 } from './Wgs84Dto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -84,6 +87,8 @@ export function InfrastruktureinrichtungSearchResultDtoFromJSON(json: any): Infr
 export function InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungSearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),

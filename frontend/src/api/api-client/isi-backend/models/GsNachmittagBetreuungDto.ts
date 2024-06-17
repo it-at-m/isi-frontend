@@ -38,6 +38,9 @@ import {
     VerortungPointDtoToJSON,
 } from './VerortungPointDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -124,6 +127,8 @@ export function GsNachmittagBetreuungDtoFromJSON(json: any): GsNachmittagBetreuu
 export function GsNachmittagBetreuungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GsNachmittagBetreuungDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),

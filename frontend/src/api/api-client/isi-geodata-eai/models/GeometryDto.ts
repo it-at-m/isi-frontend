@@ -13,6 +13,19 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
+import {
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
+import type { PointGeometryDto } from './PointGeometryDto';
+import {
+    PointGeometryDtoFromJSON,
+    PointGeometryDtoFromJSONTyped,
+    PointGeometryDtoToJSON,
+} from './PointGeometryDto';
+
 import {
      MultiPolygonGeometryDtoFromJSONTyped,
      PointGeometryDtoFromJSONTyped

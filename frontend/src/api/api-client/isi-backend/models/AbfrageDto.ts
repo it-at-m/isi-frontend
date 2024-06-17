@@ -13,6 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenDto } from './BaugenehmigungsverfahrenDto';
+import {
+    BaugenehmigungsverfahrenDtoFromJSON,
+    BaugenehmigungsverfahrenDtoFromJSONTyped,
+    BaugenehmigungsverfahrenDtoToJSON,
+} from './BaugenehmigungsverfahrenDto';
+import type { BauleitplanverfahrenDto } from './BauleitplanverfahrenDto';
+import {
+    BauleitplanverfahrenDtoFromJSON,
+    BauleitplanverfahrenDtoFromJSONTyped,
+    BauleitplanverfahrenDtoToJSON,
+} from './BauleitplanverfahrenDto';
 import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
 import {
     BearbeitungshistorieDtoFromJSON,
@@ -25,6 +37,12 @@ import {
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
 } from './StatusAbfrage';
+import type { WeiteresVerfahrenDto } from './WeiteresVerfahrenDto';
+import {
+    WeiteresVerfahrenDtoFromJSON,
+    WeiteresVerfahrenDtoFromJSONTyped,
+    WeiteresVerfahrenDtoToJSON,
+} from './WeiteresVerfahrenDto';
 
 import {
      BaugenehmigungsverfahrenDtoFromJSONTyped,

@@ -60,7 +60,7 @@ import {
  * 
  * @export
  */
-export type UpdateInfrastruktureinrichtungRequest = GrundschuleDto | GsNachmittagBetreuungDto | HausFuerKinderDto | KindergartenDto | KinderkrippeDto | MittelschuleDto;
+export type UpdateInfrastruktureinrichtungRequest = { infrastruktureinrichtungTyp: 'GRUNDSCHULE' } & GrundschuleDto | { infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG' } & GsNachmittagBetreuungDto | { infrastruktureinrichtungTyp: 'GrundschuleDto' } & GrundschuleDto | { infrastruktureinrichtungTyp: 'GsNachmittagBetreuungDto' } & GsNachmittagBetreuungDto | { infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER' } & HausFuerKinderDto | { infrastruktureinrichtungTyp: 'HausFuerKinderDto' } & HausFuerKinderDto | { infrastruktureinrichtungTyp: 'KINDERGARTEN' } & KindergartenDto | { infrastruktureinrichtungTyp: 'KINDERKRIPPE' } & KinderkrippeDto | { infrastruktureinrichtungTyp: 'KindergartenDto' } & KindergartenDto | { infrastruktureinrichtungTyp: 'KinderkrippeDto' } & KinderkrippeDto | { infrastruktureinrichtungTyp: 'MITTELSCHULE' } & MittelschuleDto | { infrastruktureinrichtungTyp: 'MittelschuleDto' } & MittelschuleDto;
 
 export function UpdateInfrastruktureinrichtungRequestFromJSON(json: any): UpdateInfrastruktureinrichtungRequest {
     return UpdateInfrastruktureinrichtungRequestFromJSONTyped(json, false);
@@ -70,7 +70,34 @@ export function UpdateInfrastruktureinrichtungRequestFromJSONTyped(json: any, ig
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...GrundschuleDtoFromJSONTyped(json, true), ...GsNachmittagBetreuungDtoFromJSONTyped(json, true), ...HausFuerKinderDtoFromJSONTyped(json, true), ...KindergartenDtoFromJSONTyped(json, true), ...KinderkrippeDtoFromJSONTyped(json, true), ...MittelschuleDtoFromJSONTyped(json, true) };
+    switch (json['infrastruktureinrichtungTyp']) {
+        case 'GRUNDSCHULE':
+            return {...GrundschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GRUNDSCHULE'};
+        case 'GS_NACHMITTAG_BETREUUNG':
+            return {...GsNachmittagBetreuungDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG'};
+        case 'GrundschuleDto':
+            return {...GrundschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GrundschuleDto'};
+        case 'GsNachmittagBetreuungDto':
+            return {...GsNachmittagBetreuungDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GsNachmittagBetreuungDto'};
+        case 'HAUS_FUER_KINDER':
+            return {...HausFuerKinderDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER'};
+        case 'HausFuerKinderDto':
+            return {...HausFuerKinderDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'HausFuerKinderDto'};
+        case 'KINDERGARTEN':
+            return {...KindergartenDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KINDERGARTEN'};
+        case 'KINDERKRIPPE':
+            return {...KinderkrippeDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KINDERKRIPPE'};
+        case 'KindergartenDto':
+            return {...KindergartenDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KindergartenDto'};
+        case 'KinderkrippeDto':
+            return {...KinderkrippeDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KinderkrippeDto'};
+        case 'MITTELSCHULE':
+            return {...MittelschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'MITTELSCHULE'};
+        case 'MittelschuleDto':
+            return {...MittelschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'MittelschuleDto'};
+        default:
+            throw new Error(`No variant of UpdateInfrastruktureinrichtungRequest exists with 'infrastruktureinrichtungTyp=${json['infrastruktureinrichtungTyp']}'`);
+    }
 }
 
 export function UpdateInfrastruktureinrichtungRequestToJSON(value?: UpdateInfrastruktureinrichtungRequest | null): any {
@@ -80,26 +107,34 @@ export function UpdateInfrastruktureinrichtungRequestToJSON(value?: UpdateInfras
     if (value === null) {
         return null;
     }
+    switch (value['infrastruktureinrichtungTyp']) {
+        case 'GRUNDSCHULE':
+            return GrundschuleDtoToJSON(value);
+        case 'GS_NACHMITTAG_BETREUUNG':
+            return GsNachmittagBetreuungDtoToJSON(value);
+        case 'GrundschuleDto':
+            return GrundschuleDtoToJSON(value);
+        case 'GsNachmittagBetreuungDto':
+            return GsNachmittagBetreuungDtoToJSON(value);
+        case 'HAUS_FUER_KINDER':
+            return HausFuerKinderDtoToJSON(value);
+        case 'HausFuerKinderDto':
+            return HausFuerKinderDtoToJSON(value);
+        case 'KINDERGARTEN':
+            return KindergartenDtoToJSON(value);
+        case 'KINDERKRIPPE':
+            return KinderkrippeDtoToJSON(value);
+        case 'KindergartenDto':
+            return KindergartenDtoToJSON(value);
+        case 'KinderkrippeDto':
+            return KinderkrippeDtoToJSON(value);
+        case 'MITTELSCHULE':
+            return MittelschuleDtoToJSON(value);
+        case 'MittelschuleDto':
+            return MittelschuleDtoToJSON(value);
+        default:
+            throw new Error(`No variant of UpdateInfrastruktureinrichtungRequest exists with 'infrastruktureinrichtungTyp=${value['infrastruktureinrichtungTyp']}'`);
+    }
 
-    if (instanceOfGrundschuleDto(value)) {
-        return GrundschuleDtoToJSON(value as GrundschuleDto);
-    }
-    if (instanceOfGsNachmittagBetreuungDto(value)) {
-        return GsNachmittagBetreuungDtoToJSON(value as GsNachmittagBetreuungDto);
-    }
-    if (instanceOfHausFuerKinderDto(value)) {
-        return HausFuerKinderDtoToJSON(value as HausFuerKinderDto);
-    }
-    if (instanceOfKindergartenDto(value)) {
-        return KindergartenDtoToJSON(value as KindergartenDto);
-    }
-    if (instanceOfKinderkrippeDto(value)) {
-        return KinderkrippeDtoToJSON(value as KinderkrippeDto);
-    }
-    if (instanceOfMittelschuleDto(value)) {
-        return MittelschuleDtoToJSON(value as MittelschuleDto);
-    }
-
-    return {};
 }
 

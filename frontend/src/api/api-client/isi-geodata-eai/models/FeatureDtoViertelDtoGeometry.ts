@@ -32,7 +32,7 @@ import {
  * 
  * @export
  */
-export type FeatureDtoViertelDtoGeometry = MultiPolygonGeometryDto | PointGeometryDto;
+export type FeatureDtoViertelDtoGeometry = { type: 'MultiPolygon' } & MultiPolygonGeometryDto | { type: 'MultiPolygonGeometryDto' } & MultiPolygonGeometryDto | { type: 'Point' } & PointGeometryDto | { type: 'PointGeometryDto' } & PointGeometryDto;
 
 export function FeatureDtoViertelDtoGeometryFromJSON(json: any): FeatureDtoViertelDtoGeometry {
     return FeatureDtoViertelDtoGeometryFromJSONTyped(json, false);
@@ -42,7 +42,18 @@ export function FeatureDtoViertelDtoGeometryFromJSONTyped(json: any, ignoreDiscr
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...MultiPolygonGeometryDtoFromJSONTyped(json, true), ...PointGeometryDtoFromJSONTyped(json, true) };
+    switch (json['type']) {
+        case 'MultiPolygon':
+            return {...MultiPolygonGeometryDtoFromJSONTyped(json, true), type: 'MultiPolygon'};
+        case 'MultiPolygonGeometryDto':
+            return {...MultiPolygonGeometryDtoFromJSONTyped(json, true), type: 'MultiPolygonGeometryDto'};
+        case 'Point':
+            return {...PointGeometryDtoFromJSONTyped(json, true), type: 'Point'};
+        case 'PointGeometryDto':
+            return {...PointGeometryDtoFromJSONTyped(json, true), type: 'PointGeometryDto'};
+        default:
+            throw new Error(`No variant of FeatureDtoViertelDtoGeometry exists with 'type=${json['type']}'`);
+    }
 }
 
 export function FeatureDtoViertelDtoGeometryToJSON(value?: FeatureDtoViertelDtoGeometry | null): any {
@@ -52,14 +63,18 @@ export function FeatureDtoViertelDtoGeometryToJSON(value?: FeatureDtoViertelDtoG
     if (value === null) {
         return null;
     }
-
-    if (instanceOfMultiPolygonGeometryDto(value)) {
-        return MultiPolygonGeometryDtoToJSON(value as MultiPolygonGeometryDto);
+    switch (value['type']) {
+        case 'MultiPolygon':
+            return MultiPolygonGeometryDtoToJSON(value);
+        case 'MultiPolygonGeometryDto':
+            return MultiPolygonGeometryDtoToJSON(value);
+        case 'Point':
+            return PointGeometryDtoToJSON(value);
+        case 'PointGeometryDto':
+            return PointGeometryDtoToJSON(value);
+        default:
+            throw new Error(`No variant of FeatureDtoViertelDtoGeometry exists with 'type=${value['type']}'`);
     }
-    if (instanceOfPointGeometryDto(value)) {
-        return PointGeometryDtoToJSON(value as PointGeometryDto);
-    }
 
-    return {};
 }
 

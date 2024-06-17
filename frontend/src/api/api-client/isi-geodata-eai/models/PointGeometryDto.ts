@@ -20,6 +20,9 @@ import {
     GeometryDtoToJSON,
 } from './GeometryDto';
 
+import {
+} from './';
+
 /**
  * Die GEOJSON-Repräsentation einer Punktkoordinate.
  * @export
@@ -51,6 +54,8 @@ export function PointGeometryDtoFromJSON(json: any): PointGeometryDto {
 export function PointGeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PointGeometryDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...GeometryDtoFromJSONTyped(json, ignoreDiscriminator),

@@ -13,6 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenInBearbeitungFachreferatDto } from './BaugenehmigungsverfahrenInBearbeitungFachreferatDto';
+import {
+    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON,
+    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
+    BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON,
+} from './BaugenehmigungsverfahrenInBearbeitungFachreferatDto';
+import type { BauleitplanverfahrenInBearbeitungFachreferatDto } from './BauleitplanverfahrenInBearbeitungFachreferatDto';
+import {
+    BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON,
+    BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
+    BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON,
+} from './BauleitplanverfahrenInBearbeitungFachreferatDto';
+import type { WeiteresVerfahrenInBearbeitungFachreferatDto } from './WeiteresVerfahrenInBearbeitungFachreferatDto';
+import {
+    WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON,
+    WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped,
+    WeiteresVerfahrenInBearbeitungFachreferatDtoToJSON,
+} from './WeiteresVerfahrenInBearbeitungFachreferatDto';
+
 import {
      BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped,
      BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped,

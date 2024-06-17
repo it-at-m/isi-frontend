@@ -26,6 +26,9 @@ import {
     AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -66,6 +69,8 @@ export function WeiteresVerfahrenBedarfsmeldungErfolgtDtoFromJSON(json: any): We
 export function WeiteresVerfahrenBedarfsmeldungErfolgtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenBedarfsmeldungErfolgtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageBedarfsmeldungErfolgtDtoFromJSONTyped(json, ignoreDiscriminator),

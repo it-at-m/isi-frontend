@@ -13,6 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto } from './BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto';
+import {
+    BaugenehmigungsverfahrenBedarfsmeldungErfolgtDtoFromJSON,
+    BaugenehmigungsverfahrenBedarfsmeldungErfolgtDtoFromJSONTyped,
+    BaugenehmigungsverfahrenBedarfsmeldungErfolgtDtoToJSON,
+} from './BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto';
+import type { BauleitplanverfahrenBedarfsmeldungErfolgtDto } from './BauleitplanverfahrenBedarfsmeldungErfolgtDto';
+import {
+    BauleitplanverfahrenBedarfsmeldungErfolgtDtoFromJSON,
+    BauleitplanverfahrenBedarfsmeldungErfolgtDtoFromJSONTyped,
+    BauleitplanverfahrenBedarfsmeldungErfolgtDtoToJSON,
+} from './BauleitplanverfahrenBedarfsmeldungErfolgtDto';
+import type { WeiteresVerfahrenBedarfsmeldungErfolgtDto } from './WeiteresVerfahrenBedarfsmeldungErfolgtDto';
+import {
+    WeiteresVerfahrenBedarfsmeldungErfolgtDtoFromJSON,
+    WeiteresVerfahrenBedarfsmeldungErfolgtDtoFromJSONTyped,
+    WeiteresVerfahrenBedarfsmeldungErfolgtDtoToJSON,
+} from './WeiteresVerfahrenBedarfsmeldungErfolgtDto';
+
 import {
      BaugenehmigungsverfahrenBedarfsmeldungErfolgtDtoFromJSONTyped,
      BauleitplanverfahrenBedarfsmeldungErfolgtDtoFromJSONTyped,
