@@ -1,14 +1,41 @@
 <template>
   <field-group-card card-title="Dokumente">
     <v-container>
-      <v-progress-circular
-        v-if="loading"
-        id="dokumente_ladekreis"
-        indeterminate
-        color="grey-lighten-1"
-        size="50"
-        width="5"
-      />
+      <v-dialog
+        v-model="loading"
+        max-width="360"
+        persistent
+      >
+        <v-list
+          class="py-3"
+          color="primary"
+          elevation="12"
+          rounded="lg"
+        >
+          <v-list-item
+            prepend-icon="mdi-file-document-refresh"
+            title="Dokumente werden hochgeladen..."
+          >
+            <template #prepend>
+              <div class="pe-4">
+                <v-icon
+                  color="primary"
+                  size="x-large"
+                ></v-icon>
+              </div>
+            </template>
+
+            <template #append>
+              <v-progress-circular
+                color="primary"
+                indeterminate="disable-shrink"
+                size="16"
+                width="2"
+              ></v-progress-circular>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-dialog>
       <dokumente-liste
         id="dokumente_liste_component"
         :dokumente="dokumente"
