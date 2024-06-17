@@ -26,6 +26,9 @@ import {
     AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDtoToJSON,
 } from './AbfragevarianteWeiteresVerfahrenInBearbeitungFachreferatDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -66,6 +69,8 @@ export function WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSON(json: any):
 export function WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),

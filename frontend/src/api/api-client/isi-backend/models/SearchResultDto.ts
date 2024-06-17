@@ -13,6 +13,24 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AbfrageSearchResultDto } from './AbfrageSearchResultDto';
+import {
+    AbfrageSearchResultDtoFromJSON,
+    AbfrageSearchResultDtoFromJSONTyped,
+    AbfrageSearchResultDtoToJSON,
+} from './AbfrageSearchResultDto';
+import type { BauvorhabenSearchResultDto } from './BauvorhabenSearchResultDto';
+import {
+    BauvorhabenSearchResultDtoFromJSON,
+    BauvorhabenSearchResultDtoFromJSONTyped,
+    BauvorhabenSearchResultDtoToJSON,
+} from './BauvorhabenSearchResultDto';
+import type { InfrastruktureinrichtungSearchResultDto } from './InfrastruktureinrichtungSearchResultDto';
+import {
+    InfrastruktureinrichtungSearchResultDtoFromJSON,
+    InfrastruktureinrichtungSearchResultDtoFromJSONTyped,
+    InfrastruktureinrichtungSearchResultDtoToJSON,
+} from './InfrastruktureinrichtungSearchResultDto';
 import type { Wgs84Dto } from './Wgs84Dto';
 import {
     Wgs84DtoFromJSON,

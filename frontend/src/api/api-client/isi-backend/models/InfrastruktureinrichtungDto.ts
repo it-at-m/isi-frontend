@@ -25,6 +25,42 @@ import {
     BearbeitendePersonDtoFromJSONTyped,
     BearbeitendePersonDtoToJSON,
 } from './BearbeitendePersonDto';
+import type { GrundschuleDto } from './GrundschuleDto';
+import {
+    GrundschuleDtoFromJSON,
+    GrundschuleDtoFromJSONTyped,
+    GrundschuleDtoToJSON,
+} from './GrundschuleDto';
+import type { GsNachmittagBetreuungDto } from './GsNachmittagBetreuungDto';
+import {
+    GsNachmittagBetreuungDtoFromJSON,
+    GsNachmittagBetreuungDtoFromJSONTyped,
+    GsNachmittagBetreuungDtoToJSON,
+} from './GsNachmittagBetreuungDto';
+import type { HausFuerKinderDto } from './HausFuerKinderDto';
+import {
+    HausFuerKinderDtoFromJSON,
+    HausFuerKinderDtoFromJSONTyped,
+    HausFuerKinderDtoToJSON,
+} from './HausFuerKinderDto';
+import type { KindergartenDto } from './KindergartenDto';
+import {
+    KindergartenDtoFromJSON,
+    KindergartenDtoFromJSONTyped,
+    KindergartenDtoToJSON,
+} from './KindergartenDto';
+import type { KinderkrippeDto } from './KinderkrippeDto';
+import {
+    KinderkrippeDtoFromJSON,
+    KinderkrippeDtoFromJSONTyped,
+    KinderkrippeDtoToJSON,
+} from './KinderkrippeDto';
+import type { MittelschuleDto } from './MittelschuleDto';
+import {
+    MittelschuleDtoFromJSON,
+    MittelschuleDtoFromJSONTyped,
+    MittelschuleDtoToJSON,
+} from './MittelschuleDto';
 import type { VerortungPointDto } from './VerortungPointDto';
 import {
     VerortungPointDtoFromJSON,

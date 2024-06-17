@@ -26,6 +26,9 @@ import {
     AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenInBearbeitungFachreferatDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -66,6 +69,8 @@ export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSON(json
 export function BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),

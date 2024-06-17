@@ -26,6 +26,9 @@ import {
     AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenInBearbeitungFachreferatDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -66,6 +69,8 @@ export function BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSON(json: an
 export function BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenInBearbeitungFachreferatDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageInBearbeitungFachreferatDtoFromJSONTyped(json, ignoreDiscriminator),

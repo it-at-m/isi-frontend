@@ -39,7 +39,7 @@ import {
  * 
  * @export
  */
-export type PatchInBearbeitungFachreferatRequest = BaugenehmigungsverfahrenInBearbeitungFachreferatDto | BauleitplanverfahrenInBearbeitungFachreferatDto | WeiteresVerfahrenInBearbeitungFachreferatDto;
+export type PatchInBearbeitungFachreferatRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenInBearbeitungFachreferatDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenInBearbeitungFachreferatDto | { artAbfrage: 'BaugenehmigungsverfahrenInBearbeitungFachreferatDto' } & BaugenehmigungsverfahrenInBearbeitungFachreferatDto | { artAbfrage: 'BauleitplanverfahrenInBearbeitungFachreferatDto' } & BauleitplanverfahrenInBearbeitungFachreferatDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenInBearbeitungFachreferatDto | { artAbfrage: 'WeiteresVerfahrenInBearbeitungFachreferatDto' } & WeiteresVerfahrenInBearbeitungFachreferatDto;
 
 export function PatchInBearbeitungFachreferatRequestFromJSON(json: any): PatchInBearbeitungFachreferatRequest {
     return PatchInBearbeitungFachreferatRequestFromJSONTyped(json, false);
@@ -49,7 +49,22 @@ export function PatchInBearbeitungFachreferatRequestFromJSONTyped(json: any, ign
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), ...BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), ...WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true) };
+    switch (json['artAbfrage']) {
+        case 'BAUGENEHMIGUNGSVERFAHREN':
+            return {...BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN'};
+        case 'BAULEITPLANVERFAHREN':
+            return {...BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), artAbfrage: 'BAULEITPLANVERFAHREN'};
+        case 'BaugenehmigungsverfahrenInBearbeitungFachreferatDto':
+            return {...BaugenehmigungsverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), artAbfrage: 'BaugenehmigungsverfahrenInBearbeitungFachreferatDto'};
+        case 'BauleitplanverfahrenInBearbeitungFachreferatDto':
+            return {...BauleitplanverfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), artAbfrage: 'BauleitplanverfahrenInBearbeitungFachreferatDto'};
+        case 'WEITERES_VERFAHREN':
+            return {...WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), artAbfrage: 'WEITERES_VERFAHREN'};
+        case 'WeiteresVerfahrenInBearbeitungFachreferatDto':
+            return {...WeiteresVerfahrenInBearbeitungFachreferatDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenInBearbeitungFachreferatDto'};
+        default:
+            throw new Error(`No variant of PatchInBearbeitungFachreferatRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
+    }
 }
 
 export function PatchInBearbeitungFachreferatRequestToJSON(value?: PatchInBearbeitungFachreferatRequest | null): any {
@@ -59,17 +74,22 @@ export function PatchInBearbeitungFachreferatRequestToJSON(value?: PatchInBearbe
     if (value === null) {
         return null;
     }
+    switch (value['artAbfrage']) {
+        case 'BAUGENEHMIGUNGSVERFAHREN':
+            return BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON(value);
+        case 'BAULEITPLANVERFAHREN':
+            return BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value);
+        case 'BaugenehmigungsverfahrenInBearbeitungFachreferatDto':
+            return BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON(value);
+        case 'BauleitplanverfahrenInBearbeitungFachreferatDto':
+            return BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value);
+        case 'WEITERES_VERFAHREN':
+            return WeiteresVerfahrenInBearbeitungFachreferatDtoToJSON(value);
+        case 'WeiteresVerfahrenInBearbeitungFachreferatDto':
+            return WeiteresVerfahrenInBearbeitungFachreferatDtoToJSON(value);
+        default:
+            throw new Error(`No variant of PatchInBearbeitungFachreferatRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
+    }
 
-    if (instanceOfBaugenehmigungsverfahrenInBearbeitungFachreferatDto(value)) {
-        return BaugenehmigungsverfahrenInBearbeitungFachreferatDtoToJSON(value as BaugenehmigungsverfahrenInBearbeitungFachreferatDto);
-    }
-    if (instanceOfBauleitplanverfahrenInBearbeitungFachreferatDto(value)) {
-        return BauleitplanverfahrenInBearbeitungFachreferatDtoToJSON(value as BauleitplanverfahrenInBearbeitungFachreferatDto);
-    }
-    if (instanceOfWeiteresVerfahrenInBearbeitungFachreferatDto(value)) {
-        return WeiteresVerfahrenInBearbeitungFachreferatDtoToJSON(value as WeiteresVerfahrenInBearbeitungFachreferatDto);
-    }
-
-    return {};
 }
 

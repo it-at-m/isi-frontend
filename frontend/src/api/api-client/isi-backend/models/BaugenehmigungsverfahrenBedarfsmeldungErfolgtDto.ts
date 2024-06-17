@@ -26,6 +26,9 @@ import {
     AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDtoToJSON,
 } from './AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -66,6 +69,8 @@ export function BaugenehmigungsverfahrenBedarfsmeldungErfolgtDtoFromJSON(json: a
 export function BaugenehmigungsverfahrenBedarfsmeldungErfolgtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageBedarfsmeldungErfolgtDtoFromJSONTyped(json, ignoreDiscriminator),

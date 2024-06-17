@@ -39,7 +39,7 @@ import {
  * 
  * @export
  */
-export type SearchResultsDtoSearchResultsInner = AbfrageSearchResultDto | BauvorhabenSearchResultDto | InfrastruktureinrichtungSearchResultDto;
+export type SearchResultsDtoSearchResultsInner = { type: 'ABFRAGE' } & AbfrageSearchResultDto | { type: 'AbfrageSearchResultDto' } & AbfrageSearchResultDto | { type: 'BAUVORHABEN' } & BauvorhabenSearchResultDto | { type: 'BauvorhabenSearchResultDto' } & BauvorhabenSearchResultDto | { type: 'INFRASTRUKTUREINRICHTUNG' } & InfrastruktureinrichtungSearchResultDto | { type: 'InfrastruktureinrichtungSearchResultDto' } & InfrastruktureinrichtungSearchResultDto;
 
 export function SearchResultsDtoSearchResultsInnerFromJSON(json: any): SearchResultsDtoSearchResultsInner {
     return SearchResultsDtoSearchResultsInnerFromJSONTyped(json, false);
@@ -49,7 +49,22 @@ export function SearchResultsDtoSearchResultsInnerFromJSONTyped(json: any, ignor
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...AbfrageSearchResultDtoFromJSONTyped(json, true), ...BauvorhabenSearchResultDtoFromJSONTyped(json, true), ...InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true) };
+    switch (json['type']) {
+        case 'ABFRAGE':
+            return {...AbfrageSearchResultDtoFromJSONTyped(json, true), type: 'ABFRAGE'};
+        case 'AbfrageSearchResultDto':
+            return {...AbfrageSearchResultDtoFromJSONTyped(json, true), type: 'AbfrageSearchResultDto'};
+        case 'BAUVORHABEN':
+            return {...BauvorhabenSearchResultDtoFromJSONTyped(json, true), type: 'BAUVORHABEN'};
+        case 'BauvorhabenSearchResultDto':
+            return {...BauvorhabenSearchResultDtoFromJSONTyped(json, true), type: 'BauvorhabenSearchResultDto'};
+        case 'INFRASTRUKTUREINRICHTUNG':
+            return {...InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true), type: 'INFRASTRUKTUREINRICHTUNG'};
+        case 'InfrastruktureinrichtungSearchResultDto':
+            return {...InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true), type: 'InfrastruktureinrichtungSearchResultDto'};
+        default:
+            throw new Error(`No variant of SearchResultsDtoSearchResultsInner exists with 'type=${json['type']}'`);
+    }
 }
 
 export function SearchResultsDtoSearchResultsInnerToJSON(value?: SearchResultsDtoSearchResultsInner | null): any {
@@ -59,17 +74,22 @@ export function SearchResultsDtoSearchResultsInnerToJSON(value?: SearchResultsDt
     if (value === null) {
         return null;
     }
+    switch (value['type']) {
+        case 'ABFRAGE':
+            return AbfrageSearchResultDtoToJSON(value);
+        case 'AbfrageSearchResultDto':
+            return AbfrageSearchResultDtoToJSON(value);
+        case 'BAUVORHABEN':
+            return BauvorhabenSearchResultDtoToJSON(value);
+        case 'BauvorhabenSearchResultDto':
+            return BauvorhabenSearchResultDtoToJSON(value);
+        case 'INFRASTRUKTUREINRICHTUNG':
+            return InfrastruktureinrichtungSearchResultDtoToJSON(value);
+        case 'InfrastruktureinrichtungSearchResultDto':
+            return InfrastruktureinrichtungSearchResultDtoToJSON(value);
+        default:
+            throw new Error(`No variant of SearchResultsDtoSearchResultsInner exists with 'type=${value['type']}'`);
+    }
 
-    if (instanceOfAbfrageSearchResultDto(value)) {
-        return AbfrageSearchResultDtoToJSON(value as AbfrageSearchResultDto);
-    }
-    if (instanceOfBauvorhabenSearchResultDto(value)) {
-        return BauvorhabenSearchResultDtoToJSON(value as BauvorhabenSearchResultDto);
-    }
-    if (instanceOfInfrastruktureinrichtungSearchResultDto(value)) {
-        return InfrastruktureinrichtungSearchResultDtoToJSON(value as InfrastruktureinrichtungSearchResultDto);
-    }
-
-    return {};
 }
 

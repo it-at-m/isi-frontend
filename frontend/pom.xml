@@ -61,7 +61,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-backend</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
-                                        <legacyDiscriminatorBehavior>true</legacyDiscriminatorBehavior>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -76,7 +76,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-master-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
-                                        <legacyDiscriminatorBehavior>true</legacyDiscriminatorBehavior>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -91,7 +91,7 @@
                                     <output>${project.basedir}/src/api/api-client/isi-geodata-eai</output>
                                     <configOptions>
                                         <sourceFolder>src/api/</sourceFolder>
-                                        <legacyDiscriminatorBehavior>true</legacyDiscriminatorBehavior>
+                                        <legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
                                     </configOptions>
                                 </configuration>
                             </execution>

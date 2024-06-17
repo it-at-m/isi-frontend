@@ -50,6 +50,9 @@ import {
     VerortungMultiPolygonDtoToJSON,
 } from './VerortungMultiPolygonDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -195,6 +198,8 @@ export function WeiteresVerfahrenAngelegtDtoFromJSON(json: any): WeiteresVerfahr
 export function WeiteresVerfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenAngelegtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageAngelegtDtoFromJSONTyped(json, ignoreDiscriminator),

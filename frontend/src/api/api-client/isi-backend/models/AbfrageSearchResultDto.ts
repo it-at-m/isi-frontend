@@ -38,6 +38,9 @@ import {
     Wgs84DtoToJSON,
 } from './Wgs84Dto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -156,6 +159,8 @@ export function AbfrageSearchResultDtoFromJSON(json: any): AbfrageSearchResultDt
 export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageSearchResultDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),

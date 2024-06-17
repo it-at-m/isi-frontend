@@ -244,6 +244,15 @@ function watchBedarfsmeldungSelection(): void {
     : abfragevariante.value.anmerkungAbfrageersteller;
 }
 
+watch(() => anmerkung, watchAnmerkung, { immediate: true, deep: true });
+function watchAnmerkung(): void {
+  if (props.isFachreferat) {
+    abfragevariante.value.anmerkungFachreferate = anmerkung.value;
+  } else {
+    abfragevariante.value.anmerkungAbfrageersteller = anmerkung.value;
+  }
+}
+
 /**
  * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
  *

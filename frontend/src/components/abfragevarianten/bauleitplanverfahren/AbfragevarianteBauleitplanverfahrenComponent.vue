@@ -40,31 +40,25 @@
       :is-editable="isEditableByBedarfsmeldung"
       :bedarfsmeldung-title="bedarfsmeldungFachreferate"
     />
-    <v-row>
-      <v-col
-        cols="12"
-        md="4"
-      />
-      <v-col
-        cols="12"
-        md="4"
+    <v-toolbar
+      color="transparent"
+      density="compact"
+      flat
+    >
+      <v-spacer />
+      <v-btn
+        id="bedarfsmeldungenUebernehmenButton"
+        color="primary"
+        variant="flat"
+        style="width: 450px"
+        density="default"
+        :disabled="!bedarfsmeldungenUebernehmenEnabled"
+        @click="bedarfsmeldungenUebernehmen()"
       >
-        <v-btn
-          id="bedarfsmeldungenUebernehmenButton"
-          color="primary"
-          variant="flat"
-          style="width: 500px"
-          :disabled="!bedarfsmeldungenUebernehmenEnabled"
-          @click="bedarfsmeldungenUebernehmen()"
-        >
-          Bedarfsmeldungen der Fachreferate übernehmen
-        </v-btn>
-      </v-col>
-      <v-col
-        cols="12"
-        md="4"
-      />
-    </v-row>
+        Bedarfsmeldungen der Fachreferate übernehmen
+      </v-btn>
+      <v-spacer />
+    </v-toolbar>
     <bedarfsmeldung-component
       id="bedarfsmeldung_abfrageerstellung_component"
       ref="bedarfsmeldungAbfrageerstellungComponent"

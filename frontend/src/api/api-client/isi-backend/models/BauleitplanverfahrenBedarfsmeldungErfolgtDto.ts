@@ -26,6 +26,9 @@ import {
     AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDtoToJSON,
 } from './AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -66,6 +69,8 @@ export function BauleitplanverfahrenBedarfsmeldungErfolgtDtoFromJSON(json: any):
 export function BauleitplanverfahrenBedarfsmeldungErfolgtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenBedarfsmeldungErfolgtDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...AbfrageBedarfsmeldungErfolgtDtoFromJSONTyped(json, ignoreDiscriminator),

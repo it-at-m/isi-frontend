@@ -38,6 +38,9 @@ import {
     VerortungPointDtoToJSON,
 } from './VerortungPointDto';
 
+import {
+} from './';
+
 /**
  * 
  * @export
@@ -106,6 +109,8 @@ export function KindergartenDtoFromJSON(json: any): KindergartenDto {
 export function KindergartenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KindergartenDto {
     if ((json === undefined) || (json === null)) {
         return json;
+    }
+    if (!ignoreDiscriminator) {
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
