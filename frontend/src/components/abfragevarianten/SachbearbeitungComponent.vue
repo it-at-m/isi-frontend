@@ -23,6 +23,7 @@
             </v-select>
           </v-slide-y-reverse-transition>
         </v-col>
+        <!-- Das Datum wird in ISI 2.0 relevant werden
         <v-col
           cols="12"
           md="6"
@@ -37,6 +38,7 @@
             required
           />
         </v-col>
+        -->
       </v-row>
       <sobon-berechnung v-model="abfragevarianteSachbearbeitung.sobonBerechnung"></sobon-berechnung>
       <v-row>

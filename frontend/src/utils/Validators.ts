@@ -186,9 +186,6 @@ export function findFaultInAbfragevariante(
     ) {
       return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
     }
-    if (_.isNil(abfragevariante.stammdatenGueltigAb)) {
-      return "Bitte für die Bedarfsberechnung die Gültigkeit des Stammdatums angeben";
-    }
   }
   const messageFaultBauschnitte = findFaultInBauabschnitte(abfragevariante);
   if (!_.isNil(messageFaultBauschnitte)) {
@@ -613,10 +610,6 @@ function findFaultInAbfragevarianteInBearbeitungSachbearbeitung(
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
   ) {
     return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
-  }
-  const date = moment(abfragevariante.stammdatenGueltigAb, "DD.MM.YYYY", true);
-  if (!date.isValid() || abfragevariante.stammdatenGueltigAb?.toISOString() == new Date(0).toISOString()) {
-    return `Bitte geben Sie das 'Stammdatum gültig ab' bei Abfragevariante '${abfragevariante.name}' im Format TT.MM.JJJJ an.`;
   }
   return null;
 }
