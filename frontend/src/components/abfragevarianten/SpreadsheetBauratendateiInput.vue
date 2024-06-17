@@ -179,7 +179,13 @@ function saveTableItem(): void {
       return isSameItem(tableItem, itemToEdit.value);
     });
     tableDataFromBauratendateiInput.value[index] = itemToEdit.value;
-    bauratendateiInput.value = createBauratendateiInput(tableDataFromBauratendateiInput.value);
+    const newBauratendateiInput = createBauratendateiInput(tableDataFromBauratendateiInput.value);
+    if (_.isNil(bauratendateiInput.value)) {
+      bauratendateiInput.value = newBauratendateiInput;
+    } else {
+      _.remove(bauratendateiInput.value);
+      bauratendateiInput.value.push(...newBauratendateiInput);
+    }
     closeTableItem();
   }
 }

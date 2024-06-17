@@ -148,12 +148,6 @@ interface Props {
 const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 const { formChanged } = useSaveLeave();
 
-watch(() => abfragevarianteSachbearbeitung, watchBauratendateiInput, { immediate: true, deep: true });
-function watchBauratendateiInput(): void {
-  console.log("watchBauratendateiInput");
-  console.log(abfragevarianteSachbearbeitung.value.bauratendateiInput);
-}
-
 const foerderartenBauratendateiInputBasis = computed(() => {
   const wohneinheiten = _.toArray(abfragevarianteSachbearbeitung.value.bauratendateiInput)
     .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
