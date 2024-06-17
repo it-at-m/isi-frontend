@@ -3,34 +3,19 @@
     <field-group-card :card-title="header">
       <v-container>
         <v-data-table
-          :headers="bauratenJahreHeaders"
+          :headers="bauratenHeader"
           :items="aggregatedBauraten"
+          density="comfortable"
           hide-default-footer
           disable-pagination
           disable-filtering
           disable-sort
         >
-          <template #body="{ items }">
-            <tbody>
-              <tr>
-                <td><span>Wohneinheiten</span></td>
-                <td
-                  v-for="(item, index) in items"
-                  :key="index"
-                >
-                  {{ formatWohneinheiten(item.weGeplant) }}
-                </td>
-              </tr>
-              <tr>
-                <td><span>GF Wohnen m²</span></td>
-                <td
-                  v-for="(item, index) in items"
-                  :key="index"
-                >
-                  {{ formatGeschossflaecheWohnen(item.gfWohnenGeplant) }}
-                </td>
-              </tr>
-            </tbody>
+          <template #item.gfWohnenGeplant="{ item }">
+            {{ formatGeschossflaecheWohnen(item.gfWohnenGeplant) }}
+          </template>
+          <template #item.weGeplant="{ item }">
+            {{ formatWohneinheiten(item.weGeplant) }}
           </template>
         </v-data-table>
       </v-container>
@@ -39,10 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { watch, computed } from "vue";
+import { watch, computed, ref } from "vue";
 import type { BauabschnittDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
 import type { AnyAbfragevarianteModel } from "@/types/common/Abfrage";
-import type DataTableHeader from "@/types/common/DataTableHeader";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
@@ -61,6 +45,12 @@ const props = defineProps<Props>();
 
 let baurateMap: Map<number, BaurateModel> = new Map<number, BaurateModel>();
 
+const bauratenHeader = ref<any[]>([
+  { title: "Jahr", key: "jahr", sortable: false, align: "start", width: "20%" },
+  { title: "Geschossfläche Wohnen in m²", key: "gfWohnenGeplant", sortable: false, align: "end", width: "40%" },
+  { title: "Anzahl an Wohneinheiten", key: "weGeplant", sortable: false, align: "end", width: "40%" },
+]);
+
 watch(() => props.aggregateBauraten, aggregateBauratenChanged, { immediate: true, deep: true });
 
 function aggregateBauratenChanged(): void {
@@ -72,15 +62,6 @@ const aggregatedBauraten = computed(() => {
     bauratenAggregation(extraktBauraten(props.aggregateBauraten));
   }
   return _.sortBy(Array.from(baurateMap.values()), ["jahr"]);
-});
-
-const bauratenJahreHeaders = computed(() => {
-  const headers = new Array<DataTableHeader>();
-  headers.push({ title: "Jahr", key: undefined, sortable: false });
-  aggregatedBauraten.value.forEach((baurate: BaurateModel) => {
-    headers.push({ title: baurate.jahr.toString(), key: undefined, sortable: false });
-  });
-  return headers;
 });
 
 function extraktBauraten(layer: AnyAbfragevarianteModel | BauabschnittModel | BaugebietModel): Array<BaurateModel> {
@@ -149,10 +130,10 @@ const header = computed(() => {
 });
 
 function formatWohneinheiten(wohneinheiten: number | undefined): string {
-  return _.isNil(wohneinheiten) ? "" : numberToFormattedStringZeroDecimals(wohneinheiten);
+  return _.isNil(wohneinheiten) ? "-" : numberToFormattedStringZeroDecimals(wohneinheiten);
 }
 
 function formatGeschossflaecheWohnen(geschossflaecheWohnen: number | undefined): string {
-  return _.isNil(geschossflaecheWohnen) ? "" : numberToFormattedStringTwoDecimals(geschossflaecheWohnen);
+  return _.isNil(geschossflaecheWohnen) ? "-" : numberToFormattedStringTwoDecimals(geschossflaecheWohnen);
 }
 </script>
