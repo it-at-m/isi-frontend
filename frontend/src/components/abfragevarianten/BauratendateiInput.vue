@@ -134,11 +134,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import _ from "lodash";
+import { createHeaders, createTableData } from "@/utils/BauratendateiUtils";
 
 interface Props {
   isEditable?: boolean;
@@ -146,6 +147,12 @@ interface Props {
 
 const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 const { formChanged } = useSaveLeave();
+
+watch(() => abfragevarianteSachbearbeitung, watchBauratendateiInput, { immediate: true, deep: true });
+function watchBauratendateiInput(): void {
+  console.log("watchBauratendateiInput");
+  console.log(abfragevarianteSachbearbeitung.value.bauratendateiInput);
+}
 
 const foerderartenBauratendateiInputBasis = computed(() => {
   const wohneinheiten = _.toArray(abfragevarianteSachbearbeitung.value.bauratendateiInput)
