@@ -273,7 +273,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref, watch } from "vue";
 import type { VForm } from "vuetify/components";
 import {
   type AbfragevarianteBauleitplanverfahrenDto,
@@ -411,26 +411,11 @@ const router = useRouter();
 const RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
 const TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
 const abfrageId = route.params.id as string;
-const artAbfrage = route.query.art as string;
 let relevanteAbfragevarianteToBeSet: AnyAbfragevarianteModel | undefined;
 let currentTransition: TransitionDto | undefined;
 let anmerkung = "";
 
-const abfrage = computed<AnyAbfrageModel>({
-  get() {
-    return searchStore.selectedAbfrage ?? new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
-  },
-  async set(value) {
-    searchStore.setSelectedAbfrage(value);
-    selectAbfrage();
-    const bauvorhabenId = value.bauvorhaben;
-    if (bauvorhabenId) {
-      const dto = await getBauvorhabenById(bauvorhabenId);
-      relevanteAbfragevarianteId.value = dto.relevanteAbfragevariante;
-    }
-  },
-});
-
+const abfrage = ref(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto()));
 const isNew = ref(true);
 const selected = ref<AbfrageDtoWithForm>(abfrage.value);
 const openForm = ref(AbfrageFormType.BAULEITPLANVERFAHREN);
@@ -459,9 +444,12 @@ const abfrageNavigationTree = ref<typeof AbfrageNavigationTree | null>(null);
 const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
-const isBauleitplanverfahren = computed(() => artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
-const isBaugenehmigungsverfahren = computed(() => artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren);
-const isWeiteresVerfahren = computed(() => artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren);
+const artAbfrage = computed(() => (isNew.value ? (route.query.art as string) : abfrage.value.artAbfrage));
+const isBauleitplanverfahren = computed(() => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
+const isBaugenehmigungsverfahren = computed(
+  () => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
+);
+const isWeiteresVerfahren = computed(() => artAbfrage.value === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren);
 const isBauleitplanverfahrenFormularOpen = computed(() => openForm.value === AbfrageFormType.BAULEITPLANVERFAHREN);
 const isBaugenehmigungsverfahrenFormularOpen = computed(
   () => openForm.value === AbfrageFormType.BAUGENEHMIGUNGSVERFAHREN,
@@ -530,9 +518,28 @@ const deleteBaurateDialogText = computed(() => {
   return "Hiermit wird die Baurate unwiderruflich gelöscht.";
 });
 
+watch(
+  abfrage,
+  () => {
+    searchStore.setSelectedAbfrage(abfrage.value);
+  },
+  { deep: true },
+);
+
+watch(
+  () => abfrage.value.bauvorhaben,
+  async (id) => {
+    if (id) {
+      const dto = await getBauvorhabenById(id);
+      relevanteAbfragevarianteId.value = dto.relevanteAbfragevariante;
+    }
+  },
+);
+
 onBeforeMount(async () => {
   isNew.value = abfrageId === undefined;
-  resetAbfrage();
+  await resetAbfrage();
+  selectAbfrage();
 });
 
 async function resetAbfrage(): Promise<void> {
@@ -1322,6 +1329,7 @@ function selectEntity(
   selected.value = entity;
   openForm.value = type;
   selectedTreeItemId.value = itemId;
+  console.log(selected.value);
 }
 
 function isAbfragevarianteBauleitplanverfahren(

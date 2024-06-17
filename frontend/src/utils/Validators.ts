@@ -15,7 +15,6 @@ import {
   InfrastruktureinrichtungDto,
   KindergartenDto,
   KinderkrippeDto,
-  KommentarDto,
   MittelschuleDto,
 } from "@/api/api-client/isi-backend";
 import {

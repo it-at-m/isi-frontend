@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref, watch } from "vue";
 import type { VForm } from "vuetify/components";
 import { createAdresseDto, createBauvorhabenDto } from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -177,27 +177,25 @@ const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value);
 const deleteDialogOpen = ref(false);
 const dataTransferDialogOpen = ref(false);
 const isNew = ref(true);
+const bauvorhaben = ref(new BauvorhabenModel(createBauvorhabenDto()));
 let datenuebernahmeAbfrageId: string | undefined = undefined;
-
-const bauvorhaben = computed({
-  get() {
-    return searchStore.selectedBauvorhaben ?? new BauvorhabenModel(createBauvorhabenDto());
-  },
-  set(model: BauvorhabenModel) {
-    searchStore.setSelectedBauvorhaben(model);
-  },
-});
 
 const bearbeitungsinformationen = computed(
   () => new BenutzerinformationenModel(bauvorhaben.value.bearbeitendePerson, bauvorhaben.value.lastModifiedDateTime),
 );
 
+watch(
+  bauvorhaben,
+  () => {
+    searchStore.setSelectedBauvorhaben(bauvorhaben.value);
+  },
+  { deep: true },
+);
+
 onBeforeMount(() => {
   isNew.value = routeId === undefined;
 
-  if (isNew.value) {
-    bauvorhaben.value = new BauvorhabenModel(createBauvorhabenDto());
-  } else {
+  if (!isNew.value) {
     fetchBauvorhabenById();
   }
 });
