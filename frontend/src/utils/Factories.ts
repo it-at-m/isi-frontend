@@ -288,6 +288,8 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    anmerkungFachreferate: undefined,
+    anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
   };
 }
@@ -334,6 +336,8 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    anmerkungFachreferate: undefined,
+    anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
   };
 }
@@ -383,6 +387,8 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    anmerkungFachreferate: undefined,
+    anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
   };
 }
