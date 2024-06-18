@@ -120,7 +120,7 @@ function getUrlWohneinheiten(): string {
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValueSobonursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   return url.toString();
 }
 
@@ -133,7 +133,7 @@ function getUrlBedarfe(artBedarf: string): string {
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValueSobonursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   url.searchParams.set(getParameterArtBedarf(), artBedarf);
   return url.toString();
 }
@@ -147,7 +147,7 @@ function getUrlSoBonSpitzenbedarfe(artBedarf: string): string {
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValueSobonursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   url.searchParams.set(getParameterArtBedarf(), artBedarf);
   return url.toString();
 }
@@ -160,7 +160,7 @@ function getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValueSobonursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   return url.toString();
 }
 

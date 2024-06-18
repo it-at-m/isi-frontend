@@ -100,7 +100,7 @@ function getUrlWohneinheiten(): string {
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValuePlanungsursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.append(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   return url.toString();
 }
 
@@ -113,7 +113,7 @@ function getUrlBedarfe(artBedarf: string): string {
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValuePlanungsursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   url.searchParams.set(getParameterArtBedarf(), artBedarf);
   return url.toString();
 }
@@ -126,7 +126,7 @@ function getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf: string, url: URL): 
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValuePlanungsursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   url.searchParams.set(getParameterArtBedarf(), artBedarf);
   return url.toString();
 }
@@ -139,7 +139,7 @@ function getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
   const abfragevarianteId = getParameterValueAbfragevarianteId();
   url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
   const ursaechlichkeit = getParameterValuePlanungsursaechlich();
-  url.searchParams.set(getParameterUrsaechlichkeit(), ursaechlichkeit);
+  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
   return url.toString();
 }
 

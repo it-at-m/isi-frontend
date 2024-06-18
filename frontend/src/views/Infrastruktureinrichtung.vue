@@ -8,21 +8,21 @@
           v-model="infrastruktureinrichtung.infrastruktureinrichtungTyp"
           :lfd-nr="lfdNr"
           :mode="mode"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
         />
         <infrastruktureinrichtung-component
           v-show="isInfrastruktureinrichtungTypNotUnspecified"
           id="infrastruktureinrichtung_infrastruktureinrichtung_component"
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
         />
         <kinderkrippe-component
           v-if="isKinderkrippe"
           id="infrastruktureinrichtung_kinderkrippe_component"
           ref="kinderkrippeComponent"
           v-model="infrastruktureinrichtung"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <kindergarten-component
@@ -30,7 +30,7 @@
           id="infrastruktureinrichtung_kindergarten_component"
           ref="kindergartenComponent"
           v-model="infrastruktureinrichtung"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <haus-fuer-kinder-component
@@ -38,7 +38,7 @@
           id="infrastruktureinrichtung_hausFuerKinder_component"
           ref="hausFuerKinderComponent"
           v-model="infrastruktureinrichtung"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <gs-nachmittag-betreuung-component
@@ -46,7 +46,7 @@
           id="infrastruktureinrichtung_gsNachmittagBetreuung_component"
           ref="gsNachmittagBetreuungComponent"
           v-model="infrastruktureinrichtung"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <grundschule-component
@@ -54,7 +54,7 @@
           id="infrastruktureinrichtung_grundschule_component"
           ref="grundschuleComponent"
           v-model="infrastruktureinrichtung"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <mittelschule-component
@@ -62,14 +62,14 @@
           id="infrastruktureinrichtung_mittelschule_component"
           ref="mittelschuleComponent"
           v-model="infrastruktureinrichtung"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <kommentare
           v-if="componentSecurity.areKommentareVisible(Context.INFRASTRUKTUREINRICHTUNG) && !isNew"
           id="infrastruktureinrichtung_kommentare"
           :context="Context.INFRASTRUKTUREINRICHTUNG"
-          :is-editable="isRoleAdminOrSachbearbeitung"
+          :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
         />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_löschen"
@@ -89,8 +89,8 @@
           :dialogtext="saveLeaveDialogText"
           :no-text="saveLeaveNoText"
           :yes-text="saveLeaveYesText"
-          @yes="leave"
-          @no="cancel"
+          @yes="leave()"
+          @no="cancel()"
         />
       </template>
       <template #heading>
@@ -124,8 +124,8 @@
           color="primary"
           elevation="1"
           style="width: 200px"
-          :disabled="!isRoleAdminOrSachbearbeitung"
-          @click="openDeleteDialog"
+          :disabled="!isRoleAdminOrSachbearbeitung || !isRoleAdminOrBedarfsmeldung"
+          @click="openDeleteDialog()"
         >
           Löschen
         </v-btn>
@@ -135,7 +135,7 @@
           class="mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="!isFormDirty || !isRoleAdminOrSachbearbeitung"
+          :disabled="!isFormDirty || !isRoleAdminOrSachbearbeitung || !isRoleAdminOrBedarfsmeldung"
           style="width: 200px"
           @click="saveInfrastruktureinrichtung()"
         >
@@ -147,7 +147,7 @@
           elevation="1"
           class="mt-2 px-1"
           style="width: 200px"
-          @click="returnToUebersicht"
+          @click="returnToUebersicht()"
         >
           Abbrechen
         </v-btn>
@@ -227,10 +227,11 @@ const {
   saveLeaveYesText,
   leave,
   cancel,
+  resetFormDirty,
 } = useSaveLeave();
 const searchStore = useSearchStore();
 const componentSecurity = useComponentSecurity();
-const { isRoleAdminOrSachbearbeitung } = useSecurity();
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
 const {
   createInfrastruktureinrichtung,
   getInfrastruktureinrichtungById,
@@ -448,12 +449,14 @@ function returnToUebersicht(message?: string, type?: TYPE): void {
   if (message && type) {
     toast(message, { type });
   }
+
   router.push("/");
 }
 
 function handleSuccess(dto: InfrastruktureinrichtungDto): void {
   infrastruktureinrichtung.value = dto;
   if (isNew.value) {
+    resetFormDirty();
     router.push("/");
     toast.success("Die Infrastruktureinrichtung wurde erfolgreich gespeichert");
   } else {
