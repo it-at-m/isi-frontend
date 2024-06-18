@@ -8,6 +8,7 @@
     >
       <v-stepper-header>
         <v-stepper-item
+          class="px-3 py-0"
           complete
           color="primary"
         >
@@ -17,8 +18,9 @@
           v-for="(statusLabel, index) in statusLabels.slice(1)"
           :key="index"
         >
-          <v-divider></v-divider>
+          <v-divider />
           <v-stepper-item
+            class="px-3 py-0"
             :complete="statusIndex > index"
             color="primary"
           >
@@ -30,6 +32,7 @@
     <v-stepper v-else>
       <v-stepper-header>
         <v-stepper-item
+          class="px-3 py-0"
           :rules="[() => false]"
           color="primary"
         >
@@ -40,12 +43,13 @@
   </div>
   <div v-else>
     <v-stepper
-      :value="shortenedStatusIndex"
+      :model-value="shortenedStatusIndex"
       alt-labels
       flat
     >
       <v-stepper-header>
         <v-stepper-item
+          class="px-3 py-0"
           complete
           color="primary"
         >
@@ -55,8 +59,9 @@
           v-for="(shortenedStatusLabel, index) in shortenedStatusLabels.slice(1)"
           :key="index"
         >
-          <v-divider></v-divider>
+          <v-divider />
           <v-stepper-item
+            class="px-3 py-0"
             :complete="shortenedStatusIndex > index"
             color="primary"
           >

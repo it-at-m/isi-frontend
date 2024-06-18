@@ -38,6 +38,7 @@
         id="yes_no_dialog-text-area"
         ref="textarea"
         class="textarea"
+        variant="underlined"
         label="Anmerkung"
         auto-grow
         rows="1"

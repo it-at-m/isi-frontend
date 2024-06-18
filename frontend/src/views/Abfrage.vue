@@ -523,7 +523,7 @@ watch(
   () => {
     searchStore.setSelectedAbfrage(abfrage.value);
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 watch(
@@ -564,8 +564,8 @@ async function resetAbfrage(): Promise<void> {
       searchStore.setSelectedAbfrage(undefined);
     }
     possibleTransitions.value = await getTransitions(abfrageId);
-    selectAbfrage();
   }
+  selectAbfrage();
 }
 
 function deleteAbfrage(): void {
