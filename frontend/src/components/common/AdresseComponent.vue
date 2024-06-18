@@ -43,7 +43,7 @@
                 @click="resetAdresse"
               />
             </template>
-            <span>ausgewählte Adresse und ergänzende Information löschen</span>
+            <span>ausgewählte Adresse löschen</span>
           </v-tooltip>
         </v-col>
       </v-row>
@@ -179,12 +179,18 @@ function assignAdresse(dto: MuenchenAdresseDto): void {
     newAdresse.coordinate = { latitude, longitude };
   }
 
-  adresse.value = newAdresse;
+  setNewAdress(newAdresse);
 }
 
 function resetAdresse(): void {
-  adresse.value = new AdresseModel(createAdresseDto());
+  const newAdresse = new AdresseModel(createAdresseDto());
+  setNewAdress(newAdresse);
   formChanged();
+}
+
+function setNewAdress(newAdresse: AdresseModel): void {
+  newAdresse.angabeLageErgaenzendeAdressinformation = adresse.value.angabeLageErgaenzendeAdressinformation;
+  adresse.value = newAdresse;
 }
 
 function resetAdressSuche(): void {
