@@ -97,7 +97,7 @@
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
           :anmerkung-max-length="anmerkungMaxLength"
-          @anmerkung="anmerkung = $event"
+          @anmerkung="changeAnmkerung($event)"
           @no="yesNoDialogStatusUebergangeNo"
           @yes="yesNoDialogStatusUebergangYes"
         />
@@ -591,6 +591,10 @@ function statusUebergang(transition: TransitionDto): void {
   isStatusUebergangDialogOpen.value = true;
 }
 
+function changeAnmkerung(test: string): void {
+  anmerkung = test;
+}
+
 function yesNoDialogDeleteAbfrageYes(): void {
   deleteBauleitplanverfahren();
   yesNoDialogDeleteAbfrageNo();
@@ -600,9 +604,9 @@ function yesNoDialogDeleteAbfrageNo(): void {
   isDeleteDialogAbfrageOpen.value = false;
 }
 
-function yesNoDialogStatusUebergangYes(): void {
+async function yesNoDialogStatusUebergangYes(): Promise<void> {
   if (!_.isNil(currentTransition)) {
-    startStatusUebergang(currentTransition);
+    await startStatusUebergang(currentTransition);
   }
   yesNoDialogStatusUebergangeNo();
 }
