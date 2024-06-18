@@ -23,11 +23,10 @@
                 <v-row justify="center">
                   <v-btn
                     :id="'dokument_listitem_download_' + index"
-                    icon
+                    variant="plain"
+                    icon="mdi-download"
                     @click="downloadDokument(item)"
-                  >
-                    <v-icon> mdi-download</v-icon>
-                  </v-btn>
+                  />
                 </v-row>
               </v-col>
               <v-col
