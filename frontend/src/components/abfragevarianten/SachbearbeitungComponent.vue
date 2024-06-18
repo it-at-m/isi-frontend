@@ -67,7 +67,10 @@
           cols="12"
           md="6"
         >
-          <reports-planungsursaechlichkeit-component v-model="abfragevarianteSachbearbeitung" />
+          <reports-planungsursaechlichkeit-component
+            v-if="showPlanungsursaechlicheReports()"
+            v-model="abfragevarianteSachbearbeitung"
+          />
         </v-col>
         <v-col
           cols="12"
@@ -124,6 +127,7 @@ import _ from "lodash";
 import type { VSelect } from "vuetify/components";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 import { Context } from "@/utils/Context";
+import { useSecurity } from "@/composables/security/Security";
 
 // Workaround um den Validation Rule Type zu bekommen
 // https://stackoverflow.com/questions/77201639/how-to-import-typescript-types-in-vuetify-3
@@ -133,6 +137,8 @@ type ValidationRule = UnwrapReadonlyArray<VSelect["rules"]>;
 interface Props {
   isEditable?: boolean;
 }
+
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
 
 const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
@@ -214,5 +220,9 @@ function showSobonReport(): boolean {
     !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix?.foerderarten) &&
     !_.isNil(abfragevarianteSachbearbeitung.value.gfWohnenSobonUrsaechlich)
   );
+}
+
+function showPlanungsursaechlicheReports(): boolean {
+  return isRoleAdminOrSachbearbeitung.value || isRoleAdminOrBedarfsmeldung.value;
 }
 </script>
