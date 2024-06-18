@@ -75,7 +75,7 @@ Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) d
 
 <!--*what insights do you have to tell*-->
 
-Die Dokumentation befindet sich unter <a href="https://github.com/it-at-m/isi-frontend/tree/dev/docs">docs</a>
+Die Dokumentation befindet sich unter <a href="https://isi.oss.muenchen.de/">docs</a>
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
