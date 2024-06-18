@@ -20,12 +20,8 @@
       <v-data-table
         :headers="bearbeitungshistorieHeaders"
         :items="bearbeitungshistorie"
-        dense
+        density="compact"
         disable-sort
-        disable-filtering
-        :footer-props="{
-          itemsPerPageOptions: [5, 10],
-        }"
       >
         <template #item.zeitpunkt="{ item }">
           {{ zeitpunktFormatted(item.zeitpunkt) }}
@@ -39,27 +35,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment/moment";
 import { useLookupStore } from "@/stores/LookupStore";
 
-interface Props {
-  bearbeitungshistorie?: BearbeitungshistorieDto[];
-}
-
 const DISPLAY_FORMAT = "DD.MM.YYYY";
-const props = defineProps<Props>();
 const lookupStore = useLookupStore();
-const bearbeitungshistorieHeaders = [
-  { text: "Name", value: "bearbeitendePerson.name", sortable: false },
-  { text: "Email", value: "bearbeitendePerson.email", sortable: false },
-  { text: "Organisationseinheit", value: "bearbeitendePerson.organisationseinheit", sortable: false },
-  { text: "Datum der Änderung", value: "zeitpunkt", sortable: false },
-  { text: "Zielstatus", value: "zielStatus", sortable: false },
-];
-const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(props.bearbeitungshistorie));
+const bearbeitungshistorie = defineModel<Array<BearbeitungshistorieDto>>({ required: false });
+const bearbeitungshistorieHeaders = ref<Array<any>>([
+  { title: "Name", key: "bearbeitendePerson.name", sortable: false },
+  { title: "Email", key: "bearbeitendePerson.email", sortable: false },
+  { title: "Organisationseinheit", key: "bearbeitendePerson.organisationseinheit", sortable: false },
+  { title: "Datum der Änderung", key: "zeitpunkt", sortable: false },
+  { title: "Zielstatus", key: "zielStatus", sortable: false },
+]);
+const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(bearbeitungshistorie.value));
 
 function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
   return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(DISPLAY_FORMAT);
