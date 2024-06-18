@@ -800,5 +800,5 @@ export function createKommentarDto(): KommentarDto {
 
 export const enum BedarfsmeldungTitle {
   FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
-  ABFRAGEERSTELLUNG = "Geplante Einrichtungen",
+  ABFRAGEERSTELLUNG = "Rückmeldung zu Bedarfsmeldungen durch Abfrageerstellung",
 }
