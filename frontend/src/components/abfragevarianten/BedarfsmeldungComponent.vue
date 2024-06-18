@@ -146,7 +146,7 @@
                 style="width: 300px"
                 @click="erfassenBedarfsmeldung()"
               >
-                Bedarfsmeldung erfassen
+                Einrichtung hinzufügen
               </v-btn>
               <v-spacer />
             </v-toolbar>
