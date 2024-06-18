@@ -31,6 +31,8 @@ import { createKommentarDto } from "@/utils/Factories";
 import { useKommentarApi } from "@/composables/requests/KommentarApi";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useRoute } from "vue-router";
+import { findFaultInKommentar } from "@/utils/Validators";
+import { useToast } from "vue-toastification";
 
 interface Props {
   context?: Context;
@@ -39,6 +41,7 @@ interface Props {
 
 const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
 const kommentarApi = useKommentarApi();
+const toast = useToast();
 const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
 const kommentare = ref<KommentarModel[]>([]);
@@ -104,17 +107,22 @@ function createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel 
 }
 
 async function saveKommentar(kommentar: KommentarModel): Promise<void> {
-  if (_.isNil(kommentar.id)) {
-    const createdKommentar = await kommentarApi.createKommentar(kommentar);
-    const model = new KommentarModel(createdKommentar);
-    model.isDirty = false;
-    replaceSavedKommentarInKommentare(model);
-    kommentare.value.unshift(createNewUnsavedKommentar());
+  const validationMessage = findFaultInKommentar(kommentar);
+  if (_.isNil(validationMessage)) {
+    if (_.isNil(kommentar.id)) {
+      const createdKommentar = await kommentarApi.createKommentar(kommentar);
+      const model = new KommentarModel(createdKommentar);
+      model.isDirty = false;
+      replaceSavedKommentarInKommentare(model);
+      kommentare.value.unshift(createNewUnsavedKommentar());
+    } else {
+      const updatedKommentar = await kommentarApi.updateKommentar(kommentar);
+      const model = new KommentarModel(updatedKommentar);
+      model.isDirty = false;
+      replaceSavedKommentarInKommentare(model);
+    }
   } else {
-    const updatedKommentar = await kommentarApi.updateKommentar(kommentar);
-    const model = new KommentarModel(updatedKommentar);
-    model.isDirty = false;
-    replaceSavedKommentarInKommentare(model);
+    toast.error(validationMessage, { timeout: false });
   }
 }
 
