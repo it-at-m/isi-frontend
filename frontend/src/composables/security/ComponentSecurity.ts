@@ -1,7 +1,7 @@
 import { useSecurity } from "@/composables/security/Security";
 import { Context } from "@/utils/Context";
 
-export function useDocumentSecurity() {
+export function useComponentSecurity() {
   const security = useSecurity();
 
   function areDokumenteVisible(context: Context): boolean {

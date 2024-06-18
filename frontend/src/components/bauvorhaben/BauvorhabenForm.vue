@@ -204,6 +204,7 @@
       </v-row>
     </field-group-card>
     <dokumente
+      v-if="componentSercurity.areDokumenteVisible(Context.BAUVORHABEN)"
       id="bauvorhaben_dokumente_component"
       v-model="bauvorhaben.dokumente"
       :name-root-folder="nameRootFolder"
@@ -282,12 +283,14 @@ import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { ref, watch } from "vue";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
 interface Props {
   isEditable?: boolean;
 }
 
 const lookupStore = useLookupStore();
+const componentSercurity = useComponentSecurity();
 const { formChanged } = useSaveLeave();
 const bauvorhaben = defineModel<BauvorhabenModel>({ required: true });
 const sobonJahrVisible = ref(false);

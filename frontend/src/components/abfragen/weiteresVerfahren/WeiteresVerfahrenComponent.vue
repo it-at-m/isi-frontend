@@ -35,6 +35,7 @@
       :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
+      v-if="componentSecurity.areDokumenteVisible(Context.ABFRAGE)"
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="weiteresVerfahren.dokumente"
@@ -56,6 +57,7 @@ import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 import { Context } from "@/utils/Context";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
 interface Props {
   isNew?: boolean;
@@ -63,6 +65,7 @@ interface Props {
 
 const nameRootFolder = "weiteresVerfahren";
 const { formChanged } = useSaveLeave();
+const componentSecurity = useComponentSecurity();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const weiteresVerfahren = defineModel<WeiteresVerfahrenModel>({ required: true });
 

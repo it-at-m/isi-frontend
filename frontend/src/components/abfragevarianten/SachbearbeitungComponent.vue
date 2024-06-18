@@ -86,6 +86,7 @@
         :is-editable="isEditableBySachbearbeitung"
       />
       <dokumente
+        v-if="componentSercurity.areDokumenteVisible(Context.ABFRAGEVARIANTE_SACHBEARBEITUNG)"
         id="dokumente_component"
         ref="dokumenteComponent"
         v-model="abfragevarianteSachbearbeitung.dokumente"
@@ -121,6 +122,8 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import _ from "lodash";
 import type { VSelect } from "vuetify/components";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
+import { Context } from "@/utils/Context";
 
 // Workaround um den Validation Rule Type zu bekommen
 // https://stackoverflow.com/questions/77201639/how-to-import-typescript-types-in-vuetify-3
@@ -142,6 +145,8 @@ const bauratenDateiInputTitle = "Bauratendatei und Schülerpotentialprognose";
 const lookupStore = useLookupStore();
 
 const searchStore = useSearchStore();
+
+const componentSercurity = useComponentSecurity();
 
 const { formChanged } = useSaveLeave();
 

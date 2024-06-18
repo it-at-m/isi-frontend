@@ -37,7 +37,7 @@
           :is-editable="isEditable"
         />
         <kommentare
-          v-if="isEditable && !isNew"
+          v-if="componentSecurity.areKommentareVisible(Context.BAUVORHABEN) && isEditable && !isNew"
           id="bauvorhaben_kommentare"
           :context="Context.BAUVORHABEN"
           :is-editable="isEditable"
@@ -154,6 +154,7 @@ import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useToast, TYPE } from "vue-toastification";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
 const routeId = useRoute().params.id as string;
 const router = useRouter();
@@ -171,6 +172,7 @@ const {
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const searchStore = useSearchStore();
+const componentSecurity = useComponentSecurity();
 const toast = useToast();
 const form = ref<VForm | null>(null);
 const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value);

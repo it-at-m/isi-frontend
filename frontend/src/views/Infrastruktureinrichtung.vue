@@ -66,7 +66,7 @@
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <kommentare
-          v-if="!isNew"
+          v-if="componentSecurity.areKommentareVisible(Context.INFRASTRUKTUREINRICHTUNG) && !isNew"
           id="infrastruktureinrichtung_kommentare"
           :context="Context.INFRASTRUKTUREINRICHTUNG"
           :is-editable="isRoleAdminOrSachbearbeitung"
@@ -216,6 +216,7 @@ import {
   findFaultInGrundschuleForSave,
   findFaultInMittelschuleForSave,
 } from "@/utils/Validators";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
 const {
   isFormDirty,
@@ -228,6 +229,7 @@ const {
   cancel,
 } = useSaveLeave();
 const searchStore = useSearchStore();
+const componentSecurity = useComponentSecurity();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const {
   createInfrastruktureinrichtung,
