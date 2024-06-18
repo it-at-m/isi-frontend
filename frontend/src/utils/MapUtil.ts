@@ -35,14 +35,17 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
-export const OVERLAYS_ARCGIS = new Map([
+export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
+
+export const OVERLAYS_ARCGIS_TRANSPARENT = new Map([
   ["Gemarkungen", "Gemarkungen"],
-  ["Baublöcke", "Baublöcke"],
-  ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
-  ["Stadtbezirke", "Stadtbezirke"],
-  ["Bezirksteile", "Bezirksteile"],
   ["Stadtviertel", "Stadtviertel"],
+  ["Bezirksteile", "Bezirksteile"],
+  ["Stadtbezirke", "Stadtbezirke"],
+  ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
   ["Grundschulsprengel", "Grundschulsprengel"],
+  ["Mittelschulsprengel", "Mittelschulsprengel"],
+  ["Baublöcke", "Baublöcke"],
   ["Umgriffe Bebauungspläne", "BB-Umgriff"],
 ]);
 
@@ -58,6 +61,15 @@ export const OVERLAYS_ARCGIS = new Map([
 export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WMS> {
   const layers: Record<string, TileLayer.WMS> = {};
 
+  for (const overlay of OVERLAYS_ARCGIS_INTRANSPARENT) {
+    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
+      layers: overlay[1],
+      transparent: false,
+      ...LAYER_OPTIONS,
+    });
+    layers[overlay[0]] = layer;
+  }
+
   for (const overlay of OVERLAYS_GRUNDKARTE) {
     const layer = L.nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
       layers: overlay[1],
@@ -67,7 +79,7 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
     layers[overlay[0]] = layer;
   }
 
-  for (const overlay of OVERLAYS_ARCGIS) {
+  for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
     const layer = L.nonTiledLayer.wms(getArcgisUrl("basis"), {
       layers: overlay[1],
       transparent: true,
