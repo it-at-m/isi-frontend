@@ -539,7 +539,6 @@ watch(
 onBeforeMount(async () => {
   isNew.value = abfrageId === undefined;
   await resetAbfrage();
-  selectAbfrage();
 });
 
 async function resetAbfrage(): Promise<void> {
@@ -565,6 +564,7 @@ async function resetAbfrage(): Promise<void> {
       searchStore.setSelectedAbfrage(undefined);
     }
     possibleTransitions.value = await getTransitions(abfrageId);
+    selectAbfrage();
   }
 }
 
@@ -789,6 +789,7 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
   } else if (showToast) {
     toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }
+  selectAbfrage();
 }
 
 async function startStatusUebergang(transition: TransitionDto) {
