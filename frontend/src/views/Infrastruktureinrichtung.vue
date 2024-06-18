@@ -227,7 +227,6 @@ const {
   saveLeaveYesText,
   leave,
   cancel,
-  resetFormDirty,
 } = useSaveLeave();
 const searchStore = useSearchStore();
 const componentSecurity = useComponentSecurity();
@@ -454,12 +453,11 @@ function returnToUebersicht(message?: string, type?: TYPE): void {
 }
 
 function handleSuccess(dto: InfrastruktureinrichtungDto): void {
-  infrastruktureinrichtung.value = dto;
   if (isNew.value) {
-    resetFormDirty();
     router.push("/");
     toast.success("Die Infrastruktureinrichtung wurde erfolgreich gespeichert");
   } else {
+    infrastruktureinrichtung.value = dto;
     toast.success("Die Infrastruktureinrichtung wurde erfolgreich aktualisiert");
   }
 }
