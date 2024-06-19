@@ -1361,6 +1361,7 @@ function selectEntity(
   selected.value = entity;
   openForm.value = type;
   selectedTreeItemId.value = itemId;
+  window.scrollTo(0, 0);
 }
 
 function isAbfragevarianteBauleitplanverfahren(
