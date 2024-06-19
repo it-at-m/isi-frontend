@@ -36,6 +36,17 @@
           cols="3"
           class="d-flex align-center justify-end"
         >
+          <v-tooltip location="bottom">
+            <template #activator="{ props: activatorProps }">
+              <v-btn
+                icon="mdi-finance"
+                target="_blank"
+                v-bind="activatorProps"
+                :href="urlGlobalReports"
+              />
+            </template>
+            <span>Zu den Reporten</span>
+          </v-tooltip>
           <v-menu
             id="app_help_menu"
             location="bottom"
@@ -128,6 +139,12 @@ const datenschutzhinweisUrl: string = import.meta.env.VITE_DATENSCHUTZHINWEIS_UR
 const logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
 const showVersionInfo = ref(false);
 const menu = ref(false);
+
+const urlGlobalReports = computed(() => {
+  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportsGlobal}`
+    : "";
+});
 
 // Schreibt alle Nutzerollen in einen String für die Darstellung
 const userRoles = computed(() => _.join(userinfo.value.roles, ", "));
