@@ -67,7 +67,7 @@
           cols="12"
           md="6"
         >
-          <v-select
+          <v-autocomplete
             id="infrastruktureinrichtung_bauvorhaben_dropdown"
             v-model="infrastruktureinrichtung.bauvorhaben"
             :items="bauvorhaben"
@@ -77,7 +77,7 @@
             label="Bauvorhaben"
             clearable
             :disabled="!isEditable"
-            @focus="fetchBauvorhaben"
+            @update:focused="!$event || fetchBauvorhaben()"
             @update:model-value="formChanged"
           />
         </v-col>

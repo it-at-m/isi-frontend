@@ -35,7 +35,7 @@
         cols="12"
         md="4"
       >
-        <v-select
+        <v-autocomplete
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
           v-model="abfrage.bauvorhaben"
@@ -46,7 +46,7 @@
           item-value="id"
           label="Bauvorhaben"
           clearable
-          @focus="fetchBauvorhaben"
+          @update:focused="!$event || fetchBauvorhaben()"
           @update:model-value="formChanged"
         />
       </v-col>

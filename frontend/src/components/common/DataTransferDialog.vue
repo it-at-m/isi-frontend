@@ -11,7 +11,7 @@
           cols="12"
           md="10"
         >
-          <v-select
+          <v-autocomplete
             id="abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
             :items="abfragen"
@@ -22,7 +22,7 @@
             return-object
             hint="Abfrage für Datenübernahme auswählen"
             persistent-hint
-            @focus="fetchAbfragen"
+            @update:focused="!$event || fetchAbfragen()"
           />
         </v-col>
       </v-row>
