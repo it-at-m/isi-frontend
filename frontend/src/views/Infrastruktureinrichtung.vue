@@ -11,7 +11,7 @@
           :is-editable="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung"
         />
         <infrastruktureinrichtung-component
-          v-show="isInfrastruktureinrichtungTypNotUnspecified"
+          v-if="isInfrastruktureinrichtungTypNotUnspecified"
           id="infrastruktureinrichtung_infrastruktureinrichtung_component"
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
