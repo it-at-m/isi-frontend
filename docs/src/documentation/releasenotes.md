@@ -70,7 +70,11 @@ Dokumente in einer Vielzahl von Dateiformaten können an Abfragen, Bauvorhaben u
 
 Das Registrieren erfolgt über Single Sign-On. Ein Rollen und Rechtekonzept ermöglicht es Nutzer\*innen über Rollen zu definieren, die es gestatten, gewisse Inhalte zu erstellen, zu lesen und/oder zu ändern.
 
-### Status
+In den Objekten Infrastrukturabfrage, Bauvorhaben und Infrastruktureinrichtungen ist es möglich, Informationen zu den Bearbeiter\*innen zu erhalten, um einen Ansprechpartner\*in für (inhaltliche) Fragen zu haben.
+
+Die Sichtrechte für die Reporte wurden ebenfalls nach den entsprechenden Rollen unterschieden.
+
+Für die Rolle Nutzer, wurden die Sichtrechte eingeschränkt. Die Rolle hat nur noch auf Abfragen im Status "Erledigt" ein Sichtrecht.
 
 In den Objekten Infrastrukturabfrage, Bauvorhaben und Infrastruktureinrichtungen ist es möglich, Informationen zu den Bearbeiter\*innen zu erhalten, um einen Ansprechpartner\*in für (inhaltliche) Fragen zu haben.
 
