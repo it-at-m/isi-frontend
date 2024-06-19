@@ -471,7 +471,7 @@ const abfrageNavigationTree = ref<typeof AbfrageNavigationTree | null>(null);
 const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
-const artAbfrage = computed(() => (isNew.value ? suggestedArtAbfrage : abfrage.value.artAbfrage));
+const artAbfrage = computed(() => (isNew.value ? suggestedArtAbfrage.value : abfrage.value.artAbfrage));
 const isBauleitplanverfahren = computed(() => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
 const isBaugenehmigungsverfahren = computed(
   () => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
