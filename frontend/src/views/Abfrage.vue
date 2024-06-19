@@ -545,8 +545,6 @@ const deleteBaurateDialogText = computed(() => {
   return "Hiermit wird die Baurate unwiderruflich gelöscht.";
 });
 
-watch(openForm, () => window.scrollTo(0, 0), { deep: true, immediate: true });
-
 watch(
   abfrage,
   () => {
@@ -1363,6 +1361,7 @@ function selectEntity(
   selected.value = entity;
   openForm.value = type;
   selectedTreeItemId.value = itemId;
+  window.scrollTo(0, 0);
 }
 
 function isAbfragevarianteBauleitplanverfahren(
