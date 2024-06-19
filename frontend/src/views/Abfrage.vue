@@ -545,6 +545,8 @@ const deleteBaurateDialogText = computed(() => {
   return "Hiermit wird die Baurate unwiderruflich gelöscht.";
 });
 
+watch(openForm, () => window.scrollTo(0, 0), { deep: true, immediate: true });
+
 watch(
   abfrage,
   () => {
