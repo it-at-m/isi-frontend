@@ -6,6 +6,10 @@ import Infrastruktureinrichtung from "../views/Infrastruktureinrichtung.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  // https://router.vuejs.org/guide/advanced/scroll-behavior#Scroll-Behavior
+  scrollBehavior() {
+    return { top: 0, left: 0 };
+  },
   routes: [
     {
       path: "/",
