@@ -113,9 +113,10 @@
       @yes="leave"
       @no="cancel"
     />
-    <bauvorhaben-data-transfer-dialog
+    <data-transfer-dialog
       id="bauvorhaben_datenuebernahme"
       v-model="dataTransferDialogOpen"
+      :context="Context.BAUVORHABEN"
       @abfrage-uebernehmen="abfrageUebernehmen($event)"
       @uebernahme-abbrechen="dataTransferDialogOpen = false"
     />
@@ -133,7 +134,7 @@ import { pflichtfeld } from "@/utils/FieldValidationRules";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import { findFaultInBauvorhaben } from "@/utils/Validators";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
-import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
+import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 import {
   type AbfrageDto,
   type BauleitplanverfahrenDto,

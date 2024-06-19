@@ -166,6 +166,13 @@
           @no="yesNoDialogRelevanteAbfragevarianteNo"
           @yes="yesNoDialogRelevanteAbfragevarianteYes"
         />
+        <data-transfer-dialog
+          id="abfrage_datenuebernahme"
+          v-model="isDataTransferDialogOpen"
+          :context="Context.ABFRAGE"
+          @abfrage-uebernehmen="abfrageUebernehmen"
+          @uebernahme-abbrechen="isDataTransferDialogOpen = false"
+        />
       </template>
       <template #heading>
         <v-container>
@@ -229,6 +236,18 @@
           @click="deleteAbfrage()"
         >
           Löschen
+        </v-btn>
+        <v-btn
+          v-else
+          id="abfrage_datenuebernahme_button"
+          class="my-4 px-1"
+          color="primary"
+          elevation="1"
+          style="width: 200px"
+          :disabled="!isRoleAdminOrAbfrageerstellung"
+          @click="isDataTransferDialogOpen = true"
+        >
+          Datenübernahme
         </v-btn>
         <v-spacer />
         <v-btn
@@ -296,6 +315,7 @@ import {
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
+  AbfrageDto,
 } from "@/api/api-client/isi-backend";
 import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
@@ -311,6 +331,7 @@ import BaugebietWeiteresVerfahrenComponent from "@/components/baugebiete/weitere
 import BaurateComponent from "@/components/bauraten/BaurateComponent.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
+import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
@@ -347,12 +368,14 @@ import {
   mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto,
   mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto,
+  copyAbfrage,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import { useToast, TYPE } from "vue-toastification";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { findFaultInAbfrageForSave } from "@/utils/Validators";
 import { useSearchStore } from "@/stores/SearchStore";
+import { Context } from "@/utils/Context";
 import {
   type AbfrageDtoWithForm,
   type AbfrageTreeItem,
@@ -366,6 +389,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useTransitionApi } from "@/composables/requests/TransitionApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { useSecurity } from "@/composables/security/Security";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { useStatusUebergangApi } from "@/composables/requests/StatusUebergangApi";
@@ -390,6 +414,7 @@ const {
   isEditableByAdmin,
   isEditableWithAnzeigeContextAbfragevariante,
 } = useAbfrageSecurity();
+const { isRoleAdminOrAbfrageerstellung } = useSecurity();
 const {
   save,
   patchAngelegt,
@@ -427,6 +452,7 @@ const isDeleteDialogAbfragevarianteOpen = ref(false);
 const isDeleteDialogBauabschnittOpen = ref(false);
 const isDeleteDialogBaugebietOpen = ref(false);
 const isDeleteDialogBaurateOpen = ref(false);
+const isDataTransferDialogOpen = ref(false);
 const isRelevanteAbfragevarianteDialogOpen = ref(false);
 const relevanteAbfragevarianteId = ref<string | undefined>(undefined);
 const relevanteAbfragevarianteDialogText = ref("");
@@ -1443,5 +1469,12 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
       }
     }
   }
+}
+
+function abfrageUebernehmen(value: AbfrageDto): void {
+  abfrage.value = copyAbfrage(value);
+  selectAbfrage();
+  formChanged();
+  isDataTransferDialogOpen.value = false;
 }
 </script>
