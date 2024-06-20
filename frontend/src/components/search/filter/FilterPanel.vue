@@ -12,6 +12,38 @@
           cols="12"
           md="4"
         >
+          <v-chip
+            class="ma-2"
+            filter
+            @click="alleFiltereinstellungenAufheben"
+            @mouseover="hoverFiltereinstellungenAufheben = true"
+            @mouseleave="hoverFiltereinstellungenAufheben = false"
+          >
+            Filtereinstellungen aufheben
+          </v-chip>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-card flat>
+            {{ helpTextFiltereinstellungenAufheben }}
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-combobox
             v-model="searchQueryAndSorting.filterStadtbezirkNummer"
             variant="underlined"
@@ -89,10 +121,18 @@ import { computed, ref } from "vue";
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
+const hoverFiltereinstellungenAufheben = ref<boolean>(false);
 const hoverFilterStadtbezirkName = ref<boolean>(false);
 const hoverFilterKitaplanungsbereichKitaPlbT = ref<boolean>(false);
 const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
+
+const helpTextFiltereinstellungenAufheben = computed(() => {
+  if (hoverFiltereinstellungenAufheben.value) {
+    return "Mit einem Klick werden alle Filtereintellungen aufgehoben";
+  }
+  return "";
+});
 
 const helpTextFiltereinstellungen = computed(() => {
   if (hoverFilterStadtbezirkName.value) {
@@ -109,4 +149,11 @@ const helpTextFiltereinstellungen = computed(() => {
   }
   return "";
 });
+
+function alleFiltereinstellungenAufheben(): void {
+  searchQueryAndSorting.value.filterStadtbezirkNummer = undefined;
+  searchQueryAndSorting.value.filterKitaplanungsbereichKitaPlbT = undefined;
+  searchQueryAndSorting.value.filterGrundschulsprengelNummer = undefined;
+  searchQueryAndSorting.value.filterMittelschulsprengelNummer = undefined;
+}
 </script>
