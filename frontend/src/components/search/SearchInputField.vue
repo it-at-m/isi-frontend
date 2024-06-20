@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, ref } from "vue";
+import { computed, ref } from "vue";
 import type { SearchQueryDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
@@ -64,12 +64,6 @@ const route = useRoute();
 const router = useRouter();
 
 const searchStore = useSearchStore();
-
-onMounted(() => {
-  searchEntitiesForSelectedSuggestion();
-  clearSearch();
-  checkCurrentFilter();
-});
 
 // Filter Dialog
 
