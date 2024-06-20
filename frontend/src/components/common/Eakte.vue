@@ -68,12 +68,12 @@ interface Props {
   isEditable?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
+withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
 const { formChanged } = useSaveLeave();
 const title = "Link eAkte";
 const linkEakte = defineModel<string | undefined>();
 const linkEakteNotEmpty = computed(() => !_.isEmpty(linkEakte.value));
-const editMode = ref(props.isEditable && _.isEmpty(linkEakte.value));
+const editMode = ref(false);
 
 const linkEakteFormatted = computed(() => {
   if (linkEakteNotEmpty.value) {
