@@ -97,6 +97,30 @@ export interface SearchQueryDto {
      * @memberof SearchQueryDto
      */
     pageSize?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterStadtbezirkName?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterKitaplanungsbereichKitaPlbT?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterGrundschulsprengelNummer?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterMittelschulsprengelNummer?: Array<string>;
 }
 
 /**
@@ -142,6 +166,10 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'selectMittelschule': json['selectMittelschule'],
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
+        'filterStadtbezirkName': !exists(json, 'filterStadtbezirkName') ? undefined : json['filterStadtbezirkName'],
+        'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
+        'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
+        'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
     };
 }
 
@@ -167,6 +195,10 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'selectMittelschule': value.selectMittelschule,
         'page': value.page,
         'pageSize': value.pageSize,
+        'filterStadtbezirkName': value.filterStadtbezirkName,
+        'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
+        'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
+        'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
     };
 }
 
