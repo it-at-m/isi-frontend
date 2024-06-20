@@ -47,7 +47,7 @@
     >
       <v-row class="justify-center">
         <v-btn
-          v-if="isEditable && linkEakteNotEmpty"
+          v-if="isEditable"
           id="link_eakte_toggle_button"
           class="mt-3 mb-14"
           variant="plain"
