@@ -47,26 +47,28 @@
           <v-combobox
             v-model="searchQueryAndSorting.filterStadtbezirkNummer"
             variant="underlined"
-            label="Nummer der Stadtbezirke"
+            label="Nummern der Stadtbezirke"
             hide-no-data
             :append-icon="''"
             multiple
             chips
             closable-chips
             density="default"
+            hint="z.B. 05 oder 14"
             @mouseover="hoverFilterStadtbezirkName = true"
             @mouseleave="hoverFilterStadtbezirkName = false"
           />
           <v-combobox
             v-model="searchQueryAndSorting.filterKitaplanungsbereichKitaPlbT"
             variant="underlined"
-            label="Nummer der Kitaplanungsbereiche"
+            label="Nummern der Kitaplanungsbereiche"
             hide-no-data
             :append-icon="''"
             multiple
             chips
             closable-chips
             density="default"
+            hint="z.B. 5.1 oder 16.2"
             @mouseover="hoverFilterKitaplanungsbereichKitaPlbT = true"
             @mouseleave="hoverFilterKitaplanungsbereichKitaPlbT = false"
           />
@@ -78,26 +80,28 @@
           <v-combobox
             v-model="searchQueryAndSorting.filterGrundschulsprengelNummer"
             variant="underlined"
-            label="Nummer der Grundschulsprengel"
+            label="Nummern der Grundschulsprengel"
             hide-no-data
             :append-icon="''"
             multiple
             chips
             closable-chips
             density="default"
+            hint="z.B. 2165"
             @mouseover="hoverFilterGrundschulsprengelNummer = true"
             @mouseleave="hoverFilterGrundschulsprengelNummer = false"
           />
           <v-combobox
             v-model="searchQueryAndSorting.filterMittelschulsprengelNummer"
             variant="underlined"
-            label="Nummer der Mittelschulsprengel"
+            label="Nummern der Mittelschulsprengel"
             hide-no-data
             :append-icon="''"
             multiple
             chips
             closable-chips
             density="default"
+            hint="z.B. 1275"
             @mouseover="hoverFilterMittelschulsprengelNummer = true"
             @mouseleave="hoverFilterMittelschulsprengelNummer = false"
           />
