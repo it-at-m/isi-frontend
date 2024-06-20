@@ -3,6 +3,7 @@ import Main from "../views/Main.vue";
 import Abfrage from "../views/Abfrage.vue";
 import Bauvorhaben from "../views/Bauvorhaben.vue";
 import Infrastruktureinrichtung from "../views/Infrastruktureinrichtung.vue";
+import { setSearchResultList } from "@/utils/RouterUtil";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,7 @@ const router = createRouter({
     {
       path: "/",
       component: Main,
+      beforeEnter: [setSearchResultList],
     },
     {
       path: "/abfrage",
