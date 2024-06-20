@@ -16,7 +16,7 @@
           variant="accordion"
         >
           <selection-and-sorting-panel v-model="searchQueryAndSorting" />
-          <filter-panel />
+          <filter-panel v-model="searchQueryAndSorting" />
         </v-expansion-panels>
       </v-sheet>
     </v-card-text>
