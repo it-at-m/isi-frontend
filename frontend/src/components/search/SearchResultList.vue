@@ -1,122 +1,116 @@
 <template>
-  <v-infinite-scroll
-    class="mt-n4"
-    width="20vw"
-    @load="getAndAppendSearchResultsNextPage"
+  <v-list
+    v-if="searchResultsAsArray.length > 0"
+    width="500px"
+    v-scroll.self="onScroll"
+    :height="viewportHeight"
+    class="pa-0 ma-0 overflow-y-auto"
   >
-    <v-list>
-      <!-- eslint-disable vue/no-unused-vars -->
-      <v-hover
-        v-for="(item, index) in searchResultsAsArray"
-        :key="index"
-        v-slot="{ isHovering }"
+    <!-- eslint-disable vue/no-unused-vars -->
+    <v-hover
+      v-for="(item, index) in searchResultsAsArray"
+      :key="index"
+      v-slot="{ isHovering }"
+    >
+      <v-card
+        v-if="isTypeOfAbfrage(item)"
+        :id="'search_result_item_' + index"
+        :elevation="isHovering ? 6 : 1"
+        class="my-2 mx-3 pt-3 scale-transition"
+        :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
+        @click="routeToAbfrageForm(item)"
       >
-        <v-card
-          v-if="isTypeOfAbfrage(item)"
-          :id="'search_result_item_' + index"
-          :elevation="isHovering ? 6 : 1"
-          class="my-2 mx-3 pt-3 scale-transition"
-          :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
-          @click="routeToAbfrageForm(item)"
+        <v-card-subtitle
+          class="text-black"
+          opacity="1"
         >
-          <v-card-subtitle
-            class="text-black"
-            opacity="1"
+          <v-icon
+            start
+            color="green-lighten-1"
           >
-            <v-icon
-              start
-              color="green-lighten-1"
-            >
-              {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
-            </v-icon>
-            {{ castToAbfrageSearchResultDto(item).name }}
-          </v-card-subtitle>
-          <v-card-text>
-            <span> Abfrageart: {{ getArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }} </span>
-            <v-spacer />
-            <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
-            <v-spacer />
-            <span>
-              Status:
-              {{ getLookupValueAbfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList) }}
-            </span>
-            <v-spacer />
-            <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristBearbeitung) }} </span>
-          </v-card-text>
-        </v-card>
-        <v-card
-          v-else-if="isTypeOfBauvorhaben(item)"
-          :id="'search_result_item_' + index"
-          :elevation="isHovering ? 6 : 1"
-          class="my-2 mx-3 pt-3 scale-transition"
-          @click="routeToBauvorhabenForm(item)"
+            {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
+          </v-icon>
+          {{ castToAbfrageSearchResultDto(item).name }}
+        </v-card-subtitle>
+        <v-card-text>
+          <span> Abfrageart: {{ getArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }} </span>
+          <v-spacer />
+          <span> Stadtbezirke: {{ getStadtbezirke(castToAbfrageSearchResultDto(item).stadtbezirke) }} </span>
+          <v-spacer />
+          <span>
+            Status:
+            {{ getLookupValueAbfrage(castToAbfrageSearchResultDto(item).statusAbfrage, statusAbfrageList) }}
+          </span>
+          <v-spacer />
+          <span> Frist: {{ datumFormatted(castToAbfrageSearchResultDto(item).fristBearbeitung) }} </span>
+        </v-card-text>
+      </v-card>
+      <v-card
+        v-else-if="isTypeOfBauvorhaben(item)"
+        :id="'search_result_item_' + index"
+        :elevation="isHovering ? 6 : 1"
+        class="my-2 mx-3 pt-3 scale-transition"
+        @click="routeToBauvorhabenForm(item)"
+      >
+        <v-card-subtitle
+          class="text-black"
+          opacity="1"
         >
-          <v-card-subtitle
-            class="text-black"
-            opacity="1"
+          <v-icon
+            start
+            color="indigo-lighten-1"
           >
-            <v-icon
-              start
-              color="indigo-lighten-1"
-            >
-              mdi-account-hard-hat
-            </v-icon>
-            {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
-          </v-card-subtitle>
-          <v-card-text>
-            <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenSearchResultDto(item).stadtbezirke) }} </span>
-            <v-spacer />
-            <span>
-              Grundstücksgröße:
-              {{ getFormattedGrundstuecksgroesse(castToBauvorhabenSearchResultDto(item).grundstuecksgroesse) }} m²
-            </span>
-            <v-spacer />
-            <span>
-              Stand:
-              {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVerfahren, standVerfahrenList) }}
-            </span>
-          </v-card-text>
-        </v-card>
-        <v-card
-          v-else
-          :id="'search_result_item_' + index"
-          class="my-2 mx-3 pt-3 scale-transition"
-          :elevation="isHovering ? 6 : 1"
-          @click="routeToInfrastruktureinrichtungForm(item)"
+            mdi-account-hard-hat
+          </v-icon>
+          {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
+        </v-card-subtitle>
+        <v-card-text>
+          <span> Stadtbezirke: {{ getStadtbezirke(castToBauvorhabenSearchResultDto(item).stadtbezirke) }} </span>
+          <v-spacer />
+          <span>
+            Grundstücksgröße:
+            {{ getFormattedGrundstuecksgroesse(castToBauvorhabenSearchResultDto(item).grundstuecksgroesse) }} m²
+          </span>
+          <v-spacer />
+          <span>
+            Stand:
+            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVerfahren, standVerfahrenList) }}
+          </span>
+        </v-card-text>
+      </v-card>
+      <v-card
+        v-else
+        :id="'search_result_item_' + index"
+        class="my-2 mx-3 pt-3 scale-transition"
+        :elevation="isHovering ? 6 : 1"
+        @click="routeToInfrastruktureinrichtungForm(item)"
+      >
+        <v-card-subtitle
+          class="text-black"
+          opacity="1"
         >
-          <v-card-subtitle
-            class="text-black"
-            opacity="1"
+          <v-icon
+            start
+            color="red-lighten-1"
           >
-            <v-icon
-              start
-              color="red-lighten-1"
-            >
-              mdi-home
-            </v-icon>
-            {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
-          </v-card-subtitle>
-          <v-card-text>
-            <span>
-              Einrichtungstyp:
-              {{
-                getLookupValueInfrastruktureinrichtung(
-                  castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
-                  infrastruktureinrichtungTypList,
-                )
-              }}
-            </span>
-          </v-card-text>
-        </v-card>
-      </v-hover>
-    </v-list>
-    <template #empty>
-      <span>Keine weiteren Suchergebnisse</span>
-    </template>
-    <template #error>
-      <span>Es gab einen Fehler neue Suchergebnisse zu laden</span>
-    </template>
-  </v-infinite-scroll>
+            mdi-home
+          </v-icon>
+          {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
+        </v-card-subtitle>
+        <v-card-text>
+          <span>
+            Einrichtungstyp:
+            {{
+              getLookupValueInfrastruktureinrichtung(
+                castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp,
+                infrastruktureinrichtungTypList,
+              )
+            }}
+          </span>
+        </v-card-text>
+      </v-card>
+    </v-hover>
+  </v-list>
 </template>
 
 <script setup lang="ts">
@@ -141,8 +135,7 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
-
-type InfiniteScrollStatus = "ok" | "empty" | "loading" | "error";
+import { useDisplay } from "vuetify";
 
 const pageRequestMutex = new Mutex();
 const lookupStore = useLookupStore();
@@ -165,6 +158,27 @@ const numberOfPossiblePages = computed(() => {
   return _.isNil(numberOfPossiblePages) ? 0 : numberOfPossiblePages;
 });
 
+const { height } = useDisplay();
+
+const viewportHeight = computed(() => {
+  const heightOfWindow = height.value;
+  return (heightOfWindow - 50) / (heightOfWindow / 100) + "vh";
+});
+
+/**
+ * Diese Methode prüft, ob der Scrollbalken der Suchergebnisliste am Ende der Liste angekommen ist und triggert dann
+ * den Suchrequest zum Holen der nächsten Seite und Anfügen der Suchergebnisse an die bestehenden Suchergebnisse.
+ *
+ * Des Weiteren wird der Request zum Holen der nächsten Seite nur dann getriggert, wenn kein anderer Request
+ * zum Holen der nächsten Seite ausgeführt wird.
+ */
+function onScroll(scrollEvent: any) {
+  const { scrollHeight, scrollTop, clientHeight } = scrollEvent.target;
+  if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
+    getAndAppendSearchResultsNextPage();
+  }
+}
+
 /**
  * Holt die Suchergebnisse auf Basis des im Store hinterlegten SearchQueryAndSortingDto für die nächste Seite
  * und fügt die bestehenden Suchergebnisse an die bereits vorhandenen Suchergebnisse an.
@@ -172,39 +186,27 @@ const numberOfPossiblePages = computed(() => {
  * Die Ausführung der Suchen und das Speichern der Suchergebnisse im Store wird mittels eines Mutex abgesichert,
  * um eine Race-Condition bei mehreren schnell hintereinander ausgeführten Seitenaufrufen zu vermeiden.
  */
-function getAndAppendSearchResultsNextPage(event: { done: (status: InfiniteScrollStatus) => void }): void {
+function getAndAppendSearchResultsNextPage(): void {
   tryAcquire(pageRequestMutex)
     .acquire()
     .then(() => {
       const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
       let currentPage = searchQueryForEntitiesDto.page;
-      if (
-        !_.isNil(searchResults.value.page) &&
-        _.isEqual(searchResults.value.page, searchResults.value.numberOfPages)
-      ) {
-        event.done("empty");
+      if (!_.isNil(currentPage) && ++currentPage <= numberOfPossiblePages.value) {
+        searchQueryForEntitiesDto.page = currentPage;
+        searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
+        searchForEntities(searchQueryForEntitiesDto)
+          .then((searchResultsNextPage) => {
+            const currentSearchResults = searchResults.value;
+            searchResultsNextPage.searchResults = _.concat(
+              _.toArray(currentSearchResults.searchResults),
+              _.toArray(searchResultsNextPage.searchResults),
+            );
+            searchStore.setSearchResults(_.cloneDeep(searchResultsNextPage));
+          })
+          .finally(() => pageRequestMutex.release());
       } else {
-        if (!_.isNil(currentPage) && ++currentPage <= numberOfPossiblePages.value) {
-          searchQueryForEntitiesDto.page = currentPage;
-          searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
-          searchForEntities(searchQueryForEntitiesDto)
-            .then((searchResultsNextPage) => {
-              const currentSearchResults = searchResults.value;
-              searchResultsNextPage.searchResults = _.concat(
-                _.toArray(currentSearchResults.searchResults),
-                _.toArray(searchResultsNextPage.searchResults),
-              );
-              searchStore.setSearchResults(_.cloneDeep(searchResultsNextPage));
-              event.done("ok");
-            })
-            .catch(() => {
-              event.done("error");
-            })
-            .finally(() => pageRequestMutex.release());
-        } else {
-          pageRequestMutex.release();
-          event.done("ok");
-        }
+        pageRequestMutex.release();
       }
     });
 }
