@@ -177,34 +177,32 @@ function getAndAppendSearchResultsNextPage(event: { done: (status: InfiniteScrol
   tryAcquire(pageRequestMutex)
     .acquire()
     .then(() => {
-      event.done("loading");
       const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
       let currentPage = searchQueryForEntitiesDto.page;
-      if (!_.isNil(currentPage) && ++currentPage <= numberOfPossiblePages.value) {
-        searchQueryForEntitiesDto.page = currentPage;
-        searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
-        searchForEntities(searchQueryForEntitiesDto)
-          .then((searchResultsNextPage) => {
-            const currentSearchResults = searchResults.value;
-            const nextPageResult = searchResultsNextPage.searchResults || [];
-            if (_.isEqual(currentSearchResults, nextPageResult)) {
-              event.done("empty");
-            } else {
+      if (_.isEqual(searchResults.value.page, searchResults.value.numberOfPages)) {
+        event.done("empty");
+      } else {
+        if (!_.isNil(currentPage) && ++currentPage <= numberOfPossiblePages.value) {
+          searchQueryForEntitiesDto.page = currentPage;
+          searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
+          searchForEntities(searchQueryForEntitiesDto)
+            .then((searchResultsNextPage) => {
+              const currentSearchResults = searchResults.value;
               searchResultsNextPage.searchResults = _.concat(
                 _.toArray(currentSearchResults.searchResults),
                 _.toArray(searchResultsNextPage.searchResults),
               );
               searchStore.setSearchResults(_.cloneDeep(searchResultsNextPage));
               event.done("ok");
-            }
-          })
-          .catch(() => {
-            event.done("error");
-          })
-          .finally(() => pageRequestMutex.release());
-      } else {
-        pageRequestMutex.release();
-        event.done("ok");
+            })
+            .catch(() => {
+              event.done("error");
+            })
+            .finally(() => pageRequestMutex.release());
+        } else {
+          pageRequestMutex.release();
+          event.done("ok");
+        }
       }
     });
 }
