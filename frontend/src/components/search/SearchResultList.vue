@@ -2,7 +2,6 @@
   <v-infinite-scroll
     class="mt-n4"
     width="20vw"
-    :target="'#suchfeld'"
     @load="getAndAppendSearchResultsNextPage"
   >
     <v-list>
