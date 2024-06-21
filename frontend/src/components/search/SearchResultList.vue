@@ -3,8 +3,6 @@
     class="mt-n4"
     width="20vw"
     :target="'#suchfeld'"
-    infinite-scroll-disabled="pageRequestMutex.isLocked()"
-    infinite-scroll-distance="10"
     @load="getAndAppendSearchResultsNextPage"
   >
     <v-list>
