@@ -515,10 +515,10 @@ const deleteAbfragevarianteDialogText = computed(() => {
       name = item.value.getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.context);
     }
     if (name) {
-      return `Hiermit wird die Abfragevariante Nr. ${name} und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.`;
+      return `Hiermit wird die Abfragevariante Nr. ${name} und alle dazugehörigen Angaben unwiderruflich gelöscht.`;
     }
   }
-  return "Hiermit wird die Abfragevariante und alle dazugehörigen Bauabschnitte unwiderruflich gelöscht.";
+  return "Hiermit wird die Abfragevariante und alle dazugehörigen Angaben unwiderruflich gelöscht.";
 });
 
 const deleteBauabschnittDialogText = computed(() => {
