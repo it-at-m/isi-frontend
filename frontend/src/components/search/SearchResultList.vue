@@ -177,9 +177,13 @@ function getAndAppendSearchResultsNextPage(event: { done: (status: InfiniteScrol
   tryAcquire(pageRequestMutex)
     .acquire()
     .then(() => {
+      event.done("ok");
       const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
       let currentPage = searchQueryForEntitiesDto.page;
-      if (_.isEqual(searchResults.value.page, searchResults.value.numberOfPages)) {
+      if (
+        !_.isNil(searchResults.value.page) &&
+        _.isEqual(searchResults.value.page, searchResults.value.numberOfPages)
+      ) {
         event.done("empty");
       } else {
         if (!_.isNil(currentPage) && ++currentPage <= numberOfPossiblePages.value) {
