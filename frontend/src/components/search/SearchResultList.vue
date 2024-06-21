@@ -204,7 +204,7 @@ function getAndAppendSearchResultsNextPage(event: { done: (status: InfiniteScrol
           .finally(() => pageRequestMutex.release());
       } else {
         pageRequestMutex.release();
-        event.done("empty");
+        event.done("ok");
       }
     });
 }
