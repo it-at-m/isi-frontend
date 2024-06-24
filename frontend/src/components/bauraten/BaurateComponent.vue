@@ -49,6 +49,30 @@
       </v-row>
     </field-group-card>
     <v-row>
+      <v-col
+        cols="12"
+        md="4"
+      />
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <v-btn
+          v-if="baurate.foerdermix !== undefined"
+          id="bauraten_foerdermix_uebernehmen_button"
+          color="secondary"
+          variant="flat"
+          style="width: 500px"
+          @click="uebernehmeFoerdermix()"
+          >Fördermix für alle Bauraten übernehmen</v-btn
+        >
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      />
+    </v-row>
+    <v-row>
       <foerdermix-formular
         id="foerdermix_formular_component"
         ref="Foerdermix"
@@ -80,6 +104,7 @@ import {
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 import type { Rule } from "@/utils/FieldValidationRules";
+import { useFoerdermixStore } from "@/stores/FoerdermixStore";
 
 interface Props {
   baugebiet?: BaugebietDto;
@@ -89,6 +114,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const baurate = defineModel<BaurateModel>({ required: true });
+const foerdermixStore = useFoerdermixStore();
 
 function validateWohneinheiten(
   baugebiet: BaugebietDto | undefined,
@@ -139,6 +165,10 @@ const baugebietRealisierungVonOr1900 = computed(() => {
   }
   return year;
 });
+
+function uebernehmeFoerdermix(): void {
+  foerdermixStore.uebernehmeWerte(baurate.value.foerdermix, props.abfragevariante?.id as string);
+}
 
 const suffixWohneinheiten = computed(() => {
   return `von ${wohneinheitenFormatted(props.baugebiet, props.abfragevariante)}`;

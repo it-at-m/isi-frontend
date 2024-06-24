@@ -316,6 +316,7 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
   AbfrageDto,
+  FoerdermixDto,
 } from "@/api/api-client/isi-backend";
 import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
@@ -375,6 +376,7 @@ import { useToast, TYPE } from "vue-toastification";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { findFaultInAbfrageForSave } from "@/utils/Validators";
 import { useSearchStore } from "@/stores/SearchStore";
+import { useFoerdermixStore } from "@/stores/FoerdermixStore";
 import { Context } from "@/utils/Context";
 import {
   type AbfrageDtoWithForm,
@@ -394,6 +396,7 @@ import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { useStatusUebergangApi } from "@/composables/requests/StatusUebergangApi";
 import { useBauratenApi } from "@/composables/requests/BauratenApi";
+import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
 const {
   saveLeaveDialog,
@@ -430,6 +433,7 @@ const { getTransitions } = useTransitionApi();
 const { statusUebergangRequest } = useStatusUebergangApi();
 const toast = useToast();
 const searchStore = useSearchStore();
+const foerdermixStore = useFoerdermixStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -561,6 +565,19 @@ watch(
       relevanteAbfragevarianteId.value = dto.relevanteAbfragevariante;
     }
   },
+);
+
+watch(
+  () => foerdermixStore.zuUebernehmenderFoerdermix,
+  () => {
+    if (
+      !_.isNil(foerdermixStore.zuUebernehmenderFoerdermix) &&
+      !_.isNil(foerdermixStore.zuUbernehmendeAbfragevarianteId)
+    ) {
+      foedermixUebernehmen(abfrage.value);
+    }
+  },
+  { immediate: true },
 );
 
 onBeforeMount(async () => {
@@ -1481,5 +1498,92 @@ function abfrageUebernehmen(value: AbfrageDto): void {
   selectAbfrage();
   formChanged();
   isDataTransferDialogOpen.value = false;
+}
+
+function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
+  if (isBauleitplanverfahren.value) {
+    (value as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren?.forEach((abfragevariante) => {
+      if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+        abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
+          bauabschnitt.baugebiete.forEach((baugebiet) => {
+            baugebiet.bauraten.forEach((baurate) => {
+              baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
+            });
+          });
+        });
+      }
+    });
+
+    (value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren?.forEach(
+      (abfragevariante) => {
+        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+          abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
+            bauabschnitt.baugebiete.forEach((baugebiet) => {
+              baugebiet.bauraten.forEach((baurate) => {
+                baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
+              });
+            });
+          });
+        }
+      },
+    );
+
+    if (isBaugenehmigungsverfahren.value) {
+      (value as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren?.forEach((abfragevariante) => {
+        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+          abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
+            bauabschnitt.baugebiete.forEach((baugebiet) => {
+              baugebiet.bauraten.forEach((baurate) => {
+                baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
+              });
+            });
+          });
+        }
+      });
+
+      (value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren?.forEach(
+        (abfragevariante) => {
+          if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+            abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
+              bauabschnitt.baugebiete.forEach((baugebiet) => {
+                baugebiet.bauraten.forEach((baurate) => {
+                  baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
+                });
+              });
+            });
+          }
+        },
+      );
+    }
+
+    if (isWeiteresVerfahren.value) {
+      (value as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren?.forEach((abfragevariante) => {
+        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+          abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
+            bauabschnitt.baugebiete.forEach((baugebiet) => {
+              baugebiet.bauraten.forEach((baurate) => {
+                baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
+              });
+            });
+          });
+        }
+      });
+      (value as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren?.forEach((abfragevariante) => {
+        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+          abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
+            bauabschnitt.baugebiete.forEach((baugebiet) => {
+              baugebiet.bauraten.forEach((baurate) => {
+                baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
+              });
+            });
+          });
+        }
+      });
+    }
+  }
+  toast.success("Fördermix wurde für alle Bauraten übernommen.");
+  foerdermixStore.uebernehmeWerte(undefined, undefined);
+
+  return value;
 }
 </script>
