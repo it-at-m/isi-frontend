@@ -207,7 +207,6 @@ const geoApi = useGeodataEaiApi();
 const koordinatenApi = useKoordinatenApi();
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const verortungModel = defineModel<VerortungPointModel | undefined>({ required: true });
-const isVerortungEditable = computed(() => props.isEditable && !adresseValid());
 const verortungCardTitle = "Verortung";
 let oldAdresse: AdresseModel | undefined = undefined;
 const pointCoordinatesAsUtm32 = ref("");
@@ -217,6 +216,7 @@ const geoJsonOptions: GeoJSONOptions = {
     return L.marker(latlng, { icon: ICON_INFRASTRUKTUREINRICHTUNG });
   },
 };
+const isVerortungEditable = computed(() => props.isEditable && !adresseValid());
 const adresseCoordinate = computed(() => {
   const lng = props.adresse?.coordinate?.longitude;
   const lat = props.adresse?.coordinate?.latitude;
