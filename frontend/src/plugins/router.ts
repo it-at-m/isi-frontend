@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import Main from "../views/Main.vue";
 import Abfrage from "../views/Abfrage.vue";
 import Bauvorhaben from "../views/Bauvorhaben.vue";
@@ -6,7 +6,7 @@ import Infrastruktureinrichtung from "../views/Infrastruktureinrichtung.vue";
 import { setSearchResultList } from "@/utils/RouterUtil";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   // https://router.vuejs.org/guide/advanced/scroll-behavior#Scroll-Behavior
   scrollBehavior(to, from, savedPosition) {
     return { top: 0, left: 0 };
