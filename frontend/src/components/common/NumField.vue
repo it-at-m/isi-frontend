@@ -38,10 +38,7 @@
       v-if="help != undefined"
       #append
     >
-      <v-tooltip
-        max-width="15%"
-        location="right"
-      >
+      <v-tooltip location="bottom">
         <template #activator="{ props: activatorProps }">
           <v-icon v-bind="activatorProps">mdi-help-circle-outline</v-icon>
         </template>
