@@ -255,7 +255,7 @@ const pointToDisplay = computed({
 });
 
 function adresseValid(): boolean {
-  return !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate);
+  return !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate.value);
 }
 
 const pointToDisplayNotEmpty = computed(() => !_.isEmpty(pointCoordinatesAsUtm32.value));
