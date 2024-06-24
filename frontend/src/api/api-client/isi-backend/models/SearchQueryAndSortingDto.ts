@@ -87,18 +87,6 @@ export interface SearchQueryAndSortingDto {
     selectMittelschule: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
-     */
-    page?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
-     */
-    pageSize?: number;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof SearchQueryAndSortingDto
      */
@@ -111,16 +99,28 @@ export interface SearchQueryAndSortingDto {
     filterKitaplanungsbereichKitaPlbT?: Array<string>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<number>}
      * @memberof SearchQueryAndSortingDto
      */
-    filterGrundschulsprengelNummer?: Array<string>;
+    filterGrundschulsprengelNummer?: Array<number>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<number>}
      * @memberof SearchQueryAndSortingDto
      */
-    filterMittelschulsprengelNummer?: Array<string>;
+    filterMittelschulsprengelNummer?: Array<number>;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryAndSortingDto
+     */
+    page?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryAndSortingDto
+     */
+    pageSize?: number;
     /**
      * 
      * @type {string}
@@ -199,12 +199,12 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
-        'page': !exists(json, 'page') ? undefined : json['page'],
-        'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
         'filterStadtbezirkNummer': !exists(json, 'filterStadtbezirkNummer') ? undefined : json['filterStadtbezirkNummer'],
         'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
+        'page': !exists(json, 'page') ? undefined : json['page'],
+        'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
         'sortBy': json['sortBy'],
         'sortOrder': json['sortOrder'],
     };
@@ -230,12 +230,12 @@ export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto 
         'selectKindergarten': value.selectKindergarten,
         'selectKinderkrippe': value.selectKinderkrippe,
         'selectMittelschule': value.selectMittelschule,
-        'page': value.page,
-        'pageSize': value.pageSize,
         'filterStadtbezirkNummer': value.filterStadtbezirkNummer,
         'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
+        'page': value.page,
+        'pageSize': value.pageSize,
         'sortBy': value.sortBy,
         'sortOrder': value.sortOrder,
     };
