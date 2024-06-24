@@ -351,7 +351,7 @@ function adresseChanged(): boolean {
   let changed = false;
   // Erstaufruf?
   if (_.isNil(oldAdresse) && !_.isNil(props.adresse)) {
-    if (_.isNil(verortungModel)) {
+    if (_.isNil(verortungModel.value)) {
       changed = !isAdresseEmpty(props.adresse); // Neuanlage mit Adressauswahl
     } else {
       /* Infrastruktureinrichtung mit existierender Adresse */
