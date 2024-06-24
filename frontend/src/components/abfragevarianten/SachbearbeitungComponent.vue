@@ -1,7 +1,7 @@
 <template>
   <div>
     <field-group-card :card-title="weitereBerechnungsgrundlagenTitle">
-      <v-row justify="center">
+      <v-row>
         <v-col
           cols="12"
           md="6"
