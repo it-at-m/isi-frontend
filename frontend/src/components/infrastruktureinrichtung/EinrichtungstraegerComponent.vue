@@ -19,7 +19,7 @@
           Einrichtungsträger
           <span
             v-if="isEinrichtungstraegerRequired"
-            class="text--secondary"
+            class="text-secondary"
           >
             *
           </span>
