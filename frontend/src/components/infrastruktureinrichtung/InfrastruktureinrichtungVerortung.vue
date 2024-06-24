@@ -159,7 +159,6 @@
 
 <script setup lang="ts">
 import { computed, watch, ref } from "vue";
-import AdresseModel from "@/types/model/common/AdresseModel";
 import CityMap from "@/components/map/CityMap.vue";
 import L, { type GeoJSONOptions, LatLng, type LatLngLiteral } from "leaflet";
 import type { Feature, Point } from "geojson";
@@ -177,6 +176,7 @@ import type {
   GrundschulsprengelDto,
   MittelschulsprengelDto,
   ViertelDto,
+  AdresseDto,
 } from "@/api/api-client/isi-backend";
 import type {
   FeatureDtoBezirksteilDto,
@@ -198,7 +198,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { isAdresseEmpty, isAdresseEqual } from "@/utils/AdresseUtil";
 
 interface Props {
-  adresse?: AdresseModel;
+  adresse?: AdresseDto;
   isEditable?: boolean;
 }
 
@@ -208,7 +208,7 @@ const koordinatenApi = useKoordinatenApi();
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const verortungModel = defineModel<VerortungPointModel | undefined>({ required: true });
 const verortungCardTitle = "Verortung";
-let oldAdresse: AdresseModel | undefined = undefined;
+let oldAdresse: AdresseDto | undefined = undefined;
 const pointCoordinatesAsUtm32 = ref("");
 const geoJson = ref<Array<Feature<Point>>>([]); /* Repräsentiert eine einzige Punktkoordinate. */
 const geoJsonOptions: GeoJSONOptions = {
