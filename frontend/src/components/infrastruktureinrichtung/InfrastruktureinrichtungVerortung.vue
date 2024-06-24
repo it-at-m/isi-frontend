@@ -195,6 +195,7 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useKoordinatenApi } from "@/composables/requests/KoordinatenApi";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import { isAdresseEmpty, isAdresseEqual } from "@/utils/AdresseUtil";
 
 interface Props {
   adresse?: AdresseModel;
@@ -351,7 +352,7 @@ function adresseChanged(): boolean {
   // Erstaufruf?
   if (_.isNil(oldAdresse) && !_.isNil(props.adresse)) {
     if (_.isNil(verortungModel)) {
-      changed = !props.adresse.isEmpty; // Neuanlage mit Adressauswahl
+      changed = !isAdresseEmpty(props.adresse); // Neuanlage mit Adressauswahl
     } else {
       /* Infrastruktureinrichtung mit existierender Adresse */
     }
@@ -359,9 +360,12 @@ function adresseChanged(): boolean {
   } else {
     // Folgeaufruf: Hat sich die ausgewählte Adresse geändert?
     if (!_.isNil(oldAdresse) && !_.isNil(props.adresse)) {
-      if (!oldAdresse.isEmpty && !props.adresse.isEmpty) {
-        changed = !oldAdresse.isEqual(props.adresse);
-      } else if ((oldAdresse.isEmpty && !props.adresse.isEmpty) || (!oldAdresse.isEmpty && props.adresse.isEmpty)) {
+      if (!isAdresseEmpty(oldAdresse) && !isAdresseEmpty(props.adresse)) {
+        changed = !isAdresseEqual(oldAdresse, props.adresse);
+      } else if (
+        (isAdresseEmpty(oldAdresse) && !isAdresseEmpty(props.adresse)) ||
+        (!isAdresseEmpty(oldAdresse) && isAdresseEmpty(props.adresse))
+      ) {
         changed = true;
       }
     }
