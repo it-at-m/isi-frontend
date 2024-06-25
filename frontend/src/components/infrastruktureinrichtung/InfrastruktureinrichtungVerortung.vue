@@ -216,7 +216,7 @@ const geoJsonOptions: GeoJSONOptions = {
     return L.marker(latlng, { icon: ICON_INFRASTRUKTUREINRICHTUNG });
   },
 };
-const isVerortungEditable = computed(() => props.isEditable && !adresseValid());
+const isVerortungEditable = computed(() => props.isEditable && !adresseValid.value);
 const adresseCoordinate = computed(() => {
   const lng = props.adresse?.coordinate?.longitude;
   const lat = props.adresse?.coordinate?.latitude;
@@ -254,9 +254,9 @@ const pointToDisplay = computed({
   },
 });
 
-function adresseValid(): boolean {
-  return !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate.value);
-}
+const adresseValid = computed(
+  () => !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate.value),
+);
 
 const pointToDisplayNotEmpty = computed(() => !_.isEmpty(pointCoordinatesAsUtm32.value));
 const stadtbezirke = computed(() =>
@@ -338,7 +338,7 @@ watch(
  */
 function handleAdresseChanged(): void {
   if (adresseChanged()) {
-    if (adresseValid()) {
+    if (adresseValid.value) {
       setGeoJsonFromLatLng(adresseCoordinate.value as LatLng);
     } else {
       geoJson.value = [];
