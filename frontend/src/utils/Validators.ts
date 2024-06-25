@@ -536,6 +536,9 @@ function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
   if (_.isEmpty(abfrage.name)) {
     return "Der Name der Abfrage ist anzugeben.";
   }
+  if (_.size(abfrage.name) > 70) {
+    return "Der Name der Abfrage ist zu lang.";
+  }
   if (
     !isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse?.angabeLageErgaenzendeAdressinformation) &&
     !isValidAdresse(abfrage.adresse)
