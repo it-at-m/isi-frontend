@@ -253,9 +253,7 @@ const pointToDisplay = computed({
     pointCoordinatesAsUtm32.value = value;
   },
 });
-/**
- * Prüf
- */
+
 const adresseValid = computed(
   () => !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate.value),
 );
