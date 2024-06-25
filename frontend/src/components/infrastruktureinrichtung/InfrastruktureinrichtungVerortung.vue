@@ -330,7 +330,7 @@ function handleAcceptSelectedGeoJson(): void {
 watch(
   () => props.adresse,
   () => handleAdresseChanged(),
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 /**
@@ -385,7 +385,7 @@ watch(
   () => {
     handleVerortungModelChanged();
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 function handleVerortungModelChanged(): void {
