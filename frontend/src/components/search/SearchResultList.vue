@@ -1,7 +1,7 @@
 <template>
   <v-list
     v-if="searchResultsAsArray.length > 0"
-    width="500px"
+    width="450px"
     v-scroll.self="onScroll"
     :height="viewportHeight"
     class="pa-0 ma-0 overflow-y-auto"
@@ -110,6 +110,19 @@
         </v-card-text>
       </v-card>
     </v-hover>
+  </v-list>
+  <v-list
+    v-else
+    width="450px"
+    :height="viewportHeight"
+    class="pa-0 ma-0"
+  >
+    <v-container
+      class="pa-0 ma-0 w-100 d-flex justify-center align-center"
+      style="height: 100%; min-height: 100px"
+    >
+      <span>Keine Suchergebnisse vorhanden</span>
+    </v-container>
   </v-list>
 </template>
 
