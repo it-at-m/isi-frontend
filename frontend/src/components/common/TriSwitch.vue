@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <v-label>
-      <span>
+      <span :class="disabled ? 'text-grey' : ''">
         <slot name="label">{{ label }}</slot>
       </span>
     </v-label>
@@ -68,6 +68,7 @@ interface Props {
 }
 
 const { formChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), { disabled: false });
 const valueInternal = defineModel<UncertainBoolean>({ required: true });
 const focused = ref(false);
 const collapsed = computed(() => valueInternal.value !== UncertainBoolean.Unspecified);
@@ -104,6 +105,10 @@ const valueAsPosition = computed({
  * Bestimmt die Hintergrundfarbe für den Range Slider.
  */
 const backgroundColor = computed(() => {
+  if (props.disabled) {
+    return "bg-grey-lighten-2";
+  }
+
   switch (valueInternal.value) {
     case UncertainBoolean.True:
       return "bg-primary";
@@ -114,8 +119,6 @@ const backgroundColor = computed(() => {
   }
 });
 
-withDefaults(defineProps<Props>(), { disabled: false });
-
 /**
  * Bestimmt die Textfarbe für die Texte links und rechts vom Range Slider.
  *
@@ -123,7 +126,7 @@ withDefaults(defineProps<Props>(), { disabled: false });
  * @return Die entsprechende CSS-Klasse.
  */
 function getAnnotationColor(type: "on" | "off"): string {
-  if (collapsed.value) {
+  if (!props.disabled && collapsed.value) {
     if (
       (type === "on" && valueInternal.value === UncertainBoolean.True) ||
       (type === "off" && valueInternal.value === UncertainBoolean.False)

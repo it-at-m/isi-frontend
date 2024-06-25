@@ -159,7 +159,6 @@
 
 <script setup lang="ts">
 import { computed, watch, ref } from "vue";
-import AdresseModel from "@/types/model/common/AdresseModel";
 import CityMap from "@/components/map/CityMap.vue";
 import L, { type GeoJSONOptions, LatLng, type LatLngLiteral } from "leaflet";
 import type { Feature, Point } from "geojson";
@@ -177,6 +176,7 @@ import type {
   GrundschulsprengelDto,
   MittelschulsprengelDto,
   ViertelDto,
+  AdresseDto,
 } from "@/api/api-client/isi-backend";
 import type {
   FeatureDtoBezirksteilDto,
@@ -195,9 +195,10 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useKoordinatenApi } from "@/composables/requests/KoordinatenApi";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import { isAdresseEmpty, isAdresseEqual } from "@/utils/AdresseUtil";
 
 interface Props {
-  adresse?: AdresseModel;
+  adresse?: AdresseDto;
   isEditable?: boolean;
 }
 
@@ -206,9 +207,8 @@ const geoApi = useGeodataEaiApi();
 const koordinatenApi = useKoordinatenApi();
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const verortungModel = defineModel<VerortungPointModel | undefined>({ required: true });
-const isVerortungEditable = computed(() => props.isEditable && !adresseValid());
 const verortungCardTitle = "Verortung";
-let oldAdresse: AdresseModel | undefined = undefined;
+let oldAdresse: AdresseDto | undefined = undefined;
 const pointCoordinatesAsUtm32 = ref("");
 const geoJson = ref<Array<Feature<Point>>>([]); /* Repräsentiert eine einzige Punktkoordinate. */
 const geoJsonOptions: GeoJSONOptions = {
@@ -216,6 +216,7 @@ const geoJsonOptions: GeoJSONOptions = {
     return L.marker(latlng, { icon: ICON_INFRASTRUKTUREINRICHTUNG });
   },
 };
+const isVerortungEditable = computed(() => props.isEditable && !adresseValid.value);
 const adresseCoordinate = computed(() => {
   const lng = props.adresse?.coordinate?.longitude;
   const lat = props.adresse?.coordinate?.latitude;
@@ -253,9 +254,9 @@ const pointToDisplay = computed({
   },
 });
 
-function adresseValid(): boolean {
-  return !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate);
-}
+const adresseValid = computed(
+  () => !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate.value),
+);
 
 const pointToDisplayNotEmpty = computed(() => !_.isEmpty(pointCoordinatesAsUtm32.value));
 const stadtbezirke = computed(() =>
@@ -329,7 +330,7 @@ function handleAcceptSelectedGeoJson(): void {
 watch(
   () => props.adresse,
   () => handleAdresseChanged(),
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 /**
@@ -337,7 +338,7 @@ watch(
  */
 function handleAdresseChanged(): void {
   if (adresseChanged()) {
-    if (adresseValid()) {
+    if (adresseValid.value) {
       setGeoJsonFromLatLng(adresseCoordinate.value as LatLng);
     } else {
       geoJson.value = [];
@@ -350,8 +351,8 @@ function adresseChanged(): boolean {
   let changed = false;
   // Erstaufruf?
   if (_.isNil(oldAdresse) && !_.isNil(props.adresse)) {
-    if (_.isNil(verortungModel)) {
-      changed = !props.adresse.isEmpty; // Neuanlage mit Adressauswahl
+    if (_.isNil(verortungModel.value)) {
+      changed = !isAdresseEmpty(props.adresse); // Neuanlage mit Adressauswahl
     } else {
       /* Infrastruktureinrichtung mit existierender Adresse */
     }
@@ -359,9 +360,12 @@ function adresseChanged(): boolean {
   } else {
     // Folgeaufruf: Hat sich die ausgewählte Adresse geändert?
     if (!_.isNil(oldAdresse) && !_.isNil(props.adresse)) {
-      if (!oldAdresse.isEmpty && !props.adresse.isEmpty) {
-        changed = !oldAdresse.isEqual(props.adresse);
-      } else if ((oldAdresse.isEmpty && !props.adresse.isEmpty) || (!oldAdresse.isEmpty && props.adresse.isEmpty)) {
+      if (!isAdresseEmpty(oldAdresse) && !isAdresseEmpty(props.adresse)) {
+        changed = !isAdresseEqual(oldAdresse, props.adresse);
+      } else if (
+        (isAdresseEmpty(oldAdresse) && !isAdresseEmpty(props.adresse)) ||
+        (!isAdresseEmpty(oldAdresse) && isAdresseEmpty(props.adresse))
+      ) {
         changed = true;
       }
     }
@@ -381,7 +385,7 @@ watch(
   () => {
     handleVerortungModelChanged();
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 function handleVerortungModelChanged(): void {
