@@ -10,7 +10,7 @@
       style="width: 100%; height: 100%"
     >
       <l-control
-        v-if="editable"
+        v-show="editable"
         ref="geoJsonControl"
         position="bottomleft"
       >
@@ -23,7 +23,7 @@
           <v-icon size="x-large"> mdi-checkbox-marked-outline </v-icon>
         </button>
         <button
-          v-if="isGeoJsonNotEmpty"
+          v-show="isGeoJsonNotEmpty"
           id="clear_geojson_button"
           class="map-control"
           title="Auswahl aufheben"
@@ -33,7 +33,7 @@
         </button>
       </l-control>
       <l-control
-        v-if="props.expandable"
+        v-show="props.expandable"
         ref="expansionControl"
         position="bottomright"
       >
