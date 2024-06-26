@@ -51,6 +51,7 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import type { AnyAbfrageModel, AnyAbfragevarianteDto, AnyAbfragevarianteModel } from "@/types/common/Abfrage";
 import { JAHR_FOERDERART_SEPERATOR, sumWohneinheitenOfBauratendateiInput } from "@/utils/BauratendateiUtils";
+import { isAdresseEmpty } from "@/utils/AdresseUtil";
 
 /**
  * Prüft die komplette Abfrage vor dem Speichern
@@ -535,6 +536,9 @@ function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
   if (_.isEmpty(abfrage.name)) {
     return "Der Name der Abfrage ist anzugeben.";
   }
+  if (_.size(abfrage.name) > 70) {
+    return "Der Name der Abfrage ist zu lang.";
+  }
   if (
     !isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse?.angabeLageErgaenzendeAdressinformation) &&
     !isValidAdresse(abfrage.adresse)
@@ -574,7 +578,7 @@ function isValidAngabeLageErgaenzendeAdressinformation(angabeLageErgaenzendeAdre
 function isValidAdresse(adresse?: AdresseDto): boolean {
   if (!_.isNil(adresse)) {
     const model: AdresseModel = new AdresseModel(adresse);
-    return _.isNil(model) ? false : !model.isEmpty;
+    return _.isNil(model) ? false : !isAdresseEmpty(model);
   }
   return false;
 }

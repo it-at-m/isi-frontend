@@ -25,7 +25,7 @@
     />
     <infrastruktureinrichtung-verortung
       v-model="infrastruktureinrichtung.verortung"
-      :adresse="infrastruktureinrichtung.adresse as AdresseModel"
+      :adresse="infrastruktureinrichtung.adresse"
       :is-editable="isEditable"
     />
     <field-group-card>
