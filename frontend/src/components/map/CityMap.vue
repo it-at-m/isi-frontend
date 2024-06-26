@@ -140,6 +140,7 @@ const isGeoJsonNotEmpty = computed(() => !_.isEmpty(props.geoJson));
 
 let map: L.Map;
 let layerControl: L.Control.Layers;
+let alreadyAddedLayersForLayerControl: Map<string, Layer> | undefined;
 let firstGeoJsonFeatureAdded = false;
 let mapMarkerClusterGroup = L.markerClusterGroup();
 
@@ -240,18 +241,20 @@ function onGeoJsonChanged() {
 }
 
 function updateLayerControlWithCustomLayers(): void {
-  if (!_.isNil(props.layersForLayerControl)) {
-    // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
-    props.layersForLayerControl.forEach((layer: Layer) => {
+  // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
+  if (!_.isNil(alreadyAddedLayersForLayerControl)) {
+    alreadyAddedLayersForLayerControl.forEach((layer: Layer) => {
       // Entfernen aus LayerControl-Element
       layerControl.removeLayer(layer);
       // Entfernen aus Karte falls Layer in LayerControl mittels Checkbox aktiviert
       map.removeLayer(layer);
     });
-
-    // Hinzufügen der neuen Layer
-    props.layersForLayerControl.forEach((layer: Layer, name: string) => layerControl.addOverlay(layer, name));
   }
+  // Hinzufügen der neuen Layer
+  if (!_.isNil(props.layersForLayerControl)) {
+    props.layersForLayerControl.forEach((layer: L.Layer, name: string) => layerControl.addOverlay(layer, name));
+  }
+  alreadyAddedLayersForLayerControl = props.layersForLayerControl;
 }
 
 function onDeselectGeoJson(event: MouseEvent): void {
