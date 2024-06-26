@@ -39,7 +39,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import _, { forEach } from "lodash";
+import _ from "lodash";
 import { createSobonBerechnung } from "./Factories";
 import { AnyAbfrageDto, AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 
