@@ -39,7 +39,7 @@ import {
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
-import _ from "lodash";
+import _, { forEach } from "lodash";
 import { createSobonBerechnung } from "./Factories";
 import { AnyAbfrageDto, AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 
@@ -717,17 +717,13 @@ export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfrag
 }
 
 function sanitizeCopy(value: any): void {
-  if (_.isPlainObject(value)) {
-    for (const key in value) {
+  if (typeof value === "object" && value !== null) {
+    for (const key of Object.keys(value)) {
       if (sanitizationMap.has(key)) {
         value[key] = sanitizationMap.get(key);
       } else {
         sanitizeCopy(value[key]);
       }
-    }
-  } else if (Array.isArray(value)) {
-    for (const entry of value) {
-      sanitizeCopy(entry);
     }
   }
 }
