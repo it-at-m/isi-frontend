@@ -100,11 +100,27 @@ function handleResetSearchAndFilterOptions(): void {
 }
 
 function checkCurrentFilter(): boolean {
-  const excludeProperties = ["page", "pageSize", "searchQuery"];
+  const excludeProperties = [
+    "page",
+    "pageSize",
+    "searchQuery",
+    // Abhängig von der Eingabe in der GUI können die Filtereinstellung undefined oder ein leeres Array sein.
+    "filterStadtbezirkNummer",
+    "filterKitaplanungsbereichKitaPlbT",
+    "filterGrundschulsprengelNummer",
+    "filterMittelschulsprengelNummer",
+  ];
   const requestSearchQueryAndSorting = _.omit(searchStore.requestSearchQueryAndSorting, excludeProperties);
   const defaultSearchQueryAndSortingFilter = _.omit(searchStore.defaultSearchQueryAndSortingFilter, excludeProperties);
 
-  return _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter);
+  return (
+    _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter) &&
+    // Explizite Prüfung der Filterlisten da diese Abhängig von der Eingabe in der GUI undefined oder ein leeres Array sein können.
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStadtbezirkNummer) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterKitaplanungsbereichKitaPlbT) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterGrundschulsprengelNummer) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterMittelschulsprengelNummer)
+  );
 }
 
 // Search
