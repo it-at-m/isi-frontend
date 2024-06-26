@@ -1,7 +1,7 @@
 <template>
   <div>
     <field-group-card :card-title="weitereBerechnungsgrundlagenTitle">
-      <v-row justify="center">
+      <v-row>
         <v-col
           cols="12"
           md="6"
@@ -108,10 +108,8 @@ import {
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
-import {
-  default as ReportsPlanungsursaechlichkeitComponent,
-  default as ReportsSobonursaechlichkeitComponent,
-} from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
+import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
+import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsSobonursaechlichkeitComponent.vue";
 import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";

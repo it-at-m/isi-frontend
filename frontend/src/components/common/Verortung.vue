@@ -321,6 +321,7 @@ async function handleClickInMap(latlng: LatLng): Promise<void> {
 
 function handleDeselectGeoJson(): void {
   selectedFlurstuecke.value = new Map<string, FlurstueckDto>();
+  handleAcceptSelectedGeoJson();
 }
 
 async function handleAcceptSelectedGeoJson(): Promise<void> {
