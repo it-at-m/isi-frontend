@@ -47,9 +47,6 @@
               :key="index"
               link
             >
-              :id="'infrastruktureinrichtungen_bauvorhaben_reference_' + index"
-              @click="routeToInfrastruktureinrichtungInfo(infra)"
-
               <v-list-item-title
                 :id="'infrastruktureinrichtungen_bauvorhaben_reference_title' + index"
                 @click="routeToInfrastruktureinrichtungInfo(infra)"
