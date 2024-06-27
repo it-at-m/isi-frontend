@@ -27,6 +27,7 @@
           :disabled="!isEditableBySachbearbeitung"
           :items="groupedStammdaten"
           label="Fördermix für Berechnung"
+          variant="underlined"
           item-title="foerdermix.bezeichnung"
           return-object
           @update:model-value="formChanged"

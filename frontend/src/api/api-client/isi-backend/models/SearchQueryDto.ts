@@ -87,6 +87,30 @@ export interface SearchQueryDto {
     selectMittelschule: boolean;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterStadtbezirkNummer?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterKitaplanungsbereichKitaPlbT?: Array<string>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof SearchQueryDto
+     */
+    filterGrundschulsprengelNummer?: Array<number>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof SearchQueryDto
+     */
+    filterMittelschulsprengelNummer?: Array<number>;
+    /**
+     * 
      * @type {number}
      * @memberof SearchQueryDto
      */
@@ -140,6 +164,10 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'filterStadtbezirkNummer': !exists(json, 'filterStadtbezirkNummer') ? undefined : json['filterStadtbezirkNummer'],
+        'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
+        'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
+        'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
     };
@@ -165,6 +193,10 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'selectKindergarten': value.selectKindergarten,
         'selectKinderkrippe': value.selectKinderkrippe,
         'selectMittelschule': value.selectMittelschule,
+        'filterStadtbezirkNummer': value.filterStadtbezirkNummer,
+        'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
+        'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
+        'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
         'page': value.page,
         'pageSize': value.pageSize,
     };
