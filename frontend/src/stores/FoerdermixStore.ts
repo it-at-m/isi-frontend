@@ -8,29 +8,29 @@ import RequestUtils from "@/utils/RequestUtils";
 
 interface State {
   zuUebernehmenderFoerdermix: FoerdermixDto | undefined;
-  zuUbernehmendeAbfragevarianteId: string | undefined;
+  zuUbernehmendeAbfragevarianteNummer: number | undefined;
 }
 
 export const useFoerdermixStore = defineStore("foerdermix", {
   state: () =>
     ({
       zuUebernehmenderFoerdermix: undefined,
-      zuUbernehmendeAbfragevarianteId: undefined,
+      zuUbernehmendeAbfragevarianteNummer: undefined,
     }) as State,
   getters: {},
   actions: {
     uebernehmeWerte(
       zuUebernehmenderFoerdermix: FoerdermixDto | undefined,
-      zuUbernehmendeAbfragevarianteId: string | undefined,
+      zuUbernehmendeAbfragevarianteNummer: number | undefined,
     ) {
       this.setZuUebernehmenderFoerdermix(zuUebernehmenderFoerdermix);
-      this.setZuUbernehmendeAbfragevarianteId(zuUbernehmendeAbfragevarianteId);
+      this.setZuUbernehmendeAbfragevarianteNummer(zuUbernehmendeAbfragevarianteNummer);
     },
     setZuUebernehmenderFoerdermix(payload: FoerdermixDto | undefined): void {
       this.zuUebernehmenderFoerdermix = payload;
     },
-    setZuUbernehmendeAbfragevarianteId(payload: string | undefined): void {
-      this.zuUbernehmendeAbfragevarianteId = payload;
+    setZuUbernehmendeAbfragevarianteNummer(payload: number | undefined): void {
+      this.zuUbernehmendeAbfragevarianteNummer = payload;
     },
   },
 });

@@ -49,6 +49,18 @@
       </v-row>
     </field-group-card>
     <v-row>
+      <foerdermix-formular
+        id="foerdermix_formular_component"
+        ref="Foerdermix"
+        v-model="baurate.foerdermix"
+        :is-editable="isEditable"
+      />
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="4"
+      />
       <v-col
         cols="12"
         md="4"
@@ -58,27 +70,15 @@
         md="4"
       >
         <v-btn
-          v-if="baurate.foerdermix !== undefined"
+          v-if="showUebernehmenButton()"
           id="bauraten_foerdermix_uebernehmen_button"
           color="secondary"
           variant="flat"
-          style="width: 500px"
+          style="width: 550px"
           @click="uebernehmeFoerdermix()"
           >Fördermix für alle Bauraten übernehmen</v-btn
         >
       </v-col>
-      <v-col
-        cols="12"
-        md="4"
-      />
-    </v-row>
-    <v-row>
-      <foerdermix-formular
-        id="foerdermix_formular_component"
-        ref="Foerdermix"
-        v-model="baurate.foerdermix"
-        :is-editable="isEditable"
-      />
     </v-row>
   </v-container>
 </template>
@@ -167,7 +167,11 @@ const baugebietRealisierungVonOr1900 = computed(() => {
 });
 
 function uebernehmeFoerdermix(): void {
-  foerdermixStore.uebernehmeWerte(baurate.value.foerdermix, props.abfragevariante?.id as string);
+  foerdermixStore.uebernehmeWerte(baurate.value.foerdermix, props.abfragevariante?.abfragevariantenNr as number);
+}
+
+function showUebernehmenButton(): boolean {
+  return !_.isEmpty(baurate.value.foerdermix.bezeichnung) && !_.isEmpty(baurate.value.foerdermix.bezeichnungJahr);
 }
 
 const suffixWohneinheiten = computed(() => {

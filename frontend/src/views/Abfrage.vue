@@ -571,7 +571,7 @@ watch(
   () => {
     if (
       !_.isNil(foerdermixStore.zuUebernehmenderFoerdermix) &&
-      !_.isNil(foerdermixStore.zuUbernehmendeAbfragevarianteId)
+      !_.isNil(foerdermixStore.zuUbernehmendeAbfragevarianteNummer)
     ) {
       foedermixUebernehmen(abfrage.value);
     }
@@ -1501,7 +1501,7 @@ function abfrageUebernehmen(value: AbfrageDto): void {
 function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
   if (isBauleitplanverfahren.value) {
     (value as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren?.forEach((abfragevariante) => {
-      if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+      if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
         abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
           bauabschnitt.baugebiete.forEach((baugebiet) => {
             baugebiet.bauraten.forEach((baurate) => {
@@ -1514,7 +1514,7 @@ function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
 
     (value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren?.forEach(
       (abfragevariante) => {
-        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+        if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
           abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
             bauabschnitt.baugebiete.forEach((baugebiet) => {
               baugebiet.bauraten.forEach((baurate) => {
@@ -1528,7 +1528,7 @@ function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
 
     if (isBaugenehmigungsverfahren.value) {
       (value as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren?.forEach((abfragevariante) => {
-        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+        if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
           abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
             bauabschnitt.baugebiete.forEach((baugebiet) => {
               baugebiet.bauraten.forEach((baurate) => {
@@ -1541,7 +1541,7 @@ function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
 
       (value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren?.forEach(
         (abfragevariante) => {
-          if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+          if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
             abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
               bauabschnitt.baugebiete.forEach((baugebiet) => {
                 baugebiet.bauraten.forEach((baurate) => {
@@ -1556,7 +1556,7 @@ function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
 
     if (isWeiteresVerfahren.value) {
       (value as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren?.forEach((abfragevariante) => {
-        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+        if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
           abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
             bauabschnitt.baugebiete.forEach((baugebiet) => {
               baugebiet.bauraten.forEach((baurate) => {
@@ -1567,7 +1567,7 @@ function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
         }
       });
       (value as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren?.forEach((abfragevariante) => {
-        if (abfragevariante.id === foerdermixStore.zuUbernehmendeAbfragevarianteId) {
+        if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
           abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
             bauabschnitt.baugebiete.forEach((baugebiet) => {
               baugebiet.bauraten.forEach((baurate) => {
