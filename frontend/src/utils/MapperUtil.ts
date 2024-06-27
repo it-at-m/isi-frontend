@@ -41,6 +41,7 @@ import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
 import { createSobonBerechnung } from "./Factories";
+import { AnyAbfrageDto, AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
@@ -701,18 +702,30 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
 }
 
 /**
- * Erstellt von einer Abfrage eine Kopie.
+ * Erstellt von einer Abfrage oder Abfragevariante eine Kopie.
  * Dabei werden einige Felder bereinigt, da es fachlich oder technisch keinen Sinn macht, ihre Werte zu kopieren.
  * Außerdem wird an den Namen der Abfrage "- Kopie" oder "- Kopie <Nummer der Kopie>" angehängt.
  *
- * @param abfrage Die zu kopierende Abfrage.
- * @returns Die bereinigte Kopie der Abfrage.
+ * @param value Die zu kopierende Abfrage oder Abfragevariante.
+ * @returns Die bereinigte Kopie.
  */
-export function copyAbfrage(abfrage: AbfrageDto): AbfrageDto {
-  const copy = _.cloneDeep(abfrage);
+export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
+  const copy = _.cloneDeep(value);
   sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
+}
+
+function sanitizeCopy(value: any): void {
+  if (typeof value === "object" && value !== null) {
+    for (const key of Object.keys(value)) {
+      if (sanitizationMap.has(key)) {
+        value[key] = sanitizationMap.get(key);
+      } else {
+        sanitizeCopy(value[key]);
+      }
+    }
+  }
 }
 
 const sanitizationMap = new Map<string, unknown>([
@@ -747,19 +760,3 @@ const sanitizationMap = new Map<string, unknown>([
   ["ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule", false],
   ["ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule", false],
 ]);
-
-function sanitizeCopy(value: any): void {
-  if (_.isPlainObject(value)) {
-    for (const key in value) {
-      if (sanitizationMap.has(key)) {
-        value[key] = sanitizationMap.get(key);
-      } else {
-        sanitizeCopy(value[key]);
-      }
-    }
-  } else if (Array.isArray(value)) {
-    for (const entry of value) {
-      sanitizeCopy(entry);
-    }
-  }
-}
