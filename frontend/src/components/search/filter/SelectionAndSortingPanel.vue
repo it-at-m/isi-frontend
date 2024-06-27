@@ -2,8 +2,8 @@
   <v-expansion-panel>
     <v-expansion-panel-title class="text-h6"> Objekttyp und Sortierung </v-expansion-panel-title>
     <v-expansion-panel-text class="mt-0">
-      <v-card-title class="mt-0 pt-0"> Objektauswahl </v-card-title>
-      <v-card-text> Es ist mindestens ein Objekttyp auszuwählen. </v-card-text>
+      <p class="font-weight-black mt-3">Objektauswahl</p>
+      <p class="font-weight-regular mb-3">Es ist mindestens ein Objekttyp auszuwählen.</p>
       <v-row
         class="align-start justify-center"
         dense
@@ -138,8 +138,8 @@
         </v-col>
       </v-row>
       <v-divider />
-      <v-card-title> Sortierung </v-card-title>
-      <v-card-text> Auswahl der Art der Sortierung und der Sortierreihenfolge. </v-card-text>
+      <p class="font-weight-black mt-3">Sortierung</p>
+      <p class="font-weight-regular mb-3">Auswahl der Art der Sortierung und der Sortierreihenfolge.</p>
       <v-row
         class="align-start justify-center"
         dense

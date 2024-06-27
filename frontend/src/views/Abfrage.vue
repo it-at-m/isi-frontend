@@ -448,7 +448,6 @@ const abfrage = ref(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto(
 const isNew = ref(true);
 const selected = ref<AbfrageDtoWithForm>(abfrage.value);
 const openForm = ref(AbfrageFormType.BAULEITPLANVERFAHREN);
-const suggestedArtAbfrage = ref(route.query.art as string);
 const dialogTextStatus = ref("");
 const possibleTransitions = ref<TransitionDto[]>([]);
 const isDeleteDialogAbfrageOpen = ref(false);
@@ -475,7 +474,7 @@ const abfrageNavigationTree = ref<typeof AbfrageNavigationTree | null>(null);
 const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
-const artAbfrage = computed(() => (isNew.value ? suggestedArtAbfrage.value : abfrage.value.artAbfrage));
+const artAbfrage = computed(() => (isNew.value ? (route.query.art as string) : abfrage.value.artAbfrage));
 const isBauleitplanverfahren = computed(() => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
 const isBaugenehmigungsverfahren = computed(
   () => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
@@ -1491,13 +1490,12 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
 }
 
 function abfrageUebernehmen(value: AbfrageDto): void {
-  abfrage.value = copyAbfrage(value);
-  if (value.artAbfrage) {
-    suggestedArtAbfrage.value = value.artAbfrage;
+  if (value.artAbfrage === abfrage.value.artAbfrage) {
+    abfrage.value = copyAbfrage(value);
+    selectAbfrage();
+    formChanged();
+    isDataTransferDialogOpen.value = false;
   }
-  selectAbfrage();
-  formChanged();
-  isDataTransferDialogOpen.value = false;
 }
 
 function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {

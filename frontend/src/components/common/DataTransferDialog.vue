@@ -60,6 +60,7 @@ import {
 import _ from "lodash";
 import { createBauleitplanverfahrenDto } from "@/utils/Factories";
 import { useLookupStore } from "@/stores/LookupStore";
+import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { Context } from "@/utils/Context";
@@ -76,6 +77,7 @@ interface Emits {
 const { getById } = useAbfragenApi();
 const { searchForEntities } = useSearchApi();
 const lookupStore = useLookupStore();
+const searchStore = useSearchStore();
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 const dialogOpen = defineModel<boolean>({ required: true });
@@ -137,6 +139,7 @@ async function fetchAbfragen(): Promise<void> {
 function searchResultFilter(result: AbfrageSearchResultDto): boolean {
   if (props.context === Context.ABFRAGE) {
     return (
+      result.artAbfrage === searchStore.selectedAbfrage?.artAbfrage &&
       result.statusAbfrage !== undefined &&
       result.statusAbfrage !== StatusAbfrage.Angelegt &&
       result.statusAbfrage !== StatusAbfrage.Abbruch
