@@ -83,6 +83,8 @@ interface Emits {
   (event: "select-baurate", value: AbfrageTreeItem): void;
   (event: "create-abfragevariante", value: AbfrageTreeItem): void;
   (event: "create-abfragevariante-sachbearbeitung", value: AbfrageTreeItem): void;
+  (event: "copy-abfragevariante", value: AbfrageTreeItem): void;
+  (event: "copy-abfragevariante-sachbearbeitung", value: AbfrageTreeItem): void;
   (event: "create-bauabschnitt", value: AbfrageTreeItem): void;
   (event: "create-baugebiet", value: AbfrageTreeItem): void;
   (event: "create-baurate", value: AbfrageTreeItem): void;
@@ -97,7 +99,6 @@ interface Emits {
 
 const DEFAULT_NAME = "Nicht gepflegt";
 const ABFRAGE_NAME = "Daten zur Abfrage";
-
 const CREATE_ABFRAGEVARIANTE = "Abfragevariante erstellen";
 const CREATE_BAUABSCHNITT = "Bauabschnitt erstellen";
 const CREATE_BAUGEBIET = "Baugebiet erstellen";
@@ -106,6 +107,7 @@ const DELETE = "Löschen";
 const MARK_AS_RELEVANT = "Als relevant markieren";
 const MARK_AS_NOT_RELEVANT = "Als nicht-relevant markieren";
 const DETERMINE_BAURATEN = "Idealtypische Bauraten ermitteln";
+const DUPLICATE = "Duplizieren";
 
 const ABFRAGEVARIANTEN_LIMIT = 5;
 
@@ -225,7 +227,20 @@ function buildSubTreeAbfragevariante(
     value: abfragevariante,
   };
 
+  if (isEditableByAbfrageerstellung.value) {
+    item.actions.push({
+      name: DUPLICATE,
+      disabled: false,
+      effect: () => emit("copy-abfragevariante", item),
+    });
+  }
+
   if (isEditableBySachbearbeitung.value) {
+    item.actions.push({
+      name: DUPLICATE,
+      disabled: false,
+      effect: () => emit("copy-abfragevariante-sachbearbeitung", item),
+    });
     item.actions.push({
       name: abfragevariante.id === props.relevanteAbfragevarianteId ? MARK_AS_NOT_RELEVANT : MARK_AS_RELEVANT,
       disabled: false,
