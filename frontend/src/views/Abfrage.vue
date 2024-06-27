@@ -211,6 +211,8 @@
           @select-baurate="handleSelectBaurate"
           @create-abfragevariante="handleCreateAbfragevariante"
           @create-abfragevariante-sachbearbeitung="handleCreateAbfragevarianteSachbearbeitung"
+          @copy-abfragevariante="handleCopyAbfragevariante"
+          @copy-abfragevariante-sachbearbeitung="handleCopyAbfragevarianteSachbearbeitung"
           @create-bauabschnitt="handleCreateBauabschnitt"
           @create-baugebiet="handleCreateBaugebiet"
           @create-baurate="handleCreateBaurate"
@@ -368,7 +370,7 @@ import {
   mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto,
   mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto,
-  copyAbfrage,
+  copyAbfrageOrAbfragevariante,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import { useToast, TYPE } from "vue-toastification";
@@ -989,6 +991,58 @@ function handleCreateAbfragevarianteSachbearbeitung(parent: AbfrageTreeItem): vo
   }
 }
 
+function handleCopyAbfragevariante(abfragevariante: AbfrageTreeItem): void {
+  const copy = copyAbfrageOrAbfragevariante(abfragevariante.value) as AnyAbfragevarianteModel;
+  if (isBauleitplanverfahren.value) {
+    (abfrage.value as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren?.push(copy);
+    renumberingAbfragevarianten((abfrage.value as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren);
+  } else if (isBaugenehmigungsverfahren.value) {
+    (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren?.push(copy);
+    renumberingAbfragevarianten(
+      (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren,
+    );
+  } else {
+    (abfrage.value as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren?.push(copy);
+    renumberingAbfragevarianten((abfrage.value as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren);
+  }
+  formChanged();
+  selectCreatedEntity(
+    copy,
+    getAbfrageFormTypeAbfragevariante(copy),
+    abfragevariante.parent!,
+    AnzeigeContextAbfragevariante.ABFRAGEVARIANTE,
+  );
+}
+
+function handleCopyAbfragevarianteSachbearbeitung(abfragevariante: AbfrageTreeItem): void {
+  const copy = copyAbfrageOrAbfragevariante(abfragevariante.value) as AnyAbfragevarianteModel;
+  if (isBauleitplanverfahren.value) {
+    (abfrage.value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren?.push(copy);
+    renumberingAbfragevarianten(
+      (abfrage.value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren,
+    );
+  } else if (isBaugenehmigungsverfahren.value) {
+    (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren?.push(
+      copy,
+    );
+    renumberingAbfragevarianten(
+      (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren,
+    );
+  } else {
+    (abfrage.value as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren?.push(copy);
+    renumberingAbfragevarianten(
+      (abfrage.value as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren,
+    );
+  }
+  formChanged();
+  selectCreatedEntity(
+    copy,
+    getAbfrageFormTypeAbfragevariante(copy),
+    abfragevariante.parent!,
+    AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
+  );
+}
+
 function getAbfrageFormTypeAbfragevariante(abfragevariante: AnyAbfragevarianteModel): AbfrageFormType {
   if (
     abfragevariante.artAbfragevariante ===
@@ -1474,7 +1528,7 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
 
 function abfrageUebernehmen(value: AbfrageDto): void {
   if (value.artAbfrage === abfrage.value.artAbfrage) {
-    abfrage.value = copyAbfrage(value);
+    abfrage.value = copyAbfrageOrAbfragevariante(value);
     selectAbfrage();
     formChanged();
     isDataTransferDialogOpen.value = false;

@@ -167,6 +167,9 @@ export function findFaultInAbfragevariante(
   if (_.isEmpty(abfragevariante.name)) {
     return "Bitte einen Namen für die Abfragevariante angeben.";
   }
+  if (_.size(abfragevariante.name) > 30) {
+    return `Der Name der Abfragevariante ${abfragevariante.name} ist zu lang.`;
+  }
   if (_.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)) {
     return "Bitte die wesentliche Rechtsgrundlage angeben";
   }
