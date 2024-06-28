@@ -1,18 +1,16 @@
-import {
+import type {
   AbfrageSearchResultDto,
-  BauvorhabenApi,
   BauvorhabenDto,
   CreateBauvorhabenRequest,
   DeleteBauvorhabenRequest,
   GetBauvorhabenByIdRequest,
   GetReferencedAbfrageRequest,
   GetReferencedInfrastruktureinrichtungRequest,
-  InformationResponseDtoFromJSON,
   InfrastruktureinrichtungSearchResultDto,
   PutChangeRelevanteAbfragevarianteRequest,
-  ResponseError,
   UpdateBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
+import { BauvorhabenApi, InformationResponseDtoFromJSON, ResponseError } from "@/api/api-client/isi-backend";
 import { useErrorHandler } from "./ErrorHandler";
 import { useSaveLeave } from "../SaveLeave";
 import RequestUtils from "@/utils/RequestUtils";
@@ -23,10 +21,7 @@ export function useBauvorhabenApi() {
   const { handleError } = useErrorHandler();
   const { resetFormDirty } = useSaveLeave();
 
-  async function getReferencedAbfrageList(
-    bauvorhabenId: string,
-    showInInformationList: boolean,
-  ): Promise<Array<AbfrageSearchResultDto>> {
+  async function getReferencedAbfrageList(bauvorhabenId: string): Promise<Array<AbfrageSearchResultDto>> {
     const requestObject: GetReferencedAbfrageRequest = {
       id: bauvorhabenId,
     };
@@ -34,13 +29,12 @@ export function useBauvorhabenApi() {
       const response = await bauvorhabenApi.getReferencedAbfrage(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
   async function getReferencedInfrastruktureinrichtungenList(
     bauvorhabenId: string,
-    showInInformationList: boolean,
   ): Promise<Array<InfrastruktureinrichtungSearchResultDto>> {
     const requestObject: GetReferencedInfrastruktureinrichtungRequest = {
       id: bauvorhabenId,
@@ -52,25 +46,24 @@ export function useBauvorhabenApi() {
       );
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function getBauvorhabenById(id: string, showInInformationList: boolean): Promise<BauvorhabenDto> {
+  async function getBauvorhabenById(id: string): Promise<BauvorhabenDto> {
     const requestObject: GetBauvorhabenByIdRequest = { id };
 
     try {
       const response = await bauvorhabenApi.getBauvorhabenById(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
   async function postBauvorhaben(
     bauvorhabenDto: BauvorhabenDto,
     datenuebernahmeAbfrageId: string | undefined,
-    showInInformationList: boolean,
   ): Promise<BauvorhabenDto> {
     const requestObject: CreateBauvorhabenRequest = {
       bauvorhabenDto: bauvorhabenDto,
@@ -82,14 +75,11 @@ export function useBauvorhabenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function putBauvorhaben(
-    bauvorhabenDto: BauvorhabenDto,
-    showInInformationList: boolean,
-  ): Promise<BauvorhabenDto> {
+  async function putBauvorhaben(bauvorhabenDto: BauvorhabenDto): Promise<BauvorhabenDto> {
     const requestObject: UpdateBauvorhabenRequest = { bauvorhabenDto };
 
     try {
@@ -97,11 +87,11 @@ export function useBauvorhabenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function deleteBauvorhaben(id: string, showInInformationList: boolean): Promise<void> {
+  async function deleteBauvorhaben(id: string): Promise<void> {
     const requestObject: DeleteBauvorhabenRequest = { id };
 
     try {
@@ -109,14 +99,11 @@ export function useBauvorhabenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function changeRelevanteAbfragevariante(
-    abfragevarianteId: string,
-    showInInformationList: boolean,
-  ): Promise<BauvorhabenDto | string> {
+  async function changeRelevanteAbfragevariante(abfragevarianteId: string): Promise<BauvorhabenDto | string> {
     const requestObject: PutChangeRelevanteAbfragevarianteRequest = {
       abfragevarianteId: abfragevarianteId,
     };
@@ -138,7 +125,7 @@ export function useBauvorhabenApi() {
         return dto.messages?.[0] ?? "";
       }
 
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

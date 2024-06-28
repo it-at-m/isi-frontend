@@ -19,15 +19,15 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "description": "Adressen erfolgreich abgefragt.",
+            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/MuenchenAdressenDto" } } }
+          },
           "555": {
             "description": "CUSTOM INTERNAL SERVER ERROR -> Bei der Ausführung des MAstER-Requests ist ein serverseitiger Fehler aufgetreten.",
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
-          },
-          "200": {
-            "description": "Adressen erfolgreich abgefragt.",
-            "content": { "application/hal+json": { "schema": { "$ref": "#/components/schemas/MuenchenAdressenDto" } } }
           }
         }
       }

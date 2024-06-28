@@ -1,5 +1,9 @@
 <template>
-  <v-card class="mx-3 mt-0 mb-6 px-3 pt-2 pb-3">
+  <v-card
+    variant="outlined"
+    class="mx-3 mt-0 mb-6 px-3 pt-2 pb-3"
+    style="border: 1px solid #d3d3d3"
+  >
     <v-row class="justify-start">
       <v-col
         cols="12"
@@ -9,9 +13,9 @@
           id="kommentar_datum"
           v-model.trim="kommentar.datum"
           maxlength="32"
-          filled
+          variant="filled"
           :disabled="!isEditable"
-          @input="changed"
+          @update:model-value="changed"
         >
           <template #label> Datum </template>
         </v-text-field>
@@ -22,13 +26,13 @@
       >
         <v-card-actions>
           <v-spacer />
-          <v-tooltip bottom>
-            <template #activator="{ on }">
+          <v-tooltip location="bottom">
+            <template #activator="{ props: activatorProps }">
               <v-btn
                 id="save_kommentar"
                 icon
                 :disabled="!isSaveable || !isEditable || !kommentar.isDirty"
-                v-on="on"
+                v-bind="activatorProps"
                 @click="saveKommentar"
               >
                 <v-icon :color="kommentar.isDirty ? 'secondary' : undefined">mdi-content-save</v-icon>
@@ -36,17 +40,16 @@
             </template>
             <span>Kommentar speichern</span>
           </v-tooltip>
-          <v-tooltip bottom>
-            <template #activator="{ on }">
+          <v-tooltip location="bottom">
+            <template #activator="{ props: activatorProps }">
               <v-btn
                 id="delete_kommentar"
-                icon
+                variant="plain"
+                icon="mdi-delete"
                 :disabled="!isDeletable || !isEditable"
-                v-on="on"
+                v-bind="activatorProps"
                 @click="deleteDialog = true"
-              >
-                <v-icon> mdi-delete</v-icon>
-              </v-btn>
+              />
             </template>
             <span>Kommentar löschen</span>
           </v-tooltip>
@@ -63,16 +66,15 @@
           v-model.trim="kommentar.text"
           label="Anmerkungen"
           auto-grow
-          filled
+          variant="filled"
           rows="5"
           :disabled="!isEditable"
-          @input="changed"
+          @update:model-value="changed"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <p class="text-h6 grey--text">Anhänge</p>
         <dokumente
           id="kommentar_dokumente"
           v-model="kommentar.dokumente"
@@ -95,59 +97,53 @@
     />
   </v-card>
 </template>
-<script lang="ts">
-import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin";
-import { Component, Mixins, Emit, Prop } from "vue-property-decorator";
+<script setup lang="ts">
+import { computed, ref } from "vue";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import Dokumente from "../dokumente/Dokumente.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({
-  components: { YesNoDialog },
-})
-export default class Kommentar extends Mixins(KommentarApiRequestMixin, SaveLeaveMixin) {
-  @Prop()
-  private kommentar!: KommentarModel;
+interface Props {
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+interface Emits {
+  (event: "save-kommentar", value: KommentarModel): void;
+  (event: "delete-kommentar", value: KommentarModel): void;
+}
 
-  private deleteDialog = false;
-  private deleteDialogTitle = "Kommentar löschen";
-  private deleteDialogText = "Hiermit wird der Kommentar unwiderruflich gelöscht.";
-  private deleteDialogYesText = "Löschen";
-  private deleteDialogNoText = "Abbrechen";
-  private nameRootFolder = "kommentare";
+const deleteDialogTitle = "Kommentar löschen";
+const deleteDialogText = "Hiermit wird der Kommentar unwiderruflich gelöscht.";
+const deleteDialogYesText = "Löschen";
+const deleteDialogNoText = "Abbrechen";
+const nameRootFolder = "kommentare";
+const { commentChanged } = useSaveLeave();
+const emit = defineEmits<Emits>();
+const kommentar = defineModel<KommentarModel>({ required: true });
+const deleteDialog = ref(false);
+const isSaveable = computed(() => !_.isEmpty(kommentar.value.datum) || !_.isEmpty(kommentar.value.text));
+const isDeletable = computed(() => !_.isNil(kommentar.value.id) || (_.isNil(kommentar.value.id) && isSaveable.value));
 
-  get isSaveable(): boolean {
-    return !_.isEmpty(this.kommentar.datum) || !_.isEmpty(this.kommentar.text);
-  }
+withDefaults(defineProps<Props>(), { isEditable: false });
 
-  get isDeletable(): boolean {
-    return !_.isNil(this.kommentar.id) || (_.isNil(this.kommentar.id) && this.isSaveable);
-  }
+function cancelDeletion(): void {
+  deleteDialog.value = false;
+}
 
-  private cancelDeletion(): void {
-    this.deleteDialog = false;
-  }
+function changed(): void {
+  kommentar.value.isDirty = true;
+  // kommentar.value = _.cloneDeep(kommentar.value);
+  commentChanged();
+}
 
-  private changed(): void {
-    this.kommentar.isDirty = true;
-    this.commentChanged();
-  }
+function saveKommentar(): void {
+  emit("save-kommentar", kommentar.value);
+}
 
-  @Emit()
-  private saveKommentar(): KommentarModel {
-    return this.kommentar;
-  }
-
-  @Emit()
-  private deleteKommentar(): KommentarModel {
-    this.cancelDeletion();
-    return this.kommentar;
-  }
+function deleteKommentar(): void {
+  cancelDeletion();
+  emit("delete-kommentar", kommentar.value);
 }
 </script>
-
-<style scoped></style>

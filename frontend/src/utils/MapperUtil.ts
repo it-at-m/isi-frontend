@@ -1,4 +1,4 @@
-import {
+import type {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -20,9 +20,6 @@ import {
   AbfragevarianteBauleitplanverfahrenAngelegtDto,
   AbfragevarianteBaugenehmigungsverfahrenAngelegtDto,
   AbfragevarianteWeiteresVerfahrenAngelegtDto,
-  AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
-  AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum,
-  AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum,
   AbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
   AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
   AbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitungDto,
@@ -32,10 +29,19 @@ import {
   AbfragevarianteBauleitplanverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
   AbfragevarianteWeiteresVerfahrenBedarfsmeldungErfolgtDto,
+  AbfrageDto,
+} from "@/api/api-client/isi-backend";
+import {
+  AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
+  AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum,
+  AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum,
+  StatusAbfrage,
 } from "@/api/api-client/isi-backend";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
+import { createSobonBerechnung } from "./Factories";
+import { AnyAbfrageDto, AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
@@ -670,16 +676,18 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
   const groups: { [bezeichnungJahr: string]: Array<FoerdermixStammModel> } = {};
   foerdermixStaemme.forEach((foerdermixStammModel) => {
     const bezeichnungJahr = foerdermixStammModel.foerdermix.bezeichnungJahr;
-    if (sobonValues && (bezeichnungJahr === "SoBoN 2021" || bezeichnungJahr === "SoBoN 2017")) {
-      // Prüft, ob das Array für das bezeichnungJahr bereits existiert, und initialisiert es bei Bedarf
-      if (!groups[bezeichnungJahr]) {
-        groups[bezeichnungJahr] = [];
+    if (bezeichnungJahr) {
+      if (sobonValues && (bezeichnungJahr === "SoBoN 2021" || bezeichnungJahr === "SoBoN 2017")) {
+        // Prüft, ob das Array für das bezeichnungJahr bereits existiert, und initialisiert es bei Bedarf
+        if (!groups[bezeichnungJahr]) {
+          groups[bezeichnungJahr] = [];
+        }
+        groups[bezeichnungJahr].push(foerdermixStammModel);
+      } else if (!sobonValues) {
+        groups[bezeichnungJahr] = groups[bezeichnungJahr] || [];
+        // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
+        groups[bezeichnungJahr].push(foerdermixStammModel);
       }
-      groups[bezeichnungJahr].push(foerdermixStammModel);
-    } else if (!sobonValues) {
-      groups[bezeichnungJahr] = groups[bezeichnungJahr] || [];
-      // Dann wird der aktuelle Fördermix zu diesem Array hinzugefügt.
-      groups[bezeichnungJahr].push(foerdermixStammModel);
     }
   });
   const flattened: GroupedStammdaten = [];
@@ -692,3 +700,63 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
   });
   return flattened;
 }
+
+/**
+ * Erstellt von einer Abfrage oder Abfragevariante eine Kopie.
+ * Dabei werden einige Felder bereinigt, da es fachlich oder technisch keinen Sinn macht, ihre Werte zu kopieren.
+ * Außerdem wird an den Namen der Abfrage "- Kopie" oder "- Kopie <Nummer der Kopie>" angehängt.
+ *
+ * @param value Die zu kopierende Abfrage oder Abfragevariante.
+ * @returns Die bereinigte Kopie.
+ */
+export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
+  const copy = _.cloneDeep(value);
+  sanitizeCopy(copy);
+  copy.name = (copy.name ?? "") + " - Kopie";
+  return copy;
+}
+
+function sanitizeCopy(value: any): void {
+  if (typeof value === "object" && value !== null) {
+    for (const key of Object.keys(value)) {
+      if (sanitizationMap.has(key)) {
+        value[key] = sanitizationMap.get(key);
+      } else {
+        sanitizeCopy(value[key]);
+      }
+    }
+  }
+}
+
+const sanitizationMap = new Map<string, unknown>([
+  // Allgemein
+  ["id", undefined],
+  ["version", undefined],
+  ["createdDateTime", undefined],
+  ["lastModifiedDateTime", undefined],
+  ["dokumente", []],
+  // Abfrage
+  ["displayName", undefined],
+  ["statusAbfrage", StatusAbfrage.Angelegt],
+  ["sub", undefined],
+  ["bearbeitungshistorie", undefined],
+  // Abfragevariante
+  ["sobonBerechnung", createSobonBerechnung()],
+  ["stammdatenGueltigAb", new Date()],
+  ["hasBauratendateiInput", false],
+  ["anmerkungBauratendateiInput", undefined],
+  ["bauratendateiInputBasis", undefined],
+  ["bauratendateiInput", []],
+  ["bedarfsmeldungFachreferate", []],
+  ["bedarfsmeldungAbfrageersteller", []],
+  ["anmerkungFachreferate", undefined],
+  ["anmerkungAbfrageersteller", undefined],
+  ["ausgeloesterBedarfImBaugebietBeruecksichtigenKita", false],
+  ["ausgeloesterBedarfMitversorgungImBplanKita", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenKita", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita", false],
+  ["ausgeloesterBedarfImBaugebietBeruecksichtigenSchule", false],
+  ["ausgeloesterBedarfMitversorgungImBplanSchule", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule", false],
+  ["ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule", false],
+]);

@@ -1,4 +1,4 @@
-import { KommentarDto } from "@/api/api-client/isi-backend";
+import type { KommentarDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface KommentarModel extends KommentarDto {}

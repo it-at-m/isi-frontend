@@ -1,4 +1,4 @@
-import { WeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
+import type { WeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import { createAdresseDto } from "@/utils/Factories";

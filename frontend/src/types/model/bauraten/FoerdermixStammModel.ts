@@ -1,4 +1,4 @@
-import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
+import type { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { createFoerdermixDto } from "@/utils/Factories";
 import _ from "lodash";
 import FoerdermixModel from "./FoerdermixModel";

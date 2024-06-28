@@ -1,14 +1,15 @@
 import { defineStore } from "pinia";
 import {
-  AbfrageSearchResultDto,
-  BauvorhabenDto,
-  BauvorhabenSearchResultDto,
-  InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungSearchResultDto,
-  SearchResultDto,
+  type AbfrageSearchResultDto,
+  type BauvorhabenDto,
+  type BauvorhabenSearchResultDto,
+  type InfrastruktureinrichtungDto,
+  type InfrastruktureinrichtungSearchResultDto,
+  type SearchResultDto,
+  type SearchResultsDto,
   SearchResultDtoTypeEnum,
-  SearchResultsDto,
 } from "@/api/api-client/isi-backend";
+import { AnyAbfrageModel } from "@/types/common/Abfrage";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
@@ -58,15 +59,13 @@ export const useSearchStore = defineStore("search", {
     setRequestSearchQueryAndSorting(payload: SearchQueryAndSortingModel): void {
       this.requestSearchQueryAndSorting = payload;
     },
-    setSelectedAbfrage(
-      payload: BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel | undefined,
-    ): void {
+    setSelectedAbfrage(payload: AnyAbfrageModel | undefined): void {
       this.selectedAbfrage = payload;
     },
-    setSelectedBauvorhaben(payload: BauvorhabenDto): void {
+    setSelectedBauvorhaben(payload: BauvorhabenDto | undefined): void {
       this.selectedBauvorhaben = payload;
     },
-    setSelectedInfrastruktureinrichtung(payload: InfrastruktureinrichtungDto): void {
+    setSelectedInfrastruktureinrichtung(payload: InfrastruktureinrichtungDto | undefined): void {
       this.selectedInfrastruktureinrichtung = payload;
     },
   },

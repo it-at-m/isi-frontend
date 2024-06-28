@@ -12,7 +12,7 @@
           label="Daten für Bauratendatei angeben"
           color="primary"
           :disabled="!isEditable"
-          @change="checkBoxChanged"
+          @update:model-value="checkBoxChanged"
         />
       </v-col>
     </v-row>
@@ -20,17 +20,19 @@
       <v-card
         v-for="(input, index) in abfragevarianteSachbearbeitung.bauratendateiInput"
         :key="index"
+        variant="outlined"
+        border="xs"
         class="px-3 pt-3 pb-3 mt-10"
-        outlined
+        style="border: 1px solid #d3d3d3"
       >
         <v-row class="justify-end">
           <v-btn
             class="my-0 mr-0 py-0 pr-0"
-            icon
+            icon="mdi-close"
+            variant="plain"
             :disabled="!isEditable"
             @click="deleteInput(index)"
           >
-            <v-icon> mdi-close </v-icon>
           </v-btn>
         </v-row>
         <v-row>
@@ -40,14 +42,15 @@
           >
             <v-combobox
               v-model="input.grundschulsprengel"
+              variant="underlined"
               label="Grundschulsprengel"
               hide-no-data
               :append-icon="''"
               multiple
               chips
-              deletable-chips
+              closable-chips
               :disabled="!isEditable"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-col>
           <v-col
@@ -56,14 +59,15 @@
           >
             <v-combobox
               v-model="input.mittelschulsprengel"
+              variant="underlined"
               label="Mittelschulsprengel"
               hide-no-data
               :append-icon="''"
               multiple
               chips
-              deletable-chips
+              closable-chips
               :disabled="!isEditable"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-col>
           <v-col
@@ -72,14 +76,15 @@
           >
             <v-combobox
               v-model="input.viertel"
+              variant="underlined"
               label="Viertel"
               hide-no-data
               :append-icon="''"
               multiple
               chips
-              deletable-chips
+              closable-chips
               :disabled="!isEditable"
-              @input="formChanged"
+              @update:model-value="formChanged"
             />
           </v-col>
         </v-row>
@@ -90,13 +95,20 @@
           :is-editable="isEditable"
         />
       </v-card>
-      <v-toolbar flat>
+      <v-toolbar
+        color="transparent"
+        flat
+      >
         <v-spacer />
         <v-btn
+          color="primary"
+          style="width: 200px"
+          variant="flat"
           :disabled="!isEditable"
           @click="addInput"
-          v-text="'Neuer Eintrag'"
-        />
+        >
+          Neuer Eintrag
+        </v-btn>
         <v-spacer />
       </v-toolbar>
     </div>
@@ -109,74 +121,74 @@
           id="abfragevarianteSachbearbeitung_bauratendatei_anmerkung"
           v-model="abfragevarianteSachbearbeitung.anmerkungBauratendateiInput"
           :disabled="!isEditable"
+          variant="underlined"
           label="Anmerkungen"
           auto-grow
           rows="3"
           maxlength="1000"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import _ from "lodash";
+<script setup lang="ts">
+import { computed } from "vue";
 import SpreadsheetBauratendateiInput from "@/components/abfragevarianten/SpreadsheetBauratendateiInput.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import _ from "lodash";
 
-@Component({ components: { SpreadsheetBauratendateiInput, FieldGroupCard } })
-export default class BauratendateiInput extends Mixins(SaveLeaveMixin) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
+interface Props {
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
+const { formChanged } = useSaveLeave();
 
-  get foerderartenBauratendateiInputBasis(): Array<string | undefined> {
-    const wohneinheiten = _.toArray(this.abfragevarianteSachbearbeitung?.bauratendateiInput)
-      .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
-      .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
-      .map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart);
-    return _.uniq(wohneinheiten.sort());
+const foerderartenBauratendateiInputBasis = computed(() => {
+  const wohneinheiten = _.toArray(abfragevarianteSachbearbeitung.value.bauratendateiInput)
+    .flatMap((bauratendateiInput) => _.toArray(bauratendateiInput.wohneinheiten))
+    .filter((wohneinheitenProFoerderartProJahr) => !_.isNil(wohneinheitenProFoerderartProJahr.foerderart))
+    .map((wohneinheitenProFoerderartProJahr) => wohneinheitenProFoerderartProJahr.foerderart);
+  return _.uniq(wohneinheiten.sort());
+});
+
+const showTables = computed(() => {
+  return (
+    abfragevarianteSachbearbeitung.value.hasBauratendateiInput === true &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.bauratendateiInputBasis)
+  );
+});
+
+withDefaults(defineProps<Props>(), { isEditable: false });
+
+function checkBoxChanged(): void {
+  const isBaurateninputCheckboxChecked =
+    !_.isNil(abfragevarianteSachbearbeitung.value.hasBauratendateiInput) &&
+    abfragevarianteSachbearbeitung.value.hasBauratendateiInput;
+  if (!isBaurateninputCheckboxChecked) {
+    abfragevarianteSachbearbeitung.value.bauratendateiInputBasis = undefined;
+    abfragevarianteSachbearbeitung.value.bauratendateiInput = [];
   }
+  formChanged();
+}
 
-  get showTables(): boolean {
-    return (
-      this.abfragevarianteSachbearbeitung.hasBauratendateiInput === true &&
-      !_.isNil(this.abfragevarianteSachbearbeitung?.bauratendateiInputBasis)
-    );
-  }
+function deleteInput(index: number): void {
+  abfragevarianteSachbearbeitung.value.bauratendateiInput?.splice(index, 1);
+  formChanged();
+}
 
-  private checkBoxChanged(): void {
-    const isBaurateninputCheckboxChecked =
-      !_.isNil(this.abfragevarianteSachbearbeitung.hasBauratendateiInput) &&
-      this.abfragevarianteSachbearbeitung.hasBauratendateiInput;
-    if (!isBaurateninputCheckboxChecked) {
-      this.abfragevarianteSachbearbeitung.bauratendateiInputBasis = undefined;
-      this.abfragevarianteSachbearbeitung.bauratendateiInput = [];
-    }
-    this.formChanged();
+function addInput(): void {
+  const newInput = _.cloneDeep(abfragevarianteSachbearbeitung.value.bauratendateiInputBasis);
+  if (!_.isNil(newInput)) {
+    newInput.id = undefined;
+    newInput.createdDateTime = undefined;
+    newInput.lastModifiedDateTime = undefined;
+    newInput.version = undefined;
+    abfragevarianteSachbearbeitung.value.bauratendateiInput?.push(newInput);
   }
-
-  private deleteInput(index: number): void {
-    this.abfragevarianteSachbearbeitung.bauratendateiInput?.splice(index, 1);
-    this.formChanged();
-  }
-
-  private addInput(): void {
-    const newInput = _.cloneDeep(this.abfragevarianteSachbearbeitung.bauratendateiInputBasis);
-    if (!_.isNil(newInput)) {
-      newInput.id = undefined;
-      newInput.createdDateTime = undefined;
-      newInput.lastModifiedDateTime = undefined;
-      newInput.version = undefined;
-      this.abfragevarianteSachbearbeitung.bauratendateiInput?.push(newInput);
-    }
-    this.formChanged();
-  }
+  formChanged();
 }
 </script>

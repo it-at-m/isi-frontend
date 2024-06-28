@@ -121,6 +121,12 @@ export interface EntityModelInfrastruktureinrichtung {
      * @type {string}
      * @memberof EntityModelInfrastruktureinrichtung
      */
+    idKibigWeb?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntityModelInfrastruktureinrichtung
+     */
     infrastruktureinrichtungTyp?: EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum;
     /**
      * 
@@ -193,6 +199,7 @@ export function EntityModelInfrastruktureinrichtungFromJSONTyped(json: any, igno
         'status': !exists(json, 'status') ? undefined : json['status'],
         'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
+        'idKibigWeb': !exists(json, 'idKibigWeb') ? undefined : json['idKibigWeb'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -219,6 +226,7 @@ export function EntityModelInfrastruktureinrichtungToJSON(value?: EntityModelInf
         'status': value.status,
         'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
+        'idKibigWeb': value.idKibigWeb,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };

@@ -1,4 +1,4 @@
-import { BauleitplanverfahrenInBearbeitungSachbearbeitungDto } from "@/api/api-client/isi-backend";
+import type { BauleitplanverfahrenInBearbeitungSachbearbeitungDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface BauleitplanverfahrenInBearbeitungSachbearbeitungModel

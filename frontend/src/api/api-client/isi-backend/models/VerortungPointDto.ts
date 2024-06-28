@@ -55,6 +55,12 @@ import {
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
+import type { UtmDto } from './UtmDto';
+import {
+    UtmDtoFromJSON,
+    UtmDtoFromJSONTyped,
+    UtmDtoToJSON,
+} from './UtmDto';
 import type { ViertelDto } from './ViertelDto';
 import {
     ViertelDtoFromJSON,
@@ -116,6 +122,12 @@ export interface VerortungPointDto {
      * @memberof VerortungPointDto
      */
     point: PointGeometryDto;
+    /**
+     * 
+     * @type {UtmDto}
+     * @memberof VerortungPointDto
+     */
+    pointUtm?: UtmDto;
 }
 
 /**
@@ -146,6 +158,7 @@ export function VerortungPointDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'grundschulsprengel': !exists(json, 'grundschulsprengel') ? undefined : (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelDtoFromJSON))),
         'mittelschulsprengel': !exists(json, 'mittelschulsprengel') ? undefined : (new Set((json['mittelschulsprengel'] as Array<any>).map(MittelschulsprengelDtoFromJSON))),
         'point': PointGeometryDtoFromJSON(json['point']),
+        'pointUtm': !exists(json, 'pointUtm') ? undefined : UtmDtoFromJSON(json['pointUtm']),
     };
 }
 
@@ -166,6 +179,7 @@ export function VerortungPointDtoToJSON(value?: VerortungPointDto | null): any {
         'grundschulsprengel': value.grundschulsprengel === undefined ? undefined : (Array.from(value.grundschulsprengel as Set<any>).map(GrundschulsprengelDtoToJSON)),
         'mittelschulsprengel': value.mittelschulsprengel === undefined ? undefined : (Array.from(value.mittelschulsprengel as Set<any>).map(MittelschulsprengelDtoToJSON)),
         'point': PointGeometryDtoToJSON(value.point),
+        'pointUtm': UtmDtoToJSON(value.pointUtm),
     };
 }
 

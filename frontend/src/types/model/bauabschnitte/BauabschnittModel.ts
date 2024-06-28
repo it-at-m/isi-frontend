@@ -1,4 +1,4 @@
-import { BauabschnittDto } from "@/api/api-client/isi-backend";
+import type { BauabschnittDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 

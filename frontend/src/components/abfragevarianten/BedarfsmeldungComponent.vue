@@ -1,6 +1,6 @@
 <template>
   <div>
-    <field-group-card :card-title="getBedarfsmeldungTitle">
+    <field-group-card :card-title="bedarfsmeldungTitle">
       <v-row
         v-if="false"
         justify="center"
@@ -14,41 +14,41 @@
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_kita_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_im_bplan_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungImBplanKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_kita_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKitaTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
         <v-col
@@ -60,44 +60,45 @@
             id="ausgeloester_bedarf_im_baugebiet_beruecksichtigen_schule_triswitch"
             ref="ausgeloesterBedarfImBaugebietBeruecksichtigenSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Bedarf im Baugebiet berücksichtigen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_im_bplan_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungImBplanSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungImBplanSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung des Bedarfs in einem Bebauungsplan"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_ausgel_bedarf_mitversorgung_in_best_einrichtungen_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
           <v-checkbox
             id="ausgeloester_bedarf_mitversorgung_in_best_einrichtungen_nach_ausbau_schule_triswitch"
             ref="ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchuleTriswitch"
             v-model="abfragevariante.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
             class="mx-3"
             label="Mitversorgung in bestehenden Einrichtungen nach deren Ausbau"
             color="primary"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
+
       <v-row justify="center">
         <v-col cols="12">
           <v-container class="table">
@@ -108,69 +109,47 @@
               hide-default-footer
               @change="formChanged"
             >
-              <template #header="{ text }">
-                <span>{{ text }}</span>
+              <template #item.infrastruktureinrichtungTyp="{ item }">
+                <td>{{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}</td>
               </template>
-              <template #body="{ items }">
-                <tbody>
-                  <tr
-                    v-for="(item, index) in items"
-                    :key="index"
-                  >
-                    <td>{{ item.anzahlEinrichtungen }}</td>
-                    <td>
-                      {{ getLookupValue(item.infrastruktureinrichtungTyp, infrastruktureinrichtungenTypList) }}
-                    </td>
-                    <td>{{ item.anzahlKinderkrippengruppen }}</td>
-                    <td>{{ item.anzahlKindergartengruppen }}</td>
-                    <td>{{ item.anzahlHortgruppen }}</td>
-                    <td>{{ item.anzahlGrundschulzuege }}</td>
-                    <td>
-                      <v-btn
-                        :id="'bedarfsmeldung_listitem_bearbeiten' + index"
-                        :disabled="!getIsEditable"
-                        icon
-                        @click="editBedarfsmeldung(item, index)"
-                      >
-                        <v-icon> mdi-pencil-outline </v-icon>
-                      </v-btn>
-                      <v-btn
-                        :id="'bedarfsmeldung_listitem_loeschen' + index"
-                        :disabled="!getIsEditable"
-                        icon
-                        @click="deleteBedarfsmeldung(index)"
-                      >
-                        <v-icon> mdi-delete</v-icon>
-                      </v-btn>
-                    </td>
-                  </tr>
-                </tbody>
+              <template #item.actions="{ item, index }">
+                <v-item-group class="d-flex">
+                  <v-btn
+                    :id="'bedarfsmeldung_listitem_bearbeiten' + index"
+                    :disabled="!isEditable"
+                    variant="plain"
+                    density="compact"
+                    icon="mdi-pencil-outline"
+                    @click="editBedarfsmeldung(item, index)"
+                  />
+                  <v-btn
+                    :id="'bedarfsmeldung_listitem_loeschen' + index"
+                    :disabled="!isEditable"
+                    variant="plain"
+                    density="compact"
+                    icon="mdi-delete"
+                    @click="deleteBedarfsmeldung(index)"
+                  />
+                </v-item-group>
               </template>
             </v-data-table>
-            <v-row class="mt-4">
-              <v-col
-                cols="12"
-                md="4"
-              />
-              <v-col
-                cols="12"
-                md="4"
-                class="text-center"
+            <v-toolbar
+              color="transparent"
+              flat
+            >
+              <v-spacer />
+              <v-btn
+                :id="'bedarfsmeldung_erfassen'"
+                :disabled="!isEditable"
+                color="primary"
+                variant="flat"
+                style="width: 300px"
+                @click="erfassenBedarfsmeldung()"
               >
-                <v-btn
-                  :id="'bedarfsmeldung_erfassen'"
-                  :disabled="!getIsEditable"
-                  class="text-wrap"
-                  block
-                  @click="erfassenBedarfsmeldung()"
-                  v-text="'Einrichtung hinzufügen'"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                md="4"
-              />
-            </v-row>
+                Einrichtung hinzufügen
+              </v-btn>
+              <v-spacer />
+            </v-toolbar>
           </v-container>
         </v-col>
       </v-row>
@@ -184,12 +163,13 @@
             id="anmerkungen_field"
             ref="anmerkungenField"
             v-model="anmerkung"
-            :disabled="!getIsEditable"
+            :disabled="!isEditable"
+            variant="underlined"
             label="Anmerkungen"
-            rows="1"
             auto-grow
+            rows="3"
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -204,160 +184,129 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import { LookupEntryDto, BedarfsmeldungDto } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import { computed, ref, watch } from "vue";
+import type { BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
-import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
-import { createBedarfsmeldungDto } from "@/utils/Factories";
-import _ from "lodash";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useLookupStore } from "@/stores/LookupStore";
 import DisplayMode from "@/types/common/DisplayMode";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import { useLookupStore } from "@/stores/LookupStore";
+import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
+import { BedarfsmeldungTitle, createBedarfsmeldungDto } from "@/utils/Factories";
+import _ from "lodash";
 
-export const enum BedarfsmeldungTitle {
-  FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
-  ABFRAGEERSTELLUNG = "Rückmeldung zu Bedarfsmeldungen durch Abfrageerstellung",
+interface Props {
+  bedarfsmeldungTitle: BedarfsmeldungTitle;
+  isEditable?: boolean;
+  isFachreferat?: boolean;
 }
-@Component({ components: { FieldGroupCard, NumField, BedarfsmeldungDialog } })
-export default class BedarfsmeldungComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
 
-  @Prop()
-  private bedarfsmeldungTitle!: BedarfsmeldungTitle;
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isFachreferat: false });
+const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
-  get getBedarfsmeldungTitle(): string {
-    if (!_.isNil(this.bedarfsmeldungTitle)) {
-      return this.bedarfsmeldungTitle.valueOf();
+const bedarfsmeldungTitle = computed(() => {
+  if (!_.isNil(props.bedarfsmeldungTitle)) {
+    return props.bedarfsmeldungTitle.valueOf();
+  }
+  return "";
+});
+
+const isEditable = computed(() => props.isEditable);
+
+const bedarfsmeldungenHeaders = ref<any[]>([
+  { title: "Typ Infrastruktureinrichtung", key: "infrastruktureinrichtungTyp", sortable: false },
+  { title: "Anz. Einrichtungen", key: "anzahlEinrichtungen", sortable: false },
+  { title: "Anz. Kinderkrippengruppen", key: "anzahlKinderkrippengruppen", sortable: false },
+  { title: "Anz. Kindergartengruppen", key: "anzahlKindergartengruppen", sortable: false },
+  { title: "Anz. Hortgruppen", key: "anzahlHortgruppen", sortable: false },
+  { title: "Anz. Grundschulzüge", key: "anzahlGrundschulzuege", sortable: false },
+  { title: "", key: "actions", sortable: false, align: "end", width: "10%" },
+]);
+const bedarfsmeldungen = ref<BedarfsmeldungDto[] | undefined>([]);
+const bedarfsmeldungDialogOpen = ref<boolean>(false);
+const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
+const anmerkung = ref<string | undefined>(undefined);
+let displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
+let selectedItemIndex = -1;
+const lookupStore = useLookupStore();
+const { formChanged } = useSaveLeave();
+
+watch(() => abfragevariante, watchBedarfsmeldungSelection, { immediate: true, deep: true });
+function watchBedarfsmeldungSelection(): void {
+  bedarfsmeldungen.value = props.isFachreferat
+    ? abfragevariante.value.bedarfsmeldungFachreferate
+    : abfragevariante.value.bedarfsmeldungAbfrageersteller;
+
+  anmerkung.value = props.isFachreferat
+    ? abfragevariante.value.anmerkungFachreferate
+    : abfragevariante.value.anmerkungAbfrageersteller;
+}
+
+watch(() => anmerkung, watchAnmerkung, { immediate: true, deep: true });
+function watchAnmerkung(): void {
+  if (props.isFachreferat) {
+    abfragevariante.value.anmerkungFachreferate = anmerkung.value;
+  } else {
+    abfragevariante.value.anmerkungAbfrageersteller = anmerkung.value;
+  }
+}
+
+/**
+ * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
+ *
+ * @param key für welchen der Wert aus der Liste geholt werden soll.
+ * @param list mit den Schlüssel-Wert-Paaren.
+ * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
+ */
+function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+  return !_.isUndefined(list) && !_.isNil(key)
+    ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+    : key;
+}
+
+const infrastruktureinrichtungenTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+
+function erfassenBedarfsmeldung(): void {
+  currentBedarfsmeldung.value = createBedarfsmeldungDto();
+  displayModeBedarfsmeldung = DisplayMode.NEU;
+  bedarfsmeldungDialogOpen.value = true;
+}
+
+function editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel, itemIndex: number): void {
+  selectedItemIndex = itemIndex;
+  currentBedarfsmeldung.value = _.cloneDeep(bedarfsmeldung);
+  displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
+  bedarfsmeldungDialogOpen.value = true;
+}
+
+function uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): void {
+  if (displayModeBedarfsmeldung === DisplayMode.NEU) {
+    if (_.isNil(bedarfsmeldungen.value)) {
+      bedarfsmeldungen.value = new Array<BedarfsmeldungDto>();
     }
-    return "";
+    bedarfsmeldungen.value.push(bedarfsmeldung);
+  } else {
+    bedarfsmeldungen.value?.splice(selectedItemIndex, 1, currentBedarfsmeldung.value as BedarfsmeldungDto);
   }
+  clearBedarfsmeldungDialog();
+}
 
-  @Prop({ type: Boolean, default: false })
-  private isEditable!: boolean;
+function abbrechenBedarfsmeldung(): void {
+  clearBedarfsmeldungDialog();
+}
 
-  get getIsEditable(): boolean {
-    return this.isEditable;
-  }
+function clearBedarfsmeldungDialog(): void {
+  bedarfsmeldungDialogOpen.value = false;
+  displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
+  selectedItemIndex = -1;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private isFachreferat!: boolean;
-
-  get getIsFachreferat(): boolean {
-    return this.isFachreferat;
-  }
-
-  private bedarfsmeldungen?: BedarfsmeldungDto[] = [];
-
-  private anmerkung?: string = "";
-
-  @Watch("abfragevariante", { immediate: true, deep: true })
-  private bedarfsmeldungSelection(): void {
-    this.bedarfsmeldungen = this.isFachreferat
-      ? this.abfragevariante.bedarfsmeldungFachreferate
-      : this.abfragevariante.bedarfsmeldungAbfrageersteller;
-
-    this.anmerkung = this.isFachreferat
-      ? this.abfragevariante.anmerkungFachreferate
-      : this.abfragevariante.anmerkungAbfrageersteller;
-  }
-
-  @Watch("anmerkung", { immediate: true, deep: true })
-  private setAnmerkung(): void {
-    if (this.isFachreferat) {
-      this.abfragevariante.anmerkungFachreferate = this.anmerkung;
-    } else {
-      this.abfragevariante.anmerkungAbfrageersteller = this.anmerkung;
-    }
-  }
-
-  private bedarfsmeldungDialogOpen = false;
-
-  private currentBedarfsmeldung = createBedarfsmeldungDto();
-
-  private displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
-
-  private selectedItemIndex = -1;
-
-  private bedarfsmeldungenHeaders = [
-    { text: "Anz. Einrichtungen", value: "anzahlEinrichtungen", sortable: false },
-    { text: "Infrastruktureinrichtung Typ", value: "infrastruktureinrichtungTyp", sortable: false },
-    { text: "Anz. Kinderkrippengruppen", value: "anzahlKindergruppen", sortable: false },
-    { text: "Anz. Kindergartengruppen", value: "anzahlKindergartengruppen", sortable: false },
-    { text: "Anz. Hortgruppen", value: "anzahlHortgruppen", sortable: false },
-    { text: "Anz. Grundschulzüge", value: "anzahlGrundschulzuege", sortable: false },
-    { text: "", value: "actions", sortable: false },
-  ];
-
-  private lookupStore = useLookupStore();
-
-  /**
-   * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
-   *
-   * @param key für welchen der Wert aus der Liste geholt werden soll.
-   * @param list mit den Schlüssel-Wert-Paaren.
-   * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
-   */
-  private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list) && !_.isNil(key)
-      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-      : key;
-  }
-
-  get infrastruktureinrichtungenTypList(): LookupEntryDto[] {
-    return this.lookupStore.infrastruktureinrichtungTyp;
-  }
-
-  private erfassenBedarfsmeldung(): void {
-    this.currentBedarfsmeldung = createBedarfsmeldungDto();
-    this.displayModeBedarfsmeldung = DisplayMode.NEU;
-    this.bedarfsmeldungDialogOpen = true;
-  }
-
-  private editBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel, itemIndex: number): void {
-    this.selectedItemIndex = itemIndex;
-    this.currentBedarfsmeldung = _.cloneDeep(bedarfsmeldung);
-    this.displayModeBedarfsmeldung = DisplayMode.AENDERUNG;
-    this.bedarfsmeldungDialogOpen = true;
-  }
-
-  private uebernehmenBedarfsmeldung(bedarfsmeldung: BedarfsmeldungModel): void {
-    if (this.displayModeBedarfsmeldung === DisplayMode.NEU) {
-      if (_.isNil(this.bedarfsmeldungen)) {
-        this.bedarfsmeldungen = new Array<BedarfsmeldungDto>();
-      }
-      this.bedarfsmeldungen.push(bedarfsmeldung);
-    } else {
-      this.bedarfsmeldungen?.splice(this.selectedItemIndex, 1, this.currentBedarfsmeldung);
-    }
-    this.clearBedarfsmeldungDialog();
-  }
-
-  private abbrechenBedarfsmeldung(): void {
-    this.clearBedarfsmeldungDialog();
-  }
-
-  private clearBedarfsmeldungDialog(): void {
-    this.bedarfsmeldungDialogOpen = false;
-    this.displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
-    this.selectedItemIndex = -1;
-  }
-
-  private deleteBedarfsmeldung(itemIndex: number) {
-    if (!_.isNil(this.bedarfsmeldungen)) {
-      this.bedarfsmeldungen.splice(itemIndex, 1);
-      this.formChanged();
-    }
+function deleteBedarfsmeldung(itemIndex: number) {
+  if (!_.isNil(bedarfsmeldungen.value)) {
+    bedarfsmeldungen.value?.splice(itemIndex, 1);
+    formChanged();
   }
 }
 </script>

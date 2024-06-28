@@ -1,4 +1,4 @@
-import { SobonBerechnungDto } from "@/api/api-client/isi-backend";
+import type { SobonBerechnungDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface SobonBerechnungModel extends SobonBerechnungDto {}

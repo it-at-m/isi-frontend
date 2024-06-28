@@ -1,4 +1,4 @@
-import { SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
+import type { SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface SearchQueryAndSortingModel extends SearchQueryAndSortingDto {}

@@ -11,13 +11,14 @@
             v-model="infrastruktureinrichtungTyp"
             class="mx-3"
             :items="infrastruktureinrichtungList"
+            variant="underlined"
             item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
+            item-title="value"
+            :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
-            @change="formChanged"
+            @update:model-value="formChanged"
           >
-            <template #label> Infrastruktureinrichtung Typ <span class="secondary--text">*</span> </template>
+            <template #label> Infrastruktureinrichtung Typ <span class="text-secondary">*</span> </template>
           </v-select>
         </v-col>
       </v-row>
@@ -54,64 +55,46 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
+import { computed, onUnmounted } from "vue";
+import type { LookupEntryDto } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import _ from "lodash";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: {
-    FieldGroupCard,
-  },
-})
-export default class InfrastruktureinrichtungTypComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: String }) infrastruktureinrichtungTyp!: string;
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
-  private lookupStore = useLookupStore();
-
-  @Prop()
-  private lfdNr!: string;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get lfdNrInfrastruktureinrichtung(): string {
-    return this.lfdNr;
-  }
-
-  @Prop()
-  private mode!: DisplayMode;
-
-  get displayMode(): DisplayMode {
-    return this.mode === undefined ? DisplayMode.UNDEFINED : this.mode;
-  }
-
-  get isNewInfrastruktureinrichtung(): boolean {
-    return this.displayMode === DisplayMode.NEU;
-  }
-
-  get infrastruktureinrichtungList(): LookupEntryDto[] {
-    return this.lookupStore.infrastruktureinrichtungTyp;
-  }
-
-  get infrastruktureinrichtungTypDisplay(): string {
-    if (!_.isNil(this.infrastruktureinrichtungTyp)) {
-      const lookupValue = this.getLookupValue(this.infrastruktureinrichtungTyp, this.infrastruktureinrichtungList);
-      return !_.isNil(lookupValue) ? lookupValue : "";
-    } else {
-      return "";
-    }
-  }
-
-  private getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
-    return !_.isUndefined(list) && !_.isNil(key)
-      ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
-      : key;
-  }
+interface Props {
+  lfdNr?: string;
+  isEditable?: boolean;
+  mode?: DisplayMode;
 }
+
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const infrastruktureinrichtungTyp = defineModel<string>({ required: true });
+const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
+const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
+const infrastruktureinrichtungList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+
+function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+  return !_.isUndefined(list) && !_.isNil(key)
+    ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
+    : key;
+}
+
+onUnmounted(() => {
+  infrastruktureinrichtungTyp.value = "";
+});
+
+const infrastruktureinrichtungTypDisplay = computed(() => {
+  if (!_.isNil(infrastruktureinrichtungTyp)) {
+    const lookupValue = getLookupValue(infrastruktureinrichtungTyp.value, infrastruktureinrichtungList.value);
+    return !_.isNil(lookupValue) ? lookupValue : "";
+  } else {
+    return "";
+  }
+});
 </script>
-<style></style>

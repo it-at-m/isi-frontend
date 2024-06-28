@@ -59,11 +59,12 @@
             id="infrastruktureinrichtung_gsNachmittagBetreuung_artGsNachmittagBetreuung"
             v-model="gsNachmittagBetreuung.artGsNachmittagBetreuung"
             :items="artGsNachmittagBetreuungList"
-            item-text="value"
+            variant="underlined"
+            item-title="value"
             item-value="key"
             label="Art der Nachmittagsbetreuung für Grundschulkinder"
             :disabled="!isEditable"
-            @change="formChanged"
+            @update:model-value="formChanged"
           />
         </v-col>
       </v-row>
@@ -71,41 +72,24 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
 import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
-import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: {
-    FieldGroupCard,
-    InfrastruktureinrichtungComponent,
-    EinrichtungstraegerComponent,
-  },
-})
-export default class GsNachmittagBetreuungComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: GsNachmittagBetreuungModel }) gsNachmittagBetreuung!: GsNachmittagBetreuungModel;
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { computed } from "vue";
+import NumField from "@/components/common/NumField.vue";
 
-  private lookupStore = useLookupStore();
-
-  get artGsNachmittagBetreuungList(): LookupEntryDto[] {
-    return this.lookupStore.artGsNachmittagBetreuung;
-  }
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.lookupStore.einrichtungstraeger;
-  }
+interface Props {
+  isEditable?: boolean;
+  isEinrichtungstraegerRequired?: boolean;
 }
+
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const gsNachmittagBetreuung = defineModel<GsNachmittagBetreuungModel>({ required: true });
+const artGsNachmittagBetreuungList = computed(() => lookupStore.artGsNachmittagBetreuung);
+const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
-<style></style>

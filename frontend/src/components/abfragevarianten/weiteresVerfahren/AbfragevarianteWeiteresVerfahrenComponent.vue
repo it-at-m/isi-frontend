@@ -5,10 +5,7 @@
         cols="12"
         md="12"
       >
-        <span
-          class="text-h6 font-weight-bold"
-          v-text="headline"
-        />
+        <span class="text-h6 font-weight-bold">{{ headline }}</span>
       </v-col>
     </v-row>
     <common-weiteres-verfahren-component
@@ -40,114 +37,90 @@
       ref="bedarfsmeldungFachreferateComponent"
       v-model="abfragevariante"
       :is-fachreferat="true"
-      :is-editable="isEditableByBedarfsmeldung()"
+      :is-editable="isEditableByBedarfsmeldung"
       :bedarfsmeldung-title="bedarfsmeldungFachreferate"
     />
-    <v-row>
-      <v-col
-        cols="12"
-        md="4"
-      />
-      <v-col
-        cols="12"
-        md="4"
+    <v-toolbar
+      color="transparent"
+      density="compact"
+      flat
+    >
+      <v-spacer />
+      <v-btn
+        id="bedarfsmeldungenUebernehmenButton"
+        color="primary"
+        variant="flat"
+        style="width: 450px"
+        density="default"
+        :disabled="!bedarfsmeldungenUebernehmenEnabled"
+        @click="bedarfsmeldungenUebernehmen()"
       >
-        <v-btn
-          id="bedarfsmeldungenUebernehmenButton"
-          class="text-wrap"
-          block
-          :disabled="!bedarfsmeldungenUebernehmenEnabled"
-          @click="bedarfsmeldungenUebernehmen()"
-          v-text="'Bedarfsmeldungen der Fachreferate übernehmen'"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="4"
-      />
-    </v-row>
+        Bedarfsmeldungen der Fachreferate übernehmen
+      </v-btn>
+      <v-spacer />
+    </v-toolbar>
     <bedarfsmeldung-component
       id="bedarfsmeldung_abfrageerstellung_component"
       ref="bedarfsmeldungAbfrageerstellungComponent"
       v-model="abfragevariante"
-      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung()"
+      :is-editable="isBedarfsmeldungEditableByAbfrageerstellung"
       :bedarfsmeldung-title="bedarfsmeldungAbfrageerstellung"
     />
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import CommonBaugenehmigungsverfahrenComponent from "@/components/abfragevarianten/baugenehmigungsverfahren/CommonBaugenehmigungsverfahrenComponent.vue";
-import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
-import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
+<script setup lang="ts">
+import { computed } from "vue";
+import BedarfsmeldungComponent from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
 import SachbearbeitungComponent from "@/components/abfragevarianten/SachbearbeitungComponent.vue";
+import GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent.vue";
+import GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent from "@/components/abfragevarianten/weiteresVerfahren/GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent.vue";
+import CommonWeiteresVerfahrenComponent from "./CommonWeiteresVerfahrenComponent.vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
-import BedarfsmeldungComponent, {
-  BedarfsmeldungTitle,
-} from "@/components/abfragevarianten/BedarfsmeldungComponent.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { BedarfsmeldungTitle } from "@/utils/Factories";
 import _ from "lodash";
 
-@Component({
-  components: {
-    FieldGroupCard,
-    CommonBaugenehmigungsverfahrenComponent,
-    GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent,
-    GeplanteAnzahlWohneinheitenWeiteresVerfahrenComponent,
-    SachbearbeitungComponent,
-    BedarfsmeldungComponent,
-    BauratenAggregiertComponent,
-  },
-})
-export default class AbfragevarianteWeiteresVerfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
-  @VModel({ type: AbfragevarianteWeiteresVerfahrenModel })
-  abfragevariante!: AbfragevarianteWeiteresVerfahrenModel;
+interface Props {
+  isEditable?: boolean;
+  anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const abfragevariante = defineModel<AbfragevarianteWeiteresVerfahrenModel>({ required: true });
+const { isBedarfsmeldungEditableByAbfrageerstellung, isEditableByBedarfsmeldung } = useAbfrageSecurity();
+const { formChanged } = useSaveLeave();
 
-  @Prop()
-  private anzeigeContextAbfragevariante!: AnzeigeContextAbfragevariante;
+const headline = computed(() => {
+  const headline = `Abfragevariante ${new AbfragevarianteWeiteresVerfahrenModel(
+    abfragevariante.value,
+  ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(props.anzeigeContextAbfragevariante)} - `;
+  return headline.concat(`${abfragevariante.value.name}`);
+});
 
-  get headline(): string {
-    const headline = `Abfragevariante ${new AbfragevarianteWeiteresVerfahrenModel(
-      this.abfragevariante,
-    ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(this.anzeigeContextAbfragevariante)} - `;
-    return headline.concat(`${this.abfragevariante.name}`);
-  }
+const bedarfsmeldungFachreferate = computed(() => BedarfsmeldungTitle.FACHREFERATE);
 
-  get bedarfsmeldungFachreferate(): BedarfsmeldungTitle {
-    return BedarfsmeldungTitle.FACHREFERATE;
-  }
+const bedarfsmeldungAbfrageerstellung = computed(() => BedarfsmeldungTitle.ABFRAGEERSTELLUNG);
 
-  get bedarfsmeldungAbfrageerstellung(): BedarfsmeldungTitle {
-    return BedarfsmeldungTitle.ABFRAGEERSTELLUNG;
-  }
+const bedarfsmeldungenUebernehmenEnabled = computed(() => {
+  return (
+    isBedarfsmeldungEditableByAbfrageerstellung.value &&
+    !_.isEmpty(abfragevariante.value.bedarfsmeldungFachreferate) &&
+    _.isEmpty(abfragevariante.value.bedarfsmeldungAbfrageersteller)
+  );
+});
 
-  get bedarfsmeldungenUebernehmenEnabled(): boolean {
-    return (
-      this.isBedarfsmeldungEditableByAbfrageerstellung() &&
-      !_.isEmpty(this.abfragevariante.bedarfsmeldungFachreferate) &&
-      _.isEmpty(this.abfragevariante.bedarfsmeldungAbfrageersteller)
-    );
-  }
-
-  private bedarfsmeldungenUebernehmen(): void {
-    this.abfragevariante.bedarfsmeldungAbfrageersteller = _.clone(this.abfragevariante.bedarfsmeldungFachreferate);
-    this.abfragevariante.bedarfsmeldungAbfrageersteller?.forEach((bedarfsmeldung) => {
-      bedarfsmeldung.id = "";
-      bedarfsmeldung.version = undefined;
-      bedarfsmeldung.createdDateTime = undefined;
-      bedarfsmeldung.lastModifiedDateTime = undefined;
-    });
-    this.formChanged();
-  }
+function bedarfsmeldungenUebernehmen(): void {
+  abfragevariante.value.bedarfsmeldungAbfrageersteller = _.clone(abfragevariante.value.bedarfsmeldungFachreferate);
+  abfragevariante.value.bedarfsmeldungAbfrageersteller?.forEach((bedarfsmeldung) => {
+    bedarfsmeldung.id = "";
+    bedarfsmeldung.version = undefined;
+    bedarfsmeldung.createdDateTime = undefined;
+    bedarfsmeldung.lastModifiedDateTime = undefined;
+  });
+  formChanged();
 }
 </script>
-
-<style></style>

@@ -1,8 +1,8 @@
 import {
-  ExtractMediaTypeInformationForAllowedMediaTypeRequest,
-  FilepathDto,
+  type ExtractMediaTypeInformationForAllowedMediaTypeRequest,
+  type FilepathDto,
+  type MimeTypeInformationDto,
   MimeTypeApi,
-  MimeTypeInformationDto,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
@@ -12,10 +12,7 @@ export function useMimeTypeApi() {
   const mimeTypeApi = new MimeTypeApi(RequestUtils.getBasicFetchConfigurationForBackend());
   const { handleError } = useErrorHandler();
 
-  async function extractMediaTypeInformationForAllowedMediaType(
-    dto: FilepathDto,
-    showInInformationList: boolean,
-  ): Promise<MimeTypeInformationDto> {
+  async function extractMediaTypeInformationForAllowedMediaType(dto: FilepathDto): Promise<MimeTypeInformationDto> {
     const requestObject: ExtractMediaTypeInformationForAllowedMediaTypeRequest = {
       filepathDto: dto,
     };
@@ -26,7 +23,7 @@ export function useMimeTypeApi() {
       );
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

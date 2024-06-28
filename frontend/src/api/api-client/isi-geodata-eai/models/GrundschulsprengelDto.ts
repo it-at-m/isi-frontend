@@ -66,13 +66,13 @@ export interface GrundschulsprengelDto {
      * @type {number}
      * @memberof GrundschulsprengelDto
      */
-    xcoordinate?: number;
+    ycoordinate?: number;
     /**
      * 
      * @type {number}
      * @memberof GrundschulsprengelDto
      */
-    ycoordinate?: number;
+    xcoordinate?: number;
 }
 
 /**
@@ -101,8 +101,8 @@ export function GrundschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminato
         'verbundnummer': !exists(json, 'verbundnummer') ? undefined : json['verbundnummer'],
         'verbundname': !exists(json, 'verbundname') ? undefined : json['verbundname'],
         'ebeneBedeutung': !exists(json, 'ebeneBedeutung') ? undefined : json['ebeneBedeutung'],
-        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
         'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
+        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
     };
 }
 
@@ -122,8 +122,8 @@ export function GrundschulsprengelDtoToJSON(value?: GrundschulsprengelDto | null
         'verbundnummer': value.verbundnummer,
         'verbundname': value.verbundname,
         'ebeneBedeutung': value.ebeneBedeutung,
-        'xcoordinate': value.xcoordinate,
         'ycoordinate': value.ycoordinate,
+        'xcoordinate': value.xcoordinate,
     };
 }
 

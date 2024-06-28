@@ -1,5 +1,5 @@
 <template>
-  <field-group-card :card-title="allgemeineInfoCardTitle">
+  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Bauvorhaben">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -10,9 +10,10 @@
           ref="aktenzeichenProLbkField"
           v-model="abfrage.aktenzeichenProLbk"
           :disabled="!isEditable"
+          variant="underlined"
           label="Aktenzeichen ProLBK"
           maxlength="255"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
       <v-col
@@ -24,27 +25,29 @@
           ref="bebauungsplannummerField"
           v-model="abfrage.bebauungsplannummer"
           :disabled="!isEditable"
+          variant="underlined"
           label="Bebauungsplannummer"
           maxlength="255"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
       <v-col
         cols="12"
         md="4"
       >
-        <v-select
+        <v-autocomplete
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
           v-model="abfrage.bauvorhaben"
-          :disabled="!(isEditableByAbfrageerstellung() || isEditableBySachbearbeitung())"
+          :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
+          variant="underlined"
           :items="bauvorhaben"
-          item-text="nameVorhaben"
+          item-title="nameVorhaben"
           item-value="id"
           label="Bauvorhaben"
           clearable
-          @focus="fetchBauvorhaben"
-          @change="formChanged"
+          @update:focused="!$event || fetchBauvorhaben()"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>
@@ -58,13 +61,14 @@
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           :disabled="!isEditable"
-          :items="standVerfahrenBaugenehmigungsverfahrenList"
+          variant="underlined"
+          :items="lookupStore.standVerfahrenBaugenehmigungsverfahren"
           item-value="key"
-          item-text="value"
-          :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-          @change="formChanged"
+          item-title="value"
+          :rules="[pflichtfeld, notUnspecified]"
+          @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
+          <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
         </v-select>
       </v-col>
       <v-col
@@ -78,9 +82,10 @@
             ref="standVerfahrenFreieEingabeField"
             v-model="abfrage.standVerfahrenFreieEingabe"
             :disabled="!isEditable"
+            variant="underlined"
             label="Freie Eingabe"
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-slide-y-reverse-transition>
       </v-col>
@@ -88,95 +93,75 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import {
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
-  BauvorhabenSearchResultDto,
-  LookupEntryDto,
-  SearchQueryAndSortingDto,
+  type BauvorhabenSearchResultDto,
+  BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
-import TriSwitch from "@/components/common/TriSwitch.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { useLookupStore } from "@/stores/LookupStore";
-@Component({
-  components: { TriSwitch },
-})
-export default class AllgemeineInformationenBaugenehmigungsverfahrenComponent extends Mixins(
-  SaveLeaveMixin,
-  SearchApiRequestMixin,
-  FieldValidationRulesMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: BaugenehmigungsverfahrenModel }) abfrage!: BaugenehmigungsverfahrenModel;
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useSearchApi } from "@/composables/requests/search/SearchApi";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
+interface Props {
+  isEditable?: boolean;
+}
 
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const { searchForEntities } = useSearchApi();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
+const standVerfahrenFreieEingabeVisible = ref(false);
+const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 
-  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Bauvorhaben";
+withDefaults(defineProps<Props>(), { isEditable: false });
 
-  private sobonJahrVisible = false;
+onMounted(() => fetchBauvorhaben());
 
-  private standVerfahrenFreieEingabeVisible = false;
-
-  private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
-
-  private lookupStore = useLookupStore();
-
-  mounted(): void {
-    this.fetchBauvorhaben();
-  }
-
-  get standVerfahrenBaugenehmigungsverfahrenList(): LookupEntryDto[] {
-    return this.lookupStore.standVerfahrenBaugenehmigungsverfahren;
-  }
-
-  /**
-   * Holt alle Bauvorhaben vom Backend.
-   */
-  private async fetchBauvorhaben(): Promise<void> {
-    const searchQueryAndSortingDto = {
-      searchQuery: "",
-      selectBauleitplanverfahren: false,
-      selectBaugenehmigungsverfahren: false,
-      selectWeiteresVerfahren: false,
-      selectBauvorhaben: true,
-      selectGrundschule: false,
-      selectGsNachmittagBetreuung: false,
-      selectHausFuerKinder: false,
-      selectKindergarten: false,
-      selectKinderkrippe: false,
-      selectMittelschule: false,
-      page: undefined,
-      pageSize: undefined,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-    } as SearchQueryAndSortingDto;
-    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
-      this.bauvorhaben = searchResults.searchResults?.map(
-        (searchResults) => searchResults as BauvorhabenSearchResultDto,
-      ) as Array<BauvorhabenSearchResultDto>;
-    });
-  }
-
-  @Watch("abfrage.standVerfahren", { immediate: true })
-  private standVerfahrenChanged(): void {
-    if (this.abfrage.standVerfahren?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      this.standVerfahrenFreieEingabeVisible = true;
+watch(
+  () => abfrage.value.standVerfahren,
+  (value) => {
+    if (value?.includes(BaugenehmigungsverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
+      standVerfahrenFreieEingabeVisible.value = true;
     } else {
-      this.abfrage.standVerfahrenFreieEingabe = undefined;
-      this.standVerfahrenFreieEingabeVisible = false;
+      standVerfahrenFreieEingabeVisible.value = false;
+      abfrage.value.standVerfahrenFreieEingabe = undefined;
     }
-  }
+  },
+  { immediate: true },
+);
+
+/**
+ * Holt alle Bauvorhaben vom Backend.
+ */
+async function fetchBauvorhaben(): Promise<void> {
+  const searchQueryAndSortingDto = {
+    searchQuery: "",
+    selectBauleitplanverfahren: false,
+    selectBaugenehmigungsverfahren: false,
+    selectWeiteresVerfahren: false,
+    selectBauvorhaben: true,
+    selectGrundschule: false,
+    selectGsNachmittagBetreuung: false,
+    selectHausFuerKinder: false,
+    selectKindergarten: false,
+    selectKinderkrippe: false,
+    selectMittelschule: false,
+    page: undefined,
+    pageSize: undefined,
+    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+  };
+  const searchResults = await searchForEntities(searchQueryAndSortingDto);
+  bauvorhaben.value = searchResults.searchResults?.map(
+    (searchResults) => searchResults as BauvorhabenSearchResultDto,
+  ) as Array<BauvorhabenSearchResultDto>;
 }
 </script>

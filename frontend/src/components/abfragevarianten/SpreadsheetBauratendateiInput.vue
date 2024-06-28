@@ -3,27 +3,28 @@
     class="mt-3"
     :headers="headers"
     :items="tableDataFromBauratendateiInput"
+    density="compact"
     hide-default-footer
   >
-    <template #[`item.jahr`]="{ item }">
+    <template #item.jahr="{ item }">
       <v-text-field
         v-if="isSameItem(item, itemToEdit)"
         v-model="itemToEdit['jahr']"
-        :hide-details="true"
-        :rules="[fieldValidationRules.digits, fieldValidationRules.min4, fieldValidationRules.pflichtfeld]"
-        dense
+        hide-details
+        variant="underlined"
+        :rules="[digits, min4, pflichtfeld]"
         maxlength="4"
         single-line
-      ></v-text-field>
+      />
       <span v-else>{{ item["jahr"] }}</span>
     </template>
     <template
       v-for="(column, index) in forderartenForHeader"
-      #[`item.${column}`]="item"
+      :key="`${column}_${index}`"
+      #[`item.${column}`]="{ item }"
     >
       <num-field
-        v-if="isSameItem(item.item, itemToEdit)"
-        :key="`${column}_${item.item.jahr}_${index}`"
+        v-if="isSameItem(item, itemToEdit)"
         v-model="itemToEdit[column]"
         :hide-details="true"
         required
@@ -31,77 +32,84 @@
         :min="0"
         :precision="2"
         single-line
-      ></num-field>
-      <span
-        v-else
-        :key="`${column}_${item.item.jahr}_${index}`"
-      >
-        {{ toLocalizedTwoDecimals(item.item[column]) }}
+      />
+      <span v-else>
+        {{ toLocalizedTwoDecimals(item[column]) }}
       </span>
     </template>
-    <template #[`item.gesamt`]="{ item }">
+    <template #item.gesamt="{ item }">
       <span>{{ roundToLocalizedTwoDecimals(item["gesamt"]) }}</span>
     </template>
     <template #item.actions="{ item }">
-      <div v-if="isSameItem(item, itemToEdit)">
+      <v-item-group
+        v-if="isSameItem(item, itemToEdit)"
+        class="d-flex"
+      >
         <v-btn
-          icon
+          icon="mdi-window-close"
+          variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="closeTableItem"
-        >
-          <v-icon> mdi-window-close </v-icon>
-        </v-btn>
+        />
         <v-btn
-          icon
+          icon="mdi-content-save"
+          variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="saveTableItem"
-        >
-          <v-icon> mdi-content-save </v-icon>
-        </v-btn>
-      </div>
-      <div v-else>
+        />
+      </v-item-group>
+      <v-item-group
+        v-else
+        class="d-flex"
+      >
         <v-btn
-          icon
+          icon="mdi-pencil-outline"
+          variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="editTableItem(item)"
-        >
-          <v-icon> mdi-pencil-outline </v-icon>
-        </v-btn>
+        />
         <v-btn
-          icon
+          icon="mdi-delete"
+          variant="plain"
+          density="compact"
           :disabled="!isEditable"
           @click="deleteTableItem(item)"
-        >
-          <v-icon> mdi-delete </v-icon>
-        </v-btn>
-      </div>
+        />
+      </v-item-group>
     </template>
     <template #no-data>
       <span>Es sind keine Baurateninformationen vorhanden</span>
     </template>
-    <template #footer>
-      <v-toolbar flat>
+    <template #bottom>
+      <v-toolbar
+        color="transparent"
+        flat
+      >
         <v-spacer />
         <v-btn
           color="primary"
+          style="width: 200px"
+          variant="flat"
+          prepend-icon="mdi-plus"
           :disabled="!isEditable"
           @click="addNewTableItem"
         >
-          <v-icon>mdi-plus</v-icon>Neue Zeile
+          Neue Zeile
         </v-btn>
       </v-toolbar>
     </template>
   </v-data-table>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+<script setup lang="ts">
+import { ref, watch } from "vue";
+import type { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import type DataTableHeader from "@/types/common/DataTableHeader";
 import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { DataTableHeader } from "vuetify";
-import _ from "lodash";
-import { WohneinheitenProFoerderartProJahrDto } from "@/api/api-client/isi-backend";
+import { useSaveLeave } from "@/composables/SaveLeave";
 import {
   ATTRIBUTE_KEY_INDEX,
   ATTRIBUTE_KEY_JAHR,
@@ -110,90 +118,106 @@ import {
   createTableData,
   ROUNDING_PRECISION,
 } from "@/utils/BauratendateiUtils";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import { digits, min4, pflichtfeld } from "@/utils/FieldValidationRules";
+import _ from "lodash";
 
-@Component({ components: { FieldGroupCard, NumField } })
-export default class SpreadsheetBauratendateiInput extends Mixins(SaveLeaveMixin, FieldValidationRulesMixin) {
-  @VModel({ type: Array })
-  private bauratendateiInput!: Array<WohneinheitenProFoerderartProJahrDto>;
+interface Props {
+  foerderartenBauratendateiInputBasis: Array<string | undefined>;
+  isEditable?: boolean;
+}
 
-  @Prop({ required: true, default: [] })
-  private foerderartenBauratendateiInputBasis!: Array<string>;
+const props = withDefaults(defineProps<Props>(), { foerderartenBauratendateiInputBasis: () => [], isEditable: false });
+const bauratendateiInput = defineModel<Array<WohneinheitenProFoerderartProJahrDto> | undefined>({ required: true });
+const { formChanged } = useSaveLeave();
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const forderartenForHeader = ref<Array<string>>([]);
 
-  private forderartenForHeader: Array<string> = [];
+const headers = ref<Array<DataTableHeader>>([]);
 
-  private headers: Array<DataTableHeader> = [];
+const tableDataFromBauratendateiInput = ref<Array<any>>([]);
 
-  private tableDataFromBauratendateiInput: Array<any> = [];
+const itemToEdit = ref<any>({ index: -1 });
 
-  private itemToEdit: any = { index: -1 };
+watch(() => bauratendateiInput, watchBauratendateiInput, { immediate: true, deep: true });
 
-  @Watch("bauratendateiInput", { immediate: true, deep: true })
-  private watchBauratendateiInput(): void {
-    this.headers = createHeaders(this.foerderartenBauratendateiInputBasis);
-    this.forderartenForHeader = _.cloneDeep(_.uniq(_.toArray(this.foerderartenBauratendateiInputBasis)));
-    this.tableDataFromBauratendateiInput = createTableData(this.bauratendateiInput);
-  }
+function watchBauratendateiInput(): void {
+  headers.value = createHeaders(props.foerderartenBauratendateiInputBasis);
+  forderartenForHeader.value = _.cloneDeep(
+    _.uniq(_.toArray(props.foerderartenBauratendateiInputBasis)).filter((v) => v !== undefined),
+  ) as string[];
+  tableDataFromBauratendateiInput.value = createTableData(bauratendateiInput.value);
+}
 
-  private isSameItem(item1: any | undefined, item2: any | undefined): boolean {
-    return item1.index === item2.index;
-  }
+function isSameItem(item1: any | undefined, item2: any | undefined): boolean {
+  return item1.index === item2.index;
+}
 
-  private addNewTableItem(): void {
-    let maxIndex = 0;
-    this.tableDataFromBauratendateiInput.forEach((tableEntry) => (maxIndex = _.max([tableEntry.index, maxIndex])));
+function addNewTableItem(): void {
+  let maxIndex = 0;
+  if (!_.isNil(tableDataFromBauratendateiInput.value) && !_.isNil(forderartenForHeader.value)) {
+    tableDataFromBauratendateiInput.value.forEach(
+      (tableEntry) => (maxIndex = _.max([tableEntry.index, maxIndex]) ?? 0),
+    );
     const newTableEntry = new Map<string | undefined, string | number | undefined>();
     newTableEntry.set(ATTRIBUTE_KEY_JAHR, undefined);
     newTableEntry.set(ATTRIBUTE_KEY_INDEX, ++maxIndex);
-    this.forderartenForHeader.forEach((forderart) => newTableEntry.set(forderart, undefined));
+    forderartenForHeader.value.forEach((forderart) => newTableEntry.set(forderart, undefined));
     const newTableEntryObject = Object.fromEntries(newTableEntry.entries());
-    this.tableDataFromBauratendateiInput.push(newTableEntryObject);
-    this.itemToEdit = _.cloneDeep(newTableEntryObject);
-    this.formChanged();
+    tableDataFromBauratendateiInput.value.push(newTableEntryObject);
+    itemToEdit.value = _.cloneDeep(newTableEntryObject);
+    formChanged();
   }
+}
 
-  private closeTableItem(): void {
-    this.itemToEdit = { index: -1 };
-  }
+function closeTableItem(): void {
+  itemToEdit.value = { index: -1 };
+}
 
-  private saveTableItem(): void {
-    const index = _.findIndex(this.tableDataFromBauratendateiInput, (tableItem) => {
-      return this.isSameItem(tableItem, this.itemToEdit);
+function saveTableItem(): void {
+  if (!_.isNil(tableDataFromBauratendateiInput.value)) {
+    const index = _.findIndex(tableDataFromBauratendateiInput.value, (tableItem) => {
+      return isSameItem(tableItem, itemToEdit.value);
     });
-    this.tableDataFromBauratendateiInput[index] = this.itemToEdit;
-    this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
-    this.closeTableItem();
+    tableDataFromBauratendateiInput.value[index] = itemToEdit.value;
+    const newBauratendateiInput = createBauratendateiInput(tableDataFromBauratendateiInput.value);
+    if (_.isNil(bauratendateiInput.value)) {
+      bauratendateiInput.value = newBauratendateiInput;
+    } else {
+      _.remove(bauratendateiInput.value);
+      bauratendateiInput.value.push(...newBauratendateiInput);
+    }
+    closeTableItem();
   }
+}
 
-  private editTableItem(item: any): void {
-    this.itemToEdit = _.cloneDeep(item);
-    this.formChanged();
-  }
+function editTableItem(item: any): void {
+  itemToEdit.value = _.cloneDeep(item);
+  formChanged();
+}
 
-  private deleteTableItem(item: any): void {
-    const index = _.findIndex(this.tableDataFromBauratendateiInput, (tableItem) => {
-      return this.isSameItem(tableItem, item);
+function deleteTableItem(item: any): void {
+  if (!_.isNil(tableDataFromBauratendateiInput.value)) {
+    const index = _.findIndex(tableDataFromBauratendateiInput.value, (tableItem) => {
+      return isSameItem(tableItem, item);
     });
-    this.tableDataFromBauratendateiInput.splice(index, 1);
-    this.bauratendateiInput = createBauratendateiInput(this.tableDataFromBauratendateiInput);
-    this.formChanged();
+    tableDataFromBauratendateiInput.value.splice(index, 1);
+    bauratendateiInput.value = createBauratendateiInput(tableDataFromBauratendateiInput.value);
+    closeTableItem();
+    formChanged();
   }
+}
 
-  private roundToLocalizedTwoDecimals(wohneinheiten: number | undefined): string | undefined {
-    const roundedWohneinheiten = _.round(_.isNil(wohneinheiten) ? 0 : wohneinheiten, ROUNDING_PRECISION);
-    return this.toLocalizedTwoDecimals(roundedWohneinheiten);
-  }
+function roundToLocalizedTwoDecimals(wohneinheiten: number | undefined): string | undefined {
+  const roundedWohneinheiten = _.round(_.isNil(wohneinheiten) ? 0 : wohneinheiten, ROUNDING_PRECISION);
+  return toLocalizedTwoDecimals(roundedWohneinheiten);
+}
 
-  private toLocalizedTwoDecimals(wohneinheiten: number | undefined): string | undefined {
-    return _.isNil(wohneinheiten)
-      ? wohneinheiten
-      : new Intl.NumberFormat("de-DE", {
-          minimumFractionDigits: ROUNDING_PRECISION,
-          maximumFractionDigits: ROUNDING_PRECISION,
-        }).format(wohneinheiten);
-  }
+function toLocalizedTwoDecimals(wohneinheiten: number | undefined): string | undefined {
+  return _.isNil(wohneinheiten)
+    ? wohneinheiten
+    : new Intl.NumberFormat("de-DE", {
+        minimumFractionDigits: ROUNDING_PRECISION,
+        maximumFractionDigits: ROUNDING_PRECISION,
+      }).format(wohneinheiten);
 }
 </script>

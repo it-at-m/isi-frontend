@@ -6,12 +6,13 @@
           id="baugebiet_bezeichnung"
           v-model.trim="baugebiet.bezeichnung"
           :disabled="!isEditable"
-          :rules="[fieldValidationRules.pflichtfeld]"
+          :rules="[pflichtfeld]"
+          variant="underlined"
           maxlength="255"
-          validate-on-blur
-          @input="formChanged"
+          validate-on="blur"
+          @update:model-value="formChanged"
         >
-          <template #label> Bezeichnung des Baugebiets <span class="secondary--text">*</span> </template>
+          <template #label> Bezeichnung des Baugebiets <span class="text-secondary">*</span> </template>
         </v-text-field>
       </v-col>
     </v-row>
@@ -24,11 +25,12 @@
           class="mx-3"
           :items="artBaulicheNutzungList"
           item-value="key"
-          item-text="value"
-          :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-          @change="formChanged"
+          item-title="value"
+          :rules="[pflichtfeld, notUnspecified]"
+          variant="underlined"
+          @update:model-value="formChanged"
         >
-          <template #label> Art der baulichen Nutzung <span class="secondary--text">*</span> </template>
+          <template #label> Art der baulichen Nutzung <span class="text-secondary">*</span> </template>
         </v-select>
       </v-col>
     </v-row>
@@ -43,7 +45,7 @@
             :disabled="!isEditable"
             label="Freie Eingabe"
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-slide-y-reverse-transition>
       </v-col>
@@ -51,79 +53,38 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from "vue-property-decorator";
-import {
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
-  LookupEntryDto,
-  BauvorhabenDtoArtFnpEnum,
-  BaugebietDtoArtBaulicheNutzungEnum,
-} from "@/api/api-client/isi-backend";
-import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import { computed, ref, watch } from "vue";
+import type { AnyAbfragevarianteDto } from "@/types/common/Abfrage";
+import { BaugebietDtoArtBaulicheNutzungEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import NumField from "@/components/common/NumField.vue";
-import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import _ from "lodash";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 
-@Component({ components: { NumField, FieldGroupCard, BauratenAggregiertComponent } })
-export default class CommonBezeichnungBaulicheNutzungComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
+interface Props {
+  abfragevariante?: AnyAbfragevarianteDto;
+  isEditable?: boolean;
+}
 
-  private lookupStore = useLookupStore();
+const baugebiet = defineModel<BaugebietModel>({ required: true });
+const artBaulicheNutzungFreieEingabeVisible = ref<boolean>(false);
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const artBaulicheNutzungList = computed(() => lookupStore.artBaulicheNutzung);
 
-  @Prop()
-  private abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto
-    | undefined;
+withDefaults(defineProps<Props>(), { isEditable: false });
 
-  @Prop()
-  private mode!: DisplayMode;
+watch(() => baugebiet.value.artBaulicheNutzung, artFnpChanged, { immediate: true });
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  private artBaulicheNutzungFreieEingabeVisible = false;
-
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
-
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
-
-  get headline(): string {
-    const headline = `Baugebiet ${this.baugebiet.bezeichnung} `;
-    return headline;
-  }
-
-  get artBaulicheNutzungList(): LookupEntryDto[] {
-    return this.lookupStore.artBaulicheNutzung;
-  }
-
-  @Watch("baugebiet.artBaulicheNutzung", { immediate: true })
-  private artFnpChanged(): void {
-    if (_.isEqual(this.baugebiet.artBaulicheNutzung, BaugebietDtoArtBaulicheNutzungEnum.FreieEingabe)) {
-      this.artBaulicheNutzungFreieEingabeVisible = true;
-    } else {
-      this.baugebiet.artBaulicheNutzungFreieEingabe = undefined;
-      this.artBaulicheNutzungFreieEingabeVisible = false;
-    }
+function artFnpChanged(): void {
+  if (_.isEqual(baugebiet.value.artBaulicheNutzung, BaugebietDtoArtBaulicheNutzungEnum.FreieEingabe)) {
+    artBaulicheNutzungFreieEingabeVisible.value = true;
+  } else {
+    baugebiet.value.artBaulicheNutzungFreieEingabe = undefined;
+    artBaulicheNutzungFreieEingabeVisible.value = false;
   }
 }
 </script>

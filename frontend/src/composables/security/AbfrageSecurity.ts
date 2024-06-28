@@ -1,5 +1,6 @@
+import { computed } from "vue";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import { useSecurity } from "./Security";
 import _ from "lodash";
 import { useSearchStore } from "@/stores/SearchStore";
@@ -7,59 +8,60 @@ import { useSearchStore } from "@/stores/SearchStore";
 // eslint-disable-next-line
 export function useAbfrageSecurity() {
   const security = useSecurity();
-  const { selectedAbfrage } = useSearchStore();
+  const searchStore = useSearchStore();
 
   function isEditableWithAnzeigeContextAbfragevariante(
     anzeigeContextAbfragevariante: AnzeigeContextAbfragevariante | undefined,
   ): boolean {
     if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE) {
-      return isEditableByAbfrageerstellung();
+      return isEditableByAbfrageerstellung.value;
     } else if (anzeigeContextAbfragevariante === AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG) {
-      return isEditableBySachbearbeitung();
+      return isEditableBySachbearbeitung.value;
     }
     return false;
   }
 
-  function isEditableByAbfrageerstellung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
-      return security.isRoleAdminOrAbfrageerstellung() && selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt;
-    }
-    return false;
-  }
-
-  function isBedarfsmeldungEditableByAbfrageerstellung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
+  const isEditableByAbfrageerstellung = computed(() => {
+    if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrAbfrageerstellung() &&
-        selectedAbfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
+        security.isRoleAdminOrAbfrageerstellung.value &&
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.Angelegt
       );
     }
     return false;
-  }
+  });
 
-  function isEditableBySachbearbeitung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
+  const isBedarfsmeldungEditableByAbfrageerstellung = computed(() => {
+    if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrSachbearbeitung() &&
-        selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
+        security.isRoleAdminOrAbfrageerstellung.value &&
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
       );
     }
     return false;
-  }
+  });
 
-  function isEditableByBedarfsmeldung(): boolean {
-    if (!_.isNil(selectedAbfrage)) {
+  const isEditableBySachbearbeitung = computed(() => {
+    if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrBedarfsmeldung() &&
-        selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
+        security.isRoleAdminOrSachbearbeitung.value &&
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
       );
     }
     return false;
-  }
+  });
 
-  function isEditableByAdmin(): boolean {
-    return security.isRoleAdmin();
-  }
+  const isEditableByBedarfsmeldung = computed(() => {
+    if (!_.isNil(searchStore.selectedAbfrage)) {
+      return (
+        security.isRoleAdminOrBedarfsmeldung.value &&
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
+      );
+    }
+    return false;
+  });
+
+  const isEditableByAdmin = computed(() => security.isRoleAdmin.value);
 
   return {
     isEditableWithAnzeigeContextAbfragevariante,

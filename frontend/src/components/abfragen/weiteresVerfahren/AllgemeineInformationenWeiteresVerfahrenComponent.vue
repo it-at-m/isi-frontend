@@ -1,5 +1,5 @@
 <template>
-  <field-group-card :card-title="allgemeineInfoCardTitle">
+  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Bauvorhaben">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -10,9 +10,10 @@
           ref="aktenzeichenProLbkField"
           v-model="abfrage.aktenzeichenProLbk"
           :disabled="!isEditable"
+          variant="underlined"
           label="Aktenzeichen ProLBK"
           maxlength="255"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
       <v-col
@@ -24,27 +25,29 @@
           ref="bebauungsplannummerField"
           v-model="abfrage.bebauungsplannummer"
           :disabled="!isEditable"
+          variant="underlined"
           label="Bebauungsplannummer"
           maxlength="255"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
       <v-col
         cols="12"
         md="4"
       >
-        <v-select
+        <v-autocomplete
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
           v-model="abfrage.bauvorhaben"
-          :disabled="!(isEditableByAbfrageerstellung() || isEditableBySachbearbeitung())"
+          :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
+          variant="underlined"
           :items="bauvorhaben"
-          item-text="nameVorhaben"
+          item-title="nameVorhaben"
           item-value="id"
           label="Bauvorhaben"
           clearable
-          @focus="fetchBauvorhaben"
-          @change="formChanged"
+          @update:focused="!$event || fetchBauvorhaben()"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>
@@ -60,9 +63,9 @@
           :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"
-          :rules="[fieldValidationRules.notUnspecified]"
+          :rules="[notUnspecified]"
         >
-          <template #label> SoBoN-relevant <span class="secondary--text">*</span> </template>
+          <template #label> SoBoN-relevant <span class="text-secondary">*</span> </template>
         </tri-switch>
       </v-col>
       <v-col
@@ -76,14 +79,15 @@
             ref="sobonJahrDropdown"
             v-model="abfrage.sobonJahr"
             :disabled="!isEditable"
-            :items="sobonVerfahrensgrundsaetzeJahrList"
+            variant="underlined"
+            :items="lookupStore.sobonVerfahrensgrundsaetzeJahr"
             item-value="key"
-            item-text="value"
-            :rules="[fieldValidationRules.pflichtfeld]"
-            @change="formChanged"
+            item-title="value"
+            :rules="[pflichtfeld]"
+            @update:model-value="formChanged"
           >
             <template #label>
-              Jahr der anzuwendenden Verfahrensgrundsätze <span class="secondary--text">*</span>
+              Jahr der anzuwendenden Verfahrensgrundsätze <span class="text-secondary">*</span>
             </template>
           </v-select>
         </v-slide-y-reverse-transition>
@@ -99,13 +103,14 @@
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           :disabled="!isEditable"
-          :items="standVerfahrenWeiteresVerfahrenList"
+          variant="underlined"
+          :items="lookupStore.standVerfahrenWeiteresVerfahren"
           item-value="key"
-          item-text="value"
-          :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-          @change="formChanged"
+          item-title="value"
+          :rules="[pflichtfeld, notUnspecified]"
+          @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="secondary--text">*</span> </template>
+          <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
         </v-select>
       </v-col>
       <v-col
@@ -119,9 +124,10 @@
             ref="standVerfahrenFreieEingabeField"
             v-model="abfrage.standVerfahrenFreieEingabe"
             :disabled="!isEditable"
+            variant="underlined"
             label="Freie Eingabe"
             maxlength="1000"
-            @input="formChanged"
+            @update:model-value="formChanged"
           />
         </v-slide-y-reverse-transition>
       </v-col>
@@ -129,111 +135,92 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
 import {
+  type BauvorhabenSearchResultDto,
+  type SearchQueryAndSortingDto,
   WeiteresVerfahrenDtoStandVerfahrenEnum,
-  BauvorhabenSearchResultDto,
-  LookupEntryDto,
   UncertainBoolean,
-  SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import { useLookupStore } from "@/stores/LookupStore";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useSearchApi } from "@/composables/requests/search/SearchApi";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 
-@Component({
-  components: { TriSwitch },
-})
-export default class AllgemeineInformationenWeiteresVerfahrenComponent extends Mixins(
-  SaveLeaveMixin,
-  SearchApiRequestMixin,
-  FieldValidationRulesMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: WeiteresVerfahrenModel }) abfrage!: WeiteresVerfahrenModel;
+interface Props {
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
+const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
+const { searchForEntities } = useSearchApi();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const abfrage = defineModel<WeiteresVerfahrenModel>({ required: true });
+const standVerfahrenFreieEingabeVisible = ref(false);
+const sobonJahrVisible = ref(false);
+const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
+withDefaults(defineProps<Props>(), { isEditable: false });
 
-  private allgemeineInfoCardTitle = "Allgemeine Informationen zum Verfahren / Bauvorhaben";
+onMounted(() => fetchBauvorhaben());
 
-  private sobonJahrVisible = false;
+watch(
+  () => abfrage.value.standVerfahren,
+  (value) => {
+    if (value?.includes(WeiteresVerfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
+      standVerfahrenFreieEingabeVisible.value = true;
+    } else {
+      standVerfahrenFreieEingabeVisible.value = false;
+      abfrage.value.standVerfahrenFreieEingabe = undefined;
+    }
+  },
+  { immediate: true },
+);
 
-  private standVerfahrenFreieEingabeVisible = false;
-
-  private bauvorhaben: Array<BauvorhabenSearchResultDto> = [];
-
-  private lookupStore = useLookupStore();
-
-  mounted(): void {
-    this.fetchBauvorhaben();
-  }
-
-  get standVerfahrenWeiteresVerfahrenList(): LookupEntryDto[] {
-    return this.lookupStore.standVerfahrenWeiteresVerfahren;
-  }
-
-  get sobonVerfahrensgrundsaetzeJahrList(): LookupEntryDto[] {
-    return this.lookupStore.sobonVerfahrensgrundsaetzeJahr;
-  }
-
-  /**
-   * Holt alle Bauvorhaben vom Backend.
-   */
-  private async fetchBauvorhaben(): Promise<void> {
-    const searchQueryAndSortingDto = {
-      searchQuery: "",
-      selectBauleitplanverfahren: false,
-      selectBaugenehmigungsverfahren: false,
-      selectWeiteresVerfahren: false,
-      selectBauvorhaben: true,
-      selectGrundschule: false,
-      selectGsNachmittagBetreuung: false,
-      selectHausFuerKinder: false,
-      selectKindergarten: false,
-      selectKinderkrippe: false,
-      selectMittelschule: false,
-      page: undefined,
-      pageSize: undefined,
-      sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-      sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-    } as SearchQueryAndSortingDto;
-    this.searchForEntities(searchQueryAndSortingDto).then((searchResults) => {
-      this.bauvorhaben = searchResults.searchResults?.map(
-        (searchResults) => searchResults as BauvorhabenSearchResultDto,
-      ) as Array<BauvorhabenSearchResultDto>;
-    });
-  }
-
-  @Watch("abfrage.sobonRelevant", { immediate: true })
-  private sobonRelevantChanged(value: UncertainBoolean): void {
+watch(
+  () => abfrage.value.sobonRelevant,
+  (value) => {
     if (value === UncertainBoolean.True) {
-      this.sobonJahrVisible = true;
+      sobonJahrVisible.value = true;
     } else {
-      this.sobonJahrVisible = false;
-      this.abfrage.sobonJahr = undefined;
+      sobonJahrVisible.value = false;
+      abfrage.value.sobonJahr = undefined;
     }
-  }
+  },
+  { immediate: true },
+);
 
-  @Watch("abfrage.standVerfahren", { immediate: true })
-  private standVerfahrenChanged(): void {
-    if (this.abfrage.standVerfahren?.includes(WeiteresVerfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      this.standVerfahrenFreieEingabeVisible = true;
-    } else {
-      this.abfrage.standVerfahrenFreieEingabe = undefined;
-      this.standVerfahrenFreieEingabeVisible = false;
-    }
-  }
+/**
+ * Holt alle Bauvorhaben vom Backend.
+ */
+async function fetchBauvorhaben(): Promise<void> {
+  const searchQueryAndSortingDto = {
+    searchQuery: "",
+    selectBauleitplanverfahren: false,
+    selectBaugenehmigungsverfahren: false,
+    selectWeiteresVerfahren: false,
+    selectBauvorhaben: true,
+    selectGrundschule: false,
+    selectGsNachmittagBetreuung: false,
+    selectHausFuerKinder: false,
+    selectKindergarten: false,
+    selectKinderkrippe: false,
+    selectMittelschule: false,
+    page: undefined,
+    pageSize: undefined,
+    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
+    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
+  } as SearchQueryAndSortingDto;
+  const searchResults = await searchForEntities(searchQueryAndSortingDto);
+  bauvorhaben.value = searchResults.searchResults?.map(
+    (searchResults) => searchResults as BauvorhabenSearchResultDto,
+  ) as Array<BauvorhabenSearchResultDto>;
 }
 </script>

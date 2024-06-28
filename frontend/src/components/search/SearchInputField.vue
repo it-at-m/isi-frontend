@@ -2,9 +2,9 @@
   <v-autocomplete
     id="suchfeld"
     v-model="selectedSuggestion"
+    v-model:search="searchQuery"
     :items="suggestions"
-    :search-input.sync="searchQuery"
-    dense
+    density="compact"
     clearable
     flat
     hide-details
@@ -12,10 +12,9 @@
     no-filter
     prepend-inner-icon="mdi-magnify"
     return-object
-    solo
+    variant="solo"
     @keyup.enter="searchEntitiesForSelectedSuggestion"
-    @update:list-index="updateSearchQuery"
-    @update:search-input="suggest"
+    @update:search="suggest"
     @click:clear="clearSearch"
   >
     <template #no-data>
@@ -23,9 +22,8 @@
         <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
       </v-list>
     </template>
-    <template #append-outer>
+    <template #append>
       <v-icon
-        class="white--text"
         :color="checkCurrentFilter() ? '' : 'secondary'"
         @click="openSearchAndFilterDialog"
       >
@@ -45,151 +43,150 @@
   </v-autocomplete>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
-import { SearchQueryDto, SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
+<script setup lang="ts">
+import { onMounted, computed, ref } from "vue";
+import type { SearchQueryDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import SearchApiRequestMixin from "@/mixins/requests/search/SearchApiRequestMixin";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
 import { useSearchStore } from "@/stores/SearchStore";
-@Component({
-  components: { SearchAndFilterOptions },
-})
-export default class SearchInputField extends Mixins(SearchApiRequestMixin) {
-  private searchAndFilterDialogOpen = false;
+import { useSearchApi } from "@/composables/requests/search/SearchApi";
+import { useRoute, useRouter } from "vue-router";
 
-  private searchQueryAndSorting: SearchQueryAndSortingModel = createSearchQueryAndSortingModel();
+const searchAndFilterDialogOpen = ref<boolean>(false);
+const searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
+const searchQuery = ref<string>("");
+const suggestions = ref<Array<string>>([]);
+const selectedSuggestion = ref<string | null>(null);
+const { searchForSearchwordSuggestion, searchForEntities } = useSearchApi();
+const route = useRoute();
+const router = useRouter();
 
-  private searchQuery = "";
+const searchStore = useSearchStore();
 
-  private suggestions: Array<string> = [];
+onMounted(() => {
+  searchEntitiesForSelectedSuggestion();
+  clearSearch();
+});
 
-  private selectedSuggestion = "";
+// Filter Dialog
 
-  private searchStore = useSearchStore();
+const searchQueryAndSortingStore = computed({
+  get() {
+    return _.cloneDeep(searchStore.requestSearchQueryAndSorting);
+  },
+  set(searchQueryForEntities: SearchQueryAndSortingModel) {
+    searchStore.setRequestSearchQueryAndSorting(_.cloneDeep(searchQueryForEntities));
+  },
+});
 
-  mounted(): void {
-    this.searchEntitiesForSelectedSuggestion();
-    this.checkCurrentFilter();
-  }
+function openSearchAndFilterDialog(): void {
+  searchQueryAndSorting.value = searchQueryAndSortingStore.value;
+  searchAndFilterDialogOpen.value = true;
+}
 
-  // Filter Dialog
+function handleAdoptSearchAndFilterOptions(): void {
+  searchQueryAndSortingStore.value = searchQueryAndSorting.value;
+  searchAndFilterDialogOpen.value = false;
+  searchEntitiesForSelectedSuggestion();
+  checkCurrentFilter();
+}
 
-  get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
-    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
-  }
+function handleResetSearchAndFilterOptions(): void {
+  searchQueryAndSorting.value = createSearchQueryAndSortingModel();
+  handleAdoptSearchAndFilterOptions();
+  searchEntitiesForSelectedSuggestion();
+}
 
-  set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
-    this.searchStore.setRequestSearchQueryAndSorting(_.cloneDeep(searchQueryForEntities));
-  }
+function checkCurrentFilter(): boolean {
+  const excludeProperties = [
+    "page",
+    "pageSize",
+    "searchQuery",
+    // Abhängig von der Eingabe in der GUI können die Filtereinstellung undefined oder ein leeres Array sein.
+    "filterStadtbezirkNummer",
+    "filterKitaplanungsbereichKitaPlbT",
+    "filterGrundschulsprengelNummer",
+    "filterMittelschulsprengelNummer",
+  ];
+  const requestSearchQueryAndSorting = _.omit(searchStore.requestSearchQueryAndSorting, excludeProperties);
+  const defaultSearchQueryAndSortingFilter = _.omit(searchStore.defaultSearchQueryAndSortingFilter, excludeProperties);
 
-  private openSearchAndFilterDialog(): void {
-    this.searchQueryAndSorting = this.searchQueryAndSortingStore;
-    this.searchAndFilterDialogOpen = true;
-  }
+  return (
+    _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter) &&
+    // Explizite Prüfung der Filterlisten da diese Abhängig von der Eingabe in der GUI undefined oder ein leeres Array sein können.
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStadtbezirkNummer) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterKitaplanungsbereichKitaPlbT) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterGrundschulsprengelNummer) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterMittelschulsprengelNummer)
+  );
+}
 
-  private handleAdoptSearchAndFilterOptions(): void {
-    this.searchQueryAndSortingStore = this.searchQueryAndSorting;
-    this.searchAndFilterDialogOpen = false;
-    this.searchEntitiesForSelectedSuggestion();
-    this.checkCurrentFilter();
-  }
+// Search
 
-  private handleResetSearchAndFilterOptions(): void {
-    this.searchQueryAndSorting = createSearchQueryAndSortingModel();
-    this.handleAdoptSearchAndFilterOptions();
-    this.searchEntitiesForSelectedSuggestion();
-  }
+const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 
-  private checkCurrentFilter(): boolean {
-    const excludeProperties = ["page", "pageSize", "searchQuery"];
-    let requestSearchQueryAndSorting = _.omit(this.searchStore.requestSearchQueryAndSorting, excludeProperties);
-    let defaultSearchQueryAndSortingFilter = _.omit(
-      this.searchStore.defaultSearchQueryAndSortingFilter,
-      excludeProperties,
-    );
-
-    return _.isEqual(requestSearchQueryAndSorting, defaultSearchQueryAndSortingFilter);
-  }
-
-  // Search
-
-  get getSearchQueryAndSorting(): SearchQueryAndSortingDto {
-    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
-  }
-
-  private updateSearchQuery(itemIndex: number) {
-    if (itemIndex > -1) {
-      this.searchQuery = this.suggestions[itemIndex];
-    }
-  }
-
-  /**
-   * Methode zur Ermittlung der Suchwortvorschläge auf Basis des letzen Wortes in der Suchquery.
-   * @param query zur Ermittlung der Suchwortvorschläge.
-   */
-  private suggest(query: string): void {
-    const splittedSearchwords = _.split(query, " ");
-    const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
-    if (!_.isEmpty(queryForSearchwordSuggestion)) {
-      const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
-      const searchQueryDto = {
-        searchQuery: queryForSearchwordSuggestion,
-        selectBauleitplanverfahren: searchQueryForEntitiesDto.selectBauleitplanverfahren,
-        selectBaugenehmigungsverfahren: searchQueryForEntitiesDto.selectBaugenehmigungsverfahren,
-        selectWeiteresVerfahren: searchQueryForEntitiesDto.selectWeiteresVerfahren,
-        selectBauvorhaben: searchQueryForEntitiesDto.selectBauvorhaben,
-        selectGrundschule: searchQueryForEntitiesDto.selectGrundschule,
-        selectGsNachmittagBetreuung: searchQueryForEntitiesDto.selectGsNachmittagBetreuung,
-        selectHausFuerKinder: searchQueryForEntitiesDto.selectHausFuerKinder,
-        selectKindergarten: searchQueryForEntitiesDto.selectKindergarten,
-        selectKinderkrippe: searchQueryForEntitiesDto.selectKinderkrippe,
-        selectMittelschule: searchQueryForEntitiesDto.selectMittelschule,
-        page: undefined,
-        pageSize: undefined,
-      } as SearchQueryDto;
-      this.searchForSearchwordSuggestion(searchQueryDto).then((suchwortSuggestions) => {
-        const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
-          const numberOfSplittedSearchwords = splittedSearchwords.length;
-          if (numberOfSplittedSearchwords > 0) {
-            splittedSearchwords[numberOfSplittedSearchwords - 1] = suchwortSuggestion;
-          }
-          return _.join(splittedSearchwords, " ");
-        });
-        this.suggestions = [query].concat(foundSuggestions);
+/**
+ * Methode zur Ermittlung der Suchwortvorschläge auf Basis des letzen Wortes in der Suchquery.
+ * @param query zur Ermittlung der Suchwortvorschläge.
+ */
+function suggest(query: string): void {
+  const splittedSearchwords = _.split(query, " ");
+  const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
+  if (!_.isEmpty(queryForSearchwordSuggestion)) {
+    const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
+    const searchQueryDto = {
+      searchQuery: queryForSearchwordSuggestion,
+      selectBauleitplanverfahren: searchQueryForEntitiesDto.selectBauleitplanverfahren,
+      selectBaugenehmigungsverfahren: searchQueryForEntitiesDto.selectBaugenehmigungsverfahren,
+      selectWeiteresVerfahren: searchQueryForEntitiesDto.selectWeiteresVerfahren,
+      selectBauvorhaben: searchQueryForEntitiesDto.selectBauvorhaben,
+      selectGrundschule: searchQueryForEntitiesDto.selectGrundschule,
+      selectGsNachmittagBetreuung: searchQueryForEntitiesDto.selectGsNachmittagBetreuung,
+      selectHausFuerKinder: searchQueryForEntitiesDto.selectHausFuerKinder,
+      selectKindergarten: searchQueryForEntitiesDto.selectKindergarten,
+      selectKinderkrippe: searchQueryForEntitiesDto.selectKinderkrippe,
+      selectMittelschule: searchQueryForEntitiesDto.selectMittelschule,
+      page: undefined,
+      pageSize: undefined,
+    } as SearchQueryDto;
+    searchForSearchwordSuggestion(searchQueryDto).then((suchwortSuggestions) => {
+      const foundSuggestions = _.toArray(suchwortSuggestions.suchwortSuggestions).map((suchwortSuggestion) => {
+        const numberOfSplittedSearchwords = splittedSearchwords.length;
+        if (numberOfSplittedSearchwords > 0) {
+          splittedSearchwords[numberOfSplittedSearchwords - 1] = suchwortSuggestion;
+        }
+        return _.join(splittedSearchwords, " ");
       });
-    }
-  }
-
-  private searchEntitiesForSelectedSuggestion(): void {
-    this.routeToMainViewWhenNotInMain();
-    const searchQueryForEntitiesDto = this.getSearchQueryAndSorting;
-    searchQueryForEntitiesDto.searchQuery = _.isNil(this.searchQuery) ? "" : this.searchQuery;
-    searchQueryForEntitiesDto.page = 1;
-    searchQueryForEntitiesDto.pageSize = 20;
-    this.suggestions = [searchQueryForEntitiesDto.searchQuery];
-    this.selectedSuggestion = searchQueryForEntitiesDto.searchQuery;
-    this.searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
-    this.searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
-      this.searchStore.setSearchResults(_.cloneDeep(searchResults));
+      suggestions.value = [query].concat(foundSuggestions);
     });
   }
+}
 
-  private clearSearch(): void {
-    this.suggestions = [];
-    this.searchQuery = "";
-    this.selectedSuggestion = "";
-  }
+function searchEntitiesForSelectedSuggestion(): void {
+  routeToMainViewWhenNotInMain();
+  const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
+  searchQueryForEntitiesDto.searchQuery = _.isNil(searchQuery.value) ? "" : searchQuery.value;
+  searchQueryForEntitiesDto.page = 1;
+  searchQueryForEntitiesDto.pageSize = 20;
+  suggestions.value = [searchQueryForEntitiesDto.searchQuery];
+  selectedSuggestion.value = searchQueryForEntitiesDto.searchQuery;
+  searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
+  searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
+    searchStore.setSearchResults(_.cloneDeep(searchResults));
+  });
+}
 
-  private routeToMainViewWhenNotInMain() {
-    const currentRoute = this.$router.currentRoute;
-    if (currentRoute.path !== "/") {
-      this.$router.push({ path: "/" });
-    }
+function clearSearch(): void {
+  suggestions.value = [];
+  searchQuery.value = "";
+  selectedSuggestion.value = "";
+}
+
+function routeToMainViewWhenNotInMain(): void {
+  if (route.path !== "/") {
+    router.push("/");
   }
 }
 </script>
-
-<style scoped></style>

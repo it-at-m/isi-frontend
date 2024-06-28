@@ -5,26 +5,25 @@
       ref="abfrageCommonComponent"
       v-model="weiteresVerfahren"
       :is-new="isNew"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <allgemeine-informationen-weiteres-verfahren-component
       id="allgemeine_informationen_weiteres_verfahren_component"
       ref="allgemeineInformationenWeiteresVerfahrenComponent"
       v-model="weiteresVerfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
-      :adresse-prop.sync="weiteresVerfahren.adresse"
-      :show-in-information-list-prop="true"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      v-model="weiteresVerfahren.adresse"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
       id="verortung_component"
       ref="verortungComponent"
       v-model="weiteresVerfahren.verortung"
-      :context="context"
+      :context="Context.ABFRAGE"
       :look-at="weiteresVerfahren.adresse"
     />
     <allgemeine-informationen-zur-abfrage-weiteres-verfahren-component
@@ -32,62 +31,43 @@
       ref="allgemeineInformationenZurAbfrageWeiteresVerfahrenComponent"
       v-model="weiteresVerfahren"
       :look-at="weiteresVerfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
-      :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-editable="isEditableByAbfrageerstellung"
+      :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
-      v-if="isDokumenteVisible(context)"
+      v-if="componentSecurity.areDokumenteVisible(Context.ABFRAGE)"
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="weiteresVerfahren.dokumente"
       :name-root-folder="nameRootFolder"
-      :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      :is-dokumente-editable="isEditableByAbfrageerstellung"
       @change="formChanged"
     />
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenWeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/AllgemeineInformationenWeiteresVerfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent.vue";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
-import { Context } from "@/utils/Context";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import Verortung from "@/components/common/Verortung.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
+import { Context } from "@/utils/Context";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
-@Component({
-  computed: {
-    context() {
-      return Context.ABFRAGE;
-    },
-  },
-  components: {
-    AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent,
-    Dokumente,
-    AbfrageCommonComponent,
-    AllgemeineInformationenWeiteresVerfahrenComponent,
-    AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent,
-    FieldGroupCard,
-  },
-})
-export default class WeiteresVerfahrenComponent extends Mixins(
-  AbfrageSecurityMixin,
-  DokumenteKommentareSecurityMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: WeiteresVerfahrenModel }) weiteresVerfahren!: WeiteresVerfahrenModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isNew!: boolean;
-
-  private nameRootFolder = "weiteresVerfahren";
+interface Props {
+  isNew?: boolean;
 }
-</script>
 
-<style></style>
+const nameRootFolder = "weiteresVerfahren";
+const { formChanged } = useSaveLeave();
+const componentSecurity = useComponentSecurity();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const weiteresVerfahren = defineModel<WeiteresVerfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isNew: false });
+</script>

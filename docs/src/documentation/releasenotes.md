@@ -76,6 +76,12 @@ Die Sichtrechte für die Reporte wurden ebenfalls nach den entsprechenden Rollen
 
 Für die Rolle Nutzer, wurden die Sichtrechte eingeschränkt. Die Rolle hat nur noch auf Abfragen im Status "Erledigt" ein Sichtrecht.
 
+In den Objekten Infrastrukturabfrage, Bauvorhaben und Infrastruktureinrichtungen ist es möglich, Informationen zu den Bearbeiter\*innen zu erhalten, um einen Ansprechpartner\*in für (inhaltliche) Fragen zu haben.
+
+Die Sichtrechte für die Reporte wurden ebenfalls nach den entsprechenden Rollen unterschieden.
+
+Für die Rolle Nutzer, wurden die Sichtrechte eingeschränkt. Die Rolle hat nur noch auf Abfragen im Status "Erledigt" ein Sichtrecht.
+
 Eine Abfrage befindet sich während ihrer Erstellung und Bearbeitung jeweils in einem Status. Über das Rollen- und Rechtekonzept wird geregelt, dass ein Statusübergang nur von der jeweils berechtigten Rolle ausgeführt werden darf. Mit dem Statusübergang geht die Abfrage in die nächste Bearbeitungsphase über. Aus der Kombination Status der Abfrage und Rolle der Nutzer\*innen ergeben sich auch die Sicht- und Bearbeitbarkeit bestimmter Eingabefelder.
 
 ### Verortung

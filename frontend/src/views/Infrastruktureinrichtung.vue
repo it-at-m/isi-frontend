@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <default-layout solid-heading>
+    <default-layout>
       <template #content>
         <infrastruktureinrichtung-typ-component
           id="infrastruktureinrichtung_infrastruktureinrichtungtyp_component"
@@ -11,7 +11,7 @@
           :is-editable="isEditable"
         />
         <infrastruktureinrichtung-component
-          v-show="isInfrastruktureinrichtungTypNotUnspecified"
+          v-if="isInfrastruktureinrichtungTypNotUnspecified"
           id="infrastruktureinrichtung_infrastruktureinrichtung_component"
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
@@ -21,54 +21,54 @@
           v-if="isKinderkrippe"
           id="infrastruktureinrichtung_kinderkrippe_component"
           ref="kinderkrippeComponent"
-          v-model="kinderkrippe"
+          v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <kindergarten-component
           v-if="isKindergarten"
           id="infrastruktureinrichtung_kindergarten_component"
           ref="kindergartenComponent"
-          v-model="kindergarten"
+          v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <haus-fuer-kinder-component
           v-if="isHausFuerKinder"
           id="infrastruktureinrichtung_hausFuerKinder_component"
           ref="hausFuerKinderComponent"
-          v-model="hausFuerKinder"
+          v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <gs-nachmittag-betreuung-component
           v-if="isGsNachmittagBetreuung"
           id="infrastruktureinrichtung_gsNachmittagBetreuung_component"
           ref="gsNachmittagBetreuungComponent"
-          v-model="gsNachmittagBetreuung"
+          v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <grundschule-component
           v-if="isGrundschule"
           id="infrastruktureinrichtung_grundschule_component"
           ref="grundschuleComponent"
-          v-model="grundschule"
+          v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <mittelschule-component
           v-if="isMittelschule"
           id="infrastruktureinrichtung_mittelschule_component"
           ref="mittelschuleComponent"
-          v-model="mittelschule"
+          v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired()"
+          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <kommentare
-          v-if="isKommentareVisible(context) && isDisplayModeAenderung"
+          v-if="componentSecurity.areKommentareVisible(Context.INFRASTRUKTUREINRICHTUNG) && !isNew"
           id="infrastruktureinrichtung_kommentare"
-          :context="context"
+          :context="Context.INFRASTRUKTUREINRICHTUNG"
           :is-editable="isEditable"
         />
         <yes-no-dialog
@@ -84,14 +84,13 @@
         />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_save_leave"
-          ref="saveLeaveDialog"
           v-model="saveLeaveDialog"
           :dialogtitle="saveLeaveDialogTitle"
           :dialogtext="saveLeaveDialogText"
           :no-text="saveLeaveNoText"
           :yes-text="saveLeaveYesText"
-          @yes="leave"
-          @no="cancel"
+          @yes="leave()"
+          @no="cancel()"
         />
       </template>
       <template #heading>
@@ -104,74 +103,74 @@
               <span
                 id="infrastruktureinrichtung_displayName"
                 class="text-h6 font-weight-bold"
-                v-text="infrastruktureinrichtungDisplayName"
-              />
+              >
+                {{ infrastruktureinrichtungDisplayName }}
+              </span>
             </v-col>
             <v-col
               cols="12"
               sm="1"
             >
-              <benutzerinformationen v-model="bearbeitungsinformationen" />
+              <benutzerinformationen :benutzerinformationen="bearbeitungsinformationen" />
             </v-col>
           </v-row>
         </v-container>
       </template>
-      <template #information>
+      <template #action>
         <v-btn
-          v-if="!isNewInfrastruktureinrichtung()"
+          v-if="!isNew"
           id="infrastruktureinrichtung_löschen_button"
-          class="text-wrap my-4 px-1"
+          class="my-4 px-1"
           color="primary"
           elevation="1"
           style="width: 200px"
           :disabled="!isEditable"
-          @click="openDeleteDialog"
-          v-text="'Löschen'"
-        />
-        <information-list
-          id="infrastruktureinrichtung_information_list"
-          information-message-deletion-intervall-seconds="10"
-        />
-      </template>
-      <template #action>
+          @click="openDeleteDialog()"
+        >
+          Löschen
+        </v-btn>
         <v-spacer />
         <v-btn
           id="infrastruktureinrichtung_speichern_button"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="!isFormDirty() || !isEditable"
+          :disabled="!isFormDirty || !isEditable"
           style="width: 200px"
           @click="saveInfrastruktureinrichtung()"
-          v-text="buttonText"
-        />
+        >
+          {{ isNew ? "Speichern" : "Aktualisieren" }}
+        </v-btn>
         <v-btn
           id="infrastruktureinrichtung_abbrechen_button"
           color="primary"
           elevation="1"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           style="width: 200px"
           @click="returnToUebersicht()"
-          v-text="'Abbrechen'"
-        />
+        >
+          Abbrechen
+        </v-btn>
       </template>
     </default-layout>
   </v-form>
 </template>
-<script lang="ts">
+
+<script setup lang="ts">
+import { computed, onBeforeMount, ref, watch } from "vue";
+import type { VForm } from "vuetify/components";
 import {
-  GrundschuleDto,
-  GsNachmittagBetreuungDto,
-  HausFuerKinderDto,
-  InfrastruktureinrichtungDto,
+  type KindergartenDto,
+  type KinderkrippeDto,
+  type MittelschuleDto,
+  type GrundschuleDto,
+  type GsNachmittagBetreuungDto,
+  type HausFuerKinderDto,
+  type InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoStatusEnum,
   InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
-  KindergartenDto,
-  KinderkrippeDto,
-  MittelschuleDto,
 } from "@/api/api-client/isi-backend";
-import { Levels } from "@/api/error";
-import InformationList from "@/components/common/InformationList.vue";
+import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
@@ -183,12 +182,6 @@ import InfrastruktureinrichtungTypComponent from "@/components/infrastruktureinr
 import KindergartenComponent from "@/components/infrastruktureinrichtung/KindergartenComponent.vue";
 import KinderkrippeComponent from "@/components/infrastruktureinrichtung/KinderkrippeComponent.vue";
 import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
-import InfrastruktureinrichtungApiRequestMixin from "@/mixins/requests/InfrastruktureinrichtungApiRequestMixin";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import SecurityMixin from "@/mixins/security/SecurityMixin";
-import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
 import DisplayMode from "@/types/common/DisplayMode";
 import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
 import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
@@ -207,400 +200,267 @@ import {
   createMittelschuleDto,
 } from "@/utils/Factories";
 import _ from "lodash";
-import Vue from "vue";
-import { Component, Mixins, Watch } from "vue-property-decorator";
-import Toaster from "../components/common/toaster.type";
-import Benutzerinformationen, { BenutzerinformationenModel } from "@/components/common/Benutzerinformationen.vue";
+import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
+import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
 import { useSearchStore } from "@/stores/SearchStore";
+import { useRoute, useRouter } from "vue-router";
+import { useSecurity } from "@/composables/security/Security";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useToast, TYPE } from "vue-toastification";
+import { useInfrastruktureinrichtungApi } from "@/composables/requests/InfrastruktureinrichtungApi";
+import {
+  findFaultInKinderkrippeForSave,
+  findFaultInKindergartenForSave,
+  findFaultInHausFuerKinderForSave,
+  findFaultInGsNachmittagBetreuungForSave,
+  findFaultInGrundschuleForSave,
+  findFaultInMittelschuleForSave,
+} from "@/utils/Validators";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
-@Component({
-  computed: {
-    context() {
-      return Context.INFRASTRUKTUREINRICHTUNG;
-    },
+const {
+  isFormDirty,
+  saveLeaveDialog,
+  saveLeaveDialogText,
+  saveLeaveDialogTitle,
+  saveLeaveNoText,
+  saveLeaveYesText,
+  leave,
+  cancel,
+} = useSaveLeave();
+const searchStore = useSearchStore();
+const componentSecurity = useComponentSecurity();
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
+const {
+  createInfrastruktureinrichtung,
+  getInfrastruktureinrichtungById,
+  deleteInfrastruktureinrichtungById,
+  updateInfrastruktureinrichtung,
+} = useInfrastruktureinrichtungApi();
+const toast = useToast();
+const router = useRouter();
+const infrastruktureinrichtungId = useRoute().params.id as string;
+const form = ref<VForm | null>(null);
+const deleteDialogOpen = ref(false);
+const isNew = ref(true);
+const mode = ref(DisplayMode.UNDEFINED);
+const infrastruktureinrichtung = ref(new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto()));
+
+const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value || isRoleAdminOrBedarfsmeldung.value);
+
+const lfdNr = computed(() => {
+  if (!_.isNil(infrastruktureinrichtung.value) && !_.isNil(infrastruktureinrichtung.value.lfdNr)) {
+    return infrastruktureinrichtung.value.lfdNr.toString();
+  }
+  return "";
+});
+
+const infrastruktureinrichtungDisplayName = computed(() => {
+  if (!_.isNil(infrastruktureinrichtung.value) && !isNew.value) {
+    return infrastruktureinrichtung.value.nameEinrichtung;
+  }
+  return "";
+});
+
+const bearbeitungsinformationen = computed(() => {
+  return new BenutzerinformationenModel(
+    infrastruktureinrichtung.value?.bearbeitendePerson,
+    infrastruktureinrichtung.value?.lastModifiedDateTime,
+  );
+});
+
+const isEinrichtungstraegerRequired = computed(() => {
+  return (
+    infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
+    infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
+  );
+});
+
+const isInfrastruktureinrichtungTypNotUnspecified = computed(() => {
+  return (
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp !==
+    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Unspecified
+  );
+});
+
+const isKinderkrippe = computed(() => {
+  return (
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe
+  );
+});
+
+const isKindergarten = computed(() => {
+  return (
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten
+  );
+});
+
+const isHausFuerKinder = computed(() => {
+  return (
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder
+  );
+});
+
+const isGsNachmittagBetreuung = computed(() => {
+  return (
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung
+  );
+});
+
+const isGrundschule = computed(() => {
+  return (
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule
+  );
+});
+
+const isMittelschule = computed(() => {
+  return (
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule
+  );
+});
+
+onBeforeMount(async () => {
+  isNew.value = infrastruktureinrichtungId === undefined;
+  mode.value = isNew.value ? DisplayMode.NEU : DisplayMode.AENDERUNG;
+
+  if (!isNew.value) {
+    infrastruktureinrichtung.value = await getInfrastruktureinrichtungById(infrastruktureinrichtungId);
+  }
+});
+
+watch(
+  infrastruktureinrichtung,
+  () => {
+    searchStore.setSelectedInfrastruktureinrichtung(infrastruktureinrichtung.value);
   },
-  components: {
-    Benutzerinformationen,
-    Kommentare,
-    InfrastruktureinrichtungComponent,
-    InformationList,
-    YesNoDialog,
-    DefaultLayout,
-    InfrastruktureinrichtungTypComponent,
-    KinderkrippeComponent,
-    KindergartenComponent,
-    HausFuerKinderComponent,
-    GsNachmittagBetreuungComponent,
-    GrundschuleComponent,
-    MittelschuleComponent,
+  { deep: true },
+);
+
+watch(
+  () => infrastruktureinrichtung.value.infrastruktureinrichtungTyp,
+  () => {
+    if (isNew.value) {
+      setNewInfrastruktureinrichtung();
+    }
   },
-})
-export default class Infrastruktureinrichtung extends Mixins(
-  FieldValidationRulesMixin,
-  ValidatorMixin,
-  SaveLeaveMixin,
-  InfrastruktureinrichtungApiRequestMixin,
-  SecurityMixin,
-  DokumenteKommentareSecurityMixin,
-) {
-  private mode = DisplayMode.UNDEFINED;
+);
 
-  private buttonText = "";
+function setNewInfrastruktureinrichtung(): void {
+  infrastruktureinrichtung.value = getModelOfNewDtoForInfrastruktureinrichtungTyp(
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp,
+  );
+}
 
-  private deleteDialogOpen = false;
+function openDeleteDialog(): void {
+  deleteDialogOpen.value = true;
+}
 
-  private infrastruktureinrichtung: InfrastruktureinrichtungDto = createInfrastruktureinrichtungDto();
+function yesNoDialogNo(): void {
+  deleteDialogOpen.value = false;
+}
 
-  private infrastruktureinrichtungId: string | undefined = this.$route.params.id;
+async function yesNoDialogYes(): Promise<void> {
+  await deleteInfrastruktureinrichtung();
+  yesNoDialogNo();
+}
 
-  private searchStore = useSearchStore();
-
-  private selectedInfrastruktureinrichtung = computed(() => this.searchStore.selectedInfrastruktureinrichtung);
-
-  get isDisplayModeAenderung(): boolean {
-    return this.mode === DisplayMode.AENDERUNG;
+function validateInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungDto): string | null {
+  switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
+      return findFaultInKinderkrippeForSave(infrastruktureinrichtung as KinderkrippeDto);
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
+      return findFaultInKindergartenForSave(infrastruktureinrichtung as KindergartenDto);
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
+      return findFaultInHausFuerKinderForSave(infrastruktureinrichtung as HausFuerKinderDto);
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+      return findFaultInGsNachmittagBetreuungForSave(infrastruktureinrichtung as GsNachmittagBetreuungDto);
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
+      return findFaultInGrundschuleForSave(infrastruktureinrichtung as GrundschuleDto);
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
+      return findFaultInMittelschuleForSave(infrastruktureinrichtung as MittelschuleDto);
+    default:
+      return null;
   }
+}
 
-  get bearbeitungsinformationen(): BenutzerinformationenModel {
-    return new BenutzerinformationenModel(
-      this.infrastruktureinrichtung?.bearbeitendePerson,
-      this.infrastruktureinrichtung?.lastModifiedDateTime,
-    );
+function getModelOfNewDtoForInfrastruktureinrichtungTyp(
+  infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum | undefined,
+):
+  | KinderkrippeModel
+  | KindergartenModel
+  | HausFuerKinderModel
+  | GsNachmittagBetreuungModel
+  | GrundschuleModel
+  | MittelschuleModel
+  | InfrastruktureinrichtungModel {
+  switch (infrastruktureinrichtungTyp) {
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
+      return new KinderkrippeModel(createKinderkrippeDto());
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
+      return new KindergartenModel(createKindergartenDto());
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
+      return new HausFuerKinderModel(createHausFuerKinderDto());
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+      return new GsNachmittagBetreuungModel(createGsNachmittagBetreuungDto());
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
+      return new GrundschuleModel(createGrundschuleDto());
+    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
+      return new MittelschuleModel(createMittelschuleDto());
+    default:
+      return new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto());
   }
+}
 
-  get isEditable(): boolean {
-    return this.isRoleAdminOrSachbearbeitung() || this.isRoleAdminOrBedarfsmeldung();
-  }
-
-  get lfdNr(): string {
-    return !_.isNil(this.infrastruktureinrichtung) && !_.isNil(this.infrastruktureinrichtung.lfdNr)
-      ? this.infrastruktureinrichtung.lfdNr.toString()
-      : "";
-  }
-
-  get infrastruktureinrichtungDisplayName(): string {
-    return !_.isNil(this.infrastruktureinrichtung) && this.isAnderungForInfrastruktureinrichtung()
-      ? this.infrastruktureinrichtung.nameEinrichtung
-      : "";
-  }
-
-  get isInfrastruktureinrichtungTypNotUnspecified(): boolean {
-    return (
-      this.infrastruktureinrichtung?.infrastruktureinrichtungTyp !==
-      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Unspecified
-    );
-  }
-
-  get isKinderkrippe(): boolean {
-    return (
-      this.infrastruktureinrichtung?.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe
-    );
-  }
-
-  get kinderkrippe(): KinderkrippeModel | undefined {
-    if (this.isKinderkrippe) {
-      return this.infrastruktureinrichtung as KinderkrippeModel;
-    } else {
-      return undefined;
-    }
-  }
-
-  get isKindergarten(): boolean {
-    return (
-      this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten
-    );
-  }
-
-  get kindergarten(): KindergartenModel | undefined {
-    if (this.isKindergarten) {
-      return this.infrastruktureinrichtung as KindergartenModel;
-    } else {
-      return undefined;
-    }
-  }
-
-  get isHausFuerKinder(): boolean {
-    return (
-      this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder
-    );
-  }
-
-  get hausFuerKinder(): HausFuerKinderModel | undefined {
-    if (this.isHausFuerKinder) {
-      return this.infrastruktureinrichtung as HausFuerKinderModel;
-    } else {
-      return undefined;
-    }
-  }
-
-  get isGsNachmittagBetreuung(): boolean {
-    return (
-      this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung
-    );
-  }
-
-  get gsNachmittagBetreuung(): GsNachmittagBetreuungModel | undefined {
-    if (this.isGsNachmittagBetreuung) {
-      return this.infrastruktureinrichtung as GsNachmittagBetreuungModel;
-    } else {
-      return undefined;
-    }
-  }
-
-  get isGrundschule(): boolean {
-    return (
-      this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule
-    );
-  }
-
-  get grundschule(): GrundschuleModel | undefined {
-    if (this.isGrundschule) {
-      return this.infrastruktureinrichtung as GrundschuleModel;
-    } else {
-      return undefined;
-    }
-  }
-
-  get isMittelschule(): boolean {
-    return (
-      this.infrastruktureinrichtung.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule
-    );
-  }
-
-  get mittelschule(): MittelschuleModel | undefined {
-    if (this.isMittelschule) {
-      return this.infrastruktureinrichtung as MittelschuleModel;
-    } else {
-      return undefined;
-    }
-  }
-  mounted(): void {
-    if (!_.isNil(this.infrastruktureinrichtungId) && !_.isEmpty(this.infrastruktureinrichtungId)) {
-      this.getInfrastruktureinrichtungAndSetToStore(this.infrastruktureinrichtungId);
-    } else {
-      this.infrastruktureinrichtung = createInfrastruktureinrichtungDto();
-      this.setInfrastruktureinrichtungToStore(this.infrastruktureinrichtung);
-    }
-    this.mode = this.determineDisplayModeNeuOrAenderung();
-    this.buttonText = this.isNewInfrastruktureinrichtung() ? "Speichern" : "Aktualisieren";
-  }
-
-  @Watch("selectedInfrastruktureinrichtung", { immediate: true, deep: true })
-  private handleSelectedInfrastruktureinrichtungChanged(): void {
-    const infrastruktureinrichtungFromStore = this.getInfrastruktureinrichtungFromStore();
-    if (!_.isNil(infrastruktureinrichtungFromStore)) {
-      this.infrastruktureinrichtung = infrastruktureinrichtungFromStore;
-    } else {
-      this.infrastruktureinrichtung = createInfrastruktureinrichtungDto();
-    }
-  }
-
-  @Watch("infrastruktureinrichtung.infrastruktureinrichtungTyp", { immediate: true })
-  private handleInfrastruktureinrichtungTypChanged(): void {
-    if (this.isNewInfrastruktureinrichtung()) {
-      this.infrastruktureinrichtung = this.getModelOfNewDtoForInfrastruktureinrichtungTyp(
-        this.infrastruktureinrichtung.infrastruktureinrichtungTyp,
-      );
-    }
-  }
-
-  private openDeleteDialog(): void {
-    this.deleteDialogOpen = true;
-  }
-
-  private yesNoDialogNo(): void {
-    this.deleteDialogOpen = false;
-  }
-
-  private async yesNoDialogYes(): Promise<void> {
-    this.deleteInfrastruktureinrichtung();
-    this.yesNoDialogNo();
-  }
-
-  private determineDisplayModeNeuOrAenderung(): DisplayMode {
-    return _.isNil(this.infrastruktureinrichtungId) ? DisplayMode.NEU : DisplayMode.AENDERUNG;
-  }
-
-  private isNewInfrastruktureinrichtung(): boolean {
-    return this.mode === DisplayMode.NEU;
-  }
-
-  private isAnderungForInfrastruktureinrichtung(): boolean {
-    return this.mode === DisplayMode.AENDERUNG;
-  }
-
-  private validateForm(): boolean {
-    return (this.$refs.form as Vue & { validate: () => boolean }).validate();
-  }
-
-  private validateInfrastruktureinrichtung(
-    infrastruktureinrichtung: InfrastruktureinrichtungDto | undefined,
-  ): string | null {
-    switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        return this.findFaultInKinderkrippeForSave(infrastruktureinrichtung as KinderkrippeDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
-        return this.findFaultInKindergartenForSave(infrastruktureinrichtung as KindergartenDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
-        return this.findFaultInHausFuerKinderForSave(infrastruktureinrichtung as HausFuerKinderDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-        return this.findFaultInGsNachmittagBetreuungForSave(infrastruktureinrichtung as GsNachmittagBetreuungDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
-        return this.findFaultInGrundschuleForSave(infrastruktureinrichtung as GrundschuleDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
-        return this.findFaultInMittelschuleForSave(infrastruktureinrichtung as MittelschuleDto);
-      default:
-        return null;
-    }
-  }
-
-  private getModelOfNewDtoForInfrastruktureinrichtungTyp(
-    infrastruktureinrichtungTyp:
-      | InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum
-      | undefined,
-  ):
-    | KinderkrippeModel
-    | KindergartenModel
-    | HausFuerKinderModel
-    | GsNachmittagBetreuungModel
-    | GrundschuleModel
-    | MittelschuleModel
-    | InfrastruktureinrichtungDto {
-    switch (infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        return this.getModelOfDto(createKinderkrippeDto()) as KinderkrippeModel;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
-        return this.getModelOfDto(createKindergartenDto()) as KindergartenModel;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
-        return this.getModelOfDto(createHausFuerKinderDto()) as HausFuerKinderModel;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-        return this.getModelOfDto(createGsNachmittagBetreuungDto()) as GsNachmittagBetreuungModel;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
-        return this.getModelOfDto(createGrundschuleDto()) as GrundschuleModel;
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
-        return this.getModelOfDto(createMittelschuleDto()) as MittelschuleModel;
-      default:
-        return createInfrastruktureinrichtungDto();
-    }
-  }
-
-  private getModelOfDto(
-    dto: InfrastruktureinrichtungDto | undefined,
-  ):
-    | KinderkrippeModel
-    | KindergartenModel
-    | HausFuerKinderModel
-    | GsNachmittagBetreuungModel
-    | GrundschuleModel
-    | MittelschuleModel
-    | undefined {
-    switch (dto?.infrastruktureinrichtungTyp) {
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
-        return new KinderkrippeModel(dto as KinderkrippeDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
-        return new KindergartenModel(dto as KindergartenDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
-        return new HausFuerKinderModel(dto as HausFuerKinderDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
-        return new GsNachmittagBetreuungModel(dto as GsNachmittagBetreuungDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
-        return new GrundschuleModel(dto as GrundschuleDto);
-      case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
-        return new MittelschuleModel(dto as MittelschuleDto);
-      default:
-        return undefined;
-    }
-  }
-
-  private async getInfrastruktureinrichtungAndSetToStore(id: string): Promise<void> {
-    await this.getInfrastruktureinrichtungById(id, false)
-      .then((dto) => {
-        this.setInfrastruktureinrichtungToStore(dto);
-      })
-      .catch(() => {
-        this.setInfrastruktureinrichtungToStore(undefined);
-      });
-  }
-
-  private async saveInfrastruktureinrichtung(): Promise<void> {
-    if (this.validateForm()) {
-      const validationMessage: string | null = this.validateInfrastruktureinrichtung(this.infrastruktureinrichtung);
-      if (_.isNil(validationMessage)) {
-        if (!_.isNil(this.infrastruktureinrichtung)) {
-          this.mode === DisplayMode.NEU
-            ? await this.createInfrastruktureinrichtung(this.infrastruktureinrichtung, true).then(
-                (savedInfrastruktureinrichtung) => this.handleSuccess(savedInfrastruktureinrichtung),
-              )
-            : await this.updateInfrastruktureinrichtung(this.infrastruktureinrichtung, true).then(
-                (savedInfrastruktureinrichtung) => this.handleSuccess(savedInfrastruktureinrichtung),
-              );
+async function saveInfrastruktureinrichtung(): Promise<void> {
+  if ((await form.value?.validate())?.valid) {
+    const validationMessage: string | null = validateInfrastruktureinrichtung(infrastruktureinrichtung.value);
+    if (_.isNil(validationMessage)) {
+      if (!_.isNil(infrastruktureinrichtung)) {
+        if (isNew.value) {
+          const savedInfrastruktureinrichtung = await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          handleSuccess(savedInfrastruktureinrichtung);
+        } else {
+          const savedInfrastruktureinrichtung = await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          handleSuccess(savedInfrastruktureinrichtung);
         }
-      } else {
-        this.showWarningInInformationList(validationMessage);
       }
     } else {
-      this.showWarningInInformationList("Es gibt noch Validierungsfehler");
+      toast.error(validationMessage, { timeout: false });
     }
+  } else {
+    toast.error("Es gibt noch Validierungsfehler");
+  }
+}
+
+async function deleteInfrastruktureinrichtung(): Promise<void> {
+  if (!_.isNil(infrastruktureinrichtungId)) {
+    await deleteInfrastruktureinrichtungById(infrastruktureinrichtungId);
+    searchStore.removeSearchResultById(infrastruktureinrichtungId);
+    returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", TYPE.SUCCESS);
+  }
+}
+
+function returnToUebersicht(message?: string, type?: TYPE): void {
+  if (message && type) {
+    toast(message, { type });
   }
 
-  private async deleteInfrastruktureinrichtung(): Promise<void> {
-    const id: string | undefined = this.infrastruktureinrichtung?.id;
-    if (!_.isNil(id)) {
-      await this.deleteInfrastruktureinrichtungById(id, false).then(() => {
-        this.searchStore.removeSearchResultById(id);
-        this.returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", Levels.SUCCESS);
-      });
-    }
-  }
+  router.push("/");
+}
 
-  private returnToUebersicht(message?: string, level?: Levels): void {
-    if (message && level) {
-      Toaster.toast(message, level);
-    }
-    this.$router.push({ path: "/" });
-  }
-
-  private setInfrastruktureinrichtungToStore(dto: InfrastruktureinrichtungDto | undefined): void {
-    if (dto !== undefined) {
-      this.searchStore.setSelectedInfrastruktureinrichtung(_.cloneDeep(dto));
-    }
-  }
-
-  private getInfrastruktureinrichtungFromStore():
-    | KinderkrippeModel
-    | KindergartenModel
-    | HausFuerKinderModel
-    | GsNachmittagBetreuungModel
-    | GrundschuleModel
-    | MittelschuleModel
-    | undefined {
-    const dto: InfrastruktureinrichtungDto | undefined = this.searchStore.selectedInfrastruktureinrichtung;
-    return this.getModelOfDto(dto);
-  }
-
-  private handleSuccess(dto: InfrastruktureinrichtungDto): void {
-    this.setInfrastruktureinrichtungToStore(dto);
-    if (this.isNewInfrastruktureinrichtung()) {
-      this.$router.push({ path: "/" });
-      Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich gespeichert`, Levels.SUCCESS);
-    } else {
-      Toaster.toast(`Die Infrastruktureinrichtung wurde erfolgreich aktualisiert`, Levels.SUCCESS);
-    }
-  }
-
-  private isEinrichtungstraegerRequired(): boolean {
-    return (
-      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
-      this.infrastruktureinrichtung.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
-    );
+function handleSuccess(dto: InfrastruktureinrichtungDto): void {
+  if (isNew.value) {
+    router.push("/");
+    toast.success("Die Infrastruktureinrichtung wurde erfolgreich gespeichert");
+  } else {
+    infrastruktureinrichtung.value = dto;
+    toast.success("Die Infrastruktureinrichtung wurde erfolgreich aktualisiert");
   }
 }
 </script>
-
-<style></style>

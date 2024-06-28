@@ -30,6 +30,12 @@ export interface MetabaseReportingDto {
      * @type {string}
      * @memberof MetabaseReportingDto
      */
+    reportsGlobal?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetabaseReportingDto
+     */
     reportBedarfe?: string;
     /**
      * 
@@ -83,6 +89,7 @@ export function MetabaseReportingDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'url': !exists(json, 'url') ? undefined : json['url'],
+        'reportsGlobal': !exists(json, 'reportsGlobal') ? undefined : json['reportsGlobal'],
         'reportBedarfe': !exists(json, 'reportBedarfe') ? undefined : json['reportBedarfe'],
         'reportErgebnissePlanungsursaechlich': !exists(json, 'reportErgebnissePlanungsursaechlich') ? undefined : json['reportErgebnissePlanungsursaechlich'],
         'reportErgebnisseSobonUrsaechlich': !exists(json, 'reportErgebnisseSobonUrsaechlich') ? undefined : json['reportErgebnisseSobonUrsaechlich'],
@@ -102,6 +109,7 @@ export function MetabaseReportingDtoToJSON(value?: MetabaseReportingDto | null):
     return {
         
         'url': value.url,
+        'reportsGlobal': value.reportsGlobal,
         'reportBedarfe': value.reportBedarfe,
         'reportErgebnissePlanungsursaechlich': value.reportErgebnissePlanungsursaechlich,
         'reportErgebnisseSobonUrsaechlich': value.reportErgebnisseSobonUrsaechlich,

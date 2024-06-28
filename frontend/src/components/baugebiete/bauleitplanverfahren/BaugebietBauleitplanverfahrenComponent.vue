@@ -2,10 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <span
-          class="text-h6 font-weight-bold"
-          v-text="headline"
-        />
+        <span class="text-h6 font-weight-bold">{{ headline }}</span>
       </v-col>
     </v-row>
     <common-bezeichnung-bauliche-nutzung-component
@@ -57,10 +54,10 @@
             id="baugebiet_geplante_anzahl_we"
             v-model="baugebiet.weGeplant"
             :disabled="!isEditable"
-            :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
+            :rules="[validateWohneinheiten(abfragevariante)]"
             class="mx-3"
             label="Geplante Anzahl Wohneinheiten"
-            :suffix="suffixWohneinheiten"
+            :suffix="suffixWohneinheiten()"
             integer
           />
         </v-col>
@@ -72,10 +69,10 @@
             id="baugebiet_geplante_geschossflaeche_wohnen"
             v-model="baugebiet.gfWohnenGeplant"
             :disabled="!isEditable"
-            :rules="[validationRules.validateGeschossflaecheWohnen(abfragevariante)]"
+            :rules="[validateGeschossflaecheWohnen(abfragevariante)]"
             class="mx-3"
             label="Geplante Geschossfläche Wohnen"
-            :suffix="suffixGeschossflaecheWohnen"
+            :suffix="suffixGeschossflaecheWohnen()"
           />
         </v-col>
       </v-row>
@@ -84,111 +81,79 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
-import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import { computed } from "vue";
+import type { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
+import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
 import NumField from "@/components/common/NumField.vue";
-import _ from "lodash";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import {
-  verteilteGeschossflaecheWohnenAbfragevariante,
-  wohneinheitenAbfragevariante,
-  verteilteWohneinheitenAbfragevariante,
-  verteilteWohneinheitenAbfragevarianteFormatted,
-  wohneinheitenAbfragevarianteFormatted,
+  countDecimals,
   geschossflaecheWohnenAbfragevariante,
   geschossflaecheWohnenAbfragevarianteFormatted,
+  verteilteGeschossflaecheWohnenAbfragevariante,
   verteilteGeschossflaecheWohnenAbfragevarianteFormatted,
-  countDecimals,
+  verteilteWohneinheitenAbfragevariante,
+  verteilteWohneinheitenAbfragevarianteFormatted,
+  wohneinheitenAbfragevariante,
+  wohneinheitenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
+import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
+import _ from "lodash";
 import CommonBezeichnungBaulicheNutzungComponent from "../CommonBezeichnungBaulicheNutzungComponent.vue";
-import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import type { Rule } from "@/utils/FieldValidationRules";
 
-@Component({
-  components: { NumField, FieldGroupCard, BauratenAggregiertComponent, CommonBezeichnungBaulicheNutzungComponent },
-})
-export default class BaugebietBauleitplanverfahrenComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
-  private geschossflaecheWohnenCardTitle = "Geschossfläche Wohnen";
+interface Props {
+  abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;
+  isEditable?: boolean;
+}
 
-  private anzahlWECardTitle = "Anzahl Wohneinheiten";
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const baugebiet = defineModel<BaugebietModel>({ required: true });
 
-  @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
-
-  @Prop()
-  private abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined;
-
-  @Prop()
-  private mode!: DisplayMode;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  private validationRules: unknown = {
-    validateWohneinheiten: (abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): boolean | string => {
-      return (
-        verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
-        `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
-          abfragevariante,
-        )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
-      );
-    },
-    validateGeschossflaecheWohnen: (
-      abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined,
-    ): boolean | string => {
-      return (
-        _.round(
-          verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
-          countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
-        ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
-        `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
-          abfragevariante,
-        )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
-      );
-    },
+function validateWohneinheiten(abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+        abfragevariante,
+      )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+    );
   };
+}
 
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
+function validateGeschossflaecheWohnen(abfragevariante: AbfragevarianteBauleitplanverfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      _.round(
+        verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante),
+        countDecimals(geschossflaecheWohnenAbfragevariante(abfragevariante)),
+      ) <= geschossflaecheWohnenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
+        abfragevariante,
+      )} m² von ${geschossflaecheWohnenAbfragevarianteFormatted(abfragevariante)} m² verteilt.`
+    );
+  };
+}
 
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
+const calcRealisierungBis = computed(() => _.max(baugebiet.value.bauraten.map((baurate) => baurate.jahr)));
 
-  get calcRealisierungBis(): number | undefined {
-    return _.max(this.baugebiet.bauraten.map((baurate) => baurate.jahr));
-  }
+const headline = computed(() => `Baugebiet ${baugebiet.value.bezeichnung}`);
 
-  get headline(): string {
-    const headline = `Baugebiet ${this.baugebiet.bezeichnung} `;
-    return headline;
-  }
+const abfragevarianteRealisierungVonOr1900 = computed(() => {
+  return !_.isNil(props.abfragevariante) && !_.isNil(props.abfragevariante.realisierungVon)
+    ? props.abfragevariante.realisierungVon
+    : 1900;
+});
 
-  get abfragevarianteRealisierungVonOr1900(): number {
-    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante.realisierungVon)
-      ? this.abfragevariante.realisierungVon
-      : 1900;
-  }
+function suffixWohneinheiten(): string {
+  return `von ${wohneinheitenAbfragevarianteFormatted(props.abfragevariante)}`;
+}
 
-  get suffixWohneinheiten(): string {
-    return `von ${wohneinheitenAbfragevarianteFormatted(this.abfragevariante)}`;
-  }
-
-  get suffixGeschossflaecheWohnen(): string {
-    return `von ${geschossflaecheWohnenAbfragevarianteFormatted(this.abfragevariante)} ${
-      this.fieldPrefixesSuffixes.squareMeter
-    }`;
-  }
+function suffixGeschossflaecheWohnen(): string {
+  return `von ${geschossflaecheWohnenAbfragevarianteFormatted(props.abfragevariante)} ${SQUARE_METER}`;
 }
 </script>

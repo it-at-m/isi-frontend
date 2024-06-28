@@ -1,5 +1,5 @@
 <template>
-  <field-group-card :card-title="allgemeineInfoZurAbfrageCardTitle">
+  <field-group-card card-title="Allgemeine Informationen zur Abfrage">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -11,7 +11,7 @@
           v-model="abfrage.fristBearbeitung"
           :disabled="!isEditable"
           label="Bearbeitungsfrist"
-          :rules="[fieldValidationRules.pflichtfeld]"
+          :rules="[pflichtfeld]"
           required
         />
       </v-col>
@@ -28,11 +28,12 @@
           ref="anmerkungField"
           v-model="abfrage.anmerkung"
           :disabled="!isEditable"
+          variant="underlined"
           label="Anmerkungen"
           auto-grow
           rows="1"
           maxlength="1000"
-          @input="formChanged"
+          @update:model-value="formChanged"
         />
       </v-col>
     </v-row>
@@ -49,37 +50,21 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import TriSwitch from "@/components/common/TriSwitch.vue";
+import DatePicker from "@/components/common/DatePicker.vue";
 import Eakte from "@/components/common/Eakte.vue";
+import { pflichtfeld } from "@/utils/FieldValidationRules";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({
-  components: { Eakte, TriSwitch },
-})
-export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-) {
-  @VModel({ type: BaugenehmigungsverfahrenModel }) abfrage!: BaugenehmigungsverfahrenModel;
-
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private isEakteEditableProp!: boolean;
-
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
-
-  get isEakteEditable(): boolean {
-    return this.isEakteEditableProp;
-  }
-
-  private allgemeineInfoZurAbfrageCardTitle = "Allgemeine Informationen zur Abfrage";
+interface Props {
+  isEditable?: boolean;
+  isEakteEditable?: boolean;
 }
+
+const { formChanged } = useSaveLeave();
+const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isEditable: false, isEakteEditable: false });
 </script>

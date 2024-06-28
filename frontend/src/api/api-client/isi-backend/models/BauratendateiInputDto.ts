@@ -52,22 +52,22 @@ export interface BauratendateiInputDto {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {Set<string>}
+     * @type {Array<string>}
      * @memberof BauratendateiInputDto
      */
-    grundschulsprengel?: Set<string>;
+    grundschulsprengel?: Array<string>;
     /**
      * 
-     * @type {Set<string>}
+     * @type {Array<string>}
      * @memberof BauratendateiInputDto
      */
-    mittelschulsprengel?: Set<string>;
+    mittelschulsprengel?: Array<string>;
     /**
      * 
-     * @type {Set<string>}
+     * @type {Array<string>}
      * @memberof BauratendateiInputDto
      */
-    viertel?: Set<string>;
+    viertel?: Array<string>;
     /**
      * 
      * @type {Array<WohneinheitenProFoerderartProJahrDto>}
@@ -119,9 +119,9 @@ export function BauratendateiInputDtoToJSON(value?: BauratendateiInputDto | null
         'version': value.version,
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'grundschulsprengel': value.grundschulsprengel === undefined ? undefined : Array.from(value.grundschulsprengel as Set<any>),
-        'mittelschulsprengel': value.mittelschulsprengel === undefined ? undefined : Array.from(value.mittelschulsprengel as Set<any>),
-        'viertel': value.viertel === undefined ? undefined : Array.from(value.viertel as Set<any>),
+        'grundschulsprengel': value.grundschulsprengel,
+        'mittelschulsprengel': value.mittelschulsprengel,
+        'viertel': value.viertel,
         'wohneinheiten': value.wohneinheiten === undefined ? undefined : ((value.wohneinheiten as Array<any>).map(WohneinheitenProFoerderartProJahrDtoToJSON)),
     };
 }

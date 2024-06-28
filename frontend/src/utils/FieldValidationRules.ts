@@ -7,6 +7,8 @@ import { UncertainBoolean } from "@/api/api-client/isi-backend";
 type Nil = undefined | null;
 type Result = true | string;
 
+export type Rule = (v: string | undefined | null) => true | string;
+
 export function pflichtfeld(v: string | Nil): Result {
   return !!v || "Pflichtfeld";
 }
@@ -21,6 +23,10 @@ export function buchstaben(v: string | Nil): Result {
 
 export function min5(v: string | Nil): Result {
   return !v || /.{5,}$/.test(v) || "Mindestens fünf Zeichen benötigt";
+}
+
+export function min4(v: string | Nil): Result {
+  return !v || /.{4,}$/.test(v) || "Mindestens vier Zeichen benötigt";
 }
 
 export function hausnummer(v: string | Nil): Result {

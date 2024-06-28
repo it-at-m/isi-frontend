@@ -1,26 +1,24 @@
 <template>
   <v-dialog
-    :value="visible"
+    :model-value="visible"
     width="40%"
     @click:outside="visible = false"
   >
     <v-card class="pb-4">
-      <v-app-bar
+      <v-toolbar
+        title="Versionen der ISI-Services"
         flat
         color="primary"
         class="mb-4"
       >
-        <span class="text-h6 white--text"> Versionen der ISI-Services </span>
-        <v-spacer />
         <v-btn
-          text
-          fab
+          variant="text"
+          icon="mdi-close"
           @click="visible = false"
         >
-          <v-icon class="white--text"> mdi-close </v-icon>
         </v-btn>
-      </v-app-bar>
-      <v-simple-table
+      </v-toolbar>
+      <v-table
         v-if="services.length !== 0"
         class="mx-8"
       >
@@ -48,9 +46,9 @@
                 <span v-else> Version unbekannt </span>
               </td>
               <td>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <span v-on="on">
+                <v-tooltip location="bottom">
+                  <template #activator="{ props: activatorProps }">
+                    <span v-bind="activatorProps">
                       {{ service.active ? "🟢" : "🔴" }}
                     </span>
                   </template>
@@ -60,7 +58,7 @@
             </tr>
           </tbody>
         </template>
-      </v-simple-table>
+      </v-table>
       <loading
         v-else
         :success="fetchSuccess"
@@ -70,14 +68,8 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, VModel, Vue, Watch } from "vue-property-decorator";
-import RequestUtils from "@/utils/RequestUtils";
-import Loading from "@/components/common/Loading.vue";
-import Service from "@/components/common/Service";
-import _ from "lodash";
-
-/**
+<script setup lang="ts">
+/*
  * VersionInfo zeigt den Namen, aktuellen Commit-Hash und Status (aktiv/inaktiv) aller bekannten Services an.
  *
  * Es wird angenommen, dass beim API-Gateway der Pfad "/actuator/info" existiert.
@@ -101,97 +93,97 @@ import _ from "lodash";
  * Props:
  * - value (boolean): Ob der Dialog sichtbar ist.
  */
-@Component({
-  components: { Loading },
-})
-export default class VersionInfo extends Vue {
-  @VModel({ type: Boolean })
-  visible!: boolean;
 
-  private services: Service[] = [];
+import { ref, watch } from "vue";
+import type Service from "@/types/common/Service";
+import RequestUtils from "@/utils/RequestUtils";
+import Loading from "@/components/common/Loading.vue";
+import _ from "lodash";
 
-  private fetchSuccess: boolean | null = null;
+const visible = defineModel<boolean>({ required: true });
+const services = ref<Service[]>([]);
+const fetchSuccess = ref<boolean | undefined>(undefined);
 
-  @Watch("visible")
-  private async updateServices(): Promise<void> {
-    if (this.visible) {
-      this.fetchSuccess = null;
-      const services = await this.fetchServices();
+watch(visible, updateServices);
 
-      for (const service of services) {
-        try {
-          const commitHash = await this.fetchCommitHash(service);
-          service.commitHash = commitHash;
-          service.active = true;
-        } catch (error) {
-          service.commitHash = "";
-          service.active = false;
-        }
+async function updateServices(): Promise<void> {
+  if (visible.value) {
+    fetchSuccess.value = undefined;
+    const fetchedServices = await fetchServices();
+
+    for (const service of fetchedServices) {
+      try {
+        const commitHash = await fetchCommitHash(service);
+        service.commitHash = commitHash;
+        service.active = true;
+      } catch (error) {
+        service.commitHash = "";
+        service.active = false;
       }
+    }
 
-      this.services = services;
+    services.value = fetchedServices;
 
-      /*
-      Ohne diese Abfrage könnte fetchSuccess=true gesetzt werden, obwohl die Request vorher fehlgeschlagen ist.
-      Es wird ein strikter Vergleich mit false verwendet, da der Wert auch null sein könnte.
-      */
-      if (this.fetchSuccess !== false) {
-        this.fetchSuccess = true;
-      }
+    /*
+    Ohne diese Abfrage könnte fetchSuccess=true gesetzt werden, obwohl die Request vorher fehlgeschlagen ist.
+    Es wird ein strikter Vergleich mit false verwendet, da der Wert auch null sein könnte.
+    */
+    if (fetchSuccess.value !== false) {
+      fetchSuccess.value = true;
     }
   }
+}
 
-  private async fetchServices(): Promise<Service[]> {
-    const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
-    let services: Service[] = [];
+async function fetchServices(): Promise<Service[]> {
+  const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
+  let services: Service[] = [];
 
-    try {
-      const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-
-      const json = await response.json();
-      const object = json?.application?.services;
-      if (!_.isNil(object)) {
-        // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
-        services = Object.values(object);
-      }
-    } catch (error) {
-      this.fetchSuccess = false;
+  try {
+    const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
+    if (!response.ok) {
+      throw Error(response.statusText);
     }
 
-    return services;
+    const json = await response.json();
+    const object = json?.application?.services;
+    if (!_.isNil(object)) {
+      // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
+      services = Object.values(object);
+    }
+  } catch (error) {
+    fetchSuccess.value = false;
   }
 
-  private async fetchCommitHash(service: Service): Promise<string> {
-    let commitHash = "";
-    const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
+  return services;
+}
 
-    try {
-      const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
+async function fetchCommitHash(service: Service): Promise<string> {
+  let commitHash = "";
+  const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
 
-      const json = await response.json();
-      const string = json?.application?.commitHash;
-      if (!_.isNil(string)) {
-        commitHash = string;
-      }
-    } catch (error) {
-      return Promise.reject(error);
+  try {
+    const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
+    if (!response.ok) {
+      throw Error(response.statusText);
     }
 
-    return commitHash;
+    const json = await response.json();
+    const string = json?.application?.commitHash;
+    if (!_.isNil(string)) {
+      commitHash = string;
+    }
+  } catch (error) {
+    return Promise.reject(error);
   }
 
-  private getCommitUrl(service: Service): string {
-    if (service.appendCommitHash) {
-      return service.scmUrl + service.commitHash;
-    } else {
-      return service.scmUrl;
-    }
+  return commitHash;
+}
+
+function getCommitUrl(service: Service): string {
+  if (service.appendCommitHash) {
+    return service.scmUrl + service.commitHash;
+  } else {
+    return service.scmUrl;
   }
 }
 </script>

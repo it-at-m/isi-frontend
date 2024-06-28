@@ -42,13 +42,13 @@ export interface ViertelDto {
      * @type {number}
      * @memberof ViertelDto
      */
-    xcoordinate?: number;
+    ycoordinate?: number;
     /**
      * 
      * @type {number}
      * @memberof ViertelDto
      */
-    ycoordinate?: number;
+    xcoordinate?: number;
 }
 
 /**
@@ -73,8 +73,8 @@ export function ViertelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
         'viertelNummer': !exists(json, 'viertelNummer') ? undefined : json['viertelNummer'],
         'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
-        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
         'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
+        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
     };
 }
 
@@ -90,8 +90,8 @@ export function ViertelDtoToJSON(value?: ViertelDto | null): any {
         'objectId': value.objectId,
         'viertelNummer': value.viertelNummer,
         'flaecheQm': value.flaecheQm,
-        'xcoordinate': value.xcoordinate,
         'ycoordinate': value.ycoordinate,
+        'xcoordinate': value.xcoordinate,
     };
 }
 

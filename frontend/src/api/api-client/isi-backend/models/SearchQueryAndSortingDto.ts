@@ -87,6 +87,30 @@ export interface SearchQueryAndSortingDto {
     selectMittelschule: boolean;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterStadtbezirkNummer?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterKitaplanungsbereichKitaPlbT?: Array<string>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterGrundschulsprengelNummer?: Array<number>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterMittelschulsprengelNummer?: Array<number>;
+    /**
+     * 
      * @type {number}
      * @memberof SearchQueryAndSortingDto
      */
@@ -175,6 +199,10 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'filterStadtbezirkNummer': !exists(json, 'filterStadtbezirkNummer') ? undefined : json['filterStadtbezirkNummer'],
+        'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
+        'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
+        'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
         'sortBy': json['sortBy'],
@@ -202,6 +230,10 @@ export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto 
         'selectKindergarten': value.selectKindergarten,
         'selectKinderkrippe': value.selectKinderkrippe,
         'selectMittelschule': value.selectMittelschule,
+        'filterStadtbezirkNummer': value.filterStadtbezirkNummer,
+        'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
+        'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
+        'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
         'page': value.page,
         'pageSize': value.pageSize,
         'sortBy': value.sortBy,

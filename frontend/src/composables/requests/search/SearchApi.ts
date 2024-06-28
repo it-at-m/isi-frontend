@@ -1,9 +1,9 @@
 import {
-  SearchQueryAndSortingDto,
-  SearchQueryDto,
-  SearchResultsDto,
+  type SearchQueryAndSortingDto,
+  type SearchQueryDto,
+  type SearchResultsDto,
+  type SuchwortSuggestionsDto,
   SucheApi,
-  SuchwortSuggestionsDto,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "../ErrorHandler";
@@ -21,7 +21,7 @@ export function useSearchApi() {
       const response = await sucheApi.searchForSearchwordSuggestion(requestParameters, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(false, error);
+      throw handleError(error);
     }
   }
 
@@ -33,7 +33,7 @@ export function useSearchApi() {
       const response = await sucheApi.searchForEntities(requestParameters, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(false, error);
+      throw handleError(error);
     }
   }
 

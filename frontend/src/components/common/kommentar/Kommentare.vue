@@ -1,173 +1,164 @@
 <template>
-  <v-container class="transition-swing pa-0 mb-2">
-    <v-expansion-panels class="ma-0 pa-0">
-      <v-expansion-panel
-        class="pa-0"
-        @click="getKommentare()"
-      >
-        <v-expansion-panel-header class="grey--text text-h6"> Kommentare </v-expansion-panel-header>
-        <v-expansion-panel-content>
+  <v-container class="scale-transition pa-0 mb-2">
+    <v-expansion-panels
+      variant="accordion"
+      @update:model-value="getKommentare()"
+    >
+      <v-expansion-panel class="pa-0">
+        <v-expansion-panel-title class="text-grey text-h6"> Kommentare </v-expansion-panel-title>
+        <v-expansion-panel-text>
           <kommentar
             v-for="(kommentar, index) in kommentare"
             :key="index"
-            :kommentar="kommentar"
+            v-model="kommentare[index]"
             :is-editable="isEditable"
             @save-kommentar="saveKommentar"
             @delete-kommentar="deleteKommentar"
           />
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
   </v-container>
 </template>
 
-<script lang="ts">
-import KommentarApiRequestMixin from "@/mixins/requests/KommentarApiRequestMixin";
-import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref, watch } from "vue";
 import _ from "lodash";
 import KommentarModel from "@/types/model/common/KommentarModel";
 import Kommentar from "@/components/common/kommentar/Kommentar.vue";
 import { Context } from "@/utils/Context";
 import { createKommentarDto } from "@/utils/Factories";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
+import { useKommentarApi } from "@/composables/requests/KommentarApi";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useRoute } from "vue-router";
+import { findFaultInKommentar } from "@/utils/Validators";
+import { useToast } from "vue-toastification";
 
-@Component({
-  components: { Kommentar },
-})
-export default class Kommentare extends Mixins(KommentarApiRequestMixin, SaveLeaveMixin, ValidatorMixin) {
-  @Prop({ type: String, default: Context.UNDEFINED })
-  private readonly context!: Context;
+interface Props {
+  context?: Context;
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
+const kommentarApi = useKommentarApi();
+const toast = useToast();
+const routeId = useRoute().params.id as string;
+const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
+const kommentare = ref<KommentarModel[]>([]);
+let isKommentarListOpen = false;
 
-  private isKommentarListOpen = false;
-
-  private kommentare: Array<KommentarModel> = [];
-
-  private get hasDirtyComment(): boolean {
-    return this.kommentare.some((kommentar) => kommentar.isDirty);
+watch(kommentare, () => {
+  if (!hasDirtyComment()) {
+    resetCommentDirty();
+  } else {
+    commentChanged();
   }
+});
 
-  @Watch("kommentare", { immediate: true, deep: true })
-  private resetCommentDirtyFlagWhenNoCommentsAreDirty(): void {
-    if (!this.hasDirtyComment) {
-      this.resetCommentDirty();
-    } else {
-      this.commentChanged();
-    }
-  }
+function hasDirtyComment(): boolean {
+  return kommentare.value.some((kommentar) => kommentar.isDirty);
+}
 
-  private getKommentare(): void {
-    if (!this.isCommentDirty()) {
-      const id = this.$route.params.id;
-      if (!this.isKommentarListOpen && !_.isNil(id)) {
-        this.isKommentarListOpen = true;
-        if (this.context === Context.BAUVORHABEN) {
-          this.getKommentareForBauvorhaben(id, true).then((kommentare) => {
-            this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-            if (this.isEditable) {
-              this.kommentare.unshift(this.createNewUnsavedKommentarForBauvorhaben());
-            }
-          });
-        } else if (this.context === Context.INFRASTRUKTUREINRICHTUNG) {
-          this.getKommentareForInfrastruktureinrichtung(id, true).then((kommentare) => {
-            this.kommentare = kommentare.map((kommentar) => new KommentarModel(kommentar));
-            if (this.isEditable) {
-              this.kommentare.unshift(this.createNewUnsavedKommentarForInfrastruktureinrichtung());
-            }
-          });
+async function getKommentare(): Promise<void> {
+  if (!isCommentDirty.value) {
+    if (!isKommentarListOpen && !_.isNil(routeId)) {
+      isKommentarListOpen = true;
+      if (props.context === Context.BAUVORHABEN) {
+        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(routeId);
+        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
+        if (props.isEditable) {
+          kommentare.value.unshift(createNewUnsavedKommentarForBauvorhaben());
         }
-      } else {
-        this.isKommentarListOpen = false;
-        this.kommentare = [];
-      }
-    }
-  }
-
-  private createNewUnsavedKommentar(): KommentarModel {
-    let kommentar;
-    if (this.context === Context.BAUVORHABEN) {
-      kommentar = this.createNewUnsavedKommentarForBauvorhaben();
-    } else {
-      kommentar = this.createNewUnsavedKommentarForInfrastruktureinrichtung();
-    }
-    return kommentar;
-  }
-
-  private createNewUnsavedKommentarForBauvorhaben(): KommentarModel {
-    const kommentar = new KommentarModel(createKommentarDto());
-    kommentar.bauvorhaben = this.$route.params.id;
-    kommentar.isDirty = false;
-    return kommentar;
-  }
-
-  private createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel {
-    const kommentar = new KommentarModel(createKommentarDto());
-    kommentar.infrastruktureinrichtung = this.$route.params.id;
-    return kommentar;
-  }
-
-  private saveKommentar(kommentar: KommentarModel): void {
-    const validationMessage = this.findFaultInKommentar(kommentar);
-    if (_.isNil(validationMessage)) {
-      if (_.isNil(kommentar.id)) {
-        this.createKommentar(kommentar, true).then((createdKommentar) => {
-          const model = new KommentarModel(createdKommentar);
-          model.isDirty = false;
-          this.replaceSavedKommentarInKommentare(model);
-          this.kommentare.unshift(this.createNewUnsavedKommentar());
-        });
-      } else {
-        this.updateKommentar(kommentar, true).then((updatedKommentar) => {
-          const model = new KommentarModel(updatedKommentar);
-          model.isDirty = false;
-          this.replaceSavedKommentarInKommentare(model);
-        });
+      } else if (props.context === Context.INFRASTRUKTUREINRICHTUNG) {
+        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId);
+        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
+        if (props.isEditable) {
+          kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());
+        }
       }
     } else {
-      this.showWarningInInformationList(validationMessage);
+      isKommentarListOpen = false;
+      kommentare.value = [];
     }
   }
+}
 
-  private replaceSavedKommentarInKommentare(kommentar: KommentarModel): void {
-    let kommentarReplacedInArray = false;
-    this.kommentare = this.kommentare.map((kommentarInArray) => {
-      if (kommentarInArray.id === kommentar.id) {
-        kommentarReplacedInArray = true;
-        return kommentar;
-      } else {
-        return kommentarInArray;
-      }
-    });
-    if (!kommentarReplacedInArray) {
-      this.kommentare.splice(0, 1, kommentar);
-    }
+function createNewUnsavedKommentar(): KommentarModel {
+  let kommentar;
+  if (props.context === Context.BAUVORHABEN) {
+    kommentar = createNewUnsavedKommentarForBauvorhaben();
+  } else {
+    kommentar = createNewUnsavedKommentarForInfrastruktureinrichtung();
   }
+  return kommentar;
+}
 
-  private deleteKommentar(kommentar: KommentarModel): void {
+function createNewUnsavedKommentarForBauvorhaben(): KommentarModel {
+  const kommentar = new KommentarModel(createKommentarDto());
+  kommentar.bauvorhaben = routeId;
+  kommentar.isDirty = false;
+  return kommentar;
+}
+
+function createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel {
+  const kommentar = new KommentarModel(createKommentarDto());
+  kommentar.infrastruktureinrichtung = routeId;
+  return kommentar;
+}
+
+async function saveKommentar(kommentar: KommentarModel): Promise<void> {
+  const validationMessage = findFaultInKommentar(kommentar);
+  if (_.isNil(validationMessage)) {
     if (_.isNil(kommentar.id)) {
-      // Wenn es sich um ein neues, unsaved Kommentar handelt, wird es entfernt
-      const index = this.kommentare.indexOf(kommentar);
-      if (index > -1) {
-        this.kommentare.splice(index, 1);
-      }
+      const createdKommentar = await kommentarApi.createKommentar(kommentar);
+      const model = new KommentarModel(createdKommentar);
+      model.isDirty = false;
+      replaceSavedKommentarInKommentare(model);
+      kommentare.value.unshift(createNewUnsavedKommentar());
     } else {
-      this.delete(kommentar.id, true).then(() => {
-        const removeIndex = this.kommentare.findIndex((k) => k.id === kommentar.id);
-        if (removeIndex > -1) {
-          this.kommentare.splice(removeIndex, 1);
-          // Überprüfen, ob gelöschter Kommentar der erste im Array war
-          if (removeIndex === 0) {
-            // isDirty-Flag des ersten Kommentars auf false setzten
-            this.kommentare[0].isDirty = false;
-          }
-        }
-      });
+      const updatedKommentar = await kommentarApi.updateKommentar(kommentar);
+      const model = new KommentarModel(updatedKommentar);
+      model.isDirty = false;
+      replaceSavedKommentarInKommentare(model);
+    }
+  } else {
+    toast.error(validationMessage, { timeout: false });
+  }
+}
+
+function replaceSavedKommentarInKommentare(kommentar: KommentarModel): void {
+  let kommentarReplacedInArray = false;
+  kommentare.value = kommentare.value.map((kommentarInArray) => {
+    if (kommentarInArray.id === kommentar.id) {
+      kommentarReplacedInArray = true;
+      return kommentar;
+    } else {
+      return kommentarInArray;
+    }
+  });
+  if (!kommentarReplacedInArray) {
+    kommentare.value.splice(0, 1, kommentar);
+  }
+}
+
+async function deleteKommentar(kommentar: KommentarModel): Promise<void> {
+  if (_.isNil(kommentar.id)) {
+    // Wenn es sich um ein neues, unsaved Kommentar handelt, wird es entfernt
+    const index = kommentare.value.indexOf(kommentar);
+    if (index > -1) {
+      kommentare.value.splice(index, 1);
+    }
+  } else {
+    await kommentarApi.deleteKommentar(kommentar.id);
+    const removeIndex = kommentare.value.findIndex((k) => k.id === kommentar.id);
+    if (removeIndex > -1) {
+      kommentare.value.splice(removeIndex, 1);
+      // Überprüfen, ob gelöschter Kommentar der erste im Array war
+      if (removeIndex === 0) {
+        // isDirty-Flag des ersten Kommentars auf false setzten
+        kommentare.value[0].isDirty = false;
+      }
     }
   }
 }
 </script>
-
-<style scoped></style>

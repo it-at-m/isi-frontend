@@ -12,7 +12,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="Gesamt"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -43,7 +43,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="SoBoN-ursächlich"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
       <v-col
@@ -57,7 +57,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="Bestandswohnbaurecht"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
     </v-row>
@@ -77,7 +77,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="Baurechtlich genehmigt"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
       <v-col
@@ -91,7 +91,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="Baurechtlich festgesetzt"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
     </v-row>
@@ -143,7 +143,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Studentisches Wohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
           <v-col
@@ -157,7 +157,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Senior*innenwohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
         </v-row>
@@ -181,7 +181,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Genossenschaftliches Wohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
           <v-col
@@ -195,7 +195,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Weiteres nicht-infrastrukturrelevantes Wohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
         </v-row>
@@ -204,37 +204,31 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import { watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
+import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 
-@Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenWeiteresVerfahrenComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: AbfragevarianteWeiteresVerfahrenModel })
-  abfragevariante!: AbfragevarianteWeiteresVerfahrenModel;
+interface Props {
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const abfragevariante = defineModel<AbfragevarianteWeiteresVerfahrenModel>({ required: true });
 
-  private geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
+const geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
 
-  @Watch("abfragevariante", { immediate: true, deep: true })
-  public clearSonderwohnformData(): void {
-    if (!this.abfragevariante.gfWohnenSonderwohnformen) {
-      this.abfragevariante.gfWohnenStudentischesWohnen = undefined;
-      this.abfragevariante.gfWohnenSeniorinnenWohnen = undefined;
-      this.abfragevariante.gfWohnenGenossenschaftlichesWohnen = undefined;
-      this.abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
-    }
+withDefaults(defineProps<Props>(), { isEditable: false });
+
+watch(() => abfragevariante, clearSonderwohnformData, { immediate: true, deep: true });
+
+function clearSonderwohnformData(): void {
+  if (!abfragevariante.value.gfWohnenSonderwohnformen) {
+    abfragevariante.value.gfWohnenStudentischesWohnen = undefined;
+    abfragevariante.value.gfWohnenSeniorinnenWohnen = undefined;
+    abfragevariante.value.gfWohnenGenossenschaftlichesWohnen = undefined;
+    abfragevariante.value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
   }
 }
 </script>

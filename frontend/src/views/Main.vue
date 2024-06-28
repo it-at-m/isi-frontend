@@ -1,198 +1,141 @@
 <template>
-  <v-container
-    fluid
-    class="fill-height pa-0"
+  <v-navigation-drawer
+    width="20vw"
+    permanent
   >
-    <v-row class="fill-height justify-center mx-0">
-      <v-col
-        class="py-0"
-        cols="12"
-        md="3"
-      >
-        <search-result-list />
-      </v-col>
-      <v-col
-        class="pa-0"
-        cols="12"
-        md="9"
-      >
-        <search-result-city-map />
-      </v-col>
-    </v-row>
+    <search-result-list />
+  </v-navigation-drawer>
+  <v-main
+    height="100%"
+    width="100%"
+  >
+    <search-result-city-map />
     <v-speed-dial
       v-model="speedDialOpen"
-      class="button-speed-dial-entity-creation"
-      bottom
-      right
-      absolute
+      location="top"
     >
-      <template #activator>
+      <template #activator="{ props: activatorProps }">
         <v-btn
           id="speed_dial_create_button"
-          v-model="speedDialOpen"
+          key="speed-dial-create-btn"
+          v-bind="activatorProps"
           color="secondary"
-          dark
-          fab
-          large
-        >
-          <v-icon v-if="speedDialOpen"> mdi-close </v-icon>
-          <v-icon v-else> mdi-plus </v-icon>
-        </v-btn>
+          :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
+          size="x-large"
+          elevation="8"
+          location="bottom end"
+          position="absolute"
+          class="mr-8 mb-8"
+          style="z-index: 400"
+          :data-x="activatorProps"
+        />
       </template>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="infrastruktureinrichtung_create_button"
+            key="infra-create-btn"
             class="text-h6"
-            fab
-            dark
-            color="red lighten-1"
-            v-on="on"
+            icon="mdi-home"
+            color="red-lighten-1"
+            size="large"
+            v-bind="props"
             @click="createInfrastruktureinrichtung"
-          >
-            <v-icon>mdi-home</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Infrastruktureinrichtung erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="bauvorhaben_create_button"
+            key="bauvorhaben-create-btn"
             class="text-h6"
-            fab
-            dark
-            color="indigo lighten-1"
-            v-on="on"
+            icon="mdi-account-hard-hat"
+            color="indigo-lighten-1"
+            size="large"
+            v-bind="props"
             @click="createBauvorhaben"
-          >
-            <v-icon>mdi-account-hard-hat</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Bauvorhaben erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="bauleitplanverfahren_create_button"
+            key="bauleitplan-create-btn"
             class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
+            icon="mdi-comment-alert"
+            color="green-lighten-1"
+            size="large"
+            v-bind="props"
             @click="createBauleitplanverfahren"
-          >
-            <v-icon>mdi-comment-alert</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Bauleitplanverfahren erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="baugenehmigungsverfahren_create_button"
+            key="baugenehmigungsverfahren-create-btn"
             class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
+            icon="mdi-account-multiple-plus"
+            color="green-lighten-1"
+            size="large"
+            v-bind="props"
             @click="createBaugenehmigungsverfahren"
-          >
-            <v-icon>mdi-account-multiple-plus</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Baugenehmigungsverfahren erstellen</span>
       </v-tooltip>
-      <v-tooltip left>
-        <template #activator="{ on }">
+      <v-tooltip location="left">
+        <template #activator="{ props }">
           <v-btn
             id="weiteres_verfahren_create_button"
+            key="weiteres-verfahren-create-btn"
             class="text-h6"
-            fab
-            dark
-            color="green lighten-1"
-            v-on="on"
+            icon="mdi-account-plus"
+            color="green-lighten-1"
+            size="large"
+            v-bind="props"
             @click="createWeiteresVerfahren"
-          >
-            <v-icon>mdi-account-plus</v-icon>
-          </v-btn>
+          />
         </template>
         <span>Weiteres Verfahren erstellen</span>
       </v-tooltip>
     </v-speed-dial>
-  </v-container>
+  </v-main>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import DefaultLayout from "@/components/DefaultLayout.vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
-import router from "@/router";
-import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
-import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import _ from "lodash";
 import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
-import { useSearchStore } from "@/stores/SearchStore";
+import { useRouter } from "vue-router";
 
-@Component({
-  components: {
-    SearchAndFilterOptions,
-    SearchResultCityMap,
-    SearchResultList,
-    DefaultLayout,
-  },
-})
-export default class Main extends Vue {
-  private speedDialOpen = false;
+const router = useRouter();
+const speedDialOpen = ref(false);
 
-  private searchStore = useSearchStore();
+function createBauleitplanverfahren(): void {
+  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
+}
 
-  get searchQueryAndSortingStore(): SearchQueryAndSortingModel {
-    return _.cloneDeep(this.searchStore.requestSearchQueryAndSorting);
-  }
+function createBaugenehmigungsverfahren(): void {
+  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren);
+}
 
-  set searchQueryAndSortingStore(searchQueryForEntities: SearchQueryAndSortingModel) {
-    this.searchStore.setRequestSearchQueryAndSorting(_.cloneDeep(searchQueryForEntities));
-  }
+function createWeiteresVerfahren(): void {
+  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.WeiteresVerfahren);
+}
 
-  private createBauleitplanverfahren(): void {
-    router.push({
-      name: "newabfrage",
-      params: { art: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren },
-    });
-  }
+function createBauvorhaben(): void {
+  router.push("/bauvorhaben");
+}
 
-  private createBaugenehmigungsverfahren(): void {
-    router.push({
-      name: "newabfrage",
-      params: { art: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren },
-    });
-  }
-
-  private createWeiteresVerfahren(): void {
-    router.push({
-      name: "newabfrage",
-      params: { art: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren },
-    });
-  }
-
-  private createBauvorhaben(): void {
-    router.push({
-      name: "createBauvorhaben",
-    });
-  }
-
-  private createInfrastruktureinrichtung(): void {
-    router.push({
-      name: "createInfrastruktureinrichtung",
-    });
-  }
+function createInfrastruktureinrichtung(): void {
+  router.push("/infrastruktureinrichtung");
 }
 </script>
-
-<style>
-.button-speed-dial-entity-creation {
-  margin-bottom: 16px;
-}
-</style>

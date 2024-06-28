@@ -1,32 +1,37 @@
 import _ from "lodash";
 import {
-  AbfrageDtoArtAbfrageEnum,
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
-  BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
-  WeiteresVerfahrenDtoStandVerfahrenEnum,
-  AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteWeiteresVerfahrenDto,
   AdresseDto,
   BauabschnittDto,
   BaugebietDto,
   BauvorhabenDto,
-  BauvorhabenDtoStandVerfahrenEnum,
-  BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
+  DokumentDto,
+  DokumentDtoArtDokumentEnum,
   GrundschuleDto,
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
   InfrastruktureinrichtungDto,
-  InfrastruktureinrichtungDtoStatusEnum,
   KindergartenDto,
   KinderkrippeDto,
+  KommentarDto,
   MittelschuleDto,
-  UncertainBoolean,
-  StatusAbfrage,
+} from "@/api/api-client/isi-backend";
+import {
+  AbfrageDtoArtAbfrageEnum,
+  BauleitplanverfahrenDtoStandVerfahrenEnum,
+  BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
+  WeiteresVerfahrenDtoStandVerfahrenEnum,
+  BauvorhabenDtoStandVerfahrenEnum,
+  BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
+  InfrastruktureinrichtungDtoStatusEnum,
   BaugebietDtoArtBaulicheNutzungEnum,
   AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
+  StatusAbfrage,
+  UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
@@ -44,18 +49,9 @@ import {
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
-
-type AnyAbfrageModel = BauleitplanverfahrenModel | BaugenehmigungsverfahrenModel | WeiteresVerfahrenModel;
-
-type AnyAbfragevarianteModel =
-  | AbfragevarianteBauleitplanverfahrenModel
-  | AbfragevarianteBaugenehmigungsverfahrenModel
-  | AbfragevarianteWeiteresVerfahrenModel;
-
-type AnyAbfragevarianteDto =
-  | AbfragevarianteBauleitplanverfahrenDto
-  | AbfragevarianteBaugenehmigungsverfahrenDto
-  | AbfragevarianteWeiteresVerfahrenDto;
+import type { AnyAbfrageModel, AnyAbfragevarianteDto, AnyAbfragevarianteModel } from "@/types/common/Abfrage";
+import { JAHR_FOERDERART_SEPERATOR, sumWohneinheitenOfBauratendateiInput } from "@/utils/BauratendateiUtils";
+import { isAdresseEmpty } from "@/utils/AdresseUtil";
 
 /**
  * Prüft die komplette Abfrage vor dem Speichern
@@ -171,6 +167,9 @@ export function findFaultInAbfragevariante(
   if (_.isEmpty(abfragevariante.name)) {
     return "Bitte einen Namen für die Abfragevariante angeben.";
   }
+  if (_.size(abfragevariante.name) > 30) {
+    return `Der Name der Abfragevariante ${abfragevariante.name} ist zu lang.`;
+  }
   if (_.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)) {
     return "Bitte die wesentliche Rechtsgrundlage angeben";
   }
@@ -191,9 +190,6 @@ export function findFaultInAbfragevariante(
         AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
     ) {
       return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
-    }
-    if (_.isNil(abfragevariante.stammdatenGueltigAb)) {
-      return "Bitte für die Bedarfsberechnung die Gültigkeit des Stammdatums angeben";
     }
   }
   const messageFaultBauschnitte = findFaultInBauabschnitte(abfragevariante);
@@ -218,6 +214,14 @@ export function findFaultInAbfragevariante(
   );
   if (!_.isNil(messageFaultInAbfragevarianteMarkedSobonBerechnung)) {
     return messageFaultInAbfragevarianteMarkedSobonBerechnung;
+  }
+  const messageFaultInAbfragevarianteBauratendateiInput = findFaultForBauratendateiInput(abfragevariante);
+  if (!_.isNil(messageFaultInAbfragevarianteBauratendateiInput)) {
+    return messageFaultInAbfragevarianteBauratendateiInput;
+  }
+  const messageFaultinDokumente = findFaultInDokumente(abfragevariante.dokumente);
+  if (!_.isNil(messageFaultinDokumente)) {
+    return messageFaultinDokumente;
   }
 
   return null;
@@ -405,6 +409,11 @@ export function findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | nu
     return "Bitte die wesentliche Rechtsgrundlage angeben";
   }
 
+  const validationMessage = findFaultInDokumente(bauvorhaben.dokumente);
+  if (!_.isNil(validationMessage)) {
+    return validationMessage;
+  }
+
   return null;
 }
 
@@ -484,6 +493,235 @@ export function findFaultInMittelschuleForSave(mittelschule: MittelschuleDto): s
   return findFaultInInfrastruktureinrichtung(mittelschule);
 }
 
+export function findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {
+  let validationMessage: string | null = null;
+  if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
+    const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.gfWohnenGeplant) ? 0 : baugebiet.gfWohnenGeplant;
+
+    const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
+      _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.gfWohnenGeplant) ? 0 : baurate.gfWohnenGeplant)),
+    );
+
+    validationMessage =
+      sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2) == geschossflaecheWohnenBaugebiet.toFixed(2)
+        ? null
+        : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(
+            2,
+          )} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
+          `der Anzahl von ${geschossflaecheWohnenBaugebiet.toFixed(2)} m² im Baugebiet${
+            _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
+          }.`;
+  }
+  return validationMessage;
+}
+
+export function findFaultInVerteilungWohneinheitenBaugebiet(baugebiet: BaugebietDto): string | null {
+  let validationMessage: string | null = null;
+  if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
+    const wohneinheitenBaugebiet = _.isNil(baugebiet.weGeplant) ? 0 : baugebiet.weGeplant;
+
+    const sumVerteilteWohneinheitenBauraten = _.sum(
+      _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant)),
+    );
+
+    validationMessage =
+      wohneinheitenBaugebiet == sumVerteilteWohneinheitenBauraten
+        ? null
+        : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
+          `der Anzahl von ${wohneinheitenBaugebiet} im Baugebiet${
+            _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
+          }.`;
+  }
+  return validationMessage;
+}
+
+function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
+  if (_.isEmpty(abfrage.name)) {
+    return "Der Name der Abfrage ist anzugeben.";
+  }
+  if (_.size(abfrage.name) > 70) {
+    return "Der Name der Abfrage ist zu lang.";
+  }
+  if (
+    !isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse?.angabeLageErgaenzendeAdressinformation) &&
+    !isValidAdresse(abfrage.adresse)
+  ) {
+    return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
+  }
+  if (
+    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
+      abfrage.standVerfahren === BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified) ||
+    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren &&
+      abfrage.standVerfahren === BaugenehmigungsverfahrenDtoStandVerfahrenEnum.Unspecified) ||
+    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+      abfrage.standVerfahren === WeiteresVerfahrenDtoStandVerfahrenEnum.Unspecified)
+  ) {
+    return "Bitte Stand des Verfahrens angeben";
+  }
+  const date = moment(abfrage.fristBearbeitung, "DD.MM.YYYY", true);
+  if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {
+    return "Bearbeitungsfrist nicht angegeben oder nicht im Format TT.MM.JJJJ";
+  }
+
+  let validationMessage: string | null = null;
+  if (!_.isNil(abfrage)) {
+    validationMessage = findFaultInDokumente(abfrage.dokumente);
+    if (!_.isNil(validationMessage)) {
+      return validationMessage;
+    }
+  }
+
+  return findFaultInAbfragevarianten(abfrage);
+}
+
+function isValidAngabeLageErgaenzendeAdressinformation(angabeLageErgaenzendeAdressinformation?: string): boolean {
+  return !_.isNil(angabeLageErgaenzendeAdressinformation) && !_.isEmpty(angabeLageErgaenzendeAdressinformation.trim());
+}
+
+function isValidAdresse(adresse?: AdresseDto): boolean {
+  if (!_.isNil(adresse)) {
+    const model: AdresseModel = new AdresseModel(adresse);
+    return _.isNil(model) ? false : !isAdresseEmpty(model);
+  }
+  return false;
+}
+
+function convertAbfragevarianteType(
+  artAbfrage: AbfrageDtoArtAbfrageEnum | undefined,
+  abfragevarianteDto: AnyAbfragevarianteDto,
+): AnyAbfragevarianteModel | undefined {
+  let abfragevariante: AnyAbfragevarianteModel | undefined = undefined;
+
+  switch (artAbfrage) {
+    case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+      abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
+      break;
+    case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+      abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
+      break;
+    case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+      abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
+      break;
+    default:
+      abfragevariante = undefined;
+      break;
+  }
+  return abfragevariante;
+}
+
+function findFaultInAbfragevarianteInBearbeitungSachbearbeitung(
+  abfragevariante: AnyAbfragevarianteModel,
+): string | null {
+  if (
+    _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
+    abfragevariante.sobonOrientierungswertJahr ===
+      AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
+  ) {
+    return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
+  }
+  return null;
+}
+
+function findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungDto): string | null {
+  if (_.isNil(infrastruktureinrichtung.nameEinrichtung)) {
+    return "Bitte den Namen für die Infrastruktureinrichtung angeben.";
+  }
+  if (_.isNil(infrastruktureinrichtung.status)) {
+    return "Bitte den Status der Infrastruktureinrichtung angeben";
+  }
+  if (
+    _.isNil(infrastruktureinrichtung.fertigstellungsjahr) &&
+    infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand
+  ) {
+    return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
+  }
+  if (
+    !isValidAngabeLageErgaenzendeAdressinformation(
+      infrastruktureinrichtung.adresse?.angabeLageErgaenzendeAdressinformation,
+    ) &&
+    !isValidAdresse(infrastruktureinrichtung.adresse)
+  ) {
+    return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
+  }
+  return null;
+}
+
+function findFaultForWohnungsnahePlaetze(
+  artPlaetze: string,
+  plaetzeGesamt: number | undefined,
+  plaetzeWohnungsnah: number | undefined,
+): string | null {
+  if (_.defaultTo(plaetzeWohnungsnah, 0) > _.defaultTo(plaetzeGesamt, 0)) {
+    return `Die Anzahl der wohnungsnahen ${artPlaetze} darf nicht die Gesamtanzahl der verfügbaren ${artPlaetze} übersteigen.`;
+  }
+  return null;
+}
+
+function findFaultForBauratendateiInput(
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
+): string | null {
+  if (_.isNil(abfragevariante.hasBauratendateiInput) || !abfragevariante.hasBauratendateiInput) {
+    return null;
+  }
+
+  const bauratendateiInputBasis = _.isNil(abfragevariante.bauratendateiInputBasis)
+    ? []
+    : [abfragevariante.bauratendateiInputBasis];
+  const bauratendateiInput = _.toArray(abfragevariante.bauratendateiInput);
+
+  const wohneinheiten = bauratendateiInput.flatMap((input) => _.toArray(input.wohneinheiten));
+  for (const wohneinheit of wohneinheiten) {
+    if (_.isEmpty(wohneinheit.jahr)) {
+      return "Jahresangabe bei Eintrag zur Bauratendatei und Schülerpotentialprognose fehlt.";
+    }
+  }
+
+  const sumBasis = sumWohneinheitenOfBauratendateiInput(bauratendateiInputBasis);
+  const sumInputs = sumWohneinheitenOfBauratendateiInput(bauratendateiInput);
+
+  const validationMessage = `Die Daten der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen nicht mit den errechneten Wohneinheiten überein.`;
+
+  if (sumBasis.size != sumInputs.size) {
+    return validationMessage;
+  }
+
+  for (const [jahrAndFoerderart, wohneinheiten] of sumBasis) {
+    const numberOfWohneinheitenInputs = sumInputs.get(jahrAndFoerderart);
+    const nonNullNumberOfWohneinheitenInputs = _.isNil(numberOfWohneinheitenInputs) ? 0 : numberOfWohneinheitenInputs;
+    const difference = Math.abs(wohneinheiten - nonNullNumberOfWohneinheitenInputs);
+    // Prüfung wegen möglicher Rundungen bedingt durch IEEE754
+    if (difference >= 0.001) {
+      const splittedJahrAndFoerderart = _.split(jahrAndFoerderart, JAHR_FOERDERART_SEPERATOR);
+      return ` In der Bauratendatei und Schülerpotentialprognose in Abfragevariante "${abfragevariante.name}" stimmen die errechneten Wohneinheiten der Förderart "${splittedJahrAndFoerderart[1]}" im Jahr "${splittedJahrAndFoerderart[0]}" in Höhe von "${wohneinheiten}" nicht mit der Summe der aufgeteilten Wohneinheiten in Höhe von "${nonNullNumberOfWohneinheitenInputs}" überein.`;
+    }
+  }
+
+  const validationMessageDokumente = findFaultInDokumente(abfragevariante.dokumente);
+  if (!_.isNil(validationMessageDokumente)) {
+    return validationMessageDokumente;
+  }
+
+  return null;
+}
+
+export function findFaultInKommentar(kommentar: KommentarDto): string | null {
+  return findFaultInDokumente(kommentar.dokumente);
+}
+
+function findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
+  let validationMessage: string | null = null;
+  if (
+    !_.isNil(dokumente) &&
+    dokumente.some((dokument) => dokument.artDokument === DokumentDtoArtDokumentEnum.Unspecified)
+  ) {
+    validationMessage = `Bitte geben Sie die Dokumentart zu dem/den Dokument(en) an`;
+  }
+  return validationMessage;
+}
+
 /**
  * Überprüft, ob die Verteilung der Wohneinheiten und Geschossfläche Wohnen auf Baugebiete bzw. Bauraten valide ist.
  * WE bzw. GF gelten als "verteilt", wenn bei mindestens einem Baugebiet bzw. Baurate eine Angabe zu ihnen gemacht wurde.
@@ -494,7 +732,7 @@ export function findFaultInMittelschuleForSave(mittelschule: MittelschuleDto): s
  * @param abfragevariante zur Validierung.
  * @return ob die Verteilung entsprechend der Beschreibung valide ist.
  */
-export function findFaultInWeGfVerteilungAbfragevariante(
+function findFaultInWeGfVerteilungAbfragevariante(
   abfragevariante:
     | AbfragevarianteBauleitplanverfahrenDto
     | AbfragevarianteBaugenehmigungsverfahrenDto
@@ -618,160 +856,4 @@ export function findFaultInWeGfVerteilungAbfragevariante(
   } else {
     return validationMessageGfWohnen;
   }
-}
-
-export function findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {
-  let validationMessage: string | null = null;
-  if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
-    const geschossflaecheWohnenBaugebiet = _.isNil(baugebiet.gfWohnenGeplant) ? 0 : baugebiet.gfWohnenGeplant;
-
-    const sumVerteilteGeschossflaecheWohnenBauraten = _.sum(
-      _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.gfWohnenGeplant) ? 0 : baurate.gfWohnenGeplant)),
-    );
-
-    validationMessage =
-      sumVerteilteGeschossflaecheWohnenBauraten.toFixed(2) == geschossflaecheWohnenBaugebiet.toFixed(2)
-        ? null
-        : `Die Anzahl von ${sumVerteilteGeschossflaecheWohnenBauraten.toFixed(
-            2,
-          )} m² über Bauraten verteilter Geschossfläche Wohnen entspricht nicht ` +
-          `der Anzahl von ${geschossflaecheWohnenBaugebiet.toFixed(2)} m² im Baugebiet${
-            _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
-          }.`;
-  }
-  return validationMessage;
-}
-
-export function findFaultInVerteilungWohneinheitenBaugebiet(baugebiet: BaugebietDto): string | null {
-  let validationMessage: string | null = null;
-  if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
-    const wohneinheitenBaugebiet = _.isNil(baugebiet.weGeplant) ? 0 : baugebiet.weGeplant;
-
-    const sumVerteilteWohneinheitenBauraten = _.sum(
-      _.toArray(baugebiet.bauraten).map((baurate) => (_.isNil(baurate.weGeplant) ? 0 : baurate.weGeplant)),
-    );
-
-    validationMessage =
-      wohneinheitenBaugebiet == sumVerteilteWohneinheitenBauraten
-        ? null
-        : `Die Anzahl von ${sumVerteilteWohneinheitenBauraten} über Bauraten verteilter Wohneinheiten entspricht nicht ` +
-          `der Anzahl von ${wohneinheitenBaugebiet} im Baugebiet${
-            _.isNil(baugebiet.bezeichnung) ? "" : " " + baugebiet.bezeichnung
-          }.`;
-  }
-  return validationMessage;
-}
-
-function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
-  if (_.isEmpty(abfrage.name)) {
-    return "Der Name der Abfrage ist anzugeben.";
-  }
-  if (
-    !isValidAngabeLageErgaenzendeAdressinformation(abfrage.adresse?.angabeLageErgaenzendeAdressinformation) &&
-    !isValidAdresse(abfrage.adresse)
-  ) {
-    return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
-  }
-  if (
-    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
-      abfrage.standVerfahren === BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified) ||
-    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren &&
-      abfrage.standVerfahren === BaugenehmigungsverfahrenDtoStandVerfahrenEnum.Unspecified) ||
-    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
-      abfrage.standVerfahren === WeiteresVerfahrenDtoStandVerfahrenEnum.Unspecified)
-  ) {
-    return "Bitte Stand des Verfahrens angeben";
-  }
-  const date = moment(abfrage.fristBearbeitung, "DD.MM.YYYY", true);
-  if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {
-    return "Bearbeitungsfrist nicht angegeben oder nicht im Format TT.MM.JJJJ";
-  }
-  return findFaultInAbfragevarianten(abfrage);
-}
-
-function isValidAngabeLageErgaenzendeAdressinformation(angabeLageErgaenzendeAdressinformation?: string): boolean {
-  return !_.isNil(angabeLageErgaenzendeAdressinformation) && !_.isEmpty(angabeLageErgaenzendeAdressinformation.trim());
-}
-
-function isValidAdresse(adresse?: AdresseDto): boolean {
-  if (!_.isNil(adresse)) {
-    const model: AdresseModel = new AdresseModel(adresse);
-    return _.isNil(model) ? false : !model.isEmpty;
-  }
-  return false;
-}
-
-function convertAbfragevarianteType(
-  artAbfrage: AbfrageDtoArtAbfrageEnum | undefined,
-  abfragevarianteDto: AnyAbfragevarianteDto,
-): AnyAbfragevarianteModel | undefined {
-  let abfragevariante: AnyAbfragevarianteModel | undefined = undefined;
-
-  switch (artAbfrage) {
-    case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-      abfragevariante = abfragevarianteDto as AbfragevarianteBauleitplanverfahrenModel;
-      break;
-    case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-      abfragevariante = abfragevarianteDto as AbfragevarianteBaugenehmigungsverfahrenModel;
-      break;
-    case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-      abfragevariante = abfragevarianteDto as AbfragevarianteWeiteresVerfahrenModel;
-      break;
-    default:
-      abfragevariante = undefined;
-      break;
-  }
-  return abfragevariante;
-}
-
-function findFaultInAbfragevarianteInBearbeitungSachbearbeitung(
-  abfragevariante: AnyAbfragevarianteModel,
-): string | null {
-  if (
-    _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
-    abfragevariante.sobonOrientierungswertJahr ===
-      AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
-  ) {
-    return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
-  }
-  const date = moment(abfragevariante.stammdatenGueltigAb, "DD.MM.YYYY", true);
-  if (!date.isValid() || abfragevariante.stammdatenGueltigAb?.toISOString() == new Date(0).toISOString()) {
-    return `Bitte geben Sie das 'Stammdatum gültig ab' bei Abfragevariante '${abfragevariante.name}' im Format TT.MM.JJJJ an.`;
-  }
-  return null;
-}
-
-function findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungDto): string | null {
-  if (_.isNil(infrastruktureinrichtung.nameEinrichtung)) {
-    return "Bitte den Namen für die Infrastruktureinrichtung angeben.";
-  }
-  if (_.isNil(infrastruktureinrichtung.status)) {
-    return "Bitte den Status der Infrastruktureinrichtung angeben";
-  }
-  if (
-    _.isNil(infrastruktureinrichtung.fertigstellungsjahr) &&
-    infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand
-  ) {
-    return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
-  }
-  if (
-    !isValidAngabeLageErgaenzendeAdressinformation(
-      infrastruktureinrichtung.adresse?.angabeLageErgaenzendeAdressinformation,
-    ) &&
-    !isValidAdresse(infrastruktureinrichtung.adresse)
-  ) {
-    return "'Angabe zur Lage und ergänzende Adressinformationen' oder Adresse muss angegeben werden";
-  }
-  return null;
-}
-
-function findFaultForWohnungsnahePlaetze(
-  artPlaetze: string,
-  plaetzeGesamt: number | undefined,
-  plaetzeWohnungsnah: number | undefined,
-): string | null {
-  if (_.defaultTo(plaetzeWohnungsnah, 0) > _.defaultTo(plaetzeGesamt, 0)) {
-    return `Die Anzahl der wohnungsnahen ${artPlaetze} darf nicht die Gesamtanzahl der verfügbaren ${artPlaetze} übersteigen.`;
-  }
-  return null;
 }

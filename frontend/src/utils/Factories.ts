@@ -1,8 +1,4 @@
-import {
-  // dreiwertiges Boolean
-  UncertainBoolean,
-  // Status der Abfrage
-  StatusAbfrage,
+import type {
   // Adresse
   AdresseDto,
   // AbfrageDto's
@@ -14,6 +10,43 @@ import {
   AbfragevarianteBauleitplanverfahrenDto,
   AbfragevarianteBaugenehmigungsverfahrenDto,
   AbfragevarianteWeiteresVerfahrenDto,
+  // Bedarfsmeldung
+  BedarfsmeldungDto,
+  // Baurate / Fördermix
+  BaurateDto,
+  FoerderartDto,
+  FoerdermixDto,
+  FoerdermixStammDto,
+  // Bauabschnitt
+  BauabschnittDto,
+  // Baugebiet
+  BaugebietDto,
+  // Bauvorhaben
+  BauvorhabenDto,
+  // Infrastruktureinrichtungen
+  InfrastruktureinrichtungDto,
+  KinderkrippeDto,
+  KindergartenDto,
+  HausFuerKinderDto,
+  GsNachmittagBetreuungDto,
+  SchuleDto,
+  GrundschuleDto,
+  MittelschuleDto,
+  // Dokumente
+  DokumentDto,
+  FilepathDto,
+  PresignedUrlDto,
+  // Kommentar
+  KommentarDto,
+  // Suche
+  SearchQueryAndSortingDto,
+  SobonBerechnungDto,
+} from "@/api/api-client/isi-backend";
+import {
+  // dreiwertiges Boolean
+  UncertainBoolean,
+  // Status der Abfrage
+  StatusAbfrage,
   // AbfrageArtEnum
   AbfrageDtoArtAbfrageEnum,
   // Abfrage StandVerfahrenEnum's
@@ -33,53 +66,28 @@ import {
   AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum,
   AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum,
   // Bedarfsmeldung
-  BedarfsmeldungDto,
   BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
-  // Baurate / Fördermix
-  BaurateDto,
-  FoerderartDto,
-  FoerdermixDto,
-  FoerdermixStammDto,
-  // Bauabschnitt
-  BauabschnittDto,
   // Baugebiet
-  BaugebietDto,
   BaugebietDtoArtBaulicheNutzungEnum,
   // Bauvorhaben
-  BauvorhabenDto,
   BauvorhabenDtoArtFnpEnum,
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
   BauvorhabenDtoStandVerfahrenEnum,
   // Infrastruktureinrichtungen
-  InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoStatusEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   SchuleDtoEinrichtungstraegerEnum,
   KindergartenDtoEinrichtungstraegerEnum,
   HausFuerKinderDtoAllOfEinrichtungstraegerEnum,
   GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum,
-  KinderkrippeDto,
-  KindergartenDto,
-  HausFuerKinderDto,
-  GsNachmittagBetreuungDto,
-  SchuleDto,
-  GrundschuleDto,
-  MittelschuleDto,
   // Dokumente
-  DokumentDto,
   DokumentDtoArtDokumentEnum,
-  FilepathDto,
-  PresignedUrlDto,
-  // Kommentar
-  KommentarDto,
   // Suche
-  SearchQueryAndSortingDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
-  SobonBerechnungDto,
 } from "@/api/api-client/isi-backend";
 import { v4 as uuidv4 } from "uuid";
-import { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
+import type { AdressSucheDto, MuenchenAdresseDto } from "@/api/api-client/isi-master-eai";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 
 export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
@@ -95,6 +103,10 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     selectKindergarten: true,
     selectKinderkrippe: true,
     selectMittelschule: true,
+    filterStadtbezirkNummer: undefined,
+    filterKitaplanungsbereichKitaPlbT: undefined,
+    filterGrundschulsprengelNummer: undefined,
+    filterMittelschulsprengelNummer: undefined,
     page: undefined,
     pageSize: undefined,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
@@ -794,4 +806,9 @@ export function createKommentarDto(): KommentarDto {
   return {
     dokumente: [],
   };
+}
+
+export const enum BedarfsmeldungTitle {
+  FACHREFERATE = "Bedarfsmeldungen der Fachreferate",
+  ABFRAGEERSTELLUNG = "Rückmeldung zu Bedarfsmeldungen durch Abfrageerstellung",
 }

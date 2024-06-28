@@ -5,26 +5,25 @@
       ref="abfrageCommonComponent"
       v-model="baugenehmigungsverfahren"
       :is-new="isNew"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <allgemeine-informationen-baugenehmigungsverfahren-component
       id="allgemeine_informationen_baugenehmigungsverfahren-component"
       ref="allgemeineInformationenBaugenehmigungsverfahrenComponent"
       v-model="baugenehmigungsverfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
-      :adresse-prop.sync="baugenehmigungsverfahren.adresse"
-      :show-in-information-list-prop="true"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      v-model="baugenehmigungsverfahren.adresse"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
       id="verortung_component"
       ref="verortungComponent"
       v-model="baugenehmigungsverfahren.verortung"
-      :context="context"
+      :context="Context.ABFRAGE"
       :look-at="baugenehmigungsverfahren.adresse"
     />
     <allgemeine-informationen-zur-abfrage-baugenehmigungsverfahren-component
@@ -32,62 +31,43 @@
       ref="allgemeineInformationenZurAbfrageBaugenehmigungsverfahrenComponent"
       v-model="baugenehmigungsverfahren"
       :look-at="baugenehmigungsverfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
-      :is-eakte-editable-prop="isEditableByAbfrageerstellung() || isEditableBySachbearbeitung()"
+      :is-editable="isEditableByAbfrageerstellung"
+      :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
-      v-if="isDokumenteVisible(context)"
+      v-if="componentSecurity.areDokumenteVisible(Context.ABFRAGE)"
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="baugenehmigungsverfahren.dokumente"
       :name-root-folder="nameRootFolder"
-      :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      :is-dokumente-editable="isEditableByAbfrageerstellung"
       @change="formChanged"
     />
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenBaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/AllgemeineInformationenBaugenehmigungsverfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageBaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/AllgemeineInformationenZurAbfrageBaugenehmigungsverfahrenComponent.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import DokumenteKommentareSecurityMixin from "@/mixins/security/DokumenteKommentareSecurityMixin";
-import { Context } from "@/utils/Context";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import Verortung from "@/components/common/Verortung.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
+import { Context } from "@/utils/Context";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
-@Component({
-  computed: {
-    context() {
-      return Context.ABFRAGE;
-    },
-  },
-  components: {
-    AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent,
-    Dokumente,
-    AbfrageCommonComponent,
-    AllgemeineInformationenBaugenehmigungsverfahrenComponent,
-    AllgemeineInformationenZurAbfrageBaugenehmigungsverfahrenComponent,
-    FieldGroupCard,
-  },
-})
-export default class BaugenehmigungsverfahrenComponent extends Mixins(
-  AbfrageSecurityMixin,
-  DokumenteKommentareSecurityMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: BaugenehmigungsverfahrenModel }) baugenehmigungsverfahren!: BaugenehmigungsverfahrenModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isNew!: boolean;
-
-  private nameRootFolder = "baugenehmigungsverfahren";
+interface Props {
+  isNew?: boolean;
 }
-</script>
 
-<style></style>
+const nameRootFolder = "baugenehmigungsverfahren";
+const { formChanged } = useSaveLeave();
+const componentSecurity = useComponentSecurity();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const baugenehmigungsverfahren = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isNew: false });
+</script>

@@ -173,6 +173,12 @@ export interface InfrastruktureinrichtungDto {
      * @memberof InfrastruktureinrichtungDto
      */
     flaecheTeilgrundstueck?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    idKibigWeb?: string;
 }
 
 
@@ -263,6 +269,7 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'status': json['status'],
         'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
+        'idKibigWeb': !exists(json, 'idKibigWeb') ? undefined : json['idKibigWeb'],
     };
 }
 
@@ -290,6 +297,7 @@ export function InfrastruktureinrichtungDtoToJSON(value?: Infrastruktureinrichtu
         'status': value.status,
         'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
+        'idKibigWeb': value.idKibigWeb,
     };
 }
 

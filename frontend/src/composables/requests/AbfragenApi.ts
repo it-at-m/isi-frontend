@@ -1,5 +1,4 @@
-import {
-  AbfragenApi,
+import type {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -22,8 +21,8 @@ import {
   PatchBedarfsmeldungErfolgtOperationRequest,
   GetByIdRequest,
   DeleteByIdRequest,
-  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
+import { AbfragenApi, AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 import { useSaveLeave } from "../SaveLeave";
@@ -36,7 +35,6 @@ export function useAbfragenApi() {
 
   async function save(
     dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | WeiteresVerfahrenAngelegtDto,
-    showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -56,14 +54,13 @@ export function useAbfragenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
   async function patchAngelegt(
     dto: BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | WeiteresVerfahrenAngelegtDto,
     id: string,
-    showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -84,7 +81,7 @@ export function useAbfragenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
@@ -94,7 +91,6 @@ export function useAbfragenApi() {
       | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
       | WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
     id: string,
-    showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -119,7 +115,7 @@ export function useAbfragenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
@@ -129,7 +125,6 @@ export function useAbfragenApi() {
       | BaugenehmigungsverfahrenInBearbeitungFachreferatDto
       | WeiteresVerfahrenInBearbeitungFachreferatDto,
     id: string,
-    showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -151,7 +146,7 @@ export function useAbfragenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
@@ -161,7 +156,6 @@ export function useAbfragenApi() {
       | BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto
       | WeiteresVerfahrenBedarfsmeldungErfolgtDto,
     id: string,
-    showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
@@ -183,13 +177,12 @@ export function useAbfragenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
   async function getById(
     id: string,
-    showInInformationList: boolean,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     const requestObject: GetByIdRequest = {
       id: id,
@@ -198,11 +191,11 @@ export function useAbfragenApi() {
       const response = await abfragenApi.getById(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 
-  async function deleteById(id: string, showInInformationList: boolean): Promise<void> {
+  async function deleteById(id: string): Promise<void> {
     const requestObject: DeleteByIdRequest = {
       id: id,
     };
@@ -211,7 +204,7 @@ export function useAbfragenApi() {
       resetFormDirty();
       return response;
     } catch (error) {
-      throw handleError(showInInformationList, error);
+      throw handleError(error);
     }
   }
 

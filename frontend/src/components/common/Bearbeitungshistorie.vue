@@ -2,19 +2,17 @@
   <v-menu
     v-if="bearbeitungshistorieAvailable"
     id="benutzerinformation_menu"
-    offset-y
+    location="bottom"
     transition="slide-y-transition"
     :close-on-content-click="false"
   >
-    <template #activator="{ on }">
+    <template #activator="{ props: activatorProps }">
       <v-btn
         id="benutzerinformation_button"
-        small
-        icon
-        fab
-        v-on="on"
+        variant="plain"
+        icon="mdi-information"
+        v-bind="activatorProps"
       >
-        <v-icon> mdi-information </v-icon>
       </v-btn>
     </template>
     <v-card flat>
@@ -22,12 +20,8 @@
       <v-data-table
         :headers="bearbeitungshistorieHeaders"
         :items="bearbeitungshistorie"
-        dense
+        density="compact"
         disable-sort
-        disable-filtering
-        :footer-props="{
-          itemsPerPageOptions: [5, 10],
-        }"
       >
         <template #item.zeitpunkt="{ item }">
           {{ zeitpunktFormatted(item.zeitpunkt) }}
@@ -40,48 +34,32 @@
   </v-menu>
 </template>
 
-<script lang="ts">
-import { Vue, Component, VModel } from "vue-property-decorator";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import type { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import moment from "moment/moment";
 import { useLookupStore } from "@/stores/LookupStore";
 
-@Component({})
-export default class Bearbeitungshistorie extends Vue {
-  static readonly DISPLAY_FORMAT = "DD.MM.YYYY";
+const DISPLAY_FORMAT = "DD.MM.YYYY";
+const lookupStore = useLookupStore();
+const bearbeitungshistorie = defineModel<Array<BearbeitungshistorieDto>>({ required: false });
+const bearbeitungshistorieHeaders = ref<Array<any>>([
+  { title: "Name", key: "bearbeitendePerson.name", sortable: false },
+  { title: "Email", key: "bearbeitendePerson.email", sortable: false },
+  { title: "Organisationseinheit", key: "bearbeitendePerson.organisationseinheit", sortable: false },
+  { title: "Datum der Änderung", key: "zeitpunkt", sortable: false },
+  { title: "Zielstatus", key: "zielStatus", sortable: false },
+]);
+const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(bearbeitungshistorie.value));
 
-  @VModel({ type: AbfrageModel })
-  private abfrage!: AbfrageModel;
+function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
+  return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(DISPLAY_FORMAT);
+}
 
-  private lookupStore = useLookupStore();
-
-  private bearbeitungshistorieHeaders = [
-    { text: "Name", value: "bearbeitendePerson.name", sortable: false },
-    { text: "Email", value: "bearbeitendePerson.email", sortable: false },
-    { text: "Organisationseinheit", value: "bearbeitendePerson.organisationseinheit", sortable: false },
-    { text: "Datum der Änderung", value: "zeitpunkt", sortable: false },
-    { text: "Zielstatus", value: "zielStatus", sortable: false },
-  ];
-
-  get bearbeitungshistorieAvailable(): boolean {
-    return !_.isEmpty(this.abfrage?.bearbeitungshistorie);
-  }
-
-  get bearbeitungshistorie(): Array<BearbeitungshistorieDto> {
-    return _.toArray(this.abfrage?.bearbeitungshistorie);
-  }
-
-  private zeitpunktFormatted(zeitpunkt: Date | undefined): string {
-    return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(Bearbeitungshistorie.DISPLAY_FORMAT);
-  }
-
-  private zielstatusText(status: StatusAbfrage | undefined): string | undefined {
-    const lookupEntries = this.lookupStore.statusAbfrage as Array<LookupEntryDto>;
-    return !_.isEmpty(lookupEntries)
-      ? lookupEntries.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
-      : "";
-  }
+function zielstatusText(status: StatusAbfrage | undefined): string | undefined {
+  return !_.isEmpty(lookupStore.statusAbfrage)
+    ? lookupStore.statusAbfrage.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
+    : "";
 }
 </script>

@@ -1,8 +1,9 @@
-import L, { LatLngLiteral, MapOptions, TileLayer, WMSOptions } from "leaflet";
+import L, { type WMSOptions, type LatLngLiteral, type MapOptions, TileLayer } from "leaflet";
 import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
 import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
+// import "@/types/common/Leaflet";
 
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
 export const DEFAULT_ICON_OPTIONS = {
@@ -22,15 +23,15 @@ export const ICON_INFRASTRUKTUREINRICHTUNG = L.icon({
 
 export const CITY_CENTER: LatLngLiteral = { lat: 48.137227, lng: 11.575517 };
 
-export const MAP_OPTIONS: MapOptions = { attributionControl: false };
-
-export const COLOR_POLYGON_UMGRIFF = "#E91E63";
-
 export const MAX_ZOOM = 20;
 
 export const MIN_ZOOM = 10;
 
+export const MAP_OPTIONS: MapOptions = { attributionControl: false, center: CITY_CENTER, maxZoom: MAX_ZOOM };
+
 export const LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: MIN_ZOOM, maxZoom: MAX_ZOOM };
+
+export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
@@ -38,13 +39,13 @@ export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "
 
 export const OVERLAYS_ARCGIS_TRANSPARENT = new Map([
   ["Gemarkungen", "Gemarkungen"],
-  ["Baublöcke", "Baublöcke"],
-  ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
-  ["Stadtbezirke", "Stadtbezirke"],
-  ["Bezirksteile", "Bezirksteile"],
   ["Stadtviertel", "Stadtviertel"],
+  ["Bezirksteile", "Bezirksteile"],
+  ["Stadtbezirke", "Stadtbezirke"],
+  ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
   ["Grundschulsprengel", "Grundschulsprengel"],
   ["Mittelschulsprengel", "Mittelschulsprengel"],
+  ["Baublöcke", "Baublöcke"],
   ["Umgriffe Bebauungspläne", "BB-Umgriff"],
 ]);
 
@@ -57,8 +58,8 @@ export const OVERLAYS_ARCGIS_TRANSPARENT = new Map([
  * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
  * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
  */
-export function assembleDefaultLayersForLayerControl(): Map<string, TileLayer.WMS> {
-  const layers = new Map<string, TileLayer.WMS>();
+export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WMS> {
+  const layers: Record<string, TileLayer.WMS> = {};
 
   for (const overlay of OVERLAYS_ARCGIS_INTRANSPARENT) {
     const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
@@ -66,25 +67,25 @@ export function assembleDefaultLayersForLayerControl(): Map<string, TileLayer.WM
       transparent: false,
       ...LAYER_OPTIONS,
     });
-    layers.set(overlay[0], layer);
+    layers[overlay[0]] = layer;
   }
 
   for (const overlay of OVERLAYS_GRUNDKARTE) {
-    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
+    const layer = L.nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
       layers: overlay[1],
       transparent: true,
       ...LAYER_OPTIONS,
     });
-    layers.set(overlay[0], layer);
+    layers[overlay[0]] = layer;
   }
 
   for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
-    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
+    const layer = L.nonTiledLayer.wms(getArcgisUrl("basis"), {
       layers: overlay[1],
       transparent: true,
       ...LAYER_OPTIONS,
     });
-    layers.set(overlay[0], layer);
+    layers[overlay[0]] = layer;
   }
 
   return layers;

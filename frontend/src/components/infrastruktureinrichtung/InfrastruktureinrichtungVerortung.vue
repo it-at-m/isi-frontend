@@ -4,11 +4,12 @@
       height="300"
       :zoom="14"
       expandable
+      automatic-zoom-to-polygons
       :editable="isVerortungEditable"
       :look-at="lookAt"
       :geo-json="geoJson"
       :geo-json-options="geoJsonOptions"
-      @click-in-map="handleClickInMap($event)"
+      @click-in-map="handleClickInMap"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
@@ -16,7 +17,7 @@
     <v-chip-group
       v-if="pointToDisplayNotEmpty"
       title="Koordinate"
-      active-class="primary--text"
+      selected-class="text-primary"
       column
     >
       <v-chip>
@@ -33,7 +34,7 @@
         <v-chip-group
           v-if="stadtbezirke.length !== 0"
           title="Stadtbezirke"
-          active-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -53,7 +54,7 @@
         <v-chip-group
           v-if="kitaplanungsbereiche.length !== 0"
           title="Kitaplanungsbereiche"
-          active-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -76,7 +77,7 @@
         <v-chip-group
           v-if="bezirksteile.length !== 0"
           title="Bezirksteile"
-          active-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -97,7 +98,7 @@
         <v-chip-group
           v-if="grundschulsprengel.length !== 0"
           title="Grundschulsprengel"
-          active-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -120,7 +121,7 @@
         <v-chip-group
           v-if="gemarkungen.length !== 0"
           title="Gemarkungen"
-          active-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -141,7 +142,7 @@
         <v-chip-group
           v-if="mittelschulsprengel.length !== 0"
           title="Mittelschulsprengel"
-          active-class="primary--text"
+          selected-class="text-primary"
           column
         >
           <v-chip
@@ -156,15 +157,13 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Mixins, VModel, Watch } from "vue-property-decorator";
-import AdresseModel from "@/types/model/common/AdresseModel";
+<script setup lang="ts">
+import { computed, watch, ref } from "vue";
 import CityMap from "@/components/map/CityMap.vue";
-import L, { GeoJSONOptions, LatLng, LatLngLiteral } from "leaflet";
-import { Feature, Point } from "geojson";
+import L, { type GeoJSONOptions, LatLng, type LatLngLiteral } from "leaflet";
+import type { Feature, Point } from "geojson";
 import _ from "lodash";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import {
+import type {
   FlurstueckDto,
   GemarkungDto,
   StadtbezirkDto,
@@ -177,8 +176,9 @@ import {
   GrundschulsprengelDto,
   MittelschulsprengelDto,
   ViertelDto,
+  AdresseDto,
 } from "@/api/api-client/isi-backend";
-import {
+import type {
   FeatureDtoBezirksteilDto,
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
@@ -189,433 +189,418 @@ import {
   FeatureDtoViertelDto,
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
-import GeodataEaiApiRequestMixin from "@/mixins/requests/eai/GeodataEaiApiRequestMixin";
-import KoordinatenApiRequestMixin from "@/mixins/requests/KoordinatenApiRequestMixin";
 import VerortungPointModel from "@/types/model/common/VerortungPointModel";
 import { ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
+import { useKoordinatenApi } from "@/composables/requests/KoordinatenApi";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import { isAdresseEmpty, isAdresseEqual } from "@/utils/AdresseUtil";
 
-@Component({
-  components: { CityMap },
-})
-export default class InfrastruktureinrichtungVerortung extends Mixins(
-  SaveLeaveMixin,
-  GeodataEaiApiRequestMixin,
-  KoordinatenApiRequestMixin,
-) {
-  @VModel({ type: VerortungPointModel }) verortungModel?: VerortungPointModel;
+interface Props {
+  adresse?: AdresseDto;
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Object })
-  private adresse?: AdresseModel;
+const { formChanged } = useSaveLeave();
+const geoApi = useGeodataEaiApi();
+const koordinatenApi = useKoordinatenApi();
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const verortungModel = defineModel<VerortungPointModel | undefined>({ required: true });
+const verortungCardTitle = "Verortung";
+let oldAdresse: AdresseDto | undefined = undefined;
+const pointCoordinatesAsUtm32 = ref("");
+const geoJson = ref<Array<Feature<Point>>>([]); /* Repräsentiert eine einzige Punktkoordinate. */
+const geoJsonOptions: GeoJSONOptions = {
+  pointToLayer: (feature: Feature, latlng) => {
+    return L.marker(latlng, { icon: ICON_INFRASTRUKTUREINRICHTUNG });
+  },
+};
+const isVerortungEditable = computed(() => props.isEditable && !adresseValid.value);
+const adresseCoordinate = computed(() => {
+  const lng = props.adresse?.coordinate?.longitude;
+  const lat = props.adresse?.coordinate?.latitude;
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get isVerortungEditable(): boolean {
-    return this.isEditable && !this.adresseValid();
+  if (lng && lat) {
+    return { lng, lat };
   }
+  return undefined;
+});
 
-  private adresseValid(): boolean {
-    return !_.isNil(this.adresse) && !_.isEmpty(this.adresse.strasse) && !_.isNil(this.adresseCoordinate);
+const verortungPointCoordinate = computed(() => {
+  let lng = Number.NaN;
+  let lat = Number.NaN;
+
+  if (
+    !_.isNil(verortungModel.value) &&
+    !_.isNil(verortungModel.value.point) &&
+    verortungModel.value.point.coordinates.length == 2
+  ) {
+    lng = verortungModel.value.point.coordinates[0];
+    lat = verortungModel.value.point.coordinates[1];
   }
+  if (!_.isNaN(lng) && !_.isNaN(lat)) {
+    return { lng, lat };
+  }
+  return undefined;
+});
 
-  private verortungCardTitle = "Verortung";
+const pointToDisplay = computed({
+  get() {
+    return pointCoordinatesAsUtm32.value;
+  },
+  set(value: string) {
+    pointCoordinatesAsUtm32.value = value;
+  },
+});
 
-  private oldAdresse: AdresseModel | undefined = undefined;
+const adresseValid = computed(
+  () => !_.isNil(props.adresse) && !_.isEmpty(props.adresse.strasse) && !_.isNil(adresseCoordinate.value),
+);
 
-  private pointCoordinatesAsUtm32 = "";
+const pointToDisplayNotEmpty = computed(() => !_.isEmpty(pointCoordinatesAsUtm32.value));
+const stadtbezirke = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.stadtbezirke) as Array<StadtbezirkDto>, ["nummer"]),
+);
+const bezirksteile = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.bezirksteile) as Array<BezirksteilDto>, ["nummer"]),
+);
+const gemarkungen = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.gemarkungen) as Array<GemarkungDto>, ["nummer"]),
+);
+const kitaplanungsbereiche = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.kitaplanungsbereiche) as Array<KitaplanungsbereichDto>, ["kitaPlb"]),
+);
+const grundschulsprengel = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.grundschulsprengel) as Array<GrundschulsprengelDto>, ["nummer"]),
+);
+const mittelschulsprengel = computed(() =>
+  _.sortBy(_.toArray(verortungModel.value?.mittelschulsprengel) as Array<MittelschulsprengelDto>, ["nummer"]),
+);
 
-  /**
-   * Repräsentiert eine einzige Punktkoordinate.
-   */
-  private geoJson: Array<Feature<Point>> = [];
+const lookAt = computed(() => {
+  if (!_.isEmpty(geoJson.value)) {
+    const coordinates = geoJson.value[0].geometry.coordinates;
+    return { lng: coordinates[0], lat: coordinates[1] };
+  }
+  return undefined;
+});
 
-  private geoJsonOptions: GeoJSONOptions = {
-    pointToLayer: (feature: Feature, latlng) => {
-      return L.marker(latlng, { icon: ICON_INFRASTRUKTUREINRICHTUNG });
+function getPointGeometry(): PointGeometryDto | undefined {
+  if (!_.isEmpty(geoJson.value)) {
+    const coordinates = geoJson.value[0].geometry.coordinates;
+    if (coordinates.length == 2) {
+      return {
+        type: "Point",
+        coordinates: [coordinates[0], coordinates[1]], // [0] = longitude, [1] = latitude
+      } as PointGeometryDto;
+    }
+  }
+  return undefined;
+}
+
+function createVerortung(point: PointGeometryDto | undefined): void {
+  if (!_.isNil(point)) {
+    createVerortungPointDtoFromSelectedPoint(point).then((verortung: VerortungPointDto | undefined) => {
+      verortungModel.value = verortung;
+    });
+  } else {
+    verortungModel.value = undefined;
+  }
+}
+
+function handleClickInMap(latlng: LatLng): void {
+  if (isVerortungEditable.value) {
+    setGeoJsonFromLatLng(latlng);
+  }
+}
+
+function handleDeselectGeoJson(): void {
+  geoJson.value = [];
+  verortungModel.value = undefined;
+  refresh();
+  formChanged();
+}
+
+function handleAcceptSelectedGeoJson(): void {
+  createVerortung(getPointGeometry());
+  formChanged();
+}
+
+watch(
+  () => props.adresse,
+  () => handleAdresseChanged(),
+  { deep: true, immediate: true },
+);
+
+/**
+ * Dient als Reaktion auf Änderungen der Adresse aus der Elternkomponente.
+ */
+function handleAdresseChanged(): void {
+  if (adresseChanged()) {
+    if (adresseValid.value) {
+      setGeoJsonFromLatLng(adresseCoordinate.value as LatLng);
+    } else {
+      geoJson.value = [];
+    }
+    handleAcceptSelectedGeoJson();
+  }
+}
+
+function adresseChanged(): boolean {
+  let changed = false;
+  // Erstaufruf?
+  if (_.isNil(oldAdresse) && !_.isNil(props.adresse)) {
+    if (_.isNil(verortungModel.value)) {
+      changed = !isAdresseEmpty(props.adresse); // Neuanlage mit Adressauswahl
+    } else {
+      /* Infrastruktureinrichtung mit existierender Adresse */
+    }
+    oldAdresse = _.cloneDeep(props.adresse);
+  } else {
+    // Folgeaufruf: Hat sich die ausgewählte Adresse geändert?
+    if (!_.isNil(oldAdresse) && !_.isNil(props.adresse)) {
+      if (!isAdresseEmpty(oldAdresse) && !isAdresseEmpty(props.adresse)) {
+        changed = !isAdresseEqual(oldAdresse, props.adresse);
+      } else if (
+        (isAdresseEmpty(oldAdresse) && !isAdresseEmpty(props.adresse)) ||
+        (!isAdresseEmpty(oldAdresse) && isAdresseEmpty(props.adresse))
+      ) {
+        changed = true;
+      }
+    }
+    if (changed) {
+      if (!_.isNil(props.adresse)) {
+        oldAdresse = _.cloneDeep(props.adresse);
+      } else {
+        oldAdresse = undefined;
+      }
+    }
+  }
+  return changed;
+}
+
+watch(
+  verortungModel,
+  () => {
+    handleVerortungModelChanged();
+  },
+  { deep: true, immediate: true },
+);
+
+function handleVerortungModelChanged(): void {
+  if (!_.isNil(verortungPointCoordinate.value)) {
+    setGeoJsonFromLatLng({ lat: verortungPointCoordinate.value?.lat, lng: verortungPointCoordinate.value?.lng });
+  } else {
+    geoJson.value = [];
+  }
+  refresh();
+}
+
+function refresh(): void {
+  const point = getPointGeometry();
+  if (!_.isNil(point)) {
+    getUtm32(point).then((utm32) => {
+      pointToDisplay.value = !_.isNil(utm32) ? `${_.round(utm32.east)} ${_.round(utm32.north)} (UTM)` : "";
+    });
+  } else {
+    pointToDisplay.value = "";
+  }
+}
+
+async function getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | undefined> {
+  let utm32: UtmDto | undefined = undefined;
+  if (!_.isNil(point) && !_.isNil(point.coordinates) && point.coordinates.length === 2) {
+    const wgs84 = {
+      longitude: point.coordinates[0],
+      latitude: point.coordinates[1],
+    } as Wgs84Dto;
+    utm32 = await koordinatenApi.wgs84toUtm32(wgs84);
+  }
+  return utm32;
+}
+
+function setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
+  geoJson.value = [
+    {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [latlng.lng, latlng.lat] },
+      properties: null,
     },
-  };
+  ];
+}
 
-  get adresseCoordinate(): LatLngLiteral | undefined {
-    const lng = this.adresse?.coordinate?.longitude;
-    const lat = this.adresse?.coordinate?.latitude;
+/**
+ * Erstellt das VerortungPointDto auf Basis einer Punktkoordinate.
+ * Tritt ein fehler bei der Erstellung des VerortungPointDtos auf, so wird undefined zurückgegeben.
+ */
+async function createVerortungPointDtoFromSelectedPoint(
+  point: PointGeometryDto,
+): Promise<VerortungPointDto | undefined> {
+  try {
+    const promiseStadtbezirke = geoApi.getStadtbezirkeForPoint(point);
+    const promiseBezirksteile = geoApi.getBezirksteileForPoint(point);
+    const promiseViertel = geoApi.getViertelForPoint(point);
+    const promiseGemarkungen = geoApi.getGemarkungenForPoint(point);
+    const promiseFlurstuecke = geoApi.getFlurstueckeForPoint(point);
+    const promiseKitaplanungsbereiche = geoApi.getKitaplanungsbereicheForPoint(point);
+    const promiseGrundschulsprengel = geoApi.getGrundschulsprengelForPoint(point);
+    const promiseMittelschulsprengel = geoApi.getMittelschulsprengelForPoint(point);
 
-    if (lng && lat) {
-      return { lng, lat };
-    }
+    // Stadtbezirke ermitteln
+    const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
+      await promiseStadtbezirke,
+    );
+
+    // Stadtbezirksteile ermitteln
+    const bezirksteileBackend: Array<BezirksteilDto> = bezirksteileGeoDataEaiToBezirksteileBackend(
+      await promiseBezirksteile,
+    );
+
+    // Viertel ermitteln
+    const viertelBackend: Array<ViertelDto> = viertelGeoDataEaiToViertelBackend(await promiseViertel);
+
+    // Gemarkungen ermitteln
+    const gemarkungenBackend: Array<GemarkungDto> = gemarkungenGeoDataEaiToGemarkungenBackend(await promiseGemarkungen);
+
+    // Flurstücke ermitteln
+    const flurstueckeBackend: Array<FlurstueckDto> = flurstueckeGeoDataEaiToFlurstueckeBackend(
+      await promiseFlurstuecke,
+    );
+
+    // Anfügen der Flurstücke an Gemarkung
+    flurstueckeBackend.forEach((flurstueck) => {
+      const matchingGemarkung = gemarkungenBackend.find((gemarkung) => gemarkung.nummer === flurstueck.gemarkungNummer);
+      matchingGemarkung?.flurstuecke.add(flurstueck);
+    });
+
+    // KitaPlb ermitteln
+    const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
+      kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(await promiseKitaplanungsbereiche);
+
+    // Grundschulsprengel ermitteln
+    const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
+      grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(await promiseGrundschulsprengel);
+
+    // Mittelschulsprengel ermitteln
+    const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
+      mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(await promiseMittelschulsprengel);
+
+    // Erstellung des VerortungPointDto
+    return new VerortungPointModel({
+      gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
+      stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
+      bezirksteile: new Set<BezirksteilDto>(bezirksteileBackend),
+      viertel: new Set<ViertelDto>(viertelBackend),
+      kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
+      grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
+      mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
+      point: point,
+    } as VerortungPointDto);
+  } catch (error) {
     return undefined;
   }
+}
 
-  get verortungPointCoordinate(): LatLngLiteral | undefined {
-    let lng: number = Number.NaN;
-    let lat: number = Number.NaN;
-
-    if (
-      !_.isNil(this.verortungModel) &&
-      !_.isNil(this.verortungModel.point) &&
-      this.verortungModel.point.coordinates.length == 2
-    ) {
-      lng = this.verortungModel.point.coordinates[0];
-      lat = this.verortungModel.point.coordinates[1];
-    }
-    if (!_.isNaN(lng) && !_.isNaN(lat)) {
-      return { lng, lat };
-    }
-    return undefined;
-  }
-
-  get pointToDisplay(): string {
-    return this.pointCoordinatesAsUtm32;
-  }
-
-  set pointToDisplay(pointCoordinatesAsUtm32: string) {
-    this.pointCoordinatesAsUtm32 = pointCoordinatesAsUtm32;
-  }
-
-  get pointToDisplayNotEmpty(): boolean {
-    return !_.isEmpty(this.pointCoordinatesAsUtm32);
-  }
-
-  get stadtbezirke(): Array<StadtbezirkDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.stadtbezirke), ["nummer"]);
-  }
-
-  get bezirksteile(): Array<BezirksteilDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.bezirksteile), ["nummer"]);
-  }
-
-  get gemarkungen(): Array<GemarkungDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.gemarkungen), ["nummer"]);
-  }
-
-  get kitaplanungsbereiche(): Array<KitaplanungsbereichDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.kitaplanungsbereiche), ["kitaPlb"]);
-  }
-
-  get grundschulsprengel(): Array<GrundschulsprengelDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.grundschulsprengel), ["nummer"]);
-  }
-
-  get mittelschulsprengel(): Array<MittelschulsprengelDto> {
-    return _.sortBy(_.toArray(this.verortungModel?.mittelschulsprengel), ["nummer"]);
-  }
-
-  get lookAt(): LatLngLiteral | undefined {
-    if (!_.isEmpty(this.geoJson)) {
-      const coordinates = this.geoJson[0].geometry.coordinates;
-      return { lng: coordinates[0], lat: coordinates[1] };
-    }
-
-    return undefined;
-  }
-
-  private getPointGeometry(): PointGeometryDto | undefined {
-    if (!_.isEmpty(this.geoJson)) {
-      const coordinates = this.geoJson[0].geometry.coordinates;
-      if (coordinates.length == 2) {
-        return {
-          type: "Point",
-          coordinates: [coordinates[0], coordinates[1]], // [0] = longitude, [1] = latitude
-        } as PointGeometryDto;
-      }
-    }
-    return undefined;
-  }
-
-  private handleClickInMap(latlng: LatLng): void {
-    if (this.isVerortungEditable) {
-      this.setGeoJsonFromLatLng(latlng);
-    }
-  }
-
-  private handleDeselectGeoJson(): void {
-    this.geoJson = [];
-    this.verortungModel = undefined;
-    this.refresh();
-    this.formChanged();
-  }
-
-  private handleAcceptSelectedGeoJson(): void {
-    this.createVerortung(this.getPointGeometry());
-    this.formChanged();
-  }
-
-  private createVerortung(point: PointGeometryDto | undefined): void {
-    if (!_.isNil(point)) {
-      this.createVerortungPointDtoFromSelectedPoint(point).then((verortung: VerortungPointDto | undefined) => {
-        this.verortungModel = verortung;
-      });
-    } else {
-      this.verortungModel = undefined;
-    }
-  }
-
-  /**
-   * Dient als Reaktion auf Änderungen der Adresse aus der Elternkomponente.
-   */
-  @Watch("adresse", { deep: true })
-  private handleAdresseChanged(): void {
-    if (this.adresseChanged) {
-      if (this.adresseValid()) {
-        this.setGeoJsonFromLatLng(this.adresseCoordinate as LatLng);
-      } else {
-        this.geoJson = [];
-      }
-      this.handleAcceptSelectedGeoJson();
-    }
-  }
-
-  get adresseChanged(): boolean {
-    let changed = false;
-    // Erstaufruf?
-    if (_.isNil(this.oldAdresse) && !_.isNil(this.adresse)) {
-      if (_.isNil(this.verortungModel)) {
-        changed = !this.adresse.isEmpty; // Neuanlage mit Adressauswahl
-      } else {
-        /* Infrastruktureinrichtung mit existierender Adresse */
-      }
-      this.oldAdresse = _.cloneDeep(this.adresse);
-    } else {
-      // Folgeaufruf: Hat sich die ausgewählte Adresse geändert?
-      if (!_.isNil(this.oldAdresse) && !_.isNil(this.adresse)) {
-        if (!this.oldAdresse.isEmpty && !this.adresse.isEmpty) {
-          changed = !this.oldAdresse.isEqual(this.adresse);
-        } else if (
-          (this.oldAdresse.isEmpty && !this.adresse.isEmpty) ||
-          (!this.oldAdresse.isEmpty && this.adresse.isEmpty)
-        ) {
-          changed = true;
-        }
-      }
-      if (changed) {
-        if (!_.isNil(this.adresse)) {
-          this.oldAdresse = _.cloneDeep(this.adresse);
-        } else {
-          this.oldAdresse = undefined;
-        }
-      }
-    }
-    return changed;
-  }
-
-  @Watch("verortungModel", { deep: true })
-  private handleVerortungModelChanged(): void {
-    if (!_.isNil(this.verortungPointCoordinate)) {
-      this.setGeoJsonFromLatLng(this.verortungPointCoordinate);
-    } else {
-      this.geoJson = [];
-    }
-    this.refresh();
-  }
-
-  private refresh(): void {
-    const point = this.getPointGeometry();
-    if (!_.isNil(point)) {
-      this.getUtm32(point).then((utm32) => {
-        this.pointToDisplay = !_.isNil(utm32) ? `${_.round(utm32.east)} ${_.round(utm32.north)} (UTM)` : "";
-      });
-    } else {
-      this.pointToDisplay = "";
-    }
-  }
-
-  private async getUtm32(point: PointGeometryDto | undefined): Promise<UtmDto | undefined> {
-    let utm32: UtmDto | undefined = undefined;
-    if (!_.isNil(point) && !_.isNil(point.coordinates) && point.coordinates.length === 2) {
-      const wgs84 = {
-        longitude: point.coordinates[0],
-        latitude: point.coordinates[1],
-      } as Wgs84Dto;
-      utm32 = await this.wgs84toUtm32(wgs84, true);
-    }
-    return utm32;
-  }
-
-  private setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
-    this.geoJson = [
-      {
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [latlng.lng, latlng.lat] },
-        properties: null,
-      },
-    ];
-  }
-
-  /**
-   * Erstellt das VerortungPointDto auf Basis einer Punktkoordinate.
-   * Tritt ein fehler bei der Erstellung des VerortungPointDtos auf, so wird undefined zurückgegeben.
-   */
-  private async createVerortungPointDtoFromSelectedPoint(
-    point: PointGeometryDto,
-  ): Promise<VerortungPointDto | undefined> {
-    try {
-      const promiseStadtbezirke = this.getStadtbezirkeForPoint(point, true);
-      const promiseBezirksteile = this.getBezirksteileForPoint(point, true);
-      const promiseViertel = this.getViertelForPoint(point, true);
-      const promiseGemarkungen = this.getGemarkungenForPoint(point, true);
-      const promiseFlurstuecke = this.getFlurstueckeForPoint(point, true);
-      const promiseKitaplanungsbereiche = this.getKitaplanungsbereicheForPoint(point, true);
-      const promiseGrundschulsprengel = this.getGrundschulsprengelForPoint(point, true);
-      const promiseMittelschulsprengel = this.getMittelschulsprengelForPoint(point, true);
-
-      // Stadtbezirke ermitteln
-      const stadtbezirkeBackend: Array<StadtbezirkDto> = this.stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
-        await promiseStadtbezirke,
-      );
-
-      // Stadtbezirksteile ermitteln
-      const bezirksteileBackend: Array<BezirksteilDto> = this.bezirksteileGeoDataEaiToBezirksteileBackend(
-        await promiseBezirksteile,
-      );
-
-      // Viertel ermitteln
-      const viertelBackend: Array<ViertelDto> = this.viertelGeoDataEaiToViertelBackend(await promiseViertel);
-
-      // Gemarkungen ermitteln
-      const gemarkungenBackend: Array<GemarkungDto> = this.gemarkungenGeoDataEaiToGemarkungenBackend(
-        await promiseGemarkungen,
-      );
-
-      // Flurstücke ermitteln
-      const flurstueckeBackend: Array<FlurstueckDto> = this.flurstueckeGeoDataEaiToFlurstueckeBackend(
-        await promiseFlurstuecke,
-      );
-
-      // Anfügen der Flurstücke an Gemarkung
-      flurstueckeBackend.forEach((flurstueck) => {
-        const matchingGemarkung = gemarkungenBackend.find(
-          (gemarkung) => gemarkung.nummer === flurstueck.gemarkungNummer,
-        );
-        matchingGemarkung?.flurstuecke.add(flurstueck);
-      });
-
-      // KitaPlb ermitteln
-      const kitaplanungsbereicheBackend: Array<KitaplanungsbereichDto> =
-        this.kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(await promiseKitaplanungsbereiche);
-
-      // Grundschulsprengel ermitteln
-      const grundschulsprengelBackend: Array<GrundschulsprengelDto> =
-        this.grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(await promiseGrundschulsprengel);
-
-      // Mittelschulsprengel ermitteln
-      const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
-        this.mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(await promiseMittelschulsprengel);
-
-      // Erstellung des VerortungPointDto
-      return new VerortungPointModel({
-        gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
-        stadtbezirke: new Set<StadtbezirkDto>(stadtbezirkeBackend),
-        bezirksteile: new Set<BezirksteilDto>(bezirksteileBackend),
-        viertel: new Set<ViertelDto>(viertelBackend),
-        kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
-        grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
-        mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
-        point: point,
-      } as VerortungPointDto);
-    } catch (error) {
-      return undefined;
-    }
-  }
-
-  private stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
-    stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>,
-  ): Array<StadtbezirkDto> {
-    return stadtbezirkeGeoDataEai.map((stadtbezirk) => {
-      return {
-        nummer: stadtbezirk.properties?.stadtbezirkNummer,
-        name: stadtbezirk.properties?.name,
-        multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
-  }
-
-  private bezirksteileGeoDataEaiToBezirksteileBackend(
-    bezirksteileGeoDataEai: Array<FeatureDtoBezirksteilDto>,
-  ): Array<BezirksteilDto> {
-    return bezirksteileGeoDataEai.map((bezirksteil) => {
-      return {
-        nummer: bezirksteil.properties?.bezirksteilNummer,
-        multiPolygon: JSON.parse(JSON.stringify(bezirksteil.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
-  }
-
-  private viertelGeoDataEaiToViertelBackend(bezirksteileGeoDataEai: Array<FeatureDtoViertelDto>): Array<ViertelDto> {
-    return bezirksteileGeoDataEai.map((viertel) => {
-      return {
-        nummer: viertel.properties?.viertelNummer,
-        flaecheQm: viertel.properties?.flaecheQm,
-        multiPolygon: JSON.parse(JSON.stringify(viertel.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
-  }
-
-  private gemarkungenGeoDataEaiToGemarkungenBackend(
-    gemarkungenGeoDataEai: Array<FeatureDtoGemarkungDto>,
-  ): Array<GemarkungDto> {
-    return gemarkungenGeoDataEai.map((gemarkung) => {
-      return {
-        flurstuecke: new Set<FlurstueckDto>(),
-        name: gemarkung.properties?.gemarkungName,
-        nummer: gemarkung.properties?.gemarkung,
-        multiPolygon: JSON.parse(JSON.stringify(gemarkung.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
-  }
-
-  private flurstueckeGeoDataEaiToFlurstueckeBackend(
-    flurstueckGeoDataEai: Array<FeatureDtoFlurstueckDto>,
-  ): Array<FlurstueckDto> {
-    return flurstueckGeoDataEai.map(this.flurstueckGeoDataEaiToFlurstueckBackend);
-  }
-
-  private flurstueckGeoDataEaiToFlurstueckBackend(flurstueckGeoDataEai: FeatureDtoFlurstueckDto): FlurstueckDto {
+function stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
+  stadtbezirkeGeoDataEai: Array<FeatureDtoStadtbezirkDto>,
+): Array<StadtbezirkDto> {
+  return stadtbezirkeGeoDataEai.map((stadtbezirk) => {
     return {
-      nummer: [
-        flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
-        flurstueckGeoDataEai.properties?.fluerstueckNummerN,
-      ].join("/"),
-      zaehler: flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
-      nenner: flurstueckGeoDataEai.properties?.fluerstueckNummerN,
-      flaecheQm: flurstueckGeoDataEai.properties?.flaecheQm,
-      eigentumsart: flurstueckGeoDataEai.properties?.eigentumsart,
-      eigentumsartBedeutung: flurstueckGeoDataEai.properties?.eigentumsartBedeutung,
-      gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
-      multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
+      nummer: stadtbezirk.properties?.stadtbezirkNummer,
+      name: stadtbezirk.properties?.name,
+      multiPolygon: JSON.parse(JSON.stringify(stadtbezirk.geometry)) as MultiPolygonGeometryDtoBackend,
     };
-  }
+  });
+}
 
-  private kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(
-    kitaplanungsbereicheGeoDataEai: Array<FeatureDtoKitaplanungsbereichDto>,
-  ): Array<KitaplanungsbereichDto> {
-    return kitaplanungsbereicheGeoDataEai.map((kitaplanungsbereich) => {
-      return {
-        kitaPlb: kitaplanungsbereich.properties?.kitaPlb,
-        kitaPlbT: kitaplanungsbereich.properties?.kitaPlbT,
-        multiPolygon: JSON.parse(JSON.stringify(kitaplanungsbereich.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
-  }
+function bezirksteileGeoDataEaiToBezirksteileBackend(
+  bezirksteileGeoDataEai: Array<FeatureDtoBezirksteilDto>,
+): Array<BezirksteilDto> {
+  return bezirksteileGeoDataEai.map((bezirksteil) => {
+    return {
+      nummer: bezirksteil.properties?.bezirksteilNummer,
+      multiPolygon: JSON.parse(JSON.stringify(bezirksteil.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
+  });
+}
 
-  private grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(
-    grundschulsprengelGeoDataEai: Array<FeatureDtoGrundschulsprengelDto>,
-  ): Array<GrundschulsprengelDto> {
-    return grundschulsprengelGeoDataEai.map((grundschulsprengel) => {
-      return {
-        nummer: grundschulsprengel.properties?.schulnummer,
-        multiPolygon: JSON.parse(JSON.stringify(grundschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
-  }
+function viertelGeoDataEaiToViertelBackend(bezirksteileGeoDataEai: Array<FeatureDtoViertelDto>): Array<ViertelDto> {
+  return bezirksteileGeoDataEai.map((viertel) => {
+    return {
+      nummer: viertel.properties?.viertelNummer,
+      flaecheQm: viertel.properties?.flaecheQm,
+      multiPolygon: JSON.parse(JSON.stringify(viertel.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
+  });
+}
 
-  private mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
-    mittelschulsprengelGeoDataEai: Array<FeatureDtoMittelschulsprengelDto>,
-  ): Array<MittelschulsprengelDto> {
-    return mittelschulsprengelGeoDataEai.map((mittelschulsprengel) => {
-      return {
-        nummer: mittelschulsprengel.properties?.schulnummer,
-        multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
-      };
-    });
-  }
+function gemarkungenGeoDataEaiToGemarkungenBackend(
+  gemarkungenGeoDataEai: Array<FeatureDtoGemarkungDto>,
+): Array<GemarkungDto> {
+  return gemarkungenGeoDataEai.map((gemarkung) => {
+    return {
+      flurstuecke: new Set<FlurstueckDto>(),
+      name: gemarkung.properties?.gemarkungName,
+      nummer: gemarkung.properties?.gemarkung,
+      multiPolygon: JSON.parse(JSON.stringify(gemarkung.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
+  });
+}
+
+function flurstueckeGeoDataEaiToFlurstueckeBackend(
+  flurstueckGeoDataEai: Array<FeatureDtoFlurstueckDto>,
+): Array<FlurstueckDto> {
+  return flurstueckGeoDataEai.map(flurstueckGeoDataEaiToFlurstueckBackend);
+}
+
+function flurstueckGeoDataEaiToFlurstueckBackend(flurstueckGeoDataEai: FeatureDtoFlurstueckDto): FlurstueckDto {
+  return {
+    nummer: [
+      flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
+      flurstueckGeoDataEai.properties?.fluerstueckNummerN,
+    ].join("/"),
+    zaehler: flurstueckGeoDataEai.properties?.fluerstueckNummerZ,
+    nenner: flurstueckGeoDataEai.properties?.fluerstueckNummerN,
+    flaecheQm: flurstueckGeoDataEai.properties?.flaecheQm,
+    eigentumsart: flurstueckGeoDataEai.properties?.eigentumsart,
+    eigentumsartBedeutung: flurstueckGeoDataEai.properties?.eigentumsartBedeutung,
+    gemarkungNummer: flurstueckGeoDataEai.properties?.gemarkung,
+    multiPolygon: JSON.parse(JSON.stringify(flurstueckGeoDataEai.geometry)) as MultiPolygonGeometryDtoBackend,
+  };
+}
+
+function kitaplanungsbereicheGeoDataEaiToKitaplanungsbereicheBackend(
+  kitaplanungsbereicheGeoDataEai: Array<FeatureDtoKitaplanungsbereichDto>,
+): Array<KitaplanungsbereichDto> {
+  return kitaplanungsbereicheGeoDataEai.map((kitaplanungsbereich) => {
+    return {
+      kitaPlb: kitaplanungsbereich.properties?.kitaPlb,
+      kitaPlbT: kitaplanungsbereich.properties?.kitaPlbT,
+      multiPolygon: JSON.parse(JSON.stringify(kitaplanungsbereich.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
+  });
+}
+
+function grundschulsprengelGeoDataEaiToGrundschulsprengelBackend(
+  grundschulsprengelGeoDataEai: Array<FeatureDtoGrundschulsprengelDto>,
+): Array<GrundschulsprengelDto> {
+  return grundschulsprengelGeoDataEai.map((grundschulsprengel) => {
+    return {
+      nummer: grundschulsprengel.properties?.schulnummer,
+      multiPolygon: JSON.parse(JSON.stringify(grundschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
+  });
+}
+
+function mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
+  mittelschulsprengelGeoDataEai: Array<FeatureDtoMittelschulsprengelDto>,
+): Array<MittelschulsprengelDto> {
+  return mittelschulsprengelGeoDataEai.map((mittelschulsprengel) => {
+    return {
+      nummer: mittelschulsprengel.properties?.schulnummer,
+      multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
+  });
 }
 </script>

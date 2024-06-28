@@ -1,4 +1,4 @@
-import { GsNachmittagBetreuungDto } from "@/api/api-client/isi-backend";
+import type { GsNachmittagBetreuungDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import { createAdresseDto } from "@/utils/Factories";

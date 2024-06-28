@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { LookupApi, LookupEntryDto, LookupListDto } from "@/api/api-client/isi-backend";
+import { LookupApi, type LookupEntryDto, type LookupListDto } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import _ from "lodash";
 

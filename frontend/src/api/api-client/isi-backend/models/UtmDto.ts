@@ -30,13 +30,13 @@ export interface UtmDto {
      * @type {number}
      * @memberof UtmDto
      */
-    north: number;
+    north?: number;
     /**
      * 
      * @type {number}
      * @memberof UtmDto
      */
-    east: number;
+    east?: number;
 }
 
 /**
@@ -44,8 +44,6 @@ export interface UtmDto {
  */
 export function instanceOfUtmDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "north" in value;
-    isInstance = isInstance && "east" in value;
 
     return isInstance;
 }
@@ -61,8 +59,8 @@ export function UtmDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ut
     return {
         
         'zone': !exists(json, 'zone') ? undefined : json['zone'],
-        'north': json['north'],
-        'east': json['east'],
+        'north': !exists(json, 'north') ? undefined : json['north'],
+        'east': !exists(json, 'east') ? undefined : json['east'],
     };
 }
 
