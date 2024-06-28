@@ -49,12 +49,24 @@ import {
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
 } from './MultiPolygonGeometryDto';
+import type { PointGeometryDto } from './PointGeometryDto';
+import {
+    PointGeometryDtoFromJSON,
+    PointGeometryDtoFromJSONTyped,
+    PointGeometryDtoToJSON,
+} from './PointGeometryDto';
 import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
     StadtbezirkDtoFromJSON,
     StadtbezirkDtoFromJSONTyped,
     StadtbezirkDtoToJSON,
 } from './StadtbezirkDto';
+import type { UtmDto } from './UtmDto';
+import {
+    UtmDtoFromJSON,
+    UtmDtoFromJSONTyped,
+    UtmDtoToJSON,
+} from './UtmDto';
 import type { ViertelDto } from './ViertelDto';
 import {
     ViertelDtoFromJSON,
@@ -116,6 +128,18 @@ export interface VerortungMultiPolygonDto {
      * @memberof VerortungMultiPolygonDto
      */
     multiPolygon: MultiPolygonGeometryDto;
+    /**
+     * 
+     * @type {PointGeometryDto}
+     * @memberof VerortungMultiPolygonDto
+     */
+    centroid?: PointGeometryDto;
+    /**
+     * 
+     * @type {UtmDto}
+     * @memberof VerortungMultiPolygonDto
+     */
+    centroidUtm?: UtmDto;
 }
 
 /**
@@ -146,6 +170,8 @@ export function VerortungMultiPolygonDtoFromJSONTyped(json: any, ignoreDiscrimin
         'grundschulsprengel': !exists(json, 'grundschulsprengel') ? undefined : (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelDtoFromJSON))),
         'mittelschulsprengel': !exists(json, 'mittelschulsprengel') ? undefined : (new Set((json['mittelschulsprengel'] as Array<any>).map(MittelschulsprengelDtoFromJSON))),
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
+        'centroid': !exists(json, 'centroid') ? undefined : PointGeometryDtoFromJSON(json['centroid']),
+        'centroidUtm': !exists(json, 'centroidUtm') ? undefined : UtmDtoFromJSON(json['centroidUtm']),
     };
 }
 
@@ -166,6 +192,8 @@ export function VerortungMultiPolygonDtoToJSON(value?: VerortungMultiPolygonDto 
         'grundschulsprengel': value.grundschulsprengel === undefined ? undefined : (Array.from(value.grundschulsprengel as Set<any>).map(GrundschulsprengelDtoToJSON)),
         'mittelschulsprengel': value.mittelschulsprengel === undefined ? undefined : (Array.from(value.mittelschulsprengel as Set<any>).map(MittelschulsprengelDtoToJSON)),
         'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
+        'centroid': PointGeometryDtoToJSON(value.centroid),
+        'centroidUtm': UtmDtoToJSON(value.centroidUtm),
     };
 }
 

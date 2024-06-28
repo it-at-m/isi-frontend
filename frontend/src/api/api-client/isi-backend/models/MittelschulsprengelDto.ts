@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { MultiPolygonGeometryModel } from './MultiPolygonGeometryModel';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
-    MultiPolygonGeometryModelFromJSON,
-    MultiPolygonGeometryModelFromJSONTyped,
-    MultiPolygonGeometryModelToJSON,
-} from './MultiPolygonGeometryModel';
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 
 /**
  * 
@@ -34,10 +34,10 @@ export interface MittelschulsprengelDto {
     nummer?: number;
     /**
      * 
-     * @type {MultiPolygonGeometryModel}
+     * @type {MultiPolygonGeometryDto}
      * @memberof MittelschulsprengelDto
      */
-    multiPolygon: MultiPolygonGeometryModel;
+    multiPolygon: MultiPolygonGeometryDto;
 }
 
 /**
@@ -61,7 +61,7 @@ export function MittelschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
-        'multiPolygon': MultiPolygonGeometryModelFromJSON(json['multiPolygon']),
+        'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
@@ -75,7 +75,7 @@ export function MittelschulsprengelDtoToJSON(value?: MittelschulsprengelDto | nu
     return {
         
         'nummer': value.nummer,
-        'multiPolygon': MultiPolygonGeometryModelToJSON(value.multiPolygon),
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

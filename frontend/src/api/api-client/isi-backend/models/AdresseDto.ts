@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { UtmDto } from './UtmDto';
+import {
+    UtmDtoFromJSON,
+    UtmDtoFromJSONTyped,
+    UtmDtoToJSON,
+} from './UtmDto';
 import type { Wgs84Dto } from './Wgs84Dto';
 import {
     Wgs84DtoFromJSON,
@@ -58,6 +64,12 @@ export interface AdresseDto {
     coordinate?: Wgs84Dto;
     /**
      * 
+     * @type {UtmDto}
+     * @memberof AdresseDto
+     */
+    coordinateUtm?: UtmDto;
+    /**
+     * 
      * @type {string}
      * @memberof AdresseDto
      */
@@ -88,6 +100,7 @@ export function AdresseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'strasse': !exists(json, 'strasse') ? undefined : json['strasse'],
         'hausnummer': !exists(json, 'hausnummer') ? undefined : json['hausnummer'],
         'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
+        'coordinateUtm': !exists(json, 'coordinateUtm') ? undefined : UtmDtoFromJSON(json['coordinateUtm']),
         'angabeLageErgaenzendeAdressinformation': !exists(json, 'angabeLageErgaenzendeAdressinformation') ? undefined : json['angabeLageErgaenzendeAdressinformation'],
     };
 }
@@ -106,6 +119,7 @@ export function AdresseDtoToJSON(value?: AdresseDto | null): any {
         'strasse': value.strasse,
         'hausnummer': value.hausnummer,
         'coordinate': Wgs84DtoToJSON(value.coordinate),
+        'coordinateUtm': UtmDtoToJSON(value.coordinateUtm),
         'angabeLageErgaenzendeAdressinformation': value.angabeLageErgaenzendeAdressinformation,
     };
 }

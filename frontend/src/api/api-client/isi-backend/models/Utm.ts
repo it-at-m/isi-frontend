@@ -16,55 +16,55 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface UtmDto
+ * @interface Utm
  */
-export interface UtmDto {
+export interface Utm {
     /**
      * 
      * @type {string}
-     * @memberof UtmDto
+     * @memberof Utm
      */
     zone?: string;
     /**
      * 
      * @type {number}
-     * @memberof UtmDto
+     * @memberof Utm
      */
-    north?: number;
+    east?: number;
     /**
      * 
      * @type {number}
-     * @memberof UtmDto
+     * @memberof Utm
      */
-    east?: number;
+    north?: number;
 }
 
 /**
- * Check if a given object implements the UtmDto interface.
+ * Check if a given object implements the Utm interface.
  */
-export function instanceOfUtmDto(value: object): boolean {
+export function instanceOfUtm(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function UtmDtoFromJSON(json: any): UtmDto {
-    return UtmDtoFromJSONTyped(json, false);
+export function UtmFromJSON(json: any): Utm {
+    return UtmFromJSONTyped(json, false);
 }
 
-export function UtmDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UtmDto {
+export function UtmFromJSONTyped(json: any, ignoreDiscriminator: boolean): Utm {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'zone': !exists(json, 'zone') ? undefined : json['zone'],
-        'north': !exists(json, 'north') ? undefined : json['north'],
         'east': !exists(json, 'east') ? undefined : json['east'],
+        'north': !exists(json, 'north') ? undefined : json['north'],
     };
 }
 
-export function UtmDtoToJSON(value?: UtmDto | null): any {
+export function UtmToJSON(value?: Utm | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -74,8 +74,8 @@ export function UtmDtoToJSON(value?: UtmDto | null): any {
     return {
         
         'zone': value.zone,
-        'north': value.north,
         'east': value.east,
+        'north': value.north,
     };
 }
 
