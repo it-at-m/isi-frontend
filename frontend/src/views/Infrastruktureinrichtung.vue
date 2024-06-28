@@ -423,9 +423,11 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
     if (_.isNil(validationMessage)) {
       if (!_.isNil(infrastruktureinrichtung)) {
         if (isNew.value) {
-          handleSuccess(await createInfrastruktureinrichtung(infrastruktureinrichtung.value));
+          const savedInfrastruktureinrichtung = await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          handleSuccess(savedInfrastruktureinrichtung);
         } else {
-          handleSuccess(await updateInfrastruktureinrichtung(infrastruktureinrichtung.value));
+          const savedInfrastruktureinrichtung = await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          handleSuccess(savedInfrastruktureinrichtung);
         }
       }
     } else {
