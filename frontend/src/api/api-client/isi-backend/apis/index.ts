@@ -19,7 +19,6 @@ export * from './BaurateApi';
 export * from './BauvorhabenApi';
 export * from './BauvorhabenEntityControllerApi';
 export * from './BauvorhabenPropertyReferenceControllerApi';
-export * from './BauvorhabenSearchControllerApi';
 export * from './DateihandlingApi';
 export * from './DokumentEntityControllerApi';
 export * from './DokumenteApi';

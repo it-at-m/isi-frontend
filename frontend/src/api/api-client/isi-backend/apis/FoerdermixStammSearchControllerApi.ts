@@ -22,11 +22,6 @@ import {
     EntityModelFoerdermixStammToJSON,
 } from '../models';
 
-export interface ExecuteSearchFoerdermixstammGet1Request {
-    bezeichnungJahr?: string;
-    bezeichnung?: string;
-}
-
 /**
  * 
  */
@@ -53,38 +48,6 @@ export class FoerdermixStammSearchControllerApi extends runtime.BaseAPI {
      */
     async executeSearchFoerdermixstammGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelFoerdermixStamm> {
         const response = await this.executeSearchFoerdermixstammGetRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async executeSearchFoerdermixstammGet1Raw(requestParameters: ExecuteSearchFoerdermixstammGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
-        const queryParameters: any = {};
-
-        if (requestParameters.bezeichnungJahr !== undefined) {
-            queryParameters['bezeichnungJahr'] = requestParameters.bezeichnungJahr;
-        }
-
-        if (requestParameters.bezeichnung !== undefined) {
-            queryParameters['bezeichnung'] = requestParameters.bezeichnung;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/foerdermixStamms/search/findByFoerdermixBezeichnungJahrIgnoreCaseAndFoerdermixBezeichnungIgnoreCase`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async executeSearchFoerdermixstammGet1(requestParameters: ExecuteSearchFoerdermixstammGet1Request = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelFoerdermixStamm> {
-        const response = await this.executeSearchFoerdermixstammGet1Raw(requestParameters, initOverrides);
         return await response.value();
     }
 
