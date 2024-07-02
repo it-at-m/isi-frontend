@@ -1553,8 +1553,6 @@ function abfrageUebernehmen(value: AbfrageDto): void {
 }
 
 function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
-  console.log("In Method");
-
   if (isBauleitplanverfahren.value) {
     (value as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren?.forEach((abfragevariante) => {
       if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
