@@ -59,22 +59,22 @@
     <v-row>
       <v-col
         cols="12"
-        md="4"
+        md="5"
       />
       <v-col
         cols="12"
-        md="4"
+        md="2"
       />
       <v-col
         cols="12"
-        md="4"
+        md="5"
       >
         <v-btn
           v-if="showUebernehmenButton()"
           id="bauraten_foerdermix_uebernehmen_button"
-          color="secondary"
+          color="primary"
           variant="flat"
-          style="width: 550px"
+          style="width: 600px"
           @click="uebernehmeFoerdermix()"
           >Fördermix für alle Bauraten übernehmen</v-btn
         >
