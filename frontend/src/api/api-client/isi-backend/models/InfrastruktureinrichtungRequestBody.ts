@@ -127,6 +127,12 @@ export interface InfrastruktureinrichtungRequestBody {
      * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
+    idKibigWeb?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
 }
 
@@ -195,6 +201,7 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'status': !exists(json, 'status') ? undefined : json['status'],
         'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
+        'idKibigWeb': !exists(json, 'idKibigWeb') ? undefined : json['idKibigWeb'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
     };
 }
@@ -222,6 +229,7 @@ export function InfrastruktureinrichtungRequestBodyToJSON(value?: Infrastrukture
         'status': value.status,
         'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
+        'idKibigWeb': value.idKibigWeb,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
     };
 }

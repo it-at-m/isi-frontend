@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Utm } from './Utm';
+import {
+    UtmFromJSON,
+    UtmFromJSONTyped,
+    UtmToJSON,
+} from './Utm';
 import type { Wgs84 } from './Wgs84';
 import {
     Wgs84FromJSON,
@@ -58,6 +64,12 @@ export interface Adresse {
     coordinate?: Wgs84;
     /**
      * 
+     * @type {Utm}
+     * @memberof Adresse
+     */
+    coordinateUtm?: Utm;
+    /**
+     * 
      * @type {string}
      * @memberof Adresse
      */
@@ -88,6 +100,7 @@ export function AdresseFromJSONTyped(json: any, ignoreDiscriminator: boolean): A
         'plz': !exists(json, 'plz') ? undefined : json['plz'],
         'ort': !exists(json, 'ort') ? undefined : json['ort'],
         'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84FromJSON(json['coordinate']),
+        'coordinateUtm': !exists(json, 'coordinateUtm') ? undefined : UtmFromJSON(json['coordinateUtm']),
         'angabeLageErgaenzendeAdressinformation': !exists(json, 'angabeLageErgaenzendeAdressinformation') ? undefined : json['angabeLageErgaenzendeAdressinformation'],
     };
 }
@@ -106,6 +119,7 @@ export function AdresseToJSON(value?: Adresse | null): any {
         'plz': value.plz,
         'ort': value.ort,
         'coordinate': Wgs84ToJSON(value.coordinate),
+        'coordinateUtm': UtmToJSON(value.coordinateUtm),
         'angabeLageErgaenzendeAdressinformation': value.angabeLageErgaenzendeAdressinformation,
     };
 }
