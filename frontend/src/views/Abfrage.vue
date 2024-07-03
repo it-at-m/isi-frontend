@@ -378,7 +378,6 @@ import { useToast, TYPE } from "vue-toastification";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { findFaultInAbfrageForSave } from "@/utils/Validators";
 import { useSearchStore } from "@/stores/SearchStore";
-import { useFoerdermixStore } from "@/stores/FoerdermixStore";
 import { Context } from "@/utils/Context";
 import {
   type AbfrageDtoWithForm,
@@ -435,7 +434,6 @@ const { getTransitions } = useTransitionApi();
 const { statusUebergangRequest } = useStatusUebergangApi();
 const toast = useToast();
 const searchStore = useSearchStore();
-const foerdermixStore = useFoerdermixStore();
 const route = useRoute();
 const router = useRouter();
 

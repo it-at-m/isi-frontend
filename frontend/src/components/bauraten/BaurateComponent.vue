@@ -94,7 +94,6 @@ import {
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 import type { Rule } from "@/utils/FieldValidationRules";
-import { useFoerdermixStore } from "@/stores/FoerdermixStore";
 
 interface Props {
   baugebiet?: BaugebietDto;
@@ -104,7 +103,6 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const baurate = defineModel<BaurateModel>({ required: true });
-const foerdermixStore = useFoerdermixStore();
 
 function validateWohneinheiten(
   baugebiet: BaugebietDto | undefined,
