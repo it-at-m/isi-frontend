@@ -167,7 +167,13 @@ const baugebietRealisierungVonOr1900 = computed(() => {
 });
 
 function uebernehmeFoerdermix(): void {
-  foerdermixStore.uebernehmeWerte(baurate.value.foerdermix, props.abfragevariante?.abfragevariantenNr as number);
+  props.abfragevariante?.bauabschnitte?.forEach((bauabschnitt) => {
+    bauabschnitt.baugebiete.forEach((baugebiet) => {
+      baugebiet.bauraten.forEach((baurateTemp) => {
+        baurateTemp.foerdermix = _.cloneDeep(baurate.value.foerdermix);
+      });
+    });
+  });
 }
 
 function showUebernehmenButton(): boolean {

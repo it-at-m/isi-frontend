@@ -568,19 +568,6 @@ watch(
   },
 );
 
-watch(
-  () => foerdermixStore.zuUebernehmenderFoerdermix,
-  () => {
-    if (
-      !_.isNil(foerdermixStore.zuUebernehmenderFoerdermix) &&
-      !_.isNil(foerdermixStore.zuUbernehmendeAbfragevarianteNummer)
-    ) {
-      foedermixUebernehmen(abfrage.value);
-    }
-  },
-  { immediate: true },
-);
-
 onBeforeMount(async () => {
   isNew.value = abfrageId === undefined;
   await resetAbfrage();
@@ -1550,92 +1537,5 @@ function abfrageUebernehmen(value: AbfrageDto): void {
     formChanged();
     isDataTransferDialogOpen.value = false;
   }
-}
-
-function foedermixUebernehmen(value: AbfrageDto): AbfrageModel {
-  if (isBauleitplanverfahren.value) {
-    (value as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren?.forEach((abfragevariante) => {
-      if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
-        abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
-          bauabschnitt.baugebiete.forEach((baugebiet) => {
-            baugebiet.bauraten.forEach((baurate) => {
-              baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
-            });
-          });
-        });
-      }
-    });
-
-    (value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren?.forEach(
-      (abfragevariante) => {
-        if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
-          abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
-            bauabschnitt.baugebiete.forEach((baugebiet) => {
-              baugebiet.bauraten.forEach((baurate) => {
-                baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
-              });
-            });
-          });
-        }
-      },
-    );
-  }
-
-  if (isBaugenehmigungsverfahren.value) {
-    (value as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren?.forEach((abfragevariante) => {
-      if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
-        abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
-          bauabschnitt.baugebiete.forEach((baugebiet) => {
-            baugebiet.bauraten.forEach((baurate) => {
-              baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
-            });
-          });
-        });
-      }
-    });
-
-    (value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren?.forEach(
-      (abfragevariante) => {
-        if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
-          abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
-            bauabschnitt.baugebiete.forEach((baugebiet) => {
-              baugebiet.bauraten.forEach((baurate) => {
-                baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
-              });
-            });
-          });
-        }
-      },
-    );
-  }
-
-  if (isWeiteresVerfahren.value) {
-    (value as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren?.forEach((abfragevariante) => {
-      if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
-        abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
-          bauabschnitt.baugebiete.forEach((baugebiet) => {
-            baugebiet.bauraten.forEach((baurate) => {
-              baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
-            });
-          });
-        });
-      }
-    });
-    (value as WeiteresVerfahrenModel).abfragevariantenSachbearbeitungWeiteresVerfahren?.forEach((abfragevariante) => {
-      if (abfragevariante.abfragevariantenNr === foerdermixStore.zuUbernehmendeAbfragevarianteNummer) {
-        abfragevariante.bauabschnitte?.forEach((bauabschnitt) => {
-          bauabschnitt.baugebiete.forEach((baugebiet) => {
-            baugebiet.bauraten.forEach((baurate) => {
-              baurate.foerdermix = foerdermixStore.zuUebernehmenderFoerdermix as FoerdermixDto;
-            });
-          });
-        });
-      }
-    });
-  }
-  toast.success("Fördermix wurde für alle Bauraten übernommen.");
-  foerdermixStore.uebernehmeWerte(undefined, undefined);
-
-  return value;
 }
 </script>
