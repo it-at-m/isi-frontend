@@ -94,7 +94,8 @@ import {
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 import type { Rule } from "@/utils/FieldValidationRules";
-
+import { useToast } from "vue-toastification";
+import { toast } from "@/plugins/toast";
 interface Props {
   baugebiet?: BaugebietDto;
   abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;
@@ -103,6 +104,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const baurate = defineModel<BaurateModel>({ required: true });
+const toast = useToast();
 
 function validateWohneinheiten(
   baugebiet: BaugebietDto | undefined,
@@ -162,6 +164,7 @@ function uebernehmeFoerdermix(): void {
       });
     });
   });
+  toast.success("Fördermix wurde für alle Bauraten übernommen.");
 }
 
 function showUebernehmenButton(): boolean {
