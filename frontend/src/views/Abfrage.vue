@@ -318,7 +318,6 @@ import {
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
   AbfrageDto,
-  FoerdermixDto,
 } from "@/api/api-client/isi-backend";
 import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
@@ -397,7 +396,6 @@ import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { useStatusUebergangApi } from "@/composables/requests/StatusUebergangApi";
 import { useBauratenApi } from "@/composables/requests/BauratenApi";
-import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
 
 const {
   saveLeaveDialog,
