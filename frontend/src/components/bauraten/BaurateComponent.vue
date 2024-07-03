@@ -57,28 +57,18 @@
       />
     </v-row>
     <v-row>
-      <v-col
-        cols="12"
-        md="5"
-      />
-      <v-col
-        cols="12"
-        md="2"
-      />
-      <v-col
-        cols="12"
-        md="5"
+      <v-spacer />
+      <v-btn
+        v-if="showUebernehmenButton()"
+        id="bauraten_foerdermix_uebernehmen_button"
+        :disabled="!isEditable"
+        color="primary"
+        variant="flat"
+        style="width: 400px; min-width: 400px; max-width: 400px"
+        @click="uebernehmeFoerdermix()"
+        >Fördermix für alle Bauraten übernehmen</v-btn
       >
-        <v-btn
-          v-if="showUebernehmenButton()"
-          id="bauraten_foerdermix_uebernehmen_button"
-          color="primary"
-          variant="flat"
-          style="width: 600px"
-          @click="uebernehmeFoerdermix()"
-          >Fördermix für alle Bauraten übernehmen</v-btn
-        >
-      </v-col>
+      <v-spacer />
     </v-row>
   </v-container>
 </template>
