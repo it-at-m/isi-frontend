@@ -56,6 +56,20 @@
         :is-editable="isEditable"
       />
     </v-row>
+    <v-row>
+      <v-spacer />
+      <v-btn
+        v-if="showUebernehmenButton()"
+        id="bauraten_foerdermix_uebernehmen_button"
+        :disabled="!isEditable"
+        color="primary"
+        variant="flat"
+        style="width: 400px; min-width: 400px; max-width: 400px"
+        @click="uebernehmeFoerdermix()"
+        >Fördermix für alle Bauraten übernehmen</v-btn
+      >
+      <v-spacer />
+    </v-row>
   </v-container>
 </template>
 
@@ -80,7 +94,8 @@ import {
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 import type { Rule } from "@/utils/FieldValidationRules";
-
+import { useToast } from "vue-toastification";
+import { toast } from "@/plugins/toast";
 interface Props {
   baugebiet?: BaugebietDto;
   abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;
@@ -89,6 +104,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const baurate = defineModel<BaurateModel>({ required: true });
+const toast = useToast();
 
 function validateWohneinheiten(
   baugebiet: BaugebietDto | undefined,
@@ -139,6 +155,21 @@ const baugebietRealisierungVonOr1900 = computed(() => {
   }
   return year;
 });
+
+function uebernehmeFoerdermix(): void {
+  props.abfragevariante?.bauabschnitte?.forEach((bauabschnitt) => {
+    bauabschnitt.baugebiete.forEach((baugebiet) => {
+      baugebiet.bauraten.forEach((baurateTemp) => {
+        baurateTemp.foerdermix = _.cloneDeep(baurate.value.foerdermix);
+      });
+    });
+  });
+  toast.success("Fördermix wurde für alle Bauraten übernommen.");
+}
+
+function showUebernehmenButton(): boolean {
+  return !_.isEmpty(baurate.value.foerdermix.bezeichnung) && !_.isEmpty(baurate.value.foerdermix.bezeichnungJahr);
+}
 
 const suffixWohneinheiten = computed(() => {
   return `von ${wohneinheitenFormatted(props.baugebiet, props.abfragevariante)}`;
