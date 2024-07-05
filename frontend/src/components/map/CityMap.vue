@@ -153,6 +153,9 @@ function initMap(): void {
     emit("click-in-map", event.latlng),
   );
 
+  // Workaround für dynamische Größe des Karten-Containers auf der Hauptseite
+  setTimeout(() => map.invalidateSize(), 500);
+
   // Der Base-Layer der Karte.
   const wmsTileLayer = L.tileLayer
     .wms(getBackgroundMapUrl(), { layers: "gsm:g_stadtkarte_gesamt", ...LAYER_OPTIONS })
