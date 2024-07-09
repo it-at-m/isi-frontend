@@ -111,6 +111,12 @@ export interface SearchQueryAndSortingDto {
     filterMittelschulsprengelNummer?: Array<number>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterInfrastruktureinrichtungStatus?: Array<SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum>;
+    /**
+     * 
      * @type {number}
      * @memberof SearchQueryAndSortingDto
      */
@@ -135,6 +141,22 @@ export interface SearchQueryAndSortingDto {
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum;
 }
 
+
+/**
+ * @export
+ */
+export const SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = {
+    Unspecified: 'UNSPECIFIED',
+    UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
+    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
+    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
+    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
+    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
+    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    Bestand: 'BESTAND'
+} as const;
+export type SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum];
 
 /**
  * @export
@@ -203,6 +225,7 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
+        'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
         'sortBy': json['sortBy'],
@@ -234,6 +257,7 @@ export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto 
         'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
+        'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
         'page': value.page,
         'pageSize': value.pageSize,
         'sortBy': value.sortBy,

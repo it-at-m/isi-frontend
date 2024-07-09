@@ -2,8 +2,6 @@
   <v-expansion-panel>
     <v-expansion-panel-title class="text-h6"> Filtereinstellung </v-expansion-panel-title>
     <v-expansion-panel-text class="mt-0">
-      <p class="font-weight-black mt-3">Verortung</p>
-      <p class="font-weight-regular mb-3">Verortungsbezogene Filtereinstellungen</p>
       <v-row
         class="align-start justify-center"
         dense
@@ -36,6 +34,8 @@
           </v-card>
         </v-col>
       </v-row>
+      <p class="font-weight-black mt-3">Verortung</p>
+      <p class="font-weight-regular mb-3">Verortungsbezogene Filtereinstellungen</p>
       <v-row
         class="align-start justify-center"
         dense
@@ -116,12 +116,44 @@
         </v-col>
       </v-row>
     </v-expansion-panel-text>
+    <v-expansion-panel-text class="mt-0">
+      <p class="font-weight-black mt-3">Infrastruktureinrichtung</p>
+      <p class="font-weight-regular mb-3">Infrastruktureinrichtungbezogene Filtereinstellungen</p>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-autocomplete
+            id="infrastruktureinrichtung_status"
+            v-model="searchQueryAndSorting.filterInfrastruktureinrichtungStatus"
+            :items="statusInfrastruktureinrichtungList"
+            variant="underlined"
+            item-value="key"
+            item-title="value"
+            multiple
+            chips
+          >
+            <template #label> Status Infrastruktureinrichtung </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+        </v-col>
+      </v-row>
+    </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 
 <script setup lang="ts">
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { computed, ref } from "vue";
+import { useLookupStore } from "@/stores/LookupStore";
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
@@ -130,6 +162,9 @@ const hoverFilterStadtbezirkName = ref<boolean>(false);
 const hoverFilterKitaplanungsbereichKitaPlbT = ref<boolean>(false);
 const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
+
+const lookupStore = useLookupStore();
+const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
 
 const helpTextFiltereinstellungenAufheben = computed(() => {
   if (hoverFiltereinstellungenAufheben.value) {
@@ -159,5 +194,6 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterKitaplanungsbereichKitaPlbT = undefined;
   searchQueryAndSorting.value.filterGrundschulsprengelNummer = undefined;
   searchQueryAndSorting.value.filterMittelschulsprengelNummer = undefined;
+  searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
 }
 </script>

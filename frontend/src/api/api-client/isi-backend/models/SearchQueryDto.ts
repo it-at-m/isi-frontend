@@ -111,6 +111,12 @@ export interface SearchQueryDto {
     filterMittelschulsprengelNummer?: Array<number>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterInfrastruktureinrichtungStatus?: Array<SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum>;
+    /**
+     * 
      * @type {number}
      * @memberof SearchQueryDto
      */
@@ -122,6 +128,24 @@ export interface SearchQueryDto {
      */
     pageSize?: number;
 }
+
+
+/**
+ * @export
+ */
+export const SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = {
+    Unspecified: 'UNSPECIFIED',
+    UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
+    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
+    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
+    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
+    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
+    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    Bestand: 'BESTAND'
+} as const;
+export type SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum];
+
 
 /**
  * Check if a given object implements the SearchQueryDto interface.
@@ -168,6 +192,7 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
+        'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
     };
@@ -197,6 +222,7 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
+        'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
         'page': value.page,
         'pageSize': value.pageSize,
     };
