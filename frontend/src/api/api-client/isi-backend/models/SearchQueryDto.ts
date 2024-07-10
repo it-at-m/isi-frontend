@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { UncertainBoolean } from './UncertainBoolean';
+import {
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+} from './UncertainBoolean';
+
 /**
  * 
  * @export
@@ -117,6 +124,18 @@ export interface SearchQueryDto {
     filterInfrastruktureinrichtungStatus?: Array<SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterStandVerfahren?: Array<SearchQueryDtoFilterStandVerfahrenEnum>;
+    /**
+     * 
+     * @type {UncertainBoolean}
+     * @memberof SearchQueryDto
+     */
+    filterSobonRelevant?: UncertainBoolean;
+    /**
+     * 
      * @type {number}
      * @memberof SearchQueryDto
      */
@@ -145,6 +164,33 @@ export const SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = {
     Bestand: 'BESTAND'
 } as const;
 export type SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum];
+
+/**
+ * @export
+ */
+export const SearchQueryDtoFilterStandVerfahrenEnum = {
+    Unspecified: 'UNSPECIFIED',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
+    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
+} as const;
+export type SearchQueryDtoFilterStandVerfahrenEnum = typeof SearchQueryDtoFilterStandVerfahrenEnum[keyof typeof SearchQueryDtoFilterStandVerfahrenEnum];
 
 
 /**
@@ -193,6 +239,8 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
         'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
+        'filterStandVerfahren': !exists(json, 'filterStandVerfahren') ? undefined : json['filterStandVerfahren'],
+        'filterSobonRelevant': !exists(json, 'filterSobonRelevant') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
     };
@@ -223,6 +271,8 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
         'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
+        'filterStandVerfahren': value.filterStandVerfahren,
+        'filterSobonRelevant': UncertainBooleanToJSON(value.filterSobonRelevant),
         'page': value.page,
         'pageSize': value.pageSize,
     };

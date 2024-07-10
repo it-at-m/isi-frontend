@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { UncertainBoolean } from './UncertainBoolean';
+import {
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+} from './UncertainBoolean';
+
 /**
  * 
  * @export
@@ -117,6 +124,18 @@ export interface SearchQueryAndSortingDto {
     filterInfrastruktureinrichtungStatus?: Array<SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterStandVerfahren?: Array<SearchQueryAndSortingDtoFilterStandVerfahrenEnum>;
+    /**
+     * 
+     * @type {UncertainBoolean}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterSobonRelevant?: UncertainBoolean;
+    /**
+     * 
      * @type {number}
      * @memberof SearchQueryAndSortingDto
      */
@@ -157,6 +176,33 @@ export const SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = 
     Bestand: 'BESTAND'
 } as const;
 export type SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum];
+
+/**
+ * @export
+ */
+export const SearchQueryAndSortingDtoFilterStandVerfahrenEnum = {
+    Unspecified: 'UNSPECIFIED',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
+    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
+} as const;
+export type SearchQueryAndSortingDtoFilterStandVerfahrenEnum = typeof SearchQueryAndSortingDtoFilterStandVerfahrenEnum[keyof typeof SearchQueryAndSortingDtoFilterStandVerfahrenEnum];
 
 /**
  * @export
@@ -226,6 +272,8 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
         'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
+        'filterStandVerfahren': !exists(json, 'filterStandVerfahren') ? undefined : json['filterStandVerfahren'],
+        'filterSobonRelevant': !exists(json, 'filterSobonRelevant') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
         'sortBy': json['sortBy'],
@@ -258,6 +306,8 @@ export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto 
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
         'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
+        'filterStandVerfahren': value.filterStandVerfahren,
+        'filterSobonRelevant': UncertainBooleanToJSON(value.filterSobonRelevant),
         'page': value.page,
         'pageSize': value.pageSize,
         'sortBy': value.sortBy,

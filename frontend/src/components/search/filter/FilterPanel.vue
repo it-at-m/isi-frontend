@@ -115,8 +115,6 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-expansion-panel-text>
-    <v-expansion-panel-text class="mt-0">
       <p class="font-weight-black mt-3">Infrastruktureinrichtung</p>
       <p class="font-weight-regular mb-3">Infrastruktureinrichtungbezogene Filtereinstellungen</p>
       <v-row
@@ -146,14 +144,83 @@
         >
         </v-col>
       </v-row>
+      <p class="font-weight-black mt-3">Bauvorhaben</p>
+      <p class="font-weight-regular mb-3">Bauvorhaben Filtereinstellungen</p>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-autocomplete
+            id="stand_verfahren"
+            v-model="searchQueryAndSorting.filterStandVerfahren"
+            :items="standVerfahrenList"
+            variant="underlined"
+            item-value="key"
+            item-title="value"
+            multiple
+            chips
+          >
+            <template #label> Stand des Verfahrens </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-radio-group
+            inline
+            v-model="sobonRelevantModel"
+            @update:model-value="sobonRelevantModelChanged"
+          >
+            <template #label> SoBoN-relevant </template>
+            <v-radio
+              label="Nein"
+              value="false"
+            ></v-radio>
+            <v-radio
+              label="Ja"
+              value="true"
+            ></v-radio>
+          </v-radio-group>
+        </v-col>
+        <v-col
+          cols="12"
+          md="8"
+        >
+        </v-col>
+      </v-row>
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 
 <script setup lang="ts">
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import { computed, ref } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { useLookupStore } from "@/stores/LookupStore";
+import { UncertainBoolean } from "@/api/api-client/isi-backend";
+
+onMounted(() => {
+  switch (searchQueryAndSorting.value.filterSobonRelevant) {
+    case UncertainBoolean.True:
+      sobonRelevantModel.value = "true";
+      break;
+    case UncertainBoolean.False:
+      sobonRelevantModel.value = "false";
+      break;
+    default:
+      sobonRelevantModel.value = undefined;
+      break;
+  }
+});
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
@@ -162,9 +229,11 @@ const hoverFilterStadtbezirkName = ref<boolean>(false);
 const hoverFilterKitaplanungsbereichKitaPlbT = ref<boolean>(false);
 const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
+const sobonRelevantModel = ref<string | undefined>(undefined);
 
 const lookupStore = useLookupStore();
 const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
+const standVerfahrenList = computed(() => lookupStore.standVerfahren);
 
 const helpTextFiltereinstellungenAufheben = computed(() => {
   if (hoverFiltereinstellungenAufheben.value) {
@@ -195,5 +264,21 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterGrundschulsprengelNummer = undefined;
   searchQueryAndSorting.value.filterMittelschulsprengelNummer = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
+  searchQueryAndSorting.value.filterStandVerfahren = undefined;
+  searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
+  sobonRelevantModel.value = undefined;
+}
+
+function sobonRelevantModelChanged(): void {
+  switch (sobonRelevantModel.value) {
+    case "true":
+      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.True;
+      break;
+    case "false":
+      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.False;
+      break;
+    default:
+      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
+  }
 }
 </script>
