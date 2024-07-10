@@ -53,6 +53,12 @@ export interface InfrastruktureinrichtungSearchResultDto extends SearchResultDto
      * @memberof InfrastruktureinrichtungSearchResultDto
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof InfrastruktureinrichtungSearchResultDto
+     */
+    zugehoerigesBauvorhaben?: string;
 }
 
 
@@ -95,6 +101,7 @@ export function InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json: any, 
         'id': !exists(json, 'id') ? undefined : json['id'],
         'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
+        'zugehoerigesBauvorhaben': !exists(json, 'zugehoerigesBauvorhaben') ? undefined : json['zugehoerigesBauvorhaben'],
     };
 }
 
@@ -110,6 +117,7 @@ export function InfrastruktureinrichtungSearchResultDtoToJSON(value?: Infrastruk
         'id': value.id,
         'nameEinrichtung': value.nameEinrichtung,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
+        'zugehoerigesBauvorhaben': value.zugehoerigesBauvorhaben,
     };
 }
 
