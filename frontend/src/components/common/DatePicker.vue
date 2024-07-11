@@ -179,9 +179,10 @@ function setTextFieldDateForMonthPicker(monthIndex: number): void {
 
 function deactivateDatePicker(): void {
   datePickerActive.value = false;
+  blur();
 }
 
 function blur(): void {
-  emit("blur", date.value);
+  emit("blur", date.value ?? new Date());
 }
 </script>
