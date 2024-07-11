@@ -192,6 +192,13 @@ export function findFaultInAbfragevariante(
       return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
     }
   }
+  if (
+    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren ||
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) &&
+    _.isEmpty(abfragevariante.bauabschnitte)
+  ) {
+    return "Bitte für jede Abfragevariante die Bauraten angeben";
+  }
   const messageFaultBauschnitte = findFaultInBauabschnitte(abfragevariante);
   if (!_.isNil(messageFaultBauschnitte)) {
     return messageFaultBauschnitte;
