@@ -183,6 +183,6 @@ function deactivateDatePicker(): void {
 }
 
 function blur(): void {
-  emit("blur", date.value ?? new Date());
+  emit("blur", date.value);
 }
 </script>
