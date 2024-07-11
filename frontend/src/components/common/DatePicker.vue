@@ -14,7 +14,7 @@
         :disabled="disabled"
         :required="required"
         @update:model-value="formChanged"
-        @blur="blur"
+        @update:focused="!$event || blur()"
       >
         <template #label>
           {{ label }}

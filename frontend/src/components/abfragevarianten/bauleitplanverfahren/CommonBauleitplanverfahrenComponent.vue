@@ -29,7 +29,7 @@
           :disabled="!isEditable"
           label="Datum Satzungsbeschluss"
           month-picker
-          @blur="datumSatzungsbeschlussChanged"
+          @blur="datumSatzungsbeschlussChanged($event)"
         />
       </v-col>
       <v-col
