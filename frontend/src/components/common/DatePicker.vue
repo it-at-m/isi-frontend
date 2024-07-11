@@ -14,7 +14,7 @@
         :disabled="disabled"
         :required="required"
         @update:model-value="formChanged"
-        @update:focused="!$event || blur()"
+        @update:focused="$event || blur()"
       >
         <template #label>
           {{ label }}
@@ -75,7 +75,7 @@ interface Props {
 }
 
 interface Emits {
-  (event: "blur", value: Date | undefined): void;
+  (event: "blur", value: void): void;
 }
 
 const ISO_FORMAT = "YYYY-MM-DD";
@@ -183,6 +183,6 @@ function deactivateDatePicker(): void {
 }
 
 function blur(): void {
-  emit("blur", date.value);
+  emit("blur");
 }
 </script>
