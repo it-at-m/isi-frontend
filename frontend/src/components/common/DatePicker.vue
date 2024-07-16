@@ -75,7 +75,7 @@ interface Props {
 }
 
 interface Emits {
-  (event: "blur", value: void): void;
+  (event: "blur", value: Date | undefined): void;
 }
 
 const ISO_FORMAT = "YYYY-MM-DD";
@@ -183,6 +183,6 @@ function deactivateDatePicker(): void {
 }
 
 function blur(): void {
-  emit("blur");
+  emit("blur", date.value);
 }
 </script>

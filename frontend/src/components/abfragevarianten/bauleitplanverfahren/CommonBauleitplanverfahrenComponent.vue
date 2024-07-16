@@ -150,8 +150,7 @@ const calcRealisierungBis = computed(() => {
   return _.max(jahre);
 });
 
-function datumSatzungsbeschlussChanged(): void {
-  const datumSatzungsbeschluss = abfragevariante.value.satzungsbeschluss;
+function datumSatzungsbeschlussChanged(datumSatzungsbeschluss: Date | undefined): void {
   if (!_.isNil(datumSatzungsbeschluss)) {
     abfragevariante.value.realisierungVon =
       datumSatzungsbeschluss.getMonth() + 1 < 7
