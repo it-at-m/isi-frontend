@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { StatusAbfrage } from './StatusAbfrage';
+import {
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+} from './StatusAbfrage';
 import type { UncertainBoolean } from './UncertainBoolean';
 import {
     UncertainBooleanFromJSON,
@@ -118,6 +124,18 @@ export interface SearchQueryAndSortingDto {
     filterMittelschulsprengelNummer?: Array<number>;
     /**
      * 
+     * @type {Array<StatusAbfrage>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterStatusAbfrage?: Array<StatusAbfrage>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryAndSortingDto
+     */
+    filterStandVerfahrenAbfrage?: Array<SearchQueryAndSortingDtoFilterStandVerfahrenAbfrageEnum>;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof SearchQueryAndSortingDto
      */
@@ -127,7 +145,7 @@ export interface SearchQueryAndSortingDto {
      * @type {Array<string>}
      * @memberof SearchQueryAndSortingDto
      */
-    filterStandVerfahren?: Array<SearchQueryAndSortingDtoFilterStandVerfahrenEnum>;
+    filterStandVerfahrenBauvorhaben?: Array<SearchQueryAndSortingDtoFilterStandVerfahrenBauvorhabenEnum>;
     /**
      * 
      * @type {UncertainBoolean}
@@ -164,23 +182,7 @@ export interface SearchQueryAndSortingDto {
 /**
  * @export
  */
-export const SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = {
-    Unspecified: 'UNSPECIFIED',
-    UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
-    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
-    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
-    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
-    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
-    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    Bestand: 'BESTAND'
-} as const;
-export type SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum];
-
-/**
- * @export
- */
-export const SearchQueryAndSortingDtoFilterStandVerfahrenEnum = {
+export const SearchQueryAndSortingDtoFilterStandVerfahrenAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
     VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
@@ -202,7 +204,50 @@ export const SearchQueryAndSortingDtoFilterStandVerfahrenEnum = {
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type SearchQueryAndSortingDtoFilterStandVerfahrenEnum = typeof SearchQueryAndSortingDtoFilterStandVerfahrenEnum[keyof typeof SearchQueryAndSortingDtoFilterStandVerfahrenEnum];
+export type SearchQueryAndSortingDtoFilterStandVerfahrenAbfrageEnum = typeof SearchQueryAndSortingDtoFilterStandVerfahrenAbfrageEnum[keyof typeof SearchQueryAndSortingDtoFilterStandVerfahrenAbfrageEnum];
+
+/**
+ * @export
+ */
+export const SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = {
+    Unspecified: 'UNSPECIFIED',
+    UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
+    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
+    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
+    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
+    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
+    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    Bestand: 'BESTAND'
+} as const;
+export type SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum];
+
+/**
+ * @export
+ */
+export const SearchQueryAndSortingDtoFilterStandVerfahrenBauvorhabenEnum = {
+    Unspecified: 'UNSPECIFIED',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
+    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
+} as const;
+export type SearchQueryAndSortingDtoFilterStandVerfahrenBauvorhabenEnum = typeof SearchQueryAndSortingDtoFilterStandVerfahrenBauvorhabenEnum[keyof typeof SearchQueryAndSortingDtoFilterStandVerfahrenBauvorhabenEnum];
 
 /**
  * @export
@@ -271,8 +316,10 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
+        'filterStatusAbfrage': !exists(json, 'filterStatusAbfrage') ? undefined : ((json['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageFromJSON)),
+        'filterStandVerfahrenAbfrage': !exists(json, 'filterStandVerfahrenAbfrage') ? undefined : json['filterStandVerfahrenAbfrage'],
         'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
-        'filterStandVerfahren': !exists(json, 'filterStandVerfahren') ? undefined : json['filterStandVerfahren'],
+        'filterStandVerfahrenBauvorhaben': !exists(json, 'filterStandVerfahrenBauvorhaben') ? undefined : json['filterStandVerfahrenBauvorhaben'],
         'filterSobonRelevant': !exists(json, 'filterSobonRelevant') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
@@ -305,8 +352,10 @@ export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto 
         'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
+        'filterStatusAbfrage': value.filterStatusAbfrage === undefined ? undefined : ((value.filterStatusAbfrage as Array<any>).map(StatusAbfrageToJSON)),
+        'filterStandVerfahrenAbfrage': value.filterStandVerfahrenAbfrage,
         'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
-        'filterStandVerfahren': value.filterStandVerfahren,
+        'filterStandVerfahrenBauvorhaben': value.filterStandVerfahrenBauvorhaben,
         'filterSobonRelevant': UncertainBooleanToJSON(value.filterSobonRelevant),
         'page': value.page,
         'pageSize': value.pageSize,

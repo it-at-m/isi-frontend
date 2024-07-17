@@ -115,6 +115,35 @@
           </v-card>
         </v-col>
       </v-row>
+      <p class="font-weight-black mt-3">Abfragen</p>
+      <p class="font-weight-regular mb-3">Abfragenbezogene Filtereinstellungen</p>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-autocomplete
+            id="stand_verfahren_abfragen"
+            v-model="searchQueryAndSorting.filterStandVerfahrenAbfrage"
+            :items="standVerfahrenList"
+            variant="underlined"
+            item-value="key"
+            item-title="value"
+            multiple
+            chips
+          >
+            <template #label> Stand des Verfahrens </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+        </v-col>
+      </v-row>
       <p class="font-weight-black mt-3">Infrastruktureinrichtung</p>
       <p class="font-weight-regular mb-3">Infrastruktureinrichtungbezogene Filtereinstellungen</p>
       <v-row
@@ -155,8 +184,8 @@
           md="6"
         >
           <v-autocomplete
-            id="stand_verfahren"
-            v-model="searchQueryAndSorting.filterStandVerfahren"
+            id="stand_verfahren_bauvorhaben"
+            v-model="searchQueryAndSorting.filterStandVerfahrenBauvorhaben"
             :items="standVerfahrenList"
             variant="underlined"
             item-value="key"
@@ -172,6 +201,8 @@
           md="6"
         >
         </v-col>
+      </v-row>
+      <v-row>
         <v-col
           cols="12"
           md="4"
