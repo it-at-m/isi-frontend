@@ -232,8 +232,22 @@ const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
 const sobonRelevantModel = ref<string | undefined>(undefined);
 
 const lookupStore = useLookupStore();
-const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
-const standVerfahrenList = computed(() => lookupStore.standVerfahren);
+const statusInfrastruktureinrichtungList = computed(() => {
+  var statusList = lookupStore.statusInfrastruktureinrichtung;
+  const index = statusList.findIndex((status) => status.key === UncertainBoolean.Unspecified);
+  if (index > -1) {
+    statusList.splice(index, 1);
+  }
+  return statusList;
+});
+const standVerfahrenList = computed(() => {
+  var standVerfahrenList = lookupStore.standVerfahren;
+  const index = standVerfahrenList.findIndex((standVerfahren) => standVerfahren.key === UncertainBoolean.Unspecified);
+  if (index > -1) {
+    standVerfahrenList.splice(index, 1);
+  }
+  return standVerfahrenList;
+});
 
 const helpTextFiltereinstellungenAufheben = computed(() => {
   if (hoverFiltereinstellungenAufheben.value) {
