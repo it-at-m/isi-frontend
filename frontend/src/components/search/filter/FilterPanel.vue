@@ -115,8 +115,182 @@
           </v-card>
         </v-col>
       </v-row>
-      <p class="font-weight-black mt-3">Abfragen</p>
-      <p class="font-weight-regular mb-3">Abfragenbezogene Filtereinstellungen</p>
+      <p class="font-weight-black mt-3">Abfrage</p>
+      <p class="font-weight-regular mb-3">Abfragebezogene Filtereinstellungen</p>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="abfrage_realisierung_von"
+            v-model="searchQueryAndSorting.filterRealisierungVon"
+            label="Realisierung von (JJJJ)"
+            year
+            maxlength="4"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="abfrage_realisierung_bis"
+            v-model="searchQueryAndSorting.filterRealisierungBis"
+            label="Realisierung bis (JJJJ)"
+            year
+            maxlength="4"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-checkbox
+            id="eigene_abfragen"
+            v-model="searchQueryAndSorting.filterNurEigeneAbfragen"
+            class="mx-3"
+            label="Nur eigene Abfragen berücksichtigen"
+            color="primary"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="8"
+        >
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-autocomplete
+            id="abfrage_status"
+            v-model="searchQueryAndSorting.filterStatusAbfrage"
+            :items="statusAbfrageList"
+            variant="underlined"
+            item-value="key"
+            item-title="value"
+            multiple
+            chips
+          >
+            <template #label> Status Abfrage </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-radio-group
+            inline
+            v-model="sobonRelevantAbfrageModel"
+            @update:model-value="sobonRelevantModelAbfrageChanged"
+          >
+            <template #label> SoBoN-relevant </template>
+            <v-radio
+              label="Nein"
+              value="false"
+            ></v-radio>
+            <v-radio
+              label="Ja"
+              value="true"
+            ></v-radio>
+          </v-radio-group>
+        </v-col>
+        <v-col
+          cols="12"
+          md="8"
+        >
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="we_gesamt_von_"
+            v-model="searchQueryAndSorting.filterWeGesamtVon"
+            label="Geplante Wohneinheiten von"
+            integer
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="we_gesamt_von_"
+            v-model="searchQueryAndSorting.filterWeGesamtBis"
+            label="Geplante Wohneinheiten bis"
+            integer
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="gf_wohnen_geplant_von"
+            v-model="searchQueryAndSorting.filterGfWohnenGeplantVon"
+            label="Geplante Geschossfläche Wohnen von"
+            :suffix="SQUARE_METER"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <num-field
+            id="gf_wohnen_geplant_bis"
+            v-model="searchQueryAndSorting.filterGfWohnenGeplantBis"
+            label="Geplante Geschossfläche Wohnen bis"
+            :suffix="SQUARE_METER"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+      </v-row>
       <v-row
         class="align-start justify-center"
         dense
@@ -209,8 +383,8 @@
         >
           <v-radio-group
             inline
-            v-model="sobonRelevantModel"
-            @update:model-value="sobonRelevantModelChanged"
+            v-model="sobonRelevantBauvorhabenModel"
+            @update:model-value="sobonRelevantModelBauvorhabenChanged"
           >
             <template #label> SoBoN-relevant </template>
             <v-radio
@@ -238,17 +412,30 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import { onMounted, computed, ref } from "vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
+import NumField from "@/components/common/NumField.vue";
+import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 
 onMounted(() => {
-  switch (searchQueryAndSorting.value.filterSobonRelevant) {
+  switch (searchQueryAndSorting.value.filterSobonRelevantBauvorhaben) {
     case UncertainBoolean.True:
-      sobonRelevantModel.value = "true";
+      sobonRelevantBauvorhabenModel.value = "true";
       break;
     case UncertainBoolean.False:
-      sobonRelevantModel.value = "false";
+      sobonRelevantBauvorhabenModel.value = "false";
       break;
     default:
-      sobonRelevantModel.value = undefined;
+      sobonRelevantBauvorhabenModel.value = undefined;
+      break;
+  }
+  switch (searchQueryAndSorting.value.filterSobonRelevantAbfrage) {
+    case UncertainBoolean.True:
+      sobonRelevantAbfrageModel.value = "true";
+      break;
+    case UncertainBoolean.False:
+      sobonRelevantAbfrageModel.value = "false";
+      break;
+    default:
+      sobonRelevantAbfrageModel.value = undefined;
       break;
   }
 });
@@ -260,9 +447,11 @@ const hoverFilterStadtbezirkName = ref<boolean>(false);
 const hoverFilterKitaplanungsbereichKitaPlbT = ref<boolean>(false);
 const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
-const sobonRelevantModel = ref<string | undefined>(undefined);
+const sobonRelevantBauvorhabenModel = ref<string | undefined>(undefined);
+const sobonRelevantAbfrageModel = ref<string | undefined>(undefined);
 
 const lookupStore = useLookupStore();
+const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
 const statusInfrastruktureinrichtungList = computed(() => {
   var statusList = lookupStore.statusInfrastruktureinrichtung;
   const index = statusList.findIndex((status) => status.key === UncertainBoolean.Unspecified);
@@ -308,22 +497,46 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterKitaplanungsbereichKitaPlbT = undefined;
   searchQueryAndSorting.value.filterGrundschulsprengelNummer = undefined;
   searchQueryAndSorting.value.filterMittelschulsprengelNummer = undefined;
+  searchQueryAndSorting.value.filterRealisierungVon = undefined;
+  searchQueryAndSorting.value.filterRealisierungBis = undefined;
+  searchQueryAndSorting.value.filterNurEigeneAbfragen = undefined;
+  searchQueryAndSorting.value.filterStatusAbfrage = undefined;
+  searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.Unspecified;
+  searchQueryAndSorting.value.filterWeGesamtVon = undefined;
+  searchQueryAndSorting.value.filterWeGesamtBis = undefined;
+  searchQueryAndSorting.value.filterGfWohnenGeplantVon = undefined;
+  searchQueryAndSorting.value.filterGfWohnenGeplantBis = undefined;
+  searchQueryAndSorting.value.filterStandVerfahrenAbfrage = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
-  searchQueryAndSorting.value.filterStandVerfahren = undefined;
-  searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
-  sobonRelevantModel.value = undefined;
+  searchQueryAndSorting.value.filterStandVerfahrenBauvorhaben = undefined;
+  searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.Unspecified;
+  sobonRelevantBauvorhabenModel.value = undefined;
+  sobonRelevantAbfrageModel.value = undefined;
 }
 
-function sobonRelevantModelChanged(): void {
-  switch (sobonRelevantModel.value) {
+function sobonRelevantModelBauvorhabenChanged(): void {
+  switch (sobonRelevantBauvorhabenModel.value) {
     case "true":
-      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.True;
+      searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.True;
       break;
     case "false":
-      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.False;
+      searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.False;
       break;
     default:
-      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
+      searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.Unspecified;
+  }
+}
+
+function sobonRelevantModelAbfrageChanged(): void {
+  switch (sobonRelevantAbfrageModel.value) {
+    case "true":
+      searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.True;
+      break;
+    case "false":
+      searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.False;
+      break;
+    default:
+      searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.Unspecified;
   }
 }
 </script>
