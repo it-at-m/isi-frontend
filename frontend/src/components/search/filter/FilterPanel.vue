@@ -126,9 +126,9 @@
           md="4"
         >
           <num-field
-            id="abfrage_realisierung_von"
+            id="abfrage_realisierungsbeginn_von"
             v-model="searchQueryAndSorting.filterRealisierungVon"
-            label="Realisierung von (JJJJ)"
+            label="Realisierungsbeginn von (JJJJ)"
             year
             maxlength="4"
           />
@@ -138,9 +138,9 @@
           md="4"
         >
           <num-field
-            id="abfrage_realisierung_bis"
+            id="abfrage_realisierungsbeginn_bis"
             v-model="searchQueryAndSorting.filterRealisierungBis"
-            label="Realisierung bis (JJJJ)"
+            label="Realisierungsbeginn bis (JJJJ)"
             year
             maxlength="4"
           />
