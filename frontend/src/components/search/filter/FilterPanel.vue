@@ -264,6 +264,8 @@
             item-title="value"
             multiple
             chips
+            @mouseover="hoverFilterStatusAbfrage = true"
+            @mouseleave="hoverFilterStatusAbfrage = false"
           >
             <template #label> Status Abfrage </template>
           </v-autocomplete>
@@ -272,6 +274,9 @@
           cols="12"
           md="4"
         >
+          <v-card flat>
+            {{ helpTextFilterStatusAbfrage }}
+          </v-card>
         </v-col>
       </v-row>
       <v-row
@@ -405,6 +410,7 @@ const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnVon = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnBis = ref<boolean>(false);
+const hoverFilterStatusAbfrage = ref<boolean>(false);
 const hoverFilterSobonRelevant = ref<boolean>(false);
 const hoverFilterStandVerfahren = ref<boolean>(false);
 
@@ -468,6 +474,13 @@ const helpTextRealisierungsbeginn = computed(() => {
   }
   if (hoverFilterRealisierungsbeginnBis.value) {
     return "Bestimmt auf Basis des Attributs 'Realisierung von' die obere Grenze der Abfragen nach denen gefiltert werden soll.";
+  }
+  return "";
+});
+
+const helpTextFilterStatusAbfrage = computed(() => {
+  if (hoverFilterStatusAbfrage.value) {
+    return "Auswahl der Abfragestatus nach denen gefiltert werden soll.";
   }
   return "";
 });
