@@ -39,14 +39,14 @@
       <v-row>
         <v-col
           cols="12"
-          md="4"
+          md="8"
         >
           <v-radio-group
             v-model="sobonRelevant"
             @update:model-value="sobonRelevantChanged"
             @mouseover="hoverFilterSobonRelevant = true"
             @mouseleave="hoverFilterSobonRelevant = false"
-            density="compact"
+            inline
           >
             <template #label> SoBoN-relevanz </template>
             <v-radio
@@ -67,14 +67,38 @@
           cols="12"
           md="4"
         >
+          <v-card flat>
+            {{ helpTextAllgemeineFiltereinstellungen }}
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="8"
+        >
+          <v-autocomplete
+            id="stand_verfahren_bauvorhaben"
+            v-model="searchQueryAndSorting.filterStandVerfahren"
+            :items="standVerfahrenList"
+            variant="underlined"
+            item-value="key"
+            item-title="value"
+            multiple
+            chips
+            @mouseover="hoverFilterStandVerfahren = true"
+            @mouseleave="hoverFilterStandVerfahren = false"
+          >
+            <template #label> Stand des Verfahrens </template>
+          </v-autocomplete>
         </v-col>
         <v-col
           cols="12"
           md="4"
         >
-          <v-card flat>
-            {{ helpTextAllgemeineFiltereinstellungen }}
-          </v-card>
         </v-col>
       </v-row>
       <p class="font-weight-black mt-3">Verortung</p>
@@ -314,33 +338,6 @@
         >
         </v-col>
       </v-row>
-      <v-row
-        class="align-start justify-center"
-        dense
-      >
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-autocomplete
-            id="stand_verfahren_abfragen"
-            v-model="searchQueryAndSorting.filterStandVerfahrenAbfrage"
-            :items="standVerfahrenList"
-            variant="underlined"
-            item-value="key"
-            item-title="value"
-            multiple
-            chips
-          >
-            <template #label> Stand des Verfahrens </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-        </v-col>
-      </v-row>
       <p class="font-weight-black mt-3">Infrastruktureinrichtung</p>
       <p class="font-weight-regular mb-3">Infrastruktureinrichtungbezogene Filtereinstellungen</p>
       <v-row
@@ -362,35 +359,6 @@
             chips
           >
             <template #label> Status Infrastruktureinrichtung </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-        </v-col>
-      </v-row>
-      <p class="font-weight-black mt-3">Bauvorhaben</p>
-      <p class="font-weight-regular mb-3">Bauvorhaben Filtereinstellungen</p>
-      <v-row
-        class="align-start justify-center"
-        dense
-      >
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-autocomplete
-            id="stand_verfahren_bauvorhaben"
-            v-model="searchQueryAndSorting.filterStandVerfahrenBauvorhaben"
-            :items="standVerfahrenList"
-            variant="underlined"
-            item-value="key"
-            item-title="value"
-            multiple
-            chips
-          >
-            <template #label> Stand des Verfahrens </template>
           </v-autocomplete>
         </v-col>
         <v-col
@@ -438,6 +406,7 @@ const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnVon = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnBis = ref<boolean>(false);
 const hoverFilterSobonRelevant = ref<boolean>(false);
+const hoverFilterStandVerfahren = ref<boolean>(false);
 
 const sobonRelevant = ref<string | undefined>(undefined);
 
@@ -463,6 +432,9 @@ const standVerfahrenList = computed(() => {
 const helpTextAllgemeineFiltereinstellungen = computed(() => {
   if (hoverFilterSobonRelevant.value) {
     return "Filtern nach SoBoN-relevanten Abfragen und Bauvorhaben.";
+  }
+  if (hoverFilterStandVerfahren.value) {
+    return "Auswahl der Verfahrensstände nach denen in Abfragen und Bauvorhaben gefiltert werden soll.";
   }
   return "";
 });
@@ -514,9 +486,8 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterWeGesamtBis = undefined;
   searchQueryAndSorting.value.filterGfWohnenGeplantVon = undefined;
   searchQueryAndSorting.value.filterGfWohnenGeplantBis = undefined;
-  searchQueryAndSorting.value.filterStandVerfahrenAbfrage = undefined;
+  searchQueryAndSorting.value.filterStandVerfahren = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
-  searchQueryAndSorting.value.filterStandVerfahrenBauvorhaben = undefined;
   sobonRelevant.value = UncertainBoolean.Unspecified;
 }
 

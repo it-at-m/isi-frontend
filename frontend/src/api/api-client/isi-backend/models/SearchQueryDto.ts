@@ -181,19 +181,13 @@ export interface SearchQueryDto {
      * @type {Array<string>}
      * @memberof SearchQueryDto
      */
-    filterStandVerfahrenAbfrage?: Array<SearchQueryDtoFilterStandVerfahrenAbfrageEnum>;
+    filterStandVerfahren?: Array<SearchQueryDtoFilterStandVerfahrenEnum>;
     /**
      * 
      * @type {Array<string>}
      * @memberof SearchQueryDto
      */
     filterInfrastruktureinrichtungStatus?: Array<SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof SearchQueryDto
-     */
-    filterStandVerfahrenBauvorhaben?: Array<SearchQueryDtoFilterStandVerfahrenBauvorhabenEnum>;
     /**
      * 
      * @type {number}
@@ -212,7 +206,7 @@ export interface SearchQueryDto {
 /**
  * @export
  */
-export const SearchQueryDtoFilterStandVerfahrenAbfrageEnum = {
+export const SearchQueryDtoFilterStandVerfahrenEnum = {
     Unspecified: 'UNSPECIFIED',
     VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
     VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
@@ -234,7 +228,7 @@ export const SearchQueryDtoFilterStandVerfahrenAbfrageEnum = {
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type SearchQueryDtoFilterStandVerfahrenAbfrageEnum = typeof SearchQueryDtoFilterStandVerfahrenAbfrageEnum[keyof typeof SearchQueryDtoFilterStandVerfahrenAbfrageEnum];
+export type SearchQueryDtoFilterStandVerfahrenEnum = typeof SearchQueryDtoFilterStandVerfahrenEnum[keyof typeof SearchQueryDtoFilterStandVerfahrenEnum];
 
 /**
  * @export
@@ -251,33 +245,6 @@ export const SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = {
     Bestand: 'BESTAND'
 } as const;
 export type SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum];
-
-/**
- * @export
- */
-export const SearchQueryDtoFilterStandVerfahrenBauvorhabenEnum = {
-    Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
-    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
-    VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
-    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
-    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
-    Strukturkonzept: 'STRUKTURKONZEPT',
-    Rahmenplanung: 'RAHMENPLANUNG',
-    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
-    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
-    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    InfoFehlt: 'INFO_FEHLT',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
-} as const;
-export type SearchQueryDtoFilterStandVerfahrenBauvorhabenEnum = typeof SearchQueryDtoFilterStandVerfahrenBauvorhabenEnum[keyof typeof SearchQueryDtoFilterStandVerfahrenBauvorhabenEnum];
 
 
 /**
@@ -334,9 +301,8 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterWeGesamtBis': !exists(json, 'filterWeGesamtBis') ? undefined : json['filterWeGesamtBis'],
         'filterGfWohnenGeplantVon': !exists(json, 'filterGfWohnenGeplantVon') ? undefined : json['filterGfWohnenGeplantVon'],
         'filterGfWohnenGeplantBis': !exists(json, 'filterGfWohnenGeplantBis') ? undefined : json['filterGfWohnenGeplantBis'],
-        'filterStandVerfahrenAbfrage': !exists(json, 'filterStandVerfahrenAbfrage') ? undefined : json['filterStandVerfahrenAbfrage'],
+        'filterStandVerfahren': !exists(json, 'filterStandVerfahren') ? undefined : json['filterStandVerfahren'],
         'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
-        'filterStandVerfahrenBauvorhaben': !exists(json, 'filterStandVerfahrenBauvorhaben') ? undefined : json['filterStandVerfahrenBauvorhaben'],
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
     };
@@ -375,9 +341,8 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'filterWeGesamtBis': value.filterWeGesamtBis,
         'filterGfWohnenGeplantVon': value.filterGfWohnenGeplantVon,
         'filterGfWohnenGeplantBis': value.filterGfWohnenGeplantBis,
-        'filterStandVerfahrenAbfrage': value.filterStandVerfahrenAbfrage,
+        'filterStandVerfahren': value.filterStandVerfahren,
         'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
-        'filterStandVerfahrenBauvorhaben': value.filterStandVerfahrenBauvorhaben,
         'page': value.page,
         'pageSize': value.pageSize,
     };
