@@ -44,22 +44,26 @@
           <v-radio-group
             v-model="sobonRelevant"
             @update:model-value="sobonRelevantChanged"
-            @mouseover="hoverFilterSobonRelevant = true"
-            @mouseleave="hoverFilterSobonRelevant = false"
             inline
           >
             <template #label> SoBoN-relevanz </template>
             <v-radio
               label="Alle"
               value="Unspecified"
+              @mouseover="hoverFilterSobonRelevantAll = true"
+              @mouseleave="hoverFilterSobonRelevantAll = false"
             />
             <v-radio
               label="SoBoN-relevant"
               value="false"
+              @mouseover="hoverFilterSobonRelevantYes = true"
+              @mouseleave="hoverFilterSobonRelevantYes = false"
             />
             <v-radio
               label="Nicht SoBoN-relevant"
               value="true"
+              @mouseover="hoverFilterSobonRelevantNo = true"
+              @mouseleave="hoverFilterSobonRelevantNo = false"
             />
           </v-radio-group>
         </v-col>
@@ -434,7 +438,9 @@ const hoverFilterWeGesamtBis = ref<boolean>(false);
 const hoverFilterGfWohnenGeplantVon = ref<boolean>(false);
 const hoverFilterGfWohnenGeplantBis = ref<boolean>(false);
 const hoverFilterStatusAbfrage = ref<boolean>(false);
-const hoverFilterSobonRelevant = ref<boolean>(false);
+const hoverFilterSobonRelevantAll = ref<boolean>(false);
+const hoverFilterSobonRelevantYes = ref<boolean>(false);
+const hoverFilterSobonRelevantNo = ref<boolean>(false);
 const hoverFilterStandVerfahren = ref<boolean>(false);
 const hoverFilterInfrastruktureinrichtungStatus = ref<boolean>(false);
 
@@ -460,8 +466,14 @@ const standVerfahrenList = computed(() => {
 });
 
 const helpTextAllgemeineFiltereinstellungen = computed(() => {
-  if (hoverFilterSobonRelevant.value) {
+  if (hoverFilterSobonRelevantAll.value) {
+    return "Es wird keine Filterung nach SoBoN-relevanz durchgeführt";
+  }
+  if (hoverFilterSobonRelevantYes.value) {
     return "Filtern nach SoBoN-relevanten Abfragen und Bauvorhaben.";
+  }
+  if (hoverFilterSobonRelevantNo.value) {
+    return "Filtern nach nicht SoBoN-relevanten Abfragen und Bauvorhaben.";
   }
   if (hoverFilterStandVerfahren.value) {
     return "Auswahl der Verfahrensstände nach denen in Abfragen und Bauvorhaben gefiltert werden soll.";
