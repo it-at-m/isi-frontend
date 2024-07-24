@@ -221,7 +221,7 @@
           md="4"
         >
           <v-card flat>
-            {{ helpTextRealisierungsbeginn }}
+            {{ helpTextFilterRealisierungsbeginn }}
           </v-card>
         </v-col>
       </v-row>
@@ -292,6 +292,8 @@
             v-model="searchQueryAndSorting.filterWeGesamtVon"
             label="Geplante Wohneinheiten von"
             integer
+            @mouseover="hoverFilterWeGesamtVon = true"
+            @mouseleave="hoverFilterWeGesamtVon = false"
           />
         </v-col>
         <v-col
@@ -303,12 +305,17 @@
             v-model="searchQueryAndSorting.filterWeGesamtBis"
             label="Geplante Wohneinheiten bis"
             integer
+            @mouseover="hoverFilterWeGesamtBis = true"
+            @mouseleave="hoverFilterWeGesamtBis = false"
           />
         </v-col>
         <v-col
           cols="12"
           md="4"
         >
+          <v-card flat>
+            {{ helpTextFilterWeGesamt }}
+          </v-card>
         </v-col>
       </v-row>
       <v-row
@@ -324,6 +331,8 @@
             v-model="searchQueryAndSorting.filterGfWohnenGeplantVon"
             label="Geplante Geschossfläche Wohnen von"
             :suffix="SQUARE_METER"
+            @mouseover="hoverFilterGfWohnenGeplantVon = true"
+            @mouseleave="hoverFilterGfWohnenGeplantVon = false"
           />
         </v-col>
         <v-col
@@ -335,12 +344,17 @@
             v-model="searchQueryAndSorting.filterGfWohnenGeplantBis"
             label="Geplante Geschossfläche Wohnen bis"
             :suffix="SQUARE_METER"
+            @mouseover="hoverFilterGfWohnenGeplantBis = true"
+            @mouseleave="hoverFilterGfWohnenGeplantBis = false"
           />
         </v-col>
         <v-col
           cols="12"
           md="4"
         >
+          <v-card flat>
+            {{ helpTextFilterGfWohnenGeplant }}
+          </v-card>
         </v-col>
       </v-row>
       <p class="font-weight-black mt-3">Infrastruktureinrichtung</p>
@@ -410,6 +424,10 @@ const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnVon = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnBis = ref<boolean>(false);
+const hoverFilterWeGesamtVon = ref<boolean>(false);
+const hoverFilterWeGesamtBis = ref<boolean>(false);
+const hoverFilterGfWohnenGeplantVon = ref<boolean>(false);
+const hoverFilterGfWohnenGeplantBis = ref<boolean>(false);
 const hoverFilterStatusAbfrage = ref<boolean>(false);
 const hoverFilterSobonRelevant = ref<boolean>(false);
 const hoverFilterStandVerfahren = ref<boolean>(false);
@@ -468,12 +486,32 @@ const helpTextFiltereinstellungen = computed(() => {
   return "";
 });
 
-const helpTextRealisierungsbeginn = computed(() => {
+const helpTextFilterRealisierungsbeginn = computed(() => {
   if (hoverFilterRealisierungsbeginnVon.value) {
     return "Bestimmt auf Basis des Attributs 'Realisierung von' die untere Grenze der Abfragen nach denen gefiltert werden soll.";
   }
   if (hoverFilterRealisierungsbeginnBis.value) {
     return "Bestimmt auf Basis des Attributs 'Realisierung von' die obere Grenze der Abfragen nach denen gefiltert werden soll.";
+  }
+  return "";
+});
+
+const helpTextFilterWeGesamt = computed(() => {
+  if (hoverFilterWeGesamtVon.value) {
+    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die untere Grenze der geplanten Wohneinheiten.";
+  }
+  if (hoverFilterWeGesamtBis.value) {
+    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die obere Grenze der geplanten Wohneinheiten.";
+  }
+  return "";
+});
+
+const helpTextFilterGfWohnenGeplant = computed(() => {
+  if (hoverFilterGfWohnenGeplantVon.value) {
+    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die untere Grenze der geplanten Geschossfläche Wohnen.";
+  }
+  if (hoverFilterGfWohnenGeplantBis.value) {
+    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die obere Grenze der geplanten Geschossfläche Wohnen.";
   }
   return "";
 });
