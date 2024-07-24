@@ -153,6 +153,9 @@
           cols="12"
           md="4"
         >
+          <v-card flat>
+            {{ helpTextRealisierungsbeginn }}
+          </v-card>
         </v-col>
       </v-row>
       <v-row
@@ -494,6 +497,16 @@ const helpTextFiltereinstellungen = computed(() => {
   }
   if (hoverFilterMittelschulsprengelNummer.value) {
     return "Eingabe der Mittelschulsprengelnummern nach denen gefiltert werden soll.";
+  }
+  return "";
+});
+
+const helpTextRealisierungsbeginn = computed(() => {
+  if (hoverFilterRealisierungsbeginnVon.value) {
+    return "Bestimmt auf Basis des Attributs 'Realisierung von' die untere Grenze der Abfragen nach denen gefiltert werden soll.";
+  }
+  if (hoverFilterRealisierungsbeginnBis.value) {
+    return "Bestimmt auf Basis des Attributs 'Realisierung von' die obere Grenze der Abfragen nach denen gefiltert werden soll.";
   }
   return "";
 });
