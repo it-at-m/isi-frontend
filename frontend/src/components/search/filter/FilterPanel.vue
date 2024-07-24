@@ -34,6 +34,45 @@
           </v-card>
         </v-col>
       </v-row>
+      <p class="font-weight-black mt-3">Allgemein</p>
+      <p class="font-weight-regular mb-3">Übergreifende Filtereinstellungen</p>
+      <v-row>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-radio-group
+            inline
+            v-model="sobonRelevant"
+            @update:model-value="sobonRelevantChanged"
+            @mouseover="hoverFilterSobonRelevant = true"
+            @mouseleave="hoverFilterSobonRelevant = false"
+          >
+            <template #label> SoBoN-relevant </template>
+            <v-radio
+              label="Nein"
+              value="false"
+            ></v-radio>
+            <v-radio
+              label="Ja"
+              value="true"
+            ></v-radio>
+          </v-radio-group>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-card flat>
+            {{ helpTextAllgemeineFiltereinstellungen }}
+          </v-card>
+        </v-col>
+      </v-row>
       <p class="font-weight-black mt-3">Verortung</p>
       <p class="font-weight-regular mb-3">Verortungsbezogene Filtereinstellungen</p>
       <v-row
@@ -207,33 +246,6 @@
         >
         </v-col>
       </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-radio-group
-            inline
-            v-model="sobonRelevantAbfrageModel"
-            @update:model-value="sobonRelevantModelAbfrageChanged"
-          >
-            <template #label> SoBoN-relevant </template>
-            <v-radio
-              label="Nein"
-              value="false"
-            ></v-radio>
-            <v-radio
-              label="Ja"
-              value="true"
-            ></v-radio>
-          </v-radio-group>
-        </v-col>
-        <v-col
-          cols="12"
-          md="8"
-        >
-        </v-col>
-      </v-row>
       <v-row
         class="align-start justify-center"
         dense
@@ -383,33 +395,6 @@
         >
         </v-col>
       </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-radio-group
-            inline
-            v-model="sobonRelevantBauvorhabenModel"
-            @update:model-value="sobonRelevantModelBauvorhabenChanged"
-          >
-            <template #label> SoBoN-relevant </template>
-            <v-radio
-              label="Nein"
-              value="false"
-            ></v-radio>
-            <v-radio
-              label="Ja"
-              value="true"
-            ></v-radio>
-          </v-radio-group>
-        </v-col>
-        <v-col
-          cols="12"
-          md="8"
-        >
-        </v-col>
-      </v-row>
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
@@ -423,26 +408,15 @@ import NumField from "@/components/common/NumField.vue";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 
 onMounted(() => {
-  switch (searchQueryAndSorting.value.filterSobonRelevantBauvorhaben) {
+  switch (searchQueryAndSorting.value.filterSobonRelevant) {
     case UncertainBoolean.True:
-      sobonRelevantBauvorhabenModel.value = "true";
+      sobonRelevant.value = "true";
       break;
     case UncertainBoolean.False:
-      sobonRelevantBauvorhabenModel.value = "false";
+      sobonRelevant.value = "false";
       break;
     default:
-      sobonRelevantBauvorhabenModel.value = undefined;
-      break;
-  }
-  switch (searchQueryAndSorting.value.filterSobonRelevantAbfrage) {
-    case UncertainBoolean.True:
-      sobonRelevantAbfrageModel.value = "true";
-      break;
-    case UncertainBoolean.False:
-      sobonRelevantAbfrageModel.value = "false";
-      break;
-    default:
-      sobonRelevantAbfrageModel.value = undefined;
+      sobonRelevant.value = undefined;
       break;
   }
 });
@@ -456,8 +430,9 @@ const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnVon = ref<boolean>(false);
 const hoverFilterRealisierungsbeginnBis = ref<boolean>(false);
-const sobonRelevantBauvorhabenModel = ref<string | undefined>(undefined);
-const sobonRelevantAbfrageModel = ref<string | undefined>(undefined);
+const hoverFilterSobonRelevant = ref<boolean>(false);
+
+const sobonRelevant = ref<string | undefined>(undefined);
 
 const lookupStore = useLookupStore();
 const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
@@ -478,9 +453,16 @@ const standVerfahrenList = computed(() => {
   return standVerfahrenList;
 });
 
+const helpTextAllgemeineFiltereinstellungen = computed(() => {
+  if (hoverFilterSobonRelevant.value) {
+    return "Filtern nach SoBoN-relevanten Abfrage und Bauvorhaben.";
+  }
+  return "";
+});
+
 const helpTextFiltereinstellungenAufheben = computed(() => {
   if (hoverFiltereinstellungenAufheben.value) {
-    return "Mit einem Klick werden alle Filtereintellungen aufgehoben";
+    return "Mit einem Klick werden alle Filtereintellungen aufgehoben.";
   }
   return "";
 });
@@ -520,7 +502,7 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterRealisierungsbeginnBis = undefined;
   searchQueryAndSorting.value.filterNurEigeneAbfragen = undefined;
   searchQueryAndSorting.value.filterStatusAbfrage = undefined;
-  searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.Unspecified;
+  searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
   searchQueryAndSorting.value.filterWeGesamtVon = undefined;
   searchQueryAndSorting.value.filterWeGesamtBis = undefined;
   searchQueryAndSorting.value.filterGfWohnenGeplantVon = undefined;
@@ -528,34 +510,19 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterStandVerfahrenAbfrage = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
   searchQueryAndSorting.value.filterStandVerfahrenBauvorhaben = undefined;
-  searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.Unspecified;
-  sobonRelevantBauvorhabenModel.value = undefined;
-  sobonRelevantAbfrageModel.value = undefined;
+  sobonRelevant.value = undefined;
 }
 
-function sobonRelevantModelBauvorhabenChanged(): void {
-  switch (sobonRelevantBauvorhabenModel.value) {
+function sobonRelevantChanged(): void {
+  switch (sobonRelevant.value) {
     case "true":
-      searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.True;
+      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.True;
       break;
     case "false":
-      searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.False;
+      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.False;
       break;
     default:
-      searchQueryAndSorting.value.filterSobonRelevantBauvorhaben = UncertainBoolean.Unspecified;
-  }
-}
-
-function sobonRelevantModelAbfrageChanged(): void {
-  switch (sobonRelevantAbfrageModel.value) {
-    case "true":
-      searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.True;
-      break;
-    case "false":
-      searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.False;
-      break;
-    default:
-      searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.Unspecified;
+      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
   }
 }
 </script>

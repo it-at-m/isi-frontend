@@ -151,7 +151,7 @@ export interface SearchQueryDto {
      * @type {UncertainBoolean}
      * @memberof SearchQueryDto
      */
-    filterSobonRelevantAbfrage?: UncertainBoolean;
+    filterSobonRelevant?: UncertainBoolean;
     /**
      * 
      * @type {number}
@@ -194,12 +194,6 @@ export interface SearchQueryDto {
      * @memberof SearchQueryDto
      */
     filterStandVerfahrenBauvorhaben?: Array<SearchQueryDtoFilterStandVerfahrenBauvorhabenEnum>;
-    /**
-     * 
-     * @type {UncertainBoolean}
-     * @memberof SearchQueryDto
-     */
-    filterSobonRelevantBauvorhaben?: UncertainBoolean;
     /**
      * 
      * @type {number}
@@ -335,7 +329,7 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterRealisierungsbeginnBis': !exists(json, 'filterRealisierungsbeginnBis') ? undefined : json['filterRealisierungsbeginnBis'],
         'filterNurEigeneAbfragen': !exists(json, 'filterNurEigeneAbfragen') ? undefined : json['filterNurEigeneAbfragen'],
         'filterStatusAbfrage': !exists(json, 'filterStatusAbfrage') ? undefined : ((json['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageFromJSON)),
-        'filterSobonRelevantAbfrage': !exists(json, 'filterSobonRelevantAbfrage') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevantAbfrage']),
+        'filterSobonRelevant': !exists(json, 'filterSobonRelevant') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
         'filterWeGesamtVon': !exists(json, 'filterWeGesamtVon') ? undefined : json['filterWeGesamtVon'],
         'filterWeGesamtBis': !exists(json, 'filterWeGesamtBis') ? undefined : json['filterWeGesamtBis'],
         'filterGfWohnenGeplantVon': !exists(json, 'filterGfWohnenGeplantVon') ? undefined : json['filterGfWohnenGeplantVon'],
@@ -343,7 +337,6 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterStandVerfahrenAbfrage': !exists(json, 'filterStandVerfahrenAbfrage') ? undefined : json['filterStandVerfahrenAbfrage'],
         'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
         'filterStandVerfahrenBauvorhaben': !exists(json, 'filterStandVerfahrenBauvorhaben') ? undefined : json['filterStandVerfahrenBauvorhaben'],
-        'filterSobonRelevantBauvorhaben': !exists(json, 'filterSobonRelevantBauvorhaben') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevantBauvorhaben']),
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
     };
@@ -377,7 +370,7 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'filterRealisierungsbeginnBis': value.filterRealisierungsbeginnBis,
         'filterNurEigeneAbfragen': value.filterNurEigeneAbfragen,
         'filterStatusAbfrage': value.filterStatusAbfrage === undefined ? undefined : ((value.filterStatusAbfrage as Array<any>).map(StatusAbfrageToJSON)),
-        'filterSobonRelevantAbfrage': UncertainBooleanToJSON(value.filterSobonRelevantAbfrage),
+        'filterSobonRelevant': UncertainBooleanToJSON(value.filterSobonRelevant),
         'filterWeGesamtVon': value.filterWeGesamtVon,
         'filterWeGesamtBis': value.filterWeGesamtBis,
         'filterGfWohnenGeplantVon': value.filterGfWohnenGeplantVon,
@@ -385,7 +378,6 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'filterStandVerfahrenAbfrage': value.filterStandVerfahrenAbfrage,
         'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
         'filterStandVerfahrenBauvorhaben': value.filterStandVerfahrenBauvorhaben,
-        'filterSobonRelevantBauvorhaben': UncertainBooleanToJSON(value.filterSobonRelevantBauvorhaben),
         'page': value.page,
         'pageSize': value.pageSize,
     };
