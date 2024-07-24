@@ -376,6 +376,8 @@
             item-title="value"
             multiple
             chips
+            @mouseover="hoverFilterInfrastruktureinrichtungStatus = true"
+            @mouseleave="hoverFilterInfrastruktureinrichtungStatus = false"
           >
             <template #label> Status Infrastruktureinrichtung </template>
           </v-autocomplete>
@@ -384,6 +386,9 @@
           cols="12"
           md="4"
         >
+          <v-card flat>
+            {{ helpTextFilterInfrastruktureinrichtungStatus }}
+          </v-card>
         </v-col>
       </v-row>
     </v-expansion-panel-text>
@@ -431,6 +436,7 @@ const hoverFilterGfWohnenGeplantBis = ref<boolean>(false);
 const hoverFilterStatusAbfrage = ref<boolean>(false);
 const hoverFilterSobonRelevant = ref<boolean>(false);
 const hoverFilterStandVerfahren = ref<boolean>(false);
+const hoverFilterInfrastruktureinrichtungStatus = ref<boolean>(false);
 
 const sobonRelevant = ref<string | undefined>(undefined);
 
@@ -519,6 +525,13 @@ const helpTextFilterGfWohnenGeplant = computed(() => {
 const helpTextFilterStatusAbfrage = computed(() => {
   if (hoverFilterStatusAbfrage.value) {
     return "Auswahl der Abfragestatus nach denen gefiltert werden soll.";
+  }
+  return "";
+});
+
+const helpTextFilterInfrastruktureinrichtungStatus = computed(() => {
+  if (hoverFilterInfrastruktureinrichtungStatus.value) {
+    return "Auswahl der Status von Infrastruktureinrichtungen nach denen gefiltert werden soll.";
   }
   return "";
 });
