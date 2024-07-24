@@ -181,7 +181,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenAngelegtDto {
      * @type {Array<BauabschnittDto>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
-    bauabschnitte?: Array<BauabschnittDto>;
+    bauabschnitte: Array<BauabschnittDto>;
 }
 
 
@@ -226,6 +226,7 @@ export function instanceOfAbfragevarianteBaugenehmigungsverfahrenAngelegtDto(val
     isInstance = isInstance && "realisierungVon" in value;
     isInstance = isInstance && "gfWohnenSonderwohnformen" in value;
     isInstance = isInstance && "weSonderwohnformen" in value;
+    isInstance = isInstance && "bauabschnitte" in value;
 
     return isInstance;
 }
@@ -265,7 +266,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(
         'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
+        'bauabschnitte': ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
     };
 }
 
@@ -303,7 +304,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON(value?:
         'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
-        'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'bauabschnitte': ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
     };
 }
 

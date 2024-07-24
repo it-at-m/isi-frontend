@@ -127,13 +127,13 @@ export interface SearchQueryDto {
      * @type {number}
      * @memberof SearchQueryDto
      */
-    filterRealisierungVon?: number;
+    filterRealisierungsbeginnVon?: number;
     /**
      * 
      * @type {number}
      * @memberof SearchQueryDto
      */
-    filterRealisierungBis?: number;
+    filterRealisierungsbeginnBis?: number;
     /**
      * 
      * @type {boolean}
@@ -331,8 +331,8 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
-        'filterRealisierungVon': !exists(json, 'filterRealisierungVon') ? undefined : json['filterRealisierungVon'],
-        'filterRealisierungBis': !exists(json, 'filterRealisierungBis') ? undefined : json['filterRealisierungBis'],
+        'filterRealisierungsbeginnVon': !exists(json, 'filterRealisierungsbeginnVon') ? undefined : json['filterRealisierungsbeginnVon'],
+        'filterRealisierungsbeginnBis': !exists(json, 'filterRealisierungsbeginnBis') ? undefined : json['filterRealisierungsbeginnBis'],
         'filterNurEigeneAbfragen': !exists(json, 'filterNurEigeneAbfragen') ? undefined : json['filterNurEigeneAbfragen'],
         'filterStatusAbfrage': !exists(json, 'filterStatusAbfrage') ? undefined : ((json['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageFromJSON)),
         'filterSobonRelevantAbfrage': !exists(json, 'filterSobonRelevantAbfrage') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevantAbfrage']),
@@ -373,8 +373,8 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
-        'filterRealisierungVon': value.filterRealisierungVon,
-        'filterRealisierungBis': value.filterRealisierungBis,
+        'filterRealisierungsbeginnVon': value.filterRealisierungsbeginnVon,
+        'filterRealisierungsbeginnBis': value.filterRealisierungsbeginnBis,
         'filterNurEigeneAbfragen': value.filterNurEigeneAbfragen,
         'filterStatusAbfrage': value.filterStatusAbfrage === undefined ? undefined : ((value.filterStatusAbfrage as Array<any>).map(StatusAbfrageToJSON)),
         'filterSobonRelevantAbfrage': UncertainBooleanToJSON(value.filterSobonRelevantAbfrage),

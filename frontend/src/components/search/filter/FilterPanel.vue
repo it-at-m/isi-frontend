@@ -127,10 +127,12 @@
         >
           <num-field
             id="abfrage_realisierungsbeginn_von"
-            v-model="searchQueryAndSorting.filterRealisierungVon"
+            v-model="searchQueryAndSorting.filterRealisierungsbeginnVon"
             label="Realisierungsbeginn von (JJJJ)"
             year
             maxlength="4"
+            @mouseover="hoverFilterRealisierungsbeginnVon = true"
+            @mouseleave="hoverFilterRealisierungsbeginnVon = false"
           />
         </v-col>
         <v-col
@@ -139,10 +141,12 @@
         >
           <num-field
             id="abfrage_realisierungsbeginn_bis"
-            v-model="searchQueryAndSorting.filterRealisierungBis"
+            v-model="searchQueryAndSorting.filterRealisierungsbeginnBis"
             label="Realisierungsbeginn bis (JJJJ)"
             year
             maxlength="4"
+            @mouseover="hoverFilterRealisierungsbeginnBis = true"
+            @mouseleave="hoverFilterRealisierungsbeginnBis = false"
           />
         </v-col>
         <v-col
@@ -447,6 +451,8 @@ const hoverFilterStadtbezirkName = ref<boolean>(false);
 const hoverFilterKitaplanungsbereichKitaPlbT = ref<boolean>(false);
 const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
 const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
+const hoverFilterRealisierungsbeginnVon = ref<boolean>(false);
+const hoverFilterRealisierungsbeginnBis = ref<boolean>(false);
 const sobonRelevantBauvorhabenModel = ref<string | undefined>(undefined);
 const sobonRelevantAbfrageModel = ref<string | undefined>(undefined);
 
@@ -497,8 +503,8 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterKitaplanungsbereichKitaPlbT = undefined;
   searchQueryAndSorting.value.filterGrundschulsprengelNummer = undefined;
   searchQueryAndSorting.value.filterMittelschulsprengelNummer = undefined;
-  searchQueryAndSorting.value.filterRealisierungVon = undefined;
-  searchQueryAndSorting.value.filterRealisierungBis = undefined;
+  searchQueryAndSorting.value.filterRealisierungsbeginnVon = undefined;
+  searchQueryAndSorting.value.filterRealisierungsbeginnBis = undefined;
   searchQueryAndSorting.value.filterNurEigeneAbfragen = undefined;
   searchQueryAndSorting.value.filterStatusAbfrage = undefined;
   searchQueryAndSorting.value.filterSobonRelevantAbfrage = UncertainBoolean.Unspecified;
