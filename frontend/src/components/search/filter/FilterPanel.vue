@@ -55,13 +55,13 @@
             />
             <v-radio
               label="SoBoN-relevant"
-              value="false"
+              value="true"
               @mouseover="hoverFilterSobonRelevantYes = true"
               @mouseleave="hoverFilterSobonRelevantYes = false"
             />
             <v-radio
               label="Nicht SoBoN-relevant"
-              value="true"
+              value="false"
               @mouseover="hoverFilterSobonRelevantNo = true"
               @mouseleave="hoverFilterSobonRelevantNo = false"
             />
