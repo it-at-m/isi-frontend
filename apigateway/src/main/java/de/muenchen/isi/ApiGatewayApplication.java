@@ -4,7 +4,6 @@
  */
 package de.muenchen.isi;
 
-import com.hazelcast.jet.impl.execution.init.CustomClassLoadedObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import reactor.core.publisher.Hooks;
