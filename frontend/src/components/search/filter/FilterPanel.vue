@@ -253,7 +253,7 @@
       >
         <v-col
           cols="12"
-          md="6"
+          md="8"
         >
           <v-autocomplete
             id="abfrage_status"
@@ -270,7 +270,7 @@
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
         </v-col>
       </v-row>
@@ -346,7 +346,7 @@
       >
         <v-col
           cols="12"
-          md="6"
+          md="8"
         >
           <v-autocomplete
             id="infrastruktureinrichtung_status"
@@ -363,7 +363,7 @@
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
         </v-col>
       </v-row>
