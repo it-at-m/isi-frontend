@@ -154,9 +154,19 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
       .abfragevariantenSachbearbeitungWeiteresVerfahren;
   }
 
+  const abfragevariantenLimitReached = _.defaultTo(abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT;
+  const abfragevariantenSachbearbeitungLimitReached =
+    _.defaultTo(abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT;
+
   if (abfragevarianten) {
     const abfragevariantenTree = abfragevarianten.map((value, index) =>
-      buildSubTreeAbfragevariante(value, item, index, AnzeigeContextAbfragevariante.ABFRAGEVARIANTE),
+      buildSubTreeAbfragevariante(
+        value,
+        item,
+        index,
+        AnzeigeContextAbfragevariante.ABFRAGEVARIANTE,
+        abfragevariantenLimitReached,
+      ),
     );
     item.children.push(...abfragevariantenTree);
   }
@@ -168,6 +178,7 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
         item,
         index + (abfragevarianten?.length ?? 0),
         AnzeigeContextAbfragevariante.ABFRAGEVARIANTE_SACHBEARBEITUNG,
+        abfragevariantenSachbearbeitungLimitReached,
       ),
     );
     item.children.push(...abfragevariantenTree);
@@ -176,7 +187,7 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
   if (isEditableByAbfrageerstellung.value) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
-      disabled: _.defaultTo(abfragevarianten?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      disabled: abfragevariantenLimitReached,
       effect: () => emit("create-abfragevariante", item),
     });
   }
@@ -184,7 +195,7 @@ function buildTree(abfrage: AnyAbfrageDto): AbfrageTreeItem {
   if (isEditableBySachbearbeitung.value) {
     item.actions.push({
       name: CREATE_ABFRAGEVARIANTE,
-      disabled: _.defaultTo(abfragevariantenSachbearbeitung?.length, 0) >= ABFRAGEVARIANTEN_LIMIT,
+      disabled: abfragevariantenSachbearbeitungLimitReached,
       effect: () => emit("create-abfragevariante-sachbearbeitung", item),
     });
   }
@@ -212,6 +223,7 @@ function buildSubTreeAbfragevariante(
   parent: AbfrageTreeItem,
   index: number,
   context: AnzeigeContextAbfragevariante,
+  duplicationDisabled: boolean,
 ): AbfrageTreeItem {
   const editable = isEditableWithAnzeigeContextAbfragevariante(context);
 
@@ -230,7 +242,7 @@ function buildSubTreeAbfragevariante(
   if (isEditableByAbfrageerstellung.value) {
     item.actions.push({
       name: DUPLICATE,
-      disabled: false,
+      disabled: duplicationDisabled,
       effect: () => emit("copy-abfragevariante", item),
     });
   }
@@ -238,7 +250,7 @@ function buildSubTreeAbfragevariante(
   if (isEditableBySachbearbeitung.value) {
     item.actions.push({
       name: DUPLICATE,
-      disabled: false,
+      disabled: duplicationDisabled,
       effect: () => emit("copy-abfragevariante-sachbearbeitung", item),
     });
     item.actions.push({
