@@ -42,21 +42,25 @@
           md="4"
         >
           <v-radio-group
-            inline
             v-model="sobonRelevant"
             @update:model-value="sobonRelevantChanged"
             @mouseover="hoverFilterSobonRelevant = true"
             @mouseleave="hoverFilterSobonRelevant = false"
+            density="compact"
           >
-            <template #label> SoBoN-relevant </template>
+            <template #label> SoBoN-relevanz </template>
             <v-radio
-              label="Nein"
+              label="Alle"
+              value="Unspecified"
+            />
+            <v-radio
+              label="SoBoN-relevant"
               value="false"
-            ></v-radio>
+            />
             <v-radio
-              label="Ja"
+              label="Nicht SoBoN-relevant"
               value="true"
-            ></v-radio>
+            />
           </v-radio-group>
         </v-col>
         <v-col
@@ -415,8 +419,11 @@ onMounted(() => {
     case UncertainBoolean.False:
       sobonRelevant.value = "false";
       break;
+    case UncertainBoolean.Unspecified:
+      sobonRelevant.value = "Unspecified";
+      break;
     default:
-      sobonRelevant.value = undefined;
+      sobonRelevant.value = UncertainBoolean.Unspecified;
       break;
   }
 });
@@ -455,7 +462,7 @@ const standVerfahrenList = computed(() => {
 
 const helpTextAllgemeineFiltereinstellungen = computed(() => {
   if (hoverFilterSobonRelevant.value) {
-    return "Filtern nach SoBoN-relevanten Abfrage und Bauvorhaben.";
+    return "Filtern nach SoBoN-relevanten Abfragen und Bauvorhaben.";
   }
   return "";
 });
@@ -510,7 +517,7 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterStandVerfahrenAbfrage = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
   searchQueryAndSorting.value.filterStandVerfahrenBauvorhaben = undefined;
-  sobonRelevant.value = undefined;
+  sobonRelevant.value = UncertainBoolean.Unspecified;
 }
 
 function sobonRelevantChanged(): void {
@@ -520,6 +527,9 @@ function sobonRelevantChanged(): void {
       break;
     case "false":
       searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.False;
+      break;
+    case "Unspecified":
+      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
       break;
     default:
       searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
