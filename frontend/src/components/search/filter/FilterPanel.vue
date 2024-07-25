@@ -245,6 +245,38 @@
             open-delay="500"
           >
             <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                id="eigene_abfragen"
+                v-model="searchQueryAndSorting.filterNurEigeneAbfragen"
+                class="mx-3"
+                color="primary"
+                label="Nur selbst erstellte Abfragen berücksichtigen"
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Ermöglicht die Filterung nach Abfragen welche selbst angelegt wurden. </span>
+          </v-tooltip>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        />
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
               <num-field
                 id="abfrage_realisierungsbeginn_von"
                 v-model="searchQueryAndSorting.filterRealisierungsbeginnVon"
@@ -284,38 +316,6 @@
               werden soll.
             </span>
           </v-tooltip>
-        </v-col>
-      </v-row>
-      <v-row
-        class="align-start justify-center"
-        dense
-      >
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-tooltip
-            location="top"
-            offset="20"
-            open-delay="500"
-          >
-            <template #activator="{ props: activatorProps }">
-              <v-checkbox
-                id="eigene_abfragen"
-                v-model="searchQueryAndSorting.filterNurEigeneAbfragen"
-                class="mx-3"
-                color="primary"
-                label="Nur selbst erstellte Abfragen berücksichtigen"
-                v-bind="activatorProps"
-              />
-            </template>
-            <span> Ermöglicht die Filterung nach Abfragen welche selbst angelegt wurden. </span>
-          </v-tooltip>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
         </v-col>
       </v-row>
       <v-row
