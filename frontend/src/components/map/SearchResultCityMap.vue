@@ -17,6 +17,11 @@ import {
   type SearchResultDto,
   type Wgs84Dto,
   SearchResultDtoTypeEnum,
+  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
+  AbfrageDtoArtAbfrageEnum,
+  AbfrageSearchResultDtoStandVerfahrenEnum,
+  InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
+  LookupEntryDto,
 } from "@/api/api-client/isi-backend";
 import type { Feature, MultiPolygon, Point } from "geojson";
 import L, { type GeoJSONOptions, Layer } from "leaflet";
@@ -26,9 +31,24 @@ import { COLOR_POLYGON_UMGRIFF, ICON_ABFRAGE, ICON_BAUVORHABEN, ICON_INFRASTRUKT
 import _ from "lodash";
 import { useSearchStore } from "@/stores/SearchStore";
 import { CITY_CENTER } from "@/utils/MapUtil";
-type EntityFeature = Feature<Point | MultiPolygon, { type: SearchResultDtoTypeEnum; id: string; name: string }>;
+import { useLookupStore } from "@/stores/LookupStore";
+type EntityFeature = Feature<
+  Point | MultiPolygon,
+  {
+    type: SearchResultDtoTypeEnum;
+    id: string;
+    name: string;
+    infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
+    zugehoerigesBauvorhaben: string | undefined;
+    artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
+    standVerfahren: AbfrageSearchResultDtoStandVerfahrenEnum | undefined;
+  }
+>;
 
 const router = useRouter();
+const lookupStore = useLookupStore();
+const standVerfahrenList = computed(() => lookupStore.standVerfahren);
+const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: EntityFeature, latlng) => {
@@ -48,8 +68,35 @@ const geoJsonOptions: GeoJSONOptions = {
     return { color: COLOR_POLYGON_UMGRIFF };
   },
   onEachFeature: (feature: EntityFeature, layer) => {
-    const contentTooltip = `<b>${feature.properties.name}</b><br>
-                   Typ: ${getSearchResultDtoTypeFormattedString(feature.properties.type)}`;
+    let contentTooltip = "";
+    if (feature.properties.type === SearchResultDtoTypeEnum.Abfrage) {
+      contentTooltip = `<b>${feature.properties.name}</b><br>
+                   Art: ${getArtAbfrageEnumFormattedString(
+                     feature.properties.artAbfrage as AbfrageDtoArtAbfrageEnum,
+                   )}<br>
+                   Stand: ${getLookupValue(
+                     feature.properties.standVerfahren as AbfrageSearchResultDtoStandVerfahrenEnum,
+                     standVerfahrenList.value,
+                   )}`;
+    } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben) {
+      contentTooltip = `<b>${feature.properties.name}</b>`;
+    } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
+      if (!_.isNil(feature.properties.zugehoerigesBauvorhaben)) {
+        contentTooltip = `<b>${feature.properties.name}</b><br>
+                   Typ: ${getLookupValue(
+                     feature.properties.infrastruktureinrichtungTyp,
+                     infrastruktureinrichtungTypList.value,
+                   )}<br>
+                   Bauvorhaben: ${feature.properties.zugehoerigesBauvorhaben}`;
+      } else {
+        contentTooltip = `<b>${feature.properties.name}</b><br>
+                   Typ: ${getLookupValue(
+                     feature.properties.infrastruktureinrichtungTyp,
+                     infrastruktureinrichtungTypList.value,
+                   )}<br>
+                   Bauvorhaben: Kein zugehöriges Bauvorhaben`;
+      }
+    }
     if (feature.geometry.type === "Point") {
       layer.bindTooltip(contentTooltip);
     } else {
@@ -90,11 +137,17 @@ const geoJson = computed(() => {
     let id: string | undefined;
     let name: string | undefined;
     let coordinate: Wgs84Dto | undefined;
+    let infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
+    let zugehoerigesBauvorhaben: string | undefined;
+    let artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
+    let standVerfahren: AbfrageSearchResultDtoStandVerfahrenEnum | undefined;
 
     if (type === SearchResultDtoTypeEnum.Abfrage) {
       id = (result as AbfrageSearchResultDto).id;
       name = (result as AbfrageSearchResultDto).name;
       coordinate = (result as AbfrageSearchResultDto).coordinate;
+      artAbfrage = (result as AbfrageSearchResultDto).artAbfrage;
+      standVerfahren = (result as AbfrageSearchResultDto).standVerfahren;
     } else if (type === SearchResultDtoTypeEnum.Bauvorhaben) {
       id = (result as BauvorhabenSearchResultDto).id;
       name = (result as BauvorhabenSearchResultDto).nameVorhaben;
@@ -103,13 +156,23 @@ const geoJson = computed(() => {
       id = (result as InfrastruktureinrichtungSearchResultDto).id;
       name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
       coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
+      infrastruktureinrichtungTyp = (result as InfrastruktureinrichtungSearchResultDto).infrastruktureinrichtungTyp;
+      zugehoerigesBauvorhaben = (result as InfrastruktureinrichtungSearchResultDto).zugehoerigesBauvorhaben;
     }
 
     if (type && id && name && coordinate) {
       features.push({
         type: "Feature",
         geometry: { type: "Point", coordinates: [coordinate.longitude, coordinate.latitude] },
-        properties: { type, id, name },
+        properties: {
+          type,
+          id,
+          name,
+          infrastruktureinrichtungTyp,
+          zugehoerigesBauvorhaben,
+          artAbfrage,
+          standVerfahren,
+        },
       });
     }
   }
@@ -146,14 +209,18 @@ const searchResults = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? searchStore.searchResults.searchResults : [];
 });
 
-function getSearchResultDtoTypeFormattedString(searchResultDtoTypeEnum: SearchResultDtoTypeEnum): string {
-  if (searchResultDtoTypeEnum == SearchResultDtoTypeEnum.Abfrage) {
-    return "Abfrage";
-  } else if (searchResultDtoTypeEnum == SearchResultDtoTypeEnum.Bauvorhaben) {
-    return "Bauvorhaben";
-  } else if (searchResultDtoTypeEnum == SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
-    return "Infrastruktureinrichtung";
+function getArtAbfrageEnumFormattedString(artAbfrageEnum: AbfrageDtoArtAbfrageEnum): string {
+  if (artAbfrageEnum == AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    return "Baugenehmigungsverfahren";
+  } else if (artAbfrageEnum == AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    return "Bauleitplanverfahren";
+  } else if (artAbfrageEnum == AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+    return "WeiteresVerfahren";
   }
   return "";
+}
+
+function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
+  return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
 }
 </script>
