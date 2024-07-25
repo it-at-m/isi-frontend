@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-title class="text-h6"> Filtereinstellung</v-expansion-panel-title>
+    <v-expansion-panel-title class="text-h6"> Filtereinstellung </v-expansion-panel-title>
     <v-expansion-panel-text class="mt-0">
       <v-row
         class="align-start justify-center"
