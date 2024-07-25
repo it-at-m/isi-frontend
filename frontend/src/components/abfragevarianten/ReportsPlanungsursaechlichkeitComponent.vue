@@ -17,56 +17,6 @@
       <v-list-item-title>
         <a
           target="_blank"
-          :href="getUrlBedarfeKinderkrippe()"
-        >
-          Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlBedarfeKindergarten()"
-        >
-          Bedarfe Kindergarten<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlAlleEinwohner()"
-        >
-          Alle Einwohner <span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe()"
-        >
-          Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten()"
-        >
-          Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
           :href="getUrlErgebnissePlanungsursaechlicheBedarfe()"
         >
           Ergebnisse Bedarfsberechnung<span class="mdi mdi-launch" />
@@ -104,33 +54,6 @@ function getUrlWohneinheiten(): string {
   return url.toString();
 }
 
-function getUrlBedarfe(artBedarf: string): string {
-  const url = new URL(getUrlReportBedarfe());
-  const abfrageId = getParameterValueAbfrageId();
-  url.searchParams.set(getParameterAbfrageId(), abfrageId);
-  const artAbfrage = getParameterValueArtAbfrage();
-  url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
-  const abfragevarianteId = getParameterValueAbfragevarianteId();
-  url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
-  const ursaechlichkeit = getParameterValuePlanungsursaechlich();
-  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
-  url.searchParams.set(getParameterArtBedarf(), artBedarf);
-  return url.toString();
-}
-
-function getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf: string, url: URL): string {
-  const abfrageId = getParameterValueAbfrageId();
-  url.searchParams.set(getParameterAbfrageId(), abfrageId);
-  const artAbfrage = getParameterValueArtAbfrage();
-  url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
-  const abfragevarianteId = getParameterValueAbfragevarianteId();
-  url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
-  const ursaechlichkeit = getParameterValuePlanungsursaechlich();
-  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
-  url.searchParams.set(getParameterArtBedarf(), artBedarf);
-  return url.toString();
-}
-
 function getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
   const abfrageId = getParameterValueAbfrageId();
   url.searchParams.set(getParameterAbfrageId(), abfrageId);
@@ -143,36 +66,9 @@ function getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
   return url.toString();
 }
 
-function getUrlPlanungsursaechlicheSpitzenbedarfeKinderkrippe() {
-  const url = new URL(getUrlReportSpitzenbedarfe());
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
-  return getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf, url);
-}
-
-function getUrlPlanungsursaechlicheSpitzenbedarfeKindergarten() {
-  const url = new URL(getUrlReportSpitzenbedarfe());
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
-  return getUrlPlanungsursaechlicheSpitzenbedarfe(artBedarf, url);
-}
-
-function getUrlBedarfeKinderkrippe(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
-  return getUrlBedarfe(artBedarf);
-}
-
-function getUrlBedarfeKindergarten(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
-  return getUrlBedarfe(artBedarf);
-}
-
 function getUrlErgebnissePlanungsursaechlicheBedarfe(): string {
   const url = new URL(getUrlReportErgebnissePlanungsursaechlicheBedarfe());
   return getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url);
-}
-
-function getUrlAlleEinwohner(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_ALLE_EINWOHNER as string;
-  return getUrlBedarfe(artBedarf);
 }
 
 function getUrlReportWohneinheiten(): string {
@@ -181,21 +77,9 @@ function getUrlReportWohneinheiten(): string {
     : "";
 }
 
-function getUrlReportBedarfe(): string {
-  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
-    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportBedarfe}`
-    : "";
-}
-
 function getUrlReportErgebnissePlanungsursaechlicheBedarfe(): string {
   return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
     ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportErgebnissePlanungsursaechlich}`
-    : "";
-}
-
-function getUrlReportSpitzenbedarfe(): string {
-  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
-    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportSpitzenbedarfePlanungsursaechlich}`
     : "";
 }
 
@@ -213,10 +97,6 @@ function getParameterAbfragevarianteId(): string {
 
 function getParameterUrsaechlichkeit(): string {
   return import.meta.env.VITE_REPORT_PARAMETER_URSAECHLICHKEIT_URL as string;
-}
-
-function getParameterArtBedarf(): string {
-  return import.meta.env.VITE_REPORT_PARAMETER_ART_BEDARF_URL as string;
 }
 
 function getParameterValueAbfrageId(): string {
