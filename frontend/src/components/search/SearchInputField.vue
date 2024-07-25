@@ -31,7 +31,7 @@
       </v-icon>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
-        max-width="1024px"
+        max-width="800px"
       >
         <search-and-filter-options
           v-model="searchQueryAndSorting"

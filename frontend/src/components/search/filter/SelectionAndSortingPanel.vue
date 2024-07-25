@@ -10,131 +10,221 @@
       >
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-chip
-            class="ma-2"
-            :prepend-icon="iconForAllObjectTypesSelected"
-            filter
-            @click="selectAll"
-            @mouseover="hoverSelectAll = true"
-            @mouseleave="hoverSelectAll = false"
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
           >
-            Alle auswählen
-          </v-chip>
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectBauleitplanverfahren"
-            :label="'Bauleitplanverfahren'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectBauleitplanverfahren = true"
-            @mouseleave="hoverSelectBauleitplanverfahren = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectBaugenehmigungsverfahren"
-            :label="'Baugenehmigungsverfahren'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectBaugenehmigungsverfahren = true"
-            @mouseleave="hoverSelectBaugenehmigungsverfahren = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectWeiteresVerfahren"
-            :label="'Weiteres Verfahren'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectWeiteresVerfahren = true"
-            @mouseleave="hoverSelectWeiteresVerfahren = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectBauvorhaben"
-            :label="'Bauvorhaben'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectBauvorhaben = true"
-            @mouseleave="hoverSelectBauvorhaben = false"
-          />
+            <template #activator="{ props: activatorProps }">
+              <v-chip
+                class="ma-2"
+                :prepend-icon="iconForAllObjectTypesSelected"
+                filter
+                @click="selectAll"
+                v-bind="activatorProps"
+              >
+                Alle auswählen
+              </v-chip>
+            </template>
+            <span> Es werden all Objekttypen ausgewählt. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectBauleitplanverfahren"
+                :label="'Bauleitplanverfahren'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Bauleitplanverfahren werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectBaugenehmigungsverfahren"
+                :label="'Baugenehmigungsverfahren'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Baugenehmigungsverfahren werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectWeiteresVerfahren"
+                :label="'Weiteres Verfahren'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Weiteren Verfahren werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectBauvorhaben"
+                :label="'Bauvorhaben'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Bauvorhaben werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-chip
-            class="ma-2"
-            :prepend-icon="iconForAllObjectTypesDeselected"
-            filter
-            @click="deselectAll"
-            @mouseover="hoverDeselectAll = true"
-            @mouseleave="hoverDeselectAll = false"
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
           >
-            Alle abwählen
-          </v-chip>
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectGrundschule"
-            :label="'Grundschule'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectGrundschule = true"
-            @mouseleave="hoverSelectGrundschule = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectGsNachmittagBetreuung"
-            :label="'Nachmittagsbetreuung für Grundschulkinder'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectGsNachmittagBetreuung = true"
-            @mouseleave="hoverSelectGsNachmittagBetreuung = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectMittelschule"
-            :label="'Mittelschule'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectMittelschule = true"
-            @mouseleave="hoverSelectMittelschule = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectKinderkrippe"
-            :label="'Kinderkrippe'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectKinderkrippe = true"
-            @mouseleave="hoverSelectKinderkrippe = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectKindergarten"
-            :label="'Kindergarten'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectKindergarten = true"
-            @mouseleave="hoverSelectKindergarten = false"
-          />
-          <v-checkbox
-            v-model="searchQueryAndSorting.selectHausFuerKinder"
-            :label="'Haus für Kinder'"
-            color="grey-darken-1"
-            hide-details
-            density="compact"
-            @mouseover="hoverSelectHausFuerKinder = true"
-            @mouseleave="hoverSelectHausFuerKinder = false"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextObjektauswahl }}
-          </v-card>
+            <template #activator="{ props: activatorProps }">
+              <v-chip
+                class="ma-2"
+                :prepend-icon="iconForAllObjectTypesDeselected"
+                filter
+                @click="deselectAll"
+                v-bind="activatorProps"
+              >
+                Alle abwählen
+              </v-chip>
+            </template>
+            <span> Es werden all Objekttypen abgewählt. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectGrundschule"
+                :label="'Grundschule'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Grundschulen werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectGsNachmittagBetreuung"
+                :label="'Nachmittagsbetreuung für Grundschulkinder'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span>
+              Die Einrichtungen zur Nachmittagsbetreuung für Grundschulkinder werden in die Suche miteinbezogen.
+            </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectMittelschule"
+                :label="'Mittelschule'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Mittelschulen werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectKinderkrippe"
+                :label="'Kinderkrippe'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Kinderkrippen werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectKindergarten"
+                :label="'Kindergarten'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Kindergärten werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectHausFuerKinder"
+                :label="'Haus für Kinder'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Häuser für Kinder werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
         </v-col>
       </v-row>
       <v-divider />
@@ -146,43 +236,51 @@
       >
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-select
-            v-model="searchQueryAndSorting.sortBy"
-            :items="entriesArtderSortierung"
-            label="Art der Sortierung"
-            item-value="key"
-            item-title="value"
-            variant="filled"
-            density="comfortable"
-            @mouseover="hoverArtDerSortierung = true"
-            @mouseleave="hoverArtDerSortierung = false"
-          />
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-select
+                v-model="searchQueryAndSorting.sortBy"
+                :items="entriesArtderSortierung"
+                label="Art der Sortierung"
+                item-value="key"
+                item-title="value"
+                variant="filled"
+                density="comfortable"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Auswahl nach welchem Attribut sortiert werden soll. </span>
+          </v-tooltip>
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-select
-            v-model="searchQueryAndSorting.sortOrder"
-            :items="entriesReihenfolgeDerSortierung"
-            label="Sortierreihenfolge"
-            item-value="key"
-            item-title="value"
-            variant="filled"
-            density="comfortable"
-            @mouseover="hoverReihenfolgeDerSortierung = true"
-            @mouseleave="hoverReihenfolgeDerSortierung = false"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextSortierung }}
-          </v-card>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-select
+                v-model="searchQueryAndSorting.sortOrder"
+                :items="entriesReihenfolgeDerSortierung"
+                label="Sortierreihenfolge"
+                item-value="key"
+                item-title="value"
+                variant="filled"
+                density="comfortable"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Auswahl ob das sortierbare Attribut aufsteigend oder absteigend sortiert werden soll. </span>
+          </v-tooltip>
         </v-col>
       </v-row>
     </v-expansion-panel-text>
@@ -198,72 +296,6 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import { computed, ref } from "vue";
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
-
-const hoverSelectAll = ref<boolean>(false);
-const hoverDeselectAll = ref<boolean>(false);
-const hoverSelectBauleitplanverfahren = ref<boolean>(false);
-const hoverSelectBaugenehmigungsverfahren = ref<boolean>(false);
-const hoverSelectWeiteresVerfahren = ref<boolean>(false);
-const hoverSelectBauvorhaben = ref<boolean>(false);
-const hoverSelectGrundschule = ref<boolean>(false);
-const hoverSelectGsNachmittagBetreuung = ref<boolean>(false);
-const hoverSelectMittelschule = ref<boolean>(false);
-const hoverSelectKinderkrippe = ref<boolean>(false);
-const hoverSelectKindergarten = ref<boolean>(false);
-const hoverSelectHausFuerKinder = ref<boolean>(false);
-
-const hoverArtDerSortierung = ref<boolean>(false);
-const hoverReihenfolgeDerSortierung = ref<boolean>(false);
-
-const helpTextObjektauswahl = computed(() => {
-  if (hoverSelectAll.value) {
-    return "Es werden all Objekttypen ausgewählt.";
-  }
-  if (hoverDeselectAll.value) {
-    return "Es werden all Objekttypen abgewählt.";
-  }
-  if (hoverSelectBauleitplanverfahren.value) {
-    return "Die Bauleitplanverfahren werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectBaugenehmigungsverfahren.value) {
-    return "Die Baugenehmigungsverfahren werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectWeiteresVerfahren.value) {
-    return "Die Weiteren Verfahren werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectBauvorhaben.value) {
-    return "Die Bauvorhaben werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectGrundschule.value) {
-    return "Die Grundschulen werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectMittelschule.value) {
-    return "Die Mittelschulen werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectGsNachmittagBetreuung.value) {
-    return "Die Einrichtungen zur Nachmittagsbetreuung für Grundschulkinder werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectKinderkrippe.value) {
-    return "Die Kinderkrippen werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectKindergarten.value) {
-    return "Die Kindergärten werden in die Suche miteinbezogen.";
-  }
-  if (hoverSelectHausFuerKinder.value) {
-    return "Die Häuser für Kinder werden in die Suche miteinbezogen.";
-  }
-  return "";
-});
-
-const helpTextSortierung = computed(() => {
-  if (hoverArtDerSortierung.value) {
-    return "Auswahl nach welchem Attribut sortiert werden soll.";
-  }
-  if (hoverReihenfolgeDerSortierung.value) {
-    return "Auswahl ob das sortierbare Attribut aufsteigend oder absteigend sortiert werden soll.";
-  }
-  return "";
-});
 
 function selectAll(): void {
   searchQueryAndSorting.value.selectBauleitplanverfahren = true;

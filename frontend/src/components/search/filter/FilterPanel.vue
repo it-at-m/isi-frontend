@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-title class="text-h6"> Filtereinstellung </v-expansion-panel-title>
+    <v-expansion-panel-title class="text-h6"> Filtereinstellung</v-expansion-panel-title>
     <v-expansion-panel-text class="mt-0">
       <v-row
         class="align-start justify-center"
@@ -8,30 +8,30 @@
       >
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-chip
-            class="ma-2"
-            filter
-            @click="alleFiltereinstellungenAufheben"
-            @mouseover="hoverFiltereinstellungenAufheben = true"
-            @mouseleave="hoverFiltereinstellungenAufheben = false"
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
           >
-            Filtereinstellungen aufheben
-          </v-chip>
+            <template #activator="{ props: activatorProps }">
+              <v-chip
+                class="ma-2"
+                filter
+                @click="alleFiltereinstellungenAufheben"
+                v-bind="activatorProps"
+              >
+                Filtereinstellungen aufheben
+              </v-chip>
+            </template>
+            <span> Mit einem Klick werden alle Filtereintellungen aufgehoben. </span>
+          </v-tooltip>
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextFiltereinstellungenAufheben }}
-          </v-card>
         </v-col>
       </v-row>
       <p class="font-weight-black mt-3">Allgemein</p>
@@ -39,41 +39,57 @@
       <v-row>
         <v-col
           cols="12"
-          md="8"
+          md="12"
         >
           <v-radio-group
             v-model="sobonRelevant"
-            @update:model-value="sobonRelevantChanged"
             inline
+            @update:model-value="sobonRelevantChanged"
           >
-            <template #label> SoBoN-relevanz </template>
-            <v-radio
-              label="Alle"
-              value="Unspecified"
-              @mouseover="hoverFilterSobonRelevantAll = true"
-              @mouseleave="hoverFilterSobonRelevantAll = false"
-            />
-            <v-radio
-              label="SoBoN-relevant"
-              value="true"
-              @mouseover="hoverFilterSobonRelevantYes = true"
-              @mouseleave="hoverFilterSobonRelevantYes = false"
-            />
-            <v-radio
-              label="Nicht SoBoN-relevant"
-              value="false"
-              @mouseover="hoverFilterSobonRelevantNo = true"
-              @mouseleave="hoverFilterSobonRelevantNo = false"
-            />
+            <template #label> SoBoN-relevanz</template>
+            <v-tooltip
+              location="top"
+              offset="20"
+              open-delay="500"
+            >
+              <template #activator="{ props: activatorProps }">
+                <v-radio
+                  label="Alle"
+                  v-bind="activatorProps"
+                  value="Unspecified"
+                />
+              </template>
+              <span> Es wird keine Filterung nach SoBoN-relevanz durchgeführt </span>
+            </v-tooltip>
+            <v-tooltip
+              location="top"
+              offset="20"
+              open-delay="500"
+            >
+              <template #activator="{ props: activatorProps }">
+                <v-radio
+                  label="SoBoN-relevant"
+                  v-bind="activatorProps"
+                  value="true"
+                />
+              </template>
+              <span> Filtern nach SoBoN-relevanten Abfragen und Bauvorhaben. </span>
+            </v-tooltip>
+            <v-tooltip
+              location="top"
+              offset="20"
+              open-delay="500"
+            >
+              <template #activator="{ props: activatorProps }">
+                <v-radio
+                  label="Nicht SoBoN-relevant"
+                  v-bind="activatorProps"
+                  value="false"
+                />
+              </template>
+              <span> Filtern nach nicht SoBoN-relevanten Abfragen und Bauvorhaben. </span>
+            </v-tooltip>
           </v-radio-group>
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextAllgemeineFiltereinstellungen }}
-          </v-card>
         </v-col>
       </v-row>
       <v-row
@@ -82,27 +98,30 @@
       >
         <v-col
           cols="12"
-          md="8"
+          md="12"
         >
-          <v-autocomplete
-            id="stand_verfahren_bauvorhaben"
-            v-model="searchQueryAndSorting.filterStandVerfahren"
-            :items="standVerfahrenList"
-            variant="underlined"
-            item-value="key"
-            item-title="value"
-            multiple
-            chips
-            @mouseover="hoverFilterStandVerfahren = true"
-            @mouseleave="hoverFilterStandVerfahren = false"
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
           >
-            <template #label> Stand des Verfahrens </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
+            <template #activator="{ props: activatorProps }">
+              <v-autocomplete
+                id="stand_verfahren_bauvorhaben"
+                v-model="searchQueryAndSorting.filterStandVerfahren"
+                :items="standVerfahrenList"
+                chips
+                item-title="value"
+                item-value="key"
+                multiple
+                v-bind="activatorProps"
+                variant="underlined"
+              >
+                <template #label> Stand des Verfahrens</template>
+              </v-autocomplete>
+            </template>
+            <span> Auswahl der Verfahrensstände nach denen in Abfragen und Bauvorhaben gefiltert werden soll. </span>
+          </v-tooltip>
         </v-col>
       </v-row>
       <p class="font-weight-black mt-3">Verortung</p>
@@ -113,77 +132,101 @@
       >
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-combobox
-            v-model="searchQueryAndSorting.filterStadtbezirkNummer"
-            variant="underlined"
-            label="Nummern der Stadtbezirke"
-            hide-no-data
-            :append-icon="''"
-            multiple
-            chips
-            closable-chips
-            density="default"
-            hint="z.B. 05 oder 14"
-            @mouseover="hoverFilterStadtbezirkName = true"
-            @mouseleave="hoverFilterStadtbezirkName = false"
-          />
-          <v-combobox
-            v-model="searchQueryAndSorting.filterKitaplanungsbereichKitaPlbT"
-            variant="underlined"
-            label="Nummern der Kitaplanungsbereiche"
-            hide-no-data
-            :append-icon="''"
-            multiple
-            chips
-            closable-chips
-            density="default"
-            hint="z.B. 5.1 oder 16.2"
-            @mouseover="hoverFilterKitaplanungsbereichKitaPlbT = true"
-            @mouseleave="hoverFilterKitaplanungsbereichKitaPlbT = false"
-          />
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-combobox
+                v-model="searchQueryAndSorting.filterStadtbezirkNummer"
+                :append-icon="''"
+                chips
+                closable-chips
+                density="default"
+                hide-no-data
+                hint="z.B. 05 oder 14"
+                label="Nummern der Stadtbezirke"
+                multiple
+                v-bind="activatorProps"
+                variant="underlined"
+              />
+            </template>
+            <span> Eingabe der Stadtbezirksnummern nach denen gefiltert werden soll. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-combobox
+                v-model="searchQueryAndSorting.filterKitaplanungsbereichKitaPlbT"
+                :append-icon="''"
+                chips
+                closable-chips
+                density="default"
+                hide-no-data
+                hint="z.B. 5.1 oder 16.2"
+                label="Nummern der Kitaplanungsbereiche"
+                multiple
+                v-bind="activatorProps"
+                variant="underlined"
+              />
+            </template>
+            <span> Eingabe der Kitaplanungsbereichsnummern nach denen gefiltert werden soll. </span>
+          </v-tooltip>
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-combobox
-            v-model="searchQueryAndSorting.filterGrundschulsprengelNummer"
-            variant="underlined"
-            label="Nummern der Grundschulsprengel"
-            hide-no-data
-            :append-icon="''"
-            multiple
-            chips
-            closable-chips
-            density="default"
-            hint="z.B. 2165"
-            @mouseover="hoverFilterGrundschulsprengelNummer = true"
-            @mouseleave="hoverFilterGrundschulsprengelNummer = false"
-          />
-          <v-combobox
-            v-model="searchQueryAndSorting.filterMittelschulsprengelNummer"
-            variant="underlined"
-            label="Nummern der Mittelschulsprengel"
-            hide-no-data
-            :append-icon="''"
-            multiple
-            chips
-            closable-chips
-            density="default"
-            hint="z.B. 1275"
-            @mouseover="hoverFilterMittelschulsprengelNummer = true"
-            @mouseleave="hoverFilterMittelschulsprengelNummer = false"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextFiltereinstellungen }}
-          </v-card>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-combobox
+                v-model="searchQueryAndSorting.filterGrundschulsprengelNummer"
+                :append-icon="''"
+                chips
+                closable-chips
+                density="default"
+                hide-no-data
+                hint="z.B. 2165"
+                label="Nummern der Grundschulsprengel"
+                multiple
+                v-bind="activatorProps"
+                variant="underlined"
+              />
+            </template>
+            <span> Eingabe der Grundschulsprengelnummern nach denen gefiltert werden soll. </span>
+          </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-combobox
+                v-model="searchQueryAndSorting.filterMittelschulsprengelNummer"
+                :append-icon="''"
+                chips
+                closable-chips
+                density="default"
+                hide-no-data
+                hint="z.B. 1275"
+                label="Nummern der Mittelschulsprengel"
+                multiple
+                v-bind="activatorProps"
+                variant="underlined"
+              />
+            </template>
+            <span> Eingabe der Mittelschulsprengelnummern nach denen gefiltert werden soll. </span>
+          </v-tooltip>
         </v-col>
       </v-row>
       <p class="font-weight-black mt-3">Abfrage</p>
@@ -194,132 +237,53 @@
       >
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <num-field
-            id="abfrage_realisierungsbeginn_von"
-            v-model="searchQueryAndSorting.filterRealisierungsbeginnVon"
-            label="Realisierungsbeginn von (JJJJ)"
-            year
-            maxlength="4"
-            @mouseover="hoverFilterRealisierungsbeginnVon = true"
-            @mouseleave="hoverFilterRealisierungsbeginnVon = false"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="abfrage_realisierungsbeginn_bis"
-            v-model="searchQueryAndSorting.filterRealisierungsbeginnBis"
-            label="Realisierungsbeginn bis (JJJJ)"
-            year
-            maxlength="4"
-            @mouseover="hoverFilterRealisierungsbeginnBis = true"
-            @mouseleave="hoverFilterRealisierungsbeginnBis = false"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextFilterRealisierungsbeginn }}
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row
-        class="align-start justify-center"
-        dense
-      >
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-checkbox
-            id="eigene_abfragen"
-            v-model="searchQueryAndSorting.filterNurEigeneAbfragen"
-            class="mx-3"
-            label="Nur eigene Abfragen berücksichtigen"
-            color="primary"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="8"
-        >
-        </v-col>
-      </v-row>
-      <v-row
-        class="align-start justify-center"
-        dense
-      >
-        <v-col
-          cols="12"
-          md="8"
-        >
-          <v-autocomplete
-            id="abfrage_status"
-            v-model="searchQueryAndSorting.filterStatusAbfrage"
-            :items="statusAbfrageList"
-            variant="underlined"
-            item-value="key"
-            item-title="value"
-            multiple
-            chips
-            @mouseover="hoverFilterStatusAbfrage = true"
-            @mouseleave="hoverFilterStatusAbfrage = false"
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
           >
-            <template #label> Status Abfrage </template>
-          </v-autocomplete>
+            <template #activator="{ props: activatorProps }">
+              <num-field
+                id="abfrage_realisierungsbeginn_von"
+                v-model="searchQueryAndSorting.filterRealisierungsbeginnVon"
+                label="Realisierungsbeginn von (JJJJ)"
+                maxlength="4"
+                v-bind="activatorProps"
+                year
+              />
+            </template>
+            <span>
+              Bestimmt auf Basis des Attributs 'Realisierung von' die untere Grenze der Abfragen nach denen gefiltert
+              werden soll.
+            </span>
+          </v-tooltip>
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-card flat>
-            {{ helpTextFilterStatusAbfrage }}
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row
-        class="align-start justify-center"
-        dense
-      >
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="we_gesamt_von_"
-            v-model="searchQueryAndSorting.filterWeGesamtVon"
-            label="Geplante Wohneinheiten von"
-            integer
-            @mouseover="hoverFilterWeGesamtVon = true"
-            @mouseleave="hoverFilterWeGesamtVon = false"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <num-field
-            id="we_gesamt_von_"
-            v-model="searchQueryAndSorting.filterWeGesamtBis"
-            label="Geplante Wohneinheiten bis"
-            integer
-            @mouseover="hoverFilterWeGesamtBis = true"
-            @mouseleave="hoverFilterWeGesamtBis = false"
-          />
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextFilterWeGesamt }}
-          </v-card>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <num-field
+                id="abfrage_realisierungsbeginn_bis"
+                v-model="searchQueryAndSorting.filterRealisierungsbeginnBis"
+                label="Realisierungsbeginn bis (JJJJ)"
+                maxlength="4"
+                v-bind="activatorProps"
+                year
+              />
+            </template>
+            <span>
+              Bestimmt auf Basis des Attributs 'Realisierung von' die obere Grenze der Abfragen nach denen gefiltert
+              werden soll.
+            </span>
+          </v-tooltip>
         </v-col>
       </v-row>
       <v-row
@@ -328,37 +292,166 @@
       >
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <num-field
-            id="gf_wohnen_geplant_von"
-            v-model="searchQueryAndSorting.filterGfWohnenGeplantVon"
-            label="Geplante Geschossfläche Wohnen von"
-            :suffix="SQUARE_METER"
-            @mouseover="hoverFilterGfWohnenGeplantVon = true"
-            @mouseleave="hoverFilterGfWohnenGeplantVon = false"
-          />
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                id="eigene_abfragen"
+                v-model="searchQueryAndSorting.filterNurEigeneAbfragen"
+                class="mx-3"
+                color="primary"
+                label="Nur eigene Abfragen berücksichtigen"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> TBD TBD TBD </span>
+          </v-tooltip>
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <num-field
-            id="gf_wohnen_geplant_bis"
-            v-model="searchQueryAndSorting.filterGfWohnenGeplantBis"
-            label="Geplante Geschossfläche Wohnen bis"
-            :suffix="SQUARE_METER"
-            @mouseover="hoverFilterGfWohnenGeplantBis = true"
-            @mouseleave="hoverFilterGfWohnenGeplantBis = false"
-          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-autocomplete
+                id="abfrage_status"
+                v-model="searchQueryAndSorting.filterStatusAbfrage"
+                :items="statusAbfrageList"
+                chips
+                item-title="value"
+                item-value="key"
+                multiple
+                v-bind="activatorProps"
+                variant="underlined"
+              >
+                <template #label> Status Abfrage</template>
+              </v-autocomplete>
+            </template>
+            <span> Auswahl der Abfragestatus nach denen gefiltert werden soll. </span>
+          </v-tooltip>
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <num-field
+                id="we_gesamt_von_"
+                v-model="searchQueryAndSorting.filterWeGesamtVon"
+                integer
+                label="Geplante Wohneinheiten von"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span>
+              Bestimmt für die Abfragen nach denen gefiltert werden soll die untere Grenze der geplanten Wohneinheiten.
+            </span>
+          </v-tooltip>
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
-          <v-card flat>
-            {{ helpTextFilterGfWohnenGeplant }}
-          </v-card>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <num-field
+                id="we_gesamt_von_"
+                v-model="searchQueryAndSorting.filterWeGesamtBis"
+                integer
+                label="Geplante Wohneinheiten bis"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span>
+              Bestimmt für die Abfragen nach denen gefiltert werden soll die obere Grenze der geplanten Wohneinheiten.
+            </span>
+          </v-tooltip>
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <num-field
+                id="gf_wohnen_geplant_von"
+                v-model="searchQueryAndSorting.filterGfWohnenGeplantVon"
+                :suffix="SQUARE_METER"
+                label="Geplante Geschossfläche Wohnen von"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span>
+              Bestimmt für die Abfragen nach denen gefiltert werden soll die untere Grenze der geplanten Geschossfläche
+              Wohnen.
+            </span>
+          </v-tooltip>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <num-field
+                id="gf_wohnen_geplant_bis"
+                v-model="searchQueryAndSorting.filterGfWohnenGeplantBis"
+                :suffix="SQUARE_METER"
+                label="Geplante Geschossfläche Wohnen bis"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span>
+              Bestimmt für die Abfragen nach denen gefiltert werden soll die obere Grenze der geplanten Geschossfläche
+              Wohnen.
+            </span>
+          </v-tooltip>
         </v-col>
       </v-row>
       <p class="font-weight-black mt-3">Infrastruktureinrichtung</p>
@@ -369,39 +462,39 @@
       >
         <v-col
           cols="12"
-          md="8"
+          md="12"
         >
-          <v-autocomplete
-            id="infrastruktureinrichtung_status"
-            v-model="searchQueryAndSorting.filterInfrastruktureinrichtungStatus"
-            :items="statusInfrastruktureinrichtungList"
-            variant="underlined"
-            item-value="key"
-            item-title="value"
-            multiple
-            chips
-            @mouseover="hoverFilterInfrastruktureinrichtungStatus = true"
-            @mouseleave="hoverFilterInfrastruktureinrichtungStatus = false"
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
           >
-            <template #label> Status Infrastruktureinrichtung </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-card flat>
-            {{ helpTextFilterInfrastruktureinrichtungStatus }}
-          </v-card>
+            <template #activator="{ props: activatorProps }">
+              <v-autocomplete
+                id="infrastruktureinrichtung_status"
+                v-model="searchQueryAndSorting.filterInfrastruktureinrichtungStatus"
+                :items="statusInfrastruktureinrichtungList"
+                chips
+                item-title="value"
+                item-value="key"
+                multiple
+                v-bind="activatorProps"
+                variant="underlined"
+              >
+                <template #label> Status Infrastruktureinrichtung</template>
+              </v-autocomplete>
+            </template>
+            <span> Auswahl der Status von Infrastruktureinrichtungen nach denen gefiltert werden soll. </span>
+          </v-tooltip>
         </v-col>
       </v-row>
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import { onMounted, computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
@@ -426,24 +519,6 @@ onMounted(() => {
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
-const hoverFiltereinstellungenAufheben = ref<boolean>(false);
-const hoverFilterStadtbezirkName = ref<boolean>(false);
-const hoverFilterKitaplanungsbereichKitaPlbT = ref<boolean>(false);
-const hoverFilterGrundschulsprengelNummer = ref<boolean>(false);
-const hoverFilterMittelschulsprengelNummer = ref<boolean>(false);
-const hoverFilterRealisierungsbeginnVon = ref<boolean>(false);
-const hoverFilterRealisierungsbeginnBis = ref<boolean>(false);
-const hoverFilterWeGesamtVon = ref<boolean>(false);
-const hoverFilterWeGesamtBis = ref<boolean>(false);
-const hoverFilterGfWohnenGeplantVon = ref<boolean>(false);
-const hoverFilterGfWohnenGeplantBis = ref<boolean>(false);
-const hoverFilterStatusAbfrage = ref<boolean>(false);
-const hoverFilterSobonRelevantAll = ref<boolean>(false);
-const hoverFilterSobonRelevantYes = ref<boolean>(false);
-const hoverFilterSobonRelevantNo = ref<boolean>(false);
-const hoverFilterStandVerfahren = ref<boolean>(false);
-const hoverFilterInfrastruktureinrichtungStatus = ref<boolean>(false);
-
 const sobonRelevant = ref<string | undefined>(undefined);
 
 const lookupStore = useLookupStore();
@@ -463,89 +538,6 @@ const standVerfahrenList = computed(() => {
     standVerfahrenList.splice(index, 1);
   }
   return standVerfahrenList;
-});
-
-const helpTextAllgemeineFiltereinstellungen = computed(() => {
-  if (hoverFilterSobonRelevantAll.value) {
-    return "Es wird keine Filterung nach SoBoN-relevanz durchgeführt";
-  }
-  if (hoverFilterSobonRelevantYes.value) {
-    return "Filtern nach SoBoN-relevanten Abfragen und Bauvorhaben.";
-  }
-  if (hoverFilterSobonRelevantNo.value) {
-    return "Filtern nach nicht SoBoN-relevanten Abfragen und Bauvorhaben.";
-  }
-  if (hoverFilterStandVerfahren.value) {
-    return "Auswahl der Verfahrensstände nach denen in Abfragen und Bauvorhaben gefiltert werden soll.";
-  }
-  return "";
-});
-
-const helpTextFiltereinstellungenAufheben = computed(() => {
-  if (hoverFiltereinstellungenAufheben.value) {
-    return "Mit einem Klick werden alle Filtereintellungen aufgehoben.";
-  }
-  return "";
-});
-
-const helpTextFiltereinstellungen = computed(() => {
-  if (hoverFilterStadtbezirkName.value) {
-    return "Eingabe der Stadtbezirksnummern nach denen gefiltert werden soll.";
-  }
-  if (hoverFilterKitaplanungsbereichKitaPlbT.value) {
-    return "Eingabe der Kitaplanungsbereichsnummern nach denen gefiltert werden soll.";
-  }
-  if (hoverFilterGrundschulsprengelNummer.value) {
-    return "Eingabe der Grundschulsprengelnummern nach denen gefiltert werden soll.";
-  }
-  if (hoverFilterMittelschulsprengelNummer.value) {
-    return "Eingabe der Mittelschulsprengelnummern nach denen gefiltert werden soll.";
-  }
-  return "";
-});
-
-const helpTextFilterRealisierungsbeginn = computed(() => {
-  if (hoverFilterRealisierungsbeginnVon.value) {
-    return "Bestimmt auf Basis des Attributs 'Realisierung von' die untere Grenze der Abfragen nach denen gefiltert werden soll.";
-  }
-  if (hoverFilterRealisierungsbeginnBis.value) {
-    return "Bestimmt auf Basis des Attributs 'Realisierung von' die obere Grenze der Abfragen nach denen gefiltert werden soll.";
-  }
-  return "";
-});
-
-const helpTextFilterWeGesamt = computed(() => {
-  if (hoverFilterWeGesamtVon.value) {
-    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die untere Grenze der geplanten Wohneinheiten.";
-  }
-  if (hoverFilterWeGesamtBis.value) {
-    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die obere Grenze der geplanten Wohneinheiten.";
-  }
-  return "";
-});
-
-const helpTextFilterGfWohnenGeplant = computed(() => {
-  if (hoverFilterGfWohnenGeplantVon.value) {
-    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die untere Grenze der geplanten Geschossfläche Wohnen.";
-  }
-  if (hoverFilterGfWohnenGeplantBis.value) {
-    return "Bestimmt für die Abfragen nach denen gefiltert werden soll die obere Grenze der geplanten Geschossfläche Wohnen.";
-  }
-  return "";
-});
-
-const helpTextFilterStatusAbfrage = computed(() => {
-  if (hoverFilterStatusAbfrage.value) {
-    return "Auswahl der Abfragestatus nach denen gefiltert werden soll.";
-  }
-  return "";
-});
-
-const helpTextFilterInfrastruktureinrichtungStatus = computed(() => {
-  if (hoverFilterInfrastruktureinrichtungStatus.value) {
-    return "Auswahl der Status von Infrastruktureinrichtungen nach denen gefiltert werden soll.";
-  }
-  return "";
 });
 
 function alleFiltereinstellungenAufheben(): void {
