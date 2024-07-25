@@ -23,7 +23,10 @@
       </v-list>
     </template>
     <template #append>
-      <v-tooltip location="bottom">
+      <v-tooltip
+        location="bottom"
+        open-delay="500"
+      >
         <template #activator="{ props: activatorProps }">
           <v-icon
             :color="checkCurrentFilter() ? '' : 'secondary'"
