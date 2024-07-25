@@ -70,7 +70,7 @@
                 <v-radio
                   label="SoBoN-relevant"
                   v-bind="activatorProps"
-                  value="true"
+                  :value="UncertainBoolean.True"
                 />
               </template>
               <span> Filtern nach SoBoN-relevanten Abfragen und Bauvorhaben. </span>
@@ -84,7 +84,7 @@
                 <v-radio
                   label="Nicht SoBoN-relevant"
                   v-bind="activatorProps"
-                  value="false"
+                  :value="UncertainBoolean.False"
                 />
               </template>
               <span> Filtern nach nicht SoBoN-relevanten Abfragen und Bauvorhaben. </span>
@@ -503,10 +503,10 @@ import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 onMounted(() => {
   switch (searchQueryAndSorting.value.filterSobonRelevant) {
     case UncertainBoolean.True:
-      sobonRelevant.value = "true";
+      sobonRelevant.value = UncertainBoolean.True;
       break;
     case UncertainBoolean.False:
-      sobonRelevant.value = "false";
+      sobonRelevant.value = UncertainBoolean.False;
       break;
     case UncertainBoolean.Unspecified:
       sobonRelevant.value = UncertainBoolean.Unspecified;
@@ -561,10 +561,10 @@ function alleFiltereinstellungenAufheben(): void {
 
 function sobonRelevantChanged(): void {
   switch (sobonRelevant.value) {
-    case "true":
+    case UncertainBoolean.True:
       searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.True;
       break;
-    case "false":
+    case UncertainBoolean.False:
       searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.False;
       break;
     case UncertainBoolean.Unspecified:
