@@ -237,7 +237,7 @@
       >
         <v-col
           cols="12"
-          md="6"
+          md="12"
         >
           <v-tooltip
             location="top"
@@ -251,17 +251,12 @@
                 class="mx-3"
                 color="primary"
                 label="Nur selbst erstellte Abfragen berücksichtigen"
-                density="compact"
                 v-bind="activatorProps"
               />
             </template>
             <span> Ermöglicht die Filterung nach Abfragen welche selbst angelegt wurden. </span>
           </v-tooltip>
         </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        />
       </v-row>
       <v-row
         class="align-start justify-center"
