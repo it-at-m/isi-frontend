@@ -109,7 +109,7 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     filterMittelschulsprengelNummer: undefined,
     filterRealisierungsbeginnVon: undefined,
     filterRealisierungsbeginnBis: undefined,
-    filterNurEigeneAbfragen: undefined,
+    filterNurEigeneAbfragen: false,
     filterStatusAbfrage: undefined,
     filterSobonRelevant: UncertainBoolean.Unspecified,
     filterWeGesamtVon: undefined,

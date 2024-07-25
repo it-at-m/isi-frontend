@@ -109,6 +109,11 @@ function checkCurrentFilter(): boolean {
     "filterKitaplanungsbereichKitaPlbT",
     "filterGrundschulsprengelNummer",
     "filterMittelschulsprengelNummer",
+    "filterStatusAbfrage",
+    "filterStandVerfahren",
+    "filterInfrastruktureinrichtungStatus",
+    // Abhängig von der Eingabe in der GUI kann die Filtereinstellung undefined sein oder die Ausprägung Unspecified besitzen.
+    "filterSobonRelevant",
   ];
   const requestSearchQueryAndSorting = _.omit(searchStore.requestSearchQueryAndSorting, excludeProperties);
   const defaultSearchQueryAndSortingFilter = _.omit(searchStore.defaultSearchQueryAndSortingFilter, excludeProperties);
@@ -119,7 +124,13 @@ function checkCurrentFilter(): boolean {
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStadtbezirkNummer) &&
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterKitaplanungsbereichKitaPlbT) &&
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterGrundschulsprengelNummer) &&
-    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterMittelschulsprengelNummer)
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterMittelschulsprengelNummer) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStatusAbfrage) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStandVerfahren) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterInfrastruktureinrichtungStatus) &&
+    // Abhängig von der Eingabe in der GUI kann die Filtereinstellung undefined sein oder die Ausprägung Unspecified besitzen.
+    (_.isNil(searchStore.requestSearchQueryAndSorting.filterSobonRelevant) ||
+      searchStore.requestSearchQueryAndSorting.filterSobonRelevant === "UNSPECIFIED")
   );
 }
 
