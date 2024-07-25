@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { onMounted, computed, ref } from "vue";
-import type { SearchQueryDto } from "@/api/api-client/isi-backend";
+import { SearchQueryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
@@ -130,7 +130,7 @@ function checkCurrentFilter(): boolean {
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterInfrastruktureinrichtungStatus) &&
     // Abhängig von der Eingabe in der GUI kann die Filtereinstellung undefined sein oder die Ausprägung Unspecified besitzen.
     (_.isNil(searchStore.requestSearchQueryAndSorting.filterSobonRelevant) ||
-      searchStore.requestSearchQueryAndSorting.filterSobonRelevant === "UNSPECIFIED")
+      searchStore.requestSearchQueryAndSorting.filterSobonRelevant === UncertainBoolean.Unspecified)
   );
 }
 
