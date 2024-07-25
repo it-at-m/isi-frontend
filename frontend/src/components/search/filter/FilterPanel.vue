@@ -305,11 +305,11 @@
                 v-model="searchQueryAndSorting.filterNurEigeneAbfragen"
                 class="mx-3"
                 color="primary"
-                label="Nur eigene Abfragen berücksichtigen"
+                label="Nur selbst erstellte Abfragen berücksichtigen"
                 v-bind="activatorProps"
               />
             </template>
-            <span> TBD TBD TBD </span>
+            <span> Ermöglicht die Filterung nach Abfragen welche selbst angelegt wurden. </span>
           </v-tooltip>
         </v-col>
         <v-col
