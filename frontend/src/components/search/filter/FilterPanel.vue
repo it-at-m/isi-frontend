@@ -56,7 +56,7 @@
                 <v-radio
                   label="Alle"
                   v-bind="activatorProps"
-                  value="Unspecified"
+                  :value="UncertainBoolean.Unspecified"
                 />
               </template>
               <span> Es wird keine Filterung nach SoBoN-relevanz durchgeführt </span>
@@ -509,7 +509,7 @@ onMounted(() => {
       sobonRelevant.value = "false";
       break;
     case UncertainBoolean.Unspecified:
-      sobonRelevant.value = "Unspecified";
+      sobonRelevant.value = UncertainBoolean.Unspecified;
       break;
     default:
       sobonRelevant.value = UncertainBoolean.Unspecified;
@@ -556,7 +556,7 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterGfWohnenGeplantBis = undefined;
   searchQueryAndSorting.value.filterStandVerfahren = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
-  sobonRelevant.value = "Unspecified";
+  sobonRelevant.value = UncertainBoolean.Unspecified;
 }
 
 function sobonRelevantChanged(): void {
@@ -567,7 +567,7 @@ function sobonRelevantChanged(): void {
     case "false":
       searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.False;
       break;
-    case "Unspecified":
+    case UncertainBoolean.Unspecified:
       searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
       break;
     default:
