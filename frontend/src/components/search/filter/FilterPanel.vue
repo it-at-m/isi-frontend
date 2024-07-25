@@ -556,7 +556,7 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterGfWohnenGeplantBis = undefined;
   searchQueryAndSorting.value.filterStandVerfahren = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
-  sobonRelevant.value = UncertainBoolean.Unspecified;
+  sobonRelevant.value = "Unspecified";
 }
 
 function sobonRelevantChanged(): void {
