@@ -23,12 +23,18 @@
       </v-list>
     </template>
     <template #append>
-      <v-icon
-        :color="checkCurrentFilter() ? '' : 'secondary'"
-        @click="openSearchAndFilterDialog"
-      >
-        {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
-      </v-icon>
+      <v-tooltip location="bottom">
+        <template #activator="{ props: activatorProps }">
+          <v-icon
+            :color="checkCurrentFilter() ? '' : 'secondary'"
+            @click="openSearchAndFilterDialog"
+            v-bind="activatorProps"
+          >
+            {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
+          </v-icon>
+        </template>
+        <span> Such- und Filtereinstellungen </span>
+      </v-tooltip>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
         max-width="800px"
