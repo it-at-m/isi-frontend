@@ -150,6 +150,10 @@ const calcRealisierungBis = computed(() => {
   return _.max(jahre);
 });
 
+/**
+ * Das Jahr des Attributs "realisierungVon" darf nur rechnerisch ermittelt werden,
+ * wenn noch kein Wert im Attribut "realisierungVon" gesetzt ist.
+ */
 function datumSatzungsbeschlussChanged(): void {
   const datumSatzungsbeschluss = abfragevariante.value.satzungsbeschluss;
   if (!_.isNil(datumSatzungsbeschluss) && _.isNil(abfragevariante.value.realisierungVon)) {
