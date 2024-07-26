@@ -193,7 +193,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbei
      * @type {Array<BauabschnittDto>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
      */
-    bauabschnitte?: Array<BauabschnittDto>;
+    bauabschnitte: Array<BauabschnittDto>;
     /**
      * 
      * @type {string}
@@ -298,6 +298,7 @@ export function instanceOfAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSa
     isInstance = isInstance && "realisierungVon" in value;
     isInstance = isInstance && "gfWohnenSonderwohnformen" in value;
     isInstance = isInstance && "weSonderwohnformen" in value;
+    isInstance = isInstance && "bauabschnitte" in value;
     isInstance = isInstance && "sobonOrientierungswertJahr" in value;
     isInstance = isInstance && "stammdatenGueltigAb" in value;
 
@@ -339,7 +340,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
+        'bauabschnitte': ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -385,7 +386,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbearbeit
         'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
-        'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'bauabschnitte': ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,

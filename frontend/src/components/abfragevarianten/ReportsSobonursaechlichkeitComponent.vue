@@ -17,76 +17,6 @@
       <v-list-item-title>
         <a
           target="_blank"
-          :href="getUrlBedarfeKinderkrippe()"
-        >
-          Bedarfe Kinderkrippe<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlBedarfeKindergarten()"
-        >
-          Bedarfe Kindergarten<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlBedarfeGsNachmittagBetreuung()"
-        >
-          Bedarfe Nachmittagsbetreuung<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlBedarfeGrundschule()"
-        >
-          Bedarfe Grundschule<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlAlleEinwohner()"
-        >
-          Alle Einwohner <span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlSobonSpitzenbedarfeKinderkrippe()"
-        >
-          Spitzenbedarfe Kinderkrippe<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
-          :href="getUrlSobonSpitzenbedarfeKindergarten()"
-        >
-          Spitzenbedarfe Kindergarten<span class="mdi mdi-launch" />
-        </a>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-title>
-        <a
-          target="_blank"
           :href="getUrlErgebnisseSobonursaechlicheBedarfe()"
         >
           Ergebnisse Bedarfsberechnung<span class="mdi mdi-launch" />
@@ -124,34 +54,6 @@ function getUrlWohneinheiten(): string {
   return url.toString();
 }
 
-function getUrlBedarfe(artBedarf: string): string {
-  const url = new URL(getUrlReportBedarfe());
-  const abfrageId = getParameterValueAbfrageId();
-  url.searchParams.set(getParameterAbfrageId(), abfrageId);
-  const artAbfrage = getParameterValueArtAbfrage();
-  url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
-  const abfragevarianteId = getParameterValueAbfragevarianteId();
-  url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
-  const ursaechlichkeit = getParameterValueSobonursaechlich();
-  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
-  url.searchParams.set(getParameterArtBedarf(), artBedarf);
-  return url.toString();
-}
-
-function getUrlSoBonSpitzenbedarfe(artBedarf: string): string {
-  const url = new URL(getUrlReportSoBonSpitzenbedarfe());
-  const abfrageId = getParameterValueAbfrageId();
-  url.searchParams.set(getParameterAbfrageId(), abfrageId);
-  const artAbfrage = getParameterValueArtAbfrage();
-  url.searchParams.set(getParameterArtAbfrage(), artAbfrage);
-  const abfragevarianteId = getParameterValueAbfragevarianteId();
-  url.searchParams.set(getParameterAbfragevarianteId(), abfragevarianteId);
-  const ursaechlichkeit = getParameterValueSobonursaechlich();
-  url.searchParams.set(decodeURIComponent(getParameterUrsaechlichkeit()), ursaechlichkeit);
-  url.searchParams.set(getParameterArtBedarf(), artBedarf);
-  return url.toString();
-}
-
 function getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
   const abfrageId = getParameterValueAbfrageId();
   url.searchParams.set(getParameterAbfrageId(), abfrageId);
@@ -164,41 +66,6 @@ function getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(url: URL): string {
   return url.toString();
 }
 
-function getUrlBedarfeKinderkrippe(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
-  return getUrlBedarfe(artBedarf);
-}
-
-function getUrlBedarfeKindergarten(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
-  return getUrlBedarfe(artBedarf);
-}
-
-function getUrlBedarfeGsNachmittagBetreuung(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_GS_NACHMITTAG_BETREUUNG as string;
-  return getUrlBedarfe(artBedarf);
-}
-
-function getUrlBedarfeGrundschule(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_GRUNDSCHULE as string;
-  return getUrlBedarfe(artBedarf);
-}
-
-function getUrlAlleEinwohner(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_ALLE_EINWOHNER as string;
-  return getUrlBedarfe(artBedarf);
-}
-
-function getUrlSobonSpitzenbedarfeKinderkrippe(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERKRIPPE as string;
-  return getUrlSoBonSpitzenbedarfe(artBedarf);
-}
-
-function getUrlSobonSpitzenbedarfeKindergarten(): string {
-  const artBedarf = import.meta.env.VITE_REPORT_ART_BEDARF_KINDERGARTEN as string;
-  return getUrlSoBonSpitzenbedarfe(artBedarf);
-}
-
 function getUrlReportWohneinheiten(): string {
   return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
     ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportWohneinheiten}`
@@ -207,18 +74,6 @@ function getUrlReportWohneinheiten(): string {
 
 function getUrlErgebnisseSobonursaechlicheBedarfe(): string {
   return getUrlErgebnissePlanungsursaechlicheBedarfsrechnung(new URL(getUrlReportErgebnisseSobonursaechlicheBedarfe()));
-}
-
-function getUrlReportBedarfe(): string {
-  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
-    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportBedarfe}`
-    : "";
-}
-
-function getUrlReportSoBonSpitzenbedarfe(): string {
-  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
-    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportSpitzenbedarfeSobonUrsaechlich}`
-    : "";
 }
 
 function getUrlReportErgebnisseSobonursaechlicheBedarfe(): string {
@@ -241,10 +96,6 @@ function getParameterAbfragevarianteId(): string {
 
 function getParameterUrsaechlichkeit(): string {
   return import.meta.env.VITE_REPORT_PARAMETER_URSAECHLICHKEIT_URL as string;
-}
-
-function getParameterArtBedarf(): string {
-  return import.meta.env.VITE_REPORT_PARAMETER_ART_BEDARF_URL as string;
 }
 
 function getParameterValueAbfrageId(): string {
