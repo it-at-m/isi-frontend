@@ -129,6 +129,11 @@ async function getReferencedAbfragen(): Promise<void> {
 }
 
 async function findAbfrageWithRelevanteAbfragevariante(): Promise<void> {
+  const relevanteAbfragevarianteId = searchStore.selectedBauvorhaben?.relevanteAbfragevariante;
+  if (!relevanteAbfragevarianteId) {
+    return;
+  }
+
   for (const abfrageSearchResult of abfragen.value) {
     if (abfrageSearchResult.id) {
       const abfrage = await getById(abfrageSearchResult.id);
@@ -152,7 +157,7 @@ async function findAbfrageWithRelevanteAbfragevariante(): Promise<void> {
       }
 
       for (const abfragevariante of abfragevarianten) {
-        if (abfragevariante.id && abfragevariante.id === searchStore.selectedBauvorhaben?.relevanteAbfragevariante) {
+        if (abfragevariante.id === relevanteAbfragevarianteId) {
           abfrageWithRelevanteAbfragevarianteId.value = abfrageSearchResult.id;
           return;
         }
