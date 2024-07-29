@@ -91,7 +91,7 @@
                         :disabled="!isDokumenteEditable"
                         @update:model-value="change"
                       >
-                        <template #label> Dokumentart <span class="text-secondary">*</span> </template>
+                        <template #label> Dokumentart </template>
                       </v-select>
                     </v-row>
                   </v-col>
