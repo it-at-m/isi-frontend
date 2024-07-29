@@ -816,8 +816,8 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
     abfrage.value = new WeiteresVerfahrenModel(dto);
   }
   if (isNew.value) {
-    router.push("/");
     toast.success(`Die Abfrage wurde erfolgreich gespeichert`);
+    isNew.value = false;
   } else if (showToast) {
     toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }

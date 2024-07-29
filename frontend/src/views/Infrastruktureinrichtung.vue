@@ -456,7 +456,8 @@ function returnToUebersicht(message?: string, type?: TYPE): void {
 
 function handleSuccess(dto: InfrastruktureinrichtungDto): void {
   if (isNew.value) {
-    router.push("/");
+    infrastruktureinrichtung.value = dto;
+    isNew.value = false;
     toast.success("Die Infrastruktureinrichtung wurde erfolgreich gespeichert");
   } else {
     infrastruktureinrichtung.value = dto;
