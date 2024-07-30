@@ -6,7 +6,31 @@
     >
       <v-expansion-panel class="pa-0">
         <v-expansion-panel-title class="text-grey text-h6"> Kommentare </v-expansion-panel-title>
-        <v-expansion-panel-text>
+        <v-expansion-panel-text v-if="loading">
+          <v-list-item
+            prepend-icon="mdi-comment-text-multiple"
+            title="Kommentare werden geladen..."
+          >
+            <template #prepend>
+              <div class="pe-4">
+                <v-icon
+                  color="primary"
+                  size="x-large"
+                />
+              </div>
+            </template>
+
+            <template #append>
+              <v-progress-circular
+                color="primary"
+                indeterminate="disable-shrink"
+                size="16"
+                width="2"
+              />
+            </template>
+          </v-list-item>
+        </v-expansion-panel-text>
+        <v-expansion-panel-text v-else>
           <kommentar
             v-for="(kommentar, index) in kommentare"
             :key="index"
@@ -45,6 +69,7 @@ const toast = useToast();
 const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
 const kommentare = ref<KommentarModel[]>([]);
+const loading = ref(false);
 let isKommentarListOpen = false;
 
 watch(kommentare, () => {
@@ -62,15 +87,20 @@ function hasDirtyComment(): boolean {
 async function getKommentare(): Promise<void> {
   if (!isCommentDirty.value) {
     if (!isKommentarListOpen && !_.isNil(routeId)) {
+      loading.value = true;
       isKommentarListOpen = true;
       if (props.context === Context.BAUVORHABEN) {
-        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(routeId);
+        const fetchedKommentare = await kommentarApi
+          .getKommentareForBauvorhaben(routeId)
+          .finally(() => (loading.value = false));
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForBauvorhaben());
         }
       } else if (props.context === Context.INFRASTRUKTUREINRICHTUNG) {
-        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId);
+        const fetchedKommentare = await kommentarApi
+          .getKommentareForInfrastruktureinrichtung(routeId)
+          .finally(() => (loading.value = false));
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());

@@ -21,7 +21,7 @@
                 <v-icon
                   color="primary"
                   size="x-large"
-                ></v-icon>
+                />
               </div>
             </template>
 
