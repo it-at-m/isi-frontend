@@ -456,7 +456,7 @@ function returnToUebersicht(message?: string, type?: TYPE): void {
 
 function handleSuccess(dto: InfrastruktureinrichtungDto): void {
   if (isNew.value) {
-    infrastruktureinrichtung.value = dto;
+    infrastruktureinrichtung.value = _.cloneDeep(dto);
     isNew.value = false;
     toast.success("Die Infrastruktureinrichtung wurde erfolgreich gespeichert");
   } else {
