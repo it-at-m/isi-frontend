@@ -147,7 +147,7 @@
                 closable-chips
                 density="default"
                 hide-no-data
-                hint="z.B. 05 oder 14"
+                hint="z.B. 5, 05 oder 14"
                 label="Nummern der Stadtbezirke"
                 multiple
                 v-bind="activatorProps"
