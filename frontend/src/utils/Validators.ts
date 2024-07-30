@@ -726,11 +726,8 @@ export function findFaultInKommentar(kommentar: KommentarDto): string | null {
 
 function findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
   let validationMessage: string | null = null;
-  if (
-    !_.isNil(dokumente) &&
-    dokumente.some((dokument) => dokument.artDokument === DokumentDtoArtDokumentEnum.Unspecified)
-  ) {
-    validationMessage = `Bitte geben Sie die Dokumentart zu dem/den Dokument(en) an`;
+  if (!_.isNil(dokumente) && dokumente.some((dokument) => dokument.artDokument === undefined)) {
+    validationMessage = `Das Feld Dokumentart zu dem/den Dokument(en) darf nicht leer sein. Gibt es keine passende Dokumentenart, so ist der Wert '--- Keine Angabe ---' zu wählen.`;
   }
   return validationMessage;
 }
