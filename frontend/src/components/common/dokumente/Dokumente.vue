@@ -31,7 +31,7 @@
                 indeterminate="disable-shrink"
                 size="16"
                 width="2"
-              ></v-progress-circular>
+              />
             </template>
           </v-list-item>
         </v-list>
