@@ -46,6 +46,7 @@ import {
   addiereAnteile,
   getBauratenFromAllTechnicalBaugebiete,
   getNonTechnicalBaugebiete,
+  getYearOfEarliestBaurateOrUndefinedIfNoYearIsGiven,
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
@@ -229,6 +230,11 @@ export function findFaultInAbfragevariante(
   const messageFaultinDokumente = findFaultInDokumente(abfragevariante.dokumente);
   if (!_.isNil(messageFaultinDokumente)) {
     return messageFaultinDokumente;
+  }
+
+  const yearOfEarliestBaurate = getYearOfEarliestBaurateOrUndefinedIfNoYearIsGiven(abfragevariante);
+  if (!_.isNil(yearOfEarliestBaurate) && yearOfEarliestBaurate !== abfragevariante.realisierungVon) {
+    return `Das Jahr ${yearOfEarliestBaurate} der frühesten Baurate der Abfragevariante '${abfragevariante.name}' muss mit dem Jahr ${abfragevariante.realisierungVon} des Attributs 'Realisierung von' der Abfragevariante übereinstimmen.`;
   }
 
   return null;

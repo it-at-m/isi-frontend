@@ -54,7 +54,7 @@
             chips
             closable-chips
             density="default"
-            hint="z.B. 05 oder 14"
+            hint="z.B. 5, 05 oder 14"
             @mouseover="hoverFilterStadtbezirkName = true"
             @mouseleave="hoverFilterStadtbezirkName = false"
           />
