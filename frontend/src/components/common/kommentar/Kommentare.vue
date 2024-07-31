@@ -7,28 +7,10 @@
       <v-expansion-panel class="pa-0">
         <v-expansion-panel-title class="text-grey text-h6"> Kommentare </v-expansion-panel-title>
         <v-expansion-panel-text v-if="loading">
-          <v-list-item
-            prepend-icon="mdi-comment-text-multiple"
-            title="Kommentare werden geladen..."
-          >
-            <template #prepend>
-              <div class="pe-4">
-                <v-icon
-                  color="primary"
-                  size="x-large"
-                />
-              </div>
-            </template>
-
-            <template #append>
-              <v-progress-circular
-                color="primary"
-                indeterminate="disable-shrink"
-                size="16"
-                width="2"
-              />
-            </template>
-          </v-list-item>
+          <loading-progress-circular
+            icon="mdi-comment-text-multiple"
+            text="Kommentare werden geladen..."
+          />
         </v-expansion-panel-text>
         <v-expansion-panel-text v-else>
           <kommentar
@@ -57,6 +39,7 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { useRoute } from "vue-router";
 import { findFaultInKommentar } from "@/utils/Validators";
 import { useToast } from "vue-toastification";
+import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 interface Props {
   context?: Context;
