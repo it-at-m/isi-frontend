@@ -15,12 +15,12 @@
       :abfragevariante="abfragevariante"
       :is-editable="isEditable"
     />
-    <geschossflaeche-wohnen-weiteres-verfahren-component
+    <anzahl-wohneinheiten-weiteres-verfahren-component
       v-model="baugebiet"
       :abfragevariante="abfragevariante"
       :is-editable="isEditable"
     />
-    <anzahl-wohneinheiten-weiteres-verfahren-component
+    <geschossflaeche-wohnen-weiteres-verfahren-component
       v-model="baugebiet"
       :abfragevariante="abfragevariante"
       :is-editable="isEditable"
