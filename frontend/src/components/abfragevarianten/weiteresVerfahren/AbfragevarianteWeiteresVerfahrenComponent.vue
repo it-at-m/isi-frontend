@@ -14,15 +14,15 @@
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-geschossflaeche-wohnen-weiteres-verfahren-component
-      id="geplante_geschossflaeche_wohnen_weiteres_verfahren_component"
-      ref="geplanteGeschossflaecheWohnenWeiteresVerfahrenComponent"
-      v-model="abfragevariante"
-      :is-editable="isEditable"
-    />
     <geplante-anzahl-wohneinheiten-weiteres-verfahren-component
       id="geplante_anzahl_wohneinheiten_weiteres_verfahren_component"
       ref="geplanteAnzahlWohneinheitenWeiteresVerfahrenrenComponent"
+      v-model="abfragevariante"
+      :is-editable="isEditable"
+    />
+    <geplante-geschossflaeche-wohnen-weiteres-verfahren-component
+      id="geplante_geschossflaeche_wohnen_weiteres_verfahren_component"
+      ref="geplanteGeschossflaecheWohnenWeiteresVerfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
