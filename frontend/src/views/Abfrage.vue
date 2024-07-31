@@ -97,7 +97,7 @@
           no-text="Abbrechen"
           :yes-text="'Zustimmen'"
           :anmerkung-max-length="anmerkungMaxLength"
-          @anmerkung="changeAnmkerung($event)"
+          @anmerkung="changeAnmerkung($event)"
           @no="yesNoDialogStatusUebergangeNo"
           @yes="yesNoDialogStatusUebergangYes"
         />
@@ -437,7 +437,7 @@ const router = useRouter();
 
 const RELEVANTE_ABFRAGEVARIANTE_DIALOG_TEXT_BASE = "Hiermit wird die vorhandene Markierung überschrieben.";
 const TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT = "erledigt-ohne-fachreferat";
-const abfrageId = route.params.id as string;
+let abfrageId: string = route.params.id as string;
 let relevanteAbfragevarianteToBeSet: AnyAbfragevarianteModel | undefined;
 let currentTransition: TransitionDto | undefined;
 let anmerkung = "";
@@ -619,7 +619,7 @@ function statusUebergang(transition: TransitionDto): void {
   isStatusUebergangDialogOpen.value = true;
 }
 
-function changeAnmkerung(test: string): void {
+function changeAnmerkung(test: string): void {
   anmerkung = test;
 }
 
@@ -816,8 +816,10 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
     abfrage.value = new WeiteresVerfahrenModel(dto);
   }
   if (isNew.value) {
-    router.push("/");
     toast.success(`Die Abfrage wurde erfolgreich gespeichert`);
+    isNew.value = false;
+    abfrageId = !_.isNil(dto.id) ? dto.id : "";
+    getTransitions(abfrageId).then((transitions) => (possibleTransitions.value = transitions));
   } else if (showToast) {
     toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }
