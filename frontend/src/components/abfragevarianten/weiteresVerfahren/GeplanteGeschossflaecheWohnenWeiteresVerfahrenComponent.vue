@@ -201,6 +201,18 @@
         </v-row>
       </div>
     </v-expand-transition>
+    <v-textarea
+      id="gf_wohnen_anmerkung"
+      v-model="abfragevariante.gfAnmerkung"
+      :disabled="!isEditable"
+      label="Anmerkungen"
+      variant="underlined"
+      auto-grow
+      rows="1"
+      maxlength="200"
+      @update:model-value="formChanged"
+    >
+    </v-textarea>
   </field-group-card>
 </template>
 
@@ -210,10 +222,13 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
   isEditable?: boolean;
 }
+
+const { formChanged } = useSaveLeave();
 
 const abfragevariante = defineModel<AbfragevarianteWeiteresVerfahrenModel>({ required: true });
 

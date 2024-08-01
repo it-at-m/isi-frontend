@@ -136,6 +136,12 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
+     * @type {string}
+     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
+     */
+    gfAnmerkung?: string;
+    /**
+     * 
      * @type {number}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
@@ -170,6 +176,12 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntityModelAbfragevarianteBauleitplanverfahren
+     */
+    weAnmerkung?: string;
     /**
      * 
      * @type {string}
@@ -359,12 +371,14 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
         'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'gfAnmerkung': !exists(json, 'gfAnmerkung') ? undefined : json['gfAnmerkung'],
         'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
         'weSonderwohnformen': !exists(json, 'weSonderwohnformen') ? undefined : json['weSonderwohnformen'],
         'weStudentischesWohnen': !exists(json, 'weStudentischesWohnen') ? undefined : json['weStudentischesWohnen'],
         'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
@@ -412,12 +426,14 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSON(value?: Ent
         'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
         'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+        'gfAnmerkung': value.gfAnmerkung,
         'weGesamt': value.weGesamt,
         'weSonderwohnformen': value.weSonderwohnformen,
         'weStudentischesWohnen': value.weStudentischesWohnen,
         'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
+        'weAnmerkung': value.weAnmerkung,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'sobonBerechnung': SobonBerechnungToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
