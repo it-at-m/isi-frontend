@@ -86,12 +86,12 @@
                         :items="lookupStore.artDokument"
                         item-value="key"
                         item-title="value"
-                        :rules="[pflichtfeld, notUnspecified]"
+                        :rules="[pflichtfeld]"
                         :readonly="!isDokumentAllowed(item)"
                         :disabled="!isDokumenteEditable"
                         @update:model-value="change"
                       >
-                        <template #label> Dokumentart <span class="text-secondary">*</span> </template>
+                        <template #label> Dokumentart </template>
                       </v-select>
                     </v-row>
                   </v-col>

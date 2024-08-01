@@ -10,9 +10,6 @@ import {
   type UpdateKommentarForBauvorhabenRequest,
   type UpdateKommentarForInfrastruktureinrichtungRequest,
   KommentareApi,
-  KommentarBauvorhabenDto,
-  KommentarInfrastruktureinrichtungDto,
-  UpdateKommentarForBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
