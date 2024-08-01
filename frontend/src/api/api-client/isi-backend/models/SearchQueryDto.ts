@@ -13,6 +13,19 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { StatusAbfrage } from './StatusAbfrage';
+import {
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+} from './StatusAbfrage';
+import type { UncertainBoolean } from './UncertainBoolean';
+import {
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+} from './UncertainBoolean';
+
 /**
  * 
  * @export
@@ -114,6 +127,72 @@ export interface SearchQueryDto {
      * @type {number}
      * @memberof SearchQueryDto
      */
+    filterRealisierungsbeginnVon?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
+    filterRealisierungsbeginnBis?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SearchQueryDto
+     */
+    filterNurEigeneAbfragen?: boolean;
+    /**
+     * 
+     * @type {Array<StatusAbfrage>}
+     * @memberof SearchQueryDto
+     */
+    filterStatusAbfrage?: Array<StatusAbfrage>;
+    /**
+     * 
+     * @type {UncertainBoolean}
+     * @memberof SearchQueryDto
+     */
+    filterSobonRelevant?: UncertainBoolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
+    filterWeGesamtVon?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
+    filterWeGesamtBis?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
+    filterGfWohnenGeplantVon?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
+    filterGfWohnenGeplantBis?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterStandVerfahren?: Array<SearchQueryDtoFilterStandVerfahrenEnum>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchQueryDto
+     */
+    filterInfrastruktureinrichtungStatus?: Array<SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum>;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchQueryDto
+     */
     page?: number;
     /**
      * 
@@ -122,6 +201,51 @@ export interface SearchQueryDto {
      */
     pageSize?: number;
 }
+
+
+/**
+ * @export
+ */
+export const SearchQueryDtoFilterStandVerfahrenEnum = {
+    Unspecified: 'UNSPECIFIED',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
+    VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
+    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
+    Strukturkonzept: 'STRUKTURKONZEPT',
+    Rahmenplanung: 'RAHMENPLANUNG',
+    Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
+    StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
+    StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
+    InfoFehlt: 'INFO_FEHLT',
+    FreieEingabe: 'FREIE_EINGABE',
+    Standortabfrage: 'STANDORTABFRAGE'
+} as const;
+export type SearchQueryDtoFilterStandVerfahrenEnum = typeof SearchQueryDtoFilterStandVerfahrenEnum[keyof typeof SearchQueryDtoFilterStandVerfahrenEnum];
+
+/**
+ * @export
+ */
+export const SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = {
+    Unspecified: 'UNSPECIFIED',
+    UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
+    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
+    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
+    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
+    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
+    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    Bestand: 'BESTAND'
+} as const;
+export type SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum];
+
 
 /**
  * Check if a given object implements the SearchQueryDto interface.
@@ -168,6 +292,17 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
         'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
+        'filterRealisierungsbeginnVon': !exists(json, 'filterRealisierungsbeginnVon') ? undefined : json['filterRealisierungsbeginnVon'],
+        'filterRealisierungsbeginnBis': !exists(json, 'filterRealisierungsbeginnBis') ? undefined : json['filterRealisierungsbeginnBis'],
+        'filterNurEigeneAbfragen': !exists(json, 'filterNurEigeneAbfragen') ? undefined : json['filterNurEigeneAbfragen'],
+        'filterStatusAbfrage': !exists(json, 'filterStatusAbfrage') ? undefined : ((json['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageFromJSON)),
+        'filterSobonRelevant': !exists(json, 'filterSobonRelevant') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
+        'filterWeGesamtVon': !exists(json, 'filterWeGesamtVon') ? undefined : json['filterWeGesamtVon'],
+        'filterWeGesamtBis': !exists(json, 'filterWeGesamtBis') ? undefined : json['filterWeGesamtBis'],
+        'filterGfWohnenGeplantVon': !exists(json, 'filterGfWohnenGeplantVon') ? undefined : json['filterGfWohnenGeplantVon'],
+        'filterGfWohnenGeplantBis': !exists(json, 'filterGfWohnenGeplantBis') ? undefined : json['filterGfWohnenGeplantBis'],
+        'filterStandVerfahren': !exists(json, 'filterStandVerfahren') ? undefined : json['filterStandVerfahren'],
+        'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
         'page': !exists(json, 'page') ? undefined : json['page'],
         'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
     };
@@ -197,6 +332,17 @@ export function SearchQueryDtoToJSON(value?: SearchQueryDto | null): any {
         'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
         'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
         'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
+        'filterRealisierungsbeginnVon': value.filterRealisierungsbeginnVon,
+        'filterRealisierungsbeginnBis': value.filterRealisierungsbeginnBis,
+        'filterNurEigeneAbfragen': value.filterNurEigeneAbfragen,
+        'filterStatusAbfrage': value.filterStatusAbfrage === undefined ? undefined : ((value.filterStatusAbfrage as Array<any>).map(StatusAbfrageToJSON)),
+        'filterSobonRelevant': UncertainBooleanToJSON(value.filterSobonRelevant),
+        'filterWeGesamtVon': value.filterWeGesamtVon,
+        'filterWeGesamtBis': value.filterWeGesamtBis,
+        'filterGfWohnenGeplantVon': value.filterGfWohnenGeplantVon,
+        'filterGfWohnenGeplantBis': value.filterGfWohnenGeplantBis,
+        'filterStandVerfahren': value.filterStandVerfahren,
+        'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
         'page': value.page,
         'pageSize': value.pageSize,
     };
