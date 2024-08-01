@@ -23,15 +23,24 @@
       </v-list>
     </template>
     <template #append>
-      <v-icon
-        :color="checkCurrentFilter() ? '' : 'secondary'"
-        @click="openSearchAndFilterDialog"
+      <v-tooltip
+        location="bottom"
+        open-delay="500"
       >
-        {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
-      </v-icon>
+        <template #activator="{ props: activatorProps }">
+          <v-icon
+            :color="checkCurrentFilter() ? '' : 'secondary'"
+            @click="openSearchAndFilterDialog"
+            v-bind="activatorProps"
+          >
+            {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
+          </v-icon>
+        </template>
+        <span> Such- und Filtereinstellungen </span>
+      </v-tooltip>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
-        max-width="1024px"
+        max-width="800px"
       >
         <search-and-filter-options
           v-model="searchQueryAndSorting"
@@ -45,7 +54,7 @@
 
 <script setup lang="ts">
 import { onMounted, computed, ref } from "vue";
-import type { SearchQueryDto } from "@/api/api-client/isi-backend";
+import { SearchQueryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
@@ -109,6 +118,11 @@ function checkCurrentFilter(): boolean {
     "filterKitaplanungsbereichKitaPlbT",
     "filterGrundschulsprengelNummer",
     "filterMittelschulsprengelNummer",
+    "filterStatusAbfrage",
+    "filterStandVerfahren",
+    "filterInfrastruktureinrichtungStatus",
+    // Abhängig von der Eingabe in der GUI kann die Filtereinstellung undefined sein oder die Ausprägung Unspecified besitzen.
+    "filterSobonRelevant",
   ];
   const requestSearchQueryAndSorting = _.omit(searchStore.requestSearchQueryAndSorting, excludeProperties);
   const defaultSearchQueryAndSortingFilter = _.omit(searchStore.defaultSearchQueryAndSortingFilter, excludeProperties);
@@ -119,7 +133,13 @@ function checkCurrentFilter(): boolean {
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStadtbezirkNummer) &&
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterKitaplanungsbereichKitaPlbT) &&
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterGrundschulsprengelNummer) &&
-    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterMittelschulsprengelNummer)
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterMittelschulsprengelNummer) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStatusAbfrage) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStandVerfahren) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterInfrastruktureinrichtungStatus) &&
+    // Abhängig von der Eingabe in der GUI kann die Filtereinstellung undefined sein oder die Ausprägung Unspecified besitzen.
+    (_.isNil(searchStore.requestSearchQueryAndSorting.filterSobonRelevant) ||
+      searchStore.requestSearchQueryAndSorting.filterSobonRelevant === UncertainBoolean.Unspecified)
   );
 }
 
