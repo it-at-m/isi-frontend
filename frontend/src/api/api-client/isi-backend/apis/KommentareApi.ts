@@ -16,20 +16,31 @@
 import * as runtime from '../runtime';
 import type {
   InformationResponseDto,
-  KommentarDto,
+  KommentarBauvorhabenDto,
+  KommentarInfrastruktureinrichtungDto,
 } from '../models';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    KommentarDtoFromJSON,
-    KommentarDtoToJSON,
+    KommentarBauvorhabenDtoFromJSON,
+    KommentarBauvorhabenDtoToJSON,
+    KommentarInfrastruktureinrichtungDtoFromJSON,
+    KommentarInfrastruktureinrichtungDtoToJSON,
 } from '../models';
 
-export interface CreateKommentarRequest {
-    kommentarDto: KommentarDto;
+export interface CreateKommentarForBauvorhabenRequest {
+    kommentarBauvorhabenDto: KommentarBauvorhabenDto;
 }
 
-export interface DeleteKommentarRequest {
+export interface CreateKommentarForInfrastruktureinrichtungRequest {
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
+}
+
+export interface DeleteKommentarForBauvorhabenRequest {
+    id: string;
+}
+
+export interface DeleteKommentarForInfrastruktureinrichtungRequest {
     id: string;
 }
 
@@ -41,8 +52,12 @@ export interface GetKommentareForInfrastruktureinrichtungRequest {
     infrastruktureinrichtungId: string;
 }
 
-export interface UpdateKommentarRequest {
-    kommentarDto: KommentarDto;
+export interface UpdateKommentarForBauvorhabenRequest {
+    kommentarBauvorhabenDto: KommentarBauvorhabenDto;
+}
+
+export interface UpdateKommentarForInfrastruktureinrichtungRequest {
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
 }
 
 /**
@@ -51,11 +66,11 @@ export interface UpdateKommentarRequest {
 export class KommentareApi extends runtime.BaseAPI {
 
     /**
-     * Anlegen eines neuen Kommentars
+     * Anlegen eines neuen Kommentars für ein Bauvorhaben
      */
-    async createKommentarRaw(requestParameters: CreateKommentarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarDto>> {
-        if (requestParameters.kommentarDto === null || requestParameters.kommentarDto === undefined) {
-            throw new runtime.RequiredError('kommentarDto','Required parameter requestParameters.kommentarDto was null or undefined when calling createKommentar.');
+    async createKommentarForBauvorhabenRaw(requestParameters: CreateKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarBauvorhabenDto>> {
+        if (requestParameters.kommentarBauvorhabenDto === null || requestParameters.kommentarBauvorhabenDto === undefined) {
+            throw new runtime.RequiredError('kommentarBauvorhabenDto','Required parameter requestParameters.kommentarBauvorhabenDto was null or undefined when calling createKommentarForBauvorhaben.');
         }
 
         const queryParameters: any = {};
@@ -65,30 +80,63 @@ export class KommentareApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/kommentar`,
+            path: `/kommentar/bauvorhaben`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: KommentarDtoToJSON(requestParameters.kommentarDto),
+            body: KommentarBauvorhabenDtoToJSON(requestParameters.kommentarBauvorhabenDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarBauvorhabenDtoFromJSON(jsonValue));
     }
 
     /**
-     * Anlegen eines neuen Kommentars
+     * Anlegen eines neuen Kommentars für ein Bauvorhaben
      */
-    async createKommentar(requestParameters: CreateKommentarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarDto> {
-        const response = await this.createKommentarRaw(requestParameters, initOverrides);
+    async createKommentarForBauvorhaben(requestParameters: CreateKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarBauvorhabenDto> {
+        const response = await this.createKommentarForBauvorhabenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Löschen eines Kommentars
+     * Anlegen eines neuen Kommentars für eine Infrastruktureinrichtung
      */
-    async deleteKommentarRaw(requestParameters: DeleteKommentarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async createKommentarForInfrastruktureinrichtungRaw(requestParameters: CreateKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarInfrastruktureinrichtungDto>> {
+        if (requestParameters.kommentarInfrastruktureinrichtungDto === null || requestParameters.kommentarInfrastruktureinrichtungDto === undefined) {
+            throw new runtime.RequiredError('kommentarInfrastruktureinrichtungDto','Required parameter requestParameters.kommentarInfrastruktureinrichtungDto was null or undefined when calling createKommentarForInfrastruktureinrichtung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/kommentar/infrastruktureinrichtung`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KommentarInfrastruktureinrichtungDtoToJSON(requestParameters.kommentarInfrastruktureinrichtungDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarInfrastruktureinrichtungDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Anlegen eines neuen Kommentars für eine Infrastruktureinrichtung
+     */
+    async createKommentarForInfrastruktureinrichtung(requestParameters: CreateKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
+        const response = await this.createKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Löschen eines Kommentars eines Bauvorhabens
+     */
+    async deleteKommentarForBauvorhabenRaw(requestParameters: DeleteKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteKommentar.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteKommentarForBauvorhaben.');
         }
 
         const queryParameters: any = {};
@@ -96,7 +144,7 @@ export class KommentareApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/kommentar/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/kommentar/bauvorhaben/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -106,16 +154,45 @@ export class KommentareApi extends runtime.BaseAPI {
     }
 
     /**
-     * Löschen eines Kommentars
+     * Löschen eines Kommentars eines Bauvorhabens
      */
-    async deleteKommentar(requestParameters: DeleteKommentarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteKommentarRaw(requestParameters, initOverrides);
+    async deleteKommentarForBauvorhaben(requestParameters: DeleteKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteKommentarForBauvorhabenRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Löschen eines Kommentars einer Infrastruktureinrichtung
+     */
+    async deleteKommentarForInfrastruktureinrichtungRaw(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteKommentarForInfrastruktureinrichtung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/kommentar/infrastruktureinrichtung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Löschen eines Kommentars einer Infrastruktureinrichtung
+     */
+    async deleteKommentarForInfrastruktureinrichtung(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
     }
 
     /**
      * Holen der Kommentare eines Bauvorhabens
      */
-    async getKommentareForBauvorhabenRaw(requestParameters: GetKommentareForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<KommentarDto>>> {
+    async getKommentareForBauvorhabenRaw(requestParameters: GetKommentareForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<KommentarBauvorhabenDto>>> {
         if (requestParameters.bauvorhabenId === null || requestParameters.bauvorhabenId === undefined) {
             throw new runtime.RequiredError('bauvorhabenId','Required parameter requestParameters.bauvorhabenId was null or undefined when calling getKommentareForBauvorhaben.');
         }
@@ -131,13 +208,13 @@ export class KommentareApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(KommentarDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(KommentarBauvorhabenDtoFromJSON));
     }
 
     /**
      * Holen der Kommentare eines Bauvorhabens
      */
-    async getKommentareForBauvorhaben(requestParameters: GetKommentareForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<KommentarDto>> {
+    async getKommentareForBauvorhaben(requestParameters: GetKommentareForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<KommentarBauvorhabenDto>> {
         const response = await this.getKommentareForBauvorhabenRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -145,7 +222,7 @@ export class KommentareApi extends runtime.BaseAPI {
     /**
      * Holen der Kommentare einer Infrastruktureinrichtung
      */
-    async getKommentareForInfrastruktureinrichtungRaw(requestParameters: GetKommentareForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<KommentarDto>>> {
+    async getKommentareForInfrastruktureinrichtungRaw(requestParameters: GetKommentareForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<KommentarInfrastruktureinrichtungDto>>> {
         if (requestParameters.infrastruktureinrichtungId === null || requestParameters.infrastruktureinrichtungId === undefined) {
             throw new runtime.RequiredError('infrastruktureinrichtungId','Required parameter requestParameters.infrastruktureinrichtungId was null or undefined when calling getKommentareForInfrastruktureinrichtung.');
         }
@@ -161,23 +238,23 @@ export class KommentareApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(KommentarDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(KommentarInfrastruktureinrichtungDtoFromJSON));
     }
 
     /**
      * Holen der Kommentare einer Infrastruktureinrichtung
      */
-    async getKommentareForInfrastruktureinrichtung(requestParameters: GetKommentareForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<KommentarDto>> {
+    async getKommentareForInfrastruktureinrichtung(requestParameters: GetKommentareForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<KommentarInfrastruktureinrichtungDto>> {
         const response = await this.getKommentareForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Aktualisierung eines Kommentars
+     * Aktualisierung eines Kommentars eines Bauvorhabens
      */
-    async updateKommentarRaw(requestParameters: UpdateKommentarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarDto>> {
-        if (requestParameters.kommentarDto === null || requestParameters.kommentarDto === undefined) {
-            throw new runtime.RequiredError('kommentarDto','Required parameter requestParameters.kommentarDto was null or undefined when calling updateKommentar.');
+    async updateKommentarForBauvorhabenRaw(requestParameters: UpdateKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarBauvorhabenDto>> {
+        if (requestParameters.kommentarBauvorhabenDto === null || requestParameters.kommentarBauvorhabenDto === undefined) {
+            throw new runtime.RequiredError('kommentarBauvorhabenDto','Required parameter requestParameters.kommentarBauvorhabenDto was null or undefined when calling updateKommentarForBauvorhaben.');
         }
 
         const queryParameters: any = {};
@@ -187,21 +264,54 @@ export class KommentareApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/kommentar`,
+            path: `/kommentar/bauvorhaben`,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: KommentarDtoToJSON(requestParameters.kommentarDto),
+            body: KommentarBauvorhabenDtoToJSON(requestParameters.kommentarBauvorhabenDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarBauvorhabenDtoFromJSON(jsonValue));
     }
 
     /**
-     * Aktualisierung eines Kommentars
+     * Aktualisierung eines Kommentars eines Bauvorhabens
      */
-    async updateKommentar(requestParameters: UpdateKommentarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarDto> {
-        const response = await this.updateKommentarRaw(requestParameters, initOverrides);
+    async updateKommentarForBauvorhaben(requestParameters: UpdateKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarBauvorhabenDto> {
+        const response = await this.updateKommentarForBauvorhabenRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Aktualisierung eines Kommentars für eine Infrastruktureinrichtung
+     */
+    async updateKommentarForInfrastruktureinrichtungRaw(requestParameters: UpdateKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarInfrastruktureinrichtungDto>> {
+        if (requestParameters.kommentarInfrastruktureinrichtungDto === null || requestParameters.kommentarInfrastruktureinrichtungDto === undefined) {
+            throw new runtime.RequiredError('kommentarInfrastruktureinrichtungDto','Required parameter requestParameters.kommentarInfrastruktureinrichtungDto was null or undefined when calling updateKommentarForInfrastruktureinrichtung.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/kommentar/infrastruktureinrichtung`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KommentarInfrastruktureinrichtungDtoToJSON(requestParameters.kommentarInfrastruktureinrichtungDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarInfrastruktureinrichtungDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung eines Kommentars für eine Infrastruktureinrichtung
+     */
+    async updateKommentarForInfrastruktureinrichtung(requestParameters: UpdateKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
+        const response = await this.updateKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -1,11 +1,18 @@
 import {
-  type CreateKommentarRequest,
-  type DeleteKommentarRequest,
+  type CreateKommentarForBauvorhabenRequest,
+  type CreateKommentarForInfrastruktureinrichtungRequest,
+  type DeleteKommentarForBauvorhabenRequest,
+  type DeleteKommentarForInfrastruktureinrichtungRequest,
   type GetKommentareForBauvorhabenRequest,
   type GetKommentareForInfrastruktureinrichtungRequest,
-  type KommentarDto,
-  type UpdateKommentarRequest,
+  type KommentarBauvorhabenDto,
+  type KommentarInfrastruktureinrichtungDto,
+  type UpdateKommentarForBauvorhabenRequest,
+  type UpdateKommentarForInfrastruktureinrichtungRequest,
   KommentareApi,
+  KommentarBauvorhabenDto,
+  KommentarInfrastruktureinrichtungDto,
+  UpdateKommentarForBauvorhabenRequest,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
@@ -17,7 +24,7 @@ export function useKommentarApi() {
   const { handleError } = useErrorHandler();
   const { resetCommentDirty } = useSaveLeave();
 
-  async function getKommentareForBauvorhaben(bauvorhabenId: string): Promise<Array<KommentarDto>> {
+  async function getKommentareForBauvorhaben(bauvorhabenId: string): Promise<Array<KommentarBauvorhabenDto>> {
     const requestObject: GetKommentareForBauvorhabenRequest = {
       bauvorhabenId: bauvorhabenId,
     };
@@ -31,7 +38,7 @@ export function useKommentarApi() {
 
   async function getKommentareForInfrastruktureinrichtung(
     infrastruktureinrichtungId: string,
-  ): Promise<Array<KommentarDto>> {
+  ): Promise<Array<KommentarInfrastruktureinrichtungDto>> {
     const requestObject: GetKommentareForInfrastruktureinrichtungRequest = {
       infrastruktureinrichtungId: infrastruktureinrichtungId,
     };
@@ -46,12 +53,14 @@ export function useKommentarApi() {
     }
   }
 
-  async function createKommentar(kommentarDto: KommentarDto): Promise<KommentarDto> {
-    const requestObject: CreateKommentarRequest = {
-      kommentarDto: kommentarDto,
+  async function createKommentarForBauvorhaben(
+    kommentarBauvorhabenDto: KommentarBauvorhabenDto,
+  ): Promise<KommentarBauvorhabenDto> {
+    const requestObject: CreateKommentarForBauvorhabenRequest = {
+      kommentarBauvorhabenDto: kommentarBauvorhabenDto,
     };
     try {
-      const response = await kommentareApi.createKommentar(requestObject, RequestUtils.getPOSTConfig());
+      const response = await kommentareApi.createKommentarForBauvorhaben(requestObject, RequestUtils.getPOSTConfig());
       resetCommentDirty();
       return response;
     } catch (error) {
@@ -59,12 +68,17 @@ export function useKommentarApi() {
     }
   }
 
-  async function updateKommentar(kommentarDto: KommentarDto): Promise<KommentarDto> {
-    const requestObject: UpdateKommentarRequest = {
-      kommentarDto: kommentarDto,
+  async function createKommentarForInfrastruktureinrichtung(
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
+  ): Promise<KommentarInfrastruktureinrichtungDto> {
+    const requestObject: CreateKommentarForInfrastruktureinrichtungRequest = {
+      kommentarInfrastruktureinrichtungDto: kommentarInfrastruktureinrichtungDto,
     };
     try {
-      const response = await kommentareApi.updateKommentar(requestObject, RequestUtils.getPUTConfig());
+      const response = await kommentareApi.createKommentarForInfrastruktureinrichtung(
+        requestObject,
+        RequestUtils.getPOSTConfig(),
+      );
       resetCommentDirty();
       return response;
     } catch (error) {
@@ -72,12 +86,61 @@ export function useKommentarApi() {
     }
   }
 
-  async function deleteKommentar(id: string): Promise<void> {
-    const requestObject: DeleteKommentarRequest = {
+  async function updateKommentarForBauvorhaben(
+    kommentarBauvorhabenDto: KommentarBauvorhabenDto,
+  ): Promise<KommentarBauvorhabenDto> {
+    const requestObject: UpdateKommentarForBauvorhabenRequest = {
+      kommentarBauvorhabenDto: kommentarBauvorhabenDto,
+    };
+    try {
+      const response = await kommentareApi.updateKommentarForBauvorhaben(requestObject, RequestUtils.getPUTConfig());
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function updateKommentarForInfrastruktureinrichtung(
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
+  ): Promise<KommentarInfrastruktureinrichtungDto> {
+    const requestObject: UpdateKommentarForInfrastruktureinrichtungRequest = {
+      kommentarInfrastruktureinrichtungDto: kommentarInfrastruktureinrichtungDto,
+    };
+    try {
+      const response = await kommentareApi.updateKommentarForInfrastruktureinrichtung(
+        requestObject,
+        RequestUtils.getPUTConfig(),
+      );
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function deleteKommentarForBauvorhaben(id: string): Promise<void> {
+    const requestObject: DeleteKommentarForBauvorhabenRequest = {
       id: id,
     };
     try {
-      const response = await kommentareApi.deleteKommentar(requestObject, RequestUtils.getDELETEConfig());
+      const response = await kommentareApi.deleteKommentarForBauvorhaben(requestObject, RequestUtils.getDELETEConfig());
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function deleteKommentarForInfrastruktureinrichtung(id: string): Promise<void> {
+    const requestObject: DeleteKommentarForInfrastruktureinrichtungRequest = {
+      id: id,
+    };
+    try {
+      const response = await kommentareApi.deleteKommentarForInfrastruktureinrichtung(
+        requestObject,
+        RequestUtils.getDELETEConfig(),
+      );
       resetCommentDirty();
       return response;
     } catch (error) {
@@ -88,8 +151,11 @@ export function useKommentarApi() {
   return {
     getKommentareForBauvorhaben,
     getKommentareForInfrastruktureinrichtung,
-    createKommentar,
-    updateKommentar,
-    deleteKommentar,
+    createKommentarForBauvorhaben,
+    createKommentarForInfrastruktureinrichtung,
+    updateKommentarForBauvorhaben,
+    updateKommentarForInfrastruktureinrichtung,
+    deleteKommentarForBauvorhaben,
+    deleteKommentarForInfrastruktureinrichtung,
   };
 }

@@ -99,7 +99,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import KommentarModel from "@/types/model/common/KommentarModel";
+import KommentarModel from "@/types/model/common/KommentarBauvorhabenModel";
 import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import Dokumente from "../dokumente/Dokumente.vue";
