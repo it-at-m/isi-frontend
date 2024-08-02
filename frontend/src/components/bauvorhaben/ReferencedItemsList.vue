@@ -3,7 +3,13 @@
     <v-expansion-panels variant="accordion">
       <v-expansion-panel @click="getReferencedAbfragen()">
         <v-expansion-panel-title> Abfragen </v-expansion-panel-title>
-        <v-expansion-panel-text>
+        <v-expansion-panel-text v-if="loadingAbfragen">
+          <loading-progress-circular
+            icon="mdi-account-multiple-plus"
+            text="Abfragen werden geladen..."
+          />
+        </v-expansion-panel-text>
+        <v-expansion-panel-text v-else>
           <v-list v-if="abfragenEmpty">
             <v-list-item>
               <v-list-item-subtitle>Dieses Bauvorhaben wird nicht durch Abfragen referenziert</v-list-item-subtitle>
@@ -44,7 +50,13 @@
       </v-expansion-panel>
       <v-expansion-panel @click="getReferencedInfrastruktureinrichtungen()">
         <v-expansion-panel-title> Infrastruktureinrichtungen </v-expansion-panel-title>
-        <v-expansion-panel-text>
+        <v-expansion-panel-text v-if="loadingInfrastruktureinrichtung">
+          <loading-progress-circular
+            icon="mdi-home"
+            text="Infrastruktureinrichtungen werden geladen..."
+          />
+        </v-expansion-panel-text>
+        <v-expansion-panel-text v-else>
           <v-list v-if="infrastruktureinrichtungenEmpty">
             <v-list-item>
               <v-list-item-subtitle>
@@ -97,6 +109,7 @@ import { computed, ref } from "vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { AnyAbfragevarianteDto } from "@/types/common/Abfrage";
+import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 const lookupStore = useLookupStore();
 const searchStore = useSearchStore();
@@ -107,15 +120,18 @@ const routeId = useRoute().params.id as string;
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
 const abfrageWithRelevanteAbfragevarianteId = ref("");
 const infrastruktureinrichtungen = ref<InfrastruktureinrichtungSearchResultDto[]>([]);
-const abfragenEmpty = computed(() => _.isEmpty(abfragen));
-const infrastruktureinrichtungenEmpty = computed(() => _.isEmpty(infrastruktureinrichtungen));
+const abfragenEmpty = computed(() => _.isEmpty(abfragen.value));
+const infrastruktureinrichtungenEmpty = computed(() => _.isEmpty(infrastruktureinrichtungen.value));
+const loadingAbfragen = ref(false);
+const loadingInfrastruktureinrichtung = ref(false);
 let isAbfrageListOpen = false;
 let isInfraListOpen = false;
 
 async function getReferencedAbfragen(): Promise<void> {
   if (!isAbfrageListOpen && !_.isNil(routeId)) {
+    loadingAbfragen.value = true;
     isAbfrageListOpen = true;
-    const searchResults = await getReferencedAbfrageList(routeId);
+    const searchResults = await getReferencedAbfrageList(routeId).finally(() => (loadingAbfragen.value = false));
     if (!_.isNil(searchResults)) {
       abfragen.value = searchResults;
     }
@@ -168,8 +184,11 @@ async function findAbfrageWithRelevanteAbfragevariante(): Promise<void> {
 
 async function getReferencedInfrastruktureinrichtungen(): Promise<void> {
   if (!isInfraListOpen && !_.isNil(routeId)) {
+    loadingInfrastruktureinrichtung.value = true;
     isInfraListOpen = true;
-    const searchResults = await getReferencedInfrastruktureinrichtungenList(routeId);
+    const searchResults = await getReferencedInfrastruktureinrichtungenList(routeId).finally(
+      () => (loadingInfrastruktureinrichtung.value = false),
+    );
     if (!_.isNil(searchResults)) {
       infrastruktureinrichtungen.value = searchResults;
     }

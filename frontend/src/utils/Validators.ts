@@ -46,6 +46,7 @@ import {
   addiereAnteile,
   getBauratenFromAllTechnicalBaugebiete,
   getNonTechnicalBaugebiete,
+  getYearOfEarliestBaurateOrUndefinedIfNoYearIsGiven,
 } from "@/utils/CalculationUtil";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
@@ -229,6 +230,11 @@ export function findFaultInAbfragevariante(
   const messageFaultinDokumente = findFaultInDokumente(abfragevariante.dokumente);
   if (!_.isNil(messageFaultinDokumente)) {
     return messageFaultinDokumente;
+  }
+
+  const yearOfEarliestBaurate = getYearOfEarliestBaurateOrUndefinedIfNoYearIsGiven(abfragevariante);
+  if (!_.isNil(yearOfEarliestBaurate) && yearOfEarliestBaurate !== abfragevariante.realisierungVon) {
+    return `Das Jahr ${yearOfEarliestBaurate} der frühesten Baurate der Abfragevariante '${abfragevariante.name}' muss mit dem Jahr ${abfragevariante.realisierungVon} des Attributs 'Realisierung von' der Abfragevariante übereinstimmen.`;
   }
 
   return null;
@@ -720,11 +726,8 @@ export function findFaultInKommentar(kommentar: KommentarDto): string | null {
 
 function findFaultInDokumente(dokumente: Array<DokumentDto> | undefined): string | null {
   let validationMessage: string | null = null;
-  if (
-    !_.isNil(dokumente) &&
-    dokumente.some((dokument) => dokument.artDokument === DokumentDtoArtDokumentEnum.Unspecified)
-  ) {
-    validationMessage = `Bitte geben Sie die Dokumentart zu dem/den Dokument(en) an`;
+  if (!_.isNil(dokumente) && dokumente.some((dokument) => dokument.artDokument === undefined)) {
+    validationMessage = `Das Feld Dokumentart zu dem/den Dokument(en) darf nicht leer sein. Gibt es keine passende Dokumentenart, so ist der Wert '--- Keine Angabe ---' zu wählen.`;
   }
   return validationMessage;
 }
