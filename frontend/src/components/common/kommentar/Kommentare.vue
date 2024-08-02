@@ -6,7 +6,13 @@
     >
       <v-expansion-panel class="pa-0">
         <v-expansion-panel-title class="text-grey text-h6"> Kommentare </v-expansion-panel-title>
-        <v-expansion-panel-text>
+        <v-expansion-panel-text v-if="loading">
+          <loading-progress-circular
+            icon="mdi-comment-text-multiple"
+            text="Kommentare werden geladen..."
+          />
+        </v-expansion-panel-text>
+        <v-expansion-panel-text v-else>
           <kommentar
             v-for="(kommentar, index) in kommentare"
             :key="index"
@@ -45,7 +51,7 @@ const kommentarApi = useKommentarApi();
 const toast = useToast();
 const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
-const kommentare = ref<KommentarModel[]>([]);
+const kommentare = ref<KommentarBauvorhabenModel[] | KommentarInfrastruktureinrichtungModel[]>([]);
 let isKommentarListOpen = false;
 
 watch(kommentare, () => {
@@ -72,7 +78,7 @@ async function getKommentare(): Promise<void> {
         }
       } else if (props.context === Context.INFRASTRUKTUREINRICHTUNG) {
         const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId);
-        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarBauvorhabenModel(kommentar));
+        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarInfrastruktureinrichtungModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());
         }
