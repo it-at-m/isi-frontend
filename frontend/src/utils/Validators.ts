@@ -81,8 +81,8 @@ export function findFaultInBauleitplanverfahrenForSave(abfrage: Bauleitplanverfa
   if (abfrage.sobonRelevant === UncertainBoolean.Unspecified) {
     return "Bitte angeben ob die Abfrage SoBoN-relevant ist";
   }
-  if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
-    return "Bitte eine Auswahl bei 'Offizielle Mitzeichnung' treffen";
+  if (abfrage.mitzeichnungBeschlussentwurf === UncertainBoolean.Unspecified) {
+    return "Bitte eine Auswahl bei 'Mitzeichnung Beschlussentwurf' treffen";
   }
   if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
     return "Die Abfrage ist SoBoN-relevant. Bitte das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN wählen.";
@@ -107,8 +107,8 @@ export function findFaultInWeiteresVerfahrenForSave(abfrage: WeiteresVerfahrenMo
   if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
     return "Die Abfrage ist SoBoN-relevant. Bitte das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN auswählen.";
   }
-  if (abfrage.offizielleMitzeichnung === UncertainBoolean.Unspecified) {
-    return "Bitte eine Auswahl bei 'Offizielle Mitzeichnung' treffen";
+  if (abfrage.mitzeichnungBeschlussentwurf === UncertainBoolean.Unspecified) {
+    return "Bitte eine Auswahl bei 'Mitzeichnung Beschlussentwurf' treffen";
   }
   return findFaultInAbfrage(abfrage);
 }

@@ -109,7 +109,7 @@ export function mapToBauleitplanverfahrenAngelegt(
     verortung: bauleitplanverfahrenDto.verortung,
     dokumente: bauleitplanverfahrenDto.dokumente,
     fristBearbeitung: bauleitplanverfahrenDto.fristBearbeitung,
-    offizielleMitzeichnung: bauleitplanverfahrenDto.offizielleMitzeichnung,
+    mitzeichnungBeschlussentwurf: bauleitplanverfahrenDto.mitzeichnungBeschlussentwurf,
     abfragevariantenBauleitplanverfahren: abfragevarianten,
   } as BauleitplanverfahrenAngelegtDto;
 }
@@ -229,7 +229,7 @@ export function mapToWeiteresVerfahrenAngelegt(
     verortung: weiteresVerfahrenDto.verortung,
     dokumente: weiteresVerfahrenDto.dokumente,
     fristBearbeitung: weiteresVerfahrenDto.fristBearbeitung,
-    offizielleMitzeichnung: weiteresVerfahrenDto.offizielleMitzeichnung,
+    mitzeichnungBeschlussentwurf: weiteresVerfahrenDto.mitzeichnungBeschlussentwurf,
     abfragevariantenWeiteresVerfahren: abfragevarianten,
   } as WeiteresVerfahrenAngelegtDto;
 }
