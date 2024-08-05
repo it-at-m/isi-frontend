@@ -36,7 +36,10 @@
           cols="3"
           class="d-flex align-center justify-end"
         >
-          <v-tooltip location="bottom">
+          <v-tooltip
+            location="bottom"
+            open-delay="500"
+          >
             <template #activator="{ props: activatorProps }">
               <v-btn
                 icon="mdi-finance"
@@ -45,18 +48,26 @@
                 :href="urlGlobalReports"
               />
             </template>
-            <span>Zu den Reporten</span>
+            <span> Zu den Reporten </span>
           </v-tooltip>
           <v-menu
             id="app_help_menu"
             location="bottom"
             transition="slide-y-transition"
           >
-            <template #activator="{ props }">
-              <v-btn
-                icon="mdi-help-circle"
-                v-bind="props"
-              />
+            <template #activator="{ props: menu }">
+              <v-tooltip
+                location="bottom"
+                open-delay="500"
+              >
+                <template v-slot:activator="{ props: tooltip }">
+                  <v-btn
+                    icon="mdi-help-circle"
+                    v-bind="mergeProps(menu, tooltip)"
+                  />
+                </template>
+                <span> Anwendungsinformationen </span>
+              </v-tooltip>
             </template>
             <v-list class="text-center">
               <v-list-item @click="showVersionInfo = true">
@@ -81,11 +92,19 @@
             location="bottom"
             transition="slide-y-transition"
           >
-            <template #activator="{ props }">
-              <v-btn
-                icon="mdi-account-circle"
-                v-bind="props"
-              />
+            <template #activator="{ props: menu }">
+              <v-tooltip
+                location="bottom"
+                open-delay="500"
+              >
+                <template v-slot:activator="{ props: tooltip }">
+                  <v-btn
+                    icon="mdi-account-circle"
+                    v-bind="mergeProps(menu, tooltip)"
+                  />
+                </template>
+                <span> Nutzerinformationen </span>
+              </v-tooltip>
             </template>
 
             <v-card class="userinfo-card">
@@ -119,7 +138,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, ref } from "vue";
+import { computed, mergeProps, onBeforeMount, onMounted, ref } from "vue";
 import VersionInfo from "@/components/common/VersionInfo.vue";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";

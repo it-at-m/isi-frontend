@@ -12,28 +12,10 @@
           elevation="12"
           rounded="lg"
         >
-          <v-list-item
-            prepend-icon="mdi-file-document-refresh"
-            title="Dokumente werden hochgeladen..."
-          >
-            <template #prepend>
-              <div class="pe-4">
-                <v-icon
-                  color="primary"
-                  size="x-large"
-                ></v-icon>
-              </div>
-            </template>
-
-            <template #append>
-              <v-progress-circular
-                color="primary"
-                indeterminate="disable-shrink"
-                size="16"
-                width="2"
-              ></v-progress-circular>
-            </template>
-          </v-list-item>
+          <loading-progress-circular
+            icon="mdi-file-document-refresh"
+            text="Dokumente werden hochgeladen..."
+          />
         </v-list>
       </v-dialog>
       <dokumente-liste
@@ -113,6 +95,7 @@ import _ from "lodash";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
 import { computed, ref } from "vue";
 import { useToast } from "vue-toastification";
+import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 interface Props {
   nameRootFolder: string;
