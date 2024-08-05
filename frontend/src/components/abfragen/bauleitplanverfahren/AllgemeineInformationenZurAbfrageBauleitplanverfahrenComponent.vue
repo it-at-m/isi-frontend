@@ -28,7 +28,7 @@
           on-text="Ja"
           :rules="[notUnspecified]"
         >
-          <template #label> Offizielle Mitzeichnung <span class="text-secondary">*</span> </template>
+          <template #label> Mitzeichnung Beschlussentwurf <span class="text-secondary">*</span> </template>
         </tri-switch>
       </v-col>
     </v-row>
