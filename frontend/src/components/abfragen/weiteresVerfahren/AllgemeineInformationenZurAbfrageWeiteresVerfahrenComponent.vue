@@ -20,9 +20,9 @@
         md="6"
       >
         <tri-switch
-          id="offizielle_mitzeichnung_triswitch"
-          ref="offizielleMitzeichnungTriswitch"
-          v-model="abfrage.offizielleMitzeichnung"
+          id="mitzeichnung_beschlussentwurf_triswitch"
+          ref="mitzeichnungBeschlussEntwurfTriswitch"
+          v-model="abfrage.mitzeichnungBeschlussentwurf"
           :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"

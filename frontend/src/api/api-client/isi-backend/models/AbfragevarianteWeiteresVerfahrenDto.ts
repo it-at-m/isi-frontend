@@ -178,6 +178,12 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenDto
+     */
+    gfAnmerkung?: string;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
@@ -224,6 +230,12 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenDto
+     */
+    weAnmerkung?: string;
     /**
      * 
      * @type {string}
@@ -441,6 +453,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
         'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'gfAnmerkung': !exists(json, 'gfAnmerkung') ? undefined : json['gfAnmerkung'],
         'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
         'weBaurechtlichGenehmigt': !exists(json, 'weBaurechtlichGenehmigt') ? undefined : json['weBaurechtlichGenehmigt'],
         'weBaurechtlichFestgesetzt': !exists(json, 'weBaurechtlichFestgesetzt') ? undefined : json['weBaurechtlichFestgesetzt'],
@@ -449,6 +462,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
         'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
@@ -504,6 +518,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSON(value?: Abfragevariant
         'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
         'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+        'gfAnmerkung': value.gfAnmerkung,
         'weGesamt': value.weGesamt,
         'weBaurechtlichGenehmigt': value.weBaurechtlichGenehmigt,
         'weBaurechtlichFestgesetzt': value.weBaurechtlichFestgesetzt,
@@ -512,6 +527,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSON(value?: Abfragevariant
         'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
+        'weAnmerkung': value.weAnmerkung,
         'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
         'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
