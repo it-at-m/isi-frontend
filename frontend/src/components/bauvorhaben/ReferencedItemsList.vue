@@ -33,6 +33,17 @@
               >
                 Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
               </v-list-item-subtitle>
+              <template #append>
+                <v-tooltip
+                  v-if="abfrage.id && abfrage.id === abfrageWithRelevanteAbfragevarianteId"
+                  location="bottom"
+                >
+                  <template #activator="{ props: tooltipProps }">
+                    <v-icon v-bind="tooltipProps">mdi-star</v-icon>
+                  </template>
+                  <span>Die relevante Abfragevariante gehört zu dieser Abfrage.</span>
+                </v-tooltip>
+              </template>
             </v-list-item>
           </v-list>
         </v-expansion-panel-text>
@@ -80,10 +91,14 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  AbfrageSearchResultDto,
-  InfrastruktureinrichtungSearchResultDto,
-  LookupEntryDto,
+import {
+  type AbfrageSearchResultDto,
+  type InfrastruktureinrichtungSearchResultDto,
+  type LookupEntryDto,
+  AbfrageDtoArtAbfrageEnum,
+  BauleitplanverfahrenDto,
+  BaugenehmigungsverfahrenDto,
+  WeiteresVerfahrenDto,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment";
@@ -91,13 +106,19 @@ import { useLookupStore } from "@/stores/LookupStore";
 import { useRoute, useRouter } from "vue-router";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { computed, ref } from "vue";
+import { useSearchStore } from "@/stores/SearchStore";
+import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
+import { AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 const lookupStore = useLookupStore();
+const searchStore = useSearchStore();
 const { getReferencedAbfrageList, getReferencedInfrastruktureinrichtungenList } = useBauvorhabenApi();
+const { getById } = useAbfragenApi();
 const router = useRouter();
 const routeId = useRoute().params.id as string;
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
+const abfrageWithRelevanteAbfragevarianteId = ref("");
 const infrastruktureinrichtungen = ref<InfrastruktureinrichtungSearchResultDto[]>([]);
 const abfragenEmpty = computed(() => _.isEmpty(abfragen.value));
 const infrastruktureinrichtungenEmpty = computed(() => _.isEmpty(infrastruktureinrichtungen.value));
@@ -118,6 +139,46 @@ async function getReferencedAbfragen(): Promise<void> {
     isAbfrageListOpen = false;
   } else {
     isAbfrageListOpen = false;
+  }
+
+  await findAbfrageWithRelevanteAbfragevariante();
+}
+
+async function findAbfrageWithRelevanteAbfragevariante(): Promise<void> {
+  const relevanteAbfragevarianteId = searchStore.selectedBauvorhaben?.relevanteAbfragevariante;
+  if (!relevanteAbfragevarianteId) {
+    return;
+  }
+
+  for (const abfrageSearchResult of abfragen.value) {
+    if (abfrageSearchResult.id) {
+      const abfrage = await getById(abfrageSearchResult.id);
+
+      let abfragevarianten: AnyAbfragevarianteDto[] = [];
+      if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+        abfragevarianten = [
+          ...((abfrage as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren ?? []),
+          ...((abfrage as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren ?? []),
+        ];
+      } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+        abfragevarianten = [
+          ...((abfrage as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren ?? []),
+          ...((abfrage as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren ?? []),
+        ];
+      } else if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+        abfragevarianten = [
+          ...((abfrage as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren ?? []),
+          ...((abfrage as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren ?? []),
+        ];
+      }
+
+      for (const abfragevariante of abfragevarianten) {
+        if (abfragevariante.id === relevanteAbfragevarianteId) {
+          abfrageWithRelevanteAbfragevarianteId.value = abfrageSearchResult.id;
+          return;
+        }
+      }
+    }
   }
 }
 
