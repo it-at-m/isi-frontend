@@ -81,12 +81,14 @@ export function mapToBauleitplanverfahrenAngelegt(
       gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      gfAnmerkung: abfragevariante.gfAnmerkung,
       weGesamt: abfragevariante.weGesamt,
       weSonderwohnformen: abfragevariante.weSonderwohnformen,
       weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
     } as AbfragevarianteBauleitplanverfahrenAngelegtDto;
   });
@@ -139,6 +141,7 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
         gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
         gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
           abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+        gfAnmerkung: abfragevariante.gfAnmerkung,
         weGesamt: abfragevariante.weGesamt,
         weBaurechtlichGenehmigt: abfragevariante.weBaurechtlichGenehmigt,
         weBaurechtlichFestgesetzt: abfragevariante.weBaurechtlichFestgesetzt,
@@ -147,6 +150,7 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
         weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
         weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
         weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+        weAnmerkung: abfragevariante.weAnmerkung,
         bauabschnitte: abfragevariante.bauabschnitte,
       } as AbfragevarianteBaugenehmigungsverfahrenAngelegtDto;
     },
@@ -198,6 +202,7 @@ export function mapToWeiteresVerfahrenAngelegt(
       gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      gfAnmerkung: abfragevariante.gfAnmerkung,
       weGesamt: abfragevariante.weGesamt,
       weBaurechtlichGenehmigt: abfragevariante.weBaurechtlichGenehmigt,
       weBaurechtlichFestgesetzt: abfragevariante.weBaurechtlichFestgesetzt,
@@ -206,6 +211,7 @@ export function mapToWeiteresVerfahrenAngelegt(
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
     } as AbfragevarianteWeiteresVerfahrenAngelegtDto;
   });
@@ -321,12 +327,14 @@ export function mapToAbfragevarianteBauleitplanverfahrenInBearbeitungSachbearbei
       gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      gfAnmerkung: abfragevariante.gfAnmerkung,
       weGesamt: abfragevariante.weGesamt,
       weSonderwohnformen: abfragevariante.weSonderwohnformen,
       weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       sobonBerechnung: abfragevariante.sobonBerechnung,
@@ -364,6 +372,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      gfAnmerkung: abfragevariante.gfAnmerkung,
       weGesamt: abfragevariante.weGesamt,
       weBaurechtlichGenehmigt: abfragevariante.weBaurechtlichGenehmigt,
       weBaurechtlichFestgesetzt: abfragevariante.weBaurechtlichFestgesetzt,
@@ -372,6 +381,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenInBearbeitungSachbea
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
@@ -410,6 +420,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+      gfAnmerkung: abfragevariante.gfAnmerkung,
       weGesamt: abfragevariante.weGesamt,
       weBaurechtlichGenehmigt: abfragevariante.weBaurechtlichGenehmigt,
       weBaurechtlichFestgesetzt: abfragevariante.weBaurechtlichFestgesetzt,
@@ -418,6 +429,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenInBearbeitungSachbearbeitun
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
       weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
+      weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
       sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
       sobonBerechnung: abfragevariante.sobonBerechnung,

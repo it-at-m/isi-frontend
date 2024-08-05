@@ -130,6 +130,12 @@ export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     */
+    gfAnmerkung?: string;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
@@ -164,6 +170,12 @@ export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
      * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
+     */
+    weAnmerkung?: string;
     /**
      * 
      * @type {Array<BauabschnittDto>}
@@ -246,12 +258,14 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json
         'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
         'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'gfAnmerkung': !exists(json, 'gfAnmerkung') ? undefined : json['gfAnmerkung'],
         'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
         'weSonderwohnformen': json['weSonderwohnformen'],
         'weStudentischesWohnen': !exists(json, 'weStudentischesWohnen') ? undefined : json['weStudentischesWohnen'],
         'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
         'bauabschnitte': ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
     };
 }
@@ -282,12 +296,14 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON(value?: Abf
         'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
         'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+        'gfAnmerkung': value.gfAnmerkung,
         'weGesamt': value.weGesamt,
         'weSonderwohnformen': value.weSonderwohnformen,
         'weStudentischesWohnen': value.weStudentischesWohnen,
         'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
+        'weAnmerkung': value.weAnmerkung,
         'bauabschnitte': ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
     };
 }
