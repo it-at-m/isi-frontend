@@ -14,15 +14,15 @@
       v-model="abfragevariante"
       :is-editable="isEditable"
     />
-    <geplante-geschossflaeche-wohnen-baugenehmigungsverfahren-component
-      id="geplante_geschossflaeche_wohnen_baugenehmigungsverfahren_component"
-      ref="geplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent"
-      v-model="abfragevariante"
-      :is-editable="isEditable"
-    />
     <geplante-anzahl-wohneinheiten-baugenehmigungsverfahren-component
       id="geplante_anzahl_wohneinheiten_baugenehmigungsverfahren_component"
       ref="geplanteAnzahlWohneinheitenBaugenehmigungsverfahrenComponent"
+      v-model="abfragevariante"
+      :is-editable="isEditable"
+    />
+    <geplante-geschossflaeche-wohnen-baugenehmigungsverfahren-component
+      id="geplante_geschossflaeche_wohnen_baugenehmigungsverfahren_component"
+      ref="geplanteGeschossflaecheWohnenBaugenehmigungsverfahrenComponent"
       v-model="abfragevariante"
       :is-editable="isEditable"
     />

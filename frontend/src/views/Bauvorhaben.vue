@@ -239,8 +239,10 @@ async function fetchBauvorhabenById(): Promise<void> {
  * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
  */
 async function saveBauvorhaben(): Promise<void> {
-  await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId);
-  returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", TYPE.SUCCESS);
+  const dto = await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId);
+  bauvorhaben.value = _.cloneDeep(dto);
+  isNew.value = false;
+  toast.success("Das Bauvorhaben wurde erfolgreich gespeichert");
 }
 
 /**
