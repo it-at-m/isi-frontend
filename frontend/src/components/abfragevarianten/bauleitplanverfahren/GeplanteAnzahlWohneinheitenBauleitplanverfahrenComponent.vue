@@ -129,6 +129,18 @@
         </v-row>
       </div>
     </v-expand-transition>
+    <v-textarea
+      id="we_anmerkung"
+      v-model="abfragevariante.weAnmerkung"
+      :disabled="!isEditable"
+      label="Anmerkungen"
+      variant="underlined"
+      auto-grow
+      rows="1"
+      maxlength="200"
+      @update:model-value="formChanged"
+    >
+    </v-textarea>
   </field-group-card>
 </template>
 
@@ -137,10 +149,13 @@ import { watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
   isEditable?: boolean;
 }
+
+const { formChanged } = useSaveLeave();
 
 const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
