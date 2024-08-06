@@ -277,17 +277,14 @@ async function saveFile(pathToFile: string, file: File): Promise<void> {
   if (!_.isNil(presignedUrlDto.url)) {
     await saveDokumentWithUrl(presignedUrlDto, file).then(() => {
       const newDokument = createDokumentDto();
-      newDokument.sizeInBytes = file.size;
       newDokument.filePath.pathToFile = filepathDto.pathToFile;
       extractMediaTypeInformationForAllowedMediaType(filepathDto)
         .then((mimeTypeInformation) => {
-          newDokument.typDokument = acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
           dokumente.value.push(newDokument);
           change();
         })
         .catch((error) => {
           if (error instanceof ResponseError && error.response.status === 406) {
-            newDokument.typDokument = mimeTypeNichtErlaubt();
             dokumente.value.push(newDokument);
             change();
           }

@@ -1,4 +1,7 @@
 <template>
+  <div class="font-weight-bold mb-5 ml-16 ps-5">
+    Es sind maximal 20 Dokumente mit jeweils einer Größe von 50 MB erlaubt.
+  </div>
   <v-container class="mx-auto my-2">
     <v-list
       v-if="hasDokumente"
@@ -50,28 +53,14 @@
                 </v-row>
                 <v-row class="align-center">
                   <v-col
-                    class="px-3 pt-1 pb-0"
                     cols="12"
                     md="4"
                   >
-                    <v-row
-                      :id="'dokument_typ_' + index"
-                      class="justify-start"
-                    >
-                      {{ item.typDokument }}
-                    </v-row>
                   </v-col>
                   <v-col
-                    class="px-3 pt-1 pb-0"
                     cols="12"
                     md="4"
                   >
-                    <v-row
-                      :id="'dokument_size_' + index"
-                      class="justify-center"
-                    >
-                      {{ getDokumentSizeInSIUnits(item) }}
-                    </v-row>
                   </v-col>
                   <v-col
                     class="px-3 pt-1 pb-0"
@@ -161,18 +150,6 @@ const hasDokumente = computed(() => !_.isNil(props.dokumente) && props.dokumente
 
 function getDokumentDisplayName(dokument: DokumentDto): string {
   return dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
-}
-
-function getDokumentSizeInSIUnits(dokument: DokumentDto): string {
-  let size: string;
-  if (dokument.sizeInBytes < 1024) {
-    size = dokument.sizeInBytes + " Byte";
-  } else if (dokument.sizeInBytes < 1048576) {
-    size = _.round(dokument.sizeInBytes / 1024, 1) + " KB";
-  } else {
-    size = _.round(dokument.sizeInBytes / 1048576, 1) + " MB";
-  }
-  return size;
 }
 
 async function downloadDokument(dokument: DokumentDto): Promise<void> {
