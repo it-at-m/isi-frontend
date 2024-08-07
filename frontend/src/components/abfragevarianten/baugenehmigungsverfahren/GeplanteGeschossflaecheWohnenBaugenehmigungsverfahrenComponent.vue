@@ -13,6 +13,7 @@
           class="mx-3"
           label="Gesamt"
           :suffix="SQUARE_METER"
+          help="Es handelt sich um die gesamte geplante Geschossfläche Wohnen angelehnt an den städtebaulichen Kennwert, nicht um die gesamte geplante Geschossfläche (z.B. Gewerbeflächen)."
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -80,6 +81,7 @@
           class="mx-3"
           label="Bestandswohnbaurecht"
           :suffix="SQUARE_METER"
+          help="Es handelt sich um Wohnbaurecht, welches schon auf der Fläche besteht. Sollte Ihnen die schon genehmigte Fläche an Wohnaurecht bekannt sein, tragen Sie diese bitte ein."
         />
       </v-col>
       <v-col
@@ -94,15 +96,35 @@
         cols="12"
         md="4"
       >
-        <v-checkbox
-          id="gf_sonderwohnformen_checkbox"
-          ref="gfSonderwohnformenCheckbox"
-          v-model="abfragevariante.gfWohnenSonderwohnformen"
-          :disabled="!isEditable"
-          class="mx-3"
-          label="Sonderwohnformen"
-          color="primary"
-        />
+        <div
+          class="d-flex"
+          align-center
+        >
+          <v-checkbox
+            id="gf_sonderwohnformen_checkbox"
+            ref="gfSonderwohnformenCheckbox"
+            v-model="abfragevariante.gfWohnenSonderwohnformen"
+            :disabled="!isEditable"
+            class="mx-3"
+            label="Sonderwohnformen"
+            color="primary"
+          />
+          <v-tooltip location="top">
+            <template #activator="{ props: activatorProps }">
+              <v-icon
+                v-bind="activatorProps"
+                class="mt-4"
+                color="grey-darken-1"
+                >mdi-help-circle-outline</v-icon
+              >
+            </template>
+            <span
+              >{{
+                "Sonderwohnformen werden in Bebauungsplänen nicht festgesetzt. Sollten Ihnen Informationen von Investoren zu besonderen Wohnformen vorliegen, tragen Sie diese bitte trotzdem ein."
+              }}
+            </span>
+          </v-tooltip>
+        </div>
       </v-col>
       <!-- Space für Platzhalter -->
       <v-col
