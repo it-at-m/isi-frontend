@@ -109,7 +109,7 @@ export interface BauleitplanverfahrenDtoAllOf {
      * @type {UncertainBoolean}
      * @memberof BauleitplanverfahrenDtoAllOf
      */
-    offizielleMitzeichnung?: UncertainBoolean;
+    mitzeichnungBeschlussentwurf?: UncertainBoolean;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenDto>}
@@ -196,7 +196,7 @@ export function BauleitplanverfahrenDtoAllOfFromJSONTyped(json: any, ignoreDiscr
         'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
-        'offizielleMitzeichnung': !exists(json, 'offizielleMitzeichnung') ? undefined : UncertainBooleanFromJSON(json['offizielleMitzeichnung']),
+        'mitzeichnungBeschlussentwurf': !exists(json, 'mitzeichnungBeschlussentwurf') ? undefined : UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
         'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': !exists(json, 'abfragevariantenSachbearbeitungBauleitplanverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
     };
@@ -220,7 +220,7 @@ export function BauleitplanverfahrenDtoAllOfToJSON(value?: BauleitplanverfahrenD
         'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
-        'offizielleMitzeichnung': UncertainBooleanToJSON(value.offizielleMitzeichnung),
+        'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value.mitzeichnungBeschlussentwurf),
         'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': value.abfragevariantenSachbearbeitungBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
     };

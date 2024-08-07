@@ -174,7 +174,7 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     verortung: undefined,
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
-    offizielleMitzeichnung: UncertainBoolean.Unspecified,
+    mitzeichnungBeschlussentwurf: UncertainBoolean.Unspecified,
     anmerkung: undefined,
     linkEakte: undefined,
     abfragevariantenBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
@@ -243,7 +243,7 @@ export function createWeiteresVerfahrenDto(): WeiteresVerfahrenDto {
     verortung: undefined,
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
-    offizielleMitzeichnung: UncertainBoolean.Unspecified,
+    mitzeichnungBeschlussentwurf: UncertainBoolean.Unspecified,
     abfragevariantenWeiteresVerfahren: new Array<AbfragevarianteWeiteresVerfahrenDto>(),
     abfragevariantenSachbearbeitungWeiteresVerfahren: new Array<AbfragevarianteWeiteresVerfahrenDto>(),
   };

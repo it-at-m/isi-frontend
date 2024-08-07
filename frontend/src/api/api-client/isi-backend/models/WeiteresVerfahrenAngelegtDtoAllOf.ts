@@ -115,7 +115,7 @@ export interface WeiteresVerfahrenAngelegtDtoAllOf {
      * @type {UncertainBoolean}
      * @memberof WeiteresVerfahrenAngelegtDtoAllOf
      */
-    offizielleMitzeichnung?: UncertainBoolean;
+    mitzeichnungBeschlussentwurf?: UncertainBoolean;
     /**
      * 
      * @type {Array<AbfragevarianteWeiteresVerfahrenAngelegtDto>}
@@ -197,7 +197,7 @@ export function WeiteresVerfahrenAngelegtDtoAllOfFromJSONTyped(json: any, ignore
         'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
-        'offizielleMitzeichnung': !exists(json, 'offizielleMitzeichnung') ? undefined : UncertainBooleanFromJSON(json['offizielleMitzeichnung']),
+        'mitzeichnungBeschlussentwurf': !exists(json, 'mitzeichnungBeschlussentwurf') ? undefined : UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
         'abfragevariantenWeiteresVerfahren': !exists(json, 'abfragevariantenWeiteresVerfahren') ? undefined : ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON)),
     };
 }
@@ -221,7 +221,7 @@ export function WeiteresVerfahrenAngelegtDtoAllOfToJSON(value?: WeiteresVerfahre
         'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
-        'offizielleMitzeichnung': UncertainBooleanToJSON(value.offizielleMitzeichnung),
+        'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value.mitzeichnungBeschlussentwurf),
         'abfragevariantenWeiteresVerfahren': value.abfragevariantenWeiteresVerfahren === undefined ? undefined : ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON)),
     };
 }
