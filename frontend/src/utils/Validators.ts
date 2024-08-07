@@ -15,7 +15,8 @@ import {
   InfrastruktureinrichtungDto,
   KindergartenDto,
   KinderkrippeDto,
-  KommentarDto,
+  KommentarBauvorhabenDto,
+  KommentarInfrastruktureinrichtungDto,
   MittelschuleDto,
 } from "@/api/api-client/isi-backend";
 import {
@@ -720,7 +721,9 @@ function findFaultForBauratendateiInput(
   return null;
 }
 
-export function findFaultInKommentar(kommentar: KommentarDto): string | null {
+export function findFaultInKommentar(
+  kommentar: KommentarBauvorhabenDto | KommentarInfrastruktureinrichtungDto,
+): string | null {
   return findFaultInDokumente(kommentar.dokumente);
 }
 
