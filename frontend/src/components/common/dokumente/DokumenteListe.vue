@@ -1,7 +1,4 @@
 <template>
-  <div class="font-weight-bold mb-5 ml-16 ps-5">
-    Es sind maximal 20 Dokumente mit jeweils einer Größe von 50 MB erlaubt.
-  </div>
   <v-container class="mx-auto my-2">
     <v-list
       v-if="hasDokumente"
