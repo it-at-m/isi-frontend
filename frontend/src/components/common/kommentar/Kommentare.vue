@@ -30,16 +30,16 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import _ from "lodash";
-import KommentarModel from "@/types/model/common/KommentarModel";
+import KommentarBauvorhabenModel from "@/types/model/common/KommentarBauvorhabenModel";
+import KommentarInfrastruktureinrichtungModel from "@/types/model/common/KommentarInfrastruktureinrichtungModel";
 import Kommentar from "@/components/common/kommentar/Kommentar.vue";
 import { Context } from "@/utils/Context";
-import { createKommentarDto } from "@/utils/Factories";
+import { createKommentarBauvorhabenDto, createKommentarInfrastruktureinrichtungDto } from "@/utils/Factories";
 import { useKommentarApi } from "@/composables/requests/KommentarApi";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useRoute } from "vue-router";
 import { findFaultInKommentar } from "@/utils/Validators";
 import { useToast } from "vue-toastification";
-import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 interface Props {
   context?: Context;
@@ -51,8 +51,7 @@ const kommentarApi = useKommentarApi();
 const toast = useToast();
 const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
-const kommentare = ref<KommentarModel[]>([]);
-const loading = ref(false);
+const kommentare = ref<KommentarBauvorhabenModel[] | KommentarInfrastruktureinrichtungModel[]>([]);
 let isKommentarListOpen = false;
 
 watch(kommentare, () => {
@@ -70,21 +69,16 @@ function hasDirtyComment(): boolean {
 async function getKommentare(): Promise<void> {
   if (!isCommentDirty.value) {
     if (!isKommentarListOpen && !_.isNil(routeId)) {
-      loading.value = true;
       isKommentarListOpen = true;
       if (props.context === Context.BAUVORHABEN) {
-        const fetchedKommentare = await kommentarApi
-          .getKommentareForBauvorhaben(routeId)
-          .finally(() => (loading.value = false));
-        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
+        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(routeId);
+        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarBauvorhabenModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForBauvorhaben());
         }
       } else if (props.context === Context.INFRASTRUKTUREINRICHTUNG) {
-        const fetchedKommentare = await kommentarApi
-          .getKommentareForInfrastruktureinrichtung(routeId)
-          .finally(() => (loading.value = false));
-        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarModel(kommentar));
+        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId);
+        kommentare.value = fetchedKommentare.map((kommentar) => new KommentarInfrastruktureinrichtungModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());
         }
@@ -96,7 +90,7 @@ async function getKommentare(): Promise<void> {
   }
 }
 
-function createNewUnsavedKommentar(): KommentarModel {
+function createNewUnsavedKommentar(): KommentarBauvorhabenModel | KommentarInfrastruktureinrichtungModel {
   let kommentar;
   if (props.context === Context.BAUVORHABEN) {
     kommentar = createNewUnsavedKommentarForBauvorhaben();
@@ -106,31 +100,44 @@ function createNewUnsavedKommentar(): KommentarModel {
   return kommentar;
 }
 
-function createNewUnsavedKommentarForBauvorhaben(): KommentarModel {
-  const kommentar = new KommentarModel(createKommentarDto());
+function createNewUnsavedKommentarForBauvorhaben(): KommentarBauvorhabenModel {
+  const kommentar = new KommentarBauvorhabenModel(createKommentarBauvorhabenDto());
   kommentar.bauvorhaben = routeId;
   kommentar.isDirty = false;
   return kommentar;
 }
 
-function createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarModel {
-  const kommentar = new KommentarModel(createKommentarDto());
+function createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarInfrastruktureinrichtungModel {
+  const kommentar = new KommentarInfrastruktureinrichtungModel(createKommentarInfrastruktureinrichtungDto());
   kommentar.infrastruktureinrichtung = routeId;
   return kommentar;
 }
 
-async function saveKommentar(kommentar: KommentarModel): Promise<void> {
+async function saveKommentar(
+  kommentar: KommentarBauvorhabenModel | KommentarInfrastruktureinrichtungModel,
+): Promise<void> {
   const validationMessage = findFaultInKommentar(kommentar);
   if (_.isNil(validationMessage)) {
+    let model: KommentarBauvorhabenModel | KommentarInfrastruktureinrichtungModel;
     if (_.isNil(kommentar.id)) {
-      const createdKommentar = await kommentarApi.createKommentar(kommentar);
-      const model = new KommentarModel(createdKommentar);
+      if (props.context === Context.BAUVORHABEN) {
+        model = new KommentarBauvorhabenModel(await kommentarApi.createKommentarForBauvorhaben(kommentar));
+      } else {
+        model = new KommentarInfrastruktureinrichtungModel(
+          await kommentarApi.createKommentarForInfrastruktureinrichtung(kommentar),
+        );
+      }
       model.isDirty = false;
       replaceSavedKommentarInKommentare(model);
       kommentare.value.unshift(createNewUnsavedKommentar());
     } else {
-      const updatedKommentar = await kommentarApi.updateKommentar(kommentar);
-      const model = new KommentarModel(updatedKommentar);
+      if (props.context === Context.BAUVORHABEN) {
+        model = new KommentarBauvorhabenModel(await kommentarApi.updateKommentarForBauvorhaben(kommentar));
+      } else {
+        model = new KommentarInfrastruktureinrichtungModel(
+          await kommentarApi.updateKommentarForInfrastruktureinrichtung(kommentar),
+        );
+      }
       model.isDirty = false;
       replaceSavedKommentarInKommentare(model);
     }
@@ -139,7 +146,9 @@ async function saveKommentar(kommentar: KommentarModel): Promise<void> {
   }
 }
 
-function replaceSavedKommentarInKommentare(kommentar: KommentarModel): void {
+function replaceSavedKommentarInKommentare(
+  kommentar: KommentarBauvorhabenModel | KommentarInfrastruktureinrichtungModel,
+): void {
   let kommentarReplacedInArray = false;
   kommentare.value = kommentare.value.map((kommentarInArray) => {
     if (kommentarInArray.id === kommentar.id) {
@@ -154,7 +163,9 @@ function replaceSavedKommentarInKommentare(kommentar: KommentarModel): void {
   }
 }
 
-async function deleteKommentar(kommentar: KommentarModel): Promise<void> {
+async function deleteKommentar(
+  kommentar: KommentarBauvorhabenModel | KommentarInfrastruktureinrichtungModel,
+): Promise<void> {
   if (_.isNil(kommentar.id)) {
     // Wenn es sich um ein neues, unsaved Kommentar handelt, wird es entfernt
     const index = kommentare.value.indexOf(kommentar);
@@ -162,7 +173,11 @@ async function deleteKommentar(kommentar: KommentarModel): Promise<void> {
       kommentare.value.splice(index, 1);
     }
   } else {
-    await kommentarApi.deleteKommentar(kommentar.id);
+    if (props.context === Context.BAUVORHABEN) {
+      await kommentarApi.deleteKommentarForBauvorhaben(kommentar.id);
+    } else {
+      await kommentarApi.deleteKommentarForInfrastruktureinrichtung(kommentar.id);
+    }
     const removeIndex = kommentare.value.findIndex((k) => k.id === kommentar.id);
     if (removeIndex > -1) {
       kommentare.value.splice(removeIndex, 1);

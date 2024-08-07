@@ -20,15 +20,15 @@
         md="6"
       >
         <tri-switch
-          id="offizielle_mitzeichnung_triswitch"
-          ref="offizielleMitzeichnungTriswitch"
-          v-model="abfrage.offizielleMitzeichnung"
+          id="mitzeichnung_beschlussentwurf_triswitch"
+          ref="mitzeichnungBeschlussEntwurfTriswitch"
+          v-model="abfrage.mitzeichnungBeschlussentwurf"
           :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"
           :rules="[notUnspecified]"
         >
-          <template #label> Offizielle Mitzeichnung <span class="text-secondary">*</span> </template>
+          <template #label> Mitzeichnung Beschlussentwurf<span class="text-secondary">*</span> </template>
         </tri-switch>
       </v-col>
     </v-row>
