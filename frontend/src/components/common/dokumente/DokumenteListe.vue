@@ -19,97 +19,60 @@
               <v-col
                 cols="12"
                 md="1"
+                class="d-flex justify-center"
               >
-                <v-row justify="center">
-                  <v-btn
-                    :id="'dokument_listitem_download_' + index"
-                    variant="plain"
-                    icon="mdi-download"
-                    @click="downloadDokument(item)"
-                  />
+                <v-btn
+                  :id="'dokument_listitem_download_' + index"
+                  variant="plain"
+                  icon="mdi-download"
+                  @click="downloadDokument(item)"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="6"
+              >
+                <v-row
+                  :id="'dokument_display_name_' + index"
+                  class="align-center"
+                >
+                  <strong>
+                    {{ getDokumentDisplayName(item) }}
+                  </strong>
                 </v-row>
               </v-col>
               <v-col
                 cols="12"
-                md="10"
+                md="4"
+                class="d-flex justify-end"
               >
-                <v-row class="align-center">
-                  <v-col
-                    cols="12"
-                    md="12"
-                  >
-                    <v-row
-                      :id="'dokument_display_name_' + index"
-                      class="justify-start"
-                    >
-                      <strong>
-                        {{ getDokumentDisplayName(item) }}
-                      </strong>
-                    </v-row>
-                  </v-col>
-                </v-row>
-                <v-row class="align-center">
-                  <v-col
-                    class="px-3 pt-1 pb-0"
-                    cols="12"
-                    md="4"
-                  >
-                    <v-row
-                      :id="'dokument_typ_' + index"
-                      class="justify-start"
-                    >
-                      {{ item.typDokument }}
-                    </v-row>
-                  </v-col>
-                  <v-col
-                    class="px-3 pt-1 pb-0"
-                    cols="12"
-                    md="4"
-                  >
-                    <v-row
-                      :id="'dokument_size_' + index"
-                      class="justify-center"
-                    >
-                      {{ getDokumentSizeInSIUnits(item) }}
-                    </v-row>
-                  </v-col>
-                  <v-col
-                    class="px-3 pt-1 pb-0"
-                    cols="12"
-                    md="4"
-                  >
-                    <v-row class="justify-end">
-                      <v-select
-                        :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
-                        v-model="item.artDokument"
-                        variant="underlined"
-                        :items="lookupStore.artDokument"
-                        item-value="key"
-                        item-title="value"
-                        :rules="[pflichtfeld]"
-                        :readonly="!isDokumentAllowed(item)"
-                        :disabled="!isDokumenteEditable"
-                        @update:model-value="change"
-                      >
-                        <template #label> Dokumentart </template>
-                      </v-select>
-                    </v-row>
-                  </v-col>
-                </v-row>
+                <v-select
+                  :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
+                  v-model="item.artDokument"
+                  variant="underlined"
+                  :items="lookupStore.artDokument"
+                  item-value="key"
+                  item-title="value"
+                  :rules="[pflichtfeld]"
+                  :readonly="!isDokumentAllowed(item)"
+                  :disabled="!isDokumenteEditable"
+                  @update:model-value="change"
+                >
+                  <template #label> Dokumentart </template>
+                </v-select>
               </v-col>
               <v-col
                 cols="12"
                 md="1"
+                class="d-flex justify-center"
               >
-                <v-row justify="center">
-                  <v-btn
-                    :id="'dokument_listitem_loeschen' + index"
-                    :disabled="!isDokumenteEditable"
-                    variant="plain"
-                    icon="mdi-delete"
-                    @click="deleteDokument(item)"
-                  />
-                </v-row>
+                <v-btn
+                  :id="'dokument_listitem_loeschen' + index"
+                  :disabled="!isDokumenteEditable"
+                  variant="plain"
+                  icon="mdi-delete"
+                  @click="deleteDokument(item)"
+                />
               </v-col>
             </v-row>
           </v-card>
@@ -161,18 +124,6 @@ const hasDokumente = computed(() => !_.isNil(props.dokumente) && props.dokumente
 
 function getDokumentDisplayName(dokument: DokumentDto): string {
   return dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
-}
-
-function getDokumentSizeInSIUnits(dokument: DokumentDto): string {
-  let size: string;
-  if (dokument.sizeInBytes < 1024) {
-    size = dokument.sizeInBytes + " Byte";
-  } else if (dokument.sizeInBytes < 1048576) {
-    size = _.round(dokument.sizeInBytes / 1024, 1) + " KB";
-  } else {
-    size = _.round(dokument.sizeInBytes / 1048576, 1) + " MB";
-  }
-  return size;
 }
 
 async function downloadDokument(dokument: DokumentDto): Promise<void> {

@@ -1,6 +1,16 @@
 <template>
   <field-group-card card-title="Dokumente">
     <v-container>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          class="text-center"
+        >
+          <span class="text-grey-darken-1"
+            >Es sind maximal 20 Dokumente mit jeweils einer Größe von 50 MB erlaubt.</span
+          >
+        </v-col>
+      </v-row>
       <v-dialog
         v-model="loading"
         max-width="360"
@@ -277,17 +287,14 @@ async function saveFile(pathToFile: string, file: File): Promise<void> {
   if (!_.isNil(presignedUrlDto.url)) {
     await saveDokumentWithUrl(presignedUrlDto, file).then(() => {
       const newDokument = createDokumentDto();
-      newDokument.sizeInBytes = file.size;
       newDokument.filePath.pathToFile = filepathDto.pathToFile;
       extractMediaTypeInformationForAllowedMediaType(filepathDto)
         .then((mimeTypeInformation) => {
-          newDokument.typDokument = acronymOrDescriptionWhenAcronymEmptyOrTypeWhenDescriptionEmpty(mimeTypeInformation);
           dokumente.value.push(newDokument);
           change();
         })
         .catch((error) => {
           if (error instanceof ResponseError && error.response.status === 406) {
-            newDokument.typDokument = mimeTypeNichtErlaubt();
             dokumente.value.push(newDokument);
             change();
           }

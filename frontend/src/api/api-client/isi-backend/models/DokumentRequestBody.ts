@@ -62,18 +62,6 @@ export interface DokumentRequestBody {
      * @memberof DokumentRequestBody
      */
     artDokument?: DokumentRequestBodyArtDokumentEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof DokumentRequestBody
-     */
-    sizeInBytes?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DokumentRequestBody
-     */
-    typDokument?: string;
 }
 
 
@@ -125,8 +113,6 @@ export function DokumentRequestBodyFromJSONTyped(json: any, ignoreDiscriminator:
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'filePath': !exists(json, 'filePath') ? undefined : FilepathFromJSON(json['filePath']),
         'artDokument': !exists(json, 'artDokument') ? undefined : json['artDokument'],
-        'sizeInBytes': !exists(json, 'sizeInBytes') ? undefined : json['sizeInBytes'],
-        'typDokument': !exists(json, 'typDokument') ? undefined : json['typDokument'],
     };
 }
 
@@ -145,8 +131,6 @@ export function DokumentRequestBodyToJSON(value?: DokumentRequestBody | null): a
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'filePath': FilepathToJSON(value.filePath),
         'artDokument': value.artDokument,
-        'sizeInBytes': value.sizeInBytes,
-        'typDokument': value.typDokument,
     };
 }
 

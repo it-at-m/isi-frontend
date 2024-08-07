@@ -64,18 +64,6 @@ export interface EntityModelDokument {
     artDokument?: EntityModelDokumentArtDokumentEnum;
     /**
      * 
-     * @type {number}
-     * @memberof EntityModelDokument
-     */
-    sizeInBytes?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof EntityModelDokument
-     */
-    typDokument?: string;
-    /**
-     * 
      * @type {{ [key: string]: Link; }}
      * @memberof EntityModelDokument
      */
@@ -130,8 +118,6 @@ export function EntityModelDokumentFromJSONTyped(json: any, ignoreDiscriminator:
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'filePath': !exists(json, 'filePath') ? undefined : FilepathFromJSON(json['filePath']),
         'artDokument': !exists(json, 'artDokument') ? undefined : json['artDokument'],
-        'sizeInBytes': !exists(json, 'sizeInBytes') ? undefined : json['sizeInBytes'],
-        'typDokument': !exists(json, 'typDokument') ? undefined : json['typDokument'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -150,8 +136,6 @@ export function EntityModelDokumentToJSON(value?: EntityModelDokument | null): a
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'filePath': FilepathToJSON(value.filePath),
         'artDokument': value.artDokument,
-        'sizeInBytes': value.sizeInBytes,
-        'typDokument': value.typDokument,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
 }
