@@ -23,79 +23,73 @@ import {
 /**
  * 
  * @export
- * @interface KommentarDto
+ * @interface KommentarBauvorhabenDto
  */
-export interface KommentarDto {
+export interface KommentarBauvorhabenDto {
     /**
      * 
      * @type {string}
-     * @memberof KommentarDto
+     * @memberof KommentarBauvorhabenDto
      */
     id?: string;
     /**
      * 
      * @type {number}
-     * @memberof KommentarDto
+     * @memberof KommentarBauvorhabenDto
      */
     version?: number;
     /**
      * 
      * @type {Date}
-     * @memberof KommentarDto
+     * @memberof KommentarBauvorhabenDto
      */
     createdDateTime?: Date;
     /**
      * 
      * @type {Date}
-     * @memberof KommentarDto
+     * @memberof KommentarBauvorhabenDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
      * @type {string}
-     * @memberof KommentarDto
+     * @memberof KommentarBauvorhabenDto
      */
     datum?: string;
     /**
      * 
      * @type {string}
-     * @memberof KommentarDto
+     * @memberof KommentarBauvorhabenDto
      */
     text?: string;
     /**
      * 
-     * @type {string}
-     * @memberof KommentarDto
-     */
-    bauvorhaben?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof KommentarDto
-     */
-    infrastruktureinrichtung?: string;
-    /**
-     * 
      * @type {Array<DokumentDto>}
-     * @memberof KommentarDto
+     * @memberof KommentarBauvorhabenDto
      */
     dokumente?: Array<DokumentDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof KommentarBauvorhabenDto
+     */
+    bauvorhaben?: string;
 }
 
 /**
- * Check if a given object implements the KommentarDto interface.
+ * Check if a given object implements the KommentarBauvorhabenDto interface.
  */
-export function instanceOfKommentarDto(value: object): boolean {
+export function instanceOfKommentarBauvorhabenDto(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function KommentarDtoFromJSON(json: any): KommentarDto {
-    return KommentarDtoFromJSONTyped(json, false);
+export function KommentarBauvorhabenDtoFromJSON(json: any): KommentarBauvorhabenDto {
+    return KommentarBauvorhabenDtoFromJSONTyped(json, false);
 }
 
-export function KommentarDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KommentarDto {
+export function KommentarBauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KommentarBauvorhabenDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -107,13 +101,12 @@ export function KommentarDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'datum': !exists(json, 'datum') ? undefined : json['datum'],
         'text': !exists(json, 'text') ? undefined : json['text'],
-        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
-        'infrastruktureinrichtung': !exists(json, 'infrastruktureinrichtung') ? undefined : json['infrastruktureinrichtung'],
         'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
 }
 
-export function KommentarDtoToJSON(value?: KommentarDto | null): any {
+export function KommentarBauvorhabenDtoToJSON(value?: KommentarBauvorhabenDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -128,9 +121,8 @@ export function KommentarDtoToJSON(value?: KommentarDto | null): any {
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'datum': value.datum,
         'text': value.text,
-        'bauvorhaben': value.bauvorhaben,
-        'infrastruktureinrichtung': value.infrastruktureinrichtung,
         'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'bauvorhaben': value.bauvorhaben,
     };
 }
 
