@@ -73,7 +73,7 @@ bld/
 [Ll]og/
 
 .DS_Store
-docs/node_modules
+node_modules
 /dist
 
 # local env files
@@ -163,6 +163,11 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+
+# Vitepress
+/.vitepress/cache/
+/.vitepress/dist/
+/node_modules/
 
 # Gatsby files
 .cache/

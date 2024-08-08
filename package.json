@@ -15,5 +15,8 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "vuepress": "^1.9.10"
   }
 }
