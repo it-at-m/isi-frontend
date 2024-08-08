@@ -46,8 +46,6 @@ Konfigurationsdatei umgestellt werden.
 In der Konfigurationsdatei wird außerdem die Route zum Backend, die für den Zugriff auf das API Gateway erlaubten URLS und
 optional eine Anbindung an einen Identity Provider über OpenId Connect konfiguriert.
 
-Ein Beispiel für eine Konfigurationsdatei befindet sich unter [Konfiguration lokaler Umgebung](/configuration/env/#lokale-umgebung).
-
 Diese konfiguriert den API Gateway Port, die Route zum Backend Service auf dem lokalen Rechner und die URLs des
 für die Entwicklung lokal gestareten Frontends.
 
@@ -63,8 +61,6 @@ Zusätzlich wird die Datenbank, die Anbindung an einen
 [S3 Storages Service](https://github.com/it-at-m/digiwf-core/tree/dev/digiwf-integrations/digiwf-s3-integration)
 mit zulässigen MIME-Types für das Dateihandling und
 optional eine Anbindung an einen Identity Provider über OpenId Connect in der Konfigurationsdatei konfiguriert.
-
-Ein Beispiel für eine Konfigurationsdatei befindet sich unter [Konfiguration lokaler Umgebung](/configuration/env/#lokale-umgebung).
 
 Diese konfiguriert den Server Port, eine HSQL Datenbank, einen lokalen Service zur Anbindung eines
 [S3 Storages Services](https://github.com/it-at-m/digiwf-core/tree/dev/digiwf-integrations/digiwf-s3-integration) und
