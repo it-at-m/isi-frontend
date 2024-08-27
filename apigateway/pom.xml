@@ -6,7 +6,7 @@
 
     <groupId>de.muenchen.isi.apigateway</groupId>
     <artifactId>isi-frontend-apigateway</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <packaging>jar</packaging>
     <name>isi_frontend_apigateway</name>
     <description>Apigateway used by ISI Frontend</description>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>de.muenchen.isi</groupId>
         <artifactId>isi-frontend</artifactId>
-        <version>1.3.0</version>
+        <version>1.4.0</version>
     </parent>
 
     <properties>
