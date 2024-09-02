@@ -11,7 +11,8 @@
     "husky": "8.0.3",
     "lint-staged": "14.0.1",
     "prettier": "3.0.3",
-    "prettier-plugin-java": "2.3.1"
+    "prettier-plugin-java": "2.3.1",
+    "vite": "^5.4.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
