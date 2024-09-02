@@ -21,7 +21,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "18.20.3"
       - name: Execute npm install, test, build
         working-directory: frontend
         run: |
