@@ -34,7 +34,6 @@ nbdist/
 
 # Sonstiges
 $(pwd)
-package-lock.json
 
 # do not check in application profile yml
 apigateway/**/application-*.yml
