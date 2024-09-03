@@ -1,6 +1,6 @@
 {
-  "name": "lint-config",
-  "version": "0.0.1",
+  "name": "isi-frontend",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "prepare": "husky install",
@@ -16,8 +16,5 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
-  },
-  "dependencies": {
-    "vuepress": "^1.9.10"
   }
 }
