@@ -2,11 +2,11 @@
   <v-text-field
     ref="inputRef"
     v-model="formattedValue"
-    v-bind="$attrs"
+    variant="underlined"
     :required="required"
-    :rules="getRules()"
-    validate-on-blur
-    @input="formChanged"
+    :rules="usedRules"
+    validate-on="blur"
+    @update:modelValue="formChanged()"
   >
     <!--
     Dieses Konstrukt dient dazu:
@@ -16,9 +16,12 @@
     -->
     <template
       v-for="(index, name) in $slots"
-      #[name]
+      #[asString(name)]
     >
-      <slot :name="name" />
+      <slot
+        v-if="name !== 'label'"
+        :name="name"
+      />
     </template>
     <template #label>
       <slot name="label">
@@ -26,21 +29,18 @@
       </slot>
       <span
         v-if="required"
-        class="secondary--text"
+        class="text-secondary"
       >
-        *</span
-      >
+        *
+      </span>
     </template>
     <template
       v-if="help != undefined"
       #append
     >
-      <v-tooltip
-        max-width="15%"
-        right
-      >
-        <template #activator="{ on }">
-          <v-icon v-on="on"> mdi-help-circle-outline </v-icon>
+      <v-tooltip location="bottom">
+        <template #activator="{ props: activatorProps }">
+          <v-icon v-bind="activatorProps">mdi-help-circle-outline</v-icon>
         </template>
         <span>{{ help }} </span>
       </v-tooltip>
@@ -48,7 +48,7 @@
   </v-text-field>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 /**
  * NumField ist ein v-text-field, welches nur Zahlen akzeptiert und diese formatiert.
  * Dafür nutzt es https://dm4t2.github.io/vue-currency-input.
@@ -69,151 +69,102 @@
  * - Alle Slots von v-text-field.
  */
 
-import { watch } from "vue";
-import { CurrencyDisplay, CurrencyInputOptions, useCurrencyInput } from "vue-currency-input";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import store from "@/store/index";
+import { computed, watch } from "vue";
+import { type CurrencyInputOptions, CurrencyDisplay, useCurrencyInput } from "vue-currency-input";
+import { type Rule, min as minRule, max as maxRule, pflichtfeld } from "@/utils/FieldValidationRules";
+import _ from "lodash";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
-  value: number;
+  modelValue?: number;
   precision?: number;
   min?: number;
   max?: number;
+  ignoreMaxValueSignedInteger?: boolean;
+  ignoreMaxValueDecimalNumeralPrecision10Scale2?: boolean;
   integer?: boolean;
   allowNegatives?: boolean;
   noGrouping?: boolean;
   year?: boolean;
   required?: boolean;
   label?: string;
-  rules?: unknown[];
+  rules?: Rule[];
   help?: string;
 }
 
-// <script setup> wird hier wegen technischen Einschränkungen bis zur Einführung von Vue 3 nicht genutzt.
-export default {
-  name: "NumField",
-  props: {
-    value: Number,
-    precision: {
-      type: Number,
-      required: false,
-      default: 2,
-    },
-    min: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    max: {
-      type: Number,
-      required: false,
-    },
-    integer: {
-      type: Boolean,
-      required: false,
-    },
-    allowNegatives: {
-      type: Boolean,
-      required: false,
-    },
-    noGrouping: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    year: {
-      type: Boolean,
-      required: false,
-    },
-    required: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    label: {
-      type: String,
-      required: false,
-    },
-    rules: {
-      type: Array,
-      required: false,
-    },
-    help: {
-      type: String,
-      required: false,
-    },
+const MAX_VALUE_SIGNED_INTEGER = _.toNumber(2147483647);
+const MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2 = _.toNumber("99999999.99");
+const { formChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), {
+  precision: 2,
+  min: 0,
+  ignoreMaxValueSignedInteger: false,
+  ignoreMaxValueDecimalNumeralPrecision10Scale2: false,
+  noGrouping: false,
+  required: false,
+});
+
+// Vereinigt evtl. übergebene Rules und intern gesetzte Rules in einem Array.
+const usedRules = computed(() => {
+  const rules: Rule[] = [];
+
+  if (props.rules) {
+    rules.push(...props.rules);
+  }
+
+  if (props.required) {
+    rules.push(pflichtfeld);
+  }
+
+  if (props.year) {
+    rules.push(minRule(1900));
+    rules.push(maxRule(2100));
+  } else {
+    if (props.min !== undefined && !props.allowNegatives) {
+      rules.push(minRule(props.min));
+    }
+    if (props.max !== undefined) {
+      rules.push(maxRule(props.max));
+    } else if (props.integer && !props.ignoreMaxValueSignedInteger) {
+      rules.push(maxRule(MAX_VALUE_SIGNED_INTEGER));
+    } else if (!props.integer && !props.ignoreMaxValueDecimalNumeralPrecision10Scale2) {
+      rules.push(maxRule(MAX_VALUE_DECIMAL_NUMERAL_PRECISION_10_SCALE_2));
+    }
+  }
+
+  return rules;
+});
+
+// Legt die options für vue-currency-input fest.
+const currencyInputOptions = computed(() => {
+  const options: CurrencyInputOptions = {
+    currency: "EUR", // Die Währung muss angegeben werden, auch wenn sie nicht angezeigt wird.
+    currencyDisplay: CurrencyDisplay.hidden,
+    precision: props.integer ? 0 : props.precision,
+    useGrouping: !props.noGrouping,
+  };
+
+  if (props.year) {
+    options.precision = 0;
+    options.useGrouping = false;
+  }
+
+  return options;
+});
+// inputRef muss zum Funktionieren von vue-currency-input vorhanden sein.
+// formattedValue ist notwendig, sobald man nicht direkt mit einem <input>-Element arbeitet.
+const { inputRef, formattedValue, setValue } = useCurrencyInput(currencyInputOptions.value);
+
+// Siehe https://dm4t2.github.io/vue-currency-input/guide.html#external-props-changes.
+watch(
+  () => props.modelValue,
+  (value) => {
+    setValue(value === undefined ? null : value);
   },
-  setup(props: Props): unknown {
-    // Funktion zum Vereinigen evtl. übergebener Rules und der intern gesetzten Rules in ein Array.
+);
 
-    function getRules(): unknown[] {
-      const usedRules: unknown[] = [];
-
-      if (props.rules) {
-        usedRules.push(...props.rules);
-      }
-
-      // Da die Composition API keine Mixins unterstützt, müssen die Rules importiert werden.
-      const allRules = new FieldValidationRulesMixin().fieldValidationRules as {
-        min: (limit: number) => (v: string) => boolean | string;
-        max: (limit: number) => (v: string) => boolean | string;
-        pflichtfeld: (v: string) => boolean | string;
-      };
-
-      if (props.year) {
-        usedRules.push(allRules.min(1900));
-        usedRules.push(allRules.max(2100));
-      } else {
-        if (props.min !== undefined && !props.allowNegatives) {
-          usedRules.push(allRules.min(props.min));
-        }
-        if (props.max !== undefined) {
-          usedRules.push(allRules.max(props.max));
-        }
-      }
-
-      if (props.required) {
-        usedRules.push(allRules.pflichtfeld);
-      }
-
-      return usedRules;
-    }
-
-    // Legt die options für vue-currency-input fest.
-
-    const options: CurrencyInputOptions = {
-      currency: "EUR", // Die Währung muss angegeben werden, auch wenn sie nicht angezeigt wird.
-      currencyDisplay: CurrencyDisplay.hidden,
-      precision: props.integer ? 0 : props.precision,
-      useGrouping: !props.noGrouping,
-    };
-
-    if (props.year) {
-      options.precision = 0;
-      options.useGrouping = false;
-    }
-
-    // Initiert alles Notwendige für den Einsatz des Inputfelds.
-
-    // inputRef muss zum Funktionieren von vue-currency-input vorhanden sein.
-    // formattedValue ist notwendig, sobald man nicht direkt mit einem <input>-Element arbeitet.
-    const { inputRef, formattedValue, setValue } = useCurrencyInput(options);
-
-    // Siehe https://dm4t2.github.io/vue-currency-input/guide.html#external-props-changes.
-    watch(
-      () => props.value,
-      (value) => {
-        setValue(value);
-      },
-    );
-
-    // Da die Composition API keine Mixins unterstützt, muss diese Funktion direkt implementiert werden.
-    function formChanged(): void {
-      // Da die aktuelle Version des Stores die Composition API nicht unterstützt, muss der Store importiert werden.
-      store.dispatch("common/formChanged");
-    }
-
-    return { getRules, formChanged, inputRef, formattedValue };
-  },
-};
+// Wird bloß zur korrekten Typisierung der Named Slots hergenommen.
+function asString(value: string | number): string {
+  return value.toString();
+}
 </script>

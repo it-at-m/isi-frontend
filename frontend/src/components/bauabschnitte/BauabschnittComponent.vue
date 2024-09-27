@@ -2,10 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <span
-          class="text-h6 font-weight-bold"
-          v-text="headline"
-        />
+        <span class="text-h6 font-weight-bold">{{ headline }}</span>
       </v-col>
     </v-row>
     <field-group-card>
@@ -15,12 +12,13 @@
             id="bauabschnitt_bezeichnung"
             v-model.trim="bauabschnitt.bezeichnung"
             :disabled="!isEditable"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="255"
-            validate-on-blur
-            @input="formChanged"
+            validate-on="blur"
+            variant="underlined"
+            @update:model-value="formChanged"
           >
-            <template #label> Bezeichnung des Bauabschnitts <span class="secondary--text">*</span> </template>
+            <template #label> Bezeichnung des Bauabschnitts <span class="text-secondary">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -29,43 +27,21 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+<script setup lang="ts">
+import { computed } from "vue";
 import BauratenAggregiertComponent from "@/components/bauraten/BauratenAggregiertComponent.vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
+import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
+import { pflichtfeld } from "@/utils/FieldValidationRules";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({ components: { FieldGroupCard, BauratenAggregiertComponent } })
-export default class BauabschnittComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: BauabschnittModel }) bauabschnitt!: BauabschnittModel;
-
-  @Prop()
-  private mode!: DisplayMode;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
-
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
-
-  get headline(): string {
-    const headline = `Bauabschnitt ${this.bauabschnitt.bezeichnung} `;
-    return headline;
-  }
+interface Props {
+  isEditable?: boolean;
 }
+
+const bauabschnitt = defineModel<BauabschnittModel>({ required: true });
+const headline = computed(() => `Bauabschnitt ${bauabschnitt.value.bezeichnung}`);
+const { formChanged } = useSaveLeave();
+
+withDefaults(defineProps<Props>(), { isEditable: false });
 </script>

@@ -8,55 +8,46 @@
         id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
         v-model="einrichtung.einrichtungstraeger"
         :items="einrichtungstraegerList"
+        variant="underlined"
         item-value="key"
-        item-text="value"
-        :rules="
-          isEinrichtungstraegerRequired ? [fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified] : []
-        "
+        item-title="value"
+        :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
         :disabled="!isEditable"
-        @change="formChanged"
+        @update:model-value="formChanged"
       >
-        <template #label
-          >Einrichtungsträger
+        <template #label>
+          Einrichtungsträger
           <span
             v-if="isEinrichtungstraegerRequired"
-            class="secondary--text"
-            >*</span
-          ></template
-        >
+            class="text-secondary"
+          >
+            *
+          </span>
+        </template>
       </v-select>
     </v-col>
   </field-group-card>
 </template>
-<script lang="ts">
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
-import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
-import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
-import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
-import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+<script setup lang="ts">
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
+import type { LookupEntryDto } from "@/api/api-client/isi-backend";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import type GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
+import type HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
+import type KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
+import type SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 
-@Component
-export default class EinrichtungstraegerComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({
-    type: [SchuleModel, KindergartenModel, GrundschuleModel, GsNachmittagBetreuungModel, HausFuerKinderModel],
-  })
-  einrichtung!: SchuleModel | KindergartenModel | GrundschuleModel | GsNachmittagBetreuungModel | HausFuerKinderModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: true })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  @Prop({ type: Array, default: [] })
-  private readonly einrichtungstraegerList!: LookupEntryDto[];
-
-  private readonly einrichutngstraegerCardTitle = "Einrichtungsträger";
+interface Props {
+  isEditable?: boolean;
+  isEinrichtungstraegerRequired?: boolean;
+  einrichtungstraegerList?: LookupEntryDto[];
 }
-</script>
 
-<style></style>
+const { formChanged } = useSaveLeave();
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
+const einrichtung = defineModel<SchuleModel | KindergartenModel | GsNachmittagBetreuungModel | HausFuerKinderModel>({
+  required: true,
+});
+const einrichutngstraegerCardTitle = "Einrichtungsträger";
+</script>

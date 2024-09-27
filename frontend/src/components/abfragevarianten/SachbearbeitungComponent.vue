@@ -1,21 +1,7 @@
 <template>
   <div>
     <field-group-card :card-title="weitereBerechnungsgrundlagenTitle">
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <num-field
-            id="planungsursaechliche_gf_wohnen_field"
-            ref="planungsursaechlicheGfWohnenField"
-            v-model="abfragevarianteSachbearbeitung.gfWohnenPlanungsursaechlich"
-            :disabled="!isEditableBySachbearbeitung()"
-            class="mx-3"
-            label="Planungsursächliche GF Wohnen"
-            :suffix="fieldPrefixesSuffixes.squareMeter"
-          />
-        </v-col>
+      <v-row>
         <v-col
           cols="12"
           md="6"
@@ -25,18 +11,39 @@
               id="sobon_orientierungswert_jahr_dropdown"
               ref="sobonOrientierungswertJahrDropdown"
               v-model="abfragevarianteSachbearbeitung.sobonOrientierungswertJahr"
-              :disabled="!isEditableBySachbearbeitung()"
+              variant="underlined"
+              :disabled="!isEditableBySachbearbeitung"
               :items="sobonOrientierungswertJahrList"
               item-value="key"
-              item-text="value"
+              item-title="value"
               :rules="sobonOrientierungswertJahrValidator"
-              @change="formChanged"
+              @update:model-value="formChanged"
             >
-              <template #label> Jahr für SoBoN-Orientierungwerte <span class="secondary--text">*</span> </template>
+              <template #label> Jahr für SoBoN-Orientierungwerte <span class="text-secondary">*</span> </template>
             </v-select>
           </v-slide-y-reverse-transition>
         </v-col>
+        <!-- Das Datum wird in ISI 2.0 relevant werden
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <date-picker
+            id="stammdaten_gueltig_ab"
+            ref="stammdatenGueltigAb"
+            v-model="abfragevarianteSachbearbeitung.stammdatenGueltigAb"
+            :disabled="!isEditableBySachbearbeitung"
+            label="Stammdatum gültig ab"
+            :rules="[pflichtfeld]"
+            required
+          />
+        </v-col>
+        -->
       </v-row>
+      <sobon-berechnung
+        v-if="isBauleitplanverfahrenOrWeiteresVerfahren"
+        v-model="abfragevarianteSachbearbeitung.sobonBerechnung"
+      ></sobon-berechnung>
       <v-row>
         <v-col
           cols="12"
@@ -45,62 +52,175 @@
           <v-textarea
             id="abfragevarianteSachbearbeitung_anmerkung"
             v-model="abfragevarianteSachbearbeitung.anmerkung"
-            :disabled="!isEditableBySachbearbeitung()"
+            :disabled="!isEditableBySachbearbeitung"
             label="Anmerkungen"
+            variant="underlined"
             auto-grow
-            rows="3"
-            maxlength="255"
-            @input="formChanged"
+            rows="1"
+            maxlength="1000"
+            @update:model-value="formChanged"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <reports-planungsursaechlichkeit-component
+            v-if="showPlanungsursaechlicheReports()"
+            v-model="abfragevarianteSachbearbeitung"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <reports-sobonursaechlichkeit-component
+            v-if="showSobonReport()"
+            v-model="abfragevarianteSachbearbeitung"
           />
         </v-col>
       </v-row>
     </field-group-card>
+    <field-group-card :card-title="bauratenDateiInputTitle">
+      <bauratendatei-input
+        v-model="abfragevarianteSachbearbeitung"
+        :is-editable="isEditableBySachbearbeitung"
+      />
+      <dokumente
+        v-if="componentSercurity.areDokumenteVisible(Context.ABFRAGEVARIANTE_SACHBEARBEITUNG)"
+        id="dokumente_component"
+        ref="dokumenteComponent"
+        v-model="abfragevarianteSachbearbeitung.dokumente"
+        :name-root-folder="nameRootFolder"
+        :is-dokumente-editable="isEditableBySachbearbeitung"
+        @change="formChanged"
+      />
+    </field-group-card>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import { computed, watch } from "vue";
+import {
+  AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
+  UncertainBoolean,
+} from "@/api/api-client/isi-backend";
+import BauratendateiInput from "@/components/abfragevarianten/BauratendateiInput.vue";
+import ReportsPlanungsursaechlichkeitComponent from "@/components/abfragevarianten/ReportsPlanungsursaechlichkeitComponent.vue";
+import ReportsSobonursaechlichkeitComponent from "@/components/abfragevarianten/ReportsSobonursaechlichkeitComponent.vue";
+import SobonBerechnung from "@/components/abfragevarianten/SobonBerechnung.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { useLookupStore } from "@/stores/LookupStore";
+import { useSearchStore } from "@/stores/SearchStore";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
+import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import _ from "lodash";
+import type { VSelect } from "vuetify/components";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
+import { Context } from "@/utils/Context";
+import { useSecurity } from "@/composables/security/Security";
 
-@Component({ components: { FieldGroupCard, NumField } })
-export default class AbfragevarianteSachbearbeitungFormular extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-  AbfrageSecurityMixin,
-) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevarianteSachbearbeitung!: AbfragevarianteBauleitplanverfahrenModel;
+// Workaround um den Validation Rule Type zu bekommen
+// https://stackoverflow.com/questions/77201639/how-to-import-typescript-types-in-vuetify-3
+type UnwrapReadonlyArray<A> = A extends Readonly<Array<infer I>> ? I : A;
+type ValidationRule = UnwrapReadonlyArray<VSelect["rules"]>;
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+interface Props {
+  isEditable?: boolean;
+}
 
-  private weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
 
-  get sobonOrientierungswertJahrList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/sobonOrientierungswertJahr"];
+const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
+
+const weitereBerechnungsgrundlagenTitle = "Weitere Berechnungsgrundlagen";
+
+const nameRootFolder = "schuelerpotentialprognose";
+
+const bauratenDateiInputTitle = "Bauratendatei und Schülerpotentialprognose";
+
+const lookupStore = useLookupStore();
+
+const searchStore = useSearchStore();
+
+const componentSercurity = useComponentSecurity();
+
+const { formChanged } = useSaveLeave();
+
+const { isEditableBySachbearbeitung } = useAbfrageSecurity();
+
+const sobonOrientierungswertJahrList = computed(() => {
+  if (
+    abfragevarianteSachbearbeitung.value.artAbfragevariante ===
+    AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
+  ) {
+    return lookupStore.sobonOrientierungswertJahr;
+  } else {
+    return lookupStore.sobonOrientierungswertJahrWithoutStandortabfrage;
   }
+});
 
-  get sobonOrientierungswertJahrValidator(): unknown[] {
-    if (this.isEditableBySachbearbeitung()) {
-      const usedRules: unknown[] = [];
-      // Objekte der benötigten Rules anlegen, um daraus eine Liste von Rules anlegen zu können
-      const rules = new FieldValidationRulesMixin().fieldValidationRules as {
-        notUnspecified: (v: string) => boolean | string;
-        pflichtfeld: (v: string) => boolean | string;
-      };
-      usedRules.push(rules.notUnspecified);
-      usedRules.push(rules.pflichtfeld);
-      return usedRules;
+const sobonOrientierungswertJahrValidator = computed(() => {
+  if (isEditableBySachbearbeitung.value) {
+    const usedRules: ValidationRule[] = [];
+    // Objekte der benötigten Rules anlegen, um daraus eine Liste von Rules anlegen zu können
+    usedRules.push(notUnspecified);
+    usedRules.push(pflichtfeld);
+    return usedRules;
+  }
+  return [];
+});
+
+const isBauleitplanverfahrenOrWeiteresVerfahren = computed(() => {
+  return (
+    abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
+      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren ||
+    abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
+      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
+  );
+});
+
+withDefaults(defineProps<Props>(), { isEditable: false });
+
+watch(
+  () => abfragevarianteSachbearbeitung.value.stammdatenGueltigAb,
+  () => {
+    if (
+      _.isNil(abfragevarianteSachbearbeitung.value.stammdatenGueltigAb) ||
+      abfragevarianteSachbearbeitung.value.stammdatenGueltigAb.getTime() === 0
+    ) {
+      abfragevarianteSachbearbeitung.value.stammdatenGueltigAb = new Date();
     }
-    return [];
-  }
+  },
+  { immediate: true },
+);
+
+/**
+ * Überprüfung ob alle Kriterien stimmen um die Sobon Report anzuzeigen.
+ */
+function showSobonReport(): boolean {
+  const abfrage = searchStore.selectedAbfrage as BauleitplanverfahrenModel | WeiteresVerfahrenModel;
+  return (
+    isBauleitplanverfahrenOrWeiteresVerfahren.value &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung) &&
+    abfrage.sobonRelevant === UncertainBoolean.True &&
+    (abfragevarianteSachbearbeitung.value.sobonBerechnung.isASobonBerechnung as boolean) &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix) &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix?.bezeichnungJahr) &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix?.bezeichnung) &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix?.foerderarten) &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.gfWohnenSobonUrsaechlich)
+  );
+}
+
+function showPlanungsursaechlicheReports(): boolean {
+  return isRoleAdminOrSachbearbeitung.value || isRoleAdminOrBedarfsmeldung.value;
 }
 </script>

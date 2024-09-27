@@ -1,20 +1,21 @@
 <template>
   <div>
-    <statusleiste-component :abfrage="abfrage" />
+    <statusleiste-component :status="abfrage.statusAbfrage" />
     <field-group-card>
       <v-row justify="center">
         <v-col cols="12">
           <v-text-field
-            id="name_abfrage_field"
+            id="name_field"
             ref="nameAbfrageField"
             v-model.trim="abfrage.name"
+            variant="underlined"
             :disabled="!isEditable"
-            :rules="[fieldValidationRules.pflichtfeld]"
+            :rules="[pflichtfeld]"
             maxlength="70"
-            validate-on-blur
-            @input="formChanged"
+            validate-on="blur"
+            @update:model-value="formChanged"
           >
-            <template #label> Name der Abfrage <span class="secondary--text">*</span> </template>
+            <template #label> Name der Abfrage <span class="text-secondary">*</span> </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -22,36 +23,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageModel from "@/types/model/abfrage/AbfrageModel";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import { pflichtfeld } from "@/utils/FieldValidationRules";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import StatusleisteComponent from "./StatusleisteComponent.vue";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({
-  components: {
-    FieldGroupCard,
-    StatusleisteComponent,
-  },
-})
-export default class AbfrageCommonComponent extends Mixins(
-  AbfrageSecurityMixin,
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-) {
-  @VModel({ type: AbfrageModel }) abfrage!: AbfrageModel;
-
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
-
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isNew!: boolean;
+interface Props {
+  isEditable?: boolean;
+  isNew?: boolean;
 }
+
+const { formChanged } = useSaveLeave();
+const abfrage = defineModel<AbfrageModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isEditable: false, isNew: false });
 </script>

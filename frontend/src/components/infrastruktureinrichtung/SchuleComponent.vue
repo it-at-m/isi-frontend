@@ -41,34 +41,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
 import SchuleModel from "@/types/model/infrastruktureinrichtung/SchuleModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import NumField from "@/components/common/NumField.vue";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
-@Component({
-  components: {
-    FieldGroupCard,
-    NumField,
-    EinrichtungstraegerComponent,
-  },
-})
-export default class SchuleComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: SchuleModel }) schule!: SchuleModel;
+import { useLookupStore } from "@/stores/LookupStore";
+import { computed } from "vue";
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: true })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraegerSchulen"];
-  }
+interface Props {
+  isEditable: boolean;
+  isEinrichtungstraegerRequired?: boolean;
 }
+
+const lookupStore = useLookupStore();
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: true });
+const schule = defineModel<SchuleModel>({ required: true });
+const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
-<style></style>

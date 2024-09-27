@@ -37,69 +37,27 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from "vue-property-decorator";
-import {
-  AbfragevarianteBauleitplanverfahrenDto,
-  AbfragevarianteBaugenehmigungsverfahrenDto,
-  AbfragevarianteWeiteresVerfahrenDto,
-} from "@/api/api-client/isi-backend";
-import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import type { AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import DisplayMode from "@/types/common/DisplayMode";
 import NumField from "@/components/common/NumField.vue";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import _ from "lodash";
+import { computed } from "vue";
 
-@Component({
-  components: {
-    NumField,
-    FieldGroupCard,
-  },
-})
-export default class CommonRealisierungszeitraumComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
-
-  @Prop()
-  private abfragevariante:
-    | AbfragevarianteBauleitplanverfahrenDto
-    | AbfragevarianteBaugenehmigungsverfahrenDto
-    | AbfragevarianteWeiteresVerfahrenDto
-    | undefined;
-
-  @Prop()
-  private mode!: DisplayMode;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  get displayMode(): DisplayMode {
-    return this.mode;
-  }
-
-  set displayMode(mode: DisplayMode) {
-    this.$emit("input", mode);
-  }
-
-  get calcRealisierungBis(): number | undefined {
-    return _.max(this.baugebiet.bauraten.map((baurate) => baurate.jahr));
-  }
-
-  get headline(): string {
-    const headline = `Baugebiet ${this.baugebiet.bezeichnung} `;
-    return headline;
-  }
-
-  get abfragevarianteRealisierungVonOr1900(): number {
-    return !_.isNil(this.abfragevariante) && !_.isNil(this.abfragevariante.realisierungVon)
-      ? this.abfragevariante.realisierungVon
-      : 1900;
-  }
+interface Props {
+  abfragevariante?: AnyAbfragevarianteDto;
+  isEditable?: boolean;
 }
+
+const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const baugebiet = defineModel<BaugebietModel>({ required: true });
+
+const calcRealisierungBis = computed(() => _.max(baugebiet.value.bauraten.map((baurate) => baurate.jahr)));
+
+const abfragevarianteRealisierungVonOr1900 = computed(() => {
+  return !_.isNil(props.abfragevariante) && !_.isNil(props.abfragevariante.realisierungVon)
+    ? props.abfragevariante.realisierungVon
+    : 1900;
+});
 </script>

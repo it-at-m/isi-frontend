@@ -1,4 +1,4 @@
-import { BaugebietDto } from "@/api/api-client/isi-backend";
+import type { BaugebietDto } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 

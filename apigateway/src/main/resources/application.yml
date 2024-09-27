@@ -8,11 +8,6 @@ spring:
       indent-output: on
   session:
     timeout: 36000  # in seconds; Goal: same lifetime as SSO Session (e.g. 10 hours)
-  zipkin:
-    enabled: false
-    sleuth:
-      reactor:
-        instrumentation-type:  # https://github.com/spring-cloud/spring-cloud-gateway/pull/2106
 
 server:
   port: 8080
@@ -55,3 +50,4 @@ management:
 info.application.name: ${spring.application.name}
 info.application.version: @project.version@
 info.application.commitHash: ${buildNumber}
+

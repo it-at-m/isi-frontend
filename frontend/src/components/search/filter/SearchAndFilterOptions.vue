@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
     <v-card-title>
-      <v-icon left>mdi-filter-outline</v-icon>
+      <v-icon start>mdi-filter-outline</v-icon>
       Such- und Filtereinstellungen
     </v-card-title>
 
@@ -12,59 +12,71 @@
         :max-height="getContentSheetHeight"
       >
         <v-expansion-panels
-          hover
-          focusable
+          v-model="panels"
+          variant="accordion"
         >
           <selection-and-sorting-panel v-model="searchQueryAndSorting" />
-          <filter-panel />
+          <filter-panel v-model="searchQueryAndSorting" />
         </v-expansion-panels>
       </v-sheet>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         color="secondary"
+        style="width: 200px"
+        variant="flat"
         @click="adoptSearchAndFilterOptions"
-        >Übernehmen
+      >
+        Übernehmen
       </v-btn>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         color="primary"
+        style="width: 200px"
+        variant="flat"
         @click="resetSearchAndFilterOptions"
-        >Zurücksetzen
+      >
+        Zurücksetzen
       </v-btn>
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-card-actions>
   </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Emit, VModel, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { computed, ref } from "vue";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
+import { useDisplay } from "vuetify";
 
-@Component({
-  components: { FilterPanel, SelectionAndSortingPanel },
-})
-export default class SearchAndFilterOptions extends Vue {
-  @VModel({ type: SearchQueryAndSortingModel }) searchQueryAndSorting!: SearchQueryAndSortingModel;
+interface Emits {
+  (event: "adopt-search-and-filter-options", value: void): void;
+  (event: "reset-search-and-filter-options", value: void): void;
+}
 
-  get getContentSheetHeight(): string {
-    if (this.$vuetify.breakpoint.xl) {
-      return "650px";
-    }
-    return "400px";
+const { xl } = useDisplay();
+/**
+ * Der default Panel welcher beim Öffnen der Such- und Filtereinstellungen aufgeklappt ist.
+ */
+const panels = ref<Array<number>>([0]);
+const emit = defineEmits<Emits>();
+
+const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
+
+const getContentSheetHeight = computed(() => {
+  if (xl.value) {
+    return "650px";
   }
+  return "400px";
+});
 
-  @Emit()
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private adoptSearchAndFilterOptions(): void {}
+function adoptSearchAndFilterOptions(): void {
+  emit("adopt-search-and-filter-options");
+}
 
-  @Emit()
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private resetSearchAndFilterOptions(): void {}
+function resetSearchAndFilterOptions(): void {
+  emit("reset-search-and-filter-options");
 }
 </script>
-
-<style scoped></style>

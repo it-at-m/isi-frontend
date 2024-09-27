@@ -1,4 +1,3 @@
-npm
 <template>
   <v-container>
     <abfrage-common-component
@@ -6,26 +5,25 @@ npm
       ref="abfrageCommonComponent"
       v-model="bauleitplanverfahren"
       :is-new="isNew"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <allgemeine-informationen-bauleitplanverfahren-component
       id="allgemeine_informationen_bauleitplanverfahren-component"
       ref="allgemeineInformationenBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <adresse-component
       id="adresse_component"
       ref="adresseComponent"
-      :adresse-prop.sync="bauleitplanverfahren.adresse"
-      :show-in-information-list-prop="true"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      v-model="bauleitplanverfahren.adresse"
+      :is-editable="isEditableByAbfrageerstellung"
     />
     <verortung
       id="verortung_component"
       ref="verortungComponent"
       v-model="bauleitplanverfahren.verortung"
-      :context="context"
+      :context="Context.ABFRAGE"
       :look-at="bauleitplanverfahren.adresse"
     />
     <allgemeine-informationen-zur-abfrage-bauleitplanverfahren-component
@@ -33,53 +31,43 @@ npm
       ref="allgemeineInformationenZurAbfrageBauleitplanverfahrenComponent"
       v-model="bauleitplanverfahren"
       :look-at="bauleitplanverfahren"
-      :is-editable-prop="isEditableByAbfrageerstellung()"
+      :is-editable="isEditableByAbfrageerstellung"
+      :is-eakte-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
     />
     <dokumente
+      v-if="componentSecurity.areDokumenteVisible(Context.ABFRAGE)"
       id="dokumente_component"
       ref="dokumenteComponent"
       v-model="bauleitplanverfahren.dokumente"
       :name-root-folder="nameRootFolder"
-      :is-dokumente-editable="isEditableByAbfrageerstellung()"
+      :is-dokumente-editable="isEditableByAbfrageerstellung"
       @change="formChanged"
     />
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
+<script setup lang="ts">
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenBauleitplanverfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import AbfrageSecurityMixin from "@/mixins/security/AbfrageSecurityMixin";
-import { Context } from "@/utils/Context";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import Verortung from "@/components/common/Verortung.vue";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import { Context } from "@/utils/Context";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
-@Component({
-  computed: {
-    context() {
-      return Context.ABFRAGE;
-    },
-  },
-  components: {
-    Dokumente,
-    AbfrageCommonComponent,
-    AllgemeineInformationenBauleitplanverfahrenComponent,
-    AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent,
-    FieldGroupCard,
-  },
-})
-export default class BauleitplanverfahrenComponent extends Mixins(AbfrageSecurityMixin, SaveLeaveMixin) {
-  @VModel({ type: BauleitplanverfahrenModel }) bauleitplanverfahren!: BauleitplanverfahrenModel;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isNew!: boolean;
-
-  private nameRootFolder = "bauleitplanverfahren";
+interface Props {
+  isNew?: boolean;
 }
-</script>
 
-<style></style>
+const nameRootFolder = "bauleitplanverfahren";
+const { formChanged } = useSaveLeave();
+const componentSecurity = useComponentSecurity();
+const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
+const bauleitplanverfahren = defineModel<BauleitplanverfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isNew: false });
+</script>

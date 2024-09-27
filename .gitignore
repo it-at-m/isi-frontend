@@ -34,7 +34,6 @@ nbdist/
 
 # Sonstiges
 $(pwd)
-package-lock.json
 
 # do not check in application profile yml
 apigateway/**/application-*.yml
@@ -43,3 +42,4 @@ frontend/.env.development
 frontend/.env.production
 frontend/auto-imports.d.ts
 frontend/components.d.ts
+frontend/package-lock.json

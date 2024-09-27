@@ -1,10 +1,14 @@
-import {} from "module";
+import { beforeEach, describe, expect, test } from "vitest";
 import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { createBauleitplanverfahrenDto, createAbfragevarianteBauleitplanverfahrenDto } from "@/utils/Factories";
+import { createPinia, setActivePinia } from "pinia";
 
 describe("ModelTest.spec.ts", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
   test("Test BauleitplanverfahrenModel", () => {
     const dto = createBauleitplanverfahrenDto();
     expect(dto.adresse).not.toBeNull();
@@ -18,7 +22,7 @@ describe("ModelTest.spec.ts", () => {
     const abfrageDto = createBauleitplanverfahrenDto();
     const abfragevarianteDto = createAbfragevarianteBauleitplanverfahrenDto();
     abfragevarianteDto.abfragevariantenNr = 1;
-    abfragevarianteDto.wesentlicheRechtsgrundlage.push(
+    abfragevarianteDto.wesentlicheRechtsgrundlage?.push(
       AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.Innenbereich,
     );
     abfragevarianteDto.realisierungVon = 2022;

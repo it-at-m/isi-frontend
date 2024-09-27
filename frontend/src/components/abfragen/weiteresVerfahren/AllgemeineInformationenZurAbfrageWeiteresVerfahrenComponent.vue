@@ -1,5 +1,5 @@
 <template>
-  <field-group-card :card-title="allgemeineInfoZurAbfrageCardTitle">
+  <field-group-card card-title="Allgemeine Informationen zur Abfrage">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -11,7 +11,7 @@
           v-model="abfrage.fristBearbeitung"
           :disabled="!isEditable"
           label="Bearbeitungsfrist"
-          :rules="[fieldValidationRules.pflichtfeld]"
+          :rules="[pflichtfeld]"
           required
         />
       </v-col>
@@ -20,15 +20,15 @@
         md="6"
       >
         <tri-switch
-          id="offizielle_mitzeichnung_triswitch"
-          ref="offizielleMitzeichnungTriswitch"
-          v-model="abfrage.offizielleMitzeichnung"
+          id="mitzeichnung_beschlussentwurf_triswitch"
+          ref="mitzeichnungBeschlussEntwurfTriswitch"
+          v-model="abfrage.mitzeichnungBeschlussentwurf"
           :disabled="!isEditable"
           off-text="Nein"
           on-text="Ja"
-          :rules="[fieldValidationRules.notUnspecified]"
+          :rules="[notUnspecified]"
         >
-          <template #label> Offizielle Mitzeichnung <span class="secondary--text">*</span> </template>
+          <template #label> Mitzeichnung Beschlussentwurf<span class="text-secondary">*</span> </template>
         </tri-switch>
       </v-col>
     </v-row>
@@ -40,39 +40,43 @@
           v-model="abfrage.anmerkung"
           :disabled="!isEditable"
           label="Anmerkungen"
+          variant="underlined"
           auto-grow
-          rows="3"
-          maxlength="255"
-          @input="formChanged"
+          rows="1"
+          maxlength="1000"
+          @update:model-value="formChanged"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <eakte
+          id="eakte_component"
+          ref="eakteComponent"
+          v-model="abfrage.linkEakte"
+          :is-editable="isEakteEditable"
         />
       </v-col>
     </v-row>
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+<script setup lang="ts">
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
 import TriSwitch from "@/components/common/TriSwitch.vue";
+import DatePicker from "@/components/common/DatePicker.vue";
+import Eakte from "@/components/common/Eakte.vue";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({
-  components: { TriSwitch },
-})
-export default class AllgemeineInformationenBauleitplanverfahrenComponent extends Mixins(
-  SaveLeaveMixin,
-  FieldValidationRulesMixin,
-) {
-  @VModel({ type: WeiteresVerfahrenModel }) abfrage!: WeiteresVerfahrenModel;
-
-  @Prop({ type: Boolean, default: true })
-  private isEditableProp!: boolean;
-
-  get isEditable(): boolean {
-    return this.isEditableProp;
-  }
-
-  private allgemeineInfoZurAbfrageCardTitle = "Allgemeine Informationen zur Abfrage";
+interface Props {
+  isEditable?: boolean;
+  isEakteEditable?: boolean;
 }
+
+const { formChanged } = useSaveLeave();
+const abfrage = defineModel<WeiteresVerfahrenModel>({ required: true });
+
+withDefaults(defineProps<Props>(), { isEditable: false, isEakteEditable: false });
 </script>

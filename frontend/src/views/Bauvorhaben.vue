@@ -1,21 +1,31 @@
 <template>
   <v-form ref="form">
-    <default-layout solid-heading>
+    <default-layout>
       <template #heading>
         <v-container>
           <v-row>
-            <v-col cols="12">
+            <v-col
+              cols="12"
+              sm="11"
+            >
               <v-text-field
                 id="bauvorhaben_nameVorhaben"
                 v-model.trim="bauvorhaben.nameVorhaben"
-                :rules="[fieldValidationRules.pflichtfeld]"
+                :rules="[pflichtfeld]"
                 maxlength="255"
-                validate-on-blur
+                validate-on="blur"
+                variant="underlined"
                 :disabled="!isEditable"
-                @input="formChanged"
+                @update:model-value="formChanged"
               >
-                <template #label> Name des Bauvorhabens <span class="secondary--text">*</span> </template>
+                <template #label> Name des Bauvorhabens <span class="text-secondary">*</span> </template>
               </v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="1"
+            >
+              <benutzerinformationen :benutzerinformationen="bearbeitungsinformationen" />
             </v-col>
           </v-row>
         </v-container>
@@ -27,61 +37,59 @@
           :is-editable="isEditable"
         />
         <kommentare
-          v-if="isEditable && !isNew"
+          v-if="componentSecurity.areKommentareVisible(Context.BAUVORHABEN) && isEditable && !isNew"
           id="bauvorhaben_kommentare"
-          :context="context"
+          :context="Context.BAUVORHABEN"
           :is-editable="isEditable"
         />
       </template>
-      <template #information>
+      <template #action>
         <v-btn
           v-if="!isNew"
           id="bauvorhaben_loeschen_button"
-          class="text-wrap my-4"
+          class="my-4"
           color="primary"
           elevation="1"
           width="200px"
           :disabled="!isEditable"
           @click="deleteDialogOpen = true"
-          v-text="'Löschen'"
-        />
+        >
+          Löschen
+        </v-btn>
         <v-btn
           v-else
           id="bauvorhaben_datenuebernahme_button"
-          class="text-wrap my-4"
+          class="my-4"
           color="primary"
           elevation="1"
           width="200px"
           :disabled="!isEditable"
           @click="dataTransferDialogOpen = true"
-          v-text="'Datenübernahme'"
-        />
-        <information-list
-          id="bauvorhaben_information_list"
-          information-message-deletion-intervall-seconds="10"
-        />
-      </template>
-      <template #action>
+        >
+          Datenübernahme
+        </v-btn>
         <v-spacer />
         <v-btn
           id="bauvorhaben_speichern_button"
           color="secondary"
           elevation="1"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           style="width: 200px"
-          :disabled="(!isNew && !isFormDirty()) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
+          :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
           @click="validateAndProceed()"
-          v-text="isNew ? 'Speichern' : 'Aktualisieren'"
-        />
+        >
+          {{ isNew ? "Speichern" : "Aktualisieren" }}
+        </v-btn>
         <v-btn
           id="bauvorhaben_abbrechen_button"
           color="primary"
           elevation="1"
-          class="text-wrap mt-2 px-1"
+          class="mt-2 px-1"
           style="width: 200px"
           @click="returnToUebersicht()"
-          v-text="'Abbrechen'"
-        />
+        >
+          Abbrechen
+        </v-btn>
       </template>
     </default-layout>
     <yes-no-dialog
@@ -97,7 +105,6 @@
     />
     <yes-no-dialog
       id="bauvorhaben_yes_no_dialog_save_leave"
-      ref="saveLeaveDialog"
       v-model="saveLeaveDialog"
       :dialogtitle="saveLeaveDialogTitle"
       :dialogtext="saveLeaveDialogText"
@@ -106,218 +113,197 @@
       @yes="leave"
       @no="cancel"
     />
-    <bauvorhaben-data-transfer-dialog
+    <data-transfer-dialog
       id="bauvorhaben_datenuebernahme"
       v-model="dataTransferDialogOpen"
+      :context="Context.BAUVORHABEN"
       @abfrage-uebernehmen="abfrageUebernehmen($event)"
       @uebernahme-abbrechen="dataTransferDialogOpen = false"
     />
   </v-form>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Vue, Watch } from "vue-property-decorator";
-import Toaster from "../components/common/toaster.type";
+<script setup lang="ts">
+import { computed, onBeforeMount, ref, watch } from "vue";
+import type { VForm } from "vuetify/components";
 import { createAdresseDto, createBauvorhabenDto } from "@/utils/Factories";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import _ from "lodash";
-import ValidatorMixin from "@/mixins/validation/ValidatorMixin";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import BauvorhabenApiRequestMixin from "@/mixins/requests/BauvorhabenApiRequestMixin";
-import Dokumente from "@/components/common/dokumente/Dokumente.vue";
-import { Levels } from "@/api/error";
+import { pflichtfeld } from "@/utils/FieldValidationRules";
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
-import InformationList from "@/components/common/InformationList.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import InformationListMixin from "@/mixins/requests/InformationListMixin";
+import { findFaultInBauvorhaben } from "@/utils/Validators";
 import BauvorhabenForm from "@/components/bauvorhaben/BauvorhabenForm.vue";
-import BauvorhabenDataTransferDialog from "@/components/bauvorhaben/BauvorhabenDataTransferDialog.vue";
+import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 import {
-  AbfrageDto,
-  BauleitplanverfahrenDto,
+  type AbfrageDto,
+  type BauleitplanverfahrenDto,
+  type WeiteresVerfahrenDto,
   AbfrageDtoArtAbfrageEnum,
   BauvorhabenDtoStandVerfahrenEnum,
   UncertainBoolean,
-  BaugenehmigungsverfahrenDto,
-  WeiteresVerfahrenDto,
 } from "@/api/api-client/isi-backend";
+import type { AnyAbfrageDto } from "@/types/common/Abfrage";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
-import SecurityMixin from "@/mixins/security/SecurityMixin";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
-import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
-import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
+import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
+import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
+import { useSearchStore } from "@/stores/SearchStore";
+import { useRoute, useRouter } from "vue-router";
+import { useSecurity } from "@/composables/security/Security";
+import { useSaveLeave } from "@/composables/SaveLeave";
+import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
+import { useToast, TYPE } from "vue-toastification";
+import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
-@Component({
-  computed: {
-    context() {
-      return Context.BAUVORHABEN;
-    },
+const routeId = useRoute().params.id as string;
+const router = useRouter();
+const {
+  saveLeaveDialog,
+  saveLeaveDialogTitle,
+  saveLeaveDialogText,
+  saveLeaveNoText,
+  saveLeaveYesText,
+  isFormDirty,
+  formChanged,
+  cancel,
+  leave,
+} = useSaveLeave();
+const { isRoleAdminOrSachbearbeitung } = useSecurity();
+const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
+const searchStore = useSearchStore();
+const componentSecurity = useComponentSecurity();
+const toast = useToast();
+const form = ref<VForm | null>(null);
+const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value);
+const deleteDialogOpen = ref(false);
+const dataTransferDialogOpen = ref(false);
+const isNew = ref(true);
+const bauvorhaben = ref(new BauvorhabenModel(createBauvorhabenDto()));
+let datenuebernahmeAbfrageId: string | undefined = undefined;
+
+const bearbeitungsinformationen = computed(
+  () => new BenutzerinformationenModel(bauvorhaben.value.bearbeitendePerson, bauvorhaben.value.lastModifiedDateTime),
+);
+
+watch(
+  bauvorhaben,
+  () => {
+    searchStore.setSelectedBauvorhaben(bauvorhaben.value);
   },
-  methods: { containsNotAllowedDokument },
-  components: {
-    Kommentare,
-    BauvorhabenDataTransferDialog,
-    BauvorhabenForm,
-    YesNoDialog,
-    DefaultLayout,
-    Dokumente,
-    InformationList,
-  },
-})
-export default class Bauvorhaben extends Mixins(
-  FieldValidationRulesMixin,
-  ValidatorMixin,
-  BauvorhabenApiRequestMixin,
-  SaveLeaveMixin,
-  InformationListMixin,
-  SecurityMixin,
-) {
-  private bauvorhaben = new BauvorhabenModel(createBauvorhabenDto());
+  { deep: true },
+);
 
-  private deleteDialogOpen = false;
+onBeforeMount(() => {
+  isNew.value = routeId === undefined;
 
-  private dataTransferDialogOpen = false;
-
-  private isNew = true;
-
-  private datenuebernahmeAbfrageId?: string = undefined;
-
-  mounted(): void {
-    this.isNew = this.$route.params.id === undefined;
-
-    if (!this.isNew) {
-      this.fetchBauvorhabenById();
-    }
+  if (!isNew.value) {
+    fetchBauvorhabenById();
   }
+});
 
-  @Watch("$store.state.search.selectedBauvorhaben", { deep: true })
-  private selectedBauvorhabenChanged() {
-    const bauvorhabenFromStore = this.$store.getters["search/selectedBauvorhaben"];
-    if (!_.isNil(bauvorhabenFromStore)) {
-      this.bauvorhaben = new BauvorhabenModel(_.cloneDeep(bauvorhabenFromStore));
-    }
-  }
+/**
+ * Löst zuerst eine Validierung des Formulars aus.
+ * Ist das Formular valide, wird auf sonstige Mängel überprüft.
+ * Gibt es keine sonstigen Mängel, wird entweder das neue Bauvorhaben gespeichert oder das vorhandene Bauvorhaben aktualisiert.
+ */
+async function validateAndProceed(): Promise<void> {
+  if ((await form.value?.validate())?.valid) {
+    const fault = findFaultInBauvorhaben(bauvorhaben.value);
 
-  get isEditable(): boolean {
-    return this.isRoleAdminOrSachbearbeitung();
-  }
-
-  /**
-   * Löst zuerst eine Validierung des Formulars aus.
-   * Ist das Formular valide, wird auf sonstige Mängel überprüft.
-   * Gibt es keine sonstigen Mängel, wird entweder das neue Bauvorhaben gespeichert oder das vorhandene Bauvorhaben aktualisiert.
-   */
-  private validateAndProceed(): void {
-    if (this.validate()) {
-      const fault = this.findFaultInBauvorhaben(this.bauvorhaben);
-
-      if (fault === null) {
-        if (this.isNew) {
-          this.saveBauvorhaben();
-        } else {
-          this.updateBauvorhaben();
-        }
+    if (fault === null) {
+      if (isNew.value) {
+        saveBauvorhaben();
       } else {
-        this.showWarningInInformationList(fault);
+        updateBauvorhaben();
       }
     } else {
-      this.showWarningInInformationList("Es gibt noch Validierungsfehler");
+      toast.error(fault, { timeout: false });
     }
-  }
-
-  /**
-   * Schickt eine GET-Anfrage für das ausgewählte Bauvorhaben ans Backend.
-   */
-  async fetchBauvorhabenById(): Promise<void> {
-    await this.getBauvorhabenById(this.$route.params.id, false).then((dto) => {
-      this.$store.commit("search/selectedBauvorhaben", dto);
-    });
-  }
-
-  /**
-   * Schickt eine POST-Anfrage für das neue Bauvorhaben ans Backend.
-   * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
-   */
-  private async saveBauvorhaben(): Promise<void> {
-    await this.postBauvorhaben(this.bauvorhaben, this.datenuebernahmeAbfrageId, true).then(() => {
-      this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gespeichert", Levels.SUCCESS);
-    });
-  }
-
-  /**
-   * Schickt eine PUT-Anfrage für das derzeitige Bauvorhaben ans Backend.
-   * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
-   */
-  private async updateBauvorhaben(): Promise<void> {
-    await this.putBauvorhaben(this.bauvorhaben, true).then((dto) => {
-      this.$store.commit("search/selectedBauvorhaben", new BauvorhabenModel(dto));
-      Toaster.toast("Das Bauvorhaben wurde erfolgreich aktualisiert", Levels.SUCCESS);
-    });
-  }
-
-  /**
-   * Schickt eine DELETE-Anfrage für das derzeitige Bauvorhaben ans Backend.
-   * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
-   */
-  private async removeBauvorhaben(): Promise<void> {
-    this.deleteDialogOpen = false;
-
-    await this.deleteBauvorhaben(this.$route.params.id, true).then(() => {
-      this.$store.commit("search/removeSearchResultById", this.$route.params.id);
-      this.returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", Levels.SUCCESS);
-    });
-  }
-
-  /**
-   * Kehrt zur Bauvorhabenübersicht und setzt das im Store zurzeit ausgewählte Bauvorhaben auf undefined.
-   * Zeigt dabei optionalerweise auch eine Nachricht per Toaster an.
-   *
-   * @param message Die anzuzeigende Nachricht. Optional.
-   * @param level Das Level der anzuzeigenden Nachricht. Optional, doch obligatorisch in Kombination mit message.
-   */
-  private returnToUebersicht(message?: string, level?: Levels): void {
-    if (message && level) {
-      Toaster.toast(message, level);
-    }
-
-    this.$router.push({ name: "home" });
-  }
-
-  /**
-   * Shorthand zum Ausführen der validate-Methode vom v-form.
-   *
-   * @return Ob das Formular valide ist.
-   */
-  private validate(): boolean {
-    return (this.$refs.form as Vue & { validate: () => boolean }).validate();
-  }
-
-  private abfrageUebernehmen(abfrage: AbfrageDto): void {
-    this.datenuebernahmeAbfrageId = abfrage.id;
-    if (abfrage.artAbfrage !== AbfrageDtoArtAbfrageEnum.Unspecified) {
-      let verfahren: BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto = abfrage;
-      this.bauvorhaben.adresse = _.isNil(verfahren.adresse) ? createAdresseDto() : _.cloneDeep(verfahren.adresse);
-      this.bauvorhaben.verortung = _.isNil(verfahren.verortung) ? undefined : _.cloneDeep(verfahren.verortung);
-      this.bauvorhaben.standVerfahren = verfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
-      this.bauvorhaben.standVerfahrenFreieEingabe = verfahren.standVerfahrenFreieEingabe;
-      this.bauvorhaben.bebauungsplannummer = verfahren.bebauungsplannummer;
-      if (verfahren.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-        this.bauvorhaben.sobonRelevant = UncertainBoolean.Unspecified;
-        this.bauvorhaben.sobonJahr = undefined;
-      } else {
-        const verfahrenWithSobonAttribute: BauleitplanverfahrenDto | WeiteresVerfahrenDto = verfahren;
-        this.bauvorhaben.sobonRelevant = _.isNil(verfahrenWithSobonAttribute.sobonRelevant)
-          ? UncertainBoolean.Unspecified
-          : verfahrenWithSobonAttribute.sobonRelevant;
-        this.bauvorhaben.sobonJahr = verfahrenWithSobonAttribute.sobonJahr;
-      }
-    }
-    this.dataTransferDialogOpen = false;
+  } else {
+    toast.error("Es gibt noch Validierungsfehler");
   }
 }
-</script>
 
-<style></style>
+/**
+ * Schickt eine GET-Anfrage für das ausgewählte Bauvorhaben ans Backend.
+ */
+async function fetchBauvorhabenById(): Promise<void> {
+  const dto = await getBauvorhabenById(routeId);
+  bauvorhaben.value = _.cloneDeep(dto);
+}
+
+/**
+ * Schickt eine POST-Anfrage für das neue Bauvorhaben ans Backend.
+ * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
+ */
+async function saveBauvorhaben(): Promise<void> {
+  const dto = await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId);
+  bauvorhaben.value = _.cloneDeep(dto);
+  isNew.value = false;
+  toast.success("Das Bauvorhaben wurde erfolgreich gespeichert");
+}
+
+/**
+ * Schickt eine PUT-Anfrage für das derzeitige Bauvorhaben ans Backend.
+ * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
+ */
+async function updateBauvorhaben(): Promise<void> {
+  const dto = await putBauvorhaben(bauvorhaben.value);
+  bauvorhaben.value = _.cloneDeep(dto);
+  toast.success("Das Bauvorhaben wurde erfolgreich aktualisiert");
+}
+
+/**
+ * Schickt eine DELETE-Anfrage für das derzeitige Bauvorhaben ans Backend.
+ * Bei Erfolg kehrt man zur Bauvorhabenübersicht zurück.
+ */
+async function removeBauvorhaben(): Promise<void> {
+  deleteDialogOpen.value = false;
+
+  await deleteBauvorhaben(routeId);
+  searchStore.removeSearchResultById(routeId);
+  returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", TYPE.SUCCESS);
+}
+
+/**
+ * Kehrt zur Bauvorhabenübersicht und setzt das im Store zurzeit ausgewählte Bauvorhaben auf undefined.
+ * Zeigt dabei optionalerweise auch eine Nachricht per Toaster an.
+ *
+ * @param message Die anzuzeigende Nachricht. Optional.
+ * @param level Das Level der anzuzeigenden Nachricht. Optional, doch obligatorisch in Kombination mit message.
+ */
+function returnToUebersicht(message?: string, type?: TYPE): void {
+  if (message && type) {
+    toast(message, { type });
+  }
+
+  router.push("/");
+}
+
+function abfrageUebernehmen(abfrage: AbfrageDto): void {
+  datenuebernahmeAbfrageId = abfrage.id;
+  if (abfrage.artAbfrage !== AbfrageDtoArtAbfrageEnum.Unspecified) {
+    const verfahren: AnyAbfrageDto = abfrage;
+    const newBauvorhaben = _.cloneDeep(bauvorhaben.value);
+    newBauvorhaben.adresse = _.isNil(verfahren.adresse) ? createAdresseDto() : _.cloneDeep(verfahren.adresse);
+    newBauvorhaben.verortung = _.isNil(verfahren.verortung) ? undefined : _.cloneDeep(verfahren.verortung);
+    newBauvorhaben.standVerfahren = verfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
+    newBauvorhaben.standVerfahrenFreieEingabe = verfahren.standVerfahrenFreieEingabe;
+    newBauvorhaben.bebauungsplannummer = verfahren.bebauungsplannummer;
+    if (verfahren.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      newBauvorhaben.sobonRelevant = UncertainBoolean.Unspecified;
+      newBauvorhaben.sobonJahr = undefined;
+    } else {
+      const verfahrenWithSobonAttribute: BauleitplanverfahrenDto | WeiteresVerfahrenDto = verfahren;
+      newBauvorhaben.sobonRelevant = _.isNil(verfahrenWithSobonAttribute.sobonRelevant)
+        ? UncertainBoolean.Unspecified
+        : verfahrenWithSobonAttribute.sobonRelevant;
+      newBauvorhaben.sobonJahr = verfahrenWithSobonAttribute.sobonJahr;
+    }
+    bauvorhaben.value = newBauvorhaben;
+  }
+  dataTransferDialogOpen.value = false;
+}
+</script>

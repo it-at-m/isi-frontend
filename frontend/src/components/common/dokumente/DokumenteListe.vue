@@ -4,10 +4,14 @@
       v-if="hasDokumente"
       id="dokumente_liste"
     >
-      <template v-for="(item, index) in dokumente">
-        <v-list-item :key="`dokument-${index}`">
+      <template
+        v-for="(item, index) in dokumente"
+        :key="`dokument-${index}`"
+      >
+        <v-list-item :id="'dokumente_list_item_' + index">
           <v-card
-            :class="`my-2 pt-3 pb-2 ${isDokumentNotAllowed(item) ? 'red accent-4' : ''}`"
+            :id="'dokumente_card_' + index"
+            :class="`my-2 pt-3 pb-2 ${!isDokumentAllowed(item) ? 'red accent-4' : ''}`"
             flat
             width="100%"
           >
@@ -15,89 +19,60 @@
               <v-col
                 cols="12"
                 md="1"
+                class="d-flex justify-center"
               >
-                <v-row justify="center">
-                  <v-btn
-                    :id="'dokument_listitem_download' + index"
-                    icon
-                    @click="downloadDokument(item)"
-                  >
-                    <v-icon> mdi-download</v-icon>
-                  </v-btn>
+                <v-btn
+                  :id="'dokument_listitem_download_' + index"
+                  variant="plain"
+                  icon="mdi-download"
+                  @click="downloadDokument(item)"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="6"
+              >
+                <v-row
+                  :id="'dokument_display_name_' + index"
+                  class="align-center"
+                >
+                  <strong>
+                    {{ getDokumentDisplayName(item) }}
+                  </strong>
                 </v-row>
               </v-col>
               <v-col
                 cols="12"
-                md="10"
+                md="4"
+                class="d-flex justify-end"
               >
-                <v-row class="align-center">
-                  <v-col
-                    cols="12"
-                    md="12"
-                  >
-                    <v-row class="justify-start">
-                      <strong>
-                        {{ getDokumentDisplayName(item) }}
-                      </strong>
-                    </v-row>
-                  </v-col>
-                </v-row>
-                <v-row class="align-center">
-                  <v-col
-                    class="px-3 pt-1 pb-0"
-                    cols="12"
-                    md="4"
-                  >
-                    <v-row class="justify-start">
-                      {{ item.typDokument }}
-                    </v-row>
-                  </v-col>
-                  <v-col
-                    class="px-3 pt-1 pb-0"
-                    cols="12"
-                    md="4"
-                  >
-                    <v-row class="justify-center">
-                      {{ getDokumentSizeInSIUnits(item) }}
-                    </v-row>
-                  </v-col>
-                  <v-col
-                    class="px-3 pt-1 pb-0"
-                    cols="12"
-                    md="4"
-                  >
-                    <v-row class="justify-end">
-                      <v-select
-                        :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
-                        v-model="item.artDokument"
-                        :items="artDokumentList"
-                        item-value="key"
-                        item-text="value"
-                        :rules="[fieldValidationRules.pflichtfeld, fieldValidationRules.notUnspecified]"
-                        :readonly="isDokumentNotAllowed(item)"
-                        :disabled="!isDokumenteEditable"
-                        @change="change"
-                      >
-                        <template #label> Dokumentart <span class="secondary--text">*</span> </template>
-                      </v-select>
-                    </v-row>
-                  </v-col>
-                </v-row>
+                <v-select
+                  :id="'dokumente_listitem_' + index + '_artDokument_dropdown'"
+                  v-model="item.artDokument"
+                  variant="underlined"
+                  :items="lookupStore.artDokument"
+                  item-value="key"
+                  item-title="value"
+                  :rules="[pflichtfeld]"
+                  :readonly="!isDokumentAllowed(item)"
+                  :disabled="!isDokumenteEditable"
+                  @update:model-value="change"
+                >
+                  <template #label> Dokumentart </template>
+                </v-select>
               </v-col>
               <v-col
                 cols="12"
                 md="1"
+                class="d-flex justify-center"
               >
-                <v-row justify="center">
-                  <v-btn
-                    :id="'dokument_listitem_loeschen' + index"
-                    :disabled="!isDokumenteEditable"
-                    icon
-                    @click="deleteDokument(item)"
-                  >
-                    <v-icon> mdi-delete</v-icon>
-                  </v-btn>
-                </v-row>
+                <v-btn
+                  :id="'dokument_listitem_loeschen' + index"
+                  :disabled="!isDokumenteEditable"
+                  variant="plain"
+                  icon="mdi-delete"
+                  @click="deleteDokument(item)"
+                />
               </v-col>
             </v-row>
           </v-card>
@@ -118,100 +93,73 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Emit } from "vue-property-decorator";
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import type { DokumentDto, FilepathDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import { createFilepathDto } from "@/utils/Factories";
 import { isDokumentAllowed } from "@/utils/DokumenteUtil";
-import DokumenteApiRequestMixin from "@/mixins/requests/DokumenteApiRequestMixin";
-import { DokumentDto, FilepathDto, LookupEntryDto, PresignedUrlDto } from "@/api/api-client/isi-backend";
+import { useDokumenteApi } from "@/composables/requests/DokumenteApi";
 import _ from "lodash";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
+import { useLookupStore } from "@/stores/LookupStore";
 
-@Component({
-  components: {
-    YesNoDialog,
-  },
-})
-export default class DokumenteListe extends Mixins(DokumenteApiRequestMixin, FieldValidationRulesMixin) {
-  @VModel({ type: Array }) dokumente!: DokumentDto[];
+interface Props {
+  dokumente: DokumentDto[];
+  isDokumenteEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: true })
-  private isDokumenteEditable!: boolean;
+interface Emits {
+  (event: "change", value: void): void;
+  (event: "on-delete-dokument", value: DokumentDto): void;
+}
 
-  private selectedDokument: DokumentDto | undefined;
+const props = withDefaults(defineProps<Props>(), { isDokumenteEditable: true });
+const emit = defineEmits<Emits>();
+const selectedDokument = ref<DokumentDto | null>(null);
+const deleteDialogOpen = ref(false);
+const lookupStore = useLookupStore();
+const { getPresignedUrlForGetDokument } = useDokumenteApi();
+const hasDokumente = computed(() => !_.isNil(props.dokumente) && props.dokumente.length > 0);
 
-  private deleteDialogOpen = false;
+function getDokumentDisplayName(dokument: DokumentDto): string {
+  return dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
+}
 
-  get hasDokumente(): boolean {
-    return !_.isNil(this.dokumente) && this.dokumente.length > 0;
+async function downloadDokument(dokument: DokumentDto): Promise<void> {
+  const filepathDto: FilepathDto = createFilepathDto();
+  filepathDto.pathToFile = dokument.filePath.pathToFile;
+  const presignedUrlDto = await getPresignedUrlForGetDokument(filepathDto);
+  prepareDownloadLink(presignedUrlDto, dokument);
+}
+
+function prepareDownloadLink(dto: PresignedUrlDto, dokument: DokumentDto) {
+  if (!_.isNil(dto.url)) {
+    const a = document.createElement("a");
+    a.href = dto.url;
+    a.download = dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
+    a.click();
   }
+}
 
-  private getDokumentDisplayName(dokument: DokumentDto): string {
-    return dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
+function deleteDokument(dokument: DokumentDto): void {
+  selectedDokument.value = dokument;
+  deleteDialogOpen.value = true;
+}
+
+function yesNoDialogYes(): void {
+  if (selectedDokument.value !== null) {
+    emit("on-delete-dokument", selectedDokument.value);
   }
+  yesNoDialogNo();
+}
 
-  private getDokumentSizeInSIUnits(dokument: DokumentDto): string {
-    let size: string;
-    if (dokument.sizeInBytes < 1024) {
-      size = dokument.sizeInBytes + " Byte";
-    } else if (dokument.sizeInBytes < 1048576) {
-      size = _.round(dokument.sizeInBytes / 1024, 1) + " KB";
-    } else {
-      size = _.round(dokument.sizeInBytes / 1048576, 1) + " MB";
-    }
-    return size;
-  }
+function yesNoDialogNo(): void {
+  deleteDialogOpen.value = false;
+  selectedDokument.value = null;
+}
 
-  get artDokumentList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/artDokument"];
-  }
-
-  async downloadDokument(dokument: DokumentDto): Promise<void> {
-    const filepathDto: FilepathDto = createFilepathDto();
-    filepathDto.pathToFile = dokument.filePath.pathToFile;
-    await this.getPresignedUrlForGetDokument(filepathDto, true).then((presignedUrlDto) => {
-      this.prepareDownloadLink(presignedUrlDto, dokument);
-    });
-  }
-
-  private prepareDownloadLink(dto: PresignedUrlDto, dokument: DokumentDto) {
-    if (!_.isNil(dto.url)) {
-      const a = document.createElement("a");
-      a.href = dto.url;
-      a.download = dokument.filePath.pathToFile.substring(dokument.filePath.pathToFile.lastIndexOf("/") + 1);
-      a.click();
-    }
-  }
-
-  private deleteDokument(selectedDokument: DokumentDto): void {
-    this.selectedDokument = selectedDokument;
-    this.deleteDialogOpen = true;
-  }
-
-  private yesNoDialogYes(): void {
-    if (this.selectedDokument !== undefined) {
-      this.$emit("onDeleteDokument", this.selectedDokument);
-    }
-    this.selectedDokument = undefined;
-    this.yesNoDialogNo();
-  }
-
-  private yesNoDialogNo(): void {
-    this.deleteDialogOpen = false;
-    this.selectedDokument = undefined;
-  }
-
-  private isDokumentAllowed(dokument: DokumentDto) {
-    return isDokumentAllowed(dokument);
-  }
-
-  private isDokumentNotAllowed(dokument: DokumentDto) {
-    return !this.isDokumentAllowed(dokument);
-  }
-
-  @Emit()
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private change(): void {}
+function change(): void {
+  emit("change");
 }
 </script>

@@ -1,4 +1,4 @@
-import { FoerdermixDto } from "@/api/api-client/isi-backend";
+import type { FoerdermixDto } from "@/api/api-client/isi-backend";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface FoerdermixModel extends FoerdermixDto {}

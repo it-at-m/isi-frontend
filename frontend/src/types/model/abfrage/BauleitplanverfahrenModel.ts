@@ -1,4 +1,4 @@
-import { BauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
+import type { BauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { createAdresseDto } from "@/utils/Factories";

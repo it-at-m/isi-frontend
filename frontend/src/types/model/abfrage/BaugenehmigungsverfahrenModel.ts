@@ -1,4 +1,4 @@
-import { BaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
+import type { BaugenehmigungsverfahrenDto } from "@/api/api-client/isi-backend";
 import AdresseModel from "@/types/model/common/AdresseModel";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import { createAdresseDto } from "@/utils/Factories";

@@ -153,34 +153,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
+<script setup lang="ts">
 import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
-import InfrastruktureinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungComponent.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { LookupEntryDto } from "@/api/api-client/isi-backend";
+
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
-@Component({
-  components: {
-    FieldGroupCard,
-    InfrastruktureinrichtungComponent,
-    EinrichtungstraegerComponent,
-  },
-})
-export default class HausFuerKinderComponent extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  @VModel({ type: HausFuerKinderModel }) hausFuerKinder!: HausFuerKinderModel;
+import { useLookupStore } from "@/stores/LookupStore";
+import { computed } from "vue";
+import NumField from "@/components/common/NumField.vue";
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  private readonly isEinrichtungstraegerRequired!: boolean;
-
-  get einrichtungstraegerList(): LookupEntryDto[] {
-    return this.$store.getters["lookup/einrichtungstraeger"];
-  }
+interface Props {
+  isEditable?: boolean;
+  isEinrichtungstraegerRequired?: boolean;
 }
+
+const lookupStore = useLookupStore();
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+const hausFuerKinder = defineModel<HausFuerKinderModel>({ required: true });
+const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 </script>
-<style></style>

@@ -1,165 +1,188 @@
 <template>
   <v-dialog
-    v-model="datePickerActivated"
+    v-model="datePickerActive"
     width="290px"
   >
-    <template #activator="{ on }">
+    <template #activator="{ props: activatorProps }">
       <v-text-field
         id="datum"
         v-model="textFieldDate"
-        :rules="getRules()"
-        validate-on-blur
-        :hint="monthPicker ? MONTH_DISPLAY_FORMAT : DISPLAY_FORMAT"
+        :rules="usedRules"
+        variant="underlined"
+        validate-on="blur"
+        :hint="displayFormat"
         :disabled="disabled"
         :required="required"
-        @input="formChanged"
-        @blur="datePickerBlurred"
+        @update:model-value="formChanged"
+        @update:focused="$event || blur()"
       >
         <template #label>
-          {{ label
-          }}<span
+          {{ label }}
+          <span
             v-if="required"
-            class="secondary--text"
+            class="text-secondary"
           >
-            *</span
-          >
+            *
+          </span>
         </template>
         <template #append>
-          <v-icon v-on="on">mdi-calendar</v-icon>
+          <v-icon v-bind="activatorProps">mdi-calendar</v-icon>
         </template>
       </v-text-field>
     </template>
+    <!-- Picker für die tagesgenaue Auswahl -->
     <v-date-picker
+      v-if="!monthPicker"
       id="datum_datePicker"
       v-model="datePickerDate"
       :disabled="disabled"
-      :first-day-of-week="1"
-      locale="de"
-      :type="monthPicker ? 'month' : 'date'"
-      @change="deactivateDatePicker"
-      @input="formChanged"
+      show-week
+      show-adjacent-months
+      :weekdays="[1, 2, 3, 4, 5, 6, 0]"
+      color="primary"
+      @update:model-value="deactivateDatePicker"
+    />
+    <!-- Picker für die monatsgenaue Auswahl -->
+    <v-date-picker
+      v-else
+      id="datum_datePicker"
+      v-model="datePickerDate"
+      :disabled="disabled"
+      :view-mode="viewMode"
+      color="primary"
+      @update:year="updateYearForMonthPicker"
+      @update:view-mode="updateViewModeForMonthPicker"
+      @update:month="setTextFieldDateForMonthPicker"
+      @update:model-value="deactivateDatePicker"
     />
   </v-dialog>
 </template>
 
-<script lang="ts">
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import { Component, VModel, Prop, Mixins } from "vue-property-decorator";
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import type { Rule } from "@/utils/FieldValidationRules";
+import { datum, pflichtfeld } from "@/utils/FieldValidationRules";
 import moment from "moment";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
 import _ from "lodash";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component
-export default class DatePicker extends Mixins(FieldValidationRulesMixin, SaveLeaveMixin) {
-  readonly ISO_FORMAT = "YYYY-MM-DD";
-  readonly DISPLAY_FORMAT = "DD.MM.YYYY";
-  readonly MONTH_DISPLAY_FORMAT = "MM.YYYY";
+interface Props {
+  label?: string; // Bezeichnung des Datumsfelds
+  required?: boolean; // Ist das Datumsfeld ein Pflichtfeld
+  disabled?: boolean; // Ob das Datumsfeld deaktiviert sein soll
+  monthPicker?: boolean; // Ob nur Monat und Jahr auswählbar sein sollen
+  rules?: Rule[]; // Welche Validierungsregeln gelten
+}
 
-  /**
-   * Bezeichnung des Datumsfelds
-   */
-  @Prop({ default: "" })
-  private label!: string;
+interface Emits {
+  (event: "blur", value: void): void;
+}
 
-  /**
-   * Der Datumswert der ausgewählt bzw. eingegeben wurde
-   */
-  @VModel({ type: Date }) date: Date | undefined;
+const ISO_FORMAT = "YYYY-MM-DD";
+const DISPLAY_FORMAT = "DD.MM.YYYY";
+const MONTH_DISPLAY_FORMAT = "MM.YYYY";
+const { formChanged } = useSaveLeave();
+const props = withDefaults(defineProps<Props>(), { label: "", required: false, disabled: false, monthPicker: false });
+const emit = defineEmits<Emits>();
+const date = defineModel<Date | undefined>();
+const datePickerActive = ref(false);
+const displayFormat = computed(() => (props.monthPicker ? MONTH_DISPLAY_FORMAT : DISPLAY_FORMAT));
 
-  /**
-   * Ist das Datumsfeld ein Pflichtfeld
-   */
-  @Prop({ type: Boolean, default: false })
-  private required!: boolean;
+// Month picker props
+const viewMode = ref("months");
+const selectedYear = ref();
 
-  @Prop({ type: Boolean, default: false })
-  private disabled!: boolean;
-
-  /**
-   * Ob nur Monat und Jahr auswählbar sein sollen.
-   * Siehe https://v2.vuetifyjs.com/en/components/date-pickers-month.
-   */
-  @Prop({ type: Boolean, default: false })
-  private monthPicker!: boolean;
-
-  @Prop({ type: Array })
-  private rules!: unknown[];
-
-  private datePickerActivated = false;
-
-  get datePickerDate(): string {
-    if (!_.isNil(this.date)) {
-      const parsedValue = moment.utc(this.date);
+const datePickerDate = computed({
+  get() {
+    if (!_.isNil(date.value)) {
+      const parsedValue = moment.utc(date.value);
       if (!parsedValue.isSame(0)) {
-        return parsedValue.format(this.ISO_FORMAT);
+        return moment(parsedValue.format(ISO_FORMAT)).toDate();
       }
     }
 
     /* undefined, null und der Unix Timestamp 0 gelten als "leere" Werte
-      und werden deshalb als heutiges Datum dargestellt. */
-    return moment.utc().format(this.ISO_FORMAT);
-  }
+    und werden deshalb als heutiges Datum dargestellt. */
+    return new Date();
+  },
 
-  set datePickerDate(date: string) {
-    this.date = moment.utc(date, this.ISO_FORMAT).toDate();
-  }
+  set(value: Date) {
+    date.value = value;
+    formChanged();
+  },
+});
 
-  get textFieldDate(): string {
-    if (!_.isNil(this.date)) {
-      const parsedValue = moment.utc(this.date);
+const textFieldDate = computed({
+  get() {
+    if (!_.isNil(date.value)) {
+      const parsedValue = moment.utc(date.value);
       if (!parsedValue.isSame(0)) {
-        return parsedValue.format(this.getDisplayFormat());
+        return parsedValue.local().format(displayFormat.value);
       }
     }
 
     /* undefined, null und der Unix Timestamp 0 gelten als "leere" Werte
-      und werden deshalb als leerer String dargestellt. */
+    und werden deshalb als leerer String dargestellt. */
     return "";
-  }
+  },
 
-  set textFieldDate(date: string) {
+  set(value: string) {
     /* Hier wird das Datum im "strict mode" geparsed, um den Nutzer-Input
-      möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
-    const parsedValue = moment.utc(date, this.getDisplayFormat(), true);
-
+    möglichst strikt zu validieren (https://momentjs.com/docs/#/parsing/is-valid/). */
+    const parsedValue = moment.utc(value, displayFormat.value, true);
     if (parsedValue.isValid()) {
-      this.date = parsedValue.toDate();
+      date.value = parsedValue.toDate();
     } else {
-      this.date = undefined;
+      date.value = undefined;
     }
+    formChanged();
+  },
+});
+
+const usedRules = computed(() => {
+  if (props.disabled) {
+    return [];
   }
 
-  private getDisplayFormat(): string {
-    return this.monthPicker ? this.MONTH_DISPLAY_FORMAT : this.DISPLAY_FORMAT;
+  const usedRules: Rule[] = [datum(displayFormat.value)];
+
+  if (props.required) {
+    usedRules.push(pflichtfeld);
+  }
+  if (props.rules) {
+    usedRules.push(...props.rules);
   }
 
-  private getRules(): unknown[] {
-    const allRules = this.fieldValidationRules as {
-      datum: (format: string) => (v: string) => boolean | string;
-      pflichtfeld: (v: string) => boolean | string;
-    };
-    const usedRules: unknown[] = [allRules.datum(this.getDisplayFormat())];
+  return usedRules;
+});
 
-    if (this.required) {
-      usedRules.push(allRules.pflichtfeld);
-    }
-    if (this.rules) {
-      usedRules.push(...this.rules);
-    }
+function updateViewModeForMonthPicker(mode: string): void {
+  viewMode.value = mode === "year" ? "year" : "months";
+}
 
-    return usedRules;
+function updateYearForMonthPicker(year: number): void {
+  selectedYear.value = year;
+}
+
+function setTextFieldDateForMonthPicker(monthIndex: number): void {
+  let selectedDate: Date;
+  if (_.isNil(selectedYear.value)) {
+    const year = _.isNil(date.value) ? new Date().getFullYear() : date.value.getFullYear();
+    selectedDate = new Date(year, monthIndex, 2);
+  } else {
+    selectedDate = new Date(selectedYear.value, monthIndex, 2);
   }
+  textFieldDate.value = moment.utc(selectedDate).local().format(displayFormat.value);
+  selectedYear.value = undefined;
+  deactivateDatePicker();
+}
 
-  private activateDatePicker() {
-    this.datePickerActivated = true;
-  }
+function deactivateDatePicker(): void {
+  datePickerActive.value = false;
+  blur();
+}
 
-  private deactivateDatePicker() {
-    this.datePickerActivated = false;
-  }
-
-  private datePickerBlurred(): void {
-    this.$emit("datePickerBlurred", this.date);
-  }
+function blur(): void {
+  emit("blur");
 }
 </script>

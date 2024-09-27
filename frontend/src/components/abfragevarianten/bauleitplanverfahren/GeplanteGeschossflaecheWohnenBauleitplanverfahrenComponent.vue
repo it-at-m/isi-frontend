@@ -12,7 +12,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="Gesamt"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -43,7 +43,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="SoBoN-ursächlich"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
       <v-col
@@ -57,7 +57,7 @@
           :disabled="!isEditable"
           class="mx-3"
           label="Bestandswohnbaurecht"
-          :suffix="fieldPrefixesSuffixes.squareMeter"
+          :suffix="SQUARE_METER"
         />
       </v-col>
     </v-row>
@@ -109,7 +109,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Studentisches Wohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
           <v-col
@@ -123,7 +123,7 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Senior*innenwohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
         </v-row>
@@ -141,13 +141,13 @@
             md="4"
           >
             <num-field
-              id="gf_wohnen_field"
+              id="gf_wohnen_genossenschaftlich_field"
               ref="gfWohnenField"
               v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
               :disabled="!isEditable"
               class="mx-3"
               label="Genossenschaftliches Wohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
           <v-col
@@ -161,46 +161,55 @@
               :disabled="!isEditable"
               class="mx-3"
               label="Weiteres nicht-infrastrukturrelevantes Wohnen"
-              :suffix="fieldPrefixesSuffixes.squareMeter"
+              :suffix="SQUARE_METER"
             />
           </v-col>
         </v-row>
       </div>
     </v-expand-transition>
+    <v-textarea
+      id="gf_wohnen_anmerkung"
+      v-model="abfragevariante.gfAnmerkung"
+      :disabled="!isEditable"
+      label="Anmerkungen"
+      variant="underlined"
+      auto-grow
+      rows="1"
+      maxlength="200"
+      @update:model-value="formChanged"
+    >
+    </v-textarea>
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import { watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+interface Props {
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const { formChanged } = useSaveLeave();
 
-  private geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
+const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
-  @Watch("abfragevariante", { immediate: true, deep: true })
-  public clearSonderwohnformData(): void {
-    if (!this.abfragevariante.gfWohnenSonderwohnformen) {
-      this.abfragevariante.gfWohnenStudentischesWohnen = undefined;
-      this.abfragevariante.gfWohnenSeniorinnenWohnen = undefined;
-      this.abfragevariante.gfWohnenGenossenschaftlichesWohnen = undefined;
-      this.abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
-    }
+const geplanteGeschossflaecheWohnenTitle = "Geplante Geschossfläche Wohnen";
+
+withDefaults(defineProps<Props>(), { isEditable: false });
+
+watch(() => abfragevariante, clearSonderwohnformData, { immediate: true, deep: true });
+
+function clearSonderwohnformData(): void {
+  if (!abfragevariante.value.gfWohnenSonderwohnformen) {
+    abfragevariante.value.gfWohnenStudentischesWohnen = undefined;
+    abfragevariante.value.gfWohnenSeniorinnenWohnen = undefined;
+    abfragevariante.value.gfWohnenGenossenschaftlichesWohnen = undefined;
+    abfragevariante.value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
   }
 }
 </script>

@@ -1,6 +1,12 @@
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
-import { AbfragevarianteBauleitplanverfahrenDto, BaugebietDto, BaurateDto } from "@/api/api-client/isi-backend";
+import type {
+  AbfragevarianteBaugenehmigungsverfahrenDto,
+  AbfragevarianteBauleitplanverfahrenDto,
+  AbfragevarianteWeiteresVerfahrenDto,
+  BaugebietDto,
+  BaurateDto,
+} from "@/api/api-client/isi-backend";
 
 export function countDecimals(numberToCount: number): number {
   return numberToCount % 1 ? numberToCount.toString().split(".")[1].length : 0;
@@ -242,4 +248,19 @@ export function verteilteGeschossflaecheWohnenAbfragevarianteFormatted(
 ): string {
   const value = verteilteGeschossflaecheWohnenAbfragevariante(abfragevariante);
   return numberToFormattedStringTwoDecimals(value);
+}
+
+export function getYearOfEarliestBaurateOrUndefinedIfNoYearIsGiven(
+  abfragevariante:
+    | AbfragevarianteBauleitplanverfahrenDto
+    | AbfragevarianteBaugenehmigungsverfahrenDto
+    | AbfragevarianteWeiteresVerfahrenDto,
+): number | undefined {
+  const yearsOfBauraten = _.toArray(abfragevariante.bauabschnitte)
+    .flatMap((bauabschnitt) => _.toArray(bauabschnitt.baugebiete))
+    .flatMap((baugebiet) => _.toArray(baugebiet.bauraten))
+    .map((baurate) => baurate.jahr)
+    .filter((jahr) => _.isNumber(jahr));
+  const minValue = Math.min(...yearsOfBauraten);
+  return minValue === Infinity ? undefined : minValue;
 }

@@ -1,13 +1,6 @@
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import { type VueWrapper, mount } from "@vue/test-utils";
 import VersionInfo from "@/components/common/VersionInfo.vue";
-import Service from "@/components/common/Service";
-
-const versionInfo = new VersionInfo() as {
-  value: boolean;
-  services: Service[];
-  fetchSuccess?: boolean;
-  updateServices: () => Promise<void>;
-};
-versionInfo.value = true;
 
 const servicesEndpoint = "/info";
 const commitHashEndpoint = "/hash";
@@ -31,7 +24,13 @@ const testService2 = {
   active: false,
 };
 
+let versionInfo: VueWrapper<any, any>;
+
 describe("VersionInfoTest.spec.ts", () => {
+  beforeEach(() => {
+    versionInfo = mount(VersionInfo, { shallow: true, props: { modelValue: true } });
+  });
+
   test("Positivfall", async () => {
     global.fetch = vi.fn((url: string) => {
       if (url.endsWith(servicesEndpoint)) {
@@ -49,12 +48,12 @@ describe("VersionInfoTest.spec.ts", () => {
       }
     }) as any;
 
-    await versionInfo.updateServices();
+    await versionInfo.vm.updateServices();
     expect(fetch).toHaveBeenCalledTimes(3);
-    expect(versionInfo.fetchSuccess).toEqual(true);
-    expect(versionInfo.services.length).toEqual(2);
-    expect(versionInfo.services).toContain(testService1);
-    expect(versionInfo.services).toContain(testService2);
+    expect(versionInfo.vm.fetchSuccess).toEqual(true);
+    expect(versionInfo.vm.services.length).toEqual(2);
+    expect(versionInfo.vm.services).toContainEqual(testService1);
+    expect(versionInfo.vm.services).toContainEqual(testService2);
     expect(testService1.active).toEqual(true);
     expect(testService2.active).toEqual(true);
     expect(testService1.commitHash).toEqual(testCommitHash);
@@ -70,10 +69,10 @@ describe("VersionInfoTest.spec.ts", () => {
       }
     }) as any;
 
-    await versionInfo.updateServices();
+    await versionInfo.vm.updateServices();
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(versionInfo.fetchSuccess).toEqual(false);
-    expect(versionInfo.services.length).toEqual(0);
+    expect(versionInfo.vm.fetchSuccess).toEqual(false);
+    expect(versionInfo.vm.services.length).toEqual(0);
   });
 
   test("Negativefall ohne Services", async () => {
@@ -86,10 +85,10 @@ describe("VersionInfoTest.spec.ts", () => {
       }
     }) as any;
 
-    await versionInfo.updateServices();
+    await versionInfo.vm.updateServices();
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(versionInfo.fetchSuccess).toEqual(true);
-    expect(versionInfo.services.length).toEqual(0);
+    expect(versionInfo.vm.fetchSuccess).toEqual(true);
+    expect(versionInfo.vm.services.length).toEqual(0);
   });
 
   test("Negativfall ohne CommitHash-Endpoint", async () => {
@@ -108,12 +107,12 @@ describe("VersionInfoTest.spec.ts", () => {
       }
     }) as any;
 
-    await versionInfo.updateServices();
+    await versionInfo.vm.updateServices();
     expect(fetch).toHaveBeenCalledTimes(3);
-    expect(versionInfo.fetchSuccess).toEqual(true);
-    expect(versionInfo.services.length).toEqual(2);
-    expect(versionInfo.services).toContain(testService1);
-    expect(versionInfo.services).toContain(testService2);
+    expect(versionInfo.vm.fetchSuccess).toEqual(true);
+    expect(versionInfo.vm.services.length).toEqual(2);
+    expect(versionInfo.vm.services).toContainEqual(testService1);
+    expect(versionInfo.vm.services).toContainEqual(testService2);
     expect(testService1.active).toEqual(false);
     expect(testService2.active).toEqual(false);
     expect(testService1.commitHash).toEqual("");
@@ -137,12 +136,12 @@ describe("VersionInfoTest.spec.ts", () => {
       }
     }) as any;
 
-    await versionInfo.updateServices();
+    await versionInfo.vm.updateServices();
     expect(fetch).toHaveBeenCalledTimes(3);
-    expect(versionInfo.fetchSuccess).toEqual(true);
-    expect(versionInfo.services.length).toEqual(2);
-    expect(versionInfo.services).toContain(testService1);
-    expect(versionInfo.services).toContain(testService2);
+    expect(versionInfo.vm.fetchSuccess).toEqual(true);
+    expect(versionInfo.vm.services.length).toEqual(2);
+    expect(versionInfo.vm.services).toContainEqual(testService1);
+    expect(versionInfo.vm.services).toContainEqual(testService2);
     expect(testService1.active).toEqual(true);
     expect(testService2.active).toEqual(true);
     expect(testService1.commitHash).toEqual("");

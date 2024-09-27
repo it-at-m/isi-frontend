@@ -1,7 +1,9 @@
-import { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
-import { AnzeigeContextAbfragevariante } from "@/views/Abfrage.vue";
+import type { AbfragevarianteBauleitplanverfahrenDto } from "@/api/api-client/isi-backend";
+import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import _ from "lodash";
+import SobonBerechnungModel from "@/types/model/abfragevariante/SobonBerechnungModel";
+import { createSobonBerechnung } from "@/utils/Factories";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AbfragevarianteBauleitplanverfahrenModel extends AbfragevarianteBauleitplanverfahrenDto {}
@@ -11,6 +13,11 @@ class AbfragevarianteBauleitplanverfahrenModel {
     this.bauabschnitte = _.toArray(abfragevariante.bauabschnitte).map(
       (bauabschnitt) => new BauabschnittModel(bauabschnitt),
     );
+    if (!_.isNil(abfragevariante.sobonBerechnung)) {
+      this.sobonBerechnung = new SobonBerechnungModel(abfragevariante.sobonBerechnung);
+    } else {
+      this.sobonBerechnung = createSobonBerechnung();
+    }
   }
 
   public getAbfragevariantenNrForContextAnzeigeAbfragevariante(

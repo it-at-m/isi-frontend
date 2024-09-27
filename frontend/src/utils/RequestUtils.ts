@@ -1,14 +1,14 @@
 import {
   Configuration as ConfigurationBackend,
-  ConfigurationParameters as ConfigurationParametersBackend,
+  type ConfigurationParameters as ConfigurationParametersBackend,
 } from "@/api/api-client/isi-backend";
 import {
   Configuration as ConfigurationMasterEai,
-  ConfigurationParameters as ConfigurationParametersMasterEai,
+  type ConfigurationParameters as ConfigurationParametersMasterEai,
 } from "@/api/api-client/isi-master-eai";
 import {
   Configuration as ConfigurationGeodataEai,
-  ConfigurationParameters as ConfigurationParametersGeodataEai,
+  type ConfigurationParameters as ConfigurationParametersGeodataEai,
 } from "@/api/api-client/isi-geodata-eai";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 

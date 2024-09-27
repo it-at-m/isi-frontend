@@ -129,40 +129,48 @@
         </v-row>
       </div>
     </v-expand-transition>
+    <v-textarea
+      id="we_anmerkung"
+      v-model="abfragevariante.weAnmerkung"
+      :disabled="!isEditable"
+      label="Anmerkungen"
+      variant="underlined"
+      auto-grow
+      rows="1"
+      maxlength="200"
+      @update:model-value="formChanged"
+    >
+    </v-textarea>
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop, Watch } from "vue-property-decorator";
-import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import { watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
+import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
-@Component({ components: { FieldGroupCard, NumField } })
-export default class GeplanteGeschossflaecheWohnenBauleitplanverfahrenComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: AbfragevarianteBauleitplanverfahrenModel })
-  abfragevariante!: AbfragevarianteBauleitplanverfahrenModel;
+interface Props {
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const { formChanged } = useSaveLeave();
 
-  private geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
+const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
-  @Watch("abfragevariante", { immediate: true, deep: true })
-  public clearSonderwohnformData(): void {
-    if (!this.abfragevariante.weSonderwohnformen) {
-      this.abfragevariante.weStudentischesWohnen = undefined;
-      this.abfragevariante.weSeniorinnenWohnen = undefined;
-      this.abfragevariante.weGenossenschaftlichesWohnen = undefined;
-      this.abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
-    }
+const geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
+
+withDefaults(defineProps<Props>(), { isEditable: false });
+
+watch(() => abfragevariante, clearSonderwohnformData, { immediate: true, deep: true });
+
+function clearSonderwohnformData(): void {
+  if (!abfragevariante.value.weSonderwohnformen) {
+    abfragevariante.value.weStudentischesWohnen = undefined;
+    abfragevariante.value.weSeniorinnenWohnen = undefined;
+    abfragevariante.value.weGenossenschaftlichesWohnen = undefined;
+    abfragevariante.value.weWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
   }
 }
 </script>

@@ -10,7 +10,7 @@
           ref="weGeplantField"
           v-model="baugebiet.weGeplant"
           :disabled="!isEditable"
-          :rules="[validationRules.validateWohneinheiten(abfragevariante)]"
+          :rules="[validateWohneinheiten(abfragevariante)]"
           class="mx-3"
           label="Gesamt"
           integer
@@ -48,47 +48,39 @@
   </field-group-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Prop } from "vue-property-decorator";
-import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
-import FieldValidationRulesMixin from "@/mixins/validation/FieldValidationRulesMixin";
-import FieldPrefixesSuffixes from "@/mixins/FieldPrefixesSuffixes";
+<script setup lang="ts">
+import type { AbfragevarianteWeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
-import SaveLeaveMixin from "@/mixins/SaveLeaveMixin";
-import { AbfragevarianteWeiteresVerfahrenDto } from "@/api/api-client/isi-backend";
+import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import {
   verteilteWohneinheitenAbfragevariante,
   verteilteWohneinheitenAbfragevarianteFormatted,
   wohneinheitenAbfragevariante,
   wohneinheitenAbfragevarianteFormatted,
 } from "@/utils/CalculationUtil";
+import type { Rule } from "@/utils/FieldValidationRules";
 
-@Component({ components: { FieldGroupCard, NumField } })
-export default class AnzahlWohneinheitenWeiteresVerfahrenComponent extends Mixins(
-  FieldPrefixesSuffixes,
-  FieldValidationRulesMixin,
-  SaveLeaveMixin,
-) {
-  @VModel({ type: BaugebietModel }) baugebiet!: BaugebietModel;
+interface Props {
+  abfragevariante?: AbfragevarianteWeiteresVerfahrenDto;
+  isEditable?: boolean;
+}
 
-  @Prop({ type: Boolean, default: false })
-  private readonly isEditable!: boolean;
+const baugebiet = defineModel<BaugebietModel>({ required: true });
 
-  @Prop()
-  private abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined;
+const geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
 
-  private geplanteAnzahlWohneinheitenTitle = "Geplante Anzahl Wohneinheiten";
+withDefaults(defineProps<Props>(), { isEditable: false });
 
-  private validationRules: unknown = {
-    validateWohneinheiten: (abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined): boolean | string => {
-      return (
-        verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
-        `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
-          abfragevariante,
-        )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
-      );
-    },
+function validateWohneinheiten(abfragevariante: AbfragevarianteWeiteresVerfahrenDto | undefined): Rule {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (v: string | undefined | null) => {
+    return (
+      verteilteWohneinheitenAbfragevariante(abfragevariante) <= wohneinheitenAbfragevariante(abfragevariante) ||
+      `Insgesamt sind ${verteilteWohneinheitenAbfragevarianteFormatted(
+        abfragevariante,
+      )} von ${wohneinheitenAbfragevarianteFormatted(abfragevariante)} verteilt.`
+    );
   };
 }
 </script>
