@@ -33,7 +33,7 @@
         <apache.commons.lang.version>3.14.0</apache.commons.lang.version>
         <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <!-- TestCoverage -->
-        <jacoco.version>0.8.7</jacoco.version>
+        <jacoco.version>0.8.12</jacoco.version>
     </properties>
 
 
