@@ -8,7 +8,6 @@ import {
   BaugebietDto,
   BauvorhabenDto,
   DokumentDto,
-  DokumentDtoArtDokumentEnum,
   GrundschuleDto,
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
@@ -151,8 +150,8 @@ export function findFaultInAbfragevarianten(abfrage: AnyAbfrageModel): string | 
       validationMessage = findFaultInAbfragevariante(abfrage, abfragevariante);
       if (!_.isNil(validationMessage)) {
         break;
-      } else if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
-        validationMessage = findFaultInAbfragevarianteInBearbeitungSachbearbeitung(abfragevariante);
+      } else if (abfrage.statusAbfrage === StatusAbfrage.StartBearbeitung) {
+        validationMessage = findFaultInAbfragevarianteStartBearbeitung(abfragevariante);
         if (!_.isNil(validationMessage)) {
           break;
         }
@@ -185,7 +184,7 @@ export function findFaultInAbfragevariante(
   if (!_.isNil(messageFaultVerteilung)) {
     return messageFaultVerteilung;
   }
-  if (abfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung) {
+  if (abfrage.statusAbfrage === StatusAbfrage.StartBearbeitung) {
     if (
       _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
       abfragevariante.sobonOrientierungswertJahr ===
@@ -623,9 +622,7 @@ function convertAbfragevarianteType(
   return abfragevariante;
 }
 
-function findFaultInAbfragevarianteInBearbeitungSachbearbeitung(
-  abfragevariante: AnyAbfragevarianteModel,
-): string | null {
+function findFaultInAbfragevarianteStartBearbeitung(abfragevariante: AnyAbfragevarianteModel): string | null {
   if (
     _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
     abfragevariante.sobonOrientierungswertJahr ===

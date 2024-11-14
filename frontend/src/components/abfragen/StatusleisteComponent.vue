@@ -98,13 +98,13 @@ const statusIndex = computed(() => {
   switch (props.status) {
     case StatusAbfrage.Angelegt:
       return 0;
-    case StatusAbfrage.Offen:
+    case StatusAbfrage.UebermitteltZurBearbeitung:
       return 1;
-    case StatusAbfrage.InBearbeitungSachbearbeitung:
+    case StatusAbfrage.StartBearbeitung:
       return 2;
-    case StatusAbfrage.InBearbeitungFachreferate:
+    case StatusAbfrage.EinpflegenBedarfsmeldung:
       return 3;
-    case StatusAbfrage.BedarfsmeldungErfolgt:
+    case StatusAbfrage.EinplanungBedarfe:
       return 4;
     case StatusAbfrage.ErledigtMitFachreferat:
       return 5;
@@ -117,9 +117,9 @@ const shortenedStatusIndex = computed(() => {
   switch (props.status) {
     case StatusAbfrage.Angelegt:
       return 0;
-    case StatusAbfrage.Offen:
+    case StatusAbfrage.UebermitteltZurBearbeitung:
       return 1;
-    case StatusAbfrage.InBearbeitungSachbearbeitung:
+    case StatusAbfrage.StartBearbeitung:
       return 2;
     case StatusAbfrage.ErledigtOhneFachreferat:
       return 3;

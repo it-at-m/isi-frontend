@@ -118,7 +118,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status BEDARFSMELDUNG_ERFOLGT
+     * Setzt eine Abfrage auf den Status EINPLANUNG_BEDARFE
      */
     async bedarfsmeldungErfolgtRaw(requestParameters: BedarfsmeldungErfolgtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -144,7 +144,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status BEDARFSMELDUNG_ERFOLGT
+     * Setzt eine Abfrage auf den Status EINPLANUNG_BEDARFE
      */
     async bedarfsmeldungErfolgt(requestParameters: BedarfsmeldungErfolgtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.bedarfsmeldungErfolgtRaw(requestParameters, initOverrides);
@@ -217,7 +217,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async erneuteBearbeitungSachbearbeitungRaw(requestParameters: ErneuteBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -243,14 +243,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async erneuteBearbeitungSachbearbeitung(requestParameters: ErneuteBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.erneuteBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Abfrage auf den Status OFFEN
+     * Setzt eine Abfrage auf den Status UEBERMITTELT_ZUR_BEARBEITUNG
      */
     async freigabeAbfrageRaw(requestParameters: FreigabeAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -276,14 +276,14 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status OFFEN
+     * Setzt eine Abfrage auf den Status UEBERMITTELT_ZUR_BEARBEITUNG
      */
     async freigabeAbfrage(requestParameters: FreigabeAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.freigabeAbfrageRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async inBearbeitungSetzenAbfrageRaw(requestParameters: InBearbeitungSetzenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -309,7 +309,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async inBearbeitungSetzenAbfrage(requestParameters: InBearbeitungSetzenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.inBearbeitungSetzenAbfrageRaw(requestParameters, initOverrides);
@@ -346,7 +346,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_FACHREFERATE
+     * Setzt eine Abfrage auf den Status EINPFLEGEN_BEDARFSMELDUNG
      */
     async verschickenDerStellungnahmeRaw(requestParameters: VerschickenDerStellungnahmeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -372,7 +372,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_FACHREFERATE
+     * Setzt eine Abfrage auf den Status EINPFLEGEN_BEDARFSMELDUNG
      */
     async verschickenDerStellungnahme(requestParameters: VerschickenDerStellungnahmeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.verschickenDerStellungnahmeRaw(requestParameters, initOverrides);
@@ -412,7 +412,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async zurueckAnSachbearbeitungAbfrageRaw(requestParameters: ZurueckAnSachbearbeitungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -438,7 +438,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status IN_BEARBEITUNG_SACHBEARBEITUNG
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async zurueckAnSachbearbeitungAbfrage(requestParameters: ZurueckAnSachbearbeitungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.zurueckAnSachbearbeitungAbfrageRaw(requestParameters, initOverrides);

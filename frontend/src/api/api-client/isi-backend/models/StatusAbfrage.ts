@@ -19,10 +19,10 @@
  */
 export const StatusAbfrage = {
     Angelegt: 'ANGELEGT',
-    Offen: 'OFFEN',
-    InBearbeitungSachbearbeitung: 'IN_BEARBEITUNG_SACHBEARBEITUNG',
-    InBearbeitungFachreferate: 'IN_BEARBEITUNG_FACHREFERATE',
-    BedarfsmeldungErfolgt: 'BEDARFSMELDUNG_ERFOLGT',
+    UebermitteltZurBearbeitung: 'UEBERMITTELT_ZUR_BEARBEITUNG',
+    StartBearbeitung: 'START_BEARBEITUNG',
+    EinpflegenBedarfsmeldung: 'EINPFLEGEN_BEDARFSMELDUNG',
+    EinplanungBedarfe: 'EINPLANUNG_BEDARFE',
     ErledigtMitFachreferat: 'ERLEDIGT_MIT_FACHREFERAT',
     ErledigtOhneFachreferat: 'ERLEDIGT_OHNE_FACHREFERAT',
     Abbruch: 'ABBRUCH'

@@ -35,17 +35,17 @@ import {
 } from './WeiteresVerfahrenStartBearbeitungDto';
 
 /**
- * @type PatchInBearbeitungSachbearbeitungRequest
+ * @type PatchStartBearbeitungRequest
  * 
  * @export
  */
-export type PatchInBearbeitungSachbearbeitungRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenStartBearbeitungDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenStartBearbeitungDto | { artAbfrage: 'BaugenehmigungsverfahrenStartBearbeitungDto' } & BaugenehmigungsverfahrenStartBearbeitungDto | { artAbfrage: 'BauleitplanverfahrenStartBearbeitungDto' } & BauleitplanverfahrenStartBearbeitungDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenStartBearbeitungDto | { artAbfrage: 'WeiteresVerfahrenStartBearbeitungDto' } & WeiteresVerfahrenStartBearbeitungDto;
+export type PatchStartBearbeitungRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenStartBearbeitungDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenStartBearbeitungDto | { artAbfrage: 'BaugenehmigungsverfahrenStartBearbeitungDto' } & BaugenehmigungsverfahrenStartBearbeitungDto | { artAbfrage: 'BauleitplanverfahrenStartBearbeitungDto' } & BauleitplanverfahrenStartBearbeitungDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenStartBearbeitungDto | { artAbfrage: 'WeiteresVerfahrenStartBearbeitungDto' } & WeiteresVerfahrenStartBearbeitungDto;
 
-export function PatchInBearbeitungSachbearbeitungRequestFromJSON(json: any): PatchInBearbeitungSachbearbeitungRequest {
-    return PatchInBearbeitungSachbearbeitungRequestFromJSONTyped(json, false);
+export function PatchStartBearbeitungRequestFromJSON(json: any): PatchStartBearbeitungRequest {
+    return PatchStartBearbeitungRequestFromJSONTyped(json, false);
 }
 
-export function PatchInBearbeitungSachbearbeitungRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatchInBearbeitungSachbearbeitungRequest {
+export function PatchStartBearbeitungRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatchStartBearbeitungRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -63,11 +63,11 @@ export function PatchInBearbeitungSachbearbeitungRequestFromJSONTyped(json: any,
         case 'WeiteresVerfahrenStartBearbeitungDto':
             return {...WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenStartBearbeitungDto'};
         default:
-            throw new Error(`No variant of PatchInBearbeitungSachbearbeitungRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
+            throw new Error(`No variant of PatchStartBearbeitungRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
     }
 }
 
-export function PatchInBearbeitungSachbearbeitungRequestToJSON(value?: PatchInBearbeitungSachbearbeitungRequest | null): any {
+export function PatchStartBearbeitungRequestToJSON(value?: PatchStartBearbeitungRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -88,7 +88,7 @@ export function PatchInBearbeitungSachbearbeitungRequestToJSON(value?: PatchInBe
         case 'WeiteresVerfahrenStartBearbeitungDto':
             return WeiteresVerfahrenStartBearbeitungDtoToJSON(value);
         default:
-            throw new Error(`No variant of PatchInBearbeitungSachbearbeitungRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
+            throw new Error(`No variant of PatchStartBearbeitungRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
     }
 
 }
