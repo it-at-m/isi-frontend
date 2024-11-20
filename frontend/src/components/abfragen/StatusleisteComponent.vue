@@ -90,7 +90,7 @@ const statusLabels = [
   "Einplanung Bedarfe",
   "Erledigt",
 ];
-const shortenedStatusLabels = ["angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "erledigt"];
+const shortenedStatusLabels = ["Angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "Erledigt"];
 const isCancelled = computed(() => props.status === StatusAbfrage.Abbruch);
 const erledigtOhneFachreferatStepper = computed(() => props.status === StatusAbfrage.ErledigtOhneFachreferat);
 
