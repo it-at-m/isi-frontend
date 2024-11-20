@@ -83,12 +83,12 @@ interface Props {
 
 const props = defineProps<Props>();
 const statusLabels = [
-  "angelegt",
+  "Angelegt",
   "Übermittelt zur Bearbeitung",
   "Start Bearbeitung",
   "Einpflegen Bedarfsmeldung",
   "Einplanung Bedarfe",
-  "erledigt",
+  "Erledigt",
 ];
 const shortenedStatusLabels = ["angelegt", "Übermittelt zur Bearbeitung", "Start Bearbeitung", "erledigt"];
 const isCancelled = computed(() => props.status === StatusAbfrage.Abbruch);
