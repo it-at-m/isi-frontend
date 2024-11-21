@@ -35,17 +35,17 @@ import {
 } from './WeiteresVerfahrenEinplanungBedarfeDto';
 
 /**
- * @type PatchBedarfsmeldungErfolgtRequest
+ * @type PatchEinplanungBedarfeRequest
  * 
  * @export
  */
-export type PatchBedarfsmeldungErfolgtRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenEinplanungBedarfeDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenEinplanungBedarfeDto | { artAbfrage: 'BaugenehmigungsverfahrenEinplanungBedarfeDto' } & BaugenehmigungsverfahrenEinplanungBedarfeDto | { artAbfrage: 'BauleitplanverfahrenEinplanungBedarfeDto' } & BauleitplanverfahrenEinplanungBedarfeDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenEinplanungBedarfeDto | { artAbfrage: 'WeiteresVerfahrenEinplanungBedarfeDto' } & WeiteresVerfahrenEinplanungBedarfeDto;
+export type PatchEinplanungBedarfeRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenEinplanungBedarfeDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenEinplanungBedarfeDto | { artAbfrage: 'BaugenehmigungsverfahrenEinplanungBedarfeDto' } & BaugenehmigungsverfahrenEinplanungBedarfeDto | { artAbfrage: 'BauleitplanverfahrenEinplanungBedarfeDto' } & BauleitplanverfahrenEinplanungBedarfeDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenEinplanungBedarfeDto | { artAbfrage: 'WeiteresVerfahrenEinplanungBedarfeDto' } & WeiteresVerfahrenEinplanungBedarfeDto;
 
-export function PatchBedarfsmeldungErfolgtRequestFromJSON(json: any): PatchBedarfsmeldungErfolgtRequest {
-    return PatchBedarfsmeldungErfolgtRequestFromJSONTyped(json, false);
+export function PatchEinplanungBedarfeRequestFromJSON(json: any): PatchEinplanungBedarfeRequest {
+    return PatchEinplanungBedarfeRequestFromJSONTyped(json, false);
 }
 
-export function PatchBedarfsmeldungErfolgtRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatchBedarfsmeldungErfolgtRequest {
+export function PatchEinplanungBedarfeRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatchEinplanungBedarfeRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -63,11 +63,11 @@ export function PatchBedarfsmeldungErfolgtRequestFromJSONTyped(json: any, ignore
         case 'WeiteresVerfahrenEinplanungBedarfeDto':
             return {...WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenEinplanungBedarfeDto'};
         default:
-            throw new Error(`No variant of PatchBedarfsmeldungErfolgtRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
+            throw new Error(`No variant of PatchEinplanungBedarfeRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
     }
 }
 
-export function PatchBedarfsmeldungErfolgtRequestToJSON(value?: PatchBedarfsmeldungErfolgtRequest | null): any {
+export function PatchEinplanungBedarfeRequestToJSON(value?: PatchEinplanungBedarfeRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -88,7 +88,7 @@ export function PatchBedarfsmeldungErfolgtRequestToJSON(value?: PatchBedarfsmeld
         case 'WeiteresVerfahrenEinplanungBedarfeDto':
             return WeiteresVerfahrenEinplanungBedarfeDtoToJSON(value);
         default:
-            throw new Error(`No variant of PatchBedarfsmeldungErfolgtRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
+            throw new Error(`No variant of PatchEinplanungBedarfeRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
     }
 
 }

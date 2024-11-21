@@ -5,22 +5,22 @@ import type {
   BauleitplanverfahrenAngelegtDto,
   BaugenehmigungsverfahrenAngelegtDto,
   WeiteresVerfahrenAngelegtDto,
-  BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
-  BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
-  WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
-  BauleitplanverfahrenInBearbeitungFachreferatDto,
-  BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
-  WeiteresVerfahrenInBearbeitungFachreferatDto,
-  BauleitplanverfahrenBedarfsmeldungErfolgtDto,
-  BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
-  WeiteresVerfahrenBedarfsmeldungErfolgtDto,
   SaveOperationRequest,
   PatchAngelegtRequest,
-  PatchInBearbeitungSachbearbeitungOperationRequest,
-  PatchInBearbeitungFachreferatOperationRequest,
-  PatchBedarfsmeldungErfolgtOperationRequest,
   GetByIdRequest,
   DeleteByIdRequest,
+  BauleitplanverfahrenStartBearbeitungDto,
+  BaugenehmigungsverfahrenStartBearbeitungDto,
+  WeiteresVerfahrenStartBearbeitungDto,
+  PatchStartBearbeitungOperationRequest,
+  BauleitplanverfahrenEinpflegenBedarfsmeldungDto,
+  BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto,
+  WeiteresVerfahrenEinpflegenBedarfsmeldungDto,
+  PatchEinpflegenBedarfsmeldungOperationRequest,
+  BauleitplanverfahrenEinplanungBedarfeDto,
+  BaugenehmigungsverfahrenEinplanungBedarfeDto,
+  WeiteresVerfahrenEinplanungBedarfeDto,
+  PatchEinplanungBedarfeOperationRequest,
 } from "@/api/api-client/isi-backend";
 import { AbfragenApi, AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
@@ -85,33 +85,30 @@ export function useAbfragenApi() {
     }
   }
 
-  async function patchInBearbeitungSachbearbeitung(
+  async function patchStartBearbeitung(
     dto:
-      | BauleitplanverfahrenInBearbeitungSachbearbeitungDto
-      | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-      | WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
+      | BauleitplanverfahrenStartBearbeitungDto
+      | BaugenehmigungsverfahrenStartBearbeitungDto
+      | WeiteresVerfahrenStartBearbeitungDto,
     id: string,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenInBearbeitungSachbearbeitungDto;
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenStartBearbeitungDto;
     } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       dtoTyped = dto as {
         artAbfrage: "BAUGENEHMIGUNGSVERFAHREN";
-      } & BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto;
+      } & BaugenehmigungsverfahrenStartBearbeitungDto;
     } else {
-      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenInBearbeitungSachbearbeitungDto;
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenStartBearbeitungDto;
     }
 
-    const requestObject: PatchInBearbeitungSachbearbeitungOperationRequest = {
-      patchInBearbeitungSachbearbeitungRequest: dtoTyped,
+    const requestObject: PatchStartBearbeitungOperationRequest = {
+      patchStartBearbeitungRequest: dtoTyped,
       id: id,
     };
     try {
-      const response = await abfragenApi.patchInBearbeitungSachbearbeitung(
-        requestObject,
-        RequestUtils.getPATCHConfig(),
-      );
+      const response = await abfragenApi.patchStartBearbeitung(requestObject, RequestUtils.getPATCHConfig());
       resetFormDirty();
       return response;
     } catch (error) {
@@ -119,30 +116,30 @@ export function useAbfragenApi() {
     }
   }
 
-  async function patchInBearbeitungFachreferat(
+  async function patchEinpflegenBedarfsmeldung(
     dto:
-      | BauleitplanverfahrenInBearbeitungFachreferatDto
-      | BaugenehmigungsverfahrenInBearbeitungFachreferatDto
-      | WeiteresVerfahrenInBearbeitungFachreferatDto,
+      | BauleitplanverfahrenEinpflegenBedarfsmeldungDto
+      | BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
+      | WeiteresVerfahrenEinpflegenBedarfsmeldungDto,
     id: string,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenInBearbeitungFachreferatDto;
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenEinpflegenBedarfsmeldungDto;
     } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       dtoTyped = dto as {
         artAbfrage: "BAUGENEHMIGUNGSVERFAHREN";
-      } & BaugenehmigungsverfahrenInBearbeitungFachreferatDto;
+      } & BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto;
     } else {
-      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenInBearbeitungFachreferatDto;
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenEinpflegenBedarfsmeldungDto;
     }
 
-    const requestObject: PatchInBearbeitungFachreferatOperationRequest = {
-      patchInBearbeitungFachreferatRequest: dtoTyped,
+    const requestObject: PatchEinpflegenBedarfsmeldungOperationRequest = {
+      patchEinpflegenBedarfsmeldungRequest: dtoTyped,
       id: id,
     };
     try {
-      const response = await abfragenApi.patchInBearbeitungFachreferat(requestObject, RequestUtils.getPATCHConfig());
+      const response = await abfragenApi.patchEinpflegenBedarfsmeldung(requestObject, RequestUtils.getPATCHConfig());
       resetFormDirty();
       return response;
     } catch (error) {
@@ -150,30 +147,30 @@ export function useAbfragenApi() {
     }
   }
 
-  async function patchBedarfsmeldungErfolgt(
+  async function patchEinplanungBedarfe(
     dto:
-      | BauleitplanverfahrenBedarfsmeldungErfolgtDto
-      | BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto
-      | WeiteresVerfahrenBedarfsmeldungErfolgtDto,
+      | BauleitplanverfahrenEinplanungBedarfeDto
+      | BaugenehmigungsverfahrenEinplanungBedarfeDto
+      | WeiteresVerfahrenEinplanungBedarfeDto,
     id: string,
   ): Promise<BauleitplanverfahrenDto | BaugenehmigungsverfahrenDto | WeiteresVerfahrenDto> {
     let dtoTyped = undefined;
     if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenBedarfsmeldungErfolgtDto;
+      dtoTyped = dto as { artAbfrage: "BAULEITPLANVERFAHREN" } & BauleitplanverfahrenEinplanungBedarfeDto;
     } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       dtoTyped = dto as {
         artAbfrage: "BAUGENEHMIGUNGSVERFAHREN";
-      } & BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto;
+      } & BaugenehmigungsverfahrenEinplanungBedarfeDto;
     } else {
-      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenBedarfsmeldungErfolgtDto;
+      dtoTyped = dto as { artAbfrage: "WEITERES_VERFAHREN" } & WeiteresVerfahrenEinplanungBedarfeDto;
     }
 
-    const requestObject: PatchBedarfsmeldungErfolgtOperationRequest = {
-      patchBedarfsmeldungErfolgtRequest: dtoTyped,
+    const requestObject: PatchEinplanungBedarfeOperationRequest = {
+      patchEinplanungBedarfeRequest: dtoTyped,
       id: id,
     };
     try {
-      const response = await abfragenApi.patchBedarfsmeldungErfolgt(requestObject, RequestUtils.getPATCHConfig());
+      const response = await abfragenApi.patchEinplanungBedarfe(requestObject, RequestUtils.getPATCHConfig());
       resetFormDirty();
       return response;
     } catch (error) {
@@ -211,9 +208,9 @@ export function useAbfragenApi() {
   return {
     save,
     patchAngelegt,
-    patchInBearbeitungSachbearbeitung,
-    patchInBearbeitungFachreferat,
-    patchBedarfsmeldungErfolgt,
+    patchStartBearbeitung,
+    patchEinpflegenBedarfsmeldung,
+    patchEinplanungBedarfe,
     getById,
     deleteById,
   };

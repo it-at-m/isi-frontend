@@ -16,21 +16,21 @@
 import * as runtime from '../runtime';
 import type {
   InformationResponseDto,
-  PatchBedarfsmeldungErfolgtRequest,
-  PatchInBearbeitungFachreferatRequest,
-  PatchInBearbeitungSachbearbeitungRequest,
+  PatchEinpflegenBedarfsmeldungRequest,
+  PatchEinplanungBedarfeRequest,
+  PatchStartBearbeitungRequest,
   Save201Response,
   SaveRequest,
 } from '../models';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-    PatchBedarfsmeldungErfolgtRequestFromJSON,
-    PatchBedarfsmeldungErfolgtRequestToJSON,
-    PatchInBearbeitungFachreferatRequestFromJSON,
-    PatchInBearbeitungFachreferatRequestToJSON,
-    PatchInBearbeitungSachbearbeitungRequestFromJSON,
-    PatchInBearbeitungSachbearbeitungRequestToJSON,
+    PatchEinpflegenBedarfsmeldungRequestFromJSON,
+    PatchEinpflegenBedarfsmeldungRequestToJSON,
+    PatchEinplanungBedarfeRequestFromJSON,
+    PatchEinplanungBedarfeRequestToJSON,
+    PatchStartBearbeitungRequestFromJSON,
+    PatchStartBearbeitungRequestToJSON,
     Save201ResponseFromJSON,
     Save201ResponseToJSON,
     SaveRequestFromJSON,
@@ -50,19 +50,19 @@ export interface PatchAngelegtRequest {
     saveRequest: SaveRequest;
 }
 
-export interface PatchBedarfsmeldungErfolgtOperationRequest {
+export interface PatchEinpflegenBedarfsmeldungOperationRequest {
     id: string;
-    patchBedarfsmeldungErfolgtRequest: PatchBedarfsmeldungErfolgtRequest;
+    patchEinpflegenBedarfsmeldungRequest: PatchEinpflegenBedarfsmeldungRequest;
 }
 
-export interface PatchInBearbeitungFachreferatOperationRequest {
+export interface PatchEinplanungBedarfeOperationRequest {
     id: string;
-    patchInBearbeitungFachreferatRequest: PatchInBearbeitungFachreferatRequest;
+    patchEinplanungBedarfeRequest: PatchEinplanungBedarfeRequest;
 }
 
-export interface PatchInBearbeitungSachbearbeitungOperationRequest {
+export interface PatchStartBearbeitungOperationRequest {
     id: string;
-    patchInBearbeitungSachbearbeitungRequest: PatchInBearbeitungSachbearbeitungRequest;
+    patchStartBearbeitungRequest: PatchStartBearbeitungRequest;
 }
 
 export interface SaveOperationRequest {
@@ -171,52 +171,15 @@ export class AbfragenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status BEDARFSMELDUNG_ERFOLGT.
+     * Aktualisierung einer Abfrage im Status EINPFLEGEN_BEDARFSMELDUNG.
      */
-    async patchBedarfsmeldungErfolgtRaw(requestParameters: PatchBedarfsmeldungErfolgtOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchEinpflegenBedarfsmeldungRaw(requestParameters: PatchEinpflegenBedarfsmeldungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchBedarfsmeldungErfolgt.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchEinpflegenBedarfsmeldung.');
         }
 
-        if (requestParameters.patchBedarfsmeldungErfolgtRequest === null || requestParameters.patchBedarfsmeldungErfolgtRequest === undefined) {
-            throw new runtime.RequiredError('patchBedarfsmeldungErfolgtRequest','Required parameter requestParameters.patchBedarfsmeldungErfolgtRequest was null or undefined when calling patchBedarfsmeldungErfolgt.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/abfrage/bedarfsmeldung-erfolgt/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: PatchBedarfsmeldungErfolgtRequestToJSON(requestParameters.patchBedarfsmeldungErfolgtRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Aktualisierung einer Abfrage im Status BEDARFSMELDUNG_ERFOLGT.
-     */
-    async patchBedarfsmeldungErfolgt(requestParameters: PatchBedarfsmeldungErfolgtOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
-        const response = await this.patchBedarfsmeldungErfolgtRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_FACHREFERATE.
-     */
-    async patchInBearbeitungFachreferatRaw(requestParameters: PatchInBearbeitungFachreferatOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchInBearbeitungFachreferat.');
-        }
-
-        if (requestParameters.patchInBearbeitungFachreferatRequest === null || requestParameters.patchInBearbeitungFachreferatRequest === undefined) {
-            throw new runtime.RequiredError('patchInBearbeitungFachreferatRequest','Required parameter requestParameters.patchInBearbeitungFachreferatRequest was null or undefined when calling patchInBearbeitungFachreferat.');
+        if (requestParameters.patchEinpflegenBedarfsmeldungRequest === null || requestParameters.patchEinpflegenBedarfsmeldungRequest === undefined) {
+            throw new runtime.RequiredError('patchEinpflegenBedarfsmeldungRequest','Required parameter requestParameters.patchEinpflegenBedarfsmeldungRequest was null or undefined when calling patchEinpflegenBedarfsmeldung.');
         }
 
         const queryParameters: any = {};
@@ -230,30 +193,67 @@ export class AbfragenApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchInBearbeitungFachreferatRequestToJSON(requestParameters.patchInBearbeitungFachreferatRequest),
+            body: PatchEinpflegenBedarfsmeldungRequestToJSON(requestParameters.patchEinpflegenBedarfsmeldungRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_FACHREFERATE.
+     * Aktualisierung einer Abfrage im Status EINPFLEGEN_BEDARFSMELDUNG.
      */
-    async patchInBearbeitungFachreferat(requestParameters: PatchInBearbeitungFachreferatOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
-        const response = await this.patchInBearbeitungFachreferatRaw(requestParameters, initOverrides);
+    async patchEinpflegenBedarfsmeldung(requestParameters: PatchEinpflegenBedarfsmeldungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
+        const response = await this.patchEinpflegenBedarfsmeldungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_SACHBEARBEITUNG.
+     * Aktualisierung einer Abfrage im Status EINPLANUNG_BEDARFE.
      */
-    async patchInBearbeitungSachbearbeitungRaw(requestParameters: PatchInBearbeitungSachbearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchEinplanungBedarfeRaw(requestParameters: PatchEinplanungBedarfeOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchInBearbeitungSachbearbeitung.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchEinplanungBedarfe.');
         }
 
-        if (requestParameters.patchInBearbeitungSachbearbeitungRequest === null || requestParameters.patchInBearbeitungSachbearbeitungRequest === undefined) {
-            throw new runtime.RequiredError('patchInBearbeitungSachbearbeitungRequest','Required parameter requestParameters.patchInBearbeitungSachbearbeitungRequest was null or undefined when calling patchInBearbeitungSachbearbeitung.');
+        if (requestParameters.patchEinplanungBedarfeRequest === null || requestParameters.patchEinplanungBedarfeRequest === undefined) {
+            throw new runtime.RequiredError('patchEinplanungBedarfeRequest','Required parameter requestParameters.patchEinplanungBedarfeRequest was null or undefined when calling patchEinplanungBedarfe.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/abfrage/bedarfsmeldung-erfolgt/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PatchEinplanungBedarfeRequestToJSON(requestParameters.patchEinplanungBedarfeRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung einer Abfrage im Status EINPLANUNG_BEDARFE.
+     */
+    async patchEinplanungBedarfe(requestParameters: PatchEinplanungBedarfeOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
+        const response = await this.patchEinplanungBedarfeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Aktualisierung einer Abfrage im Status START_BEARBEITUNG.
+     */
+    async patchStartBearbeitungRaw(requestParameters: PatchStartBearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchStartBearbeitung.');
+        }
+
+        if (requestParameters.patchStartBearbeitungRequest === null || requestParameters.patchStartBearbeitungRequest === undefined) {
+            throw new runtime.RequiredError('patchStartBearbeitungRequest','Required parameter requestParameters.patchStartBearbeitungRequest was null or undefined when calling patchStartBearbeitung.');
         }
 
         const queryParameters: any = {};
@@ -267,17 +267,17 @@ export class AbfragenApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchInBearbeitungSachbearbeitungRequestToJSON(requestParameters.patchInBearbeitungSachbearbeitungRequest),
+            body: PatchStartBearbeitungRequestToJSON(requestParameters.patchStartBearbeitungRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status IN_BEARBEITUNG_SACHBEARBEITUNG.
+     * Aktualisierung einer Abfrage im Status START_BEARBEITUNG.
      */
-    async patchInBearbeitungSachbearbeitung(requestParameters: PatchInBearbeitungSachbearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
-        const response = await this.patchInBearbeitungSachbearbeitungRaw(requestParameters, initOverrides);
+    async patchStartBearbeitung(requestParameters: PatchStartBearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
+        const response = await this.patchStartBearbeitungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

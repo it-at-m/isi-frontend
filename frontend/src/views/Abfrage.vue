@@ -302,22 +302,22 @@ import {
   type AbfragevarianteWeiteresVerfahrenDto,
   type BaurateDto,
   type BauleitplanverfahrenAngelegtDto,
-  type BauleitplanverfahrenInBearbeitungSachbearbeitungDto,
-  type BauleitplanverfahrenInBearbeitungFachreferatDto,
-  type BauleitplanverfahrenBedarfsmeldungErfolgtDto,
   type BaugenehmigungsverfahrenAngelegtDto,
-  type BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
-  type BaugenehmigungsverfahrenInBearbeitungFachreferatDto,
-  type BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
-  type WeiteresVerfahrenAngelegtDto,
-  type WeiteresVerfahrenInBearbeitungSachbearbeitungDto,
-  type WeiteresVerfahrenInBearbeitungFachreferatDto,
-  type WeiteresVerfahrenBedarfsmeldungErfolgtDto,
   type TransitionDto,
   AbfrageDtoArtAbfrageEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
   AbfrageDto,
+  BauleitplanverfahrenStartBearbeitungDto,
+  BaugenehmigungsverfahrenStartBearbeitungDto,
+  WeiteresVerfahrenStartBearbeitungDto,
+  BauleitplanverfahrenEinpflegenBedarfsmeldungDto,
+  BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto,
+  WeiteresVerfahrenEinpflegenBedarfsmeldungDto,
+  BauleitplanverfahrenEinplanungBedarfeDto,
+  BaugenehmigungsverfahrenEinplanungBedarfeDto,
+  WeiteresVerfahrenEinplanungBedarfeDto,
+  WeiteresVerfahrenAngelegtDto,
 } from "@/api/api-client/isi-backend";
 import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
@@ -361,16 +361,16 @@ import {
   mapToBauleitplanverfahrenAngelegt,
   mapToBaugenehmigungsverfahrenAngelegt,
   mapToWeiteresVerfahrenAngelegt,
-  mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto,
-  mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto,
-  mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto,
-  mapToBauleitplanverfahrenInBearbeitungFachreferatDto,
-  mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto,
-  mapToWeiteresVerfahrenInBearbeitungFachreferatDto,
-  mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto,
-  mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto,
-  mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto,
   copyAbfrageOrAbfragevariante,
+  mapToBauleitplanverfahrenStartBearbeitungDto,
+  mapToBaugenehmigungsverfahrenStartBearbeitungDto,
+  mapToWeiteresVerfahrenStartBearbeitungDto,
+  mapToBauleitplanverfahrenEinpflegenBedarfsmeldungDto,
+  mapToBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto,
+  mapToWeiteresVerfahrenEinpflegenBedarfsmeldungDto,
+  mapToBauleitplanverfahrenEinplanungBedarfeDto,
+  mapToBaugenehmigungsverfahrenEinplanungBedarfeDto,
+  mapToWeiteresVerfahrenEinplanungBedarfeDto,
 } from "@/utils/MapperUtil";
 import _ from "lodash";
 import { useToast, TYPE } from "vue-toastification";
@@ -420,9 +420,9 @@ const { isRoleAdminOrAbfrageerstellung } = useSecurity();
 const {
   save,
   patchAngelegt,
-  patchInBearbeitungSachbearbeitung,
-  patchInBearbeitungFachreferat,
-  patchBedarfsmeldungErfolgt,
+  patchStartBearbeitung,
+  patchEinpflegenBedarfsmeldung,
+  patchEinplanungBedarfe,
   getById,
   deleteById,
 } = useAbfragenApi();
@@ -708,11 +708,11 @@ async function saveAbfrage(): Promise<void> {
       } else if (isEditableByAbfrageerstellung.value) {
         handlePatchAngelegt(abfrage.value);
       } else if (isEditableBySachbearbeitung.value) {
-        handlePatchInBearbeitungSachbearbeitung(abfrage.value);
+        handlePatchStartBearbeitung(abfrage.value);
       } else if (isEditableByBedarfsmeldung.value) {
-        handlePatchInBearbeitungFachreferat(abfrage.value);
+        handlePatchEinpflegenBedarfsmeldung(abfrage.value);
       } else if (isBedarfsmeldungEditableByAbfrageerstellung.value) {
-        handlePatchBedarfsmeldungErfolgt(abfrage.value);
+        handlePatchEinplanungBedarfe(abfrage.value);
       }
     } else {
       toast.error(validationMessage, { timeout: false });
@@ -756,54 +756,54 @@ async function handlePatchAngelegt(model: AnyAbfrageModel): Promise<void> {
   handleSuccess(dto, true);
 }
 
-async function handlePatchInBearbeitungSachbearbeitung(model: AnyAbfrageModel): Promise<void> {
-  let abfrageInBearbeitungSachbearbeitungDto:
-    | BauleitplanverfahrenInBearbeitungSachbearbeitungDto
-    | BaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto
-    | WeiteresVerfahrenInBearbeitungSachbearbeitungDto
+async function handlePatchStartBearbeitung(model: AnyAbfrageModel): Promise<void> {
+  let abfrageStartBearbeitungDto:
+    | BauleitplanverfahrenStartBearbeitungDto
+    | BaugenehmigungsverfahrenStartBearbeitungDto
+    | WeiteresVerfahrenStartBearbeitungDto
     | undefined = undefined;
   if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    abfrageInBearbeitungSachbearbeitungDto = mapToBauleitplanverfahrenInBearbeitungSachbearbeitungDto(model);
+    abfrageStartBearbeitungDto = mapToBauleitplanverfahrenStartBearbeitungDto(model);
   } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    abfrageInBearbeitungSachbearbeitungDto = mapToBaugenehmigungsverfahrenInBearbeitungSachbearbeitungDto(model);
+    abfrageStartBearbeitungDto = mapToBaugenehmigungsverfahrenStartBearbeitungDto(model);
   } else {
-    abfrageInBearbeitungSachbearbeitungDto = mapToWeiteresVerfahrenInBearbeitungSachbearbeitungDto(model);
+    abfrageStartBearbeitungDto = mapToWeiteresVerfahrenStartBearbeitungDto(model);
   }
-  const dto = await patchInBearbeitungSachbearbeitung(abfrageInBearbeitungSachbearbeitungDto, abfrageId);
+  const dto = await patchStartBearbeitung(abfrageStartBearbeitungDto, abfrageId);
   handleSuccess(dto, true);
 }
 
-async function handlePatchInBearbeitungFachreferat(model: AnyAbfrageModel): Promise<void> {
-  let abfrageInBearbeitungFachreferatDto:
-    | BauleitplanverfahrenInBearbeitungFachreferatDto
-    | BaugenehmigungsverfahrenInBearbeitungFachreferatDto
-    | WeiteresVerfahrenInBearbeitungFachreferatDto
+async function handlePatchEinpflegenBedarfsmeldung(model: AnyAbfrageModel): Promise<void> {
+  let abfrageEinpflegenBedarfsmeldungDto:
+    | BauleitplanverfahrenEinpflegenBedarfsmeldungDto
+    | BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
+    | WeiteresVerfahrenEinpflegenBedarfsmeldungDto
     | undefined = undefined;
   if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    abfrageInBearbeitungFachreferatDto = mapToBauleitplanverfahrenInBearbeitungFachreferatDto(model);
+    abfrageEinpflegenBedarfsmeldungDto = mapToBauleitplanverfahrenEinpflegenBedarfsmeldungDto(model);
   } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    abfrageInBearbeitungFachreferatDto = mapToBaugenehmigungsverfahrenInBearbeitungFachreferatDto(model);
+    abfrageEinpflegenBedarfsmeldungDto = mapToBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto(model);
   } else {
-    abfrageInBearbeitungFachreferatDto = mapToWeiteresVerfahrenInBearbeitungFachreferatDto(model);
+    abfrageEinpflegenBedarfsmeldungDto = mapToWeiteresVerfahrenEinpflegenBedarfsmeldungDto(model);
   }
-  const dto = await patchInBearbeitungFachreferat(abfrageInBearbeitungFachreferatDto, abfrageId);
+  const dto = await patchEinpflegenBedarfsmeldung(abfrageEinpflegenBedarfsmeldungDto, abfrageId);
   handleSuccess(dto, true);
 }
 
-async function handlePatchBedarfsmeldungErfolgt(model: AnyAbfrageModel): Promise<void> {
-  let abfrageBedarfsmeldungErfolgtDto:
-    | BauleitplanverfahrenBedarfsmeldungErfolgtDto
-    | BaugenehmigungsverfahrenBedarfsmeldungErfolgtDto
-    | WeiteresVerfahrenBedarfsmeldungErfolgtDto
+async function handlePatchEinplanungBedarfe(model: AnyAbfrageModel): Promise<void> {
+  let abfrageEinplanungBedarfeDto:
+    | BauleitplanverfahrenEinplanungBedarfeDto
+    | BaugenehmigungsverfahrenEinplanungBedarfeDto
+    | WeiteresVerfahrenEinplanungBedarfeDto
     | undefined = undefined;
   if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    abfrageBedarfsmeldungErfolgtDto = mapToBauleitplanverfahrenBedarfsmeldungErfolgtDto(model);
+    abfrageEinplanungBedarfeDto = mapToBauleitplanverfahrenEinplanungBedarfeDto(model);
   } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    abfrageBedarfsmeldungErfolgtDto = mapToBaugenehmigungsverfahrenBedarfsmeldungErfolgtDto(model);
+    abfrageEinplanungBedarfeDto = mapToBaugenehmigungsverfahrenEinplanungBedarfeDto(model);
   } else {
-    abfrageBedarfsmeldungErfolgtDto = mapToWeiteresVerfahrenBedarfsmeldungErfolgtDto(model);
+    abfrageEinplanungBedarfeDto = mapToWeiteresVerfahrenEinplanungBedarfeDto(model);
   }
-  const dto = await patchBedarfsmeldungErfolgt(abfrageBedarfsmeldungErfolgtDto, abfrageId);
+  const dto = await patchEinplanungBedarfe(abfrageEinplanungBedarfeDto, abfrageId);
   handleSuccess(dto, true);
 }
 

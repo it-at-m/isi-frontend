@@ -35,7 +35,7 @@ export function useAbfrageSecurity() {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
         security.isRoleAdminOrAbfrageerstellung.value &&
-        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.BedarfsmeldungErfolgt
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.EinplanungBedarfe
       );
     }
     return false;
@@ -45,7 +45,7 @@ export function useAbfrageSecurity() {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
         security.isRoleAdminOrSachbearbeitung.value &&
-        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungSachbearbeitung
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.StartBearbeitung
       );
     }
     return false;
@@ -55,7 +55,7 @@ export function useAbfrageSecurity() {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
         security.isRoleAdminOrBedarfsmeldung.value &&
-        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.InBearbeitungFachreferate
+        searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.EinpflegenBedarfsmeldung
       );
     }
     return false;
