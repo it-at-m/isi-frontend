@@ -1,0 +1,3 @@
+2024-11-28 12:33:47.246 CET [22208] FATAL:  bereits bestehender Shared-Memory-Block wird noch benutzt
+2024-11-28 12:33:47.246 CET [22208] TIPP:  Prüfen Sie, ob irgendwelche alten Serverprozesse noch laufen und beenden Sie diese.
+2024-11-28 12:33:47.246 CET [22208] LOG:  Datenbanksystem ist heruntergefahren

@@ -3,7 +3,7 @@ import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import _ from "lodash";
 import SobonBerechnungModel from "@/types/model/abfragevariante/SobonBerechnungModel";
-import { createSobonBerechnung } from "@/utils/Factories";
+import { createSobonBerechnungBauleitplanverfahren } from "@/utils/Factories";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AbfragevarianteBauleitplanverfahrenModel extends AbfragevarianteBauleitplanverfahrenDto {}
@@ -16,7 +16,7 @@ class AbfragevarianteBauleitplanverfahrenModel {
     if (!_.isNil(abfragevariante.sobonBerechnung)) {
       this.sobonBerechnung = new SobonBerechnungModel(abfragevariante.sobonBerechnung);
     } else {
-      this.sobonBerechnung = createSobonBerechnung();
+      this.sobonBerechnung = createSobonBerechnungBauleitplanverfahren();
     }
   }
 

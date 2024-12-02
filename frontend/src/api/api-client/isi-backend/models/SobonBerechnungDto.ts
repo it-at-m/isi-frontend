@@ -38,7 +38,27 @@ export interface SobonBerechnungDto {
      * @memberof SobonBerechnungDto
      */
     sobonFoerdermix?: FoerdermixDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof SobonBerechnungDto
+     */
+    sobonOrientierungswertJahrSobonUrsaechlich?: SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum;
 }
+
+
+/**
+ * @export
+ */
+export const SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Jahr2014: 'JAHR_2014',
+    Jahr2017: 'JAHR_2017',
+    Jahr2022: 'JAHR_2022',
+    Standortabfrage: 'STANDORTABFRAGE'
+} as const;
+export type SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum[keyof typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum];
+
 
 /**
  * Check if a given object implements the SobonBerechnungDto interface.
@@ -61,6 +81,7 @@ export function SobonBerechnungDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
         'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
+        'sobonOrientierungswertJahrSobonUrsaechlich': !exists(json, 'sobonOrientierungswertJahrSobonUrsaechlich') ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
     };
 }
 
@@ -75,6 +96,7 @@ export function SobonBerechnungDtoToJSON(value?: SobonBerechnungDto | null): any
         
         'isASobonBerechnung': value.isASobonBerechnung,
         'sobonFoerdermix': FoerdermixDtoToJSON(value.sobonFoerdermix),
+        'sobonOrientierungswertJahrSobonUrsaechlich': value.sobonOrientierungswertJahrSobonUrsaechlich,
     };
 }
 

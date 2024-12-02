@@ -241,7 +241,7 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
      * @type {string}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
-    sobonOrientierungswertJahr?: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum;
+    sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;
     /**
      * 
      * @type {SobonBerechnungDto}
@@ -403,14 +403,14 @@ export type AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum = 
 /**
  * @export
  */
-export const AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum = {
+export const AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = {
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
     Jahr2022: 'JAHR_2022',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum];
+export type AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum];
 
 
 /**
@@ -463,7 +463,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
-        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'sobonOrientierungswertJahrPlanungsursaechlich': !exists(json, 'sobonOrientierungswertJahrPlanungsursaechlich') ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -528,7 +528,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSON(value?: Abfragevariant
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'weAnmerkung': value.weAnmerkung,
-        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'sobonOrientierungswertJahrPlanungsursaechlich': value.sobonOrientierungswertJahrPlanungsursaechlich,
         'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,

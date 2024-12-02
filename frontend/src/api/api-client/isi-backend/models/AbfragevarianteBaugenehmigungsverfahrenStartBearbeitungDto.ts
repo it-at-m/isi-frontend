@@ -211,7 +211,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto {
      * @type {string}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto
      */
-    sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrEnum;
+    sobonOrientierungswertJahrPlanungsursaechlich: AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;
     /**
      * 
      * @type {Date}
@@ -289,14 +289,14 @@ export type AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoWesentlich
 /**
  * @export
  */
-export const AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrEnum = {
+export const AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = {
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
     Jahr2022: 'JAHR_2022',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrEnum];
+export type AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum];
 
 
 /**
@@ -311,7 +311,7 @@ export function instanceOfAbfragevarianteBaugenehmigungsverfahrenStartBearbeitun
     isInstance = isInstance && "gfWohnenSonderwohnformen" in value;
     isInstance = isInstance && "weSonderwohnformen" in value;
     isInstance = isInstance && "bauabschnitte" in value;
-    isInstance = isInstance && "sobonOrientierungswertJahr" in value;
+    isInstance = isInstance && "sobonOrientierungswertJahrPlanungsursaechlich" in value;
     isInstance = isInstance && "stammdatenGueltigAb" in value;
 
     return isInstance;
@@ -355,7 +355,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoFromJS
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
         'bauabschnitte': ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
-        'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'],
+        'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
@@ -403,7 +403,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoToJSON
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'weAnmerkung': value.weAnmerkung,
         'bauabschnitte': ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
-        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'sobonOrientierungswertJahrPlanungsursaechlich': value.sobonOrientierungswertJahrPlanungsursaechlich,
         'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'hasBauratendateiInput': value.hasBauratendateiInput,

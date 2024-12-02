@@ -8,9 +8,9 @@
         >
           <v-slide-y-reverse-transition>
             <v-select
-              id="sobon_orientierungswert_jahr_dropdown"
-              ref="sobonOrientierungswertJahrDropdown"
-              v-model="abfragevarianteSachbearbeitung.sobonOrientierungswertJahr"
+              id="sobon_orientierungswert_jahr_planungsursaechlich_dropdown"
+              ref="sobonOrientierungswertJahrPlanungsursaechlichDropdown"
+              v-model="abfragevarianteSachbearbeitung.sobonOrientierungswertJahrPlanungsursaechlich"
               variant="underlined"
               :disabled="!isEditableBySachbearbeitung"
               :items="sobonOrientierungswertJahrList"
@@ -19,7 +19,33 @@
               :rules="sobonOrientierungswertJahrValidator"
               @update:model-value="formChanged"
             >
-              <template #label> Jahr für SoBoN-Orientierungwerte <span class="text-secondary">*</span> </template>
+              <template #label>
+                Jahr für SoBoN-Orientierungwerte (planungsursächlich) <span class="text-secondary">*</span>
+              </template>
+            </v-select>
+          </v-slide-y-reverse-transition>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-slide-y-reverse-transition>
+            <v-select
+              v-if="
+                isBauleitplanverfahrenOrWeiteresVerfahren &&
+                abfragevarianteSachbearbeitung.sobonBerechnung?.isASobonBerechnung
+              "
+              id="sobon_orientierungswert_jahr_sobonursaechlich_dropdown"
+              ref="sobonOrientierungswertJahrSobonursaechlichDropdown"
+              v-model="abfragevarianteSachbearbeitung.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich"
+              variant="underlined"
+              :disabled="!isEditableBySachbearbeitung"
+              :items="sobonOrientierungswertJahrList"
+              item-value="key"
+              item-title="value"
+              @update:model-value="formChanged"
+            >
+              <template #label> Jahr für SoBoN-Orientierungwerte (SoBoN-ursächlich) </template>
             </v-select>
           </v-slide-y-reverse-transition>
         </v-col>
@@ -216,6 +242,7 @@ function showSobonReport(): boolean {
     !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix?.bezeichnungJahr) &&
     !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix?.bezeichnung) &&
     !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung?.sobonFoerdermix?.foerderarten) &&
+    !_.isNil(abfragevarianteSachbearbeitung.value.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich) &&
     !_.isNil(abfragevarianteSachbearbeitung.value.gfWohnenSobonUrsaechlich)
   );
 }
