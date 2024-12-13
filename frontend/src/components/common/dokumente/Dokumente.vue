@@ -7,7 +7,7 @@
           class="text-center"
         >
           <span class="text-grey-darken-1"
-            >Es sind maximal 20 Dokumente mit jeweils einer Größe von 50 MB erlaubt.</span
+            >Es sind maximal 50 Dokumente mit jeweils einer Größe von 50 MB erlaubt.</span
           >
         </v-col>
       </v-row>
