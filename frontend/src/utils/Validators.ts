@@ -17,6 +17,7 @@ import {
   KommentarBauvorhabenDto,
   KommentarInfrastruktureinrichtungDto,
   MittelschuleDto,
+  SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum,
 } from "@/api/api-client/isi-backend";
 import {
   AbfrageDtoArtAbfrageEnum,
@@ -27,7 +28,7 @@ import {
   BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   InfrastruktureinrichtungDtoStatusEnum,
   BaugebietDtoArtBaulicheNutzungEnum,
-  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
+  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum,
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
   StatusAbfrage,
@@ -186,9 +187,9 @@ export function findFaultInAbfragevariante(
   }
   if (abfrage.statusAbfrage === StatusAbfrage.StartBearbeitung) {
     if (
-      _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
-      abfragevariante.sobonOrientierungswertJahr ===
-        AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
+      _.isNil(abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich) ||
+      abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich ===
+        AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified
     ) {
       return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
     }
@@ -273,6 +274,13 @@ export function findFaultInAbfragevarianteMarkedSobonBerechnung(
           abfragevarianteSobon.sobonBerechnung.sobonFoerdermix.foerderarten?.length == 0)
       ) {
         return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
+      }
+      if (
+        _.isNil(abfragevarianteSobon.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich) ||
+        abfragevarianteSobon.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich ==
+          SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum.Unspecified
+      ) {
+        return "Bitte geben Sie ein Jahr für SoBoN-Orientierungswerte an für die SoBoN-Berechnung";
       }
       if (_.isNil(abfragevarianteSobon.gfWohnenSobonUrsaechlich)) {
         return "Bitte geben Sie SoBoN-ursächliche Geschlossfläche Wohnen an um eine SoBoN-Berechnung durchzuführen.";
@@ -624,9 +632,9 @@ function convertAbfragevarianteType(
 
 function findFaultInAbfragevarianteStartBearbeitung(abfragevariante: AnyAbfragevarianteModel): string | null {
   if (
-    _.isNil(abfragevariante.sobonOrientierungswertJahr) ||
-    abfragevariante.sobonOrientierungswertJahr ===
-      AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified
+    _.isNil(abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich) ||
+    abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich ===
+      AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified
   ) {
     return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
   }

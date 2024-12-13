@@ -187,7 +187,7 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
      * @type {string}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
-    sobonOrientierungswertJahr?: EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum;
+    sobonOrientierungswertJahrPlanungsursaechlich?: EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum;
     /**
      * 
      * @type {SobonBerechnung}
@@ -314,14 +314,14 @@ export type EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrund
 /**
  * @export
  */
-export const EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum = {
+export const EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum = {
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
     Jahr2022: 'JAHR_2022',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum = typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum[keyof typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrEnum];
+export type EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum];
 
 /**
  * @export
@@ -379,7 +379,7 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
-        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'sobonOrientierungswertJahrPlanungsursaechlich': !exists(json, 'sobonOrientierungswertJahrPlanungsursaechlich') ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungFromJSON(json['sobonBerechnung']),
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
@@ -434,7 +434,7 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSON(value?: Ent
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'weAnmerkung': value.weAnmerkung,
-        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'sobonOrientierungswertJahrPlanungsursaechlich': value.sobonOrientierungswertJahrPlanungsursaechlich,
         'sobonBerechnung': SobonBerechnungToJSON(value.sobonBerechnung),
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,

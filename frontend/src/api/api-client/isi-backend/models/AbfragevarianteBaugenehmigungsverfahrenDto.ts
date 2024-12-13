@@ -223,7 +223,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
      * @type {string}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
-    sobonOrientierungswertJahr?: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum;
+    sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;
     /**
      * 
      * @type {Date}
@@ -379,14 +379,14 @@ export type AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlage
 /**
  * @export
  */
-export const AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum = {
+export const AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = {
     Unspecified: 'UNSPECIFIED',
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
     Jahr2022: 'JAHR_2022',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum = typeof AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum];
+export type AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum];
 
 
 /**
@@ -437,7 +437,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoFromJSONTyped(json: an
         'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
-        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : json['sobonOrientierungswertJahr'],
+        'sobonOrientierungswertJahrPlanungsursaechlich': !exists(json, 'sobonOrientierungswertJahrPlanungsursaechlich') ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
         'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
@@ -499,7 +499,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoToJSON(value?: Abfrage
         'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
         'weAnmerkung': value.weAnmerkung,
-        'sobonOrientierungswertJahr': value.sobonOrientierungswertJahr,
+        'sobonOrientierungswertJahrPlanungsursaechlich': value.sobonOrientierungswertJahrPlanungsursaechlich,
         'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
         'anmerkung': value.anmerkung,
         'hasBauratendateiInput': value.hasBauratendateiInput,

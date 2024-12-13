@@ -39,7 +39,7 @@ import {
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
-import { createSobonBerechnung } from "./Factories";
+import { createSobonBerechnungBauleitplanverfahren } from "./Factories";
 import { AnyAbfrageDto, AnyAbfragevarianteDto } from "@/types/common/Abfrage";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
@@ -332,7 +332,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenStartBearbeitungDto(
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
-      sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      sobonOrientierungswertJahrPlanungsursaechlich: abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich,
       sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
@@ -379,7 +379,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto(
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
-      sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      sobonOrientierungswertJahrPlanungsursaechlich: abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
       hasBauratendateiInput: abfragevariante.hasBauratendateiInput,
@@ -427,7 +427,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenStartBearbeitungDto(
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
-      sobonOrientierungswertJahr: abfragevariante.sobonOrientierungswertJahr,
+      sobonOrientierungswertJahrPlanungsursaechlich: abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich,
       sobonBerechnung: abfragevariante.sobonBerechnung,
       stammdatenGueltigAb: abfragevariante.stammdatenGueltigAb,
       anmerkung: abfragevariante.anmerkung,
@@ -749,7 +749,7 @@ const sanitizationMap = new Map<string, unknown>([
   ["sub", undefined],
   ["bearbeitungshistorie", undefined],
   // Abfragevariante
-  ["sobonBerechnung", createSobonBerechnung()],
+  ["sobonBerechnung", createSobonBerechnungBauleitplanverfahren()],
   ["stammdatenGueltigAb", new Date()],
   ["hasBauratendateiInput", false],
   ["anmerkungBauratendateiInput", undefined],

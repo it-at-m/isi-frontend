@@ -63,9 +63,9 @@ import {
   AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum,
   AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum,
   // Abfragevariante SobonOrientierungswertJahrEnum's
-  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum,
-  AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum,
-  AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum,
+  AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum,
+  AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum,
+  AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum,
   // Bedarfsmeldung
   BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   // Baugebiet
@@ -295,8 +295,9 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     weAnmerkung: undefined,
-    sobonOrientierungswertJahr: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
-    sobonBerechnung: createSobonBerechnung(),
+    sobonOrientierungswertJahrPlanungsursaechlich:
+      AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
+    sobonBerechnung: createSobonBerechnungBauleitplanverfahren(),
     stammdatenGueltigAb: new Date(0),
     hasBauratendateiInput: false,
     anmerkungBauratendateiInput: undefined,
@@ -346,7 +347,8 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     weAnmerkung: undefined,
-    sobonOrientierungswertJahr: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
+    sobonOrientierungswertJahrPlanungsursaechlich:
+      AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
     stammdatenGueltigAb: new Date(0),
     hasBauratendateiInput: false,
     anmerkungBauratendateiInput: undefined,
@@ -398,8 +400,9 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     weAnmerkung: undefined,
-    sobonOrientierungswertJahr: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrEnum.Unspecified,
-    sobonBerechnung: createSobonBerechnung(),
+    sobonOrientierungswertJahrPlanungsursaechlich:
+      AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
+    sobonBerechnung: createSobonBerechnungWeiteresVerfahren(),
     stammdatenGueltigAb: new Date(0),
     hasBauratendateiInput: false,
     anmerkungBauratendateiInput: undefined,
@@ -415,10 +418,21 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
   };
 }
 
-export function createSobonBerechnung(): SobonBerechnungDto {
+export function createSobonBerechnungBauleitplanverfahren(): SobonBerechnungDto {
   return {
     sobonFoerdermix: createFoerdermixDto(),
     isASobonBerechnung: false,
+    sobonOrientierungswertJahrSobonUrsaechlich:
+      AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
+  };
+}
+
+export function createSobonBerechnungWeiteresVerfahren(): SobonBerechnungDto {
+  return {
+    sobonFoerdermix: createFoerdermixDto(),
+    isASobonBerechnung: false,
+    sobonOrientierungswertJahrSobonUrsaechlich:
+      AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
   };
 }
 
