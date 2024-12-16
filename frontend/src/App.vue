@@ -36,20 +36,68 @@
           cols="3"
           class="d-flex align-center justify-end"
         >
-          <v-tooltip
+          <v-menu
+            id="globale_reports"
             location="bottom"
-            open-delay="500"
+            transition="slide-y-transition"
           >
-            <template #activator="{ props: activatorProps }">
-              <v-btn
-                icon="mdi-finance"
-                target="_blank"
-                v-bind="activatorProps"
-                :href="urlGlobalReports"
-              />
+            <template #activator="{ props: menu }">
+              <v-tooltip
+                location="bottom"
+                open-delay="500"
+              >
+                <template v-slot:activator="{ props: tooltip }">
+                  <v-btn
+                    icon="mdi-finance"
+                    v-bind="mergeProps(menu, tooltip)"
+                  />
+                </template>
+                <span> Zu den Reporten </span>
+              </v-tooltip>
             </template>
-            <span> Zu den Reporten </span>
-          </v-tooltip>
+            <v-list class="text-center">
+              <v-list-item @click="showVersionInfo = true">
+                <v-list-item-title>
+                  <a
+                    target="_blank"
+                    :href="urlBauratendatei"
+                  >
+                    Bauratendatei<span class="mdi mdi-launch" />
+                  </a>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title>
+                  <a
+                    target="_blank"
+                    :href="urlKitaplanungsbereichKrippe"
+                  >
+                    Kitaplanungsbereichsblatt Krippe<span class="mdi mdi-launch" />
+                  </a>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title>
+                  <a
+                    target="_blank"
+                    :href="urlKitaplanungsbereichKiga"
+                  >
+                    Kitaplanungsbereichsblatt Kiga<span class="mdi mdi-launch" />
+                  </a>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title>
+                  <a
+                    target="_blank"
+                    :href="urlAndereReports"
+                  >
+                    Andere Reporte<span class="mdi mdi-launch" />
+                  </a>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-menu
             id="app_help_menu"
             location="bottom"
@@ -159,9 +207,27 @@ const logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
 const showVersionInfo = ref(false);
 const menu = ref(false);
 
-const urlGlobalReports = computed(() => {
+const urlBauratendatei = computed(() => {
   return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
-    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportsGlobal}`
+    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportBauratendatei}`
+    : "";
+});
+
+const urlKitaplanungsbereichKrippe = computed(() => {
+  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportKitaplanungsbereichKrippe}`
+    : "";
+});
+
+const urlKitaplanungsbereichKiga = computed(() => {
+  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportKitaplanungsbereichKiga}`
+    : "";
+});
+
+const urlAndereReports = computed(() => {
+  return !_.isNil(metabaseReportingStore.metabaseReportingInformation)
+    ? `${metabaseReportingStore.metabaseReportingInformation.url}/${metabaseReportingStore.metabaseReportingInformation.reportAndere}`
     : "";
 });
 
