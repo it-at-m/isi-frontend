@@ -56,7 +56,7 @@
               </v-tooltip>
             </template>
             <v-list class="text-center">
-              <v-list-item @click="showVersionInfo = true">
+              <v-list-item>
                 <v-list-item-title>
                   <a
                     target="_blank"
