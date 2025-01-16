@@ -36,18 +36,23 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
 export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
-
-export const OVERLAYS_ARCGIS_TRANSPARENT = new Map([
-  ["Gemarkungen", "Gemarkungen"],
-  ["Stadtviertel", "Stadtviertel"],
-  ["Bezirksteile", "Bezirksteile"],
-  ["Stadtbezirke", "Stadtbezirke"],
-  ["Kitaplanungsbereiche", "Kitaplanungsbereiche"],
-  ["Grundschulsprengel", "Grundschulsprengel"],
-  ["Mittelschulsprengel", "Mittelschulsprengel"],
-  ["Baublöcke", "Baublöcke"],
-  ["Umgriffe Bebauungspläne", "BB-Umgriff"],
-]);
+export class OverlayUrlMapping {
+  displayName: String;
+  internalName: String;
+  urlPart: String;
+}
+export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
+  { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis" },
+  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },
+  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },
+  { displayName: "Bezirksteile", internalName: "Bezirksteile", urlPart: "basis" },
+  { displayName: "Stadtbezirke", internalName: "Stadtbezirke", urlPart: "basis" },
+  { displayName: "Kitaplanungsbereiche", internalName: "Kitaplanungsbereiche", urlPart: "Bildung_und_Soziales" },
+  { displayName: "Grundschulsprengel", internalName: "Grundschulsprengel", urlPart: "Bildung_und_Soziales" },
+  { displayName: "Mittelschulsprengel", internalName: "Mittelschulsprengel", urlPart: "Bildung_und_Soziales" },
+  { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis" },
+  { displayName: "Umgriffe Bebauungspläne", internalName: "BB-Umgriff", urlPart: "basis" },
+];
 
 /**
  * Die Methode erstellt die Standardlayer welche als Overlay über eine Karte gelegt werden können.
@@ -80,12 +85,12 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
   }
 
   for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
-    const layer = L.nonTiledLayer.wms(getArcgisUrl("basis"), {
-      layers: overlay[1],
+    const layer = L.nonTiledLayer.wms(getArcgisUrl(overlay.urlPart), {
+      layers: overlay.internalName,
       transparent: true,
       ...LAYER_OPTIONS,
     });
-    layers[overlay[0]] = layer;
+    layers[overlay.displayName] = layer;
   }
 
   return layers;
