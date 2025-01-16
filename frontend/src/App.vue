@@ -56,7 +56,7 @@
               </v-tooltip>
             </template>
             <v-list class="text-center">
-              <v-list-item>
+              <v-list-item v-if="isRoleAdminOrSachbearbeitung">
                 <v-list-item-title>
                   <a
                     target="_blank"
@@ -66,7 +66,7 @@
                   </a>
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-if="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung">
                 <v-list-item-title>
                   <a
                     target="_blank"
@@ -76,7 +76,7 @@
                   </a>
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-if="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung">
                 <v-list-item-title>
                   <a
                     target="_blank"
@@ -196,12 +196,14 @@ import { useStammdatenStore } from "@/stores/StammdatenStore";
 import { useUserinfoStore } from "@/stores/Userinfostore";
 import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
 import { useUserInfoApi } from "./composables/requests/UserInfoApi";
+import { useSecurity } from "./composables/security/Security";
 
 const lookupStore = useLookupStore();
 const stammdatenStore = useStammdatenStore();
 const userInfoStore = useUserinfoStore();
 const { getUserinfo } = useUserInfoApi();
 const metabaseReportingStore = useMetabaseReportingStore();
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
 const datenschutzhinweisUrl: string = import.meta.env.VITE_DATENSCHUTZHINWEIS_URL;
 const logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
 const showVersionInfo = ref(false);
