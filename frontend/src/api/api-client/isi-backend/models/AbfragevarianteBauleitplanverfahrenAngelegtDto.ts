@@ -209,7 +209,6 @@ export const AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrun
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
     Befreiung: 'BEFREIUNG',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum];

@@ -206,7 +206,6 @@ export const BauvorhabenRequestBodyStandVerfahrenEnum = {
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
@@ -240,7 +239,6 @@ export const BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum = {
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
     Befreiung: 'BEFREIUNG',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum = typeof BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum[keyof typeof BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum];
@@ -256,7 +254,6 @@ export const BauvorhabenRequestBodyArtFnpEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauvorhabenRequestBodyArtFnpEnum = typeof BauvorhabenRequestBodyArtFnpEnum[keyof typeof BauvorhabenRequestBodyArtFnpEnum];

@@ -136,7 +136,6 @@ export const BaugebietDtoArtBaulicheNutzungEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BaugebietDtoArtBaulicheNutzungEnum = typeof BaugebietDtoArtBaulicheNutzungEnum[keyof typeof BaugebietDtoArtBaulicheNutzungEnum];

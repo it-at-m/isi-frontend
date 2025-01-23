@@ -54,6 +54,12 @@ export interface SobonOrientierungswertSozialeInfrastrukturRequestBody {
      * @type {string}
      * @memberof SobonOrientierungswertSozialeInfrastrukturRequestBody
      */
+    jahrBezeichnung?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SobonOrientierungswertSozialeInfrastrukturRequestBody
+     */
     einrichtungstyp?: SobonOrientierungswertSozialeInfrastrukturRequestBodyEinrichtungstypEnum;
     /**
      * 
@@ -188,6 +194,7 @@ export function SobonOrientierungswertSozialeInfrastrukturRequestBodyFromJSONTyp
         'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'gueltigAb': !exists(json, 'gueltigAb') ? undefined : (new Date(json['gueltigAb'])),
+        'jahrBezeichnung': !exists(json, 'jahrBezeichnung') ? undefined : json['jahrBezeichnung'],
         'einrichtungstyp': !exists(json, 'einrichtungstyp') ? undefined : json['einrichtungstyp'],
         'altersklasse': !exists(json, 'altersklasse') ? undefined : json['altersklasse'],
         'foerderartBezeichnung': !exists(json, 'foerderartBezeichnung') ? undefined : json['foerderartBezeichnung'],
@@ -219,6 +226,7 @@ export function SobonOrientierungswertSozialeInfrastrukturRequestBodyToJSON(valu
         'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
         'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
         'gueltigAb': value.gueltigAb === undefined ? undefined : (value.gueltigAb.toISOString().substr(0,10)),
+        'jahrBezeichnung': value.jahrBezeichnung,
         'einrichtungstyp': value.einrichtungstyp,
         'altersklasse': value.altersklasse,
         'foerderartBezeichnung': value.foerderartBezeichnung,

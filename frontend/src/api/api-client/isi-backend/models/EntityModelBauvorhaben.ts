@@ -200,7 +200,6 @@ export const EntityModelBauvorhabenStandVerfahrenEnum = {
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
@@ -234,7 +233,6 @@ export const EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum = {
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
     Befreiung: 'BEFREIUNG',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum = typeof EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum[keyof typeof EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum];
@@ -250,7 +248,6 @@ export const EntityModelBauvorhabenArtFnpEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type EntityModelBauvorhabenArtFnpEnum = typeof EntityModelBauvorhabenArtFnpEnum[keyof typeof EntityModelBauvorhabenArtFnpEnum];

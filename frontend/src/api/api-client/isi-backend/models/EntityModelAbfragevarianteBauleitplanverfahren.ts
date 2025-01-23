@@ -306,7 +306,6 @@ export const EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrun
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
     Befreiung: 'BEFREIUNG',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum = typeof EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum[keyof typeof EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum];
@@ -319,6 +318,8 @@ export const EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswer
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
     Jahr2022: 'JAHR_2022',
+    Jahr2024: 'JAHR_2024',
+    Jahr202434: 'JAHR_2024_34',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof EntityModelAbfragevarianteBauleitplanverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum];
