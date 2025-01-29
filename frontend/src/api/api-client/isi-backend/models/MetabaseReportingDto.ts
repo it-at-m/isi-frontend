@@ -30,12 +30,6 @@ export interface MetabaseReportingDto {
      * @type {string}
      * @memberof MetabaseReportingDto
      */
-    reportsGlobal?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
-     */
     reportErgebnissePlanungsursaechlich?: string;
     /**
      * 
@@ -49,6 +43,30 @@ export interface MetabaseReportingDto {
      * @memberof MetabaseReportingDto
      */
     reportWohneinheiten?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetabaseReportingDto
+     */
+    reportBauratendatei?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetabaseReportingDto
+     */
+    reportKitaplanungsbereichKrippe?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetabaseReportingDto
+     */
+    reportKitaplanungsbereichKiga?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetabaseReportingDto
+     */
+    reportAndere?: string;
 }
 
 /**
@@ -71,10 +89,13 @@ export function MetabaseReportingDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'url': !exists(json, 'url') ? undefined : json['url'],
-        'reportsGlobal': !exists(json, 'reportsGlobal') ? undefined : json['reportsGlobal'],
         'reportErgebnissePlanungsursaechlich': !exists(json, 'reportErgebnissePlanungsursaechlich') ? undefined : json['reportErgebnissePlanungsursaechlich'],
         'reportErgebnisseSobonUrsaechlich': !exists(json, 'reportErgebnisseSobonUrsaechlich') ? undefined : json['reportErgebnisseSobonUrsaechlich'],
         'reportWohneinheiten': !exists(json, 'reportWohneinheiten') ? undefined : json['reportWohneinheiten'],
+        'reportBauratendatei': !exists(json, 'reportBauratendatei') ? undefined : json['reportBauratendatei'],
+        'reportKitaplanungsbereichKrippe': !exists(json, 'reportKitaplanungsbereichKrippe') ? undefined : json['reportKitaplanungsbereichKrippe'],
+        'reportKitaplanungsbereichKiga': !exists(json, 'reportKitaplanungsbereichKiga') ? undefined : json['reportKitaplanungsbereichKiga'],
+        'reportAndere': !exists(json, 'reportAndere') ? undefined : json['reportAndere'],
     };
 }
 
@@ -88,10 +109,13 @@ export function MetabaseReportingDtoToJSON(value?: MetabaseReportingDto | null):
     return {
         
         'url': value.url,
-        'reportsGlobal': value.reportsGlobal,
         'reportErgebnissePlanungsursaechlich': value.reportErgebnissePlanungsursaechlich,
         'reportErgebnisseSobonUrsaechlich': value.reportErgebnisseSobonUrsaechlich,
         'reportWohneinheiten': value.reportWohneinheiten,
+        'reportBauratendatei': value.reportBauratendatei,
+        'reportKitaplanungsbereichKrippe': value.reportKitaplanungsbereichKrippe,
+        'reportKitaplanungsbereichKiga': value.reportKitaplanungsbereichKiga,
+        'reportAndere': value.reportAndere,
     };
 }
 
