@@ -92,7 +92,7 @@
                     target="_blank"
                     :href="urlAndereReports"
                   >
-                    Andere Reporte<span class="mdi mdi-launch" />
+                    Andere Reports<span class="mdi mdi-launch" />
                   </a>
                 </v-list-item-title>
               </v-list-item>
