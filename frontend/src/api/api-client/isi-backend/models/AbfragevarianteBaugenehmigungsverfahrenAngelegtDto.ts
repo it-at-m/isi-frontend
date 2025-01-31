@@ -221,7 +221,6 @@ export const AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechts
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
     Befreiung: 'BEFREIUNG',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum];

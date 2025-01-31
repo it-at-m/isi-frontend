@@ -212,7 +212,6 @@ export const BauvorhabenDtoStandVerfahrenEnum = {
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
@@ -246,7 +245,6 @@ export const BauvorhabenDtoWesentlicheRechtsgrundlageEnum = {
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
     Befreiung: 'BEFREIUNG',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauvorhabenDtoWesentlicheRechtsgrundlageEnum = typeof BauvorhabenDtoWesentlicheRechtsgrundlageEnum[keyof typeof BauvorhabenDtoWesentlicheRechtsgrundlageEnum];
@@ -262,7 +260,6 @@ export const BauvorhabenDtoArtFnpEnum = {
     Mk: 'MK',
     Mi: 'MI',
     Ge: 'GE',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauvorhabenDtoArtFnpEnum = typeof BauvorhabenDtoArtFnpEnum[keyof typeof BauvorhabenDtoArtFnpEnum];

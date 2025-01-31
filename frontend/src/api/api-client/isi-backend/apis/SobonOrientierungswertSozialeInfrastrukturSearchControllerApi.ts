@@ -28,6 +28,12 @@ export interface ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetReque
     gueltigAb?: Date;
 }
 
+export interface ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Request {
+    einrichtungstyp?: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1EinrichtungstypEnum;
+    foerderartBezeichnung?: string;
+    jahrBezeichnung?: string;
+}
+
 /**
  * 
  */
@@ -69,6 +75,42 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
         return await response.value();
     }
 
+    /**
+     */
+    async executeSearchSobonorientierungswertsozialeinfrastrukturGet1Raw(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.einrichtungstyp !== undefined) {
+            queryParameters['einrichtungstyp'] = requestParameters.einrichtungstyp;
+        }
+
+        if (requestParameters.foerderartBezeichnung !== undefined) {
+            queryParameters['foerderartBezeichnung'] = requestParameters.foerderartBezeichnung;
+        }
+
+        if (requestParameters.jahrBezeichnung !== undefined) {
+            queryParameters['jahrBezeichnung'] = requestParameters.jahrBezeichnung;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndJahrBezeichnung`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async executeSearchSobonorientierungswertsozialeinfrastrukturGet1(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Request = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelSobonOrientierungswertSozialeInfrastruktur> {
+        const response = await this.executeSearchSobonorientierungswertsozialeinfrastrukturGet1Raw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }
 
 /**
@@ -84,3 +126,16 @@ export const ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtu
     Mittelschule: 'MITTELSCHULE'
 } as const;
 export type ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum = typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum[keyof typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum];
+/**
+ * @export
+ */
+export const ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1EinrichtungstypEnum = {
+    Unspecified: 'UNSPECIFIED',
+    Kinderkrippe: 'KINDERKRIPPE',
+    Kindergarten: 'KINDERGARTEN',
+    GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
+    HausFuerKinder: 'HAUS_FUER_KINDER',
+    Grundschule: 'GRUNDSCHULE',
+    Mittelschule: 'MITTELSCHULE'
+} as const;
+export type ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1EinrichtungstypEnum = typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1EinrichtungstypEnum[keyof typeof ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1EinrichtungstypEnum];

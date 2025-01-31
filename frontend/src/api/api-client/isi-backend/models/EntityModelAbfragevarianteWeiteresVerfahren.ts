@@ -330,7 +330,6 @@ export const EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundla
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
     Befreiung: 'BEFREIUNG',
-    InfoFehlt: 'INFO_FEHLT',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum = typeof EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum[keyof typeof EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum];
@@ -343,6 +342,8 @@ export const EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJa
     Jahr2014: 'JAHR_2014',
     Jahr2017: 'JAHR_2017',
     Jahr2022: 'JAHR_2022',
+    Jahr2024: 'JAHR_2024',
+    Jahr202434: 'JAHR_2024_34',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum];
