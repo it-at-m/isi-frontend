@@ -40,22 +40,21 @@ class BackendRouteTest {
     @BeforeEach
     void setup() {
         stubFor(
-            get(urlEqualTo("/remote/endpoint"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withHeaders(
-                            new HttpHeaders(
-                                new HttpHeader("Content-Type", "application/json"),
-                                new HttpHeader(
-                                    "WWW-Authenticate",
-                                    "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""
-                                ), // removed by route filter
-                                new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT") // removed by route filter
-                            )
+            get(urlEqualTo("/remote/endpoint")).willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.OK.value())
+                    .withHeaders(
+                        new HttpHeaders(
+                            new HttpHeader("Content-Type", "application/json"),
+                            new HttpHeader(
+                                "WWW-Authenticate",
+                                "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""
+                            ), // removed by route filter
+                            new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT") // removed by route filter
                         )
-                        .withBody("{ \"testkey\" : \"testvalue\" }")
-                )
+                    )
+                    .withBody("{ \"testkey\" : \"testvalue\" }")
+            )
         );
     }
 

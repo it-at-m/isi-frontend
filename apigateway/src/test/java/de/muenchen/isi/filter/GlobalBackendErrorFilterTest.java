@@ -37,22 +37,21 @@ class GlobalBackendErrorFilterTest {
     @BeforeEach
     void setup() {
         stubFor(
-            get(urlEqualTo("/remote"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .withHeaders(
-                            new HttpHeaders(
-                                new HttpHeader("Content-Type", "application/json"),
-                                new HttpHeader(
-                                    "WWW-Authenticate",
-                                    "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""
-                                ),
-                                new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT")
-                            )
+            get(urlEqualTo("/remote")).willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .withHeaders(
+                        new HttpHeaders(
+                            new HttpHeader("Content-Type", "application/json"),
+                            new HttpHeader(
+                                "WWW-Authenticate",
+                                "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""
+                            ),
+                            new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT")
                         )
-                        .withBody("{ \"testkey\" : \"testvalue\" }")
-                )
+                    )
+                    .withBody("{ \"testkey\" : \"testvalue\" }")
+            )
         );
     }
 

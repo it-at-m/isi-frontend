@@ -21,7 +21,7 @@ Zuweisung erkennbar ist.
 
 ## Frontend Coding Guidelines
 
--   Die Bezeichner von Custom Components werden in HTML im kebab-case geschrieben, z.B.: `<abfrage-component/>`
--   Wo möglich sollen die Typescript Decorator für Vue verwendet werden, siehe auch https://github.com/strantr/vuety
--   Alle Objekte, die in Komponenten benötigt werden, sind im Vuex-Store vorzuhalten und von dort zu holen.
--   Statusänderungen eines Objektes sind über den Vuex-Store vorzunehmen und nicht über Events an übergeordnete Komponenten zurückzuspiegeln.
+- Die Bezeichner von Custom Components werden in HTML im kebab-case geschrieben, z.B.: `<abfrage-component/>`
+- Wo möglich sollen die Typescript Decorator für Vue verwendet werden, siehe auch https://github.com/strantr/vuety
+- Alle Objekte, die in Komponenten benötigt werden, sind im Vuex-Store vorzuhalten und von dort zu holen.
+- Statusänderungen eines Objektes sind über den Vuex-Store vorzunehmen und nicht über Events an übergeordnete Komponenten zurückzuspiegeln.
