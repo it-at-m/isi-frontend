@@ -135,7 +135,7 @@
           class="mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="!isFormDirty || !isEditable || disableSaveButton"
+          :disabled="!isFormDirty || !isEditable || commonStore.disableSaveButton"
           style="width: 200px"
           @click="saveInfrastruktureinrichtung()"
         >
@@ -218,6 +218,7 @@ import {
 } from "@/utils/Validators";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 import { useCommonStore } from "@/stores/CommonStore";
+import { storeToRefs } from "pinia";
 
 const {
   isFormDirty,
@@ -230,7 +231,7 @@ const {
   cancel,
 } = useSaveLeave();
 const searchStore = useSearchStore();
-const { disableSaveButton, disableButton, enableButton } = useCommonStore();
+const commonStore = useCommonStore();
 const componentSecurity = useComponentSecurity();
 const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
 const {
@@ -424,7 +425,7 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
     const validationMessage: string | null = validateInfrastruktureinrichtung(infrastruktureinrichtung.value);
     if (_.isNil(validationMessage)) {
       if (!_.isNil(infrastruktureinrichtung)) {
-        disableButton();
+        commonStore.disableButton();
         if (isNew.value) {
           const savedInfrastruktureinrichtung = await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
           handleSuccess(savedInfrastruktureinrichtung);
@@ -466,6 +467,6 @@ function handleSuccess(dto: InfrastruktureinrichtungDto): void {
     infrastruktureinrichtung.value = dto;
     toast.success("Die Infrastruktureinrichtung wurde erfolgreich aktualisiert");
   }
-  enableButton();
+  commonStore.enableButton();
 }
 </script>

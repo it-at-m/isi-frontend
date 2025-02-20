@@ -11,7 +11,7 @@ import _ from "lodash";
 // eslint-disable-next-line
 export function useErrorHandler() {
   const toast = useToast();
-  const { enableButton } = useCommonStore();
+  const commonStore = useCommonStore();
   const ERROR_MESSAGE_GATEWAY =
     "Anwendungssystem (API-Gateway) nicht verfügbar. Bitte kontaktieren Sie den Servicedesk.";
   const ERROR_MESSAGE_BACKEND =
@@ -55,7 +55,7 @@ export function useErrorHandler() {
       // TypeError -> Der fetch-Request ist fehlgeschlagen.
       showInformation(ERROR_MESSAGE_GATEWAY);
     }
-    enableButton();
+    commonStore.enableButton();
     return error instanceof Error ? error : { name: "Error", message: ERROR_MESSAGE_GATEWAY };
   }
 

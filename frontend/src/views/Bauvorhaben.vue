@@ -79,7 +79,7 @@
             (!isNew && !isFormDirty) ||
             containsNotAllowedDokument(bauvorhaben.dokumente) ||
             !isEditable ||
-            disableSaveButton
+            commonStore.disableSaveButton
           "
           @click="validateAndProceed()"
         >
@@ -176,7 +176,7 @@ const {
   cancel,
   leave,
 } = useSaveLeave();
-const { disableSaveButton, disableButton, enableButton } = useCommonStore();
+const commonStore = useCommonStore();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const searchStore = useSearchStore();
@@ -220,11 +220,10 @@ async function validateAndProceed(): Promise<void> {
     const fault = findFaultInBauvorhaben(bauvorhaben.value);
 
     if (fault === null) {
+      commonStore.disableButton();
       if (isNew.value) {
-        disableButton();
         saveBauvorhaben();
       } else {
-        disableButton();
         updateBauvorhaben();
       }
     } else {
@@ -252,7 +251,7 @@ async function saveBauvorhaben(): Promise<void> {
   bauvorhaben.value = _.cloneDeep(dto);
   isNew.value = false;
   toast.success("Das Bauvorhaben wurde erfolgreich gespeichert");
-  enableButton();
+  commonStore.enableButton();
 }
 
 /**
@@ -263,7 +262,7 @@ async function updateBauvorhaben(): Promise<void> {
   const dto = await putBauvorhaben(bauvorhaben.value);
   bauvorhaben.value = _.cloneDeep(dto);
   toast.success("Das Bauvorhaben wurde erfolgreich aktualisiert");
-  enableButton();
+  commonStore.enableButton();
 }
 
 /**

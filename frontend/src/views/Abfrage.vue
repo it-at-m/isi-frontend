@@ -272,7 +272,9 @@
           class="mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(abfrage.dokumente) || disableSaveButton"
+          :disabled="
+            (!isNew && !isFormDirty) || containsNotAllowedDokument(abfrage.dokumente) || commonStore.disableSaveButton
+          "
           style="width: 200px"
           @click="saveAbfrage()"
         >
@@ -409,7 +411,7 @@ const {
   cancel,
   leave,
 } = useSaveLeave();
-const { disableSaveButton, disableButton, enableButton } = useCommonStore();
+const commonStore = useCommonStore();
 const {
   isEditableByAbfrageerstellung,
   isEditableBySachbearbeitung,
@@ -705,7 +707,7 @@ async function saveAbfrage(): Promise<void> {
   if ((await form.value?.validate())?.valid) {
     const validationMessage: string | null = findFaultInAbfrageForSave(abfrage.value);
     if (_.isNil(validationMessage)) {
-      disableButton();
+      commonStore.disableButton();
       if (isNew.value) {
         handleSave(abfrage.value);
       } else if (isEditableByAbfrageerstellung.value) {
@@ -826,7 +828,7 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
   } else if (showToast) {
     toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }
-  enableButton();
+  commonStore.enableButton();
   selectAbfrage();
 }
 
