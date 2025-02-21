@@ -38,9 +38,9 @@ Dieses Projekt implementiert die UI der ISI-Anwendung.
 
 Dieses Projekt verwendet die folgenden Technologien:
 
--   Spring Boot
--   Vue.js
--   JSON Schema
+- Spring Boot
+- Vue.js
+- JSON Schema
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
