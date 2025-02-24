@@ -272,7 +272,9 @@
           class="mt-2 px-1"
           color="secondary"
           elevation="1"
-          :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(abfrage.dokumente)"
+          :disabled="
+            (!isNew && !isFormDirty) || containsNotAllowedDokument(abfrage.dokumente) || commonStore.disableSaveButton
+          "
           style="width: 200px"
           @click="saveAbfrage()"
         >
@@ -396,6 +398,7 @@ import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { useStatusUebergangApi } from "@/composables/requests/StatusUebergangApi";
 import { useBauratenApi } from "@/composables/requests/BauratenApi";
+import { useCommonStore } from "@/stores/CommonStore";
 
 const {
   saveLeaveDialog,
@@ -408,6 +411,7 @@ const {
   cancel,
   leave,
 } = useSaveLeave();
+const commonStore = useCommonStore();
 const {
   isEditableByAbfrageerstellung,
   isEditableBySachbearbeitung,
@@ -703,6 +707,7 @@ async function saveAbfrage(): Promise<void> {
   if ((await form.value?.validate())?.valid) {
     const validationMessage: string | null = findFaultInAbfrageForSave(abfrage.value);
     if (_.isNil(validationMessage)) {
+      commonStore.disableButton();
       if (isNew.value) {
         handleSave(abfrage.value);
       } else if (isEditableByAbfrageerstellung.value) {
@@ -823,6 +828,7 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
   } else if (showToast) {
     toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }
+  commonStore.enableButton();
   selectAbfrage();
 }
 

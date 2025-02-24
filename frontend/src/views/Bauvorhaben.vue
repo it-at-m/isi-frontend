@@ -75,7 +75,12 @@
           elevation="1"
           class="mt-2 px-1"
           style="width: 200px"
-          :disabled="(!isNew && !isFormDirty) || containsNotAllowedDokument(bauvorhaben.dokumente) || !isEditable"
+          :disabled="
+            (!isNew && !isFormDirty) ||
+            containsNotAllowedDokument(bauvorhaben.dokumente) ||
+            !isEditable ||
+            commonStore.disableSaveButton
+          "
           @click="validateAndProceed()"
         >
           {{ isNew ? "Speichern" : "Aktualisieren" }}
@@ -156,6 +161,7 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useToast, TYPE } from "vue-toastification";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
+import { useCommonStore } from "@/stores/CommonStore";
 
 const routeId = useRoute().params.id as string;
 const router = useRouter();
@@ -170,6 +176,7 @@ const {
   cancel,
   leave,
 } = useSaveLeave();
+const commonStore = useCommonStore();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { getBauvorhabenById, postBauvorhaben, putBauvorhaben, deleteBauvorhaben } = useBauvorhabenApi();
 const searchStore = useSearchStore();
@@ -213,6 +220,7 @@ async function validateAndProceed(): Promise<void> {
     const fault = findFaultInBauvorhaben(bauvorhaben.value);
 
     if (fault === null) {
+      commonStore.disableButton();
       if (isNew.value) {
         saveBauvorhaben();
       } else {
@@ -243,6 +251,7 @@ async function saveBauvorhaben(): Promise<void> {
   bauvorhaben.value = _.cloneDeep(dto);
   isNew.value = false;
   toast.success("Das Bauvorhaben wurde erfolgreich gespeichert");
+  commonStore.enableButton();
 }
 
 /**
@@ -253,6 +262,7 @@ async function updateBauvorhaben(): Promise<void> {
   const dto = await putBauvorhaben(bauvorhaben.value);
   bauvorhaben.value = _.cloneDeep(dto);
   toast.success("Das Bauvorhaben wurde erfolgreich aktualisiert");
+  commonStore.enableButton();
 }
 
 /**
