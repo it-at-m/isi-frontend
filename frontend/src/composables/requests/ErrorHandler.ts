@@ -17,7 +17,8 @@ export function useErrorHandler() {
   const ERROR_MESSAGE_BACKEND =
     "Es ist ein Problem im Anwendungssystem (Backend) aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
   const ERROR_MESSAGE_NOT_AUTHORIZED = "Sie haben nicht die nötigen Rechte um diese Aktion durchzuführen.";
-
+  const ERROR_MESSAGE_TIMEOUT =
+    "Es ist ein Zeitüberschreitung im Anwendungssystem aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
   /**
    * Diese Methode zeigt den im Parameter übergebenen "error" als Toast an.
    *
@@ -39,6 +40,9 @@ export function useErrorHandler() {
     } else if (error instanceof ResponseError && error.response.status === 503) {
       // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
       showInformation(ERROR_MESSAGE_GATEWAY);
+    } else if (error instanceof ResponseError && error.response.status === 504) {
+      // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
+      showInformation(ERROR_MESSAGE_TIMEOUT);
     } else if (error instanceof ResponseError && error.response.status !== 500) {
       // Das Backend reagiert mit einer fachlichen Fehlermeldung.
       error.response.json().then((json: unknown) => {
