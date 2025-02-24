@@ -85,7 +85,8 @@ public class GatewayUtils {
                     return super.writeWith(
                         flux
                             .buffer()
-                            .map(dataBuffer -> newDataBuffer // replace old body represented by dataBuffer by the new one
+                            .map(
+                                dataBuffer -> newDataBuffer // replace old body represented by dataBuffer by the new one
                             )
                     );
                 }
