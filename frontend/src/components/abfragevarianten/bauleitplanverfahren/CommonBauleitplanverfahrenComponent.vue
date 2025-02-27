@@ -156,7 +156,7 @@ const calcRealisierungBis = computed(() => {
  */
 function datumSatzungsbeschlussChanged(): void {
   const datumSatzungsbeschluss = abfragevariante.value.satzungsbeschluss;
-  if (!_.isNil(datumSatzungsbeschluss) && _.isNil(abfragevariante.value.realisierungVon)) {
+  if (!_.isNil(datumSatzungsbeschluss)) {
     abfragevariante.value.realisierungVon =
       datumSatzungsbeschluss.getMonth() + 1 < 7
         ? datumSatzungsbeschluss.getFullYear() + 3
