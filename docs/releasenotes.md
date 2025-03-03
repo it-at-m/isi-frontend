@@ -19,11 +19,15 @@ Alle drei Abfragearten wurden in den Rahmen Geplante Geschossfläche Wohnen und 
 
 Die Infrastrukturabfragen aller drei Abfragearten durchlaufen einen sogenannten Abfrageprozess, in welchem die verschiedenen Rollen ihre entsprechenden Einträge vornehmen. Der Abfrageprozess wird durch Statusübergänge - Auslösen über Buttons - durchlaufen.
 
+Die Benennung der Zustände und Zustandsübergänge (Status) sind vereinheitlicht.
+
 Für alle Abfragearten ist die Datengrundlage für die Bauratendatei und Schülerpotenzialprognose geschaffen. Dabei werden Informationen zum Grund- und Mittelschulsprengel sowie zu den Vierteln aus der Verortung herausgelesen und automatisch in ISI befüllt. Eine manuelle Änderung ist möglich. Entsprechende Validierungsregeln sind umgesetzt.
 
 Für alle Abfragearten, die eine Verbindung zu Vorgängen innerhalb der e-Akte haben, ist es möglich den entsprechenden Link zum Vorgang der e-Akte anzugeben.
 
 Beim Anlegen einer neuen Abfrage ist es möglich, Daten aus einer bestehenden Abfrage zu übernehmen. Die Kopie enthält wichtige Daten aus einer früheren Abfrage jedoch, gibt es keine inhaltlichen Zusammenhänge mehr zwischen Abfragen. Außerdem wurden die Abfragen um einen Hinweis zum "Jahr der Orientierungswerte" ergänzt, um ein leichteres Befüllen der Formulare zu ermöglichen (Überprüfung der Pflichtfelder).
+
+Für die SoBoN-Berechnung ist ein zweites Feld (Attribut) Jahr für SoBoN-Orientierungswerte (SoBoN-ursächlich) integriert, damit die SoBoN-Berechnung und die planungsursächlichen Berechnung mit unterschiedlichen Angaben zu den Jahren erfolgen können.
 
 Den Rollen Abfrageersteller und Sachbearbeitung_PLAN haben die Möglichkeit Varianten innerhalb der Abfrage zu kopieren und anschließend die Daten entsprechend anzupassen. Dies führt zu einer schnelleren und leichteren Erstellung und Weiterverarbeitung einer Abfrage.
 
@@ -32,6 +36,8 @@ Für die Abfragearten Baugenehmigungsverfahren und Bauleitplanverfahren ist es n
 Des Weiteren wurde eine Validierung von Baurate und Realisierungsbeginn umgesetzt, so dass eine Abfrage nur dann gespeichert werden kann, wenn mindestens eine Baurate der gesamten Abfragevariante zeitlich mit dem in der Abfragevariante angegebenen Realisierungsbeginn übereinstimmt.
 
 Zur Erleichterung des Eingabeprozesses wird es ermöglicht, einen Fördermix für alle Bauraten einer Abfragevariante zu vergeben. Eine nachträgliche manuelle Änderung des Fördermixes ist gegeben.
+
+Die Dropdownliste für den Fördermix ist um zwei weitere Fördermix-Anteile (40%-Beschluss und Werkswohnungsmodell) ergänzt.
 
 Zur Vereinfachung des Anlegens einer Abfrage, wurden die "Daten zur Abfrage" deutlicher hervorgehoben, um die Aufmerksamkeit beim Anlegen einer Abfrage auf diese zu lenken.
 
@@ -59,6 +65,8 @@ Die Rollen Abfrageerstellung, Sachbearbeitung und Bedarfsmeldung erhalten jeweil
 Die Stadtbezirke, die die den Umgriff der Abfragen betreffen, werden als Informationen in der Nachricht weitergegeben.
 
 Die Rollen Sachbearbeitung_PLAN und Bedarfsmeldung erhalten eine Mitteilung via E-Mail, sobald eine Abfrage in den Status Erledigt überführt wird, den Abfrageprozess also vollständig durchlaufen hat.
+
+Für die Rolle Bedarfsmeldung ist ein zweites Gruppenpostfach hinterlegt. Dabei wird über eine Bedingung (SoBoN-Berechnung liegt vor) abgefragt, wann die Rolle Bedarfsmeldung, über welches Gruppenpostfach über das Vorliegen einer Abfrage informiert wird.
 
 ### Bauvorhaben
 
@@ -90,6 +98,8 @@ Dokumente in einer Vielzahl von Dateiformaten können an Abfragen, Bauvorhaben u
 
 Beim Hochladen von Dokumenten wird der Ladevorgang über einen Ladekreisel dargestellt, um erkennbar zu machen, dass die Applikation noch im Bearbeitungsmodus ist.
 
+Das Hochladen von Dokumenten ist auf 50 Dokumente für jedes Objekt erhöht.
+
 ### Rechte, Rollen
 
 Das Registrieren erfolgt über Single Sign-On. Ein Rollen und Rechtekonzept ermöglicht es Nutzer\*innen über Rollen zu definieren, die es gestatten, gewisse Inhalte zu erstellen, zu lesen und/oder zu ändern.
@@ -103,6 +113,8 @@ Für die Rolle Nutzer, wurden die Sichtrechte eingeschränkt. Die Rolle hat nur 
 Eine Abfrage befindet sich während ihrer Erstellung und Bearbeitung jeweils in einem Status. Über das Rollen- und Rechtekonzept wird geregelt, dass ein Statusübergang nur von der jeweils berechtigten Rolle ausgeführt werden darf. Mit dem Statusübergang geht die Abfrage in die nächste Bearbeitungsphase über. Aus der Kombination Status der Abfrage und Rolle der Nutzer\*innen ergeben sich auch die Sicht- und Bearbeitbarkeit bestimmter Eingabefelder.
 
 Die Rolle Bedarfsmeldung erhält die gleichen Rechte im Umgang mit den Infrastruktureinrichtungen. Diese können jetzt auch von der Rolle Bedarfsmeldung angelegt, bearbeitet und gelöscht sowie um interne Dokumente ergänzt werden. Außerdem können in Abhängigkeit der Rolle die angefügten Dokumente angeklickt und geöffnet werden.
+
+Alle Rollen können – je nach hinterlegtem Recht – in ISI über einen Link direkt auf "globalen" Reporte – entspricht Reporten, die nicht in der Abfragevariante hinterlegt sind – zugreifen.
 
 ### Verortung
 
@@ -134,13 +146,19 @@ Bei der Verknüpfung einer Abfrage bzw. einer Infrastruktureinrichtung mit einem
 
 Bei der Datenübernahme aus einer Abfrage in ein Bauvorhaben bzw. bei der Datenübernahme aus einer Abfrage in eine neue Abfrage kann in der Liste mit den Vorschlägen nach dem gewünschten Objekt gesucht werden.
 
-### Reports
+### Reporte
 
 Ein Absprung von ISI heraus nach Metabase wird ermöglicht, um auf verschiedene Reporte zugreifen können.
+
+Weitere Anpassungen des Datenmodells für die Reportingdatenbank sind für die Erstellung komplexer Reporte über Metabase umgesetzt. Die Vorbereitungen auf die Erstellung neuer Reporte sind geschaffen.
 
 ### Benutzerfreundlichkeit
 
 Sobald eine neue Seite in ISI geöffnet wird, wird der Cursor auf den Anfang der Seite platziert.
+
+Die Bezeichnung, ob eine Abfrage den gesamten Abfrageprozess (Einbindung der Fachreferate) durchläuft oder vorab einen Abschluss finden kann, wurde für die Nutzenden unterscheidbar hervorgehoben.
+
+Für die Unterscheidung der unterschiedlichen Jahre und Versionen des Fördermix, ist der Eintrag "SoBoN-Ursächlichkeit" in "SoBoN 2017" im Dropdown Fördermix im Formular Bauraten umbenannt.
 
 ### Stammdaten
 
@@ -149,3 +167,5 @@ Die Grundlagen zur Berechnung der idealtypischen Bauraten sind als Stammdaten in
 Die städtebaulichen SoBoN-Orientierungswerte und die SoBoN-Orientierungswerte für soziale Infrastruktur, sind als Stammdaten in ISI hinterlegt.
 
 Ebenfalls liegen die vorgegebenen Werte für die Versorgungsquote und die Gruppenstärke der jeweiligen Altersgruppen als Stammdaten in ISI vor.
+
+Die Stammdaten sind um neue Orientierungswerte für das Jahr 2024 ergänzt.
