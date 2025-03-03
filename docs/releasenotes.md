@@ -64,7 +64,7 @@ Die Rollen Abfrageerstellung, Sachbearbeitung und Bedarfsmeldung erhalten jeweil
 
 Die Stadtbezirke, die die den Umgriff der Abfragen betreffen, werden als Informationen in der Nachricht weitergegeben.
 
-Die Rollen Sachbearbeitung_PLAN und Bedarfsmeldung erhalten eine Mitteilung via E-Mail, sobald eine Abfrage in den Status _Erledigt_ überführt wird, den Abfrageprozess also vollständig durchlaufen hat.
+Die Rollen Sachbearbeitung_PLAN und Bedarfsmeldung erhalten eine Mitteilung via E-Mail, sobald eine Abfrage in den Status Erledigt überführt wird, den Abfrageprozess also vollständig durchlaufen hat.
 
 Für die Rolle Bedarfsmeldung ist ein zweites Gruppenpostfach hinterlegt. Dabei wird über eine Bedingung (SoBoN-Berechnung liegt vor) abgefragt, wann die Rolle Bedarfsmeldung, über welches Gruppenpostfach über das Vorliegen einer Abfrage informiert wird.
 
