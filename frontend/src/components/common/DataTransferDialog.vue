@@ -11,6 +11,26 @@
           cols="12"
           md="10"
         >
+          <v-text-field
+            id="abfrageSuch_field"
+            ref="abfrageSuchField"
+            v-model="abfrageSearchModel"
+            label="Suche"
+            variant="underlined"
+          />
+          <!--
+          <v-select
+              id="abfrage_datenuebernahme_dropdown"
+              v-model="selectedAbfrageSearchResult"
+              variant="underlined"
+              :items="abfragen"
+              item-value="id"
+              item-title="(item) => getItemText(item)"
+              title="Abfrage für Datenübernahme auswählen"
+          >
+          </v-select>
+          -->
+          <!--
           <v-autocomplete
             id="abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
@@ -24,10 +44,17 @@
             persistent-hint
             @update:focused="!$event || fetchAbfragen()"
           />
+          -->
         </v-col>
       </v-row>
       <v-card-actions>
         <v-spacer />
+        <v-btn
+          id="abfrage_datenuebernahme_suchen_button"
+          @click="fetchAbfragen()"
+        >
+          Suchen
+        </v-btn>
         <v-btn
           id="abfrage_datenuebernahme_abbrechen_button"
           @click="uebernahmeAbbrechen"
@@ -48,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import {
   type AbfrageDto,
   type AbfrageSearchResultDto,
@@ -64,6 +91,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { Context } from "@/utils/Context";
+import { notUnspecified, pflichtfeld } from "@/utils/FieldValidationRules";
 
 interface Props {
   context: Context;
@@ -84,8 +112,7 @@ const dialogOpen = defineModel<boolean>({ required: true });
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
 const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>();
 let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
-
-onMounted(() => fetchAbfragen());
+const abfrageSearchModel = ref("");
 
 watch(
   selectedAbfrageSearchResult,
@@ -125,15 +152,18 @@ async function fetchAbfragen(): Promise<void> {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
-    page: undefined,
-    pageSize: undefined,
+    page: 1,
+    pageSize: 20,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
-  const searchResults = await searchForEntities(searchQueryAndSortingDto);
-  abfragen.value = searchResults.searchResults
-    ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
-    .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
+  if (!_.isEmpty(abfrageSearchModel.value)) {
+    searchQueryAndSortingDto.searchQuery = abfrageSearchModel.value;
+    const searchResults = await searchForEntities(searchQueryAndSortingDto);
+    abfragen.value = searchResults.searchResults
+      ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
+      .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
+  }
 }
 
 function searchResultFilter(result: AbfrageSearchResultDto): boolean {
