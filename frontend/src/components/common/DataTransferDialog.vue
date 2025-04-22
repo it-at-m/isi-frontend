@@ -18,18 +18,16 @@
             label="Suche"
             variant="underlined"
           />
-          <!--
           <v-select
-              id="abfrage_datenuebernahme_dropdown"
-              v-model="selectedAbfrageSearchResult"
-              variant="underlined"
-              :items="abfragen"
-              item-value="id"
-              item-title="(item) => getItemText(item)"
-              title="Abfrage für Datenübernahme auswählen"
+            id="abfrage_datenuebernahme_dropdown"
+            v-model="selectedAbfrageSearchResult"
+            variant="underlined"
+            :items="abfragen"
+            item-value="id"
+            item-title="(item) => getItemText(item)"
+            title="Abfrage für Datenübernahme auswählen"
           >
           </v-select>
-          -->
           <!--
           <v-autocomplete
             id="abfrage_datenuebernahme_dropdown"
