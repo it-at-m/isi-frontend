@@ -9,7 +9,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="10"
+          md="6"
         >
           <v-text-field
             id="abfrageSuch_field"
@@ -18,6 +18,25 @@
             label="Suche"
             variant="underlined"
           />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-btn
+            variant="outlined"
+            id="abfrage_datenuebernahme_suchen_button"
+            @click="fetchAbfragen()"
+          >
+            Suchen
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="10"
+        >
           <v-select
             id="abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
@@ -32,12 +51,6 @@
       </v-row>
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          id="abfrage_datenuebernahme_suchen_button"
-          @click="fetchAbfragen()"
-        >
-          Suchen
-        </v-btn>
         <v-btn
           id="abfrage_datenuebernahme_abbrechen_button"
           @click="uebernahmeAbbrechen"
