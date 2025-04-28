@@ -9,7 +9,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
+          md="8"
         >
           <v-text-field
             id="abfrageSuch_field"
@@ -21,7 +21,7 @@
         </v-col>
         <v-col
           cols="12"
-          md="4"
+          md="3"
         >
           <v-btn
             variant="outlined"
@@ -35,7 +35,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="10"
+          md="11"
         >
           <v-select
             id="abfrage_datenuebernahme_dropdown"
