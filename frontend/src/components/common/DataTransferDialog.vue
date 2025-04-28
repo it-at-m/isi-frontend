@@ -24,25 +24,10 @@
             variant="underlined"
             :items="abfragen"
             item-value="id"
-            item-title="(item) => getItemText(item)"
+            :item-title="(item) => getItemText(item)"
             title="Abfrage für Datenübernahme auswählen"
           >
           </v-select>
-          <!--
-          <v-autocomplete
-            id="abfrage_datenuebernahme_dropdown"
-            v-model="selectedAbfrageSearchResult"
-            :items="abfragen"
-            :item-title="(item) => getItemText(item)"
-            item-value="id"
-            label="Abfragen"
-            variant="underlined"
-            return-object
-            hint="Abfrage für Datenübernahme auswählen"
-            persistent-hint
-            @update:focused="!$event || fetchAbfragen()"
-          />
-          -->
         </v-col>
       </v-row>
       <v-card-actions>
@@ -89,7 +74,6 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { Context } from "@/utils/Context";
-import { notUnspecified, pflichtfeld } from "@/utils/FieldValidationRules";
 
 interface Props {
   context: Context;
