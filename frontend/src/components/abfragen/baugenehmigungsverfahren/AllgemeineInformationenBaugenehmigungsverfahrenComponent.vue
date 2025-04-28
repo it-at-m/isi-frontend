@@ -36,27 +36,27 @@
         md="4"
       >
         <span
-          v-if="isEditable"
+          v-if="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
           class="v-label theme--light"
         >
-          {{ title }}
+          {{ nameBauvorhaben }}
         </span>
         <span
           v-else
           class="v-label text-grey-lighten-1"
         >
-          {{ title }}
+          {{ nameBauvorhaben }}
         </span>
         <v-btn
           id="bauvorhaben_auswahl_button"
           class="my-4"
           color="primary"
           elevation="1"
-          width="200px"
+          width="120"
           :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
           @click="bauvorhabenAuswahlDialogOpen = true"
         >
-          Bauvorhaben zuordnen
+          Bauvorhaben
         </v-btn>
         <!--
         <v-autocomplete
