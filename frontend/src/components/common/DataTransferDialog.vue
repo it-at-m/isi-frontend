@@ -99,8 +99,8 @@ const abfrageSearchModel = ref("");
 watch(
   selectedAbfrageSearchResult,
   async () => {
-    if (!_.isNil(selectedAbfrageSearchResult.value) && !_.isNil(selectedAbfrageSearchResult.value.id)) {
-      const idAbfrage = selectedAbfrageSearchResult.value.id;
+    if (!_.isNil(selectedAbfrageSearchResult.value)) {
+      const idAbfrage = selectedAbfrageSearchResult.value;
       selectedAbfrage = await getById(idAbfrage);
     }
   },
