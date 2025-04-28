@@ -22,6 +22,7 @@
         <v-col
           cols="12"
           md="3"
+          class="d-flex justify-end align-center"
         >
           <v-btn
             variant="outlined"
@@ -49,8 +50,7 @@
           </v-select>
         </v-col>
       </v-row>
-      <v-card-actions>
-        <v-spacer />
+      <v-card-actions class="d-flex justify-end">
         <v-btn
           id="abfrage_datenuebernahme_abbrechen_button"
           @click="uebernahmeAbbrechen"
