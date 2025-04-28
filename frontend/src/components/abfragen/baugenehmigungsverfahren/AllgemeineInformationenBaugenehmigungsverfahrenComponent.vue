@@ -35,6 +35,30 @@
         cols="12"
         md="4"
       >
+        <span
+          v-if="isEditable"
+          class="v-label theme--light"
+        >
+          {{ title }}
+        </span>
+        <span
+          v-else
+          class="v-label text-grey-lighten-1"
+        >
+          {{ title }}
+        </span>
+        <v-btn
+          id="bauvorhaben_auswahl_button"
+          class="my-4"
+          color="primary"
+          elevation="1"
+          width="200px"
+          :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
+          @click="bauvorhabenAuswahlDialogOpen = true"
+        >
+          Bauvorhaben zuordnen
+        </v-btn>
+        <!--
         <v-autocomplete
           id="bauvorhaben_dropdown"
           ref="bauvorhabenDropdown"
@@ -49,6 +73,7 @@
           @update:focused="!$event || fetchBauvorhaben()"
           @update:model-value="formChanged"
         />
+        -->
       </v-col>
     </v-row>
     <v-row justify="center">
