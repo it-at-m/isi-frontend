@@ -35,18 +35,20 @@
         cols="12"
         md="4"
       >
-        <span
+        <v-label
           v-if="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
-          class="v-label theme--light"
+          class="my-2"
+          variant="underlined"
         >
-          {{ nameBauvorhaben }}
-        </span>
-        <span
+          {{ nameBauvorhaben() }}
+        </v-label>
+        <v-label
           v-else
-          class="v-label text-grey-lighten-1"
+          class="my-2 text-grey-lighten-1"
+          variant="underlined"
         >
-          {{ nameBauvorhaben }}
-        </span>
+          {{ nameBauvorhaben() }}
+        </v-label>
         <v-btn
           id="bauvorhaben_auswahl_button"
           class="my-4"
@@ -54,7 +56,7 @@
           elevation="1"
           width="120"
           :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
-          @click="bauvorhabenAuswahlDialogOpen = true"
+          @click="isBausverfahrenAuswahlDialogOpen = true"
         >
           Bauvorhaben
         </v-btn>
@@ -116,23 +118,28 @@
       </v-col>
     </v-row>
   </field-group-card>
+  <auswahl-bauvorhaben-dialog
+    id="auswahl_bauvorhaben_dialog"
+    v-model="isBausverfahrenAuswahlDialogOpen"
+    @abfrage-uebernehmen="bauvorhabenUebernehmen"
+    @uebernahme-abbrechen="isBausverfahrenAuswahlDialogOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import {
   type BauvorhabenSearchResultDto,
   BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
-  SearchQueryAndSortingDtoSortByEnum,
-  SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import _ from "lodash";
+import AuswahlBauvorhabenDialog from "@/components/common/AuswahlBauvorhabenDialog.vue";
 
 interface Props {
   isEditable?: boolean;
@@ -140,15 +147,13 @@ interface Props {
 
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
-const { searchForEntities } = useSearchApi();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
-const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
+const bauvorhaben = ref<BauvorhabenSearchResultDto>({});
+const isBausverfahrenAuswahlDialogOpen = ref(false);
 
 withDefaults(defineProps<Props>(), { isEditable: false });
-
-onMounted(() => fetchBauvorhaben());
 
 watch(
   () => abfrage.value.standVerfahren,
@@ -163,30 +168,13 @@ watch(
   { immediate: true },
 );
 
-/**
- * Holt alle Bauvorhaben vom Backend.
- */
-async function fetchBauvorhaben(): Promise<void> {
-  const searchQueryAndSortingDto = {
-    searchQuery: "",
-    selectBauleitplanverfahren: false,
-    selectBaugenehmigungsverfahren: false,
-    selectWeiteresVerfahren: false,
-    selectBauvorhaben: true,
-    selectGrundschule: false,
-    selectGsNachmittagBetreuung: false,
-    selectHausFuerKinder: false,
-    selectKindergarten: false,
-    selectKinderkrippe: false,
-    selectMittelschule: false,
-    page: undefined,
-    pageSize: undefined,
-    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-  };
-  const searchResults = await searchForEntities(searchQueryAndSortingDto);
-  bauvorhaben.value = searchResults.searchResults?.map(
-    (searchResults) => searchResults as BauvorhabenSearchResultDto,
-  ) as Array<BauvorhabenSearchResultDto>;
+function nameBauvorhaben() {
+  return !_.isNil(bauvorhaben.value) && !_.isNil(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "";
+}
+function bauvorhabenUebernehmen(value: BauvorhabenSearchResultDto): void {
+  bauvorhaben.value = _.cloneDeep(value);
+  abfrage.value.bauvorhaben = bauvorhaben.value.id;
+  formChanged();
+  isBausverfahrenAuswahlDialogOpen.value = false;
 }
 </script>
