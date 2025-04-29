@@ -8,8 +8,8 @@
       <v-card-title class="align-stretch">Datenübernahme aus Abfrage</v-card-title>
       <v-row justify="center">
         <v-col
-          cols="12"
-          md="8"
+          cols="11"
+          md="9"
         >
           <v-text-field
             id="abfrageSuch_field"
@@ -20,13 +20,14 @@
           />
         </v-col>
         <v-col
-          cols="12"
-          md="3"
+          cols="11"
+          md="2"
           class="d-flex justify-end align-center"
         >
           <v-btn
             variant="outlined"
             id="abfrage_datenuebernahme_suchen_button"
+            style="width: 120px"
             @click="fetchAbfragen()"
           >
             Suchen
@@ -35,7 +36,7 @@
       </v-row>
       <v-row justify="center">
         <v-col
-          cols="12"
+          cols="11"
           md="11"
         >
           <v-select
