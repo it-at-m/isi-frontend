@@ -79,13 +79,9 @@ import {
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import { createBauleitplanverfahrenDto, createBauvorhabenDto } from "@/utils/Factories";
-import { useLookupStore } from "@/stores/LookupStore";
-import { useSearchStore } from "@/stores/SearchStore";
+import { createBauvorhabenDto } from "@/utils/Factories";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
-import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 interface Emits {
   (event: "bauvorhabenUebernehmen", value: BauvorhabenDto): void;
   (event: "bauvorhabenAuswahlAbbrechen", value: void): void;
@@ -134,13 +130,13 @@ async function fetchBauvorhaben(): Promise<void> {
   ) as Array<BauvorhabenSearchResultDto>;
 }
 
-function abfrageUebernehmen(): void {
-  selectedBauvorhabenSearchResult.value = undefined;
+function bauvorhabenUebernehmen(): void {
+  selectedBauvorhabenSearchResult.value = "";
   emit("bauvorhabenUebernehmen", selectedBauvorhaben);
 }
 
-function uebernahmeAbbrechen(): void {
-  selectedBauvorhabenSearchResult.value = undefined;
+function bauvorhabenAuswahlAbbrechen(): void {
+  selectedBauvorhabenSearchResult.value = "";
   emit("bauvorhabenAuswahlAbbrechen");
 }
 </script>
