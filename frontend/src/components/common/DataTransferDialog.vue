@@ -68,6 +68,23 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-dialog
+      v-model="loading"
+      max-width="360"
+      persistent
+    >
+      <v-list
+        class="py-3"
+        color="primary"
+        elevation="12"
+        rounded="lg"
+      >
+        <loading-progress-circular
+          icon="mdi-file-document-refresh"
+          text="Suche läuft..."
+        />
+      </v-list>
+    </v-dialog>
   </v-dialog>
 </template>
 
@@ -88,6 +105,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { Context } from "@/utils/Context";
+import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 interface Props {
   context: Context;
@@ -109,6 +127,7 @@ const abfragen = ref<AbfrageSearchResultDto[]>([]);
 const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>();
 let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
 const abfrageSearchModel = ref("");
+const loading = ref(false);
 
 watch(
   selectedAbfrageSearchResult,
@@ -155,7 +174,9 @@ async function fetchAbfragen(): Promise<void> {
   };
   if (!_.isEmpty(abfrageSearchModel.value)) {
     searchQueryAndSortingDto.searchQuery = abfrageSearchModel.value;
+    loading.value = true;
     const searchResults = await searchForEntities(searchQueryAndSortingDto);
+    loading.value = false;
     abfragen.value = searchResults.searchResults
       ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
       .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
