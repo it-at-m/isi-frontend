@@ -1,6 +1,6 @@
 # ReleaseNotes
 
-## ISI Version 1.4.0
+## ISI Version 1.5.0
 
 ### Infrastrukturabfragen
 
