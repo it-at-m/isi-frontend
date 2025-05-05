@@ -148,9 +148,7 @@ Bei der Datenübernahme aus einer Abfrage in ein Bauvorhaben bzw. bei der Daten�
 
 ### Reporte
 
-Ein Absprung von ISI heraus nach Metabase wird ermöglicht, um auf verschiedene Reporte zugreifen können.
-
-Weitere Anpassungen des Datenmodells für die Reportingdatenbank sind für die Erstellung komplexer Reporte über Metabase umgesetzt. Die Vorbereitungen auf die Erstellung neuer Reporte sind geschaffen.
+Ein Absprung von ISI heraus nach Metabase wird ermöglicht, um auf verschiedene Reporte zugreifen können. Weitere Anpassungen des Datenmodells für die Reportingdatenbank sind für die Erstellung komplexer Reporte über Metabase umgesetzt. Die Vorbereitungen auf die Erstellung neuer Reporte sind geschaffen.
 
 ### Benutzerfreundlichkeit
 
