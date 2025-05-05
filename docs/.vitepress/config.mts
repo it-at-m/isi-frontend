@@ -8,7 +8,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
-      { text: "Release Notes", link: "/releasenotes" },
+      { text: "Release Notes", link: "/release_notes" },
       { text: "Einführung", link: "/einfuehrung" },
       { text: "Technischer Setup", link: "/technical_setup" },
       { text: "Roadmap", link: "/roadmap" },
