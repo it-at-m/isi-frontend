@@ -1,4 +1,4 @@
-# ReleaseNotes
+# Release Notes
 
 ## ISI Version 1.5.0
 
