@@ -17,6 +17,7 @@
             v-model="abfrageSearchModel"
             label="Suche"
             variant="underlined"
+            @keyup.enter="fetchAbfragen"
           />
         </v-col>
         <v-col
@@ -28,7 +29,7 @@
             variant="outlined"
             id="abfrage_datenuebernahme_suchen_button"
             style="width: 120px"
-            @click="fetchAbfragen()"
+            @click="fetchAbfragen"
           >
             Suchen
           </v-btn>
