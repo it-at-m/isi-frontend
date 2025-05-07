@@ -33,49 +33,35 @@
       </v-col>
       <v-col
         cols="12"
-        md="4"
+        md="3"
+        class="d-flex align-center"
       >
-        <v-label
-          v-if="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
-          class="my-2"
-          variant="underlined"
+        <span
+          v-if="isBauverfahrenEditable"
+          class="v-label theme--light"
         >
-          {{ nameBauvorhaben() }}
-        </v-label>
-        <v-label
+          {{ nameBauvorhaben }}
+        </span>
+        <span
           v-else
-          class="my-2 text-grey-lighten-1"
-          variant="underlined"
+          class="v-label text-grey-lighten-1"
         >
-          {{ nameBauvorhaben() }}
-        </v-label>
+          {{ nameBauvorhaben }}
+        </span>
+      </v-col>
+      <v-col
+        cols="12"
+        md="1"
+        class="d-flex align-right"
+      >
         <v-btn
-          id="bauvorhaben_auswahl_button"
-          class="my-4"
-          color="primary"
-          elevation="1"
-          width="120"
-          :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
-          @click="isBausverfahrenAuswahlDialogOpen = true"
-        >
-          Bauvorhaben
-        </v-btn>
-        <!--
-        <v-autocomplete
-          id="bauvorhaben_dropdown"
-          ref="bauvorhabenDropdown"
-          v-model="abfrage.bauvorhaben"
-          :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
-          variant="underlined"
-          :items="bauvorhaben"
-          item-title="nameVorhaben"
-          item-value="id"
-          label="Bauvorhaben"
-          clearable
-          @update:focused="!$event || fetchBauvorhaben()"
-          @update:model-value="formChanged"
+          id="open_auswahl_bauvorhaben"
+          class="mt-3 ml-2"
+          variant="plain"
+          :icon="isBauverfahrenEditable ? 'mdi-pencil-outline' : 'mdi-eye-outline'"
+          :disabled="!isBauverfahrenEditable"
+          @click="isAuswahlBauvorhabenDialogOpen = true"
         />
-        -->
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -95,7 +81,7 @@
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
+          <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
         </v-select>
       </v-col>
       <v-col
@@ -120,14 +106,14 @@
   </field-group-card>
   <auswahl-bauvorhaben-dialog
     id="auswahl_bauvorhaben_dialog"
-    v-model="isBausverfahrenAuswahlDialogOpen"
-    @abfrage-uebernehmen="bauvorhabenUebernehmen"
-    @uebernahme-abbrechen="isBausverfahrenAuswahlDialogOpen = false"
+    v-model="isAuswahlBauvorhabenDialogOpen"
+    @bauvorhaben-uebernehmen="bauvorhabenUebernehmen"
+    @bauvorhaben-auswahl-abbrechen="isAuswahlBauvorhabenDialogOpen = false"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
 import {
@@ -151,7 +137,15 @@ const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrag
 const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenSearchResultDto>({});
-const isBausverfahrenAuswahlDialogOpen = ref(false);
+const isAuswahlBauvorhabenDialogOpen = ref(false);
+const isBauverfahrenEditable = computed(() => isEditableByAbfrageerstellung || isEditableBySachbearbeitung);
+const nameBauvorhaben = computed(() =>
+  !_.isNil(bauvorhaben.value) && !_.isNil(bauvorhaben.value.nameVorhaben)
+    ? bauvorhaben.value.nameVorhaben
+    : isBauverfahrenEditable
+      ? "Kein Bauvorhaben zugeordnet"
+      : "",
+);
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
@@ -168,13 +162,10 @@ watch(
   { immediate: true },
 );
 
-function nameBauvorhaben() {
-  return !_.isNil(bauvorhaben.value) && !_.isNil(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "";
-}
 function bauvorhabenUebernehmen(value: BauvorhabenSearchResultDto): void {
   bauvorhaben.value = _.cloneDeep(value);
   abfrage.value.bauvorhaben = bauvorhaben.value.id;
   formChanged();
-  isBausverfahrenAuswahlDialogOpen.value = false;
+  isAuswahlBauvorhabenDialogOpen.value = false;
 }
 </script>
