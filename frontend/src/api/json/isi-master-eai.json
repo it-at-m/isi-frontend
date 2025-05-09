@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.1",
   "info": {
     "title": "ISI MAstER EAI",
     "description": "ISI MAstER EAI - Service zum Abfragen von Adressen von MAstER",
@@ -36,18 +36,18 @@
   "components": {
     "schemas": {
       "AdressSucheDto": {
+        "required": ["query"],
         "type": "object",
-        "description": "Kriterien für die Adress-Suche",
         "properties": {
           "query": { "type": "string", "description": "Suchtext mit Adressteilen." },
-          "page": { "type": "integer", "format": "int32", "description": "Seitennummer (optional, default = 0)" },
+          "page": { "type": "integer", "description": "Seitennummer (optional, default = 0)", "format": "int32" },
           "pagesize": {
             "type": "integer",
-            "format": "int32",
-            "description": "Seitengröße. Anzahl maximal angezeigter Ergebnisse pro Seite (optional, default = 20)"
+            "description": "Seitengröße. Anzahl maximal angezeigter Ergebnisse pro Seite (optional, default = 20)",
+            "format": "int32"
           }
         },
-        "required": ["query"]
+        "description": "Kriterien für die Adress-Suche"
       },
       "InformationResponseDto": {
         "type": "object",
