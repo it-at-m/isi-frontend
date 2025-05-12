@@ -166,6 +166,7 @@ async function fetchBauvorhaben(): Promise<void> {
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
+  searchQueryAndSortingDto.searchQuery = bauvorhabenSearchModel.value;
   loading.value = true;
   const searchResults = await searchForEntities(searchQueryAndSortingDto);
   bauvorhaben.value = searchResults.searchResults?.map(

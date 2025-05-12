@@ -18,21 +18,34 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="5"
+        class="d-flex align-center"
       >
-        <v-autocomplete
-          id="bauvorhaben_dropdown"
-          ref="bauvorhabenDropdown"
-          v-model="abfrage.bauvorhaben"
-          variant="underlined"
-          :disabled="!(isEditableByAbfrageerstellung || isEditableBySachbearbeitung)"
-          :items="bauvorhaben"
-          item-title="nameVorhaben"
-          item-value="id"
-          label="Bauvorhaben"
-          clearable
-          @update:focused="!$event || fetchBauvorhaben()"
-          @update:model-value="formChanged"
+        <span
+          v-if="isBauverfahrenEditable"
+          class="v-label theme--light"
+        >
+          {{ nameBauvorhaben }}
+        </span>
+        <span
+          v-else
+          class="v-label text-grey-lighten-1"
+        >
+          {{ nameBauvorhaben }}
+        </span>
+      </v-col>
+      <v-col
+        cols="12"
+        md="1"
+        class="d-flex align-right"
+      >
+        <v-btn
+          id="open_auswahl_bauvorhaben"
+          class="mt-3 ml-2"
+          variant="plain"
+          :icon="isBauverfahrenEditable ? 'mdi-pencil-outline' : 'mdi-eye-outline'"
+          :disabled="!isBauverfahrenEditable"
+          @click="isAuswahlBauvorhabenDialogOpen = true"
         />
       </v-col>
     </v-row>
@@ -50,7 +63,7 @@
           on-text="Ja"
           :rules="[notUnspecified]"
         >
-          <template #label> SoBoN-relevant <span class="text-secondary">*</span> </template>
+          <template #label> SoBoN-relevant <span class="text-secondary">*</span></template>
         </tri-switch>
       </v-col>
       <v-col
@@ -95,7 +108,7 @@
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
+          <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
         </v-select>
       </v-col>
       <v-col
@@ -118,10 +131,16 @@
       </v-col>
     </v-row>
   </field-group-card>
+  <auswahl-bauvorhaben-dialog
+    id="auswahl_bauvorhaben_dialog"
+    v-model="isAuswahlBauvorhabenDialogOpen"
+    @bauvorhaben-uebernehmen="bauvorhabenUebernehmen"
+    @bauvorhaben-auswahl-abbrechen="isAuswahlBauvorhabenDialogOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import {
@@ -138,6 +157,8 @@ import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
+import _ from "lodash";
+import AuswahlBauvorhabenDialog from "@/components/common/AuswahlBauvorhabenDialog.vue";
 
 interface Props {
   isEditable?: boolean;
@@ -151,10 +172,16 @@ const abfrage = defineModel<BauleitplanverfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
-
+const isAuswahlBauvorhabenDialogOpen = ref(false);
+const isBauverfahrenEditable = computed(() => isEditableByAbfrageerstellung || isEditableBySachbearbeitung);
+const nameBauvorhaben = computed(() =>
+  !_.isNil(bauvorhaben.value) && !_.isNil(bauvorhaben.value.nameVorhaben)
+    ? bauvorhaben.value.nameVorhaben
+    : isBauverfahrenEditable
+      ? "Kein Bauvorhaben zugeordnet"
+      : "",
+);
 withDefaults(defineProps<Props>(), { isEditable: false });
-
-onMounted(() => fetchBauvorhaben());
 
 watch(
   () => abfrage.value.standVerfahren,
@@ -182,30 +209,10 @@ watch(
   { immediate: true },
 );
 
-/**
- * Holt alle Bauvorhaben vom Backend.
- */
-async function fetchBauvorhaben(): Promise<void> {
-  const searchQueryAndSortingDto = {
-    searchQuery: "",
-    selectBauleitplanverfahren: false,
-    selectBaugenehmigungsverfahren: false,
-    selectWeiteresVerfahren: false,
-    selectBauvorhaben: true,
-    selectGrundschule: false,
-    selectGsNachmittagBetreuung: false,
-    selectHausFuerKinder: false,
-    selectKindergarten: false,
-    selectKinderkrippe: false,
-    selectMittelschule: false,
-    page: undefined,
-    pageSize: undefined,
-    sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
-    sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
-  } as SearchQueryAndSortingDto;
-  const searchResults = await searchForEntities(searchQueryAndSortingDto);
-  bauvorhaben.value = searchResults.searchResults?.map(
-    (searchResults) => searchResults as BauvorhabenSearchResultDto,
-  ) as Array<BauvorhabenSearchResultDto>;
+function bauvorhabenUebernehmen(value: BauvorhabenSearchResultDto): void {
+  bauvorhaben.value = _.cloneDeep(value);
+  abfrage.value.bauvorhaben = bauvorhaben.value.id;
+  formChanged();
+  isAuswahlBauvorhabenDialogOpen.value = false;
 }
 </script>
