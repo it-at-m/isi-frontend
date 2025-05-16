@@ -138,7 +138,9 @@ const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenSearchResultDto>({});
 const isAuswahlBauvorhabenDialogOpen = ref(false);
-const isBauverfahrenEditable = computed(() => isEditableByAbfrageerstellung || isEditableBySachbearbeitung);
+const isBauverfahrenEditable = computed(() => {
+  return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
+});
 const nameBauvorhaben = computed(() =>
   !_.isNil(bauvorhaben.value) && !_.isNil(bauvorhaben.value.nameVorhaben)
     ? bauvorhaben.value.nameVorhaben
@@ -165,7 +167,7 @@ watch(
 function bauvorhabenUebernehmen(value: BauvorhabenSearchResultDto): void {
   bauvorhaben.value = _.cloneDeep(value);
   abfrage.value.bauvorhaben = bauvorhaben.value.id;
-  formChanged();
   isAuswahlBauvorhabenDialogOpen.value = false;
+  formChanged();
 }
 </script>

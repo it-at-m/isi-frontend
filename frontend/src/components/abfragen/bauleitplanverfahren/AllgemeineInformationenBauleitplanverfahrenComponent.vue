@@ -140,16 +140,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import {
   type BauvorhabenSearchResultDto,
-  type SearchQueryAndSortingDto,
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   UncertainBoolean,
-  SearchQueryAndSortingDtoSortByEnum,
-  SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
@@ -159,6 +156,7 @@ import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import _ from "lodash";
 import AuswahlBauvorhabenDialog from "@/components/common/AuswahlBauvorhabenDialog.vue";
+import { Context } from "@/utils/Context";
 
 interface Props {
   isEditable?: boolean;
@@ -166,14 +164,15 @@ interface Props {
 
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
-const { searchForEntities } = useSearchApi();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<BauleitplanverfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 const isAuswahlBauvorhabenDialogOpen = ref(false);
-const isBauverfahrenEditable = computed(() => isEditableByAbfrageerstellung || isEditableBySachbearbeitung);
+const isBauverfahrenEditable = computed(() => {
+  return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
+});
 const nameBauvorhaben = computed(() =>
   !_.isNil(bauvorhaben.value) && !_.isNil(bauvorhaben.value.nameVorhaben)
     ? bauvorhaben.value.nameVorhaben
@@ -212,7 +211,7 @@ watch(
 function bauvorhabenUebernehmen(value: BauvorhabenSearchResultDto): void {
   bauvorhaben.value = _.cloneDeep(value);
   abfrage.value.bauvorhaben = bauvorhaben.value.id;
-  formChanged();
   isAuswahlBauvorhabenDialogOpen.value = false;
+  formChanged();
 }
 </script>
