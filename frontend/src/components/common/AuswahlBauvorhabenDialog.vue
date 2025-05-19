@@ -166,13 +166,15 @@ async function fetchBauvorhaben(): Promise<void> {
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
-  searchQueryAndSortingDto.searchQuery = bauvorhabenSearchModel.value;
-  loading.value = true;
-  const searchResults = await searchForEntities(searchQueryAndSortingDto);
-  bauvorhaben.value = searchResults.searchResults?.map(
-    (searchResults) => searchResults as BauvorhabenSearchResultDto,
-  ) as Array<BauvorhabenSearchResultDto>;
-  loading.value = false;
+  if (!_.isEmpty(bauvorhabenSearchModel.value)) {
+    searchQueryAndSortingDto.searchQuery = bauvorhabenSearchModel.value;
+    loading.value = true;
+    const searchResults = await searchForEntities(searchQueryAndSortingDto);
+    bauvorhaben.value = searchResults.searchResults?.map(
+      (searchResults) => searchResults as BauvorhabenSearchResultDto,
+    ) as Array<BauvorhabenSearchResultDto>;
+    loading.value = false;
+  }
 }
 
 function bauvorhabenUebernehmen(): void {
