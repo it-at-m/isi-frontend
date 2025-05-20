@@ -53,7 +53,7 @@
         cols="12"
         md="2"
       >
-        <div class="d-flex align-center ml-6">
+        <div class="d-flex align-center ml-8">
           <v-btn
             id="open_auswahl_bauvorhaben"
             class="mt-3"
