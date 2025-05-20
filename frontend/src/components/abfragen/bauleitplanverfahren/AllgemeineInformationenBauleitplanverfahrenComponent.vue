@@ -18,7 +18,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="5"
+        md="4"
         class="d-flex align-center"
       >
         <span
@@ -36,17 +36,26 @@
       </v-col>
       <v-col
         cols="12"
-        md="1"
-        class="d-flex align-right"
+        md="2"
       >
-        <v-btn
-          id="open_auswahl_bauvorhaben"
-          class="mt-3 ml-2"
-          variant="plain"
-          :icon="isBauverfahrenEditable ? 'mdi-pencil-outline' : 'mdi-eye-outline'"
-          :disabled="!isBauverfahrenEditable"
-          @click="isAuswahlBauvorhabenDialogOpen = true"
-        />
+        <div class="d-flex align-center ml-8">
+          <v-btn
+            id="open_auswahl_bauvorhaben"
+            variant="plain"
+            class="mt-3"
+            :icon="isBauverfahrenEditable ? 'mdi-pencil-outline' : 'mdi-eye-outline'"
+            :disabled="!isBauverfahrenEditable"
+            @click="isAuswahlBauvorhabenDialogOpen = true"
+          />
+          <v-btn
+            id="bauvorhaben_loeschen"
+            variant="plain"
+            class="mt-3"
+            icon="mdi-delete"
+            :disabled="!isBauverfahrenDeleteable"
+            @click="deleteBauvorhaben"
+          />
+        </div>
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -175,7 +184,9 @@ const isAuswahlBauvorhabenDialogOpen = ref(false);
 const isBauverfahrenEditable = computed(() => {
   return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
 });
-
+const isBauverfahrenDeleteable = computed(() => {
+  return isBauverfahrenEditable && !_.isEmpty(abfrage.value.bauvorhaben);
+});
 const nameBauvorhaben = computed(() => {
   return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
 });
@@ -231,6 +242,11 @@ watch(
 function bauvorhabenUebernehmen(idBauvorhaben: string): void {
   abfrage.value.bauvorhaben = idBauvorhaben;
   isAuswahlBauvorhabenDialogOpen.value = false;
+  formChanged();
+}
+
+function deleteBauvorhaben(): void {
+  abfrage.value.bauvorhaben = undefined;
   formChanged();
 }
 </script>

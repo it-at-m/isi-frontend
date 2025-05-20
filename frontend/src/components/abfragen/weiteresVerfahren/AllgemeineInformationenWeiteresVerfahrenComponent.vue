@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col
         cols="12"
-        md="4"
+        md="3"
       >
         <v-text-field
           id="aktenzeichen_pro_lbk_field"
@@ -18,7 +18,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="4"
+        md="3"
       >
         <v-text-field
           id="bebauungsplannummer_field"
@@ -33,7 +33,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="3"
+        md="4"
         class="d-flex align-center"
       >
         <span
@@ -51,17 +51,26 @@
       </v-col>
       <v-col
         cols="12"
-        md="1"
-        class="d-flex align-right"
+        md="2"
       >
-        <v-btn
-          id="open_auswahl_bauvorhaben"
-          class="mt-3 ml-2"
-          variant="plain"
-          :icon="isBauverfahrenEditable ? 'mdi-pencil-outline' : 'mdi-eye-outline'"
-          :disabled="!isBauverfahrenEditable"
-          @click="isAuswahlBauvorhabenDialogOpen = true"
-        />
+        <div class="d-flex align-center ml-6">
+          <v-btn
+            id="open_auswahl_bauvorhaben"
+            class="mt-3"
+            variant="plain"
+            :icon="isBauverfahrenEditable ? 'mdi-pencil-outline' : 'mdi-eye-outline'"
+            :disabled="!isBauverfahrenEditable"
+            @click="isAuswahlBauvorhabenDialogOpen = true"
+          />
+          <v-btn
+            id="bauvorhaben_loeschen"
+            variant="plain"
+            class="mt-3"
+            icon="mdi-delete"
+            :disabled="!isBauverfahrenDeleteable"
+            @click="deleteBauvorhaben"
+          />
+        </div>
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -186,6 +195,9 @@ const isAuswahlBauvorhabenDialogOpen = ref(false);
 const isBauverfahrenEditable = computed(() => {
   return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
 });
+const isBauverfahrenDeleteable = computed(() => {
+  return isBauverfahrenEditable && !_.isEmpty(abfrage.value.bauvorhaben);
+});
 const nameBauvorhaben = computed(() => {
   return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
 });
@@ -241,6 +253,11 @@ watch(
 function bauvorhabenUebernehmen(idBauvorhaben: string): void {
   abfrage.value.bauvorhaben = idBauvorhaben;
   isAuswahlBauvorhabenDialogOpen.value = false;
+  formChanged();
+}
+
+function deleteBauvorhaben(): void {
+  abfrage.value.bauvorhaben = undefined;
   formChanged();
 }
 </script>
