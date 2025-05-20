@@ -42,6 +42,7 @@
         >
           <v-select
             id="bauvorhaben_auswahl_dropdown"
+            ref="bauvorhabenSelect"
             v-model="selectedBauvorhabenSearchResult"
             item-title="nameVorhaben"
             :items="bauvorhaben"
@@ -108,7 +109,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { ref, watch, nextTick } from "vue";
 import {
   type BauvorhabenSearchResultDto,
   SearchQueryAndSortingDtoSortByEnum,
@@ -117,6 +118,7 @@ import {
 import _ from "lodash";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
+import { VSelect } from "vuetify/components";
 
 interface Emits {
   (event: "bauvorhabenUebernehmen", value: string): void;
@@ -131,6 +133,7 @@ const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 const selectedBauvorhabenSearchResult = ref("");
 const bauvorhabenSearchModel = ref("");
 const loading = ref(false);
+const bauvorhabenSelect = ref();
 
 async function fetchBauvorhaben(): Promise<void> {
   const searchQueryAndSortingDto = {
@@ -158,6 +161,11 @@ async function fetchBauvorhaben(): Promise<void> {
       (searchResults) => searchResults as BauvorhabenSearchResultDto,
     ) as Array<BauvorhabenSearchResultDto>;
     loading.value = false;
+  }
+
+  await nextTick();
+  if (bauvorhaben.value.length > 0 && bauvorhabenSelect.value) {
+    bauvorhabenSelect.value.menu = true;
   }
 }
 
