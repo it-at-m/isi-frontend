@@ -144,19 +144,21 @@ import { computed, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import {
-  type BauvorhabenSearchResultDto,
   BauleitplanverfahrenDtoStandVerfahrenEnum,
   UncertainBoolean,
+  BauvorhabenDto,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { useSearchApi } from "@/composables/requests/search/SearchApi";
+
+const { getBauvorhabenById } = useBauvorhabenApi();
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import _ from "lodash";
 import AuswahlBauvorhabenDialog from "@/components/common/AuswahlBauvorhabenDialog.vue";
-import { Context } from "@/utils/Context";
+import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
+import { createBauvorhabenDto } from "@/utils/Factories";
 
 interface Props {
   isEditable?: boolean;
@@ -168,18 +170,36 @@ const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrag
 const abfrage = defineModel<BauleitplanverfahrenModel>({ required: true });
 const standVerfahrenFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
-const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
+const bauvorhaben = ref<BauvorhabenDto>(createBauvorhabenDto());
 const isAuswahlBauvorhabenDialogOpen = ref(false);
 const isBauverfahrenEditable = computed(() => {
   return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
 });
-const nameBauvorhaben = computed(() =>
-  !_.isNil(bauvorhaben.value) && !_.isNil(bauvorhaben.value.nameVorhaben)
-    ? bauvorhaben.value.nameVorhaben
-    : isBauverfahrenEditable
-      ? "Kein Bauvorhaben zugeordnet"
-      : "",
+
+const nameBauvorhaben = computed(() => {
+  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
+});
+
+watch(
+  () => abfrage.value.bauvorhaben,
+  async (value) => {
+    await getBauvorhaben();
+  },
+  { immediate: true },
 );
+
+async function getBauvorhaben(): Promise<void> {
+  if (
+    !_.isNil(abfrage.value.bauvorhaben) &&
+    !_.isEmpty(abfrage.value.bauvorhaben) &&
+    abfrage.value.bauvorhaben != bauvorhaben.value.id
+  ) {
+    bauvorhaben.value = await getBauvorhabenById(abfrage.value.bauvorhaben);
+  } else {
+    bauvorhaben.value = createBauvorhabenDto();
+  }
+}
+
 withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(
@@ -208,9 +228,8 @@ watch(
   { immediate: true },
 );
 
-function bauvorhabenUebernehmen(value: BauvorhabenSearchResultDto): void {
-  bauvorhaben.value = _.cloneDeep(value);
-  abfrage.value.bauvorhaben = bauvorhaben.value.id;
+function bauvorhabenUebernehmen(idBauvorhaben: string): void {
+  abfrage.value.bauvorhaben = idBauvorhaben;
   isAuswahlBauvorhabenDialogOpen.value = false;
   formChanged();
 }

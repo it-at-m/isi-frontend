@@ -110,43 +110,27 @@
 <script lang="ts" setup>
 import { ref, watch } from "vue";
 import {
-  type BauvorhabenDto,
   type BauvorhabenSearchResultDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import _ from "lodash";
-import { createBauvorhabenDto } from "@/utils/Factories";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
-import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 interface Emits {
-  (event: "bauvorhabenUebernehmen", value: BauvorhabenDto): void;
+  (event: "bauvorhabenUebernehmen", value: string): void;
 
   (event: "bauvorhabenAuswahlAbbrechen", value: void): void;
 }
 
 const { searchForEntities } = useSearchApi();
-const { getBauvorhabenById } = useBauvorhabenApi();
 const emit = defineEmits<Emits>();
 const dialogOpen = defineModel<boolean>({ required: true });
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 const selectedBauvorhabenSearchResult = ref("");
-let selectedBauvorhaben = ref<BauvorhabenDto>(createBauvorhabenDto());
 const bauvorhabenSearchModel = ref("");
 const loading = ref(false);
-
-watch(
-  selectedBauvorhabenSearchResult,
-  async () => {
-    if (!_.isNil(selectedBauvorhabenSearchResult.value) && !_.isEmpty(selectedBauvorhabenSearchResult.value)) {
-      const idBauvorhaben = selectedBauvorhabenSearchResult.value;
-      selectedBauvorhaben = await getBauvorhabenById(idBauvorhaben);
-    }
-  },
-  { immediate: true },
-);
 
 async function fetchBauvorhaben(): Promise<void> {
   const searchQueryAndSortingDto = {
@@ -178,8 +162,8 @@ async function fetchBauvorhaben(): Promise<void> {
 }
 
 function bauvorhabenUebernehmen(): void {
+  emit("bauvorhabenUebernehmen", selectedBauvorhabenSearchResult.value);
   selectedBauvorhabenSearchResult.value = "";
-  emit("bauvorhabenUebernehmen", selectedBauvorhaben);
 }
 
 function bauvorhabenAuswahlAbbrechen(): void {
