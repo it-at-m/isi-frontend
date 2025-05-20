@@ -43,6 +43,7 @@
           <v-select
             id="abfrage_datenuebernahme_dropdown"
             v-model="selectedAbfrageSearchResult"
+            ref="abfragenSelect"
             variant="underlined"
             :items="abfragen"
             item-value="id"
@@ -90,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { nextTick, ref, watch } from "vue";
 import {
   type AbfrageDto,
   type AbfrageSearchResultDto,
@@ -114,6 +115,7 @@ interface Props {
 
 interface Emits {
   (event: "abfrageUebernehmen", value: AbfrageDto): void;
+
   (event: "uebernahmeAbbrechen", value: void): void;
 }
 
@@ -129,6 +131,7 @@ const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>();
 let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
 const abfrageSearchModel = ref("");
 const loading = ref(false);
+const abfragenSelect = ref();
 
 watch(
   selectedAbfrageSearchResult,
@@ -181,6 +184,10 @@ async function fetchAbfragen(): Promise<void> {
     abfragen.value = searchResults.searchResults
       ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
       .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
+  }
+  await nextTick();
+  if (abfragen.value.length > 0 && abfragenSelect.value) {
+    abfragenSelect.value.menu = true;
   }
 }
 
