@@ -171,8 +171,8 @@ async function fetchAbfragen(): Promise<void> {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
-    page: 1,
-    pageSize: 20,
+    page: undefined,
+    pageSize: undefined,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
