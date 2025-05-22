@@ -94,6 +94,7 @@
 import { nextTick, ref, watch } from "vue";
 import {
   type AbfrageDto,
+  AbfrageDtoArtAbfrageEnum,
   type AbfrageSearchResultDto,
   type LookupEntryDto,
   SearchQueryAndSortingDtoSortByEnum,
@@ -161,9 +162,9 @@ function getItemText(searchResult: AbfrageSearchResultDto): string {
 async function fetchAbfragen(): Promise<void> {
   const searchQueryAndSortingDto = {
     searchQuery: "",
-    selectBauleitplanverfahren: true,
-    selectBaugenehmigungsverfahren: true,
-    selectWeiteresVerfahren: true,
+    selectBauleitplanverfahren: false,
+    selectBaugenehmigungsverfahren: false,
+    selectWeiteresVerfahren: false,
     selectBauvorhaben: false,
     selectGrundschule: false,
     selectGsNachmittagBetreuung: false,
@@ -179,11 +180,26 @@ async function fetchAbfragen(): Promise<void> {
   if (!_.isEmpty(abfrageSearchModel.value)) {
     searchQueryAndSortingDto.searchQuery = abfrageSearchModel.value;
     loading.value = true;
+    switch (searchStore.selectedAbfrage?.artAbfrage) {
+      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+        searchQueryAndSortingDto.selectBauleitplanverfahren = true;
+        break;
+      case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+        searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
+        break;
+      case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+        searchQueryAndSortingDto.selectWeiteresVerfahren = true;
+        break;
+      default:
+        break;
+    }
     const searchResults = await searchForEntities(searchQueryAndSortingDto);
+    console.log("searchResults: ", searchResults.searchResults?.length);
     loading.value = false;
     abfragen.value = searchResults.searchResults
       ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
       .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
+    console.log("after filter: ", abfragen.value.length);
   }
   await nextTick();
   if (abfragen.value.length > 0 && abfragenSelect.value) {
