@@ -180,19 +180,26 @@ async function fetchAbfragen(): Promise<void> {
   if (!_.isEmpty(abfrageSearchModel.value)) {
     searchQueryAndSortingDto.searchQuery = abfrageSearchModel.value;
     loading.value = true;
-    switch (searchStore.selectedAbfrage?.artAbfrage) {
-      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-        searchQueryAndSortingDto.selectBauleitplanverfahren = true;
-        break;
-      case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-        searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
-        break;
-      case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-        searchQueryAndSortingDto.selectWeiteresVerfahren = true;
-        break;
-      default:
-        break;
+    if (props.context === Context.ABFRAGE) {
+      switch (searchStore.selectedAbfrage?.artAbfrage) {
+        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+          searchQueryAndSortingDto.selectBauleitplanverfahren = true;
+          break;
+        case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+          searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
+          break;
+        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+          searchQueryAndSortingDto.selectWeiteresVerfahren = true;
+          break;
+        default:
+          break;
+      }
+    } else {
+      searchQueryAndSortingDto.selectBauleitplanverfahren = true;
+      searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
+      searchQueryAndSortingDto.selectWeiteresVerfahren = true;
     }
+    console.log("searchQueryAndSortingDto", searchQueryAndSortingDto);
     const searchResults = await searchForEntities(searchQueryAndSortingDto);
     console.log("searchResults: ", searchResults.searchResults?.length);
     loading.value = false;
