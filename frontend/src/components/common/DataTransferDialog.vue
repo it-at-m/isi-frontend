@@ -199,14 +199,11 @@ async function fetchAbfragen(): Promise<void> {
       searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
       searchQueryAndSortingDto.selectWeiteresVerfahren = true;
     }
-    console.log("searchQueryAndSortingDto", searchQueryAndSortingDto);
     const searchResults = await searchForEntities(searchQueryAndSortingDto);
-    console.log("searchResults: ", searchResults.searchResults?.length);
     loading.value = false;
     abfragen.value = searchResults.searchResults
       ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
       .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
-    console.log("after filter: ", abfragen.value.length);
   }
   await nextTick();
   if (abfragen.value.length > 0 && abfragenSelect.value) {
