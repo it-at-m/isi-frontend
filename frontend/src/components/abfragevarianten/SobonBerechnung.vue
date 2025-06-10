@@ -34,11 +34,51 @@
         />
       </v-col>
     </v-expand-transition>
+
+    <v-expand-transition>
+      <v-col
+        v-if="isFreieEingabe"
+        cols="12"
+      >
+        <v-row>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-text-field
+              id="sobon_foerdermix_summe"
+              v-model="gesamtsumme"
+              label="Summe"
+              variant="underlined"
+              readonly
+              :rules="[() => nichtGleich100Prozent(sobonBerechnung.sobonFoerdermix)]"
+              suffix="%"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            v-for="(foerderart, index) in foerderarten"
+            :key="index"
+            cols="12"
+            md="4"
+          >
+            <num-field
+              :id="'sobon_foerderart_' + index"
+              v-model="foerderart.anteilProzent"
+              :label="foerderart.bezeichnung"
+              :suffix="PERCENT"
+              :disabled="!isFreieEingabe"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-expand-transition>
   </v-row>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import type { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
@@ -48,13 +88,16 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import FoerdermixStammModel from "@/types/model/bauraten/FoerdermixStammModel";
 import { createFoerdermixDto } from "@/utils/Factories";
 import { mapFoerdermixStammModelToFoerderMix, mapFoerdermixToFoerderMixStammModel } from "@/utils/MapperUtil";
+import { nichtGleich100Prozent } from "@/utils/FieldValidationRules";
+import { addiereAnteile } from "@/utils/CalculationUtil";
+import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
+import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
 const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
-
 const stammdatenStore = useStammdatenStore();
 
 onMounted(() => {
@@ -75,13 +118,28 @@ const sobonFoerdermix = computed({
   },
 });
 
+const foerderarten = computed(() => {
+  if (!_.isNil(sobonBerechnung.value.sobonFoerdermix)) {
+    return sobonBerechnung.value.sobonFoerdermix.foerderarten;
+  }
+});
+
+const isFreieEingabe = computed(() => {
+  return sobonBerechnung.value.sobonFoerdermix?.bezeichnung === "Freie Eingabe" && isEditableBySachbearbeitung;
+});
+
+const gesamtsumme = computed(() => {
+  if (!_.isNil(sobonBerechnung.value.sobonFoerdermix)) {
+    const foerdermixe = new FoerdermixModel(sobonBerechnung.value.sobonFoerdermix);
+    return addiereAnteile(foerdermixe);
+  }
+  return 0;
+});
+
 function setGroupedStammdatenList(): void {
   let stammdaten = stammdatenStore.foerdermixStammdaten;
-  stammdaten = stammdaten.filter((foerdermixStaemme: FoerdermixStammDto) => {
-    return (
-      foerdermixStaemme.foerdermix.bezeichnung !== "private Fläche" &&
-      foerdermixStaemme.foerdermix.bezeichnung !== "städtische Fläche"
-    );
+  stammdaten = stammdaten.filter((fm: FoerdermixStammDto) => {
+    return fm.foerdermix.bezeichnung !== "private Fläche" && fm.foerdermix.bezeichnung !== "städtische Fläche";
   });
   groupedStammdaten.value = _.sortBy(stammdaten, ["foerdermix.bezeichnungJahr"]);
 }
@@ -93,3 +151,5 @@ function sobonBerechnungChanged(): void {
   }
 }
 </script>
+
+<style scoped></style>
