@@ -93,6 +93,7 @@ import { addiereAnteile } from "@/utils/CalculationUtil";
 import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
+import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
@@ -125,7 +126,10 @@ const foerderarten = computed(() => {
 });
 
 const isFreieEingabe = computed(() => {
-  return sobonBerechnung.value.sobonFoerdermix?.bezeichnung === "Freie Eingabe" && isEditableBySachbearbeitung;
+  return (
+    sobonBerechnung.value.sobonFoerdermix?.bezeichnung === FoerdermixStammdaten.FREIE_EINGABE &&
+    isEditableBySachbearbeitung
+  );
 });
 
 const gesamtsumme = computed(() => {
@@ -139,7 +143,10 @@ const gesamtsumme = computed(() => {
 function setGroupedStammdatenList(): void {
   let stammdaten = stammdatenStore.foerdermixStammdaten;
   stammdaten = stammdaten.filter((fm: FoerdermixStammDto) => {
-    return fm.foerdermix.bezeichnung !== "private Fläche" && fm.foerdermix.bezeichnung !== "städtische Fläche";
+    return (
+      fm.foerdermix.bezeichnung !== FoerdermixStammdaten.PRIVATE_FLAECHE &&
+      fm.foerdermix.bezeichnung !== FoerdermixStammdaten.STAEDTISCHE_FLAECHE
+    );
   });
   groupedStammdaten.value = _.sortBy(stammdaten, ["foerdermix.bezeichnungJahr"]);
 }

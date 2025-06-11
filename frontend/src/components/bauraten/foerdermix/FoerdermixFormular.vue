@@ -73,6 +73,7 @@ import { nichtGleich100Prozent } from "@/utils/FieldValidationRules";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
+import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 
 interface Props {
   isEditable?: boolean;
@@ -117,7 +118,7 @@ const gesamtsumme = computed(() => {
 });
 
 const isFreieEingabe = computed(() => {
-  isFreie = selectedItem.value.foerdermix.bezeichnung === freieEingabe && props.isEditable;
+  isFreie = selectedItem.value.foerdermix.bezeichnung === FoerdermixStammdaten.FREIE_EINGABE && props.isEditable;
   return isFreie;
 });
 
