@@ -82,8 +82,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const foerdermix = defineModel<FoerdermixModel>({ required: true });
 const anteileFMCardTitle = "Anteile Fördermix";
-const freieEingabe = "Freie Eingabe";
-
 let isFreie = false;
 let stammdaten: FoerdermixStammModel[] = [];
 const selectedItem = ref<FoerdermixStammModel>(createFoerdermixStammDto());
