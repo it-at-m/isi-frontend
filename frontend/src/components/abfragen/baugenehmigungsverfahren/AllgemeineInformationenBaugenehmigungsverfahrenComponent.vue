@@ -153,7 +153,7 @@ const isBauverfahrenEditable = computed(() => {
 });
 const isBauverfahrenDeleteable = computed(() => {
   return (
-    isEditableByAbfrageerstellung.value || (isEditableBySachbearbeitung.value && !_.isEmpty(abfrage.value.bauvorhaben))
+    (isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value) && !_.isEmpty(abfrage.value.bauvorhaben)
   );
 });
 const nameBauvorhaben = computed(() => {
