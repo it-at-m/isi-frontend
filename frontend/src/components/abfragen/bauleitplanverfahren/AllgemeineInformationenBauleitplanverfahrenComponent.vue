@@ -185,7 +185,9 @@ const isBauverfahrenEditable = computed(() => {
   return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
 });
 const isBauverfahrenDeleteable = computed(() => {
-  return isBauverfahrenEditable && !_.isEmpty(abfrage.value.bauvorhaben);
+  return (
+    (isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value) && !_.isEmpty(abfrage.value.bauvorhaben)
+  );
 });
 const nameBauvorhaben = computed(() => {
   return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
