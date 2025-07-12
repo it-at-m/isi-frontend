@@ -30,7 +30,7 @@
         übereinstimmen -->
         <org.projectlombok.lombok.version>1.18.36</org.projectlombok.lombok.version>
         <logstash.encoder.version>7.4</logstash.encoder.version>
-        <apache.commons.lang.version>3.17.0</apache.commons.lang.version>
+        <apache.commons.lang.version>3.18.0</apache.commons.lang.version>
         <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <!-- TestCoverage -->
         <jacoco.version>0.8.12</jacoco.version>
