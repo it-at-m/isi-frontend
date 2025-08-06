@@ -19,6 +19,7 @@ export function useErrorHandler() {
   const ERROR_MESSAGE_NOT_AUTHORIZED = "Sie haben nicht die nötigen Rechte um diese Aktion durchzuführen.";
   const ERROR_MESSAGE_TIMEOUT =
     "Im Anwendungssystem ist eine Zeitüberschreitung aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
+
   /**
    * Diese Methode zeigt den im Parameter übergebenen "error" als Toast an.
    *
@@ -33,6 +34,9 @@ export function useErrorHandler() {
    * @param error welche angezeigt werden soll.
    */
   function handleError(error: unknown): Error {
+    console.log("Error: " + error);
+    console.log("Error response.type: " + (error as ResponseError).response.type);
+    console.log("Error response.status: " + (error as ResponseError).response.status);
     if (error instanceof ResponseError && error.response.type === "opaqueredirect") {
       location.reload();
     } else if (error instanceof ResponseError && error.response.status === 403) {
