@@ -34,23 +34,15 @@ export function useErrorHandler() {
    * @param error welche angezeigt werden soll.
    */
   function handleError(error: unknown): Error {
-    console.log("Error is instanceof ResponseError: " + (error instanceof ResponseError));
-    console.log("Error is type of: " + typeof error);
-    console.log("Error response.type: " + (error as ResponseError).response.type);
-    console.log("Error response.status: " + (error as ResponseError).response.status);
     if (error instanceof ResponseError && error.response.status === 403) {
-      console.log("label1");
       showInformation(ERROR_MESSAGE_NOT_AUTHORIZED);
     } else if (error instanceof ResponseError && error.response.status === 503) {
-      console.log("label2");
       // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
       showInformation(ERROR_MESSAGE_GATEWAY);
     } else if (error instanceof ResponseError && error.response.status === 504) {
-      console.log("label3");
       // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
       showInformation(ERROR_MESSAGE_TIMEOUT);
     } else if (error instanceof ResponseError && error.response.status !== 500) {
-      console.log("label4");
       // Das Backend reagiert mit einer fachlichen Fehlermeldung.
       error.response.json().then((json: unknown) => {
         const informationResponseDto: InformationResponseDto = InformationResponseDtoFromJSON(json);
@@ -60,14 +52,11 @@ export function useErrorHandler() {
         showInformation(messages, type);
       });
     } else if (error instanceof ResponseError && error.response.status === 500) {
-      console.log("label5");
       // ResponseError vom Gateway. D.h. das Gateway aber nicht das Backend konnte erreicht werden.
       showInformation(ERROR_MESSAGE_BACKEND);
     } else if ((error as ResponseError).response.type === "opaqueredirect") {
-      console.log("label6");
       location.reload();
     } else {
-      console.log("label7");
       // TypeError -> Der fetch-Request ist fehlgeschlagen.
       showInformation(ERROR_MESSAGE_GATEWAY);
     }
