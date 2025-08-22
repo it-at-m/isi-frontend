@@ -15,10 +15,8 @@ jobs:
           node-version: "20"
       - name: Execute npm install, test, build
         working-directory: frontend
-        env:
-          NODE_ENV: dev
         run: |
-          npm ci
+          npm ci --include=dev
           npm run build --if-present
           npm run test:unit
       - name: Check with eslint
