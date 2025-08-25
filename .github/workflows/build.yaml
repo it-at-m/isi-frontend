@@ -18,6 +18,7 @@ jobs:
         run: |
           npm ci --include=dev
           npm run build --if-present
+          echo $NODE_ENV
           npm run test:unit
       - name: Check with eslint
         run: |
