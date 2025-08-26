@@ -34,16 +34,76 @@ export function useErrorHandler() {
    * @param error welche angezeigt werden soll.
    */
   function handleError(error: unknown): Error {
+    console.log("Error instanceof ResponseError: " + (error instanceof ResponseError));
+    if (error instanceof ResponseError) {
+      let res = error as ResponseError;
+      console.log("Status: " + res.response.status + ", type: " + res.response.type + ", message: ");
+    }
+    if (error instanceof ResponseError) {
+      let responseError = error as ResponseError;
+      switch (responseError.response.status) {
+        case 0:
+          console.log("label 1.0");
+          if (responseError.response.type === "opaqueredirect") {
+            console.log("label 1.1");
+            location.reload();
+          }
+          break;
+        case 403:
+          console.log("label 2");
+          showInformation(ERROR_MESSAGE_NOT_AUTHORIZED);
+          break;
+        case 500:
+          // ResponseError vom Gateway. D.h. das Gateway aber nicht das Backend konnte erreicht werden.
+          console.log("label 3");
+          showInformation(ERROR_MESSAGE_BACKEND);
+          break;
+        case 503:
+          // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
+          console.log("label 4");
+          showInformation(ERROR_MESSAGE_GATEWAY);
+          break;
+        case 504:
+          // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
+          console.log("label 5");
+          showInformation(ERROR_MESSAGE_TIMEOUT);
+          break;
+        default:
+          // Das Backend reagiert mit einer fachlichen Fehlermeldung.
+          console.log("label 6");
+          error.response.json().then((json: unknown) => {
+            const informationResponseDto: InformationResponseDto = InformationResponseDtoFromJSON(json);
+            // Show as Toast
+            const messages: string = _.join(informationResponseDto.messages, "; ");
+            const type = getToastType(informationResponseDto.type);
+            showInformation(messages, type);
+          });
+          break;
+      }
+    } else {
+      // TypeError -> Der fetch-Request ist fehlgeschlagen.
+      console.log("label 7");
+      showInformation(ERROR_MESSAGE_GATEWAY);
+    }
+    console.log("label 8");
+    commonStore.enableButton();
+    return error instanceof Error ? error : { name: "Error", message: ERROR_MESSAGE_GATEWAY };
+
+    /*
     if (error instanceof ResponseError && error.response.status === 403) {
+      console.log("label 1");
       showInformation(ERROR_MESSAGE_NOT_AUTHORIZED);
     } else if (error instanceof ResponseError && error.response.status === 503) {
       // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
+      console.log("label 2");
       showInformation(ERROR_MESSAGE_GATEWAY);
     } else if (error instanceof ResponseError && error.response.status === 504) {
       // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
+      console.log("label 3");
       showInformation(ERROR_MESSAGE_TIMEOUT);
     } else if (error instanceof ResponseError && error.response.status !== 500) {
       // Das Backend reagiert mit einer fachlichen Fehlermeldung.
+      console.log("label 4");
       error.response.json().then((json: unknown) => {
         const informationResponseDto: InformationResponseDto = InformationResponseDtoFromJSON(json);
         // Show as Toast
@@ -53,15 +113,20 @@ export function useErrorHandler() {
       });
     } else if (error instanceof ResponseError && error.response.status === 500) {
       // ResponseError vom Gateway. D.h. das Gateway aber nicht das Backend konnte erreicht werden.
+      console.log("label 5");
       showInformation(ERROR_MESSAGE_BACKEND);
     } else if ((error as ResponseError).response.type === "opaqueredirect") {
+      console.log("label 6");
       location.reload();
     } else {
       // TypeError -> Der fetch-Request ist fehlgeschlagen.
+      console.log("label 7");
       showInformation(ERROR_MESSAGE_GATEWAY);
     }
+    console.log("label 8");
     commonStore.enableButton();
     return error instanceof Error ? error : { name: "Error", message: ERROR_MESSAGE_GATEWAY };
+     */
   }
 
   /**
