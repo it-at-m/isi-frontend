@@ -6,7 +6,7 @@
 
     <groupId>de.muenchen.isi.apigateway</groupId>
     <artifactId>isi-frontend-apigateway</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <packaging>jar</packaging>
     <name>isi_frontend_apigateway</name>
     <description>Apigateway used by ISI Frontend</description>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>de.muenchen.isi</groupId>
         <artifactId>isi-frontend</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
     </parent>
 
     <properties>
@@ -22,7 +22,7 @@
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
         <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <spring.boot.version>3.4.3</spring.boot.version>
         <spring.cloud.version>2024.0.0</spring.cloud.version>
