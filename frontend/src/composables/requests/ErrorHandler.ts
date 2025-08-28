@@ -36,16 +36,21 @@ export function useErrorHandler() {
   function handleError(error: unknown): Error {
     console.log("Error instanceof ResponseError: " + (error instanceof ResponseError));
     if (error instanceof ResponseError) {
-      let debug: ResponseError = error as ResponseError;
-      console.log("ResponeError, Status: " + debug.response.status + ", type: " + debug.response.type + ", message: ");
+      console.log(
+        "ResponeError, Status: " +
+          (error as ResponseError).response.status +
+          ", type: " +
+          (error as ResponseError).response.type +
+          ", message: " +
+          (error as ResponseError).message,
+      );
     }
     if (error instanceof ResponseError) {
-      let responseError: ResponseError = error as ResponseError;
-      if (responseError.response.type === "opaqueredirect") {
+      if ((error as ResponseError).response.type === "opaqueredirect") {
         console.log("label 0");
         location.reload();
       }
-      switch (responseError.response.status) {
+      switch ((error as ResponseError).response.status) {
         case 0:
           console.log("label 1");
           break;
