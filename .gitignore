@@ -42,4 +42,3 @@ frontend/.env.development
 frontend/.env.production
 frontend/auto-imports.d.ts
 frontend/components.d.ts
-frontend/package-lock.json

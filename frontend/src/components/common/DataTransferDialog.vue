@@ -8,26 +8,52 @@
       <v-card-title class="align-stretch">Datenübernahme aus Abfrage</v-card-title>
       <v-row justify="center">
         <v-col
-          cols="12"
-          md="10"
+          cols="11"
+          md="9"
         >
-          <v-autocomplete
-            id="abfrage_datenuebernahme_dropdown"
-            v-model="selectedAbfrageSearchResult"
-            :items="abfragen"
-            :item-title="(item) => getItemText(item)"
-            item-value="id"
-            label="Abfragen"
+          <v-text-field
+            id="abfrageSuch_field"
+            ref="abfrageSuchField"
+            v-model="abfrageSearchModel"
+            label="Suche"
             variant="underlined"
-            return-object
-            hint="Abfrage für Datenübernahme auswählen"
-            persistent-hint
-            @update:focused="!$event || fetchAbfragen()"
+            @keyup.enter="fetchAbfragen"
           />
         </v-col>
+        <v-col
+          cols="11"
+          md="2"
+          class="d-flex justify-end align-center"
+        >
+          <v-btn
+            variant="outlined"
+            id="abfrage_datenuebernahme_suchen_button"
+            style="width: 120px"
+            @click="fetchAbfragen"
+          >
+            Suchen
+          </v-btn>
+        </v-col>
       </v-row>
-      <v-card-actions>
-        <v-spacer />
+      <v-row justify="center">
+        <v-col
+          cols="11"
+          md="11"
+        >
+          <v-select
+            id="abfrage_datenuebernahme_dropdown"
+            v-model="selectedAbfrageSearchResult"
+            ref="abfragenSelect"
+            variant="underlined"
+            :items="abfragen"
+            item-value="id"
+            :item-title="(item) => getItemText(item)"
+            title="Abfrage für Datenübernahme auswählen"
+          >
+          </v-select>
+        </v-col>
+      </v-row>
+      <v-card-actions class="d-flex justify-end">
         <v-btn
           id="abfrage_datenuebernahme_abbrechen_button"
           @click="uebernahmeAbbrechen"
@@ -44,13 +70,31 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-dialog
+      v-model="loading"
+      max-width="360"
+      persistent
+    >
+      <v-list
+        class="py-3"
+        color="primary"
+        elevation="12"
+        rounded="lg"
+      >
+        <loading-progress-circular
+          icon="mdi-file-document-refresh"
+          text="Suche läuft..."
+        />
+      </v-list>
+    </v-dialog>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { nextTick, ref, watch } from "vue";
 import {
   type AbfrageDto,
+  AbfrageDtoArtAbfrageEnum,
   type AbfrageSearchResultDto,
   type LookupEntryDto,
   SearchQueryAndSortingDtoSortByEnum,
@@ -64,6 +108,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { Context } from "@/utils/Context";
+import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 interface Props {
   context: Context;
@@ -71,6 +116,7 @@ interface Props {
 
 interface Emits {
   (event: "abfrageUebernehmen", value: AbfrageDto): void;
+
   (event: "uebernahmeAbbrechen", value: void): void;
 }
 
@@ -84,14 +130,15 @@ const dialogOpen = defineModel<boolean>({ required: true });
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
 const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>();
 let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
-
-onMounted(() => fetchAbfragen());
+const abfrageSearchModel = ref("");
+const loading = ref(false);
+const abfragenSelect = ref();
 
 watch(
   selectedAbfrageSearchResult,
   async () => {
-    if (!_.isNil(selectedAbfrageSearchResult.value) && !_.isNil(selectedAbfrageSearchResult.value.id)) {
-      const idAbfrage = selectedAbfrageSearchResult.value.id;
+    if (!_.isNil(selectedAbfrageSearchResult.value)) {
+      const idAbfrage = selectedAbfrageSearchResult.value;
       selectedAbfrage = await getById(idAbfrage);
     }
   },
@@ -115,9 +162,9 @@ function getItemText(searchResult: AbfrageSearchResultDto): string {
 async function fetchAbfragen(): Promise<void> {
   const searchQueryAndSortingDto = {
     searchQuery: "",
-    selectBauleitplanverfahren: true,
-    selectBaugenehmigungsverfahren: true,
-    selectWeiteresVerfahren: true,
+    selectBauleitplanverfahren: false,
+    selectBaugenehmigungsverfahren: false,
+    selectWeiteresVerfahren: false,
     selectBauvorhaben: false,
     selectGrundschule: false,
     selectGsNachmittagBetreuung: false,
@@ -130,10 +177,38 @@ async function fetchAbfragen(): Promise<void> {
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
-  const searchResults = await searchForEntities(searchQueryAndSortingDto);
-  abfragen.value = searchResults.searchResults
-    ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
-    .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
+  if (!_.isEmpty(abfrageSearchModel.value)) {
+    searchQueryAndSortingDto.searchQuery = abfrageSearchModel.value;
+    loading.value = true;
+    if (props.context === Context.ABFRAGE) {
+      switch (searchStore.selectedAbfrage?.artAbfrage) {
+        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+          searchQueryAndSortingDto.selectBauleitplanverfahren = true;
+          break;
+        case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+          searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
+          break;
+        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+          searchQueryAndSortingDto.selectWeiteresVerfahren = true;
+          break;
+        default:
+          break;
+      }
+    } else {
+      searchQueryAndSortingDto.selectBauleitplanverfahren = true;
+      searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
+      searchQueryAndSortingDto.selectWeiteresVerfahren = true;
+    }
+    const searchResults = await searchForEntities(searchQueryAndSortingDto);
+    loading.value = false;
+    abfragen.value = searchResults.searchResults
+      ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
+      .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
+  }
+  await nextTick();
+  if (abfragen.value.length > 0 && abfragenSelect.value) {
+    abfragenSelect.value.menu = true;
+  }
 }
 
 function searchResultFilter(result: AbfrageSearchResultDto): boolean {

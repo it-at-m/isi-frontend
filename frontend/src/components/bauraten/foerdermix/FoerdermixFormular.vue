@@ -73,6 +73,7 @@ import { nichtGleich100Prozent } from "@/utils/FieldValidationRules";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
+import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 
 interface Props {
   isEditable?: boolean;
@@ -81,8 +82,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const foerdermix = defineModel<FoerdermixModel>({ required: true });
 const anteileFMCardTitle = "Anteile Fördermix";
-const freieEingabe = "Freie Eingabe";
-
 let isFreie = false;
 let stammdaten: FoerdermixStammModel[] = [];
 const selectedItem = ref<FoerdermixStammModel>(createFoerdermixStammDto());
@@ -117,7 +116,7 @@ const gesamtsumme = computed(() => {
 });
 
 const isFreieEingabe = computed(() => {
-  isFreie = selectedItem.value.foerdermix.bezeichnung === freieEingabe && props.isEditable;
+  isFreie = selectedItem.value.foerdermix.bezeichnung === FoerdermixStammdaten.FREIE_EINGABE && props.isEditable;
   return isFreie;
 });
 

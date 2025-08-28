@@ -18,7 +18,7 @@ export function useErrorHandler() {
     "Es ist ein Problem im Anwendungssystem (Backend) aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
   const ERROR_MESSAGE_NOT_AUTHORIZED = "Sie haben nicht die nötigen Rechte um diese Aktion durchzuführen.";
   const ERROR_MESSAGE_TIMEOUT =
-    "Es ist ein Zeitüberschreitung im Anwendungssystem aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
+    "Im Anwendungssystem ist eine Zeitüberschreitung aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
   /**
    * Diese Methode zeigt den im Parameter übergebenen "error" als Toast an.
    *
