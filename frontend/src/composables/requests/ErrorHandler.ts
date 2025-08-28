@@ -13,7 +13,7 @@ export function useErrorHandler() {
   const toast = useToast();
   const commonStore = useCommonStore();
   const ERROR_MESSAGE_GATEWAY =
-    "Anwendungssystem (API-Gateway) nicht verfügbar. Bitte kontaktieren Sie den Servicedesk.";
+    "Das Anwendungssystem (API-Gateway) ist nicht verfügbar oder die Sitzung ist abgelaufen. Versuchen Sie es erneut mit F5. Ansonsten kontaktieren Sie bitte den Servicedesk.";
   const ERROR_MESSAGE_BACKEND =
     "Es ist ein Problem im Anwendungssystem (Backend) aufgetreten. Bitte kontaktieren Sie den Servicedesk.";
   const ERROR_MESSAGE_NOT_AUTHORIZED = "Sie haben nicht die nötigen Rechte um diese Aktion durchzuführen.";
@@ -37,17 +37,16 @@ export function useErrorHandler() {
     console.log("Error instanceof ResponseError: " + (error instanceof ResponseError));
     if (error instanceof ResponseError) {
       let res = error as ResponseError;
-      console.log("Status: " + res.response.status + ", type: " + res.response.type + ", message: ");
+      console.log("ResponeError, Status: " + res.response.status + ", type: " + res.response.type + ", message: ");
     }
     if (error instanceof ResponseError) {
-      let responseError = error as ResponseError;
+      if (responseError.response.type === "opaqueredirect") {
+        console.log("label 0");
+        location.reload();
+      }
       switch (responseError.response.status) {
         case 0:
-          console.log("label 1.0");
-          if (responseError.response.type === "opaqueredirect") {
-            console.log("label 1.1");
-            location.reload();
-          }
+          console.log("label 1");
           break;
         case 403:
           console.log("label 2");
@@ -88,45 +87,6 @@ export function useErrorHandler() {
     console.log("label 8");
     commonStore.enableButton();
     return error instanceof Error ? error : { name: "Error", message: ERROR_MESSAGE_GATEWAY };
-
-    /*
-    if (error instanceof ResponseError && error.response.status === 403) {
-      console.log("label 1");
-      showInformation(ERROR_MESSAGE_NOT_AUTHORIZED);
-    } else if (error instanceof ResponseError && error.response.status === 503) {
-      // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
-      console.log("label 2");
-      showInformation(ERROR_MESSAGE_GATEWAY);
-    } else if (error instanceof ResponseError && error.response.status === 504) {
-      // ResponseError vom Loadbalancer. D.h. das Gateway konnte nicht erreicht werden.
-      console.log("label 3");
-      showInformation(ERROR_MESSAGE_TIMEOUT);
-    } else if (error instanceof ResponseError && error.response.status !== 500) {
-      // Das Backend reagiert mit einer fachlichen Fehlermeldung.
-      console.log("label 4");
-      error.response.json().then((json: unknown) => {
-        const informationResponseDto: InformationResponseDto = InformationResponseDtoFromJSON(json);
-        // Show as Toast
-        const messages: string = _.join(informationResponseDto.messages, "; ");
-        const type = getToastType(informationResponseDto.type);
-        showInformation(messages, type);
-      });
-    } else if (error instanceof ResponseError && error.response.status === 500) {
-      // ResponseError vom Gateway. D.h. das Gateway aber nicht das Backend konnte erreicht werden.
-      console.log("label 5");
-      showInformation(ERROR_MESSAGE_BACKEND);
-    } else if ((error as ResponseError).response.type === "opaqueredirect") {
-      console.log("label 6");
-      location.reload();
-    } else {
-      // TypeError -> Der fetch-Request ist fehlgeschlagen.
-      console.log("label 7");
-      showInformation(ERROR_MESSAGE_GATEWAY);
-    }
-    console.log("label 8");
-    commonStore.enableButton();
-    return error instanceof Error ? error : { name: "Error", message: ERROR_MESSAGE_GATEWAY };
-     */
   }
 
   /**
