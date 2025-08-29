@@ -15,7 +15,7 @@
 
     <properties>
         <!-- SonarQube -->
-        <sonar.scanner.version>3.9.0.2155</sonar.scanner.version>
+        <sonar.scanner.version>3.11.0.3922</sonar.scanner.version>
         <git.scm.url>scm:git:git@github.com:it-at-m/isi-frontend.git</git.scm.url>
         <git.url>https://github.com/it-at-m/isi-frontend</git.url>
     </properties>
