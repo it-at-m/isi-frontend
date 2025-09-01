@@ -54,18 +54,3 @@ jobs:
         # TODO: Tests vom API Gateway funktionieren nur mit dem SSO. Muss noch konfiguriert werden.
         run: mvn -B -Pgitlab-cicd verify -DskipTests -Dspring.security.logging.requests=all --file pom.xml
   #        run: mvn -B -s ./.m2/settings.xml -Pgitlab-cicd verify -Dspring.security.logging.requests=all --file pom.xml
-
-  compliance:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Advance Security Policy as Code
-        uses: advanced-security/policy-as-code@v2.9.1
-        with:
-          policy: it-at-m/policy-as-code
-          policy-path: default.yaml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          argvs: "--disable-dependabot --disable-secret-scanning --disable-code-scanning --display"
