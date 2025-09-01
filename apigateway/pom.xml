@@ -29,7 +29,7 @@
         <!-- Version muss mit der in den spring-boot-dependencies bereitgestellten Lombok-Version
         übereinstimmen -->
         <org.projectlombok.lombok.version>1.18.36</org.projectlombok.lombok.version>
-        <logstash.encoder.version>7.4</logstash.encoder.version>
+        <logstash.encoder.version>8.1</logstash.encoder.version>
         <apache.commons.lang.version>3.18.0</apache.commons.lang.version>
         <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <!-- TestCoverage -->
