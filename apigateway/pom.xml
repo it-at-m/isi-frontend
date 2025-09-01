@@ -23,9 +23,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
-        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
-        <spring.boot.version>3.4.3</spring.boot.version>
-        <spring.cloud.version>2024.0.0</spring.cloud.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+        <spring.boot.version>3.5.5</spring.boot.version>
+        <spring.cloud.version>2025.0.0</spring.cloud.version>
         <!-- Version muss mit der in den spring-boot-dependencies bereitgestellten Lombok-Version
         übereinstimmen -->
         <org.projectlombok.lombok.version>1.18.36</org.projectlombok.lombok.version>
@@ -33,7 +33,7 @@
         <apache.commons.lang.version>3.18.0</apache.commons.lang.version>
         <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <!-- TestCoverage -->
-        <jacoco.version>0.8.12</jacoco.version>
+        <jacoco.version>0.8.13</jacoco.version>
     </properties>
 
 
