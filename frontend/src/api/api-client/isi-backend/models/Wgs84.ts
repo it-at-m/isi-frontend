@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface Wgs84 {
 /**
  * Check if a given object implements the Wgs84 interface.
  */
-export function instanceOfWgs84(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfWgs84(value: object): value is Wgs84 {
+    return true;
 }
 
 export function Wgs84FromJSON(json: any): Wgs84 {
@@ -47,27 +45,29 @@ export function Wgs84FromJSON(json: any): Wgs84 {
 }
 
 export function Wgs84FromJSONTyped(json: any, ignoreDiscriminator: boolean): Wgs84 {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'latitude': !exists(json, 'latitude') ? undefined : json['latitude'],
-        'longitude': !exists(json, 'longitude') ? undefined : json['longitude'],
+        'latitude': json['latitude'] == null ? undefined : json['latitude'],
+        'longitude': json['longitude'] == null ? undefined : json['longitude'],
     };
 }
 
-export function Wgs84ToJSON(value?: Wgs84 | null): any {
-    if (value === undefined) {
-        return undefined;
+export function Wgs84ToJSON(json: any): Wgs84 {
+    return Wgs84ToJSONTyped(json, false);
+}
+
+export function Wgs84ToJSONTyped(value?: Wgs84 | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'latitude': value.latitude,
-        'longitude': value.longitude,
+        'latitude': value['latitude'],
+        'longitude': value['longitude'],
     };
 }
 

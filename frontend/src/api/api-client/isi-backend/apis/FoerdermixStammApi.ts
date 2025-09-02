@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   FoerdermixStammDto,
   InformationResponseDto,
-} from '../models';
+} from '../models/index';
 import {
     FoerdermixStammDtoFromJSON,
     FoerdermixStammDtoToJSON,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface DeleteFoerdermixStammByIdRequest {
     id: string;
@@ -50,16 +50,23 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
      * Löschen eines FoerdermixStamm
      */
     async deleteFoerdermixStammByIdRaw(requestParameters: DeleteFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteFoerdermixStammById.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteFoerdermixStammById().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/stammdaten/foerdermix/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/stammdaten/foerdermix/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -84,8 +91,11 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/stammdaten/foerdermix`;
+
         const response = await this.request({
-            path: `/stammdaten/foerdermix`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -107,16 +117,23 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
      * Lesen eines FoerdermixStamm
      */
     async getFoerdermixStammByIdRaw(requestParameters: GetFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getFoerdermixStammById.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getFoerdermixStammById().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/stammdaten/foerdermix/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/stammdaten/foerdermix/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -137,8 +154,11 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
      * Anlegen eines FoerdermixStamm
      */
     async saveFoerdermixStammRaw(requestParameters: SaveFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
-        if (requestParameters.foerdermixStammDto === null || requestParameters.foerdermixStammDto === undefined) {
-            throw new runtime.RequiredError('foerdermixStammDto','Required parameter requestParameters.foerdermixStammDto was null or undefined when calling saveFoerdermixStamm.');
+        if (requestParameters['foerdermixStammDto'] == null) {
+            throw new runtime.RequiredError(
+                'foerdermixStammDto',
+                'Required parameter "foerdermixStammDto" was null or undefined when calling saveFoerdermixStamm().'
+            );
         }
 
         const queryParameters: any = {};
@@ -147,12 +167,15 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/stammdaten/foerdermix`;
+
         const response = await this.request({
-            path: `/stammdaten/foerdermix`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FoerdermixStammDtoToJSON(requestParameters.foerdermixStammDto),
+            body: FoerdermixStammDtoToJSON(requestParameters['foerdermixStammDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FoerdermixStammDtoFromJSON(jsonValue));
@@ -170,8 +193,11 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
      * Aktualisierung eines FoerdermixStamm
      */
     async updateFoerdermixStammRaw(requestParameters: UpdateFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
-        if (requestParameters.foerdermixStammDto === null || requestParameters.foerdermixStammDto === undefined) {
-            throw new runtime.RequiredError('foerdermixStammDto','Required parameter requestParameters.foerdermixStammDto was null or undefined when calling updateFoerdermixStamm.');
+        if (requestParameters['foerdermixStammDto'] == null) {
+            throw new runtime.RequiredError(
+                'foerdermixStammDto',
+                'Required parameter "foerdermixStammDto" was null or undefined when calling updateFoerdermixStamm().'
+            );
         }
 
         const queryParameters: any = {};
@@ -180,12 +206,15 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/stammdaten/foerdermix`;
+
         const response = await this.request({
-            path: `/stammdaten/foerdermix`,
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: FoerdermixStammDtoToJSON(requestParameters.foerdermixStammDto),
+            body: FoerdermixStammDtoToJSON(requestParameters['foerdermixStammDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FoerdermixStammDtoFromJSON(jsonValue));

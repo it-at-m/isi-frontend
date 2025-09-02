@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Foerdermix } from './Foerdermix';
 import {
     FoerdermixFromJSON,
     FoerdermixFromJSONTyped,
     FoerdermixToJSON,
+    FoerdermixToJSONTyped,
 } from './Foerdermix';
 
 /**
@@ -61,10 +62,8 @@ export interface FoerdermixStammRequestBody {
 /**
  * Check if a given object implements the FoerdermixStammRequestBody interface.
  */
-export function instanceOfFoerdermixStammRequestBody(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFoerdermixStammRequestBody(value: object): value is FoerdermixStammRequestBody {
+    return true;
 }
 
 export function FoerdermixStammRequestBodyFromJSON(json: any): FoerdermixStammRequestBody {
@@ -72,33 +71,35 @@ export function FoerdermixStammRequestBodyFromJSON(json: any): FoerdermixStammRe
 }
 
 export function FoerdermixStammRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): FoerdermixStammRequestBody {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'foerdermix': !exists(json, 'foerdermix') ? undefined : FoerdermixFromJSON(json['foerdermix']),
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'foerdermix': json['foerdermix'] == null ? undefined : FoerdermixFromJSON(json['foerdermix']),
     };
 }
 
-export function FoerdermixStammRequestBodyToJSON(value?: FoerdermixStammRequestBody | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FoerdermixStammRequestBodyToJSON(json: any): FoerdermixStammRequestBody {
+    return FoerdermixStammRequestBodyToJSONTyped(json, false);
+}
+
+export function FoerdermixStammRequestBodyToJSONTyped(value?: FoerdermixStammRequestBody | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'foerdermix': FoerdermixToJSON(value.foerdermix),
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'foerdermix': FoerdermixToJSON(value['foerdermix']),
     };
 }
 

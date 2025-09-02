@@ -12,22 +12,22 @@
  * Do not edit the class manually.
  */
 
+import type { BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto } from './BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto';
 import {
-    BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto,
     instanceOfBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto,
     BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSON,
     BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
     BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON,
 } from './BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto';
+import type { BauleitplanverfahrenEinpflegenBedarfsmeldungDto } from './BauleitplanverfahrenEinpflegenBedarfsmeldungDto';
 import {
-    BauleitplanverfahrenEinpflegenBedarfsmeldungDto,
     instanceOfBauleitplanverfahrenEinpflegenBedarfsmeldungDto,
     BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSON,
     BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
     BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSON,
 } from './BauleitplanverfahrenEinpflegenBedarfsmeldungDto';
+import type { WeiteresVerfahrenEinpflegenBedarfsmeldungDto } from './WeiteresVerfahrenEinpflegenBedarfsmeldungDto';
 import {
-    WeiteresVerfahrenEinpflegenBedarfsmeldungDto,
     instanceOfWeiteresVerfahrenEinpflegenBedarfsmeldungDto,
     WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON,
     WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
@@ -39,57 +39,45 @@ import {
  * 
  * @export
  */
-export type PatchEinpflegenBedarfsmeldungRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenEinpflegenBedarfsmeldungDto | { artAbfrage: 'BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto' } & BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto | { artAbfrage: 'BauleitplanverfahrenEinpflegenBedarfsmeldungDto' } & BauleitplanverfahrenEinpflegenBedarfsmeldungDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenEinpflegenBedarfsmeldungDto | { artAbfrage: 'WeiteresVerfahrenEinpflegenBedarfsmeldungDto' } & WeiteresVerfahrenEinpflegenBedarfsmeldungDto;
+export type PatchEinpflegenBedarfsmeldungRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenEinpflegenBedarfsmeldungDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenEinpflegenBedarfsmeldungDto;
 
 export function PatchEinpflegenBedarfsmeldungRequestFromJSON(json: any): PatchEinpflegenBedarfsmeldungRequest {
     return PatchEinpflegenBedarfsmeldungRequestFromJSONTyped(json, false);
 }
 
 export function PatchEinpflegenBedarfsmeldungRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatchEinpflegenBedarfsmeldungRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     switch (json['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return {...BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN'};
+            return Object.assign({}, BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return {...BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), artAbfrage: 'BAULEITPLANVERFAHREN'};
-        case 'BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto':
-            return {...BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), artAbfrage: 'BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto'};
-        case 'BauleitplanverfahrenEinpflegenBedarfsmeldungDto':
-            return {...BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), artAbfrage: 'BauleitplanverfahrenEinpflegenBedarfsmeldungDto'};
+            return Object.assign({}, BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return {...WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), artAbfrage: 'WEITERES_VERFAHREN'};
-        case 'WeiteresVerfahrenEinpflegenBedarfsmeldungDto':
-            return {...WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenEinpflegenBedarfsmeldungDto'};
+            return Object.assign({}, WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
         default:
-            throw new Error(`No variant of PatchEinpflegenBedarfsmeldungRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
+            return json;
     }
 }
 
-export function PatchEinpflegenBedarfsmeldungRequestToJSON(value?: PatchEinpflegenBedarfsmeldungRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+export function PatchEinpflegenBedarfsmeldungRequestToJSON(json: any): any {
+    return PatchEinpflegenBedarfsmeldungRequestToJSONTyped(json, false);
+}
+
+export function PatchEinpflegenBedarfsmeldungRequestToJSONTyped(value?: PatchEinpflegenBedarfsmeldungRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
     switch (value['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON(value);
+            return Object.assign({}, BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON(value), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSON(value);
-        case 'BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto':
-            return BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON(value);
-        case 'BauleitplanverfahrenEinpflegenBedarfsmeldungDto':
-            return BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSON(value);
+            return Object.assign({}, BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSON(value), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON(value);
-        case 'WeiteresVerfahrenEinpflegenBedarfsmeldungDto':
-            return WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON(value);
+            return Object.assign({}, WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON(value), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
         default:
-            throw new Error(`No variant of PatchEinpflegenBedarfsmeldungRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
+            return value;
     }
-
 }
 

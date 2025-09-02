@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface Foerderart {
 /**
  * Check if a given object implements the Foerderart interface.
  */
-export function instanceOfFoerderart(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFoerderart(value: object): value is Foerderart {
+    return true;
 }
 
 export function FoerderartFromJSON(json: any): Foerderart {
@@ -47,27 +45,29 @@ export function FoerderartFromJSON(json: any): Foerderart {
 }
 
 export function FoerderartFromJSONTyped(json: any, ignoreDiscriminator: boolean): Foerderart {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'bezeichnung': !exists(json, 'bezeichnung') ? undefined : json['bezeichnung'],
-        'anteilProzent': !exists(json, 'anteilProzent') ? undefined : json['anteilProzent'],
+        'bezeichnung': json['bezeichnung'] == null ? undefined : json['bezeichnung'],
+        'anteilProzent': json['anteilProzent'] == null ? undefined : json['anteilProzent'],
     };
 }
 
-export function FoerderartToJSON(value?: Foerderart | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FoerderartToJSON(json: any): Foerderart {
+    return FoerderartToJSONTyped(json, false);
+}
+
+export function FoerderartToJSONTyped(value?: Foerderart | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'bezeichnung': value.bezeichnung,
-        'anteilProzent': value.anteilProzent,
+        'bezeichnung': value['bezeichnung'],
+        'anteilProzent': value['anteilProzent'],
     };
 }
 

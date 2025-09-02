@@ -12,32 +12,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { BaugenehmigungsverfahrenEinplanungBedarfeDto } from './BaugenehmigungsverfahrenEinplanungBedarfeDto';
-import {
-    BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON,
-    BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped,
-    BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON,
-} from './BaugenehmigungsverfahrenEinplanungBedarfeDto';
-import type { BauleitplanverfahrenEinplanungBedarfeDto } from './BauleitplanverfahrenEinplanungBedarfeDto';
-import {
-    BauleitplanverfahrenEinplanungBedarfeDtoFromJSON,
-    BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped,
-    BauleitplanverfahrenEinplanungBedarfeDtoToJSON,
-} from './BauleitplanverfahrenEinplanungBedarfeDto';
-import type { WeiteresVerfahrenEinplanungBedarfeDto } from './WeiteresVerfahrenEinplanungBedarfeDto';
-import {
-    WeiteresVerfahrenEinplanungBedarfeDtoFromJSON,
-    WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped,
-    WeiteresVerfahrenEinplanungBedarfeDtoToJSON,
-} from './WeiteresVerfahrenEinplanungBedarfeDto';
+import { mapValues } from '../runtime';
 
-import {
-     BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped,
-     BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped,
-     WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped
-} from './';
-
+import { type BaugenehmigungsverfahrenEinplanungBedarfeDto, BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped, BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON, BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSONTyped } from './BaugenehmigungsverfahrenEinplanungBedarfeDto';
+import { type BauleitplanverfahrenEinplanungBedarfeDto, BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped, BauleitplanverfahrenEinplanungBedarfeDtoToJSON, BauleitplanverfahrenEinplanungBedarfeDtoToJSONTyped } from './BauleitplanverfahrenEinplanungBedarfeDto';
+import { type WeiteresVerfahrenEinplanungBedarfeDto, WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped, WeiteresVerfahrenEinplanungBedarfeDtoToJSON, WeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped } from './WeiteresVerfahrenEinplanungBedarfeDto';
 /**
  * AbfrageEinplanungBedarfeDto
  * @export
@@ -74,10 +53,8 @@ export type AbfrageEinplanungBedarfeDtoArtAbfrageEnum = typeof AbfrageEinplanung
 /**
  * Check if a given object implements the AbfrageEinplanungBedarfeDto interface.
  */
-export function instanceOfAbfrageEinplanungBedarfeDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfAbfrageEinplanungBedarfeDto(value: object): value is AbfrageEinplanungBedarfeDto {
+    return true;
 }
 
 export function AbfrageEinplanungBedarfeDtoFromJSON(json: any): AbfrageEinplanungBedarfeDto {
@@ -85,38 +62,53 @@ export function AbfrageEinplanungBedarfeDtoFromJSON(json: any): AbfrageEinplanun
 }
 
 export function AbfrageEinplanungBedarfeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageEinplanungBedarfeDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
         if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
-            return BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true);
+            return BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
-            return BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true);
+            return BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
-            return WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json, true);
+            return WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json, ignoreDiscriminator);
         }
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
     };
 }
 
-export function AbfrageEinplanungBedarfeDtoToJSON(value?: AbfrageEinplanungBedarfeDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AbfrageEinplanungBedarfeDtoToJSON(json: any): AbfrageEinplanungBedarfeDto {
+    return AbfrageEinplanungBedarfeDtoToJSONTyped(json, false);
+}
+
+export function AbfrageEinplanungBedarfeDtoToJSONTyped(value?: AbfrageEinplanungBedarfeDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            case 'BAUGENEHMIGUNGSVERFAHREN':
+                return BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSONTyped(value as BaugenehmigungsverfahrenEinplanungBedarfeDto, ignoreDiscriminator);
+            case 'BAULEITPLANVERFAHREN':
+                return BauleitplanverfahrenEinplanungBedarfeDtoToJSONTyped(value as BauleitplanverfahrenEinplanungBedarfeDto, ignoreDiscriminator);
+            case 'WEITERES_VERFAHREN':
+                return WeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped(value as WeiteresVerfahrenEinplanungBedarfeDto, ignoreDiscriminator);
+            default:
+                return value;
+        }
     }
+
     return {
         
-        'version': value.version,
-        'artAbfrage': value.artAbfrage,
+        'version': value['version'],
+        'artAbfrage': value['artAbfrage'],
     };
 }
 

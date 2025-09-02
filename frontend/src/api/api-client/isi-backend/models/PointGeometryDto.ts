@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface PointGeometryDto {
 /**
  * Check if a given object implements the PointGeometryDto interface.
  */
-export function instanceOfPointGeometryDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "coordinates" in value;
-
-    return isInstance;
+export function instanceOfPointGeometryDto(value: object): value is PointGeometryDto {
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('coordinates' in value) || value['coordinates'] === undefined) return false;
+    return true;
 }
 
 export function PointGeometryDtoFromJSON(json: any): PointGeometryDto {
@@ -49,7 +47,7 @@ export function PointGeometryDtoFromJSON(json: any): PointGeometryDto {
 }
 
 export function PointGeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PointGeometryDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function PointGeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
     };
 }
 
-export function PointGeometryDtoToJSON(value?: PointGeometryDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PointGeometryDtoToJSON(json: any): PointGeometryDto {
+    return PointGeometryDtoToJSONTyped(json, false);
+}
+
+export function PointGeometryDtoToJSONTyped(value?: PointGeometryDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'coordinates': value.coordinates,
+        'type': value['type'],
+        'coordinates': value['coordinates'],
     };
 }
 

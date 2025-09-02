@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -72,10 +72,8 @@ export interface Link {
 /**
  * Check if a given object implements the Link interface.
  */
-export function instanceOfLink(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfLink(value: object): value is Link {
+    return true;
 }
 
 export function LinkFromJSON(json: any): Link {
@@ -83,39 +81,41 @@ export function LinkFromJSON(json: any): Link {
 }
 
 export function LinkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Link {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'href': !exists(json, 'href') ? undefined : json['href'],
-        'hreflang': !exists(json, 'hreflang') ? undefined : json['hreflang'],
-        'title': !exists(json, 'title') ? undefined : json['title'],
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'deprecation': !exists(json, 'deprecation') ? undefined : json['deprecation'],
-        'profile': !exists(json, 'profile') ? undefined : json['profile'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'templated': !exists(json, 'templated') ? undefined : json['templated'],
+        'href': json['href'] == null ? undefined : json['href'],
+        'hreflang': json['hreflang'] == null ? undefined : json['hreflang'],
+        'title': json['title'] == null ? undefined : json['title'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'deprecation': json['deprecation'] == null ? undefined : json['deprecation'],
+        'profile': json['profile'] == null ? undefined : json['profile'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'templated': json['templated'] == null ? undefined : json['templated'],
     };
 }
 
-export function LinkToJSON(value?: Link | null): any {
-    if (value === undefined) {
-        return undefined;
+export function LinkToJSON(json: any): Link {
+    return LinkToJSONTyped(json, false);
+}
+
+export function LinkToJSONTyped(value?: Link | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'href': value.href,
-        'hreflang': value.hreflang,
-        'title': value.title,
-        'type': value.type,
-        'deprecation': value.deprecation,
-        'profile': value.profile,
-        'name': value.name,
-        'templated': value.templated,
+        'href': value['href'],
+        'hreflang': value['hreflang'],
+        'title': value['title'],
+        'type': value['type'],
+        'deprecation': value['deprecation'],
+        'profile': value['profile'],
+        'name': value['name'],
+        'templated': value['templated'],
     };
 }
 

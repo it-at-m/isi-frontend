@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,10 +54,8 @@ export interface ViertelDto {
 /**
  * Check if a given object implements the ViertelDto interface.
  */
-export function instanceOfViertelDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfViertelDto(value: object): value is ViertelDto {
+    return true;
 }
 
 export function ViertelDtoFromJSON(json: any): ViertelDto {
@@ -65,33 +63,35 @@ export function ViertelDtoFromJSON(json: any): ViertelDto {
 }
 
 export function ViertelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViertelDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
-        'viertelNummer': !exists(json, 'viertelNummer') ? undefined : json['viertelNummer'],
-        'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
-        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
-        'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
+        'objectId': json['objectId'] == null ? undefined : json['objectId'],
+        'viertelNummer': json['viertelNummer'] == null ? undefined : json['viertelNummer'],
+        'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
+        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
+        'ycoordinate': json['ycoordinate'] == null ? undefined : json['ycoordinate'],
     };
 }
 
-export function ViertelDtoToJSON(value?: ViertelDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ViertelDtoToJSON(json: any): ViertelDto {
+    return ViertelDtoToJSONTyped(json, false);
+}
+
+export function ViertelDtoToJSONTyped(value?: ViertelDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'objectId': value.objectId,
-        'viertelNummer': value.viertelNummer,
-        'flaecheQm': value.flaecheQm,
-        'xcoordinate': value.xcoordinate,
-        'ycoordinate': value.ycoordinate,
+        'objectId': value['objectId'],
+        'viertelNummer': value['viertelNummer'],
+        'flaecheQm': value['flaecheQm'],
+        'xcoordinate': value['xcoordinate'],
+        'ycoordinate': value['ycoordinate'],
     };
 }
 

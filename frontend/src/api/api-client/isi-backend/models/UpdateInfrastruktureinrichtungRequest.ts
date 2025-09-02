@@ -12,43 +12,43 @@
  * Do not edit the class manually.
  */
 
+import type { GrundschuleDto } from './GrundschuleDto';
 import {
-    GrundschuleDto,
     instanceOfGrundschuleDto,
     GrundschuleDtoFromJSON,
     GrundschuleDtoFromJSONTyped,
     GrundschuleDtoToJSON,
 } from './GrundschuleDto';
+import type { GsNachmittagBetreuungDto } from './GsNachmittagBetreuungDto';
 import {
-    GsNachmittagBetreuungDto,
     instanceOfGsNachmittagBetreuungDto,
     GsNachmittagBetreuungDtoFromJSON,
     GsNachmittagBetreuungDtoFromJSONTyped,
     GsNachmittagBetreuungDtoToJSON,
 } from './GsNachmittagBetreuungDto';
+import type { HausFuerKinderDto } from './HausFuerKinderDto';
 import {
-    HausFuerKinderDto,
     instanceOfHausFuerKinderDto,
     HausFuerKinderDtoFromJSON,
     HausFuerKinderDtoFromJSONTyped,
     HausFuerKinderDtoToJSON,
 } from './HausFuerKinderDto';
+import type { KindergartenDto } from './KindergartenDto';
 import {
-    KindergartenDto,
     instanceOfKindergartenDto,
     KindergartenDtoFromJSON,
     KindergartenDtoFromJSONTyped,
     KindergartenDtoToJSON,
 } from './KindergartenDto';
+import type { KinderkrippeDto } from './KinderkrippeDto';
 import {
-    KinderkrippeDto,
     instanceOfKinderkrippeDto,
     KinderkrippeDtoFromJSON,
     KinderkrippeDtoFromJSONTyped,
     KinderkrippeDtoToJSON,
 } from './KinderkrippeDto';
+import type { MittelschuleDto } from './MittelschuleDto';
 import {
-    MittelschuleDto,
     instanceOfMittelschuleDto,
     MittelschuleDtoFromJSON,
     MittelschuleDtoFromJSONTyped,
@@ -60,81 +60,57 @@ import {
  * 
  * @export
  */
-export type UpdateInfrastruktureinrichtungRequest = { infrastruktureinrichtungTyp: 'GRUNDSCHULE' } & GrundschuleDto | { infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG' } & GsNachmittagBetreuungDto | { infrastruktureinrichtungTyp: 'GrundschuleDto' } & GrundschuleDto | { infrastruktureinrichtungTyp: 'GsNachmittagBetreuungDto' } & GsNachmittagBetreuungDto | { infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER' } & HausFuerKinderDto | { infrastruktureinrichtungTyp: 'HausFuerKinderDto' } & HausFuerKinderDto | { infrastruktureinrichtungTyp: 'KINDERGARTEN' } & KindergartenDto | { infrastruktureinrichtungTyp: 'KINDERKRIPPE' } & KinderkrippeDto | { infrastruktureinrichtungTyp: 'KindergartenDto' } & KindergartenDto | { infrastruktureinrichtungTyp: 'KinderkrippeDto' } & KinderkrippeDto | { infrastruktureinrichtungTyp: 'MITTELSCHULE' } & MittelschuleDto | { infrastruktureinrichtungTyp: 'MittelschuleDto' } & MittelschuleDto;
+export type UpdateInfrastruktureinrichtungRequest = { infrastruktureinrichtungTyp: 'GRUNDSCHULE' } & GrundschuleDto | { infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG' } & GsNachmittagBetreuungDto | { infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER' } & HausFuerKinderDto | { infrastruktureinrichtungTyp: 'KINDERGARTEN' } & KindergartenDto | { infrastruktureinrichtungTyp: 'KINDERKRIPPE' } & KinderkrippeDto | { infrastruktureinrichtungTyp: 'MITTELSCHULE' } & MittelschuleDto;
 
 export function UpdateInfrastruktureinrichtungRequestFromJSON(json: any): UpdateInfrastruktureinrichtungRequest {
     return UpdateInfrastruktureinrichtungRequestFromJSONTyped(json, false);
 }
 
 export function UpdateInfrastruktureinrichtungRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateInfrastruktureinrichtungRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     switch (json['infrastruktureinrichtungTyp']) {
         case 'GRUNDSCHULE':
-            return {...GrundschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GRUNDSCHULE'};
+            return Object.assign({}, GrundschuleDtoFromJSONTyped(json, true), { infrastruktureinrichtungTyp: 'GRUNDSCHULE' } as const);
         case 'GS_NACHMITTAG_BETREUUNG':
-            return {...GsNachmittagBetreuungDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG'};
-        case 'GrundschuleDto':
-            return {...GrundschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GrundschuleDto'};
-        case 'GsNachmittagBetreuungDto':
-            return {...GsNachmittagBetreuungDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'GsNachmittagBetreuungDto'};
+            return Object.assign({}, GsNachmittagBetreuungDtoFromJSONTyped(json, true), { infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG' } as const);
         case 'HAUS_FUER_KINDER':
-            return {...HausFuerKinderDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER'};
-        case 'HausFuerKinderDto':
-            return {...HausFuerKinderDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'HausFuerKinderDto'};
+            return Object.assign({}, HausFuerKinderDtoFromJSONTyped(json, true), { infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER' } as const);
         case 'KINDERGARTEN':
-            return {...KindergartenDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KINDERGARTEN'};
+            return Object.assign({}, KindergartenDtoFromJSONTyped(json, true), { infrastruktureinrichtungTyp: 'KINDERGARTEN' } as const);
         case 'KINDERKRIPPE':
-            return {...KinderkrippeDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KINDERKRIPPE'};
-        case 'KindergartenDto':
-            return {...KindergartenDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KindergartenDto'};
-        case 'KinderkrippeDto':
-            return {...KinderkrippeDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'KinderkrippeDto'};
+            return Object.assign({}, KinderkrippeDtoFromJSONTyped(json, true), { infrastruktureinrichtungTyp: 'KINDERKRIPPE' } as const);
         case 'MITTELSCHULE':
-            return {...MittelschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'MITTELSCHULE'};
-        case 'MittelschuleDto':
-            return {...MittelschuleDtoFromJSONTyped(json, true), infrastruktureinrichtungTyp: 'MittelschuleDto'};
+            return Object.assign({}, MittelschuleDtoFromJSONTyped(json, true), { infrastruktureinrichtungTyp: 'MITTELSCHULE' } as const);
         default:
-            throw new Error(`No variant of UpdateInfrastruktureinrichtungRequest exists with 'infrastruktureinrichtungTyp=${json['infrastruktureinrichtungTyp']}'`);
+            return json;
     }
 }
 
-export function UpdateInfrastruktureinrichtungRequestToJSON(value?: UpdateInfrastruktureinrichtungRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+export function UpdateInfrastruktureinrichtungRequestToJSON(json: any): any {
+    return UpdateInfrastruktureinrichtungRequestToJSONTyped(json, false);
+}
+
+export function UpdateInfrastruktureinrichtungRequestToJSONTyped(value?: UpdateInfrastruktureinrichtungRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
     switch (value['infrastruktureinrichtungTyp']) {
         case 'GRUNDSCHULE':
-            return GrundschuleDtoToJSON(value);
+            return Object.assign({}, GrundschuleDtoToJSON(value), { infrastruktureinrichtungTyp: 'GRUNDSCHULE' } as const);
         case 'GS_NACHMITTAG_BETREUUNG':
-            return GsNachmittagBetreuungDtoToJSON(value);
-        case 'GrundschuleDto':
-            return GrundschuleDtoToJSON(value);
-        case 'GsNachmittagBetreuungDto':
-            return GsNachmittagBetreuungDtoToJSON(value);
+            return Object.assign({}, GsNachmittagBetreuungDtoToJSON(value), { infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG' } as const);
         case 'HAUS_FUER_KINDER':
-            return HausFuerKinderDtoToJSON(value);
-        case 'HausFuerKinderDto':
-            return HausFuerKinderDtoToJSON(value);
+            return Object.assign({}, HausFuerKinderDtoToJSON(value), { infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER' } as const);
         case 'KINDERGARTEN':
-            return KindergartenDtoToJSON(value);
+            return Object.assign({}, KindergartenDtoToJSON(value), { infrastruktureinrichtungTyp: 'KINDERGARTEN' } as const);
         case 'KINDERKRIPPE':
-            return KinderkrippeDtoToJSON(value);
-        case 'KindergartenDto':
-            return KindergartenDtoToJSON(value);
-        case 'KinderkrippeDto':
-            return KinderkrippeDtoToJSON(value);
+            return Object.assign({}, KinderkrippeDtoToJSON(value), { infrastruktureinrichtungTyp: 'KINDERKRIPPE' } as const);
         case 'MITTELSCHULE':
-            return MittelschuleDtoToJSON(value);
-        case 'MittelschuleDto':
-            return MittelschuleDtoToJSON(value);
+            return Object.assign({}, MittelschuleDtoToJSON(value), { infrastruktureinrichtungTyp: 'MITTELSCHULE' } as const);
         default:
-            throw new Error(`No variant of UpdateInfrastruktureinrichtungRequest exists with 'infrastruktureinrichtungTyp=${value['infrastruktureinrichtungTyp']}'`);
+            return value;
     }
-
 }
 

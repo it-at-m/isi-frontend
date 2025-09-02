@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityModelAbfragevariante } from './EntityModelAbfragevariante';
 import {
     EntityModelAbfragevarianteFromJSON,
     EntityModelAbfragevarianteFromJSONTyped,
     EntityModelAbfragevarianteToJSON,
+    EntityModelAbfragevarianteToJSONTyped,
 } from './EntityModelAbfragevariante';
 
 /**
@@ -37,10 +38,8 @@ export interface PagedModelEntityModelAbfragevarianteEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelAbfragevarianteEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelAbfragevarianteEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelAbfragevarianteEmbedded(value: object): value is PagedModelEntityModelAbfragevarianteEmbedded {
+    return true;
 }
 
 export function PagedModelEntityModelAbfragevarianteEmbeddedFromJSON(json: any): PagedModelEntityModelAbfragevarianteEmbedded {
@@ -48,25 +47,27 @@ export function PagedModelEntityModelAbfragevarianteEmbeddedFromJSON(json: any):
 }
 
 export function PagedModelEntityModelAbfragevarianteEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelAbfragevarianteEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'abfragevariantes': !exists(json, 'abfragevariantes') ? undefined : ((json['abfragevariantes'] as Array<any>).map(EntityModelAbfragevarianteFromJSON)),
+        'abfragevariantes': json['abfragevariantes'] == null ? undefined : ((json['abfragevariantes'] as Array<any>).map(EntityModelAbfragevarianteFromJSON)),
     };
 }
 
-export function PagedModelEntityModelAbfragevarianteEmbeddedToJSON(value?: PagedModelEntityModelAbfragevarianteEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelAbfragevarianteEmbeddedToJSON(json: any): PagedModelEntityModelAbfragevarianteEmbedded {
+    return PagedModelEntityModelAbfragevarianteEmbeddedToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelAbfragevarianteEmbeddedToJSONTyped(value?: PagedModelEntityModelAbfragevarianteEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'abfragevariantes': value.abfragevariantes === undefined ? undefined : ((value.abfragevariantes as Array<any>).map(EntityModelAbfragevarianteToJSON)),
+        'abfragevariantes': value['abfragevariantes'] == null ? undefined : ((value['abfragevariantes'] as Array<any>).map(EntityModelAbfragevarianteToJSON)),
     };
 }
 

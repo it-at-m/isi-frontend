@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelSobonOrientierungswertSozialeInfrastruktur,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON,
     EntityModelSobonOrientierungswertSozialeInfrastrukturToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetRequest {
     einrichtungstyp?: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum;
@@ -44,22 +44,25 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
     async executeSearchSobonorientierungswertsozialeinfrastrukturGetRaw(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
         const queryParameters: any = {};
 
-        if (requestParameters.einrichtungstyp !== undefined) {
-            queryParameters['einrichtungstyp'] = requestParameters.einrichtungstyp;
+        if (requestParameters['einrichtungstyp'] != null) {
+            queryParameters['einrichtungstyp'] = requestParameters['einrichtungstyp'];
         }
 
-        if (requestParameters.foerderartBezeichnung !== undefined) {
-            queryParameters['foerderartBezeichnung'] = requestParameters.foerderartBezeichnung;
+        if (requestParameters['foerderartBezeichnung'] != null) {
+            queryParameters['foerderartBezeichnung'] = requestParameters['foerderartBezeichnung'];
         }
 
-        if (requestParameters.gueltigAb !== undefined) {
-            queryParameters['gueltigAb'] = (requestParameters.gueltigAb as any).toISOString().substr(0,10);
+        if (requestParameters['gueltigAb'] != null) {
+            queryParameters['gueltigAb'] = (requestParameters['gueltigAb'] as any).toISOString().substring(0,10);
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
+
         const response = await this.request({
-            path: `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -80,22 +83,25 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
     async executeSearchSobonorientierungswertsozialeinfrastrukturGet1Raw(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
         const queryParameters: any = {};
 
-        if (requestParameters.einrichtungstyp !== undefined) {
-            queryParameters['einrichtungstyp'] = requestParameters.einrichtungstyp;
+        if (requestParameters['einrichtungstyp'] != null) {
+            queryParameters['einrichtungstyp'] = requestParameters['einrichtungstyp'];
         }
 
-        if (requestParameters.foerderartBezeichnung !== undefined) {
-            queryParameters['foerderartBezeichnung'] = requestParameters.foerderartBezeichnung;
+        if (requestParameters['foerderartBezeichnung'] != null) {
+            queryParameters['foerderartBezeichnung'] = requestParameters['foerderartBezeichnung'];
         }
 
-        if (requestParameters.jahrBezeichnung !== undefined) {
-            queryParameters['jahrBezeichnung'] = requestParameters.jahrBezeichnung;
+        if (requestParameters['jahrBezeichnung'] != null) {
+            queryParameters['jahrBezeichnung'] = requestParameters['jahrBezeichnung'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndJahrBezeichnung`;
+
         const response = await this.request({
-            path: `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndJahrBezeichnung`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
+    MultiPolygonGeometryDtoToJSONTyped,
 } from './MultiPolygonGeometryDto';
 
 /**
@@ -49,11 +50,9 @@ export interface KitaplanungsbereichDto {
 /**
  * Check if a given object implements the KitaplanungsbereichDto interface.
  */
-export function instanceOfKitaplanungsbereichDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "multiPolygon" in value;
-
-    return isInstance;
+export function instanceOfKitaplanungsbereichDto(value: object): value is KitaplanungsbereichDto {
+    if (!('multiPolygon' in value) || value['multiPolygon'] === undefined) return false;
+    return true;
 }
 
 export function KitaplanungsbereichDtoFromJSON(json: any): KitaplanungsbereichDto {
@@ -61,29 +60,31 @@ export function KitaplanungsbereichDtoFromJSON(json: any): KitaplanungsbereichDt
 }
 
 export function KitaplanungsbereichDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KitaplanungsbereichDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'kitaPlb': !exists(json, 'kitaPlb') ? undefined : json['kitaPlb'],
-        'kitaPlbT': !exists(json, 'kitaPlbT') ? undefined : json['kitaPlbT'],
+        'kitaPlb': json['kitaPlb'] == null ? undefined : json['kitaPlb'],
+        'kitaPlbT': json['kitaPlbT'] == null ? undefined : json['kitaPlbT'],
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
-export function KitaplanungsbereichDtoToJSON(value?: KitaplanungsbereichDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function KitaplanungsbereichDtoToJSON(json: any): KitaplanungsbereichDto {
+    return KitaplanungsbereichDtoToJSONTyped(json, false);
+}
+
+export function KitaplanungsbereichDtoToJSONTyped(value?: KitaplanungsbereichDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'kitaPlb': value.kitaPlb,
-        'kitaPlbT': value.kitaPlbT,
-        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
+        'kitaPlb': value['kitaPlb'],
+        'kitaPlbT': value['kitaPlbT'],
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value['multiPolygon']),
     };
 }
 

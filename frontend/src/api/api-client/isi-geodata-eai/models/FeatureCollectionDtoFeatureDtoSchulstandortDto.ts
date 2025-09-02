@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoSchulstandortDto } from './FeatureDtoSchulstandortDto';
 import {
     FeatureDtoSchulstandortDtoFromJSON,
     FeatureDtoSchulstandortDtoFromJSONTyped,
     FeatureDtoSchulstandortDtoToJSON,
+    FeatureDtoSchulstandortDtoToJSONTyped,
 } from './FeatureDtoSchulstandortDto';
 
 /**
@@ -43,10 +44,8 @@ export interface FeatureCollectionDtoFeatureDtoSchulstandortDto {
 /**
  * Check if a given object implements the FeatureCollectionDtoFeatureDtoSchulstandortDto interface.
  */
-export function instanceOfFeatureCollectionDtoFeatureDtoSchulstandortDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureCollectionDtoFeatureDtoSchulstandortDto(value: object): value is FeatureCollectionDtoFeatureDtoSchulstandortDto {
+    return true;
 }
 
 export function FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoSchulstandortDto {
@@ -54,27 +53,29 @@ export function FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSON(json: any
 }
 
 export function FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureCollectionDtoFeatureDtoSchulstandortDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoSchulstandortDtoFromJSON)),
+        'type': json['type'] == null ? undefined : json['type'],
+        'features': json['features'] == null ? undefined : ((json['features'] as Array<any>).map(FeatureDtoSchulstandortDtoFromJSON)),
     };
 }
 
-export function FeatureCollectionDtoFeatureDtoSchulstandortDtoToJSON(value?: FeatureCollectionDtoFeatureDtoSchulstandortDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureCollectionDtoFeatureDtoSchulstandortDtoToJSON(json: any): FeatureCollectionDtoFeatureDtoSchulstandortDto {
+    return FeatureCollectionDtoFeatureDtoSchulstandortDtoToJSONTyped(json, false);
+}
+
+export function FeatureCollectionDtoFeatureDtoSchulstandortDtoToJSONTyped(value?: FeatureCollectionDtoFeatureDtoSchulstandortDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoSchulstandortDtoToJSON)),
+        'type': value['type'],
+        'features': value['features'] == null ? undefined : ((value['features'] as Array<any>).map(FeatureDtoSchulstandortDtoToJSON)),
     };
 }
 

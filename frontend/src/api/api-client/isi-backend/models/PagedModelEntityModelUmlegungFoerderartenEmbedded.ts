@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityModelUmlegungFoerderarten } from './EntityModelUmlegungFoerderarten';
 import {
     EntityModelUmlegungFoerderartenFromJSON,
     EntityModelUmlegungFoerderartenFromJSONTyped,
     EntityModelUmlegungFoerderartenToJSON,
+    EntityModelUmlegungFoerderartenToJSONTyped,
 } from './EntityModelUmlegungFoerderarten';
 
 /**
@@ -37,10 +38,8 @@ export interface PagedModelEntityModelUmlegungFoerderartenEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelUmlegungFoerderartenEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelUmlegungFoerderartenEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelUmlegungFoerderartenEmbedded(value: object): value is PagedModelEntityModelUmlegungFoerderartenEmbedded {
+    return true;
 }
 
 export function PagedModelEntityModelUmlegungFoerderartenEmbeddedFromJSON(json: any): PagedModelEntityModelUmlegungFoerderartenEmbedded {
@@ -48,25 +47,27 @@ export function PagedModelEntityModelUmlegungFoerderartenEmbeddedFromJSON(json: 
 }
 
 export function PagedModelEntityModelUmlegungFoerderartenEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelUmlegungFoerderartenEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'umlegungFoerderartens': !exists(json, 'umlegungFoerderartens') ? undefined : ((json['umlegungFoerderartens'] as Array<any>).map(EntityModelUmlegungFoerderartenFromJSON)),
+        'umlegungFoerderartens': json['umlegungFoerderartens'] == null ? undefined : ((json['umlegungFoerderartens'] as Array<any>).map(EntityModelUmlegungFoerderartenFromJSON)),
     };
 }
 
-export function PagedModelEntityModelUmlegungFoerderartenEmbeddedToJSON(value?: PagedModelEntityModelUmlegungFoerderartenEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelUmlegungFoerderartenEmbeddedToJSON(json: any): PagedModelEntityModelUmlegungFoerderartenEmbedded {
+    return PagedModelEntityModelUmlegungFoerderartenEmbeddedToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelUmlegungFoerderartenEmbeddedToJSONTyped(value?: PagedModelEntityModelUmlegungFoerderartenEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'umlegungFoerderartens': value.umlegungFoerderartens === undefined ? undefined : ((value.umlegungFoerderartens as Array<any>).map(EntityModelUmlegungFoerderartenToJSON)),
+        'umlegungFoerderartens': value['umlegungFoerderartens'] == null ? undefined : ((value['umlegungFoerderartens'] as Array<any>).map(EntityModelUmlegungFoerderartenToJSON)),
     };
 }
 

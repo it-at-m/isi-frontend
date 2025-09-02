@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Filepath } from './Filepath';
 import {
     FilepathFromJSON,
     FilepathFromJSONTyped,
     FilepathToJSON,
+    FilepathToJSONTyped,
 } from './Filepath';
 
 /**
@@ -85,10 +86,8 @@ export type DokumentResponseArtDokumentEnum = typeof DokumentResponseArtDokument
 /**
  * Check if a given object implements the DokumentResponse interface.
  */
-export function instanceOfDokumentResponse(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfDokumentResponse(value: object): value is DokumentResponse {
+    return true;
 }
 
 export function DokumentResponseFromJSON(json: any): DokumentResponse {
@@ -96,33 +95,35 @@ export function DokumentResponseFromJSON(json: any): DokumentResponse {
 }
 
 export function DokumentResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DokumentResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'filePath': !exists(json, 'filePath') ? undefined : FilepathFromJSON(json['filePath']),
-        'artDokument': !exists(json, 'artDokument') ? undefined : json['artDokument'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'filePath': json['filePath'] == null ? undefined : FilepathFromJSON(json['filePath']),
+        'artDokument': json['artDokument'] == null ? undefined : json['artDokument'],
     };
 }
 
-export function DokumentResponseToJSON(value?: DokumentResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DokumentResponseToJSON(json: any): DokumentResponse {
+    return DokumentResponseToJSONTyped(json, false);
+}
+
+export function DokumentResponseToJSONTyped(value?: DokumentResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'filePath': FilepathToJSON(value.filePath),
-        'artDokument': value.artDokument,
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'filePath': FilepathToJSON(value['filePath']),
+        'artDokument': value['artDokument'],
     };
 }
 

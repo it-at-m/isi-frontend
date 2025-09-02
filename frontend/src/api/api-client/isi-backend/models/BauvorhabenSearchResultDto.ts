@@ -12,34 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
+    MultiPolygonGeometryDtoToJSONTyped,
 } from './MultiPolygonGeometryDto';
 import type { SearchResultDto } from './SearchResultDto';
 import {
     SearchResultDtoFromJSON,
     SearchResultDtoFromJSONTyped,
     SearchResultDtoToJSON,
+    SearchResultDtoToJSONTyped,
 } from './SearchResultDto';
-import type { StadtbezirkDto } from './StadtbezirkDto';
-import {
-    StadtbezirkDtoFromJSON,
-    StadtbezirkDtoFromJSONTyped,
-    StadtbezirkDtoToJSON,
-} from './StadtbezirkDto';
 import type { Wgs84Dto } from './Wgs84Dto';
 import {
     Wgs84DtoFromJSON,
     Wgs84DtoFromJSONTyped,
     Wgs84DtoToJSON,
+    Wgs84DtoToJSONTyped,
 } from './Wgs84Dto';
-
+import type { StadtbezirkDto } from './StadtbezirkDto';
 import {
-} from './';
+    StadtbezirkDtoFromJSON,
+    StadtbezirkDtoFromJSONTyped,
+    StadtbezirkDtoToJSON,
+    StadtbezirkDtoToJSONTyped,
+} from './StadtbezirkDto';
 
 /**
  * 
@@ -116,10 +117,8 @@ export type BauvorhabenSearchResultDtoStandVerfahrenEnum = typeof BauvorhabenSea
 /**
  * Check if a given object implements the BauvorhabenSearchResultDto interface.
  */
-export function instanceOfBauvorhabenSearchResultDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfBauvorhabenSearchResultDto(value: object): value is BauvorhabenSearchResultDto {
+    return true;
 }
 
 export function BauvorhabenSearchResultDtoFromJSON(json: any): BauvorhabenSearchResultDto {
@@ -127,37 +126,46 @@ export function BauvorhabenSearchResultDtoFromJSON(json: any): BauvorhabenSearch
 }
 
 export function BauvorhabenSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauvorhabenSearchResultDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'nameVorhaben': !exists(json, 'nameVorhaben') ? undefined : json['nameVorhaben'],
-        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
-        'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
-        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
-        'umgriff': !exists(json, 'umgriff') ? undefined : MultiPolygonGeometryDtoFromJSON(json['umgriff']),
+        ...SearchResultDtoFromJSONTyped(json, true),
+        'id': json['id'] == null ? undefined : json['id'],
+        'nameVorhaben': json['nameVorhaben'] == null ? undefined : json['nameVorhaben'],
+        'stadtbezirke': json['stadtbezirke'] == null ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
+        'grundstuecksgroesse': json['grundstuecksgroesse'] == null ? undefined : json['grundstuecksgroesse'],
+        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
+        'umgriff': json['umgriff'] == null ? undefined : MultiPolygonGeometryDtoFromJSON(json['umgriff']),
     };
 }
 
-export function BauvorhabenSearchResultDtoToJSON(value?: BauvorhabenSearchResultDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BauvorhabenSearchResultDtoToJSON(json: any): BauvorhabenSearchResultDto {
+    return BauvorhabenSearchResultDtoToJSONTyped(json, false);
+}
+
+export function BauvorhabenSearchResultDtoToJSONTyped(value?: BauvorhabenSearchResultDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['type']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...SearchResultDtoToJSON(value),
-        'id': value.id,
-        'nameVorhaben': value.nameVorhaben,
-        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkDtoToJSON)),
-        'grundstuecksgroesse': value.grundstuecksgroesse,
-        'standVerfahren': value.standVerfahren,
-        'umgriff': MultiPolygonGeometryDtoToJSON(value.umgriff),
+        ...SearchResultDtoToJSONTyped(value, true),
+        'id': value['id'],
+        'nameVorhaben': value['nameVorhaben'],
+        'stadtbezirke': value['stadtbezirke'] == null ? undefined : (Array.from(value['stadtbezirke'] as Set<any>).map(StadtbezirkDtoToJSON)),
+        'grundstuecksgroesse': value['grundstuecksgroesse'],
+        'standVerfahren': value['standVerfahren'],
+        'umgriff': MultiPolygonGeometryDtoToJSON(value['umgriff']),
     };
 }
 

@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityModelBauvorhaben } from './EntityModelBauvorhaben';
 import {
     EntityModelBauvorhabenFromJSON,
     EntityModelBauvorhabenFromJSONTyped,
     EntityModelBauvorhabenToJSON,
+    EntityModelBauvorhabenToJSONTyped,
 } from './EntityModelBauvorhaben';
 
 /**
@@ -37,10 +38,8 @@ export interface PagedModelEntityModelBauvorhabenEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelBauvorhabenEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelBauvorhabenEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelBauvorhabenEmbedded(value: object): value is PagedModelEntityModelBauvorhabenEmbedded {
+    return true;
 }
 
 export function PagedModelEntityModelBauvorhabenEmbeddedFromJSON(json: any): PagedModelEntityModelBauvorhabenEmbedded {
@@ -48,25 +47,27 @@ export function PagedModelEntityModelBauvorhabenEmbeddedFromJSON(json: any): Pag
 }
 
 export function PagedModelEntityModelBauvorhabenEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelBauvorhabenEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'bauvorhabens': !exists(json, 'bauvorhabens') ? undefined : ((json['bauvorhabens'] as Array<any>).map(EntityModelBauvorhabenFromJSON)),
+        'bauvorhabens': json['bauvorhabens'] == null ? undefined : ((json['bauvorhabens'] as Array<any>).map(EntityModelBauvorhabenFromJSON)),
     };
 }
 
-export function PagedModelEntityModelBauvorhabenEmbeddedToJSON(value?: PagedModelEntityModelBauvorhabenEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelBauvorhabenEmbeddedToJSON(json: any): PagedModelEntityModelBauvorhabenEmbedded {
+    return PagedModelEntityModelBauvorhabenEmbeddedToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelBauvorhabenEmbeddedToJSONTyped(value?: PagedModelEntityModelBauvorhabenEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'bauvorhabens': value.bauvorhabens === undefined ? undefined : ((value.bauvorhabens as Array<any>).map(EntityModelBauvorhabenToJSON)),
+        'bauvorhabens': value['bauvorhabens'] == null ? undefined : ((value['bauvorhabens'] as Array<any>).map(EntityModelBauvorhabenToJSON)),
     };
 }
 

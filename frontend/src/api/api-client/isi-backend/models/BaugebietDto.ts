@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BaurateDto } from './BaurateDto';
 import {
     BaurateDtoFromJSON,
     BaurateDtoFromJSONTyped,
     BaurateDtoToJSON,
+    BaurateDtoToJSONTyped,
 } from './BaurateDto';
 
 /**
@@ -144,15 +145,13 @@ export type BaugebietDtoArtBaulicheNutzungEnum = typeof BaugebietDtoArtBaulicheN
 /**
  * Check if a given object implements the BaugebietDto interface.
  */
-export function instanceOfBaugebietDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "bezeichnung" in value;
-    isInstance = isInstance && "artBaulicheNutzung" in value;
-    isInstance = isInstance && "realisierungVon" in value;
-    isInstance = isInstance && "bauraten" in value;
-    isInstance = isInstance && "technical" in value;
-
-    return isInstance;
+export function instanceOfBaugebietDto(value: object): value is BaugebietDto {
+    if (!('bezeichnung' in value) || value['bezeichnung'] === undefined) return false;
+    if (!('artBaulicheNutzung' in value) || value['artBaulicheNutzung'] === undefined) return false;
+    if (!('realisierungVon' in value) || value['realisierungVon'] === undefined) return false;
+    if (!('bauraten' in value) || value['bauraten'] === undefined) return false;
+    if (!('technical' in value) || value['technical'] === undefined) return false;
+    return true;
 }
 
 export function BaugebietDtoFromJSON(json: any): BaugebietDto {
@@ -160,55 +159,57 @@ export function BaugebietDtoFromJSON(json: any): BaugebietDto {
 }
 
 export function BaugebietDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugebietDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
         'artBaulicheNutzung': json['artBaulicheNutzung'],
-        'artBaulicheNutzungFreieEingabe': !exists(json, 'artBaulicheNutzungFreieEingabe') ? undefined : json['artBaulicheNutzungFreieEingabe'],
+        'artBaulicheNutzungFreieEingabe': json['artBaulicheNutzungFreieEingabe'] == null ? undefined : json['artBaulicheNutzungFreieEingabe'],
         'realisierungVon': json['realisierungVon'],
-        'gfWohnenGeplant': !exists(json, 'gfWohnenGeplant') ? undefined : json['gfWohnenGeplant'],
-        'gfWohnenBaurechtlichGenehmigt': !exists(json, 'gfWohnenBaurechtlichGenehmigt') ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
-        'gfWohnenBaurechtlichFestgesetzt': !exists(json, 'gfWohnenBaurechtlichFestgesetzt') ? undefined : json['gfWohnenBaurechtlichFestgesetzt'],
-        'weGeplant': !exists(json, 'weGeplant') ? undefined : json['weGeplant'],
-        'weBaurechtlichGenehmigt': !exists(json, 'weBaurechtlichGenehmigt') ? undefined : json['weBaurechtlichGenehmigt'],
-        'weBaurechtlichFestgesetzt': !exists(json, 'weBaurechtlichFestgesetzt') ? undefined : json['weBaurechtlichFestgesetzt'],
+        'gfWohnenGeplant': json['gfWohnenGeplant'] == null ? undefined : json['gfWohnenGeplant'],
+        'gfWohnenBaurechtlichGenehmigt': json['gfWohnenBaurechtlichGenehmigt'] == null ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
+        'gfWohnenBaurechtlichFestgesetzt': json['gfWohnenBaurechtlichFestgesetzt'] == null ? undefined : json['gfWohnenBaurechtlichFestgesetzt'],
+        'weGeplant': json['weGeplant'] == null ? undefined : json['weGeplant'],
+        'weBaurechtlichGenehmigt': json['weBaurechtlichGenehmigt'] == null ? undefined : json['weBaurechtlichGenehmigt'],
+        'weBaurechtlichFestgesetzt': json['weBaurechtlichFestgesetzt'] == null ? undefined : json['weBaurechtlichFestgesetzt'],
         'bauraten': ((json['bauraten'] as Array<any>).map(BaurateDtoFromJSON)),
         'technical': json['technical'],
     };
 }
 
-export function BaugebietDtoToJSON(value?: BaugebietDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BaugebietDtoToJSON(json: any): BaugebietDto {
+    return BaugebietDtoToJSONTyped(json, false);
+}
+
+export function BaugebietDtoToJSONTyped(value?: BaugebietDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bezeichnung': value.bezeichnung,
-        'artBaulicheNutzung': value.artBaulicheNutzung,
-        'artBaulicheNutzungFreieEingabe': value.artBaulicheNutzungFreieEingabe,
-        'realisierungVon': value.realisierungVon,
-        'gfWohnenGeplant': value.gfWohnenGeplant,
-        'gfWohnenBaurechtlichGenehmigt': value.gfWohnenBaurechtlichGenehmigt,
-        'gfWohnenBaurechtlichFestgesetzt': value.gfWohnenBaurechtlichFestgesetzt,
-        'weGeplant': value.weGeplant,
-        'weBaurechtlichGenehmigt': value.weBaurechtlichGenehmigt,
-        'weBaurechtlichFestgesetzt': value.weBaurechtlichFestgesetzt,
-        'bauraten': ((value.bauraten as Array<any>).map(BaurateDtoToJSON)),
-        'technical': value.technical,
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'bezeichnung': value['bezeichnung'],
+        'artBaulicheNutzung': value['artBaulicheNutzung'],
+        'artBaulicheNutzungFreieEingabe': value['artBaulicheNutzungFreieEingabe'],
+        'realisierungVon': value['realisierungVon'],
+        'gfWohnenGeplant': value['gfWohnenGeplant'],
+        'gfWohnenBaurechtlichGenehmigt': value['gfWohnenBaurechtlichGenehmigt'],
+        'gfWohnenBaurechtlichFestgesetzt': value['gfWohnenBaurechtlichFestgesetzt'],
+        'weGeplant': value['weGeplant'],
+        'weBaurechtlichGenehmigt': value['weBaurechtlichGenehmigt'],
+        'weBaurechtlichFestgesetzt': value['weBaurechtlichFestgesetzt'],
+        'bauraten': ((value['bauraten'] as Array<any>).map(BaurateDtoToJSON)),
+        'technical': value['technical'],
     };
 }
 

@@ -12,32 +12,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { BaugenehmigungsverfahrenAngelegtDto } from './BaugenehmigungsverfahrenAngelegtDto';
-import {
-    BaugenehmigungsverfahrenAngelegtDtoFromJSON,
-    BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
-    BaugenehmigungsverfahrenAngelegtDtoToJSON,
-} from './BaugenehmigungsverfahrenAngelegtDto';
-import type { BauleitplanverfahrenAngelegtDto } from './BauleitplanverfahrenAngelegtDto';
-import {
-    BauleitplanverfahrenAngelegtDtoFromJSON,
-    BauleitplanverfahrenAngelegtDtoFromJSONTyped,
-    BauleitplanverfahrenAngelegtDtoToJSON,
-} from './BauleitplanverfahrenAngelegtDto';
-import type { WeiteresVerfahrenAngelegtDto } from './WeiteresVerfahrenAngelegtDto';
-import {
-    WeiteresVerfahrenAngelegtDtoFromJSON,
-    WeiteresVerfahrenAngelegtDtoFromJSONTyped,
-    WeiteresVerfahrenAngelegtDtoToJSON,
-} from './WeiteresVerfahrenAngelegtDto';
+import { mapValues } from '../runtime';
 
-import {
-     BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
-     BauleitplanverfahrenAngelegtDtoFromJSONTyped,
-     WeiteresVerfahrenAngelegtDtoFromJSONTyped
-} from './';
-
+import { type BaugenehmigungsverfahrenAngelegtDto, BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped, BaugenehmigungsverfahrenAngelegtDtoToJSON, BaugenehmigungsverfahrenAngelegtDtoToJSONTyped } from './BaugenehmigungsverfahrenAngelegtDto';
+import { type BauleitplanverfahrenAngelegtDto, BauleitplanverfahrenAngelegtDtoFromJSONTyped, BauleitplanverfahrenAngelegtDtoToJSON, BauleitplanverfahrenAngelegtDtoToJSONTyped } from './BauleitplanverfahrenAngelegtDto';
+import { type WeiteresVerfahrenAngelegtDto, WeiteresVerfahrenAngelegtDtoFromJSONTyped, WeiteresVerfahrenAngelegtDtoToJSON, WeiteresVerfahrenAngelegtDtoToJSONTyped } from './WeiteresVerfahrenAngelegtDto';
 /**
  * AbfrageAngelegtDto
  * @export
@@ -98,11 +77,9 @@ export type AbfrageAngelegtDtoArtAbfrageEnum = typeof AbfrageAngelegtDtoArtAbfra
 /**
  * Check if a given object implements the AbfrageAngelegtDto interface.
  */
-export function instanceOfAbfrageAngelegtDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-
-    return isInstance;
+export function instanceOfAbfrageAngelegtDto(value: object): value is AbfrageAngelegtDto {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    return true;
 }
 
 export function AbfrageAngelegtDtoFromJSON(json: any): AbfrageAngelegtDto {
@@ -110,46 +87,61 @@ export function AbfrageAngelegtDtoFromJSON(json: any): AbfrageAngelegtDto {
 }
 
 export function AbfrageAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageAngelegtDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
         if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
-            return BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true);
+            return BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
-            return BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true);
+            return BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
-            return WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, true);
+            return WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, ignoreDiscriminator);
         }
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
         'name': json['name'],
-        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
-        'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
+        'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
+        'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
+        'linkEakte': json['linkEakte'] == null ? undefined : json['linkEakte'],
     };
 }
 
-export function AbfrageAngelegtDtoToJSON(value?: AbfrageAngelegtDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AbfrageAngelegtDtoToJSON(json: any): AbfrageAngelegtDto {
+    return AbfrageAngelegtDtoToJSONTyped(json, false);
+}
+
+export function AbfrageAngelegtDtoToJSONTyped(value?: AbfrageAngelegtDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            case 'BAUGENEHMIGUNGSVERFAHREN':
+                return BaugenehmigungsverfahrenAngelegtDtoToJSONTyped(value as BaugenehmigungsverfahrenAngelegtDto, ignoreDiscriminator);
+            case 'BAULEITPLANVERFAHREN':
+                return BauleitplanverfahrenAngelegtDtoToJSONTyped(value as BauleitplanverfahrenAngelegtDto, ignoreDiscriminator);
+            case 'WEITERES_VERFAHREN':
+                return WeiteresVerfahrenAngelegtDtoToJSONTyped(value as WeiteresVerfahrenAngelegtDto, ignoreDiscriminator);
+            default:
+                return value;
+        }
     }
+
     return {
         
-        'version': value.version,
-        'artAbfrage': value.artAbfrage,
-        'name': value.name,
-        'anmerkung': value.anmerkung,
-        'bauvorhaben': value.bauvorhaben,
-        'linkEakte': value.linkEakte,
+        'version': value['version'],
+        'artAbfrage': value['artAbfrage'],
+        'name': value['name'],
+        'anmerkung': value['anmerkung'],
+        'bauvorhaben': value['bauvorhaben'],
+        'linkEakte': value['linkEakte'],
     };
 }
 

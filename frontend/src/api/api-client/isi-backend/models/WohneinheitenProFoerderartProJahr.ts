@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface WohneinheitenProFoerderartProJahr {
 /**
  * Check if a given object implements the WohneinheitenProFoerderartProJahr interface.
  */
-export function instanceOfWohneinheitenProFoerderartProJahr(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfWohneinheitenProFoerderartProJahr(value: object): value is WohneinheitenProFoerderartProJahr {
+    return true;
 }
 
 export function WohneinheitenProFoerderartProJahrFromJSON(json: any): WohneinheitenProFoerderartProJahr {
@@ -53,29 +51,31 @@ export function WohneinheitenProFoerderartProJahrFromJSON(json: any): Wohneinhei
 }
 
 export function WohneinheitenProFoerderartProJahrFromJSONTyped(json: any, ignoreDiscriminator: boolean): WohneinheitenProFoerderartProJahr {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'foerderart': !exists(json, 'foerderart') ? undefined : json['foerderart'],
-        'jahr': !exists(json, 'jahr') ? undefined : json['jahr'],
-        'wohneinheiten': !exists(json, 'wohneinheiten') ? undefined : json['wohneinheiten'],
+        'foerderart': json['foerderart'] == null ? undefined : json['foerderart'],
+        'jahr': json['jahr'] == null ? undefined : json['jahr'],
+        'wohneinheiten': json['wohneinheiten'] == null ? undefined : json['wohneinheiten'],
     };
 }
 
-export function WohneinheitenProFoerderartProJahrToJSON(value?: WohneinheitenProFoerderartProJahr | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WohneinheitenProFoerderartProJahrToJSON(json: any): WohneinheitenProFoerderartProJahr {
+    return WohneinheitenProFoerderartProJahrToJSONTyped(json, false);
+}
+
+export function WohneinheitenProFoerderartProJahrToJSONTyped(value?: WohneinheitenProFoerderartProJahr | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'foerderart': value.foerderart,
-        'jahr': value.jahr,
-        'wohneinheiten': value.wohneinheiten,
+        'foerderart': value['foerderart'],
+        'jahr': value['jahr'],
+        'wohneinheiten': value['wohneinheiten'],
     };
 }
 

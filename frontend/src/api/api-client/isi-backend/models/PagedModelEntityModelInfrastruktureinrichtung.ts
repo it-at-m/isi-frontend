@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-} from './Link';
+import { mapValues } from '../runtime';
 import type { PageMetadata } from './PageMetadata';
 import {
     PageMetadataFromJSON,
     PageMetadataFromJSONTyped,
     PageMetadataToJSON,
+    PageMetadataToJSONTyped,
 } from './PageMetadata';
 import type { PagedModelEntityModelInfrastruktureinrichtungEmbedded } from './PagedModelEntityModelInfrastruktureinrichtungEmbedded';
 import {
     PagedModelEntityModelInfrastruktureinrichtungEmbeddedFromJSON,
     PagedModelEntityModelInfrastruktureinrichtungEmbeddedFromJSONTyped,
     PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSON,
+    PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSONTyped,
 } from './PagedModelEntityModelInfrastruktureinrichtungEmbedded';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+    LinkToJSONTyped,
+} from './Link';
 
 /**
  * 
@@ -61,10 +64,8 @@ export interface PagedModelEntityModelInfrastruktureinrichtung {
 /**
  * Check if a given object implements the PagedModelEntityModelInfrastruktureinrichtung interface.
  */
-export function instanceOfPagedModelEntityModelInfrastruktureinrichtung(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelInfrastruktureinrichtung(value: object): value is PagedModelEntityModelInfrastruktureinrichtung {
+    return true;
 }
 
 export function PagedModelEntityModelInfrastruktureinrichtungFromJSON(json: any): PagedModelEntityModelInfrastruktureinrichtung {
@@ -72,29 +73,31 @@ export function PagedModelEntityModelInfrastruktureinrichtungFromJSON(json: any)
 }
 
 export function PagedModelEntityModelInfrastruktureinrichtungFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelInfrastruktureinrichtung {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'embedded': !exists(json, '_embedded') ? undefined : PagedModelEntityModelInfrastruktureinrichtungEmbeddedFromJSON(json['_embedded']),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
-        'page': !exists(json, 'page') ? undefined : PageMetadataFromJSON(json['page']),
+        'embedded': json['_embedded'] == null ? undefined : PagedModelEntityModelInfrastruktureinrichtungEmbeddedFromJSON(json['_embedded']),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'page': json['page'] == null ? undefined : PageMetadataFromJSON(json['page']),
     };
 }
 
-export function PagedModelEntityModelInfrastruktureinrichtungToJSON(value?: PagedModelEntityModelInfrastruktureinrichtung | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelInfrastruktureinrichtungToJSON(json: any): PagedModelEntityModelInfrastruktureinrichtung {
+    return PagedModelEntityModelInfrastruktureinrichtungToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelInfrastruktureinrichtungToJSONTyped(value?: PagedModelEntityModelInfrastruktureinrichtung | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        '_embedded': PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSON(value.embedded),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
-        'page': PageMetadataToJSON(value.page),
+        '_embedded': PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSON(value['embedded']),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
+        'page': PageMetadataToJSON(value['page']),
     };
 }
 

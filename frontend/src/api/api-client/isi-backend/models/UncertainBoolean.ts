@@ -25,6 +25,17 @@ export const UncertainBoolean = {
 export type UncertainBoolean = typeof UncertainBoolean[keyof typeof UncertainBoolean];
 
 
+export function instanceOfUncertainBoolean(value: any): boolean {
+    for (const key in UncertainBoolean) {
+        if (Object.prototype.hasOwnProperty.call(UncertainBoolean, key)) {
+            if (UncertainBoolean[key as keyof typeof UncertainBoolean] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function UncertainBooleanFromJSON(json: any): UncertainBoolean {
     return UncertainBooleanFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function UncertainBooleanFromJSONTyped(json: any, ignoreDiscriminator: bo
 
 export function UncertainBooleanToJSON(value?: UncertainBoolean | null): any {
     return value as any;
+}
+
+export function UncertainBooleanToJSONTyped(value: any, ignoreDiscriminator: boolean): UncertainBoolean {
+    return value as UncertainBoolean;
 }
 

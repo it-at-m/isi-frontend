@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelKommentar,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelKommentarFromJSON,
     EntityModelKommentarToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ExecuteSearchKommentarGetRequest {
     bauvorhaben?: string;
@@ -48,14 +48,17 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
     async executeSearchKommentarGetRaw(requestParameters: ExecuteSearchKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
-        if (requestParameters.bauvorhaben !== undefined) {
-            queryParameters['bauvorhaben'] = requestParameters.bauvorhaben;
+        if (requestParameters['bauvorhaben'] != null) {
+            queryParameters['bauvorhaben'] = requestParameters['bauvorhaben'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/kommentars/search/deleteAllByBauvorhabenId`;
+
         const response = await this.request({
-            path: `/kommentars/search/deleteAllByBauvorhabenId`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -75,14 +78,17 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
     async executeSearchKommentarGet1Raw(requestParameters: ExecuteSearchKommentarGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
-        if (requestParameters.infrastruktureinrichtung !== undefined) {
-            queryParameters['infrastruktureinrichtung'] = requestParameters.infrastruktureinrichtung;
+        if (requestParameters['infrastruktureinrichtung'] != null) {
+            queryParameters['infrastruktureinrichtung'] = requestParameters['infrastruktureinrichtung'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/kommentars/search/deleteAllByInfrastruktureinrichtungId`;
+
         const response = await this.request({
-            path: `/kommentars/search/deleteAllByInfrastruktureinrichtungId`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -102,14 +108,17 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
     async executeSearchKommentarGet2Raw(requestParameters: ExecuteSearchKommentarGet2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
         const queryParameters: any = {};
 
-        if (requestParameters.bauvorhaben !== undefined) {
-            queryParameters['bauvorhaben'] = requestParameters.bauvorhaben;
+        if (requestParameters['bauvorhaben'] != null) {
+            queryParameters['bauvorhaben'] = requestParameters['bauvorhaben'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/kommentars/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc`;
+
         const response = await this.request({
-            path: `/kommentars/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -130,14 +139,17 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
     async executeSearchKommentarGet3Raw(requestParameters: ExecuteSearchKommentarGet3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
         const queryParameters: any = {};
 
-        if (requestParameters.infrastruktureinrichtung !== undefined) {
-            queryParameters['infrastruktureinrichtung'] = requestParameters.infrastruktureinrichtung;
+        if (requestParameters['infrastruktureinrichtung'] != null) {
+            queryParameters['infrastruktureinrichtung'] = requestParameters['infrastruktureinrichtung'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/kommentars/search/findAllByInfrastruktureinrichtungIdOrderByCreatedDateTimeDesc`;
+
         const response = await this.request({
-            path: `/kommentars/search/findAllByInfrastruktureinrichtungIdOrderByCreatedDateTimeDesc`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface UtmDto {
 /**
  * Check if a given object implements the UtmDto interface.
  */
-export function instanceOfUtmDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfUtmDto(value: object): value is UtmDto {
+    return true;
 }
 
 export function UtmDtoFromJSON(json: any): UtmDto {
@@ -47,27 +45,29 @@ export function UtmDtoFromJSON(json: any): UtmDto {
 }
 
 export function UtmDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UtmDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'north': !exists(json, 'north') ? undefined : json['north'],
-        'east': !exists(json, 'east') ? undefined : json['east'],
+        'north': json['north'] == null ? undefined : json['north'],
+        'east': json['east'] == null ? undefined : json['east'],
     };
 }
 
-export function UtmDtoToJSON(value?: UtmDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UtmDtoToJSON(json: any): UtmDto {
+    return UtmDtoToJSONTyped(json, false);
+}
+
+export function UtmDtoToJSONTyped(value?: UtmDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'north': value.north,
-        'east': value.east,
+        'north': value['north'],
+        'east': value['east'],
     };
 }
 

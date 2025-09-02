@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Foerdermix } from './Foerdermix';
 import {
     FoerdermixFromJSON,
     FoerdermixFromJSONTyped,
     FoerdermixToJSON,
+    FoerdermixToJSONTyped,
 } from './Foerdermix';
 
 /**
@@ -65,10 +66,8 @@ export type SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum = type
 /**
  * Check if a given object implements the SobonBerechnung interface.
  */
-export function instanceOfSobonBerechnung(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfSobonBerechnung(value: object): value is SobonBerechnung {
+    return true;
 }
 
 export function SobonBerechnungFromJSON(json: any): SobonBerechnung {
@@ -76,29 +75,31 @@ export function SobonBerechnungFromJSON(json: any): SobonBerechnung {
 }
 
 export function SobonBerechnungFromJSONTyped(json: any, ignoreDiscriminator: boolean): SobonBerechnung {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
-        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
-        'sobonOrientierungswertJahrSobonUrsaechlich': !exists(json, 'sobonOrientierungswertJahrSobonUrsaechlich') ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
+        'isASobonBerechnung': json['isASobonBerechnung'] == null ? undefined : json['isASobonBerechnung'],
+        'sobonFoerdermix': json['sobonFoerdermix'] == null ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
+        'sobonOrientierungswertJahrSobonUrsaechlich': json['sobonOrientierungswertJahrSobonUrsaechlich'] == null ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
     };
 }
 
-export function SobonBerechnungToJSON(value?: SobonBerechnung | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SobonBerechnungToJSON(json: any): SobonBerechnung {
+    return SobonBerechnungToJSONTyped(json, false);
+}
+
+export function SobonBerechnungToJSONTyped(value?: SobonBerechnung | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'isASobonBerechnung': value.isASobonBerechnung,
-        'sobonFoerdermix': FoerdermixToJSON(value.sobonFoerdermix),
-        'sobonOrientierungswertJahrSobonUrsaechlich': value.sobonOrientierungswertJahrSobonUrsaechlich,
+        'isASobonBerechnung': value['isASobonBerechnung'],
+        'sobonFoerdermix': FoerdermixToJSON(value['sobonFoerdermix']),
+        'sobonOrientierungswertJahrSobonUrsaechlich': value['sobonOrientierungswertJahrSobonUrsaechlich'],
     };
 }
 

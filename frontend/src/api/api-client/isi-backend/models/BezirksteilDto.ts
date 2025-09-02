@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
+    MultiPolygonGeometryDtoToJSONTyped,
 } from './MultiPolygonGeometryDto';
 
 /**
@@ -43,11 +44,9 @@ export interface BezirksteilDto {
 /**
  * Check if a given object implements the BezirksteilDto interface.
  */
-export function instanceOfBezirksteilDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "multiPolygon" in value;
-
-    return isInstance;
+export function instanceOfBezirksteilDto(value: object): value is BezirksteilDto {
+    if (!('multiPolygon' in value) || value['multiPolygon'] === undefined) return false;
+    return true;
 }
 
 export function BezirksteilDtoFromJSON(json: any): BezirksteilDto {
@@ -55,27 +54,29 @@ export function BezirksteilDtoFromJSON(json: any): BezirksteilDto {
 }
 
 export function BezirksteilDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BezirksteilDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
+        'nummer': json['nummer'] == null ? undefined : json['nummer'],
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
-export function BezirksteilDtoToJSON(value?: BezirksteilDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BezirksteilDtoToJSON(json: any): BezirksteilDto {
+    return BezirksteilDtoToJSONTyped(json, false);
+}
+
+export function BezirksteilDtoToJSONTyped(value?: BezirksteilDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'nummer': value.nummer,
-        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
+        'nummer': value['nummer'],
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value['multiPolygon']),
     };
 }
 

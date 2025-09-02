@@ -18,7 +18,7 @@ import type {
   EntityModelGlobalCounter,
   GlobalCounterRequestBody,
   PagedModelEntityModelGlobalCounter,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelGlobalCounterFromJSON,
     EntityModelGlobalCounterToJSON,
@@ -26,7 +26,7 @@ import {
     GlobalCounterRequestBodyToJSON,
     PagedModelEntityModelGlobalCounterFromJSON,
     PagedModelEntityModelGlobalCounterToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface DeleteItemResourceGlobalcounterDeleteRequest {
     id: string;
@@ -65,16 +65,23 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
      * delete-globalcounter
      */
     async deleteItemResourceGlobalcounterDeleteRaw(requestParameters: DeleteItemResourceGlobalcounterDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceGlobalcounterDelete.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteItemResourceGlobalcounterDelete().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/globalCounters/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/globalCounters/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -96,22 +103,25 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceGlobalcounterGetRaw(requestParameters: GetCollectionResourceGlobalcounterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelGlobalCounter>> {
         const queryParameters: any = {};
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sort) {
-            queryParameters['sort'] = requestParameters.sort;
+        if (requestParameters['sort'] != null) {
+            queryParameters['sort'] = requestParameters['sort'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/globalCounters`;
+
         const response = await this.request({
-            path: `/globalCounters`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -132,16 +142,23 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
      * get-globalcounter
      */
     async getItemResourceGlobalcounterGetRaw(requestParameters: GetItemResourceGlobalcounterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelGlobalCounter>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceGlobalcounterGet.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getItemResourceGlobalcounterGet().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/globalCounters/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/globalCounters/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -162,12 +179,18 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
      * patch-globalcounter
      */
     async patchItemResourceGlobalcounterPatchRaw(requestParameters: PatchItemResourceGlobalcounterPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelGlobalCounter>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceGlobalcounterPatch.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling patchItemResourceGlobalcounterPatch().'
+            );
         }
 
-        if (requestParameters.globalCounterRequestBody === null || requestParameters.globalCounterRequestBody === undefined) {
-            throw new runtime.RequiredError('globalCounterRequestBody','Required parameter requestParameters.globalCounterRequestBody was null or undefined when calling patchItemResourceGlobalcounterPatch.');
+        if (requestParameters['globalCounterRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'globalCounterRequestBody',
+                'Required parameter "globalCounterRequestBody" was null or undefined when calling patchItemResourceGlobalcounterPatch().'
+            );
         }
 
         const queryParameters: any = {};
@@ -176,12 +199,16 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/globalCounters/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/globalCounters/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: GlobalCounterRequestBodyToJSON(requestParameters.globalCounterRequestBody),
+            body: GlobalCounterRequestBodyToJSON(requestParameters['globalCounterRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelGlobalCounterFromJSON(jsonValue));
@@ -190,17 +217,27 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-globalcounter
      */
-    async patchItemResourceGlobalcounterPatch(requestParameters: PatchItemResourceGlobalcounterPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelGlobalCounter> {
+    async patchItemResourceGlobalcounterPatch(requestParameters: PatchItemResourceGlobalcounterPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelGlobalCounter | null | undefined > {
         const response = await this.patchItemResourceGlobalcounterPatchRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
     /**
      * create-globalcounter
      */
     async postCollectionResourceGlobalcounterPostRaw(requestParameters: PostCollectionResourceGlobalcounterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelGlobalCounter>> {
-        if (requestParameters.globalCounterRequestBody === null || requestParameters.globalCounterRequestBody === undefined) {
-            throw new runtime.RequiredError('globalCounterRequestBody','Required parameter requestParameters.globalCounterRequestBody was null or undefined when calling postCollectionResourceGlobalcounterPost.');
+        if (requestParameters['globalCounterRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'globalCounterRequestBody',
+                'Required parameter "globalCounterRequestBody" was null or undefined when calling postCollectionResourceGlobalcounterPost().'
+            );
         }
 
         const queryParameters: any = {};
@@ -209,12 +246,15 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/globalCounters`;
+
         const response = await this.request({
-            path: `/globalCounters`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GlobalCounterRequestBodyToJSON(requestParameters.globalCounterRequestBody),
+            body: GlobalCounterRequestBodyToJSON(requestParameters['globalCounterRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelGlobalCounterFromJSON(jsonValue));
@@ -232,12 +272,18 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
      * update-globalcounter
      */
     async putItemResourceGlobalcounterPutRaw(requestParameters: PutItemResourceGlobalcounterPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelGlobalCounter>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceGlobalcounterPut.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling putItemResourceGlobalcounterPut().'
+            );
         }
 
-        if (requestParameters.globalCounterRequestBody === null || requestParameters.globalCounterRequestBody === undefined) {
-            throw new runtime.RequiredError('globalCounterRequestBody','Required parameter requestParameters.globalCounterRequestBody was null or undefined when calling putItemResourceGlobalcounterPut.');
+        if (requestParameters['globalCounterRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'globalCounterRequestBody',
+                'Required parameter "globalCounterRequestBody" was null or undefined when calling putItemResourceGlobalcounterPut().'
+            );
         }
 
         const queryParameters: any = {};
@@ -246,12 +292,16 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/globalCounters/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/globalCounters/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: GlobalCounterRequestBodyToJSON(requestParameters.globalCounterRequestBody),
+            body: GlobalCounterRequestBodyToJSON(requestParameters['globalCounterRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelGlobalCounterFromJSON(jsonValue));
@@ -260,9 +310,18 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-globalcounter
      */
-    async putItemResourceGlobalcounterPut(requestParameters: PutItemResourceGlobalcounterPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelGlobalCounter> {
+    async putItemResourceGlobalcounterPut(requestParameters: PutItemResourceGlobalcounterPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelGlobalCounter | null | undefined > {
         const response = await this.putItemResourceGlobalcounterPutRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 201:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
 }

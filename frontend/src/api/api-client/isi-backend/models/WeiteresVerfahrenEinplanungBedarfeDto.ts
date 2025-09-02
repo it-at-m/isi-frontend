@@ -12,22 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { AbfrageEinplanungBedarfeDto } from './AbfrageEinplanungBedarfeDto';
-import {
-    AbfrageEinplanungBedarfeDtoFromJSON,
-    AbfrageEinplanungBedarfeDtoFromJSONTyped,
-    AbfrageEinplanungBedarfeDtoToJSON,
-} from './AbfrageEinplanungBedarfeDto';
+import { mapValues } from '../runtime';
 import type { AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto } from './AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto';
 import {
     AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON,
+    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped,
 } from './AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto';
-
+import type { AbfrageEinplanungBedarfeDto } from './AbfrageEinplanungBedarfeDto';
 import {
-} from './';
+    AbfrageEinplanungBedarfeDtoFromJSON,
+    AbfrageEinplanungBedarfeDtoFromJSONTyped,
+    AbfrageEinplanungBedarfeDtoToJSON,
+    AbfrageEinplanungBedarfeDtoToJSONTyped,
+} from './AbfrageEinplanungBedarfeDto';
 
 /**
  * 
@@ -54,12 +53,10 @@ export interface WeiteresVerfahrenEinplanungBedarfeDto extends AbfrageEinplanung
 /**
  * Check if a given object implements the WeiteresVerfahrenEinplanungBedarfeDto interface.
  */
-export function instanceOfWeiteresVerfahrenEinplanungBedarfeDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
-    isInstance = isInstance && "abfragevariantenSachbearbeitungWeiteresVerfahren" in value;
-
-    return isInstance;
+export function instanceOfWeiteresVerfahrenEinplanungBedarfeDto(value: object): value is WeiteresVerfahrenEinplanungBedarfeDto {
+    if (!('abfragevariantenWeiteresVerfahren' in value) || value['abfragevariantenWeiteresVerfahren'] === undefined) return false;
+    if (!('abfragevariantenSachbearbeitungWeiteresVerfahren' in value) || value['abfragevariantenSachbearbeitungWeiteresVerfahren'] === undefined) return false;
+    return true;
 }
 
 export function WeiteresVerfahrenEinplanungBedarfeDtoFromJSON(json: any): WeiteresVerfahrenEinplanungBedarfeDto {
@@ -67,29 +64,38 @@ export function WeiteresVerfahrenEinplanungBedarfeDtoFromJSON(json: any): Weiter
 }
 
 export function WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenEinplanungBedarfeDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, ignoreDiscriminator),
+        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, true),
         'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON)),
         'abfragevariantenSachbearbeitungWeiteresVerfahren': ((json['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON)),
     };
 }
 
-export function WeiteresVerfahrenEinplanungBedarfeDtoToJSON(value?: WeiteresVerfahrenEinplanungBedarfeDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WeiteresVerfahrenEinplanungBedarfeDtoToJSON(json: any): WeiteresVerfahrenEinplanungBedarfeDto {
+    return WeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped(json, false);
+}
+
+export function WeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped(value?: WeiteresVerfahrenEinplanungBedarfeDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...AbfrageEinplanungBedarfeDtoToJSON(value),
-        'abfragevariantenWeiteresVerfahren': ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
-        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value.abfragevariantenSachbearbeitungWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
+        ...AbfrageEinplanungBedarfeDtoToJSONTyped(value, true),
+        'abfragevariantenWeiteresVerfahren': ((value['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
+        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
     };
 }
 

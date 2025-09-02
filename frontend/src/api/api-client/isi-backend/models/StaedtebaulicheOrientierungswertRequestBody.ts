@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -72,10 +72,8 @@ export interface StaedtebaulicheOrientierungswertRequestBody {
 /**
  * Check if a given object implements the StaedtebaulicheOrientierungswertRequestBody interface.
  */
-export function instanceOfStaedtebaulicheOrientierungswertRequestBody(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfStaedtebaulicheOrientierungswertRequestBody(value: object): value is StaedtebaulicheOrientierungswertRequestBody {
+    return true;
 }
 
 export function StaedtebaulicheOrientierungswertRequestBodyFromJSON(json: any): StaedtebaulicheOrientierungswertRequestBody {
@@ -83,39 +81,41 @@ export function StaedtebaulicheOrientierungswertRequestBodyFromJSON(json: any): 
 }
 
 export function StaedtebaulicheOrientierungswertRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): StaedtebaulicheOrientierungswertRequestBody {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'gueltigAb': !exists(json, 'gueltigAb') ? undefined : (new Date(json['gueltigAb'])),
-        'foerderartBezeichnung': !exists(json, 'foerderartBezeichnung') ? undefined : json['foerderartBezeichnung'],
-        'durchschnittlicheGrundflaeche': !exists(json, 'durchschnittlicheGrundflaeche') ? undefined : json['durchschnittlicheGrundflaeche'],
-        'belegungsdichte': !exists(json, 'belegungsdichte') ? undefined : json['belegungsdichte'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'gueltigAb': json['gueltigAb'] == null ? undefined : (new Date(json['gueltigAb'])),
+        'foerderartBezeichnung': json['foerderartBezeichnung'] == null ? undefined : json['foerderartBezeichnung'],
+        'durchschnittlicheGrundflaeche': json['durchschnittlicheGrundflaeche'] == null ? undefined : json['durchschnittlicheGrundflaeche'],
+        'belegungsdichte': json['belegungsdichte'] == null ? undefined : json['belegungsdichte'],
     };
 }
 
-export function StaedtebaulicheOrientierungswertRequestBodyToJSON(value?: StaedtebaulicheOrientierungswertRequestBody | null): any {
-    if (value === undefined) {
-        return undefined;
+export function StaedtebaulicheOrientierungswertRequestBodyToJSON(json: any): StaedtebaulicheOrientierungswertRequestBody {
+    return StaedtebaulicheOrientierungswertRequestBodyToJSONTyped(json, false);
+}
+
+export function StaedtebaulicheOrientierungswertRequestBodyToJSONTyped(value?: StaedtebaulicheOrientierungswertRequestBody | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'gueltigAb': value.gueltigAb === undefined ? undefined : (value.gueltigAb.toISOString().substr(0,10)),
-        'foerderartBezeichnung': value.foerderartBezeichnung,
-        'durchschnittlicheGrundflaeche': value.durchschnittlicheGrundflaeche,
-        'belegungsdichte': value.belegungsdichte,
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'gueltigAb': value['gueltigAb'] == null ? undefined : ((value['gueltigAb']).toISOString().substring(0,10)),
+        'foerderartBezeichnung': value['foerderartBezeichnung'],
+        'durchschnittlicheGrundflaeche': value['durchschnittlicheGrundflaeche'],
+        'belegungsdichte': value['belegungsdichte'],
     };
 }
 

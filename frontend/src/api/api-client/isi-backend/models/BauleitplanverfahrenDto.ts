@@ -12,58 +12,63 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { AbfrageDto } from './AbfrageDto';
-import {
-    AbfrageDtoFromJSON,
-    AbfrageDtoFromJSONTyped,
-    AbfrageDtoToJSON,
-} from './AbfrageDto';
+import { mapValues } from '../runtime';
 import type { AbfragevarianteBauleitplanverfahrenDto } from './AbfragevarianteBauleitplanverfahrenDto';
 import {
     AbfragevarianteBauleitplanverfahrenDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenDtoToJSON,
+    AbfragevarianteBauleitplanverfahrenDtoToJSONTyped,
 } from './AbfragevarianteBauleitplanverfahrenDto';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
+import {
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+    VerortungMultiPolygonDtoToJSONTyped,
+} from './VerortungMultiPolygonDto';
+import type { StatusAbfrage } from './StatusAbfrage';
+import {
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+    StatusAbfrageToJSONTyped,
+} from './StatusAbfrage';
+import type { AbfrageDto } from './AbfrageDto';
+import {
+    AbfrageDtoFromJSON,
+    AbfrageDtoFromJSONTyped,
+    AbfrageDtoToJSON,
+    AbfrageDtoToJSONTyped,
+} from './AbfrageDto';
+import type { UncertainBoolean } from './UncertainBoolean';
+import {
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+    UncertainBooleanToJSONTyped,
+} from './UncertainBoolean';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+    DokumentDtoToJSONTyped,
+} from './DokumentDto';
 import type { AdresseDto } from './AdresseDto';
 import {
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
+    AdresseDtoToJSONTyped,
 } from './AdresseDto';
 import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
 import {
     BearbeitungshistorieDtoFromJSON,
     BearbeitungshistorieDtoFromJSONTyped,
     BearbeitungshistorieDtoToJSON,
+    BearbeitungshistorieDtoToJSONTyped,
 } from './BearbeitungshistorieDto';
-import type { DokumentDto } from './DokumentDto';
-import {
-    DokumentDtoFromJSON,
-    DokumentDtoFromJSONTyped,
-    DokumentDtoToJSON,
-} from './DokumentDto';
-import type { StatusAbfrage } from './StatusAbfrage';
-import {
-    StatusAbfrageFromJSON,
-    StatusAbfrageFromJSONTyped,
-    StatusAbfrageToJSON,
-} from './StatusAbfrage';
-import type { UncertainBoolean } from './UncertainBoolean';
-import {
-    UncertainBooleanFromJSON,
-    UncertainBooleanFromJSONTyped,
-    UncertainBooleanToJSON,
-} from './UncertainBoolean';
-import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
-import {
-    VerortungMultiPolygonDtoFromJSON,
-    VerortungMultiPolygonDtoFromJSONTyped,
-    VerortungMultiPolygonDtoToJSON,
-} from './VerortungMultiPolygonDto';
-
-import {
-} from './';
 
 /**
  * 
@@ -150,14 +155,14 @@ export interface BauleitplanverfahrenDto extends AbfrageDto {
  * @export
  */
 export const BauleitplanverfahrenDtoSobonJahrEnum = {
-    _1995: 'JAHR_1995',
-    _1997: 'JAHR_1997',
-    _2001: 'JAHR_2001',
-    _2006: 'JAHR_2006',
-    _2012: 'JAHR_2012',
-    _2017: 'JAHR_2017',
-    _2017Plus: 'JAHR_2017_PLUS',
-    _2021: 'JAHR_2021'
+    Jahr1995: 'JAHR_1995',
+    Jahr1997: 'JAHR_1997',
+    Jahr2001: 'JAHR_2001',
+    Jahr2006: 'JAHR_2006',
+    Jahr2012: 'JAHR_2012',
+    Jahr2017: 'JAHR_2017',
+    Jahr2017Plus: 'JAHR_2017_PLUS',
+    Jahr2021: 'JAHR_2021'
 } as const;
 export type BauleitplanverfahrenDtoSobonJahrEnum = typeof BauleitplanverfahrenDtoSobonJahrEnum[keyof typeof BauleitplanverfahrenDtoSobonJahrEnum];
 
@@ -191,10 +196,8 @@ export type BauleitplanverfahrenDtoStandVerfahrenEnum = typeof Bauleitplanverfah
 /**
  * Check if a given object implements the BauleitplanverfahrenDto interface.
  */
-export function instanceOfBauleitplanverfahrenDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfBauleitplanverfahrenDto(value: object): value is BauleitplanverfahrenDto {
+    return true;
 }
 
 export function BauleitplanverfahrenDtoFromJSON(json: any): BauleitplanverfahrenDto {
@@ -202,49 +205,58 @@ export function BauleitplanverfahrenDtoFromJSON(json: any): Bauleitplanverfahren
 }
 
 export function BauleitplanverfahrenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageDtoFromJSONTyped(json, ignoreDiscriminator),
-        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
-        'sobonRelevant': !exists(json, 'sobonRelevant') ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
-        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
-        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
-        'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
-        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
-        'mitzeichnungBeschlussentwurf': !exists(json, 'mitzeichnungBeschlussentwurf') ? undefined : UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
-        'abfragevariantenBauleitplanverfahren': !exists(json, 'abfragevariantenBauleitplanverfahren') ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
-        'abfragevariantenSachbearbeitungBauleitplanverfahren': !exists(json, 'abfragevariantenSachbearbeitungBauleitplanverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
+        ...AbfrageDtoFromJSONTyped(json, true),
+        'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
+        'sobonRelevant': json['sobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
+        'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
+        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
+        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
+        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (new Date(json['fristBearbeitung'])),
+        'mitzeichnungBeschlussentwurf': json['mitzeichnungBeschlussentwurf'] == null ? undefined : UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
+        'abfragevariantenBauleitplanverfahren': json['abfragevariantenBauleitplanverfahren'] == null ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': json['abfragevariantenSachbearbeitungBauleitplanverfahren'] == null ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
     };
 }
 
-export function BauleitplanverfahrenDtoToJSON(value?: BauleitplanverfahrenDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BauleitplanverfahrenDtoToJSON(json: any): BauleitplanverfahrenDto {
+    return BauleitplanverfahrenDtoToJSONTyped(json, false);
+}
+
+export function BauleitplanverfahrenDtoToJSONTyped(value?: BauleitplanverfahrenDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...AbfrageDtoToJSON(value),
-        'bebauungsplannummer': value.bebauungsplannummer,
-        'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
-        'sobonJahr': value.sobonJahr,
-        'standVerfahren': value.standVerfahren,
-        'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
-        'adresse': AdresseDtoToJSON(value.adresse),
-        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
-        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
-        'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value.mitzeichnungBeschlussentwurf),
-        'abfragevariantenBauleitplanverfahren': value.abfragevariantenBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
-        'abfragevariantenSachbearbeitungBauleitplanverfahren': value.abfragevariantenSachbearbeitungBauleitplanverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
+        ...AbfrageDtoToJSONTyped(value, true),
+        'bebauungsplannummer': value['bebauungsplannummer'],
+        'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
+        'sobonJahr': value['sobonJahr'],
+        'standVerfahren': value['standVerfahren'],
+        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'adresse': AdresseDtoToJSON(value['adresse']),
+        'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
+        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
+        'fristBearbeitung': value['fristBearbeitung'] == null ? undefined : ((value['fristBearbeitung']).toISOString().substring(0,10)),
+        'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value['mitzeichnungBeschlussentwurf']),
+        'abfragevariantenBauleitplanverfahren': value['abfragevariantenBauleitplanverfahren'] == null ? undefined : ((value['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': value['abfragevariantenSachbearbeitungBauleitplanverfahren'] == null ? undefined : ((value['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
     };
 }
 
