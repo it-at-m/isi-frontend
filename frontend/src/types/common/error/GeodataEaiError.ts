@@ -4,7 +4,7 @@ interface GeodataEaiError extends Error {}
 class GeodataEaiError {
   message: string;
 
-  constructor(error: Error, message: string) {
+  constructor(error: unknown, message: string) {
     Object.assign(this, error, {});
     this.message = message;
   }

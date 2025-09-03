@@ -236,14 +236,12 @@ export function useGeodataEaiApi() {
   }
 
   function handleErrorInternal(error: unknown) {
-    if (error instanceof Error && (error as Error).name === "FetchError") {
-      throw handleError(
-        new GeodataEaiError(
-          error,
-          "Die Session ist abgelaufen oder die Geodaten-Anbindung ist nicht verfügbar. Versuchen Sie es erneut mit F5. Ansonsten kontaktieren Sie bitte den Servicedesk.",
-        ),
-      );
-    } else throw handleError(error);
+    throw handleError(
+      new GeodataEaiError(
+        error,
+        "Die Session ist abgelaufen oder die Geodaten-Anbindung ist nicht verfügbar. Versuchen Sie es erneut mit F5. Ansonsten kontaktieren Sie bitte den Servicedesk.",
+      ),
+    );
   }
 
   return {
