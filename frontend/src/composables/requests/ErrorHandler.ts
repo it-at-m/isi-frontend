@@ -7,6 +7,7 @@ import {
 import { useToast, TYPE } from "vue-toastification";
 import { useCommonStore } from "@/stores/CommonStore";
 import _ from "lodash";
+import GeodataEaiError from "@/types/common/error/GeodataEaiError";
 
 // eslint-disable-next-line
 export function useErrorHandler() {
@@ -87,10 +88,15 @@ export function useErrorHandler() {
       }
     } else {
       // TypeError -> Der fetch-Request ist fehlgeschlagen.
-      console.log("label 7");
-      showInformation(ERROR_MESSAGE_GATEWAY);
+      if (error instanceof GeodataEaiError) {
+        console.log("label 7");
+        showInformation((error as GeodataEaiError).message);
+      } else {
+        console.log("label 8");
+        showInformation(ERROR_MESSAGE_GATEWAY);
+      }
     }
-    console.log("label 8");
+    console.log("label 9");
     commonStore.enableButton();
     return error instanceof Error ? error : { name: "Error", message: ERROR_MESSAGE_GATEWAY };
   }

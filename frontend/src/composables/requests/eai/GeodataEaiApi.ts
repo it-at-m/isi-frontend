@@ -34,6 +34,7 @@ import {
 } from "@/api/api-client/isi-geodata-eai";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "../ErrorHandler";
+import GeodataEaiError from "@/types/common/error/GeodataEaiError";
 
 // eslint-disable-next-line
 export function useGeodataEaiApi() {
@@ -48,7 +49,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getFlurstuecke1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -58,7 +59,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getStadtbezirke1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -68,7 +69,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getGemarkungen1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -78,7 +79,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getBezirksteile1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -88,7 +89,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getViertel1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -100,7 +101,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getKitaplanungsbereiche1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -112,7 +113,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getGrundschulsprengel1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -124,7 +125,7 @@ export function useGeodataEaiApi() {
       const response = await punktApi.getMittelschulsprengel1(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -136,7 +137,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getFlurstuecke(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -148,7 +149,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getGemarkungen(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -160,7 +161,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getStadtbezirke(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -172,7 +173,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getBezirksteile(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErhandleErrorInternalror(error);
     }
   }
 
@@ -184,7 +185,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getViertel(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -196,7 +197,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getKitaplanungsbereiche(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -208,7 +209,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getGrundschulsprengel(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -220,7 +221,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getMittelschulsprengel(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
   }
 
@@ -230,8 +231,19 @@ export function useGeodataEaiApi() {
       const response = await operationApi.unify(request, RequestUtils.getPOSTConfig());
       return response ?? { type: "MultiPolygon", coordinates: undefined };
     } catch (error) {
-      throw handleError(error);
+      throw handleErrorInternal(error);
     }
+  }
+
+  function handleErrorInternal(error: unknown) {
+    if (error instanceof Error && (error as Error).name === "FetchError") {
+      throw handleError(
+        new GeodataEaiError(
+          error,
+          "Die Session ist abgelaufen oder die Geodaten-Anbindung ist nicht verfügbar. Versuchen Sie es erneut mit F5. Ansonsten kontaktieren Sie bitte den Servicedesk.",
+        ),
+      );
+    } else throw handleError(error);
   }
 
   return {
