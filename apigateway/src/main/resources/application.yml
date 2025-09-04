@@ -21,7 +21,7 @@ server:
 management:
   endpoints:
     access:
-      default: restricted   # statt enabled-by-default: false
+      default: none
     web:
       cors:
         allowedOrigins:
@@ -37,13 +37,13 @@ management:
         prometheus: metrics
   endpoint:
     health:
-      access: anonymous    # statt enabled: on
+      access: unrestricted
       probes:
         enabled: true
     info:
-      access: anonymous    # statt enabled: on
+      access: unrestricted
     prometheus:
-      access: anonymous    # statt enabled: on
+      access: unrestricted
   info:
     env:
       enabled: true
