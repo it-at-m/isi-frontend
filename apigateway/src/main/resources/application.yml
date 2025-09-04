@@ -37,13 +37,13 @@ management:
         prometheus: metrics
   endpoint:
     health:
-      access: unrestricted
+      access: READ_ONLY
       probes:
         enabled: true
     info:
-      access: unrestricted
+      access: READ_ONLY
     prometheus:
-      access: unrestricted
+      access: READ_ONLY
   info:
     env:
       enabled: true
