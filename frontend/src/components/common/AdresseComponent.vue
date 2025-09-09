@@ -28,6 +28,7 @@
             :rules="[adressSucheValidationRule]"
             validate-on="blur"
             @update:search="searchForAdressenWith"
+            @blur="resetAdressSuche"
           />
         </v-col>
         <v-col cols="1">
@@ -157,8 +158,6 @@ const selected = computed<MuenchenAdresseDto | undefined>({
     } else {
       resetAdresse();
     }
-
-    resetAdressSuche();
   },
 });
 
