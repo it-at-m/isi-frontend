@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,10 +48,8 @@ export interface GemarkungDto {
 /**
  * Check if a given object implements the GemarkungDto interface.
  */
-export function instanceOfGemarkungDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfGemarkungDto(value: object): value is GemarkungDto {
+    return true;
 }
 
 export function GemarkungDtoFromJSON(json: any): GemarkungDto {
@@ -59,31 +57,33 @@ export function GemarkungDtoFromJSON(json: any): GemarkungDto {
 }
 
 export function GemarkungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GemarkungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
-        'oid1': !exists(json, 'oid1') ? undefined : json['oid1'],
-        'gemarkung': !exists(json, 'gemarkung') ? undefined : json['gemarkung'],
-        'gemarkungName': !exists(json, 'gemarkungName') ? undefined : json['gemarkungName'],
+        'objectId': json['objectId'] == null ? undefined : json['objectId'],
+        'oid1': json['oid1'] == null ? undefined : json['oid1'],
+        'gemarkung': json['gemarkung'] == null ? undefined : json['gemarkung'],
+        'gemarkungName': json['gemarkungName'] == null ? undefined : json['gemarkungName'],
     };
 }
 
-export function GemarkungDtoToJSON(value?: GemarkungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GemarkungDtoToJSON(json: any): GemarkungDto {
+    return GemarkungDtoToJSONTyped(json, false);
+}
+
+export function GemarkungDtoToJSONTyped(value?: GemarkungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'objectId': value.objectId,
-        'oid1': value.oid1,
-        'gemarkung': value.gemarkung,
-        'gemarkungName': value.gemarkungName,
+        'objectId': value['objectId'],
+        'oid1': value['oid1'],
+        'gemarkung': value['gemarkung'],
+        'gemarkungName': value['gemarkungName'],
     };
 }
 

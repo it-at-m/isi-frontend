@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -60,12 +60,10 @@ export type SchuleDtoEinrichtungstraegerEnum = typeof SchuleDtoEinrichtungstraeg
 /**
  * Check if a given object implements the SchuleDto interface.
  */
-export function instanceOfSchuleDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "anzahlKlassen" in value;
-    isInstance = isInstance && "anzahlPlaetze" in value;
-
-    return isInstance;
+export function instanceOfSchuleDto(value: object): value is SchuleDto {
+    if (!('anzahlKlassen' in value) || value['anzahlKlassen'] === undefined) return false;
+    if (!('anzahlPlaetze' in value) || value['anzahlPlaetze'] === undefined) return false;
+    return true;
 }
 
 export function SchuleDtoFromJSON(json: any): SchuleDto {
@@ -73,29 +71,31 @@ export function SchuleDtoFromJSON(json: any): SchuleDto {
 }
 
 export function SchuleDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SchuleDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'anzahlKlassen': json['anzahlKlassen'],
         'anzahlPlaetze': json['anzahlPlaetze'],
-        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
+        'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
     };
 }
 
-export function SchuleDtoToJSON(value?: SchuleDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SchuleDtoToJSON(json: any): SchuleDto {
+    return SchuleDtoToJSONTyped(json, false);
+}
+
+export function SchuleDtoToJSONTyped(value?: SchuleDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'anzahlKlassen': value.anzahlKlassen,
-        'anzahlPlaetze': value.anzahlPlaetze,
-        'einrichtungstraeger': value.einrichtungstraeger,
+        'anzahlKlassen': value['anzahlKlassen'],
+        'anzahlPlaetze': value['anzahlPlaetze'],
+        'einrichtungstraeger': value['einrichtungstraeger'],
     };
 }
 

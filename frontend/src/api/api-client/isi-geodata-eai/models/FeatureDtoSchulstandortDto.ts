@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
+    FeatureDtoViertelDtoGeometryToJSONTyped,
 } from './FeatureDtoViertelDtoGeometry';
 import type { SchulstandortDto } from './SchulstandortDto';
 import {
     SchulstandortDtoFromJSON,
     SchulstandortDtoFromJSONTyped,
     SchulstandortDtoToJSON,
+    SchulstandortDtoToJSONTyped,
 } from './SchulstandortDto';
 
 /**
@@ -55,10 +57,8 @@ export interface FeatureDtoSchulstandortDto {
 /**
  * Check if a given object implements the FeatureDtoSchulstandortDto interface.
  */
-export function instanceOfFeatureDtoSchulstandortDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureDtoSchulstandortDto(value: object): value is FeatureDtoSchulstandortDto {
+    return true;
 }
 
 export function FeatureDtoSchulstandortDtoFromJSON(json: any): FeatureDtoSchulstandortDto {
@@ -66,29 +66,31 @@ export function FeatureDtoSchulstandortDtoFromJSON(json: any): FeatureDtoSchulst
 }
 
 export function FeatureDtoSchulstandortDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoSchulstandortDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': !exists(json, 'properties') ? undefined : SchulstandortDtoFromJSON(json['properties']),
+        'type': json['type'] == null ? undefined : json['type'],
+        'geometry': json['geometry'] == null ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
+        'properties': json['properties'] == null ? undefined : SchulstandortDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoSchulstandortDtoToJSON(value?: FeatureDtoSchulstandortDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureDtoSchulstandortDtoToJSON(json: any): FeatureDtoSchulstandortDto {
+    return FeatureDtoSchulstandortDtoToJSONTyped(json, false);
+}
+
+export function FeatureDtoSchulstandortDtoToJSONTyped(value?: FeatureDtoSchulstandortDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
-        'properties': SchulstandortDtoToJSON(value.properties),
+        'type': value['type'],
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value['geometry']),
+        'properties': SchulstandortDtoToJSON(value['properties']),
     };
 }
 

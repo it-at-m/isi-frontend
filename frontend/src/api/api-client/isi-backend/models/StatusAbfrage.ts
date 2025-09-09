@@ -30,6 +30,17 @@ export const StatusAbfrage = {
 export type StatusAbfrage = typeof StatusAbfrage[keyof typeof StatusAbfrage];
 
 
+export function instanceOfStatusAbfrage(value: any): boolean {
+    for (const key in StatusAbfrage) {
+        if (Object.prototype.hasOwnProperty.call(StatusAbfrage, key)) {
+            if (StatusAbfrage[key as keyof typeof StatusAbfrage] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function StatusAbfrageFromJSON(json: any): StatusAbfrage {
     return StatusAbfrageFromJSONTyped(json, false);
 }
@@ -40,5 +51,9 @@ export function StatusAbfrageFromJSONTyped(json: any, ignoreDiscriminator: boole
 
 export function StatusAbfrageToJSON(value?: StatusAbfrage | null): any {
     return value as any;
+}
+
+export function StatusAbfrageToJSONTyped(value: any, ignoreDiscriminator: boolean): StatusAbfrage {
+    return value as StatusAbfrage;
 }
 

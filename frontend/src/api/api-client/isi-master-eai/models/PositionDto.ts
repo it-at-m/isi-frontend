@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { UtmDto } from './UtmDto';
 import {
     UtmDtoFromJSON,
     UtmDtoFromJSONTyped,
     UtmDtoToJSON,
+    UtmDtoToJSONTyped,
 } from './UtmDto';
 import type { WgsDto } from './WgsDto';
 import {
     WgsDtoFromJSON,
     WgsDtoFromJSONTyped,
     WgsDtoToJSON,
+    WgsDtoToJSONTyped,
 } from './WgsDto';
 
 /**
@@ -49,10 +51,8 @@ export interface PositionDto {
 /**
  * Check if a given object implements the PositionDto interface.
  */
-export function instanceOfPositionDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPositionDto(value: object): value is PositionDto {
+    return true;
 }
 
 export function PositionDtoFromJSON(json: any): PositionDto {
@@ -60,27 +60,29 @@ export function PositionDtoFromJSON(json: any): PositionDto {
 }
 
 export function PositionDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PositionDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'utm': !exists(json, 'utm') ? undefined : UtmDtoFromJSON(json['utm']),
-        'wgs': !exists(json, 'wgs') ? undefined : WgsDtoFromJSON(json['wgs']),
+        'utm': json['utm'] == null ? undefined : UtmDtoFromJSON(json['utm']),
+        'wgs': json['wgs'] == null ? undefined : WgsDtoFromJSON(json['wgs']),
     };
 }
 
-export function PositionDtoToJSON(value?: PositionDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PositionDtoToJSON(json: any): PositionDto {
+    return PositionDtoToJSONTyped(json, false);
+}
+
+export function PositionDtoToJSONTyped(value?: PositionDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'utm': UtmDtoToJSON(value.utm),
-        'wgs': WgsDtoToJSON(value.wgs),
+        'utm': UtmDtoToJSON(value['utm']),
+        'wgs': WgsDtoToJSON(value['wgs']),
     };
 }
 

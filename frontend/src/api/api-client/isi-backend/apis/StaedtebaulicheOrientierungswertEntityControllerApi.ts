@@ -18,7 +18,7 @@ import type {
   EntityModelStaedtebaulicheOrientierungswert,
   PagedModelEntityModelStaedtebaulicheOrientierungswert,
   StaedtebaulicheOrientierungswertRequestBody,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelStaedtebaulicheOrientierungswertFromJSON,
     EntityModelStaedtebaulicheOrientierungswertToJSON,
@@ -26,7 +26,7 @@ import {
     PagedModelEntityModelStaedtebaulicheOrientierungswertToJSON,
     StaedtebaulicheOrientierungswertRequestBodyFromJSON,
     StaedtebaulicheOrientierungswertRequestBodyToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface DeleteItemResourceStaedtebaulicheorientierungswertDeleteRequest {
     id: string;
@@ -65,16 +65,23 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
      * delete-staedtebaulicheorientierungswert
      */
     async deleteItemResourceStaedtebaulicheorientierungswertDeleteRaw(requestParameters: DeleteItemResourceStaedtebaulicheorientierungswertDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceStaedtebaulicheorientierungswertDelete.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteItemResourceStaedtebaulicheorientierungswertDelete().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/staedtebaulicheOrientierungswerts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -96,22 +103,25 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
     async getCollectionResourceStaedtebaulicheorientierungswertGetRaw(requestParameters: GetCollectionResourceStaedtebaulicheorientierungswertGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelStaedtebaulicheOrientierungswert>> {
         const queryParameters: any = {};
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sort) {
-            queryParameters['sort'] = requestParameters.sort;
+        if (requestParameters['sort'] != null) {
+            queryParameters['sort'] = requestParameters['sort'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/staedtebaulicheOrientierungswerts`;
+
         const response = await this.request({
-            path: `/staedtebaulicheOrientierungswerts`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -132,16 +142,23 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
      * get-staedtebaulicheorientierungswert
      */
     async getItemResourceStaedtebaulicheorientierungswertGetRaw(requestParameters: GetItemResourceStaedtebaulicheorientierungswertGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelStaedtebaulicheOrientierungswert>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceStaedtebaulicheorientierungswertGet.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getItemResourceStaedtebaulicheorientierungswertGet().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/staedtebaulicheOrientierungswerts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -162,12 +179,18 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
      * patch-staedtebaulicheorientierungswert
      */
     async patchItemResourceStaedtebaulicheorientierungswertPatchRaw(requestParameters: PatchItemResourceStaedtebaulicheorientierungswertPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelStaedtebaulicheOrientierungswert>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceStaedtebaulicheorientierungswertPatch.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling patchItemResourceStaedtebaulicheorientierungswertPatch().'
+            );
         }
 
-        if (requestParameters.staedtebaulicheOrientierungswertRequestBody === null || requestParameters.staedtebaulicheOrientierungswertRequestBody === undefined) {
-            throw new runtime.RequiredError('staedtebaulicheOrientierungswertRequestBody','Required parameter requestParameters.staedtebaulicheOrientierungswertRequestBody was null or undefined when calling patchItemResourceStaedtebaulicheorientierungswertPatch.');
+        if (requestParameters['staedtebaulicheOrientierungswertRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'staedtebaulicheOrientierungswertRequestBody',
+                'Required parameter "staedtebaulicheOrientierungswertRequestBody" was null or undefined when calling patchItemResourceStaedtebaulicheorientierungswertPatch().'
+            );
         }
 
         const queryParameters: any = {};
@@ -176,12 +199,16 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/staedtebaulicheOrientierungswerts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: StaedtebaulicheOrientierungswertRequestBodyToJSON(requestParameters.staedtebaulicheOrientierungswertRequestBody),
+            body: StaedtebaulicheOrientierungswertRequestBodyToJSON(requestParameters['staedtebaulicheOrientierungswertRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelStaedtebaulicheOrientierungswertFromJSON(jsonValue));
@@ -190,17 +217,27 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
     /**
      * patch-staedtebaulicheorientierungswert
      */
-    async patchItemResourceStaedtebaulicheorientierungswertPatch(requestParameters: PatchItemResourceStaedtebaulicheorientierungswertPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelStaedtebaulicheOrientierungswert> {
+    async patchItemResourceStaedtebaulicheorientierungswertPatch(requestParameters: PatchItemResourceStaedtebaulicheorientierungswertPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelStaedtebaulicheOrientierungswert | null | undefined > {
         const response = await this.patchItemResourceStaedtebaulicheorientierungswertPatchRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
     /**
      * create-staedtebaulicheorientierungswert
      */
     async postCollectionResourceStaedtebaulicheorientierungswertPostRaw(requestParameters: PostCollectionResourceStaedtebaulicheorientierungswertPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelStaedtebaulicheOrientierungswert>> {
-        if (requestParameters.staedtebaulicheOrientierungswertRequestBody === null || requestParameters.staedtebaulicheOrientierungswertRequestBody === undefined) {
-            throw new runtime.RequiredError('staedtebaulicheOrientierungswertRequestBody','Required parameter requestParameters.staedtebaulicheOrientierungswertRequestBody was null or undefined when calling postCollectionResourceStaedtebaulicheorientierungswertPost.');
+        if (requestParameters['staedtebaulicheOrientierungswertRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'staedtebaulicheOrientierungswertRequestBody',
+                'Required parameter "staedtebaulicheOrientierungswertRequestBody" was null or undefined when calling postCollectionResourceStaedtebaulicheorientierungswertPost().'
+            );
         }
 
         const queryParameters: any = {};
@@ -209,12 +246,15 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/staedtebaulicheOrientierungswerts`;
+
         const response = await this.request({
-            path: `/staedtebaulicheOrientierungswerts`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: StaedtebaulicheOrientierungswertRequestBodyToJSON(requestParameters.staedtebaulicheOrientierungswertRequestBody),
+            body: StaedtebaulicheOrientierungswertRequestBodyToJSON(requestParameters['staedtebaulicheOrientierungswertRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelStaedtebaulicheOrientierungswertFromJSON(jsonValue));
@@ -232,12 +272,18 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
      * update-staedtebaulicheorientierungswert
      */
     async putItemResourceStaedtebaulicheorientierungswertPutRaw(requestParameters: PutItemResourceStaedtebaulicheorientierungswertPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelStaedtebaulicheOrientierungswert>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceStaedtebaulicheorientierungswertPut.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling putItemResourceStaedtebaulicheorientierungswertPut().'
+            );
         }
 
-        if (requestParameters.staedtebaulicheOrientierungswertRequestBody === null || requestParameters.staedtebaulicheOrientierungswertRequestBody === undefined) {
-            throw new runtime.RequiredError('staedtebaulicheOrientierungswertRequestBody','Required parameter requestParameters.staedtebaulicheOrientierungswertRequestBody was null or undefined when calling putItemResourceStaedtebaulicheorientierungswertPut.');
+        if (requestParameters['staedtebaulicheOrientierungswertRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'staedtebaulicheOrientierungswertRequestBody',
+                'Required parameter "staedtebaulicheOrientierungswertRequestBody" was null or undefined when calling putItemResourceStaedtebaulicheorientierungswertPut().'
+            );
         }
 
         const queryParameters: any = {};
@@ -246,12 +292,16 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/staedtebaulicheOrientierungswerts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: StaedtebaulicheOrientierungswertRequestBodyToJSON(requestParameters.staedtebaulicheOrientierungswertRequestBody),
+            body: StaedtebaulicheOrientierungswertRequestBodyToJSON(requestParameters['staedtebaulicheOrientierungswertRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelStaedtebaulicheOrientierungswertFromJSON(jsonValue));
@@ -260,9 +310,18 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
     /**
      * update-staedtebaulicheorientierungswert
      */
-    async putItemResourceStaedtebaulicheorientierungswertPut(requestParameters: PutItemResourceStaedtebaulicheorientierungswertPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelStaedtebaulicheOrientierungswert> {
+    async putItemResourceStaedtebaulicheorientierungswertPut(requestParameters: PutItemResourceStaedtebaulicheorientierungswertPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelStaedtebaulicheOrientierungswert | null | undefined > {
         const response = await this.putItemResourceStaedtebaulicheorientierungswertPutRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 201:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
 }

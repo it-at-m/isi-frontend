@@ -12,31 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Adresse } from './Adresse';
 import {
     AdresseFromJSON,
     AdresseFromJSONTyped,
     AdresseToJSON,
+    AdresseToJSONTyped,
 } from './Adresse';
+import type { VerortungPoint } from './VerortungPoint';
+import {
+    VerortungPointFromJSON,
+    VerortungPointFromJSONTyped,
+    VerortungPointToJSON,
+    VerortungPointToJSONTyped,
+} from './VerortungPoint';
 import type { BearbeitendePerson } from './BearbeitendePerson';
 import {
     BearbeitendePersonFromJSON,
     BearbeitendePersonFromJSONTyped,
     BearbeitendePersonToJSON,
+    BearbeitendePersonToJSONTyped,
 } from './BearbeitendePerson';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
-import type { VerortungPoint } from './VerortungPoint';
-import {
-    VerortungPointFromJSON,
-    VerortungPointFromJSONTyped,
-    VerortungPointToJSON,
-} from './VerortungPoint';
 
 /**
  * 
@@ -171,10 +175,8 @@ export type EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum =
 /**
  * Check if a given object implements the EntityModelInfrastruktureinrichtung interface.
  */
-export function instanceOfEntityModelInfrastruktureinrichtung(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelInfrastruktureinrichtung(value: object): value is EntityModelInfrastruktureinrichtung {
+    return true;
 }
 
 export function EntityModelInfrastruktureinrichtungFromJSON(json: any): EntityModelInfrastruktureinrichtung {
@@ -182,53 +184,55 @@ export function EntityModelInfrastruktureinrichtungFromJSON(json: any): EntityMo
 }
 
 export function EntityModelInfrastruktureinrichtungFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelInfrastruktureinrichtung {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
-        'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
-        'adresse': !exists(json, 'adresse') ? undefined : AdresseFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungPointFromJSON(json['verortung']),
-        'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
-        'fertigstellungsjahr': !exists(json, 'fertigstellungsjahr') ? undefined : json['fertigstellungsjahr'],
-        'status': !exists(json, 'status') ? undefined : json['status'],
-        'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
-        'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
-        'idKibigWeb': !exists(json, 'idKibigWeb') ? undefined : json['idKibigWeb'],
-        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
+        'lfdNr': json['lfdNr'] == null ? undefined : json['lfdNr'],
+        'adresse': json['adresse'] == null ? undefined : AdresseFromJSON(json['adresse']),
+        'verortung': json['verortung'] == null ? undefined : VerortungPointFromJSON(json['verortung']),
+        'nameEinrichtung': json['nameEinrichtung'] == null ? undefined : json['nameEinrichtung'],
+        'fertigstellungsjahr': json['fertigstellungsjahr'] == null ? undefined : json['fertigstellungsjahr'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
+        'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
+        'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
+        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelInfrastruktureinrichtungToJSON(value?: EntityModelInfrastruktureinrichtung | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelInfrastruktureinrichtungToJSON(json: any): EntityModelInfrastruktureinrichtung {
+    return EntityModelInfrastruktureinrichtungToJSONTyped(json, false);
+}
+
+export function EntityModelInfrastruktureinrichtungToJSONTyped(value?: EntityModelInfrastruktureinrichtung | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bearbeitendePerson': BearbeitendePersonToJSON(value.bearbeitendePerson),
-        'lfdNr': value.lfdNr,
-        'adresse': AdresseToJSON(value.adresse),
-        'verortung': VerortungPointToJSON(value.verortung),
-        'nameEinrichtung': value.nameEinrichtung,
-        'fertigstellungsjahr': value.fertigstellungsjahr,
-        'status': value.status,
-        'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
-        'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
-        'idKibigWeb': value.idKibigWeb,
-        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'bearbeitendePerson': BearbeitendePersonToJSON(value['bearbeitendePerson']),
+        'lfdNr': value['lfdNr'],
+        'adresse': AdresseToJSON(value['adresse']),
+        'verortung': VerortungPointToJSON(value['verortung']),
+        'nameEinrichtung': value['nameEinrichtung'],
+        'fertigstellungsjahr': value['fertigstellungsjahr'],
+        'status': value['status'],
+        'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
+        'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
+        'idKibigWeb': value['idKibigWeb'],
+        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

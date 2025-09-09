@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-} from './Link';
+import { mapValues } from '../runtime';
 import type { PageMetadata } from './PageMetadata';
 import {
     PageMetadataFromJSON,
     PageMetadataFromJSONTyped,
     PageMetadataToJSON,
+    PageMetadataToJSONTyped,
 } from './PageMetadata';
 import type { PagedModelEntityModelKommentarEmbedded } from './PagedModelEntityModelKommentarEmbedded';
 import {
     PagedModelEntityModelKommentarEmbeddedFromJSON,
     PagedModelEntityModelKommentarEmbeddedFromJSONTyped,
     PagedModelEntityModelKommentarEmbeddedToJSON,
+    PagedModelEntityModelKommentarEmbeddedToJSONTyped,
 } from './PagedModelEntityModelKommentarEmbedded';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+    LinkToJSONTyped,
+} from './Link';
 
 /**
  * 
@@ -61,10 +64,8 @@ export interface PagedModelEntityModelKommentar {
 /**
  * Check if a given object implements the PagedModelEntityModelKommentar interface.
  */
-export function instanceOfPagedModelEntityModelKommentar(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelKommentar(value: object): value is PagedModelEntityModelKommentar {
+    return true;
 }
 
 export function PagedModelEntityModelKommentarFromJSON(json: any): PagedModelEntityModelKommentar {
@@ -72,29 +73,31 @@ export function PagedModelEntityModelKommentarFromJSON(json: any): PagedModelEnt
 }
 
 export function PagedModelEntityModelKommentarFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelKommentar {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'embedded': !exists(json, '_embedded') ? undefined : PagedModelEntityModelKommentarEmbeddedFromJSON(json['_embedded']),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
-        'page': !exists(json, 'page') ? undefined : PageMetadataFromJSON(json['page']),
+        'embedded': json['_embedded'] == null ? undefined : PagedModelEntityModelKommentarEmbeddedFromJSON(json['_embedded']),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'page': json['page'] == null ? undefined : PageMetadataFromJSON(json['page']),
     };
 }
 
-export function PagedModelEntityModelKommentarToJSON(value?: PagedModelEntityModelKommentar | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelKommentarToJSON(json: any): PagedModelEntityModelKommentar {
+    return PagedModelEntityModelKommentarToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelKommentarToJSONTyped(value?: PagedModelEntityModelKommentar | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        '_embedded': PagedModelEntityModelKommentarEmbeddedToJSON(value.embedded),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
-        'page': PageMetadataToJSON(value.page),
+        '_embedded': PagedModelEntityModelKommentarEmbeddedToJSON(value['embedded']),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
+        'page': PageMetadataToJSON(value['page']),
     };
 }
 

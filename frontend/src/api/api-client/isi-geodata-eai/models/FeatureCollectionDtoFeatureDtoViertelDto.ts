@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoViertelDto } from './FeatureDtoViertelDto';
 import {
     FeatureDtoViertelDtoFromJSON,
     FeatureDtoViertelDtoFromJSONTyped,
     FeatureDtoViertelDtoToJSON,
+    FeatureDtoViertelDtoToJSONTyped,
 } from './FeatureDtoViertelDto';
 
 /**
@@ -43,10 +44,8 @@ export interface FeatureCollectionDtoFeatureDtoViertelDto {
 /**
  * Check if a given object implements the FeatureCollectionDtoFeatureDtoViertelDto interface.
  */
-export function instanceOfFeatureCollectionDtoFeatureDtoViertelDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureCollectionDtoFeatureDtoViertelDto(value: object): value is FeatureCollectionDtoFeatureDtoViertelDto {
+    return true;
 }
 
 export function FeatureCollectionDtoFeatureDtoViertelDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoViertelDto {
@@ -54,27 +53,29 @@ export function FeatureCollectionDtoFeatureDtoViertelDtoFromJSON(json: any): Fea
 }
 
 export function FeatureCollectionDtoFeatureDtoViertelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureCollectionDtoFeatureDtoViertelDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoViertelDtoFromJSON)),
+        'type': json['type'] == null ? undefined : json['type'],
+        'features': json['features'] == null ? undefined : ((json['features'] as Array<any>).map(FeatureDtoViertelDtoFromJSON)),
     };
 }
 
-export function FeatureCollectionDtoFeatureDtoViertelDtoToJSON(value?: FeatureCollectionDtoFeatureDtoViertelDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureCollectionDtoFeatureDtoViertelDtoToJSON(json: any): FeatureCollectionDtoFeatureDtoViertelDto {
+    return FeatureCollectionDtoFeatureDtoViertelDtoToJSONTyped(json, false);
+}
+
+export function FeatureCollectionDtoFeatureDtoViertelDtoToJSONTyped(value?: FeatureCollectionDtoFeatureDtoViertelDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoViertelDtoToJSON)),
+        'type': value['type'],
+        'features': value['features'] == null ? undefined : ((value['features'] as Array<any>).map(FeatureDtoViertelDtoToJSON)),
     };
 }
 

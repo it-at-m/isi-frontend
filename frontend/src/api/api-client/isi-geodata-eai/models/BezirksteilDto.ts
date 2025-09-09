@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,10 +54,8 @@ export interface BezirksteilDto {
 /**
  * Check if a given object implements the BezirksteilDto interface.
  */
-export function instanceOfBezirksteilDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfBezirksteilDto(value: object): value is BezirksteilDto {
+    return true;
 }
 
 export function BezirksteilDtoFromJSON(json: any): BezirksteilDto {
@@ -65,33 +63,35 @@ export function BezirksteilDtoFromJSON(json: any): BezirksteilDto {
 }
 
 export function BezirksteilDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BezirksteilDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
-        'bezirksteilNummer': !exists(json, 'bezirksteilNummer') ? undefined : json['bezirksteilNummer'],
-        'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
-        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
-        'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
+        'objectId': json['objectId'] == null ? undefined : json['objectId'],
+        'bezirksteilNummer': json['bezirksteilNummer'] == null ? undefined : json['bezirksteilNummer'],
+        'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
+        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
+        'ycoordinate': json['ycoordinate'] == null ? undefined : json['ycoordinate'],
     };
 }
 
-export function BezirksteilDtoToJSON(value?: BezirksteilDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BezirksteilDtoToJSON(json: any): BezirksteilDto {
+    return BezirksteilDtoToJSONTyped(json, false);
+}
+
+export function BezirksteilDtoToJSONTyped(value?: BezirksteilDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'objectId': value.objectId,
-        'bezirksteilNummer': value.bezirksteilNummer,
-        'flaecheQm': value.flaecheQm,
-        'xcoordinate': value.xcoordinate,
-        'ycoordinate': value.ycoordinate,
+        'objectId': value['objectId'],
+        'bezirksteilNummer': value['bezirksteilNummer'],
+        'flaecheQm': value['flaecheQm'],
+        'xcoordinate': value['xcoordinate'],
+        'ycoordinate': value['ycoordinate'],
     };
 }
 

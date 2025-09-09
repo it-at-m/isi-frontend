@@ -12,16 +12,14 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { GeometryDto } from './GeometryDto';
 import {
     GeometryDtoFromJSON,
     GeometryDtoFromJSONTyped,
     GeometryDtoToJSON,
+    GeometryDtoToJSONTyped,
 } from './GeometryDto';
-
-import {
-} from './';
 
 /**
  * Die GEOJSON-Repräsentation des Multipolygons.
@@ -40,10 +38,8 @@ export interface MultiPolygonGeometryDto extends GeometryDto {
 /**
  * Check if a given object implements the MultiPolygonGeometryDto interface.
  */
-export function instanceOfMultiPolygonGeometryDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfMultiPolygonGeometryDto(value: object): value is MultiPolygonGeometryDto {
+    return true;
 }
 
 export function MultiPolygonGeometryDtoFromJSON(json: any): MultiPolygonGeometryDto {
@@ -51,27 +47,36 @@ export function MultiPolygonGeometryDtoFromJSON(json: any): MultiPolygonGeometry
 }
 
 export function MultiPolygonGeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MultiPolygonGeometryDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...GeometryDtoFromJSONTyped(json, ignoreDiscriminator),
-        'coordinates': !exists(json, 'coordinates') ? undefined : json['coordinates'],
+        ...GeometryDtoFromJSONTyped(json, true),
+        'coordinates': json['coordinates'] == null ? undefined : json['coordinates'],
     };
 }
 
-export function MultiPolygonGeometryDtoToJSON(value?: MultiPolygonGeometryDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MultiPolygonGeometryDtoToJSON(json: any): MultiPolygonGeometryDto {
+    return MultiPolygonGeometryDtoToJSONTyped(json, false);
+}
+
+export function MultiPolygonGeometryDtoToJSONTyped(value?: MultiPolygonGeometryDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['type']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...GeometryDtoToJSON(value),
-        'coordinates': value.coordinates,
+        ...GeometryDtoToJSONTyped(value, true),
+        'coordinates': value['coordinates'],
     };
 }
 

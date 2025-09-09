@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -79,10 +80,8 @@ export interface EntityModelStaedtebaulicheOrientierungswert {
 /**
  * Check if a given object implements the EntityModelStaedtebaulicheOrientierungswert interface.
  */
-export function instanceOfEntityModelStaedtebaulicheOrientierungswert(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelStaedtebaulicheOrientierungswert(value: object): value is EntityModelStaedtebaulicheOrientierungswert {
+    return true;
 }
 
 export function EntityModelStaedtebaulicheOrientierungswertFromJSON(json: any): EntityModelStaedtebaulicheOrientierungswert {
@@ -90,39 +89,41 @@ export function EntityModelStaedtebaulicheOrientierungswertFromJSON(json: any): 
 }
 
 export function EntityModelStaedtebaulicheOrientierungswertFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelStaedtebaulicheOrientierungswert {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'gueltigAb': !exists(json, 'gueltigAb') ? undefined : (new Date(json['gueltigAb'])),
-        'foerderartBezeichnung': !exists(json, 'foerderartBezeichnung') ? undefined : json['foerderartBezeichnung'],
-        'durchschnittlicheGrundflaeche': !exists(json, 'durchschnittlicheGrundflaeche') ? undefined : json['durchschnittlicheGrundflaeche'],
-        'belegungsdichte': !exists(json, 'belegungsdichte') ? undefined : json['belegungsdichte'],
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'gueltigAb': json['gueltigAb'] == null ? undefined : (new Date(json['gueltigAb'])),
+        'foerderartBezeichnung': json['foerderartBezeichnung'] == null ? undefined : json['foerderartBezeichnung'],
+        'durchschnittlicheGrundflaeche': json['durchschnittlicheGrundflaeche'] == null ? undefined : json['durchschnittlicheGrundflaeche'],
+        'belegungsdichte': json['belegungsdichte'] == null ? undefined : json['belegungsdichte'],
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelStaedtebaulicheOrientierungswertToJSON(value?: EntityModelStaedtebaulicheOrientierungswert | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelStaedtebaulicheOrientierungswertToJSON(json: any): EntityModelStaedtebaulicheOrientierungswert {
+    return EntityModelStaedtebaulicheOrientierungswertToJSONTyped(json, false);
+}
+
+export function EntityModelStaedtebaulicheOrientierungswertToJSONTyped(value?: EntityModelStaedtebaulicheOrientierungswert | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'gueltigAb': value.gueltigAb === undefined ? undefined : (value.gueltigAb.toISOString().substr(0,10)),
-        'foerderartBezeichnung': value.foerderartBezeichnung,
-        'durchschnittlicheGrundflaeche': value.durchschnittlicheGrundflaeche,
-        'belegungsdichte': value.belegungsdichte,
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'gueltigAb': value['gueltigAb'] == null ? undefined : ((value['gueltigAb']).toISOString().substring(0,10)),
+        'foerderartBezeichnung': value['foerderartBezeichnung'],
+        'durchschnittlicheGrundflaeche': value['durchschnittlicheGrundflaeche'],
+        'belegungsdichte': value['belegungsdichte'],
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

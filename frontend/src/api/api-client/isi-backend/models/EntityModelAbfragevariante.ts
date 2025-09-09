@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -86,10 +87,8 @@ export type EntityModelAbfragevarianteArtAbfragevarianteEnum = typeof EntityMode
 /**
  * Check if a given object implements the EntityModelAbfragevariante interface.
  */
-export function instanceOfEntityModelAbfragevariante(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelAbfragevariante(value: object): value is EntityModelAbfragevariante {
+    return true;
 }
 
 export function EntityModelAbfragevarianteFromJSON(json: any): EntityModelAbfragevariante {
@@ -97,37 +96,39 @@ export function EntityModelAbfragevarianteFromJSON(json: any): EntityModelAbfrag
 }
 
 export function EntityModelAbfragevarianteFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelAbfragevariante {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'abfragevariantenNr': json['abfragevariantenNr'] == null ? undefined : json['abfragevariantenNr'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelAbfragevarianteToJSON(value?: EntityModelAbfragevariante | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelAbfragevarianteToJSON(json: any): EntityModelAbfragevariante {
+    return EntityModelAbfragevarianteToJSONTyped(json, false);
+}
+
+export function EntityModelAbfragevarianteToJSONTyped(value?: EntityModelAbfragevariante | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'abfragevariantenNr': value.abfragevariantenNr,
-        'name': value.name,
-        'artAbfragevariante': value.artAbfragevariante,
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'abfragevariantenNr': value['abfragevariantenNr'],
+        'name': value['name'],
+        'artAbfragevariante': value['artAbfragevariante'],
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

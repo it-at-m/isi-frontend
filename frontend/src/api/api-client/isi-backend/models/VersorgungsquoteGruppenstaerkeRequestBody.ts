@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -94,10 +94,8 @@ export type VersorgungsquoteGruppenstaerkeRequestBodyInfrastruktureinrichtungTyp
 /**
  * Check if a given object implements the VersorgungsquoteGruppenstaerkeRequestBody interface.
  */
-export function instanceOfVersorgungsquoteGruppenstaerkeRequestBody(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfVersorgungsquoteGruppenstaerkeRequestBody(value: object): value is VersorgungsquoteGruppenstaerkeRequestBody {
+    return true;
 }
 
 export function VersorgungsquoteGruppenstaerkeRequestBodyFromJSON(json: any): VersorgungsquoteGruppenstaerkeRequestBody {
@@ -105,41 +103,43 @@ export function VersorgungsquoteGruppenstaerkeRequestBodyFromJSON(json: any): Ve
 }
 
 export function VersorgungsquoteGruppenstaerkeRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): VersorgungsquoteGruppenstaerkeRequestBody {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'gueltigAb': !exists(json, 'gueltigAb') ? undefined : (new Date(json['gueltigAb'])),
-        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
-        'versorgungsquotePlanungsursaechlich': !exists(json, 'versorgungsquotePlanungsursaechlich') ? undefined : json['versorgungsquotePlanungsursaechlich'],
-        'versorgungsquoteSobonUrsaechlich': !exists(json, 'versorgungsquoteSobonUrsaechlich') ? undefined : json['versorgungsquoteSobonUrsaechlich'],
-        'gruppenstaerke': !exists(json, 'gruppenstaerke') ? undefined : json['gruppenstaerke'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'gueltigAb': json['gueltigAb'] == null ? undefined : (new Date(json['gueltigAb'])),
+        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
+        'versorgungsquotePlanungsursaechlich': json['versorgungsquotePlanungsursaechlich'] == null ? undefined : json['versorgungsquotePlanungsursaechlich'],
+        'versorgungsquoteSobonUrsaechlich': json['versorgungsquoteSobonUrsaechlich'] == null ? undefined : json['versorgungsquoteSobonUrsaechlich'],
+        'gruppenstaerke': json['gruppenstaerke'] == null ? undefined : json['gruppenstaerke'],
     };
 }
 
-export function VersorgungsquoteGruppenstaerkeRequestBodyToJSON(value?: VersorgungsquoteGruppenstaerkeRequestBody | null): any {
-    if (value === undefined) {
-        return undefined;
+export function VersorgungsquoteGruppenstaerkeRequestBodyToJSON(json: any): VersorgungsquoteGruppenstaerkeRequestBody {
+    return VersorgungsquoteGruppenstaerkeRequestBodyToJSONTyped(json, false);
+}
+
+export function VersorgungsquoteGruppenstaerkeRequestBodyToJSONTyped(value?: VersorgungsquoteGruppenstaerkeRequestBody | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'gueltigAb': value.gueltigAb === undefined ? undefined : (value.gueltigAb.toISOString().substr(0,10)),
-        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
-        'versorgungsquotePlanungsursaechlich': value.versorgungsquotePlanungsursaechlich,
-        'versorgungsquoteSobonUrsaechlich': value.versorgungsquoteSobonUrsaechlich,
-        'gruppenstaerke': value.gruppenstaerke,
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'gueltigAb': value['gueltigAb'] == null ? undefined : ((value['gueltigAb']).toISOString().substring(0,10)),
+        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
+        'versorgungsquotePlanungsursaechlich': value['versorgungsquotePlanungsursaechlich'],
+        'versorgungsquoteSobonUrsaechlich': value['versorgungsquoteSobonUrsaechlich'],
+        'gruppenstaerke': value['gruppenstaerke'],
     };
 }
 

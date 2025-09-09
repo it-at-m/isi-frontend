@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoGemarkungDto } from './FeatureDtoGemarkungDto';
 import {
     FeatureDtoGemarkungDtoFromJSON,
     FeatureDtoGemarkungDtoFromJSONTyped,
     FeatureDtoGemarkungDtoToJSON,
+    FeatureDtoGemarkungDtoToJSONTyped,
 } from './FeatureDtoGemarkungDto';
 
 /**
@@ -43,10 +44,8 @@ export interface FeatureCollectionDtoFeatureDtoGemarkungDto {
 /**
  * Check if a given object implements the FeatureCollectionDtoFeatureDtoGemarkungDto interface.
  */
-export function instanceOfFeatureCollectionDtoFeatureDtoGemarkungDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureCollectionDtoFeatureDtoGemarkungDto(value: object): value is FeatureCollectionDtoFeatureDtoGemarkungDto {
+    return true;
 }
 
 export function FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoGemarkungDto {
@@ -54,27 +53,29 @@ export function FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON(json: any): F
 }
 
 export function FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureCollectionDtoFeatureDtoGemarkungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoGemarkungDtoFromJSON)),
+        'type': json['type'] == null ? undefined : json['type'],
+        'features': json['features'] == null ? undefined : ((json['features'] as Array<any>).map(FeatureDtoGemarkungDtoFromJSON)),
     };
 }
 
-export function FeatureCollectionDtoFeatureDtoGemarkungDtoToJSON(value?: FeatureCollectionDtoFeatureDtoGemarkungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureCollectionDtoFeatureDtoGemarkungDtoToJSON(json: any): FeatureCollectionDtoFeatureDtoGemarkungDto {
+    return FeatureCollectionDtoFeatureDtoGemarkungDtoToJSONTyped(json, false);
+}
+
+export function FeatureCollectionDtoFeatureDtoGemarkungDtoToJSONTyped(value?: FeatureCollectionDtoFeatureDtoGemarkungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoGemarkungDtoToJSON)),
+        'type': value['type'],
+        'features': value['features'] == null ? undefined : ((value['features'] as Array<any>).map(FeatureDtoGemarkungDtoToJSON)),
     };
 }
 

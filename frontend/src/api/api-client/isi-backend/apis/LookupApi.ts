@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   LookupListsDto,
-} from '../models';
+} from '../models/index';
 import {
     LookupListsDtoFromJSON,
     LookupListsDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 /**
  * 
@@ -35,8 +35,11 @@ export class LookupApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/lookup-lists`;
+
         const response = await this.request({
-            path: `/lookup-lists`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BauratendateiInputDto } from './BauratendateiInputDto';
 import {
     BauratendateiInputDtoFromJSON,
     BauratendateiInputDtoFromJSONTyped,
     BauratendateiInputDtoToJSON,
+    BauratendateiInputDtoToJSONTyped,
 } from './BauratendateiInputDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
+    DokumentDtoToJSONTyped,
 } from './DokumentDto';
 
 /**
@@ -130,12 +132,10 @@ export type AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitu
 /**
  * Check if a given object implements the AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto interface.
  */
-export function instanceOfAbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "sobonOrientierungswertJahrPlanungsursaechlich" in value;
-    isInstance = isInstance && "stammdatenGueltigAb" in value;
-
-    return isInstance;
+export function instanceOfAbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto(value: object): value is AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto {
+    if (!('sobonOrientierungswertJahrPlanungsursaechlich' in value) || value['sobonOrientierungswertJahrPlanungsursaechlich'] === undefined) return false;
+    if (!('stammdatenGueltigAb' in value) || value['stammdatenGueltigAb'] === undefined) return false;
+    return true;
 }
 
 export function AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoFromJSON(json: any): AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto {
@@ -143,45 +143,47 @@ export function AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearb
 }
 
 export function AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
-        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
-        'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
-        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
-        'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
-        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
+        'hasBauratendateiInput': json['hasBauratendateiInput'] == null ? undefined : json['hasBauratendateiInput'],
+        'anmerkungBauratendateiInput': json['anmerkungBauratendateiInput'] == null ? undefined : json['anmerkungBauratendateiInput'],
+        'bauratendateiInputBasis': json['bauratendateiInputBasis'] == null ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
+        'bauratendateiInput': json['bauratendateiInput'] == null ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
+        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
-export function AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoToJSON(value?: AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoToJSON(json: any): AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto {
+    return AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoToJSONTyped(json, false);
+}
+
+export function AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoToJSONTyped(value?: AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'artAbfragevariante': value.artAbfragevariante,
-        'sobonOrientierungswertJahrPlanungsursaechlich': value.sobonOrientierungswertJahrPlanungsursaechlich,
-        'stammdatenGueltigAb': (value.stammdatenGueltigAb.toISOString().substr(0,10)),
-        'anmerkung': value.anmerkung,
-        'hasBauratendateiInput': value.hasBauratendateiInput,
-        'anmerkungBauratendateiInput': value.anmerkungBauratendateiInput,
-        'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value.bauratendateiInputBasis),
-        'bauratendateiInput': value.bauratendateiInput === undefined ? undefined : ((value.bauratendateiInput as Array<any>).map(BauratendateiInputDtoToJSON)),
-        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'id': value['id'],
+        'version': value['version'],
+        'artAbfragevariante': value['artAbfragevariante'],
+        'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],
+        'stammdatenGueltigAb': ((value['stammdatenGueltigAb']).toISOString().substring(0,10)),
+        'anmerkung': value['anmerkung'],
+        'hasBauratendateiInput': value['hasBauratendateiInput'],
+        'anmerkungBauratendateiInput': value['anmerkungBauratendateiInput'],
+        'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value['bauratendateiInputBasis']),
+        'bauratendateiInput': value['bauratendateiInput'] == null ? undefined : ((value['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoToJSON)),
+        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 

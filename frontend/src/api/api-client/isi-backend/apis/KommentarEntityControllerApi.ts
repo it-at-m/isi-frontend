@@ -18,7 +18,7 @@ import type {
   EntityModelKommentar,
   KommentarRequestBody,
   PagedModelEntityModelKommentar,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelKommentarFromJSON,
     EntityModelKommentarToJSON,
@@ -26,7 +26,7 @@ import {
     KommentarRequestBodyToJSON,
     PagedModelEntityModelKommentarFromJSON,
     PagedModelEntityModelKommentarToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface DeleteItemResourceKommentarDeleteRequest {
     id: string;
@@ -65,16 +65,23 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
      * delete-kommentar
      */
     async deleteItemResourceKommentarDeleteRaw(requestParameters: DeleteItemResourceKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceKommentarDelete.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteItemResourceKommentarDelete().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/kommentars/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/kommentars/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -96,22 +103,25 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceKommentarGetRaw(requestParameters: GetCollectionResourceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelKommentar>> {
         const queryParameters: any = {};
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sort) {
-            queryParameters['sort'] = requestParameters.sort;
+        if (requestParameters['sort'] != null) {
+            queryParameters['sort'] = requestParameters['sort'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/kommentars`;
+
         const response = await this.request({
-            path: `/kommentars`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -132,16 +142,23 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
      * get-kommentar
      */
     async getItemResourceKommentarGetRaw(requestParameters: GetItemResourceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceKommentarGet.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getItemResourceKommentarGet().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/kommentars/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/kommentars/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -162,12 +179,18 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
      * patch-kommentar
      */
     async patchItemResourceKommentarPatchRaw(requestParameters: PatchItemResourceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceKommentarPatch.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling patchItemResourceKommentarPatch().'
+            );
         }
 
-        if (requestParameters.kommentarRequestBody === null || requestParameters.kommentarRequestBody === undefined) {
-            throw new runtime.RequiredError('kommentarRequestBody','Required parameter requestParameters.kommentarRequestBody was null or undefined when calling patchItemResourceKommentarPatch.');
+        if (requestParameters['kommentarRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'kommentarRequestBody',
+                'Required parameter "kommentarRequestBody" was null or undefined when calling patchItemResourceKommentarPatch().'
+            );
         }
 
         const queryParameters: any = {};
@@ -176,12 +199,16 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/kommentars/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/kommentars/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: KommentarRequestBodyToJSON(requestParameters.kommentarRequestBody),
+            body: KommentarRequestBodyToJSON(requestParameters['kommentarRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
@@ -190,17 +217,27 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-kommentar
      */
-    async patchItemResourceKommentarPatch(requestParameters: PatchItemResourceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelKommentar> {
+    async patchItemResourceKommentarPatch(requestParameters: PatchItemResourceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelKommentar | null | undefined > {
         const response = await this.patchItemResourceKommentarPatchRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
     /**
      * create-kommentar
      */
     async postCollectionResourceKommentarPostRaw(requestParameters: PostCollectionResourceKommentarPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
-        if (requestParameters.kommentarRequestBody === null || requestParameters.kommentarRequestBody === undefined) {
-            throw new runtime.RequiredError('kommentarRequestBody','Required parameter requestParameters.kommentarRequestBody was null or undefined when calling postCollectionResourceKommentarPost.');
+        if (requestParameters['kommentarRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'kommentarRequestBody',
+                'Required parameter "kommentarRequestBody" was null or undefined when calling postCollectionResourceKommentarPost().'
+            );
         }
 
         const queryParameters: any = {};
@@ -209,12 +246,15 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/kommentars`;
+
         const response = await this.request({
-            path: `/kommentars`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: KommentarRequestBodyToJSON(requestParameters.kommentarRequestBody),
+            body: KommentarRequestBodyToJSON(requestParameters['kommentarRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
@@ -232,12 +272,18 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
      * update-kommentar
      */
     async putItemResourceKommentarPutRaw(requestParameters: PutItemResourceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceKommentarPut.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling putItemResourceKommentarPut().'
+            );
         }
 
-        if (requestParameters.kommentarRequestBody === null || requestParameters.kommentarRequestBody === undefined) {
-            throw new runtime.RequiredError('kommentarRequestBody','Required parameter requestParameters.kommentarRequestBody was null or undefined when calling putItemResourceKommentarPut.');
+        if (requestParameters['kommentarRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'kommentarRequestBody',
+                'Required parameter "kommentarRequestBody" was null or undefined when calling putItemResourceKommentarPut().'
+            );
         }
 
         const queryParameters: any = {};
@@ -246,12 +292,16 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/kommentars/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/kommentars/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: KommentarRequestBodyToJSON(requestParameters.kommentarRequestBody),
+            body: KommentarRequestBodyToJSON(requestParameters['kommentarRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
@@ -260,9 +310,18 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-kommentar
      */
-    async putItemResourceKommentarPut(requestParameters: PutItemResourceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelKommentar> {
+    async putItemResourceKommentarPut(requestParameters: PutItemResourceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelKommentar | null | undefined > {
         const response = await this.putItemResourceKommentarPutRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 201:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
 }

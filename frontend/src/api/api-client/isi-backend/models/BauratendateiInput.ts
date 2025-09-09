@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { WohneinheitenProFoerderartProJahr } from './WohneinheitenProFoerderartProJahr';
 import {
     WohneinheitenProFoerderartProJahrFromJSON,
     WohneinheitenProFoerderartProJahrFromJSONTyped,
     WohneinheitenProFoerderartProJahrToJSON,
+    WohneinheitenProFoerderartProJahrToJSONTyped,
 } from './WohneinheitenProFoerderartProJahr';
 
 /**
@@ -79,10 +80,8 @@ export interface BauratendateiInput {
 /**
  * Check if a given object implements the BauratendateiInput interface.
  */
-export function instanceOfBauratendateiInput(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfBauratendateiInput(value: object): value is BauratendateiInput {
+    return true;
 }
 
 export function BauratendateiInputFromJSON(json: any): BauratendateiInput {
@@ -90,39 +89,41 @@ export function BauratendateiInputFromJSON(json: any): BauratendateiInput {
 }
 
 export function BauratendateiInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauratendateiInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'grundschulsprengel': !exists(json, 'grundschulsprengel') ? undefined : json['grundschulsprengel'],
-        'mittelschulsprengel': !exists(json, 'mittelschulsprengel') ? undefined : json['mittelschulsprengel'],
-        'viertel': !exists(json, 'viertel') ? undefined : json['viertel'],
-        'wohneinheiten': !exists(json, 'wohneinheiten') ? undefined : ((json['wohneinheiten'] as Array<any>).map(WohneinheitenProFoerderartProJahrFromJSON)),
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'grundschulsprengel': json['grundschulsprengel'] == null ? undefined : json['grundschulsprengel'],
+        'mittelschulsprengel': json['mittelschulsprengel'] == null ? undefined : json['mittelschulsprengel'],
+        'viertel': json['viertel'] == null ? undefined : json['viertel'],
+        'wohneinheiten': json['wohneinheiten'] == null ? undefined : ((json['wohneinheiten'] as Array<any>).map(WohneinheitenProFoerderartProJahrFromJSON)),
     };
 }
 
-export function BauratendateiInputToJSON(value?: BauratendateiInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BauratendateiInputToJSON(json: any): BauratendateiInput {
+    return BauratendateiInputToJSONTyped(json, false);
+}
+
+export function BauratendateiInputToJSONTyped(value?: BauratendateiInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'grundschulsprengel': value.grundschulsprengel,
-        'mittelschulsprengel': value.mittelschulsprengel,
-        'viertel': value.viertel,
-        'wohneinheiten': value.wohneinheiten === undefined ? undefined : ((value.wohneinheiten as Array<any>).map(WohneinheitenProFoerderartProJahrToJSON)),
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'grundschulsprengel': value['grundschulsprengel'],
+        'mittelschulsprengel': value['mittelschulsprengel'],
+        'viertel': value['viertel'],
+        'wohneinheiten': value['wohneinheiten'] == null ? undefined : ((value['wohneinheiten'] as Array<any>).map(WohneinheitenProFoerderartProJahrToJSON)),
     };
 }
 

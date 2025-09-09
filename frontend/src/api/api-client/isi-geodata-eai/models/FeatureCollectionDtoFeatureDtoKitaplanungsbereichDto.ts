@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoKitaplanungsbereichDto } from './FeatureDtoKitaplanungsbereichDto';
 import {
     FeatureDtoKitaplanungsbereichDtoFromJSON,
     FeatureDtoKitaplanungsbereichDtoFromJSONTyped,
     FeatureDtoKitaplanungsbereichDtoToJSON,
+    FeatureDtoKitaplanungsbereichDtoToJSONTyped,
 } from './FeatureDtoKitaplanungsbereichDto';
 
 /**
@@ -43,10 +44,8 @@ export interface FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto {
 /**
  * Check if a given object implements the FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto interface.
  */
-export function instanceOfFeatureCollectionDtoFeatureDtoKitaplanungsbereichDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureCollectionDtoFeatureDtoKitaplanungsbereichDto(value: object): value is FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto {
+    return true;
 }
 
 export function FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto {
@@ -54,27 +53,29 @@ export function FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSON(jso
 }
 
 export function FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoKitaplanungsbereichDtoFromJSON)),
+        'type': json['type'] == null ? undefined : json['type'],
+        'features': json['features'] == null ? undefined : ((json['features'] as Array<any>).map(FeatureDtoKitaplanungsbereichDtoFromJSON)),
     };
 }
 
-export function FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoToJSON(value?: FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoToJSON(json: any): FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto {
+    return FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoToJSONTyped(json, false);
+}
+
+export function FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoToJSONTyped(value?: FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoKitaplanungsbereichDtoToJSON)),
+        'type': value['type'],
+        'features': value['features'] == null ? undefined : ((value['features'] as Array<any>).map(FeatureDtoKitaplanungsbereichDtoToJSON)),
     };
 }
 

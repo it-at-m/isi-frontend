@@ -12,22 +12,22 @@
  * Do not edit the class manually.
  */
 
+import type { BaugenehmigungsverfahrenEinplanungBedarfeDto } from './BaugenehmigungsverfahrenEinplanungBedarfeDto';
 import {
-    BaugenehmigungsverfahrenEinplanungBedarfeDto,
     instanceOfBaugenehmigungsverfahrenEinplanungBedarfeDto,
     BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON,
     BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped,
     BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON,
 } from './BaugenehmigungsverfahrenEinplanungBedarfeDto';
+import type { BauleitplanverfahrenEinplanungBedarfeDto } from './BauleitplanverfahrenEinplanungBedarfeDto';
 import {
-    BauleitplanverfahrenEinplanungBedarfeDto,
     instanceOfBauleitplanverfahrenEinplanungBedarfeDto,
     BauleitplanverfahrenEinplanungBedarfeDtoFromJSON,
     BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped,
     BauleitplanverfahrenEinplanungBedarfeDtoToJSON,
 } from './BauleitplanverfahrenEinplanungBedarfeDto';
+import type { WeiteresVerfahrenEinplanungBedarfeDto } from './WeiteresVerfahrenEinplanungBedarfeDto';
 import {
-    WeiteresVerfahrenEinplanungBedarfeDto,
     instanceOfWeiteresVerfahrenEinplanungBedarfeDto,
     WeiteresVerfahrenEinplanungBedarfeDtoFromJSON,
     WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped,
@@ -39,57 +39,45 @@ import {
  * 
  * @export
  */
-export type PatchEinplanungBedarfeRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenEinplanungBedarfeDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenEinplanungBedarfeDto | { artAbfrage: 'BaugenehmigungsverfahrenEinplanungBedarfeDto' } & BaugenehmigungsverfahrenEinplanungBedarfeDto | { artAbfrage: 'BauleitplanverfahrenEinplanungBedarfeDto' } & BauleitplanverfahrenEinplanungBedarfeDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenEinplanungBedarfeDto | { artAbfrage: 'WeiteresVerfahrenEinplanungBedarfeDto' } & WeiteresVerfahrenEinplanungBedarfeDto;
+export type PatchEinplanungBedarfeRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenEinplanungBedarfeDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenEinplanungBedarfeDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenEinplanungBedarfeDto;
 
 export function PatchEinplanungBedarfeRequestFromJSON(json: any): PatchEinplanungBedarfeRequest {
     return PatchEinplanungBedarfeRequestFromJSONTyped(json, false);
 }
 
 export function PatchEinplanungBedarfeRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatchEinplanungBedarfeRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     switch (json['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return {...BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN'};
+            return Object.assign({}, BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return {...BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), artAbfrage: 'BAULEITPLANVERFAHREN'};
-        case 'BaugenehmigungsverfahrenEinplanungBedarfeDto':
-            return {...BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), artAbfrage: 'BaugenehmigungsverfahrenEinplanungBedarfeDto'};
-        case 'BauleitplanverfahrenEinplanungBedarfeDto':
-            return {...BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), artAbfrage: 'BauleitplanverfahrenEinplanungBedarfeDto'};
+            return Object.assign({}, BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return {...WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), artAbfrage: 'WEITERES_VERFAHREN'};
-        case 'WeiteresVerfahrenEinplanungBedarfeDto':
-            return {...WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenEinplanungBedarfeDto'};
+            return Object.assign({}, WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json, true), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
         default:
-            throw new Error(`No variant of PatchEinplanungBedarfeRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
+            return json;
     }
 }
 
-export function PatchEinplanungBedarfeRequestToJSON(value?: PatchEinplanungBedarfeRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+export function PatchEinplanungBedarfeRequestToJSON(json: any): any {
+    return PatchEinplanungBedarfeRequestToJSONTyped(json, false);
+}
+
+export function PatchEinplanungBedarfeRequestToJSONTyped(value?: PatchEinplanungBedarfeRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
     switch (value['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON(value);
+            return Object.assign({}, BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON(value), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return BauleitplanverfahrenEinplanungBedarfeDtoToJSON(value);
-        case 'BaugenehmigungsverfahrenEinplanungBedarfeDto':
-            return BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON(value);
-        case 'BauleitplanverfahrenEinplanungBedarfeDto':
-            return BauleitplanverfahrenEinplanungBedarfeDtoToJSON(value);
+            return Object.assign({}, BauleitplanverfahrenEinplanungBedarfeDtoToJSON(value), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return WeiteresVerfahrenEinplanungBedarfeDtoToJSON(value);
-        case 'WeiteresVerfahrenEinplanungBedarfeDto':
-            return WeiteresVerfahrenEinplanungBedarfeDtoToJSON(value);
+            return Object.assign({}, WeiteresVerfahrenEinplanungBedarfeDtoToJSON(value), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
         default:
-            throw new Error(`No variant of PatchEinplanungBedarfeRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
+            return value;
     }
-
 }
 

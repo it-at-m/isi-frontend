@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface WgsDto {
 /**
  * Check if a given object implements the WgsDto interface.
  */
-export function instanceOfWgsDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfWgsDto(value: object): value is WgsDto {
+    return true;
 }
 
 export function WgsDtoFromJSON(json: any): WgsDto {
@@ -47,27 +45,29 @@ export function WgsDtoFromJSON(json: any): WgsDto {
 }
 
 export function WgsDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WgsDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'lat': !exists(json, 'lat') ? undefined : json['lat'],
-        'lon': !exists(json, 'lon') ? undefined : json['lon'],
+        'lat': json['lat'] == null ? undefined : json['lat'],
+        'lon': json['lon'] == null ? undefined : json['lon'],
     };
 }
 
-export function WgsDtoToJSON(value?: WgsDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WgsDtoToJSON(json: any): WgsDto {
+    return WgsDtoToJSONTyped(json, false);
+}
+
+export function WgsDtoToJSONTyped(value?: WgsDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'lat': value.lat,
-        'lon': value.lon,
+        'lat': value['lat'],
+        'lon': value['lon'],
     };
 }
 

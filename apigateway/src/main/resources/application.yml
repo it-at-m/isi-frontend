@@ -20,7 +20,8 @@ server:
 
 management:
   endpoints:
-    enabled-by-default: false
+    access:
+      default: none
     web:
       cors:
         allowedOrigins:
@@ -36,13 +37,13 @@ management:
         prometheus: metrics
   endpoint:
     health:
-      enabled: on
+      access: READ_ONLY
       probes:
         enabled: true
     info:
-      enabled: on
+      access: READ_ONLY
     prometheus:
-      enabled: on
+      access: READ_ONLY
   info:
     env:
       enabled: true
@@ -50,4 +51,3 @@ management:
 info.application.name: ${spring.application.name}
 info.application.version: @project.version@
 info.application.commitHash: ${buildNumber}
-

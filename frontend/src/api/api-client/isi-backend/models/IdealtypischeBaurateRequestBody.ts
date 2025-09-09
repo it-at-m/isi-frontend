@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Jahresrate } from './Jahresrate';
 import {
     JahresrateFromJSON,
     JahresrateFromJSONTyped,
     JahresrateToJSON,
+    JahresrateToJSONTyped,
 } from './Jahresrate';
 
 /**
@@ -90,10 +91,8 @@ export type IdealtypischeBaurateRequestBodyTypEnum = typeof IdealtypischeBaurate
 /**
  * Check if a given object implements the IdealtypischeBaurateRequestBody interface.
  */
-export function instanceOfIdealtypischeBaurateRequestBody(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfIdealtypischeBaurateRequestBody(value: object): value is IdealtypischeBaurateRequestBody {
+    return true;
 }
 
 export function IdealtypischeBaurateRequestBodyFromJSON(json: any): IdealtypischeBaurateRequestBody {
@@ -101,39 +100,41 @@ export function IdealtypischeBaurateRequestBodyFromJSON(json: any): Idealtypisch
 }
 
 export function IdealtypischeBaurateRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): IdealtypischeBaurateRequestBody {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'von': !exists(json, 'von') ? undefined : json['von'],
-        'bisExklusiv': !exists(json, 'bisExklusiv') ? undefined : json['bisExklusiv'],
-        'typ': !exists(json, 'typ') ? undefined : json['typ'],
-        'jahresraten': !exists(json, 'jahresraten') ? undefined : ((json['jahresraten'] as Array<any>).map(JahresrateFromJSON)),
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'von': json['von'] == null ? undefined : json['von'],
+        'bisExklusiv': json['bisExklusiv'] == null ? undefined : json['bisExklusiv'],
+        'typ': json['typ'] == null ? undefined : json['typ'],
+        'jahresraten': json['jahresraten'] == null ? undefined : ((json['jahresraten'] as Array<any>).map(JahresrateFromJSON)),
     };
 }
 
-export function IdealtypischeBaurateRequestBodyToJSON(value?: IdealtypischeBaurateRequestBody | null): any {
-    if (value === undefined) {
-        return undefined;
+export function IdealtypischeBaurateRequestBodyToJSON(json: any): IdealtypischeBaurateRequestBody {
+    return IdealtypischeBaurateRequestBodyToJSONTyped(json, false);
+}
+
+export function IdealtypischeBaurateRequestBodyToJSONTyped(value?: IdealtypischeBaurateRequestBody | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'von': value.von,
-        'bisExklusiv': value.bisExklusiv,
-        'typ': value.typ,
-        'jahresraten': value.jahresraten === undefined ? undefined : ((value.jahresraten as Array<any>).map(JahresrateToJSON)),
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
+        'von': value['von'],
+        'bisExklusiv': value['bisExklusiv'],
+        'typ': value['typ'],
+        'jahresraten': value['jahresraten'] == null ? undefined : ((value['jahresraten'] as Array<any>).map(JahresrateToJSON)),
     };
 }
 

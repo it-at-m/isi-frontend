@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface Utm {
 /**
  * Check if a given object implements the Utm interface.
  */
-export function instanceOfUtm(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfUtm(value: object): value is Utm {
+    return true;
 }
 
 export function UtmFromJSON(json: any): Utm {
@@ -53,29 +51,31 @@ export function UtmFromJSON(json: any): Utm {
 }
 
 export function UtmFromJSONTyped(json: any, ignoreDiscriminator: boolean): Utm {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'zone': !exists(json, 'zone') ? undefined : json['zone'],
-        'east': !exists(json, 'east') ? undefined : json['east'],
-        'north': !exists(json, 'north') ? undefined : json['north'],
+        'zone': json['zone'] == null ? undefined : json['zone'],
+        'east': json['east'] == null ? undefined : json['east'],
+        'north': json['north'] == null ? undefined : json['north'],
     };
 }
 
-export function UtmToJSON(value?: Utm | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UtmToJSON(json: any): Utm {
+    return UtmToJSONTyped(json, false);
+}
+
+export function UtmToJSONTyped(value?: Utm | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'zone': value.zone,
-        'east': value.east,
-        'north': value.north,
+        'zone': value['zone'],
+        'east': value['east'],
+        'north': value['north'],
     };
 }
 

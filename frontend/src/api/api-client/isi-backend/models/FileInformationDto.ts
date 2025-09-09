@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface FileInformationDto {
 /**
  * Check if a given object implements the FileInformationDto interface.
  */
-export function instanceOfFileInformationDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFileInformationDto(value: object): value is FileInformationDto {
+    return true;
 }
 
 export function FileInformationDtoFromJSON(json: any): FileInformationDto {
@@ -53,29 +51,31 @@ export function FileInformationDtoFromJSON(json: any): FileInformationDto {
 }
 
 export function FileInformationDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileInformationDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'maxFileSizeBytes': !exists(json, 'maxFileSizeBytes') ? undefined : json['maxFileSizeBytes'],
-        'maxNumberOfFiles': !exists(json, 'maxNumberOfFiles') ? undefined : json['maxNumberOfFiles'],
-        'allowedMimeTypes': !exists(json, 'allowedMimeTypes') ? undefined : json['allowedMimeTypes'],
+        'maxFileSizeBytes': json['maxFileSizeBytes'] == null ? undefined : json['maxFileSizeBytes'],
+        'maxNumberOfFiles': json['maxNumberOfFiles'] == null ? undefined : json['maxNumberOfFiles'],
+        'allowedMimeTypes': json['allowedMimeTypes'] == null ? undefined : json['allowedMimeTypes'],
     };
 }
 
-export function FileInformationDtoToJSON(value?: FileInformationDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FileInformationDtoToJSON(json: any): FileInformationDto {
+    return FileInformationDtoToJSONTyped(json, false);
+}
+
+export function FileInformationDtoToJSONTyped(value?: FileInformationDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'maxFileSizeBytes': value.maxFileSizeBytes,
-        'maxNumberOfFiles': value.maxNumberOfFiles,
-        'allowedMimeTypes': value.allowedMimeTypes,
+        'maxFileSizeBytes': value['maxFileSizeBytes'],
+        'maxNumberOfFiles': value['maxNumberOfFiles'],
+        'allowedMimeTypes': value['allowedMimeTypes'],
     };
 }
 

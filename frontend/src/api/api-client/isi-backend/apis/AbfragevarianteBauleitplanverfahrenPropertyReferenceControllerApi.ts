@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   CollectionModelDokument,
   CollectionModelObject,
-} from '../models';
+} from '../models/index';
 import {
     CollectionModelDokumentFromJSON,
     CollectionModelDokumentToJSON,
     CollectionModelObjectFromJSON,
     CollectionModelObjectToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPatchRequest {
     id: string;
@@ -62,12 +62,18 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
      * patch-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
     async createPropertyReferenceAbfragevariantebauleitplanverfahrenPatchRaw(requestParameters: CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPatch.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPatch().'
+            );
         }
 
-        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
-            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPatch.');
+        if (requestParameters['collectionModelObject'] == null) {
+            throw new runtime.RequiredError(
+                'collectionModelObject',
+                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPatch().'
+            );
         }
 
         const queryParameters: any = {};
@@ -76,12 +82,16 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
+            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
@@ -90,21 +100,34 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
     /**
      * patch-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
-    async createPropertyReferenceAbfragevariantebauleitplanverfahrenPatch(requestParameters: CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument> {
+    async createPropertyReferenceAbfragevariantebauleitplanverfahrenPatch(requestParameters: CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument | null | undefined > {
         const response = await this.createPropertyReferenceAbfragevariantebauleitplanverfahrenPatchRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
     /**
      * update-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
     async createPropertyReferenceAbfragevariantebauleitplanverfahrenPutRaw(requestParameters: CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPut.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPut().'
+            );
         }
 
-        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
-            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPut.');
+        if (requestParameters['collectionModelObject'] == null) {
+            throw new runtime.RequiredError(
+                'collectionModelObject',
+                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceAbfragevariantebauleitplanverfahrenPut().'
+            );
         }
 
         const queryParameters: any = {};
@@ -113,12 +136,16 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
+            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
@@ -127,25 +154,41 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
     /**
      * update-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
-    async createPropertyReferenceAbfragevariantebauleitplanverfahrenPut(requestParameters: CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument> {
+    async createPropertyReferenceAbfragevariantebauleitplanverfahrenPut(requestParameters: CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument | null | undefined > {
         const response = await this.createPropertyReferenceAbfragevariantebauleitplanverfahrenPutRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 201:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
     /**
      * delete-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
     async deletePropertyReferenceAbfragevariantebauleitplanverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceAbfragevariantebauleitplanverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceAbfragevariantebauleitplanverfahrenDelete.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deletePropertyReferenceAbfragevariantebauleitplanverfahrenDelete().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -165,20 +208,31 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
      * delete-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
     async deletePropertyReferenceIdAbfragevariantebauleitplanverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfragevariantebauleitplanverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceIdAbfragevariantebauleitplanverfahrenDelete.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deletePropertyReferenceIdAbfragevariantebauleitplanverfahrenDelete().'
+            );
         }
 
-        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
-            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling deletePropertyReferenceIdAbfragevariantebauleitplanverfahrenDelete.');
+        if (requestParameters['propertyId'] == null) {
+            throw new runtime.RequiredError(
+                'propertyId',
+                'Required parameter "propertyId" was null or undefined when calling deletePropertyReferenceIdAbfragevariantebauleitplanverfahrenDelete().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente/{propertyId}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/{id}/dokumente/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -198,16 +252,23 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
      * get-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
     async followPropertyReferenceAbfragevariantebauleitplanverfahrenGetRaw(requestParameters: FollowPropertyReferenceAbfragevariantebauleitplanverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceAbfragevariantebauleitplanverfahrenGet.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling followPropertyReferenceAbfragevariantebauleitplanverfahrenGet().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -228,20 +289,31 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
      * get-dokument-by-abfragevariantebauleitplanverfahren-Id
      */
     async followPropertyReferenceAbfragevariantebauleitplanverfahrenGet1Raw(requestParameters: FollowPropertyReferenceAbfragevariantebauleitplanverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceAbfragevariantebauleitplanverfahrenGet1.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling followPropertyReferenceAbfragevariantebauleitplanverfahrenGet1().'
+            );
         }
 
-        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
-            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling followPropertyReferenceAbfragevariantebauleitplanverfahrenGet1.');
+        if (requestParameters['propertyId'] == null) {
+            throw new runtime.RequiredError(
+                'propertyId',
+                'Required parameter "propertyId" was null or undefined when calling followPropertyReferenceAbfragevariantebauleitplanverfahrenGet1().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente/{propertyId}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/{id}/dokumente/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

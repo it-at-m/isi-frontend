@@ -12,34 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { AdresseDto } from './AdresseDto';
-import {
-    AdresseDtoFromJSON,
-    AdresseDtoFromJSONTyped,
-    AdresseDtoToJSON,
-} from './AdresseDto';
-import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
-import {
-    BearbeitendePersonDtoFromJSON,
-    BearbeitendePersonDtoFromJSONTyped,
-    BearbeitendePersonDtoToJSON,
-} from './BearbeitendePersonDto';
+import { mapValues } from '../runtime';
 import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
+    InfrastruktureinrichtungDtoToJSONTyped,
 } from './InfrastruktureinrichtungDto';
 import type { VerortungPointDto } from './VerortungPointDto';
 import {
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
+    VerortungPointDtoToJSONTyped,
 } from './VerortungPointDto';
-
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
 import {
-} from './';
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+    BearbeitendePersonDtoToJSONTyped,
+} from './BearbeitendePersonDto';
+import type { AdresseDto } from './AdresseDto';
+import {
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+    AdresseDtoToJSONTyped,
+} from './AdresseDto';
 
 /**
  * 
@@ -112,12 +113,10 @@ export type GsNachmittagBetreuungDtoEinrichtungstraegerEnum = typeof GsNachmitta
 /**
  * Check if a given object implements the GsNachmittagBetreuungDto interface.
  */
-export function instanceOfGsNachmittagBetreuungDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "anzahlHortPlaetze" in value;
-    isInstance = isInstance && "anzahlHortGruppen" in value;
-
-    return isInstance;
+export function instanceOfGsNachmittagBetreuungDto(value: object): value is GsNachmittagBetreuungDto {
+    if (!('anzahlHortPlaetze' in value) || value['anzahlHortPlaetze'] === undefined) return false;
+    if (!('anzahlHortGruppen' in value) || value['anzahlHortGruppen'] === undefined) return false;
+    return true;
 }
 
 export function GsNachmittagBetreuungDtoFromJSON(json: any): GsNachmittagBetreuungDto {
@@ -125,35 +124,44 @@ export function GsNachmittagBetreuungDtoFromJSON(json: any): GsNachmittagBetreuu
 }
 
 export function GsNachmittagBetreuungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GsNachmittagBetreuungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
-        'artGsNachmittagBetreuung': !exists(json, 'artGsNachmittagBetreuung') ? undefined : json['artGsNachmittagBetreuung'],
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
+        'artGsNachmittagBetreuung': json['artGsNachmittagBetreuung'] == null ? undefined : json['artGsNachmittagBetreuung'],
         'anzahlHortPlaetze': json['anzahlHortPlaetze'],
         'anzahlHortGruppen': json['anzahlHortGruppen'],
-        'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],
-        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
+        'wohnungsnaheHortPlaetze': json['wohnungsnaheHortPlaetze'] == null ? undefined : json['wohnungsnaheHortPlaetze'],
+        'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
     };
 }
 
-export function GsNachmittagBetreuungDtoToJSON(value?: GsNachmittagBetreuungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GsNachmittagBetreuungDtoToJSON(json: any): GsNachmittagBetreuungDto {
+    return GsNachmittagBetreuungDtoToJSONTyped(json, false);
+}
+
+export function GsNachmittagBetreuungDtoToJSONTyped(value?: GsNachmittagBetreuungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['infrastruktureinrichtungTyp']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...InfrastruktureinrichtungDtoToJSON(value),
-        'artGsNachmittagBetreuung': value.artGsNachmittagBetreuung,
-        'anzahlHortPlaetze': value.anzahlHortPlaetze,
-        'anzahlHortGruppen': value.anzahlHortGruppen,
-        'wohnungsnaheHortPlaetze': value.wohnungsnaheHortPlaetze,
-        'einrichtungstraeger': value.einrichtungstraeger,
+        ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
+        'artGsNachmittagBetreuung': value['artGsNachmittagBetreuung'],
+        'anzahlHortPlaetze': value['anzahlHortPlaetze'],
+        'anzahlHortGruppen': value['anzahlHortGruppen'],
+        'wohnungsnaheHortPlaetze': value['wohnungsnaheHortPlaetze'],
+        'einrichtungstraeger': value['einrichtungstraeger'],
     };
 }
 

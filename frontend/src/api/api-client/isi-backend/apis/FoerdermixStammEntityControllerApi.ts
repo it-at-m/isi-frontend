@@ -18,7 +18,7 @@ import type {
   EntityModelFoerdermixStamm,
   FoerdermixStammRequestBody,
   PagedModelEntityModelFoerdermixStamm,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelFoerdermixStammFromJSON,
     EntityModelFoerdermixStammToJSON,
@@ -26,7 +26,7 @@ import {
     FoerdermixStammRequestBodyToJSON,
     PagedModelEntityModelFoerdermixStammFromJSON,
     PagedModelEntityModelFoerdermixStammToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface DeleteItemResourceFoerdermixstammDeleteRequest {
     id: string;
@@ -65,16 +65,23 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
      * delete-foerdermixstamm
      */
     async deleteItemResourceFoerdermixstammDeleteRaw(requestParameters: DeleteItemResourceFoerdermixstammDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceFoerdermixstammDelete.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteItemResourceFoerdermixstammDelete().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/foerdermixStamms/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/foerdermixStamms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -96,22 +103,25 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceFoerdermixstammGetRaw(requestParameters: GetCollectionResourceFoerdermixstammGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelFoerdermixStamm>> {
         const queryParameters: any = {};
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sort) {
-            queryParameters['sort'] = requestParameters.sort;
+        if (requestParameters['sort'] != null) {
+            queryParameters['sort'] = requestParameters['sort'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/foerdermixStamms`;
+
         const response = await this.request({
-            path: `/foerdermixStamms`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -132,16 +142,23 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
      * get-foerdermixstamm
      */
     async getItemResourceFoerdermixstammGetRaw(requestParameters: GetItemResourceFoerdermixstammGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceFoerdermixstammGet.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getItemResourceFoerdermixstammGet().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/foerdermixStamms/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/foerdermixStamms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -162,12 +179,18 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
      * patch-foerdermixstamm
      */
     async patchItemResourceFoerdermixstammPatchRaw(requestParameters: PatchItemResourceFoerdermixstammPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceFoerdermixstammPatch.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling patchItemResourceFoerdermixstammPatch().'
+            );
         }
 
-        if (requestParameters.foerdermixStammRequestBody === null || requestParameters.foerdermixStammRequestBody === undefined) {
-            throw new runtime.RequiredError('foerdermixStammRequestBody','Required parameter requestParameters.foerdermixStammRequestBody was null or undefined when calling patchItemResourceFoerdermixstammPatch.');
+        if (requestParameters['foerdermixStammRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'foerdermixStammRequestBody',
+                'Required parameter "foerdermixStammRequestBody" was null or undefined when calling patchItemResourceFoerdermixstammPatch().'
+            );
         }
 
         const queryParameters: any = {};
@@ -176,12 +199,16 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/foerdermixStamms/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/foerdermixStamms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: FoerdermixStammRequestBodyToJSON(requestParameters.foerdermixStammRequestBody),
+            body: FoerdermixStammRequestBodyToJSON(requestParameters['foerdermixStammRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
@@ -190,17 +217,27 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-foerdermixstamm
      */
-    async patchItemResourceFoerdermixstammPatch(requestParameters: PatchItemResourceFoerdermixstammPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelFoerdermixStamm> {
+    async patchItemResourceFoerdermixstammPatch(requestParameters: PatchItemResourceFoerdermixstammPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelFoerdermixStamm | null | undefined > {
         const response = await this.patchItemResourceFoerdermixstammPatchRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
     /**
      * create-foerdermixstamm
      */
     async postCollectionResourceFoerdermixstammPostRaw(requestParameters: PostCollectionResourceFoerdermixstammPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
-        if (requestParameters.foerdermixStammRequestBody === null || requestParameters.foerdermixStammRequestBody === undefined) {
-            throw new runtime.RequiredError('foerdermixStammRequestBody','Required parameter requestParameters.foerdermixStammRequestBody was null or undefined when calling postCollectionResourceFoerdermixstammPost.');
+        if (requestParameters['foerdermixStammRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'foerdermixStammRequestBody',
+                'Required parameter "foerdermixStammRequestBody" was null or undefined when calling postCollectionResourceFoerdermixstammPost().'
+            );
         }
 
         const queryParameters: any = {};
@@ -209,12 +246,15 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/foerdermixStamms`;
+
         const response = await this.request({
-            path: `/foerdermixStamms`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FoerdermixStammRequestBodyToJSON(requestParameters.foerdermixStammRequestBody),
+            body: FoerdermixStammRequestBodyToJSON(requestParameters['foerdermixStammRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
@@ -232,12 +272,18 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
      * update-foerdermixstamm
      */
     async putItemResourceFoerdermixstammPutRaw(requestParameters: PutItemResourceFoerdermixstammPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceFoerdermixstammPut.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling putItemResourceFoerdermixstammPut().'
+            );
         }
 
-        if (requestParameters.foerdermixStammRequestBody === null || requestParameters.foerdermixStammRequestBody === undefined) {
-            throw new runtime.RequiredError('foerdermixStammRequestBody','Required parameter requestParameters.foerdermixStammRequestBody was null or undefined when calling putItemResourceFoerdermixstammPut.');
+        if (requestParameters['foerdermixStammRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'foerdermixStammRequestBody',
+                'Required parameter "foerdermixStammRequestBody" was null or undefined when calling putItemResourceFoerdermixstammPut().'
+            );
         }
 
         const queryParameters: any = {};
@@ -246,12 +292,16 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/foerdermixStamms/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/foerdermixStamms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: FoerdermixStammRequestBodyToJSON(requestParameters.foerdermixStammRequestBody),
+            body: FoerdermixStammRequestBodyToJSON(requestParameters['foerdermixStammRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
@@ -260,9 +310,18 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-foerdermixstamm
      */
-    async putItemResourceFoerdermixstammPut(requestParameters: PutItemResourceFoerdermixstammPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelFoerdermixStamm> {
+    async putItemResourceFoerdermixstammPut(requestParameters: PutItemResourceFoerdermixstammPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelFoerdermixStamm | null | undefined > {
         const response = await this.putItemResourceFoerdermixstammPutRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 201:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
 }

@@ -168,7 +168,7 @@ import {
   type HausFuerKinderDto,
   type InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoStatusEnum,
-  InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
+  InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
 } from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";

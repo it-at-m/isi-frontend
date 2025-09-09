@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
+    FeatureDtoViertelDtoGeometryToJSONTyped,
 } from './FeatureDtoViertelDtoGeometry';
 import type { ViertelDto } from './ViertelDto';
 import {
     ViertelDtoFromJSON,
     ViertelDtoFromJSONTyped,
     ViertelDtoToJSON,
+    ViertelDtoToJSONTyped,
 } from './ViertelDto';
 
 /**
@@ -55,10 +57,8 @@ export interface FeatureDtoViertelDto {
 /**
  * Check if a given object implements the FeatureDtoViertelDto interface.
  */
-export function instanceOfFeatureDtoViertelDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureDtoViertelDto(value: object): value is FeatureDtoViertelDto {
+    return true;
 }
 
 export function FeatureDtoViertelDtoFromJSON(json: any): FeatureDtoViertelDto {
@@ -66,29 +66,31 @@ export function FeatureDtoViertelDtoFromJSON(json: any): FeatureDtoViertelDto {
 }
 
 export function FeatureDtoViertelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoViertelDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': !exists(json, 'properties') ? undefined : ViertelDtoFromJSON(json['properties']),
+        'type': json['type'] == null ? undefined : json['type'],
+        'geometry': json['geometry'] == null ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
+        'properties': json['properties'] == null ? undefined : ViertelDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoViertelDtoToJSON(value?: FeatureDtoViertelDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureDtoViertelDtoToJSON(json: any): FeatureDtoViertelDto {
+    return FeatureDtoViertelDtoToJSONTyped(json, false);
+}
+
+export function FeatureDtoViertelDtoToJSONTyped(value?: FeatureDtoViertelDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
-        'properties': ViertelDtoToJSON(value.properties),
+        'type': value['type'],
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value['geometry']),
+        'properties': ViertelDtoToJSON(value['properties']),
     };
 }
 

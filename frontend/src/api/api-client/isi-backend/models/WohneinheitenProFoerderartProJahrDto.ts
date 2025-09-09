@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface WohneinheitenProFoerderartProJahrDto {
 /**
  * Check if a given object implements the WohneinheitenProFoerderartProJahrDto interface.
  */
-export function instanceOfWohneinheitenProFoerderartProJahrDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfWohneinheitenProFoerderartProJahrDto(value: object): value is WohneinheitenProFoerderartProJahrDto {
+    return true;
 }
 
 export function WohneinheitenProFoerderartProJahrDtoFromJSON(json: any): WohneinheitenProFoerderartProJahrDto {
@@ -53,29 +51,31 @@ export function WohneinheitenProFoerderartProJahrDtoFromJSON(json: any): Wohnein
 }
 
 export function WohneinheitenProFoerderartProJahrDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WohneinheitenProFoerderartProJahrDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'foerderart': !exists(json, 'foerderart') ? undefined : json['foerderart'],
-        'jahr': !exists(json, 'jahr') ? undefined : json['jahr'],
-        'wohneinheiten': !exists(json, 'wohneinheiten') ? undefined : json['wohneinheiten'],
+        'foerderart': json['foerderart'] == null ? undefined : json['foerderart'],
+        'jahr': json['jahr'] == null ? undefined : json['jahr'],
+        'wohneinheiten': json['wohneinheiten'] == null ? undefined : json['wohneinheiten'],
     };
 }
 
-export function WohneinheitenProFoerderartProJahrDtoToJSON(value?: WohneinheitenProFoerderartProJahrDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WohneinheitenProFoerderartProJahrDtoToJSON(json: any): WohneinheitenProFoerderartProJahrDto {
+    return WohneinheitenProFoerderartProJahrDtoToJSONTyped(json, false);
+}
+
+export function WohneinheitenProFoerderartProJahrDtoToJSONTyped(value?: WohneinheitenProFoerderartProJahrDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'foerderart': value.foerderart,
-        'jahr': value.jahr,
-        'wohneinheiten': value.wohneinheiten,
+        'foerderart': value['foerderart'],
+        'jahr': value['jahr'],
+        'wohneinheiten': value['wohneinheiten'],
     };
 }
 

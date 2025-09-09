@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { Flurstueck } from './Flurstueck';
-import {
-    FlurstueckFromJSON,
-    FlurstueckFromJSONTyped,
-    FlurstueckToJSON,
-} from './Flurstueck';
+import { mapValues } from '../runtime';
 import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
 import {
     MultiPolygonGeometryFromJSON,
     MultiPolygonGeometryFromJSONTyped,
     MultiPolygonGeometryToJSON,
+    MultiPolygonGeometryToJSONTyped,
 } from './MultiPolygonGeometry';
+import type { Flurstueck } from './Flurstueck';
+import {
+    FlurstueckFromJSON,
+    FlurstueckFromJSONTyped,
+    FlurstueckToJSON,
+    FlurstueckToJSONTyped,
+} from './Flurstueck';
 
 /**
  * 
@@ -61,10 +63,8 @@ export interface Gemarkung {
 /**
  * Check if a given object implements the Gemarkung interface.
  */
-export function instanceOfGemarkung(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfGemarkung(value: object): value is Gemarkung {
+    return true;
 }
 
 export function GemarkungFromJSON(json: any): Gemarkung {
@@ -72,31 +72,33 @@ export function GemarkungFromJSON(json: any): Gemarkung {
 }
 
 export function GemarkungFromJSONTyped(json: any, ignoreDiscriminator: boolean): Gemarkung {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'flurstuecke': !exists(json, 'flurstuecke') ? undefined : (new Set((json['flurstuecke'] as Array<any>).map(FlurstueckFromJSON))),
-        'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'nummer': json['nummer'] == null ? undefined : json['nummer'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'flurstuecke': json['flurstuecke'] == null ? undefined : (new Set((json['flurstuecke'] as Array<any>).map(FlurstueckFromJSON))),
+        'multiPolygon': json['multiPolygon'] == null ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
     };
 }
 
-export function GemarkungToJSON(value?: Gemarkung | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GemarkungToJSON(json: any): Gemarkung {
+    return GemarkungToJSONTyped(json, false);
+}
+
+export function GemarkungToJSONTyped(value?: Gemarkung | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'nummer': value.nummer,
-        'name': value.name,
-        'flurstuecke': value.flurstuecke === undefined ? undefined : (Array.from(value.flurstuecke as Set<any>).map(FlurstueckToJSON)),
-        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
+        'nummer': value['nummer'],
+        'name': value['name'],
+        'flurstuecke': value['flurstuecke'] == null ? undefined : (Array.from(value['flurstuecke'] as Set<any>).map(FlurstueckToJSON)),
+        'multiPolygon': MultiPolygonGeometryToJSON(value['multiPolygon']),
     };
 }
 

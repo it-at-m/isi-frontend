@@ -79,8 +79,8 @@ import {
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   SchuleDtoEinrichtungstraegerEnum,
   KindergartenDtoEinrichtungstraegerEnum,
-  HausFuerKinderDtoAllOfEinrichtungstraegerEnum,
-  GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum,
+  HausFuerKinderDtoEinrichtungstraegerEnum,
+  GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
   // Dokumente
   DokumentDtoArtDokumentEnum,
   // Suche

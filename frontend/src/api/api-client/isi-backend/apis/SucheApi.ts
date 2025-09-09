@@ -20,7 +20,7 @@ import type {
   SearchQueryDto,
   SearchResultsDto,
   SuchwortSuggestionsDto,
-} from '../models';
+} from '../models/index';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
@@ -32,7 +32,7 @@ import {
     SearchResultsDtoToJSON,
     SuchwortSuggestionsDtoFromJSON,
     SuchwortSuggestionsDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface SearchForEntitiesRequest {
     searchQueryAndSortingDto: SearchQueryAndSortingDto;
@@ -51,8 +51,11 @@ export class SucheApi extends runtime.BaseAPI {
      * Suche nach Entitäten für die im Request-Body gegebene Suchanfrage.
      */
     async searchForEntitiesRaw(requestParameters: SearchForEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchResultsDto>> {
-        if (requestParameters.searchQueryAndSortingDto === null || requestParameters.searchQueryAndSortingDto === undefined) {
-            throw new runtime.RequiredError('searchQueryAndSortingDto','Required parameter requestParameters.searchQueryAndSortingDto was null or undefined when calling searchForEntities.');
+        if (requestParameters['searchQueryAndSortingDto'] == null) {
+            throw new runtime.RequiredError(
+                'searchQueryAndSortingDto',
+                'Required parameter "searchQueryAndSortingDto" was null or undefined when calling searchForEntities().'
+            );
         }
 
         const queryParameters: any = {};
@@ -61,12 +64,15 @@ export class SucheApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/search/entities`;
+
         const response = await this.request({
-            path: `/search/entities`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SearchQueryAndSortingDtoToJSON(requestParameters.searchQueryAndSortingDto),
+            body: SearchQueryAndSortingDtoToJSON(requestParameters['searchQueryAndSortingDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SearchResultsDtoFromJSON(jsonValue));
@@ -84,8 +90,11 @@ export class SucheApi extends runtime.BaseAPI {
      * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchanfrage.
      */
     async searchForSearchwordSuggestionRaw(requestParameters: SearchForSearchwordSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuchwortSuggestionsDto>> {
-        if (requestParameters.searchQueryDto === null || requestParameters.searchQueryDto === undefined) {
-            throw new runtime.RequiredError('searchQueryDto','Required parameter requestParameters.searchQueryDto was null or undefined when calling searchForSearchwordSuggestion.');
+        if (requestParameters['searchQueryDto'] == null) {
+            throw new runtime.RequiredError(
+                'searchQueryDto',
+                'Required parameter "searchQueryDto" was null or undefined when calling searchForSearchwordSuggestion().'
+            );
         }
 
         const queryParameters: any = {};
@@ -94,12 +103,15 @@ export class SucheApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/search/searchword-suggestion`;
+
         const response = await this.request({
-            path: `/search/searchword-suggestion`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SearchQueryDtoToJSON(requestParameters.searchQueryDto),
+            body: SearchQueryDtoToJSON(requestParameters['searchQueryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuchwortSuggestionsDtoFromJSON(jsonValue));
