@@ -39,7 +39,7 @@
         "required": ["query"],
         "type": "object",
         "properties": {
-          "query": { "type": "string", "description": "Suchtext mit Adressteilen." },
+          "query": { "minLength": 1, "type": "string", "description": "Suchtext mit Adressteilen." },
           "page": { "type": "integer", "description": "Seitennummer (optional, default = 0)", "format": "int32" },
           "pagesize": {
             "type": "integer",
